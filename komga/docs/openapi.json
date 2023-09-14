@@ -2733,6 +2733,938 @@
         }
       }
     },
+    "/opds/v2/series/{id}": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getOneSeries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tag",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/search": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getSearchResults",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/readlists/{id}": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getOneReadList",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/{id}/series/latest": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLatestSeries",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/series/latest": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLatestSeries_1",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/readlists": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesReadLists",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/{id}/readlists": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesReadLists_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/{id}/on-deck": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getOnDeck",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/on-deck": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getOnDeck_1",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/{id}/keep-reading": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getKeepReading",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/keep-reading": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getKeepReading_1",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/collections": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesCollections",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/{id}/collections": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesCollections_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/browse": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesBrowse",
+        "parameters": [
+          {
+            "name": "publisher",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/{id}/browse": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesBrowse_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "publisher",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/books/latest": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLatestBooks",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/{id}/books/latest": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLatestBooks_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries/{id}": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesRecommended",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/libraries": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesRecommended_1",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/catalog": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getLibrariesRecommended_2",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/collections/{id}": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getOneCollection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/opds/v1.2/series": {
       "get": {
         "tags": [
@@ -2807,7 +3739,7 @@
         "tags": [
           "opds-controller"
         ],
-        "operationId": "getOneSeries",
+        "operationId": "getOneSeries_1",
         "parameters": [
           {
             "name": "User-Agent",
@@ -2874,7 +3806,7 @@
         "tags": [
           "opds-controller"
         ],
-        "operationId": "getLatestSeries",
+        "operationId": "getLatestSeries_2",
         "parameters": [
           {
             "name": "User-Agent",
@@ -3023,7 +3955,7 @@
         "tags": [
           "opds-controller"
         ],
-        "operationId": "getOneReadList",
+        "operationId": "getOneReadList_1",
         "parameters": [
           {
             "name": "User-Agent",
@@ -3140,7 +4072,7 @@
         "tags": [
           "opds-controller"
         ],
-        "operationId": "getOnDeck",
+        "operationId": "getOnDeck_2",
         "parameters": [
           {
             "name": "User-Agent",
@@ -3297,7 +4229,7 @@
         "tags": [
           "opds-controller"
         ],
-        "operationId": "getKeepReading",
+        "operationId": "getKeepReading_2",
         "parameters": [
           {
             "name": "User-Agent",
@@ -3406,7 +4338,7 @@
         "tags": [
           "opds-controller"
         ],
-        "operationId": "getOneCollection",
+        "operationId": "getOneCollection_1",
         "parameters": [
           {
             "name": "User-Agent",
@@ -3508,10 +4440,51 @@
         }
       }
     },
-    "/opds/v1.2/books/{bookId}/thumbnail": {
+    "/opds/v1.2/books/{bookId}/thumbnail/small": {
       "get": {
         "tags": [
           "opds-controller"
+        ],
+        "operationId": "getBookThumbnailSmall",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v1.2/books/{bookId}/thumbnail": {
+      "get": {
+        "tags": [
+          "opds-common-controller"
         ],
         "operationId": "getBookThumbnail",
         "parameters": [
@@ -3549,12 +4522,12 @@
         }
       }
     },
-    "/opds/v1.2/books/{bookId}/thumbnail/small": {
+    "/opds/v2/books/{bookId}/thumbnail": {
       "get": {
         "tags": [
-          "opds-controller"
+          "opds-common-controller"
         ],
-        "operationId": "getBookThumbnailSmall",
+        "operationId": "getBookThumbnail_1",
         "parameters": [
           {
             "name": "bookId",
@@ -3741,7 +4714,7 @@
         "tags": [
           "opds-controller"
         ],
-        "operationId": "getLatestBooks",
+        "operationId": "getLatestBooks_2",
         "parameters": [
           {
             "name": "User-Agent",
@@ -4620,7 +5593,7 @@
         "tags": [
           "series-controller"
         ],
-        "operationId": "getOneSeries_1",
+        "operationId": "getOneSeries_2",
         "parameters": [
           {
             "name": "seriesId",
@@ -5263,7 +6236,7 @@
           "series-controller"
         ],
         "description": "Return recently added or updated series.",
-        "operationId": "getLatestSeries_1",
+        "operationId": "getLatestSeries_3",
         "parameters": [
           {
             "name": "library_id",
@@ -7021,7 +7994,7 @@
         "tags": [
           "book-controller"
         ],
-        "operationId": "getBookThumbnail_1",
+        "operationId": "getBookThumbnail_2",
         "parameters": [
           {
             "name": "bookId",
@@ -7233,6 +8206,56 @@
         }
       }
     },
+    "/api/v1/books/{bookId}/pages/{pageNumber}/raw": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getBookPageRaw",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/books/{bookId}/next": {
       "get": {
         "tags": [
@@ -7266,6 +8289,131 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BookDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/manifest": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getWebPubManifest",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/webpub+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
+                }
+              },
+              "application/divina+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/manifest/pdf": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getWebPubManifestPdf",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/webpub+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/manifest/divina": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getWebPubManifestDivina",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/divina+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
                 }
               }
             }
@@ -7493,7 +8641,7 @@
           "book-controller"
         ],
         "description": "Return newly added or updated books.",
-        "operationId": "getLatestBooks_1",
+        "operationId": "getLatestBooks_3",
         "parameters": [
           {
             "name": "unpaged",
@@ -9131,13 +10279,6 @@
       "UserUpdateDto": {
         "type": "object",
         "properties": {
-          "roles": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "ageRestriction": {
             "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
@@ -9157,6 +10298,13 @@
           },
           "sharedLibraries": {
             "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -9262,10 +10410,17 @@
               "type": "string"
             }
           },
-          "links": {
+          "sharingLabels": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WebLinkUpdateDto"
+              "type": "string"
+            }
+          },
+          "alternateTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
             }
           },
           "readingDirection": {
@@ -9281,24 +10436,17 @@
             "type": "integer",
             "format": "int32"
           },
-          "genres": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "totalBookCount": {
             "type": "integer",
             "format": "int32"
           },
-          "alternateTitles": {
+          "links": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
+              "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
-          "sharingLabels": {
+          "genres": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -9434,14 +10582,11 @@
               "type": "string"
             }
           },
-          "summary": {
-            "type": "string"
-          },
           "releaseDate": {
             "type": "string",
             "format": "date"
           },
-          "isbn": {
+          "summary": {
             "type": "string"
           },
           "links": {
@@ -9455,9 +10600,408 @@
             "items": {
               "$ref": "#/components/schemas/AuthorUpdateDto"
             }
+          },
+          "isbn": {
+            "type": "string"
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
+      },
+      "FacetDto": {
+        "required": [
+          "links",
+          "metadata"
+        ],
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/FeedMetadataDto"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          }
+        }
+      },
+      "FeedDto": {
+        "required": [
+          "facets",
+          "groups",
+          "links",
+          "metadata",
+          "navigation",
+          "publications"
+        ],
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/FeedMetadataDto"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "navigation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "facets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FacetDto"
+            }
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeedGroupDto"
+            }
+          },
+          "publications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPPublicationDto"
+            }
+          }
+        }
+      },
+      "FeedGroupDto": {
+        "required": [
+          "links",
+          "metadata",
+          "navigation",
+          "publications"
+        ],
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/FeedMetadataDto"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "navigation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "publications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPPublicationDto"
+            }
+          }
+        }
+      },
+      "FeedMetadataDto": {
+        "required": [
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "subTitle": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "identifier": {
+            "type": "string"
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "itemsPerPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfItems": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "WPBelongsToDto": {
+        "required": [
+          "collection",
+          "series"
+        ],
+        "type": "object",
+        "properties": {
+          "series": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPContributorDto"
+            }
+          },
+          "collection": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPContributorDto"
+            }
+          }
+        }
+      },
+      "WPContributorDto": {
+        "required": [
+          "links",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "number",
+            "format": "float"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          }
+        }
+      },
+      "WPLinkDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "rel": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "WPMetadataDto": {
+        "required": [
+          "artist",
+          "author",
+          "colorist",
+          "contributor",
+          "editor",
+          "illustrator",
+          "inker",
+          "letterer",
+          "penciler",
+          "publisher",
+          "subject",
+          "title",
+          "translator"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "identifier": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "conformsTo": {
+            "type": "string"
+          },
+          "sortAs": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "published": {
+            "type": "string",
+            "format": "date"
+          },
+          "language": {
+            "type": "string"
+          },
+          "author": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "translator": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "editor": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "artist": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "illustrator": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "letterer": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "penciler": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "colorist": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "inker": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contributor": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publisher": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subject": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "readingProgression": {
+            "type": "string",
+            "enum": [
+              "rtl",
+              "ltr",
+              "ttb",
+              "btt",
+              "auto"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "numberOfPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "belongsTo": {
+            "$ref": "#/components/schemas/WPBelongsToDto"
+          }
+        }
+      },
+      "WPPublicationDto": {
+        "required": [
+          "images",
+          "links",
+          "metadata",
+          "readingOrder",
+          "resources",
+          "toc"
+        ],
+        "type": "object",
+        "properties": {
+          "context": {
+            "type": "string"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/WPMetadataDto"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "readingOrder": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "resources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "toc": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          }
+        }
       },
       "OpdsAuthor": {
         "required": [
@@ -9638,13 +11182,26 @@
       "PageAuthenticationActivityDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -9656,25 +11213,12 @@
               "$ref": "#/components/schemas/AuthenticationActivityDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -9684,12 +11228,12 @@
       "PageableObject": {
         "type": "object",
         "properties": {
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
           "offset": {
             "type": "integer",
             "format": "int64"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
           },
           "pageNumber": {
             "type": "integer",
@@ -9699,10 +11243,10 @@
             "type": "integer",
             "format": "int32"
           },
-          "paged": {
+          "unpaged": {
             "type": "boolean"
           },
-          "unpaged": {
+          "paged": {
             "type": "boolean"
           }
         }
@@ -9713,10 +11257,10 @@
           "empty": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           }
         }
@@ -9776,13 +11320,26 @@
       "PageAuthorDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -9794,25 +11351,12 @@
               "$ref": "#/components/schemas/AuthorDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -9881,13 +11425,26 @@
       "PageSeriesDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -9899,25 +11456,12 @@
               "$ref": "#/components/schemas/SeriesDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10373,13 +11917,26 @@
       "PageBookDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -10391,25 +11948,12 @@
               "$ref": "#/components/schemas/BookDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10466,13 +12010,26 @@
       "PageReadListDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -10484,25 +12041,12 @@
               "$ref": "#/components/schemas/ReadListDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10588,13 +12132,26 @@
       "PagePageHashKnownDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -10606,25 +12163,12 @@
               "$ref": "#/components/schemas/PageHashKnownDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10634,13 +12178,26 @@
       "PagePageHashMatchDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -10652,25 +12209,12 @@
               "$ref": "#/components/schemas/PageHashMatchDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10700,13 +12244,26 @@
       "PagePageHashUnknownDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -10718,25 +12275,12 @@
               "$ref": "#/components/schemas/PageHashUnknownDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10775,13 +12319,26 @@
       "PageHistoricalEventDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -10793,25 +12350,12 @@
               "$ref": "#/components/schemas/HistoricalEventDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -10821,13 +12365,26 @@
       "PageCollectionDto": {
         "type": "object",
         "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
           "totalPages": {
             "type": "integer",
             "format": "int32"
           },
-          "totalElements": {
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "number": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
           "size": {
             "type": "integer",
@@ -10839,25 +12396,12 @@
               "$ref": "#/components/schemas/CollectionDto"
             }
           },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
