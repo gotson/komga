@@ -50,7 +50,7 @@ class FileSystemScanner(
 
   private val sidecarBookPrefilter = sidecarBookConsumers.flatMap { it.getSidecarBookPrefilter() }
 
-  fun scanRootFolder(root: Path, forceDirectoryModifiedTime: Boolean = false): ScanResult {
+  fun scanRootFolder(root: Path, forceDirectoryModifiedTime: Boolean = false, oneshotsDir: String? = null): ScanResult {
     logger.info { "Scanning folder: $root" }
     logger.info { "Supported extensions: $supportedExtensions" }
     logger.info { "Excluded patterns: ${komgaProperties.librariesScanDirectoryExclusions}" }
@@ -71,7 +71,9 @@ class FileSystemScanner(
       val pathToBookSidecars = mutableMapOf<Path, MutableList<TempSidecar>>()
 
       Files.walkFileTree(
-        root, setOf(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
+        root,
+        setOf(FileVisitOption.FOLLOW_LINKS),
+        Integer.MAX_VALUE,
         object : FileVisitor<Path> {
           override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
             logger.trace { "preVisit: $dir (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }
@@ -130,16 +132,28 @@ class FileSystemScanner(
             val books = pathToBooks[dir]
             val tempSeries = pathToSeries[dir]
             if (!books.isNullOrEmpty() && tempSeries !== null) {
-              val series =
-                if (forceDirectoryModifiedTime)
-                  tempSeries.copy(fileLastModified = maxOf(tempSeries.fileLastModified, books.maxOf { it.fileLastModified }))
-                else
-                  tempSeries
+              if (!oneshotsDir.isNullOrBlank() && dir.pathString.contains(oneshotsDir, true)) {
+                books.forEach { book ->
+                  val series = Series(
+                    name = book.name,
+                    url = book.url,
+                    fileLastModified = book.fileLastModified,
+                    oneshot = true,
+                  )
+                  scannedSeries[series] = listOf(book.copy(oneshot = true))
+                }
+              } else {
+                val series =
+                  if (forceDirectoryModifiedTime)
+                    tempSeries.copy(fileLastModified = maxOf(tempSeries.fileLastModified, books.maxOf { it.fileLastModified }))
+                  else
+                    tempSeries
 
-              scannedSeries[series] = books
+                scannedSeries[series] = books
 
-              // only add series sidecars if series has books
-              pathToSeriesSidecars[dir]?.let { scannedSidecars.addAll(it) }
+                // only add series sidecars if series has books
+                pathToSeriesSidecars[dir]?.let { scannedSidecars.addAll(it) }
+              }
 
               // book sidecars are matched here, with the actual list of books
               books.forEach { book ->

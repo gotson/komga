@@ -6,19 +6,16 @@ Thanks a lot for contributing to Komga!
 
 You will need:
 
-- Java JDK version 8+
+- Java JDK version 17+
 - Nodejs version 16+
 
 ## Setting up the project
 
-- run `npm install` in the root folder of the project. This will install the necessary commit hooks.
 - run `npm install` in the `komga-webui` folder of the project. This will install the necessary tooling for the webui.
 
 ## Commit messages
 
 Komga's commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) standard. This enables automatic versioning, releases, and release notes generation.
-
-Commit messages are enforced using commit hooks ran on the developer's PC.
 
 ## Project organization
 
@@ -43,7 +40,8 @@ The backend project uses `gradle` to run all the necessary tasks. If your IDE do
 
 Here is a list of useful tasks:
 - `bootRun`: run the application locally, useful for testing your changes.
-- `copyWebDist`: build the frontend, and copy the bundle to `/resources/public`. You need to run this manually if you want to test the latest frontend build hosted by Spring.
+- `prepareThymeLeaf`: build the frontend, and copy the bundle to `/resources/public`. You need to run this manually if
+  you want to test the latest frontend build hosted by Spring.
 - `test`: run automated tests. Always run this before committing.
 - `jooq-codegen-primary`: generates the jOOQ DSL.
 
@@ -63,14 +61,14 @@ SET SPRING_PROFILES_ACTIVE=dev
 
 ## Frontend development
 
-You can run a live development server with `npm run serve` from `/komga-webui`. The dev server will override the URL to connect to `localhost:8080`, so you can also run `gradle bootRun` to have a backend running, serving the API requests. The frontend will be loaded from `localhost:8081`.
+You can run a live development server with `npm run serve` from `/komga-webui`. The dev server will override the URL to connect to `localhost:25600`, so you can also run `gradle bootRun` to have a backend running, serving the API requests. The frontend will be loaded from `localhost:8081`.
 
 Make sure you start the backend with the `dev` profile, else the frontend requests will be denied because of CORS.
 
 ## Docker
 
 To build the Docker image, you need to:
-- have the webui built and copied to `/resources/public`. To do so, run `./gradlew copyWebDist`
-- unpack the jar into layers expected by the `Dockerfile`. To do so, run `./gradlew unpack`
 
-Then you can run `docker build -f ./komga/Dockerfile .`
+- have the webui built and copied to `/resources/public`. To do so, run `./gradlew prepareThymeLeaf`
+- prepare the docker image via JReleaser. To do so, run `./gradlew jreleaserPackage`
+- the `Dockerfile` will be available in `komga/build/jreleaser/package/docker/`

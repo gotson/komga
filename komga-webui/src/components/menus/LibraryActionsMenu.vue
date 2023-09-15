@@ -7,8 +7,11 @@
         </v-btn>
       </template>
       <v-list dense>
-        <v-list-item @click="scan">
+        <v-list-item @click="scan(false)">
           <v-list-item-title>{{ $t('menu.scan_library_files') }}</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="scan(true)" class="list-warning">
+          <v-list-item-title>{{ $t('menu.scan_library_files_deep') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="confirmAnalyzeModal = true">
           <v-list-item-title>{{ $t('menu.analyze') }}</v-list-item-title>
@@ -23,7 +26,7 @@
           <v-list-item-title>{{ $t('menu.edit') }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="promptDeleteLibrary"
-                     class="list-warning">
+                     class="list-danger">
           <v-list-item-title>{{ $t('menu.delete') }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -81,8 +84,8 @@ export default Vue.extend({
     },
   },
   methods: {
-    scan() {
-      this.$komgaLibraries.scanLibrary(this.library)
+    scan(scanDeep: boolean) {
+      this.$komgaLibraries.scanLibrary(this.library, scanDeep)
     },
     analyze() {
       this.$komgaLibraries.analyzeLibrary(this.library)

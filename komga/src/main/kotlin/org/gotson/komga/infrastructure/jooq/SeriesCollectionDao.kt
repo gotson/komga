@@ -202,7 +202,6 @@ class SeriesCollectionDao(
 
   @Transactional
   override fun delete(collectionId: String) {
-
     dsl.deleteFrom(cs).where(cs.COLLECTION_ID.eq(collectionId)).execute()
     dsl.deleteFrom(c).where(c.ID.eq(collectionId)).execute()
   }

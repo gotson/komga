@@ -29,6 +29,9 @@ class MediaDao(
   private val groupFields = arrayOf(*m.fields(), *p.fields())
 
   override fun findById(bookId: String): Media =
+    find(dsl, bookId)!!
+
+  override fun findByIdOrNull(bookId: String): Media? =
     find(dsl, bookId)
 
   override fun findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(libraryId: String, mediaTypes: Collection<String>, pageHashing: Int): Collection<Pair<String, String>> {
@@ -64,7 +67,7 @@ class MediaDao(
       .fetch()
       .map { Pair(it[m.BOOK_ID], it[m.PAGE_COUNT]) }
 
-  private fun find(dsl: DSLContext, bookId: String): Media =
+  private fun find(dsl: DSLContext, bookId: String): Media? =
     dsl.select(*groupFields)
       .from(m)
       .leftJoin(p).on(m.BOOK_ID.eq(p.BOOK_ID))
@@ -72,7 +75,8 @@ class MediaDao(
       .groupBy(*groupFields)
       .orderBy(p.NUMBER.asc())
       .fetchGroups(
-        { it.into(m) }, { it.into(p) },
+        { it.into(m) },
+        { it.into(p) },
       ).map { (mr, pr) ->
         val files = dsl.selectFrom(f)
           .where(f.BOOK_ID.eq(bookId))
@@ -80,7 +84,7 @@ class MediaDao(
           .map { it.fileName }
 
         mr.toDomain(pr.filterNot { it.bookId == null }.map { it.toDomain() }, files)
-      }.first()
+      }.firstOrNull()
 
   @Transactional
   override fun insert(media: Media) {
@@ -131,7 +135,7 @@ class MediaDao(
             p.WIDTH,
             p.HEIGHT,
             p.FILE_HASH,
-            p.FILE_SIZE
+            p.FILE_SIZE,
           ).values(null as String?, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach { media ->
@@ -235,6 +239,6 @@ class MediaDao(
       mediaType = mediaType,
       dimension = if (width != null && height != null) Dimension(width, height) else null,
       fileHash = fileHash,
-      fileSize = fileSize
+      fileSize = fileSize,
     )
 }

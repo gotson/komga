@@ -17,7 +17,6 @@ class DataSourcesConfiguration(
   @Bean("sqliteDataSource")
   @Primary
   fun sqliteDataSource(): DataSource {
-
     val extraPragmas = komgaProperties.database.pragmas.let {
       if (it.isEmpty()) ""
       else "?" + it.map { (key, value) -> "$key=$value" }.joinToString(separator = "&")

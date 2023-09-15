@@ -16,9 +16,9 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null)
   abstract fun uniqueId(): String
   val priority = priority.coerceIn(0, 9)
 
-  class ScanLibrary(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
-    override fun uniqueId() = "SCAN_LIBRARY_$libraryId"
-    override fun toString(): String = "ScanLibrary(libraryId='$libraryId', priority='$priority')"
+  class ScanLibrary(val libraryId: String, val scanDeep: Boolean, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "SCAN_LIBRARY_${libraryId}_DEEP_$scanDeep"
+    override fun toString(): String = "ScanLibrary(libraryId='$libraryId', scanDeep='$scanDeep', priority='$priority')"
   }
 
   class FindBooksToConvert(val libraryId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
@@ -110,6 +110,11 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null)
   class RebuildIndex(val entities: Set<LuceneEntity>?, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override fun uniqueId() = "REBUILD_INDEX"
     override fun toString(): String = "RebuildIndex(priority='$priority',entities='${entities?.map { it.type }}')"
+  }
+
+  class UpgradedIndex(priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "UPGRADE_INDEX"
+    override fun toString(): String = "UpgradeIndex(priority='$priority')"
   }
 
   class DeleteBook(val bookId: String, priority: Int = DEFAULT_PRIORITY) : Task(priority) {

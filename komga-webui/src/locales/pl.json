@@ -21,6 +21,11 @@
     "account_settings": "Ustawienia konta",
     "change_password": "zmień hasło"
   },
+  "announcements": {
+    "mark_all_read": "Oznacz wszystkie jako przeczytane",
+    "mark_read": "Oznacz jako przeczytane",
+    "tab_title": "Ogłoszenia"
+  },
   "authentication_activity": {
     "datetime": "Data i czas",
     "email": "E-mail",
@@ -174,7 +179,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Edycja elementów",
-    "edit_readlist": "Edytuj listę"
+    "edit_readlist": "Edytuj listę",
+    "manual_ordering": "sortowanie ręczne"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "To jest najwcześniejszy rok z dat publikacji wszystkich książek w serii",
@@ -188,6 +194,7 @@
   "common": {
     "age": "Wiek",
     "all_libraries": "Wszystkie biblioteki",
+    "book": "Zeszyt",
     "books": "Książki",
     "books_n": "Brak tomów| 1 tom | {count} tomy | {count} tomów",
     "books_total": "{count} / {total} książek",
@@ -205,6 +212,7 @@
     "filename": "Nazwa pliku",
     "filter_no_matches": "Aktywny filtr nie zwrócił żadnych wyników",
     "genre": "Gatunek",
+    "go_to_collection": "Idź do kolekcji",
     "go_to_library": "Przejdź do biblioteki",
     "go_to_readlist": "Przejdź do listy czytanych",
     "go_to_series": "Przejdź do cyklu",
@@ -214,21 +222,25 @@
     "lock_all": "Zablokuj wszystko",
     "n_selected": "wybrano {count}",
     "nothing_to_show": "Nic do wyświetlenia",
+    "oneshot": "Jednoczęściowe",
     "outdated": "Nieaktualny",
     "page": "Strona",
     "page_number": "Numer strony",
     "pages": "strony",
+    "pages_left": "Brak pozostałych stron | Pozostała 1 strona | Zostało {count} stron",
     "pages_n": "Brak stron | 1 strona | {count} strony | {count} stron",
     "password": "Hasło",
     "pending_tasks": "Brak oczekujących zadań | 1 zadanie oczekujące | {count} zadania oczekujące | {count} zadań oczekujących",
     "publisher": "Wydawca",
     "read": "Czytaj",
+    "read_on": "Czytano {date}",
+    "readlist": "Lista",
     "readlists": "Listy",
     "required": "Wymagane",
     "reset_filters": "Zresetuj filtry",
     "roles": "Role",
     "save_changes": "Zapisz zmiany",
-    "series": "Serie",
+    "series": "Seria | Serie",
     "sidecars": "Dodatki",
     "tags": "Tagi",
     "unavailable": "Niedostępny",
@@ -250,10 +262,20 @@
     "book_number": "Numer książki: {name}",
     "book_series": "Seria: {name}",
     "button_import": "Importuj",
+    "button_match": "Dopasowanie",
     "comicrack_preambule_html": "Importowanie istniejących list z programu ComicRack w formacie <code>.cbl</code>. <br>Komga spróbuje dopasować cykle i tomy do cykli i tomów znajdujących się w bibliotekach.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} zeszytów nie dopasowanych",
+      "create": "Stwórz mimo to",
+      "title": "Niektóre zeszyty nie pasują"
+    },
+    "field_file_label": "Lista Czytania ComicRack (.cbl)",
     "field_files_label": "Listy programu ComicRack",
     "import_read_lists": "Zaimportuj listy",
     "imported_as": "Zaimportowano jako {name}",
+    "readlist_created": "Stworzono Listę Czytania: {name}",
+    "requested_number": "Żądany numer",
+    "requested_series": "Żądana seria",
     "results_preambule": "Wynik importu wyświetlono poniżej. Wyświetlono także niedopasowane książki dla każdego przetworzonego pliku.",
     "size_limit": "Plik powinien być mniejszy niż {size} MB",
     "tab_title": "Import danych"
@@ -291,6 +313,10 @@
       "body": "Analizuje wszystkie pliki w bibliotece. Analiza zbiera informacje o mediach. W zależności od rozmiaru biblioteki może to zająć dużo czasu.",
       "button_confirm": "Analizuj",
       "title": "Analizuj bibliotekę"
+    },
+    "book_picker": {
+      "filter": "Filtruj według numeru książki, tytułu lub daty wydania",
+      "title": "Wybierz książkę"
     },
     "delete_book": {
       "button_confirm": "Usuń",
@@ -344,8 +370,10 @@
       "authors_notice_multiple_edit": "Edytujesz autorów dla wielu książek. Spowoduje to zastąpienie istniejących autorów każdej książki.",
       "button_cancel": "Anuluj",
       "button_confirm": "Zapisz zmiany",
+      "copy_from": "Skopiuj z {field}",
       "dialog_title_multiple": "Edycja książki | Edycja {count} książek",
       "dialog_title_single": "Edycja {book}",
+      "field_alternate_title": "Tytuł alternatywny",
       "field_isbn": "ISBN",
       "field_isbn_error": "Musi być prawidłowym numerem ISBN 13",
       "field_link_label": "Opis odnośnika",
@@ -360,6 +388,8 @@
       "field_summary": "Streszczenie",
       "field_tags": "Tagi",
       "field_title": "Tytuł",
+      "number_sort_decrement": "Zmniejsz wszystkie o 1",
+      "number_sort_increment": "Zwiększ wszystkie o 1",
       "tab_authors": "Twórcy",
       "tab_general": "Ogólne",
       "tab_links": "Odnośniki",
@@ -393,14 +423,15 @@
       "field_import_comicinfo_collections": "Kolekcje",
       "field_import_comicinfo_readlists": "Listy",
       "field_import_comicinfo_series": "Metadane cykli",
+      "field_import_comicinfo_series_append_volume": "Dołącz tom do tytułu serii",
       "field_import_epub_book": "Metadane książki",
       "field_import_epub_series": "Metadane cykli",
       "field_import_local_artwork": "Grafika lokalna",
       "field_import_mylar_series": "Metadane cykli",
       "field_name": "Nazwa",
+      "field_oneshotsdirectory": "Katalog jednoczęściowych",
       "field_repair_extensions": "Automatycznie napraw nieprawidłowe rozszerzenia plików",
       "field_root_folder": "Katalog główny",
-      "field_scanner_deep_scan": "Głębokie skanowanie",
       "field_scanner_empty_trash_after_scan": "Opróżnij kosz automatycznie po każdym skanowaniu",
       "field_scanner_force_directory_modified_time": "Wymuś czas modyfikacji katalogu",
       "field_series_cover": "Okładka cyklu",
@@ -418,6 +449,7 @@
       "tab_general": "Ogólne",
       "tab_metadata": "Metadane",
       "tab_options": "Opcje",
+      "tooltip_oneshotsdirectory": "Pozostaw puste aby wyłączyć",
       "tooltip_scanner_force_modified_time": "Włącz jeżeli biblioteka znajduje się na Google Drive",
       "tooltip_use_resources": "Może znacząco obciązyć zasoby jeżeli biblioteka jest duża lub sprzęt nie jest wydajny"
     },
@@ -425,8 +457,10 @@
       "button_cancel": "Anuluj",
       "button_confirm": "Zapisz zmiany",
       "dialog_title": "Edycja listy",
+      "field_manual_ordering": "Sortowanie ręczne",
       "field_name": "Nazwa",
       "field_summary": "Streszczenie",
+      "label_ordering": "Domyślnie książki na liście przeczytanych są sortowane ręcznie. Można wyłączyć ręczne porządkowanie, aby sortować książki według daty wydania.",
       "tab_general": "Ogólne",
       "tab_poster": "Plakat"
     },
@@ -455,6 +489,7 @@
       "tab_poster": "Plakat",
       "tab_sharing": "Udostępnianie",
       "tab_tags": "Tagi",
+      "tab_titles": "Tytuły alternatywne",
       "tags_notice_multiple_edit": "Edytujesz tagi dla wielu cykli. Spowoduje to zastąpienie istniejących tagów w każdym cyklu."
     },
     "edit_user": {
@@ -513,6 +548,7 @@
     },
     "series_picker": {
       "label_search_series": "Szukaj serii",
+      "no_results": "Nie znaleziono serii",
       "title": "Wybierz serię"
     },
     "server_stop": {
@@ -551,21 +587,30 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Pozostało do automatycznego usunięcia ({count})",
     "action_delete_auto": "Automtyczne usuwanie",
     "action_delete_manual": "Ręczne usuwanie",
     "action_delete_matches": "Usuń pasujące",
     "action_ignore": "Ignoruj",
+    "action_ignore_remaining": "Zignoruj pozostałe ({count})",
+    "action_manual_delete_remaining": "Pozostało do usunięcia ręcznego ({count})",
+    "confirm_auto_delete_remaining": "Wszystkie pozostałe skróty stron na tej stronie ({count}) zostaną oznaczone do automatycznego usunięcia.",
+    "confirm_manual_delete_remaining": "Wszystkie pozostałe skróty strony na tej stronie ({count}) zostaną oznaczone do ręcznego usunięcia.",
     "delete_to_save": "Usuń żeby zaoszczędzić {size}",
     "deleted_count": "Usunięto 1 raz | Usunięto {count} razy",
+    "empty_title": "Nie znaleziono zduplikowanych stron",
     "filter": {
       "count": "Ilość",
       "delete_count": "Ilość usuniętych",
       "delete_size": "Zaoszczędzona przestrzeń",
+      "match_count": "Liczba dopasowań",
       "size": "Rozmiar",
       "total_size": "Rozmiar razem"
     },
     "info": "Usunięcie duplikatów stron zmieni zawartość Twoich plików. Zrób kopię zapasową i użyj usuwania ręcznego zanim użyjesz usuwania automatycznego.",
+    "known": "Znany",
     "matches_n": "Brak wyników | 1 wynik| {count} wyników",
+    "new": "Nowy",
     "saved_size": "Zaoszczędzono {size}",
     "title": "Duplikaty stron",
     "unknown_size": "Nieznany rozmiar"
@@ -630,12 +675,7 @@
     "ERR_1007": "Niektóre wpisy nie mogły zostać przeanalizowane",
     "ERR_1008": "Nieznany błąd podczas pobierania pozycji książki",
     "ERR_1009": "Lista o tej nazwie już istnieje",
-    "ERR_1010": "Żadne książki nie zostały dopasowane w żądaniu listy",
-    "ERR_1011": "Brak unikalnego dopasowania dla cyklu",
-    "ERR_1012": "Brak dopasowania dla cykli",
-    "ERR_1013": "Brak unikalnego dopasowania dla numeru tomu w cyklu",
-    "ERR_1014": "Brak dopasowania dla numeru tomu w cyklu",
-    "ERR_1015": "Błąd podczas deserializacji listy ComicRack",
+    "ERR_1015": "Błąd podczas deserializacji listy ComicRack CBL",
     "ERR_1016": "Katalog jest niedostępny lub nie jest katalogiem",
     "ERR_1017": "Nie można skanować folderu, który jest częścią istniejącej biblioteki",
     "ERR_1018": "Nie znaleziono pliku",
@@ -646,7 +686,12 @@
     "ERR_1023": "Tom już znajduje się na liście czytania",
     "ERR_1024": "Błąd logowania OAuth2: brak atrybutu adresu e-mail",
     "ERR_1025": "Błąd logowania OAuth2: nie istnieje lokalny użytkownik z tym adresem e-mail",
-    "ERR_1026": "Błąd logowania OpenID Connect: e-mail nie został zweryfikowany"
+    "ERR_1026": "Błąd logowania OpenID Connect: e-mail nie został zweryfikowany",
+    "ERR_1027": "Błąd logowania OpenID Connect: brak atrybutu email_verified",
+    "ERR_1028": "Błąd logowania OpenID Connect: brak atrybutu e-mail",
+    "ERR_1029": "ComicRack CBL nie zawiera żadnej książki",
+    "ERR_1030": "ComicRack CBL nie posiada elementu Name",
+    "ERR_1031": "W ComicRack CBL Book brakuje serii lub numeru"
   },
   "filter": {
     "age_rating": "Klasyfikacja wiekowa",
@@ -656,9 +701,11 @@
     "in_progress": "W trakcie",
     "language": "język",
     "library": "biblioteka",
+    "oneshot": "Jednoczęściowe",
     "publisher": "wydawca",
     "read": "Przeczytane",
     "release_date": "data wydania",
+    "sharing_label": "Etykieta udostępniania",
     "status": "status",
     "tag": "tag",
     "unread": "Nieprzeczytane"
@@ -720,6 +767,7 @@
     "mark_unread": "Oznacz jako nieprzeczytane",
     "refresh_metadata": "Odśwież metadane",
     "scan_library_files": "Skanuj pliki bibliotek",
+    "scan_library_files_deep": "Skanuj pliki bibliotek (głębokie)",
     "select_all": "Zaznacz wszystkie"
   },
   "metrics": {
@@ -745,6 +793,12 @@
     "less": "Mniej",
     "more": "Więcej"
   },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Duplikat książki",
+      "error_choose_book": "Wybierz książkę"
+    }
+  },
   "readlists_expansion_panel": {
     "manage_readlist": "Zarządzanie listami",
     "title": "Lista {name}"
@@ -765,6 +819,7 @@
       "button_cancel_all_tasks": "Anuluj wszystkie zadania",
       "button_empty_trash": "Opróżnij kosz dla wszystkich bibliotek",
       "button_scan_libraries": "Skanuj wszystkie biblioteki",
+      "button_scan_libraries_deep": "Skanuj wszystkie biblioteki (głębokie)",
       "button_shutdown": "Wyłącz",
       "notification_tasks_cancelled": "Brak zadań do anulowania | Anulowano jedno zadanie | Anulowano {count} zadań",
       "section_title": "Zarządzanie serwerem"
@@ -809,6 +864,10 @@
     "tooltip_to_be_uploaded": "Do przesłania",
     "tooltip_too_big": "Plik jest za duży!",
     "tooltip_user_uploaded": "Przesłane przez użytkownika"
+  },
+  "titles_more": {
+    "less": "Mniej tytułów",
+    "more": "Więcej tytułów"
   },
   "user_roles": {
     "ADMIN": "Administrator",

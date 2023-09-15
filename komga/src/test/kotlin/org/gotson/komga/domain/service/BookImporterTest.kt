@@ -33,10 +33,8 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Paths
@@ -44,7 +42,6 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.createDirectory
 import kotlin.io.path.createFile
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class BookImporterTest(
   @Autowired private val bookImporter: BookImporter,

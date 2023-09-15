@@ -1,11 +1,11 @@
 package org.gotson.komga.infrastructure.security.session
 
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.session.web.http.CookieHttpSessionIdResolver
 import org.springframework.session.web.http.CookieSerializer
 import org.springframework.session.web.http.HeaderHttpSessionIdResolver
 import org.springframework.session.web.http.HttpSessionIdResolver
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 class SmartHttpSessionIdResolver(
   private val sessionHeaderName: String,

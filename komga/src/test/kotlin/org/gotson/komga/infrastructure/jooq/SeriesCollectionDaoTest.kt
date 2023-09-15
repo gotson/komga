@@ -10,14 +10,11 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.Pageable
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDateTime
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class SeriesCollectionDaoTest(
   @Autowired private val collectionDao: SeriesCollectionDao,
@@ -179,7 +176,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(1)
         .containsExactly(seriesLibrary1.id)
-      assertThat(filtered).isTrue()
+      assertThat(filtered).isTrue
     }
 
     assertThat(foundLibrary1Unfiltered).hasSize(2)
@@ -188,7 +185,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(2)
         .containsExactly(seriesLibrary1.id, seriesLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
 
     assertThat(foundLibrary2Filtered).hasSize(2)
@@ -197,7 +194,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(1)
         .containsExactly(seriesLibrary2.id)
-      assertThat(filtered).isTrue()
+      assertThat(filtered).isTrue
     }
 
     assertThat(foundLibrary2Unfiltered).hasSize(2)
@@ -206,7 +203,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(2)
         .containsExactly(seriesLibrary1.id, seriesLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
 
     assertThat(foundBothUnfiltered).hasSize(3)
@@ -215,7 +212,7 @@ class SeriesCollectionDaoTest(
       assertThat(seriesIds)
         .hasSize(2)
         .containsExactly(seriesLibrary1.id, seriesLibrary2.id)
-      assertThat(filtered).isFalse()
+      assertThat(filtered).isFalse
     }
   }
 }

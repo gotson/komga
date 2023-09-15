@@ -17,7 +17,8 @@ enum class AgeRating(val value: String, val ageRating: Int? = null) {
   R_18("R18+", 18),
   RATING_PENDING("Rating Pending"),
   TEEN("Teen", 13),
-  X_18("X18+", 18);
+  X_18("X18+", 18),
+  ;
 
   companion object {
     private val map = values().associateBy { it.value.toLowerNoSpace() }

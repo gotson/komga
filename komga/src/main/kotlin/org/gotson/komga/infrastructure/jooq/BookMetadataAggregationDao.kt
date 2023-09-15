@@ -34,7 +34,8 @@ class BookMetadataAggregationDao(
       .leftJoin(a).on(d.SERIES_ID.eq(a.SERIES_ID))
       .where(d.SERIES_ID.`in`(seriesIds))
       .fetchGroups(
-        { it.into(d) }, { it.into(a) },
+        { it.into(d) },
+        { it.into(a) },
       ).map { (dr, ar) ->
         dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.seriesId))
       }

@@ -1,11 +1,11 @@
 package org.gotson.komga.domain.model
 
 import com.github.f4b6a3.tsid.TsidCreator
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.language.lowerNotBlank
 import java.io.Serializable
 import java.time.LocalDateTime
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
 
 const val ROLE_USER = "USER"
 const val ROLE_ADMIN = "ADMIN"

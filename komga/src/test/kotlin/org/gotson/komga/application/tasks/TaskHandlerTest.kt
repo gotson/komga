@@ -19,17 +19,14 @@ import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jms.config.JmsListenerEndpointRegistry
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.jms.support.destination.JmsDestinationAccessor
-import org.springframework.test.context.junit.jupiter.SpringExtension
 
 private val logger = KotlinLogging.logger {}
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class TaskHandlerTest(
   @Autowired private val taskEmitter: TaskEmitter,
@@ -63,7 +60,7 @@ class TaskHandlerTest(
   @Test
   fun `when similar tasks are submitted then only one is executed`() {
     every { mockBookRepository.findByIdOrNull(any()) } returns makeBook("id")
-    every { mockBookLifecycle.analyzeAndPersist(any()) } returns false
+    every { mockBookLifecycle.analyzeAndPersist(any()) } returns emptySet()
 
     jmsListenerEndpointRegistry.stop()
     val book = makeBook("book")
@@ -85,7 +82,7 @@ class TaskHandlerTest(
       Thread.sleep(1_00)
       makeBook(slot.captured)
     }
-    every { mockBookLifecycle.analyzeAndPersist(capture(calls)) } returns false
+    every { mockBookLifecycle.analyzeAndPersist(capture(calls)) } returns emptySet()
 
     jmsListenerEndpointRegistry.stop()
     (0..9).forEach {

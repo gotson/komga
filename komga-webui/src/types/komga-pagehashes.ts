@@ -2,12 +2,11 @@ import {PageHashAction} from '@/types/enum-pagehashes'
 
 export interface PageHashDto {
   hash: string,
-  mediaType: string,
   size?: number,
+  matchCount: number,
 }
 
 export interface PageHashUnknownDto extends PageHashDto {
-  matchCount: number,
 }
 
 export interface PageHashMatchDto {
@@ -15,11 +14,12 @@ export interface PageHashMatchDto {
   url: string,
   pageNumber: number,
   fileName: string,
+  fileSize: number,
+  mediaType: string,
 }
 
 export interface PageHashCreationDto {
   hash: string,
-  mediaType: string,
   size?: number,
   action: PageHashAction,
 }
@@ -27,6 +27,6 @@ export interface PageHashCreationDto {
 export interface PageHashKnownDto extends PageHashDto {
   action: PageHashAction
   deleteCount: number,
-  createdDate: string,
-  lastModifiedDate: string,
+  createdDate: Date,
+  lastModifiedDate: Date,
 }

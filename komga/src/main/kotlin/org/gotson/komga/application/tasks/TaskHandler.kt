@@ -2,6 +2,7 @@ package org.gotson.komga.application.tasks
 
 import io.micrometer.core.instrument.MeterRegistry
 import mu.KotlinLogging
+import org.gotson.komga.domain.model.BookAction
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -54,10 +55,9 @@ class TaskHandler(
     try {
       measureTime {
         when (task) {
-
           is Task.ScanLibrary ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              libraryContentLifecycle.scanRootFolder(library)
+              libraryContentLifecycle.scanRootFolder(library, task.scanDeep)
               taskEmitter.analyzeUnknownAndOutdatedBooks(library)
               taskEmitter.repairExtensions(library, LOW_PRIORITY)
               taskEmitter.findBooksToConvert(library, LOWEST_PRIORITY)
@@ -94,10 +94,9 @@ class TaskHandler(
 
           is Task.AnalyzeBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
-              if (bookLifecycle.analyzeAndPersist(book)) {
-                taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
-                taskEmitter.refreshBookMetadata(book, priority = task.priority + 1)
-              }
+              val actions = bookLifecycle.analyzeAndPersist(book)
+              if (actions.contains(BookAction.GENERATE_THUMBNAIL)) taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+              if (actions.contains(BookAction.REFRESH_METADATA)) taskEmitter.refreshBookMetadata(book, priority = task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.GenerateBookThumbnail ->
@@ -150,7 +149,9 @@ class TaskHandler(
 
           is Task.RemoveHashedPages ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
-              bookPageEditor.removeHashedPages(book, task.pages)
+              if (bookPageEditor.removeHashedPages(book, task.pages) == BookAction.GENERATE_THUMBNAIL) {
+                taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+              }
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.HashBook ->
@@ -165,9 +166,12 @@ class TaskHandler(
 
           is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex(task.entities)
 
+          is Task.UpgradedIndex -> searchIndexLifecycle.upgradeIndex()
+
           is Task.DeleteBook -> {
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
-              bookLifecycle.deleteBookFiles(book)
+              if (book.oneshot) seriesLifecycle.deleteSeriesFiles(seriesRepository.findByIdOrNull(book.seriesId)!!)
+              else bookLifecycle.deleteBookFiles(book)
             }
           }
 

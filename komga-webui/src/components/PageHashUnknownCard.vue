@@ -18,7 +18,6 @@
             <v-container>
               <v-row>
                 <v-col>
-                  <div>{{ hash.mediaType }}</div>
                   <div>{{ getFileSize(hash.size) || $t('duplicate_pages.unknown_size') }}</div>
                 </v-col>
               </v-row>
@@ -92,7 +91,6 @@ export default Vue.extend({
       try {
         await this.$komgaPageHashes.createOrUpdatePageHash({
           hash: this.hash.hash,
-          mediaType: this.hash.mediaType,
           size: this.hash.size,
           action: action,
         })

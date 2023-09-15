@@ -1,12 +1,12 @@
 package org.gotson.komga.benchmark
 
+import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.PositiveOrZero
 import org.openjdk.jmh.annotations.Mode
 import org.openjdk.jmh.results.format.ResultFormatType
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 import org.springframework.validation.annotation.Validated
-import javax.validation.constraints.Positive
-import javax.validation.constraints.PositiveOrZero
 
 @Component
 @ConfigurationProperties(prefix = "benchmark")

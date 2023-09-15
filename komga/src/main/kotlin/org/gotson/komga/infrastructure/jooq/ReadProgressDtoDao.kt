@@ -27,24 +27,6 @@ class ReadProgressDtoDao(
   private val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
   private val countInProgress: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0))
 
-  override fun findProgressBySeries(seriesId: String, userId: String): TachiyomiReadProgressDto {
-    val indexedReadProgress = dsl.select(
-      rowNumber().over().orderBy(d.NUMBER_SORT),
-      r.COMPLETED,
-    )
-      .from(b)
-      .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .where(b.SERIES_ID.eq(seriesId))
-      .orderBy(d.NUMBER_SORT)
-      .fetch()
-      .toList()
-
-    val booksCount = getSeriesBooksCount(seriesId, userId)
-
-    return booksCountToDto(booksCount, indexedReadProgress.lastRead() ?: 0)
-  }
-
   override fun findProgressV2BySeries(seriesId: String, userId: String): TachiyomiReadProgressV2Dto {
     val numberSortReadProgress = dsl.select(
       d.NUMBER_SORT,

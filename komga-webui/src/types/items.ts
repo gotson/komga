@@ -5,6 +5,7 @@ import {SeriesDto} from '@/types/komga-series'
 import i18n from '@/i18n'
 import {MediaStatus} from '@/types/enum-books'
 import {getFileSize} from '@/functions/file'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export enum ItemTypes {
   BOOK, SERIES, COLLECTION, READLIST
@@ -76,6 +77,11 @@ export class BookItem extends Item<BookDto> {
 
 
   title(context: ItemContext[]): ItemTitle | ItemTitle[] {
+    if (this.item.oneshot)
+      return {
+        title: this.item.metadata.title,
+        to: this.to(),
+      }
     if (context.includes(ItemContext.SHOW_SERIES))
       return [
         {
@@ -106,18 +112,23 @@ export class BookItem extends Item<BookDto> {
         let text
         let title
         if (context.includes(ItemContext.RELEASE_DATE))
-          text = this.item.metadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium', timeZone: 'UTC'} as Intl.DateTimeFormatOptions).format(new Date(this.item.metadata.releaseDate)) : i18n.t('book_card.no_release_date')
-        else if (context.includes(ItemContext.DATE_ADDED))
-          {
-            const date = new Date(this.item.created)
-            text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
-            title = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'long', timeStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
-          }
-        else if (context.includes(ItemContext.READ_DATE)) {
-          if (this.item.readProgress?.lastModified) {
-            const date = new Date(this.item.readProgress?.lastModified)
-            text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
-            title = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'long', timeStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
+          text = this.item.metadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {
+            dateStyle: 'medium',
+            timeZone: 'UTC',
+          } as Intl.DateTimeFormatOptions).format(new Date(this.item.metadata.releaseDate)) : i18n.t('book_card.no_release_date')
+        else if (context.includes(ItemContext.DATE_ADDED)) {
+          text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(this.item.created)
+          title = new Intl.DateTimeFormat(i18n.locale, {
+            dateStyle: 'long',
+            timeStyle: 'medium',
+          } as Intl.DateTimeFormatOptions).format(this.item.created)
+        } else if (context.includes(ItemContext.READ_DATE)) {
+          if (this.item.readProgress?.readDate) {
+            text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(this.item.readProgress?.readDate)
+            title = new Intl.DateTimeFormat(i18n.locale, {
+              dateStyle: 'long',
+              timeStyle: 'medium',
+            } as Intl.DateTimeFormatOptions).format(this.item.readProgress?.readDate)
           } else {
             text = i18n.t('book_card.unread')
           }
@@ -125,23 +136,35 @@ export class BookItem extends Item<BookDto> {
           text = getFileSize(this.item.sizeBytes)
         else
           text = i18n.tc('common.pages_n', this.item.media.pagesCount)
-        return `<div class="text-truncate" title="${title}">${text}</div>`
+        return `<div class="text-truncate" title="${title ? title : ''}">${text}</div>`
     }
   }
 
   to(): RawLocation {
-    return {
-      name: 'browse-book',
-      params: {bookId: this.item.id},
-      query: {context: this.item?.context?.origin, contextId: this.item?.context?.id},
-    }
+    return this.item.oneshot ?
+      {
+        name: 'browse-oneshot',
+        params: {seriesId: this.item.seriesId},
+        query: {context: this.item?.context?.origin, contextId: this.item?.context?.id},
+      } :
+      {
+        name: 'browse-book',
+        params: {bookId: this.item.id},
+        query: {context: this.item?.context?.origin, contextId: this.item?.context?.id},
+      }
   }
 
   seriesTo(): RawLocation {
-    return {
-      name: 'browse-series',
-      params: {seriesId: this.item.seriesId},
-    }
+    return this.item.oneshot ?
+      {
+        name: 'browse-oneshot',
+        params: {seriesId: this.item.seriesId},
+        query: {context: this.item?.context?.origin, contextId: this.item?.context?.id},
+      } :
+      {
+        name: 'browse-series',
+        params: {seriesId: this.item.seriesId},
+      }
   }
 
   fabTo(): RawLocation {
@@ -175,27 +198,32 @@ export class SeriesItem extends Item<SeriesDto> {
     let text
     let title
     if (context.includes(ItemContext.RELEASE_DATE))
-      text = this.item.booksMetadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium', timeZone: 'UTC'} as Intl.DateTimeFormatOptions).format(new Date(this.item.booksMetadata.releaseDate)) : i18n.t('book_card.no_release_date')
-    else if (context.includes(ItemContext.DATE_ADDED))
-      {
-        const date = new Date(this.item.created)
-        text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
-        title = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'long', timeStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
-      }
-    else if (context.includes(ItemContext.DATE_UPDATED))
-      {
-        const date = new Date(this.item.lastModified)
-        text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
-        title = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'long', timeStyle: 'medium'} as Intl.DateTimeFormatOptions).format(date)
-      }
-    else
+      text = this.item.booksMetadata.releaseDate ? new Intl.DateTimeFormat(i18n.locale, {
+        dateStyle: 'medium',
+        timeZone: 'UTC',
+      } as Intl.DateTimeFormatOptions).format(new Date(this.item.booksMetadata.releaseDate)) : i18n.t('book_card.no_release_date')
+    else if (context.includes(ItemContext.DATE_ADDED)) {
+      text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(this.item.created)
+      title = new Intl.DateTimeFormat(i18n.locale, {
+        dateStyle: 'long',
+        timeStyle: 'medium',
+      } as Intl.DateTimeFormatOptions).format(this.item.created)
+    } else if (context.includes(ItemContext.DATE_UPDATED)) {
+      text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(this.item.lastModified)
+      title = new Intl.DateTimeFormat(i18n.locale, {
+        dateStyle: 'long',
+        timeStyle: 'medium',
+      } as Intl.DateTimeFormatOptions).format(this.item.lastModified)
+    } else if (this.item.oneshot) {
+      text = i18n.t('common.oneshot')
+    } else
       text = i18n.tc('common.books_n', this.item.booksCount)
-    return `<div class="text-truncate" title="${title}">${text}</div>`
+    return `<div class="text-truncate" title="${title ? title : ''}">${text}</div>`
   }
 
   to(): RawLocation {
     return {
-      name: 'browse-series', params: {seriesId: this.item.id.toString()},
+      name: this.item.oneshot ? 'browse-oneshot' : 'browse-series', params: {seriesId: this.item.id.toString()},
       query: {context: this.item?.context?.origin, contextId: this.item?.context?.id},
     }
   }

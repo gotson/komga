@@ -35,7 +35,7 @@ class SessionConfiguration {
 
   @Bean
   fun customizeSessionRepository(komgaProperties: KomgaProperties) =
-    SessionRepositoryCustomizer<CaffeineIndexedSessionRepository>() {
+    SessionRepositoryCustomizer<CaffeineIndexedSessionRepository> {
       it.setDefaultMaxInactiveInterval(komgaProperties.sessionTimeout.seconds.toInt())
     }
 

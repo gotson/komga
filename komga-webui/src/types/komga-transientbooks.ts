@@ -4,7 +4,7 @@ export interface TransientBookDto {
   id: string,
   name: string,
   url: string,
-  fileLastModified: string,
+  fileLastModified: Date,
   sizeBytes: number,
   size: string,
   status: string,

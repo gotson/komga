@@ -69,7 +69,7 @@
               <v-list-item @click="setCurrentPageAsPoster(ItemTypes.SERIES)">
                 <v-list-item-title>{{ $t('bookreader.set_current_page_as_series_poster') }}</v-list-item-title>
               </v-list-item>
-              <v-list-item v-if="contextReadList"  @click="setCurrentPageAsPoster(ItemTypes.READLIST)">
+              <v-list-item v-if="contextReadList" @click="setCurrentPageAsPoster(ItemTypes.READLIST)">
                 <v-list-item-title>{{ $t('bookreader.set_current_page_as_readlist_poster') }}</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -780,11 +780,12 @@ export default Vue.extend({
       } as Location)
     },
     closeBook() {
-      this.$router.push({
-        name: 'browse-book',
-        params: {bookId: this.bookId.toString()},
-        query: {context: this.context.origin, contextId: this.context.id},
-      })
+      this.$router.push(
+        {
+          name: this.book.oneshot ? 'browse-oneshot' : 'browse-book',
+          params: {bookId: this.bookId.toString(), seriesId: this.book.seriesId},
+          query: {context: this.context.origin, contextId: this.context.id},
+        })
     },
     changeReadingDir(dir: ReadingDirection) {
       this.readingDirection = dir
@@ -866,6 +867,7 @@ export default Vue.extend({
     downloadCurrentPage() {
       new jsFileDownloader({
         url: this.currentPage.url,
+        filename: `${this.book.name}-${this.currentPage.number}.${this.currentPage.fileName.split('.').pop()}`,
         withCredentials: true,
         forceDesktopMode: true,
       })

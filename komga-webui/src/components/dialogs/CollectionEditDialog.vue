@@ -157,7 +157,7 @@ export default Vue.extend({
     },
     getErrorsName(): string {
       if (this.form.name === '') return this.$t('common.required').toString()
-      if (this.form.name !== this.collection.name && this.collections.some(e => e.name === this.form.name)) {
+      if (this.form.name?.toLowerCase() !== this.collection.name?.toLowerCase() && this.collections.some(e => e.name.toLowerCase() === this.form.name.toLowerCase())) {
         return this.$t('dialog.add_to_collection.field_search_create_error').toString()
       }
       return ''

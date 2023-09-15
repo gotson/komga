@@ -17,19 +17,16 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class SeriesCollectionControllerTest(
@@ -721,6 +718,7 @@ class SeriesCollectionControllerTest(
     @Test
     @WithMockCustomUser
     fun `given non-admin user when creating collection then return forbidden`() {
+      // language=JSON
       val jsonString = """
         {"name":"collection","ordered":false,"seriesIds":["3"]}
       """.trimIndent()
@@ -736,6 +734,7 @@ class SeriesCollectionControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when creating collection then return ok`() {
+      // language=JSON
       val jsonString = """
         {"name":"collection","ordered":false,"seriesIds":["${seriesLibrary1.first().id}"]}
       """.trimIndent()
@@ -756,6 +755,7 @@ class SeriesCollectionControllerTest(
     fun `given existing collections when creating collection with existing name then return bad request`() {
       makeCollections()
 
+      // language=JSON
       val jsonString = """
         {"name":"Lib1","ordered":false,"seriesIds":["${seriesLibrary1.first().id}"]}
       """.trimIndent()
@@ -771,6 +771,7 @@ class SeriesCollectionControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given collection with duplicate seriesIds when creating collection then return bad request`() {
+      // language=JSON
       val jsonString = """
         {"name":"Lib1","ordered":false,"seriesIds":["${seriesLibrary1.first().id}","${seriesLibrary1.first().id}"]}
       """.trimIndent()
@@ -789,6 +790,7 @@ class SeriesCollectionControllerTest(
     @Test
     @WithMockCustomUser
     fun `given non-admin user when updating collection then return forbidden`() {
+      // language=JSON
       val jsonString = """
         {"name":"collection","ordered":false,"seriesIds":["3"]}
       """.trimIndent()
@@ -806,6 +808,7 @@ class SeriesCollectionControllerTest(
     fun `given admin user when updating collection then return no content`() {
       makeCollections()
 
+      // language=JSON
       val jsonString = """
         {"name":"updated","ordered":true,"seriesIds":["${seriesLibrary1.first().id}"]}
       """.trimIndent()
@@ -832,6 +835,7 @@ class SeriesCollectionControllerTest(
     fun `given existing collections when updating collection with existing name then return bad request`() {
       makeCollections()
 
+      // language=JSON
       val jsonString = """{"name":"Lib2"}"""
 
       mockMvc.patch("/api/v1/collections/${colLib1.id}") {
@@ -847,6 +851,7 @@ class SeriesCollectionControllerTest(
     fun `given existing collection when updating collection with duplicate seriesIds then return bad request`() {
       makeCollections()
 
+      // language=JSON
       val jsonString = """{"seriesIds":["${seriesLibrary1.first().id}","${seriesLibrary1.first().id}"]}"""
 
       mockMvc.patch("/api/v1/collections/${colLib1.id}") {

@@ -43,7 +43,7 @@ class SeriesMetadata(
   val titleSort = titleSort.trim()
   val summary = summary.trim()
   val publisher = publisher.trim()
-  val language = language.trim().lowercase()
+  val language = BCP47TagValidator.normalize(language.trim())
   val tags = tags.lowerNotBlank().toSet()
   val genres = genres.lowerNotBlank().toSet()
   val sharingLabels = sharingLabels.lowerNotBlank().toSet()
@@ -123,7 +123,7 @@ class SeriesMetadata(
     LEFT_TO_RIGHT,
     RIGHT_TO_LEFT,
     VERTICAL,
-    WEBTOON
+    WEBTOON,
   }
 
   override fun toString(): String =

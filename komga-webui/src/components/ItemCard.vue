@@ -20,7 +20,7 @@
           <div class="unread" v-if="isUnread"/>
 
           <!-- unread count for series -->
-          <span v-if="unreadCount"
+          <span v-else-if="unreadCount"
                 class="white--text pa-1 px-2 text-subtitle-2"
                 :style="{background: 'orange', position: 'absolute', right: 0}"
           >
@@ -72,11 +72,19 @@
               <div v-if="!selected && !preselect && actionMenu"
                    :style="'position: absolute; bottom: 5px; ' + ($vuetify.rtl ? 'left' : 'right') +': 5px'"
               >
-                <book-actions-menu v-if="computedItem.type() === ItemTypes.BOOK"
+                <one-shot-actions-menu v-if="computedItem.type() === ItemTypes.BOOK && item.oneshot"
+                                       :book="item"
+                                       :menu.sync="actionMenuState"
+                />
+                <book-actions-menu v-if="computedItem.type() === ItemTypes.BOOK && !item.oneshot"
                                    :book="item"
                                    :menu.sync="actionMenuState"
                 />
-                <series-actions-menu v-if="computedItem.type() === ItemTypes.SERIES"
+                <one-shot-actions-menu v-if="computedItem.type() === ItemTypes.SERIES && item.oneshot"
+                                       :series="item"
+                                       :menu.sync="actionMenuState"
+                />
+                <series-actions-menu v-if="computedItem.type() === ItemTypes.SERIES && !item.oneshot"
                                      :series="item"
                                      :menu.sync="actionMenuState"
                 />
@@ -128,7 +136,7 @@
               </router-link>
             </v-card-subtitle>
           </template>
-          <v-card-text class="px-2 font-weight-light" v-html="body">
+          <v-card-text class="px-2 pt-0 font-weight-light" v-html="body">
           </v-card-text>
         </template>
       </v-card>
@@ -165,10 +173,12 @@ import {
   ThumbnailSeriesSseDto,
 } from '@/types/komga-sse'
 import {coverBase64} from '@/types/image'
+import {ReadListDto} from '@/types/komga-readlists'
+import OneShotActionsMenu from '@/components/menus/OneshotActionsMenu.vue'
 
 export default Vue.extend({
   name: 'ItemCard',
-  components: {BookActionsMenu, SeriesActionsMenu, CollectionActionsMenu, ReadListActionsMenu},
+  components: {OneShotActionsMenu, BookActionsMenu, SeriesActionsMenu, CollectionActionsMenu, ReadListActionsMenu},
   props: {
     item: {
       type: Object as () => BookDto | SeriesDto | CollectionDto | ReadListDto,
@@ -290,6 +300,7 @@ export default Vue.extend({
     },
     isUnread(): boolean {
       if (this.computedItem.type() === ItemTypes.BOOK) return getReadProgress(this.item as BookDto) === ReadStatus.UNREAD
+      if (this.computedItem.type() === ItemTypes.SERIES && (this.item as SeriesDto).oneshot) return (this.item as SeriesDto).booksUnreadCount + (this.item as SeriesDto).booksInProgressCount > 0
       return false
     },
     unreadCount(): number | undefined {

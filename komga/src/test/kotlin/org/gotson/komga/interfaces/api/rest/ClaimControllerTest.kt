@@ -1,17 +1,17 @@
 package org.gotson.komga.interfaces.api.rest
 
-import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 @ActiveProfiles("test")
@@ -30,5 +30,14 @@ class ClaimControllerTest(
     }.andExpect {
       status { isBadRequest() }
     }
+  }
+
+  @Test
+  @WithAnonymousUser
+  fun `given anonymous user when getting claim status then returns OK`() {
+    mockMvc.get("/api/v1/claim")
+      .andExpect {
+        status { isOk() }
+      }
   }
 }

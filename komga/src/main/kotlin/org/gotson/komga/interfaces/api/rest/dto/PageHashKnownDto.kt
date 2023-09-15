@@ -6,10 +6,10 @@ import java.time.LocalDateTime
 
 data class PageHashKnownDto(
   val hash: String,
-  val mediaType: String,
   val size: Long?,
   val action: PageHashKnown.Action,
   val deleteCount: Int,
+  val matchCount: Int,
 
   val created: LocalDateTime,
   val lastModified: LocalDateTime,
@@ -17,10 +17,10 @@ data class PageHashKnownDto(
 
 fun PageHashKnown.toDto() = PageHashKnownDto(
   hash = hash,
-  mediaType = mediaType,
   size = size,
   action = action,
   deleteCount = deleteCount,
+  matchCount = matchCount,
   created = createdDate.toUTC(),
   lastModified = lastModifiedDate.toUTC(),
 )

@@ -33,9 +33,27 @@ export const persistedModule: Module<any, any> = {
       route: {},
     },
     importPath: '',
-     duplicatesNewPageSize: 10,
+    duplicatesNewPageSize: 10,
   },
   getters: {
+    getLocaleFirstDay: (state) => () => {
+      try {
+        // @ts-ignore
+        const loc = new Intl.Locale(state.locale)
+        try {
+          // @ts-ignore
+          return loc.getWeekInfo().firstDay
+        } catch (e) {
+        }
+        try {
+          // @ts-ignore
+          return loc.weekInfo.firstDay
+        } catch (e) {
+        }
+      } catch (e) {
+      }
+      return 1
+    },
     getCollectionFilter: (state) => (id: string) => {
       return state.collection.filter[id]
     },

@@ -1,0 +1,871 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} от {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Зареждане на елементи...",
+      "noResultsText": "Не са намерини подходящи записи"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Редове на страница:",
+      "sortBy": "Подреди по"
+    },
+    "fileInput": {
+      "counter": "{0} файла",
+      "counterSize": "{0} файла ({1} общо)"
+    },
+    "noDataText": "Няма данни"
+  },
+  "account_settings": {
+    "account_settings": "Настройки на акаунта",
+    "change_password": "смени парола"
+  },
+  "authentication_activity": {
+    "datetime": "Дата Време",
+    "email": "Имейл",
+    "error": "Грешка",
+    "ip": "IP",
+    "source": "Източник",
+    "success": "Успех",
+    "user_agent": "Потребителски агент"
+  },
+  "author_roles": {
+    "colorist": "оцветител",
+    "cover": "корица",
+    "editor": "редактори",
+    "inker": "контур",
+    "letterer": "буквари",
+    "penciller": "моливник",
+    "translator": "преводач",
+    "writer": "автор"
+  },
+  "book_card": {
+    "error": "Грешка",
+    "no_release_date": "Няма дата на издаване",
+    "unknown": "Да бъде анализирано",
+    "unread": "Нечетено",
+    "unsupported": "Неподдържано"
+  },
+  "book_import": {
+    "button_browse": "Разглеждате",
+    "button_import": "Вмъкване",
+    "button_scan": "Сканиране",
+    "button_select_series": "Избери Поредица",
+    "field_import_path": "Вмъкни от папка",
+    "info_part1": "Този екран Ви позволява да вмъквате файлове извън съществуващите библиотеки. Можета да вмъквате файлове само във вече съществуващи Поредици, тогава Komga ще премести или копира файловете в папката на избраната Поредица.",
+    "info_part2": "Ако изберете номер за книга, и вече съществува книга с този номер, ще можете да сравните двете книги. Ако решите да вмъктене книгата, Комга ще поднови съществуващата книга с новата, заменяйки старият файл с новият.",
+    "no_files_found": "Няма намерени файлове",
+    "notification": {
+      "go_to_book": "Отиди към книга",
+      "import_failure": "Неуспешно вмъкване на книга: {file}",
+      "import_successful": "Успешно вмъкната книга: {book}",
+      "source_file": "Изходен файл: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Книгата трябва първо да бъде анализирана",
+      "error_choose_series": "Изберете поредица",
+      "error_only_import_no_errors": "Може да бъдат вмъквани само книги без грешки",
+      "warning_upgrade": "Същесвуващите книги ще бъдат подновени"
+    },
+    "table": {
+      "destination_name": "Име на дестинация",
+      "file_name": "Име на файл",
+      "number": "Номер",
+      "series": "Поредица"
+    },
+    "title": "Вмъкване",
+    "try_another_directory": "Опитайте да претърсите друга папка"
+  },
+  "bookreader": {
+    "beginning_of_book": "Вие сте в началото на книгата.",
+    "changing_reading_direction": "Смяна на посока на четене към",
+    "cycling_page_layout": "Циклиране на Подредба на Страница",
+    "cycling_scale": "Циклиране на Мащаб",
+    "cycling_side_padding": "Циклиране на Странична Подложка",
+    "download_current_page": "Свали текущата страница",
+    "end_of_book": "Достигнахте края на книгата.",
+    "from_series_metadata": "от метаданните на поредицата",
+    "move_next": "Цъкнете или натиснете \"Следваща\" отново за да се преместите към следващата книга.",
+    "move_next_exit": "Цъкнете или натиснете \"Следваща\" отново за да излезете от четеца.",
+    "move_previous": "Цъкнете или натиснете \"Предишна\" отново за да се преместите към предишната книга.",
+    "notification_poster_set_book": "Плаката на книгата е настоен на текущата страница.",
+    "notification_poster_set_readlist": "Плаката на списъка за четене е настроен на текущата страница.",
+    "notification_poster_set_series": "Плаката на поредицата е настроен на текущата страница.",
+    "paged_reader_layout": {
+      "double": "Двойни страници",
+      "double_no_cover": "Двойни страници (без корица)",
+      "single": "Единична страница"
+    },
+    "reader_settings": "Настройки на четеца",
+    "scale_type": {
+      "continuous_original": "Оригинал",
+      "continuous_width": "Оразмеряване по широчина",
+      "height": "Оразмеряване по височина",
+      "original": "Оригинал",
+      "screen": "Екран",
+      "width": "Оразмеряване по широчина",
+      "width_shrink_only": "Оразмеряване по широчина (само смаляване)"
+    },
+    "set_current_page_as_book_poster": "Настой страницата като плакат за книгата",
+    "set_current_page_as_readlist_poster": "Настой страницата като плакат за списъка за четене",
+    "set_current_page_as_series_poster": "Настой страницата като плакат за поредицата",
+    "settings": {
+      "always_fullscreen": "Винаги на Пълен Екран",
+      "animate_page_transitions": "Анимирай смяната на страници",
+      "background_color": "Цвят на фонна",
+      "background_colors": {
+        "black": "Черно",
+        "gray": "Сиво",
+        "white": "Бяло"
+      },
+      "display": "Дисплей",
+      "general": "Основни",
+      "gestures": "Жестове",
+      "page_layout": "Подреждане на страница",
+      "paged": "Опций на Странициран Четец",
+      "reading_mode": "Режим на четене",
+      "scale_type": "Тип мащабиране",
+      "side_padding": "Страннична подложка",
+      "side_padding_none": "Никакъва",
+      "webtoon": "Опций на Уебтун Четец"
+    },
+    "shortcuts": {
+      "close": "Затвори",
+      "cycle_page_layout": "Циклирай подреждане на страница",
+      "cycle_scale": "Циклирай мащаб",
+      "cycle_side_padding": "Циклирай станична подложка",
+      "first_page": "Първа страница",
+      "fullscreen": "Влез/Излез от пълен екран",
+      "last_page": "Последна страница",
+      "left_to_right": "От ляво на дясно",
+      "menus": "Менюта",
+      "next_page": "Следваща страница",
+      "previous_page": "Предишна страница",
+      "reader_navigation": "Навигация на четец",
+      "right_to_left": "От дясно на ляво",
+      "settings": "Настройки",
+      "show_hide_help": "Покажи/Скрий помощ",
+      "show_hide_settings": "Покажи/Скрий меню на настройки",
+      "show_hide_thumbnails": "Покажи/Скрий изследовател на миниатюри",
+      "show_hide_toolbars": "Покажи/Скрий лента инструменти",
+      "vertical": "Вертикално",
+      "webtoon": "Уебтун"
+    },
+    "tooltip_incognito": "Прогреса на четене няма да бъде запазен"
+  },
+  "browse_book": {
+    "comment": "КОМЕНТАР",
+    "download_file": "Свали файл",
+    "file": "ФАЙЛ",
+    "format": "ФОРМАТ",
+    "isbn": "ISBN",
+    "links": "ВРЪЗКИ",
+    "navigation_within_readlist": "Навигация в списъка за четене: {name}",
+    "outdated_tooltip": "Файла за тази книга е променен, книгата трябва да бъде анализирана отново",
+    "read_book": "Чети книга",
+    "read_incognito": "Чети инкогнито",
+    "size": "РАЗМЕР"
+  },
+  "browse_collection": {
+    "edit_collection": "Редактирайте колекция",
+    "edit_elements": "Редактирайте елементи",
+    "manual_ordering": "ръчно подреждане"
+  },
+  "browse_readlist": {
+    "edit_elements": "Редактирайте елементи",
+    "edit_readlist": "Редактирайте списък за четене",
+    "manual_ordering": "ръчно подреждане"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Това е най-ранната година на издаване за всички книги в поредицата",
+    "series_no_summary": "Тази поредица няма резюме, затова избрахме за Вас!",
+    "summary_from_book": "Резюме от книга {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Мениджирай колекция",
+    "title": "колекция \"{name}\""
+  },
+  "common": {
+    "age": "Възраст",
+    "all_libraries": "Всички Библиотеки",
+    "book": "Книга",
+    "books": "Книги",
+    "books_n": "Няма книги | 1 книга | {count} книги",
+    "books_total": "{count} / {total} книги",
+    "cancel": "Отмени",
+    "choose_image": "Изберете изображение",
+    "close": "Затвори",
+    "collections": "Колекции",
+    "create": "Създай",
+    "delete": "Изтрий",
+    "disk_space": "Дисково пространство",
+    "dismiss": "Отхвърли",
+    "download": "Свали",
+    "drag_drop": "теглене и пускане",
+    "email": "Имейл",
+    "filename": "Име на файл",
+    "filter_no_matches": "Активният филтър няма съвпадения",
+    "genre": "Жанр",
+    "go_to_collection": "Към колекция",
+    "go_to_library": "Към библиотеката",
+    "go_to_readlist": "Към списъка за четене",
+    "go_to_series": "Към поредицата",
+    "library": "Библиотека",
+    "locale_name": "Български",
+    "locale_rtl": "false",
+    "lock_all": "Заключи всички",
+    "n_selected": "{count} избрани",
+    "nothing_to_show": "Нищо за показване",
+    "outdated": "Остарял",
+    "page": "Страница",
+    "page_number": "Номер на страницата",
+    "pages": "страници",
+    "pages_left": "Няма останали страници | Остава 1 страница | Остават {count} страници",
+    "pages_n": "Няма страници | 1 страница | {count} страници",
+    "password": "Парола",
+    "pending_tasks": "Няма чакащи задачи | 1 чакаща задача | {count} чакащи задачи",
+    "publisher": "Издател",
+    "read": "Чети",
+    "read_on": "Четено на {date}",
+    "readlist": "Списък за четене",
+    "readlists": "Списък на прочетени",
+    "required": "Задължително",
+    "reset_filters": "Нулиране на филтри",
+    "roles": "Роли",
+    "save_changes": "Запазите промените",
+    "series": "Поредица | Поредици",
+    "sidecars": "Странични файлове",
+    "tags": "Тагове",
+    "unavailable": "Недостъпен",
+    "unlock_all": "Отключи всички",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "Използвайте панела на филтъра, за да промените активния филтър",
+    "year": "година"
+  },
+  "dashboard": {
+    "keep_reading": "Продължате да четете",
+    "on_deck": "На Ред",
+    "recently_added_books": "Наскоро добавени книги",
+    "recently_added_series": "Наскоро добавени поредици",
+    "recently_read_books": "Наскоро прочетени книги",
+    "recently_released_books": "Наскоро издадени книги",
+    "recently_updated_series": "Наскоро актуализирани поредици"
+  },
+  "data_import": {
+    "book_number": "Номер на книгата: {name}",
+    "book_series": "Поредица: {name}",
+    "button_import": "Вмъкване",
+    "button_match": "Спостави",
+    "comicrack_preambule_html": "Можете да вмъкнете съществуващи списъци за четене на ComicRack във формат <code>.cbl</code>.<br>Komga ще се опита да съпостави предоставената поредица и номер на книга с поредици и книги във вашите библиотеки.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} книги са несравними",
+      "create": "Създайте все пак",
+      "title": "Някои книги не съответстват"
+    },
+    "field_file_label": "Списък за четене на ComicRack (.cbl)",
+    "field_files_label": "Списъци за четене на ComicRack (.cbl)",
+    "import_read_lists": "Вмъкване на списъци за четене",
+    "imported_as": "Вмъкнат като {name}",
+    "readlist_created": "Създаден списък за четене: {name}",
+    "requested_number": "Искан номер",
+    "requested_series": "Поискани поредици",
+    "results_preambule": "Резултатът от вмъкването е показан по-долу. Можете също така да проверите несъответстващите книги за всеки предоставен файл.",
+    "size_limit": "Размерът трябва да бъде по-малък от {size} MB",
+    "tab_title": "Вмъкване на данни"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Създай",
+      "card_collection_subtitle": "Няма серия | 1 серия | {count} серии",
+      "dialog_title": "Добавяне към колекция",
+      "field_search_create": "Търсене или създаване на колекция",
+      "field_search_create_error": "Вече съществува колекция с това име",
+      "label_no_matching_collection": "Няма съответстваща колекция"
+    },
+    "add_to_readlist": {
+      "button_create": "Създай",
+      "card_readlist_subtitle": "Няма книги | 1 книга | {count} книги",
+      "dialog_title": "Добави в списъка за четене",
+      "field_search_create": "Търсене или създаване на списък за четене",
+      "field_search_create_error": "Вече съществува списък за четене с това име",
+      "label_no_matching_readlist": "Няма съответстващ списък за четене"
+    },
+    "add_user": {
+      "button_cancel": "Отмени",
+      "button_confirm": "Добави",
+      "dialog_title": "Добавяне на потребител",
+      "field_email": "Имейл",
+      "field_email_error": "Трябва да е валиден имейл адрес",
+      "field_password": "Парола",
+      "field_role_administrator": "Администратор",
+      "field_role_file_download": "Изтегляне на файлове",
+      "field_role_page_streaming": "Поточно предаване на страници",
+      "label_roles": "Роли"
+    },
+    "analyze_library": {
+      "body": "Анализира всички мултимедийни файлове в библиотеката. Анализът събира информация за медиите. В зависимост от размера на библиотеката това може да отнеме много време.",
+      "button_confirm": "Анализирай",
+      "title": "Анализирайте библиотеката"
+    },
+    "book_picker": {
+      "filter": "Филтриране по номер на книгата, заглавие или дата на издаване",
+      "title": "Изберете книга"
+    },
+    "delete_book": {
+      "button_confirm": "Изтрий",
+      "confirm_delete": "Да, изтрий книгата \"{name}\" и нейните файлове",
+      "confirm_delete_multiple": "Да, изтрий {count} книги и техните файлове",
+      "dialog_title": "Изтриване на книга",
+      "dialog_title_multiple": "Изтриване на книги",
+      "warning_html": "Книгата <b>{name}</b> ще бъде премахната от този сървър заедно със съхранените медийни файлове. Това <b>не може да бъде</b> отменено. Продължете?",
+      "warning_multiple_html": "{count} книги ще бъдат премахнати от този сървър заедно със съхранените медийни файлове. Това <b> не може </b> да бъде отменено. Продължи?"
+    },
+    "delete_collection": {
+      "button_confirm": "Изтрий",
+      "confirm_delete": "Да, изтрий колекцията \"{name}\"",
+      "confirm_delete_multiple": "Да, изтрий {count} колекции",
+      "dialog_title": "Изтриване на колекция",
+      "dialog_title_multiple": "Изтриване на колекции",
+      "warning_html": "Колекцията <b>{name}</b> ще бъде премахната от този сървър. Вашите медийни файлове няма да бъдат засегнати. Това <b>не може</b> да бъде отменено. Продължете?",
+      "warning_multiple_html": "{count} колекции ще бъдат премахнати от този сървър. Вашите медийни файлове няма да бъдат засегнати. Това <b> не може </b> да бъде отменено. Продължи?"
+    },
+    "delete_library": {
+      "button_confirm": "Изтрий",
+      "confirm_delete": "Да, изтрий библиотеката \"{name}\"",
+      "title": "Изтриване на библиотека",
+      "warning_html": "Колекцията <b>{name}</b> ще бъде премахната от този сървър. Вашите медийни файлове няма да бъдат засегнати. Това <b>не може</b> да бъде отменено. Продължи?"
+    },
+    "delete_readlist": {
+      "button_confirm": "Изтрий",
+      "confirm_delete": "Да, изтрий списъка за четене \"{name}\"",
+      "confirm_delete_multiple": "Да, изтрий {count} списъци за четене",
+      "dialog_title": "Изтриване на списъка за четене",
+      "dialog_title_multiple": "Изтриване на списъци за четене",
+      "warning_html": "Списъка за четене <b>{name}</b> ще бъде премахната от този сървър. Вашите медийни файлове няма да бъдат засегнати. Това <b>не може</b> да бъде отменено. Продължи?",
+      "warning_multiple_html": "{count} списъки за четене ще бъдат премахнати от този сървър. Вашите медийни файлове няма да бъдат засегнати. Това <b> не може </b> да бъде отменено. Продължи?"
+    },
+    "delete_series": {
+      "button_confirm": "Изтрий",
+      "confirm_delete": "Да, изтрий поредицата \"{name}\" и нейните файлове",
+      "confirm_delete_multiple": "Да, изтрий {count} поредици и техните файлове",
+      "dialog_title": "Изтриване на серия",
+      "warning_html": "Поредицата <b>{name}</b> ще бъде премахната от този сървър заедно със съхранените медийни файлове. Това <b>не може</b> да бъде отменено. Продължете?",
+      "warning_multiple_html": "{count} поредици ще бъдат премахнати от този сървър заедно със съхранените медийни файлове. Това <b> не може </b> да бъде отменено. Продължи?"
+    },
+    "delete_user": {
+      "button_confirm": "Изтрий",
+      "confirm_delete": "Да, изтрий потребителя \"{name}\"",
+      "dialog_title": "Изтриване на потребител",
+      "warning_html": "Потребителят <b>{name}</b> ще бъде изтрит от този сървър. Това <b>не може</b> да бъде отменено. Продължи?"
+    },
+    "edit_books": {
+      "add_author_role_error_duplicate": "Вече съществува",
+      "authors_notice_multiple_edit": "Редактирате автори за няколко книги. Това ще замени съществуващите автори на всяка книга.",
+      "button_cancel": "Отмени",
+      "button_confirm": "Запазване на промените",
+      "copy_from": "Копиране от {field}",
+      "dialog_title_multiple": "Редактиране на {count} книга | Редактиране на {count} книги",
+      "dialog_title_single": "Редактиране на {book}",
+      "field_alternate_title": "Алтернативно заглавие",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Трябва да е валиден ISBN 13",
+      "field_link_label": "Етикет",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Трябва да бъде http или https",
+      "field_link_url_error_url": "Трябва да е валиден URL адрес",
+      "field_number": "Номер",
+      "field_number_sort": "Сортов номер",
+      "field_number_sort_hint": "Можете да използвате десетични числа",
+      "field_release_date": "Дата на Издаване",
+      "field_release_date_error": "Трябва да е валидна дата във формат ГГГГ-ММ-ДД",
+      "field_summary": "Резюме",
+      "field_tags": "Тагове",
+      "field_title": "Заглавие",
+      "number_sort_decrement": "Намаляване на всички с 1",
+      "number_sort_increment": "Увеличаване на всички с 1",
+      "tab_authors": "Автори",
+      "tab_general": "Основни",
+      "tab_links": "Връзки",
+      "tab_poster": "Плакат",
+      "tab_tags": "Тагове",
+      "tags_notice_multiple_edit": "Редактирате тагове за няколко книги. Това ще замени съществуващите тагове на всяка книга."
+    },
+    "edit_collection": {
+      "button_cancel": "Отмени",
+      "button_confirm": "Запазване на промените",
+      "dialog_title": "Редактирайте колекция",
+      "field_manual_ordering": "Ръчно подреждане",
+      "label_ordering": "По подразбиране сериите в дадена колекция се подреждат по име. Можете да активирате ръчното подреждане, за да определите свой собствен ред.",
+      "tab_general": "Основни",
+      "tab_poster": "Плакат"
+    },
+    "edit_library": {
+      "button_browse": "Разглеждате",
+      "button_cancel": "Отмени",
+      "button_confirm_add": "Добави",
+      "button_confirm_edit": "Редактирай",
+      "button_next": "Следваща",
+      "dialog_title_add": "Добавяне на библиотека",
+      "dialot_title_edit": "Редактиране на библиотеката",
+      "field_analysis_analyze_dimensions": "Анализирайте размерите на страниците",
+      "field_analysis_hash_files": "Изчисляване на хеш за файлове",
+      "field_analysis_hash_pages": "Изчисляване на хеш за страници",
+      "field_convert_to_cbz": "Автоматично конвертиране в CBZ",
+      "field_import_barcode_isbn": "ISBN баркод",
+      "field_import_comicinfo_book": "Метаданни за книгата",
+      "field_import_comicinfo_collections": "Колекции",
+      "field_import_comicinfo_readlists": "Списъци за четене",
+      "field_import_comicinfo_series": "Метаданни за поредицата",
+      "field_import_comicinfo_series_append_volume": "Добавяне на том към заглавието на поредицата",
+      "field_import_epub_book": "Метаданни за книгата",
+      "field_import_epub_series": "Метаданни за поредицата",
+      "field_import_local_artwork": "Местни изображения",
+      "field_import_mylar_series": "Метаданни за поредицата",
+      "field_name": "Име",
+      "field_repair_extensions": "Автоматично поправяне на неправилни файлови разширения",
+      "field_root_folder": "Основна папка",
+      "field_scanner_empty_trash_after_scan": "Автоматично изпразване на кошчето след всяко сканиране",
+      "field_scanner_force_directory_modified_time": "Принудителна промяна на време на промяна на директорията",
+      "field_series_cover": "Корица на поредицата",
+      "file_browser_dialog_button_confirm": "Избери",
+      "file_browser_dialog_title": "Основната папка на библиотеката",
+      "label_analysis": "Анализ",
+      "label_file_management": "Управление на файлове",
+      "label_import_barcode_isbn": "Вмъкване на ISBN в баркод",
+      "label_import_comicinfo": "Вмъкване на метаданни за CBR/CBZ, съдържащи файл ComicInfo.xml",
+      "label_import_epub": "Вмъкване на метаданни от EPUB файлове",
+      "label_import_local": "Вмъкване на локални медийни активи",
+      "label_import_mylar": "Вмъкване на метаданни, генерирани от Mylar",
+      "label_scanner": "Скенер",
+      "label_series_cover": "Корица на поредицата",
+      "tab_general": "Основни",
+      "tab_metadata": "Метаданни",
+      "tab_options": "Опции",
+      "tooltip_scanner_force_modified_time": "Активирайте, ако библиотеката е в Google Drive",
+      "tooltip_use_resources": "Може да изразходва много ресурси при големи библиотеки или бавен хардуер"
+    },
+    "edit_readlist": {
+      "button_cancel": "Отмени",
+      "button_confirm": "Запазване на промените",
+      "dialog_title": "Редактирайте списък за четене",
+      "field_manual_ordering": "Ръчно подреждане",
+      "field_name": "Име",
+      "field_summary": "Резюме",
+      "label_ordering": "По подразбиране книгите в списъка за четене се подреждат ръчно. Можете да деактивирате ръчното подреждане, за да сортирате книгите по дата на издаване.",
+      "tab_general": "Основни",
+      "tab_poster": "Плакат"
+    },
+    "edit_series": {
+      "button_cancel": "Отмени",
+      "button_confirm": "Запазване на промените",
+      "dialog_title_multiple": "Редактиране на {count} серия | Редактиране на {count} серии",
+      "dialog_title_single": "Редактиране на {series}",
+      "field_age_rating": "Възрастова оценка",
+      "field_age_rating_error": "Възрастовата оценка трябва да е 0 или повече",
+      "field_genres": "Жанрове",
+      "field_labels": "Етикети",
+      "field_language": "Език",
+      "field_language_hint": "Таг на език по IETF BCP 47",
+      "field_publisher": "Издателство",
+      "field_reading_direction": "Посока на четене",
+      "field_sort_title": "Заглавие за подреждане",
+      "field_status": "Статус",
+      "field_summary": "Резюме",
+      "field_tags": "Тагове",
+      "field_title": "Заглавие",
+      "field_total_book_count": "Общ брой книги",
+      "field_total_book_count_error": "Общият брой на книгите трябва да бъде 1 или повече",
+      "mixed": "СМЕСЕН",
+      "tab_general": "Основни",
+      "tab_poster": "Плакат",
+      "tab_sharing": "Споделяне",
+      "tab_tags": "Тагове",
+      "tab_titles": "Алтернативни заглавия",
+      "tags_notice_multiple_edit": "Редактирате тагове за множество поредици. Това ще замени съществуващите тагове на всяка серия."
+    },
+    "edit_user": {
+      "button_cancel": "Отмени",
+      "button_confirm": "Запазване на промените",
+      "dialog_title": "Редактиране на потребител",
+      "label_roles_for": "Роли за {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Разрешаване само при",
+        "exclude_over": "Изключване на над",
+        "none": "Без ограничения"
+      },
+      "edit_restrictions_for": "Редактиране на ограниченията за {name}",
+      "label_age_restriction": "Възрастово ограничение",
+      "label_allow_only_labels": "Разрешаване само с етикети",
+      "label_exclude_labels": "Изключване на етикети",
+      "tab_content_restrictions": "Ограничение на съдържанието",
+      "tab_shared_libraries": "Споделени библиотеки"
+    },
+    "empty_trash": {
+      "body": "По подразбиране мултимедийният сървър не премахва веднага информацията за медия. Това помага, ако устройството е временно изключено. Когато изпразните кошчето за библиотека, цялата информация за липсващи медии се изтрива.",
+      "button_confirm": "Изпразни",
+      "title": "Изпразване на боклука за библиотеката"
+    },
+    "file_browser": {
+      "button_cancel": "Отмени",
+      "button_confirm_default": "Избери",
+      "dialog_title_default": "Файлов браузър",
+      "parent_directory": "Родител"
+    },
+    "filename_chooser": {
+      "button_choose": "Избери",
+      "field_destination_filename": "Име на целевия файл",
+      "label_source_filename": "Име на изходния файл",
+      "table": {
+        "existing_file": "Съществуващ файл",
+        "order": "Ред"
+      },
+      "title": "Име на Целевия Файл"
+    },
+    "password_change": {
+      "button_cancel": "Отмени",
+      "button_confirm": "Промяна на паролата",
+      "dialog_title": "Промяна на паролата",
+      "field_new_password": "Нова парола",
+      "field_new_password_error": "Изисква се нова парола.",
+      "field_repeat_password": "Повторете новата парола",
+      "field_repeat_password_error": "Паролите трябва да са еднакви."
+    },
+    "refresh_library_metadata": {
+      "body": "Обновява метаданните за всички мултимедийни файлове в библиотеката. В зависимост от размера на библиотеката Ви това може да отнеме много време.",
+      "button_confirm": "Опресняване",
+      "title": "Опресняване на метаданните за библиотеката"
+    },
+    "series_picker": {
+      "label_search_series": "Трърсене на поредици",
+      "no_results": "Няма намерени поредици",
+      "title": "Избери Поредица"
+    },
+    "server_stop": {
+      "button_confirm": "Спри",
+      "confirmation_message": "Сигурни ли сте, че искате да спрете Komga?",
+      "dialog_title": "Изключване на сървъра"
+    },
+    "shortcut_help": {
+      "label_description": "Описание",
+      "label_key": "Ключ"
+    },
+    "transient_book_details": {
+      "label_candidate": "Кандидат",
+      "label_existing": "Съществуващ",
+      "label_format": "Формат",
+      "label_name": "Име",
+      "label_pages": "Страници",
+      "label_size": "Размер",
+      "pages_table": {
+        "filename": "Име на файл",
+        "height": "Височина",
+        "index": "Индекс",
+        "media_type": "Тип на медията",
+        "size": "Размер",
+        "width": "Широчина"
+      },
+      "title": "Подробности за книгата",
+      "title_comparison": "Сравнение на книги"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Кандидат",
+      "label_existing": "Съществуващ",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Проверете книгата",
+      "title_comparison": "Сравнение на книги"
+    }
+  },
+  "duplicate_pages": {
+    "action_delete_auto": "Автоматично изтриване",
+    "action_delete_manual": "Ръчно изтриване",
+    "action_delete_matches": "Изтриване на съвпадения",
+    "action_ignore": "Игнорирай",
+    "delete_to_save": "Изтрийте, за да запазите {size}",
+    "deleted_count": "Изтрит {count} пъти",
+    "filter": {
+      "count": "Брой",
+      "delete_count": "Брой изтрити",
+      "delete_size": "Спестено място",
+      "size": "Размер",
+      "total_size": "Общ размер"
+    },
+    "info": "Изтриването на дублиращи се страници ще промени файловете ви. Създайте резервно копие на файловете си и използвайте ръчно изтриване, преди да използвате автоматично изтриване.",
+    "known": "Познати",
+    "matches_n": "Няма съвпадения | 1 съвпадение | {count} съвпадения",
+    "new": "Нови",
+    "saved_size": "Спестено {size}",
+    "title": "Дублирани страници",
+    "unknown_size": "Неизвестен размер"
+  },
+  "duplicates": {
+    "file_hash": "Файлов хеш",
+    "size": "Размер",
+    "title": "Дублирани файлове",
+    "url": "URL"
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hardlink/Копиране на файлове",
+      "MOVE": "Преместване на файлове"
+    },
+    "historical_event_type": {
+      "BookConverted": "Книгата е преобразувана",
+      "BookFileDeleted": "Файлът на книгата е изтрит",
+      "BookImported": "Внесена книга",
+      "DuplicatePageDeleted": "Дублираната страница е изтрита",
+      "SeriesFolderDeleted": "Папката на поредицата е изтрита"
+    },
+    "media_status": {
+      "ERROR": "Грешка",
+      "OUTDATED": "Остарял",
+      "READY": "Готово",
+      "UNKNOWN": "неизвестен",
+      "UNSUPPORTED": "Неподдържано"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Автоматично изтриване",
+      "DELETE_MANUAL": "Ръчно изтриване",
+      "IGNORE": "Игнорирай"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "От ляво на дясно",
+      "RIGHT_TO_LEFT": "От дясно на ляво",
+      "VERTICAL": "Вертикално",
+      "WEBTOON": "Уебтун"
+    },
+    "series_cover": {
+      "FIRST": "Първа",
+      "FIRST_UNREAD_OR_FIRST": "Първа непрочетена иначе първа",
+      "FIRST_UNREAD_OR_LAST": "Първа непрочетена иначе последна",
+      "LAST": "Последна"
+    },
+    "series_status": {
+      "ABANDONED": "Изоставена",
+      "ENDED": "Приключила",
+      "HIATUS": "Хиатус",
+      "ONGOING": "Продължава"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "Файлът не можа да бъде достъпен по време на анализа",
+    "ERR_1001": "Типът на медията не се поддържа",
+    "ERR_1002": "Криптираните архиви RAR не се поддържат",
+    "ERR_1003": "Не се поддържат Solid RAR архиви",
+    "ERR_1004": "Не се поддържат Multi-Volume RAR архиви",
+    "ERR_1005": "Неизвестна грешка при анализиране на книга",
+    "ERR_1006": "Книгата не съдържа нито една страница",
+    "ERR_1007": "Някои записи не могат да бъдат анализирани",
+    "ERR_1008": "Неизвестна грешка при получаване на записи в книга",
+    "ERR_1009": "Вече съществува списък за четене с това име",
+    "ERR_1015": "Грешка при десериализиране на ComicRack CBL",
+    "ERR_1016": "Директорията не е достъпна или не е директория",
+    "ERR_1017": "Не може да се сканира папка, която е част от съществуваща библиотека",
+    "ERR_1018": "Файлът не е намерен",
+    "ERR_1019": "Не може да се вмъкне файл, който е част от съществуваща библиотека",
+    "ERR_1020": "Книгата за подобряване не принадлежи към предоставените серии",
+    "ERR_1021": "Целевият файл вече съществува",
+    "ERR_1022": "Нововмъкнатата книга не може да бъде сканирана",
+    "ERR_1023": "Книгата вече присъства в списъка за четене",
+    "ERR_1024": "Грешка при влизане в OAuth2: няма атрибут за имейл",
+    "ERR_1025": "Грешка при влизане в OAuth2: не съществува местен потребител с този имейл",
+    "ERR_1026": "Грешка при влизане в OpenID Connect: имейлът не е потвърден",
+    "ERR_1027": "Грешка при влизане в OpenID Connect: няма атрибут email_verified",
+    "ERR_1028": "Грешка при влизане в OpenID Connect: няма атрибут за имейл",
+    "ERR_1029": "ComicRack CBL не съдържа никакъв елемент Book",
+    "ERR_1030": "ComicRack CBL няма елемент Name",
+    "ERR_1031": "ComicRack CBL в Book липсва серия или номер"
+  },
+  "filter": {
+    "age_rating": "възрастова оценка",
+    "age_rating_none": "Без",
+    "complete": "Завършени",
+    "genre": "жанр",
+    "in_progress": "В Обръщение",
+    "language": "език",
+    "library": "библиотека",
+    "publisher": "издателство",
+    "read": "Прочетени",
+    "release_date": "дата на издаване",
+    "status": "статус",
+    "tag": "таг",
+    "unread": "Непрочетени"
+  },
+  "filter_drawer": {
+    "filter": "филтър",
+    "sort": "подреждане"
+  },
+  "history": {
+    "header": {
+      "book": "Книга",
+      "date": "Дата",
+      "details": "Подробности",
+      "series": "Поредица",
+      "type": "Вид"
+    },
+    "title": "История"
+  },
+  "home": {
+    "theme": "Тема",
+    "translation": "Превод"
+  },
+  "library_navigation": {
+    "browse": "Преглед",
+    "collections": "Колекции",
+    "readlists": "Списъци за Четене",
+    "recommended": "Препоръчани"
+  },
+  "login": {
+    "create_user_account": "Създаване на потребителски акаунт",
+    "login": "Влезте",
+    "unclaimed_html": "Този сървър на Komga все още не е активен, трябва да създадете потребителски акаунт, за да имате достъп до него.<br><br> Изберете <strong>имейл</strong> и <strong>парола</strong> и кликнете върху <strong>Създаване на потребителски акаунт</strong>."
+  },
+  "media_analysis": {
+    "comment": "Коментар",
+    "media_analysis": "Медиен анализ",
+    "media_type": "Тип на Медията",
+    "name": "Име",
+    "size": "Размер",
+    "status": "Статус",
+    "url": "URL"
+  },
+  "media_management": {
+    "title": "Управление на медиите"
+  },
+  "menu": {
+    "add_to_collection": "Добави към колекция",
+    "add_to_readlist": "Добави към списък за четене",
+    "analyze": "Анализирай",
+    "bulk_edit_metadata": "Групово редактиране на метаданни",
+    "delete": "Изтриване",
+    "deselect_all": "Отмени избора на всички",
+    "download_readlist": "Изтегляне на списък за четене",
+    "download_series": "Изтегляне на поредица",
+    "edit": "Редакция",
+    "edit_metadata": "Редактиране на метаданни",
+    "empty_trash": "Изпразване на кошчето",
+    "mark_read": "Отбележи като прочетено",
+    "mark_unread": "Отбележи като непрочетено",
+    "refresh_metadata": "Опресняване на метаданните",
+    "scan_library_files": "Сканирайте библиотечните файлове",
+    "select_all": "Изберете всички"
+  },
+  "metrics": {
+    "library_books": "Книги на библиотека",
+    "library_disk_space": "Дисково пространство на библиотеката",
+    "library_series": "Поредици на библиотека",
+    "library_sidecars": "Станични файлове на библиотека",
+    "tasks_executed": "Изпълнени задачи",
+    "tasks_total_time": "Общо време на задачите",
+    "title": "Показатели"
+  },
+  "navigation": {
+    "home": "Начало",
+    "libraries": "Библиотеки",
+    "logout": "Изход"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Връщане към началната страница",
+    "page_does_not_exist": "Страницата, която търсите, не съществува.",
+    "page_not_found": "Страницата не е намерена"
+  },
+  "read_more": {
+    "less": "Скрий",
+    "more": "Покажи още"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Дублирана книга",
+      "error_choose_book": "Изберете книга"
+    }
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Управление на списъка за четене",
+    "title": "Списък за четене {name}"
+  },
+  "search": {
+    "no_results": "Търсенето не върна резултати",
+    "search": "Търсене",
+    "search_for_something_else": "Опитайте се да потърсите нещо друго",
+    "search_results_for": "Резултати от търсенето за \"{name}\""
+  },
+  "searchbox": {
+    "in_library": "в {library}",
+    "no_results": "Няма резултати",
+    "search_all": "Търсене във всички…"
+  },
+  "server": {
+    "server_management": {
+      "button_cancel_all_tasks": "Отменете всички задачи",
+      "button_empty_trash": "Изпразване на кошчето за всички библиотеки",
+      "button_scan_libraries": "Сканиране на всички библиотеки",
+      "button_shutdown": "Изключване",
+      "notification_tasks_cancelled": "Няма задачи за отмяна | Една отменена задача | {count} отменени задачи",
+      "section_title": "Управление на сървъра"
+    },
+    "tab_title": "Сървър"
+  },
+  "server_settings": {
+    "server_settings": "Настройки на сървъра"
+  },
+  "settings_user": {
+    "change_password": "Промяна на паролата",
+    "edit_restrictions": "Редактиране на ограниченията",
+    "edit_user": "Редактиране на потребител",
+    "latest_activity": "Последна активност: {date}",
+    "no_recent_activity": "Няма скорошна активност",
+    "role_administrator": "Администратор",
+    "role_user": "Потребител"
+  },
+  "sort": {
+    "books_count": "Брой книги",
+    "date_added": "Дата на добавяне",
+    "date_updated": "Дата на актуализация",
+    "file_name": "Име на файл",
+    "file_size": "Размер на файла",
+    "folder_name": "Име на папка",
+    "name": "Име",
+    "number": "Номер",
+    "release_date": "Дата на издаване"
+  },
+  "theme": {
+    "dark": "Тъмна",
+    "light": "Светла",
+    "system": "Система"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Изтрий",
+    "tooltip_generated": "Генерирано изображение",
+    "tooltip_mark_as_selected": "Отбележи като избана",
+    "tooltip_selected": "Избрани",
+    "tooltip_sidecar": "Местни изображения",
+    "tooltip_to_be_deleted": "За изтриване",
+    "tooltip_to_be_uploaded": "За качване",
+    "tooltip_too_big": "Файлът е твърде голям!",
+    "tooltip_user_uploaded": "Качен от потребителя"
+  },
+  "titles_more": {
+    "less": "По-малко заглавия",
+    "more": "Още заглавия"
+  },
+  "user_roles": {
+    "ADMIN": "Администратор",
+    "FILE_DOWNLOAD": "Изтегляне на файлове",
+    "PAGE_STREAMING": "Стриймване на страници",
+    "USER": "Потребител"
+  },
+  "users": {
+    "authentication_activity": "Дейност по удостоверяване",
+    "users": "Потребители"
+  },
+  "validation": {
+    "zero_or_more": "Трябва да е 0 или повече"
+  },
+  "welcome": {
+    "add_library": "Добавяне на библиотека",
+    "no_libraries_yet": "Все още няма добавени библиотеки!",
+    "welcome_message": "Добре дошли в Komga"
+  }
+}

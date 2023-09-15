@@ -2,7 +2,7 @@
   <div class="pa-6">
     <v-row align="center" justify="center">
       <v-img src="../assets/logo.svg"
-             max-width="400"
+             :max-width="logoWidth"
       />
     </v-row>
   </div>
@@ -13,6 +13,23 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'StartupView',
+  computed: {
+    logoWidth(): number {
+      let l = 100
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+          l = 100
+        case 'sm':
+        case 'md':
+          l = 200
+        case 'lg':
+        case 'xl':
+        default:
+          l = 300
+      }
+      return l
+    },
+  },
   async mounted() {
     try {
       if (this.$route.query.xAuthToken) {

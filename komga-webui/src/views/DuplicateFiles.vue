@@ -16,7 +16,10 @@
       }"
     >
       <template v-slot:item.url="{ item }">
-        <router-link :to="{name:'browse-book', params: {bookId: item.id}}">{{ item.url }}</router-link>
+        <router-link
+          :to="{name: item.oneshot ? 'browse-oneshot' : 'browse-book', params: {bookId: item.id, seriesId: item.seriesId}}">
+          {{ item.url }}
+        </router-link>
       </template>
 
       <template v-slot:item.deleted="{ item }">

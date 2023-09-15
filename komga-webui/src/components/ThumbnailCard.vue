@@ -63,6 +63,7 @@ import {
   seriesThumbnailUrlByThumbnailId,
 } from '@/functions/urls'
 import {BookThumbnailDto} from '@/types/komga-books'
+import {ReadListThumbnailDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'ThumbnailCard',

@@ -9,6 +9,7 @@ import {
   ReadProgressUpdateDto,
 } from '@/types/komga-books'
 import {formatISO} from 'date-fns'
+import {ReadListDto} from '@/types/komga-readlists'
 
 const qs = require('qs')
 

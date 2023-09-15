@@ -14,7 +14,6 @@ export interface LibraryCreationDto {
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
-  scanDeep: boolean,
   repairExtensions: boolean,
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
@@ -22,6 +21,7 @@ export interface LibraryCreationDto {
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,
+  oneshotsDirectory: string,
 }
 
 export interface LibraryUpdateDto {
@@ -38,7 +38,6 @@ export interface LibraryUpdateDto {
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
-  scanDeep: boolean,
   repairExtensions: boolean,
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
@@ -46,6 +45,7 @@ export interface LibraryUpdateDto {
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,
+  oneshotsDirectory: string,
 }
 
 export interface LibraryDto {
@@ -63,7 +63,6 @@ export interface LibraryDto {
   importLocalArtwork: boolean,
   importBarcodeIsbn: boolean,
   scanForceModifiedTime: boolean,
-  scanDeep: boolean,
   repairExtensions: boolean,
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
@@ -71,5 +70,6 @@ export interface LibraryDto {
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,
+  oneshotsDirectory: string,
   unavailable: boolean,
 }

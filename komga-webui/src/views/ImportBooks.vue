@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="pa-6">
-    <v-alert type="info" text class="body-2">
+    <v-alert type="info" text class="body-2" dismissible>
       <div>{{ $t('book_import.info_part1') }}</div>
       <div class="mt-2">{{ $t('book_import.info_part2') }}</div>
     </v-alert>
@@ -82,7 +82,7 @@
           <v-btn @click="modalSeriesPicker = true" :disabled="globalSelect === 0">
             {{ $t('book_import.button_select_series') }}
           </v-btn>
-          <series-picker-dialog v-model="modalSeriesPicker" :series.sync="selectedSeries"></series-picker-dialog>
+          <series-picker-dialog v-model="modalSeriesPicker" :series.sync="selectedSeries" :include-oneshots="false"/>
         </v-col>
         <v-spacer/>
 

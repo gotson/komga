@@ -13,4 +13,4 @@
 
 ## Usage
 
-Please refer to the [official documentation](https://komga.org/installation/docker.html).
+Please refer to the [official documentation](https://komga.org/docs/installation/docker).

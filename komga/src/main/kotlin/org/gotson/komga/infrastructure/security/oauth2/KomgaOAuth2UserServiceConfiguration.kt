@@ -56,7 +56,9 @@ class KomgaOAuth2UserServiceConfiguration(
     return OAuth2UserService { userRequest: OidcUserRequest ->
       val oidcUser = delegate.loadUser(userRequest)
 
-      if (!oidcUser.emailVerified) throw OAuth2AuthenticationException("ERR_1026")
+      if (oidcUser.email == null) throw OAuth2AuthenticationException("ERR_1028")
+      if (komgaProperties.oidcEmailVerification && oidcUser.emailVerified == null) throw OAuth2AuthenticationException("ERR_1027")
+      if (komgaProperties.oidcEmailVerification && oidcUser.emailVerified == false) throw OAuth2AuthenticationException("ERR_1026")
 
       val existingUser = userRepository.findByEmailIgnoreCaseOrNull(oidcUser.email)
         ?: tryCreateNewUser(oidcUser.email)

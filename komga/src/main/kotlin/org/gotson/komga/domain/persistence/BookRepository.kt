@@ -44,7 +44,7 @@ interface BookRepository {
   fun deleteAll()
 
   fun count(): Long
-  fun countGroupedByLibraryName(): Map<String, Int>
+  fun countGroupedByLibraryId(): Map<String, Int>
 
-  fun getFilesizeGroupedByLibraryName(): Map<String, BigDecimal>
+  fun getFilesizeGroupedByLibraryId(): Map<String, BigDecimal>
 }

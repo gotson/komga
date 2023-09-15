@@ -72,7 +72,6 @@ class LibraryDao(
       .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
       .set(l.IMPORT_BARCODE_ISBN, library.importBarcodeIsbn)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
-      .set(l.SCAN_DEEP, library.scanDeep)
       .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
       .set(l.EMPTY_TRASH_AFTER_SCAN, library.emptyTrashAfterScan)
@@ -80,6 +79,7 @@ class LibraryDao(
       .set(l.HASH_FILES, library.hashFiles)
       .set(l.HASH_PAGES, library.hashPages)
       .set(l.ANALYZE_DIMENSIONS, library.analyzeDimensions)
+      .set(l.ONESHOTS_DIRECTORY, library.oneshotsDirectory)
       .set(l.UNAVAILABLE_DATE, library.unavailableDate)
       .execute()
   }
@@ -100,7 +100,6 @@ class LibraryDao(
       .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
       .set(l.IMPORT_BARCODE_ISBN, library.importBarcodeIsbn)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
-      .set(l.SCAN_DEEP, library.scanDeep)
       .set(l.REPAIR_EXTENSIONS, library.repairExtensions)
       .set(l.CONVERT_TO_CBZ, library.convertToCbz)
       .set(l.EMPTY_TRASH_AFTER_SCAN, library.emptyTrashAfterScan)
@@ -108,6 +107,7 @@ class LibraryDao(
       .set(l.HASH_FILES, library.hashFiles)
       .set(l.HASH_PAGES, library.hashPages)
       .set(l.ANALYZE_DIMENSIONS, library.analyzeDimensions)
+      .set(l.ONESHOTS_DIRECTORY, library.oneshotsDirectory)
       .set(l.UNAVAILABLE_DATE, library.unavailableDate)
       .set(l.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(l.ID.eq(library.id))
@@ -131,7 +131,6 @@ class LibraryDao(
       importLocalArtwork = importLocalArtwork,
       importBarcodeIsbn = importBarcodeIsbn,
       scanForceModifiedTime = scanForceModifiedTime,
-      scanDeep = scanDeep,
       repairExtensions = repairExtensions,
       convertToCbz = convertToCbz,
       emptyTrashAfterScan = emptyTrashAfterScan,
@@ -139,6 +138,7 @@ class LibraryDao(
       hashFiles = hashFiles,
       hashPages = hashPages,
       analyzeDimensions = analyzeDimensions,
+      oneshotsDirectory = oneshotsDirectory,
 
       unavailableDate = unavailableDate,
       id = id,

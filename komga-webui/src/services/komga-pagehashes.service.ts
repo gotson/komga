@@ -52,13 +52,8 @@ export default class KomgaPageHashesService {
 
   async getPageHashMatches(pageHash: PageHashDto, pageRequest?: PageRequest): Promise<Page<PageHashMatchDto>> {
     try {
-      const params = {
-        ...pageRequest,
-        media_type: pageHash.mediaType,
-        file_size: pageHash.size || -1,
-      }
       return (await this.http.get(`${API_PAGE_HASH}/${pageHash.hash}`, {
-        params: params,
+        params: pageRequest,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
@@ -84,14 +79,7 @@ export default class KomgaPageHashesService {
 
   async deleteAllMatches(pageHash: PageHashDto) {
     try {
-      const params = {
-        media_type: pageHash.mediaType,
-        file_size: pageHash.size || -1,
-      }
-      await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/delete-all`, null, {
-        params: params,
-        paramsSerializer: params => qs.stringify(params, {indices: false}),
-      })
+      await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/delete-all`)
     } catch (e) {
       let msg = `An error occurred while trying to execute delete all matches on page hash ${pageHash}`
       if (e.response.data.message) {
@@ -103,14 +91,7 @@ export default class KomgaPageHashesService {
 
   async deleteSingleMatch(pageHash: PageHashDto, match: PageHashMatchDto) {
     try {
-      const params = {
-        media_type: pageHash.mediaType,
-        file_size: pageHash.size || -1,
-      }
-      await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/delete-match`, match, {
-        params: params,
-        paramsSerializer: params => qs.stringify(params, {indices: false}),
-      })
+      await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/delete-match`, match)
     } catch (e) {
       let msg = `An error occurred while trying to execute delete single match on page hash ${pageHash}`
       if (e.response.data.message) {

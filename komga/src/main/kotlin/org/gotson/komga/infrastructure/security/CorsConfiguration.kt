@@ -28,7 +28,7 @@ class CorsConfiguration {
         "/**",
         CorsConfiguration().applyPermitDefaultValues().apply {
           allowedOrigins = komgaProperties.cors.allowedOrigins
-          allowedMethods = HttpMethod.values().map { it.name }
+          allowedMethods = HttpMethod.values().map { it.name() }
           allowCredentials = true
           addExposedHeader(HttpHeaders.CONTENT_DISPOSITION)
           addExposedHeader(sessionHeaderName)

@@ -1,45 +1,69 @@
-interface ReadListDto {
+export interface ReadListDto {
   id: string,
   name: string,
   summary: string,
+  ordered: boolean,
   filtered: boolean,
   bookIds: string[],
-  createdDate: string,
-  lastModifiedDate: string
+  createdDate: Date,
+  lastModifiedDate: Date
 }
 
-interface ReadListCreationDto {
+export interface ReadListCreationDto {
   name: string,
   summary?: string,
+  ordered?: boolean,
   bookIds: string[]
 }
 
-interface ReadListUpdateDto {
+export interface ReadListUpdateDto {
   name?: string,
   summary?: string,
+  ordered?: boolean,
   bookIds?: string[]
 }
 
-interface ReadListRequestResultDto {
-  readList?: ReadListDto,
-  unmatchedBooks: ReadListRequestResultBookDto[],
-  errorCode: string,
-  requestName: string,
-}
-
-interface ReadListRequestResultBookDto {
-  book: ReadListRequestBookDto,
-  errorCode: string,
-}
-
-interface ReadListRequestBookDto {
-  series: string,
+export interface ReadListRequestBookDto {
+  series: string[],
   number: string,
 }
 
-interface ReadListThumbnailDto {
+export interface ReadListThumbnailDto {
   id: string,
   readListId: string,
   type: string,
   selected: boolean
+}
+
+export interface ReadListRequestMatchDto {
+  readListMatch: ReadListMatchDto,
+  requests: ReadListRequestBookMatchesDto[],
+  errorCode: string,
+}
+
+export interface ReadListMatchDto {
+  name: string,
+  errorCode: string,
+}
+
+export interface ReadListRequestBookMatchesDto {
+  request: ReadListRequestBookDto,
+  matches: ReadListRequestBookMatchDto[],
+}
+
+export interface ReadListRequestBookMatchDto {
+  series: ReadListRequestBookMatchSeriesDto,
+  books: ReadListRequestBookMatchBookDto[],
+}
+
+export interface ReadListRequestBookMatchSeriesDto {
+  seriesId: string,
+  title: string,
+  releaseDate?: string,
+}
+
+export interface ReadListRequestBookMatchBookDto {
+  bookId: string,
+  number: string,
+  title: string,
 }

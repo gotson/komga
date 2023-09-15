@@ -74,7 +74,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {SeriesDto} from '@/types/komga-series'
 import {ERROR} from '@/types/events'
 import {stripAccents} from '@/functions/string'
 
@@ -90,8 +89,8 @@ export default Vue.extend({
   },
   props: {
     value: Boolean,
-    series: {
-      type: [Object as () => SeriesDto, Array as () => SeriesDto[]],
+    seriesIds: {
+      type: [Array as () => string[]],
       required: true,
     },
   },
@@ -111,12 +110,8 @@ export default Vue.extend({
 
   },
   computed: {
-    seriesIds(): string[] {
-      if (Array.isArray(this.series)) return this.series.map(s => s.id)
-      else return [this.series.id]
-    },
     duplicate(): string {
-      if (this.newCollection !== '' && this.collections.some(e => e.name === this.newCollection)) {
+      if (this.newCollection !== '' && this.collections.some(e => e.name.toLowerCase() === this.newCollection.toLowerCase())) {
         return this.$t('dialog.add_to_collection.field_search_create_error').toString()
       } else return ''
     },

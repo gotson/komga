@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.Zip64Mode
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
@@ -12,6 +13,7 @@ import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Media
@@ -37,7 +39,7 @@ import org.gotson.komga.interfaces.api.persistence.ReadProgressDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListCreationDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListDto
-import org.gotson.komga.interfaces.api.rest.dto.ReadListRequestResultDto
+import org.gotson.komga.interfaces.api.rest.dto.ReadListRequestMatchDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadListUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressUpdateDto
@@ -76,7 +78,6 @@ import java.io.OutputStream
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.concurrent.TimeUnit
 import java.util.zip.Deflater
-import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
 
@@ -224,13 +225,15 @@ class ReadListController(
   @PostMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
-    @Valid @RequestBody readList: ReadListCreationDto,
+    @Valid @RequestBody
+    readList: ReadListCreationDto,
   ): ReadListDto =
     try {
       readListLifecycle.addReadList(
         ReadList(
           name = readList.name,
           summary = readList.summary,
+          ordered = readList.ordered,
           bookIds = readList.bookIds.toIndexedMap(),
         ),
       ).toDto()
@@ -238,24 +241,30 @@ class ReadListController(
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
     }
 
-  @PostMapping("/import")
+  @PostMapping("match/comicrack")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  fun importFromComicRackList(
-    @RequestParam("files") files: List<MultipartFile>,
-  ): List<ReadListRequestResultDto> =
-    files.map { readListLifecycle.importReadList(it.bytes).toDto(it.originalFilename) }
+  fun matchFromComicRackList(
+    @RequestParam("file") file: MultipartFile,
+  ): ReadListRequestMatchDto =
+    try {
+      readListLifecycle.matchComicRackList(file.bytes).toDto()
+    } catch (e: CodedException) {
+      throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.code)
+    }
 
   @PatchMapping("{id}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable id: String,
-    @Valid @RequestBody readList: ReadListUpdateDto,
+    @Valid @RequestBody
+    readList: ReadListUpdateDto,
   ) {
     readListRepository.findByIdOrNull(id)?.let { existing ->
       val updated = existing.copy(
         name = readList.name ?: existing.name,
         summary = readList.summary ?: existing.summary,
+        ordered = readList.ordered ?: existing.ordered,
         bookIds = readList.bookIds?.toIndexedMap() ?: existing.bookIds,
       )
       try {
@@ -293,7 +302,9 @@ class ReadListController(
     @Parameter(hidden = true) page: Pageable,
   ): Page<BookDto> =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
-      val sort = Sort.by(Sort.Order.asc("readList.number"))
+      val sort =
+        if (readList.ordered) Sort.by(Sort.Order.asc("readList.number"))
+        else Sort.by(Sort.Order.asc("metadata.releaseDate"))
 
       val pageRequest =
         if (unpaged) UnpagedSorted(sort)
@@ -318,6 +329,7 @@ class ReadListController(
         principal.user.getAuthorizedLibraryIds(null),
         bookSearch,
         pageRequest,
+        principal.user.restrictions,
       )
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -330,10 +342,11 @@ class ReadListController(
   ): BookDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       bookDtoRepository.findPreviousInReadListOrNull(
-        id,
+        it,
         bookId,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
+        principal.user.restrictions,
       )
         ?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -346,10 +359,11 @@ class ReadListController(
   ): BookDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
       bookDtoRepository.findNextInReadListOrNull(
-        id,
+        it,
         bookId,
         principal.user.id,
         principal.user.getAuthorizedLibraryIds(null),
+        principal.user.restrictions,
       )
         ?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -367,7 +381,8 @@ class ReadListController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markReadProgressTachiyomi(
     @PathVariable id: String,
-    @Valid @RequestBody readProgress: TachiyomiReadProgressUpdateDto,
+    @Valid @RequestBody
+    readProgress: TachiyomiReadProgressUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
@@ -377,6 +392,7 @@ class ReadListController(
         principal.user.getAuthorizedLibraryIds(null),
         BookSearchWithReadProgress(),
         UnpagedSorted(Sort.by(Sort.Order.asc("readList.number"))),
+        principal.user.restrictions,
       ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
         .forEach { book ->
           if (book.readProgress?.completed != true)
@@ -427,7 +443,7 @@ class ReadListController(
               .build()
           },
         )
-        .contentType(MediaType.parseMediaType(ZIP.value))
+        .contentType(MediaType.parseMediaType(ZIP.type))
         .body(streamingResponse)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }

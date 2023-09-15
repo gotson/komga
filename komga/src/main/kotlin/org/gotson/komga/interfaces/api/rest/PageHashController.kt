@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookPageNumbered
-import org.gotson.komga.domain.model.PageHash
 import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.PageHashRepository
@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/v1/page-hashes", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -57,10 +56,8 @@ class PageHashController(
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   fun getKnownPageHashThumbnail(
     @PathVariable pageHash: String,
-    @RequestParam("media_type") mediaType: String,
-    @RequestParam("file_size") size: Long,
   ): ByteArray =
-    pageHashRepository.getKnownThumbnail(PageHash(pageHash, mediaType, size))
+    pageHashRepository.getKnownThumbnail(pageHash)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("/unknown")
@@ -74,13 +71,10 @@ class PageHashController(
   @PageableAsQueryParam
   fun getPageHashMatches(
     @PathVariable pageHash: String,
-    @RequestParam("media_type") mediaType: String,
-    @RequestParam("file_size") size: Long,
     @Parameter(hidden = true) page: Pageable,
   ): Page<PageHashMatchDto> =
     pageHashRepository.findMatchesByHash(
-      PageHash(pageHash, mediaType, size),
-      null,
+      pageHash,
       page,
     ).map { it.toDto() }
 
@@ -88,14 +82,9 @@ class PageHashController(
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   fun getUnknownPageHashThumbnail(
     @PathVariable pageHash: String,
-    @RequestParam("media_type") mediaType: String,
-    @RequestParam("file_size") size: Long,
     @RequestParam("resize") resize: Int? = null,
   ): ResponseEntity<ByteArray> =
-    pageHashLifecycle.getPage(
-      PageHash(pageHash, mediaType, size),
-      resize,
-    )?.let {
+    pageHashLifecycle.getPage(pageHash, resize)?.let {
       ResponseEntity.ok()
         .contentType(getMediaTypeOrDefault(it.mediaType))
         .body(it.content)
@@ -104,13 +93,13 @@ class PageHashController(
   @PutMapping
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun createOrUpdateKnownPageHash(
-    @Valid @RequestBody pageHash: PageHashCreationDto,
+    @Valid @RequestBody
+    pageHash: PageHashCreationDto,
   ) {
     try {
       pageHashLifecycle.createOrUpdate(
         PageHashKnown(
           hash = pageHash.hash,
-          mediaType = pageHash.mediaType,
           size = pageHash.size,
           action = pageHash.action,
         ),
@@ -124,20 +113,16 @@ class PageHashController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun performDelete(
     @PathVariable pageHash: String,
-    @RequestParam("media_type") mediaType: String,
-    @RequestParam("file_size") size: Long,
   ) {
-    val hash = PageHash(pageHash, mediaType, size)
-
-    val toRemove = pageHashRepository.findMatchesByHash(hash, null, Pageable.unpaged())
+    val toRemove = pageHashRepository.findMatchesByHash(pageHash, Pageable.unpaged())
       .groupBy(
         { it.bookId },
         {
           BookPageNumbered(
             fileName = it.fileName,
-            mediaType = hash.mediaType,
-            fileHash = hash.hash,
-            fileSize = hash.size,
+            mediaType = it.mediaType,
+            fileHash = pageHash,
+            fileSize = it.fileSize,
             pageNumber = it.pageNumber,
           )
         },
@@ -150,8 +135,6 @@ class PageHashController(
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteSingleMatch(
     @PathVariable pageHash: String,
-    @RequestParam("media_type") mediaType: String,
-    @RequestParam("file_size") size: Long,
     @RequestBody matchDto: PageHashMatchDto,
   ) {
     val toRemove = Pair(
@@ -159,9 +142,9 @@ class PageHashController(
       listOf(
         BookPageNumbered(
           fileName = matchDto.fileName,
-          mediaType = mediaType,
+          mediaType = matchDto.mediaType,
           fileHash = pageHash,
-          fileSize = size,
+          fileSize = matchDto.fileSize,
           pageNumber = matchDto.pageNumber,
         ),
       ),

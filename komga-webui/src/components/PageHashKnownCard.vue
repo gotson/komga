@@ -26,7 +26,6 @@
 
               <v-row>
                 <v-col>
-                  <div>{{ hash.mediaType }}</div>
                   <div>{{ getFileSize(hash.size) || $t('duplicate_pages.unknown_size') }}</div>
                 </v-col>
               </v-row>
@@ -35,12 +34,12 @@
               <v-row>
                 <v-col>
                   <v-btn
-                    v-if="matchCount"
                     @click="$emit('matches-clicked')"
                     outlined
                     rounded
+                    :disabled="hash.matchCount == 0"
                   >
-                    {{ $tc('duplicate_pages.matches_n', matchCount) }}
+                    {{ $tc('duplicate_pages.matches_n', hash.matchCount) }}
                   </v-btn>
                 </v-col>
               </v-row>
@@ -56,6 +55,11 @@
                     v-if="hash.size && hash.deleteCount"
                   >{{ $t('duplicate_pages.saved_size', {size: getFileSize(hash.size * hash.deleteCount)}) }}
                   </div>
+
+                  <div
+                      v-if="hash.size && hash.matchCount"
+                  ><br/>{{ $t('duplicate_pages.delete_to_save', {size: getFileSize(hash.size * hash.matchCount)}) }}
+                  </div>
                 </v-col>
               </v-row>
             </v-container>
@@ -67,7 +71,7 @@
     <v-card-actions>
       <v-btn v-if="hash.action === PageHashAction.DELETE_MANUAL"
              :color="deleteRequested ? 'success': 'primary'"
-             :disabled="!matchCount"
+             :disabled="hash.matchCount == 0"
              @click="deleteMatches"
       >
         <v-icon left v-if="deleteRequested">mdi-check</v-icon>
@@ -107,7 +111,6 @@ export default Vue.extend({
       pageHashKnownThumbnailUrl,
       getFileSize,
       PageHashAction,
-      matchCount: undefined as number | undefined,
       deleteRequested: false,
     }
   },
@@ -123,26 +126,15 @@ export default Vue.extend({
       }
     },
   },
-  mounted() {
-    this.getMatchCount()
-  },
   watch: {
     hash: {
       handler() {
         this.deleteRequested = false
-        this.matchCount = undefined
-        this.getMatchCount()
       },
       deep: true,
     },
   },
   methods: {
-    async getMatchCount() {
-      if (this.hash?.action === PageHashAction.DELETE_MANUAL)
-        this.matchCount = (await this.$komgaPageHashes.getPageHashMatches(this.hash, {size: 0})).totalElements
-      else
-        this.matchCount = undefined
-    },
     async deleteMatches() {
       if(!this.deleteRequested) {
         await this.$komgaPageHashes.deleteAllMatches(this.hash)
@@ -162,7 +154,6 @@ export default Vue.extend({
       try {
         const p = {
           hash: this.hash.hash,
-          mediaType: this.hash.mediaType,
           size: this.hash.size,
           action: action,
         }

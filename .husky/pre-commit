@@ -1,5 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-npm run --prefix komga-webui lint
-./gradlew ktlintCheck

@@ -40,7 +40,7 @@
       <v-btn
         icon
         :disabled="$_.isEmpty(siblingPrevious)"
-        :to="{ name: 'browse-book', params: { bookId: previousId }, query: { context: context.origin, contextId: context.id}  }"
+        :to="{ name: siblingPrevious.oneshot ? 'browse-oneshot' : 'browse-book', params: { seriesId: siblingPrevious.seriesId, bookId: previousId }, query: { context: context.origin, contextId: context.id}  }"
       >
         <rtl-icon icon="mdi-chevron-left" rtl="mdi-chevron-right"/>
       </v-btn>
@@ -64,12 +64,13 @@
             <v-list-item
               v-for="(book, i) in siblings"
               :key="i"
-              :to="{ name: 'browse-book', params: { bookId: book.id }, query: { context: context.origin, contextId: context.id} }"
+              :to="{ name: book.oneshot ? 'browse-oneshot' : 'browse-book', params: { seriesId: book.seriesId, bookId: book.id }, query: { context: context.origin, contextId: context.id}  }"
             >
               <v-list-item-title class="text-wrap text-body-2">
-                <template v-if="contextReadList">{{ book.seriesTitle }} {{ book.metadata.number }}:
+                <template v-if="contextReadList && !book.oneshot">{{ book.seriesTitle }} {{ book.metadata.number }}:
                   {{ book.metadata.title }}
                 </template>
+                <template v-else-if="contextReadList && book.oneshot">{{ book.metadata.title }}</template>
                 <template v-else>{{ book.metadata.number }} - {{ book.metadata.title }}</template>
               </v-list-item-title>
             </v-list-item>
@@ -81,7 +82,7 @@
       <v-btn
         icon
         :disabled="$_.isEmpty(siblingNext)"
-        :to="{ name: 'browse-book', params: { bookId: nextId }, query: { context: context.origin, contextId: context.id}  }"
+        :to="{ name: siblingNext.oneshot ? 'browse-oneshot' : 'browse-book', params: { seriesId: siblingNext.seriesId, bookId: nextId }, query: { context: context.origin, contextId: context.id}  }"
       >
         <rtl-icon icon="mdi-chevron-right" rtl="mdi-chevron-left"/>
       </v-btn>
@@ -159,7 +160,10 @@
 
               <v-col cols="auto" v-if="book.metadata.releaseDate">
                 {{
-                  new Intl.DateTimeFormat($i18n.locale, {dateStyle: 'long', timeZone: 'UTC'}).format(new Date(book.metadata.releaseDate))
+                  new Intl.DateTimeFormat($i18n.locale, {
+                    dateStyle: 'long',
+                    timeZone: 'UTC'
+                  }).format(new Date(book.metadata.releaseDate))
                 }}
               </v-col>
 
@@ -309,7 +313,7 @@
       </v-row>
 
       <v-row v-if="book.metadata.tags.length > 0" class="align-center text-caption">
-        <v-col cols="4" sm="3" md="2" xl="1" class="py-1">TAGS</v-col>
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $i18n.t('common.tags') }}</v-col>
         <v-col cols="8" sm="9" md="10" xl="11" class="py-1 text-capitalize">
           <vue-horizontal>
             <template v-slot:btn-prev>
@@ -345,7 +349,7 @@
       </v-row>
 
       <v-row v-if="book.metadata.links.length > 0" class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
           <v-chip
             v-for="(link, i) in book.metadata.links"
@@ -371,27 +375,27 @@
       </v-row>
 
       <v-row class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.size') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.size') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.size }}</v-col>
       </v-row>
 
       <v-row v-if="book.media.comment" class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.comment') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.comment') }}</v-col>
         <v-col class="py-1 error--text font-weight-bold" cols="8" sm="9" md="10" xl="11">{{ mediaComment }}</v-col>
       </v-row>
 
       <v-row class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.format') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.format') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ format.type }}</v-col>
       </v-row>
 
       <v-row v-if="book.metadata.isbn" class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.isbn') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.isbn') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.metadata.isbn }}</v-col>
       </v-row>
 
       <v-row class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.file') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.file') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.url }}</v-col>
       </v-row>
 
@@ -431,6 +435,7 @@ import {convertErrorCodes} from '@/functions/error-codes'
 import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -526,7 +531,7 @@ export default Vue.extend({
         return new Intl.DateTimeFormat(this.$i18n.locale, {
           dateStyle: 'medium',
           timeStyle: 'short',
-        } as Intl.DateTimeFormatOptions).format(new Date(this.book.readProgress.lastModified))
+        } as Intl.DateTimeFormatOptions).format(this.book.readProgress.readDate)
       return undefined
     },
     previousId(): string {
@@ -580,6 +585,11 @@ export default Vue.extend({
     },
     async loadBook(bookId: string) {
       this.book = await this.$komgaBooks.getBook(bookId)
+      // for the cases where we can't change the origin target route because we don't have the full BookDto
+      if (this.book.oneshot) await this.$router.replace({
+        name: 'browse-oneshot',
+        params: {seriesId: this.book.seriesId},
+      })
 
       // parse query params to get context and contextId
       if (this.$route.query.contextId && this.$route.query.context

@@ -29,15 +29,11 @@ logging:
   logback:
     rollingpolicy:
       max-history: 1
-
-management.metrics.export.influx:
-  #  enabled: true
-  uri: http://localhost:8086
-
 springdoc:
   cache:
     disabled: true
 
-#server:
+server:
+  port: 8080
 #  servlet:
 #    context-path: /komga

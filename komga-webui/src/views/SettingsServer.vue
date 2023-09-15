@@ -5,7 +5,13 @@
     </v-row>
     <v-row>
       <v-col cols="auto">
-        <v-btn @click="scanAllLibraries">{{ $t('server.server_management.button_scan_libraries') }}</v-btn>
+        <v-btn @click="scanAllLibraries(false)">{{ $t('server.server_management.button_scan_libraries') }}</v-btn>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn @click="scanAllLibraries(true)"
+               color="warning"
+        >{{ $t('server.server_management.button_scan_libraries_deep') }}
+        </v-btn>
       </v-col>
       <v-col cols="auto">
         <v-btn @click="confirmEmptyTrash = true">{{ $t('server.server_management.button_empty_trash') }}</v-btn>
@@ -68,9 +74,9 @@ export default Vue.extend({
         this.$komgaLibraries.emptyTrash(library)
       })
     },
-    scanAllLibraries() {
+    scanAllLibraries(scanDeep: boolean) {
       this.libraries.forEach(library => {
-        this.$komgaLibraries.scanLibrary(library)
+        this.$komgaLibraries.scanLibrary(library, scanDeep)
       })
     },
     async cancelAllTasks() {

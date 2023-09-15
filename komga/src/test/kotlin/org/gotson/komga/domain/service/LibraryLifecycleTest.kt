@@ -8,17 +8,17 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.io.TempDir
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.io.FileNotFoundException
 import java.net.URL
 import java.nio.file.Files
+import java.nio.file.Path
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class LibraryLifecycleTest(
   @Autowired private val libraryRepository: LibraryRepository,
@@ -45,7 +45,14 @@ class LibraryLifecycleTest(
     fun `when adding library with non-directory root folder then exception is thrown`() {
       // when
       val thrown = catchThrowable {
-        libraryLifecycle.addLibrary(Library("test", Files.createTempFile(null, null).toUri().toURL()))
+        libraryLifecycle.addLibrary(
+          Library(
+            "test",
+            Files.createTempFile(null, null)
+              .also { it.toFile().deleteOnExit() }
+              .toUri().toURL(),
+          ),
+        )
       }
 
       // then
@@ -53,13 +60,13 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given existing library when adding library with same name then exception is thrown`() {
+    fun `given existing library when adding library with same name then exception is thrown`(@TempDir path1: Path, @TempDir path2: Path) {
       // given
-      libraryLifecycle.addLibrary(Library("test", Files.createTempDirectory(null).toUri().toURL()))
+      libraryLifecycle.addLibrary(Library("test", path1.toUri().toURL()))
 
       // when
       val thrown = catchThrowable {
-        libraryLifecycle.addLibrary(Library("test", Files.createTempDirectory(null).toUri().toURL()))
+        libraryLifecycle.addLibrary(Library("test", path2.toUri().toURL()))
       }
 
       // then
@@ -67,9 +74,8 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given existing library when adding library with root folder as child of existing library then exception is thrown`() {
+    fun `given existing library when adding library with root folder as child of existing library then exception is thrown`(@TempDir parent: Path) {
       // given
-      val parent = Files.createTempDirectory(null)
       libraryLifecycle.addLibrary(Library("parent", parent.toUri().toURL()))
 
       // when
@@ -85,9 +91,8 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given existing library when adding library with root folder as parent of existing library then exception is thrown`() {
+    fun `given existing library when adding library with root folder as parent of existing library then exception is thrown`(@TempDir parent: Path) {
       // given
-      val parent = Files.createTempDirectory(null)
       val child = Files.createTempDirectory(parent, null)
       libraryLifecycle.addLibrary(Library("child", child.toUri().toURL()))
 
@@ -105,8 +110,14 @@ class LibraryLifecycleTest(
 
   @Nested
   inner class Update {
-    private val rootFolder = Files.createTempDirectory(null)
-    private val library = Library("Existing", rootFolder.toUri().toURL())
+    private lateinit var rootFolder: Path
+    private lateinit var library: Library
+
+    @BeforeAll
+    fun setup(@TempDir root: Path) {
+      rootFolder = root
+      library = Library("Existing", rootFolder.toUri().toURL())
+    }
 
     @Test
     fun `given existing library when updating with non-existent root folder then exception is thrown`() {
@@ -127,7 +138,11 @@ class LibraryLifecycleTest(
       val existing = libraryLifecycle.addLibrary(library)
 
       // when
-      val toUpdate = existing.copy(name = "test", root = Files.createTempFile(null, null).toUri().toURL())
+      val toUpdate = existing.copy(
+        name = "test",
+        root = Files.createTempFile(null, null)
+          .also { it.toFile().deleteOnExit() }.toUri().toURL(),
+      )
       val thrown = catchThrowable {
         libraryLifecycle.updateLibrary(toUpdate)
       }
@@ -151,13 +166,13 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given existing library when updating library with same name then exception is thrown`() {
+    fun `given existing library when updating library with same name then exception is thrown`(@TempDir path1: Path, @TempDir path2: Path) {
       // given
-      libraryLifecycle.addLibrary(Library("test", Files.createTempDirectory(null).toUri().toURL()))
+      libraryLifecycle.addLibrary(Library("test", path1.toUri().toURL()))
       val existing = libraryLifecycle.addLibrary(library)
 
       // when
-      val toUpdate = existing.copy(name = "test", root = Files.createTempDirectory(null).toUri().toURL())
+      val toUpdate = existing.copy(name = "test", root = path2.toUri().toURL())
       val thrown = catchThrowable {
         libraryLifecycle.updateLibrary(toUpdate)
       }
@@ -183,9 +198,8 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given existing library when updating library with root folder as child of existing library then exception is thrown`() {
+    fun `given existing library when updating library with root folder as child of existing library then exception is thrown`(@TempDir parent: Path) {
       // given
-      val parent = Files.createTempDirectory(null)
       libraryLifecycle.addLibrary(Library("parent", parent.toUri().toURL()))
       val existing = libraryLifecycle.addLibrary(library)
 
@@ -203,9 +217,8 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given single existing library when updating library with root folder as parent of existing library then no exception is thrown`() {
+    fun `given single existing library when updating library with root folder as parent of existing library then no exception is thrown`(@TempDir parent: Path) {
       // given
-      val parent = Files.createTempDirectory(null)
       val child = Files.createTempDirectory(parent, null)
       val existing = libraryLifecycle.addLibrary(Library("child", child.toUri().toURL()))
 
@@ -220,9 +233,8 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given existing library when updating library with root folder as parent of existing library then exception is thrown`() {
+    fun `given existing library when updating library with root folder as parent of existing library then exception is thrown`(@TempDir parent: Path) {
       // given
-      val parent = Files.createTempDirectory(null)
       val child = Files.createTempDirectory(parent, null)
       libraryLifecycle.addLibrary(Library("child", child.toUri().toURL()))
       val existing = libraryLifecycle.addLibrary(library)

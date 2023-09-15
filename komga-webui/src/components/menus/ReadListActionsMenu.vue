@@ -8,7 +8,7 @@
       </template>
       <v-list dense>
         <v-list-item @click="promptDeleteReadList"
-                     class="list-warning">
+                     class="list-danger">
           <v-list-item-title>{{ $t('menu.delete') }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -17,6 +17,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'ReadListActionsMenu',

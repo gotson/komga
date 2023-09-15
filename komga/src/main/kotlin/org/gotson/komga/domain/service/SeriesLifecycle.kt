@@ -2,7 +2,6 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
-import org.apache.commons.lang3.StringUtils
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
@@ -93,7 +92,8 @@ class SeriesLifecycle(
     val oldToNew = sorted.mapIndexedNotNull { index, (book, metadata) ->
       if (metadata.numberLock && metadata.numberSortLock) null
       else Triple(
-        book, metadata,
+        book,
+        metadata,
         metadata.copy(
           number = if (!metadata.numberLock) (index + 1).toString() else metadata.number,
           numberSort = if (!metadata.numberSortLock) (index + 1).toFloat() else metadata.numberSort,
@@ -112,7 +112,7 @@ class SeriesLifecycle(
 
     // update book count for series
     seriesRepository.findByIdOrNull(series.id)?.let {
-      seriesRepository.update(it.copy(bookCount = books.size))
+      seriesRepository.update(it.copy(bookCount = books.size), false)
     }
   }
 
@@ -149,7 +149,7 @@ class SeriesLifecycle(
       seriesMetadataRepository.insert(
         SeriesMetadata(
           title = series.name,
-          titleSort = StringUtils.stripAccents(series.name),
+          titleSort = series.name.stripAccents(),
           seriesId = series.id,
         ),
       )

@@ -1,5 +1,8 @@
 package org.gotson.komga.infrastructure.configuration
 
+import jakarta.annotation.PostConstruct
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Positive
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.convert.DurationUnit
 import org.springframework.stereotype.Component
@@ -7,13 +10,21 @@ import org.springframework.validation.annotation.Validated
 import org.sqlite.SQLiteConfig.JournalMode
 import java.time.Duration
 import java.time.temporal.ChronoUnit
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Positive
+import kotlin.io.path.Path
+import kotlin.io.path.createDirectories
 
 @Component
 @ConfigurationProperties(prefix = "komga")
 @Validated
 class KomgaProperties {
+  @PostConstruct
+  private fun makeDirs() {
+    try {
+      Path(database.file).parent.createDirectories()
+    } catch (_: Exception) {
+    }
+  }
+
   var librariesScanCron: String = ""
 
   var librariesScanStartup: Boolean = false
@@ -23,9 +34,6 @@ class KomgaProperties {
   var deleteEmptyReadLists: Boolean = true
 
   var deleteEmptyCollections: Boolean = true
-
-  @Deprecated("Deprecated since 0.143.0, you can configure this in the library options directly")
-  var fileHashing: Boolean = true
 
   @Positive
   var pageHashing: Int = 3
@@ -39,6 +47,8 @@ class KomgaProperties {
   var sessionTimeout: Duration = Duration.ofMinutes(30)
 
   var oauth2AccountCreation: Boolean = false
+
+  var oidcEmailVerification: Boolean = true
 
   var database = Database()
 

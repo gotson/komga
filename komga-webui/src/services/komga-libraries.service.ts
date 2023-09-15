@@ -6,11 +6,11 @@ const API_LIBRARIES = '/api/v1/libraries'
 export default class KomgaLibrariesService {
   private http: AxiosInstance
 
-  constructor (http: AxiosInstance) {
+  constructor(http: AxiosInstance) {
     this.http = http
   }
 
-  async getLibraries (): Promise<LibraryDto[]> {
+  async getLibraries(): Promise<LibraryDto[]> {
     try {
       return (await this.http.get(API_LIBRARIES)).data
     } catch (e) {
@@ -22,7 +22,7 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async getLibrary (libraryId: string): Promise<LibraryDto> {
+  async getLibrary(libraryId: string): Promise<LibraryDto> {
     try {
       return (await this.http.get(`${API_LIBRARIES}/${libraryId}`)).data
     } catch (e) {
@@ -34,7 +34,7 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async postLibrary (library: LibraryCreationDto): Promise<LibraryDto> {
+  async postLibrary(library: LibraryCreationDto): Promise<LibraryDto> {
     try {
       return (await this.http.post(API_LIBRARIES, library)).data
     } catch (e) {
@@ -46,9 +46,9 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async updateLibrary (libraryId: string, library: LibraryUpdateDto) {
+  async updateLibrary(libraryId: string, library: LibraryUpdateDto) {
     try {
-      await this.http.put(`${API_LIBRARIES}/${libraryId}`, library)
+      await this.http.patch(`${API_LIBRARIES}/${libraryId}`, library)
     } catch (e) {
       let msg = `An error occurred while trying to update library '${libraryId}'`
       if (e.response.data.message) {
@@ -58,7 +58,7 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async deleteLibrary (library: LibraryDto) {
+  async deleteLibrary(library: LibraryDto) {
     try {
       await this.http.delete(`${API_LIBRARIES}/${library.id}`)
     } catch (e) {
@@ -70,9 +70,11 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async scanLibrary (library: LibraryDto) {
+  async scanLibrary(library: LibraryDto, scanDeep: boolean = false) {
     try {
-      await this.http.post(`${API_LIBRARIES}/${library.id}/scan`)
+      await this.http.post(`${API_LIBRARIES}/${library.id}/scan`, null, {
+        params: {deep: scanDeep},
+      })
     } catch (e) {
       let msg = `An error occurred while trying to scan library '${library.name}'`
       if (e.response.data.message) {
@@ -82,7 +84,7 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async analyzeLibrary (library: LibraryDto) {
+  async analyzeLibrary(library: LibraryDto) {
     try {
       await this.http.post(`${API_LIBRARIES}/${library.id}/analyze`)
     } catch (e) {
@@ -94,7 +96,7 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async refreshMetadata (library: LibraryDto) {
+  async refreshMetadata(library: LibraryDto) {
     try {
       await this.http.post(`${API_LIBRARIES}/${library.id}/metadata/refresh`)
     } catch (e) {
@@ -106,7 +108,7 @@ export default class KomgaLibrariesService {
     }
   }
 
-  async emptyTrash (library: LibraryDto) {
+  async emptyTrash(library: LibraryDto) {
     try {
       await this.http.post(`${API_LIBRARIES}/${library.id}/empty-trash`)
     } catch (e) {

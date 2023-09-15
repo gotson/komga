@@ -1,8 +1,8 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
+import jakarta.validation.Valid
+import jakarta.validation.constraints.PositiveOrZero
 import org.gotson.komga.domain.model.AllowExclude
-import javax.validation.Valid
-import javax.validation.constraints.PositiveOrZero
 import kotlin.properties.Delegates
 
 class UserUpdateDto {

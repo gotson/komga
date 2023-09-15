@@ -18,7 +18,6 @@ data class LibraryDto(
   val importLocalArtwork: Boolean,
   val importBarcodeIsbn: Boolean,
   val scanForceModifiedTime: Boolean,
-  val scanDeep: Boolean,
   val repairExtensions: Boolean,
   val convertToCbz: Boolean,
   val emptyTrashAfterScan: Boolean,
@@ -26,6 +25,7 @@ data class LibraryDto(
   val hashFiles: Boolean,
   val hashPages: Boolean,
   val analyzeDimensions: Boolean,
+  val oneshotsDirectory: String?,
   val unavailable: Boolean,
 )
 
@@ -44,7 +44,6 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   importLocalArtwork = importLocalArtwork,
   importBarcodeIsbn = importBarcodeIsbn,
   scanForceModifiedTime = scanForceModifiedTime,
-  scanDeep = scanDeep,
   repairExtensions = repairExtensions,
   convertToCbz = convertToCbz,
   emptyTrashAfterScan = emptyTrashAfterScan,
@@ -52,5 +51,6 @@ fun Library.toDto(includeRoot: Boolean) = LibraryDto(
   hashFiles = hashFiles,
   hashPages = hashPages,
   analyzeDimensions = analyzeDimensions,
+  oneshotsDirectory = oneshotsDirectory,
   unavailable = unavailableDate != null,
 )

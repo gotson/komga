@@ -44,7 +44,8 @@ class BookMetadataDao(
       .where(d.BOOK_ID.`in`(bookIds))
       .groupBy(*groupFields)
       .fetchGroups(
-        { it.into(d) }, { it.into(a) },
+        { it.into(d) },
+        { it.into(a) },
       ).map { (dr, ar) ->
         dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.bookId), findLinks(dr.bookId))
       }

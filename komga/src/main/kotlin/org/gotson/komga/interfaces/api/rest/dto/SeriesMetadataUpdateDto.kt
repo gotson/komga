@@ -1,11 +1,11 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
+import jakarta.validation.Valid
+import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.PositiveOrZero
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.infrastructure.validation.NullOrBlankOrBCP47
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
-import javax.validation.Valid
-import javax.validation.constraints.Positive
-import javax.validation.constraints.PositiveOrZero
 import kotlin.properties.Delegates
 
 class SeriesMetadataUpdateDto {

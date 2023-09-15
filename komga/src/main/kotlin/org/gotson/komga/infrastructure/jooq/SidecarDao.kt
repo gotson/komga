@@ -54,12 +54,11 @@ class SidecarDao(
       .execute()
   }
 
-  override fun countGroupedByLibraryName(): Map<String, Int> =
-    dsl.select(l.NAME, DSL.count(sc.URL))
-      .from(l)
-      .leftJoin(sc).on(l.ID.eq(sc.LIBRARY_ID))
-      .groupBy(l.NAME)
-      .fetchMap(l.NAME, DSL.count(sc.URL))
+  override fun countGroupedByLibraryId(): Map<String, Int> =
+    dsl.select(sc.LIBRARY_ID, DSL.count(sc.URL))
+      .from(sc)
+      .groupBy(sc.LIBRARY_ID)
+      .fetchMap(sc.LIBRARY_ID, DSL.count(sc.URL))
 
   private fun SidecarRecord.toDomain() =
     SidecarStored(

@@ -174,7 +174,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Modifica elementi",
-    "edit_readlist": "Modifica elenco lettura"
+    "edit_readlist": "Modifica elenco lettura",
+    "manual_ordering": "Ordinamento manuale"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Questo è l'anno di uscita del primo fumetto della serie",
@@ -188,6 +189,7 @@
   "common": {
     "age": "Età",
     "all_libraries": "Tutte le librerie",
+    "book": "Libro",
     "books": "Fumetti",
     "books_n": "Nessun fumetto | 1 fumetto | {count} fumetti",
     "books_total": "{count} / {total} libri",
@@ -205,6 +207,7 @@
     "filename": "Nome file",
     "filter_no_matches": "Il filtro attivo non ha corrispondenze",
     "genre": "Genere",
+    "go_to_collection": "Vai alla collezione",
     "go_to_library": "Vai alla libreria",
     "go_to_readlist": "Vai all'elenco di lettura",
     "go_to_series": "Vai alle serie",
@@ -218,11 +221,14 @@
     "page": "Pagina",
     "page_number": "Numero pagina",
     "pages": "pagine",
+    "pages_left": "Nessuna pagina rimanente | 1 pagina rimanente | {count} pagine rimanenti",
     "pages_n": "Nessuna pagina | 1 pagina | {count} pagine",
     "password": "Password",
     "pending_tasks": "Nessuna attività in sospeso | 1 attività in sospeso | {count} attività in sospeso",
     "publisher": "Editore",
     "read": "Leggi",
+    "read_on": "Letto il {date}",
+    "readlist": "Elenco di lettura",
     "readlists": "Liste di lettura",
     "required": "Richiesto",
     "reset_filters": "Rimuovi filtri",
@@ -250,10 +256,20 @@
     "book_number": "Fumetto numero: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importa",
+    "button_match": "Corrispondenza",
     "comicrack_preambule_html": "Puoi importare liste di lettura ComicRack esistenti in formato <code>.cbl</code>.<br>Komga cercherà di far corrispondere la serie e il numero di fumetti forniti con le serie e i fumetti nelle tue librerie.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} libri senza corrispondenza",
+      "create": "Crea comunque",
+      "title": "Alcuni libri non corrispondono"
+    },
+    "field_file_label": "Lista di lettura ComicRack (.cbl)",
     "field_files_label": "Liste di lettura ComicRack (.cbl)",
     "import_read_lists": "Importa Liste Lettura",
     "imported_as": "Importato come {name}",
+    "readlist_created": "Lista lettura creata: {name}",
+    "requested_number": "Numero richiesto",
+    "requested_series": "Serie richiesta",
     "results_preambule": "Il risultato dell'importazione è mostrato qui sotto. Puoi anche controllare i fumetti senza corrispondenza per ogni file fornito.",
     "size_limit": "Deve essere meno di {size} MB",
     "tab_title": "Importa Dati"
@@ -291,6 +307,10 @@
       "body": "Analizza tutti i file nella libreria. L'analisi cattura le informazioni sui media. A seconda delle dimensioni della tua libreria, questo potrebbe richiedere molto tempo.",
       "button_confirm": "Analizza",
       "title": "Analizza libreria"
+    },
+    "book_picker": {
+      "filter": "Filtra per numero del libro, titolo o data di uscita",
+      "title": "Seleziona libro"
     },
     "delete_book": {
       "button_confirm": "Cancella",
@@ -344,8 +364,10 @@
       "authors_notice_multiple_edit": "Stai modificando gli autori per più fumetti. Questo sovrascriverà gli autori esistenti di ogni fumetto.",
       "button_cancel": "Annulla",
       "button_confirm": "Salva modifiche",
+      "copy_from": "Copia da {field}",
       "dialog_title_multiple": "Modifica {count} fumetto | Modifica {count} fumetti",
       "dialog_title_single": "Modifica {book}",
+      "field_alternate_title": "Titolo alternativo",
       "field_isbn": "ISBN",
       "field_isbn_error": "Deve essere un ISBN 13 valido",
       "field_link_label": "Etichetta",
@@ -360,6 +382,8 @@
       "field_summary": "Riassunto",
       "field_tags": "Etichette",
       "field_title": "Titolo",
+      "number_sort_decrement": "Decrementa tutto di 1",
+      "number_sort_increment": "Incrementa tutto di 1",
       "tab_authors": "Autori",
       "tab_general": "Generale",
       "tab_links": "Links",
@@ -393,6 +417,7 @@
       "field_import_comicinfo_collections": "Raccolte",
       "field_import_comicinfo_readlists": "Liste di lettura",
       "field_import_comicinfo_series": "Metadati della serie",
+      "field_import_comicinfo_series_append_volume": "Aggiungi il volume al titolo della serie",
       "field_import_epub_book": "Metadati del fumetto",
       "field_import_epub_series": "Metadati della serie",
       "field_import_local_artwork": "Copertine locali",
@@ -400,7 +425,6 @@
       "field_name": "Nome",
       "field_repair_extensions": "Ripara automaticamente le estensioni errate dei file",
       "field_root_folder": "Cartella principale",
-      "field_scanner_deep_scan": "Scansione profonda",
       "field_scanner_empty_trash_after_scan": "Svuota il cestino in automatico dopo ogni scansione",
       "field_scanner_force_directory_modified_time": "Usa data di modifica delle cartelle",
       "field_series_cover": "Copertina della serie",
@@ -425,8 +449,10 @@
       "button_cancel": "Annulla",
       "button_confirm": "Salva modifiche",
       "dialog_title": "Modifica elenco di lettura",
+      "field_manual_ordering": "Ordinamento manuale",
       "field_name": "Nome",
       "field_summary": "Sommario",
+      "label_ordering": "Di default, i libri in un elenco di lettura vengono ordinati manualmente. Puoi disattivare l'ordinamento manuale per ordinare i libri in base alla data d'uscita.",
       "tab_general": "Generale",
       "tab_poster": "Copertina"
     },
@@ -455,6 +481,7 @@
       "tab_poster": "Copertina",
       "tab_sharing": "Condivisione",
       "tab_tags": "Etichette",
+      "tab_titles": "Titoli alternativi",
       "tags_notice_multiple_edit": "Stai modificando le etichette per più serie. Questo sovrascriverà le etichette esistenti di ogni serie."
     },
     "edit_user": {
@@ -513,10 +540,11 @@
     },
     "series_picker": {
       "label_search_series": "Cerca una serie",
+      "no_results": "Nessuna serie trovata",
       "title": "Seleziona una serie"
     },
     "server_stop": {
-      "button_confirm": "Spegni",
+      "button_confirm": "Ferma",
       "confirmation_message": "Sei sicuro/a di voler spegnere Komga?",
       "dialog_title": "Spegni il server"
     },
@@ -555,17 +583,22 @@
     "action_delete_manual": "Elimina manuale",
     "action_delete_matches": "Elimina corrispondenze",
     "action_ignore": "Ignora",
+    "action_ignore_remaining": "Ignora rimanenti ({count})",
     "delete_to_save": "Elimina per salvare {size}",
     "deleted_count": "Eliminato {count} volte",
+    "empty_title": "Nessuna pagina duplicata trovata",
     "filter": {
       "count": "Numero",
       "delete_count": "Numero eliminazioni",
       "delete_size": "Spazio risparmiato",
+      "match_count": "Conteggio corrispondenze",
       "size": "Dimensione",
       "total_size": "Dimensione totale"
     },
     "info": "L'eliminazione di pagine duplicate modificherà i file. Esegui il backup dei file e utilizza la cancellazione manuale prima di utilizzare la cancellazione automatica.",
+    "known": "Conosciuto",
     "matches_n": "Nessuna corrispondenza | 1 corrispondenza | {count} corrispondenze",
+    "new": "Nuovo",
     "saved_size": "Risparmiati {size}",
     "title": "Pagine duplicate",
     "unknown_size": "Dimensione sconosciuta"
@@ -630,23 +663,23 @@
     "ERR_1007": "Non è stato possibile analizzare alcune voci",
     "ERR_1008": "Errore sconosciuto durante il recupero delle voci del fumetto",
     "ERR_1009": "Esiste già una lista di lettura con quel nome",
-    "ERR_1010": "Nessun fumetto è stato abbinato all'interno della lista di lettura richiesta",
-    "ERR_1011": "Nessuna corrispondenza unica per la serie",
-    "ERR_1012": "Nessuna corrispondenza per la serie",
-    "ERR_1013": "Nessuna corrispondenza per il numero del fumetto nella serie",
-    "ERR_1014": "Nessuna corrispondenza per il numero del fumetto nella serie",
     "ERR_1015": "Errore durante la deserializzazione della lista di lettura di ComicRack",
     "ERR_1016": "Cartella non accessibile o non è una cartella",
     "ERR_1017": "Impossibile eseguire la scansione di una cartella che fa parte di una libreria esistente",
     "ERR_1018": "File non trovato",
-    "ERR_1019": "Impossibile eseguire la scansione di una cartella che fa parte di una libreria esistente",
+    "ERR_1019": "Impossibile importare file che fa parte di una libreria esistente",
     "ERR_1020": "Il fumetto da aggiornare non appartiene alla serie fornita",
     "ERR_1021": "Il file di destinazione esiste già",
     "ERR_1022": "Impossibile scansionare il fumetto appena importato",
     "ERR_1023": "Fumetto già presente nella lista di lettura",
     "ERR_1024": "Errore di accesso OAuth2: nessun attributo email",
     "ERR_1025": "OAuth2 Errore di accesso: nessun utente locale esiste con quell'e-mail",
-    "ERR_1026": "Errore di accesso a OpenID Connect: email non verificata"
+    "ERR_1026": "Errore di accesso a OpenID Connect: email non verificata",
+    "ERR_1027": "Errore di Connessione OpenID: nessun attributo email_verified",
+    "ERR_1028": "Errore login connessione OpenID: nessun attributo mail",
+    "ERR_1029": "ComicRack CBL non contiene alcun libro",
+    "ERR_1030": "ComicRack CBL non ha l'elemento Nome",
+    "ERR_1031": "Al libro ComicRack CBL manca la serie o il numero"
   },
   "filter": {
     "age_rating": "Fascia d'età",
@@ -720,6 +753,7 @@
     "mark_unread": "Segna come non letto",
     "refresh_metadata": "Aggiorna metadati",
     "scan_library_files": "Scansiona i file della libreria",
+    "scan_library_files_deep": "Scansiona i file della libreria (approfondito)",
     "select_all": "Seleziona Tutto"
   },
   "metrics": {
@@ -745,6 +779,12 @@
     "less": "Mostra meno",
     "more": "Mostra di più"
   },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Libro duplicato",
+      "error_choose_book": "Scegli un libro"
+    }
+  },
   "readlists_expansion_panel": {
     "manage_readlist": "Gestire lista di lettura",
     "title": "{name} lista di lettura"
@@ -765,6 +805,7 @@
       "button_cancel_all_tasks": "Annulla tutte le attività",
       "button_empty_trash": "Svuota il cestino per tutte le librerie",
       "button_scan_libraries": "Scansiona tutte le librerie",
+      "button_scan_libraries_deep": "Scansiona tutte le librerie (approfondito)",
       "button_shutdown": "Spegni",
       "notification_tasks_cancelled": "Nessuna attività da annullare | Un'attività annullata | {count} attività annullate",
       "section_title": "Gestione server"
@@ -809,6 +850,10 @@
     "tooltip_to_be_uploaded": "Da caricare",
     "tooltip_too_big": "File troppo grande!",
     "tooltip_user_uploaded": "Utente caricato"
+  },
+  "titles_more": {
+    "less": "Meno titoli",
+    "more": "Più titoli"
   },
   "user_roles": {
     "ADMIN": "Amministratore",

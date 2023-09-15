@@ -16,7 +16,6 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
-import org.gotson.komga.domain.model.ScanResult
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.ThumbnailBook
@@ -38,23 +37,21 @@ import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.language.toIndexedMap
+import org.gotson.komga.toScanResult
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.Pageable
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.nameWithoutExtension
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class LibraryContentLifecycleTest(
   @Autowired private val seriesRepository: SeriesRepository,
@@ -116,9 +113,6 @@ class LibraryContentLifecycleTest(
       libraryLifecycle.deleteLibrary(it)
     }
   }
-
-  private fun Map<Series, List<Book>>.toScanResult() =
-    ScanResult(this, emptyList())
 
   @Nested
   inner class Scan {

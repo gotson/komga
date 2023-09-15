@@ -9,6 +9,7 @@ data class ReadListDto(
   val id: String,
   val name: String,
   val summary: String,
+  val ordered: Boolean,
 
   val bookIds: List<String>,
 
@@ -25,6 +26,7 @@ fun ReadList.toDto() =
     id = id,
     name = name,
     summary = summary,
+    ordered = ordered,
     bookIds = bookIds.values.toList(),
     createdDate = createdDate.toUTC(),
     lastModifiedDate = lastModifiedDate.toUTC(),

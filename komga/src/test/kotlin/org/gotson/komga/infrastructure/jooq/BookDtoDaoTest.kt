@@ -33,18 +33,15 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.net.URL
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class BookDtoDaoTest(
   @Autowired private val bookDtoDao: BookDtoDao,
@@ -109,6 +106,75 @@ class BookDtoDaoTest(
     val books = bookRepository.findAll().sortedBy { it.name }
     books.elementAt(0).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, false)) }
     books.elementAt(1).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
+  }
+
+  @Nested
+  inner class Criteria {
+    @Test
+    fun `given books when searching by multiple tags then results are matched and not duplicated`() {
+      // given
+      val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
+      val book2 = makeBook("Éric le bleu", seriesId = series.id, libraryId = library.id)
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          book1,
+          book2,
+        ),
+      )
+
+      bookMetadataRepository.findById(book1.id).let {
+        bookMetadataRepository.update(it.copy(tags = setOf("tag1", "tag2")))
+      }
+      bookMetadataRepository.findById(book2.id).let {
+        bookMetadataRepository.update(it.copy(tags = setOf("tag1", "tag2")))
+      }
+
+      // when
+      val page = bookDtoDao.findAll(
+        BookSearchWithReadProgress(tags = setOf("tag1", "tag2")),
+        user.id,
+        Pageable.unpaged(),
+      )
+
+      // then
+      assertThat(page.totalElements).isEqualTo(2)
+      assertThat(page.content).hasSize(2)
+      assertThat(page.content.map { it.metadata.title }).containsExactly("Éric le rouge", "Éric le bleu")
+    }
+
+    @Test
+    fun `given books when searching by multiple authors then results are matched and not duplicated`() {
+      // given
+      val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
+      val book2 = makeBook("Éric le bleu", seriesId = series.id, libraryId = library.id)
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          book1,
+          book2,
+        ),
+      )
+
+      bookMetadataRepository.findById(book1.id).let {
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))))
+      }
+      bookMetadataRepository.findById(book2.id).let {
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))))
+      }
+
+      // when
+      val page = bookDtoDao.findAll(
+        BookSearchWithReadProgress(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))),
+        user.id,
+        Pageable.unpaged(),
+      )
+
+      // then
+      assertThat(page.totalElements).isEqualTo(2)
+      assertThat(page.content).hasSize(2)
+      assertThat(page.content.map { it.metadata.title }).containsExactly("Éric le rouge", "Éric le bleu")
+    }
   }
 
   @Nested
@@ -345,6 +411,60 @@ class BookDtoDaoTest(
       // then
       assertThat(found).hasSize(3)
       assertThat(found.map { it.name }).containsExactly("Batman", "Batman and Robin", "The incredible adventures of Batman, the man who is also a bat!")
+    }
+
+    @Test
+    fun `given books when searching by term and sort order then results are ordered by sort order`() {
+      // given
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          makeBook("Book 3", seriesId = series.id, libraryId = library.id),
+          makeBook("Book 1", seriesId = series.id, libraryId = library.id),
+          makeBook("Book 2", seriesId = series.id, libraryId = library.id),
+        ),
+      )
+
+      searchIndexLifecycle.rebuildIndex()
+
+      // when
+      val found = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "book"),
+        user.id,
+        UnpagedSorted(Sort.by("name")),
+      ).content
+      val pages = (0..2).map {
+        bookDtoDao.findAll(
+          BookSearchWithReadProgress(searchTerm = "book"),
+          user.id,
+          PageRequest.of(it, 1, Sort.by("name")),
+        )
+      }
+      val page0 = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "book"),
+        user.id,
+        PageRequest.of(0, 2, Sort.by("name")),
+      )
+      val page1 = bookDtoDao.findAll(
+        BookSearchWithReadProgress(searchTerm = "book"),
+        user.id,
+        PageRequest.of(1, 2, Sort.by("name")),
+      )
+
+      // then
+      assertThat(found).hasSize(3)
+      assertThat(found.map { it.name }).containsExactly("Book 1", "Book 2", "Book 3")
+
+      assertThat(pages).hasSize(3)
+      assertThat(pages.map { it.totalPages }).containsOnly(3)
+      assertThat(pages.map { it.totalElements }).containsOnly(3)
+      assertThat(pages.map { it.size }).containsOnly(1)
+      assertThat(pages.flatMap { it.content }.map { it.name }).containsExactly("Book 1", "Book 2", "Book 3")
+
+      assertThat(page0).hasSize(2)
+      assertThat(page0.content.map { it.name }).containsExactly("Book 1", "Book 2")
+      assertThat(page1).hasSize(1)
+      assertThat(page1.content.map { it.name }).containsExactly("Book 3")
     }
 
     @Test
@@ -716,7 +836,7 @@ class BookDtoDaoTest(
       )
 
       // when
-      val found = bookDtoDao.findAllDuplicates(user.id, Pageable.unpaged(),).content
+      val found = bookDtoDao.findAllDuplicates(user.id, Pageable.unpaged()).content
 
       // then
       assertThat(found).hasSize(2)
@@ -735,7 +855,7 @@ class BookDtoDaoTest(
       )
 
       // when
-      val found = bookDtoDao.findAllDuplicates(user.id, Pageable.unpaged(),).content
+      val found = bookDtoDao.findAllDuplicates(user.id, Pageable.unpaged()).content
 
       // then
       assertThat(found).isEmpty()

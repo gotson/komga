@@ -357,7 +357,7 @@
       </v-row>
 
       <v-row v-if="series.metadata.links.length > 0" class="align-center text-caption">
-        <v-col class="py-1" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.links') }}</v-col>
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">
           <v-chip
             v-for="(link, i) in series.metadata.links"
@@ -432,6 +432,7 @@
         icon="mdi-book-multiple"
         icon-color="secondary"
       >
+        <v-btn @click="resetSortAndFilters">{{ $t('common.reset_filters') }}</v-btn>
       </empty-state>
 
       <template v-else>
@@ -624,7 +625,7 @@ export default Vue.extend({
       }
     },
     languageDisplay(): string {
-      return tags(this.series.metadata.language).language().descriptions()[0]
+      return tags(this.series.metadata.language)?.language()?.descriptions()[0] || this.series.metadata.language
     },
     statusChip(): object {
       switch (this.series.metadata.status) {
@@ -820,7 +821,11 @@ export default Vue.extend({
     }, 1000),
     async loadSeries(seriesId: string) {
       this.$komgaSeries.getOneSeries(seriesId)
-        .then(v => this.series = v)
+        .then(v => {
+          this.series = v
+          // for the cases where we can't change the origin target route because we don't have the full BookDto
+          if (this.series.oneshot) this.$router.replace({name: 'browse-oneshot', params: {seriesId: this.seriesId}})
+        })
       this.$komgaSeries.getCollections(seriesId)
         .then(v => this.collections = v)
 
@@ -901,7 +906,7 @@ export default Vue.extend({
       this.$store.dispatch('dialogUpdateBulkBooks', this.$_.sortBy(this.selectedBooks, ['metadata.numberSort']))
     },
     addToReadList() {
-      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks)
+      this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks.map(b => b.id))
     },
     async markSelectedRead() {
       await Promise.all(this.selectedBooks.map(b =>

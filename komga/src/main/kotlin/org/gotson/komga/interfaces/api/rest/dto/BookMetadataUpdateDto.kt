@@ -1,5 +1,7 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.WebLink
@@ -8,8 +10,6 @@ import org.gotson.komga.infrastructure.validation.NullOrNotBlank
 import org.hibernate.validator.constraints.URL
 import java.net.URI
 import java.time.LocalDate
-import javax.validation.Valid
-import javax.validation.constraints.NotBlank
 import kotlin.properties.Delegates
 
 class BookMetadataUpdateDto {

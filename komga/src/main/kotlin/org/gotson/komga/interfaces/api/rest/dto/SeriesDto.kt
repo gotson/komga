@@ -22,6 +22,7 @@ data class SeriesDto(
   val metadata: SeriesMetadataDto,
   val booksMetadata: BookMetadataAggregationDto,
   val deleted: Boolean,
+  val oneshot: Boolean,
 )
 
 fun SeriesDto.restrictUrl(restrict: Boolean) =

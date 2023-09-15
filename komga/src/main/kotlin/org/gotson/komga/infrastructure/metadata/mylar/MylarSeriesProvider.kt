@@ -11,6 +11,7 @@ import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.infrastructure.metadata.mylar.dto.Status
 import org.gotson.komga.infrastructure.sidecar.SidecarSeriesConsumer
+import org.gotson.komga.language.stripAccents
 import org.springframework.stereotype.Service
 import kotlin.io.path.notExists
 import org.gotson.komga.infrastructure.metadata.mylar.dto.Series as MylarSeries
@@ -25,6 +26,11 @@ class MylarSeriesProvider(
 ) : SeriesMetadataProvider, SidecarSeriesConsumer {
 
   override fun getSeriesMetadata(series: Series): SeriesMetadataPatch? {
+    if (series.oneshot) {
+      logger.debug { "Disabled for oneshot series, skipping" }
+      return null
+    }
+
     try {
       val seriesJsonPath = series.path.resolve(SERIES_JSON)
       if (seriesJsonPath.notExists()) {
@@ -38,7 +44,7 @@ class MylarSeriesProvider(
 
       return SeriesMetadataPatch(
         title = title,
-        titleSort = title,
+        titleSort = title.stripAccents(),
         status = when (metadata.status) {
           Status.Ended -> SeriesMetadata.Status.ENDED
           Status.Continuing -> SeriesMetadata.Status.ONGOING
@@ -50,7 +56,7 @@ class MylarSeriesProvider(
         language = null,
         genres = null,
         totalBookCount = metadata.totalIssues,
-        collections = emptyList(),
+        collections = emptySet(),
       )
     } catch (e: Exception) {
       logger.error(e) { "Error while retrieving metadata from $SERIES_JSON" }

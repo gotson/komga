@@ -1,0 +1,159 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} מ- {2}"
+    },
+    "dataIterator": {
+      "loadingText": "מטעין פריטים...",
+      "noResultsText": "לא נמצאו תוצאות תואמות"
+    },
+    "dataTable": {
+      "itemsPerPageText": "שורות בעמוד:",
+      "sortBy": "מיין לפי"
+    },
+    "fileInput": {
+      "counter": "{0} קבצים",
+      "counterSize": "{0} קבצים ({1} בסך הכל)"
+    },
+    "noDataText": "אין נתונים זמינים"
+  },
+  "account_settings": {
+    "account_settings": "הגדרות חשבון",
+    "change_password": "שנה סיסמא"
+  },
+  "authentication_activity": {
+    "datetime": "תאריך שעה",
+    "email": "כתובת דוא\"ל",
+    "error": "שגיאה",
+    "ip": "כתובת אינטרנט",
+    "source": "מקור",
+    "success": "הצלחה"
+  },
+  "author_roles": {
+    "colorist": "אומני צבע",
+    "cover": "כריכה",
+    "editor": "עורכים",
+    "inker": "אומני דיו",
+    "letterer": "מעצבי אותיות",
+    "penciller": "אומני עיפרון",
+    "translator": "מתרגמים",
+    "writer": "סופרים"
+  },
+  "book_card": {
+    "error": "שגיאה",
+    "no_release_date": "אין תאריך הוצאה",
+    "unknown": "לנתח",
+    "unread": "לא נקרא",
+    "unsupported": "אינו נתמך"
+  },
+  "book_import": {
+    "button_browse": "לדפדף",
+    "button_import": "ליבא",
+    "button_scan": "לסרוק",
+    "button_select_series": "בחר סדרה",
+    "field_import_path": "יבא מתיקיה",
+    "info_part1": "מסך זה מאפשר לך לייבא קבצים מחוץ לספריות הקיימות שלך. אתה יכול לייבא רק קבצים לסדרה קיימת, ובמקרה זה Komga תעביר או תעתיק את הקבצים לספרייה של הסדרה שנבחרה.",
+    "info_part2": "אם תבחר מספר לספר, וכבר קיים ספר עם מספר זה, אז תוכל להשוות בין 2 הספרים. אם תחליט לייבא את הספר, קומגה תשדרג את הספר הקיים עם הספר החדש, ולמעשה תחליף את הקובץ הישן בחדש.",
+    "no_files_found": "לא נמצאו קבצים",
+    "notification": {
+      "go_to_book": "לך לספר",
+      "import_failure": "ייבוא הספר נכשל: {file}",
+      "import_successful": "הספר יובא בהצלחה: {book}",
+      "source_file": "קובץ מקור: {file}"
+    },
+    "row": {
+      "error_analyze_first": "תחילה יש לאבחו את הספר",
+      "error_choose_series": "בחר סדרה אחת",
+      "error_only_import_no_errors": "נתן לייבא רק ספרים ללא שגיאות",
+      "warning_upgrade": "הספר הקיים ישודרג"
+    },
+    "table": {
+      "destination_name": "שם היעד",
+      "file_name": "שם קובץ",
+      "number": "מספר",
+      "series": "סדרה"
+    },
+    "title": "יבוא",
+    "try_another_directory": "נסה לחפש בתיקייה אחרת"
+  },
+  "bookreader": {
+    "beginning_of_book": "אתה בתחילת הספר.",
+    "changing_reading_direction": "שינוי כיוון הקריאה ל",
+    "cycling_page_layout": "דיפדוף אפשריות פריסת דף",
+    "cycling_scale": "דיפדוף סרגלי מידה",
+    "cycling_side_padding": "דיפדוף מרווח צדדי",
+    "download_current_page": "הורד את הדף הנוכחי",
+    "end_of_book": "הגעת לסוף הספר.",
+    "from_series_metadata": "ממטא נתונים של הסדרה",
+    "move_next": "בחר או לחץ על \"הבא\" כדי לעבור לספר הבא.",
+    "move_next_exit": "בחר או לחץ על \"הבא\" כדי לצאת מהקורא.",
+    "move_previous": "בחר או לחץ על \"הקודם\" כדי לעבור לספר הקודם.",
+    "notification_poster_set_book": "פוסטר הספר מוגדר כעת לעמוד הנוכחי.",
+    "notification_poster_set_readlist": "פוסטר רשימת קריאה מוגדר כעת לעמוד הנוכחי.",
+    "notification_poster_set_series": "פוסטר הסדרה מוגדר כעת לעמוד הנוכחי.",
+    "paged_reader_layout": {
+      "double": "עמודים כפולים",
+      "double_no_cover": "עמודים כפולים (ללא כריכה)",
+      "single": "עמוד יחיד"
+    },
+    "reader_settings": "הגדרות קורא",
+    "scale_type": {
+      "continuous_original": "המקור",
+      "continuous_width": "התאמה לרוחב",
+      "height": "התאמה לגובה",
+      "original": "המקור",
+      "screen": "מסך",
+      "width": "התאמה לרוחב",
+      "width_shrink_only": "התאמה לרוחב (כיווץ בלבד)"
+    },
+    "set_current_page_as_book_poster": "הגדר עמוד ככרזה לספר",
+    "set_current_page_as_readlist_poster": "הגדר עמוד ככרזה לרשימת קריאה",
+    "set_current_page_as_series_poster": "הגדר דף ככרזה לסדרה",
+    "settings": {
+      "always_fullscreen": "תמיד מסך מלא",
+      "animate_page_transitions": "הנפש מעברי עמודים",
+      "background_color": "צבע רקע",
+      "background_colors": {
+        "black": "שחור",
+        "gray": "אפור",
+        "white": "לבן"
+      },
+      "display": "תצוגה",
+      "general": "כללי",
+      "gestures": "מחוות",
+      "page_layout": "מערך דף",
+      "paged": "אפשרויות דיפדוף לקורא",
+      "reading_mode": "מצב קריאה",
+      "scale_type": "סוג קנה מידה",
+      "side_padding": "מרווחי צד",
+      "side_padding_none": "ללא",
+      "webtoon": "אפשרויות קורא ל-Webtoon"
+    },
+    "shortcuts": {
+      "close": "סגור",
+      "cycle_page_layout": "דיפדוף אפשרויות של מערכי עמוד",
+      "cycle_scale": "דיפדוף אפשרויות של קנה מידה",
+      "cycle_side_padding": "דיפדוף אפשרויות של מרווחי צד",
+      "first_page": "עמוד ראשון",
+      "fullscreen": "כניסה/יציאה ממסך מלא",
+      "last_page": "עמוד אחרון",
+      "left_to_right": "משמאל לימין",
+      "menus": "תפריטים",
+      "next_page": "עמוד הבא",
+      "previous_page": "עמוד קודם",
+      "reader_navigation": "ניווט הקורא",
+      "right_to_left": "מימין לשמאל",
+      "settings": "הגדרות",
+      "show_hide_help": "הצג/הסתיר עזרה",
+      "show_hide_settings": "הצג/הסתר תפריט הגדרות",
+      "show_hide_thumbnails": "הצג/הסתר סייר תמונות ממוזערות",
+      "show_hide_toolbars": "הצג/הסתר סרגלי כלים",
+      "vertical": "אנכי",
+      "webtoon": "וואבטון"
+    },
+    "tooltip_incognito": "התקדמות הקריאה לא תישמר"
+  },
+  "common": {
+    "locale_name": "עברית"
+  }
+}

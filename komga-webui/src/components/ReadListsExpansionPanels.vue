@@ -5,14 +5,18 @@
     >
       <v-expansion-panel-header>{{ $t('readlists_expansion_panel.title', {name: r.name}) }}</v-expansion-panel-header>
       <v-expansion-panel-content>
-        <horizontal-scroller>
+        <horizontal-scroller
+          :tick="readListsLoaders[index].tick"
+          @scroll-changed="(percent) => scrollChanged(readListsLoaders[index], percent)"
+        >
           <template v-slot:prepend>
             <router-link class="text-overline"
                          :to="{name: 'browse-readlist', params: {readListId: r.id}}"
-            >{{ $t('readlists_expansion_panel.manage_readlist') }}</router-link>
+            >{{ $t('readlists_expansion_panel.manage_readlist') }}
+            </router-link>
           </template>
           <template v-slot:content>
-            <item-browser :items="readListsContent[index]"
+            <item-browser :items="readListsLoaders[index].items"
                           :item-context="[ItemContext.SHOW_SERIES]"
                           nowrap
                           :selectable="false"
@@ -33,6 +37,8 @@ import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
 import {ContextOrigin} from '@/types/context'
 import {ItemContext} from '@/types/items'
+import {PageLoader} from '@/types/pageLoader'
+import {ReadListDto} from '@/types/komga-readlists'
 
 export default Vue.extend({
   name: 'ReadListsExpansionPanels',
@@ -50,26 +56,35 @@ export default Vue.extend({
     return {
       ItemContext,
       readListPanel: undefined as number | undefined,
-      readListsContent: [[]] as any[],
+      readListsLoaders: [] as PageLoader<BookDto>[],
     }
   },
   watch: {
     readLists: {
-      handler (val) {
+      handler(val: ReadListDto[]) {
         this.readListPanel = undefined
-        this.readListsContent = [...Array(val.length)].map(elem => new Array(0))
+        this.readListsLoaders = val.map(rl => new PageLoader<BookDto>(
+          {},
+          (pageable: PageRequest) => this.$komgaReadLists.getBooks(rl.id, pageable),
+          (x: BookDto) => {
+            x.context = {origin: ContextOrigin.READLIST, id: rl.id}
+            return x
+          },
+        ))
       },
       immediate: true,
     },
-    async readListPanel (val) {
+    async readListPanel(val) {
       if (val !== undefined) {
-        const rlId = this.readLists[val].id
-        if (this.$_.isEmpty(this.readListsContent[val])) {
-          const content = (await this.$komgaReadLists.getBooks(rlId, { unpaged: true } as PageRequest)).content
-          content.forEach((x: BookDto) => x.context = { origin: ContextOrigin.READLIST, id: rlId })
-          this.readListsContent.splice(val, 1, content)
+        if (!this.readListsLoaders[val].hasLoadedAny) {
+          this.readListsLoaders[val].loadNext()
         }
       }
+    },
+  },
+  methods: {
+    async scrollChanged(loader: PageLoader<any>, percent: number) {
+      if (percent > 0.95) await loader.loadNext()
     },
   },
 })

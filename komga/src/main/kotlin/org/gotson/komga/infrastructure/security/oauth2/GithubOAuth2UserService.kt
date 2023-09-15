@@ -37,11 +37,11 @@ class GithubOAuth2UserService : DefaultOAuth2UserService() {
           parameterizedResponseType,
         )
           .body?.let { emails ->
-            emails
-              .filter { it["verified"] == true }
-              .filter { it["primary"] == true }
-              .firstNotNullOfOrNull { it["email"].toString() }
-          }
+          emails
+            .filter { it["verified"] == true }
+            .filter { it["primary"] == true }
+            .firstNotNullOfOrNull { it["email"].toString() }
+        }
         oAuth2User = DefaultOAuth2User(
           oAuth2User.authorities,
           oAuth2User.attributes.toMutableMap().apply { put("email", email) },

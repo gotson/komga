@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
@@ -56,7 +57,6 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.TimeUnit
-import javax.validation.Valid
 
 private val logger = KotlinLogging.logger {}
 
@@ -200,7 +200,8 @@ class SeriesCollectionController(
   @PostMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun addOne(
-    @Valid @RequestBody collection: CollectionCreationDto,
+    @Valid @RequestBody
+    collection: CollectionCreationDto,
   ): CollectionDto =
     try {
       collectionLifecycle.addCollection(
@@ -219,7 +220,8 @@ class SeriesCollectionController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable id: String,
-    @Valid @RequestBody collection: CollectionUpdateDto,
+    @Valid @RequestBody
+    collection: CollectionUpdateDto,
   ) {
     collectionRepository.findByIdOrNull(id)?.let { existing ->
       val updated = existing.copy(
@@ -260,7 +262,7 @@ class SeriesCollectionController(
     @RequestParam(name = "genre", required = false) genres: List<String>?,
     @RequestParam(name = "tag", required = false) tags: List<String>?,
     @RequestParam(name = "age_rating", required = false) ageRatings: List<String>?,
-    @RequestParam(name = "release_year", required = false) release_years: List<String>?,
+    @RequestParam(name = "release_years", required = false) releaseYears: List<String>?,
     @RequestParam(name = "deleted", required = false) deleted: Boolean?,
     @RequestParam(name = "complete", required = false) complete: Boolean?,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
@@ -283,7 +285,6 @@ class SeriesCollectionController(
       val seriesSearch = SeriesSearchWithReadProgress(
         libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
         metadataStatus = metadataStatus,
-        readStatus = readStatus,
         publishers = publishers,
         deleted = deleted,
         complete = complete,
@@ -291,7 +292,8 @@ class SeriesCollectionController(
         genres = genres,
         tags = tags,
         ageRatings = ageRatings?.map { it.toIntOrNull() },
-        releaseYears = release_years,
+        releaseYears = releaseYears,
+        readStatus = readStatus,
         authors = authors,
       )
 

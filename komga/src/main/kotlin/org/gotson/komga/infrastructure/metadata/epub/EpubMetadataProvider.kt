@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.metadata.epub
 
 import org.apache.commons.validator.routines.ISBNValidator
 import org.gotson.komga.domain.model.Author
+import org.gotson.komga.domain.model.BCP47TagValidator
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
@@ -13,7 +14,7 @@ import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
-import org.gotson.komga.infrastructure.validation.BCP47TagValidator
+import org.gotson.komga.language.stripAccents
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
 import org.jsoup.safety.Safelist
@@ -47,7 +48,7 @@ class EpubMetadataProvider(
     )
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
-    if (book.media.mediaType != MediaType.EPUB.value) return null
+    if (book.media.mediaType != MediaType.EPUB.type) return null
     epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
@@ -85,7 +86,7 @@ class EpubMetadataProvider(
   }
 
   override fun getSeriesMetadataFromBook(book: BookWithMedia, library: Library): SeriesMetadataPatch? {
-    if (book.media.mediaType != MediaType.EPUB.value) return null
+    if (book.media.mediaType != MediaType.EPUB.type) return null
     epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
@@ -107,16 +108,16 @@ class EpubMetadataProvider(
 
       return SeriesMetadataPatch(
         title = series,
-        titleSort = series,
+        titleSort = series?.stripAccents(),
         status = null,
         readingDirection = direction,
         publisher = publisher,
         ageRating = null,
         summary = null,
-        language = if (language != null && BCP47TagValidator.isValid(language)) language else null,
+        language = if (language != null && BCP47TagValidator.isValid(language)) BCP47TagValidator.normalize(language) else null,
         genres = genres,
         totalBookCount = null,
-        collections = emptyList(),
+        collections = emptySet(),
       )
     }
     return null

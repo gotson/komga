@@ -7,8 +7,8 @@
         dot
         offset-x="15"
         offset-y="20"
-        :value="drawerVisible ? 0 : booksToCheck"
-        color="accent"
+        :value="drawerVisible ? 0 : booksToCheck + $store.getters.getUnreadAnnouncementsCount()"
+        :color="booksToCheck ? 'accent' : 'warning'"
         class="ms-n3"
       >
         <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
@@ -135,7 +135,14 @@
             <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
+            <v-badge
+              dot
+              inline
+              :value="$store.getters.getUnreadAnnouncementsCount()"
+              color="warning"
+            >
+              <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
+            </v-badge>
           </v-list-item-content>
         </v-list-item>
 
@@ -238,6 +245,8 @@ export default Vue.extend({
       this.info = await this.$actuator.getInfo()
       this.$komgaBooks.getBooks(undefined, {size: 0} as PageRequest, undefined, [MediaStatus.ERROR, MediaStatus.UNSUPPORTED])
         .then(x => this.$store.commit('setBooksToCheck', x.totalElements))
+      this.$komgaAnnouncements.getAnnouncements()
+        .then(x => this.$store.commit('setAnnouncements', x))
     }
   },
   computed: {

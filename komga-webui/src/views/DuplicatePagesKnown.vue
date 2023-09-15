@@ -162,6 +162,7 @@ export default Vue.extend({
         {name: this.$t('duplicate_pages.filter.delete_size').toString(), key: 'deleteSize'},
         {name: this.$t('duplicate_pages.filter.size').toString(), key: 'fileSize'},
         {name: this.$t('duplicate_pages.filter.delete_count').toString(), key: 'deleteCount'},
+        {name: this.$t('duplicate_pages.filter.match_count').toString(), key: 'matchCount'},
       ]
     },
     paginationVisible(): number {
@@ -211,7 +212,7 @@ export default Vue.extend({
     },
     pageHashUpdated(updated: PageHashKnownDto) {
       this.elements.find(x => {
-          if (x.hash === updated.hash && x.mediaType === updated.mediaType && x.size === updated.size) {
+          if (x.hash === updated.hash) {
             x.action = updated.action
             return true
           }

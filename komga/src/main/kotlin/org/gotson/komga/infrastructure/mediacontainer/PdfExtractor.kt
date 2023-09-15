@@ -3,10 +3,12 @@ package org.gotson.komga.infrastructure.mediacontainer
 import com.github.benmanes.caffeine.cache.Caffeine
 import mu.KotlinLogging
 import org.apache.pdfbox.io.MemoryUsageSetting
+import org.apache.pdfbox.multipdf.PageExtractor
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.rendering.ImageType
 import org.apache.pdfbox.rendering.PDFRenderer
+import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.MediaType
@@ -20,7 +22,7 @@ import kotlin.math.roundToInt
 private val logger = KotlinLogging.logger {}
 
 @Service
-class PdfExtractor : MediaContainerExtractor {
+class PdfExtractor : MediaContainerRawExtractor {
 
   private val mediaType = "image/jpeg"
   private val imageIOFormat = "jpeg"
@@ -32,7 +34,7 @@ class PdfExtractor : MediaContainerExtractor {
     .evictionListener { _: Path?, pdf: PDDocument?, _ -> pdf?.close() }
     .build<Path, PDDocument>()
 
-  override fun mediaTypes(): List<String> = listOf(MediaType.PDF.value)
+  override fun mediaTypes(): List<String> = listOf(MediaType.PDF.type)
 
   override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
     PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
@@ -53,6 +55,16 @@ class PdfExtractor : MediaContainerExtractor {
       ImageIO.write(image, imageIOFormat, out)
       out.toByteArray()
     }
+  }
+
+  override fun getRawEntryStream(path: Path, entryName: String): BookPageContent {
+    val pdf = cache.get(path) { PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()) }!!
+    val pageNumber = entryName.toInt() + 1
+    val bytes = ByteArrayOutputStream().use { out ->
+      PageExtractor(pdf, pageNumber, pageNumber).extract().save(out)
+      out.toByteArray()
+    }
+    return BookPageContent(bytes, MediaType.PDF.type)
   }
 
   private fun PDPage.getScale() = resolution / minOf(cropBox.width, cropBox.height)

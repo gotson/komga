@@ -21,6 +21,11 @@
     "account_settings": "Account Settings",
     "change_password": "change password"
   },
+  "announcements": {
+    "mark_all_read": "Mark all as read",
+    "mark_read": "Mark as read",
+    "tab_title": "Announcements"
+  },
   "authentication_activity": {
     "datetime": "Date Time",
     "email": "Email",
@@ -174,7 +179,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Edit elements",
-    "edit_readlist": "Edit read list"
+    "edit_readlist": "Edit read list",
+    "manual_ordering": "manual ordering"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "This is the earliest year from the release dates from all books in the series",
@@ -188,6 +194,7 @@
   "common": {
     "age": "Age",
     "all_libraries": "All Libraries",
+    "book": "Book",
     "books": "Books",
     "books_n": "No book | 1 book | {count} books",
     "books_total": "{count} / {total} books",
@@ -215,6 +222,7 @@
     "lock_all": "Lock all",
     "n_selected": "{count} selected",
     "nothing_to_show": "Nothing to show",
+    "oneshot": "One-shot",
     "outdated": "Outdated",
     "page": "Page",
     "page_number": "Page number",
@@ -226,12 +234,13 @@
     "publisher": "Publisher",
     "read": "Read",
     "read_on": "Read on {date}",
+    "readlist": "Read List",
     "readlists": "Read Lists",
     "required": "Required",
     "reset_filters": "Reset filters",
     "roles": "Roles",
     "save_changes": "Save changes",
-    "series": "Series",
+    "series": "Series | Series",
     "sidecars": "Sidecars",
     "tags": "Tags",
     "unavailable": "Unavailable",
@@ -253,10 +262,20 @@
     "book_number": "Book number: {name}",
     "book_series": "Series: {name}",
     "button_import": "Import",
+    "button_match": "Match",
     "comicrack_preambule_html": "You can import existing ComicRack Reading Lists in <code>.cbl</code> format.<br/>Komga will try to match the provided series and book number with series and books in your libraries.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} books are unmatched",
+      "create": "Create anyway",
+      "title": "Some books are not matched"
+    },
+    "field_file_label": "ComicRack Reading List (.cbl)",
     "field_files_label": "ComicRack Reading Lists (.cbl)",
     "import_read_lists": "Import Read Lists",
     "imported_as": "Imported as {name}",
+    "readlist_created": "Read List created: {name}",
+    "requested_number": "Requested Number",
+    "requested_series": "Requested Series",
     "results_preambule": "Result of the import is shown below. You can also check the unmatched books for each provided file.",
     "size_limit": "Size should be less than {size} MB",
     "tab_title": "Data Import"
@@ -294,6 +313,10 @@
       "body": "Analyzes all the media files in the library. The analysis captures information about the media. Depending on your library size, this may take a long time.",
       "button_confirm": "Analyze",
       "title": "Analyze library"
+    },
+    "book_picker": {
+      "filter": "Filter by book number, title, or release date",
+      "title": "Select Book"
     },
     "delete_book": {
       "button_confirm": "Delete",
@@ -406,9 +429,9 @@
       "field_import_local_artwork": "Local artwork",
       "field_import_mylar_series": "Series metadata",
       "field_name": "Name",
+      "field_oneshotsdirectory": "One-Shots directory",
       "field_repair_extensions": "Automatically repair incorrect file extensions",
       "field_root_folder": "Root folder",
-      "field_scanner_deep_scan": "Deep scan",
       "field_scanner_empty_trash_after_scan": "Empty trash automatically after every scan",
       "field_scanner_force_directory_modified_time": "Force directory modified time",
       "field_series_cover": "Series cover",
@@ -426,6 +449,7 @@
       "tab_general": "General",
       "tab_metadata": "Metadata",
       "tab_options": "Options",
+      "tooltip_oneshotsdirectory": "Leave empty to disable",
       "tooltip_scanner_force_modified_time": "Enable if the library is on a Google Drive",
       "tooltip_use_resources": "Can consume lots of resources on large libraries or slow hardware"
     },
@@ -433,8 +457,10 @@
       "button_cancel": "Cancel",
       "button_confirm": "Save changes",
       "dialog_title": "Edit read list",
+      "field_manual_ordering": "Manual ordering",
       "field_name": "Name",
       "field_summary": "Summary",
+      "label_ordering": "By default, books in a read list are ordered manually. You can disable manual ordering to sort books by release date.",
       "tab_general": "General",
       "tab_poster": "Poster"
     },
@@ -522,6 +548,7 @@
     },
     "series_picker": {
       "label_search_series": "Search Series",
+      "no_results": "No Series found",
       "title": "Select Series"
     },
     "server_stop": {
@@ -560,21 +587,30 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Auto delete remaining ({count})",
     "action_delete_auto": "Auto delete",
     "action_delete_manual": "Manual delete",
     "action_delete_matches": "Delete matches",
     "action_ignore": "Ignore",
+    "action_ignore_remaining": "Ignore remaining ({count})",
+    "action_manual_delete_remaining": "Manual delete remaining ({count})",
+    "confirm_auto_delete_remaining": "All of the remaining page hashes on this page ({count}) will be marked for automatic deletion.",
+    "confirm_manual_delete_remaining": "All of the remaining page hashes on this page ({count}) will be marked for manual deletion.",
     "delete_to_save": "Delete to save {size}",
     "deleted_count": "Deleted {count} times",
+    "empty_title": "No duplicate pages found",
     "filter": {
       "count": "Count",
       "delete_count": "Deletion count",
       "delete_size": "Space saved",
+      "match_count": "Match count",
       "size": "Size",
       "total_size": "Total size"
     },
     "info": "Deleting duplicate pages will modify your files. Backup your files and use manual deletion before using automatic deletion.",
+    "known": "Known",
     "matches_n": "No matches | 1 match | {count} matches",
+    "new": "New",
     "saved_size": "Saved {size}",
     "title": "Duplicate pages",
     "unknown_size": "Unknown size"
@@ -639,12 +675,7 @@
     "ERR_1007": "Some entries could not be analyzed",
     "ERR_1008": "Unknown error while getting book's entries",
     "ERR_1009": "A read list with that name already exists",
-    "ERR_1010": "No books were matched within the read list request",
-    "ERR_1011": "No unique match for series",
-    "ERR_1012": "No match for series",
-    "ERR_1013": "No unique match for book number within series",
-    "ERR_1014": "No match for book number within series",
-    "ERR_1015": "Error while deserializing ComicRack ReadingList",
+    "ERR_1015": "Error while deserializing ComicRack CBL",
     "ERR_1016": "Directory not accessible or not a directory",
     "ERR_1017": "Cannot scan folder that is part of an existing library",
     "ERR_1018": "File not found",
@@ -655,7 +686,12 @@
     "ERR_1023": "Book already present in ReadingList",
     "ERR_1024": "OAuth2 login error: no email attribute",
     "ERR_1025": "OAuth2 login error: no local user exist with that email",
-    "ERR_1026": "OpenID Connect login error: email not verified"
+    "ERR_1026": "OpenID Connect login error: email not verified",
+    "ERR_1027": "OpenID Connect login error: no email_verified attribute",
+    "ERR_1028": "OpenID Connect login error: no email attribute",
+    "ERR_1029": "ComicRack CBL does not contain any Book element",
+    "ERR_1030": "ComicRack CBL has no Name element",
+    "ERR_1031": "ComicRack CBL Book is missing series or number"
   },
   "filter": {
     "age_rating": "age rating",
@@ -665,9 +701,11 @@
     "in_progress": "In Progress",
     "language": "language",
     "library": "library",
+    "oneshot": "One-shot",
     "publisher": "publisher",
     "read": "Read",
     "release_date": "release date",
+    "sharing_label": "Sharing Label",
     "status": "status",
     "tag": "tag",
     "unread": "Unread"
@@ -729,6 +767,7 @@
     "mark_unread": "Mark as unread",
     "refresh_metadata": "Refresh metadata",
     "scan_library_files": "Scan library files",
+    "scan_library_files_deep": "Scan library files (deep)",
     "select_all": "Select all"
   },
   "metrics": {
@@ -754,6 +793,12 @@
     "less": "Read less",
     "more": "Read more"
   },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Duplicate book",
+      "error_choose_book": "Choose a book"
+    }
+  },
   "readlists_expansion_panel": {
     "manage_readlist": "Manage read list",
     "title": "{name} read list"
@@ -774,6 +819,7 @@
       "button_cancel_all_tasks": "Cancel all tasks",
       "button_empty_trash": "Empty trash for all libraries",
       "button_scan_libraries": "Scan all libraries",
+      "button_scan_libraries_deep": "Scan all libraries (deep)",
       "button_shutdown": "Shut down",
       "notification_tasks_cancelled": "No tasks to cancel | One task cancelled | {count} tasks cancelled",
       "section_title": "Server Management"

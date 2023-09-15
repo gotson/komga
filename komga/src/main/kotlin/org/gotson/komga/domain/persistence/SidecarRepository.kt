@@ -12,5 +12,5 @@ interface SidecarRepository {
   fun deleteByLibraryIdAndUrls(libraryId: String, urls: Collection<URL>)
   fun deleteByLibraryId(libraryId: String)
 
-  fun countGroupedByLibraryName(): Map<String, Int>
+  fun countGroupedByLibraryId(): Map<String, Int>
 }

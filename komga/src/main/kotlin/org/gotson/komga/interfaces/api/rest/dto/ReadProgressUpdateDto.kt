@@ -1,9 +1,9 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
-import javax.validation.Constraint
-import javax.validation.ConstraintValidator
-import javax.validation.ConstraintValidatorContext
-import javax.validation.constraints.Positive
+import jakarta.validation.Constraint
+import jakarta.validation.ConstraintValidator
+import jakarta.validation.ConstraintValidatorContext
+import jakarta.validation.constraints.Positive
 import kotlin.reflect.KClass
 
 @ReadProgressUpdateDtoConstraint

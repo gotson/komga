@@ -144,24 +144,44 @@
                 <v-row v-if="single">
                   <!--  Release Date  -->
                   <v-col cols="6">
-                    <v-text-field v-model="form.releaseDate"
-                                  :label="$t('dialog.edit_books.field_release_date')"
-                                  filled
-                                  dense
-                                  placeholder="YYYY-MM-DD"
-                                  clearable
-                                  :error-messages="releaseDateErrors"
-                                  @blur="$v.form.releaseDate.$touch()"
-                                  @change="form.releaseDateLock = true"
+                    <v-menu
+                      v-model="menuDate"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
                     >
-                      <template v-slot:prepend>
-                        <v-icon :color="form.releaseDateLock ? 'secondary' : ''"
-                                @click="form.releaseDateLock = !form.releaseDateLock"
+                      <template v-slot:activator="{on, attrs}">
+                        <v-text-field v-model="form.releaseDate"
+                                      :label="$t('dialog.edit_books.field_release_date')"
+                                      filled
+                                      dense
+                                      placeholder="YYYY-MM-DD"
+                                      clearable
+                                      :error-messages="releaseDateErrors"
+                                      @blur="$v.form.releaseDate.$touch()"
+                                      @change="form.releaseDateLock = true"
+                                      v-bind="attrs"
+                                      v-on="on"
                         >
-                          {{ form.releaseDateLock ? 'mdi-lock' : 'mdi-lock-open' }}
-                        </v-icon>
+                          <template v-slot:prepend>
+                            <v-icon :color="form.releaseDateLock ? 'secondary' : ''"
+                                    @click="form.releaseDateLock = !form.releaseDateLock"
+                            >
+                              {{ form.releaseDateLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                            </v-icon>
+                          </template>
+                        </v-text-field>
                       </template>
-                    </v-text-field>
+                      <v-date-picker v-model="form.releaseDate"
+                                     :show-current="true"
+                                     :show-adjacent-months="true"
+                                     :locale="$i18n.locale"
+                                     :first-day-of-week="$store.getters.getLocaleFirstDay()"
+                                     @input="menuDate = false"
+                                     @change="form.releaseDateLock = true"
+                      />
+                    </v-menu>
                   </v-col>
 
                   <!--  ISBN  -->
@@ -427,6 +447,7 @@ export default Vue.extend({
     return {
       modal: false,
       tab: 0,
+      menuDate: false,
       customRole: '',
       customRoles: [] as string[],
       customRoleValid: false,

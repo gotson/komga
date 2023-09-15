@@ -11,14 +11,12 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.nio.file.Path
 import java.time.LocalDateTime
 import kotlin.io.path.extension
@@ -27,7 +25,6 @@ import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.name
 import kotlin.io.path.toPath
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class BookAnalyzerTest(
   @Autowired private val komgaProperties: KomgaProperties,

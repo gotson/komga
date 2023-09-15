@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 class AlternateTitleUpdateDto {
   @get:NotBlank

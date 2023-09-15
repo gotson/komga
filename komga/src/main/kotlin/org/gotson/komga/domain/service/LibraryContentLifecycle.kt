@@ -62,11 +62,11 @@ class LibraryContentLifecycle(
   private val eventPublisher: EventPublisher,
 ) {
 
-  fun scanRootFolder(library: Library) {
+  fun scanRootFolder(library: Library, scanDeep: Boolean = false) {
     logger.info { "Updating library: $library" }
     measureTime {
       val scanResult = try {
-        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime)
+        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime, library.oneshotsDirectory)
       } catch (e: DirectoryNotFoundException) {
         library.copy(unavailableDate = LocalDateTime.now()).let {
           libraryRepository.update(it)
@@ -136,7 +136,7 @@ class LibraryContentLifecycle(
             logger.info { "Series changed on disk, updating: $existingSeries" }
             seriesRepository.update(existingSeries.copy(fileLastModified = newSeries.fileLastModified, deletedDate = null))
           }
-          if (library.scanDeep || seriesChanged) {
+          if (scanDeep || seriesChanged) {
             // update list of books with existing entities if they exist
             val existingBooks = bookRepository.findAllBySeriesId(existingSeries.id)
             logger.debug { "Existing books: $existingBooks" }

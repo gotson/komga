@@ -2,7 +2,9 @@ package org.gotson.komga.infrastructure.metadata.comicrack
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import mu.KotlinLogging
+import org.apache.commons.validator.routines.ISBNValidator
 import org.gotson.komga.domain.model.Author
+import org.gotson.komga.domain.model.BCP47TagValidator
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookWithMedia
@@ -16,7 +18,7 @@ import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.ComicInfo
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.Manga
-import org.gotson.komga.infrastructure.validation.BCP47TagValidator
+import org.gotson.komga.language.stripAccents
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.net.URI
@@ -30,6 +32,7 @@ private const val COMIC_INFO = "ComicInfo.xml"
 class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer,
+  private val isbnValidator: ISBNValidator,
 ) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
   override fun getCapabilities(): Set<BookMetadataPatchCapability> =
@@ -98,6 +101,8 @@ class ComicInfoProvider(
 
       val tags = comicInfo.tags?.split(',')?.mapNotNull { it.trim().lowercase().ifBlank { null } }
 
+      val isbn = comicInfo.gtin?.let { isbnValidator.validate(it) }
+
       return BookMetadataPatch(
         title = comicInfo.title?.ifBlank { null },
         summary = comicInfo.summary?.ifBlank { null },
@@ -108,6 +113,7 @@ class ComicInfoProvider(
         readLists = readLists,
         links = link,
         tags = if (!tags.isNullOrEmpty()) tags.toSet() else null,
+        isbn = isbn,
       )
     }
     return null
@@ -126,16 +132,16 @@ class ComicInfoProvider(
 
       return SeriesMetadataPatch(
         title = series,
-        titleSort = series,
+        titleSort = series?.stripAccents(),
         status = null,
         summary = null,
         readingDirection = readingDirection,
         publisher = comicInfo.publisher?.ifBlank { null },
         ageRating = comicInfo.ageRating?.ageRating,
-        language = if (comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) comicInfo.languageISO else null,
+        language = if (comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) BCP47TagValidator.normalize(comicInfo.languageISO!!) else null,
         genres = if (!genres.isNullOrEmpty()) genres.toSet() else null,
         totalBookCount = comicInfo.count,
-        collections = listOfNotNull(comicInfo.seriesGroup?.ifBlank { null }),
+        collections = comicInfo.seriesGroup?.split(',')?.mapNotNull { it.trim().ifBlank { null } }?.toSet() ?: emptySet(),
       )
     }
     return null

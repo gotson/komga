@@ -129,7 +129,7 @@ class SeriesMetadataLifecycle(
       ageRating = patches.mapNotNull { it.ageRating }.maxOrNull(),
       publisher = patches.mostFrequent { it.publisher },
       totalBookCount = patches.mapNotNull { it.totalBookCount }.maxOrNull(),
-      collections = emptyList(),
+      collections = emptySet(),
     )
 
     handlePatchForSeriesMetadata(aggregatedPatch, series)

@@ -26,14 +26,11 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.nio.file.Files
 import java.nio.file.Paths
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 class BookLifecycleTest(
   @Autowired private val bookRepository: BookRepository,
@@ -77,7 +74,7 @@ class BookLifecycleTest(
   }
 
   @Test
-  fun `given outdated book with different number of pages than before when analyzing then existing read progress is deleted`() {
+  fun `given outdated book with different number of pages than before when analyzing then existing incomplete read progress is reset to 1`() {
     // given
     makeSeries(name = "series", libraryId = library.id).let { series ->
       seriesLifecycle.createSeries(series).let { created ->
@@ -106,7 +103,14 @@ class BookLifecycleTest(
     bookLifecycle.analyzeAndPersist(book)
 
     // then
-    assertThat(readProgressRepository.findAll()).isEmpty()
+    with(readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user1.id)!!) {
+      assertThat(page).isEqualTo(2)
+      assertThat(completed).isTrue
+    }
+    with(readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user2.id)!!) {
+      assertThat(page).isEqualTo(1)
+      assertThat(completed).isFalse
+    }
   }
 
   @Test

@@ -33,7 +33,8 @@ class SqliteUdfDataSource : SQLiteDataSource() {
   private fun createUdfRegexp(connection: SQLiteConnection) {
     log.debug { "Adding custom REGEXP function" }
     Function.create(
-      connection, "REGEXP",
+      connection,
+      "REGEXP",
       object : Function() {
         override fun xFunc() {
           val regexp = (value_text(0) ?: "").toRegex(RegexOption.IGNORE_CASE)
@@ -48,7 +49,8 @@ class SqliteUdfDataSource : SQLiteDataSource() {
   private fun createUdfStripAccents(connection: SQLiteConnection) {
     log.debug { "Adding custom $udfStripAccents function" }
     Function.create(
-      connection, udfStripAccents,
+      connection,
+      udfStripAccents,
       object : Function() {
         override fun xFunc() =
           when (val text = value_text(0)) {
@@ -62,7 +64,8 @@ class SqliteUdfDataSource : SQLiteDataSource() {
   private fun createUnicode3Collation(connection: SQLiteConnection) {
     log.debug { "Adding custom $collationUnicode3 collation" }
     Collation.create(
-      connection, collationUnicode3,
+      connection,
+      collationUnicode3,
       object : Collation() {
         val collator = Collator.getInstance().apply {
           strength = Collator.TERTIARY

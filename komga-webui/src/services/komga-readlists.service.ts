@@ -1,5 +1,12 @@
 import {AxiosInstance} from 'axios'
 import {AuthorDto, BookDto} from '@/types/komga-books'
+import {
+  ReadListCreationDto,
+  ReadListDto,
+  ReadListRequestMatchDto,
+  ReadListThumbnailDto,
+  ReadListUpdateDto,
+} from '@/types/komga-readlists'
 
 const qs = require('qs')
 
@@ -55,17 +62,17 @@ export default class KomgaReadListsService {
     }
   }
 
-  async postReadListImport(files: any): Promise<ReadListRequestResultDto[]> {
+  async postReadListMatch(file: any): Promise<ReadListRequestMatchDto> {
     try {
       const formData = new FormData()
-      files.forEach((f: any) => formData.append('files', f))
-      return (await this.http.post(`${API_READLISTS}/import`, formData, {
+      formData.append('file', file)
+      return (await this.http.post(`${API_READLISTS}/match/comicrack`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       })).data
     } catch (e) {
-      let msg = 'An error occurred while trying to import readlists\''
+      let msg = 'An error occurred while trying to match readlist'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

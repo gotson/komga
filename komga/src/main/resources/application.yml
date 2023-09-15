@@ -61,27 +61,32 @@ server:
   shutdown: graceful
   error:
     include-message: always
+  port: 25600
 
 management:
   endpoints.web.exposure.include: "*"
   endpoint:
+    configprops:
+      roles: ADMIN
+      show-values: when_authorized
+    env:
+      roles: ADMIN
+      show-values: when_authorized
     health:
       roles: ADMIN
       show-details: when_authorized
     shutdown:
       enabled: true
-  metrics:
-    export:
-      influx:
-        enabled: false
-      simple:
-        enabled: true
-        step: 24h
   info:
     java:
       enabled: true
     os:
       enabled: true
+  simple:
+    metrics:
+      export:
+        enabled: true
+        step: 24h
 springdoc:
   group-configs:
     - group: REST API

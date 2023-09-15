@@ -30,7 +30,7 @@
                     new Intl.DateTimeFormat($i18n.locale, {
                       dateStyle: 'medium',
                       timeStyle: 'short'
-                    }).format(new Date(usersLastActivity[u.id]))
+                    }).format(usersLastActivity[u.id])
                 })
               }}
             </v-list-item-subtitle>

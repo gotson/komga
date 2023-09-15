@@ -157,6 +157,7 @@ class ReadListDao(
       .set(rl.ID, readList.id)
       .set(rl.NAME, readList.name)
       .set(rl.SUMMARY, readList.summary)
+      .set(rl.ORDERED, readList.ordered)
       .set(rl.BOOK_COUNT, readList.bookIds.size)
       .execute()
 
@@ -178,6 +179,7 @@ class ReadListDao(
     dsl.update(rl)
       .set(rl.NAME, readList.name)
       .set(rl.SUMMARY, readList.summary)
+      .set(rl.ORDERED, readList.ordered)
       .set(rl.BOOK_COUNT, readList.bookIds.size)
       .set(rl.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(rl.ID.eq(readList.id))
@@ -233,6 +235,7 @@ class ReadListDao(
     ReadList(
       name = name,
       summary = summary,
+      ordered = ordered,
       bookIds = bookIds,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),

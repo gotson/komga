@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.jooq.Tables
+import org.gotson.komga.jooq.tables.records.AnnouncementsReadRecord
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
@@ -22,6 +23,7 @@ class KomgaUserDao(
   private val u = Tables.USER
   private val ul = Tables.USER_LIBRARY_SHARING
   private val us = Tables.USER_SHARING
+  private val ar = Tables.ANNOUNCEMENTS_READ
 
   override fun count(): Long = dsl.fetchCount(u).toLong()
 
@@ -128,6 +130,10 @@ class KomgaUserDao(
     insertSharingRestrictions(user)
   }
 
+  override fun saveAnnouncementIdsRead(user: KomgaUser, announcementIds: Set<String>) {
+    dsl.batchStore(announcementIds.map { AnnouncementsReadRecord(user.id, it) }).execute()
+  }
+
   private fun insertSharedLibraries(user: KomgaUser) {
     user.sharedLibrariesIds.forEach {
       dsl.insertInto(ul)
@@ -155,6 +161,7 @@ class KomgaUserDao(
 
   @Transactional
   override fun delete(userId: String) {
+    dsl.deleteFrom(ar).where(ar.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(us).where(us.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(ul).where(ul.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(u).where(u.ID.equal(userId)).execute()
@@ -162,10 +169,17 @@ class KomgaUserDao(
 
   @Transactional
   override fun deleteAll() {
+    dsl.deleteFrom(ar).execute()
     dsl.deleteFrom(us).execute()
     dsl.deleteFrom(ul).execute()
     dsl.deleteFrom(u).execute()
   }
+
+  override fun findAnnouncementIdsReadByUserId(userId: String): Set<String> =
+    dsl.select(ar.ANNOUNCEMENT_ID)
+      .from(ar)
+      .where(ar.USER_ID.eq(userId))
+      .fetchSet(ar.ANNOUNCEMENT_ID)
 
   override fun existsByEmailIgnoreCase(email: String): Boolean =
     dsl.fetchExists(

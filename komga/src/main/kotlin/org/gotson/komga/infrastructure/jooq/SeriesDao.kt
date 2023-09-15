@@ -104,10 +104,11 @@ class SeriesDao(
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
       .set(s.LIBRARY_ID, series.libraryId)
       .set(s.DELETED_DATE, series.deletedDate)
+      .set(s.ONESHOT, series.oneshot)
       .execute()
   }
 
-  override fun update(series: Series) {
+  override fun update(series: Series, updateModifiedTime: Boolean) {
     dsl.update(s)
       .set(s.NAME, series.name)
       .set(s.URL, series.url.toString())
@@ -115,7 +116,8 @@ class SeriesDao(
       .set(s.LIBRARY_ID, series.libraryId)
       .set(s.BOOK_COUNT, series.bookCount)
       .set(s.DELETED_DATE, series.deletedDate)
-      .set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .set(s.ONESHOT, series.oneshot)
+      .apply { if (updateModifiedTime) set(s.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z"))) }
       .where(s.ID.eq(series.id))
       .execute()
   }
@@ -137,12 +139,11 @@ class SeriesDao(
 
   override fun count(): Long = dsl.fetchCount(s).toLong()
 
-  override fun countGroupedByLibraryName(): Map<String, Int> =
-    dsl.select(l.NAME, DSL.count(s.ID))
-      .from(l)
-      .leftJoin(s).on(l.ID.eq(s.LIBRARY_ID))
-      .groupBy(l.NAME)
-      .fetchMap(l.NAME, DSL.count(s.ID))
+  override fun countGroupedByLibraryId(): Map<String, Int> =
+    dsl.select(s.LIBRARY_ID, DSL.count(s.ID))
+      .from(s)
+      .groupBy(s.LIBRARY_ID)
+      .fetchMap(s.LIBRARY_ID, DSL.count(s.ID))
 
   private fun SeriesSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
@@ -175,6 +176,7 @@ class SeriesDao(
       libraryId = libraryId,
       bookCount = bookCount,
       deletedDate = deletedDate,
+      oneshot = oneshot,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )

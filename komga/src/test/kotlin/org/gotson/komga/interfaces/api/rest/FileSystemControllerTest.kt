@@ -3,19 +3,18 @@ package org.gotson.komga.interfaces.api.rest
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_USER
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.io.TempDir
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import java.nio.file.Files
+import java.nio.file.Path
 
-@ExtendWith(SpringExtension::class)
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class FileSystemControllerTest(
@@ -48,8 +47,7 @@ class FileSystemControllerTest(
 
   @Test
   @WithMockUser(roles = [ROLE_USER, ROLE_ADMIN])
-  fun `given non-existent path param when getDirectoryListing then return bad request`() {
-    val parent = Files.createTempDirectory(null)
+  fun `given non-existent path param when getDirectoryListing then return bad request`(@TempDir parent: Path) {
     Files.delete(parent)
 
     mockMvc.post(route) {

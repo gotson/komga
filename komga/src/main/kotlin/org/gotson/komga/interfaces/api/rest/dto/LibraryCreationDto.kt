@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 data class LibraryCreationDto(
   @get:NotBlank val name: String,
@@ -16,7 +16,6 @@ data class LibraryCreationDto(
   val importLocalArtwork: Boolean = true,
   val importBarcodeIsbn: Boolean = true,
   val scanForceModifiedTime: Boolean = false,
-  val scanDeep: Boolean = false,
   val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
   val emptyTrashAfterScan: Boolean = false,
@@ -24,4 +23,5 @@ data class LibraryCreationDto(
   val hashFiles: Boolean = true,
   val hashPages: Boolean = false,
   val analyzeDimensions: Boolean = true,
+  val oneshotsDirectory: String? = null,
 )

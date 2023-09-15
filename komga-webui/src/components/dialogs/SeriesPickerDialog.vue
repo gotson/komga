@@ -29,7 +29,7 @@
 
             <v-row v-if="results">
               <v-col>
-                <v-list elevation="5" v-if="results.length > 0" two-line>
+                <v-list elevation="5" v-if="results.length > 0" three-line>
                   <div v-for="(s, index) in results"
                        :key="index"
                   >
@@ -42,7 +42,17 @@
                       />
                       <v-list-item-content>
                         <v-list-item-title>{{ s.metadata.title }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ $t('searchbox.in_library', {library: getLibraryName(s)}) }}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{
+                            $t('searchbox.in_library', {library: getLibraryName(s)})
+                          }}
+                        </v-list-item-subtitle>
+                        <v-list-item-subtitle v-if="s.booksMetadata.releaseDate">{{
+                            new Intl.DateTimeFormat($i18n.locale, {
+                              year: 'numeric',
+                              timeZone: 'UTC'
+                            }).format(new Date(s.booksMetadata.releaseDate))
+                          }}
+                        </v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider v-if="index !== results.length-1"/>
@@ -53,7 +63,7 @@
                   v-if="results.length === 0 && showResults"
                   type="info"
                   text
-                >No Series found
+                >{{ $t('dialog.series_picker.no_results') }}
                 </v-alert>
 
               </v-col>
@@ -81,6 +91,7 @@ export default Vue.extend({
       results: [] as SeriesDto[],
       search: '',
       showResults: false,
+      seriesThumbnailUrl,
     }
   },
   props: {
@@ -88,6 +99,10 @@ export default Vue.extend({
     series: {
       type: Object as PropType<SeriesDto>,
       required: false,
+    },
+    includeOneshots: {
+      type: Boolean,
+      default: true,
     },
   },
   watch: {
@@ -108,7 +123,7 @@ export default Vue.extend({
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {
         this.showResults = false
-        this.results = (await this.$komgaSeries.getSeries(undefined, {unpaged: true}, query)).content
+        this.results = (await this.$komgaSeries.getSeries(undefined, {unpaged: true}, query, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, this.includeOneshots ? undefined : false)).content
         this.showResults = true
       } else {
         this.clear()
@@ -128,9 +143,6 @@ export default Vue.extend({
     },
     getLibraryName(item: SeriesDto): string {
       return this.$store.getters.getLibraryById(item.libraryId).name
-    },
-    seriesThumbnailUrl(seriesId: string): string {
-      return seriesThumbnailUrl(seriesId)
     },
   },
 })

@@ -75,13 +75,13 @@ export function transientBookPageUrl(transientBookId: string, page: number): str
 }
 
 export function pageHashUnknownThumbnailUrl(pageHash: PageHashUnknownDto, resize?: number): string {
-  let url = `${urls.originNoSlash}/api/v1/page-hashes/unknown/${pageHash.hash}/thumbnail?media_type=${pageHash.mediaType}&file_size=${pageHash.size || -1}`
+  let url = `${urls.originNoSlash}/api/v1/page-hashes/unknown/${pageHash.hash}/thumbnail`
   if(resize) {
-    url += `&resize=${resize}`
+    url += `?resize=${resize}`
   }
   return url
 }
 
 export function pageHashKnownThumbnailUrl(pageHash: PageHashKnownDto): string {
-  return `${urls.originNoSlash}/api/v1/page-hashes/${pageHash.hash}/thumbnail?media_type=${pageHash.mediaType}&file_size=${pageHash.size || -1}`
+  return `${urls.originNoSlash}/api/v1/page-hashes/${pageHash.hash}/thumbnail`
 }

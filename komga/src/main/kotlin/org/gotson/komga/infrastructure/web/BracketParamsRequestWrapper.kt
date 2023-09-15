@@ -1,9 +1,9 @@
 package org.gotson.komga.infrastructure.web
 
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequestWrapper
 import org.gotson.komga.language.toEnumeration
 import java.util.Enumeration
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletRequestWrapper
 
 class BracketParamsRequestWrapper(request: HttpServletRequest) : HttpServletRequestWrapper(request) {
   override fun getParameter(name: String): String? {

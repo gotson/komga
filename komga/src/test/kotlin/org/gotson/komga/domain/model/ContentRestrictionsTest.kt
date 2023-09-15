@@ -53,7 +53,7 @@ class ContentRestrictionsTest {
   fun `given labels with duplicate values when creating restriction then label restrictions are normalized`() {
     val restriction = ContentRestrictions(
       labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
-      labelsExclude = setOf("c", "d", "D", "d ", "d", " D ")
+      labelsExclude = setOf("c", "d", "D", "d ", "d", " D "),
     )
 
     assertThat(restriction.labelsAllow).containsExactlyInAnyOrder("a", "b")
@@ -64,7 +64,7 @@ class ContentRestrictionsTest {
   fun `given labels with same value in both allow and exclude when creating restriction then exclude labels are removed from allow labels`() {
     val restriction = ContentRestrictions(
       labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
-      labelsExclude = setOf(" A ", "d", "D", "d ", "d", " D ")
+      labelsExclude = setOf(" A ", "d", "D", "d ", "d", " D "),
     )
 
     assertThat(restriction.labelsAllow).containsExactlyInAnyOrder("b")
@@ -75,7 +75,7 @@ class ContentRestrictionsTest {
   fun `given allow labels with all values in exclude labels when creating restriction then allow labels is null`() {
     val restriction = ContentRestrictions(
       labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
-      labelsExclude = setOf(" A ", "b", "B", "B ", "b", " B ")
+      labelsExclude = setOf(" A ", "b", "B", "B ", "b", " B "),
     )
 
     assertThat(restriction.labelsAllow).isEmpty()

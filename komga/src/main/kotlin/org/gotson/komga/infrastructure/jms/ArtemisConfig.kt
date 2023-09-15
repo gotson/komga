@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jms
 
+import jakarta.jms.ConnectionFactory
 import mu.KotlinLogging
 import org.apache.activemq.artemis.api.core.QueueConfiguration
 import org.apache.activemq.artemis.api.core.RoutingType
@@ -9,7 +10,6 @@ import org.springframework.boot.autoconfigure.jms.artemis.ArtemisConfigurationCu
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory
-import javax.jms.ConnectionFactory
 import org.apache.activemq.artemis.core.config.Configuration as ArtemisConfiguration
 
 private val logger = KotlinLogging.logger {}
@@ -31,7 +31,7 @@ class ArtemisConfig : ArtemisConfigurationCustomizer {
       // default is 90, meaning the queue would block if disk is 90% full. Set it to 100 to avoid blocking.
       it.maxDiskUsage = 100
       // disable prefetch, ensures messages stay in the queue and last value can have desired effect
-      it.addAddressesSetting(
+      it.addAddressSetting(
         QUEUE_TASKS,
         AddressSettings().apply {
           defaultConsumerWindowSize = 0

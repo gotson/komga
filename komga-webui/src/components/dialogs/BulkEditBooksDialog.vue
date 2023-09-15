@@ -279,8 +279,8 @@ export default Vue.extend({
     validateIsbn(isbn: string): string | boolean {
       return isbn && !new IsbnVerify(isbn).isIsbn13({check_digit: true}) ? this.$t('dialog.edit_books.field_isbn_error').toString() : true
     },
-    validateRequired(value: string): string | boolean {
-      return !value ? this.$t('common.required').toString() : true
+    validateRequired(value: any): string | boolean {
+      return value || value === 0 ? true : this.$t('common.required').toString()
     },
     validateReleaseDate(date: string): string | boolean {
       return date && !isMatch(date, 'yyyy-MM-dd') ? this.$t('dialog.edit_books.field_release_date_error').toString() : true

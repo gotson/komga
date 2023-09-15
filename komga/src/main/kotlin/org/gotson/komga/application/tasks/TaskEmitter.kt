@@ -1,5 +1,6 @@
 package org.gotson.komga.application.tasks
 
+import jakarta.jms.ConnectionFactory
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
@@ -19,7 +20,6 @@ import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.springframework.data.domain.Sort
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
-import javax.jms.ConnectionFactory
 
 private val logger = KotlinLogging.logger {}
 
@@ -42,8 +42,8 @@ class TaskEmitter(
     libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
-  fun scanLibrary(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.ScanLibrary(libraryId, priority))
+  fun scanLibrary(libraryId: String, scanDeep: Boolean = false, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.ScanLibrary(libraryId, scanDeep, priority))
   }
 
   fun emptyTrash(libraryId: String, priority: Int = DEFAULT_PRIORITY) {
@@ -138,6 +138,10 @@ class TaskEmitter(
 
   fun rebuildIndex(priority: Int = DEFAULT_PRIORITY, entities: Set<LuceneEntity>? = null) {
     submitTask(Task.RebuildIndex(entities, priority))
+  }
+
+  fun upgradeIndex(priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.UpgradedIndex(priority))
   }
 
   fun deleteBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {

@@ -139,6 +139,7 @@ class SeriesDtoDao(
       }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+      .apply { if (joinConditions.sharingLabel) leftJoin(sl).on(s.ID.eq(sl.SERIES_ID)) }
       .where(conditions)
       .and(searchCondition)
       .groupBy(firstChar)
@@ -172,6 +173,7 @@ class SeriesDtoDao(
       }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+      .apply { if (joinConditions.sharingLabel) leftJoin(sl).on(s.ID.eq(sl.SERIES_ID)) }
 
   private fun findAll(
     conditions: Condition,
@@ -196,6 +198,7 @@ class SeriesDtoDao(
       }
       .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
       .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+      .apply { if (joinConditions.sharingLabel) leftJoin(sl).on(s.ID.eq(sl.SERIES_ID)) }
       .where(conditions)
       .and(searchCondition)
       .fetchOne(countDistinct(s.ID)) ?: 0
@@ -300,6 +303,7 @@ class SeriesDtoDao(
     if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
     if (complete == false) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.ne(s.BOOK_COUNT)))
     if (complete == true) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.eq(s.BOOK_COUNT)))
+    if (oneshot != null) c = c.and(s.ONESHOT.eq(oneshot))
     if (!languages.isNullOrEmpty()) c = c.and(d.LANGUAGE.collate(SqliteUdfDataSource.collationUnicode3).`in`(languages))
     if (!genres.isNullOrEmpty()) c = c.and(g.GENRE.collate(SqliteUdfDataSource.collationUnicode3).`in`(genres))
     if (!tags.isNullOrEmpty()) c = c.and(st.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags).or(bmat.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags)))
@@ -317,6 +321,7 @@ class SeriesDtoDao(
       }
       c = c.and(ca)
     }
+    if (!sharingLabels.isNullOrEmpty()) c = c.and(sl.LABEL.collate(SqliteUdfDataSource.collationUnicode3).`in`(sharingLabels))
     if (!readStatus.isNullOrEmpty()) {
       val cr = readStatus.map {
         when (it) {
@@ -344,6 +349,7 @@ class SeriesDtoDao(
       tag = !tags.isNullOrEmpty(),
       collection = !collectionIds.isNullOrEmpty(),
       aggregationAuthor = !authors.isNullOrEmpty(),
+      sharingLabel = !sharingLabels.isNullOrEmpty(),
     )
 
   private data class JoinConditions(
@@ -352,6 +358,7 @@ class SeriesDtoDao(
     val tag: Boolean = false,
     val collection: Boolean = false,
     val aggregationAuthor: Boolean = false,
+    val sharingLabel: Boolean = false,
   )
 
   private fun SeriesRecord.toDto(
@@ -377,6 +384,7 @@ class SeriesDtoDao(
       metadata = metadata,
       booksMetadata = booksMetadata,
       deleted = deletedDate != null,
+      oneshot = oneshot,
     )
 
   private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, links: List<WebLinkDto>, alternateTitles: List<AlternateTitleDto>) =
@@ -421,7 +429,7 @@ class SeriesDtoDao(
       summary = summary,
       summaryNumber = summaryNumber,
 
-      created = createdDate.toCurrentTimeZone(),
-      lastModified = lastModifiedDate.toCurrentTimeZone(),
+      created = createdDate,
+      lastModified = lastModifiedDate,
     )
 }

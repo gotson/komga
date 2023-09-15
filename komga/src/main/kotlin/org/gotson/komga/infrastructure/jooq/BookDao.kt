@@ -252,7 +252,8 @@ class BookDao(
             b.LIBRARY_ID,
             b.SERIES_ID,
             b.DELETED_DATE,
-          ).values(null as String?, null, null, null, null, null, null, null, null, null),
+            b.ONESHOT,
+          ).values(null as String?, null, null, null, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach {
             step.bind(
@@ -266,6 +267,7 @@ class BookDao(
               it.libraryId,
               it.seriesId,
               it.deletedDate,
+              it.oneshot,
             )
           }
         }.execute()
@@ -295,6 +297,7 @@ class BookDao(
       .set(b.SERIES_ID, book.seriesId)
       .set(b.DELETED_DATE, book.deletedDate)
       .set(b.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .set(b.ONESHOT, book.oneshot)
       .where(b.ID.eq(book.id))
       .execute()
   }
@@ -316,19 +319,17 @@ class BookDao(
 
   override fun count(): Long = dsl.fetchCount(b).toLong()
 
-  override fun countGroupedByLibraryName(): Map<String, Int> =
-    dsl.select(l.NAME, DSL.count(b.ID))
-      .from(l)
-      .leftJoin(b).on(l.ID.eq(b.LIBRARY_ID))
-      .groupBy(l.NAME)
-      .fetchMap(l.NAME, DSL.count(b.ID))
+  override fun countGroupedByLibraryId(): Map<String, Int> =
+    dsl.select(b.LIBRARY_ID, DSL.count(b.ID))
+      .from(b)
+      .groupBy(b.LIBRARY_ID)
+      .fetchMap(b.LIBRARY_ID, DSL.count(b.ID))
 
-  override fun getFilesizeGroupedByLibraryName(): Map<String, BigDecimal> =
-    dsl.select(l.NAME, DSL.sum(b.FILE_SIZE))
-      .from(l)
-      .leftJoin(b).on(l.ID.eq(b.LIBRARY_ID))
-      .groupBy(l.NAME)
-      .fetchMap(l.NAME, DSL.sum(b.FILE_SIZE))
+  override fun getFilesizeGroupedByLibraryId(): Map<String, BigDecimal> =
+    dsl.select(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
+      .from(b)
+      .groupBy(b.LIBRARY_ID)
+      .fetchMap(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
 
   private fun BookSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
@@ -355,6 +356,7 @@ class BookDao(
       libraryId = libraryId,
       seriesId = seriesId,
       deletedDate = deletedDate,
+      oneshot = oneshot,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
       number = number,
