@@ -167,7 +167,7 @@ jobs:
           tag: 'v${{ needs.version.outputs.version_next }}'
           default_author: github_actions
       - name: Run Conveyor
-        uses: hydraulic-software/conveyor/actions/build@v11.1
+        uses: hydraulic-software/conveyor/actions/build@v11.2
         with:
           command: -f conveyor.ci.conf make site -o ./output/release
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
@@ -201,7 +201,7 @@ jobs:
             build/jreleaser/trace.log
             build/jreleaser/output.properties
       - name: Run Conveyor - Microsoft Store
-        uses: hydraulic-software/conveyor/actions/build@v11.1
+        uses: hydraulic-software/conveyor/actions/build@v11.2
         with:
           command: -f conveyor.msstore.ci.conf make site -o ./output/msstore
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
