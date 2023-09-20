@@ -63,10 +63,17 @@ class LibraryContentLifecycle(
 ) {
 
   fun scanRootFolder(library: Library, scanDeep: Boolean = false) {
-    logger.info { "Updating library: $library" }
+    logger.info { "Scan root folder for library: $library" }
     measureTime {
       val scanResult = try {
-        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime, library.oneshotsDirectory)
+        fileSystemScanner.scanRootFolder(
+          Paths.get(library.root.toURI()),
+          library.scanForceModifiedTime,
+          library.oneshotsDirectory,
+          library.scanCbx,
+          library.scanPdf,
+          library.scanEpub,
+        )
       } catch (e: DirectoryNotFoundException) {
         library.copy(unavailableDate = LocalDateTime.now()).let {
           libraryRepository.update(it)
@@ -206,6 +213,7 @@ class LibraryContentLifecycle(
                   Sidecar.Type.METADATA -> taskEmitter.refreshSeriesMetadata(series.id)
                 }
               }
+
             Sidecar.Source.BOOK ->
               bookRepository.findNotDeletedByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { book ->
                 logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Book for ${newSidecar.type}: $book" }

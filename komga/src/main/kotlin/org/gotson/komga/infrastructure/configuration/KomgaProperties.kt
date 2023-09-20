@@ -25,8 +25,10 @@ class KomgaProperties {
     }
   }
 
+  @Deprecated("Moved to library options since 1.5.0")
   var librariesScanCron: String = ""
 
+  @Deprecated("Moved to library options since 1.5.0")
   var librariesScanStartup: Boolean = false
 
   var librariesScanDirectoryExclusions: List<String> = emptyList()

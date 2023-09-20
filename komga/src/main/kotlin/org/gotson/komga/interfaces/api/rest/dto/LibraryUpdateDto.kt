@@ -25,6 +25,12 @@ class LibraryUpdateDto {
   val importBarcodeIsbn: Boolean? = null
 
   val scanForceModifiedTime: Boolean? = null
+  val scanInterval: ScanIntervalDto? = null
+  val scanOnStartup: Boolean? = null
+  val scanCbx: Boolean? = null
+  val scanPdf: Boolean? = null
+  val scanEpub: Boolean? = null
+
   val repairExtensions: Boolean? = null
   val convertToCbz: Boolean? = null
   val emptyTrashAfterScan: Boolean? = null

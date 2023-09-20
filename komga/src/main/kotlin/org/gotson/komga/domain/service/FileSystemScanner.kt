@@ -39,8 +39,6 @@ class FileSystemScanner(
   private val sidecarSeriesConsumers: List<SidecarSeriesConsumer>,
 ) {
 
-  private val supportedExtensions = listOf("cbz", "zip", "cbr", "rar", "pdf", "epub")
-
   private data class TempSidecar(
     val name: String,
     val url: URL,
@@ -50,9 +48,21 @@ class FileSystemScanner(
 
   private val sidecarBookPrefilter = sidecarBookConsumers.flatMap { it.getSidecarBookPrefilter() }
 
-  fun scanRootFolder(root: Path, forceDirectoryModifiedTime: Boolean = false, oneshotsDir: String? = null): ScanResult {
+  fun scanRootFolder(
+    root: Path,
+    forceDirectoryModifiedTime: Boolean = false,
+    oneshotsDir: String? = null,
+    scanCbx: Boolean = true,
+    scanPdf: Boolean = true,
+    scanEpub: Boolean = true,
+  ): ScanResult {
+    val scanForExtensions = buildList {
+      if (scanCbx) addAll(listOf("cbz", "zip", "cbr", "rar"))
+      if (scanPdf) add("pdf")
+      if (scanEpub) add("epub")
+    }
     logger.info { "Scanning folder: $root" }
-    logger.info { "Supported extensions: $supportedExtensions" }
+    logger.info { "Scan for extensions: $scanForExtensions" }
     logger.info { "Excluded patterns: ${komgaProperties.librariesScanDirectoryExclusions}" }
     logger.info { "Force directory modified time: $forceDirectoryModifiedTime" }
 
@@ -95,7 +105,7 @@ class FileSystemScanner(
           override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
             logger.trace { "visitFile: $file (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }
             if (!attrs.isSymbolicLink && !attrs.isDirectory) {
-              if (supportedExtensions.contains(file.extension.lowercase()) &&
+              if (scanForExtensions.contains(file.extension.lowercase()) &&
                 !file.name.startsWith(".")
               ) {
                 val book = pathToBook(file, attrs)

@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.application.scheduler.LibraryScanScheduler
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DomainEvent
@@ -27,6 +28,7 @@ class LibraryLifecycle(
   private val taskEmitter: TaskEmitter,
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
+  private val libraryScanScheduler: LibraryScanScheduler,
 ) {
 
   @Throws(
@@ -52,10 +54,16 @@ class LibraryLifecycle(
   fun updateLibrary(toUpdate: Library) {
     logger.info { "Updating library: ${toUpdate.id}" }
 
-    val existing = libraryRepository.findAll().filter { it.id != toUpdate.id }
-    checkLibraryValidity(toUpdate, existing)
+    val libraries = libraryRepository.findAll()
+    val otherLibraries = libraries.filter { it.id != toUpdate.id }
+    val current = libraries.first { it.id == toUpdate.id }
+    checkLibraryValidity(toUpdate, otherLibraries)
 
     libraryRepository.update(toUpdate)
+
+    if (current.scanInterval != toUpdate.scanInterval)
+      libraryScanScheduler.scheduleScan(toUpdate)
+
     taskEmitter.scanLibrary(toUpdate.id)
 
     eventPublisher.publishEvent(DomainEvent.LibraryUpdated(toUpdate))

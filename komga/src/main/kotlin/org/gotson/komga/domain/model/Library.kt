@@ -21,6 +21,11 @@ data class Library(
   val importLocalArtwork: Boolean = true,
   val importBarcodeIsbn: Boolean = true,
   val scanForceModifiedTime: Boolean = false,
+  val scanOnStartup: Boolean = false,
+  val scanInterval: ScanInterval = ScanInterval.EVERY_6H,
+  val scanCbx: Boolean = true,
+  val scanPdf: Boolean = true,
+  val scanEpub: Boolean = true,
   val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
   val emptyTrashAfterScan: Boolean = false,
@@ -43,6 +48,15 @@ data class Library(
     FIRST_UNREAD_OR_FIRST,
     FIRST_UNREAD_OR_LAST,
     LAST,
+  }
+
+  enum class ScanInterval {
+    DISABLED,
+    HOURLY,
+    EVERY_6H,
+    EVERY_12H,
+    DAILY,
+    WEEKLY,
   }
 
   @delegate:Transient

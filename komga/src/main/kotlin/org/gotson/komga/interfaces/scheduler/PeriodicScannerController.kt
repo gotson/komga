@@ -1,11 +1,12 @@
 package org.gotson.komga.interfaces.scheduler
 
 import mu.KotlinLogging
+import org.gotson.komga.application.scheduler.LibraryScanScheduler
 import org.gotson.komga.application.tasks.TaskEmitter
+import org.gotson.komga.domain.persistence.LibraryRepository
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 private val logger = KotlinLogging.logger {}
@@ -14,12 +15,23 @@ private val logger = KotlinLogging.logger {}
 @Component
 class PeriodicScannerController(
   private val taskEmitter: TaskEmitter,
+  private val libraryRepository: LibraryRepository,
+  private val libraryScanScheduler: LibraryScanScheduler,
 ) {
 
-  @EventListener(classes = [ApplicationReadyEvent::class], condition = "@komgaProperties.librariesScanStartup")
-  @Scheduled(cron = "#{@komgaProperties.librariesScanCron ?: '-'}")
-  fun scanAllLibraries() {
-    logger.info { "Periodic libraries scan starting" }
-    taskEmitter.scanLibraries()
+  @EventListener(classes = [ApplicationReadyEvent::class])
+  fun scanOnStartup() {
+    libraryRepository.findAll()
+      .filter { it.scanOnStartup }
+      .forEach {
+        logger.info { "Scan on startup for library: ${it.name}" }
+        taskEmitter.scanLibrary(it.id)
+      }
+  }
+
+  @EventListener(classes = [ApplicationReadyEvent::class])
+  fun scheduleScans() {
+    libraryRepository.findAll()
+      .forEach { libraryScanScheduler.scheduleScan(it) }
   }
 }
