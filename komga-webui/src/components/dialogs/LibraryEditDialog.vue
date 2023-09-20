@@ -30,6 +30,10 @@
               {{ $t('dialog.edit_library.tab_general') }}
             </v-tab>
             <v-tab class="justify-start">
+              <v-icon left class="hidden-xs-only">mdi-magnify-scan</v-icon>
+              {{ $t('dialog.edit_library.label_scanner') }}
+            </v-tab>
+            <v-tab class="justify-start">
               <v-icon left class="hidden-xs-only">mdi-tune</v-icon>
               {{ $t('dialog.edit_library.tab_options') }}
             </v-tab>
@@ -79,13 +83,12 @@
               </v-card>
             </v-tab-item>
 
-            <!--  Tab: Options  -->
+            <!--  Tab: Scanner  -->
             <v-tab-item>
               <v-card flat :min-height="$vuetify.breakpoint.xs ? $vuetify.breakpoint.height * .8 : undefined">
                 <v-container fluid>
                   <v-row>
-                    <v-col cols="auto">
-                      <span class="text-subtitle-1 text--primary">{{ $t('dialog.edit_library.label_scanner') }}</span>
+                    <v-col>
                       <v-checkbox
                         v-model="form.emptyTrashAfterScan"
                         :label="$t('dialog.edit_library.field_scanner_empty_trash_after_scan')"
@@ -109,6 +112,21 @@
                         </template>
                       </v-checkbox>
 
+                      <v-checkbox
+                        v-model="form.scanOnStartup"
+                        :label="$t('dialog.edit_library.field_scanner_scan_startup')"
+                        hide-details
+                        class="mx-4"
+                      />
+
+                      <v-select :items="scanInterval"
+                                v-model="form.scanInterval"
+                                :label="$t('dialog.edit_library.field_scan_interval')"
+                                flat
+                                hide-details
+                                class="mx-4 mt-3"
+                      />
+
                       <v-text-field v-model="form.oneshotsDirectory"
                                     clearable
                                     :label="$t('dialog.edit_library.field_oneshotsdirectory')"
@@ -124,8 +142,35 @@
                           </v-tooltip>
                         </template>
                       </v-text-field>
+
+                      <div class="mx-4">
+                        <span class="text-subtitle-1 text--primary">{{
+                            $t('dialog.edit_library.label_scan_types')
+                          }}</span>
+                        <v-chip-group
+                          multiple
+                          v-model="form.scanTypes"
+                          active-class="primary"
+                        >
+                          <v-chip v-for="type in fileTypes"
+                                  :key="type.value"
+                                  :value="type.value"
+                                  filter
+                                  outlined
+                          >{{ type.text }}
+                          </v-chip>
+                        </v-chip-group>
+                      </div>
                     </v-col>
                   </v-row>
+                </v-container>
+              </v-card>
+            </v-tab-item>
+
+            <!--  Tab: Options  -->
+            <v-tab-item>
+              <v-card flat :min-height="$vuetify.breakpoint.xs ? $vuetify.breakpoint.height * .8 : undefined">
+                <v-container fluid>
                   <v-row>
                     <v-col cols="auto">
                       <span class="text-subtitle-1 text--primary">{{ $t('dialog.edit_library.label_analysis') }}</span>
@@ -376,7 +421,7 @@ import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 import Vue from 'vue'
 import {required} from 'vuelidate/lib/validators'
 import {ERROR} from '@/types/events'
-import {SeriesCoverDto} from '@/types/enum-libraries'
+import {ScanIntervalDto, SeriesCoverDto} from '@/types/enum-libraries'
 import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
@@ -401,6 +446,9 @@ export default Vue.extend({
         importLocalArtwork: true,
         importBarcodeIsbn: false,
         scanForceModifiedTime: false,
+        scanInterval: ScanIntervalDto.EVERY_6H,
+        scanOnStartup: false,
+        scanTypes: [],
         repairExtensions: false,
         convertToCbz: false,
         emptyTrashAfterScan: false,
@@ -421,13 +469,31 @@ export default Vue.extend({
       return this.library ? this.$t('dialog.edit_library.button_confirm_edit').toString() : this.$t('dialog.edit_library.button_confirm_add').toString()
     },
     showNext(): boolean {
-      return !this.library && this.tab !== 2
+      return !this.library && this.tab !== 3
     },
     seriesCover(): any[] {
       return Object.keys(SeriesCoverDto).map(x => ({
         text: this.$t(`enums.series_cover.${x}`),
         value: x,
       }))
+    },
+    scanInterval(): any[] {
+      return Object.keys(ScanIntervalDto).map(x => ({
+        text: this.$t(`enums.scan_interval.${x}`),
+        value: x,
+      }))
+    },
+    fileTypes(): any[] {
+      return [{
+        text: this.$t('common.cbx').toString(),
+        value: 'cbx',
+      }, {
+        text: this.$t('common.pdf').toString(),
+        value: 'pdf',
+      }, {
+        text: this.$t('common.epub').toString(),
+        value: 'epub',
+      }]
     },
 
     importComicInfo: {
@@ -534,6 +600,13 @@ export default Vue.extend({
       this.form.importLocalArtwork = library ? library.importLocalArtwork : true
       this.form.importBarcodeIsbn = library ? library.importBarcodeIsbn : false
       this.form.scanForceModifiedTime = library ? library.scanForceModifiedTime : false
+      this.form.scanInterval = library ? library.scanInterval : ScanIntervalDto.EVERY_6H
+      this.form.scanOnStartup = library ? library.scanOnStartup : false
+      this.form.scanTypes = []
+      if (!library) this.form.scanTypes = ['cbx', 'pdf', 'epub']
+      if (library?.scanEpub == true) this.form.scanTypes.splice(0, 0, 'epub')
+      if (library?.scanPdf == true) this.form.scanTypes.splice(0, 0, 'pdf')
+      if (library?.scanCbx == true) this.form.scanTypes.splice(0, 0, 'cbx')
       this.form.repairExtensions = library ? library.repairExtensions : false
       this.form.convertToCbz = library ? library.convertToCbz : false
       this.form.emptyTrashAfterScan = library ? library.emptyTrashAfterScan : false
@@ -562,6 +635,11 @@ export default Vue.extend({
           importLocalArtwork: this.form.importLocalArtwork,
           importBarcodeIsbn: this.form.importBarcodeIsbn,
           scanForceModifiedTime: this.form.scanForceModifiedTime,
+          scanInterval: this.form.scanInterval,
+          scanOnStartup: this.form.scanOnStartup,
+          scanCbx: this.form.scanTypes.includes('cbx'),
+          scanPdf: this.form.scanTypes.includes('pdf'),
+          scanEpub: this.form.scanTypes.includes('epub'),
           repairExtensions: this.form.repairExtensions,
           convertToCbz: this.form.convertToCbz,
           emptyTrashAfterScan: this.form.emptyTrashAfterScan,
