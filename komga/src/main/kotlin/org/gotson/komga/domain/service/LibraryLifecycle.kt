@@ -64,9 +64,20 @@ class LibraryLifecycle(
     if (current.scanInterval != toUpdate.scanInterval)
       libraryScanScheduler.scheduleScan(toUpdate)
 
-    taskEmitter.scanLibrary(toUpdate.id)
+    if (checkLibraryShouldRescan(current, toUpdate))
+      taskEmitter.scanLibrary(toUpdate.id)
 
     eventPublisher.publishEvent(DomainEvent.LibraryUpdated(toUpdate))
+  }
+
+  private fun checkLibraryShouldRescan(existing: Library, updated: Library): Boolean {
+    if (existing.root != updated.root) return true
+    if (existing.oneshotsDirectory != updated.oneshotsDirectory) return true
+    if (existing.scanCbx != updated.scanCbx) return true
+    if (existing.scanPdf != updated.scanPdf) return true
+    if (existing.scanEpub != updated.scanEpub) return true
+    if (existing.scanForceModifiedTime != updated.scanForceModifiedTime) return true
+    return false
   }
 
   private fun checkLibraryValidity(library: Library, existing: Collection<Library>) {
