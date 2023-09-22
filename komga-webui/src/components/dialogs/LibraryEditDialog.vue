@@ -161,6 +161,15 @@
                           </v-chip>
                         </v-chip-group>
                       </div>
+
+                      <v-combobox v-model="form.scanDirectoryExclusions"
+                                  clearable
+                                  multiple
+                                  small-chips
+                                  deletable-chips
+                                  :label="$t('dialog.edit_library.label_scan_directory_exclusions')"
+                                  class="mx-4"
+                      />
                     </v-col>
                   </v-row>
                 </v-container>
@@ -449,6 +458,7 @@ export default Vue.extend({
         scanInterval: ScanIntervalDto.EVERY_6H,
         scanOnStartup: false,
         scanTypes: [],
+        scanDirectoryExclusions: [] as string[],
         repairExtensions: false,
         convertToCbz: false,
         emptyTrashAfterScan: false,
@@ -607,6 +617,7 @@ export default Vue.extend({
       if (library?.scanEpub == true) this.form.scanTypes.splice(0, 0, 'epub')
       if (library?.scanPdf == true) this.form.scanTypes.splice(0, 0, 'pdf')
       if (library?.scanCbx == true) this.form.scanTypes.splice(0, 0, 'cbx')
+      this.form.scanDirectoryExclusions = library ? library.scanDirectoryExclusions : ['#recycle', '@eaDir', '@Recycle']
       this.form.repairExtensions = library ? library.repairExtensions : false
       this.form.convertToCbz = library ? library.convertToCbz : false
       this.form.emptyTrashAfterScan = library ? library.emptyTrashAfterScan : false
@@ -640,6 +651,7 @@ export default Vue.extend({
           scanCbx: this.form.scanTypes.includes('cbx'),
           scanPdf: this.form.scanTypes.includes('pdf'),
           scanEpub: this.form.scanTypes.includes('epub'),
+          scanDirectoryExclusions: this.form.scanDirectoryExclusions,
           repairExtensions: this.form.repairExtensions,
           convertToCbz: this.form.convertToCbz,
           emptyTrashAfterScan: this.form.emptyTrashAfterScan,
