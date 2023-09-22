@@ -5,6 +5,8 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.LibraryRecord
 import org.jooq.DSLContext
+import org.jooq.Record
+import org.jooq.ResultQuery
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
@@ -18,39 +20,51 @@ class LibraryDao(
 
   private val l = Tables.LIBRARY
   private val ul = Tables.USER_LIBRARY_SHARING
+  private val le = Tables.LIBRARY_EXCLUSIONS
 
   override fun findByIdOrNull(libraryId: String): Library? =
     findOne(libraryId)
-      ?.toDomain()
+      .fetchAndMap()
+      .firstOrNull()
 
   override fun findById(libraryId: String): Library =
-    findOne(libraryId)!!
-      .toDomain()
+    findOne(libraryId)
+      .fetchAndMap()
+      .first()
 
   private fun findOne(libraryId: String) =
-    dsl.selectFrom(l)
+    selectBase()
       .where(l.ID.eq(libraryId))
-      .fetchOneInto(l)
-
   override fun findAll(): Collection<Library> =
-    dsl.selectFrom(l)
-      .fetchInto(l)
-      .map { it.toDomain() }
+    selectBase()
+      .fetchAndMap()
 
   override fun findAllByIds(libraryIds: Collection<String>): Collection<Library> =
-    dsl.selectFrom(l)
+    selectBase()
       .where(l.ID.`in`(libraryIds))
-      .fetchInto(l)
-      .map { it.toDomain() }
+      .fetchAndMap()
+
+  private fun selectBase() =
+    dsl.select()
+      .from(l)
+      .leftJoin(le).onKey()
+
+  private fun ResultQuery<Record>.fetchAndMap(): Collection<Library> =
+    this.fetchGroups({ it.into(l) }, { it.into(le) })
+      .map { (lr, ler) ->
+        lr.toDomain(ler.mapNotNull { it.exclusion }.toSet())
+      }
 
   @Transactional
   override fun delete(libraryId: String) {
+    dsl.deleteFrom(le).where(le.LIBRARY_ID.eq(libraryId)).execute()
     dsl.deleteFrom(ul).where(ul.LIBRARY_ID.eq(libraryId)).execute()
     dsl.deleteFrom(l).where(l.ID.eq(libraryId)).execute()
   }
 
   @Transactional
   override fun deleteAll() {
+    dsl.deleteFrom(le).execute()
     dsl.deleteFrom(ul).execute()
     dsl.deleteFrom(l).execute()
   }
@@ -87,6 +101,8 @@ class LibraryDao(
       .set(l.ONESHOTS_DIRECTORY, library.oneshotsDirectory)
       .set(l.UNAVAILABLE_DATE, library.unavailableDate)
       .execute()
+
+    insertDirectoryExclusions(library)
   }
 
   @Transactional
@@ -122,11 +138,32 @@ class LibraryDao(
       .set(l.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(l.ID.eq(library.id))
       .execute()
+
+    dsl.deleteFrom(le).where(le.LIBRARY_ID.eq(library.id)).execute()
+    insertDirectoryExclusions(library)
   }
 
   override fun count(): Long = dsl.fetchCount(l).toLong()
+  fun findDirectoryExclusions(libraryId: String): Set<String> =
+    dsl.select(le.EXCLUSION)
+      .from(le)
+      .where(le.LIBRARY_ID.eq(libraryId))
+      .fetchSet(le.EXCLUSION)
 
-  private fun LibraryRecord.toDomain() =
+  private fun insertDirectoryExclusions(library: Library) {
+    if (library.scanDirectoryExclusions.isNotEmpty()) {
+      dsl.batch(
+        dsl.insertInto(le, le.LIBRARY_ID, le.EXCLUSION)
+          .values(null as String?, null),
+      ).also { step ->
+        library.scanDirectoryExclusions.forEach {
+          step.bind(library.id, it)
+        }
+      }.execute()
+    }
+  }
+
+  private fun LibraryRecord.toDomain(directoryExclusions: Set<String>) =
     Library(
       name = name,
       root = URL(root),
@@ -146,6 +183,7 @@ class LibraryDao(
       scanEpub = scanEpub,
       scanOnStartup = scanStartup,
       scanInterval = Library.ScanInterval.valueOf(scanInterval),
+      scanDirectoryExclusions = directoryExclusions,
       repairExtensions = repairExtensions,
       convertToCbz = convertToCbz,
       emptyTrashAfterScan = emptyTrashAfterScan,

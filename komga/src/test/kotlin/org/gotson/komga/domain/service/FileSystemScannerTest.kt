@@ -6,7 +6,6 @@ import org.apache.commons.io.FilenameUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.DirectoryNotFoundException
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -16,12 +15,7 @@ import java.nio.file.Path
 import java.util.stream.Stream
 
 class FileSystemScannerTest {
-
-  private val komgaProperties = KomgaProperties().apply {
-    librariesScanDirectoryExclusions = listOf("#recycle")
-  }
-
-  private val scanner = FileSystemScanner(komgaProperties, emptyList(), emptyList())
+  private val scanner = FileSystemScanner(emptyList(), emptyList())
 
   @Test
   fun `given unavailable root directory when scanning then throw exception`() {
@@ -294,7 +288,7 @@ class FileSystemScannerTest {
       makeSubDir(recycle, "subtrash", listOf("trash2.cbz"))
 
       // when
-      val scan = scanner.scanRootFolder(root).series
+      val scan = scanner.scanRootFolder(root, directoryExclusions = setOf("#recycle")).series
 
       // then
       assertThat(scan).hasSize(2)

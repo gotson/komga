@@ -74,6 +74,7 @@ class LibraryDaoTest(
         scanPdf = false,
         scanInterval = Library.ScanInterval.DAILY,
         scanOnStartup = true,
+        scanDirectoryExclusions = setOf("a", "b"),
       )
     }
 
@@ -111,6 +112,7 @@ class LibraryDaoTest(
     assertThat(modified.scanPdf).isEqualTo(updated.scanPdf)
     assertThat(modified.scanInterval).isEqualTo(updated.scanInterval)
     assertThat(modified.scanOnStartup).isEqualTo(updated.scanOnStartup)
+    assertThat(modified.scanDirectoryExclusions).containsExactlyInAnyOrderElementsOf(updated.scanDirectoryExclusions)
   }
 
   @Test

@@ -31,6 +31,7 @@ class KomgaProperties {
   @Deprecated("Moved to library options since 1.5.0")
   var librariesScanStartup: Boolean = false
 
+  @Deprecated("Moved to library options since 1.5.0")
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
   var deleteEmptyReadLists: Boolean = true

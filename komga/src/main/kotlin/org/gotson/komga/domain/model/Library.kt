@@ -26,6 +26,7 @@ data class Library(
   val scanCbx: Boolean = true,
   val scanPdf: Boolean = true,
   val scanEpub: Boolean = true,
+  val scanDirectoryExclusions: Set<String> = emptySet(),
   val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
   val emptyTrashAfterScan: Boolean = false,
