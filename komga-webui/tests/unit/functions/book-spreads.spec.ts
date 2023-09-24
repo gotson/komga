@@ -95,12 +95,12 @@ describe('Double Pages', () => {
     ] as PageDtoWithUrl[]
 
     const spreads = buildSpreads(pages, pageLayout)
-
-    expect(spreads.length).toEqual(4)
+    // Expecting [E, 1], [2, 3], [4, 5]
+    expect(spreads.length).toEqual(3)
 
     expect(spreads[0].length).toEqual(2)
-    expect(spreads[0][1].number).toEqual(1)
     expect(spreads[0][0].number).toEqual(0) // empty page
+    expect(spreads[0][1].number).toEqual(1)
 
     expect(spreads[1].length).toEqual(2)
     expect(spreads[1][0].number).toEqual(2)
@@ -108,10 +108,7 @@ describe('Double Pages', () => {
 
     expect(spreads[2].length).toEqual(2)
     expect(spreads[2][0].number).toEqual(4)
-
-    expect(spreads[3].length).toEqual(2)
-    expect(spreads[3][0].number).toEqual(5)
-    expect(spreads[3][1].number).toEqual(0) // empty page
+    expect(spreads[2][1].number).toEqual(5)
   })
 })
 
