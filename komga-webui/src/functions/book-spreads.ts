@@ -28,18 +28,19 @@ export function buildSpreads(pages: PageDtoWithUrl[], pageLayout: PagedReaderLay
       const p = pagesClone.shift() as PageDtoWithUrl
       if (isPageLandscape(p)) {
         spreads.push([p])
-        if (pageLayout === PagedReaderLayout.DOUBLE_NO_COVER) {
-          const p2 = pagesClone.shift() as PageDtoWithUrl
-          spreads.push([createEmptyPage(p2), p2])
-        }
       } else {
         if (pagesClone.length > 0) {
-          const p2 = pagesClone.shift() as PageDtoWithUrl
-          if (isPageLandscape(p2)) {
-            spreads.push([p, createEmptyPage(p)])
-            spreads.push([p2])
+          const [prevPage] = spreads[spreads.length - 1] as PageDtoWithUrl[]
+          if (pageLayout === PagedReaderLayout.DOUBLE_NO_COVER && isPageLandscape(prevPage)){
+            spreads.push([createEmptyPage(p), p])
           } else {
-            spreads.push([p, p2])
+            const p2 = pagesClone.shift() as PageDtoWithUrl
+            if (isPageLandscape(p2)) {
+              spreads.push([p, createEmptyPage(p)])
+              spreads.push([p2])
+            } else {
+              spreads.push([p, p2])
+            }
           }
         } else {
           spreads.push([p, createEmptyPage(p)])
