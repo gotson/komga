@@ -34,6 +34,7 @@ export const persistedModule: Module<any, any> = {
     },
     importPath: '',
     duplicatesNewPageSize: 10,
+    rememberMe: false,
   },
   getters: {
     getLocaleFirstDay: (state) => () => {
@@ -127,6 +128,9 @@ export const persistedModule: Module<any, any> = {
     },
     setDuplicatesNewPageSize(state, val) {
       state.duplicatesNewPageSize = val
+    },
+    setRememberMe(state, val) {
+      state.rememberMe = val
     },
   },
 }

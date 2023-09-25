@@ -27,8 +27,12 @@ const vuexModule: Module<any, any> = {
     },
   },
   actions: {
-    async getMeWithAuth ({ commit }, { login, password }: { login: string, password: string }) {
-      commit('setMe', await service.getMeWithAuth(login, password))
+    async getMeWithAuth({commit}, {login, password, rememberMe}: {
+      login: string,
+      password: string,
+      rememberMe: boolean
+    }) {
+      commit('setMe', await service.getMeWithAuth(login, password, rememberMe))
     },
     async logout ({ commit }) {
       try {
