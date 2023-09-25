@@ -178,7 +178,7 @@ import ReadMore from '@/components/ReadMore.vue'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
-import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
+import {ReadStatus} from '@/types/enum-books'
 import {authorRoles} from '@/types/author-roles'
 import {LibraryDto} from '@/types/komga-libraries'
 import {mergeFilterParams, toNameValue} from '@/functions/filter'
@@ -283,7 +283,7 @@ export default Vue.extend({
   },
   computed: {
     itemContext(): ItemContext[] {
-      if(this.readList?.ordered === false) return [ItemContext.SHOW_SERIES, ItemContext.RELEASE_DATE]
+      if (this.readList?.ordered === false) return [ItemContext.SHOW_SERIES, ItemContext.RELEASE_DATE]
       return [ItemContext.SHOW_SERIES]
     },
     paginationVisible(): number {
@@ -303,7 +303,7 @@ export default Vue.extend({
       return {
         readStatus: {
           values: [
-            {name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+            {name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD},
             {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
             {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
           ],
@@ -465,7 +465,7 @@ export default Vue.extend({
         }))
       })
 
-      const booksPage = await this.$komgaReadLists.getBooks(readListId, pageRequest, this.filters.library, replaceCompositeReadStatus(this.filters.readStatus), this.filters.tag, authorsFilter)
+      const booksPage = await this.$komgaReadLists.getBooks(readListId, pageRequest, this.filters.library, this.filters.readStatus, this.filters.tag, authorsFilter)
 
       this.totalPages = booksPage.totalPages
       this.totalElements = booksPage.totalElements

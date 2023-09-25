@@ -148,7 +148,7 @@ import {
 import Vue from 'vue'
 import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {LIBRARIES_ALL} from '@/types/library'
-import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
+import {ReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {mergeFilterParams, toNameValue} from '@/functions/filter'
 import FilterDrawer from '@/components/FilterDrawer.vue'
@@ -278,7 +278,7 @@ export default Vue.extend({
       return {
         readStatus: {
           values: [
-            {name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+            {name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD},
             {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
             {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
           ],
@@ -461,7 +461,7 @@ export default Vue.extend({
       })
 
       const complete = parseBooleanFilter(this.filters.complete)
-      const seriesPage = await this.$komgaCollections.getSeries(collectionId, pageRequest, this.filters.library, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)
+      const seriesPage = await this.$komgaCollections.getSeries(collectionId, pageRequest, this.filters.library, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
