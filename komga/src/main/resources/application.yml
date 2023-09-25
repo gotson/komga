@@ -13,7 +13,6 @@ logging:
     org.apache.activemq.audit: WARN
 
 komga:
-  libraries-scan-cron: "0 0 */8 * * ?"
   database:
     file: \${komga.config-dir}/database.sqlite
   lucene:
@@ -29,6 +28,8 @@ spring:
     placeholders:
       library-file-hashing: \${komga.file-hashing:true}
       library-scan-startup: \${komga.libraries-scan-startup:false}
+      delete-empty-collections: \${komga.delete-empty-collections:true}
+      delete-empty-read-lists: \${komga.delete-empty-read-lists:true}
   thymeleaf:
     prefix: classpath:/public/
   mvc:

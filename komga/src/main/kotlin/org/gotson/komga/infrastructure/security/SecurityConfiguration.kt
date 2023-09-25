@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.actuate.health.HealthEndpoint
 import org.springframework.context.annotation.Bean
@@ -33,6 +34,7 @@ private val logger = KotlinLogging.logger {}
 @EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(
   private val komgaProperties: KomgaProperties,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
   private val komgaUserDetailsLifecycle: UserDetailsService,
   private val oauth2UserService: OAuth2UserService<OAuth2UserRequest, OAuth2User>,
   private val oidcUserService: OAuth2UserService<OidcUserRequest, OidcUser>,
@@ -120,20 +122,15 @@ class SecurityConfiguration(
       }
     }
 
-    if (!komgaProperties.rememberMe.key.isNullOrBlank()) {
-      logger.info { "RememberMe is active, validity: ${komgaProperties.rememberMe.validity}" }
-
-      http
-        .rememberMe {
-          it.rememberMeServices(
-            TokenBasedRememberMeServices(komgaProperties.rememberMe.key, komgaUserDetailsLifecycle).apply {
-              setTokenValiditySeconds(komgaProperties.rememberMe.validity.seconds.toInt())
-              setAlwaysRemember(true)
-              setAuthenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
-            },
-          )
-        }
-    }
+    http
+      .rememberMe {
+        it.rememberMeServices(
+          TokenBasedRememberMeServices(komgaSettingsProvider.rememberMeKey, komgaUserDetailsLifecycle).apply {
+            setTokenValiditySeconds(komgaSettingsProvider.rememberMeDuration.inWholeSeconds.toInt())
+            setAuthenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
+          },
+        )
+      }
 
     return http.build()
   }

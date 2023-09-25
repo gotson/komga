@@ -34,13 +34,16 @@ class KomgaProperties {
   @Deprecated("Moved to library options since 1.5.0")
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
+  @Deprecated("Moved to server settings since 1.5.0")
   var deleteEmptyReadLists: Boolean = true
 
+  @Deprecated("Moved to server settings since 1.5.0")
   var deleteEmptyCollections: Boolean = true
 
   @Positive
   var pageHashing: Int = 3
 
+  @Deprecated("Moved to server settings since 1.5.0")
   var rememberMe = RememberMe()
 
   @DurationUnit(ChronoUnit.SECONDS)
@@ -64,10 +67,13 @@ class KomgaProperties {
   @Positive
   var taskConsumersMax: Int = 1
 
+  @Deprecated("Moved to server settings since 1.5.0")
   class RememberMe {
+    @Deprecated("Moved to server settings since 1.5.0")
     @get:NotBlank
     var key: String? = null
 
+    @Deprecated("Moved to server settings since 1.5.0")
     @DurationUnit(ChronoUnit.SECONDS)
     var validity: Duration = Duration.ofDays(14)
   }

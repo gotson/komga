@@ -25,7 +25,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.language.notEquals
 import org.gotson.komga.language.toIndexedMap
@@ -49,7 +49,7 @@ class LibraryContentLifecycle(
   private val collectionLifecycle: SeriesCollectionLifecycle,
   private val readListLifecycle: ReadListLifecycle,
   private val sidecarRepository: SidecarRepository,
-  private val komgaProperties: KomgaProperties,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
   private val taskEmitter: TaskEmitter,
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
@@ -402,11 +402,11 @@ class LibraryContentLifecycle(
   }
 
   private fun cleanupEmptySets() {
-    if (komgaProperties.deleteEmptyCollections) {
+    if (komgaSettingsProvider.deleteEmptyCollections) {
       collectionLifecycle.deleteEmptyCollections()
     }
 
-    if (komgaProperties.deleteEmptyReadLists) {
+    if (komgaSettingsProvider.deleteEmptyReadLists) {
       readListLifecycle.deleteEmptyReadLists()
     }
   }

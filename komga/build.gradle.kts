@@ -1,4 +1,3 @@
-
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.prefixIfNot
@@ -267,6 +266,8 @@ flyway {
   placeholders = mapOf(
     "library-file-hashing" to "true",
     "library-scan-startup" to "false",
+    "delete-empty-collections" to "true",
+    "delete-empty-read-lists" to "true",
   )
 }
 tasks.flywayMigrate {
