@@ -17,7 +17,6 @@ komga:
     file: \${komga.config-dir}/database.sqlite
   lucene:
     data-directory: \${komga.config-dir}/lucene
-  session-timeout: 7d
   config-dir: \${user.home}/.komga
 
 spring:

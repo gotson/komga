@@ -46,6 +46,7 @@ class KomgaProperties {
   @Deprecated("Moved to server settings since 1.5.0")
   var rememberMe = RememberMe()
 
+  @Deprecated("Removed since 1.5.0", ReplaceWith("server.servlet.session.timeout"))
   @DurationUnit(ChronoUnit.SECONDS)
   var sessionTimeout: Duration = Duration.ofMinutes(30)
 
