@@ -440,9 +440,6 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    // reloadSeries: throttle(function (this: any) {
-    //   this.loadSeries(this.collectionId)
-    // }, 1000),
     async loadPage(collectionId: string, page: number) {
       this.selectedSeries = []
 
@@ -474,21 +471,6 @@ export default Vue.extend({
     reloadPage: throttle(function (this: any) {
       this.loadPage(this.collectionId, this.page)
     }, 1000),
-    // async loadSeries(collectionId: string) {
-    //   let authorsFilter = [] as AuthorDto[]
-    //   authorRoles.forEach((role: string) => {
-    //     if (role in this.filters) this.filters[role].forEach((name: string) => authorsFilter.push({
-    //       name: name,
-    //       role: role,
-    //     }))
-    //   })
-    //
-    //   const complete = parseBooleanFilter(this.filters.complete)
-    //   this.series = (await this.$komgaCollections.getSeries(collectionId, {unpaged: true} as PageRequest, this.filters.library, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)).content
-    //   this.series.forEach((x: SeriesDto) => x.context = {origin: ContextOrigin.COLLECTION, id: collectionId})
-    //   this.seriesCopy = [...this.series]
-    //   this.selectedSeries = []
-    // },
     async loadCollection(collectionId: string) {
       this.$komgaCollections.getOneCollection(collectionId)
         .then(v => this.collection = v)
