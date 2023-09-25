@@ -9,7 +9,7 @@
       <v-toolbar-title v-if="readList">
         <span>{{ readList.name }}</span>
         <v-chip label class="mx-4">
-          <span style="font-size: 1.1rem">{{ readList.bookIds.length }}</span>
+          <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
         <span v-if="readList.ordered"
               class="font-italic text-overline"

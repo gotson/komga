@@ -9,7 +9,7 @@
       <v-toolbar-title v-if="collection">
         <span>{{ collection.name }}</span>
         <v-chip label class="mx-4">
-          <span style="font-size: 1.1rem">{{ collection.seriesIds.length }}</span>
+          <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
         <span v-if="collection.ordered"
               class="font-italic text-overline"
