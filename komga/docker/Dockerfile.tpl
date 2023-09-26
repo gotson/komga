@@ -8,10 +8,10 @@ FROM eclipse-temurin:19-jre
 RUN if [ "`uname -m`" = "x86_64" ]; then \
     apt -y update && \
     apt -y install wget && \
-    wget "https://github.com/libjxl/libjxl/releases/download/v0.8.1/jxl-debs-amd64-ubuntu-22.04-v0.8.1.tar.gz" && \
-    tar -xzf jxl-debs-amd64-ubuntu-22.04-v0.8.1.tar.gz && \
-    apt -y install ./jxl_0.8.1_amd64.deb ./libjxl_0.8.1_amd64.deb ./libjxl-dev_0.8.1_amd64.deb && \
-    rm *.deb && rm *.ddeb && rm jxl-debs-amd64-ubuntu-22.04-v0.8.1.tar.gz && \
+    wget "https://github.com/libjxl/libjxl/releases/download/v0.8.2/jxl-debs-amd64-ubuntu-22.04-v0.8.2.tar.gz" && \
+    tar -xzf jxl-debs-amd64-ubuntu-22.04-v0.8.2.tar.gz && \
+    apt -y install ./jxl_0.8.2_amd64.deb ./libjxl_0.8.2_amd64.deb ./libjxl-dev_0.8.2_amd64.deb && \
+    rm *.deb && rm *.ddeb && rm jxl-debs-amd64-ubuntu-22.04-v0.8.2.tar.gz && \
     apt -y remove wget && apt -y clean && rm -rf /var/lib/apt/lists/*; fi
 
 VOLUME /tmp
