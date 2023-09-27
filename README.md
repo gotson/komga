@@ -28,9 +28,9 @@ Komga is a free and open source comics/mangas server.
 - Import books from outside your libraries directly into your series folder
 - Import ComicRack `cbl` read lists
 
-## Download
+## Installation
 
-Get the app from our [releases page](https://github.com/gotson/komga/releases) or through [Docker](https://hub.docker.com/r/gotson/komga).
+Refer to the [website](https://komga.org/docs/category/installation) for instructions.
 
 ## Documentation
 
