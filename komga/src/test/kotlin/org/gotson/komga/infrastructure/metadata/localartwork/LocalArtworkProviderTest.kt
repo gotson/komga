@@ -23,6 +23,9 @@ class LocalArtworkProviderTest {
       when (firstArg<Path>().extension.lowercase()) {
         "jpg", "jpeg", "tbn" -> "image/jpeg"
         "png" -> "image/png"
+        "webp" -> "image/webp"
+        "avif" -> "image/avif"
+        "jxl" -> "image/jxl"
         else -> "application/octet-stream"
       }
     }
@@ -38,9 +41,9 @@ class LocalArtworkProviderTest {
       Files.createDirectory(root)
 
       val bookFile = Files.createFile(root.resolve("book(e).cbz"))
-      val thumbsFiles = listOf("bOOk(e).jpeg", "Book(e).tbn", "book(e).PNG", "book(e).jpeg")
-      val thumbsDashFiles = listOf("book(e)-1.jpeg", "book(e)-2.tbn", "book(e)-23.png", "book(e)-111.jpeg")
-      val invalidFiles = listOf("book12(e).jpeg", "book(e).gif", "cover.png", "other.jpeg")
+      val thumbsFiles = listOf("bOOk(e).jpeg", "Book(e).tbn", "book(e).PNG", "book(e).jpeg", "book(e).webp")
+      val thumbsDashFiles = listOf("book(e)-1.jpeg", "book(e)-2.tbn", "book(e)-23.png", "book(e)-111.jpeg", "book(e)-123.webp")
+      val invalidFiles = listOf("book12(e).jpeg", "book(e).gif", "cover.png", "other.jpeg", "book.webp", "book(e).avif", "book(e).jxl")
 
       (thumbsFiles + thumbsDashFiles + invalidFiles).forEach { Files.createFile(root.resolve(it)) }
 
@@ -73,8 +76,8 @@ class LocalArtworkProviderTest {
       val seriesPath = fs.getPath("/series")
       val seriesFile = Files.createDirectory(seriesPath)
 
-      val thumbsFiles = listOf("CoVeR.jpeg", "DefauLt.tbn", "POSter.PNG", "FoLDer.jpeg", "serIES.TBN")
-      val invalidFiles = listOf("cover.gif", "artwork.jpg", "other.jpeg")
+      val thumbsFiles = listOf("CoVeR.jpeg", "DefauLt.tbn", "POSter.PNG", "FoLDer.jpeg", "serIES.TBN", "serIes.WebP")
+      val invalidFiles = listOf("cover.gif", "artwork.jpg", "other.jpeg", "cover.avif", "series.jxl")
 
       (thumbsFiles + invalidFiles).forEach { Files.createFile(seriesPath.resolve(it)) }
 
