@@ -430,6 +430,9 @@ export default Vue.extend({
     checkImageSupport(ImageFeature.JPEG_XL, (isSupported) => {
       if (isSupported) this.supportedMediaTypes.push('image/jxl')
     })
+    checkImageSupport(ImageFeature.AVIF, (isSupported) => {
+      if (isSupported) this.supportedMediaTypes.push('image/avif')
+    })
     this.shortcuts = this.$_.keyBy([...shortcutsSettings, ...shortcutsSettingsPaged, ...shortcutsSettingsContinuous, ...shortcutsMenus, ...shortcutsAll], x => x.key)
     window.addEventListener('keydown', this.keyPressed)
     if (screenfull.isEnabled) screenfull.on('change', this.fullscreenChanged)
