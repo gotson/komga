@@ -142,6 +142,7 @@
         :page-layout="pageLayout"
         :scale="scale"
         :animations="animations"
+        :simulateSpine="simulateSpine"
         :swipe="swipe"
         @menu="toggleToolbars()"
         @jump-previous="jumpToPrevious()"
@@ -186,6 +187,13 @@
               <settings-switch v-model="animations"
                                :label="$t('bookreader.settings.animate_page_transitions')"/>
             </v-list-item>
+
+            <template v-if="doublePageLayout">
+                <v-list-item>
+                  <settings-switch v-model="simulateSpine"
+                                   :label="$t('bookreader.settings.simulate_spine')"/>
+                </v-list-item>
+            </template>
 
             <v-list-item>
               <settings-switch v-model="swipe" :label="$t('bookreader.settings.gestures')"/>
@@ -388,6 +396,7 @@ export default Vue.extend({
         sidePadding: 0,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         backgroundColor: 'black',
+        simulateSpine: true,
       },
       shortcuts: {} as any,
       notification: {
@@ -448,6 +457,7 @@ export default Vue.extend({
     this.continuousScale = this.$store.state.persistedState.webreader.continuous.scale
     this.sidePadding = this.$store.state.persistedState.webreader.continuous.padding
     this.backgroundColor = this.$store.state.persistedState.webreader.background
+    this.simulateSpine = this.$store.state.persistedState.webreader.paged.simulateSpine
 
     this.setup(this.bookId, Number(this.$route.query.page))
   },
@@ -492,6 +502,10 @@ export default Vue.extend({
   computed: {
     continuousReader(): boolean {
       return this.readingDirection === ReadingDirection.WEBTOON
+    },
+    doublePageLayout(): boolean {
+      return this.readingDirection !== ReadingDirection.WEBTOON
+             && this.settings.pageLayout !== PagedReaderLayout.SINGLE_PAGE
     },
     progress(): number {
       return this.page / this.pagesCount * 100
@@ -546,6 +560,15 @@ export default Vue.extend({
       set: function (animations: boolean): void {
         this.settings.animations = animations
         this.$store.commit('setWebreaderAnimations', animations)
+      },
+    },
+    simulateSpine: {
+      get: function (): boolean {
+        return this.settings.simulateSpine
+      },
+      set: function (simulate_spine: boolean): void {
+        this.settings.simulateSpine = simulate_spine
+        this.$store.commit('setWebreaderPagedSimulateSpine', simulate_spine)
       },
     },
     scale: {
