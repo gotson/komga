@@ -12,10 +12,10 @@
       "sortBy": "排序方式"
     },
     "fileInput": {
-      "counter": "{0} 個文件",
-      "counterSize": "{0} 個文件（共 {1}）"
+      "counter": "{0} 個檔案",
+      "counterSize": "{0} 個檔案（共 {1}）"
     },
-    "noDataText": "無數據可用"
+    "noDataText": "無資料可用"
   },
   "account_settings": {
     "account_settings": "帳號設定",
@@ -58,14 +58,14 @@
     "button_scan": "掃描",
     "button_select_series": "選擇系列",
     "field_import_path": "從資料夾匯入",
-    "info_part1": "此頁面允許您匯入現有書櫃之外的文件. 只能將文件匯入到現有序列, 在這種情況下Komga會將檔案移動或複製到所選序列的目錄中.",
-    "info_part2": "如果您為一本書選擇了一個編號, 並且已經存在一本帶有該編號的書,你可以比較這兩本書.如果您決定匯入該書. Komga將升級現有的書使用新文件, 有效地用新文件替換舊文件.",
-    "no_files_found": "找不到文件",
+    "info_part1": "此頁面允許您匯入現有書櫃之外的檔案. 只能將檔案匯入到現有序列, 在這種情況下Komga會將檔案移動或複製到所選序列的目錄中.",
+    "info_part2": "如果您為一本書選擇了一個編號, 並且已經存在一本帶有該編號的書,你可以比較這兩本書.如果您決定匯入該書. Komga將升級現有的書使用新檔案, 有效地用新檔案替換舊檔案.",
+    "no_files_found": "找不到檔案",
     "notification": {
       "go_to_book": "開啟書籍位置",
       "import_failure": "無法匯入書籍:{file}",
-      "import_successful": "書籍導入成功：{book}",
-      "source_file": "來源文件：{file}"
+      "import_successful": "書籍匯入成功：{book}",
+      "source_file": "來源檔案：{file}"
     },
     "row": {
       "error_analyze_first": "書籍需要先分析一下",
@@ -90,7 +90,7 @@
     "cycling_side_padding": "切換邊距",
     "download_current_page": "下載當前頁面",
     "end_of_book": "你已經閱讀完這本書了.",
-    "from_series_metadata": "來自系列元數據",
+    "from_series_metadata": "來自系列元資料",
     "move_next": "再單擊或按“下一步”移動到下一本.",
     "move_next_exit": "再單擊或按“下一步”退出閱讀.",
     "move_previous": "再單擊或按“下一步”退出閱讀.",
@@ -161,19 +161,19 @@
   },
   "browse_book": {
     "comment": "註釋",
-    "download_file": "下載文件",
+    "download_file": "下載檔案",
     "file": "檔案位置",
     "format": "格式",
     "isbn": "ISBN",
     "links": "鏈接",
     "navigation_within_readlist": "在閱讀清單中導航：{name}",
-    "outdated_tooltip": "這本書的文件已經改變，必須重新分析這本書",
+    "outdated_tooltip": "這本書的檔案已經改變，必須重新分析這本書",
     "read_book": "閱讀",
     "read_incognito": "無痕閱讀",
-    "size": "文件大小"
+    "size": "檔案大小"
   },
   "browse_collection": {
-    "edit_collection": "编辑收藏",
+    "edit_collection": "編輯收藏",
     "edit_elements": "編輯元素",
     "manual_ordering": "手動排序"
   },
@@ -260,9 +260,9 @@
   "data_import": {
     "book_number": "書號：{name}",
     "book_series": "系列：{name}",
-    "button_import": "導入",
+    "button_import": "匯入",
     "button_match": "匹配",
-    "comicrack_preambule_html": "您可以導入現有的 ComicRack 閱讀列表，其為 <code>.cbl</code>格式。<br>Komga 會試著將您提供的系列和書號與您庫中的相匹配。",
+    "comicrack_preambule_html": "您可以匯入現有的 ComicRack 閱讀列表，其為 <code>.cbl</code>格式。<br>Komga 會試著將您提供的系列和書號與您書庫中的相匹配。",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} 本書匹配失敗",
       "create": "仍然創建",
@@ -270,14 +270,14 @@
     },
     "field_file_label": "ComicRack 閱讀列表 (.cbl)",
     "field_files_label": "ComicRack 閱讀列表（.cbl）",
-    "import_read_lists": "導入閱讀列表",
-    "imported_as": "導入為 {name}",
+    "import_read_lists": "匯入閱讀列表",
+    "imported_as": "匯入為 {name}",
     "readlist_created": "已創建閱讀列表：{name}",
     "requested_number": "請求書號",
     "requested_series": "請求系列",
-    "results_preambule": "導入結果如下所示。您還可以為每個提供的文件檢查不匹配的書籍。",
+    "results_preambule": "匯入結果如下所示。您還可以為每個提供的檔案檢查不匹配的書籍。",
     "size_limit": "大小應小於 {size} MB",
-    "tab_title": "數據導入"
+    "tab_title": "資料匯入"
   },
   "dialog": {
     "add_to_collection": {
@@ -304,14 +304,14 @@
       "field_email_error": "必須是有效的電子信箱地址",
       "field_password": "密碼",
       "field_role_administrator": "管理員",
-      "field_role_file_download": "文件下載",
+      "field_role_file_download": "檔案下載",
       "field_role_page_streaming": "允許瀏覽",
       "label_roles": "角色"
     },
     "analyze_library": {
-      "body": "分析庫中的所有媒體文件。該分析獲取有關媒體的信息。根據庫的大小，這可能需要很長的時間。",
+      "body": "分析書庫中的所有媒體檔案。該分析獲取有關媒體的信息。根據書庫的大小，這可能需要很長的時間。",
       "button_confirm": "分析",
-      "title": "分析庫"
+      "title": "分析書庫"
     },
     "book_picker": {
       "filter": "按序號、標題或發行日期過濾",
@@ -319,12 +319,12 @@
     },
     "delete_book": {
       "button_confirm": "刪除",
-      "confirm_delete": "是的，删除書籍 “{name}” 及其文件",
-      "confirm_delete_multiple": "是的，删除 {count} 本書及它們的文件",
+      "confirm_delete": "是的，删除書籍 “{name}” 及其檔案",
+      "confirm_delete_multiple": "是的，删除 {count} 本書及它們的檔案",
       "dialog_title": "刪除書籍",
       "dialog_title_multiple": "刪除書籍",
-      "warning_html": "<b>{name}</b> 連同所存儲媒體文件將從此服務器中刪除。此操作<b>無法</b>撤銷。繼續嗎？",
-      "warning_multiple_html": "{count} 本書連同所存儲的媒體文件從此服務器中删除。此操作<b>無法</b>撤銷。繼續嗎？"
+      "warning_html": "<b>{name}</b> 連同所存儲媒體檔案將從此伺服器中刪除。此操作<b>無法</b>復原。繼續嗎？",
+      "warning_multiple_html": "{count} 本書連同所存儲的媒體檔案從此伺服器中删除。此操作<b>無法</b>復原。繼續嗎？"
     },
     "delete_collection": {
       "button_confirm": "刪除",
@@ -332,14 +332,14 @@
       "confirm_delete_multiple": "是的，删除 {count} 個收藏",
       "dialog_title": "删除收藏",
       "dialog_title_multiple": "删除收藏",
-      "warning_html": "收藏 <b>{name}</b>將從此服務器中删除。您的媒體文件不會受到影響。此操作<b>無法</b>撤銷。繼續嗎？",
-      "warning_multiple_html": "將從此服務器删除 {count} 個收藏。您的媒體文件不會受到影響。此操作<b>無法</b>撤銷。繼續嗎？"
+      "warning_html": "收藏 <b>{name}</b>將從此伺服器中删除。您的媒體檔案不會受到影響。此操作<b>無法</b>復原。繼續嗎？",
+      "warning_multiple_html": "將從此伺服器删除 {count} 個收藏。您的媒體檔案不會受到影響。此操作<b>無法</b>復原。繼續嗎？"
     },
     "delete_library": {
       "button_confirm": "刪除",
-      "confirm_delete": "是的，删除庫 “{name}”",
-      "title": "删除庫",
-      "warning_html": "庫 <b>{name}</b> 將從此服務器中删除。您的媒體文件不會受到影響。此操作<b>無法</b>撤銷。繼續嗎？"
+      "confirm_delete": "是的，删除書庫 “{name}”",
+      "title": "删除書庫",
+      "warning_html": "書庫 <b>{name}</b> 將從此伺服器中删除。您的媒體檔案不會受到影響。此操作<b>無法</b>復原。繼續嗎？"
     },
     "delete_readlist": {
       "button_confirm": "刪除",
@@ -347,22 +347,22 @@
       "confirm_delete_multiple": "是的，删除 {count} 個閱讀列表",
       "dialog_title": "删除閱讀列表",
       "dialog_title_multiple": "删除閱讀列表",
-      "warning_html": "閱讀列表 <b>{name}</b> 將從此服務器中删除。您的媒體文件不會受到影響。此操作<b>無法</b>撤銷。繼續嗎？",
-      "warning_multiple_html": "將從此服務器中删除 {count} 個閱讀列表。你的媒體文件不會受影響。此操作 <b>無法</b>撤銷。繼續嗎？"
+      "warning_html": "閱讀列表 <b>{name}</b> 將從此伺服器中删除。您的媒體檔案不會受到影響。此操作<b>無法</b>復原。繼續嗎？",
+      "warning_multiple_html": "將從此伺服器中删除 {count} 個閱讀列表。你的媒體檔案不會受影響。此操作 <b>無法</b>復原。繼續嗎？"
     },
     "delete_series": {
       "button_confirm": "刪除",
-      "confirm_delete": "是的，删除系列 “{name}”及其文件",
-      "confirm_delete_multiple": "是的，删除 {count} 個系列及它們的文件",
+      "confirm_delete": "是的，删除系列 “{name}”及其檔案",
+      "confirm_delete_multiple": "是的，删除 {count} 個系列及它們的檔案",
       "dialog_title": "删除系列",
-      "warning_html": "系列 <b>{name}</b> 及所存儲媒體文件將從此服務器中删除。此操作<b>無法</b>撤銷。繼續嗎？",
-      "warning_multiple_html": "{count} 個連載及所存儲媒體文件將從此服務器中删除。此操作<b>無法</b>撤銷。繼續嗎？"
+      "warning_html": "系列 <b>{name}</b> 及所存儲媒體檔案將從此伺服器中删除。此操作<b>無法</b>復原。繼續嗎？",
+      "warning_multiple_html": "{count} 個連載及所存儲媒體檔案將從此伺服器中删除。此操作<b>無法</b>復原。繼續嗎？"
     },
     "delete_user": {
       "button_confirm": "刪除",
-      "confirm_delete": "是的，删除用户 “{name}”",
-      "dialog_title": "删除用户",
-      "warning_html": "用户 <b>{name}</b> 將從此服務器中删除。此操作<b>無法</b>撤銷。繼續嗎？"
+      "confirm_delete": "是的，删除用戶 “{name}”",
+      "dialog_title": "删除用戶",
+      "warning_html": "用戶 <b>{name}</b> 將從此伺服器中删除。此操作<b>無法</b>復原。繼續嗎？"
     },
     "edit_books": {
       "add_author_role_error_duplicate": "已存在",
@@ -401,7 +401,7 @@
       "button_confirm": "保存修改",
       "dialog_title": "編輯收藏",
       "field_manual_ordering": "手動排序",
-      "label_ordering": "默認情况下，收藏中的系列將按名稱排序，您可以啟用手動排序來整理想要的順序。",
+      "label_ordering": "預設情况下，收藏中的系列將按名稱排序，您可以啟用手動排序來整理想要的順序。",
       "tab_general": "常規",
       "tab_poster": "海報"
     },
@@ -411,44 +411,44 @@
       "button_confirm_add": "添加",
       "button_confirm_edit": "編輯",
       "button_next": "繼續",
-      "dialog_title_add": "添加庫",
-      "dialot_title_edit": "編輯庫",
+      "dialog_title_add": "添加書庫",
+      "dialot_title_edit": "編輯書庫",
       "field_analysis_analyze_dimensions": "分析頁面尺寸",
-      "field_analysis_hash_files": "計算文件哈希",
-      "field_analysis_hash_pages": "計算頁面哈希",
+      "field_analysis_hash_files": "計算檔案雜湊",
+      "field_analysis_hash_pages": "計算頁面雜湊",
       "field_convert_to_cbz": "自動轉換為 CBZ 格式",
-      "field_import_barcode_isbn": "ISBN 條形碼",
-      "field_import_comicinfo_book": "書籍元數據",
+      "field_import_barcode_isbn": "ISBN 條碼",
+      "field_import_comicinfo_book": "書籍元資料",
       "field_import_comicinfo_collections": "收藏",
       "field_import_comicinfo_readlists": "閱讀列表",
-      "field_import_comicinfo_series": "系列元數據",
+      "field_import_comicinfo_series": "系列元資料",
       "field_import_comicinfo_series_append_volume": "在系列標題中添加卷號",
-      "field_import_epub_book": "書籍元數據",
-      "field_import_epub_series": "系列元數據",
+      "field_import_epub_book": "書籍元資料",
+      "field_import_epub_series": "系列元資料",
       "field_import_local_artwork": "本地圖片(插圖)",
-      "field_import_mylar_series": "系列元數據",
+      "field_import_mylar_series": "系列元資料",
       "field_name": "名稱",
-      "field_repair_extensions": "自動修復不正確的文件擴展名",
+      "field_repair_extensions": "自動修復不正確的檔案擴展名",
       "field_root_folder": "根資料夾",
       "field_scanner_empty_trash_after_scan": "每次掃描後自動清理垃圾",
       "field_scanner_force_directory_modified_time": "強制目錄修改時間",
       "field_series_cover": "系列封面",
       "file_browser_dialog_button_confirm": "選擇",
-      "file_browser_dialog_title": "庫的根資料夾",
+      "file_browser_dialog_title": "書庫的根資料夾",
       "label_analysis": "分析",
-      "label_file_management": "文件管理",
-      "label_import_barcode_isbn": "從條形碼中導入 ISBN",
-      "label_import_comicinfo": "導入含有 ComicInfo.xml 的 CBR/CBZ 壓縮包",
-      "label_import_epub": "導入EPUB文件的元數據",
-      "label_import_local": "導入本地媒體",
-      "label_import_mylar": "導入 Mylar 生成的元數據",
+      "label_file_management": "檔案管理",
+      "label_import_barcode_isbn": "從條碼中匯入 ISBN",
+      "label_import_comicinfo": "匯入含有 ComicInfo.xml 的 CBR/CBZ 壓縮包",
+      "label_import_epub": "匯入EPUB檔案的元資料",
+      "label_import_local": "匯入本地媒體",
+      "label_import_mylar": "匯入 Mylar 生成的元資料",
       "label_scanner": "掃描器",
       "label_series_cover": "系列封面",
       "tab_general": "常規",
-      "tab_metadata": "元數據",
+      "tab_metadata": "元資料",
       "tab_options": "選項",
-      "tooltip_scanner_force_modified_time": "如果庫在谷歌雲盤上則啟用",
-      "tooltip_use_resources": "大型庫或老舊硬件上開啟會消耗大量資源"
+      "tooltip_scanner_force_modified_time": "如果書庫在 Google Drive 上則啟用",
+      "tooltip_use_resources": "大型書庫或老舊硬體上開啟會消耗大量資源"
     },
     "edit_readlist": {
       "button_cancel": "取消",
@@ -457,7 +457,7 @@
       "field_manual_ordering": "手動排序",
       "field_name": "名稱",
       "field_summary": "概要",
-      "label_ordering": "默認情况下，閱讀列表中的書籍需要手動排序。您可以禁用手動排序來通過發行日期排序。",
+      "label_ordering": "預設情况下，閱讀列表中的書籍需要手動排序。您可以禁用手動排序來通過發行日期排序。",
       "tab_general": "常規",
       "tab_poster": "海報"
     },
@@ -506,28 +506,28 @@
       "label_allow_only_labels": "“僅允許”標籤",
       "label_exclude_labels": "“排除”標籤",
       "tab_content_restrictions": "内容限制",
-      "tab_shared_libraries": "共享的庫"
+      "tab_shared_libraries": "共享的書庫"
     },
     "empty_trash": {
-      "body": "默認情况下，媒體服務器不會立即删除媒體的信息。這對驅動器暫時斷開連接的情況有所幫助。清理垃圾時，所有丢失媒體相關的信息都會被删除。",
+      "body": "預設情况下，媒體伺服器不會立即删除媒體的信息。這對驅動器暫時斷開連接的情況有所幫助。清理垃圾時，所有丢失媒體相關的信息都會被删除。",
       "button_confirm": "清理",
       "title": "清理書庫垃圾"
     },
     "file_browser": {
       "button_cancel": "取消",
       "button_confirm_default": "選擇",
-      "dialog_title_default": "文件瀏覽",
+      "dialog_title_default": "檔案瀏覽",
       "parent_directory": "父目錄"
     },
     "filename_chooser": {
       "button_choose": "選擇",
-      "field_destination_filename": "目標文件名",
-      "label_source_filename": "源文件名",
+      "field_destination_filename": "目標檔案名",
+      "label_source_filename": "源檔案名",
       "table": {
-        "existing_file": "現有文件",
+        "existing_file": "現有檔案",
         "order": "命令"
       },
-      "title": "目標文件名"
+      "title": "目標檔案名"
     },
     "password_change": {
       "button_cancel": "取消",
@@ -539,9 +539,9 @@
       "field_repeat_password_error": "密碼必須相同。"
     },
     "refresh_library_metadata": {
-      "body": "刷新庫中所有媒體文件的元數據。根據庫的大小，這可能需要很長時間。",
+      "body": "刷新書庫中所有媒體檔案的元資料。根據書庫的大小，這可能需要很長時間。",
       "button_confirm": "刷新",
-      "title": "刷新庫元數據"
+      "title": "刷新書庫元資料"
     },
     "series_picker": {
       "label_search_series": "搜索系列",
@@ -550,8 +550,8 @@
     },
     "server_stop": {
       "button_confirm": "停止",
-      "confirmation_message": "您確定要關閉 Komga 服務器嗎？",
-      "dialog_title": "關閉服務器"
+      "confirmation_message": "您確定要關閉 Komga 伺服器嗎？",
+      "dialog_title": "關閉伺服器"
     },
     "shortcut_help": {
       "label_description": "說明",
@@ -560,12 +560,12 @@
     "transient_book_details": {
       "label_candidate": "候選",
       "label_existing": "現有的",
-      "label_format": "文件格式",
+      "label_format": "檔案格式",
       "label_name": "名稱",
       "label_pages": "頁數",
-      "label_size": "文件大小",
+      "label_size": "檔案大小",
       "pages_table": {
-        "filename": "文件名",
+        "filename": "檔案名",
         "height": "高",
         "index": "索引",
         "media_type": "媒體類型",
@@ -601,7 +601,7 @@
       "size": "大小",
       "total_size": "總大小"
     },
-    "info": "删除重複頁面會修改您的文件。請在使用自動删除之前備份文件並手動删除。",
+    "info": "删除重複頁面會修改您的檔案。請在使用自動删除之前備份檔案並手動删除。",
     "known": "已知",
     "matches_n": "無匹配 | 1 個匹配 | {count} 個匹配",
     "new": "新增",
@@ -610,22 +610,22 @@
     "unknown_size": "未知大小"
   },
   "duplicates": {
-    "file_hash": "文件哈希",
+    "file_hash": "檔案雜湊",
     "size": "大小",
-    "title": "重複文件",
+    "title": "重複檔案",
     "url": "URL"
   },
   "enums": {
     "copy_mode": {
-      "HARDLINK": "硬鏈結/複製文件",
-      "MOVE": "移動文件"
+      "HARDLINK": "硬鏈結/複製檔案",
+      "MOVE": "移動檔案"
     },
     "historical_event_type": {
       "BookConverted": "書籍已轉換",
-      "BookFileDeleted": "書籍文件已删除",
-      "BookImported": "導入的書籍",
+      "BookFileDeleted": "書籍檔案已删除",
+      "BookImported": "匯入的書籍",
       "DuplicatePageDeleted": "重複頁面已删除",
-      "SeriesFolderDeleted": "系列文件夾已删除"
+      "SeriesFolderDeleted": "系列資料夾已删除"
     },
     "media_status": {
       "ERROR": "錯誤",
@@ -652,40 +652,40 @@
       "LAST": "最後一張"
     },
     "series_status": {
-      "ABANDONED": "已放棄",
+      "ABANDONED": "已斷尾",
       "ENDED": "已完結",
       "HIATUS": "有生之年",
       "ONGOING": "連載中"
     }
   },
   "error_codes": {
-    "ERR_1000": "分析期間無法訪問文件",
+    "ERR_1000": "分析期間無法訪問檔案",
     "ERR_1001": "不支持的媒體類型",
-    "ERR_1002": "不支持加密的 RAR 文件",
-    "ERR_1003": "不支持固實壓縮的 RAR 文件",
-    "ERR_1004": "不支持多卷(分卷)的 RAR 文件",
+    "ERR_1002": "不支持加密的 RAR 檔案",
+    "ERR_1003": "不支持固實壓縮的 RAR 檔案",
+    "ERR_1004": "不支持多卷(分卷)的 RAR 檔案",
     "ERR_1005": "分析書籍時出現未知錯誤",
     "ERR_1006": "這本書不包含任何頁面",
     "ERR_1007": "無法分析某些條目",
     "ERR_1008": "獲取書籍條目時出現未知錯誤",
     "ERR_1009": "已存在該名稱的閱讀列表",
-    "ERR_1015": "反序列化 ComicRack CBL 文件时出錯",
+    "ERR_1015": "反序列化 ComicRack CBL 檔案時出錯",
     "ERR_1016": "目錄不可訪問",
-    "ERR_1017": "無法掃描作為現有庫一部分的文件夾",
-    "ERR_1018": "文件未找到",
-    "ERR_1019": "無法導入屬於現有庫的文件",
+    "ERR_1017": "無法掃描作為現有書庫一部分的資料夾",
+    "ERR_1018": "檔案未找到",
+    "ERR_1019": "無法匯入屬於現有書庫的檔案",
     "ERR_1020": "要升级的書籍不屬於提供的系列",
-    "ERR_1021": "目標文件已存在",
-    "ERR_1022": "無法掃描新導入的書籍",
+    "ERR_1021": "目標檔案已存在",
+    "ERR_1022": "無法掃描新匯入的書籍",
     "ERR_1023": "書籍已經在閱讀列表中",
     "ERR_1024": "OAuth2 登入錯誤：沒有 email 屬性",
-    "ERR_1025": "OAuth2 登錄錯誤：没有使用該電子郵件的本地用户",
+    "ERR_1025": "OAuth2 登錄錯誤：没有使用該電子郵件的本地用戶",
     "ERR_1026": "OpenID Connect 登錄錯誤：電子郵件未驗證",
     "ERR_1027": "OpenID Connect 登入錯誤：没有 email_verified 屬性",
-    "ERR_1028": "OpenID Connect 登錄錯誤：没有 email 屬性",
-    "ERR_1029": "ComicRack CBL 文件中没有書籍",
-    "ERR_1030": "ComicRack CBL 文件中没有書名元素",
-    "ERR_1031": "ComicRack CBL 文件中的書籍没有系列或書號"
+    "ERR_1028": "OpenID Connect 錯誤：没有 email 屬性",
+    "ERR_1029": "ComicRack CBL 檔案中没有書籍",
+    "ERR_1030": "ComicRack CBL 檔案中没有書名元素",
+    "ERR_1031": "ComicRack CBL 檔案中的書籍没有系列或書號"
   },
   "filter": {
     "age_rating": "年齡限制",
@@ -694,7 +694,7 @@
     "genre": "風格",
     "in_progress": "正在進行",
     "language": "語言",
-    "library": "庫",
+    "library": "書庫",
     "publisher": "出版商",
     "read": "已讀",
     "release_date": "發行日期",
@@ -718,7 +718,7 @@
   },
   "home": {
     "theme": "主題",
-    "translation": "翻譯"
+    "translation": "語言"
   },
   "library_navigation": {
     "browse": "瀏覽",
@@ -729,7 +729,7 @@
   "login": {
     "create_user_account": "創建帳戶",
     "login": "登入",
-    "unclaimed_html": "該 Komga 服務器尚未激活，您需要創建一個用户帳戶才能訪問它。<br><br>選擇一個 <strong>信箱</strong> 和 <strong>密码</strong> 然後點擊 <strong>創建帳戶</strong>。"
+    "unclaimed_html": "該 Komga 伺服器尚未啟用，您需要創建一個用戶帳戶才能訪問它。<br><br>選擇一個 <strong>信箱</strong> 和 <strong>密码</strong> 然後點擊 <strong>創建帳戶</strong>。"
   },
   "media_analysis": {
     "comment": "註釋",
@@ -747,32 +747,32 @@
     "add_to_collection": "添加到收藏",
     "add_to_readlist": "添加到閱讀列表",
     "analyze": "分析",
-    "bulk_edit_metadata": "批量編輯元數據",
+    "bulk_edit_metadata": "批量編輯元資料",
     "delete": "刪除",
     "deselect_all": "取消選中所有",
     "download_readlist": "下載閱讀列表",
     "download_series": "下載系列",
     "edit": "編輯",
-    "edit_metadata": "編輯元數據",
+    "edit_metadata": "編輯元資料",
     "empty_trash": "清理垃圾",
     "mark_read": "標記為已讀",
     "mark_unread": "標記為未讀",
-    "refresh_metadata": "刷新元數據",
-    "scan_library_files": "掃描庫文件",
+    "refresh_metadata": "刷新元資料",
+    "scan_library_files": "掃描書庫檔案",
     "select_all": "選擇所有"
   },
   "metrics": {
-    "library_books": "每個庫的書籍數",
-    "library_disk_space": "庫磁盤空間",
-    "library_series": "每個庫的系列數",
-    "library_sidecars": "每個庫的邊車",
+    "library_books": "每個書庫的書籍數",
+    "library_disk_space": "書庫磁碟空間",
+    "library_series": "每個書庫的系列數",
+    "library_sidecars": "每個書庫的邊車",
     "tasks_executed": "已執行的任務",
     "tasks_total_time": "任務總時間",
     "title": "性能指標"
   },
   "navigation": {
     "home": "主頁",
-    "libraries": "庫",
+    "libraries": "書庫",
     "logout": "登出"
   },
   "page_not_found": {
@@ -812,12 +812,12 @@
       "button_scan_libraries": "掃描所有書庫",
       "button_shutdown": "關機",
       "notification_tasks_cancelled": "無可取消任務 | 取消了一個任務 | 取消了 {count} 個任務",
-      "section_title": "服務器管理"
+      "section_title": "伺服器管理"
     },
-    "tab_title": "服務器"
+    "tab_title": "伺服器"
   },
   "server_settings": {
-    "server_settings": "服務器設定"
+    "server_settings": "伺服器設定"
   },
   "settings_user": {
     "change_password": "更改密碼",
@@ -832,16 +832,16 @@
     "books_count": "書籍數量",
     "date_added": "添加時間",
     "date_updated": "更新時間",
-    "file_name": "文件名",
-    "file_size": "文件大小",
-    "folder_name": "文件夾名",
+    "file_name": "檔案名",
+    "file_size": "檔案大小",
+    "folder_name": "資料夾名",
     "name": "名稱",
     "number": "序號",
     "release_date": "發佈日期"
   },
   "theme": {
-    "dark": "暗",
-    "light": "亮",
+    "dark": "深色",
+    "light": "淺色",
     "system": "系統"
   },
   "thumbnail_card": {
@@ -852,8 +852,8 @@
     "tooltip_sidecar": "本地插圖",
     "tooltip_to_be_deleted": "將被删除",
     "tooltip_to_be_uploaded": "將被上傳",
-    "tooltip_too_big": "文件太大！",
-    "tooltip_user_uploaded": "用户上傳的"
+    "tooltip_too_big": "檔案太大！",
+    "tooltip_user_uploaded": "用戶上傳的"
   },
   "titles_more": {
     "less": "更少標題",
@@ -873,8 +873,8 @@
     "zero_or_more": "必須為 0 或更大"
   },
   "welcome": {
-    "add_library": "添加庫",
-    "no_libraries_yet": "還没有添加任何庫！",
+    "add_library": "新增書庫",
+    "no_libraries_yet": "還没有新增任何書庫！",
     "welcome_message": "歡迎使用 Komga"
   }
 }
