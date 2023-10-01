@@ -1,4 +1,3 @@
-
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.prefixIfNot
@@ -264,7 +263,12 @@ val migrationDirsSqlite = listOf(
 flyway {
   url = dbSqlite["url"]
   locations = arrayOf("classpath:db/migration/sqlite")
-  placeholders = mapOf("library-file-hashing" to "true")
+  placeholders = mapOf(
+    "library-file-hashing" to "true",
+    "library-scan-startup" to "false",
+    "delete-empty-collections" to "true",
+    "delete-empty-read-lists" to "true",
+  )
 }
 tasks.flywayMigrate {
   // in order to include the Java migrations, flywayClasses must be run before flywayMigrate

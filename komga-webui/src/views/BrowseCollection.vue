@@ -9,7 +9,7 @@
       <v-toolbar-title v-if="collection">
         <span>{{ collection.name }}</span>
         <v-chip label class="mx-4">
-          <span style="font-size: 1.1rem">{{ collection.seriesIds.length }}</span>
+          <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
         <span v-if="collection.ordered"
               class="font-italic text-overline"
@@ -148,7 +148,7 @@ import {
 import Vue from 'vue'
 import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {LIBRARIES_ALL} from '@/types/library'
-import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
+import {ReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {mergeFilterParams, toNameValue} from '@/functions/filter'
 import FilterDrawer from '@/components/FilterDrawer.vue'
@@ -278,7 +278,7 @@ export default Vue.extend({
       return {
         readStatus: {
           values: [
-            {name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+            {name: this.$i18n.t('filter.unread').toString(), value: ReadStatus.UNREAD},
             {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
             {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
           ],
@@ -440,9 +440,6 @@ export default Vue.extend({
 
       this.setWatches()
     },
-    // reloadSeries: throttle(function (this: any) {
-    //   this.loadSeries(this.collectionId)
-    // }, 1000),
     async loadPage(collectionId: string, page: number) {
       this.selectedSeries = []
 
@@ -461,7 +458,7 @@ export default Vue.extend({
       })
 
       const complete = parseBooleanFilter(this.filters.complete)
-      const seriesPage = await this.$komgaCollections.getSeries(collectionId, pageRequest, this.filters.library, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)
+      const seriesPage = await this.$komgaCollections.getSeries(collectionId, pageRequest, this.filters.library, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
@@ -474,21 +471,6 @@ export default Vue.extend({
     reloadPage: throttle(function (this: any) {
       this.loadPage(this.collectionId, this.page)
     }, 1000),
-    // async loadSeries(collectionId: string) {
-    //   let authorsFilter = [] as AuthorDto[]
-    //   authorRoles.forEach((role: string) => {
-    //     if (role in this.filters) this.filters[role].forEach((name: string) => authorsFilter.push({
-    //       name: name,
-    //       role: role,
-    //     }))
-    //   })
-    //
-    //   const complete = parseBooleanFilter(this.filters.complete)
-    //   this.series = (await this.$komgaCollections.getSeries(collectionId, {unpaged: true} as PageRequest, this.filters.library, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete)).content
-    //   this.series.forEach((x: SeriesDto) => x.context = {origin: ContextOrigin.COLLECTION, id: collectionId})
-    //   this.seriesCopy = [...this.series]
-    //   this.selectedSeries = []
-    // },
     async loadCollection(collectionId: string) {
       this.$komgaCollections.getOneCollection(collectionId)
         .then(v => this.collection = v)

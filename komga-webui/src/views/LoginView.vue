@@ -48,6 +48,16 @@
         </v-row>
 
         <v-row>
+          <v-col>
+            <v-checkbox v-model="rememberMe"
+                        :label="$t('common.remember-me')"
+                        hide-details
+                        class="mt-0"
+            />
+          </v-col>
+        </v-row>
+
+        <v-row>
           <v-col cols="auto">
             <v-btn color="primary"
                    type="submit"
@@ -183,6 +193,15 @@ export default Vue.extend({
       },
     },
 
+    rememberMe: {
+      get: function (): boolean {
+        return this.$store.state.persistedState.rememberMe
+      },
+      set: function (value: boolean): void {
+        this.$store.commit('setRememberMe', value)
+      },
+    },
+
     themes(): object[] {
       return [
         {text: this.$i18n.t(Theme.LIGHT), value: Theme.LIGHT},
@@ -260,6 +279,7 @@ export default Vue.extend({
             {
               login: this.form.login,
               password: this.form.password,
+              rememberMe: this.rememberMe,
             })
 
           await this.$store.dispatch('getLibraries')

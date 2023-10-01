@@ -134,16 +134,16 @@ jobs:
           java-package: 'jdk'
           distribution: 'temurin'
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -167,7 +167,7 @@ jobs:
           tag: 'v${{ needs.version.outputs.version_next }}'
           default_author: github_actions
       - name: Run Conveyor
-        uses: hydraulic-software/conveyor/actions/build@v11.1
+        uses: hydraulic-software/conveyor/actions/build@v11.3
         with:
           command: -f conveyor.ci.conf make site -o ./output/release
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
@@ -201,7 +201,7 @@ jobs:
             build/jreleaser/trace.log
             build/jreleaser/output.properties
       - name: Run Conveyor - Microsoft Store
-        uses: hydraulic-software/conveyor/actions/build@v11.1
+        uses: hydraulic-software/conveyor/actions/build@v11.3
         with:
           command: -f conveyor.msstore.ci.conf make site -o ./output/msstore
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}

@@ -29,6 +29,7 @@ import komgaPageHashes from './plugins/komga-pagehashes.plugin'
 import komgaMetrics from './plugins/komga-metrics.plugin'
 import komgaHistory from './plugins/komga-history.plugin'
 import komgaAnnouncements from './plugins/komga-announcements.plugin'
+import komgaSettings from './plugins/komga-settings.plugin'
 import vuetify from './plugins/vuetify'
 import logger from './plugins/logger.plugin'
 import './public-path'
@@ -74,6 +75,7 @@ Vue.use(komgaPageHashes, {http: Vue.prototype.$http})
 Vue.use(komgaMetrics, {http: Vue.prototype.$http})
 Vue.use(komgaHistory, {http: Vue.prototype.$http})
 Vue.use(komgaAnnouncements, {http: Vue.prototype.$http})
+Vue.use(komgaSettings, {http: Vue.prototype.$http})
 
 Vue.config.productionTip = false
 

@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
+import org.gotson.komga.application.scheduler.LibraryScanScheduler
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DomainEvent
@@ -27,6 +28,7 @@ class LibraryLifecycle(
   private val taskEmitter: TaskEmitter,
   private val eventPublisher: EventPublisher,
   private val transactionTemplate: TransactionTemplate,
+  private val libraryScanScheduler: LibraryScanScheduler,
 ) {
 
   @Throws(
@@ -52,13 +54,31 @@ class LibraryLifecycle(
   fun updateLibrary(toUpdate: Library) {
     logger.info { "Updating library: ${toUpdate.id}" }
 
-    val existing = libraryRepository.findAll().filter { it.id != toUpdate.id }
-    checkLibraryValidity(toUpdate, existing)
+    val libraries = libraryRepository.findAll()
+    val otherLibraries = libraries.filter { it.id != toUpdate.id }
+    val current = libraries.first { it.id == toUpdate.id }
+    checkLibraryValidity(toUpdate, otherLibraries)
 
     libraryRepository.update(toUpdate)
-    taskEmitter.scanLibrary(toUpdate.id)
+
+    if (current.scanInterval != toUpdate.scanInterval)
+      libraryScanScheduler.scheduleScan(toUpdate)
+
+    if (checkLibraryShouldRescan(current, toUpdate))
+      taskEmitter.scanLibrary(toUpdate.id)
 
     eventPublisher.publishEvent(DomainEvent.LibraryUpdated(toUpdate))
+  }
+
+  private fun checkLibraryShouldRescan(existing: Library, updated: Library): Boolean {
+    if (existing.root != updated.root) return true
+    if (existing.oneshotsDirectory != updated.oneshotsDirectory) return true
+    if (existing.scanCbx != updated.scanCbx) return true
+    if (existing.scanPdf != updated.scanPdf) return true
+    if (existing.scanEpub != updated.scanEpub) return true
+    if (existing.scanForceModifiedTime != updated.scanForceModifiedTime) return true
+    if (existing.scanDirectoryExclusions != updated.scanDirectoryExclusions) return true
+    return false
   }
 
   private fun checkLibraryValidity(library: Library, existing: Collection<Library>) {

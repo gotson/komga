@@ -68,6 +68,13 @@ class LibraryDaoTest(
         hashFiles = false,
         hashPages = true,
         analyzeDimensions = false,
+        scanForceModifiedTime = true,
+        scanCbx = false,
+        scanEpub = false,
+        scanPdf = false,
+        scanInterval = Library.ScanInterval.DAILY,
+        scanOnStartup = true,
+        scanDirectoryExclusions = setOf("a", "b"),
       )
     }
 
@@ -99,6 +106,13 @@ class LibraryDaoTest(
     assertThat(modified.hashFiles).isEqualTo(updated.hashFiles)
     assertThat(modified.hashPages).isEqualTo(updated.hashPages)
     assertThat(modified.analyzeDimensions).isEqualTo(updated.analyzeDimensions)
+    assertThat(modified.scanForceModifiedTime).isEqualTo(updated.scanForceModifiedTime)
+    assertThat(modified.scanCbx).isEqualTo(updated.scanCbx)
+    assertThat(modified.scanEpub).isEqualTo(updated.scanEpub)
+    assertThat(modified.scanPdf).isEqualTo(updated.scanPdf)
+    assertThat(modified.scanInterval).isEqualTo(updated.scanInterval)
+    assertThat(modified.scanOnStartup).isEqualTo(updated.scanOnStartup)
+    assertThat(modified.scanDirectoryExclusions).containsExactlyInAnyOrderElementsOf(updated.scanDirectoryExclusions)
   }
 
   @Test

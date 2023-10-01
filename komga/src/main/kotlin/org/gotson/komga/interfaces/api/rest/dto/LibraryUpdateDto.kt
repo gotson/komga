@@ -25,6 +25,16 @@ class LibraryUpdateDto {
   val importBarcodeIsbn: Boolean? = null
 
   val scanForceModifiedTime: Boolean? = null
+  val scanInterval: ScanIntervalDto? = null
+  val scanOnStartup: Boolean? = null
+  val scanCbx: Boolean? = null
+  val scanPdf: Boolean? = null
+  val scanEpub: Boolean? = null
+  var scanDirectoryExclusions: Set<String>?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
   val repairExtensions: Boolean? = null
   val convertToCbz: Boolean? = null
   val emptyTrashAfterScan: Boolean? = null

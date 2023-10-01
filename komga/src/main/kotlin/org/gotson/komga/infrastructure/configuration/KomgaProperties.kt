@@ -25,14 +25,19 @@ class KomgaProperties {
     }
   }
 
+  @Deprecated("Moved to library options since 1.5.0")
   var librariesScanCron: String = ""
 
+  @Deprecated("Moved to library options since 1.5.0")
   var librariesScanStartup: Boolean = false
 
+  @Deprecated("Moved to library options since 1.5.0")
   var librariesScanDirectoryExclusions: List<String> = emptyList()
 
+  @Deprecated("Moved to server settings since 1.5.0")
   var deleteEmptyReadLists: Boolean = true
 
+  @Deprecated("Moved to server settings since 1.5.0")
   var deleteEmptyCollections: Boolean = true
 
   @Positive
@@ -41,8 +46,10 @@ class KomgaProperties {
   @Positive
   var thumbnailHeight: Int = 300
 
+  @Deprecated("Moved to server settings since 1.5.0")
   var rememberMe = RememberMe()
 
+  @Deprecated("Removed since 1.5.0", ReplaceWith("server.servlet.session.timeout"))
   @DurationUnit(ChronoUnit.SECONDS)
   var sessionTimeout: Duration = Duration.ofMinutes(30)
 
@@ -64,10 +71,13 @@ class KomgaProperties {
   @Positive
   var taskConsumersMax: Int = 1
 
+  @Deprecated("Moved to server settings since 1.5.0")
   class RememberMe {
+    @Deprecated("Moved to server settings since 1.5.0")
     @get:NotBlank
     var key: String? = null
 
+    @Deprecated("Moved to server settings since 1.5.0")
     @DurationUnit(ChronoUnit.SECONDS)
     var validity: Duration = Duration.ofDays(14)
   }

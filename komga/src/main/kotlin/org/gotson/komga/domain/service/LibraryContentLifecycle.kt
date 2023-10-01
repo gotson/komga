@@ -25,7 +25,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.language.notEquals
 import org.gotson.komga.language.toIndexedMap
@@ -49,7 +49,7 @@ class LibraryContentLifecycle(
   private val collectionLifecycle: SeriesCollectionLifecycle,
   private val readListLifecycle: ReadListLifecycle,
   private val sidecarRepository: SidecarRepository,
-  private val komgaProperties: KomgaProperties,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
   private val taskEmitter: TaskEmitter,
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
@@ -63,10 +63,18 @@ class LibraryContentLifecycle(
 ) {
 
   fun scanRootFolder(library: Library, scanDeep: Boolean = false) {
-    logger.info { "Updating library: $library" }
+    logger.info { "Scan root folder for library: $library" }
     measureTime {
       val scanResult = try {
-        fileSystemScanner.scanRootFolder(Paths.get(library.root.toURI()), library.scanForceModifiedTime, library.oneshotsDirectory)
+        fileSystemScanner.scanRootFolder(
+          Paths.get(library.root.toURI()),
+          library.scanForceModifiedTime,
+          library.oneshotsDirectory,
+          library.scanCbx,
+          library.scanPdf,
+          library.scanEpub,
+          library.scanDirectoryExclusions,
+        )
       } catch (e: DirectoryNotFoundException) {
         library.copy(unavailableDate = LocalDateTime.now()).let {
           libraryRepository.update(it)
@@ -206,6 +214,7 @@ class LibraryContentLifecycle(
                   Sidecar.Type.METADATA -> taskEmitter.refreshSeriesMetadata(series.id)
                 }
               }
+
             Sidecar.Source.BOOK ->
               bookRepository.findNotDeletedByLibraryIdAndUrlOrNull(library.id, newSidecar.parentUrl)?.let { book ->
                 logger.info { "Sidecar changed on disk (${newSidecar.url}, refresh Book for ${newSidecar.type}: $book" }
@@ -393,11 +402,11 @@ class LibraryContentLifecycle(
   }
 
   private fun cleanupEmptySets() {
-    if (komgaProperties.deleteEmptyCollections) {
+    if (komgaSettingsProvider.deleteEmptyCollections) {
       collectionLifecycle.deleteEmptyCollections()
     }
 
-    if (komgaProperties.deleteEmptyReadLists) {
+    if (komgaSettingsProvider.deleteEmptyReadLists) {
       readListLifecycle.deleteEmptyReadLists()
     }
   }

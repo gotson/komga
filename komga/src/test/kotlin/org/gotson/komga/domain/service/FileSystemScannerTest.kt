@@ -6,18 +6,16 @@ import org.apache.commons.io.FilenameUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.DirectoryNotFoundException
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.stream.Stream
 
 class FileSystemScannerTest {
-
-  private val komgaProperties = KomgaProperties().apply {
-    librariesScanDirectoryExclusions = listOf("#recycle")
-  }
-
-  private val scanner = FileSystemScanner(komgaProperties, emptyList(), emptyList())
+  private val scanner = FileSystemScanner(emptyList(), emptyList())
 
   @Test
   fun `given unavailable root directory when scanning then throw exception`() {
@@ -112,6 +110,51 @@ class FileSystemScannerTest {
       assertThat(books).hasSize(1)
       assertThat(books.map { it.name }).containsExactly("file1")
     }
+  }
+
+  @ParameterizedTest
+  @MethodSource("libraryScanFileTypesArguments")
+  fun `given directory when scanning excluding some files then return a series excluding those files as books`(
+    sourceFiles: List<String>,
+    scanCbz: Boolean,
+    scanPdf: Boolean,
+    scanEpub: Boolean,
+    resultBookNames: List<String>,
+  ) {
+    Jimfs.newFileSystem(Configuration.unix()).use { fs ->
+      // given
+      val root = fs.getPath("/root")
+      Files.createDirectory(root)
+
+      sourceFiles.forEach { Files.createFile(root.resolve(it)) }
+
+      // when
+      val scan = scanner.scanRootFolder(root, scanCbx = scanCbz, scanPdf = scanPdf, scanEpub = scanEpub).series
+
+      // then
+      if (resultBookNames.isNotEmpty()) {
+        assertThat(scan).hasSize(1)
+        val books = scan.getValue(scan.keys.first())
+        assertThat(books).hasSameSizeAs(resultBookNames)
+        assertThat(books.map { it.name }).containsExactlyInAnyOrderElementsOf(resultBookNames)
+      } else {
+        assertThat(scan).isEmpty()
+      }
+    }
+  }
+
+  private fun libraryScanFileTypesArguments(): Stream<Arguments> {
+    val sourceFiles = listOf("cbz.cbz", "cbr.cbr", "zip.zip", "rar.rar", "pdf.pdf", "epub.epub")
+    return Stream.of(
+      Arguments.of(sourceFiles, true, true, true, listOf("cbz", "cbr", "zip", "rar", "pdf", "epub")),
+      Arguments.of(sourceFiles, false, true, true, listOf("pdf", "epub")),
+      Arguments.of(sourceFiles, true, false, true, listOf("cbz", "cbr", "zip", "rar", "epub")),
+      Arguments.of(sourceFiles, true, true, false, listOf("cbz", "cbr", "zip", "rar", "pdf")),
+      Arguments.of(sourceFiles, false, false, true, listOf("epub")),
+      Arguments.of(sourceFiles, true, false, false, listOf("cbz", "cbr", "zip", "rar")),
+      Arguments.of(sourceFiles, false, true, false, listOf("pdf")),
+      Arguments.of(sourceFiles, false, false, false, emptyList<String>()),
+    )
   }
 
   @Test
@@ -245,7 +288,7 @@ class FileSystemScannerTest {
       makeSubDir(recycle, "subtrash", listOf("trash2.cbz"))
 
       // when
-      val scan = scanner.scanRootFolder(root).series
+      val scan = scanner.scanRootFolder(root, directoryExclusions = setOf("#recycle")).series
 
       // then
       assertThat(scan).hasSize(2)
