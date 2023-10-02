@@ -199,16 +199,19 @@
     "books_n": "Kein Buch | 1 Buch | {count} Bücher",
     "books_total": "{count} / {total} Bücher",
     "cancel": "Abbrechen",
+    "cbx": "Comic Buch Archive",
     "choose_image": "Wähle ein Bild aus",
     "close": "Schließen",
     "collections": "Sammlungen",
     "create": "Erstellen",
     "delete": "Löschen",
+    "discard": "Verwerfen",
     "disk_space": "Festplattenspeicher",
     "dismiss": "Verwerfen",
     "download": "Herunterladen",
     "drag_drop": "Drag and Drop",
     "email": "E-Mail",
+    "epub": "EPUB",
     "filename": "Dateiname",
     "filter_no_matches": "Die Suchkriterien haben kein Ergebnis geliefert",
     "genre": "Genre",
@@ -222,6 +225,7 @@
     "lock_all": "Alle sperren",
     "n_selected": "{count} markiert",
     "nothing_to_show": "Nichts anzuzeigen",
+    "oneshot": "One-Shot",
     "outdated": "Nicht mehr aktuell",
     "page": "Seite",
     "page_number": "Seitennummer",
@@ -229,12 +233,14 @@
     "pages_left": "Keine weiteren Seiten | 1 Seite noch übrig | Noch {count} Seiten übrig",
     "pages_n": "Keine Seite | 1 Seite | {count} Seiten",
     "password": "Passwort",
+    "pdf": "PDF",
     "pending_tasks": "Keine ausstehenden Aufgaben | 1 ausstehende Aufgabe | {count} ausstehende Aufgaben",
     "publisher": "Verlag",
     "read": "Lesen",
     "read_on": "Am {date} gelesen",
     "readlist": "Leseliste",
     "readlists": "Leseliste",
+    "remember-me": "Erinnere Dich an mich",
     "required": "Notwendig",
     "reset_filters": "Filter Zurücksetzen",
     "roles": "Rollen",
@@ -428,10 +434,13 @@
       "field_import_local_artwork": "Lokale Artwork",
       "field_import_mylar_series": "Serien Metadaten",
       "field_name": "Name",
+      "field_oneshotsdirectory": "One-Shots Verzeichnis",
       "field_repair_extensions": "Falsche Dateierweiterungen automatisch reparieren",
       "field_root_folder": "Stammordner",
+      "field_scan_interval": "Scan Interval",
       "field_scanner_empty_trash_after_scan": "Automatische Bereinigung nach jedem Scan",
       "field_scanner_force_directory_modified_time": "Erzwinge das Durchsuchen des Verzeichnis auf Basis des Zeitstempels",
+      "field_scanner_scan_startup": "Prüfe (Scan) beim Hochfahren",
       "field_series_cover": "Serien Titelbild",
       "file_browser_dialog_button_confirm": "Auswählen",
       "file_browser_dialog_title": "Bibliothekshauptverzeichnis",
@@ -442,11 +451,14 @@
       "label_import_epub": "Importiere für EPUB Dateien die Metadaten",
       "label_import_local": "Importiere lokale Medienbestände",
       "label_import_mylar": "Importiere Mylar generierte Metadaten",
+      "label_scan_directory_exclusions": "Ausschlusskriterien für das Verzeichnis",
+      "label_scan_types": "Prüfe (Scan) auf diese Dateitypen",
       "label_scanner": "Scanner",
       "label_series_cover": "Serien Titelbild",
       "tab_general": "Allgemein",
       "tab_metadata": "Metadaten",
       "tab_options": "Optionen",
+      "tooltip_oneshotsdirectory": "Nicht auswählen um es zu deaktivieren",
       "tooltip_scanner_force_modified_time": "Einschalten, wenn es sich um eine Bibliothek auf Google Drive handelt",
       "tooltip_use_resources": "Diese Option kann bei großen Bibliotheken oder langsamer Hardware lange benötigen und viele Ressourcen belegen"
     },
@@ -648,6 +660,14 @@
       "VERTICAL": "Vertikal",
       "WEBTOON": "Webtoon"
     },
+    "scan_interval": {
+      "DAILY": "Täglich",
+      "DISABLED": "Deaktiviert",
+      "EVERY_12H": "Alle 12 Stunden",
+      "EVERY_6H": "Alle 6 Stunden",
+      "HOURLY": "Stündlich",
+      "WEEKLY": "Wöchentlich"
+    },
     "series_cover": {
       "FIRST": "Erstes",
       "FIRST_UNREAD_OR_FIRST": "Erstes ungelesene oder Erstes",
@@ -698,6 +718,7 @@
     "in_progress": "In Bearbeitung",
     "language": "Sprache",
     "library": "Bibliothek",
+    "oneshot": "One-Shot",
     "publisher": "Verlag",
     "read": "Gelesen",
     "release_date": "Veröffentlichungsdatum",
@@ -823,6 +844,10 @@
     "tab_title": "Server"
   },
   "server_settings": {
+    "label_delete_empty_collections": "Lösche leere Kollectionen nach der Prüfung (Scan)",
+    "label_delete_empty_readlists": "Lösche leere Leselisten nach der Überprüfung (Scan)",
+    "label_rememberme_duration": "Laufzeit der Erinnere dich an mich Funktion (in Tagen)",
+    "requires_restart": "Neustart erforderlich um die Änderung nutzbar zu machen",
     "server_settings": "Servereinstellungen"
   },
   "settings_user": {
@@ -876,6 +901,7 @@
     "users": "Benutzer"
   },
   "validation": {
+    "one_or_more": "Es muss mehr als 1 sein",
     "zero_or_more": "Muss größer oder gleich 0 sein"
   },
   "welcome": {
