@@ -199,16 +199,19 @@
     "books_n": "无书籍 | 1 本书 | {count} 本书",
     "books_total": "{count} / 共 {total} 本书",
     "cancel": "取消",
+    "cbx": "漫画书存档",
     "choose_image": "选择图片",
     "close": "关闭",
     "collections": "收藏",
     "create": "创建",
     "delete": "删除",
+    "discard": "弃置",
     "disk_space": "磁盘空间",
     "dismiss": "解除",
     "download": "下载",
     "drag_drop": "拖放",
     "email": "邮箱",
+    "epub": "Epub",
     "filename": "文件名",
     "filter_no_matches": "过滤器没有匹配的结果",
     "genre": "风格",
@@ -218,7 +221,7 @@
     "go_to_series": "转到系列",
     "library": "书库",
     "locale_name": "简体中文",
-    "locale_rtl": "false",
+    "locale_rtl": "错误",
     "lock_all": "锁定全部",
     "n_selected": "已选择 {count}",
     "nothing_to_show": "没有什么可显示",
@@ -230,12 +233,14 @@
     "pages_left": "无剩余页 | 剩余 1 页 | 剩余 {count} 页",
     "pages_n": "无页面 | 1 页 | {count} 页",
     "password": "密码",
+    "pdf": "PDF",
     "pending_tasks": "无挂起任务 | 1个挂起任务 | {count} 个挂起任务",
     "publisher": "出版商",
     "read": "阅读",
     "read_on": "于 {date} 阅读",
     "readlist": "阅读列表",
     "readlists": "阅读列表",
+    "remember-me": "记住账号",
     "required": "必填",
     "reset_filters": "重置过滤器",
     "roles": "角色",
@@ -432,8 +437,10 @@
       "field_oneshotsdirectory": "一键目录",
       "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
+      "field_scan_interval": "扫描间隔",
       "field_scanner_empty_trash_after_scan": "每次扫描后自动清理垃圾",
       "field_scanner_force_directory_modified_time": "强制目录修改时间",
+      "field_scanner_scan_startup": "启动时扫描",
       "field_series_cover": "系列封面",
       "file_browser_dialog_button_confirm": "选择",
       "file_browser_dialog_title": "库的根文件夹",
@@ -444,6 +451,8 @@
       "label_import_epub": "导入EPUB文件的元数据",
       "label_import_local": "导入本地媒体",
       "label_import_mylar": "导入 Mylar 生成的元数据",
+      "label_scan_directory_exclusions": "目录排除",
+      "label_scan_types": "扫描文件类型",
       "label_scanner": "扫描器",
       "label_series_cover": "系列封面",
       "tab_general": "常规",
@@ -651,6 +660,14 @@
       "VERTICAL": "垂直模式",
       "WEBTOON": "Webtoon 模式"
     },
+    "scan_interval": {
+      "DAILY": "每日",
+      "DISABLED": "Disabled",
+      "EVERY_12H": "每隔 12 小时",
+      "EVERY_6H": "每隔6小时",
+      "HOURLY": "每小时",
+      "WEEKLY": "每周"
+    },
     "series_cover": {
       "FIRST": "第一张",
       "FIRST_UNREAD_OR_FIRST": "第一张未读或第一张封面",
@@ -827,6 +844,10 @@
     "tab_title": "服务器"
   },
   "server_settings": {
+    "label_delete_empty_collections": "扫描后删除空的收藏",
+    "label_delete_empty_readlists": "扫描后删除空的阅读列表",
+    "label_rememberme_duration": "记住我的持续时间（天数）",
+    "requires_restart": "需要重启才能生效",
     "server_settings": "服务器设置"
   },
   "settings_user": {
@@ -880,6 +901,7 @@
     "users": "用户"
   },
   "validation": {
+    "one_or_more": "必须为 1 个或更多",
     "zero_or_more": "必须为 0 或更大"
   },
   "welcome": {
