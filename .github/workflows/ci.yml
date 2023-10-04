@@ -209,7 +209,7 @@ jobs:
       - name: Run Conveyor - Microsoft Store
         uses: hydraulic-software/conveyor/actions/build@v11.3
         with:
-          command: -f conveyor.msstore.ci.conf make site -o ./output/msstore
+          command: -f conveyor.msstore.ci.conf make ms-store-release -o ./output/msstore
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
