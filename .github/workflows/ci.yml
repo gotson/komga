@@ -160,6 +160,8 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: jreleaserChangelog
+        env:
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release commit and push
         uses: EndBug/add-and-commit@v9
         with:
