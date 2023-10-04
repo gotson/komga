@@ -254,7 +254,7 @@ sourceSets {
 }
 
 val dbSqlite = mapOf(
-  "url" to "jdbc:sqlite:${project.buildDir}/generated/flyway/database.sqlite",
+  "url" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/database.sqlite",
 )
 val migrationDirsSqlite = listOf(
   "$projectDir/src/flyway/resources/db/migration/sqlite",
@@ -274,10 +274,10 @@ tasks.flywayMigrate {
   // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
   dependsOn("flywayClasses")
   migrationDirsSqlite.forEach { inputs.dir(it) }
-  outputs.dir("${project.buildDir}/generated/flyway")
+  outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway")
   doFirst {
     delete(outputs.files)
-    mkdir("${project.buildDir}/generated/flyway")
+    mkdir("${project.layout.buildDirectory.get()}/generated/flyway")
   }
   mixed = true
 }
