@@ -17,8 +17,6 @@ kotlin {
 
 dependencies {
   implementation(project(":komga"))
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.1"))
-  implementation("org.springframework.boot:spring-boot-starter-web")
 
   implementation(compose.desktop.common)
 
