@@ -4,8 +4,7 @@ plugins {
     kotlin("plugin.spring")
   }
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
-  id("org.jetbrains.compose") version "1.4.3"
-  id("dev.hydraulic.conveyor") version "1.5"
+  id("org.jetbrains.compose") version "1.5.2"
   id("dev.hydraulic.conveyor") version "1.6"
   application
 }
