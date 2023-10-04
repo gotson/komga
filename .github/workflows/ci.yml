@@ -73,6 +73,8 @@ jobs:
       - name: npm build
         working-directory: komga-webui
         run: npm run build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
       - name: npm test
         working-directory: komga-webui
         run: npm run test:unit
@@ -152,6 +154,8 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: :komga:prepareThymeLeaf :komga:bootJar :komga-tray:jar
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
       - name: Generate OpenAPI docs
         uses: gradle/gradle-build-action@v2
         with:
