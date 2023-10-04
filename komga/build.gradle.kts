@@ -65,7 +65,7 @@ dependencies {
   implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
   implementation("io.hawt:hawtio-springboot:2.17.4")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
