@@ -173,7 +173,7 @@ jobs:
           tag: 'v${{ needs.version.outputs.version_next }}'
           default_author: github_actions
       - name: Run Conveyor
-        uses: hydraulic-software/conveyor/actions/build@v11.3
+        uses: hydraulic-software/conveyor/actions/build@v11.4
         with:
           command: -f conveyor.ci.conf make site -o ./output/release
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
