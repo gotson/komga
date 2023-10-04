@@ -2310,6 +2310,67 @@
         }
       }
     },
+    "/api/v1/settings": {
+      "get": {
+        "tags": [
+          "settings-controller"
+        ],
+        "operationId": "getSettings",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingsDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "settings-controller"
+        ],
+        "operationId": "updateSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/api/v1/series/{seriesId}/metadata": {
       "patch": {
         "tags": [
@@ -4609,6 +4670,18 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "Some very limited server driven content negotiation is handled. If a book is a PDF book, and the Accept header contains \u0027application/pdf\u0027 as a more specific type than other \u0027image/\u0027 types, a raw PDF page will be returned.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/MediaType"
+              }
+            }
           }
         ],
         "responses": {
@@ -4681,6 +4754,18 @@
             "schema": {
               "type": "boolean",
               "default": false
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "Some very limited server driven content negotiation is handled. If a book is a PDF book, and the Accept header contains \u0027application/pdf\u0027 as a more specific type than other \u0027image/\u0027 types, a raw PDF page will be returned.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/MediaType"
+              }
             }
           }
         ],
@@ -9324,6 +9409,29 @@
           "scanForceModifiedTime": {
             "type": "boolean"
           },
+          "scanInterval": {
+            "type": "string",
+            "enum": [
+              "DISABLED",
+              "HOURLY",
+              "EVERY_6H",
+              "EVERY_12H",
+              "DAILY",
+              "WEEKLY"
+            ]
+          },
+          "scanOnStartup": {
+            "type": "boolean"
+          },
+          "scanCbx": {
+            "type": "boolean"
+          },
+          "scanPdf": {
+            "type": "boolean"
+          },
+          "scanEpub": {
+            "type": "boolean"
+          },
           "repairExtensions": {
             "type": "boolean"
           },
@@ -9353,6 +9461,13 @@
           },
           "oneshotsDirectory": {
             "type": "string"
+          },
+          "scanDirectoryExclusions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "description": "Fields to update. You can omit fields you don\u0027t want to update."
@@ -9858,7 +9973,13 @@
           "name",
           "repairExtensions",
           "root",
+          "scanCbx",
+          "scanDirectoryExclusions",
+          "scanEpub",
           "scanForceModifiedTime",
+          "scanInterval",
+          "scanOnStartup",
+          "scanPdf",
           "seriesCover"
         ],
         "type": "object",
@@ -9901,6 +10022,36 @@
           },
           "scanForceModifiedTime": {
             "type": "boolean"
+          },
+          "scanInterval": {
+            "type": "string",
+            "enum": [
+              "DISABLED",
+              "HOURLY",
+              "EVERY_6H",
+              "EVERY_12H",
+              "DAILY",
+              "WEEKLY"
+            ]
+          },
+          "scanOnStartup": {
+            "type": "boolean"
+          },
+          "scanCbx": {
+            "type": "boolean"
+          },
+          "scanPdf": {
+            "type": "boolean"
+          },
+          "scanEpub": {
+            "type": "boolean"
+          },
+          "scanDirectoryExclusions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "repairExtensions": {
             "type": "boolean"
@@ -9955,7 +10106,13 @@
           "name",
           "repairExtensions",
           "root",
+          "scanCbx",
+          "scanDirectoryExclusions",
+          "scanEpub",
           "scanForceModifiedTime",
+          "scanInterval",
+          "scanOnStartup",
+          "scanPdf",
           "seriesCover",
           "unavailable"
         ],
@@ -10002,6 +10159,36 @@
           },
           "scanForceModifiedTime": {
             "type": "boolean"
+          },
+          "scanInterval": {
+            "type": "string",
+            "enum": [
+              "DISABLED",
+              "HOURLY",
+              "EVERY_6H",
+              "EVERY_12H",
+              "DAILY",
+              "WEEKLY"
+            ]
+          },
+          "scanOnStartup": {
+            "type": "boolean"
+          },
+          "scanCbx": {
+            "type": "boolean"
+          },
+          "scanPdf": {
+            "type": "boolean"
+          },
+          "scanEpub": {
+            "type": "boolean"
+          },
+          "scanDirectoryExclusions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "repairExtensions": {
             "type": "boolean"
@@ -10279,8 +10466,12 @@
       "UserUpdateDto": {
         "type": "object",
         "properties": {
-          "ageRestriction": {
-            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "labelsAllow": {
             "uniqueItems": true,
@@ -10296,15 +10487,11 @@
               "type": "string"
             }
           },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
+          },
           "sharedLibraries": {
             "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
-          },
-          "roles": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -10316,6 +10503,24 @@
         "properties": {
           "password": {
             "type": "string"
+          }
+        }
+      },
+      "SettingsUpdateDto": {
+        "type": "object",
+        "properties": {
+          "deleteEmptyCollections": {
+            "type": "boolean"
+          },
+          "deleteEmptyReadLists": {
+            "type": "boolean"
+          },
+          "rememberMeDurationDays": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "renewRememberMeKey": {
+            "type": "boolean"
           }
         }
       },
@@ -10410,17 +10615,10 @@
               "type": "string"
             }
           },
-          "sharingLabels": {
-            "uniqueItems": true,
+          "links": {
             "type": "array",
             "items": {
-              "type": "string"
-            }
-          },
-          "alternateTitles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
+              "$ref": "#/components/schemas/WebLinkUpdateDto"
             }
           },
           "readingDirection": {
@@ -10436,17 +10634,24 @@
             "type": "integer",
             "format": "int32"
           },
+          "genres": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "totalBookCount": {
             "type": "integer",
             "format": "int32"
           },
-          "links": {
+          "alternateTitles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WebLinkUpdateDto"
+              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
             }
           },
-          "genres": {
+          "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -10582,11 +10787,7 @@
               "type": "string"
             }
           },
-          "releaseDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "summary": {
+          "isbn": {
             "type": "string"
           },
           "links": {
@@ -10601,8 +10802,12 @@
               "$ref": "#/components/schemas/AuthorUpdateDto"
             }
           },
-          "isbn": {
+          "summary": {
             "type": "string"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date"
           }
         },
         "description": "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update."
@@ -11145,6 +11350,42 @@
           }
         }
       },
+      "MediaType": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "subtype": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "qualityValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "concrete": {
+            "type": "boolean"
+          },
+          "wildcardType": {
+            "type": "boolean"
+          },
+          "wildcardSubtype": {
+            "type": "boolean"
+          },
+          "subtypeSuffix": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          }
+        }
+      },
       "AuthenticationActivityDto": {
         "required": [
           "dateTime",
@@ -11190,18 +11431,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -11213,12 +11444,22 @@
               "$ref": "#/components/schemas/AuthenticationActivityDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -11228,13 +11469,6 @@
       "PageableObject": {
         "type": "object",
         "properties": {
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "offset": {
-            "type": "integer",
-            "format": "int64"
-          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -11243,24 +11477,31 @@
             "type": "integer",
             "format": "int32"
           },
+          "paged": {
+            "type": "boolean"
+          },
           "unpaged": {
             "type": "boolean"
           },
-          "paged": {
-            "type": "boolean"
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           }
         }
       },
       "SortObject": {
         "type": "object",
         "properties": {
-          "empty": {
+          "sorted": {
             "type": "boolean"
           },
           "unsorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "empty": {
             "type": "boolean"
           }
         }
@@ -11328,18 +11569,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -11351,15 +11582,45 @@
               "$ref": "#/components/schemas/AuthorDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
           },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "SettingsDto": {
+        "required": [
+          "deleteEmptyCollections",
+          "deleteEmptyReadLists",
+          "rememberMeDurationDays"
+        ],
+        "type": "object",
+        "properties": {
+          "deleteEmptyCollections": {
+            "type": "boolean"
+          },
+          "deleteEmptyReadLists": {
+            "type": "boolean"
+          },
+          "rememberMeDurationDays": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -11433,18 +11694,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -11456,12 +11707,22 @@
               "$ref": "#/components/schemas/SeriesDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -11925,18 +12186,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -11948,12 +12199,22 @@
               "$ref": "#/components/schemas/BookDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -12018,18 +12279,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -12041,12 +12292,22 @@
               "$ref": "#/components/schemas/ReadListDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -12140,18 +12401,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -12163,12 +12414,22 @@
               "$ref": "#/components/schemas/PageHashKnownDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -12186,18 +12447,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -12209,12 +12460,22 @@
               "$ref": "#/components/schemas/PageHashMatchDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -12252,18 +12513,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -12275,12 +12526,22 @@
               "$ref": "#/components/schemas/PageHashUnknownDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -12327,18 +12588,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -12350,12 +12601,22 @@
               "$ref": "#/components/schemas/HistoricalEventDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
@@ -12373,18 +12634,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "size": {
             "type": "integer",
@@ -12396,12 +12647,22 @@
               "$ref": "#/components/schemas/CollectionDto"
             }
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "numberOfElements": {
             "type": "integer",
             "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
           },
           "empty": {
             "type": "boolean"
