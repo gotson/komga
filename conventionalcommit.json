@@ -30,6 +30,9 @@
     "i18n": {
       "description": "Changes which affect translation"
     },
+    "deps": {
+      "description": "Changes which affect dependencies"
+    },
     "ci": {
       "description": "Changes which affect CI configuration files and scripts.<br/>Example scopes: travis, circle, browser-stack, sauce-labs"
     },
