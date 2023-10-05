@@ -8,7 +8,8 @@ plugins {
     kotlin("plugin.spring")
     kotlin("kapt")
   }
-  id("org.springframework.boot") version "3.1.4"
+  // 3.1.3+ breaks SSE - https://github.com/spring-projects/spring-framework/issues/31140
+  id("org.springframework.boot") version "3.1.2"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
   id("nu.studer.jooq") version "8.2.1"
   id("org.flywaydb.flyway") version "9.7.0"
@@ -41,7 +42,7 @@ dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
 
-  api(platform("org.springframework.boot:spring-boot-dependencies:3.1.4"))
+  api(platform("org.springframework.boot:spring-boot-dependencies:3.1.2"))
 
   api("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -56,7 +57,7 @@ dependencies {
   implementation("com.github.gotson:spring-session-caffeine:2.0.0")
   implementation("org.springframework.data:spring-data-commons")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:3.1.4")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:3.1.2")
 
   implementation("org.apache.activemq:artemis-jakarta-server")
 
@@ -131,9 +132,9 @@ dependencies {
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.37")
   kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.37")
-  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.1.4")
+  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.1.2")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:3.1.4")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:3.1.2")
 }
 
 val webui = "$rootDir/komga-webui"
