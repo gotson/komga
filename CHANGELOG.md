@@ -1,3 +1,22 @@
+# [1.5.1](https://github.com/gotson/komga/compare/v1.5.0...v1.5.1) (2023-10-05)
+## 🐛 Fixes
+**sse**
+- sse connections would not be closed properly ([8ed5726](https://github.com/gotson/komga/commits/8ed5726))
+
+**webui**
+- add missing hint on remember-me regenerate checkbox ([18bffa9](https://github.com/gotson/komga/commits/18bffa9))
+
+## 🛠  Build
+**komga-deps**
+- bump ben-manes version from 0.46.0 to 0.48.0 ([37ec436](https://github.com/gotson/komga/commits/37ec436))
+- bump jreleaser from 1.7.0 to 1.8.0 ([72d848d](https://github.com/gotson/komga/commits/72d848d))
+
+**unscoped**
+- split ci into tests and release workflows ([c6128ee](https://github.com/gotson/komga/commits/c6128ee))
+- add inputs to replay parts of the release workflow when it fails ([a8b37c7](https://github.com/gotson/komga/commits/a8b37c7))
+- bump conveyor from 11.3 to 11.4 ([d4f23b8](https://github.com/gotson/komga/commits/d4f23b8))
+- fix step for ms-store submission ([dd2edba](https://github.com/gotson/komga/commits/dd2edba))
+
 # [1.5.0](https://github.com/gotson/komga/compare/v1.4.0...v1.5.0) (2023-10-04)
 ## 🚀 Features
 **api**
