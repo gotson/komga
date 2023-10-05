@@ -33,7 +33,8 @@
           v-model="form.renewRememberMeKey"
           @change="$v.form.renewRememberMeKey.$touch()"
           label="Regenerate the RememberMe key"
-          hide-details
+          persistent-hint
+          :hint="$t('server_settings.requires_restart')"
         />
       </v-col>
     </v-row>
