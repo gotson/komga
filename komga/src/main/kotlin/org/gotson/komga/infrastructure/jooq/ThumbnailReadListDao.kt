@@ -1,10 +1,14 @@
 package org.gotson.komga.infrastructure.jooq
 
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailReadList
 import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ThumbnailReadlistRecord
 import org.jooq.DSLContext
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -35,6 +39,22 @@ class ThumbnailReadListDao(
       .map { it.toDomain() }
       .firstOrNull()
 
+  override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailReadList> {
+    val query = dsl.selectFrom(tr)
+      .where(tr.FILE_SIZE.eq(0))
+      .or(tr.MEDIA_TYPE.eq(""))
+      .or(tr.WIDTH.eq(0))
+      .or(tr.HEIGHT.eq(0))
+
+    val count = query.count()
+    val items = query
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchInto(tr)
+      .map { it.toDomain() }
+
+    return PageImpl(items, pageable, count.toLong())
+  }
+
   override fun insert(thumbnail: ThumbnailReadList) {
     dsl.insertInto(tr)
       .set(tr.ID, thumbnail.id)
@@ -42,6 +62,10 @@ class ThumbnailReadListDao(
       .set(tr.THUMBNAIL, thumbnail.thumbnail)
       .set(tr.SELECTED, thumbnail.selected)
       .set(tr.TYPE, thumbnail.type.toString())
+      .set(tr.MEDIA_TYPE, thumbnail.mediaType)
+      .set(tr.WIDTH, thumbnail.dimension.width)
+      .set(tr.HEIGHT, thumbnail.dimension.height)
+      .set(tr.FILE_SIZE, thumbnail.fileSize)
       .execute()
   }
 
@@ -51,8 +75,26 @@ class ThumbnailReadListDao(
       .set(tr.THUMBNAIL, thumbnail.thumbnail)
       .set(tr.SELECTED, thumbnail.selected)
       .set(tr.TYPE, thumbnail.type.toString())
+      .set(tr.MEDIA_TYPE, thumbnail.mediaType)
+      .set(tr.WIDTH, thumbnail.dimension.width)
+      .set(tr.HEIGHT, thumbnail.dimension.height)
+      .set(tr.FILE_SIZE, thumbnail.fileSize)
       .where(tr.ID.eq(thumbnail.id))
       .execute()
+  }
+
+  override fun updateMetadata(thumbnails: Collection<ThumbnailReadList>) {
+    dsl.batched { c ->
+      thumbnails.forEach {
+        c.dsl().update(tr)
+          .set(tr.MEDIA_TYPE, it.mediaType)
+          .set(tr.WIDTH, it.dimension.width)
+          .set(tr.HEIGHT, it.dimension.height)
+          .set(tr.FILE_SIZE, it.fileSize)
+          .where(tr.ID.eq(it.id))
+          .execute()
+      }
+    }
   }
 
   @Transactional
@@ -87,6 +129,9 @@ class ThumbnailReadListDao(
       thumbnail = thumbnail,
       selected = selected,
       type = ThumbnailReadList.Type.valueOf(type),
+      mediaType = mediaType,
+      fileSize = fileSize,
+      dimension = Dimension(width, height),
       id = id,
       readListId = readlistId,
       createdDate = createdDate,

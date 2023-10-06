@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
@@ -19,6 +20,7 @@ import org.gotson.komga.domain.model.ThumbnailSeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
 import org.gotson.komga.domain.service.SeriesCollectionLifecycle
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
@@ -67,6 +69,7 @@ class SeriesCollectionController(
   private val collectionLifecycle: SeriesCollectionLifecycle,
   private val seriesDtoRepository: SeriesDtoRepository,
   private val contentDetector: ContentDetector,
+  private val imageAnalyzer: ImageAnalyzer,
   private val thumbnailSeriesCollectionRepository: ThumbnailSeriesCollectionRepository,
   private val eventPublisher: EventPublisher,
 ) {
@@ -152,7 +155,8 @@ class SeriesCollectionController(
   ): ThumbnailSeriesCollectionDto {
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
 
-      if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+      val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
+      if (!contentDetector.isImage(mediaType))
         throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
       return collectionLifecycle.addThumbnail(
@@ -161,6 +165,9 @@ class SeriesCollectionController(
           thumbnail = file.bytes,
           type = ThumbnailSeriesCollection.Type.USER_UPLOADED,
           selected = selected,
+          fileSize = file.bytes.size.toLong(),
+          mediaType = mediaType,
+          dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
         ),
       ).toDto()
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

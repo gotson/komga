@@ -1,11 +1,15 @@
 package org.gotson.komga.infrastructure.jooq
 
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ThumbnailSeriesRecord
 import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
@@ -45,6 +49,22 @@ class ThumbnailSeriesDao(
       .map { it.toDomain() }
       .firstOrNull()
 
+  override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailSeries> {
+    val query = dsl.selectFrom(ts)
+      .where(ts.FILE_SIZE.eq(0))
+      .or(ts.MEDIA_TYPE.eq(""))
+      .or(ts.WIDTH.eq(0))
+      .or(ts.HEIGHT.eq(0))
+
+    val count = query.count()
+    val items = query
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchInto(ts)
+      .map { it.toDomain() }
+
+    return PageImpl(items, pageable, count.toLong())
+  }
+
   override fun insert(thumbnail: ThumbnailSeries) {
     dsl.insertInto(ts)
       .set(ts.ID, thumbnail.id)
@@ -52,8 +72,26 @@ class ThumbnailSeriesDao(
       .set(ts.URL, thumbnail.url?.toString())
       .set(ts.THUMBNAIL, thumbnail.thumbnail)
       .set(ts.TYPE, thumbnail.type.toString())
+      .set(ts.MEDIA_TYPE, thumbnail.mediaType)
+      .set(ts.WIDTH, thumbnail.dimension.width)
+      .set(ts.HEIGHT, thumbnail.dimension.height)
+      .set(ts.FILE_SIZE, thumbnail.fileSize)
       .set(ts.SELECTED, thumbnail.selected)
       .execute()
+  }
+
+  override fun updateMetadata(thumbnails: Collection<ThumbnailSeries>) {
+    dsl.batched { c ->
+      thumbnails.forEach {
+        c.dsl().update(ts)
+          .set(ts.MEDIA_TYPE, it.mediaType)
+          .set(ts.WIDTH, it.dimension.width)
+          .set(ts.HEIGHT, it.dimension.height)
+          .set(ts.FILE_SIZE, it.fileSize)
+          .where(ts.ID.eq(it.id))
+          .execute()
+      }
+    }
   }
 
   @Transactional
@@ -92,6 +130,9 @@ class ThumbnailSeriesDao(
       url = url?.let { URL(it) },
       selected = selected,
       type = ThumbnailSeries.Type.valueOf(type),
+      mediaType = mediaType,
+      fileSize = fileSize,
+      dimension = Dimension(width, height),
       id = id,
       seriesId = seriesId,
       createdDate = createdDate,

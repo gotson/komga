@@ -8,6 +8,7 @@ import org.apache.commons.io.FilenameUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Series
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.TikaConfiguration
 import org.junit.jupiter.api.Test
@@ -31,7 +32,7 @@ class LocalArtworkProviderTest {
     }
   }
 
-  private val localMediaAssetsProvider = LocalArtworkProvider(contentDetector)
+  private val localMediaAssetsProvider = LocalArtworkProvider(contentDetector, ImageAnalyzer())
 
   @Test
   fun `given book with sidecar files when getting thumbnails then return valid ones`() {

@@ -4,6 +4,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
@@ -886,6 +887,9 @@ class SeriesControllerTest(
             thumbnail = Random.nextBytes(1),
             bookId = book.id,
             type = ThumbnailBook.Type.GENERATED,
+            fileSize = 0,
+            mediaType = "",
+            dimension = Dimension(0, 0),
           ),
           MarkSelectedPreference.YES,
         )
@@ -921,6 +925,9 @@ class SeriesControllerTest(
             thumbnail = Random.nextBytes(1),
             bookId = book.id,
             type = ThumbnailBook.Type.GENERATED,
+            fileSize = 0,
+            mediaType = "",
+            dimension = Dimension(0, 0),
           ),
           MarkSelectedPreference.YES,
         )

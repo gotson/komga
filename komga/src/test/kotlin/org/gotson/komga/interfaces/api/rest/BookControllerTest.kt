@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.groups.Tuple.tuple
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
@@ -24,7 +25,6 @@ import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
@@ -756,7 +756,7 @@ class BookControllerTest(
 
       val validation: MockMvcResultMatchersDsl.() -> Unit = {
         status { isOk() }
-        jsonPath("$.content[0].url") { value(Matchers.containsString("1.cbr")) }
+        jsonPath("$.content[0].url") { value(containsString("1.cbr")) }
       }
 
       mockMvc.get("/api/v1/books")
@@ -771,7 +771,7 @@ class BookControllerTest(
       mockMvc.get("/api/v1/books/${book.id}")
         .andExpect {
           status { isOk() }
-          jsonPath("$.url") { value(Matchers.containsString("1.cbr")) }
+          jsonPath("$.url") { value(containsString("1.cbr")) }
         }
     }
   }
@@ -794,6 +794,9 @@ class BookControllerTest(
           thumbnail = Random.nextBytes(100),
           bookId = book.id,
           type = ThumbnailBook.Type.GENERATED,
+          fileSize = 0,
+          mediaType = "",
+          dimension = Dimension(0, 0),
         ),
         MarkSelectedPreference.YES,
       )
@@ -854,6 +857,9 @@ class BookControllerTest(
           thumbnail = Random.nextBytes(1),
           bookId = book.id,
           type = ThumbnailBook.Type.GENERATED,
+          fileSize = 0,
+          mediaType = "",
+          dimension = Dimension(0, 0),
         ),
         MarkSelectedPreference.YES,
       )
@@ -868,6 +874,9 @@ class BookControllerTest(
           thumbnail = Random.nextBytes(1),
           bookId = book.id,
           type = ThumbnailBook.Type.GENERATED,
+          fileSize = 0,
+          mediaType = "",
+          dimension = Dimension(0, 0),
         ),
         MarkSelectedPreference.YES,
       )

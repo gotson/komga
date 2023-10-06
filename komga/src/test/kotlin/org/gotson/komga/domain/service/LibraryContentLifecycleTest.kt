@@ -11,6 +11,7 @@ import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
@@ -656,8 +657,8 @@ class LibraryContentLifecycleTest(
       bookRepository.findByIdOrNull(book.id)?.let {
         bookRepository.update(it.copy(fileHash = "sameHash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id), MarkSelectedPreference.NO)
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id), MarkSelectedPreference.NO)
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id, fileSize = 0, mediaType = "", dimension = Dimension(0, 0)), MarkSelectedPreference.NO)
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id, fileSize = 0, mediaType = "", dimension = Dimension(0, 0)), MarkSelectedPreference.NO)
       }
 
       every { mockHasher.computeHash(any<Path>()) } returns "sameHash"
@@ -702,8 +703,8 @@ class LibraryContentLifecycleTest(
       bookRepository.findByIdOrNull(book.id)?.let {
         bookRepository.update(it.copy(fileHash = "sameHash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id), MarkSelectedPreference.NO)
-        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id), MarkSelectedPreference.NO)
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id, fileSize = 0, mediaType = "", dimension = Dimension(0, 0)), MarkSelectedPreference.NO)
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id, fileSize = 0, mediaType = "", dimension = Dimension(0, 0)), MarkSelectedPreference.NO)
       }
 
       every { mockHasher.computeHash(any<Path>()) } returns "sameHash"

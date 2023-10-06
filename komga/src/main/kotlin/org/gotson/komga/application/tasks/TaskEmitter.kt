@@ -152,6 +152,10 @@ class TaskEmitter(
     submitTask(Task.DeleteSeries(seriesId, priority))
   }
 
+  fun findThumbnailsWithoutMetadata(priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.FindThumbnailsWithoutMetadata(priority))
+  }
+
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
     jmsTemplates[task.priority]!!.convertAndSend(QUEUE_TASKS, task) {

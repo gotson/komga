@@ -15,6 +15,7 @@ import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
@@ -40,6 +41,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
@@ -121,6 +123,7 @@ class BookController(
   private val bookDtoRepository: BookDtoRepository,
   private val readListRepository: ReadListRepository,
   private val contentDetector: ContentDetector,
+  private val imageAnalyzer: ImageAnalyzer,
   private val eventPublisher: EventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val imageConverter: ImageConverter,
@@ -331,7 +334,8 @@ class BookController(
   ): ThumbnailBookDto {
     val book = bookRepository.findByIdOrNull(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+    val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
+    if (!contentDetector.isImage(mediaType))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
     return bookLifecycle.addThumbnailForBook(
@@ -340,6 +344,9 @@ class BookController(
         thumbnail = file.bytes,
         type = ThumbnailBook.Type.USER_UPLOADED,
         selected = selected,
+        fileSize = file.bytes.size.toLong(),
+        mediaType = mediaType,
+        dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
       ),
       if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
     ).toDto()
