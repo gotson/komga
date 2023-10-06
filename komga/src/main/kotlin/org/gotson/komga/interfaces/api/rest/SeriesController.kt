@@ -59,7 +59,7 @@ import org.gotson.komga.interfaces.api.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.api.rest.dto.GroupCountDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesMetadataUpdateDto
-import org.gotson.komga.interfaces.api.rest.dto.SeriesThumbnailDto
+import org.gotson.komga.interfaces.api.rest.dto.ThumbnailSeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressUpdateV2Dto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressV2Dto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
@@ -396,7 +396,7 @@ class SeriesController(
   fun getSeriesThumbnails(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
-  ): Collection<SeriesThumbnailDto> {
+  ): Collection<ThumbnailSeriesDto> {
     principal.user.checkContentRestriction(seriesId)
 
     return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
@@ -409,7 +409,7 @@ class SeriesController(
     @PathVariable(name = "seriesId") seriesId: String,
     @RequestParam("file") file: MultipartFile,
     @RequestParam("selected") selected: Boolean = true,
-  ): SeriesThumbnailDto {
+  ): ThumbnailSeriesDto {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
