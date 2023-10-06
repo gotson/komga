@@ -205,6 +205,7 @@
     "collections": "Collections",
     "create": "Create",
     "delete": "Delete",
+    "dimension": "w: {width}, h: {height}",
     "discard": "Discard",
     "disk_space": "Disk space",
     "dismiss": "Dismiss",
