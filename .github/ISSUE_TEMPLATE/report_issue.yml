@@ -84,7 +84,7 @@ body:
           required: true
         - label: I have written a short but informative title.
           required: true
-        - label: I have checked the [FAQ](https://komga.org/faq/).
+        - label: I have checked the [FAQ](https://komga.org/docs/faq).
           required: true
         - label: I have updated the app to the latest version.
           required: true
