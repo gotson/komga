@@ -56,7 +56,7 @@ class ThumbnailBookDao(
       .or(tb.WIDTH.eq(0))
       .or(tb.HEIGHT.eq(0))
 
-    val count = query.count()
+    val count = dsl.fetchCount(query)
     val items = query
       .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
       .fetchInto(tb)
