@@ -19,6 +19,6 @@ class ThumbnailMetadataFixerController(
   @EventListener(ApplicationReadyEvent::class)
   fun findThumbnailsWithoutMetadata() {
     logger.info { "Find and fix thumbnails without metadata" }
-    taskEmitter.findThumbnailsWithoutMetadata(LOWEST_PRIORITY)
+    taskEmitter.fixThumbnailsWithoutMetadata(LOWEST_PRIORITY)
   }
 }

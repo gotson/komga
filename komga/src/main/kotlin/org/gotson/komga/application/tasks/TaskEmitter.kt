@@ -152,8 +152,8 @@ class TaskEmitter(
     submitTask(Task.DeleteSeries(seriesId, priority))
   }
 
-  fun findThumbnailsWithoutMetadata(priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.FindThumbnailsWithoutMetadata(priority))
+  fun fixThumbnailsWithoutMetadata(priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.FixThumbnailsWithoutMetadata(priority))
   }
 
   private fun submitTask(task: Task) {

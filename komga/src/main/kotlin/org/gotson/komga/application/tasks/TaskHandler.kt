@@ -183,9 +183,9 @@ class TaskHandler(
             }
           }
 
-          is Task.FindThumbnailsWithoutMetadata -> {
+          is Task.FixThumbnailsWithoutMetadata -> {
             if (thumbnailLifecycle.fixThumbnailsMetadata())
-              taskEmitter.findThumbnailsWithoutMetadata(LOWEST_PRIORITY)
+              taskEmitter.fixThumbnailsWithoutMetadata(LOWEST_PRIORITY)
           }
         }
       }.also {
