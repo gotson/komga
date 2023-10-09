@@ -5,6 +5,13 @@
     </v-row>
     <v-row>
       <v-col cols="auto">
+        <v-select
+          v-model="form.thumbnailSize"
+          @change="$v.form.thumbnailSize.$touch()"
+          :items="thumbnailSizes"
+          :label="$t('server_settings.label_thumbnail_size')"
+          hide-details
+        />
         <v-checkbox
           v-model="form.deleteEmptyCollections"
           @change="$v.form.deleteEmptyCollections.$touch()"
@@ -57,6 +64,7 @@
 </template>
 
 <script lang="ts">
+import {ThumbnailSizeDto} from '@/types/komga-settings'
 import Vue from 'vue'
 import {minValue, required} from 'vuelidate/lib/validators'
 
@@ -68,6 +76,7 @@ export default Vue.extend({
       deleteEmptyReadLists: false,
       rememberMeDurationDays: 365,
       renewRememberMeKey: false,
+      thumbnailSize: ThumbnailSizeDto.DEFAULT,
     },
   }),
   validations: {
@@ -79,12 +88,19 @@ export default Vue.extend({
         required,
       },
       renewRememberMeKey: {},
+      thumbnailSize: {},
     },
   },
   mounted() {
     this.refreshSettings()
   },
   computed: {
+    thumbnailSizes(): any[] {
+      return Object.keys(ThumbnailSizeDto).map(x => ({
+        text: this.$t(`enums.thumbnail_size.${x}`),
+        value: x,
+      }))
+    },
     rememberMeDurationErrors(): string[] {
       const errors = [] as string[]
       if (!this.$v.form?.rememberMeDurationDays?.$dirty) return errors
@@ -106,6 +122,7 @@ export default Vue.extend({
       this.form.deleteEmptyReadLists = settings.deleteEmptyReadLists
       this.form.rememberMeDurationDays = settings.rememberMeDurationDays
       this.form.renewRememberMeKey = false
+      this.form.thumbnailSize = settings.thumbnailSize
       this.$v.form.$reset()
     },
     async saveSettings() {
@@ -118,6 +135,8 @@ export default Vue.extend({
         this.$_.merge(newSettings, {rememberMeDurationDays: this.form.rememberMeDurationDays})
       if (this.$v.form?.renewRememberMeKey?.$dirty)
         this.$_.merge(newSettings, {renewRememberMeKey: this.form.renewRememberMeKey})
+      if (this.$v.form?.thumbnailSize?.$dirty)
+        this.$_.merge(newSettings, {thumbnailSize: this.form.thumbnailSize})
 
       await this.$komgaSettings.updateSettings(newSettings)
       await this.refreshSettings()

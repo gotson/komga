@@ -680,6 +680,12 @@
       "ENDED": "Ended",
       "HIATUS": "Hiatus",
       "ONGOING": "Ongoing"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Default (300px)",
+      "LARGE": "Large (900px)",
+      "MEDIUM": "Medium (600px)",
+      "XLARGE": "X-Large (1200px)"
     }
   },
   "error_codes": {
@@ -848,6 +854,7 @@
     "label_delete_empty_collections": "Delete empty collections after scan",
     "label_delete_empty_readlists": "Delete empty read lists after scan",
     "label_rememberme_duration": "Remember me duration (in days)",
+    "label_thumbnail_size": "Thumbnails size",
     "requires_restart": "Requires restart to take effect",
     "server_settings": "Server Settings"
   },

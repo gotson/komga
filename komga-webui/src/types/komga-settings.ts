@@ -2,6 +2,7 @@ export interface SettingsDto {
   deleteEmptyCollections: boolean,
   deleteEmptyReadLists: boolean,
   rememberMeDurationDays: number,
+  thumbnailSize: ThumbnailSizeDto,
 }
 
 export interface SettingsUpdateDto {
@@ -9,4 +10,12 @@ export interface SettingsUpdateDto {
   deleteEmptyReadLists?: boolean,
   rememberMeDurationDays?: number,
   renewRememberMeKey?: boolean,
+  thumbnailSize?: ThumbnailSizeDto,
+}
+
+export enum ThumbnailSizeDto {
+  DEFAULT = 'DEFAULT',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE',
+  XLARGE = 'XLARGE',
 }
