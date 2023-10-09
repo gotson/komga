@@ -20,6 +20,7 @@ import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.AlternateTitle
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
@@ -40,6 +41,7 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
@@ -57,9 +59,9 @@ import org.gotson.komga.interfaces.api.rest.dto.CollectionDto
 import org.gotson.komga.interfaces.api.rest.dto.GroupCountDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesMetadataUpdateDto
-import org.gotson.komga.interfaces.api.rest.dto.SeriesThumbnailDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressUpdateV2Dto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressV2Dto
+import org.gotson.komga.interfaces.api.rest.dto.ThumbnailSeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.core.io.FileSystemResource
@@ -110,6 +112,7 @@ class SeriesController(
   private val readProgressDtoRepository: ReadProgressDtoRepository,
   private val eventPublisher: EventPublisher,
   private val contentDetector: ContentDetector,
+  private val imageAnalyzer: ImageAnalyzer,
   private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,
 ) {
 
@@ -393,7 +396,7 @@ class SeriesController(
   fun getSeriesThumbnails(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,
-  ): Collection<SeriesThumbnailDto> {
+  ): Collection<ThumbnailSeriesDto> {
     principal.user.checkContentRestriction(seriesId)
 
     return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
@@ -406,9 +409,11 @@ class SeriesController(
     @PathVariable(name = "seriesId") seriesId: String,
     @RequestParam("file") file: MultipartFile,
     @RequestParam("selected") selected: Boolean = true,
-  ): SeriesThumbnailDto {
+  ): ThumbnailSeriesDto {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+
+    val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
+    if (!contentDetector.isImage(mediaType))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
     return seriesLifecycle.addThumbnailForSeries(
@@ -416,6 +421,9 @@ class SeriesController(
         seriesId = series.id,
         thumbnail = file.bytes,
         type = ThumbnailSeries.Type.USER_UPLOADED,
+        fileSize = file.bytes.size.toLong(),
+        mediaType = mediaType,
+        dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
       ),
       if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
     ).toDto()

@@ -1,7 +1,7 @@
 [![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/komga?label=OpenCollective%20Sponsors&color=success)](https://opencollective.com/komga) [![GitHub Sponsors](https://img.shields.io/github/sponsors/gotson?label=Github%20Sponsors&color=success)](https://github.com/sponsors/gotson)
 [![Discord](https://img.shields.io/discord/678794935368941569?label=Discord&color=blue)](https://discord.gg/TdRpkDu)
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/gotson/komga/ci.yml?branch=master)](https://github.com/gotson/komga/actions?query=workflow%3ACI+branch%3Amaster)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/gotson/komga/tests.yml?branch=master)](https://github.com/gotson/komga/actions?query=workflow%3ATests+branch%3Amaster)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/gotson/komga?color=blue&label=download&sort=semver)](https://github.com/gotson/komga/releases) [![GitHub all releases](https://img.shields.io/github/downloads/gotson/komga/total?color=blue&label=github%20downloads)](https://github.com/gotson/komga/releases)
 [![Docker Pulls](https://img.shields.io/docker/pulls/gotson/komga)](https://hub.docker.com/r/gotson/komga)
 
@@ -28,9 +28,9 @@ Komga is a free and open source comics/mangas server.
 - Import books from outside your libraries directly into your series folder
 - Import ComicRack `cbl` read lists
 
-## Download
+## Installation
 
-Get the app from our [releases page](https://github.com/gotson/komga/releases) or through [Docker](https://hub.docker.com/r/gotson/komga).
+Refer to the [website](https://komga.org/docs/category/installation) for instructions.
 
 ## Documentation
 

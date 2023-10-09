@@ -16,6 +16,7 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
@@ -41,6 +42,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
@@ -82,6 +84,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -89,6 +92,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -122,6 +126,7 @@ class BookController(
   private val bookDtoRepository: BookDtoRepository,
   private val readListRepository: ReadListRepository,
   private val contentDetector: ContentDetector,
+  private val imageAnalyzer: ImageAnalyzer,
   private val eventPublisher: EventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val imageConverter: ImageConverter,
@@ -349,7 +354,8 @@ class BookController(
   ): ThumbnailBookDto {
     val book = bookRepository.findByIdOrNull(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+    val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
+    if (!contentDetector.isImage(mediaType))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
     return bookLifecycle.addThumbnailForBook(
@@ -358,6 +364,9 @@ class BookController(
         thumbnail = file.bytes,
         type = ThumbnailBook.Type.USER_UPLOADED,
         selected = selected,
+        fileSize = file.bytes.size.toLong(),
+        mediaType = mediaType,
+        dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
       ),
       if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
     ).toDto()
@@ -499,6 +508,9 @@ class BookController(
     @Parameter(description = "If set to true, pages will start at index 0. If set to false, pages will start at index 1.")
     @RequestParam(value = "zero_based", defaultValue = "false")
     zeroBasedIndex: Boolean,
+    @Parameter(description = "Some very limited server driven content negotiation is handled. If a book is a PDF book, and the Accept header contains 'application/pdf' as a more specific type than other 'image/' types, a raw PDF page will be returned.")
+    @RequestHeader(HttpHeaders.ACCEPT, required = false)
+    acceptHeaders: MutableList<MediaType>?,
   ): ResponseEntity<ByteArray> =
     bookRepository.findByIdOrNull((bookId))?.let { book ->
       val media = mediaRepository.findById(bookId)
@@ -510,6 +522,14 @@ class BookController(
       }
 
       principal.user.checkContentRestriction(book)
+
+      if (media.mediaType == PDF.type && acceptHeaders != null && acceptHeaders.any { it.isCompatibleWith(MediaType.APPLICATION_PDF) }) {
+        // keep only pdf and image
+        acceptHeaders.removeIf { !it.isCompatibleWith(MediaType.APPLICATION_PDF) && !it.isCompatibleWith(MediaType("image")) }
+        MimeTypeUtils.sortBySpecificity(acceptHeaders)
+        if (acceptHeaders.first().isCompatibleWith(MediaType.APPLICATION_PDF))
+          return getBookPageRaw(book, media, pageNumber)
+      }
 
       try {
         val convertFormat = when (convertTo?.lowercase()) {
@@ -570,33 +590,35 @@ class BookController(
 
       principal.user.checkContentRestriction(book)
 
-      try {
-        val pageContent = bookAnalyzer.getPageContentRaw(BookWithMedia(book, media), pageNumber)
-
-        ResponseEntity.ok()
-          .headers(
-            HttpHeaders().apply {
-              val extension = contentDetector.mediaTypeToExtension(pageContent.mediaType) ?: ""
-              val pageFileName = "${book.name}-$pageNumber$extension"
-              contentDisposition = ContentDisposition.builder("inline")
-                .filename(pageFileName, UTF_8)
-                .build()
-            },
-          )
-          .contentType(getMediaTypeOrDefault(pageContent.mediaType))
-          .setNotModified(media)
-          .body(pageContent.content)
-      } catch (ex: IndexOutOfBoundsException) {
-        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
-      } catch (ex: MediaUnsupportedException) {
-        throw ResponseStatusException(HttpStatus.BAD_REQUEST, ex.message)
-      } catch (ex: MediaNotReadyException) {
-        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
-      } catch (ex: NoSuchFileException) {
-        logger.warn(ex) { "File not found: $book" }
-        throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
-      }
+      getBookPageRaw(book, media, pageNumber)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  private fun getBookPageRaw(book: Book, media: Media, pageNumber: Int): ResponseEntity<ByteArray> = try {
+    val pageContent = bookAnalyzer.getPageContentRaw(BookWithMedia(book, media), pageNumber)
+
+    ResponseEntity.ok()
+      .headers(
+        HttpHeaders().apply {
+          val extension = contentDetector.mediaTypeToExtension(pageContent.mediaType) ?: ""
+          val pageFileName = "${book.name}-$pageNumber$extension"
+          contentDisposition = ContentDisposition.builder("inline")
+            .filename(pageFileName, UTF_8)
+            .build()
+        },
+      )
+      .contentType(getMediaTypeOrDefault(pageContent.mediaType))
+      .setNotModified(media)
+      .body(pageContent.content)
+  } catch (ex: IndexOutOfBoundsException) {
+    throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
+  } catch (ex: MediaUnsupportedException) {
+    throw ResponseStatusException(HttpStatus.BAD_REQUEST, ex.message)
+  } catch (ex: MediaNotReadyException) {
+    throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
+  } catch (ex: NoSuchFileException) {
+    logger.warn(ex) { "File not found: $book" }
+    throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
+  }
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
@@ -667,7 +689,7 @@ class BookController(
     @PathVariable bookId: String,
   ): ResponseEntity<WPPublicationDto> =
     bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
-      if (bookDto.media.mediaType != KomgaMediaType.PDF.type) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
+      if (bookDto.media.mediaType != PDF.type) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
       principal.user.checkContentRestriction(bookDto)
       val manifest = bookDto.toManifestPdf(
         mediaRepository.findById(bookDto.id),

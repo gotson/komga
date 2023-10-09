@@ -135,7 +135,7 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import LibraryItemTypeSelect from '@/components/LibraryItemTypeSelect.vue'
 import {parseBooleanFilter, parseQuerySort} from '@/functions/query-params'
-import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
+import {ReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
 import {
   LIBRARY_CHANGED,
@@ -295,7 +295,7 @@ export default Vue.extend({
       return {
         readStatus: {
           values: [
-            {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+            {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD},
             {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
             {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
           ],
@@ -547,13 +547,13 @@ export default Vue.extend({
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
       const complete = parseBooleanFilter(this.filters.complete)
       const oneshot = parseBooleanFilter(this.filters.oneshot)
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete, this.filters.sharingLabel, oneshot)
+      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete, this.filters.sharingLabel, oneshot)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
 
-      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel, oneshot)
+      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel, oneshot)
       const nonAlpha = seriesGroups
         .filter((g) => !(/[a-zA-Z]/).test(g.group))
         .reduce((a, b) => a + b.count, 0)

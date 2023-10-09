@@ -4,3 +4,12 @@ export enum SeriesCoverDto {
   FIRST_UNREAD_OR_LAST = 'FIRST_UNREAD_OR_LAST',
   LAST = 'LAST',
 }
+
+export enum ScanIntervalDto {
+  DISABLED = 'DISABLED',
+  HOURLY = 'HOURLY',
+  EVERY_6H = 'EVERY_6H',
+  EVERY_12H = 'EVERY_12H',
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+}

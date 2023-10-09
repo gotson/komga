@@ -126,4 +126,9 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null)
     override fun uniqueId() = "DELETE_SERIES_$seriesId"
     override fun toString(): String = "DeleteSeries(seriesId='$seriesId', priority='$priority')"
   }
+
+  class FindThumbnailsWithoutMetadata(priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "FIND_THUMBNAILS_WITHOUT_METADATA"
+    override fun toString(): String = "FindThumbnailsWithoutMetadata(priority='$priority')"
+  }
 }

@@ -5,11 +5,13 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.infrastructure.hash.Hasher
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
@@ -30,6 +32,7 @@ class BookAnalyzer(
   private val contentDetector: ContentDetector,
   extractors: List<MediaContainerExtractor>,
   private val imageConverter: ImageConverter,
+  private val imageAnalyzer: ImageAnalyzer,
   private val hasher: Hasher,
   @Value("#{@komgaProperties.pageHashing}") private val pageHashing: Int,
 ) {
@@ -130,6 +133,9 @@ class BookAnalyzer(
       thumbnail = thumbnail,
       type = ThumbnailBook.Type.GENERATED,
       bookId = book.book.id,
+      mediaType = "image/$thumbnailFormat",
+      dimension = thumbnail?.let { imageAnalyzer.getDimension(it.inputStream()) } ?: Dimension(0, 0),
+      fileSize = thumbnail?.size?.toLong() ?: 0,
     )
   }
 

@@ -1,4 +1,4 @@
-import filesize from 'filesize'
+import {partial} from 'filesize'
 
 export async function getFileFromUrl(url: string, name: string = url, defaultType = 'image/jpeg', fetchOptions = {}) {
   const response = await fetch(url, fetchOptions)
@@ -9,7 +9,7 @@ export async function getFileFromUrl(url: string, name: string = url, defaultTyp
 }
 
 
-const filesizePartial = filesize.partial({round: 1})
+const filesizePartial = partial({round: 1})
 
 export function getFileSize(n?: number): string | undefined {
   if(!n) return undefined

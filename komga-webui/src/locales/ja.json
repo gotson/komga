@@ -199,6 +199,7 @@
     "books_n": "0 冊 | 1 冊 | {count} 冊",
     "books_total": "{count} / {total} 冊",
     "cancel": "キャンセル",
+    "cbx": "漫画アーカイブ",
     "choose_image": "画像を選択",
     "close": "閉じる",
     "collections": "コレクション",
@@ -207,7 +208,9 @@
     "disk_space": "使用容量",
     "dismiss": "却下",
     "download": "ダウンロード",
+    "drag_drop": "ドラッグ&ドロップ",
     "email": "メールアドレス",
+    "epub": "Epub",
     "filename": "ファイル名",
     "filter_no_matches": "フィルタに一致するものはありません",
     "genre": "ジャンル",
@@ -221,6 +224,7 @@
     "lock_all": "すべてをロックする",
     "n_selected": "{count} 冊を選択中",
     "nothing_to_show": "表示するものはありません",
+    "oneshot": "ワンショット",
     "outdated": "古い",
     "page": "ページ",
     "page_number": "ページ数",
@@ -228,6 +232,7 @@
     "pages_left": "残りページなし | 残り1ページ | 残り{count}ページ",
     "pages_n": "0 ページ | 1 ページ | {count} ページ",
     "password": "パスワード",
+    "pdf": "PDF",
     "pending_tasks": "保留中のタスクなし | 1タスク保留中 | {count} タスク保留中",
     "publisher": "出版社",
     "read": "読む",
@@ -239,6 +244,7 @@
     "roles": "役割",
     "save_changes": "変更を保存",
     "series": "シリーズ | シリーズ",
+    "sidecars": "サイドカー",
     "tags": "タグ",
     "unavailable": "利用できません",
     "unlock_all": "全てアンロック",
@@ -259,11 +265,20 @@
     "book_number": "巻数: {name}",
     "book_series": "シリーズ: {name}",
     "button_import": "インポート",
+    "button_match": "マッチ",
     "comicrack_preambule_html": "既存のComicRackの読書リストを<code>.cbl</code>形式でインポートすることができます。<br>Komgaは指定されたシリーズと書籍番号を、あなたのライブラリにあるシリーズと本に一致させようとします。",
+    "dialog_confirmation": {
+      "body": "{total} 冊のうち {unmatched} 冊が一致しませんでした",
+      "create": "生成を試みる",
+      "title": "数冊の書籍が一致しませんでした"
+    },
+    "field_file_label": "ComicRack 読書リスト (.cbl)",
     "field_files_label": "ComicRack 読書リスト (.cbl)",
     "import_read_lists": "Read Listsのインポート",
     "imported_as": "{name}をインポートしました",
     "readlist_created": "読書リストが作成されました: {name}",
+    "requested_number": "要求された数",
+    "requested_series": "要求されたシリーズ",
     "results_preambule": "インポートの結果は以下の通りです。また、指定されたファイルごとにマッチしていない本を確認することができます。",
     "size_limit": "サイズは{size}MB以下にしてください",
     "tab_title": "データインポート"
@@ -302,6 +317,19 @@
       "button_confirm": "解析",
       "title": "ライブラリを解析"
     },
+    "book_picker": {
+      "filter": "冊数、タイトル又は発行日によるフィルタ",
+      "title": "書籍を選択"
+    },
+    "delete_book": {
+      "button_confirm": "削除",
+      "confirm_delete": "はい、書籍 {name} とそのファイルを削除します",
+      "confirm_delete_multiple": "はい、 {count} 冊の書籍とファイルを削除します",
+      "dialog_title": "書籍を削除",
+      "dialog_title_multiple": "書籍(複数)を削除",
+      "warning_html": "このサーバーの書籍 <b>{name}</b>と格納されているメディアファイルを削除します。この操作は<b>取り消しできません。</b>続けますか？",
+      "warning_multiple_html": "このサーバーの {count} 冊の書籍と格納されているメディアファイルを削除します。この操作は<b>取り消しできません。</b>続けますか？"
+    },
     "delete_collection": {
       "button_confirm": "削除",
       "confirm_delete": "はい、コレクション「{name}」を削除します",
@@ -326,6 +354,14 @@
       "warning_html": "読書リスト<b>{name}</b>はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？",
       "warning_multiple_html": "{count}件の読書リストが削除されます。メディアファイルには影響しません。<b>取り消すことはできません</b>。よろしいですか？"
     },
+    "delete_series": {
+      "button_confirm": "削除",
+      "confirm_delete": "はい、このシリーズ「{name}」とファイルを削除します",
+      "confirm_delete_multiple": "はい、 {count} 個のシリーズとファイルを削除します",
+      "dialog_title": "シリーズを削除",
+      "warning_html": "シリーズ<b>{name}</b>は保存されているメディアファイルと共にこのサーバから削除されます。これは<b>元に戻すことはできません</b>。続行しますか？",
+      "warning_multiple_html": "{count}シリーズは保存されているメディアファイルと共にこのサーバーから削除されます。これは<b>元に戻せません</b>。続行しますか？"
+    },
     "delete_user": {
       "button_confirm": "削除",
       "confirm_delete": "はい、ユーザ「{name}」を削除します",
@@ -333,13 +369,20 @@
       "warning_html": "ユーザ<b>{name}</b>はこのサーバから削除されます。削除はなかったことに<b>できません</b>。続けますか？"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "すでに存在しています",
       "authors_notice_multiple_edit": "複数冊まとめて著者情報を編集しています。それぞれの書籍の著者情報より優先されるようになります。",
       "button_cancel": "キャンセル",
       "button_confirm": "変更を保存",
-      "dialog_title_multiple": "{count} 冊を編集",
+      "copy_from": "{field}からコピー",
+      "dialog_title_multiple": "{count} 冊を編集 | {count} 冊を編集",
       "dialog_title_single": "{book} を編集",
+      "field_alternate_title": "別タイトル",
       "field_isbn": "ISBN",
       "field_isbn_error": "ISBN は正しく 13 桁にしてください",
+      "field_link_label": "ラベル",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "httpまたはhttpsが必須です",
+      "field_link_url_error_url": "有効なURLでなければならない",
       "field_number": "ナンバー",
       "field_number_sort": "ソートナンバー",
       "field_number_sort_hint": "十進数が使えます",
@@ -348,8 +391,12 @@
       "field_summary": "サマリ",
       "field_tags": "タグ",
       "field_title": "タイトル",
+      "number_sort_decrement": "すべてを1ずつ減らす",
+      "number_sort_increment": "すべてを1ずつ増やす",
       "tab_authors": "著作者",
       "tab_general": "一般",
+      "tab_links": "リンク",
+      "tab_poster": "ポスター",
       "tab_tags": "タグ",
       "tags_notice_multiple_edit": "複数冊まとめてタグを編集しています。それぞれの書籍のタグより優先されるようになります。"
     },
@@ -358,7 +405,9 @@
       "button_confirm": "変更を保存",
       "dialog_title": "コレクションを編集",
       "field_manual_ordering": "手動で並べる",
-      "label_ordering": "コレクション中のシリーズは、デフォルトでは名前順に並びます。並び順を自分で決めるために、手動で並べることができます。"
+      "label_ordering": "コレクション中のシリーズは、デフォルトでは名前順に並びます。並び順を自分で決めるために、手動で並べることができます。",
+      "tab_general": "一般",
+      "tab_poster": "ポスター"
     },
     "edit_library": {
       "button_browse": "ブラウズ",
@@ -368,42 +417,59 @@
       "button_next": "次へ",
       "dialog_title_add": "ライブラリを追加",
       "dialot_title_edit": "ライブラリを編集",
+      "field_analysis_analyze_dimensions": "ページ寸法の分析",
+      "field_analysis_hash_files": "ファイルのハッシュを計算する",
+      "field_analysis_hash_pages": "ページのハッシュを計算する",
       "field_convert_to_cbz": "自動的にCBZに変換",
       "field_import_barcode_isbn": "ISBN バーコード",
       "field_import_comicinfo_book": "書誌情報",
       "field_import_comicinfo_collections": "コレクション",
       "field_import_comicinfo_readlists": "読書リスト",
       "field_import_comicinfo_series": "シリーズ情報",
+      "field_import_comicinfo_series_append_volume": "シリーズタイトルに巻数を追加",
       "field_import_epub_book": "書誌情報",
       "field_import_epub_series": "シリーズ情報",
       "field_import_local_artwork": "ローカルのアートワーク",
       "field_import_mylar_series": "シリーズ情報",
       "field_name": "ライブラリ名",
+      "field_oneshotsdirectory": "ワンショット ディレクトリー",
       "field_repair_extensions": "不正なファイル拡張子を自動的に修復",
       "field_root_folder": "ルートフォルダ",
+      "field_scan_interval": "スキャン間隔",
       "field_scanner_empty_trash_after_scan": "スキャン後、ゴミ箱を自動的に空する",
       "field_scanner_force_directory_modified_time": "ディレクトリの変更時刻が更新されているものと見なす",
+      "field_scanner_scan_startup": "起動時のスキャン",
       "field_series_cover": "シリーズカバー",
       "file_browser_dialog_button_confirm": "選択",
       "file_browser_dialog_title": "ライブラリのルートフォルダ",
+      "label_analysis": "分析",
       "label_file_management": "ファイル管理",
       "label_import_barcode_isbn": "バーコードから ISBN をインポート",
       "label_import_comicinfo": "ComicInfo.xml ファイルを含んだ CBR/CBZ から情報をインポート",
       "label_import_epub": "EPUB ファイルから書誌情報をインポート",
       "label_import_local": "ローカルのメディアをインポート",
       "label_import_mylar": "Mylar によって生成されたメタデータをインポートする",
+      "label_scan_directory_exclusions": "ディレクトリの除外",
+      "label_scan_types": "これらのファイルタイプをスキャンする",
       "label_scanner": "スキャナ",
       "label_series_cover": "シリーズカバー",
       "tab_general": "一般",
       "tab_metadata": "メタデータ",
-      "tab_options": "オプション"
+      "tab_options": "オプション",
+      "tooltip_oneshotsdirectory": "無効にするには空のままにする",
+      "tooltip_scanner_force_modified_time": "ライブラリがGoogleドライブ上にある場合、有効にします",
+      "tooltip_use_resources": "大規模なライブラリや低速なハードウェアでは、多くのリソースを消費する可能性があります"
     },
     "edit_readlist": {
       "button_cancel": "キャンセル",
       "button_confirm": "変更を保存",
       "dialog_title": "読書リストを編集",
+      "field_manual_ordering": "手動順序",
       "field_name": "リスト名",
-      "field_summary": "概要"
+      "field_summary": "概要",
+      "label_ordering": "デフォルトでは、既読リストの書籍は手動で並べ替えられます。手動順序を無効にすると、発売日順に並べ替えることができます。",
+      "tab_general": "一般",
+      "tab_poster": "ポスター"
     },
     "edit_series": {
       "button_cancel": "キャンセル",
@@ -413,6 +479,7 @@
       "field_age_rating": "年齢レーティング",
       "field_age_rating_error": "年齢レーティングは 0 以上にしてください",
       "field_genres": "ジャンル",
+      "field_labels": "ラベル",
       "field_language": "言語",
       "field_language_hint": "IETF BCP 47 言語タグ",
       "field_publisher": "出版社",
@@ -488,6 +555,7 @@
     },
     "series_picker": {
       "label_search_series": "シリーズを検索",
+      "no_results": "シリーズが見つかりません",
       "title": "シリーズの選択"
     },
     "server_stop": {
@@ -511,6 +579,7 @@
         "height": "高さ",
         "index": "目次",
         "media_type": "メディアの種類",
+        "size": "サイズ",
         "width": "幅"
       },
       "title": "書籍の詳細",
@@ -525,10 +594,39 @@
     }
   },
   "duplicate_pages": {
-    "action_ignore": "無視"
+    "action_auto_delete_remaining": "残り自動削除 ({count})",
+    "action_delete_auto": "自動削除",
+    "action_delete_manual": "手動削除",
+    "action_delete_matches": "マッチの削除",
+    "action_ignore": "無視",
+    "action_ignore_remaining": "残り無視 ({count})",
+    "action_manual_delete_remaining": "手動削除残り ({count})",
+    "confirm_auto_delete_remaining": "このページ({count})に残っているページハッシュはすべて自動削除の対象になります。",
+    "confirm_manual_delete_remaining": "このページ（{count}）に残っているすべてのページハッシュは、手動で削除するようにマークされます。",
+    "delete_to_save": "{size}を削除して保存する",
+    "deleted_count": "削除{count}回",
+    "empty_title": "重複ページなし",
+    "filter": {
+      "count": "カウント",
+      "delete_count": "削除数",
+      "delete_size": "省スペース",
+      "match_count": "マッチ数",
+      "size": "サイズ",
+      "total_size": "合計サイズ"
+    },
+    "info": "重複ページを削除すると、ファイルが変更されます。自動削除を使用する前に、ファイルをバックアップし、手動削除を使用してください。",
+    "known": "既知",
+    "matches_n": "マッチなし｜1マッチ｜{count}マッチ",
+    "new": "ニュー",
+    "saved_size": "保存された{size}",
+    "title": "重複ページ",
+    "unknown_size": "サイズ不明"
   },
   "duplicates": {
-    "title": "重複ファイル"
+    "file_hash": "ファイルハッシュ",
+    "size": "サイズ",
+    "title": "重複ファイル",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -551,13 +649,28 @@
     },
     "page_hash_action": {
       "DELETE_AUTO": "自動削除",
-      "DELETE_MANUAL": "手動削除"
+      "DELETE_MANUAL": "手動削除",
+      "IGNORE": "除外"
     },
     "reading_direction": {
       "LEFT_TO_RIGHT": "左から右",
       "RIGHT_TO_LEFT": "右から左",
       "VERTICAL": "縦",
       "WEBTOON": "Webtoon"
+    },
+    "scan_interval": {
+      "DAILY": "毎日",
+      "DISABLED": "無効",
+      "EVERY_12H": "12時間ごと",
+      "EVERY_6H": "6時間ごと",
+      "HOURLY": "1時間ごと",
+      "WEEKLY": "週ごと"
+    },
+    "series_cover": {
+      "FIRST": "最初",
+      "FIRST_UNREAD_OR_FIRST": "未読を最初にする",
+      "FIRST_UNREAD_OR_LAST": "最初の未読が最後にする",
+      "LAST": "最後"
     },
     "series_status": {
       "ABANDONED": "打ち切り",
@@ -582,17 +695,30 @@
     "ERR_1017": "既存のライブラリの一部であるフォルダをスキャンできない",
     "ERR_1018": "ファイルが見つかりませんでした",
     "ERR_1019": "既存のライブラリの一部であるファイルはインポートできません",
+    "ERR_1020": "アップグレードする本は、提供されたシリーズに属していない",
     "ERR_1021": "宛先は既に存在しています",
+    "ERR_1022": "新しく取り込んだ本がスキャンできませんでした",
     "ERR_1023": "書籍は既に読書リストに存在します",
-    "ERR_1029": "ComicRack CBLは本が一冊もありません"
+    "ERR_1024": "OAuth2ログインエラー: email属性がありません",
+    "ERR_1025": "OAuth2ログインエラー: 電子メールを持つローカルユーザが存在しない",
+    "ERR_1026": "OpenID Connectログインエラー：電子メールが検証されていません",
+    "ERR_1027": "OpenID Connectログインエラー：email_verified属性がありません",
+    "ERR_1028": "OpenID Connectログインエラー：email 属性がありません",
+    "ERR_1029": "ComicRack CBLは本が一冊もありません",
+    "ERR_1030": "ComicRack CBLにはName要素がありません",
+    "ERR_1031": "ComicRack CBL Bookにシリーズまたは番号がありません"
   },
   "filter": {
     "age_rating": "年齢レーティング",
     "age_rating_none": "なし",
+    "complete": "完了",
     "genre": "ジャンル",
+    "in_progress": "処理中",
     "language": "言語",
     "library": "ライブラリ",
+    "oneshot": "ワンショット",
     "publisher": "出版社",
+    "read": "読み込み",
     "release_date": "発売日",
     "sharing_label": "共有ラベル",
     "status": "執筆状況",
@@ -663,8 +789,10 @@
     "library_books": "ライブラリごとの冊数",
     "library_disk_space": "ライブラリの使用容量",
     "library_series": "ライブラリごとのシリーズ数",
+    "library_sidecars": "ライブラリーごとのサイドカー",
     "tasks_executed": "実行されたタスク",
-    "tasks_total_time": "タスクの総実行時間"
+    "tasks_total_time": "タスクの総実行時間",
+    "title": "指標"
   },
   "navigation": {
     "home": "ホーム",
@@ -679,6 +807,12 @@
   "read_more": {
     "less": "省略する",
     "more": "続きを読む"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "重複した本",
+      "error_choose_book": "本を選ぶ"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "読書リストを管理",
@@ -714,6 +848,8 @@
     "change_password": "パスワードを変更",
     "edit_restrictions": "制限を編集",
     "edit_user": "ユーザの編集",
+    "latest_activity": "最新アクティビティ：{date}",
+    "no_recent_activity": "最近のアクティビティなし",
     "role_administrator": "管理者",
     "role_user": "ユーザ"
   },
@@ -736,8 +872,17 @@
   "thumbnail_card": {
     "tooltip_delete": "削除",
     "tooltip_generated": "生成された画像",
+    "tooltip_mark_as_selected": "選択マーク",
     "tooltip_selected": "選択中",
-    "tooltip_too_big": "ファイルが大きすぎます!"
+    "tooltip_sidecar": "ローカルのアートワーク",
+    "tooltip_to_be_deleted": "削除予定",
+    "tooltip_to_be_uploaded": "アップロード予定",
+    "tooltip_too_big": "ファイルが大きすぎます!",
+    "tooltip_user_uploaded": "ユーザーがアップロード"
+  },
+  "titles_more": {
+    "less": "敬称略",
+    "more": "その他のタイトル"
   },
   "user_roles": {
     "ADMIN": "管理者",
@@ -746,6 +891,7 @@
     "USER": "ユーザ"
   },
   "users": {
+    "authentication_activity": "認証アクティビティ",
     "users": "ユーザ"
   },
   "validation": {

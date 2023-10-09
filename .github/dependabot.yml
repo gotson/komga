@@ -3,23 +3,35 @@ updates:
   - package-ecosystem: "npm"
     directory: "/komga-webui"
     open-pull-requests-limit: 0
+    commit-message:
+      prefix: "deps(webui)"
+      include: "scope"
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "gradle"
     directory: "/komga"
     open-pull-requests-limit: 0
+    commit-message:
+      prefix: "deps(komga)"
+      include: "scope"
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "gradle"
     directory: "/komga-tray"
     open-pull-requests-limit: 0
+    commit-message:
+      prefix: "deps(komga-tray)"
+      include: "scope"
     schedule:
       interval: "weekly"
 
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
+    commit-message:
+      prefix: "deps(ci)"
+      include: "scope"
     schedule:
       interval: "weekly"

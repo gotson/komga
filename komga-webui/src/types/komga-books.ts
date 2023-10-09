@@ -143,5 +143,9 @@ export interface BookThumbnailDto {
   id: string,
   bookId: string,
   type: string,
-  selected: boolean
+  selected: boolean,
+  mediaType: string,
+  fileSize: number,
+  width: number,
+  height: number,
 }

@@ -36,6 +36,7 @@ export const persistedModule: Module<any, any> = {
     },
     importPath: '',
     duplicatesNewPageSize: 10,
+    rememberMe: false,
   },
   getters: {
     getLocaleFirstDay: (state) => () => {
@@ -43,10 +44,12 @@ export const persistedModule: Module<any, any> = {
         // @ts-ignore
         const loc = new Intl.Locale(state.locale)
         try {
+          // @ts-ignore
           return loc.getWeekInfo().firstDay
         } catch (e) {
         }
         try {
+          // @ts-ignore
           return loc.weekInfo.firstDay
         } catch (e) {
         }
@@ -139,6 +142,9 @@ export const persistedModule: Module<any, any> = {
     },
     setDuplicatesNewPageSize(state, val) {
       state.duplicatesNewPageSize = val
+    },
+    setRememberMe(state, val) {
+      state.rememberMe = val
     },
   },
 }

@@ -48,6 +48,16 @@
         </v-row>
 
         <v-row>
+          <v-col>
+            <v-checkbox v-model="rememberMe"
+                        :label="$t('common.remember-me')"
+                        hide-details
+                        class="mt-0"
+            />
+          </v-col>
+        </v-row>
+
+        <v-row>
           <v-col cols="auto">
             <v-btn color="primary"
                    type="submit"
@@ -183,6 +193,15 @@ export default Vue.extend({
       },
     },
 
+    rememberMe: {
+      get: function (): boolean {
+        return this.$store.state.persistedState.rememberMe
+      },
+      set: function (value: boolean): void {
+        this.$store.commit('setRememberMe', value)
+      },
+    },
+
     themes(): object[] {
       return [
         {text: this.$i18n.t(Theme.LIGHT), value: Theme.LIGHT},
@@ -224,8 +243,8 @@ export default Vue.extend({
       const url = `${urls.originNoSlash}/oauth2/authorization/${provider.registrationId}`
       const height = 600
       const width = 600
-      const y = window.top.outerHeight / 2 + window.top.screenY - (height / 2)
-      const x = window.top.outerWidth / 2 + window.top.screenX - (width / 2)
+      const y = window.top!.outerHeight / 2 + window.top!.screenY - (height / 2)
+      const x = window.top!.outerWidth / 2 + window.top!.screenX - (width / 2)
       window.open(url, 'oauth2Login',
         `toolbar=no,
         location=off,
@@ -260,6 +279,7 @@ export default Vue.extend({
             {
               login: this.form.login,
               password: this.form.password,
+              rememberMe: this.rememberMe,
             })
 
           await this.$store.dispatch('getLibraries')

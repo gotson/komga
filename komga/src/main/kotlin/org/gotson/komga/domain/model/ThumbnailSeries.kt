@@ -12,6 +12,9 @@ data class ThumbnailSeries(
   val url: URL? = null,
   val selected: Boolean = false,
   val type: Type,
+  val mediaType: String,
+  val fileSize: Long,
+  val dimension: Dimension,
 
   val id: String = TsidCreator.getTsid256().toString(),
   val seriesId: String = "",
@@ -23,9 +26,16 @@ data class ThumbnailSeries(
     SIDECAR, USER_UPLOADED
   }
 
+  fun exists(): Boolean {
+    if (url != null) return Files.exists(Paths.get(url.toURI()))
+    return thumbnail != null
+  }
+
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
-    if (other !is ThumbnailSeries) return false
+    if (javaClass != other?.javaClass) return false
+
+    other as ThumbnailSeries
 
     if (thumbnail != null) {
       if (other.thumbnail == null) return false
@@ -34,6 +44,9 @@ data class ThumbnailSeries(
     if (url != other.url) return false
     if (selected != other.selected) return false
     if (type != other.type) return false
+    if (mediaType != other.mediaType) return false
+    if (fileSize != other.fileSize) return false
+    if (dimension != other.dimension) return false
     if (id != other.id) return false
     if (seriesId != other.seriesId) return false
     if (createdDate != other.createdDate) return false
@@ -47,15 +60,13 @@ data class ThumbnailSeries(
     result = 31 * result + (url?.hashCode() ?: 0)
     result = 31 * result + selected.hashCode()
     result = 31 * result + type.hashCode()
+    result = 31 * result + mediaType.hashCode()
+    result = 31 * result + fileSize.hashCode()
+    result = 31 * result + dimension.hashCode()
     result = 31 * result + id.hashCode()
     result = 31 * result + seriesId.hashCode()
     result = 31 * result + createdDate.hashCode()
     result = 31 * result + lastModifiedDate.hashCode()
     return result
-  }
-
-  fun exists(): Boolean {
-    if (url != null) return Files.exists(Paths.get(url.toURI()))
-    return thumbnail != null
   }
 }

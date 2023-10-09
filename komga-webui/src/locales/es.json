@@ -199,16 +199,19 @@
     "books_n": "Sin libros | 1 libro | {count} libros",
     "books_total": "{count} / {total} libros",
     "cancel": "Cancelar",
+    "cbx": "Archivos de cómic",
     "choose_image": "Elegir una imagen",
     "close": "Cerrar",
     "collections": "Colecciones",
     "create": "Crear",
     "delete": "Eliminar",
+    "discard": "Descartar",
     "disk_space": "Espacio en disco",
     "dismiss": "Descartar",
     "download": "Descargar",
     "drag_drop": "arrastrar y soltar",
     "email": "Correo electrónico",
+    "epub": "Epub",
     "filename": "Nombre de archivo",
     "filter_no_matches": "El filtro activo no tiene coincidencias",
     "genre": "Género",
@@ -230,12 +233,14 @@
     "pages_left": "No quedan páginas | Queda 1 página | Quedan {count} páginas",
     "pages_n": "Sin páginas | 1 página | {count} páginas",
     "password": "Contraseña",
+    "pdf": "PDF",
     "pending_tasks": "Sin tareas pendientes | 1 tarea pendiente | {count} tareas pendientes",
     "publisher": "Editorial",
     "read": "Leer",
     "read_on": "Leer la {date}",
     "readlist": "Lista de lectura",
     "readlists": "Listas de lectura",
+    "remember-me": "Recordarme",
     "required": "Requerido",
     "reset_filters": "Reiniciar filtros",
     "roles": "Funciones",
@@ -432,8 +437,10 @@
       "field_oneshotsdirectory": "Directorio de one-shots",
       "field_repair_extensions": "Automáticamente reparar extensiones de archivo incorrectas",
       "field_root_folder": "Carpeta raíz",
+      "field_scan_interval": "Intervalo de escaneo",
       "field_scanner_empty_trash_after_scan": "Vaciar papelera automáticamente luego de cada escaneo",
       "field_scanner_force_directory_modified_time": "Forzar fecha de modificación de directorio",
+      "field_scanner_scan_startup": "Escanear al iniciar",
       "field_series_cover": "Portada de serie",
       "file_browser_dialog_button_confirm": "Elegir",
       "file_browser_dialog_title": "Directorio raíz de la biblioteca",
@@ -444,6 +451,8 @@
       "label_import_epub": "Importar metadatos desde archivos EPUB",
       "label_import_local": "Importar recursos multimedia locales",
       "label_import_mylar": "Importar metadatos generados por Mylar",
+      "label_scan_directory_exclusions": "Exclusiones de directorios",
+      "label_scan_types": "Escanear por estos tipos de archivos",
       "label_scanner": "Escáner",
       "label_series_cover": "Portada de serie",
       "tab_general": "General",
@@ -651,6 +660,14 @@
       "VERTICAL": "Vertical",
       "WEBTOON": "Webtoon"
     },
+    "scan_interval": {
+      "DAILY": "Diariamente",
+      "DISABLED": "Deshabilitado",
+      "EVERY_12H": "Cada 12 horas",
+      "EVERY_6H": "Cada 6 horas",
+      "HOURLY": "Cada hora",
+      "WEEKLY": "Semanalmente"
+    },
     "series_cover": {
       "FIRST": "El primero",
       "FIRST_UNREAD_OR_FIRST": "El primero sin leer de lo contrario el primero",
@@ -827,6 +844,10 @@
     "tab_title": "Servidor"
   },
   "server_settings": {
+    "label_delete_empty_collections": "Eliminar las colecciones vacías después de escanear",
+    "label_delete_empty_readlists": "Eliminar las listas de lectura vacías después de escanear",
+    "label_rememberme_duration": "Duración de «recordarme» (en días)",
+    "requires_restart": "Necesita reiniciar para tener efecto",
     "server_settings": "Ajustes del servidor"
   },
   "settings_user": {
@@ -880,6 +901,7 @@
     "users": "Usuarios"
   },
   "validation": {
+    "one_or_more": "Debe ser 1 o más",
     "zero_or_more": "Debe ser 0 o más"
   },
   "welcome": {

@@ -1,10 +1,14 @@
 package org.gotson.komga.infrastructure.jooq
 
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailSeriesCollection
 import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
 import org.gotson.komga.jooq.Tables
 import org.gotson.komga.jooq.tables.records.ThumbnailCollectionRecord
 import org.jooq.DSLContext
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -35,6 +39,22 @@ class ThumbnailSeriesCollectionDao(
       .fetchInto(tc)
       .map { it.toDomain() }
 
+  override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailSeriesCollection> {
+    val query = dsl.selectFrom(tc)
+      .where(tc.FILE_SIZE.eq(0))
+      .or(tc.MEDIA_TYPE.eq(""))
+      .or(tc.WIDTH.eq(0))
+      .or(tc.HEIGHT.eq(0))
+
+    val count = query.count()
+    val items = query
+      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+      .fetchInto(tc)
+      .map { it.toDomain() }
+
+    return PageImpl(items, pageable, count.toLong())
+  }
+
   override fun insert(thumbnail: ThumbnailSeriesCollection) {
     dsl.insertInto(tc)
       .set(tc.ID, thumbnail.id)
@@ -42,6 +62,10 @@ class ThumbnailSeriesCollectionDao(
       .set(tc.THUMBNAIL, thumbnail.thumbnail)
       .set(tc.SELECTED, thumbnail.selected)
       .set(tc.TYPE, thumbnail.type.toString())
+      .set(tc.MEDIA_TYPE, thumbnail.mediaType)
+      .set(tc.WIDTH, thumbnail.dimension.width)
+      .set(tc.HEIGHT, thumbnail.dimension.height)
+      .set(tc.FILE_SIZE, thumbnail.fileSize)
       .execute()
   }
 
@@ -51,8 +75,26 @@ class ThumbnailSeriesCollectionDao(
       .set(tc.THUMBNAIL, thumbnail.thumbnail)
       .set(tc.SELECTED, thumbnail.selected)
       .set(tc.TYPE, thumbnail.type.toString())
+      .set(tc.MEDIA_TYPE, thumbnail.mediaType)
+      .set(tc.WIDTH, thumbnail.dimension.width)
+      .set(tc.HEIGHT, thumbnail.dimension.height)
+      .set(tc.FILE_SIZE, thumbnail.fileSize)
       .where(tc.ID.eq(thumbnail.id))
       .execute()
+  }
+
+  override fun updateMetadata(thumbnails: Collection<ThumbnailSeriesCollection>) {
+    dsl.batched { c ->
+      thumbnails.forEach {
+        c.dsl().update(tc)
+          .set(tc.MEDIA_TYPE, it.mediaType)
+          .set(tc.WIDTH, it.dimension.width)
+          .set(tc.HEIGHT, it.dimension.height)
+          .set(tc.FILE_SIZE, it.fileSize)
+          .where(tc.ID.eq(it.id))
+          .execute()
+      }
+    }
   }
 
   @Transactional
@@ -87,6 +129,9 @@ class ThumbnailSeriesCollectionDao(
       thumbnail = thumbnail,
       selected = selected,
       type = ThumbnailSeriesCollection.Type.valueOf(type),
+      mediaType = mediaType,
+      fileSize = fileSize,
+      dimension = Dimension(width, height),
       id = id,
       collectionId = collectionId,
       createdDate = createdDate,

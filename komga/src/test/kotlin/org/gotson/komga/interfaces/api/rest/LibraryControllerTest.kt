@@ -5,10 +5,12 @@ import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.hamcrest.Matchers
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
+import org.hamcrest.Matchers.hasItems
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,7 +19,9 @@ import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
+import java.nio.file.Path
 
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
@@ -30,12 +34,12 @@ class LibraryControllerTest(
 
   private val library = makeLibrary(path = "file:/library1", id = "1")
 
-  @BeforeAll
+  @BeforeEach
   fun `setup library`() {
     libraryRepository.insert(library)
   }
 
-  @AfterAll
+  @AfterEach
   fun `teardown library`() {
     libraryRepository.deleteAll()
   }
@@ -129,6 +133,57 @@ class LibraryControllerTest(
         .andExpect {
           status { isOk() }
           jsonPath("$.root") { value(Matchers.containsString("library1")) }
+        }
+    }
+  }
+
+  @Nested
+  inner class DirectoryExclusions {
+    @Test
+    @WithMockCustomUser
+    fun `given library with exclusions when getting libraries then exclusions are present`() {
+      libraryRepository.update(library.copy(scanDirectoryExclusions = setOf("test", "value")))
+
+      mockMvc.get(route)
+        .andExpect {
+          status { isOk() }
+          jsonPath("$[0].scanDirectoryExclusions.length()") { value(2) }
+          jsonPath("$[0].scanDirectoryExclusions") { hasItems("test", "value") }
+        }
+
+      mockMvc.get("$route/${library.id}")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.scanDirectoryExclusions.length()") { value(2) }
+          jsonPath("$.scanDirectoryExclusions") { hasItems("test", "value") }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    fun `given library with exclusions when updating library then exclusions are updated`(@TempDir tmp: Path) {
+      libraryRepository.update(library.copy(root = tmp.toUri().toURL(), scanDirectoryExclusions = setOf("test", "value")))
+
+      // language=JSON
+      val jsonString = """
+        {
+          "scanDirectoryExclusions": ["updated"]
+        }
+      """.trimIndent()
+
+      mockMvc.patch("$route/${library.id}") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }
+        .andExpect {
+          status { isNoContent() }
+        }
+
+      mockMvc.get("$route/${library.id}")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.scanDirectoryExclusions.length()") { value(1) }
+          jsonPath("$.scanDirectoryExclusions") { hasItems("updated") }
         }
     }
   }

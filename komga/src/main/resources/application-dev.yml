@@ -1,10 +1,4 @@
 komga:
-  remember-me:
-    key: changeMe!
-    validity: 30d
-#  libraries-scan-cron: "*/5 * * * * ?" #every 5 seconds
-  libraries-scan-cron: "-" #disable
-  libraries-scan-startup: false
   database:
     file: ":memory:"
   cors.allowed-origins:

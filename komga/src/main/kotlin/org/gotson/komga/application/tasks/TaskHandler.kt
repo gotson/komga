@@ -16,6 +16,7 @@ import org.gotson.komga.domain.service.LocalArtworkLifecycle
 import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
+import org.gotson.komga.domain.service.ThumbnailLifecycle
 import org.gotson.komga.infrastructure.jms.QUEUE_FACTORY
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
@@ -46,6 +47,7 @@ class TaskHandler(
   private val bookPageEditor: BookPageEditor,
   private val searchIndexLifecycle: SearchIndexLifecycle,
   private val pageHashLifecycle: PageHashLifecycle,
+  private val thumbnailLifecycle: ThumbnailLifecycle,
   private val meterRegistry: MeterRegistry,
 ) {
 
@@ -179,6 +181,11 @@ class TaskHandler(
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
               seriesLifecycle.deleteSeriesFiles(series)
             }
+          }
+
+          is Task.FindThumbnailsWithoutMetadata -> {
+            if (thumbnailLifecycle.fixThumbnailsMetadata())
+              taskEmitter.findThumbnailsWithoutMetadata(LOWEST_PRIORITY)
           }
         }
       }.also {

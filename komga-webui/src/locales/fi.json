@@ -18,7 +18,7 @@
     "noDataText": "Tietoja ei ole saatavilla"
   },
   "account_settings": {
-    "account_settings": "Tilin Asetukset",
+    "account_settings": "Tilin asetukset",
     "change_password": "Vaihda salasana"
   },
   "announcements": {
@@ -193,7 +193,7 @@
   },
   "common": {
     "age": "Ikä",
-    "all_libraries": "Kaikki Kirjastot",
+    "all_libraries": "Kaikki kirjastot",
     "book": "Kirja",
     "books": "Kirjat",
     "books_n": "Ei kirjaa | Yksi kirja | {count} kirjaa",
@@ -222,6 +222,7 @@
     "lock_all": "Lukitse kaikki",
     "n_selected": "{count} valittu",
     "nothing_to_show": "Ei näytettävää",
+    "oneshot": "Kertajulkaisu",
     "outdated": "Vanhentunut",
     "page": "Sivu",
     "page_number": "Sivunumero",
@@ -249,13 +250,13 @@
     "year": "vuosi"
   },
   "dashboard": {
-    "keep_reading": "Jatka Lukemista",
+    "keep_reading": "Jatka lukemista",
     "on_deck": "Meneillään",
-    "recently_added_books": "Viimeksi Lisätyt Kirjat",
-    "recently_added_series": "Viimeksi Lisätyt Sarjat",
+    "recently_added_books": "Viimeksi lisätyt kirjat",
+    "recently_added_series": "Viimeksi lisätyt sarjat",
     "recently_read_books": "Äskettäin Luetut Kirjat",
     "recently_released_books": "Äskettäin Julkaistut Kirjat",
-    "recently_updated_series": "Viimeksi Päivitetyt Sarjat"
+    "recently_updated_series": "Viimeksi päivitetyt sarjat"
   },
   "data_import": {
     "book_number": "Kirjan numero: {name}",
@@ -428,6 +429,7 @@
       "field_import_local_artwork": "Paikallinen kuvamateriaali",
       "field_import_mylar_series": "Sarjan metatiedot",
       "field_name": "Nimi",
+      "field_oneshotsdirectory": "Kertajulkaisujen kansio",
       "field_repair_extensions": "Korjaa virheelliset tiedostopäätteet automaattisesti",
       "field_root_folder": "Juurikansio",
       "field_scanner_empty_trash_after_scan": "Tyhjennä roskakori automaattisesti jokaisen skannauksen jälkeen",
@@ -447,6 +449,7 @@
       "tab_general": "Yleiset",
       "tab_metadata": "Metatiedot",
       "tab_options": "Vaihtoehdot",
+      "tooltip_oneshotsdirectory": "Jätä tyhjäksi poistaaksesi käytöstä",
       "tooltip_scanner_force_modified_time": "Ota käyttöön, jos kirjasto on Google Drivessa",
       "tooltip_use_resources": "Voi kuluttaa paljon resursseja suurilla kirjastoilla tai hitaalla laitteistolla"
     },
@@ -590,16 +593,22 @@
     "action_delete_matches": "Poista osumat",
     "action_ignore": "Jätä huomiotta",
     "action_ignore_remaining": "Jätä loput huomioimatta ({count})",
+    "action_manual_delete_remaining": "Manuaalisia poistoja jäljellä {count}",
+    "confirm_auto_delete_remaining": "Kaikki jäljelle jääneet sivujen tarkisteet tällä sivulla ({count}) merkitään automaattisesti poistettaviksi.",
+    "confirm_manual_delete_remaining": "Kaikki jäljelle jääneet sivujen tarkisteet tällä sivulla ({count}) merkitään manuaalisesti poistettaviksi.",
     "delete_to_save": "Poista säästääksesi {size}",
     "deleted_count": "Poistettu {count} kertaa",
+    "empty_title": "Sivujen kaksoiskappaleita ei löytynyt",
     "filter": {
       "count": "Määrä",
       "delete_count": "Poistojen määrä",
       "delete_size": "Tilaa säästetty",
+      "match_count": "Osumien määrä",
       "size": "Koko",
       "total_size": "Yhteiskoko"
     },
     "info": "Duplikaattisivujen poistaminen muokkaa tiedostojasi. Ota tiedostoistasi varmuuskopio ja käytä manuaalista poistoa ennen kuin käytät automaattista poistoa.",
+    "known": "Tunnettu",
     "matches_n": "Ei osumia | 1 osuma | {count} osumaa",
     "new": "Uusi",
     "saved_size": "Säästetty {size}",
@@ -677,7 +686,12 @@
     "ERR_1023": "Kirja on jo lukulistalla",
     "ERR_1024": "OAuth2-kirjautumisvirhe: ei sähköpostiattribuuttia",
     "ERR_1025": "OAuth2-kirjautumisvirhe: kyseisellä sähköpostilla ei ole paikallista käyttäjää",
-    "ERR_1026": "OpenID Connect kirjautumisvirhe: sähköpostiosoitetta ei ole vahvistettu"
+    "ERR_1026": "OpenID Connect kirjautumisvirhe: sähköpostiosoitetta ei ole vahvistettu",
+    "ERR_1027": "OpenID Connect kirjautumisvirhe: email_verified attribuutti puuttuu",
+    "ERR_1028": "OpenID Connect kirjautumisvirhe: email attribuutti puuttuu",
+    "ERR_1029": "ComicRack CBL ei sisällä ainuttakaan Kirja elementtiä",
+    "ERR_1030": "ComicRack CBL ei sisällä Nimi elementtiä",
+    "ERR_1031": "ComicRack CBL Kirjasta puuttuu sarja tai numero"
   },
   "filter": {
     "age_rating": "ikäluokitus",
@@ -687,9 +701,11 @@
     "in_progress": "Meneillään",
     "language": "kieli",
     "library": "kirjasto",
+    "oneshot": "Kertajulkaisu",
     "publisher": "julkaisija",
     "read": "Luettu",
     "release_date": "julkaisupäivämäärä",
+    "sharing_label": "Jakotunniste",
     "status": "tila",
     "tag": "tunniste",
     "unread": "Lukemattomat"
@@ -751,6 +767,7 @@
     "mark_unread": "Merkitse lukemattomaksi",
     "refresh_metadata": "Päivitä metatiedot",
     "scan_library_files": "Skannaa kirjastotiedostot",
+    "scan_library_files_deep": "Skannaa kirjastotiedostot (syvä)",
     "select_all": "Valitse kaikki"
   },
   "metrics": {
@@ -765,7 +782,7 @@
   "navigation": {
     "home": "Koti",
     "libraries": "Kirjastot",
-    "logout": "Kirjaudu Ulos"
+    "logout": "Kirjaudu ulos"
   },
   "page_not_found": {
     "go_back_to_home_page": "Takaisin etusivulle",
@@ -775,6 +792,12 @@
   "read_more": {
     "less": "Lue vähemmän",
     "more": "Lue lisää"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Monista kirja",
+      "error_choose_book": "Valitse kirja"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Hallitse lukulistaa",
@@ -796,6 +819,7 @@
       "button_cancel_all_tasks": "Peruuta kaikki tehtävät",
       "button_empty_trash": "Tyhjennä kaikkien kirjastojen roskakori",
       "button_scan_libraries": "Skannaa kaikki kirjastot",
+      "button_scan_libraries_deep": "Skannaa kaikki kirjastot (syvä)",
       "button_shutdown": "Sammuta",
       "notification_tasks_cancelled": "Ei peruutettavia tehtäviä | Yksi tehtävä peruutettu | {count} tehtävää peruutettu",
       "section_title": "Palvelimen hallinta"
@@ -803,7 +827,7 @@
     "tab_title": "Palvelin"
   },
   "server_settings": {
-    "server_settings": "Palvelimen Asetukset"
+    "server_settings": "Palvelimen asetukset"
   },
   "settings_user": {
     "change_password": "Vaihda salasana",
@@ -841,10 +865,14 @@
     "tooltip_too_big": "Tiedosto on liian iso!",
     "tooltip_user_uploaded": "Käyttäjän lataama"
   },
+  "titles_more": {
+    "less": "Vähemmän nimiä",
+    "more": "Enemmän nimiä"
+  },
   "user_roles": {
     "ADMIN": "Järjestelmänvalvoja",
     "FILE_DOWNLOAD": "Tiedostojen lataus",
-    "PAGE_STREAMING": "Sivujen suoratoisto",
+    "PAGE_STREAMING": "Suoratoista sivuja",
     "USER": "Käyttäjä"
   },
   "users": {

@@ -6,7 +6,7 @@ Thanks a lot for contributing to Komga!
 
 You will need:
 
-- Java JDK version 17+
+- Java JDK version 17 & 19
 - Nodejs version 16+
 
 ## Setting up the project
@@ -19,9 +19,10 @@ Komga's commit messages follow the [Conventional Commits](https://www.convention
 
 ## Project organization
 
-Komga is composed of 2 projects:
+Komga is composed of 3 projects:
 - `komga`: a Spring Boot backend server that hosts the APIs, but also serves the static assets of the frontend.
 - `komga-webui`: a VueJS frontend, built at compile time and served by the backend at runtime.
+- `komga-tray`: a thin desktop wrapper that displays a tray-icon
 
 ## Backend development
 
@@ -40,7 +41,8 @@ The backend project uses `gradle` to run all the necessary tasks. If your IDE do
 
 Here is a list of useful tasks:
 - `bootRun`: run the application locally, useful for testing your changes.
-- `copyWebDist`: build the frontend, and copy the bundle to `/resources/public`. You need to run this manually if you want to test the latest frontend build hosted by Spring.
+- `prepareThymeLeaf`: build the frontend, and copy the bundle to `/resources/public`. You need to run this manually if
+  you want to test the latest frontend build hosted by Spring.
 - `test`: run automated tests. Always run this before committing.
 - `jooq-codegen-primary`: generates the jOOQ DSL.
 
@@ -67,6 +69,7 @@ Make sure you start the backend with the `dev` profile, else the frontend reques
 ## Docker
 
 To build the Docker image, you need to:
-- have the webui built and copied to `/resources/public`. To do so, run `./gradlew copyWebDist`
+
+- have the webui built and copied to `/resources/public`. To do so, run `./gradlew prepareThymeLeaf`
 - prepare the docker image via JReleaser. To do so, run `./gradlew jreleaserPackage`
 - the `Dockerfile` will be available in `komga/build/jreleaser/package/docker/`

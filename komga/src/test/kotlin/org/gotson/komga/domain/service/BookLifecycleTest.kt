@@ -8,6 +8,7 @@ import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ThumbnailBook
@@ -161,7 +162,7 @@ class BookLifecycleTest(
 
       val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
       val book = makeBook("1", libraryId = library.id, seriesId = series.id, url = bookPath.toUri().toURL())
-      val sidecar = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecarPath.toUri().toURL())
+      val sidecar = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecarPath.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
 
       seriesLifecycle.createSeries(series)
       seriesLifecycle.addBooks(series, listOf(book))
@@ -205,8 +206,8 @@ class BookLifecycleTest(
 
       val series = makeSeries(name = "series", libraryId = library.id, url = seriesPath.toUri().toURL())
       val book = makeBook("1", libraryId = library.id, seriesId = series.id, url = bookPath.toUri().toURL())
-      val sidecar1 = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecar1Path.toUri().toURL())
-      val sidecar2 = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecar2Path.toUri().toURL())
+      val sidecar1 = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecar1Path.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
+      val sidecar2 = ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, url = sidecar2Path.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
 
       seriesLifecycle.createSeries(series)
       seriesLifecycle.addBooks(series, listOf(book))
