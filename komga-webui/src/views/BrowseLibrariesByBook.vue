@@ -134,7 +134,7 @@ import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import LibraryItemTypeSelect from '@/components/LibraryItemTypeSelect.vue'
 import {parseBooleanFilter, parseQuerySort} from '@/functions/query-params'
-import {ReadStatus, replaceCompositeReadStatus} from '@/types/enum-books'
+import {ReadStatus} from '@/types/enum-books'
 import {
   LIBRARY_CHANGED,
   LIBRARY_DELETED,
@@ -295,7 +295,7 @@ export default Vue.extend({
       return {
         readStatus: {
           values: [
-            {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD_AND_IN_PROGRESS},
+            {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD},
             {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
             {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
           ],
@@ -537,14 +537,14 @@ export default Vue.extend({
 
       const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
       const complete = parseBooleanFilter(this.filters.complete)
-      const booksPage = await this.$komgaBooks.getBooks(requestLibraryId, pageRequest, undefined, undefined, replaceCompositeReadStatus(this.filters.readStatus), undefined, searchRegex, this.filters.publisher, this.filters.releaseDate, this.filters.tag, authorsFilter, this.filters.sharingLabel, this.filters.genre, this.filters.language, this.filters.ageRating)
+      const booksPage = await this.$komgaBooks.getBooks(requestLibraryId, pageRequest, undefined, undefined, this.filters.readStatus, undefined, searchRegex, this.filters.publisher, this.filters.releaseDate, this.filters.tag, authorsFilter, this.filters.sharingLabel, this.filters.genre, this.filters.language, this.filters.ageRating)
       booksPage.content.forEach((x: BookDto) => x.context = {origin: ContextOrigin.LIBRARY, id: this.libraryId})
 
       this.totalPages = booksPage.totalPages
       this.totalElements = booksPage.totalElements
       this.items = booksPage.content
 
-      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, replaceCompositeReadStatus(this.filters.readStatus), this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel)
+      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel)
       const nonAlpha = seriesGroups
         .filter((g) => !(/[a-zA-Z]/).test(g.group))
         .reduce((a, b) => a + b.count, 0)
