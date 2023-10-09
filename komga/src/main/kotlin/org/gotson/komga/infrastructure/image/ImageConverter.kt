@@ -7,6 +7,7 @@ import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
+import kotlin.math.min
 
 private val logger = KotlinLogging.logger {}
 
@@ -49,15 +50,16 @@ class ImageConverter {
       baos.toByteArray()
     }
 
-  fun resizeImage(imageBytes: ByteArray, format: String, size: Int): ByteArray =
-    ByteArrayOutputStream().use {
+  fun resizeImage(imageBytes: ByteArray, format: ImageType, size: Int): ByteArray {
+    return ByteArrayOutputStream().use {
       Thumbnails.of(imageBytes.inputStream())
         .size(size, size)
         .imageType(BufferedImage.TYPE_INT_ARGB)
-        .outputFormat(format)
+        .outputFormat(format.imageIOFormat)
         .toOutputStream(it)
       it.toByteArray()
     }
+  }
 
   private fun containsAlphaChannel(image: BufferedImage): Boolean =
     image.colorModel.hasAlpha()

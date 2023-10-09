@@ -183,7 +183,7 @@ class BookLifecycle(
 
       if (resizeTo != null) {
         return try {
-          imageConverter.resizeImage(thumbnailBytes, resizeTargetFormat.imageIOFormat, resizeTo)
+          imageConverter.resizeImage(thumbnailBytes, resizeTargetFormat, resizeTo)
         } catch (e: Exception) {
           logger.error(e) { "Resize thumbnail of book $bookId to $resizeTo: failed" }
           thumbnailBytes
@@ -244,7 +244,7 @@ class BookLifecycle(
 
     if (resizeTo != null) {
       val convertedPage = try {
-        imageConverter.resizeImage(pageContent, resizeTargetFormat.imageIOFormat, resizeTo)
+        imageConverter.resizeImage(pageContent, resizeTargetFormat, resizeTo)
       } catch (e: Exception) {
         logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
         throw e

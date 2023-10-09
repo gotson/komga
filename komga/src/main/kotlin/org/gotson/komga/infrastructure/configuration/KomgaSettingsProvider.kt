@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.configuration
 
 import org.apache.commons.lang3.RandomStringUtils
+import org.gotson.komga.domain.model.ThumbnailSize
 import org.gotson.komga.infrastructure.jooq.ServerSettingsDao
 import org.springframework.stereotype.Service
 import kotlin.time.Duration
@@ -44,6 +45,15 @@ class KomgaSettingsProvider(
       serverSettingsDao.saveSetting(Settings.REMEMBER_ME_DURATION.name, value.inWholeDays.toInt())
       field = value
     }
+
+  var thumbnailSize: ThumbnailSize =
+    serverSettingsDao.getSettingByKey(Settings.THUMBNAIL_SIZE.name, String::class.java)?.let {
+      ThumbnailSize.valueOf(it)
+    } ?: ThumbnailSize.DEFAULT
+    set(value) {
+      serverSettingsDao.saveSetting(Settings.THUMBNAIL_SIZE.name, value.name)
+      field = value
+    }
 }
 
 private enum class Settings {
@@ -51,4 +61,5 @@ private enum class Settings {
   DELETE_EMPTY_READLISTS,
   REMEMBER_ME_KEY,
   REMEMBER_ME_DURATION,
+  THUMBNAIL_SIZE,
 }

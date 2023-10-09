@@ -22,6 +22,7 @@ import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
@@ -107,6 +108,7 @@ class OpdsController(
   private val referentialRepository: ReferentialRepository,
   private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
 ) {
 
   private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/gotson/komga"))
@@ -663,7 +665,7 @@ class OpdsController(
     principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
     val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else 300)
+    return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else komgaSettingsProvider.thumbnailSize.maxEdge)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

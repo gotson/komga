@@ -3,9 +3,12 @@ package org.gotson.komga.interfaces.api.rest
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_USER
+import org.gotson.komga.domain.model.ThumbnailSize
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -49,6 +52,7 @@ class SettingsControllerTest(
     komgaSettingsProvider.deleteEmptyCollections = true
     komgaSettingsProvider.deleteEmptyReadLists = false
     komgaSettingsProvider.rememberMeDuration = 5.days
+    komgaSettingsProvider.thumbnailSize = ThumbnailSize.LARGE
 
     mockMvc.get("/api/v1/settings")
       .andExpect {
@@ -56,6 +60,7 @@ class SettingsControllerTest(
         jsonPath("deleteEmptyCollections") { value(true) }
         jsonPath("deleteEmptyReadLists") { value(false) }
         jsonPath("rememberMeDurationDays") { value(5) }
+        jsonPath("thumbnailSize") { value("LARGE") }
       }
   }
 
@@ -65,6 +70,7 @@ class SettingsControllerTest(
     komgaSettingsProvider.deleteEmptyCollections = true
     komgaSettingsProvider.deleteEmptyReadLists = true
     komgaSettingsProvider.rememberMeDuration = 5.days
+    komgaSettingsProvider.thumbnailSize = ThumbnailSize.LARGE
 
     val rememberMeKey = komgaSettingsProvider.rememberMeKey
 
@@ -73,7 +79,8 @@ class SettingsControllerTest(
       {
         "deleteEmptyCollections": false,
         "rememberMeDurationDays": 15,
-        "renewRememberMeKey": true
+        "renewRememberMeKey": true,
+        "thumbnailSize": "MEDIUM"
       }
     """.trimIndent()
 
@@ -89,18 +96,20 @@ class SettingsControllerTest(
     assertThat(komgaSettingsProvider.deleteEmptyReadLists).isTrue
     assertThat(komgaSettingsProvider.rememberMeDuration).isEqualTo(15.days)
     assertThat(komgaSettingsProvider.rememberMeKey).isNotEqualTo(rememberMeKey)
+    assertThat(komgaSettingsProvider.thumbnailSize).isEqualTo(ThumbnailSize.MEDIUM)
   }
 
-  @Test
+  @ParameterizedTest
   @WithMockCustomUser(roles = [ROLE_ADMIN])
-  fun `given admin user when updating with invalid settings then returns bad request`() {
-    //language=JSON
-    val jsonString = """
-      {
-        "rememberMeDurationDays": 0
-      }
-    """.trimIndent()
-
+  @ValueSource(
+    strings = [
+      //language=JSON
+      """{"rememberMeDurationDays": 0}""",
+      //language=JSON
+      """{"thumbnailSize": "HUGE"}""",
+    ],
+  )
+  fun `given admin user when updating with invalid settings then returns bad request`(jsonString: String) {
     mockMvc.patch("/api/v1/settings") {
       contentType = MediaType.APPLICATION_JSON
       content = jsonString

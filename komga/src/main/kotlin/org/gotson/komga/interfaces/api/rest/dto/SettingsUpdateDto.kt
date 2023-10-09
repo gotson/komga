@@ -8,4 +8,5 @@ data class SettingsUpdateDto(
   @get:Positive
   val rememberMeDurationDays: Long? = null,
   val renewRememberMeKey: Boolean? = null,
+  val thumbnailSize: ThumbnailSizeDto? = null,
 )
