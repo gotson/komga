@@ -6,6 +6,7 @@ import com.tngtech.archunit.junit.ArchTest
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
 import com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_ACCESS_STANDARD_STREAMS
 import com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS
+import com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_FIELD_INJECTION
 import com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_JAVA_UTIL_LOGGING
 import com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_JODATIME
 import org.gotson.komga.Application
@@ -24,6 +25,9 @@ class CodingRulesTest {
 
   @ArchTest
   private val no_java_util_logging = NO_CLASSES_SHOULD_USE_JAVA_UTIL_LOGGING
+
+  @ArchTest
+  private val no_field_injection = NO_CLASSES_SHOULD_USE_FIELD_INJECTION
 }
 
 @AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.OnlyIncludeTests::class])
