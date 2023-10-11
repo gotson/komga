@@ -131,4 +131,9 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null)
     override fun uniqueId() = "FIX_THUMBNAILS_WITHOUT_METADATA"
     override fun toString(): String = "FixThumbnailsWithoutMetadata(priority='$priority')"
   }
+
+  class FindBookThumbnailsToRegenerate(val forBiggerResultOnly: Boolean, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+    override fun uniqueId() = "FIND_BOOK_THUMBNAILS_TO_REGENERATE"
+    override fun toString(): String = "FindBookThumbnailsToRegenerate(forBiggerResultOnly='$forBiggerResultOnly', priority='$priority')"
+  }
 }

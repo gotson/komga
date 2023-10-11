@@ -108,6 +108,10 @@ class TaskEmitter(
     submitTask(Task.GenerateBookThumbnail(book.id, priority, book.seriesId))
   }
 
+  fun generateBookThumbnail(bookId: String, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.GenerateBookThumbnail(bookId, priority, bookId))
+  }
+
   fun refreshBookMetadata(
     book: Book,
     capabilities: Set<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toSet(),
@@ -154,6 +158,10 @@ class TaskEmitter(
 
   fun fixThumbnailsWithoutMetadata(priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.FixThumbnailsWithoutMetadata(priority))
+  }
+
+  fun findBookThumbnailsToRegenerate(forBiggerResultOnly: Boolean, priority: Int = DEFAULT_PRIORITY) {
+    submitTask(Task.FindBookThumbnailsToRegenerate(forBiggerResultOnly, priority))
   }
 
   private fun submitTask(task: Task) {

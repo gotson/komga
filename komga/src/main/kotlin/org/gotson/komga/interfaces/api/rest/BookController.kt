@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
+import org.gotson.komga.application.tasks.LOWEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
@@ -834,6 +835,15 @@ class BookController(
       bookId = bookId,
       priority = HIGHEST_PRIORITY,
     )
+  }
+
+  @PutMapping("api/v1/books/thumbnails")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun regenerateThumbnails(
+    @RequestParam(name = "for_bigger_result_only", required = false) forBiggerResultOnly: Boolean = false,
+  ) {
+    taskEmitter.findBookThumbnailsToRegenerate(forBiggerResultOnly, LOWEST_PRIORITY)
   }
 
   private fun ResponseEntity.BodyBuilder.setNotModified(media: Media) =

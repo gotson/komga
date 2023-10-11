@@ -5,6 +5,7 @@ import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookAction
 import org.gotson.komga.domain.model.BookPageContent
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.HistoricalEvent
@@ -23,9 +24,11 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
@@ -54,6 +57,7 @@ class BookLifecycle(
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
   private val historicalEventRepository: HistoricalEventRepository,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
 ) {
 
   private val resizeTargetFormat = ImageType.JPEG
@@ -229,6 +233,14 @@ class BookLifecycle(
         logger.info { "Book has no selected thumbnail, choosing one automatically" }
         thumbnailBookRepository.markSelected(all.first())
       }
+    }
+  }
+
+  fun findBookThumbnailsToRegenerate(forBiggerResultOnly: Boolean): Collection<String> {
+    return if (forBiggerResultOnly) {
+      thumbnailBookRepository.findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(ThumbnailBook.Type.GENERATED, komgaSettingsProvider.thumbnailSize.maxEdge)
+    } else {
+      bookRepository.findAllIds(BookSearch(deleted = false), Sort.unsorted())
     }
   }
 

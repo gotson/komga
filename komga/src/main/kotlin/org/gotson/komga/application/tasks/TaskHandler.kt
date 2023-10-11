@@ -187,6 +187,13 @@ class TaskHandler(
             if (thumbnailLifecycle.fixThumbnailsMetadata())
               taskEmitter.fixThumbnailsWithoutMetadata(LOWEST_PRIORITY)
           }
+
+          is Task.FindBookThumbnailsToRegenerate -> {
+            val bookIds = bookLifecycle.findBookThumbnailsToRegenerate(task.forBiggerResultOnly)
+            bookIds.forEach {
+              taskEmitter.generateBookThumbnail(it, task.priority)
+            }
+          }
         }
       }.also {
         logger.info { "Task $task executed in $it" }

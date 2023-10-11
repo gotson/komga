@@ -65,6 +65,14 @@ class ThumbnailBookDao(
     return PageImpl(items, pageable, count.toLong())
   }
 
+  override fun findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(type: ThumbnailBook.Type, size: Int): Collection<String> =
+    dsl.select(tb.BOOK_ID)
+      .from(tb)
+      .where(tb.TYPE.eq(type.toString()))
+      .and(tb.WIDTH.lt(size))
+      .and(tb.HEIGHT.lt(size))
+      .fetch(tb.BOOK_ID)
+
   override fun insert(thumbnail: ThumbnailBook) {
     dsl.insertInto(tb)
       .set(tb.ID, thumbnail.id)

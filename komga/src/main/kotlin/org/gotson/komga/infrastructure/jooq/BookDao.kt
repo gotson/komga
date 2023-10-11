@@ -30,7 +30,6 @@ class BookDao(
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
   private val r = Tables.READ_PROGRESS
-  private val l = Tables.LIBRARY
 
   private val sorts = mapOf(
     "createdDate" to b.CREATED_DATE,
