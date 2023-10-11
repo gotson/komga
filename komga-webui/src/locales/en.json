@@ -851,6 +851,13 @@
     "tab_title": "Server"
   },
   "server_settings": {
+    "dialog_regenerate_thumbnails": {
+      "body": "Thumbnails size has changed. Do you want to regenerate book thumbnails?",
+      "btn_alternate": "Yes, all books",
+      "btn_cancel": "No",
+      "btn_confirm": "Yes, but only if bigger",
+      "title": "Regenerate thumbnails"
+    },
     "label_delete_empty_collections": "Delete empty collections after scan",
     "label_delete_empty_readlists": "Delete empty read lists after scan",
     "label_rememberme_duration": "Remember me duration (in days)",

@@ -60,6 +60,17 @@
         </v-btn>
       </v-col>
     </v-row>
+
+    <confirmation-dialog
+      v-model="dialogRegenerateThumbnails"
+      :title="$t('server_settings.dialog_regenerate_thumbnails.title')"
+      :body="$t('server_settings.dialog_regenerate_thumbnails.body')"
+      :button-confirm="$t('server_settings.dialog_regenerate_thumbnails.btn_confirm')"
+      :button-alternate="$t('server_settings.dialog_regenerate_thumbnails.btn_alternate')"
+      :button-cancel="$t('server_settings.dialog_regenerate_thumbnails.btn_cancel')"
+      @confirm="regenerateThumbnails(true)"
+      @alternate="regenerateThumbnails(false)"
+    />
   </v-container>
 </template>
 
@@ -67,9 +78,11 @@
 import {ThumbnailSizeDto} from '@/types/komga-settings'
 import Vue from 'vue'
 import {minValue, required} from 'vuelidate/lib/validators'
+import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 export default Vue.extend({
   name: 'ServerSettings',
+  components: {ConfirmationDialog},
   data: () => ({
     form: {
       deleteEmptyCollections: false,
@@ -78,6 +91,14 @@ export default Vue.extend({
       renewRememberMeKey: false,
       thumbnailSize: ThumbnailSizeDto.DEFAULT,
     },
+    existingSettings: {
+      deleteEmptyCollections: false,
+      deleteEmptyReadLists: false,
+      rememberMeDurationDays: 365,
+      renewRememberMeKey: false,
+      thumbnailSize: ThumbnailSizeDto.DEFAULT,
+    },
+    dialogRegenerateThumbnails: false,
   }),
   validations: {
     form: {
@@ -118,15 +139,13 @@ export default Vue.extend({
   methods: {
     async refreshSettings() {
       const settings = await (this.$komgaSettings.getSettings())
-      this.form.deleteEmptyCollections = settings.deleteEmptyCollections
-      this.form.deleteEmptyReadLists = settings.deleteEmptyReadLists
-      this.form.rememberMeDurationDays = settings.rememberMeDurationDays
-      this.form.renewRememberMeKey = false
-      this.form.thumbnailSize = settings.thumbnailSize
+      this.$_.merge(this.form, settings)
+      this.$_.merge(this.existingSettings, settings)
       this.$v.form.$reset()
     },
     async saveSettings() {
       const newSettings = {}
+      let thumbnailSizeHasChanged = false
       if (this.$v.form?.deleteEmptyCollections?.$dirty)
         this.$_.merge(newSettings, {deleteEmptyCollections: this.form.deleteEmptyCollections})
       if (this.$v.form?.deleteEmptyReadLists?.$dirty)
@@ -135,11 +154,20 @@ export default Vue.extend({
         this.$_.merge(newSettings, {rememberMeDurationDays: this.form.rememberMeDurationDays})
       if (this.$v.form?.renewRememberMeKey?.$dirty)
         this.$_.merge(newSettings, {renewRememberMeKey: this.form.renewRememberMeKey})
-      if (this.$v.form?.thumbnailSize?.$dirty)
+      if (this.$v.form?.thumbnailSize?.$dirty) {
         this.$_.merge(newSettings, {thumbnailSize: this.form.thumbnailSize})
+        thumbnailSizeHasChanged = this.existingSettings.thumbnailSize != this.form.thumbnailSize
+      }
 
       await this.$komgaSettings.updateSettings(newSettings)
       await this.refreshSettings()
+
+      if (thumbnailSizeHasChanged) {
+        this.dialogRegenerateThumbnails = true
+      }
+    },
+    regenerateThumbnails(forBiggerResultOnly: boolean) {
+      this.$komgaBooks.regenerateThumbnails(forBiggerResultOnly)
     },
   },
 })
