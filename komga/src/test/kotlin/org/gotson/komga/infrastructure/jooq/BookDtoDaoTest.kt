@@ -400,6 +400,7 @@ class BookDtoDaoTest(
       )
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -426,6 +427,7 @@ class BookDtoDaoTest(
       )
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -486,6 +488,7 @@ class BookDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -518,6 +521,7 @@ class BookDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -547,6 +551,7 @@ class BookDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -576,6 +581,7 @@ class BookDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val foundGeneric = bookDtoDao.findAll(
@@ -613,6 +619,7 @@ class BookDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -641,6 +648,7 @@ class BookDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -665,6 +673,7 @@ class BookDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -692,6 +701,7 @@ class BookDtoDaoTest(
       )
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -717,6 +727,7 @@ class BookDtoDaoTest(
       )
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -744,6 +755,7 @@ class BookDtoDaoTest(
       )
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -770,6 +782,7 @@ class BookDtoDaoTest(
       )
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(
@@ -809,6 +822,7 @@ class BookDtoDaoTest(
       )
 
       searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = bookDtoDao.findAll(

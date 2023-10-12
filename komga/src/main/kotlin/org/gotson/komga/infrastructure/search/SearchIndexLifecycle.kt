@@ -66,19 +66,17 @@ class SearchIndexLifecycle(
     val pages = ceil(count.toDouble() / batchSize).toInt()
     logger.info { "Number of entities: $count" }
 
-    luceneHelper.getIndexWriter().use { indexWriter ->
-      measureTime {
-        indexWriter.deleteDocuments(Term(LuceneEntity.TYPE, entity.type))
+    measureTime {
+      luceneHelper.deleteDocuments(Term(LuceneEntity.TYPE, entity.type))
 
-        (0 until pages).forEach { page ->
-          logger.info { "Processing page ${page + 1} of $pages ($batchSize elements)" }
-          val entityDocs = provider(PageRequest.of(page, batchSize)).content
-            .mapNotNull { toDoc(it) }
-          indexWriter.addDocuments(entityDocs)
-        }
-      }.also { duration ->
-        logger.info { "Wrote ${entity.name} index in $duration" }
+      (0 until pages).forEach { page ->
+        logger.info { "Processing page ${page + 1} of $pages ($batchSize elements)" }
+        val entityDocs = provider(PageRequest.of(page, batchSize)).content
+          .mapNotNull { toDoc(it) }
+        luceneHelper.addDocuments(entityDocs)
       }
+    }.also { duration ->
+      logger.info { "Wrote ${entity.name} index in $duration" }
     }
   }
 
@@ -111,20 +109,14 @@ class SearchIndexLifecycle(
     } else this.toDocument()
 
   private fun addEntity(doc: Document) {
-    luceneHelper.getIndexWriter().use { indexWriter ->
-      indexWriter.addDocument(doc)
-    }
+    luceneHelper.addDocument(doc)
   }
 
   private fun updateEntity(entity: LuceneEntity, entityId: String, newDoc: Document) {
-    luceneHelper.getIndexWriter().use { indexWriter ->
-      indexWriter.updateDocument(Term(entity.id, entityId), newDoc)
-    }
+    luceneHelper.updateDocument(Term(entity.id, entityId), newDoc)
   }
 
   private fun deleteEntity(entity: LuceneEntity, entityId: String) {
-    luceneHelper.getIndexWriter().use { indexWriter ->
-      indexWriter.deleteDocuments(Term(entity.id, entityId))
-    }
+    luceneHelper.deleteDocuments(Term(entity.id, entityId))
   }
 }

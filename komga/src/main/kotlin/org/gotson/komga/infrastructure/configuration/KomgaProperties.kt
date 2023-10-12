@@ -110,6 +110,9 @@ class KomgaProperties {
 
     var indexAnalyzer = IndexAnalyzer()
 
+    @DurationUnit(ChronoUnit.SECONDS)
+    var commitDelay: Duration = Duration.ofSeconds(2)
+
     class IndexAnalyzer {
       @get:Positive
       var minGram: Int = 3
