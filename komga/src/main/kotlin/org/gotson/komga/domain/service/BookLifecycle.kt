@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookAction
 import org.gotson.komga.domain.model.BookPageContent
@@ -28,6 +27,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
@@ -53,7 +53,7 @@ class BookLifecycle(
   private val libraryRepository: LibraryRepository,
   private val bookAnalyzer: BookAnalyzer,
   private val imageConverter: ImageConverter,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
   private val historicalEventRepository: HistoricalEventRepository,

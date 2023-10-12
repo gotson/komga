@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.validation.Valid
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
@@ -35,6 +34,7 @@ import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.ThumbnailSeriesCollectionDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -71,7 +71,7 @@ class SeriesCollectionController(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
   private val thumbnailSeriesCollectionRepository: ThumbnailSeriesCollectionRepository,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
 ) {
 
   @PageableWithoutSortAsQueryParam

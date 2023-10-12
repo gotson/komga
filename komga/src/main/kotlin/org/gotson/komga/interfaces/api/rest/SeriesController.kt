@@ -13,7 +13,6 @@ import org.apache.commons.compress.archivers.zip.Zip64Mode
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
@@ -64,6 +63,7 @@ import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressV2Dto
 import org.gotson.komga.interfaces.api.rest.dto.ThumbnailSeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -110,7 +110,7 @@ class SeriesController(
   private val bookDtoRepository: BookDtoRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val readProgressDtoRepository: ReadProgressDtoRepository,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
   private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,

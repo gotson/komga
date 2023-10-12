@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
@@ -11,6 +10,7 @@ import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
 import org.gotson.komga.infrastructure.image.MosaicGenerator
 import org.gotson.komga.infrastructure.metadata.comicrack.ReadListProvider
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 
@@ -24,7 +24,7 @@ class ReadListLifecycle(
   private val mosaicGenerator: MosaicGenerator,
   private val readListMatcher: ReadListMatcher,
   private val readListProvider: ReadListProvider,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val transactionTemplate: TransactionTemplate,
 ) {
 

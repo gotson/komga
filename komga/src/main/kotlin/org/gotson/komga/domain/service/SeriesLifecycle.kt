@@ -2,7 +2,6 @@ package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadata
@@ -30,6 +29,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.language.stripAccents
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
@@ -58,7 +58,7 @@ class SeriesLifecycle(
   private val collectionRepository: SeriesCollectionRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val taskEmitter: TaskEmitter,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val transactionTemplate: TransactionTemplate,
   private val historicalEventRepository: HistoricalEventRepository,
 ) {

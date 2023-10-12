@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.apache.commons.io.IOUtils
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.LOWEST_PRIORITY
@@ -69,6 +68,7 @@ import org.gotson.komga.interfaces.api.rest.dto.ThumbnailBookDto
 import org.gotson.komga.interfaces.api.rest.dto.patch
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -125,7 +125,7 @@ class BookController(
   private val readListRepository: ReadListRepository,
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val imageConverter: ImageConverter,
 ) {

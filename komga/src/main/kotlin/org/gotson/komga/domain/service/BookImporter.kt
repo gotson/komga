@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.CodedException
@@ -22,6 +21,7 @@ import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.language.toIndexedMap
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
@@ -56,7 +56,7 @@ class BookImporter(
   private val readListRepository: ReadListRepository,
   private val libraryRepository: LibraryRepository,
   private val sidecarRepository: SidecarRepository,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val taskEmitter: TaskEmitter,
   private val historicalEventRepository: HistoricalEventRepository,
 ) {

@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.scheduler.LibraryScanScheduler
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.DirectoryNotFoundException
@@ -12,6 +11,7 @@ import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.FileNotFoundException
@@ -26,7 +26,7 @@ class LibraryLifecycle(
   private val seriesRepository: SeriesRepository,
   private val sidecarRepository: SidecarRepository,
   private val taskEmitter: TaskEmitter,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val transactionTemplate: TransactionTemplate,
   private val libraryScanScheduler: LibraryScanScheduler,
 ) {
