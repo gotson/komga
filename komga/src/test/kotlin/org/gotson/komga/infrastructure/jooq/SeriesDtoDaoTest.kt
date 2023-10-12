@@ -5,7 +5,6 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ReadProgress
@@ -35,6 +34,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import java.time.LocalDate
@@ -61,7 +61,7 @@ class SeriesDtoDaoTest(
   private val user = KomgaUser("user@example.org", "", false)
 
   @MockkBean
-  private lateinit var mockEventPublisher: EventPublisher
+  private lateinit var mockEventPublisher: ApplicationEventPublisher
 
   @BeforeAll
   fun setup() {

@@ -4,7 +4,6 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.slot
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.SeriesCollection
@@ -30,6 +29,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
 
 @SpringBootTest
@@ -52,7 +52,7 @@ class SearchIndexLifecycleTest(
   private val library = makeLibrary()
 
   @MockkBean
-  private lateinit var mockEventPublisher: EventPublisher
+  private lateinit var mockEventPublisher: ApplicationEventPublisher
 
   @BeforeAll
   fun setup() {
