@@ -1,6 +1,8 @@
 komga:
   database:
-    file: ":memory:"
+    file: "file:database?mode=memory"
+  tasks-db:
+    file: "file:tasks?mode=memory"
   cors.allowed-origins:
     - http://localhost:8081
 #  task-consumers: 5

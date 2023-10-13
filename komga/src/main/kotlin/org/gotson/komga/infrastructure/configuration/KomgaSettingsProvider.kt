@@ -2,7 +2,7 @@ package org.gotson.komga.infrastructure.configuration
 
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.ThumbnailSize
-import org.gotson.komga.infrastructure.jooq.ServerSettingsDao
+import org.gotson.komga.infrastructure.jooq.main.ServerSettingsDao
 import org.springframework.stereotype.Service
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days

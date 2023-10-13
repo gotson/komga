@@ -18,6 +18,8 @@ komga:
   lucene:
     data-directory: \${komga.config-dir}/lucene
   config-dir: \${user.home}/.komga
+  tasks-db:
+    file: \${komga.config-dir}/tasks.sqlite
 
 spring:
   flyway:

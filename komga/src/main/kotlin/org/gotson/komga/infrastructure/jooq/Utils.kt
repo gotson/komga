@@ -3,7 +3,7 @@ package org.gotson.komga.infrastructure.jooq
 import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
-import org.gotson.komga.jooq.Tables
+import org.gotson.komga.jooq.main.Tables
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.Field

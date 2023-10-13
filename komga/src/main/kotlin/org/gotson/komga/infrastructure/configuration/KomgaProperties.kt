@@ -56,6 +56,8 @@ class KomgaProperties {
 
   var database = Database()
 
+  var tasksDb = Database()
+
   var cors = Cors()
 
   var lucene = Lucene()
