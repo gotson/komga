@@ -517,19 +517,16 @@ class SeriesController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: String) {
-    bookRepository.findAllBySeriesId(seriesId).forEach {
-      taskEmitter.analyzeBook(it, HIGH_PRIORITY)
-    }
+    taskEmitter.analyzeBook(bookRepository.findAllBySeriesId(seriesId), HIGH_PRIORITY)
   }
 
   @PostMapping("v1/series/{seriesId}/metadata/refresh")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable seriesId: String) {
-    bookRepository.findAllBySeriesId(seriesId).forEach {
-      taskEmitter.refreshBookMetadata(it, priority = HIGH_PRIORITY)
-      taskEmitter.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
-    }
+    val books = bookRepository.findAllBySeriesId(seriesId)
+    taskEmitter.refreshBookMetadata(books, priority = HIGH_PRIORITY)
+    taskEmitter.refreshBookLocalArtwork(books, priority = HIGH_PRIORITY)
     taskEmitter.refreshSeriesLocalArtwork(seriesId, priority = HIGH_PRIORITY)
   }
 

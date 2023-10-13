@@ -10,7 +10,6 @@ import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.BookConverter
 import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
@@ -26,7 +25,6 @@ private val logger = KotlinLogging.logger {}
 @Service
 class TaskEmitter(
   connectionFactory: ConnectionFactory,
-  private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val bookConverter: BookConverter,
 ) {
@@ -36,10 +34,6 @@ class TaskEmitter(
       priority = it
       isExplicitQosEnabled = true
     }
-  }
-
-  fun scanLibraries() {
-    libraryRepository.findAll().forEach { scanLibrary(it.id) }
   }
 
   fun scanLibrary(libraryId: String, scanDeep: Boolean = false, priority: Int = DEFAULT_PRIORITY) {
@@ -73,16 +67,20 @@ class TaskEmitter(
     submitTask(Task.FindBooksWithMissingPageHash(library.id, priority))
   }
 
-  fun hashBookPages(bookId: String, seriesId: String, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.HashBookPages(bookId, priority, seriesId))
+  fun hashBookPages(bookIdToSeriesId: Collection<Pair<String, String>>, priority: Int = DEFAULT_PRIORITY) {
+    bookIdToSeriesId.forEach { (bookId, seriesId) ->
+      submitTask(Task.HashBookPages(bookId, priority, seriesId))
+    }
   }
 
   fun findBooksToConvert(library: Library, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.FindBooksToConvert(library.id, priority))
   }
 
-  fun convertBookToCbz(book: Book, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.ConvertBook(book.id, priority, book.seriesId))
+  fun convertBookToCbz(books: Collection<Book>, priority: Int = DEFAULT_PRIORITY) {
+    books.forEach { book ->
+      submitTask(Task.ConvertBook(book.id, priority, book.seriesId))
+    }
   }
 
   fun repairExtensions(library: Library, priority: Int = DEFAULT_PRIORITY) {
@@ -100,8 +98,16 @@ class TaskEmitter(
     submitTask(Task.RemoveHashedPages(bookId, pages, priority, bookId))
   }
 
+  fun removeDuplicatePages(bookIdToPages: Map<String, Collection<BookPageNumbered>>, priority: Int = DEFAULT_PRIORITY) {
+    bookIdToPages.forEach { removeDuplicatePages(it.key, it.value) }
+  }
+
   fun analyzeBook(book: Book, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.AnalyzeBook(book.id, priority, book.seriesId))
+  }
+
+  fun analyzeBook(books: Collection<Book>, priority: Int = DEFAULT_PRIORITY) {
+    books.forEach { analyzeBook(it, priority) }
   }
 
   fun generateBookThumbnail(book: Book, priority: Int = DEFAULT_PRIORITY) {
@@ -112,12 +118,24 @@ class TaskEmitter(
     submitTask(Task.GenerateBookThumbnail(bookId, priority, bookId))
   }
 
+  fun generateBookThumbnail(bookIds: Collection<String>, priority: Int = DEFAULT_PRIORITY) {
+    bookIds.forEach { generateBookThumbnail(it, priority) }
+  }
+
   fun refreshBookMetadata(
     book: Book,
     capabilities: Set<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toSet(),
     priority: Int = DEFAULT_PRIORITY,
   ) {
     submitTask(Task.RefreshBookMetadata(book.id, capabilities, priority, book.seriesId))
+  }
+
+  fun refreshBookMetadata(
+    books: Collection<Book>,
+    capabilities: Set<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toSet(),
+    priority: Int = DEFAULT_PRIORITY,
+  ) {
+    books.forEach { refreshBookMetadata(it, capabilities, priority) }
   }
 
   fun refreshSeriesMetadata(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
@@ -132,8 +150,16 @@ class TaskEmitter(
     submitTask(Task.RefreshBookLocalArtwork(book.id, priority, book.seriesId))
   }
 
+  fun refreshBookLocalArtwork(books: Collection<Book>, priority: Int = DEFAULT_PRIORITY) {
+    books.forEach { refreshBookLocalArtwork(it, priority) }
+  }
+
   fun refreshSeriesLocalArtwork(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.RefreshSeriesLocalArtwork(seriesId, priority))
+  }
+
+  fun refreshSeriesLocalArtwork(seriesIds: Collection<String>, priority: Int = DEFAULT_PRIORITY) {
+    seriesIds.forEach { refreshSeriesLocalArtwork(it, priority) }
   }
 
   fun importBook(sourceFile: String, seriesId: String, copyMode: CopyMode, destinationName: String?, upgradeBookId: String?, priority: Int = DEFAULT_PRIORITY) {

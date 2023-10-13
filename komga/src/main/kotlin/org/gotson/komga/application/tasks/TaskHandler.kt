@@ -70,23 +70,17 @@ class TaskHandler(
 
           is Task.FindBooksToConvert ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              bookConverter.getConvertibleBooks(library).forEach {
-                taskEmitter.convertBookToCbz(it, task.priority + 1)
-              }
+              taskEmitter.convertBookToCbz(bookConverter.getConvertibleBooks(library), task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindBooksWithMissingPageHash ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              pageHashLifecycle.getBookAndSeriesIdsWithMissingPageHash(library).forEach {
-                taskEmitter.hashBookPages(it.first, it.second, task.priority + 1)
-              }
+              taskEmitter.hashBookPages(pageHashLifecycle.getBookAndSeriesIdsWithMissingPageHash(library), task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindDuplicatePagesToDelete ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              pageHashLifecycle.getBookPagesToDeleteAutomatically(library).forEach { (bookId, pages) ->
-                taskEmitter.removeDuplicatePages(bookId, pages, task.priority + 1)
-              }
+              taskEmitter.removeDuplicatePages(pageHashLifecycle.getBookPagesToDeleteAutomatically(library), task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.EmptyTrash ->
@@ -189,10 +183,7 @@ class TaskHandler(
           }
 
           is Task.FindBookThumbnailsToRegenerate -> {
-            val bookIds = bookLifecycle.findBookThumbnailsToRegenerate(task.forBiggerResultOnly)
-            bookIds.forEach {
-              taskEmitter.generateBookThumbnail(it, task.priority)
-            }
+            taskEmitter.generateBookThumbnail(bookLifecycle.findBookThumbnailsToRegenerate(task.forBiggerResultOnly), task.priority)
           }
         }
       }.also {

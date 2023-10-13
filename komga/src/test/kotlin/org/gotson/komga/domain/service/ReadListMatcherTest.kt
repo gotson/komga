@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.application.tasks.TaskEmitter
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadListRequest
 import org.gotson.komga.domain.model.ReadListRequestBook
@@ -51,7 +52,7 @@ class ReadListMatcherTest(
 
   @BeforeEach
   fun beforeEach() {
-    every { mockTaskEmitter.refreshBookMetadata(any(), any()) } just Runs
+    every { mockTaskEmitter.refreshBookMetadata(any<Book>(), any()) } just Runs
   }
 
   @AfterAll
