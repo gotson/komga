@@ -194,7 +194,7 @@ class TaskEmitter(
     logger.info { "Sending task: $task" }
     jmsTemplates[task.priority]!!.convertAndSend(QUEUE_TASKS, task) {
       it.apply {
-        setStringProperty(QUEUE_UNIQUE_ID, task.uniqueId())
+        setStringProperty(QUEUE_UNIQUE_ID, task.uniqueId)
         setStringProperty(JMS_PROPERTY_TYPE, task.javaClass.simpleName)
         task.groupId?.let { groupId -> setStringProperty("JMSXGroupID", groupId) }
       }
