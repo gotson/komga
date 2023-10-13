@@ -58,22 +58,25 @@ class ReadProgressDao(
 
   @Transactional
   override fun save(readProgress: ReadProgress) {
-    saveQuery(readProgress).execute()
+    readProgress.toQuery().execute()
     aggregateSeriesProgress(listOf(readProgress.bookId), readProgress.userId)
   }
 
   @Transactional
   override fun save(readProgresses: Collection<ReadProgress>) {
-    val queries = readProgresses.map { saveQuery(it) }
-    queries.chunked(batchSize).forEach { chunk -> dsl.batch(chunk).execute() }
+    readProgresses
+      .map { it.toQuery() }
+      .chunked(batchSize)
+      .forEach { chunk -> dsl.batch(chunk).execute() }
 
-    readProgresses.groupBy { it.userId }
+    readProgresses
+      .groupBy { it.userId }
       .forEach { (userId, readProgresses) ->
         aggregateSeriesProgress(readProgresses.map { it.bookId }, userId)
       }
   }
 
-  private fun saveQuery(readProgress: ReadProgress): Query =
+  private fun ReadProgress.toQuery(): Query =
     dsl.insertInto(
       r,
       r.BOOK_ID,
@@ -83,16 +86,16 @@ class ReadProgressDao(
       r.READ_DATE,
     )
       .values(
-        readProgress.bookId,
-        readProgress.userId,
-        readProgress.page,
-        readProgress.completed,
-        readProgress.readDate.toUTC(),
+        bookId,
+        userId,
+        page,
+        completed,
+        readDate.toUTC(),
       )
       .onDuplicateKeyUpdate()
-      .set(r.PAGE, readProgress.page)
-      .set(r.COMPLETED, readProgress.completed)
-      .set(r.READ_DATE, readProgress.readDate.toUTC())
+      .set(r.PAGE, page)
+      .set(r.COMPLETED, completed)
+      .set(r.READ_DATE, readDate.toUTC())
       .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
 
   @Transactional
