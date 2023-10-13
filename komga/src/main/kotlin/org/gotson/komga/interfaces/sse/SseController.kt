@@ -9,8 +9,6 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
 import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
-import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
-import org.gotson.komga.infrastructure.jms.TOPIC_FACTORY
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.sse.dto.BookImportSseDto
@@ -28,8 +26,8 @@ import org.gotson.komga.interfaces.sse.dto.ThumbnailReadListSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailSeriesCollectionSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailSeriesSseDto
 import org.springframework.context.SmartLifecycle
+import org.springframework.context.event.EventListener
 import org.springframework.http.MediaType
-import org.springframework.jms.annotation.JmsListener
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -75,7 +73,7 @@ class SseController(
     }
   }
 
-  @JmsListener(destination = TOPIC_EVENTS, containerFactory = TOPIC_FACTORY)
+  @EventListener
   fun handleSseEvent(event: DomainEvent) {
     when (event) {
       is DomainEvent.LibraryAdded -> emitSse("LibraryAdded", LibrarySseDto(event.library.id))

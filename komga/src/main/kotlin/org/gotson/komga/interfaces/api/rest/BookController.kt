@@ -8,13 +8,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.validation.Valid
 import mu.KotlinLogging
 import org.apache.commons.io.IOUtils
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
+import org.gotson.komga.application.tasks.LOWEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
@@ -40,6 +41,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.BookLifecycle
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
@@ -66,6 +68,7 @@ import org.gotson.komga.interfaces.api.rest.dto.ThumbnailBookDto
 import org.gotson.komga.interfaces.api.rest.dto.patch
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -121,7 +124,8 @@ class BookController(
   private val bookDtoRepository: BookDtoRepository,
   private val readListRepository: ReadListRepository,
   private val contentDetector: ContentDetector,
-  private val eventPublisher: EventPublisher,
+  private val imageAnalyzer: ImageAnalyzer,
+  private val eventPublisher: ApplicationEventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val imageConverter: ImageConverter,
 ) {
@@ -331,7 +335,8 @@ class BookController(
   ): ThumbnailBookDto {
     val book = bookRepository.findByIdOrNull(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+    val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
+    if (!contentDetector.isImage(mediaType))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
     return bookLifecycle.addThumbnailForBook(
@@ -340,6 +345,9 @@ class BookController(
         thumbnail = file.bytes,
         type = ThumbnailBook.Type.USER_UPLOADED,
         selected = selected,
+        fileSize = file.bytes.size.toLong(),
+        mediaType = mediaType,
+        dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
       ),
       if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
     ).toDto()
@@ -827,6 +835,15 @@ class BookController(
       bookId = bookId,
       priority = HIGHEST_PRIORITY,
     )
+  }
+
+  @PutMapping("api/v1/books/thumbnails")
+  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @ResponseStatus(HttpStatus.ACCEPTED)
+  fun regenerateThumbnails(
+    @RequestParam(name = "for_bigger_result_only", required = false) forBiggerResultOnly: Boolean = false,
+  ) {
+    taskEmitter.findBookThumbnailsToRegenerate(forBiggerResultOnly, LOWEST_PRIORITY)
   }
 
   private fun ResponseEntity.BodyBuilder.setNotModified(media: Media) =

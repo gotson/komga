@@ -10,16 +10,14 @@ import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
-import org.gotson.komga.infrastructure.jms.TOPIC_FACTORY
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
+import org.springframework.context.event.EventListener
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Component
 import kotlin.math.ceil
 import kotlin.time.measureTime
@@ -66,23 +64,21 @@ class SearchIndexLifecycle(
     val pages = ceil(count.toDouble() / batchSize).toInt()
     logger.info { "Number of entities: $count" }
 
-    luceneHelper.getIndexWriter().use { indexWriter ->
-      measureTime {
-        indexWriter.deleteDocuments(Term(LuceneEntity.TYPE, entity.type))
+    measureTime {
+      luceneHelper.deleteDocuments(Term(LuceneEntity.TYPE, entity.type))
 
-        (0 until pages).forEach { page ->
-          logger.info { "Processing page ${page + 1} of $pages ($batchSize elements)" }
-          val entityDocs = provider(PageRequest.of(page, batchSize)).content
-            .mapNotNull { toDoc(it) }
-          indexWriter.addDocuments(entityDocs)
-        }
-      }.also { duration ->
-        logger.info { "Wrote ${entity.name} index in $duration" }
+      (0 until pages).forEach { page ->
+        logger.info { "Processing page ${page + 1} of $pages ($batchSize elements)" }
+        val entityDocs = provider(PageRequest.of(page, batchSize)).content
+          .mapNotNull { toDoc(it) }
+        luceneHelper.addDocuments(entityDocs)
       }
+    }.also { duration ->
+      logger.info { "Wrote ${entity.name} index in $duration" }
     }
   }
 
-  @JmsListener(destination = TOPIC_EVENTS, containerFactory = TOPIC_FACTORY)
+  @EventListener
   fun consumeEvents(event: DomainEvent) {
     when (event) {
       is DomainEvent.SeriesAdded -> seriesDtoRepository.findByIdOrNull(event.series.id, "unused")?.toDocument()?.let { addEntity(it) }
@@ -111,20 +107,14 @@ class SearchIndexLifecycle(
     } else this.toDocument()
 
   private fun addEntity(doc: Document) {
-    luceneHelper.getIndexWriter().use { indexWriter ->
-      indexWriter.addDocument(doc)
-    }
+    luceneHelper.addDocument(doc)
   }
 
   private fun updateEntity(entity: LuceneEntity, entityId: String, newDoc: Document) {
-    luceneHelper.getIndexWriter().use { indexWriter ->
-      indexWriter.updateDocument(Term(entity.id, entityId), newDoc)
-    }
+    luceneHelper.updateDocument(Term(entity.id, entityId), newDoc)
   }
 
   private fun deleteEntity(entity: LuceneEntity, entityId: String) {
-    luceneHelper.getIndexWriter().use { indexWriter ->
-      indexWriter.deleteDocuments(Term(entity.id, entityId))
-    }
+    luceneHelper.deleteDocuments(Term(entity.id, entityId))
   }
 }

@@ -1,24 +1,29 @@
 <template>
   <v-card>
     <v-img
-      :src="getImage(item)"
+      :src="imageUrl"
       aspect-ratio="0.7071"
       contain/>
-    <v-card-actions align="center">
+    <v-card-text style="height: 5rem">
+      <div>{{ fileSize }}</div>
+      <div v-if="dimension">{{ $t('common.dimension', dimension) }}</div>
+      <div v-if="mediaType">{{ mediaType }}</div>
+    </v-card-text>
+    <v-card-actions>
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-icon
             class="v-btn--icon v-size--default px-2"
-            :color="isFileToBig(item) ? 'error' : ''"
+            :color="fileTooBig ? 'error' : ''"
             v-bind="attrs"
             v-on="on">
-            {{ getStatusIcon(item) }}
+            {{ statusIcon }}
           </v-icon>
         </template>
-        <span>{{ getStatusTooltip(item) }}</span>
+        <span>{{ statusTooltip }}</span>
       </v-tooltip>
 
-      <v-tooltip v-if="!isFileToBig(item)" top>
+      <v-tooltip v-if="!fileTooBig" top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
@@ -34,7 +39,7 @@
           }}</span>
       </v-tooltip>
 
-      <v-tooltip v-if="isDeletable(item)" top>
+      <v-tooltip v-if="deletable" top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             icon
@@ -54,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, {PropType} from 'vue'
 import {SeriesThumbnailDto} from '@/types/komga-series'
 import {
   bookThumbnailUrlByThumbnailId,
@@ -64,6 +69,8 @@ import {
 } from '@/functions/urls'
 import {BookThumbnailDto} from '@/types/komga-books'
 import {ReadListThumbnailDto} from '@/types/komga-readlists'
+import {Dimension} from '@/types/image'
+import {getFileSize} from '@/functions/file'
 
 export default Vue.extend({
   name: 'ThumbnailCard',
@@ -86,74 +93,91 @@ export default Vue.extend({
       required: true,
     },
   },
-  methods: {
-    getStatusIcon(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto): string {
-      if (item instanceof File) {
-        if (this.isFileToBig(item)) {
+  computed: {
+    fileSize(): string | undefined {
+      if (this.item instanceof File) {
+        return getFileSize(this.item.size)
+      }
+      return getFileSize(this.$_.get(this.item, 'fileSize', undefined))
+    },
+    dimension(): Dimension | undefined {
+      if (this.$_.has(this.item, 'width') && this.$_.has(this.item, 'height')) {
+        return {width: this.$_.get(this.item, 'width', 0), height: this.$_.get(this.item, 'height', 0)}
+      }
+      return undefined
+    },
+    mediaType(): string | undefined {
+      return this.$_.get(this.item, 'mediaType', undefined)
+    },
+    fileTooBig(): boolean {
+      if (this.item instanceof File) {
+        return this.item.size > 1_000_000
+      } else {
+        return false
+      }
+    },
+    statusIcon(): string {
+      if (this.item instanceof File) {
+        if (this.fileTooBig) {
           return 'mdi-alert-circle'
         } else {
           return 'mdi-cloud-upload-outline'
         }
       } else {
-        if (item.type === 'SIDECAR') {
+        if (this.item.type === 'SIDECAR') {
           return 'mdi-folder-outline'
-        } else if (item.type === 'GENERATED') {
+        } else if (this.item.type === 'GENERATED') {
           return 'mdi-file-outline'
         } else {
           return 'mdi-cloud-check-outline'
         }
       }
     },
-    getStatusTooltip(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto): string {
-      if (item instanceof File) {
-        if (this.isFileToBig(item)) {
+    statusTooltip(): string {
+      if (this.item instanceof File) {
+        if (this.fileTooBig) {
           return this.$t('thumbnail_card.tooltip_too_big').toString()
         } else {
           return this.$t('thumbnail_card.tooltip_to_be_uploaded').toString()
         }
       } else {
-        if (item.type === 'SIDECAR') {
+        if (this.item.type === 'SIDECAR') {
           return this.$t('thumbnail_card.tooltip_sidecar').toString()
         }
-        if (item.type === 'GENERATED') {
+        if (this.item.type === 'GENERATED') {
           return this.$t('thumbnail_card.tooltip_generated').toString()
         } else {
           return this.$t('thumbnail_card.tooltip_user_uploaded').toString()
         }
       }
     },
-    isFileToBig(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto): boolean {
-      if (item instanceof File) {
-        return item.size > 1_000_000
-      } else {
-        return false
-      }
-    },
-    getImage(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto): string {
-      if (item instanceof File) {
-        return URL.createObjectURL(item)
-      } else if ('seriesId' in item) {
-        return seriesThumbnailUrlByThumbnailId(item.seriesId, item.id)
-      } else if ('bookId' in item) {
-        return bookThumbnailUrlByThumbnailId(item.bookId, item.id)
-      } else if ('readListId' in item) {
-        return readListThumbnailUrlByThumbnailId(item.readListId, item.id)
-      } else if ('collectionId' in item) {
-        return collectionThumbnailUrlByThumbnailId(item.collectionId, item.id)
+    imageUrl(): string {
+      if (this.item instanceof File) {
+        return URL.createObjectURL(this.item)
+      } else if ('seriesId' in this.item) {
+        return seriesThumbnailUrlByThumbnailId(this.item.seriesId, this.item.id)
+      } else if ('bookId' in this.item) {
+        return bookThumbnailUrlByThumbnailId(this.item.bookId, this.item.id)
+      } else if ('readListId' in this.item) {
+        return readListThumbnailUrlByThumbnailId(this.item.readListId, this.item.id)
+      } else if ('collectionId' in this.item) {
+        return collectionThumbnailUrlByThumbnailId(this.item.collectionId, this.item.id)
       } else {
         throw new Error('The given item type is not known!')
       }
     },
+    deletable() {
+      if (this.item instanceof File) {
+        return true
+      } else {
+        return this.item.type !== 'SIDECAR' && this.item.type !== 'GENERATED'
+      }
+    },
+  },
+  methods: {
     onClickSelect() {
       if (!this.selected) {
         this.$emit('on-select-thumbnail', this.item)
-      }
-    },
-    isDeletable(item: File | SeriesThumbnailDto | BookThumbnailDto | ReadListThumbnailDto | CollectionThumbnailDto) {
-      if (item instanceof File) {
-        return true
-      } else {
-        return item.type !== 'SIDECAR' && item.type !== 'GENERATED'
       }
     },
     onClickDelete() {

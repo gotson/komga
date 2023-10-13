@@ -10,10 +10,10 @@ import org.apache.commons.compress.archivers.zip.Zip64Mode
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.CodedException
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Media
@@ -28,6 +28,7 @@ import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.ReadListLifecycle
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
@@ -47,6 +48,7 @@ import org.gotson.komga.interfaces.api.rest.dto.ThumbnailReadListDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.gotson.komga.language.toIndexedMap
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -91,8 +93,9 @@ class ReadListController(
   private val readProgressDtoRepository: ReadProgressDtoRepository,
   private val thumbnailReadListRepository: ThumbnailReadListRepository,
   private val contentDetector: ContentDetector,
+  private val imageAnalyzer: ImageAnalyzer,
   private val bookLifecycle: BookLifecycle,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
 ) {
 
   @PageableWithoutSortAsQueryParam
@@ -177,7 +180,8 @@ class ReadListController(
   ): ThumbnailReadListDto {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { readList ->
 
-      if (!contentDetector.isImage(file.inputStream.buffered().use { contentDetector.detectMediaType(it) }))
+      val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
+      if (!contentDetector.isImage(mediaType))
         throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
       return readListLifecycle.addThumbnail(
@@ -186,6 +190,9 @@ class ReadListController(
           thumbnail = file.bytes,
           type = ThumbnailReadList.Type.USER_UPLOADED,
           selected = selected,
+          fileSize = file.bytes.size.toLong(),
+          mediaType = mediaType,
+          dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
         ),
       ).toDto()
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

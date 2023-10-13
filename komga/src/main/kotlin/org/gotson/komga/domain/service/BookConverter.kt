@@ -4,7 +4,6 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.FilenameUtils
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookConversionException
 import org.gotson.komga.domain.model.BookWithMedia
@@ -21,6 +20,7 @@ import org.gotson.komga.domain.persistence.HistoricalEventRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.language.notEquals
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.FileNotFoundException
@@ -46,7 +46,7 @@ class BookConverter(
   private val mediaRepository: MediaRepository,
   private val libraryRepository: LibraryRepository,
   private val transactionTemplate: TransactionTemplate,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val historicalEventRepository: HistoricalEventRepository,
 ) {
 

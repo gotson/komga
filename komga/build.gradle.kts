@@ -1,4 +1,3 @@
-
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.prefixIfNot
@@ -9,12 +8,13 @@ plugins {
     kotlin("plugin.spring")
     kotlin("kapt")
   }
-  id("org.springframework.boot") version "3.1.1"
+  // 3.1.3+ breaks SSE - https://github.com/spring-projects/spring-framework/issues/31140
+  id("org.springframework.boot") version "3.1.2"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
   id("nu.studer.jooq") version "8.2.1"
   id("org.flywaydb.flyway") version "9.7.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
-  id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
+  id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
   id("com.google.devtools.ksp") version "1.8.22-1.0.11"
 
   jacoco
@@ -42,9 +42,9 @@ dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.1"))
+  api(platform("org.springframework.boot:spring-boot-dependencies:3.1.2"))
 
-  implementation("org.springframework.boot:spring-boot-starter-web")
+  api("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -57,26 +57,26 @@ dependencies {
   implementation("com.github.gotson:spring-session-caffeine:2.0.0")
   implementation("org.springframework.data:spring-data-commons")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:3.1.1")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:3.1.2")
 
   implementation("org.apache.activemq:artemis-jakarta-server")
 
   implementation("org.flywaydb:flyway-core")
 
   implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
-  implementation("io.hawt:hawtio-springboot:2.17.4")
+  implementation("io.hawt:hawtio-springboot:2.17.6")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
-  implementation("commons-io:commons-io:2.13.0")
-  implementation("org.apache.commons:commons-lang3:3.12.0")
+  implementation("commons-io:commons-io:2.14.0")
+  implementation("org.apache.commons:commons-lang3:3.13.0")
   implementation("commons-validator:commons-validator:1.7")
 
   run {
-    val luceneVersion = "9.7.0"
+    val luceneVersion = "9.8.0"
     implementation("org.apache.lucene:lucene-core:$luceneVersion")
     implementation("org.apache.lucene:lucene-analysis-common:$luceneVersion")
     implementation("org.apache.lucene:lucene-queryparser:$luceneVersion")
@@ -87,14 +87,14 @@ dependencies {
 
   implementation("com.appmattus.crypto:cryptohash:0.10.1")
 
-  implementation("org.apache.tika:tika-core:2.8.0")
-  implementation("org.apache.commons:commons-compress:1.23.0")
-  implementation("com.github.junrar:junrar:7.5.4")
+  implementation("org.apache.tika:tika-core:2.9.0")
+  implementation("org.apache.commons:commons-compress:1.24.0")
+  implementation("com.github.junrar:junrar:7.5.5")
   implementation("org.apache.pdfbox:pdfbox:2.0.28")
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.16.1")
 
-  implementation("net.coobird:thumbnailator:0.4.19")
+  implementation("net.coobird:thumbnailator:0.4.20")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.9.4")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.9.4")
@@ -104,11 +104,11 @@ dependencies {
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.4")
 
   // barcode scanning
-  implementation("com.google.zxing:core:3.5.1")
+  implementation("com.google.zxing:core:3.5.2")
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
-  implementation("com.github.f4b6a3:tsid-creator:5.2.4")
+  implementation("com.github.f4b6a3:tsid-creator:5.2.5")
 
   implementation("com.github.ben-manes.caffeine:caffeine")
 
@@ -125,16 +125,16 @@ dependencies {
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("com.ninja-squad:springmockk:4.0.2")
   testImplementation("io.mockk:mockk:1.13.5")
-  testImplementation("com.google.jimfs:jimfs:1.2")
+  testImplementation("com.google.jimfs:jimfs:1.3.0")
 
-  testImplementation("com.tngtech.archunit:archunit-junit5:1.0.1")
+  testImplementation("com.tngtech.archunit:archunit-junit5:1.1.0")
 
-  benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-  benchmarkImplementation("org.openjdk.jmh:jmh-core:1.36")
-  kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.36")
-  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.1.1")
+  benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+  benchmarkImplementation("org.openjdk.jmh:jmh-core:1.37")
+  kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.37")
+  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.1.2")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:3.1.1")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:3.1.2")
 }
 
 val webui = "$rootDir/komga-webui"
@@ -255,7 +255,7 @@ sourceSets {
 }
 
 val dbSqlite = mapOf(
-  "url" to "jdbc:sqlite:${project.buildDir}/generated/flyway/database.sqlite",
+  "url" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/database.sqlite",
 )
 val migrationDirsSqlite = listOf(
   "$projectDir/src/flyway/resources/db/migration/sqlite",
@@ -267,16 +267,18 @@ flyway {
   placeholders = mapOf(
     "library-file-hashing" to "true",
     "library-scan-startup" to "false",
+    "delete-empty-collections" to "true",
+    "delete-empty-read-lists" to "true",
   )
 }
 tasks.flywayMigrate {
   // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
   dependsOn("flywayClasses")
   migrationDirsSqlite.forEach { inputs.dir(it) }
-  outputs.dir("${project.buildDir}/generated/flyway")
+  outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway")
   doFirst {
     delete(outputs.files)
-    mkdir("${project.buildDir}/generated/flyway")
+    mkdir("${project.layout.buildDirectory.get()}/generated/flyway")
   }
   mixed = true
 }

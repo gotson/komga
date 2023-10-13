@@ -1,0 +1,65 @@
+name: Tests
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'komga-webui/src/locales/*'
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 19
+          java-package: 'jdk'
+          distribution: 'temurin'
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          java-package: 'jdk'
+          distribution: 'temurin'
+      - name: Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+      - name: Upload Unit Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: komga/build/test-results/
+      - name: Upload Unit Test Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: komga/build/reports/tests/
+
+  webui:
+    runs-on: ubuntu-latest
+    name: Test webui builds
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: komga-webui/package-lock.json
+      - name: npm install
+        working-directory: komga-webui
+        run: npm install
+      - name: npm build
+        working-directory: komga-webui
+        run: npm run build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
+      - name: npm test
+        working-directory: komga-webui
+        run: npm run test:unit

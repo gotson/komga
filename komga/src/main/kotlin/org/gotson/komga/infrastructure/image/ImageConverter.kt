@@ -2,16 +2,22 @@ package org.gotson.komga.infrastructure.image
 
 import mu.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.springframework.stereotype.Service
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
+import kotlin.math.max
+import kotlin.math.min
 
 private val logger = KotlinLogging.logger {}
 
 @Service
-class ImageConverter {
+class ImageConverter(
+  private val imageAnalyzer: ImageAnalyzer,
+  private val contentDetector: ContentDetector,
+) {
 
   val supportedReadFormats by lazy { ImageIO.getReaderFormatNames().toList() }
   val supportedReadMediaTypes by lazy { ImageIO.getReaderMIMETypes().toList() }
@@ -49,15 +55,27 @@ class ImageConverter {
       baos.toByteArray()
     }
 
-  fun resizeImage(imageBytes: ByteArray, format: String, size: Int): ByteArray =
-    ByteArrayOutputStream().use {
+  fun resizeImage(imageBytes: ByteArray, format: ImageType, size: Int): ByteArray {
+    val longestEdge = imageAnalyzer.getDimension(imageBytes.inputStream())?.let {
+      val mediaType = contentDetector.detectMediaType(imageBytes.inputStream())
+      val longestEdge = max(it.height, it.width)
+      // don't resize if source and target format is the same, and source is smaller than desired
+      if (mediaType == format.mediaType && longestEdge <= size) return imageBytes
+      longestEdge
+    }
+
+    // prevent upscaling
+    val resizeTo = if (longestEdge != null) min(longestEdge, size) else size
+
+    return ByteArrayOutputStream().use {
       Thumbnails.of(imageBytes.inputStream())
-        .size(size, size)
+        .size(resizeTo, resizeTo)
         .imageType(BufferedImage.TYPE_INT_ARGB)
-        .outputFormat(format)
+        .outputFormat(format.imageIOFormat)
         .toOutputStream(it)
       it.toByteArray()
     }
+  }
 
   private fun containsAlphaChannel(image: BufferedImage): Boolean =
     image.colorModel.hasAlpha()

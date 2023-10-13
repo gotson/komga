@@ -18,7 +18,7 @@ export default class KomgaUsersService {
     this.http = http
   }
 
-  async getMeWithAuth(login: string, password: string): Promise<UserDto> {
+  async getMeWithAuth(login: string, password: string, rememberMe: boolean): Promise<UserDto> {
     try {
       return (await this.http.get(
         `${API_USERS}/me`,
@@ -26,6 +26,9 @@ export default class KomgaUsersService {
           auth: {
             username: login,
             password: password,
+          },
+          params: {
+            'remember-me': rememberMe,
           },
         },
       )).data

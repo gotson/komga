@@ -5,11 +5,14 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
@@ -30,16 +33,17 @@ class BookAnalyzer(
   private val contentDetector: ContentDetector,
   extractors: List<MediaContainerExtractor>,
   private val imageConverter: ImageConverter,
+  private val imageAnalyzer: ImageAnalyzer,
   private val hasher: Hasher,
   @Value("#{@komgaProperties.pageHashing}") private val pageHashing: Int,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
 ) {
 
   val supportedMediaTypes = extractors
     .flatMap { e -> e.mediaTypes().map { it to e } }
     .toMap()
 
-  private val thumbnailSize = 300
-  private val thumbnailFormat = "jpeg"
+  val thumbnailType = ImageType.JPEG
 
   fun analyze(book: Book, analyzeDimensions: Boolean): Media {
     logger.info { "Trying to analyze book: $book" }
@@ -119,7 +123,7 @@ class BookAnalyzer(
       if (coverBytes == null) coverBytes = extractor.getEntryStream(book.book.path, book.media.pages.first().fileName)
 
       coverBytes.let { cover ->
-        imageConverter.resizeImage(cover, thumbnailFormat, thumbnailSize)
+        imageConverter.resizeImage(cover, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
       }
     } catch (ex: Exception) {
       logger.warn(ex) { "Could not generate thumbnail for book: $book" }
@@ -130,6 +134,9 @@ class BookAnalyzer(
       thumbnail = thumbnail,
       type = ThumbnailBook.Type.GENERATED,
       bookId = book.book.id,
+      mediaType = thumbnailType.mediaType,
+      dimension = thumbnail?.let { imageAnalyzer.getDimension(it.inputStream()) } ?: Dimension(0, 0),
+      fileSize = thumbnail?.size?.toLong() ?: 0,
     )
   }
 

@@ -32,7 +32,11 @@ export interface ReadListThumbnailDto {
   id: string,
   readListId: string,
   type: string,
-  selected: boolean
+  selected: boolean,
+  mediaType: string,
+  fileSize: number,
+  width: number,
+  height: number,
 }
 
 export interface ReadListRequestMatchDto {

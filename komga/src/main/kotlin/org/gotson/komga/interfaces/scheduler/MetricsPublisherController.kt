@@ -15,12 +15,9 @@ import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
-import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
-import org.gotson.komga.infrastructure.jms.TOPIC_FACTORY
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
-import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Component
 import java.util.concurrent.atomic.AtomicLong
 
@@ -84,7 +81,7 @@ class MetricsPublisherController(
     .baseUnit("bytes")
     .register(meterRegistry)
 
-  @JmsListener(destination = TOPIC_EVENTS, containerFactory = TOPIC_FACTORY)
+  @EventListener
   private fun pushMetricsOnEvent(event: DomainEvent) {
     when (event) {
       is DomainEvent.LibraryScanned -> entitiesMultiTag.forEach { pushMetricsCount(it) }

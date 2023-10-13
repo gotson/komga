@@ -8,6 +8,7 @@ import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.ThumbnailSeries
@@ -268,7 +269,7 @@ class SeriesLifecycleTest(
 
   @Test
   fun `given a sidecar thumbnail when deleting then IllegarlArgumentException is thrown`() {
-    val thumbnail = ThumbnailSeries(type = ThumbnailSeries.Type.SIDECAR)
+    val thumbnail = ThumbnailSeries(type = ThumbnailSeries.Type.SIDECAR, fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
 
     val thrown = catchThrowable { seriesLifecycle.deleteThumbnailForSeries(thumbnail) }
 
@@ -295,7 +296,7 @@ class SeriesLifecycleTest(
         makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
         makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
       )
-      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
 
       seriesLifecycle.createSeries(series)
       seriesLifecycle.addBooks(series, books)
@@ -331,8 +332,8 @@ class SeriesLifecycleTest(
         makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
         makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
       )
-      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
-      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL())
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
+      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
 
       seriesLifecycle.createSeries(series)
       seriesLifecycle.addBooks(series, books)
@@ -371,8 +372,8 @@ class SeriesLifecycleTest(
         makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
         makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
       )
-      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
-      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL())
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
+      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
 
       seriesLifecycle.createSeries(series)
       seriesLifecycle.addBooks(series, books)
@@ -426,8 +427,8 @@ class SeriesLifecycleTest(
         makeBook("1", libraryId = library.id, url = book1Path.toUri().toURL()),
         makeBook("2", libraryId = library.id, url = book2Path.toUri().toURL()),
       )
-      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL())
-      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL())
+      val bookSidecar = ThumbnailBook(bookId = books[0].id, type = ThumbnailBook.Type.SIDECAR, url = bookSidecarPath.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
+      val seriesSidecar = ThumbnailSeries(seriesId = series.id, type = ThumbnailSeries.Type.SIDECAR, url = seriesSidecarPath.toUri().toURL(), fileSize = 0, mediaType = "", dimension = Dimension(0, 0))
 
       seriesLifecycle.createSeries(series)
       seriesLifecycle.addBooks(series, books)

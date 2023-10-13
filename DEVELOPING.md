@@ -6,7 +6,7 @@ Thanks a lot for contributing to Komga!
 
 You will need:
 
-- Java JDK version 17+
+- Java JDK version 17 & 19
 - Nodejs version 16+
 
 ## Setting up the project
@@ -19,9 +19,10 @@ Komga's commit messages follow the [Conventional Commits](https://www.convention
 
 ## Project organization
 
-Komga is composed of 2 projects:
+Komga is composed of 3 projects:
 - `komga`: a Spring Boot backend server that hosts the APIs, but also serves the static assets of the frontend.
 - `komga-webui`: a VueJS frontend, built at compile time and served by the backend at runtime.
+- `komga-tray`: a thin desktop wrapper that displays a tray-icon
 
 ## Backend development
 

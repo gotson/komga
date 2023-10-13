@@ -12,8 +12,8 @@ plugins {
     kotlin("kapt") version kotlinVersion
   }
   id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
-  id("com.github.ben-manes.versions") version "0.46.0"
-  id("org.jreleaser") version "1.7.0"
+  id("com.github.ben-manes.versions") version "0.48.0"
+  id("org.jreleaser") version "1.8.0"
 }
 
 fun isNonStable(version: String): Boolean {
@@ -48,7 +48,7 @@ allprojects {
 }
 
 tasks.wrapper {
-  gradleVersion = "8.1.1"
+  gradleVersion = "8.3"
   distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -91,6 +91,12 @@ jreleaser {
           labels.add("i18n")
           order.set(70)
         }
+        category {
+          title.set("⚙️ Dependencies")
+          key.set("dependencies")
+          labels.add("dependencies")
+          order.set(80)
+        }
         labeler {
           label.set("perf")
           title.set("regex:^(?:perf(?:\\(.*\\))?!?):\\s.*")
@@ -100,6 +106,11 @@ jreleaser {
           label.set("i18n")
           title.set("regex:^(?:i18n(?:\\(.*\\))?!?):\\s.*")
           order.set(130)
+        }
+        labeler {
+          label.set("dependencies")
+          title.set("regex:^(?:deps(?:\\(.*\\))?!?):\\s.*")
+          order.set(140)
         }
         extraProperties.put("categorizeScopes", true)
         append {

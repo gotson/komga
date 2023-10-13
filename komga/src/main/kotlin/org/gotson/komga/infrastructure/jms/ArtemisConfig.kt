@@ -17,11 +17,9 @@ private val logger = KotlinLogging.logger {}
 const val QUEUE_UNIQUE_ID = "unique_id"
 
 const val QUEUE_TASKS = "tasks.background"
-const val TOPIC_EVENTS = "domain.events"
 
 const val JMS_PROPERTY_TYPE = "type"
 
-const val TOPIC_FACTORY = "topicJmsListenerContainerFactory"
 const val QUEUE_FACTORY = "queueJmsListenerContainerFactory"
 
 @Configuration
@@ -43,24 +41,8 @@ class ArtemisConfig : ArtemisConfigurationCustomizer {
           .setLastValueKey(QUEUE_UNIQUE_ID)
           .setRoutingType(RoutingType.ANYCAST),
       )
-      it.addQueueConfiguration(
-        QueueConfiguration(TOPIC_EVENTS)
-          .setAddress(TOPIC_EVENTS)
-          .setRoutingType(RoutingType.MULTICAST),
-      )
     }
   }
-
-  @Bean(TOPIC_FACTORY)
-  fun topicJmsListenerContainerFactory(
-    connectionFactory: ConnectionFactory,
-    configurer: DefaultJmsListenerContainerFactoryConfigurer,
-  ): DefaultJmsListenerContainerFactory =
-    DefaultJmsListenerContainerFactory().apply {
-      configurer.configure(this, connectionFactory)
-      setErrorHandler { logger.warn { it.message } }
-      setPubSubDomain(true)
-    }
 
   @Bean(QUEUE_FACTORY)
   fun queueJmsListenerContainerFactory(

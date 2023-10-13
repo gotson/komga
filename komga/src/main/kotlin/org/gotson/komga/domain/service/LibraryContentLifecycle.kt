@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
@@ -25,10 +24,11 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
-import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.language.notEquals
 import org.gotson.komga.language.toIndexedMap
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.nio.file.Paths
@@ -49,7 +49,7 @@ class LibraryContentLifecycle(
   private val collectionLifecycle: SeriesCollectionLifecycle,
   private val readListLifecycle: ReadListLifecycle,
   private val sidecarRepository: SidecarRepository,
-  private val komgaProperties: KomgaProperties,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
   private val taskEmitter: TaskEmitter,
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
@@ -59,7 +59,7 @@ class LibraryContentLifecycle(
   private val readProgressRepository: ReadProgressRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val thumbnailBookRepository: ThumbnailBookRepository,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
 ) {
 
   fun scanRootFolder(library: Library, scanDeep: Boolean = false) {
@@ -402,11 +402,11 @@ class LibraryContentLifecycle(
   }
 
   private fun cleanupEmptySets() {
-    if (komgaProperties.deleteEmptyCollections) {
+    if (komgaSettingsProvider.deleteEmptyCollections) {
       collectionLifecycle.deleteEmptyCollections()
     }
 
-    if (komgaProperties.deleteEmptyReadLists) {
+    if (komgaSettingsProvider.deleteEmptyReadLists) {
       readListLifecycle.deleteEmptyReadLists()
     }
   }
