@@ -205,6 +205,7 @@
     "collections": "收藏",
     "create": "创建",
     "delete": "删除",
+    "dimension": "宽:{width}, 高:{height}",
     "discard": "弃置",
     "disk_space": "磁盘空间",
     "dismiss": "解除",
@@ -221,7 +222,7 @@
     "go_to_series": "转到系列",
     "library": "书库",
     "locale_name": "简体中文",
-    "locale_rtl": "错误",
+    "locale_rtl": "false",
     "lock_all": "锁定全部",
     "n_selected": "已选择 {count}",
     "nothing_to_show": "没有什么可显示",
@@ -662,7 +663,7 @@
     },
     "scan_interval": {
       "DAILY": "每日",
-      "DISABLED": "Disabled",
+      "DISABLED": "禁用",
       "EVERY_12H": "每隔 12 小时",
       "EVERY_6H": "每隔6小时",
       "HOURLY": "每小时",
@@ -679,6 +680,12 @@
       "ENDED": "已完结",
       "HIATUS": "有生之年",
       "ONGOING": "连载中"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "默认(300px)",
+      "LARGE": "大(900px)",
+      "MEDIUM": "中 (600px)",
+      "XLARGE": "超大 (1200px)"
     }
   },
   "error_codes": {
@@ -844,9 +851,17 @@
     "tab_title": "服务器"
   },
   "server_settings": {
+    "dialog_regenerate_thumbnails": {
+      "body": "缩略图大小已更改。您想重新生成书籍缩略图吗？",
+      "btn_alternate": "是，所有书籍",
+      "btn_cancel": "不是",
+      "btn_confirm": "是的，但前提是更大",
+      "title": "重新生成缩略图"
+    },
     "label_delete_empty_collections": "扫描后删除空的收藏",
     "label_delete_empty_readlists": "扫描后删除空的阅读列表",
     "label_rememberme_duration": "记住我的持续时间（天数）",
+    "label_thumbnail_size": "缩略图尺寸",
     "requires_restart": "需要重启才能生效",
     "server_settings": "服务器设置"
   },
