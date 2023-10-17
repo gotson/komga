@@ -1,6 +1,5 @@
 package org.gotson.komga.application.tasks
 
-import jakarta.jms.ConnectionFactory
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
@@ -11,31 +10,21 @@ import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.service.BookConverter
-import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
-import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
-import org.gotson.komga.infrastructure.jms.QUEUE_UNIQUE_ID
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.search.LuceneEntity
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Sort
-import org.springframework.jms.core.JmsTemplate
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class TaskEmitter(
-  connectionFactory: ConnectionFactory,
   private val bookRepository: BookRepository,
   private val bookConverter: BookConverter,
+  private val tasksRepository: TasksRepository,
+  private val eventPublisher: ApplicationEventPublisher,
 ) {
-
-  private val jmsTemplates = (0..9).associateWith {
-    JmsTemplate(connectionFactory).apply {
-      priority = it
-      isExplicitQosEnabled = true
-    }
-  }
-
   fun scanLibrary(libraryId: String, scanDeep: Boolean = false, priority: Int = DEFAULT_PRIORITY) {
     submitTask(Task.ScanLibrary(libraryId, scanDeep, priority))
   }
@@ -59,7 +48,7 @@ class TaskEmitter(
   fun hashBooksWithoutHash(library: Library) {
     if (library.hashFiles)
       bookRepository.findAllByLibraryIdAndWithEmptyHash(library.id).forEach {
-        submitTask(Task.HashBook(it.id, LOWEST_PRIORITY, it.seriesId))
+        submitTask(Task.HashBook(it.id, LOWEST_PRIORITY))
       }
   }
 
@@ -93,7 +82,7 @@ class TaskEmitter(
   }
 
   fun removeDuplicatePages(bookId: String, pages: Collection<BookPageNumbered>, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.RemoveHashedPages(bookId, pages, priority, bookId))
+    submitTask(Task.RemoveHashedPages(bookId, pages, priority))
   }
 
   fun removeDuplicatePages(bookIdToPages: Map<String, Collection<BookPageNumbered>>, priority: Int = DEFAULT_PRIORITY) {
@@ -109,11 +98,11 @@ class TaskEmitter(
   }
 
   fun generateBookThumbnail(book: Book, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.GenerateBookThumbnail(book.id, priority, book.seriesId))
+    submitTask(Task.GenerateBookThumbnail(book.id, priority))
   }
 
   fun generateBookThumbnail(bookId: String, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.GenerateBookThumbnail(bookId, priority, bookId))
+    submitTask(Task.GenerateBookThumbnail(bookId, priority))
   }
 
   fun generateBookThumbnail(bookIds: Collection<String>, priority: Int = DEFAULT_PRIORITY) {
@@ -145,7 +134,7 @@ class TaskEmitter(
   }
 
   fun refreshBookLocalArtwork(book: Book, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.RefreshBookLocalArtwork(book.id, priority, book.seriesId))
+    submitTask(Task.RefreshBookLocalArtwork(book.id, priority))
   }
 
   fun refreshBookLocalArtwork(books: Collection<Book>, priority: Int = DEFAULT_PRIORITY) {
@@ -190,12 +179,7 @@ class TaskEmitter(
 
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
-    jmsTemplates[task.priority]!!.convertAndSend(QUEUE_TASKS, task) {
-      it.apply {
-        setStringProperty(QUEUE_UNIQUE_ID, task.uniqueId)
-        setStringProperty(JMS_PROPERTY_TYPE, task.javaClass.simpleName)
-        task.groupId?.let { groupId -> setStringProperty("JMSXGroupID", groupId) }
-      }
-    }
+    tasksRepository.save(task)
+    eventPublisher.publishEvent(TaskAddedEvent())
   }
 }

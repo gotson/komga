@@ -17,12 +17,9 @@ import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.domain.service.ThumbnailLifecycle
-import org.gotson.komga.infrastructure.jms.QUEUE_FACTORY
-import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
 import org.gotson.komga.interfaces.scheduler.METER_TASKS_EXECUTION
 import org.gotson.komga.interfaces.scheduler.METER_TASKS_FAILURE
-import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
 import kotlin.time.measureTime
@@ -51,7 +48,6 @@ class TaskHandler(
   private val meterRegistry: MeterRegistry,
 ) {
 
-  @JmsListener(destination = QUEUE_TASKS, containerFactory = QUEUE_FACTORY, concurrency = "#{@komgaProperties.taskConsumers}-#{@komgaProperties.taskConsumersMax}")
   fun handleTask(task: Task) {
     logger.info { "Executing task: $task" }
     try {

@@ -53,15 +53,12 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-  implementation("org.springframework.boot:spring-boot-starter-artemis")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
   implementation("org.springframework.session:spring-session-core")
   implementation("com.github.gotson:spring-session-caffeine:2.0.0")
   implementation("org.springframework.data:spring-data-commons")
 
   kapt("org.springframework.boot:spring-boot-configuration-processor:3.1.2")
-
-  implementation("org.apache.activemq:artemis-jakarta-server")
 
   implementation("org.flywaydb:flyway-core")
 

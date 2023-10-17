@@ -11,9 +11,6 @@ komga:
 spring:
   flyway:
     enabled: true
-  artemis:
-    embedded:
-      persistent: false
 
 logging:
   level:

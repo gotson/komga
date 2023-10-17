@@ -3,10 +3,10 @@ package org.gotson.komga.infrastructure.datasource
 import org.flywaydb.core.Flyway
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
 import javax.sql.DataSource
 
-@Configuration
+@Component
 class FlywaySecondaryMigrationInitializer(
   @Qualifier("tasksDataSource")
   private val tasksDataSource: DataSource,

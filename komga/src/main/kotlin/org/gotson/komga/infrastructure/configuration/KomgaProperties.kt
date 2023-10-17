@@ -65,9 +65,11 @@ class KomgaProperties {
   var configDir: String? = null
 
   @Positive
+  @Deprecated("Artemis has been replaced")
   var taskConsumers: Int = 1
 
   @Positive
+  @Deprecated("Artemis has been replaced")
   var taskConsumersMax: Int = 1
 
   @Deprecated("Moved to server settings since 1.5.0")
