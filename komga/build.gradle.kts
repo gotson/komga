@@ -1,3 +1,4 @@
+
 import nu.studer.gradle.jooq.JooqGenerate
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.flywaydb.gradle.task.FlywayMigrateTask
@@ -355,6 +356,12 @@ sourceSets {
       srcDir("build/generated-src/jooq/tasks")
     }
   }
+}
+tasks.runKtlintCheckOverMainSourceSet {
+  dependsOn("generateTasksJooq")
+}
+tasks.compileKotlin {
+  dependsOn("generateTasksJooq")
 }
 
 openApi {
