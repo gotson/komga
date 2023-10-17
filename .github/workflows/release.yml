@@ -150,6 +150,13 @@ jobs:
           tag: '${{ needs.version.outputs.version_next }}'
           default_author: github_actions
 
+      - name: Retrieve the Apple private key and decode it to a file
+        if: inputs.github_release
+        env:
+          APPLE_PRIVATE_KEY: ${{ secrets.APPLE_PRIVATE_KEY }}
+        run: |
+          echo APPLE_PRIVATE_KEY | base64 --decode > ./secret/apple_private_key.p8
+
       - name: Conveyor build apps
         uses: hydraulic-software/conveyor/actions/build@v11.4
         if: inputs.github_release
@@ -158,8 +165,8 @@ jobs:
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
-          APPLE_ASP: ${{ secrets.APPLE_ASP }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
 
       - name: Adjust Conveyor output
         if: inputs.github_release

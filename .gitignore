@@ -52,3 +52,4 @@ application-oauth2.yml
 
 ### Conveyor
 output/
+secret/
