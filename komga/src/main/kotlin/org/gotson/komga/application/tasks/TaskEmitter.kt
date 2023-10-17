@@ -67,10 +67,8 @@ class TaskEmitter(
     submitTask(Task.FindBooksWithMissingPageHash(library.id, priority))
   }
 
-  fun hashBookPages(bookIdToSeriesId: Collection<Pair<String, String>>, priority: Int = DEFAULT_PRIORITY) {
-    bookIdToSeriesId.forEach { (bookId, seriesId) ->
-      submitTask(Task.HashBookPages(bookId, priority, seriesId))
-    }
+  fun hashBookPages(bookIdToSeriesId: Collection<String>, priority: Int = DEFAULT_PRIORITY) {
+    bookIdToSeriesId.forEach { submitTask(Task.HashBookPages(it, priority)) }
   }
 
   fun findBooksToConvert(library: Library, priority: Int = DEFAULT_PRIORITY) {
@@ -171,7 +169,7 @@ class TaskEmitter(
   }
 
   fun upgradeIndex(priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.UpgradedIndex(priority))
+    submitTask(Task.UpgradeIndex(priority))
   }
 
   fun deleteBook(bookId: String, priority: Int = DEFAULT_PRIORITY) {

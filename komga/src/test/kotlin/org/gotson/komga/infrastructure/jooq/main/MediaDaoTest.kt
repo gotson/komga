@@ -217,11 +217,9 @@ class MediaDaoTest(
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
-      assertThat(found as Iterable<Pair<String, String>>)
-        .hasSize(1)
-        .containsOnly(Pair(book.id, book.seriesId))
+      assertThat(found).containsExactly(book.id)
     }
 
     @Test
@@ -239,7 +237,7 @@ class MediaDaoTest(
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }
@@ -259,11 +257,9 @@ class MediaDaoTest(
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
-      assertThat(found as Iterable<Pair<String, String>>)
-        .hasSize(1)
-        .containsOnly(Pair(book.id, book.seriesId))
+      assertThat(found).containsOnly(book.id)
     }
 
     @Test
@@ -282,7 +278,7 @@ class MediaDaoTest(
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }
@@ -303,7 +299,7 @@ class MediaDaoTest(
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }
@@ -324,7 +320,7 @@ class MediaDaoTest(
       )
       mediaDao.insert(media)
 
-      val found = mediaDao.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
+      val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
 
       assertThat(found).isEmpty()
     }

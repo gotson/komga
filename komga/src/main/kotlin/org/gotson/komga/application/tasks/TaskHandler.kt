@@ -75,7 +75,7 @@ class TaskHandler(
 
           is Task.FindBooksWithMissingPageHash ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              taskEmitter.hashBookPages(pageHashLifecycle.getBookAndSeriesIdsWithMissingPageHash(library), task.priority + 1)
+              taskEmitter.hashBookPages(pageHashLifecycle.getBookIdsWithMissingPageHash(library), task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindDuplicatePagesToDelete ->
@@ -162,7 +162,7 @@ class TaskHandler(
 
           is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex(task.entities)
 
-          is Task.UpgradedIndex -> searchIndexLifecycle.upgradeIndex()
+          is Task.UpgradeIndex -> searchIndexLifecycle.upgradeIndex()
 
           is Task.DeleteBook -> {
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->

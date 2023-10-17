@@ -26,12 +26,9 @@ class PageHashLifecycle(
 
   private val hashableMediaTypes = listOf(MediaType.ZIP.type)
 
-  /**
-   * @return a Collection of Pair of BookId/SeriesId
-   */
-  fun getBookAndSeriesIdsWithMissingPageHash(library: Library): Collection<Pair<String, String>> =
+  fun getBookIdsWithMissingPageHash(library: Library): Collection<String> =
     if (library.hashPages)
-      mediaRepository.findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(library.id, hashableMediaTypes, komgaProperties.pageHashing)
+      mediaRepository.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(library.id, hashableMediaTypes, komgaProperties.pageHashing)
         .also { logger.info { "Found ${it.size} books with missing page hash" } }
     else {
       logger.info { "Page hashing is not enabled, skipping" }

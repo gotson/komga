@@ -112,7 +112,7 @@ sealed class Task(priority: Int = DEFAULT_PRIORITY, val groupId: String? = null)
     override fun toString(): String = "RebuildIndex(priority='$priority',entities='${entities?.map { it.type }}')"
   }
 
-  class UpgradedIndex(priority: Int = DEFAULT_PRIORITY) : Task(priority) {
+  class UpgradeIndex(priority: Int = DEFAULT_PRIORITY) : Task(priority) {
     override val uniqueId = "UPGRADE_INDEX"
     override fun toString(): String = "UpgradeIndex(priority='$priority')"
   }
