@@ -1,3 +1,13 @@
+# [1.6.1](https://github.com/gotson/komga/compare/v1.6.0...v1.6.1) (2023-10-18)
+## 🐛 Fixes
+**komga-tray**
+- missing jdk modules preventing SSL connections ([0d9184e](https://github.com/gotson/komga/commits/0d9184e))
+- some tasks would not be run on startup ([a47eddb](https://github.com/gotson/komga/commits/a47eddb))
+
+## 🔄️ Changes
+**komga-tray**
+- add more logs around open explorer action ([db06919](https://github.com/gotson/komga/commits/db06919))
+
 # [1.6.0](https://github.com/gotson/komga/compare/v1.5.1...v1.6.0) (2023-10-18)
 ## 🚀 Features
 **api**
