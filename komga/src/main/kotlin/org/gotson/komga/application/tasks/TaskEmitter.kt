@@ -34,22 +34,25 @@ class TaskEmitter(
   }
 
   fun analyzeUnknownAndOutdatedBooks(library: Library) {
-    bookRepository.findAll(
-      BookSearch(
-        libraryIds = listOf(library.id),
-        mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED),
-      ),
-      UnpagedSorted(Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))),
-    ).forEach {
-      submitTask(Task.AnalyzeBook(it.id, groupId = it.seriesId))
-    }
+    bookRepository
+      .findAll(
+        BookSearch(
+          libraryIds = listOf(library.id),
+          mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED),
+        ),
+        UnpagedSorted(Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))),
+      )
+      .content
+      .map { Task.AnalyzeBook(it.id, groupId = it.seriesId) }
+      .let { submitTasks(it) }
   }
 
   fun hashBooksWithoutHash(library: Library) {
     if (library.hashFiles)
-      bookRepository.findAllByLibraryIdAndWithEmptyHash(library.id).forEach {
-        submitTask(Task.HashBook(it.id, LOWEST_PRIORITY))
-      }
+      bookRepository
+        .findAllByLibraryIdAndWithEmptyHash(library.id)
+        .map { Task.HashBook(it.id, LOWEST_PRIORITY) }
+        .let { submitTasks(it) }
   }
 
   fun findBooksWithMissingPageHash(library: Library, priority: Int = DEFAULT_PRIORITY) {
@@ -57,7 +60,9 @@ class TaskEmitter(
   }
 
   fun hashBookPages(bookIdToSeriesId: Collection<String>, priority: Int = DEFAULT_PRIORITY) {
-    bookIdToSeriesId.forEach { submitTask(Task.HashBookPages(it, priority)) }
+    bookIdToSeriesId
+      .map { Task.HashBookPages(it, priority) }
+      .let { submitTasks(it) }
   }
 
   fun findBooksToConvert(library: Library, priority: Int = DEFAULT_PRIORITY) {
@@ -65,16 +70,17 @@ class TaskEmitter(
   }
 
   fun convertBookToCbz(books: Collection<Book>, priority: Int = DEFAULT_PRIORITY) {
-    books.forEach { book ->
-      submitTask(Task.ConvertBook(book.id, priority, book.seriesId))
-    }
+    books
+      .map { Task.ConvertBook(it.id, priority, it.seriesId) }
+      .let { submitTasks(it) }
   }
 
   fun repairExtensions(library: Library, priority: Int = DEFAULT_PRIORITY) {
     if (library.repairExtensions)
-      bookConverter.getMismatchedExtensionBooks(library).forEach {
-        submitTask(Task.RepairExtension(it.id, priority, it.seriesId))
-      }
+      bookConverter
+        .getMismatchedExtensionBooks(library)
+        .map { Task.RepairExtension(it.id, priority, it.seriesId) }
+        .let { submitTasks(it) }
   }
 
   fun findDuplicatePagesToDelete(library: Library, priority: Int = DEFAULT_PRIORITY) {
@@ -86,7 +92,9 @@ class TaskEmitter(
   }
 
   fun removeDuplicatePages(bookIdToPages: Map<String, Collection<BookPageNumbered>>, priority: Int = DEFAULT_PRIORITY) {
-    bookIdToPages.forEach { removeDuplicatePages(it.key, it.value) }
+    bookIdToPages
+      .map { Task.RemoveHashedPages(it.key, it.value, priority) }
+      .let { submitTasks(it) }
   }
 
   fun analyzeBook(book: Book, priority: Int = DEFAULT_PRIORITY) {
@@ -94,11 +102,9 @@ class TaskEmitter(
   }
 
   fun analyzeBook(books: Collection<Book>, priority: Int = DEFAULT_PRIORITY) {
-    books.forEach { analyzeBook(it, priority) }
-  }
-
-  fun generateBookThumbnail(book: Book, priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.GenerateBookThumbnail(book.id, priority))
+    books
+      .map { Task.AnalyzeBook(it.id, priority, it.seriesId) }
+      .let { submitTasks(it) }
   }
 
   fun generateBookThumbnail(bookId: String, priority: Int = DEFAULT_PRIORITY) {
@@ -106,7 +112,9 @@ class TaskEmitter(
   }
 
   fun generateBookThumbnail(bookIds: Collection<String>, priority: Int = DEFAULT_PRIORITY) {
-    bookIds.forEach { generateBookThumbnail(it, priority) }
+    bookIds
+      .map { Task.GenerateBookThumbnail(it, priority) }
+      .let { submitTasks(it) }
   }
 
   fun refreshBookMetadata(
@@ -122,7 +130,9 @@ class TaskEmitter(
     capabilities: Set<BookMetadataPatchCapability> = BookMetadataPatchCapability.values().toSet(),
     priority: Int = DEFAULT_PRIORITY,
   ) {
-    books.forEach { refreshBookMetadata(it, capabilities, priority) }
+    books
+      .map { Task.RefreshBookMetadata(it.id, capabilities, priority, it.seriesId) }
+      .let { submitTasks(it) }
   }
 
   fun refreshSeriesMetadata(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
@@ -138,7 +148,9 @@ class TaskEmitter(
   }
 
   fun refreshBookLocalArtwork(books: Collection<Book>, priority: Int = DEFAULT_PRIORITY) {
-    books.forEach { refreshBookLocalArtwork(it, priority) }
+    books
+      .map { Task.RefreshBookLocalArtwork(it.id, priority) }
+      .let { submitTasks(it) }
   }
 
   fun refreshSeriesLocalArtwork(seriesId: String, priority: Int = DEFAULT_PRIORITY) {
@@ -146,7 +158,9 @@ class TaskEmitter(
   }
 
   fun refreshSeriesLocalArtwork(seriesIds: Collection<String>, priority: Int = DEFAULT_PRIORITY) {
-    seriesIds.forEach { refreshSeriesLocalArtwork(it, priority) }
+    seriesIds
+      .map { Task.RefreshSeriesLocalArtwork(it, priority) }
+      .let { submitTasks(it) }
   }
 
   fun importBook(sourceFile: String, seriesId: String, copyMode: CopyMode, destinationName: String?, upgradeBookId: String?, priority: Int = DEFAULT_PRIORITY) {
@@ -180,6 +194,12 @@ class TaskEmitter(
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
     tasksRepository.save(task)
+    eventPublisher.publishEvent(TaskAddedEvent())
+  }
+
+  private fun submitTasks(tasks: Collection<Task>) {
+    logger.info { "Sending tasks: $tasks" }
+    tasksRepository.save(tasks)
     eventPublisher.publishEvent(TaskAddedEvent())
   }
 }

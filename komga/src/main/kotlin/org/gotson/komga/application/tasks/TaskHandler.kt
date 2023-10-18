@@ -87,7 +87,7 @@ class TaskHandler(
           is Task.AnalyzeBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               val actions = bookLifecycle.analyzeAndPersist(book)
-              if (actions.contains(BookAction.GENERATE_THUMBNAIL)) taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+              if (actions.contains(BookAction.GENERATE_THUMBNAIL)) taskEmitter.generateBookThumbnail(book.id, priority = task.priority + 1)
               if (actions.contains(BookAction.REFRESH_METADATA)) taskEmitter.refreshBookMetadata(book, priority = task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
@@ -142,7 +142,7 @@ class TaskHandler(
           is Task.RemoveHashedPages ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               if (bookPageEditor.removeHashedPages(book, task.pages) == BookAction.GENERATE_THUMBNAIL) {
-                taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+                taskEmitter.generateBookThumbnail(book.id, priority = task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
