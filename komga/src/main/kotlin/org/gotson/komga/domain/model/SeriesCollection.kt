@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.model
 
 import com.github.f4b6a3.tsid.TsidCreator
-import java.io.Serializable
 import java.time.LocalDateTime
 
 data class SeriesCollection(
@@ -22,4 +21,4 @@ data class SeriesCollection(
    * Indicates that the seriesIds have been filtered and is not exhaustive.
    */
   val filtered: Boolean = false,
-) : Auditable, Serializable
+) : Auditable

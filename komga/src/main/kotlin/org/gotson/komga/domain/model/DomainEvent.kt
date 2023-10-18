@@ -1,9 +1,8 @@
 package org.gotson.komga.domain.model
 
-import java.io.Serializable
 import java.net.URL
 
-sealed class DomainEvent : Serializable {
+sealed class DomainEvent {
 
   data class LibraryAdded(val library: Library) : DomainEvent()
   data class LibraryUpdated(val library: Library) : DomainEvent()

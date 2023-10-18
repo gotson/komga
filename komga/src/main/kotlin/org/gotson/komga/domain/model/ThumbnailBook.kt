@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.model
 
 import com.github.f4b6a3.tsid.TsidCreator
-import java.io.Serializable
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -21,7 +20,7 @@ data class ThumbnailBook(
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable, Serializable {
+) : Auditable {
   enum class Type {
     GENERATED, SIDECAR, USER_UPLOADED
   }

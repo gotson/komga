@@ -4,7 +4,6 @@ import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.infrastructure.search.LuceneEntity
-import java.io.Serializable
 
 const val HIGHEST_PRIORITY = 8
 const val HIGH_PRIORITY = 6
@@ -12,7 +11,7 @@ const val DEFAULT_PRIORITY = 4
 const val LOW_PRIORITY = 2
 const val LOWEST_PRIORITY = 0
 
-sealed class Task(val priority: Int = DEFAULT_PRIORITY, val groupId: String? = null) : Serializable {
+sealed class Task(val priority: Int = DEFAULT_PRIORITY, val groupId: String? = null) {
   abstract val uniqueId: String
 
   class ScanLibrary(val libraryId: String, val scanDeep: Boolean, priority: Int = DEFAULT_PRIORITY) : Task(priority) {
