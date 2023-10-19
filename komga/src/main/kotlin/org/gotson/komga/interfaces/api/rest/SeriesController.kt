@@ -411,6 +411,7 @@ class SeriesController(
     @RequestParam("selected") selected: Boolean = true,
   ): ThumbnailSeriesDto {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (series.oneshot) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
 
     val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
     if (!contentDetector.isImage(mediaType))
