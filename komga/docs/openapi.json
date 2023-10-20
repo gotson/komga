@@ -10576,6 +10576,10 @@
               "LARGE",
               "XLARGE"
             ]
+          },
+          "taskPoolSize": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -11664,6 +11668,7 @@
           "deleteEmptyCollections",
           "deleteEmptyReadLists",
           "rememberMeDurationDays",
+          "taskPoolSize",
           "thumbnailSize"
         ],
         "type": "object",
@@ -11686,6 +11691,10 @@
               "LARGE",
               "XLARGE"
             ]
+          },
+          "taskPoolSize": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

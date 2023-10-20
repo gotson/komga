@@ -1,3 +1,37 @@
+# [1.6.2](https://github.com/gotson/komga/compare/v1.6.1...v1.6.2) (2023-10-20)
+## 🚀 Features
+**api**
+- configure number of task processing threads ([9ef319b](https://github.com/gotson/komga/commits/9ef319b))
+
+**webui**
+- configure number of task processing threads from server settings ([a837988](https://github.com/gotson/komga/commits/a837988))
+
+## 🐛 Fixes
+**api**
+- prevent setting series poster for oneshots ([d8af496](https://github.com/gotson/komga/commits/d8af496))
+
+**komga**
+- sometimes tasks would not be seen as available ([528eddb](https://github.com/gotson/komga/commits/528eddb))
+- do not cache PDF documents ([6d5d695](https://github.com/gotson/komga/commits/6d5d695))
+
+**webreader**
+- hide setting series poster menu for oneshots ([ff06e06](https://github.com/gotson/komga/commits/ff06e06))
+
+## 🔄️ Changes
+**webui**
+- reorder server settings components ([67ee547](https://github.com/gotson/komga/commits/67ee547))
+
+## 🛠  Build
+**dependabot**
+- attempt to fix dependabot config ([0636790](https://github.com/gotson/komga/commits/0636790))
+
+**unscoped**
+- cleanup conveyor output to reduce disk space ([4f4cad2](https://github.com/gotson/komga/commits/4f4cad2))
+
+## ⚙️ Dependencies
+**webui-dev**
+- bump @babel/traverse from 7.22.17 to 7.23.2 ([3467d90](https://github.com/gotson/komga/commits/3467d90))
+
 # [1.6.1](https://github.com/gotson/komga/compare/v1.6.0...v1.6.1) (2023-10-18)
 ## 🐛 Fixes
 **komga-tray**
