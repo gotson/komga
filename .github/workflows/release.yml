@@ -63,6 +63,11 @@ jobs:
     needs: version
     if: needs.version.outputs.should_release || inputs.force_release
     steps:
+      - name: Remove unnecessary files
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
