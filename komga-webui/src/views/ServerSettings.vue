@@ -36,6 +36,16 @@
           min="1"
           class="mt-4"
         />
+        <v-text-field
+          v-model="form.taskPoolSize"
+          @input="$v.form.taskPoolSize.$touch()"
+          @blur="$v.form.taskPoolSize.$touch()"
+          :error-messages="taskPoolSizeErrors"
+          :label="$t('server_settings.label_task_pool_size')"
+          type="number"
+          min="1"
+          class="mt-4"
+        />
         <v-checkbox
           v-model="form.renewRememberMeKey"
           @change="$v.form.renewRememberMeKey.$touch()"
@@ -90,6 +100,7 @@ export default Vue.extend({
       rememberMeDurationDays: 365,
       renewRememberMeKey: false,
       thumbnailSize: ThumbnailSizeDto.DEFAULT,
+      taskPoolSize: 8,
     },
     existingSettings: {
       deleteEmptyCollections: false,
@@ -97,6 +108,7 @@ export default Vue.extend({
       rememberMeDurationDays: 365,
       renewRememberMeKey: false,
       thumbnailSize: ThumbnailSizeDto.DEFAULT,
+      taskPoolSize: 8,
     },
     dialogRegenerateThumbnails: false,
   }),
@@ -110,6 +122,10 @@ export default Vue.extend({
       },
       renewRememberMeKey: {},
       thumbnailSize: {},
+      taskPoolSize: {
+        minValue: minValue(1),
+        required,
+      },
     },
   },
   mounted() {
@@ -127,6 +143,13 @@ export default Vue.extend({
       if (!this.$v.form?.rememberMeDurationDays?.$dirty) return errors
       !this.$v?.form?.rememberMeDurationDays?.minValue && errors.push(this.$t('validation.one_or_more').toString())
       !this.$v?.form?.rememberMeDurationDays?.required && errors.push(this.$t('common.required').toString())
+      return errors
+    },
+    taskPoolSizeErrors(): string[] {
+      const errors = [] as string[]
+      if (!this.$v.form?.taskPoolSize?.$dirty) return errors
+      !this.$v?.form?.taskPoolSize?.minValue && errors.push(this.$t('validation.one_or_more').toString())
+      !this.$v?.form?.taskPoolSize?.required && errors.push(this.$t('common.required').toString())
       return errors
     },
     saveDisabled(): boolean {
@@ -158,6 +181,8 @@ export default Vue.extend({
         this.$_.merge(newSettings, {thumbnailSize: this.form.thumbnailSize})
         thumbnailSizeHasChanged = this.existingSettings.thumbnailSize != this.form.thumbnailSize
       }
+      if (this.$v.form?.taskPoolSize?.$dirty)
+        this.$_.merge(newSettings, {taskPoolSize: this.form.taskPoolSize})
 
       await this.$komgaSettings.updateSettings(newSettings)
       await this.refreshSettings()

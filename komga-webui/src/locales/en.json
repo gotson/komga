@@ -861,6 +861,7 @@
     "label_delete_empty_collections": "Delete empty collections after scan",
     "label_delete_empty_readlists": "Delete empty read lists after scan",
     "label_rememberme_duration": "Remember me duration (in days)",
+    "label_task_pool_size": "Task threads",
     "label_thumbnail_size": "Thumbnails size",
     "requires_restart": "Requires restart to take effect",
     "server_settings": "Server Settings"

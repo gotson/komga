@@ -3,6 +3,7 @@ export interface SettingsDto {
   deleteEmptyReadLists: boolean,
   rememberMeDurationDays: number,
   thumbnailSize: ThumbnailSizeDto,
+  taskPoolSize: number,
 }
 
 export interface SettingsUpdateDto {
@@ -11,6 +12,7 @@ export interface SettingsUpdateDto {
   rememberMeDurationDays?: number,
   renewRememberMeKey?: boolean,
   thumbnailSize?: ThumbnailSizeDto,
+  taskPoolSize?: number,
 }
 
 export enum ThumbnailSizeDto {
