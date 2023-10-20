@@ -25,6 +25,16 @@
           hide-details
         />
         <v-text-field
+          v-model="form.taskPoolSize"
+          @input="$v.form.taskPoolSize.$touch()"
+          @blur="$v.form.taskPoolSize.$touch()"
+          :error-messages="taskPoolSizeErrors"
+          :label="$t('server_settings.label_task_pool_size')"
+          type="number"
+          min="1"
+          class="mt-4"
+        />
+        <v-text-field
           v-model="form.rememberMeDurationDays"
           @input="$v.form.rememberMeDurationDays.$touch()"
           @blur="$v.form.rememberMeDurationDays.$touch()"
@@ -32,16 +42,6 @@
           :label="$t('server_settings.label_rememberme_duration')"
           :hint="$t('server_settings.requires_restart')"
           persistent-hint
-          type="number"
-          min="1"
-          class="mt-4"
-        />
-        <v-text-field
-          v-model="form.taskPoolSize"
-          @input="$v.form.taskPoolSize.$touch()"
-          @blur="$v.form.taskPoolSize.$touch()"
-          :error-messages="taskPoolSizeErrors"
-          :label="$t('server_settings.label_task_pool_size')"
           type="number"
           min="1"
           class="mt-4"
