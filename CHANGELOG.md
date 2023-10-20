@@ -1,3 +1,5 @@
+# [1.6.3](https://github.com/gotson/komga/compare/v1.6.2...v1.6.3) (2023-10-20)
+
 # [1.6.2](https://github.com/gotson/komga/compare/v1.6.1...v1.6.2) (2023-10-20)
 ## 🚀 Features
 **api**
