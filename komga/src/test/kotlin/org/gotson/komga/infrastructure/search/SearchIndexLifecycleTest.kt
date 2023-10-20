@@ -4,7 +4,6 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.slot
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.SeriesCollection
@@ -30,6 +29,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
 
 @SpringBootTest
@@ -52,7 +52,7 @@ class SearchIndexLifecycleTest(
   private val library = makeLibrary()
 
   @MockkBean
-  private lateinit var mockEventPublisher: EventPublisher
+  private lateinit var mockEventPublisher: ApplicationEventPublisher
 
   @BeforeAll
   fun setup() {
@@ -97,6 +97,7 @@ class SearchIndexLifecycleTest(
     fun `given empty index when adding an entity then it is added to the index`() {
       val series = seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
       seriesLifecycle.addBooks(series, listOf(makeBook("book", seriesId = series.id, libraryId = library.id)))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       val found = luceneHelper.searchEntitiesIds("book", LuceneEntity.Book)
 
@@ -109,6 +110,7 @@ class SearchIndexLifecycleTest(
       val series = seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
       val book = makeBook("book", seriesId = series.id, libraryId = library.id)
       seriesLifecycle.addBooks(series, listOf(book))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("book", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
@@ -119,6 +121,7 @@ class SearchIndexLifecycleTest(
         bookMetadataRepository.update(it.copy(title = "updated"))
       }
       mockEventPublisher.publishEvent(DomainEvent.BookUpdated(book))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("book", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
@@ -135,6 +138,7 @@ class SearchIndexLifecycleTest(
       val series = seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
       val book = makeBook("book", seriesId = series.id, libraryId = library.id)
       seriesLifecycle.addBooks(series, listOf(book))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("book", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
@@ -142,6 +146,7 @@ class SearchIndexLifecycleTest(
       }
 
       bookLifecycle.deleteOne(book)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("book", LuceneEntity.Book).let { found ->
         assertThat(found).isNotNull
@@ -155,6 +160,7 @@ class SearchIndexLifecycleTest(
     @Test
     fun `given empty index when adding an entity then it is added to the index`() {
       seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       val found = luceneHelper.searchEntitiesIds("series", LuceneEntity.Series)
 
@@ -165,6 +171,7 @@ class SearchIndexLifecycleTest(
     @Test
     fun `given an entity when updating then it is updated in the index`() {
       val series = seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("series", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
@@ -175,6 +182,7 @@ class SearchIndexLifecycleTest(
         seriesMetadataRepository.update(it.copy(title = "updated", titleSort = "updated"))
       }
       mockEventPublisher.publishEvent(DomainEvent.SeriesUpdated(series))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("series", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
@@ -189,6 +197,7 @@ class SearchIndexLifecycleTest(
     @Test
     fun `given an entity when deleting then it is removed from the index`() {
       val series = seriesLifecycle.createSeries(makeSeries("Series", libraryId = library.id))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("series", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
@@ -196,6 +205,7 @@ class SearchIndexLifecycleTest(
       }
 
       seriesLifecycle.deleteMany(listOf(series))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("series", LuceneEntity.Series).let { found ->
         assertThat(found).isNotNull
@@ -210,6 +220,7 @@ class SearchIndexLifecycleTest(
     fun `given empty index when adding an entity then it is added to the index`() {
       val collection = SeriesCollection("collection")
       collectionLifecycle.addCollection(collection)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       val found = luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection)
 
@@ -221,6 +232,7 @@ class SearchIndexLifecycleTest(
     fun `given an entity when updating then it is updated in the index`() {
       val collection = SeriesCollection("collection")
       collectionLifecycle.addCollection(collection)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
@@ -231,6 +243,7 @@ class SearchIndexLifecycleTest(
         collectionRepository.update(it.copy(name = "updated"))
       }
       mockEventPublisher.publishEvent(DomainEvent.CollectionUpdated(collection))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
@@ -246,6 +259,7 @@ class SearchIndexLifecycleTest(
     fun `given an entity when deleting then it is removed from the index`() {
       val collection = SeriesCollection("collection")
       collectionLifecycle.addCollection(collection)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
@@ -253,6 +267,7 @@ class SearchIndexLifecycleTest(
       }
 
       collectionLifecycle.deleteCollection(collection)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("collection", LuceneEntity.Collection).let { found ->
         assertThat(found).isNotNull
@@ -267,6 +282,7 @@ class SearchIndexLifecycleTest(
     fun `given empty index when adding an entity then it is added to the index`() {
       val readList = ReadList("readlist")
       readListLifecycle.addReadList(readList)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       val found = luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList)
 
@@ -278,6 +294,7 @@ class SearchIndexLifecycleTest(
     fun `given an entity when updating then it is updated in the index`() {
       val readList = ReadList("readlist")
       readListLifecycle.addReadList(readList)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull
@@ -288,6 +305,7 @@ class SearchIndexLifecycleTest(
         readListRepository.update(it.copy(name = "updated"))
       }
       mockEventPublisher.publishEvent(DomainEvent.ReadListUpdated(readList))
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull
@@ -303,6 +321,7 @@ class SearchIndexLifecycleTest(
     fun `given an entity when deleting then it is removed from the index`() {
       val readList = ReadList("readlist")
       readListLifecycle.addReadList(readList)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull
@@ -310,6 +329,7 @@ class SearchIndexLifecycleTest(
       }
 
       readListLifecycle.deleteReadList(readList)
+      Thread.sleep(100) // search index update is asynchronous, and need a slight delay to be processed
 
       luceneHelper.searchEntitiesIds("readlist", LuceneEntity.ReadList).let { found ->
         assertThat(found).isNotNull

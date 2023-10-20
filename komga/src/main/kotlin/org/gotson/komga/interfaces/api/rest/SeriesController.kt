@@ -13,7 +13,6 @@ import org.apache.commons.compress.archivers.zip.Zip64Mode
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
@@ -64,6 +63,7 @@ import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressV2Dto
 import org.gotson.komga.interfaces.api.rest.dto.ThumbnailSeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.restrictUrl
 import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -110,7 +110,7 @@ class SeriesController(
   private val bookDtoRepository: BookDtoRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val readProgressDtoRepository: ReadProgressDtoRepository,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
   private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,
@@ -411,6 +411,7 @@ class SeriesController(
     @RequestParam("selected") selected: Boolean = true,
   ): ThumbnailSeriesDto {
     val series = seriesRepository.findByIdOrNull(seriesId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    if (series.oneshot) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
 
     val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
     if (!contentDetector.isImage(mediaType))
@@ -517,19 +518,16 @@ class SeriesController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable seriesId: String) {
-    bookRepository.findAllBySeriesId(seriesId).forEach {
-      taskEmitter.analyzeBook(it, HIGH_PRIORITY)
-    }
+    taskEmitter.analyzeBook(bookRepository.findAllBySeriesId(seriesId), HIGH_PRIORITY)
   }
 
   @PostMapping("v1/series/{seriesId}/metadata/refresh")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable seriesId: String) {
-    bookRepository.findAllBySeriesId(seriesId).forEach {
-      taskEmitter.refreshBookMetadata(it, priority = HIGH_PRIORITY)
-      taskEmitter.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
-    }
+    val books = bookRepository.findAllBySeriesId(seriesId)
+    taskEmitter.refreshBookMetadata(books, priority = HIGH_PRIORITY)
+    taskEmitter.refreshBookLocalArtwork(books, priority = HIGH_PRIORITY)
     taskEmitter.refreshSeriesLocalArtwork(seriesId, priority = HIGH_PRIORITY)
   }
 

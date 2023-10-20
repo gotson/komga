@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.MetadataPatchTarget
@@ -18,6 +17,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
 import org.gotson.komga.language.mostFrequent
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
@@ -36,7 +36,7 @@ class SeriesMetadataLifecycle(
   private val bookRepository: BookRepository,
   private val collectionRepository: SeriesCollectionRepository,
   private val collectionLifecycle: SeriesCollectionLifecycle,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
 ) {
 
   fun refreshMetadata(series: Series) {

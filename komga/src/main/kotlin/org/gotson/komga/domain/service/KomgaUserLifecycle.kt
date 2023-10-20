@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
@@ -9,6 +8,7 @@ import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -24,7 +24,7 @@ class KomgaUserLifecycle(
   private val passwordEncoder: PasswordEncoder,
   private val sessionRegistry: SessionRegistry,
   private val transactionTemplate: TransactionTemplate,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
 ) {
 
   fun updatePassword(user: KomgaUser, newPassword: String, expireSessions: Boolean) {

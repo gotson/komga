@@ -1,4 +1,7 @@
+
+import nu.studer.gradle.jooq.JooqGenerate
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.flywaydb.gradle.task.FlywayMigrateTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.prefixIfNot
 
@@ -51,7 +54,6 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-  implementation("org.springframework.boot:spring-boot-starter-artemis")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
   implementation("org.springframework.session:spring-session-core")
   implementation("com.github.gotson:spring-session-caffeine:2.0.0")
@@ -59,11 +61,9 @@ dependencies {
 
   kapt("org.springframework.boot:spring-boot-configuration-processor:3.1.2")
 
-  implementation("org.apache.activemq:artemis-jakarta-server")
-
   implementation("org.flywaydb:flyway-core")
 
-  implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+  api("io.github.microutils:kotlin-logging-jvm:3.0.5")
   implementation("io.hawt:hawtio-springboot:2.17.6")
 
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
@@ -242,27 +242,24 @@ springBoot {
   }
 }
 
-sourceSets {
-  // add a flyway sourceSet
-  val flyway by creating {
-    compileClasspath += sourceSets.main.get().compileClasspath
-    runtimeClasspath += sourceSets.main.get().runtimeClasspath
-  }
-  // main sourceSet depends on the output of flyway sourceSet
-  main {
-    output.dir(flyway.output)
-  }
-}
+val sqliteUrls = mapOf(
+  "main" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/main/database.sqlite",
+  "tasks" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/tasks/tasks.sqlite",
+)
+val sqliteMigrationDirs = mapOf(
+  "main" to listOf(
+    "$projectDir/src/flyway/resources/db/migration/sqlite",
+    "$projectDir/src/flyway/kotlin/db/migration/sqlite",
+  ),
+  "tasks" to listOf(
+    "$projectDir/src/flyway/resources/tasks/migration/sqlite",
+//    "$projectDir/src/flyway/kotlin/tasks/migration/sqlite",
+  ),
+)
 
-val dbSqlite = mapOf(
-  "url" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/database.sqlite",
-)
-val migrationDirsSqlite = listOf(
-  "$projectDir/src/flyway/resources/db/migration/sqlite",
-  "$projectDir/src/flyway/kotlin/db/migration/sqlite",
-)
-flyway {
-  url = dbSqlite["url"]
+task("flywayMigrateMain", FlywayMigrateTask::class) {
+  val id = "main"
+  url = sqliteUrls[id]
   locations = arrayOf("classpath:db/migration/sqlite")
   placeholders = mapOf(
     "library-file-hashing" to "true",
@@ -270,15 +267,28 @@ flyway {
     "delete-empty-collections" to "true",
     "delete-empty-read-lists" to "true",
   )
-}
-tasks.flywayMigrate {
   // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
   dependsOn("flywayClasses")
-  migrationDirsSqlite.forEach { inputs.dir(it) }
-  outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway")
+  sqliteMigrationDirs[id]?.forEach { inputs.dir(it) }
+  outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
   doFirst {
     delete(outputs.files)
-    mkdir("${project.layout.buildDirectory.get()}/generated/flyway")
+    mkdir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
+  }
+  mixed = true
+}
+
+task("flywayMigrateTasks", FlywayMigrateTask::class) {
+  val id = "tasks"
+  url = sqliteUrls[id]
+  locations = arrayOf("classpath:tasks/migration/sqlite")
+  // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
+  dependsOn("flywayClasses")
+  sqliteMigrationDirs[id]?.forEach { inputs.dir(it) }
+  outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
+  doFirst {
+    delete(outputs.files)
+    mkdir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
   }
   mixed = true
 }
@@ -291,24 +301,67 @@ jooq {
         logging = org.jooq.meta.jaxb.Logging.WARN
         jdbc.apply {
           driver = "org.sqlite.JDBC"
-          url = dbSqlite["url"]
+          url = sqliteUrls["main"]
         }
         generator.apply {
           database.apply {
             name = "org.jooq.meta.sqlite.SQLiteDatabase"
           }
           target.apply {
-            packageName = "org.gotson.komga.jooq"
+            packageName = "org.gotson.komga.jooq.main"
+          }
+        }
+      }
+    }
+    create("tasks") {
+      jooqConfiguration.apply {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc.apply {
+          driver = "org.sqlite.JDBC"
+          url = sqliteUrls["tasks"]
+        }
+        generator.apply {
+          database.apply {
+            name = "org.jooq.meta.sqlite.SQLiteDatabase"
+          }
+          target.apply {
+            packageName = "org.gotson.komga.jooq.tasks"
           }
         }
       }
     }
   }
 }
-tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
-  migrationDirsSqlite.forEach { inputs.dir(it) }
+tasks.named<JooqGenerate>("generateJooq") {
+  sqliteMigrationDirs["main"]?.forEach { inputs.dir(it) }
   allInputsDeclared.set(true)
-  dependsOn("flywayMigrate")
+  dependsOn("flywayMigrateMain")
+}
+tasks.named<JooqGenerate>("generateTasksJooq") {
+  sqliteMigrationDirs["tasks"]?.forEach { inputs.dir(it) }
+  allInputsDeclared.set(true)
+  dependsOn("flywayMigrateTasks")
+}
+
+sourceSets {
+  // add a flyway sourceSet
+  val flyway by creating {
+    compileClasspath += sourceSets.main.get().compileClasspath
+    runtimeClasspath += sourceSets.main.get().runtimeClasspath
+  }
+  // main sourceSet depends on the output of flyway sourceSet, and generated jooq classes
+  main {
+    java {
+      output.dir(flyway.output)
+      srcDir("build/generated-src/jooq/tasks")
+    }
+  }
+}
+tasks.runKtlintCheckOverMainSourceSet {
+  dependsOn("generateTasksJooq")
+}
+tasks.compileKotlin {
+  dependsOn("generateTasksJooq")
 }
 
 openApi {

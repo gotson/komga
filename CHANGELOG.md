@@ -1,3 +1,114 @@
+# [1.6.3](https://github.com/gotson/komga/compare/v1.6.2...v1.6.3) (2023-10-20)
+
+# [1.6.2](https://github.com/gotson/komga/compare/v1.6.1...v1.6.2) (2023-10-20)
+## 🚀 Features
+**api**
+- configure number of task processing threads ([9ef319b](https://github.com/gotson/komga/commits/9ef319b))
+
+**webui**
+- configure number of task processing threads from server settings ([a837988](https://github.com/gotson/komga/commits/a837988))
+
+## 🐛 Fixes
+**api**
+- prevent setting series poster for oneshots ([d8af496](https://github.com/gotson/komga/commits/d8af496))
+
+**komga**
+- sometimes tasks would not be seen as available ([528eddb](https://github.com/gotson/komga/commits/528eddb))
+- do not cache PDF documents ([6d5d695](https://github.com/gotson/komga/commits/6d5d695))
+
+**webreader**
+- hide setting series poster menu for oneshots ([ff06e06](https://github.com/gotson/komga/commits/ff06e06))
+
+## 🔄️ Changes
+**webui**
+- reorder server settings components ([67ee547](https://github.com/gotson/komga/commits/67ee547))
+
+## 🛠  Build
+**dependabot**
+- attempt to fix dependabot config ([0636790](https://github.com/gotson/komga/commits/0636790))
+
+**unscoped**
+- cleanup conveyor output to reduce disk space ([4f4cad2](https://github.com/gotson/komga/commits/4f4cad2))
+
+## ⚙️ Dependencies
+**webui-dev**
+- bump @babel/traverse from 7.22.17 to 7.23.2 ([3467d90](https://github.com/gotson/komga/commits/3467d90))
+
+# [1.6.1](https://github.com/gotson/komga/compare/v1.6.0...v1.6.1) (2023-10-18)
+## 🐛 Fixes
+**komga-tray**
+- missing jdk modules preventing SSL connections ([0d9184e](https://github.com/gotson/komga/commits/0d9184e))
+- some tasks would not be run on startup ([a47eddb](https://github.com/gotson/komga/commits/a47eddb))
+
+## 🔄️ Changes
+**komga-tray**
+- add more logs around open explorer action ([db06919](https://github.com/gotson/komga/commits/db06919))
+
+# [1.6.0](https://github.com/gotson/komga/compare/v1.5.1...v1.6.0) (2023-10-18)
+## 🚀 Features
+**api**
+- new endpoint to regenerate thumbnails conditionally ([796745a](https://github.com/gotson/komga/commits/796745a))
+- add thumbnail size server setting ([5fa789b](https://github.com/gotson/komga/commits/5fa789b)), closes [#861](https://github.com/gotson/komga/issues/861) [#1031](https://github.com/gotson/komga/issues/1031)
+- add thumbnail metadata ([5b6e9e3](https://github.com/gotson/komga/commits/5b6e9e3))
+
+**komga**
+- generate mosaic thumbnails with the quality configured in server settings ([b19e799](https://github.com/gotson/komga/commits/b19e799))
+- prevent image resizing scale up ([84fe3b7](https://github.com/gotson/komga/commits/84fe3b7))
+- store filesize, media type and dimensions for thumbnails ([bb13c0c](https://github.com/gotson/komga/commits/bb13c0c))
+
+**webui**
+- dialog to regenerate thumbnails if size has changed ([ac1c824](https://github.com/gotson/komga/commits/ac1c824))
+- configure thumbnail size from server settings ([f0b1abe](https://github.com/gotson/komga/commits/f0b1abe))
+- display thumbnail metadata in edit poster dialog ([64fddbd](https://github.com/gotson/komga/commits/64fddbd))
+
+## 🐛 Fixes
+**komga**
+- incorrect counts when getting thumbnails without metadata ([553016c](https://github.com/gotson/komga/commits/553016c))
+
+## 🏎 Perf
+**komga**
+- submit tasks in bulk ([5fe4e3e](https://github.com/gotson/komga/commits/5fe4e3e))
+- replace Artemis for background task handling ([b7aa120](https://github.com/gotson/komga/commits/b7aa120)), closes [#1038](https://github.com/gotson/komga/issues/1038)
+- better handling of Lucene index when reading and updating ([487b439](https://github.com/gotson/komga/commits/487b439))
+
+## 🔄️ Changes
+**komga**
+- remove Serializable ([6e6f8b7](https://github.com/gotson/komga/commits/6e6f8b7))
+- simplify some background tasks ([77ccb9e](https://github.com/gotson/komga/commits/77ccb9e))
+- use extension function ([9abb261](https://github.com/gotson/komga/commits/9abb261))
+- add support for multiple data sources ([cafe669](https://github.com/gotson/komga/commits/cafe669))
+- convert Task.uniqueId to a property ([ae32b85](https://github.com/gotson/komga/commits/ae32b85))
+- add functions to send multiple tasks in TaskEmitter ([12a786b](https://github.com/gotson/komga/commits/12a786b))
+- replace Artemis with Spring events for domain event publishing ([545a314](https://github.com/gotson/komga/commits/545a314))
+- remove empty file ([da184c8](https://github.com/gotson/komga/commits/da184c8))
+- rename task ([266f692](https://github.com/gotson/komga/commits/266f692))
+- add backing fields for server settings ([e35d468](https://github.com/gotson/komga/commits/e35d468))
+
+**opds**
+- remove chunky specific code as chunky doesn't work anymore with Komga ([9d0a533](https://github.com/gotson/komga/commits/9d0a533))
+
+**unscoped**
+- ktlint ([7057c28](https://github.com/gotson/komga/commits/7057c28))
+
+## 🛠  Build
+**changelog**
+- group dependencies in separate category ([0b3748a](https://github.com/gotson/komga/commits/0b3748a))
+
+**komga**
+- fix gradle task dependencies ([1fcef0e](https://github.com/gotson/komga/commits/1fcef0e))
+- disable AuthenticationActivityCleanupController during tests ([572a176](https://github.com/gotson/komga/commits/572a176))
+- fix tests following previous changes ([72cf68b](https://github.com/gotson/komga/commits/72cf68b))
+- coding rule test for no field injection ([e7fcf23](https://github.com/gotson/komga/commits/e7fcf23))
+
+## 📝 Documentation
+
+- fix faq link in issue report ([31c0bb0](https://github.com/gotson/komga/commits/31c0bb0))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([e032f94](https://github.com/gotson/komga/commits/e032f94))
+- translated using Weblate (Spanish) ([4caaa34](https://github.com/gotson/komga/commits/4caaa34))
+
 # [1.5.1](https://github.com/gotson/komga/compare/v1.5.0...v1.5.1) (2023-10-05)
 ## 🐛 Fixes
 **sse**

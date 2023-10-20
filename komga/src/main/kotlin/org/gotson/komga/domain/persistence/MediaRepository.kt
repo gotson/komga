@@ -6,7 +6,7 @@ interface MediaRepository {
   fun findById(bookId: String): Media
   fun findByIdOrNull(bookId: String): Media?
 
-  fun findAllBookAndSeriesIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(libraryId: String, mediaTypes: Collection<String>, pageHashing: Int): Collection<Pair<String, String>>
+  fun findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(libraryId: String, mediaTypes: Collection<String>, pageHashing: Int): Collection<String>
 
   fun getPagesSize(bookId: String): Int
   fun getPagesSizes(bookIds: Collection<String>): Collection<Pair<String, Int>>

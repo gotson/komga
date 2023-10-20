@@ -219,22 +219,17 @@ class LibraryController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(@PathVariable libraryId: String) {
-    bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId))).forEach {
-      taskEmitter.analyzeBook(it, HIGH_PRIORITY)
-    }
+    taskEmitter.analyzeBook(bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId))), HIGH_PRIORITY)
   }
 
   @PostMapping("{libraryId}/metadata/refresh")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(@PathVariable libraryId: String) {
-    bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId))).forEach {
-      taskEmitter.refreshBookMetadata(it, priority = HIGH_PRIORITY)
-      taskEmitter.refreshBookLocalArtwork(it, priority = HIGH_PRIORITY)
-    }
-    seriesRepository.findAllIdsByLibraryId(libraryId).forEach {
-      taskEmitter.refreshSeriesLocalArtwork(it, priority = HIGH_PRIORITY)
-    }
+    val books = bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId)))
+    taskEmitter.refreshBookMetadata(books, priority = HIGH_PRIORITY)
+    taskEmitter.refreshBookLocalArtwork(books, priority = HIGH_PRIORITY)
+    taskEmitter.refreshSeriesLocalArtwork(seriesRepository.findAllIdsByLibraryId(libraryId), priority = HIGH_PRIORITY)
   }
 
   @PostMapping("{libraryId}/empty-trash")

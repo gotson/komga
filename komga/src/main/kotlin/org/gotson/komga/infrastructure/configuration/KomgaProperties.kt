@@ -56,6 +56,8 @@ class KomgaProperties {
 
   var database = Database()
 
+  var tasksDb = Database()
+
   var cors = Cors()
 
   var lucene = Lucene()
@@ -63,9 +65,11 @@ class KomgaProperties {
   var configDir: String? = null
 
   @Positive
+  @Deprecated("Artemis has been replaced")
   var taskConsumers: Int = 1
 
   @Positive
+  @Deprecated("Artemis has been replaced")
   var taskConsumersMax: Int = 1
 
   @Deprecated("Moved to server settings since 1.5.0")
@@ -109,6 +113,9 @@ class KomgaProperties {
     var dataDirectory: String = ""
 
     var indexAnalyzer = IndexAnalyzer()
+
+    @DurationUnit(ChronoUnit.SECONDS)
+    var commitDelay: Duration = Duration.ofSeconds(2)
 
     class IndexAnalyzer {
       @get:Positive

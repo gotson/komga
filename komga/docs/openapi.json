@@ -606,6 +606,39 @@
         }
       }
     },
+    "/api/v1/books/thumbnails": {
+      "put": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "regenerateThumbnails",
+        "parameters": [
+          {
+            "name": "for_bigger_result_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
     "/api/v1/announcements": {
       "get": {
         "tags": [
@@ -859,7 +892,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SeriesThumbnailDto"
+                    "$ref": "#/components/schemas/ThumbnailSeriesDto"
                   }
                 }
               }
@@ -924,7 +957,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SeriesThumbnailDto"
+                  "$ref": "#/components/schemas/ThumbnailSeriesDto"
                 }
               }
             }
@@ -3803,15 +3836,6 @@
         "operationId": "getOneSeries_1",
         "parameters": [
           {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -3869,15 +3893,6 @@
         ],
         "operationId": "getLatestSeries_2",
         "parameters": [
-          {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -4019,15 +4034,6 @@
         "operationId": "getOneReadList_1",
         "parameters": [
           {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -4135,15 +4141,6 @@
         ],
         "operationId": "getOnDeck_2",
         "parameters": [
-          {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -4293,15 +4290,6 @@
         "operationId": "getKeepReading_2",
         "parameters": [
           {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
-          {
             "name": "page",
             "in": "query",
             "description": "Zero-based page index (0..N)",
@@ -4401,15 +4389,6 @@
         ],
         "operationId": "getOneCollection_1",
         "parameters": [
-          {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -4801,15 +4780,6 @@
         ],
         "operationId": "getLatestBooks_2",
         "parameters": [
-          {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -9674,12 +9644,16 @@
           }
         }
       },
-      "SeriesThumbnailDto": {
+      "ThumbnailSeriesDto": {
         "required": [
+          "fileSize",
+          "height",
           "id",
+          "mediaType",
           "selected",
           "seriesId",
-          "type"
+          "type",
+          "width"
         ],
         "type": "object",
         "properties": {
@@ -9694,6 +9668,21 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -9769,10 +9758,14 @@
       },
       "ThumbnailReadListDto": {
         "required": [
+          "fileSize",
+          "height",
           "id",
+          "mediaType",
           "readListId",
           "selected",
-          "type"
+          "type",
+          "width"
         ],
         "type": "object",
         "properties": {
@@ -9787,6 +9780,21 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -10337,9 +10345,13 @@
       "ThumbnailSeriesCollectionDto": {
         "required": [
           "collectionId",
+          "fileSize",
+          "height",
           "id",
+          "mediaType",
           "selected",
-          "type"
+          "type",
+          "width"
         ],
         "type": "object",
         "properties": {
@@ -10354,15 +10366,34 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
       "ThumbnailBookDto": {
         "required": [
           "bookId",
+          "fileSize",
+          "height",
           "id",
+          "mediaType",
           "selected",
-          "type"
+          "type",
+          "width"
         ],
         "type": "object",
         "properties": {
@@ -10377,6 +10408,21 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -10521,6 +10567,19 @@
           },
           "renewRememberMeKey": {
             "type": "boolean"
+          },
+          "thumbnailSize": {
+            "type": "string",
+            "enum": [
+              "DEFAULT",
+              "MEDIUM",
+              "LARGE",
+              "XLARGE"
+            ]
+          },
+          "taskPoolSize": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -10645,17 +10704,17 @@
             "type": "integer",
             "format": "int32"
           },
-          "alternateTitles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
-            }
-          },
           "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "alternateTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
             }
           }
         },
@@ -11477,10 +11536,10 @@
             "type": "integer",
             "format": "int32"
           },
-          "paged": {
+          "unpaged": {
             "type": "boolean"
           },
-          "unpaged": {
+          "paged": {
             "type": "boolean"
           },
           "offset": {
@@ -11608,7 +11667,9 @@
         "required": [
           "deleteEmptyCollections",
           "deleteEmptyReadLists",
-          "rememberMeDurationDays"
+          "rememberMeDurationDays",
+          "taskPoolSize",
+          "thumbnailSize"
         ],
         "type": "object",
         "properties": {
@@ -11621,6 +11682,19 @@
           "rememberMeDurationDays": {
             "type": "integer",
             "format": "int64"
+          },
+          "thumbnailSize": {
+            "type": "string",
+            "enum": [
+              "DEFAULT",
+              "MEDIUM",
+              "LARGE",
+              "XLARGE"
+            ]
+          },
+          "taskPoolSize": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

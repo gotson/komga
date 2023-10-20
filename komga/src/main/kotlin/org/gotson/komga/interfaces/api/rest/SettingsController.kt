@@ -5,6 +5,8 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.interfaces.api.rest.dto.SettingsDto
 import org.gotson.komga.interfaces.api.rest.dto.SettingsUpdateDto
+import org.gotson.komga.interfaces.api.rest.dto.toDomain
+import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -29,6 +31,8 @@ class SettingsController(
       komgaSettingsProvider.deleteEmptyCollections,
       komgaSettingsProvider.deleteEmptyReadLists,
       komgaSettingsProvider.rememberMeDuration.inWholeDays,
+      komgaSettingsProvider.thumbnailSize.toDto(),
+      komgaSettingsProvider.taskPoolSize,
     )
 
   @PatchMapping
@@ -41,5 +45,7 @@ class SettingsController(
     newSettings.deleteEmptyReadLists?.let { komgaSettingsProvider.deleteEmptyReadLists = it }
     newSettings.rememberMeDurationDays?.let { komgaSettingsProvider.rememberMeDuration = it.days }
     if (newSettings.renewRememberMeKey == true) komgaSettingsProvider.renewRememberMeKey()
+    newSettings.thumbnailSize?.let { komgaSettingsProvider.thumbnailSize = it.toDomain() }
+    newSettings.taskPoolSize?.let { komgaSettingsProvider.taskPoolSize = it }
   }
 }

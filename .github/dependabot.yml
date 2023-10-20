@@ -5,7 +5,7 @@ updates:
     open-pull-requests-limit: 0
     commit-message:
       prefix: "deps(webui)"
-      include: "scope"
+    #      include: "scope"
     schedule:
       interval: "weekly"
 

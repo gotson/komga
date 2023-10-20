@@ -27,6 +27,12 @@
       <v-card-actions>
         <v-spacer/>
         <v-btn text @click="dialogCancel">{{ buttonCancel || $t('common.cancel') }}</v-btn>
+        <v-btn v-if="buttonAlternate"
+               text
+               @click="dialogAlternate"
+               :disabled="confirmText && !confirmation"
+        >{{ buttonAlternate }}
+        </v-btn>
         <v-btn :color="buttonConfirmColor"
                @click="dialogConfirm"
                :disabled="confirmText && !confirmation"
@@ -78,6 +84,10 @@ export default Vue.extend({
       type: String,
       default: 'primary',
     },
+    buttonAlternate: {
+      type: String,
+      required: false,
+    },
   },
   watch: {
     value(val) {
@@ -94,6 +104,10 @@ export default Vue.extend({
     },
     dialogConfirm() {
       this.$emit('confirm')
+      this.$emit('input', false)
+    },
+    dialogAlternate() {
+      this.$emit('alternate')
       this.$emit('input', false)
     },
   },

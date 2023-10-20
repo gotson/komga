@@ -10,6 +10,7 @@ import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.application.tasks.TaskEmitter
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.KomgaUser
@@ -82,8 +83,8 @@ class BookImporterTest(
 
   @BeforeEach
   fun initMocks() {
-    every { mockTackReceiver.refreshBookMetadata(any(), any(), any()) } just Runs
-    every { mockTackReceiver.refreshBookLocalArtwork(any(), any()) } just Runs
+    every { mockTackReceiver.refreshBookMetadata(any<Book>(), any(), any()) } just Runs
+    every { mockTackReceiver.refreshBookLocalArtwork(any<Book>(), any()) } just Runs
   }
 
   @AfterEach
@@ -238,7 +239,7 @@ class BookImporterTest(
       bookImporter.importBook(sourceFile, series, CopyMode.COPY)
 
       // then
-      verify(exactly = 2) { mockTackReceiver.refreshBookLocalArtwork(any()) }
+      verify(exactly = 2) { mockTackReceiver.refreshBookLocalArtwork(any<Book>()) }
 
       assertThat(destDir.resolve("book 2.cbz")).exists()
       assertThat(destDir.resolve("book 2.jpg")).exists()
@@ -271,7 +272,7 @@ class BookImporterTest(
       bookImporter.importBook(sourceFile, series, CopyMode.COPY, destinationName = "book 5")
 
       // then
-      verify(exactly = 2) { mockTackReceiver.refreshBookLocalArtwork(any()) }
+      verify(exactly = 2) { mockTackReceiver.refreshBookLocalArtwork(any<Book>()) }
 
       assertThat(destDir.resolve("book 5.cbz")).exists()
       assertThat(destDir.resolve("book 5.jpg")).exists()

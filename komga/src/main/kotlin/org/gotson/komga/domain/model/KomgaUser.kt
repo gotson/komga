@@ -4,7 +4,6 @@ import com.github.f4b6a3.tsid.TsidCreator
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.language.lowerNotBlank
-import java.io.Serializable
 import java.time.LocalDateTime
 
 const val ROLE_USER = "USER"
@@ -27,7 +26,7 @@ data class KomgaUser(
   val id: String = TsidCreator.getTsid256().toString(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable, Serializable {
+) : Auditable {
 
   @delegate:Transient
   val roles: Set<String> by lazy {

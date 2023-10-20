@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.SeriesCollection
@@ -9,6 +8,7 @@ import org.gotson.komga.domain.model.ThumbnailSeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
 import org.gotson.komga.infrastructure.image.MosaicGenerator
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 
@@ -20,7 +20,7 @@ class SeriesCollectionLifecycle(
   private val thumbnailSeriesCollectionRepository: ThumbnailSeriesCollectionRepository,
   private val seriesLifecycle: SeriesLifecycle,
   private val mosaicGenerator: MosaicGenerator,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val transactionTemplate: TransactionTemplate,
 ) {
 

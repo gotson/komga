@@ -13,10 +13,6 @@ on:
           - 'major'
           - 'minor'
           - 'patch'
-      force_release:
-        description: 'Force release (in case it went wrong)'
-        default: false
-        type: boolean
       github_release:
         description: 'Create Github Release'
         default: true
@@ -61,8 +57,12 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     needs: version
-    if: needs.version.outputs.should_release || inputs.force_release
     steps:
+      - name: Remove unnecessary files
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -206,6 +206,10 @@ jobs:
           path: |
             build/jreleaser/trace.log
             build/jreleaser/output.properties
+
+      # Sometimes the workflow will fail because it's out of disk space
+      - name: Cleanup Conveyor output
+        run: rm -fr ./output
 
       - name: JReleaser Publish
         if: inputs.docker_release

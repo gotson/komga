@@ -136,7 +136,7 @@ class ThumbnailLifecycle(
       }
 
       updater(fixedThumbs)
-      Result(fixedThumbs.size, (thumbs.size <= thumbs.totalElements))
+      Result(fixedThumbs.size, (thumbs.numberOfElements < thumbs.totalElements))
     }
     logger.info { "Fixed ${result.processed} ${clazz.simpleName} in $duration" }
     return result.hasMore

@@ -128,7 +128,7 @@ class PageHashController(
         },
       )
 
-    toRemove.forEach { taskEmitter.removeDuplicatePages(it.key, it.value) }
+    taskEmitter.removeDuplicatePages(toRemove)
   }
 
   @PostMapping("{pageHash}/delete-match")

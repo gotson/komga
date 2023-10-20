@@ -17,7 +17,7 @@ const qs = require('qs')
 const API_BOOKS = '/api/v1/books'
 
 export default class KomgaBooksService {
-  private http: AxiosInstance;
+  private http: AxiosInstance
 
   constructor(http: AxiosInstance) {
     this.http = http
@@ -29,6 +29,7 @@ export default class KomgaBooksService {
                  genre?: string[], language?: string[], ageRating?: string[]) : Promise<Page<BookDto>> {
     try {
       const params = {...pageRequest} as any
+
       if (libraryId) params.library_id = libraryId
       if (search) params.search = search
       if (mediaStatus) params.media_status = mediaStatus
@@ -290,6 +291,22 @@ export default class KomgaBooksService {
       await this.http.put(`${API_BOOKS}/${bookId}/thumbnails/${thumbnailId}/selected`)
     } catch (e) {
       let msg = `An error occurred while trying to mark thumbnail as selected for book '${bookId}'`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async regenerateThumbnails(forBiggerResultOnly: boolean) {
+    try {
+      await this.http.put(`${API_BOOKS}/thumbnails`, null, {
+        params: {
+          for_bigger_result_only: forBiggerResultOnly,
+        },
+      })
+    } catch (e) {
+      let msg = 'An error occurred while trying to regenerate thumbnails'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

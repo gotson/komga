@@ -1,10 +1,10 @@
 package org.gotson.komga.domain.service
 
 import mu.KotlinLogging
-import org.gotson.komga.application.events.EventPublisher
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookAction
 import org.gotson.komga.domain.model.BookPageContent
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.HistoricalEvent
@@ -23,9 +23,12 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.io.File
@@ -50,10 +53,11 @@ class BookLifecycle(
   private val libraryRepository: LibraryRepository,
   private val bookAnalyzer: BookAnalyzer,
   private val imageConverter: ImageConverter,
-  private val eventPublisher: EventPublisher,
+  private val eventPublisher: ApplicationEventPublisher,
   private val transactionTemplate: TransactionTemplate,
   private val hasher: Hasher,
   private val historicalEventRepository: HistoricalEventRepository,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
 ) {
 
   private val resizeTargetFormat = ImageType.JPEG
@@ -183,7 +187,7 @@ class BookLifecycle(
 
       if (resizeTo != null) {
         return try {
-          imageConverter.resizeImage(thumbnailBytes, resizeTargetFormat.imageIOFormat, resizeTo)
+          imageConverter.resizeImageToByteArray(thumbnailBytes, resizeTargetFormat, resizeTo)
         } catch (e: Exception) {
           logger.error(e) { "Resize thumbnail of book $bookId to $resizeTo: failed" }
           thumbnailBytes
@@ -232,6 +236,14 @@ class BookLifecycle(
     }
   }
 
+  fun findBookThumbnailsToRegenerate(forBiggerResultOnly: Boolean): Collection<String> {
+    return if (forBiggerResultOnly) {
+      thumbnailBookRepository.findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(ThumbnailBook.Type.GENERATED, komgaSettingsProvider.thumbnailSize.maxEdge)
+    } else {
+      bookRepository.findAllIds(BookSearch(deleted = false), Sort.unsorted())
+    }
+  }
+
   @Throws(
     ImageConversionException::class,
     MediaNotReadyException::class,
@@ -244,7 +256,7 @@ class BookLifecycle(
 
     if (resizeTo != null) {
       val convertedPage = try {
-        imageConverter.resizeImage(pageContent, resizeTargetFormat.imageIOFormat, resizeTo)
+        imageConverter.resizeImageToByteArray(pageContent, resizeTargetFormat, resizeTo)
       } catch (e: Exception) {
         logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
         throw e

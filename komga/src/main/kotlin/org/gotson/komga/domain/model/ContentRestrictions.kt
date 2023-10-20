@@ -1,13 +1,12 @@
 package org.gotson.komga.domain.model
 
 import org.gotson.komga.language.lowerNotBlank
-import java.io.Serializable
 
 class ContentRestrictions(
   val ageRestriction: AgeRestriction? = null,
   labelsAllow: Set<String> = emptySet(),
   labelsExclude: Set<String> = emptySet(),
-) : Serializable {
+) {
   val labelsAllow =
     labelsAllow.lowerNotBlank().toSet()
       .minus(labelsExclude.lowerNotBlank().toSet())

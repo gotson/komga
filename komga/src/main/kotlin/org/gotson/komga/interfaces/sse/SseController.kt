@@ -1,16 +1,10 @@
 package org.gotson.komga.interfaces.sse
 
-import jakarta.jms.ObjectMessage
-import jakarta.jms.QueueBrowser
-import jakarta.jms.Session
 import mu.KotlinLogging
+import org.gotson.komga.application.tasks.TasksRepository
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.BookRepository
-import org.gotson.komga.infrastructure.jms.JMS_PROPERTY_TYPE
-import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
-import org.gotson.komga.infrastructure.jms.TOPIC_EVENTS
-import org.gotson.komga.infrastructure.jms.TOPIC_FACTORY
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.sse.dto.BookImportSseDto
@@ -28,9 +22,8 @@ import org.gotson.komga.interfaces.sse.dto.ThumbnailReadListSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailSeriesCollectionSseDto
 import org.gotson.komga.interfaces.sse.dto.ThumbnailSeriesSseDto
 import org.springframework.context.SmartLifecycle
+import org.springframework.context.event.EventListener
 import org.springframework.http.MediaType
-import org.springframework.jms.annotation.JmsListener
-import org.springframework.jms.core.JmsTemplate
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
@@ -44,7 +37,7 @@ private val logger = KotlinLogging.logger {}
 @Controller
 class SseController(
   private val bookRepository: BookRepository,
-  private val jmsTemplate: JmsTemplate,
+  private val tasksRepository: TasksRepository,
 ) : SmartLifecycle {
 
   private var acceptingConnections = true
@@ -65,17 +58,12 @@ class SseController(
   @Scheduled(fixedRate = 10_000)
   fun taskCount() {
     if (emitters.isNotEmpty()) {
-      val tasksCount = jmsTemplate.browse(QUEUE_TASKS) { _: Session, browser: QueueBrowser ->
-        browser.enumeration.toList()
-          .groupingBy { (it as ObjectMessage).getStringProperty(JMS_PROPERTY_TYPE) ?: "unknown" }
-          .eachCount()
-      } ?: emptyMap()
-
+      val tasksCount = tasksRepository.countBySimpleType()
       emitSse("TaskQueueStatus", TaskQueueSseDto(tasksCount.values.sum(), tasksCount), adminOnly = true)
     }
   }
 
-  @JmsListener(destination = TOPIC_EVENTS, containerFactory = TOPIC_FACTORY)
+  @EventListener
   fun handleSseEvent(event: DomainEvent) {
     when (event) {
       is DomainEvent.LibraryAdded -> emitSse("LibraryAdded", LibrarySseDto(event.library.id))
@@ -133,7 +121,7 @@ class SseController(
                 .name(name)
                 .data(data, MediaType.APPLICATION_JSON),
             )
-          } catch (e: IOException) {
+          } catch (_: IOException) {
           }
         }
     }
