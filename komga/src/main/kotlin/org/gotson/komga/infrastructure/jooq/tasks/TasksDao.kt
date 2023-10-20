@@ -34,7 +34,8 @@ class TasksDao(
       .and(
         t.GROUP_ID.notIn(
           dsl.select(t.GROUP_ID).from(t).where(t.OWNER.isNotNull).and(t.GROUP_ID.isNotNull),
-        ),
+        )
+          .or(t.GROUP_ID.isNull),
       )
 
   override fun hasAvailable(): Boolean {
