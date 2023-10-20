@@ -1,6 +1,7 @@
 package org.gotson.komga.application.tasks
 
 import mu.KotlinLogging
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.boot.task.TaskExecutorBuilder
@@ -14,12 +15,13 @@ private val logger = KotlinLogging.logger {}
 class TaskProcessor(
   private val tasksRepository: TasksRepository,
   private val taskHandler: TaskHandler,
+  private val settingsProvider: KomgaSettingsProvider,
   taskExecutorBuilder: TaskExecutorBuilder,
 ) : InitializingBean {
   val executor: ThreadPoolTaskExecutor =
     taskExecutorBuilder
       .threadNamePrefix("taskProcessor-")
-      .corePoolSize(8)
+      .corePoolSize(settingsProvider.taskPoolSize)
       .build()
       .apply { initialize() }
 
@@ -32,11 +34,18 @@ class TaskProcessor(
     processTasks = true
   }
 
+  @EventListener(TaskPoolSizeChangedEvent::class)
+  fun taskPoolSizeChanged() {
+    executor.corePoolSize = settingsProvider.taskPoolSize
+  }
+
   @EventListener(TaskAddedEvent::class, ApplicationReadyEvent::class)
   fun processAvailableTask() {
     if (processTasks) {
+      logger.debug { "Active count: ${executor.activeCount}, Core Pool Size: ${executor.corePoolSize}, Pool Size: ${executor.poolSize}" }
+      if (executor.corePoolSize == 1) executor.execute { takeAndProcess() }
       // fan out while threads are available
-      while (tasksRepository.hasAvailable() && executor.activeCount < executor.corePoolSize)
+      else while (tasksRepository.hasAvailable() && executor.activeCount < executor.corePoolSize)
         executor.execute { takeAndProcess() }
     } else {
       logger.debug { "Not processing tasks" }

@@ -53,6 +53,7 @@ class SettingsControllerTest(
     komgaSettingsProvider.deleteEmptyReadLists = false
     komgaSettingsProvider.rememberMeDuration = 5.days
     komgaSettingsProvider.thumbnailSize = ThumbnailSize.LARGE
+    komgaSettingsProvider.taskPoolSize = 4
 
     mockMvc.get("/api/v1/settings")
       .andExpect {
@@ -61,6 +62,7 @@ class SettingsControllerTest(
         jsonPath("deleteEmptyReadLists") { value(false) }
         jsonPath("rememberMeDurationDays") { value(5) }
         jsonPath("thumbnailSize") { value("LARGE") }
+        jsonPath("taskPoolSize") { value(4) }
       }
   }
 
@@ -71,6 +73,7 @@ class SettingsControllerTest(
     komgaSettingsProvider.deleteEmptyReadLists = true
     komgaSettingsProvider.rememberMeDuration = 5.days
     komgaSettingsProvider.thumbnailSize = ThumbnailSize.LARGE
+    komgaSettingsProvider.taskPoolSize = 4
 
     val rememberMeKey = komgaSettingsProvider.rememberMeKey
 
@@ -80,7 +83,8 @@ class SettingsControllerTest(
         "deleteEmptyCollections": false,
         "rememberMeDurationDays": 15,
         "renewRememberMeKey": true,
-        "thumbnailSize": "MEDIUM"
+        "thumbnailSize": "MEDIUM",
+        "taskPoolSize": 8
       }
     """.trimIndent()
 
@@ -97,6 +101,7 @@ class SettingsControllerTest(
     assertThat(komgaSettingsProvider.rememberMeDuration).isEqualTo(15.days)
     assertThat(komgaSettingsProvider.rememberMeKey).isNotEqualTo(rememberMeKey)
     assertThat(komgaSettingsProvider.thumbnailSize).isEqualTo(ThumbnailSize.MEDIUM)
+    assertThat(komgaSettingsProvider.taskPoolSize).isEqualTo(8)
   }
 
   @ParameterizedTest
@@ -107,6 +112,8 @@ class SettingsControllerTest(
       """{"rememberMeDurationDays": 0}""",
       //language=JSON
       """{"thumbnailSize": "HUGE"}""",
+      """{"taskPoolSize": 0}""",
+      """{"taskPoolSize": -15}""",
     ],
   )
   fun `given admin user when updating with invalid settings then returns bad request`(jsonString: String) {

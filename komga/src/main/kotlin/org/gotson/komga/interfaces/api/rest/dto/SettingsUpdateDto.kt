@@ -9,4 +9,6 @@ data class SettingsUpdateDto(
   val rememberMeDurationDays: Long? = null,
   val renewRememberMeKey: Boolean? = null,
   val thumbnailSize: ThumbnailSizeDto? = null,
+  @get:Positive
+  val taskPoolSize: Int? = null,
 )
