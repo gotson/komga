@@ -21,6 +21,11 @@
     "account_settings": "Настройки Аккаунта",
     "change_password": "изменить пароль"
   },
+  "announcements": {
+    "mark_all_read": "Пометить всё как прочитанное",
+    "mark_read": "Пометить как прочитанное",
+    "tab_title": "Объявления"
+  },
   "authentication_activity": {
     "datetime": "Дата / Время",
     "email": "Эл. почта",
@@ -174,7 +179,8 @@
   },
   "browse_readlist": {
     "edit_elements": "Редактировать элементы",
-    "edit_readlist": "Редактировать список чтения"
+    "edit_readlist": "Редактировать список чтения",
+    "manual_ordering": "ручная сортировка"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Это самая ранняя дата выпуска из всех книг в этой серии",
@@ -188,15 +194,18 @@
   "common": {
     "age": "Возраст",
     "all_libraries": "Все Библиотеки",
+    "book": "Книга",
     "books": "Книги",
     "books_n": "Книг нет | 1 книга | {count} книг",
     "books_total": "{count} / {total} книг",
     "cancel": "Отмена",
+    "cbx": "Архивы комиксов",
     "choose_image": "Выберите изображение",
     "close": "Закрыть",
     "collections": "Коллекции",
     "create": "Создать",
     "delete": "Удалить",
+    "discard": "Отмена",
     "disk_space": "Дисковое пространство",
     "dismiss": "Отклонить",
     "download": "Скачать",
