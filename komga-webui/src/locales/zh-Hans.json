@@ -861,6 +861,7 @@
     "label_delete_empty_collections": "扫描后删除空的收藏",
     "label_delete_empty_readlists": "扫描后删除空的阅读列表",
     "label_rememberme_duration": "记住我的持续时间（天数）",
+    "label_task_pool_size": "任务线程",
     "label_thumbnail_size": "缩略图尺寸",
     "requires_restart": "需要重启才能生效",
     "server_settings": "服务器设置"
