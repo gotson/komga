@@ -861,6 +861,7 @@
     "label_delete_empty_collections": "Eliminar las colecciones vacías después de escanear",
     "label_delete_empty_readlists": "Eliminar las listas de lectura vacías después de escanear",
     "label_rememberme_duration": "Duración de «recordarme» (en días)",
+    "label_task_pool_size": "Hilo con tareas",
     "label_thumbnail_size": "Tamaño de miniaturas",
     "requires_restart": "Necesita reiniciar para tener efecto",
     "server_settings": "Ajustes del servidor"
