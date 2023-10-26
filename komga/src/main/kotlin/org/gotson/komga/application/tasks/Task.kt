@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.infrastructure.search.LuceneEntity
+import java.time.LocalDateTime
 
 const val HIGHEST_PRIORITY = 8
 const val HIGH_PRIORITY = 6
@@ -125,8 +126,8 @@ sealed class Task(val priority: Int = DEFAULT_PRIORITY, val groupId: String? = n
     override fun toString(): String = "DeleteSeries(seriesId='$seriesId', priority='$priority')"
   }
 
-  class FixThumbnailsWithoutMetadata(priority: Int = DEFAULT_PRIORITY) : Task(priority) {
-    override val uniqueId = "FIX_THUMBNAILS_WITHOUT_METADATA"
+  class FixThumbnailsWithoutMetadata(priority: Int = DEFAULT_PRIORITY) : Task(priority, "FixThumbnailsWithoutMetadata") {
+    override val uniqueId = "FIX_THUMBNAILS_WITHOUT_METADATA_${LocalDateTime.now()}"
     override fun toString(): String = "FixThumbnailsWithoutMetadata(priority='$priority')"
   }
 
