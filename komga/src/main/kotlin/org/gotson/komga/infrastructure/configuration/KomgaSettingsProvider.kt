@@ -59,7 +59,7 @@ class KomgaSettingsProvider(
     }
 
   var taskPoolSize: Int =
-    serverSettingsDao.getSettingByKey(Settings.TASK_POOL_SIZE.name, Int::class.java) ?: 8
+    serverSettingsDao.getSettingByKey(Settings.TASK_POOL_SIZE.name, Int::class.java) ?: 1
     set(value) {
       serverSettingsDao.saveSetting(Settings.TASK_POOL_SIZE.name, value)
       field = value
