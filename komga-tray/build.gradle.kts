@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   run {
     kotlin("jvm")
@@ -12,7 +14,19 @@ plugins {
 group = "org.gotson"
 
 kotlin {
-  jvmToolchain(19) // for NightMonkeys
+  jvmToolchain(21)
+}
+
+tasks {
+  withType<JavaCompile> {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
+  }
+  withType<KotlinCompile> {
+    kotlinOptions {
+      jvmTarget = "17"
+    }
+  }
 }
 
 dependencies {
