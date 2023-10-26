@@ -1,3 +1,31 @@
+# [1.6.4](https://github.com/gotson/komga/compare/v1.6.3...v1.6.4) (2023-10-26)
+## 🐛 Fixes
+**komga**
+- change the default value of TASK_POOL_SIZE to 1 ([7ebce00](https://github.com/gotson/komga/commits/7ebce00))
+- FixThumbnailsWithoutMetadata could not rerun itself ([493a33b](https://github.com/gotson/komga/commits/493a33b))
+
+**opds**
+- disable content negociation in the pages API ([084997f](https://github.com/gotson/komga/commits/084997f)), closes [#1262](https://github.com/gotson/komga/issues/1262)
+
+## 🏎 Perf
+**komga**
+- add some db indices to help with FixThumbnailsWithoutMetadata task ([517f035](https://github.com/gotson/komga/commits/517f035))
+
+## 🛠  Build
+**release**
+- simplify reruns ([8e1e699](https://github.com/gotson/komga/commits/8e1e699))
+- attempt to avoid worker out of space issue ([bcda81a](https://github.com/gotson/komga/commits/bcda81a))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([2cd95f1](https://github.com/gotson/komga/commits/2cd95f1))
+- translated using Weblate (Spanish) ([b9842f6](https://github.com/gotson/komga/commits/b9842f6))
+- translated using Weblate (Russian) ([80dc7a9](https://github.com/gotson/komga/commits/80dc7a9))
+
+## ⚙️ Dependencies
+**komga**
+- bump sqlite-jdbc from 3.42.0.0 to 3.43.2.1 ([c90b472](https://github.com/gotson/komga/commits/c90b472))
+
 # [1.6.3](https://github.com/gotson/komga/compare/v1.6.2...v1.6.3) (2023-10-20)
 
 # [1.6.2](https://github.com/gotson/komga/compare/v1.6.1...v1.6.2) (2023-10-20)
