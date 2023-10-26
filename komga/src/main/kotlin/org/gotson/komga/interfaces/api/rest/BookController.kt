@@ -459,21 +459,25 @@ class BookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @ApiResponse(
-    content = [
-      Content(
-        mediaType = "image/*",
-        schema = Schema(type = "string", format = "binary"),
-      ),
-    ],
-  )
-  @GetMapping(
-    value = [
-      "api/v1/books/{bookId}/pages/{pageNumber}",
-      "opds/v1.2/books/{bookId}/pages/{pageNumber}",
-    ],
-    produces = [MediaType.ALL_VALUE],
-  )
+  @ApiResponse(content = [Content(mediaType = "image/*", schema = Schema(type = "string", format = "binary"))])
+  @GetMapping("opds/v1.2/books/{bookId}/pages/{pageNumber}", produces = ["image/png", "image/gif", "image/jpeg"])
+  @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
+  fun getBookPageOpds(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    request: ServletWebRequest,
+    @PathVariable bookId: String,
+    @PathVariable pageNumber: Int,
+    @Parameter(
+      description = "Convert the image to the provided format.",
+      schema = Schema(allowableValues = ["jpeg", "png"]),
+    )
+    @RequestParam(value = "convert", required = false)
+    convertTo: String?,
+  ): ResponseEntity<ByteArray> =
+    getBookPageInternal(bookId, pageNumber + 1, convertTo, request, principal, null)
+
+  @ApiResponse(content = [Content(mediaType = "image/*", schema = Schema(type = "string", format = "binary"))])
+  @GetMapping("api/v1/books/{bookId}/pages/{pageNumber}", produces = [MediaType.ALL_VALUE])
   @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
   fun getBookPage(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -493,61 +497,61 @@ class BookController(
     @RequestHeader(HttpHeaders.ACCEPT, required = false)
     acceptHeaders: MutableList<MediaType>?,
   ): ResponseEntity<ByteArray> =
-    bookRepository.findByIdOrNull((bookId))?.let { book ->
-      val media = mediaRepository.findById(bookId)
-      if (request.checkNotModified(getBookLastModified(media))) {
-        return@let ResponseEntity
-          .status(HttpStatus.NOT_MODIFIED)
-          .setNotModified(media)
-          .body(ByteArray(0))
+    getBookPageInternal(bookId, if (zeroBasedIndex) pageNumber + 1 else pageNumber, convertTo, request, principal, acceptHeaders)
+
+  private fun getBookPageInternal(bookId: String, pageNumber: Int, convertTo: String?, request: ServletWebRequest, principal: KomgaPrincipal, acceptHeaders: MutableList<MediaType>?) = bookRepository.findByIdOrNull((bookId))?.let { book ->
+    val media = mediaRepository.findById(bookId)
+    if (request.checkNotModified(getBookLastModified(media))) {
+      return@let ResponseEntity
+        .status(HttpStatus.NOT_MODIFIED)
+        .setNotModified(media)
+        .body(ByteArray(0))
+    }
+
+    principal.user.checkContentRestriction(book)
+
+    if (media.mediaType == PDF.type && acceptHeaders != null && acceptHeaders.any { it.isCompatibleWith(MediaType.APPLICATION_PDF) }) {
+      // keep only pdf and image
+      acceptHeaders.removeIf { !it.isCompatibleWith(MediaType.APPLICATION_PDF) && !it.isCompatibleWith(MediaType("image")) }
+      MimeTypeUtils.sortBySpecificity(acceptHeaders)
+      if (acceptHeaders.first().isCompatibleWith(MediaType.APPLICATION_PDF))
+        return getBookPageRaw(book, media, pageNumber)
+    }
+
+    try {
+      val convertFormat = when (convertTo?.lowercase()) {
+        "jpeg" -> ImageType.JPEG
+        "png" -> ImageType.PNG
+        "", null -> null
+        else -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid conversion format: $convertTo")
       }
 
-      principal.user.checkContentRestriction(book)
+      val pageContent = bookLifecycle.getBookPage(book, pageNumber, convertFormat)
 
-      if (media.mediaType == PDF.type && acceptHeaders != null && acceptHeaders.any { it.isCompatibleWith(MediaType.APPLICATION_PDF) }) {
-        // keep only pdf and image
-        acceptHeaders.removeIf { !it.isCompatibleWith(MediaType.APPLICATION_PDF) && !it.isCompatibleWith(MediaType("image")) }
-        MimeTypeUtils.sortBySpecificity(acceptHeaders)
-        if (acceptHeaders.first().isCompatibleWith(MediaType.APPLICATION_PDF))
-          return getBookPageRaw(book, media, pageNumber)
-      }
-
-      try {
-        val convertFormat = when (convertTo?.lowercase()) {
-          "jpeg" -> ImageType.JPEG
-          "png" -> ImageType.PNG
-          "", null -> null
-          else -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid conversion format: $convertTo")
-        }
-
-        val pageNum = if (zeroBasedIndex) pageNumber + 1 else pageNumber
-
-        val pageContent = bookLifecycle.getBookPage(book, pageNum, convertFormat)
-
-        ResponseEntity.ok()
-          .headers(
-            HttpHeaders().apply {
-              val extension = contentDetector.mediaTypeToExtension(pageContent.mediaType) ?: "jpeg"
-              val imageFileName = "${book.name}-$pageNum$extension"
-              contentDisposition = ContentDisposition.builder("inline")
-                .filename(imageFileName, UTF_8)
-                .build()
-            },
-          )
-          .contentType(getMediaTypeOrDefault(pageContent.mediaType))
-          .setNotModified(media)
-          .body(pageContent.content)
-      } catch (ex: IndexOutOfBoundsException) {
-        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
-      } catch (ex: ImageConversionException) {
-        throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
-      } catch (ex: MediaNotReadyException) {
-        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
-      } catch (ex: NoSuchFileException) {
-        logger.warn(ex) { "File not found: $book" }
-        throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
-      }
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      ResponseEntity.ok()
+        .headers(
+          HttpHeaders().apply {
+            val extension = contentDetector.mediaTypeToExtension(pageContent.mediaType) ?: "jpeg"
+            val imageFileName = "${book.name}-$pageNumber$extension"
+            contentDisposition = ContentDisposition.builder("inline")
+              .filename(imageFileName, UTF_8)
+              .build()
+          },
+        )
+        .contentType(getMediaTypeOrDefault(pageContent.mediaType))
+        .setNotModified(media)
+        .body(pageContent.content)
+    } catch (ex: IndexOutOfBoundsException) {
+      throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
+    } catch (ex: ImageConversionException) {
+      throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
+    } catch (ex: MediaNotReadyException) {
+      throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
+    } catch (ex: NoSuchFileException) {
+      logger.warn(ex) { "File not found: $book" }
+      throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
+    }
+  } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
     value = ["api/v1/books/{bookId}/pages/{pageNumber}/raw"],
