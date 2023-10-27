@@ -16,11 +16,13 @@ fun openUrl(url: String) {
 
 fun openExplorer(file: File) {
   logger.info { "Try to open explorer for path: $file" }
-  if (Desktop.isDesktopSupported())
-    Desktop.getDesktop().let {
-      if (it.isSupported(Desktop.Action.BROWSE_FILE_DIR)) it.browseFileDirectory(file)
-      else logger.warn { "Cannot open explorer: Desktop.Action.BROWSE_FILE_DIR is not supported" }
+  when {
+    Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE_FILE_DIR) -> Desktop.getDesktop().browseFileDirectory(file)
+    System.getProperty("os.name").startsWith("win", true) -> {
+      val command = """explorer.exe /select, "${file.absolutePath}""""
+      Runtime.getRuntime().exec(command)
     }
-  else
-    logger.warn { "Cannot open explorer: Desktop is not supported" }
+
+    else -> logger.warn { "Cannot open explorer, not supported" }
+  }
 }
