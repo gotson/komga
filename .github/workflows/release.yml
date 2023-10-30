@@ -75,7 +75,7 @@ jobs:
         if: needs.version.outputs.should_release #only redo if the version changed
         run: sed -i -e "s/version=.*/version=${{ needs.version.outputs.version_next }}/" gradle.properties
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '16'
           cache: 'npm'
