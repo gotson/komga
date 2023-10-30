@@ -65,6 +65,26 @@ class KomgaSettingsProvider(
       field = value
       eventPublisher.publishEvent(TaskPoolSizeChangedEvent())
     }
+
+  var serverPort: Int? =
+    serverSettingsDao.getSettingByKey(Settings.SERVER_PORT.name, Int::class.java)
+    set(value) {
+      if (value != null)
+        serverSettingsDao.saveSetting(Settings.SERVER_PORT.name, value)
+      else
+        serverSettingsDao.deleteSetting(Settings.SERVER_PORT.name)
+      field = value
+    }
+
+  var serverContextPath: String? =
+    serverSettingsDao.getSettingByKey(Settings.SERVER_CONTEXT_PATH.name, String::class.java)
+    set(value) {
+      if (value != null)
+        serverSettingsDao.saveSetting(Settings.SERVER_CONTEXT_PATH.name, value)
+      else
+        serverSettingsDao.deleteSetting(Settings.SERVER_CONTEXT_PATH.name)
+      field = value
+    }
 }
 
 private enum class Settings {
@@ -74,4 +94,6 @@ private enum class Settings {
   REMEMBER_ME_DURATION,
   THUMBNAIL_SIZE,
   TASK_POOL_SIZE,
+  SERVER_PORT,
+  SERVER_CONTEXT_PATH,
 }

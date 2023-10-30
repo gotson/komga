@@ -33,6 +33,10 @@ class ServerSettingsDao(
     saveSetting(key, value.toString())
   }
 
+  fun deleteSetting(key: String) {
+    dsl.deleteFrom(s).where(s.KEY.eq(key)).execute()
+  }
+
   fun deleteAll() {
     dsl.deleteFrom(s).execute()
   }
