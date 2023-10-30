@@ -9,7 +9,7 @@ ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:21-jre $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 RUN apt -y update && \
-    apt -y install --no-install-recommends ca-certificates locales software-properties-common wget gpg-agent && \
+    apt -y install ca-certificates locales software-properties-common wget && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
     add-apt-repository -y ppa:strukturag/libheif && \
@@ -27,7 +27,7 @@ ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:21-jre $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 RUN apt -y update && \
-    apt -y install --no-install-recommends ca-certificates locales libheif-dev && \
+    apt -y install ca-certificates locales libheif-dev && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8
 
