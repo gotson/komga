@@ -10558,6 +10558,15 @@
           "taskPoolSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "serverPort": {
+            "maximum": 65535,
+            "type": "integer",
+            "format": "int32"
+          },
+          "serverContextPath": {
+            "pattern": "^\\/[\\w-\\/]*[a-zA-Z0-9]$",
+            "type": "string"
           }
         }
       },
@@ -11452,15 +11461,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11590,18 +11599,59 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
           },
-          "numberOfElements": {
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SettingMultiSourceInteger": {
+        "required": [
+          "configurationSource",
+          "databaseSource",
+          "effectiveValue"
+        ],
+        "type": "object",
+        "properties": {
+          "configurationSource": {
             "type": "integer",
             "format": "int32"
           },
-          "empty": {
-            "type": "boolean"
+          "databaseSource": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "effectiveValue": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SettingMultiSourceString": {
+        "required": [
+          "configurationSource",
+          "databaseSource",
+          "effectiveValue"
+        ],
+        "type": "object",
+        "properties": {
+          "configurationSource": {
+            "type": "string"
+          },
+          "databaseSource": {
+            "type": "string"
+          },
+          "effectiveValue": {
+            "type": "string"
           }
         }
       },
@@ -11610,6 +11660,8 @@
           "deleteEmptyCollections",
           "deleteEmptyReadLists",
           "rememberMeDurationDays",
+          "serverContextPath",
+          "serverPort",
           "taskPoolSize",
           "thumbnailSize"
         ],
@@ -11637,6 +11689,12 @@
           "taskPoolSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "serverPort": {
+            "$ref": "#/components/schemas/SettingMultiSourceInteger"
+          },
+          "serverContextPath": {
+            "$ref": "#/components/schemas/SettingMultiSourceString"
           }
         }
       },
@@ -11730,15 +11788,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12222,15 +12280,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12315,15 +12373,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12437,15 +12495,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12483,15 +12541,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12549,15 +12607,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12624,15 +12682,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12670,15 +12728,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
-          },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
           },
           "empty": {
             "type": "boolean"
