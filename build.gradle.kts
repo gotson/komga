@@ -67,6 +67,7 @@ jreleaser {
     github {
       discussionCategoryName.set("Announcements")
       skipTag.set(true)
+      tagName.set("{{projectVersion}}")
 
       changelog {
         formatted.set(Active.ALWAYS)

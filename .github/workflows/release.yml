@@ -146,7 +146,7 @@ jobs:
         if: needs.version.outputs.should_release #only redo if the version changed
         with:
           message: 'chore(release): ${{ needs.version.outputs.version_next }} [skip ci]'
-          tag: 'v${{ needs.version.outputs.version_next }}'
+          tag: '${{ needs.version.outputs.version_next }}'
           default_author: github_actions
 
       - name: Conveyor build apps
