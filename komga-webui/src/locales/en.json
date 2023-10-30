@@ -851,6 +851,7 @@
     "tab_title": "Server"
   },
   "server_settings": {
+    "config_precedence": "Takes precedence over the configuration file",
     "dialog_regenerate_thumbnails": {
       "body": "Thumbnails size has changed. Do you want to regenerate book thumbnails?",
       "btn_alternate": "Yes, all books",
@@ -861,6 +862,8 @@
     "label_delete_empty_collections": "Delete empty collections after scan",
     "label_delete_empty_readlists": "Delete empty read lists after scan",
     "label_rememberme_duration": "Remember me duration (in days)",
+    "label_server_context_path": "Base URL",
+    "label_server_port": "Server Port",
     "label_task_pool_size": "Task threads",
     "label_thumbnail_size": "Thumbnails size",
     "requires_restart": "Requires restart to take effect",
@@ -917,7 +920,9 @@
     "users": "Users"
   },
   "validation": {
+    "context_path": "Must start with '/', not end with '/-_', and contain only '/-_a-z0-9'",
     "one_or_more": "Must be 1 or more",
+    "tcp_port": "Must be between 1 and 65535",
     "zero_or_more": "Must be 0 or more"
   },
   "welcome": {

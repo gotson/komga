@@ -53,6 +53,59 @@
           persistent-hint
           :hint="$t('server_settings.requires_restart')"
         />
+
+        <v-text-field
+          v-model="form.serverPort"
+          @input="$v.form.serverPort.$touch()"
+          @blur="$v.form.serverPort.$touch()"
+          :error-messages="serverPortErrors"
+          :placeholder="existingSettings.serverPort?.configurationSource?.toString()"
+          :persistent-placeholder="!!existingSettings.serverPort?.configurationSource"
+          :hint="$t('server_settings.requires_restart')"
+          persistent-hint
+          clearable
+          :label="$t('server_settings.label_server_port')"
+          type="number"
+          min="1"
+          max="65535"
+          class="mt-4"
+        >
+          <template v-slot:append v-if="!!existingSettings.serverPort?.configurationSource">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on">
+                  mdi-information-outline
+                </v-icon>
+              </template>
+              {{ $t('server_settings.config_precedence') }}
+            </v-tooltip>
+          </template>
+        </v-text-field>
+
+        <v-text-field
+          v-model="form.serverContextPath"
+          @input="$v.form.serverContextPath.$touch()"
+          @blur="$v.form.serverContextPath.$touch()"
+          :error-messages="serverContextPathErrors"
+          :placeholder="existingSettings.serverContextPath?.configurationSource"
+          :persistent-placeholder="!!existingSettings.serverContextPath?.configurationSource"
+          :hint="$t('server_settings.requires_restart')"
+          persistent-hint
+          clearable
+          :label="$t('server_settings.label_server_context_path')"
+          class="mt-4"
+        >
+          <template v-slot:append v-if="!!existingSettings.serverContextPath?.configurationSource">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on">
+                  mdi-information-outline
+                </v-icon>
+              </template>
+              {{ $t('server_settings.config_precedence') }}
+            </v-tooltip>
+          </template>
+        </v-text-field>
       </v-col>
     </v-row>
     <v-row>
@@ -85,10 +138,12 @@
 </template>
 
 <script lang="ts">
-import {ThumbnailSizeDto} from '@/types/komga-settings'
+import {SettingsDto, ThumbnailSizeDto} from '@/types/komga-settings'
 import Vue from 'vue'
-import {minValue, required} from 'vuelidate/lib/validators'
+import {helpers, maxValue, minValue, required} from 'vuelidate/lib/validators'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+
+const contextPath = helpers.regex('contextPath', /^\/[-a-zA-Z0-9_\/]*[a-zA-Z0-9]$/)
 
 export default Vue.extend({
   name: 'ServerSettings',
@@ -100,16 +155,11 @@ export default Vue.extend({
       rememberMeDurationDays: 365,
       renewRememberMeKey: false,
       thumbnailSize: ThumbnailSizeDto.DEFAULT,
-      taskPoolSize: 8,
+      taskPoolSize: 1,
+      serverPort: 25600,
+      serverContextPath: '',
     },
-    existingSettings: {
-      deleteEmptyCollections: false,
-      deleteEmptyReadLists: false,
-      rememberMeDurationDays: 365,
-      renewRememberMeKey: false,
-      thumbnailSize: ThumbnailSizeDto.DEFAULT,
-      taskPoolSize: 8,
-    },
+    existingSettings: {} as SettingsDto,
     dialogRegenerateThumbnails: false,
   }),
   validations: {
@@ -125,6 +175,13 @@ export default Vue.extend({
       taskPoolSize: {
         minValue: minValue(1),
         required,
+      },
+      serverPort: {
+        minValue: minValue(1),
+        maxValue: maxValue(65535),
+      },
+      serverContextPath: {
+        contextPath,
       },
     },
   },
@@ -152,6 +209,18 @@ export default Vue.extend({
       !this.$v?.form?.taskPoolSize?.required && errors.push(this.$t('common.required').toString())
       return errors
     },
+    serverPortErrors(): string[] {
+      const errors = [] as string[]
+      if (!this.$v.form?.serverPort?.$dirty) return errors;
+      (!this.$v?.form?.serverPort?.minValue || !this.$v?.form?.serverPort?.maxValue) && errors.push(this.$t('validation.tcp_port').toString())
+      return errors
+    },
+    serverContextPathErrors(): string[] {
+      const errors = [] as string[]
+      if (!this.$v.form?.serverContextPath?.$dirty) return errors
+      !this.$v?.form?.serverContextPath?.contextPath && errors.push(this.$t('validation.context_path').toString())
+      return errors
+    },
     saveDisabled(): boolean {
       return this.$v.form.$invalid || !this.$v.form.$anyDirty
     },
@@ -163,6 +232,8 @@ export default Vue.extend({
     async refreshSettings() {
       const settings = await (this.$komgaSettings.getSettings())
       this.$_.merge(this.form, settings)
+      this.form.serverPort = settings.serverPort.databaseSource
+      this.form.serverContextPath = settings.serverContextPath.databaseSource
       this.$_.merge(this.existingSettings, settings)
       this.$v.form.$reset()
     },
@@ -183,6 +254,11 @@ export default Vue.extend({
       }
       if (this.$v.form?.taskPoolSize?.$dirty)
         this.$_.merge(newSettings, {taskPoolSize: this.form.taskPoolSize})
+      if (this.$v.form?.serverPort?.$dirty)
+        this.$_.merge(newSettings, {serverPort: this.form.serverPort})
+      if (this.$v.form?.serverContextPath?.$dirty)
+        // coerce empty string to null
+        this.$_.merge(newSettings, {serverContextPath: this.form.serverContextPath || null})
 
       await this.$komgaSettings.updateSettings(newSettings)
       await this.refreshSettings()
