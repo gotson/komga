@@ -9,7 +9,9 @@ ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:21-jre $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 RUN apt -y update && \
-    apt -y install software-properties-common wget && \
+    apt -y install --no-install-recommends ca-certificates locales software-properties-common wget && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
     add-apt-repository -y ppa:strukturag/libheif && \
     add-apt-repository -y ppa:strukturag/libde265 && \
     apt -y update && apt install -y libheif-dev && \
@@ -25,7 +27,9 @@ ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:21-jre $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 RUN apt -y update && \
-    apt -y install libheif-dev
+    apt -y install --no-install-recommends ca-certificates locales libheif-dev && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen en_US.UTF-8
 
 # arm builder: uses temurin-17, as arm32 support was dropped in JDK 21
 FROM eclipse-temurin:17-jre as build-arm
@@ -39,7 +43,7 @@ COPY --from=builder spring-boot-loader/ ./
 COPY --from=builder snapshot-dependencies/ ./
 COPY --from=builder application/ ./
 ENV KOMGA_CONFIGDIR="/config"
-ENV LC_ALL=en_US.UTF-8
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/x86_64-linux-gnu"
 ENTRYPOINT ["java", "--enable-preview", "--enable-native-access=ALL-UNNAMED", "org.springframework.boot.loader.JarLauncher", "--spring.config.additional-location=file:/config/"]
 EXPOSE 25600
