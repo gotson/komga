@@ -199,16 +199,20 @@
     "books_n": "Ei kirjaa | Yksi kirja | {count} kirjaa",
     "books_total": "{count} / {total} kirjaa",
     "cancel": "Peruuta",
+    "cbx": "Sarjakuva-arkistot",
     "choose_image": "Valitse kuva",
     "close": "Sulje",
     "collections": "Kokoelmat",
     "create": "Luo",
     "delete": "Poista",
+    "dimension": "l: {width}, k:{height}",
+    "discard": "Hylkää",
     "disk_space": "Levytila",
     "dismiss": "Hylkää",
     "download": "Lataa",
     "drag_drop": "vedä ja pudota",
     "email": "Sähköposti",
+    "epub": "Epub",
     "filename": "Tiedostonimi",
     "filter_no_matches": "Aktiiviselle suodattimelle ei löytynyt tuloksia",
     "genre": "Tyylilaji",
@@ -230,12 +234,14 @@
     "pages_left": "Ei sivuja jäljellä | 1 sivu jäljellä | {count} sivua jäljellä",
     "pages_n": "Ei sivuja | Yksi sivu | {count} sivua",
     "password": "Salasana",
+    "pdf": "PDF",
     "pending_tasks": "Ei odottavia tehtäviä | 1 odottava tehtävä | {count} odottavaa tehtävää",
     "publisher": "Julkaisija",
     "read": "Lue",
     "read_on": "Luettu {date}",
     "readlist": "Lukulista",
     "readlists": "Lukulistat",
+    "remember-me": "Muista minut",
     "required": "Pakollinen",
     "reset_filters": "Nollaa suodattimet",
     "roles": "Roolit",
@@ -432,8 +438,10 @@
       "field_oneshotsdirectory": "Kertajulkaisujen kansio",
       "field_repair_extensions": "Korjaa virheelliset tiedostopäätteet automaattisesti",
       "field_root_folder": "Juurikansio",
+      "field_scan_interval": "Skannausten aikaväli",
       "field_scanner_empty_trash_after_scan": "Tyhjennä roskakori automaattisesti jokaisen skannauksen jälkeen",
       "field_scanner_force_directory_modified_time": "Pakota hakemiston muokattu aika",
+      "field_scanner_scan_startup": "Skannaa käynnistyksen yhteydessä",
       "field_series_cover": "Sarjan kansi",
       "file_browser_dialog_button_confirm": "Valitse",
       "file_browser_dialog_title": "Kirjaston juurikansio",
@@ -444,6 +452,8 @@
       "label_import_epub": "Tuo metatiedot EPUB-tiedostoista",
       "label_import_local": "Tuo paikalliset mediatiedot",
       "label_import_mylar": "Tuo Mylarin luoma metatieto",
+      "label_scan_directory_exclusions": "Poisluetut kansiot",
+      "label_scan_types": "Skannaa näitä tiedostomuotoja",
       "label_scanner": "Skanneri",
       "label_series_cover": "Sarjan kansi",
       "tab_general": "Yleiset",
@@ -651,6 +661,14 @@
       "VERTICAL": "Pystysuora",
       "WEBTOON": "Webtoon-tyylinen"
     },
+    "scan_interval": {
+      "DAILY": "Päivittäinen",
+      "DISABLED": "Pois käytöstä",
+      "EVERY_12H": "12 tunnin välein",
+      "EVERY_6H": "6 tunnin välein",
+      "HOURLY": "Tunneittain",
+      "WEEKLY": "Viikottain"
+    },
     "series_cover": {
       "FIRST": "Ensimmäinen",
       "FIRST_UNREAD_OR_FIRST": "Ensimmäinen lukematon, muuten ensimmäinen",
@@ -662,6 +680,12 @@
       "ENDED": "Päättynyt",
       "HIATUS": "Tauolla",
       "ONGOING": "Jatkuva"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Oletus (300px)",
+      "LARGE": "Suuri (900px)",
+      "MEDIUM": "Keskitaso (600px)",
+      "XLARGE": "Todella suuri (1200px)"
     }
   },
   "error_codes": {
@@ -827,6 +851,19 @@
     "tab_title": "Palvelin"
   },
   "server_settings": {
+    "dialog_regenerate_thumbnails": {
+      "body": "Pikkukuvien koko on vaihtunut. Haluatko luoda uudet kirjojen pikkukuvat?",
+      "btn_alternate": "Kyllä, kaikki kirjat",
+      "btn_cancel": "Ei",
+      "btn_confirm": "Kyllä, mutta vain jos suurempi",
+      "title": "Luo pikkukuvat uudestaan"
+    },
+    "label_delete_empty_collections": "Poista tyhjät kokoelmat skannauksen jälkeen",
+    "label_delete_empty_readlists": "Poista tyhjät luettujen listat skannauksen jälkeen",
+    "label_rememberme_duration": "Muista minut ajan pituus (päivää)",
+    "label_task_pool_size": "Töiden säikeet",
+    "label_thumbnail_size": "Pikkukuvien koko",
+    "requires_restart": "Vaatii uudelleenkäynnistyksen",
     "server_settings": "Palvelimen asetukset"
   },
   "settings_user": {
@@ -880,6 +917,7 @@
     "users": "Käyttäjät"
   },
   "validation": {
+    "one_or_more": "Pitää olla vähintään yksi",
     "zero_or_more": "On oltava vähintään 0"
   },
   "welcome": {
