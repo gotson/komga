@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service
 import java.net.URL
 import java.nio.file.Path
 import kotlin.io.path.fileSize
+import kotlin.io.path.inputStream
+import kotlin.io.path.toPath
 import kotlin.reflect.KClass
 import kotlin.time.measureTimedValue
 
@@ -151,9 +153,9 @@ class ThumbnailLifecycle(
 
   private fun getMetadata(url: URL): ThumbnailMetadata =
     ThumbnailMetadata(
-      mediaType = contentDetector.detectMediaType(url.openStream()),
+      mediaType = contentDetector.detectMediaType(url.toURI().toPath().inputStream()),
       fileSize = Path.of(url.toURI()).fileSize(),
-      dimension = imageAnalyzer.getDimension(url.openStream()) ?: Dimension(0, 0),
+      dimension = imageAnalyzer.getDimension(url.toURI().toPath().inputStream()) ?: Dimension(0, 0),
     )
 
   private data class Result(val processed: Int, val hasMore: Boolean)
