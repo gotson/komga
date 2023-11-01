@@ -1,4 +1,3 @@
-
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jreleaser.model.Active
 import org.jreleaser.model.Distribution.DistributionType.SINGLE_JAR
@@ -43,7 +42,7 @@ allprojects {
   }
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version.set("0.48.2")
+    version = "0.48.2"
   }
 }
 
@@ -54,70 +53,70 @@ tasks.wrapper {
 
 jreleaser {
   project {
-    description.set("Media server for comics/mangas/BDs with API and OPDS support")
-    copyright.set("Gauthier Roebroeck")
+    description = "Media server for comics/mangas/BDs with API and OPDS support"
+    copyright = "Gauthier Roebroeck"
     authors.add("Gauthier Roebroeck")
-    license.set("MIT")
+    license = "MIT"
     links {
-      homepage.set("https://komga.org")
+      homepage = "https://komga.org"
     }
   }
 
   release {
     github {
-      discussionCategoryName.set("Announcements")
-      skipTag.set(true)
-      tagName.set("{{projectVersion}}")
+      discussionCategoryName = "Announcements"
+      skipTag = true
+      tagName = "{{projectVersion}}"
 
       changelog {
-        formatted.set(Active.ALWAYS)
-        preset.set("conventional-commits")
-        skipMergeCommits.set(true)
-        links.set(true)
-        format.set("- {{#commitIsConventional}}{{#conventionalCommitIsBreakingChange}}🚨 {{/conventionalCommitIsBreakingChange}}{{#conventionalCommitScope}}**{{conventionalCommitScope}}**: {{/conventionalCommitScope}}{{conventionalCommitDescription}}{{#conventionalCommitBreakingChangeContent}}: *{{conventionalCommitBreakingChangeContent}}*{{/conventionalCommitBreakingChangeContent}} ({{commitShortHash}}){{/commitIsConventional}}{{^commitIsConventional}}{{commitTitle}} ({{commitShortHash}}){{/commitIsConventional}}{{#commitHasIssues}}, closes{{#commitIssues}} {{issue}}{{/commitIssues}}{{/commitHasIssues}}")
+        formatted = Active.ALWAYS
+        preset = "conventional-commits"
+        skipMergeCommits = true
+        links = true
+        format = "- {{#commitIsConventional}}{{#conventionalCommitIsBreakingChange}}🚨 {{/conventionalCommitIsBreakingChange}}{{#conventionalCommitScope}}**{{conventionalCommitScope}}**: {{/conventionalCommitScope}}{{conventionalCommitDescription}}{{#conventionalCommitBreakingChangeContent}}: *{{conventionalCommitBreakingChangeContent}}*{{/conventionalCommitBreakingChangeContent}} ({{commitShortHash}}){{/commitIsConventional}}{{^commitIsConventional}}{{commitTitle}} ({{commitShortHash}}){{/commitIsConventional}}{{#commitHasIssues}}, closes{{#commitIssues}} {{issue}}{{/commitIssues}}{{/commitHasIssues}}"
         hide {
-          uncategorized.set(true)
-          contributors.set(listOf("Weblate", "GitHub", "semantic-release-bot", "[bot]", "github-actions"))
+          uncategorized = true
+          contributors = listOf("Weblate", "GitHub", "semantic-release-bot", "[bot]", "github-actions")
         }
         excludeLabels.add("chore")
         category {
-          title.set("🏎 Perf")
-          key.set("perf")
+          title = "🏎 Perf"
+          key = "perf"
           labels.add("perf")
-          order.set(25)
+          order = 25
         }
         category {
-          title.set("🌐 Translation")
-          key.set("i18n")
+          title = "🌐 Translation"
+          key = "i18n"
           labels.add("i18n")
-          order.set(70)
+          order = 70
         }
         category {
-          title.set("⚙️ Dependencies")
-          key.set("dependencies")
+          title = "⚙️ Dependencies"
+          key = "dependencies"
           labels.add("dependencies")
-          order.set(80)
+          order = 80
         }
         labeler {
-          label.set("perf")
-          title.set("regex:^(?:perf(?:\\(.*\\))?!?):\\s.*")
-          order.set(120)
+          label = "perf"
+          title = "regex:^(?:perf(?:\\(.*\\))?!?):\\s.*"
+          order = 120
         }
         labeler {
-          label.set("i18n")
-          title.set("regex:^(?:i18n(?:\\(.*\\))?!?):\\s.*")
-          order.set(130)
+          label = "i18n"
+          title = "regex:^(?:i18n(?:\\(.*\\))?!?):\\s.*"
+          order = 130
         }
         labeler {
-          label.set("dependencies")
-          title.set("regex:^(?:deps(?:\\(.*\\))?!?):\\s.*")
-          order.set(140)
+          label = "dependencies"
+          title = "regex:^(?:deps(?:\\(.*\\))?!?):\\s.*"
+          order = 140
         }
         extraProperties.put("categorizeScopes", true)
         append {
-          enabled.set(true)
-          title.set("# [{{projectVersion}}]({{repoUrl}}/compare/{{previousTagName}}...{{tagName}}) ({{#f_now}}YYYY-MM-dd{{/f_now}})")
-          target.set(rootDir.resolve("CHANGELOG.md"))
+          enabled = true
+          title = "# [{{projectVersion}}]({{repoUrl}}/compare/{{previousTagName}}...{{tagName}}) ({{#f_now}}YYYY-MM-dd{{/f_now}})"
+          target = rootDir.resolve("CHANGELOG.md")
           content.set(
             """
             {{changelogTitle}}
@@ -128,45 +127,45 @@ jreleaser {
       }
 
       issues {
-        enabled.set(true)
-        comment.set("🎉 This issue has been resolved in `{{tagName}}` ([Release Notes]({{releaseNotesUrl}}))")
-        applyMilestone.set(Apply.ALWAYS)
+        enabled = true
+        comment = "🎉 This issue has been resolved in `{{tagName}}` ([Release Notes]({{releaseNotesUrl}}))"
+        applyMilestone = Apply.ALWAYS
         label {
-          name.set("released")
-          description.set("Issue has been released")
-          color.set("#ededed")
+          name = "released"
+          description = "Issue has been released"
+          color = "#ededed"
         }
       }
     }
   }
 
   files {
-    active.set(Active.RELEASE)
+    active = Active.RELEASE
     // workaround as glob doesn't seem to work https://github.com/jreleaser/jreleaser/issues/1466
     file("./output/release").listFiles()?.forEach {
       artifact {
-        path.set(it)
+        path = it
       }
     }
   }
 
   distributions {
     create("komga") {
-      active.set(Active.RELEASE)
-      distributionType.set(SINGLE_JAR)
+      active = Active.RELEASE
+      distributionType = SINGLE_JAR
       artifact {
-        path.set(rootDir.resolve("komga/build/libs/komga-{{projectVersion}}.jar"))
+        path = rootDir.resolve("komga/build/libs/komga-{{projectVersion}}.jar")
       }
     }
   }
 
   packagers {
     docker {
-      active.set(Active.RELEASE)
-      continueOnError.set(true)
-      templateDirectory.set(rootDir.resolve("komga/docker"))
-      repository.active.set(Active.NEVER)
-      buildArgs.set(listOf("--cache-from", "gotson/komga:latest"))
+      active = Active.RELEASE
+      continueOnError = true
+      templateDirectory = rootDir.resolve("komga/docker")
+      repository.active = Active.NEVER
+      buildArgs = listOf("--cache-from", "gotson/komga:latest")
       imageNames.set(
         listOf(
           "komga:latest",
@@ -175,12 +174,12 @@ jreleaser {
         ),
       )
       registries {
-        create("docker.io") { externalLogin.set(true) }
-        create("ghcr.io") { externalLogin.set(true) }
+        create("docker.io") { externalLogin = true }
+        create("ghcr.io") { externalLogin = true }
       }
       buildx {
-        enabled.set(true)
-        createBuilder.set(false)
+        enabled = true
+        createBuilder = false
         platforms.set(
           listOf(
             "linux/amd64",

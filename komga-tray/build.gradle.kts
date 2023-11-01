@@ -41,7 +41,7 @@ dependencies {
 }
 
 application {
-  mainClass.set("org.gotson.komga.DesktopApplicationKt")
+  mainClass = "org.gotson.komga.DesktopApplicationKt"
 }
 
 // Work around temporary Compose bugs

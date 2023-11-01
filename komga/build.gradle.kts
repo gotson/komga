@@ -235,7 +235,7 @@ tasks {
 springBoot {
   buildInfo {
     // prevent task bootBuildInfo to rerun every time
-    excludes.set(setOf("time"))
+    excludes = setOf("time")
     properties {
       // but rerun if the gradle.properties file changed
       inputs.file("$rootDir/gradle.properties")
@@ -295,7 +295,7 @@ task("flywayMigrateTasks", FlywayMigrateTask::class) {
 }
 
 jooq {
-  version.set("3.18.4")
+  version = "3.18.4"
   configurations {
     create("main") {
       jooqConfiguration.apply {
@@ -335,12 +335,12 @@ jooq {
 }
 tasks.named<JooqGenerate>("generateJooq") {
   sqliteMigrationDirs["main"]?.forEach { inputs.dir(it) }
-  allInputsDeclared.set(true)
+  allInputsDeclared = true
   dependsOn("flywayMigrateMain")
 }
 tasks.named<JooqGenerate>("generateTasksJooq") {
   sqliteMigrationDirs["tasks"]?.forEach { inputs.dir(it) }
-  allInputsDeclared.set(true)
+  allInputsDeclared = true
   dependsOn("flywayMigrateTasks")
 }
 
@@ -366,7 +366,7 @@ tasks.compileKotlin {
 }
 
 openApi {
-  outputDir.set(file("$projectDir/docs"))
+  outputDir = file("$projectDir/docs")
   customBootRun {
     args.add("--spring.profiles.active=claim")
     args.add("--server.port=8080")
