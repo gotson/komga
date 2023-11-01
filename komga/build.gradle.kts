@@ -87,7 +87,7 @@ dependencies {
 
   implementation("com.appmattus.crypto:cryptohash:0.10.1")
 
-  implementation("org.apache.tika:tika-core:2.9.0")
+  implementation("org.apache.tika:tika-core:2.9.1")
   implementation("org.apache.commons:commons-compress:1.24.0")
   implementation("com.github.junrar:junrar:7.5.5")
   implementation("org.apache.pdfbox:pdfbox:2.0.28")
