@@ -92,7 +92,7 @@ dependencies {
   implementation("com.github.junrar:junrar:7.5.5")
   implementation("org.apache.pdfbox:pdfbox:2.0.28")
   implementation("net.grey-panther:natural-comparator:1.1")
-  implementation("org.jsoup:jsoup:1.16.1")
+  implementation("org.jsoup:jsoup:1.16.2")
 
   implementation("net.coobird:thumbnailator:0.4.20")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4")
