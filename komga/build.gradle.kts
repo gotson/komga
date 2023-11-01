@@ -95,11 +95,11 @@ dependencies {
   implementation("org.jsoup:jsoup:1.16.2")
 
   implementation("net.coobird:thumbnailator:0.4.20")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.9.4")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.9.4")
   runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.6.0")
   runtimeOnly("com.github.gotson.nightmonkeys:imageio-heif:0.6.0")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.10.0")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.10.0")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.10.0")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.4")
