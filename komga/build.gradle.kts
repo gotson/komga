@@ -17,7 +17,7 @@ plugins {
   id("nu.studer.jooq") version "8.2.1"
   id("org.flywaydb.flyway") version "9.7.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
-  id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
+  id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("com.google.devtools.ksp") version "1.8.22-1.0.11"
 
   jacoco
