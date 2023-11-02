@@ -117,12 +117,10 @@ jreleaser {
           enabled = true
           title = "# [{{projectVersion}}]({{repoUrl}}/compare/{{previousTagName}}...{{tagName}}) ({{#f_now}}YYYY-MM-dd{{/f_now}})"
           target = rootDir.resolve("CHANGELOG.md")
-          content.set(
-            """
+          content = """
             {{changelogTitle}}
             {{changelogChanges}}
-            """.trimIndent(),
-          )
+          """.trimIndent()
         }
       }
 
@@ -166,12 +164,10 @@ jreleaser {
       templateDirectory = rootDir.resolve("komga/docker")
       repository.active = Active.NEVER
       buildArgs = listOf("--cache-from", "gotson/komga:latest")
-      imageNames.set(
-        listOf(
-          "komga:latest",
-          "komga:{{projectVersion}}",
-          "komga:{{projectVersionMajor}}.x",
-        ),
+      imageNames = listOf(
+        "komga:latest",
+        "komga:{{projectVersion}}",
+        "komga:{{projectVersionMajor}}.x",
       )
       registries {
         create("docker.io") { externalLogin = true }
@@ -180,12 +176,10 @@ jreleaser {
       buildx {
         enabled = true
         createBuilder = false
-        platforms.set(
-          listOf(
-            "linux/amd64",
-            "linux/arm/v7",
-            "linux/arm64/v8",
-          ),
+        platforms = listOf(
+          "linux/amd64",
+          "linux/arm/v7",
+          "linux/arm64/v8",
         )
       }
     }
