@@ -1,3 +1,44 @@
+# [1.7.0](https://github.com/gotson/komga/compare/1.6.4...1.7.0) (2023-11-02)
+## 🚀 Features
+**api**
+- configure server port and context path ([3f39037](https://github.com/gotson/komga/commits/3f39037)), closes [#1264](https://github.com/gotson/komga/issues/1264)
+
+**komga-tray**
+- add libjxl for Windows ([8171cb8](https://github.com/gotson/komga/commits/8171cb8))
+
+**webui**
+- add server port and context path to the server settings screen ([4196f08](https://github.com/gotson/komga/commits/4196f08)), closes [#1264](https://github.com/gotson/komga/issues/1264)
+
+## 🐛 Fixes
+**komga-tray**
+- use workaround to open filesystem on Windows ([6059b85](https://github.com/gotson/komga/commits/6059b85))
+
+## 🛠  Build
+**docker**
+- add support for AVIF on amd64/arm64 images ([a92db64](https://github.com/gotson/komga/commits/a92db64))
+
+**komga-tray**
+- add native image libraries for macOS ([d8dea84](https://github.com/gotson/komga/commits/d8dea84))
+- use JDK 21 toolchain ([69eb24d](https://github.com/gotson/komga/commits/69eb24d))
+
+**unscoped**
+- change release tag format to enable delta updates in Conveyor ([c4cd4bd](https://github.com/gotson/komga/commits/c4cd4bd))
+- install JDK 21 ([0267ba8](https://github.com/gotson/komga/commits/0267ba8))
+
+## 📝 Documentation
+
+- update DEVELOPING.md for necessary JDK ([5a66f2a](https://github.com/gotson/komga/commits/5a66f2a))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Traditional)) ([56b782e](https://github.com/gotson/komga/commits/56b782e))
+- translated using Weblate (Finnish) ([d8fe2d7](https://github.com/gotson/komga/commits/d8fe2d7))
+- translated using Weblate (Turkish) ([a519261](https://github.com/gotson/komga/commits/a519261))
+
+## ⚙️ Dependencies
+**komga**
+- add imageio-heif:0.6.0 ([07cf63a](https://github.com/gotson/komga/commits/07cf63a)), closes [#942](https://github.com/gotson/komga/issues/942)
+
 # [1.7.0](https://github.com/gotson/komga/compare/1.6.4...1.7.0) (2023-10-30)
 ## 🚀 Features
 **api**
