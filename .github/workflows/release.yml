@@ -156,7 +156,7 @@ jobs:
           APPLE_PRIVATE_KEY: ${{ secrets.APPLE_PRIVATE_KEY }}
         run: |
           mkdir ./secret
-          echo APPLE_PRIVATE_KEY | base64 --decode > ./secret/apple_private_key.p8
+          echo $APPLE_PRIVATE_KEY | base64 --decode > ./secret/apple_private_key.p8
 
       - name: Conveyor build apps
         uses: hydraulic-software/conveyor/actions/build@v11.4
