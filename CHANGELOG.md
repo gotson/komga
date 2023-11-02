@@ -1,3 +1,52 @@
+# [1.7.1](https://github.com/gotson/komga/compare/1.7.0...1.7.1) (2023-11-02)
+## 🐛 Fixes
+**docker**
+- install gpg-agent ([895c59c](https://github.com/gotson/komga/commits/895c59c))
+- add missing locales ([1af13e6](https://github.com/gotson/komga/commits/1af13e6))
+
+**komga**
+- thumbnail metadata fixer cannot open UNC path ([879366b](https://github.com/gotson/komga/commits/879366b)), closes [#1275](https://github.com/gotson/komga/issues/1275)
+
+## 🔄️ Changes
+**docker**
+- remove --no-install-recommends ([d9f16ed](https://github.com/gotson/komga/commits/d9f16ed))
+
+**unscoped**
+- use property assignment instead of set ([01b96fd](https://github.com/gotson/komga/commits/01b96fd))
+
+## 🛠  Build
+**release**
+- fix version computation with new tag pattern ([a65a7f1](https://github.com/gotson/komga/commits/a65a7f1))
+- add 'current' parameter for bump type ([bec9f50](https://github.com/gotson/komga/commits/bec9f50))
+
+**unscoped**
+- use property assignment instead of set ([0e43eb0](https://github.com/gotson/komga/commits/0e43eb0))
+- bump gradle from 8.3 to 8.4 ([5f36271](https://github.com/gotson/komga/commits/5f36271))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([e3172b6](https://github.com/gotson/komga/commits/e3172b6))
+- translated using Weblate (Spanish) ([7629dcc](https://github.com/gotson/komga/commits/7629dcc))
+- translated using Weblate (Czech) ([1c5796d](https://github.com/gotson/komga/commits/1c5796d))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/setup-node from 3 to 4 ([142b44b](https://github.com/gotson/komga/commits/142b44b))
+
+**komga**
+- bump jreleaser from 1.8.0 to 1.9.0 ([7935f1c](https://github.com/gotson/komga/commits/7935f1c))
+- bump nightmonkeys.imageio from 0.6.0 to 0.6.1 ([9570101](https://github.com/gotson/komga/commits/9570101))
+- bump tika-core from 2.9.0 to 2.9.1 ([8480806](https://github.com/gotson/komga/commits/8480806))
+- bump springdoc.openapi-gradle-plugin from 1.7.0 to 1.8.0 ([602fd4e](https://github.com/gotson/komga/commits/602fd4e))
+- bump twelvemonkeys.imageio from 3.9.4 to 3.10.0 ([894f9f1](https://github.com/gotson/komga/commits/894f9f1))
+- bump sqlite-jdbc from 3.43.2.1 to 3.43.2.2 ([af0023b](https://github.com/gotson/komga/commits/af0023b))
+- bump jsoup from 1.16.1 to 1.16.2 ([647fb40](https://github.com/gotson/komga/commits/647fb40))
+- bump commons-io from 2.14.0 to 2.15.0 ([3f56e19](https://github.com/gotson/komga/commits/3f56e19))
+- bump icu4j from 73.2 to 74.1 ([30a7408](https://github.com/gotson/komga/commits/30a7408))
+
+**komga-tray**
+- bump jetbrains compose from 1.5.2 to 1.5.10 ([9b195bf](https://github.com/gotson/komga/commits/9b195bf))
+
 # [1.7.0](https://github.com/gotson/komga/compare/1.6.4...1.7.0) (2023-10-30)
 ## 🚀 Features
 **api**
