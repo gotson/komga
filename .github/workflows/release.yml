@@ -168,6 +168,12 @@ jobs:
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+      - name: Upload Conveyor log
+        if: always() && inputs.github_release
+        uses: actions/upload-artifact@v3
+        with:
+          name: conveyor-make-site
+          path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
 
       - name: Adjust Conveyor output
         if: inputs.github_release
@@ -247,3 +253,9 @@ jobs:
           CONVEYOR_MSSTORE_CLIENT_ID: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_ID }}
           CONVEYOR_MSSTORE_CLIENT_SECRET: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_SECRET }}
           CONVEYOR_MSSTORE_TENANT_ID: ${{ secrets.CONVEYOR_MSSTORE_TENANT_ID }}
+      - name: Upload Conveyor log
+        if: always() && inputs.msstore_release
+        uses: actions/upload-artifact@v3
+        with:
+          name: conveyor-ms-store-release
+          path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
