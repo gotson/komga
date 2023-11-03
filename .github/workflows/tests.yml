@@ -48,7 +48,7 @@ jobs:
       - name: Conveyor - compute JDK module list
         uses: hydraulic-software/conveyor/actions/build@v12.0
         with:
-          command: -Kapp.machines=mac.aarch64 make processed-jars
+          command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
 
