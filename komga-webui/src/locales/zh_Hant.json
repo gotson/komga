@@ -205,6 +205,7 @@
     "collections": "收藏",
     "create": "創建",
     "delete": "刪除",
+    "dimension": "寬:{width}, 高:{height}",
     "discard": "丟棄",
     "disk_space": "硬碟空間",
     "dismiss": "解除",
@@ -679,6 +680,12 @@
       "ENDED": "已完結",
       "HIATUS": "有生之年",
       "ONGOING": "連載中"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "預設(300px)",
+      "LARGE": "大(900px)",
+      "MEDIUM": "中 (600px)",
+      "XLARGE": "超大 (1200px)"
     }
   },
   "error_codes": {
@@ -844,9 +851,18 @@
     "tab_title": "伺服器"
   },
   "server_settings": {
+    "dialog_regenerate_thumbnails": {
+      "body": "縮圖大小已變更。您想重新產生書籍縮圖嗎？",
+      "btn_alternate": "是,所有書籍",
+      "btn_cancel": "不是",
+      "btn_confirm": "是的，但前提是更大",
+      "title": "重新產生縮圖"
+    },
     "label_delete_empty_collections": "掃描後刪除空的收藏",
     "label_delete_empty_readlists": "掃描後刪除空的讀取清單",
     "label_rememberme_duration": "記住我的持續時間（天）",
+    "label_task_pool_size": "任務執行緒",
+    "label_thumbnail_size": "縮圖尺寸",
     "requires_restart": "需要重啟才能生效",
     "server_settings": "伺服器設定"
   },

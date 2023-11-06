@@ -3,6 +3,15 @@ export interface SettingsDto {
   deleteEmptyReadLists: boolean,
   rememberMeDurationDays: number,
   thumbnailSize: ThumbnailSizeDto,
+  taskPoolSize: number,
+  serverPort: SettingMultiSource<number>,
+  serverContextPath: SettingMultiSource<string>,
+}
+
+export interface SettingMultiSource<T> {
+  configurationSource?: T,
+  databaseSource?: T,
+  effectiveValue?: T,
 }
 
 export interface SettingsUpdateDto {
@@ -11,6 +20,9 @@ export interface SettingsUpdateDto {
   rememberMeDurationDays?: number,
   renewRememberMeKey?: boolean,
   thumbnailSize?: ThumbnailSizeDto,
+  taskPoolSize?: number,
+  serverPort?: number,
+  serverContextPath?: string,
 }
 
 export enum ThumbnailSizeDto {

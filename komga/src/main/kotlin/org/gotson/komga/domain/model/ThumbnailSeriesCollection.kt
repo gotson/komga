@@ -1,7 +1,6 @@
 package org.gotson.komga.domain.model
 
 import com.github.f4b6a3.tsid.TsidCreator
-import java.io.Serializable
 import java.time.LocalDateTime
 
 data class ThumbnailSeriesCollection(
@@ -17,7 +16,7 @@ data class ThumbnailSeriesCollection(
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable, Serializable {
+) : Auditable {
   enum class Type {
     USER_UPLOADED,
   }

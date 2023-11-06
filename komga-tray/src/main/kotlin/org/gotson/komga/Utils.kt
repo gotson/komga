@@ -1,8 +1,11 @@
 package org.gotson.komga
 
+import mu.KotlinLogging
 import java.awt.Desktop
 import java.io.File
 import java.net.URI
+
+private val logger = KotlinLogging.logger {}
 
 fun openUrl(url: String) {
   if (Desktop.isDesktopSupported())
@@ -12,8 +15,14 @@ fun openUrl(url: String) {
 }
 
 fun openExplorer(file: File) {
-  if (Desktop.isDesktopSupported())
-    Desktop.getDesktop().let {
-      if (it.isSupported(Desktop.Action.BROWSE_FILE_DIR)) it.browseFileDirectory(file)
+  logger.info { "Try to open explorer for path: $file" }
+  when {
+    Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE_FILE_DIR) -> Desktop.getDesktop().browseFileDirectory(file)
+    System.getProperty("os.name").startsWith("win", true) -> {
+      val command = """explorer.exe /select, "${file.absolutePath}""""
+      Runtime.getRuntime().exec(command)
     }
+
+    else -> logger.warn { "Cannot open explorer, not supported" }
+  }
 }

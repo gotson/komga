@@ -66,7 +66,7 @@
               <v-list-item @click="setCurrentPageAsPoster(ItemTypes.BOOK)">
                 <v-list-item-title>{{ $t('bookreader.set_current_page_as_book_poster') }}</v-list-item-title>
               </v-list-item>
-              <v-list-item @click="setCurrentPageAsPoster(ItemTypes.SERIES)">
+              <v-list-item v-if="!book.oneshot" @click="setCurrentPageAsPoster(ItemTypes.SERIES)">
                 <v-list-item-title>{{ $t('bookreader.set_current_page_as_series_poster') }}</v-list-item-title>
               </v-list-item>
               <v-list-item v-if="contextReadList" @click="setCurrentPageAsPoster(ItemTypes.READLIST)">

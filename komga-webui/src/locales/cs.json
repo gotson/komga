@@ -21,6 +21,10 @@
     "account_settings": "Nastavení účtu",
     "change_password": "změnit heslo"
   },
+  "announcements": {
+    "mark_all_read": "Označit všechny jako přečtené",
+    "mark_read": "Označit jako přečtené"
+  },
   "authentication_activity": {
     "datetime": "Datum a čas",
     "email": "Email",

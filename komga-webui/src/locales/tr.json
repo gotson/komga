@@ -21,6 +21,11 @@
     "account_settings": "Hesap Ayarları",
     "change_password": "Şifreni Değiştir"
   },
+  "announcements": {
+    "mark_all_read": "Hepsini okundu olarak işaretle",
+    "mark_read": "Okundu olarak işaretle",
+    "tab_title": "Duyurular"
+  },
   "authentication_activity": {
     "datetime": "Tarih ve Saat",
     "email": "Email",
@@ -53,6 +58,7 @@
     "button_scan": "Tara",
     "button_select_series": "Seri Seç",
     "field_import_path": "Klasörden içe aktar",
+    "info_part1": "Bu ekran dosyaları içeri aktarmanıza ve var olan kütüphanelerinizi dışarı çıkartmanıza olanak tanır. Sadece var olan serileri içeri aktarabilirsiniz, bu durumda Komga dosyaları seçilen serilere kopyalacak veya taşıyacaktır.",
     "no_files_found": "Herhangi bir dosya bulunamadı"
   },
   "common": {

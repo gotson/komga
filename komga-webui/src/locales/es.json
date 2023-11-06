@@ -205,6 +205,7 @@
     "collections": "Colecciones",
     "create": "Crear",
     "delete": "Eliminar",
+    "dimension": "anch: {width}, alt: {height}",
     "discard": "Descartar",
     "disk_space": "Espacio en disco",
     "dismiss": "Descartar",
@@ -679,6 +680,12 @@
       "ENDED": "Finalizado",
       "HIATUS": "Interrumpido",
       "ONGOING": "En curso"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Por defecto (300px)",
+      "LARGE": "Grande (900px)",
+      "MEDIUM": "Mediano (600px)",
+      "XLARGE": "Extra grande (1200px)"
     }
   },
   "error_codes": {
@@ -844,9 +851,21 @@
     "tab_title": "Servidor"
   },
   "server_settings": {
+    "config_precedence": "Tiene prioridad sobre el archivo de configuración",
+    "dialog_regenerate_thumbnails": {
+      "body": "El tamaño de las miniaturas ha cambiado. ¿Quiere regenerar las miniaturas de los libros?",
+      "btn_alternate": "Sí, todos los libros",
+      "btn_cancel": "No",
+      "btn_confirm": "Sí, pero solo si son más grandes",
+      "title": "Regenerar miniaturas"
+    },
     "label_delete_empty_collections": "Eliminar las colecciones vacías después de escanear",
     "label_delete_empty_readlists": "Eliminar las listas de lectura vacías después de escanear",
     "label_rememberme_duration": "Duración de «recordarme» (en días)",
+    "label_server_context_path": "URL base",
+    "label_server_port": "Puerto del servidor",
+    "label_task_pool_size": "Hilos de tareas",
+    "label_thumbnail_size": "Tamaño de miniaturas",
     "requires_restart": "Necesita reiniciar para tener efecto",
     "server_settings": "Ajustes del servidor"
   },
@@ -901,7 +920,9 @@
     "users": "Usuarios"
   },
   "validation": {
+    "context_path": "Debe empezar con '/', no terminar con '/-_' y contener solo '/-_a-z0-9'",
     "one_or_more": "Debe ser 1 o más",
+    "tcp_port": "Debe estar entre 1 y 65535",
     "zero_or_more": "Debe ser 0 o más"
   },
   "welcome": {

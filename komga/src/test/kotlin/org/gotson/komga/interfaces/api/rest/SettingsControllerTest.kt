@@ -53,6 +53,9 @@ class SettingsControllerTest(
     komgaSettingsProvider.deleteEmptyReadLists = false
     komgaSettingsProvider.rememberMeDuration = 5.days
     komgaSettingsProvider.thumbnailSize = ThumbnailSize.LARGE
+    komgaSettingsProvider.taskPoolSize = 4
+    komgaSettingsProvider.serverPort = 1234
+    komgaSettingsProvider.serverContextPath = "/example"
 
     mockMvc.get("/api/v1/settings")
       .andExpect {
@@ -61,6 +64,13 @@ class SettingsControllerTest(
         jsonPath("deleteEmptyReadLists") { value(false) }
         jsonPath("rememberMeDurationDays") { value(5) }
         jsonPath("thumbnailSize") { value("LARGE") }
+        jsonPath("taskPoolSize") { value(4) }
+        jsonPath("serverPort.configurationSource") { value(25600) }
+        jsonPath("serverPort.databaseSource") { value(1234) }
+        jsonPath("serverPort.effectiveValue") { value(25600) }
+        jsonPath("serverContextPath.configurationSource") { value(null) }
+        jsonPath("serverContextPath.databaseSource") { value("/example") }
+        jsonPath("serverContextPath.effectiveValue") { value("") }
       }
   }
 
@@ -71,6 +81,9 @@ class SettingsControllerTest(
     komgaSettingsProvider.deleteEmptyReadLists = true
     komgaSettingsProvider.rememberMeDuration = 5.days
     komgaSettingsProvider.thumbnailSize = ThumbnailSize.LARGE
+    komgaSettingsProvider.taskPoolSize = 4
+    komgaSettingsProvider.serverPort = 1234
+    komgaSettingsProvider.serverContextPath = "/example"
 
     val rememberMeKey = komgaSettingsProvider.rememberMeKey
 
@@ -80,7 +93,10 @@ class SettingsControllerTest(
         "deleteEmptyCollections": false,
         "rememberMeDurationDays": 15,
         "renewRememberMeKey": true,
-        "thumbnailSize": "MEDIUM"
+        "thumbnailSize": "MEDIUM",
+        "taskPoolSize": 8,
+        "serverPort": 5678,
+        "serverContextPath": "/komga-hyphen/subpath123"
       }
     """.trimIndent()
 
@@ -97,6 +113,53 @@ class SettingsControllerTest(
     assertThat(komgaSettingsProvider.rememberMeDuration).isEqualTo(15.days)
     assertThat(komgaSettingsProvider.rememberMeKey).isNotEqualTo(rememberMeKey)
     assertThat(komgaSettingsProvider.thumbnailSize).isEqualTo(ThumbnailSize.MEDIUM)
+    assertThat(komgaSettingsProvider.taskPoolSize).isEqualTo(8)
+    assertThat(komgaSettingsProvider.serverPort).isEqualTo(5678)
+    assertThat(komgaSettingsProvider.serverContextPath).isEqualTo("/komga-hyphen/subpath123")
+  }
+
+  @Test
+  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  fun `given admin user when deleting settings then deletable settings are deleted`() {
+    komgaSettingsProvider.deleteEmptyCollections = true
+    komgaSettingsProvider.deleteEmptyReadLists = true
+    komgaSettingsProvider.rememberMeDuration = 5.days
+    komgaSettingsProvider.thumbnailSize = ThumbnailSize.LARGE
+    komgaSettingsProvider.taskPoolSize = 4
+    komgaSettingsProvider.serverPort = 1234
+    komgaSettingsProvider.serverContextPath = "/example"
+
+    val rememberMeKey = komgaSettingsProvider.rememberMeKey
+
+    //language=JSON
+    val jsonString = """
+      {
+        "deleteEmptyCollections": null,
+        "rememberMeDurationDays": null,
+        "renewRememberMeKey": null,
+        "thumbnailSize": null,
+        "taskPoolSize": null,
+        "serverPort": null,
+        "serverContextPath": null
+      }
+    """.trimIndent()
+
+    mockMvc.patch("/api/v1/settings") {
+      contentType = MediaType.APPLICATION_JSON
+      content = jsonString
+    }
+      .andExpect {
+        status { isNoContent() }
+      }
+
+    assertThat(komgaSettingsProvider.deleteEmptyCollections).isTrue
+    assertThat(komgaSettingsProvider.deleteEmptyReadLists).isTrue
+    assertThat(komgaSettingsProvider.rememberMeDuration).isEqualTo(5.days)
+    assertThat(komgaSettingsProvider.rememberMeKey).isEqualTo(rememberMeKey)
+    assertThat(komgaSettingsProvider.thumbnailSize).isEqualTo(ThumbnailSize.LARGE)
+    assertThat(komgaSettingsProvider.taskPoolSize).isEqualTo(4)
+    assertThat(komgaSettingsProvider.serverPort).isNull()
+    assertThat(komgaSettingsProvider.serverContextPath).isNull()
   }
 
   @ParameterizedTest
@@ -107,6 +170,16 @@ class SettingsControllerTest(
       """{"rememberMeDurationDays": 0}""",
       //language=JSON
       """{"thumbnailSize": "HUGE"}""",
+      """{"taskPoolSize": 0}""",
+      """{"serverPort": 0}""",
+      """{"serverPort": -5}""",
+      """{"serverPort": 65536}""",
+      """{"serverContextPath": "noSlashBegin"}""",
+      """{"serverContextPath": "/slashEnd/"}""",
+      """{"serverContextPath": "/invalid=character"}""",
+      """{"serverContextPath": "/invalid/end-"}""",
+      """{"serverContextPath": "/invalid/end_"}""",
+      """{"serverContextPath": "/日本語"}""",
     ],
   )
   fun `given admin user when updating with invalid settings then returns bad request`(jsonString: String) {

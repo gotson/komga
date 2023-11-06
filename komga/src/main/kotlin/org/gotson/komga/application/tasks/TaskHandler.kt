@@ -17,12 +17,9 @@ import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.gotson.komga.domain.service.ThumbnailLifecycle
-import org.gotson.komga.infrastructure.jms.QUEUE_FACTORY
-import org.gotson.komga.infrastructure.jms.QUEUE_TASKS
 import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
 import org.gotson.komga.interfaces.scheduler.METER_TASKS_EXECUTION
 import org.gotson.komga.interfaces.scheduler.METER_TASKS_FAILURE
-import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
 import kotlin.time.measureTime
@@ -51,7 +48,6 @@ class TaskHandler(
   private val meterRegistry: MeterRegistry,
 ) {
 
-  @JmsListener(destination = QUEUE_TASKS, containerFactory = QUEUE_FACTORY, concurrency = "#{@komgaProperties.taskConsumers}-#{@komgaProperties.taskConsumersMax}")
   fun handleTask(task: Task) {
     logger.info { "Executing task: $task" }
     try {
@@ -70,23 +66,17 @@ class TaskHandler(
 
           is Task.FindBooksToConvert ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              bookConverter.getConvertibleBooks(library).forEach {
-                taskEmitter.convertBookToCbz(it, task.priority + 1)
-              }
+              taskEmitter.convertBookToCbz(bookConverter.getConvertibleBooks(library), task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindBooksWithMissingPageHash ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              pageHashLifecycle.getBookAndSeriesIdsWithMissingPageHash(library).forEach {
-                taskEmitter.hashBookPages(it.first, it.second, task.priority + 1)
-              }
+              taskEmitter.hashBookPages(pageHashLifecycle.getBookIdsWithMissingPageHash(library), task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindDuplicatePagesToDelete ->
             libraryRepository.findByIdOrNull(task.libraryId)?.let { library ->
-              pageHashLifecycle.getBookPagesToDeleteAutomatically(library).forEach { (bookId, pages) ->
-                taskEmitter.removeDuplicatePages(bookId, pages, task.priority + 1)
-              }
+              taskEmitter.removeDuplicatePages(pageHashLifecycle.getBookPagesToDeleteAutomatically(library), task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.EmptyTrash ->
@@ -97,7 +87,7 @@ class TaskHandler(
           is Task.AnalyzeBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               val actions = bookLifecycle.analyzeAndPersist(book)
-              if (actions.contains(BookAction.GENERATE_THUMBNAIL)) taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+              if (actions.contains(BookAction.GENERATE_THUMBNAIL)) taskEmitter.generateBookThumbnail(book.id, priority = task.priority + 1)
               if (actions.contains(BookAction.REFRESH_METADATA)) taskEmitter.refreshBookMetadata(book, priority = task.priority + 1)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
@@ -152,7 +142,7 @@ class TaskHandler(
           is Task.RemoveHashedPages ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               if (bookPageEditor.removeHashedPages(book, task.pages) == BookAction.GENERATE_THUMBNAIL) {
-                taskEmitter.generateBookThumbnail(book, priority = task.priority + 1)
+                taskEmitter.generateBookThumbnail(book.id, priority = task.priority + 1)
               }
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
@@ -168,7 +158,7 @@ class TaskHandler(
 
           is Task.RebuildIndex -> searchIndexLifecycle.rebuildIndex(task.entities)
 
-          is Task.UpgradedIndex -> searchIndexLifecycle.upgradeIndex()
+          is Task.UpgradeIndex -> searchIndexLifecycle.upgradeIndex()
 
           is Task.DeleteBook -> {
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
@@ -189,10 +179,7 @@ class TaskHandler(
           }
 
           is Task.FindBookThumbnailsToRegenerate -> {
-            val bookIds = bookLifecycle.findBookThumbnailsToRegenerate(task.forBiggerResultOnly)
-            bookIds.forEach {
-              taskEmitter.generateBookThumbnail(it, task.priority)
-            }
+            taskEmitter.generateBookThumbnail(bookLifecycle.findBookThumbnailsToRegenerate(task.forBiggerResultOnly), task.priority)
           }
         }
       }.also {

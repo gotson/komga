@@ -606,6 +606,39 @@
         }
       }
     },
+    "/api/v1/books/thumbnails": {
+      "put": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "regenerateThumbnails",
+        "parameters": [
+          {
+            "name": "for_bigger_result_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
     "/api/v1/announcements": {
       "get": {
         "tags": [
@@ -859,7 +892,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SeriesThumbnailDto"
+                    "$ref": "#/components/schemas/ThumbnailSeriesDto"
                   }
                 }
               }
@@ -924,7 +957,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SeriesThumbnailDto"
+                  "$ref": "#/components/schemas/ThumbnailSeriesDto"
                 }
               }
             }
@@ -3803,15 +3836,6 @@
         "operationId": "getOneSeries_1",
         "parameters": [
           {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -3869,15 +3893,6 @@
         ],
         "operationId": "getLatestSeries_2",
         "parameters": [
-          {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -4019,15 +4034,6 @@
         "operationId": "getOneReadList_1",
         "parameters": [
           {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -4135,15 +4141,6 @@
         ],
         "operationId": "getOnDeck_2",
         "parameters": [
-          {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -4293,15 +4290,6 @@
         "operationId": "getKeepReading_2",
         "parameters": [
           {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
-          {
             "name": "page",
             "in": "query",
             "description": "Zero-based page index (0..N)",
@@ -4401,15 +4389,6 @@
         ],
         "operationId": "getOneCollection_1",
         "parameters": [
-          {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -4624,97 +4603,12 @@
         }
       }
     },
-    "/api/v1/books/{bookId}/pages/{pageNumber}": {
-      "get": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "getBookPage",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pageNumber",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "convert",
-            "in": "query",
-            "description": "Convert the image to the provided format.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "jpeg",
-                "png"
-              ]
-            }
-          },
-          {
-            "name": "zero_based",
-            "in": "query",
-            "description": "If set to true, pages will start at index 0. If set to false, pages will start at index 1.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "description": "Some very limited server driven content negotiation is handled. If a book is a PDF book, and the Accept header contains \u0027application/pdf\u0027 as a more specific type than other \u0027image/\u0027 types, a raw PDF page will be returned.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/MediaType"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "default response",
-            "content": {
-              "image/*": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/opds/v1.2/books/{bookId}/pages/{pageNumber}": {
       "get": {
         "tags": [
           "book-controller"
         ],
-        "operationId": "getBookPage_1",
+        "operationId": "getBookPageOpds",
         "parameters": [
           {
             "name": "bookId",
@@ -4744,28 +4638,6 @@
                 "jpeg",
                 "png"
               ]
-            }
-          },
-          {
-            "name": "zero_based",
-            "in": "query",
-            "description": "If set to true, pages will start at index 0. If set to false, pages will start at index 1.",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "description": "Some very limited server driven content negotiation is handled. If a book is a PDF book, and the Accept header contains \u0027application/pdf\u0027 as a more specific type than other \u0027image/\u0027 types, a raw PDF page will be returned.",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/MediaType"
-              }
             }
           }
         ],
@@ -4801,15 +4673,6 @@
         ],
         "operationId": "getLatestBooks_2",
         "parameters": [
-          {
-            "name": "User-Agent",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": ""
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -8241,6 +8104,91 @@
         }
       }
     },
+    "/api/v1/books/{bookId}/pages/{pageNumber}": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getBookPage",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "convert",
+            "in": "query",
+            "description": "Convert the image to the provided format.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "jpeg",
+                "png"
+              ]
+            }
+          },
+          {
+            "name": "zero_based",
+            "in": "query",
+            "description": "If set to true, pages will start at index 0. If set to false, pages will start at index 1.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "Some very limited server driven content negotiation is handled. If a book is a PDF book, and the Accept header contains \u0027application/pdf\u0027 as a more specific type than other \u0027image/\u0027 types, a raw PDF page will be returned.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/MediaType"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/books/{bookId}/pages/{pageNumber}/thumbnail": {
       "get": {
         "tags": [
@@ -9674,12 +9622,16 @@
           }
         }
       },
-      "SeriesThumbnailDto": {
+      "ThumbnailSeriesDto": {
         "required": [
+          "fileSize",
+          "height",
           "id",
+          "mediaType",
           "selected",
           "seriesId",
-          "type"
+          "type",
+          "width"
         ],
         "type": "object",
         "properties": {
@@ -9694,6 +9646,21 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -9769,10 +9736,14 @@
       },
       "ThumbnailReadListDto": {
         "required": [
+          "fileSize",
+          "height",
           "id",
+          "mediaType",
           "readListId",
           "selected",
-          "type"
+          "type",
+          "width"
         ],
         "type": "object",
         "properties": {
@@ -9787,6 +9758,21 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -10337,9 +10323,13 @@
       "ThumbnailSeriesCollectionDto": {
         "required": [
           "collectionId",
+          "fileSize",
+          "height",
           "id",
+          "mediaType",
           "selected",
-          "type"
+          "type",
+          "width"
         ],
         "type": "object",
         "properties": {
@@ -10354,15 +10344,34 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
       "ThumbnailBookDto": {
         "required": [
           "bookId",
+          "fileSize",
+          "height",
           "id",
+          "mediaType",
           "selected",
-          "type"
+          "type",
+          "width"
         ],
         "type": "object",
         "properties": {
@@ -10377,6 +10386,21 @@
           },
           "selected": {
             "type": "boolean"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -10521,6 +10545,28 @@
           },
           "renewRememberMeKey": {
             "type": "boolean"
+          },
+          "thumbnailSize": {
+            "type": "string",
+            "enum": [
+              "DEFAULT",
+              "MEDIUM",
+              "LARGE",
+              "XLARGE"
+            ]
+          },
+          "taskPoolSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serverPort": {
+            "maximum": 65535,
+            "type": "integer",
+            "format": "int32"
+          },
+          "serverContextPath": {
+            "pattern": "^\\/[\\w-\\/]*[a-zA-Z0-9]$",
+            "type": "string"
           }
         }
       },
@@ -10645,17 +10691,17 @@
             "type": "integer",
             "format": "int32"
           },
-          "alternateTitles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
-            }
-          },
           "sharingLabels": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "alternateTitles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlternateTitleUpdateDto"
             }
           }
         },
@@ -11350,42 +11396,6 @@
           }
         }
       },
-      "MediaType": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "subtype": {
-            "type": "string"
-          },
-          "parameters": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          },
-          "qualityValue": {
-            "type": "number",
-            "format": "double"
-          },
-          "concrete": {
-            "type": "boolean"
-          },
-          "wildcardType": {
-            "type": "boolean"
-          },
-          "wildcardSubtype": {
-            "type": "boolean"
-          },
-          "subtypeSuffix": {
-            "type": "string"
-          },
-          "charset": {
-            "type": "string"
-          }
-        }
-      },
       "AuthenticationActivityDto": {
         "required": [
           "dateTime",
@@ -11451,15 +11461,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -11589,18 +11599,59 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
           },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
           "empty": {
             "type": "boolean"
+          }
+        }
+      },
+      "SettingMultiSourceInteger": {
+        "required": [
+          "configurationSource",
+          "databaseSource",
+          "effectiveValue"
+        ],
+        "type": "object",
+        "properties": {
+          "configurationSource": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "databaseSource": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "effectiveValue": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SettingMultiSourceString": {
+        "required": [
+          "configurationSource",
+          "databaseSource",
+          "effectiveValue"
+        ],
+        "type": "object",
+        "properties": {
+          "configurationSource": {
+            "type": "string"
+          },
+          "databaseSource": {
+            "type": "string"
+          },
+          "effectiveValue": {
+            "type": "string"
           }
         }
       },
@@ -11608,7 +11659,11 @@
         "required": [
           "deleteEmptyCollections",
           "deleteEmptyReadLists",
-          "rememberMeDurationDays"
+          "rememberMeDurationDays",
+          "serverContextPath",
+          "serverPort",
+          "taskPoolSize",
+          "thumbnailSize"
         ],
         "type": "object",
         "properties": {
@@ -11621,6 +11676,25 @@
           "rememberMeDurationDays": {
             "type": "integer",
             "format": "int64"
+          },
+          "thumbnailSize": {
+            "type": "string",
+            "enum": [
+              "DEFAULT",
+              "MEDIUM",
+              "LARGE",
+              "XLARGE"
+            ]
+          },
+          "taskPoolSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serverPort": {
+            "$ref": "#/components/schemas/SettingMultiSourceInteger"
+          },
+          "serverContextPath": {
+            "$ref": "#/components/schemas/SettingMultiSourceString"
           }
         }
       },
@@ -11714,15 +11788,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12206,15 +12280,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12299,15 +12373,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12421,15 +12495,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12467,15 +12541,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12533,15 +12607,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12608,15 +12682,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12654,15 +12728,15 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
-          },
           "first": {
             "type": "boolean"
           },
           "last": {
             "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -12677,6 +12751,42 @@
         "properties": {
           "isClaimed": {
             "type": "boolean"
+          }
+        }
+      },
+      "MediaType": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "subtype": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "qualityValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "concrete": {
+            "type": "boolean"
+          },
+          "wildcardType": {
+            "type": "boolean"
+          },
+          "wildcardSubtype": {
+            "type": "boolean"
+          },
+          "subtypeSuffix": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
           }
         }
       },

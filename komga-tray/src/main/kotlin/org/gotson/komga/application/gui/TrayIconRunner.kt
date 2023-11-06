@@ -12,6 +12,7 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.core.env.Environment
 import org.springframework.core.io.ClassPathResource
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -29,6 +30,8 @@ class TrayIconRunner(
   val komgaConfigDir = File(komgaConfigDir)
   val logFile = File(logFileName)
   val iconFileName = if (env.activeProfiles.contains("mac")) "komga-gray-minimal.svg" else "komga-color.svg"
+
+  @Async
   override fun run(args: ApplicationArguments) {
     runTray()
   }
