@@ -17,7 +17,7 @@ plugins {
   id("nu.studer.jooq") version "8.2.1"
   id("org.flywaydb.flyway") version "9.7.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
-  id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
+  id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("com.google.devtools.ksp") version "1.8.22-1.0.11"
 
   jacoco
@@ -71,7 +71,7 @@ dependencies {
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
-  implementation("commons-io:commons-io:2.14.0")
+  implementation("commons-io:commons-io:2.15.0")
   implementation("org.apache.commons:commons-lang3:3.13.0")
   implementation("commons-validator:commons-validator:1.7")
 
@@ -83,22 +83,23 @@ dependencies {
     implementation("org.apache.lucene:lucene-backward-codecs:$luceneVersion")
   }
 
-  implementation("com.ibm.icu:icu4j:73.2")
+  implementation("com.ibm.icu:icu4j:74.1")
 
   implementation("com.appmattus.crypto:cryptohash:0.10.1")
 
-  implementation("org.apache.tika:tika-core:2.9.0")
+  implementation("org.apache.tika:tika-core:2.9.1")
   implementation("org.apache.commons:commons-compress:1.24.0")
   implementation("com.github.junrar:junrar:7.5.5")
   implementation("org.apache.pdfbox:pdfbox:2.0.28")
   implementation("net.grey-panther:natural-comparator:1.1")
-  implementation("org.jsoup:jsoup:1.16.1")
+  implementation("org.jsoup:jsoup:1.16.2")
 
   implementation("net.coobird:thumbnailator:0.4.20")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.9.4")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.9.4")
-  runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.4.1")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.10.0")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.10.0")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.10.0")
+  runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.6.1")
+  runtimeOnly("com.github.gotson.nightmonkeys:imageio-heif:0.6.1")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.4")
@@ -112,8 +113,8 @@ dependencies {
 
   implementation("com.github.ben-manes.caffeine:caffeine")
 
-  implementation("org.xerial:sqlite-jdbc:3.42.0.0")
-  jooqGenerator("org.xerial:sqlite-jdbc:3.42.0.0")
+  implementation("org.xerial:sqlite-jdbc:3.43.2.2")
+  jooqGenerator("org.xerial:sqlite-jdbc:3.43.2.2")
 
   if (version.toString().endsWith(".0.0")) {
     ksp("com.github.gotson.bestbefore:bestbefore-processor-kotlin:0.1.0")
@@ -234,7 +235,7 @@ tasks {
 springBoot {
   buildInfo {
     // prevent task bootBuildInfo to rerun every time
-    excludes.set(setOf("time"))
+    excludes = setOf("time")
     properties {
       // but rerun if the gradle.properties file changed
       inputs.file("$rootDir/gradle.properties")
@@ -294,7 +295,7 @@ task("flywayMigrateTasks", FlywayMigrateTask::class) {
 }
 
 jooq {
-  version.set("3.18.4")
+  version = "3.18.4"
   configurations {
     create("main") {
       jooqConfiguration.apply {
@@ -334,12 +335,12 @@ jooq {
 }
 tasks.named<JooqGenerate>("generateJooq") {
   sqliteMigrationDirs["main"]?.forEach { inputs.dir(it) }
-  allInputsDeclared.set(true)
+  allInputsDeclared = true
   dependsOn("flywayMigrateMain")
 }
 tasks.named<JooqGenerate>("generateTasksJooq") {
   sqliteMigrationDirs["tasks"]?.forEach { inputs.dir(it) }
-  allInputsDeclared.set(true)
+  allInputsDeclared = true
   dependsOn("flywayMigrateTasks")
 }
 
@@ -365,7 +366,7 @@ tasks.compileKotlin {
 }
 
 openApi {
-  outputDir.set(file("$projectDir/docs"))
+  outputDir = file("$projectDir/docs")
   customBootRun {
     args.add("--spring.profiles.active=claim")
     args.add("--server.port=8080")

@@ -1,3 +1,121 @@
+# [1.7.1](https://github.com/gotson/komga/compare/1.7.0...1.7.1) (2023-11-02)
+## 🐛 Fixes
+**docker**
+- install gpg-agent ([895c59c](https://github.com/gotson/komga/commits/895c59c))
+- add missing locales ([1af13e6](https://github.com/gotson/komga/commits/1af13e6))
+
+**komga**
+- thumbnail metadata fixer cannot open UNC path ([879366b](https://github.com/gotson/komga/commits/879366b)), closes [#1275](https://github.com/gotson/komga/issues/1275)
+
+## 🔄️ Changes
+**docker**
+- remove --no-install-recommends ([d9f16ed](https://github.com/gotson/komga/commits/d9f16ed))
+
+**unscoped**
+- use property assignment instead of set ([01b96fd](https://github.com/gotson/komga/commits/01b96fd))
+
+## 🛠  Build
+**release**
+- fix version computation with new tag pattern ([a65a7f1](https://github.com/gotson/komga/commits/a65a7f1))
+- add 'current' parameter for bump type ([bec9f50](https://github.com/gotson/komga/commits/bec9f50))
+
+**unscoped**
+- use property assignment instead of set ([0e43eb0](https://github.com/gotson/komga/commits/0e43eb0))
+- bump gradle from 8.3 to 8.4 ([5f36271](https://github.com/gotson/komga/commits/5f36271))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([e3172b6](https://github.com/gotson/komga/commits/e3172b6))
+- translated using Weblate (Spanish) ([7629dcc](https://github.com/gotson/komga/commits/7629dcc))
+- translated using Weblate (Czech) ([1c5796d](https://github.com/gotson/komga/commits/1c5796d))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/setup-node from 3 to 4 ([142b44b](https://github.com/gotson/komga/commits/142b44b))
+
+**komga**
+- bump jreleaser from 1.8.0 to 1.9.0 ([7935f1c](https://github.com/gotson/komga/commits/7935f1c))
+- bump nightmonkeys.imageio from 0.6.0 to 0.6.1 ([9570101](https://github.com/gotson/komga/commits/9570101))
+- bump tika-core from 2.9.0 to 2.9.1 ([8480806](https://github.com/gotson/komga/commits/8480806))
+- bump springdoc.openapi-gradle-plugin from 1.7.0 to 1.8.0 ([602fd4e](https://github.com/gotson/komga/commits/602fd4e))
+- bump twelvemonkeys.imageio from 3.9.4 to 3.10.0 ([894f9f1](https://github.com/gotson/komga/commits/894f9f1))
+- bump sqlite-jdbc from 3.43.2.1 to 3.43.2.2 ([af0023b](https://github.com/gotson/komga/commits/af0023b))
+- bump jsoup from 1.16.1 to 1.16.2 ([647fb40](https://github.com/gotson/komga/commits/647fb40))
+- bump commons-io from 2.14.0 to 2.15.0 ([3f56e19](https://github.com/gotson/komga/commits/3f56e19))
+- bump icu4j from 73.2 to 74.1 ([30a7408](https://github.com/gotson/komga/commits/30a7408))
+
+**komga-tray**
+- bump jetbrains compose from 1.5.2 to 1.5.10 ([9b195bf](https://github.com/gotson/komga/commits/9b195bf))
+
+# [1.7.0](https://github.com/gotson/komga/compare/1.6.4...1.7.0) (2023-10-30)
+## 🚀 Features
+**api**
+- configure server port and context path ([3f39037](https://github.com/gotson/komga/commits/3f39037)), closes [#1264](https://github.com/gotson/komga/issues/1264)
+
+**komga-tray**
+- add libjxl for Windows ([8171cb8](https://github.com/gotson/komga/commits/8171cb8))
+
+**webui**
+- add server port and context path to the server settings screen ([4196f08](https://github.com/gotson/komga/commits/4196f08)), closes [#1264](https://github.com/gotson/komga/issues/1264)
+
+## 🐛 Fixes
+**komga-tray**
+- use workaround to open filesystem on Windows ([6059b85](https://github.com/gotson/komga/commits/6059b85))
+
+## 🛠  Build
+**docker**
+- add support for AVIF on amd64/arm64 images ([a92db64](https://github.com/gotson/komga/commits/a92db64))
+
+**komga-tray**
+- add native image libraries for macOS ([d8dea84](https://github.com/gotson/komga/commits/d8dea84))
+- use JDK 21 toolchain ([69eb24d](https://github.com/gotson/komga/commits/69eb24d))
+
+**unscoped**
+- change release tag format to enable delta updates in Conveyor ([c4cd4bd](https://github.com/gotson/komga/commits/c4cd4bd))
+- install JDK 21 ([0267ba8](https://github.com/gotson/komga/commits/0267ba8))
+
+## 📝 Documentation
+
+- update DEVELOPING.md for necessary JDK ([5a66f2a](https://github.com/gotson/komga/commits/5a66f2a))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Traditional)) ([56b782e](https://github.com/gotson/komga/commits/56b782e))
+- translated using Weblate (Finnish) ([d8fe2d7](https://github.com/gotson/komga/commits/d8fe2d7))
+- translated using Weblate (Turkish) ([a519261](https://github.com/gotson/komga/commits/a519261))
+
+## ⚙️ Dependencies
+**komga**
+- add imageio-heif:0.6.0 ([07cf63a](https://github.com/gotson/komga/commits/07cf63a)), closes [#942](https://github.com/gotson/komga/issues/942)
+
+# [1.6.4](https://github.com/gotson/komga/compare/v1.6.3...v1.6.4) (2023-10-26)
+## 🐛 Fixes
+**komga**
+- change the default value of TASK_POOL_SIZE to 1 ([7ebce00](https://github.com/gotson/komga/commits/7ebce00))
+- FixThumbnailsWithoutMetadata could not rerun itself ([493a33b](https://github.com/gotson/komga/commits/493a33b))
+
+**opds**
+- disable content negociation in the pages API ([084997f](https://github.com/gotson/komga/commits/084997f)), closes [#1262](https://github.com/gotson/komga/issues/1262)
+
+## 🏎 Perf
+**komga**
+- add some db indices to help with FixThumbnailsWithoutMetadata task ([517f035](https://github.com/gotson/komga/commits/517f035))
+
+## 🛠  Build
+**release**
+- simplify reruns ([8e1e699](https://github.com/gotson/komga/commits/8e1e699))
+- attempt to avoid worker out of space issue ([bcda81a](https://github.com/gotson/komga/commits/bcda81a))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([2cd95f1](https://github.com/gotson/komga/commits/2cd95f1))
+- translated using Weblate (Spanish) ([b9842f6](https://github.com/gotson/komga/commits/b9842f6))
+- translated using Weblate (Russian) ([80dc7a9](https://github.com/gotson/komga/commits/80dc7a9))
+
+## ⚙️ Dependencies
+**komga**
+- bump sqlite-jdbc from 3.42.0.0 to 3.43.2.1 ([c90b472](https://github.com/gotson/komga/commits/c90b472))
+
 # [1.6.3](https://github.com/gotson/komga/compare/v1.6.2...v1.6.3) (2023-10-20)
 
 # [1.6.2](https://github.com/gotson/komga/compare/v1.6.1...v1.6.2) (2023-10-20)

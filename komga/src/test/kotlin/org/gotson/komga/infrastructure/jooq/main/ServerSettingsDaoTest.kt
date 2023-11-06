@@ -43,7 +43,7 @@ class ServerSettingsDaoTest(
   }
 
   @Test
-  fun `given existing setting when saving again then it is overriden`() {
+  fun `given existing setting when saving again then it is overridden`() {
     serverSettingsDao.saveSetting("setting", "value")
 
     val initial = serverSettingsDao.getSettingByKey("setting", String::class.java)
@@ -52,5 +52,17 @@ class ServerSettingsDaoTest(
     serverSettingsDao.saveSetting("setting", "updated")
     val updated = serverSettingsDao.getSettingByKey("setting", String::class.java)
     assertThat(updated).isEqualTo("updated")
+  }
+
+  @Test
+  fun `given existing setting when deleting then it is deleted`() {
+    serverSettingsDao.saveSetting("setting", "value")
+
+    val initial = serverSettingsDao.getSettingByKey("setting", String::class.java)
+    assertThat(initial).isEqualTo("value")
+
+    serverSettingsDao.deleteSetting("setting")
+    val updated = serverSettingsDao.getSettingByKey("setting", String::class.java)
+    assertThat(updated).isNull()
   }
 }

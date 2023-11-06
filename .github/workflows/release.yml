@@ -3,6 +3,10 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
+      release_notes:
+        description: Release notes (use \n for newlines)
+        type: string
+        required: false
       bump:
         description: 'Bump type'
         required: false
@@ -13,6 +17,7 @@ on:
           - 'major'
           - 'minor'
           - 'patch'
+          - 'current'
       github_release:
         description: 'Create Github Release'
         default: true
@@ -44,14 +49,14 @@ jobs:
         run: brew install caarlos0/tap/svu
       - name: Compute next version for release
         run: |
-          echo "VERSION_NEXT=`svu --pattern="v[0-9]*" --strip-prefix ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
-          echo "VERSION_NEXT_SUFFIX=`svu --pattern="v[0-9]*" --strip-prefix ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
+          echo "VERSION_NEXT=`svu --pattern="[0-9]*" --strip-prefix ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
+          echo "VERSION_NEXT_SUFFIX=`svu --pattern="[0-9]*" --strip-prefix ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
       - name: Set Versions
         id: versions
         run: |
-          echo "version_current=`svu --pattern="v[0-9]*" --strip-prefix current`" >> $GITHUB_OUTPUT
+          echo "version_current=`svu --pattern="[0-9]*" --strip-prefix current`" >> $GITHUB_OUTPUT
           echo "version_next=${{ env.VERSION_NEXT_SUFFIX }}" >> $GITHUB_OUTPUT
-          [[ `svu --pattern="v[0-9]*" --strip-prefix current` != ${{ env.VERSION_NEXT }} ]] && echo "should_release=true" >> $GITHUB_OUTPUT || echo
+          [[ `svu --pattern="[0-9]*" --strip-prefix current` != ${{ env.VERSION_NEXT }} ]] && echo "should_release=true" >> $GITHUB_OUTPUT || echo
 
   release:
     name: Release
@@ -75,7 +80,7 @@ jobs:
         if: needs.version.outputs.should_release #only redo if the version changed
         run: sed -i -e "s/version=.*/version=${{ needs.version.outputs.version_next }}/" gradle.properties
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '16'
           cache: 'npm'
@@ -83,13 +88,13 @@ jobs:
 
       - uses: actions/setup-java@v3
         with:
-          java-version: '19'
+          java-version: 21
           java-package: 'jdk'
           distribution: 'temurin'
 
       - uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: 17
           java-package: 'jdk'
           distribution: 'temurin'
 
@@ -125,6 +130,14 @@ jobs:
         with:
           arguments: :komga:generateOpenApiDocs
 
+      - name: Create release notes
+        run: |
+          mkdir release_notes
+          echo -e "${{ inputs.release_notes }}" >> release_notes/release_notes.md
+          echo "Release notes:"
+          cat release_notes/release_notes.md
+          echo ""
+
       - name: JReleaser Changelog append
         uses: gradle/gradle-build-action@v2
         if: needs.version.outputs.should_release #only redo if the version changed
@@ -146,19 +159,33 @@ jobs:
         if: needs.version.outputs.should_release #only redo if the version changed
         with:
           message: 'chore(release): ${{ needs.version.outputs.version_next }} [skip ci]'
-          tag: 'v${{ needs.version.outputs.version_next }}'
+          tag: '${{ needs.version.outputs.version_next }}'
           default_author: github_actions
 
+      - name: Retrieve the Apple private key and decode it to a file
+        if: inputs.github_release
+        env:
+          APPLE_PRIVATE_KEY: ${{ secrets.APPLE_PRIVATE_KEY }}
+        run: |
+          mkdir ./secret
+          echo $APPLE_PRIVATE_KEY | base64 --decode > ./secret/apple_private_key.p8
+
       - name: Conveyor build apps
-        uses: hydraulic-software/conveyor/actions/build@v11.4
+        uses: hydraulic-software/conveyor/actions/build@v12.0
         if: inputs.github_release
         with:
           command: -f conveyor.ci.conf make site -o ./output/release
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
-          APPLE_ASP: ${{ secrets.APPLE_ASP }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+      - name: Upload Conveyor log
+        if: always() && inputs.github_release
+        uses: actions/upload-artifact@v3
+        with:
+          name: conveyor-make-site
+          path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
 
       - name: Adjust Conveyor output
         if: inputs.github_release
@@ -228,7 +255,7 @@ jobs:
             build/jreleaser/output.properties
 
       - name: Conveyor - publish to Microsoft Store
-        uses: hydraulic-software/conveyor/actions/build@v11.4
+        uses: hydraulic-software/conveyor/actions/build@v12.0
         if: inputs.msstore_release
         with:
           command: -f conveyor.msstore.ci.conf make ms-store-release -o ./output/msstore
@@ -238,3 +265,9 @@ jobs:
           CONVEYOR_MSSTORE_CLIENT_ID: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_ID }}
           CONVEYOR_MSSTORE_CLIENT_SECRET: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_SECRET }}
           CONVEYOR_MSSTORE_TENANT_ID: ${{ secrets.CONVEYOR_MSSTORE_TENANT_ID }}
+      - name: Upload Conveyor log
+        if: always() && inputs.msstore_release
+        uses: actions/upload-artifact@v3
+        with:
+          name: conveyor-ms-store-release
+          path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
