@@ -3,6 +3,10 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
+      release_notes:
+        description: Release notes (use \n for newlines)
+        type: string
+        required: false
       bump:
         description: 'Bump type'
         required: false
@@ -125,6 +129,14 @@ jobs:
         if: needs.version.outputs.should_release #only redo if the version changed
         with:
           arguments: :komga:generateOpenApiDocs
+
+      - name: Create release notes
+        run: |
+          mkdir release_notes
+          echo -e "${{ inputs.release_notes }}" >> release_notes/release_notes.md
+          echo "Release notes:"
+          cat release_notes/release_notes.md
+          echo ""
 
       - name: JReleaser Changelog append
         uses: gradle/gradle-build-action@v2

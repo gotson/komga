@@ -49,6 +49,7 @@ nbdist/
 /config-dir/
 application-oauth2.yml
 /benchmark
+/release_notes
 
 ### Conveyor
 output/

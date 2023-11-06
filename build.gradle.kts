@@ -2,6 +2,8 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jreleaser.model.Active
 import org.jreleaser.model.Distribution.DistributionType.SINGLE_JAR
 import org.jreleaser.model.api.common.Apply
+import kotlin.io.path.Path
+import kotlin.io.path.exists
 
 plugins {
   run {
@@ -73,6 +75,13 @@ jreleaser {
         preset = "conventional-commits"
         skipMergeCommits = true
         links = true
+        content = (if (Path("./release_notes/release_notes.md").exists()) "{{#f_file_read}}{{basedir}}/release_notes/release_notes.md{{/f_file_read}}" else "") +
+          """
+            ## Changelog
+
+            {{changelogChanges}}
+            {{changelogContributors}}
+          """.trimIndent()
         format = "- {{#commitIsConventional}}{{#conventionalCommitIsBreakingChange}}🚨 {{/conventionalCommitIsBreakingChange}}{{#conventionalCommitScope}}**{{conventionalCommitScope}}**: {{/conventionalCommitScope}}{{conventionalCommitDescription}}{{#conventionalCommitBreakingChangeContent}}: *{{conventionalCommitBreakingChangeContent}}*{{/conventionalCommitBreakingChangeContent}} ({{commitShortHash}}){{/commitIsConventional}}{{^commitIsConventional}}{{commitTitle}} ({{commitShortHash}}){{/commitIsConventional}}{{#commitHasIssues}}, closes{{#commitIssues}} {{issue}}{{/commitIssues}}{{/commitHasIssues}}"
         hide {
           uncategorized = true
