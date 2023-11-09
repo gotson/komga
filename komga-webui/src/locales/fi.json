@@ -851,6 +851,7 @@
     "tab_title": "Palvelin"
   },
   "server_settings": {
+    "config_precedence": "Ensisijainen asetustiedostoon nähden",
     "dialog_regenerate_thumbnails": {
       "body": "Pikkukuvien koko on vaihtunut. Haluatko luoda uudet kirjojen pikkukuvat?",
       "btn_alternate": "Kyllä, kaikki kirjat",
@@ -861,6 +862,8 @@
     "label_delete_empty_collections": "Poista tyhjät kokoelmat skannauksen jälkeen",
     "label_delete_empty_readlists": "Poista tyhjät luettujen listat skannauksen jälkeen",
     "label_rememberme_duration": "Muista minut ajan pituus (päivää)",
+    "label_server_context_path": "Perusosoite",
+    "label_server_port": "Palvelimen portti",
     "label_task_pool_size": "Töiden säikeet",
     "label_thumbnail_size": "Pikkukuvien koko",
     "requires_restart": "Vaatii uudelleenkäynnistyksen",
@@ -917,7 +920,9 @@
     "users": "Käyttäjät"
   },
   "validation": {
+    "context_path": "Täytyy alkaa '/', ei voi päättyä '/-_' ja voi sisältää vain '/-_a-z0-9'",
     "one_or_more": "Pitää olla vähintään yksi",
+    "tcp_port": "Pitää olla väliltä 1 ja 65535",
     "zero_or_more": "On oltava vähintään 0"
   },
   "welcome": {
