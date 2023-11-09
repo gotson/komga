@@ -1,3 +1,45 @@
+# [1.7.2](https://github.com/gotson/komga/compare/1.7.1...1.7.2) (2023-11-09)
+## 🐛 Fixes
+**komga**
+- check temp directory exists and is writable on startup ([4999edd](https://github.com/gotson/komga/commits/4999edd)), closes [#1283](https://github.com/gotson/komga/issues/1283)
+- task FixThumbnailsWithoutMetadata could not fix sidecar covers ([9d2d007](https://github.com/gotson/komga/commits/9d2d007)), closes [#1287](https://github.com/gotson/komga/issues/1287)
+
+## 🔄️ Changes
+**komga**
+- ktlint format ([ea52a5e](https://github.com/gotson/komga/commits/ea52a5e))
+
+## 🛠  Build
+**conveyor**
+- remove space in windows installer name ([d51fdeb](https://github.com/gotson/komga/commits/d51fdeb))
+- adjust JDK module list ([74d04d0](https://github.com/gotson/komga/commits/74d04d0))
+- bump conveyor from 11.4 to 12.0 ([e30a93b](https://github.com/gotson/komga/commits/e30a93b))
+- change windows installer name ([2c87700](https://github.com/gotson/komga/commits/2c87700))
+- hard-code module list ([5911431](https://github.com/gotson/komga/commits/5911431))
+- fix config file ([b80de03](https://github.com/gotson/komga/commits/b80de03))
+- use the Apple notarization API ([0704e9f](https://github.com/gotson/komga/commits/0704e9f))
+
+**jreleaser**
+- add release introduction to the release notes ([d52ba95](https://github.com/gotson/komga/commits/d52ba95))
+
+**release**
+- upload conveyor logs ([e631313](https://github.com/gotson/komga/commits/e631313))
+- fix secret decoding ([0995c26](https://github.com/gotson/komga/commits/0995c26))
+- create secret folder before decoding ([4ddd51e](https://github.com/gotson/komga/commits/4ddd51e))
+
+**tests**
+- use conveyor detect config file ([0f6b7cc](https://github.com/gotson/komga/commits/0f6b7cc))
+- add missing config for conveyor ([39825e4](https://github.com/gotson/komga/commits/39825e4))
+- build jdk module list and compare with historical ([33e10f5](https://github.com/gotson/komga/commits/33e10f5))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([091015e](https://github.com/gotson/komga/commits/091015e))
+- translated using Weblate (Finnish) ([44a8db0](https://github.com/gotson/komga/commits/44a8db0))
+
+## ⚙️ Dependencies
+**komga**
+- bump nightmonkeys imageio from 0.6.1 to 0.6.2 ([25eb6c0](https://github.com/gotson/komga/commits/25eb6c0)), closes [#1289](https://github.com/gotson/komga/issues/1289)
+
 # [1.7.1](https://github.com/gotson/komga/compare/1.7.0...1.7.1) (2023-11-02)
 ## 🐛 Fixes
 **docker**
