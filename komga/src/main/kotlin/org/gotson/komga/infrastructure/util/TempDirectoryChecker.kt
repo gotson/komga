@@ -30,6 +30,5 @@ fun checkTempDirectory() {
     }
 
     check(Files.isWritable(tmpDir)) { "Temp directory is not writable: $tmpDir" }
-
   } ?: throw IllegalStateException("System property 'java.io.tmpdir' is not defined")
 }
