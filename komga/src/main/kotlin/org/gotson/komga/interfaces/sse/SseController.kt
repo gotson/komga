@@ -50,7 +50,8 @@ class SseController(
     if (!acceptingConnections) throw IllegalStateException("Server is shutting down, not accepting new SSE connections")
     val emitter = SseEmitter()
     emitter.onCompletion { synchronized(emitters) { emitters.remove(emitter) } }
-    emitter.onTimeout { emitter.complete() }
+    emitter.onTimeout { synchronized(emitters) { emitters.remove(emitter) } }
+    emitter.onError { synchronized(emitters) { emitters.remove(emitter) } }
     emitters[emitter] = principal.user
     return emitter
   }

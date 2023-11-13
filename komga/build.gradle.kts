@@ -11,7 +11,6 @@ plugins {
     kotlin("plugin.spring")
     kotlin("kapt")
   }
-  // 3.1.3+ breaks SSE - https://github.com/spring-projects/spring-framework/issues/31140
   id("org.springframework.boot") version "3.1.2"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
   id("nu.studer.jooq") version "8.2.1"
