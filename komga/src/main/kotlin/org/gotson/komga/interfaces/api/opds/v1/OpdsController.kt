@@ -684,9 +684,9 @@ class OpdsController(
     val mediaTypes = media.pages.map { it.mediaType }.distinct()
 
     val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
-      OpdsLinkPageStreaming(mediaTypes.first(), uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}", media.pages.size, readProgress?.page, readProgress?.readDate)
+      OpdsLinkPageStreaming(mediaTypes.first(), uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}", media.pageCount, readProgress?.page, readProgress?.readDate)
     } else {
-      OpdsLinkPageStreaming("image/jpeg", uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?convert=jpeg", media.pages.size, readProgress?.page, readProgress?.readDate)
+      OpdsLinkPageStreaming("image/jpeg", uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?convert=jpeg", media.pageCount, readProgress?.page, readProgress?.readDate)
     }
 
     return OpdsEntryAcquisition(

@@ -114,7 +114,7 @@ class MediaDao(
               it.status,
               it.mediaType,
               it.comment,
-              it.pages.size,
+              it.pageCount,
             )
           }
         }.execute()
@@ -189,7 +189,7 @@ class MediaDao(
       .set(m.STATUS, media.status.toString())
       .set(m.MEDIA_TYPE, media.mediaType)
       .set(m.COMMENT, media.comment)
-      .set(m.PAGE_COUNT, media.pages.size)
+      .set(m.PAGE_COUNT, media.pageCount)
       .set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(m.BOOK_ID.eq(media.bookId))
       .execute()
@@ -229,6 +229,7 @@ class MediaDao(
       status = Media.Status.valueOf(status),
       mediaType = mediaType,
       pages = pages,
+      pageCount = pageCount,
       files = files,
       comment = comment,
       bookId = bookId,

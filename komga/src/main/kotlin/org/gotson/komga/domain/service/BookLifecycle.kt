@@ -69,9 +69,9 @@ class BookLifecycle(
     transactionTemplate.executeWithoutResult {
       // if the number of pages has changed, delete all read progress for that book
       mediaRepository.findById(book.id).let { previous ->
-        if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
+        if (previous.status == Media.Status.OUTDATED && previous.pageCount != media.pageCount) {
           val adjustedProgress = readProgressRepository.findAllByBookId(book.id)
-            .map { it.copy(page = if (it.completed) media.pages.size else 1) }
+            .map { it.copy(page = if (it.completed) media.pageCount else 1) }
           if (adjustedProgress.isNotEmpty()) {
             logger.info { "Number of pages differ, adjust read progress for book" }
             readProgressRepository.save(adjustedProgress)
@@ -345,7 +345,7 @@ class BookLifecycle(
   fun markReadProgressCompleted(bookId: String, user: KomgaUser) {
     val media = mediaRepository.findById(bookId)
 
-    val progress = ReadProgress(bookId, user.id, media.pages.size, true)
+    val progress = ReadProgress(bookId, user.id, media.pageCount, true)
     readProgressRepository.save(progress)
     eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(progress))
   }

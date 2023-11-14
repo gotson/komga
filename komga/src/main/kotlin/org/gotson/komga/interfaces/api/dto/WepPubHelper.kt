@@ -92,7 +92,7 @@ fun BookDto.toManifestPdf(media: Media, seriesMetadata: SeriesMetadata): WPPubli
       metadata = it.metadata
         .withSeriesMetadata(seriesMetadata)
         .copy(conformsTo = PROFILE_PDF),
-      readingOrder = List(media.pages.size) { index: Int ->
+      readingOrder = List(media.pageCount) { index: Int ->
         WPLinkDto(
           href = uriBuilder.cloneBuilder().path("books/$id/pages/${index + 1}/raw").toUriString(),
           type = PDF.type,

@@ -6,6 +6,7 @@ data class Media(
   val status: Status = Status.UNKNOWN,
   val mediaType: String? = null,
   val pages: List<BookPage> = emptyList(),
+  val pageCount: Int = pages.size,
   val files: List<String> = emptyList(),
   val comment: String? = null,
   val bookId: String = "",

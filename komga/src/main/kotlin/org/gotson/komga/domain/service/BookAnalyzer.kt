@@ -84,7 +84,7 @@ class BookAnalyzer(
 
       val files = others.map { it.name }
 
-      return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, files = files, comment = entriesErrorSummary, bookId = book.id)
+      return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, pageCount = pages.size, files = files, comment = entriesErrorSummary, bookId = book.id)
     } catch (ade: AccessDeniedException) {
       logger.error(ade) { "Error while analyzing book: $book" }
       return Media(status = Media.Status.ERROR, comment = "ERR_1000", bookId = book.id)
@@ -150,8 +150,8 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    if (number > book.media.pages.size || number <= 0) {
-      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pages.size} pages" }
+    if (number > book.media.pageCount || number <= 0) {
+      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pageCount} pages" }
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
@@ -170,8 +170,8 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    if (number > book.media.pages.size || number <= 0) {
-      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pages.size} pages" }
+    if (number > book.media.pageCount || number <= 0) {
+      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pageCount} pages" }
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
@@ -203,7 +203,7 @@ class BookAnalyzer(
    */
   fun hashPages(book: BookWithMedia): Media {
     val hashedPages = book.media.pages.mapIndexed { index, bookPage ->
-      if (bookPage.fileHash.isBlank() && (index < pageHashing || index >= (book.media.pages.size - pageHashing))) {
+      if (bookPage.fileHash.isBlank() && (index < pageHashing || index >= (book.media.pageCount - pageHashing))) {
         val content = getPageContent(book, index + 1)
         val hash = hashPage(bookPage, content)
         bookPage.copy(fileHash = hash)
