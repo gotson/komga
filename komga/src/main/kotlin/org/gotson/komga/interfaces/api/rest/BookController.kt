@@ -22,11 +22,7 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
-import org.gotson.komga.domain.model.MediaType.EPUB
-import org.gotson.komga.domain.model.MediaType.PDF
-import org.gotson.komga.domain.model.MediaType.RAR_4
-import org.gotson.komga.domain.model.MediaType.RAR_GENERIC
-import org.gotson.komga.domain.model.MediaType.ZIP
+import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
@@ -51,12 +47,11 @@ import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
+import org.gotson.komga.interfaces.api.WebPubGenerator
 import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.WPPublicationDto
-import org.gotson.komga.interfaces.api.dto.toManifestDivina
-import org.gotson.komga.interfaces.api.dto.toManifestPdf
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.BookImportBatchDto
@@ -128,6 +123,7 @@ class BookController(
   private val eventPublisher: ApplicationEventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val imageConverter: ImageConverter,
+  private val webPubGenerator: WebPubGenerator,
 ) {
 
   @PageableAsQueryParam
@@ -446,15 +442,18 @@ class BookController(
 
         Media.Status.ERROR -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
         Media.Status.UNSUPPORTED -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book format is not supported")
-        Media.Status.READY -> media.pages.mapIndexed { index, bookPage ->
-          PageDto(
-            number = index + 1,
-            fileName = bookPage.fileName,
-            mediaType = bookPage.mediaType,
-            width = bookPage.dimension?.width,
-            height = bookPage.dimension?.height,
-            sizeBytes = bookPage.fileSize,
-          )
+        Media.Status.READY -> {
+          val pages = if (media.profile == MediaProfile.PDF) bookAnalyzer.getPdfPagesDynamic(media) else media.pages
+          pages.mapIndexed { index, bookPage ->
+            PageDto(
+              number = index + 1,
+              fileName = bookPage.fileName,
+              mediaType = bookPage.mediaType,
+              width = bookPage.dimension?.width,
+              height = bookPage.dimension?.height,
+              sizeBytes = bookPage.fileSize,
+            )
+          }
         }
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -510,7 +509,7 @@ class BookController(
 
     principal.user.checkContentRestriction(book)
 
-    if (media.mediaType == PDF.type && acceptHeaders != null && acceptHeaders.any { it.isCompatibleWith(MediaType.APPLICATION_PDF) }) {
+    if (media.profile == MediaProfile.PDF && acceptHeaders != null && acceptHeaders.any { it.isCompatibleWith(MediaType.APPLICATION_PDF) }) {
       // keep only pdf and image
       acceptHeaders.removeIf { !it.isCompatibleWith(MediaType.APPLICATION_PDF) && !it.isCompatibleWith(MediaType("image")) }
       MimeTypeUtils.sortBySpecificity(acceptHeaders)
@@ -655,12 +654,9 @@ class BookController(
     @PathVariable bookId: String,
   ): ResponseEntity<WPPublicationDto> =
     mediaRepository.findByIdOrNull(bookId)?.let { media ->
-      when (KomgaMediaType.fromMediaType(media.mediaType)) {
-        ZIP -> getWebPubManifestDivina(principal, bookId)
-        RAR_GENERIC -> getWebPubManifestDivina(principal, bookId)
-        RAR_4 -> getWebPubManifestDivina(principal, bookId)
-        EPUB -> getWebPubManifestDivina(principal, bookId)
-        PDF -> getWebPubManifestPdf(principal, bookId)
+      when (KomgaMediaType.fromMediaType(media.mediaType)?.profile) {
+        MediaProfile.DIVINA -> getWebPubManifestDivina(principal, bookId)
+        MediaProfile.PDF -> getWebPubManifestPdf(principal, bookId)
         null -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -674,9 +670,10 @@ class BookController(
     @PathVariable bookId: String,
   ): ResponseEntity<WPPublicationDto> =
     bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
-      if (bookDto.media.mediaType != PDF.type) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
+      if (bookDto.media.mediaProfile != MediaProfile.PDF.name) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
       principal.user.checkContentRestriction(bookDto)
-      val manifest = bookDto.toManifestPdf(
+      val manifest = webPubGenerator.toManifestPdf(
+        bookDto,
         mediaRepository.findById(bookDto.id),
         seriesMetadataRepository.findById(bookDto.seriesId),
       )
@@ -686,9 +683,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
-    value = [
-      "api/v1/books/{bookId}/manifest/divina",
-    ],
+    value = ["api/v1/books/{bookId}/manifest/divina"],
     produces = [MEDIATYPE_DIVINA_JSON_VALUE],
   )
   fun getWebPubManifestDivina(
@@ -697,8 +692,8 @@ class BookController(
   ): ResponseEntity<WPPublicationDto> =
     bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
       principal.user.checkContentRestriction(bookDto)
-      val manifest = bookDto.toManifestDivina(
-        imageConverter::canConvertMediaType,
+      val manifest = webPubGenerator.toManifestDivina(
+        bookDto,
         mediaRepository.findById(bookDto.id),
         seriesMetadataRepository.findById(bookDto.seriesId),
       )

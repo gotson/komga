@@ -1,40 +1,20 @@
 package org.gotson.komga.infrastructure.mediacontainer
 
-import org.assertj.core.api.Assertions
-import org.gotson.komga.domain.model.Dimension
+import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.infrastructure.image.ImageType
 import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 
 class PdfExtractorTest {
-  private val pdfExtractor = PdfExtractor()
+  private val pdfExtractor = PdfExtractor(ImageType.JPEG, 1000F)
 
   @Test
-  fun `given pdf file when parsing for entries then returns all images`() {
+  fun `given pdf file when getting pages then pages are returned`() {
     val fileResource = ClassPathResource("pdf/komga.pdf")
 
-    val entries = pdfExtractor.getEntries(fileResource.file.toPath(), true)
+    val pages = pdfExtractor.getPages(fileResource.file.toPath(), true)
 
-    Assertions.assertThat(entries).hasSize(1)
-    with(entries.first()) {
-      Assertions.assertThat(name).isEqualTo("0")
-      Assertions.assertThat(mediaType).isEqualTo("image/jpeg")
-      Assertions.assertThat(dimension).isEqualTo(Dimension(1536, 1536))
-      Assertions.assertThat(fileSize).isNull()
-    }
-  }
-
-  @Test
-  fun `given pdf file when parsing for entries without analyzing dimensions  then returns all images without dimensions`() {
-    val fileResource = ClassPathResource("pdf/komga.pdf")
-
-    val entries = pdfExtractor.getEntries(fileResource.file.toPath(), false)
-
-    Assertions.assertThat(entries).hasSize(1)
-    with(entries.first()) {
-      Assertions.assertThat(name).isEqualTo("0")
-      Assertions.assertThat(mediaType).isEqualTo("image/jpeg")
-      Assertions.assertThat(dimension).isNull()
-      Assertions.assertThat(fileSize).isNull()
-    }
+    assertThat(pages).hasSize(1)
+    assertThat(pages.first().dimension?.width).isEqualTo(512)
   }
 }

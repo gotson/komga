@@ -8,6 +8,8 @@ import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaProfile
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
@@ -18,7 +20,8 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.CoverExtractor
 import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
-import org.gotson.komga.infrastructure.mediacontainer.MediaContainerRawExtractor
+import org.gotson.komga.infrastructure.mediacontainer.PdfExtractor
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
@@ -32,32 +35,42 @@ private val logger = KotlinLogging.logger {}
 class BookAnalyzer(
   private val contentDetector: ContentDetector,
   extractors: List<MediaContainerExtractor>,
+  private val pdfExtractor: PdfExtractor,
   private val imageConverter: ImageConverter,
   private val imageAnalyzer: ImageAnalyzer,
   private val hasher: Hasher,
   @Value("#{@komgaProperties.pageHashing}") private val pageHashing: Int,
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Qualifier("thumbnailType")
   private val thumbnailType: ImageType,
+  @Qualifier("pdfImageType")
+  private val pdfImageType: ImageType,
 ) {
 
   val supportedMediaTypes = extractors
     .flatMap { e -> e.mediaTypes().map { it to e } }
     .toMap()
+
   fun analyze(book: Book, analyzeDimensions: Boolean): Media {
     logger.info { "Trying to analyze book: $book" }
     try {
-      val mediaType = contentDetector.detectMediaType(book.path)
-      logger.info { "Detected media type: $mediaType" }
-      if (!supportedMediaTypes.containsKey(mediaType))
-        return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
+      val mediaType = contentDetector.detectMediaType(book.path).let {
+        logger.info { "Detected media type: $it" }
+        MediaType.fromMediaType(it) ?: return Media(mediaType = it, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
+      }
+
+      if (mediaType.profile == MediaProfile.PDF) {
+        val pages = pdfExtractor.getPages(book.path, analyzeDimensions).map { BookPage(it.name, "", it.dimension) }
+        return Media(mediaType = mediaType.type, status = Media.Status.READY, pages = pages, bookId = book.id)
+      }
 
       val entries = try {
-        supportedMediaTypes.getValue(mediaType).getEntries(book.path, analyzeDimensions)
+        supportedMediaTypes.getValue(mediaType.type).getEntries(book.path, analyzeDimensions)
       } catch (ex: MediaUnsupportedException) {
-        return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.code, bookId = book.id)
+        return Media(mediaType = mediaType.type, status = Media.Status.UNSUPPORTED, comment = ex.code, bookId = book.id)
       } catch (ex: Exception) {
         logger.error(ex) { "Error while analyzing book: $book" }
-        return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1008", bookId = book.id)
+        return Media(mediaType = mediaType.type, status = Media.Status.ERROR, comment = "ERR_1008", bookId = book.id)
       }
 
       val (pages, others) = entries
@@ -78,13 +91,13 @@ class BookAnalyzer(
 
       if (pages.isEmpty()) {
         logger.warn { "Book $book does not contain any pages" }
-        return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1006", bookId = book.id)
+        return Media(mediaType = mediaType.type, status = Media.Status.ERROR, comment = "ERR_1006", bookId = book.id)
       }
       logger.info { "Book has ${pages.size} pages" }
 
       val files = others.map { it.name }
 
-      return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, pageCount = pages.size, files = files, comment = entriesErrorSummary, bookId = book.id)
+      return Media(mediaType = mediaType.type, status = Media.Status.READY, pages = pages, pageCount = pages.size, files = files, comment = entriesErrorSummary, bookId = book.id)
     } catch (ade: AccessDeniedException) {
       logger.error(ade) { "Error while analyzing book: $book" }
       return Media(status = Media.Status.ERROR, comment = "ERR_1000", bookId = book.id)
@@ -107,7 +120,7 @@ class BookAnalyzer(
     }
 
     val thumbnail = try {
-      val extractor = supportedMediaTypes.getValue(book.media.mediaType!!)
+      val extractor = supportedMediaTypes[book.media.mediaType!!]
       // try to get the cover from a CoverExtractor first
       var coverBytes: ByteArray? = if (extractor is CoverExtractor) {
         try {
@@ -118,9 +131,12 @@ class BookAnalyzer(
         }
       } else null
       // if no cover could be found, get the first page
-      if (coverBytes == null) coverBytes = extractor.getEntryStream(book.book.path, book.media.pages.first().fileName)
+      if (coverBytes == null) {
+        coverBytes = if (book.media.profile == MediaProfile.PDF) pdfExtractor.getPageContentAsImage(book.book.path, 1).content
+        else extractor?.getEntryStream(book.book.path, book.media.pages.first().fileName)
+      }
 
-      coverBytes.let { cover ->
+      coverBytes?.let { cover ->
         imageConverter.resizeImageToByteArray(cover, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
       }
     } catch (ex: Exception) {
@@ -155,7 +171,11 @@ class BookAnalyzer(
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
-    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+    return when (book.media.profile) {
+      MediaProfile.DIVINA -> supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+      MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, number).content
+      null -> throw MediaNotReadyException()
+    }
   }
 
   @Throws(
@@ -175,10 +195,9 @@ class BookAnalyzer(
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
-    val extractor = supportedMediaTypes.getValue(book.media.mediaType!!)
-    if (extractor !is MediaContainerRawExtractor) throw MediaUnsupportedException("Extractor does not support raw extraction of pages")
+    if (book.media.profile != MediaProfile.PDF) throw MediaUnsupportedException("Extractor does not support raw extraction of pages")
 
-    return extractor.getRawEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+    return pdfExtractor.getPageContentAsPdf(book.book.path, number)
   }
 
   @Throws(
@@ -191,6 +210,8 @@ class BookAnalyzer(
       logger.warn { "Book media is not ready, cannot get files" }
       throw MediaNotReadyException()
     }
+
+    if (book.media.profile != MediaProfile.DIVINA) throw MediaUnsupportedException("Extractor does not support extraction of files")
 
     return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, fileName)
   }
@@ -229,5 +250,16 @@ class BookAnalyzer(
       } else content
 
     return hasher.computeHash(bytes.inputStream())
+  }
+
+  fun getPdfPagesDynamic(media: Media): List<BookPage> {
+    if (media.profile != MediaProfile.PDF) throw MediaUnsupportedException("Cannot get synthetic pages for non-PDF media")
+
+    return media.pages.map { page ->
+      page.copy(
+        mediaType = pdfImageType.mediaType,
+        dimension = page.dimension?.let { pdfExtractor.scaleDimension(it) },
+      )
+    }
   }
 }

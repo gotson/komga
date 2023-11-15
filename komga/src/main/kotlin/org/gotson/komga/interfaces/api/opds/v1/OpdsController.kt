@@ -9,6 +9,7 @@ import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesCollection
@@ -23,6 +24,7 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
+import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
@@ -47,6 +49,7 @@ import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -109,6 +112,8 @@ class OpdsController(
   private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Qualifier("pdfImageType")
+  private val pdfImageType: ImageType,
 ) {
 
   private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/gotson/komga"))
@@ -681,7 +686,11 @@ class OpdsController(
   }
 
   private fun BookDto.toOpdsEntry(media: Media, prepend: (BookDto) -> String = { "" }): OpdsEntryAcquisition {
-    val mediaTypes = media.pages.map { it.mediaType }.distinct()
+    val mediaTypes = when (media.profile) {
+      MediaProfile.DIVINA -> media.pages.map { it.mediaType }.distinct()
+      MediaProfile.PDF -> listOf(pdfImageType.mediaType)
+      null -> emptyList()
+    }
 
     val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
       OpdsLinkPageStreaming(mediaTypes.first(), uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}", media.pageCount, readProgress?.page, readProgress?.readDate)
@@ -700,7 +709,7 @@ class OpdsController(
       authors = metadata.authors.map { OpdsAuthor(it.name) },
       links = listOf(
         OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail/small").toUriString()),
-        OpdsLinkImage(media.pages[0].mediaType, uriBuilder("books/$id/thumbnail").toUriString()),
+        OpdsLinkImage(if (media.profile == MediaProfile.PDF) pdfImageType.mediaType else media.pages[0].mediaType, uriBuilder("books/$id/thumbnail").toUriString()),
         OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),
         opdsLinkPageStreaming,
       ),

@@ -13,6 +13,7 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.BookMetadataRepository
@@ -27,6 +28,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -58,6 +60,8 @@ class BookLifecycle(
   private val hasher: Hasher,
   private val historicalEventRepository: HistoricalEventRepository,
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Qualifier("pdfImageType")
+  private val pdfImageType: ImageType,
 ) {
 
   private val resizeTargetFormat = ImageType.JPEG
@@ -252,7 +256,9 @@ class BookLifecycle(
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
     val media = mediaRepository.findById(book.id)
     val pageContent = bookAnalyzer.getPageContent(BookWithMedia(book, media), number)
-    val pageMediaType = media.pages[number - 1].mediaType
+    val pageMediaType =
+      if (media.profile == MediaProfile.PDF) pdfImageType.mediaType
+      else media.pages[number - 1].mediaType
 
     if (resizeTo != null) {
       val convertedPage = try {

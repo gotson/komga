@@ -5,8 +5,10 @@ import mu.KotlinLogging
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.TransientBookRepository
+import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.TransientBookLifecycle
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.toFilePath
@@ -33,6 +35,7 @@ private val logger = KotlinLogging.logger {}
 class TransientBooksController(
   private val transientBookLifecycle: TransientBookLifecycle,
   private val transientBookRepository: TransientBookRepository,
+  private val bookAnalyzer: BookAnalyzer,
 ) {
 
   @PostMapping
@@ -78,30 +81,32 @@ class TransientBooksController(
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-}
 
-private fun BookWithMedia.toDto() =
-  TransientBookDto(
-    id = book.id,
-    name = book.name,
-    url = book.url.toFilePath(),
-    fileLastModified = book.fileLastModified,
-    sizeBytes = book.fileSize,
-    status = media.status.toString(),
-    mediaType = media.mediaType ?: "",
-    pages = media.pages.mapIndexed { index, bookPage ->
-      PageDto(
-        number = index + 1,
-        fileName = bookPage.fileName,
-        mediaType = bookPage.mediaType,
-        width = bookPage.dimension?.width,
-        height = bookPage.dimension?.height,
-        sizeBytes = bookPage.fileSize,
-      )
-    },
-    files = media.files,
-    comment = media.comment ?: "",
-  )
+  private fun BookWithMedia.toDto(): TransientBookDto {
+    val pages = if (media.profile == MediaProfile.PDF) bookAnalyzer.getPdfPagesDynamic(media) else media.pages
+    return TransientBookDto(
+      id = book.id,
+      name = book.name,
+      url = book.url.toFilePath(),
+      fileLastModified = book.fileLastModified,
+      sizeBytes = book.fileSize,
+      status = media.status.toString(),
+      mediaType = media.mediaType ?: "",
+      pages = pages.mapIndexed { index, bookPage ->
+        PageDto(
+          number = index + 1,
+          fileName = bookPage.fileName,
+          mediaType = bookPage.mediaType,
+          width = bookPage.dimension?.width,
+          height = bookPage.dimension?.height,
+          sizeBytes = bookPage.fileSize,
+        )
+      },
+      files = media.files,
+      comment = media.comment ?: "",
+    )
+  }
+}
 
 data class ScanRequestDto(
   val path: String,
