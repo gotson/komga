@@ -1,6 +1,4 @@
 java.base
-java.base/jdk.internal.vm.annotation
-java.base/sun.security.x509
 java.compiler
 java.datatransfer
 java.desktop
