@@ -171,7 +171,7 @@ jobs:
           echo $APPLE_PRIVATE_KEY | base64 --decode > ./secret/apple_private_key.p8
 
       - name: Conveyor build apps
-        uses: hydraulic-software/conveyor/actions/build@v12.0
+        uses: hydraulic-software/conveyor/actions/build@v12.1
         if: inputs.github_release
         with:
           command: -f conveyor.ci.conf make site -o ./output/release
@@ -255,7 +255,7 @@ jobs:
             build/jreleaser/output.properties
 
       - name: Conveyor - publish to Microsoft Store
-        uses: hydraulic-software/conveyor/actions/build@v12.0
+        uses: hydraulic-software/conveyor/actions/build@v12.1
         if: inputs.msstore_release
         with:
           command: -f conveyor.msstore.ci.conf make ms-store-release -o ./output/msstore
