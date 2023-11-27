@@ -59,7 +59,7 @@ jobs:
         run: diff --unified  ./komga-tray/conveyor/required-jdk-modules.txt ./output/required-jdk-modules.txt
 
       - name: Upload JDK required modules
-        if: failure()
+        if: steps.conveyor_compare.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
           name: conveyor-required-jdk-modules
@@ -72,7 +72,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: komga-webui/package-lock.json
       - name: npm install
