@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.core.io.ClassPathResource
 import java.util.stream.Stream
+import kotlin.io.path.Path
 
 class NavTest {
   @ParameterizedTest
@@ -17,7 +18,7 @@ class NavTest {
     val navString = navResource.inputStream.readAllBytes().decodeToString()
 
     // when
-    val nav = processNav(navString, navType)
+    val nav = processNav(ResourceContent(Path("${prefix?.let { "$it/" }}nav.xhtml"), navString), navType)
 
     // then
     val expectedNav = expectedProvider(prefix?.let { "$it/" } ?: "")

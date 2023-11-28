@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.core.io.ClassPathResource
 import java.util.stream.Stream
+import kotlin.io.path.Path
 
 class NcxTest {
   @ParameterizedTest
@@ -17,7 +18,7 @@ class NcxTest {
     val ncxString = ncxResource.inputStream.readAllBytes().decodeToString()
 
     // when
-    val ncxNav = processNcx(ncxString, navType)
+    val ncxNav = processNcx(ResourceContent(Path("${prefix?.let { "$it/" }}toc.ncx"), ncxString), navType)
 
     // then
     val expectedNav = expectedProvider(prefix?.let { "$it/" } ?: "")
