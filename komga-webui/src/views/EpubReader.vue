@@ -282,7 +282,6 @@ import {getBookTitleCompact} from '@/functions/book-title'
 import {SeriesDto} from '@/types/komga-series'
 import {Context, ContextOrigin} from '@/types/context'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
-import SettingsSelect from '@/components/SettingsSelect.vue'
 import {TocEntry} from '@/types/epub'
 import TocList from '@/components/TocList.vue'
 import {Locations} from '@d-i-t-a/reader/dist/types/model/Locator'
@@ -294,7 +293,7 @@ import {getBookReadRouteFromMediaProfile} from '@/functions/book-format'
 
 export default Vue.extend({
   name: 'EpubReader',
-  components: {ShortcutHelpDialog, TocList, SettingsSelect, SettingsSwitch},
+  components: {ShortcutHelpDialog, TocList, SettingsSwitch},
   data: function () {
     return {
       screenfull,
