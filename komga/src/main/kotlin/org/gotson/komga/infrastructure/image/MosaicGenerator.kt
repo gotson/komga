@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.image
 
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
@@ -10,6 +11,7 @@ import kotlin.math.roundToInt
 @Service
 class MosaicGenerator(
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Qualifier("thumbnailType")
   private val thumbnailType: ImageType,
   private val imageConverter: ImageConverter,
 ) {

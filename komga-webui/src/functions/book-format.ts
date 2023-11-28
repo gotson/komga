@@ -1,19 +1,29 @@
 import {BookFormat} from '@/types/komga-books'
+import {lowerCase} from 'lodash'
 
-export function getBookFormatFromMediaType (mediaType: string): BookFormat {
+export function getBookFormatFromMediaType(mediaType: string): BookFormat {
   switch (mediaType) {
     case 'application/x-rar-compressed':
     case 'application/x-rar-compressed; version=4':
-      return { type: 'CBR', color: '#03A9F4' }
+      return {type: 'CBR', color: '#03A9F4'}
     case 'application/zip':
-      return { type: 'CBZ', color: '#4CAF50' }
+      return {type: 'CBZ', color: '#4CAF50'}
     case 'application/pdf':
-      return { type: 'PDF', color: '#FF5722' }
+      return {type: 'PDF', color: '#FF5722'}
     case 'application/epub+zip':
-      return { type: 'EPUB', color: '#ff5ab1' }
+      return {type: 'EPUB', color: '#ff5ab1'}
     case 'application/x-rar-compressed; version=5':
-      return { type: 'RAR5', color: '#000000' }
+      return {type: 'RAR5', color: '#000000'}
     default:
-      return { type: mediaType, color: '#000000' }
+      return {type: mediaType, color: '#000000'}
+  }
+}
+
+export function getBookReadRouteFromMediaProfile(mediaProfile: string): string {
+  switch (lowerCase(mediaProfile)) {
+    case 'epub':
+      return 'read-epub'
+    default:
+      return 'read-book'
   }
 }

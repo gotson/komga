@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.api.rest.dto
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.jakewharton.byteunits.BinaryByteUnit
 import org.apache.commons.io.FilenameUtils
+import org.gotson.komga.domain.model.MediaType
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -38,7 +39,9 @@ data class MediaDto(
   val mediaType: String,
   val pagesCount: Int,
   val comment: String,
-)
+) {
+  val mediaProfile: String by lazy { MediaType.fromMediaType(mediaType)?.profile?.name ?: "" }
+}
 
 data class BookMetadataDto(
   val title: String,

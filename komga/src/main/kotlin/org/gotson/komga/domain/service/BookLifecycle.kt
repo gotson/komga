@@ -13,6 +13,7 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.BookMetadataRepository
@@ -27,6 +28,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -58,6 +60,8 @@ class BookLifecycle(
   private val hasher: Hasher,
   private val historicalEventRepository: HistoricalEventRepository,
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Qualifier("pdfImageType")
+  private val pdfImageType: ImageType,
 ) {
 
   private val resizeTargetFormat = ImageType.JPEG
@@ -69,9 +73,9 @@ class BookLifecycle(
     transactionTemplate.executeWithoutResult {
       // if the number of pages has changed, delete all read progress for that book
       mediaRepository.findById(book.id).let { previous ->
-        if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
+        if (previous.status == Media.Status.OUTDATED && previous.pageCount != media.pageCount) {
           val adjustedProgress = readProgressRepository.findAllByBookId(book.id)
-            .map { it.copy(page = if (it.completed) media.pages.size else 1) }
+            .map { it.copy(page = if (it.completed) media.pageCount else 1) }
           if (adjustedProgress.isNotEmpty()) {
             logger.info { "Number of pages differ, adjust read progress for book" }
             readProgressRepository.save(adjustedProgress)
@@ -252,7 +256,9 @@ class BookLifecycle(
   fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
     val media = mediaRepository.findById(book.id)
     val pageContent = bookAnalyzer.getPageContent(BookWithMedia(book, media), number)
-    val pageMediaType = media.pages[number - 1].mediaType
+    val pageMediaType =
+      if (media.profile == MediaProfile.PDF) pdfImageType.mediaType
+      else media.pages[number - 1].mediaType
 
     if (resizeTo != null) {
       val convertedPage = try {
@@ -345,7 +351,7 @@ class BookLifecycle(
   fun markReadProgressCompleted(bookId: String, user: KomgaUser) {
     val media = mediaRepository.findById(bookId)
 
-    val progress = ReadProgress(bookId, user.id, media.pages.size, true)
+    val progress = ReadProgress(bookId, user.id, media.pageCount, true)
     readProgressRepository.save(progress)
     eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(progress))
   }

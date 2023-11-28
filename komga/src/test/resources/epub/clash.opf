@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package version="2.0" unique-identifier="PrimaryID" xmlns="http://www.idpf.org/2007/opf">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:identifier id="PrimaryID" opf:scheme="ISBN">978-0-553-89784-5</dc:identifier>
+    <dc:title>A Clash of Kings</dc:title>
+    <dc:rights>Copyright © 1996 by George R.R. Martin</dc:rights>
+    <dc:creator opf:file-as="Martin, George R. R." opf:role="aut">George R. R. Martin</dc:creator>
+    <dc:description>&lt;p&gt;</dc:description>
+    <dc:publisher>Random House Publishing Group</dc:publisher>
+    <dc:date opf:event="publication">2011-03-22</dc:date>
+    <dc:language>en</dc:language>
+    <meta name="cover" content="b02-cover-image" />
+    <meta content="1.1" name="epubcheckversion" />
+    <meta content="2011-03-15" name="epubcheckdate" />
+    <meta content="0.4.0" name="Sigil version" />
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    <item id="b02-css" href="Styles/Mart_9780553897852_epub_css_r1.css" media-type="text/css"/>
+    <item id="b02-cvi" href="Text/Mart_9780553897852_epub_cvi_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-tp" href="Text/Mart_9780553897852_epub_tp_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-toc" href="Text/Mart_9780553897852_epub_toc_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-ded" href="Text/Mart_9780553897852_epub_ded_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-fm1" href="Text/Mart_9780553897852_epub_fm1_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-fm2" href="Text/Mart_9780553897852_epub_fm2_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-prl" href="Text/Mart_9780553897852_epub_prl_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c01" href="Text/Mart_9780553897852_epub_c01_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c02" href="Text/Mart_9780553897852_epub_c02_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c03" href="Text/Mart_9780553897852_epub_c03_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c04" href="Text/Mart_9780553897852_epub_c04_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c05" href="Text/Mart_9780553897852_epub_c05_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c06" href="Text/Mart_9780553897852_epub_c06_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c07" href="Text/Mart_9780553897852_epub_c07_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c08" href="Text/Mart_9780553897852_epub_c08_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c09" href="Text/Mart_9780553897852_epub_c09_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c10" href="Text/Mart_9780553897852_epub_c10_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c11" href="Text/Mart_9780553897852_epub_c11_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c12" href="Text/Mart_9780553897852_epub_c12_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c13" href="Text/Mart_9780553897852_epub_c13_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c14" href="Text/Mart_9780553897852_epub_c14_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c15" href="Text/Mart_9780553897852_epub_c15_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c16" href="Text/Mart_9780553897852_epub_c16_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c17" href="Text/Mart_9780553897852_epub_c17_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c18" href="Text/Mart_9780553897852_epub_c18_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c19" href="Text/Mart_9780553897852_epub_c19_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c20" href="Text/Mart_9780553897852_epub_c20_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c21" href="Text/Mart_9780553897852_epub_c21_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c22" href="Text/Mart_9780553897852_epub_c22_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c23" href="Text/Mart_9780553897852_epub_c23_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c24" href="Text/Mart_9780553897852_epub_c24_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c25" href="Text/Mart_9780553897852_epub_c25_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c26" href="Text/Mart_9780553897852_epub_c26_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c27" href="Text/Mart_9780553897852_epub_c27_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c28" href="Text/Mart_9780553897852_epub_c28_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c29" href="Text/Mart_9780553897852_epub_c29_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c30" href="Text/Mart_9780553897852_epub_c30_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c31" href="Text/Mart_9780553897852_epub_c31_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c32" href="Text/Mart_9780553897852_epub_c32_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c33" href="Text/Mart_9780553897852_epub_c33_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c34" href="Text/Mart_9780553897852_epub_c34_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c35" href="Text/Mart_9780553897852_epub_c35_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c36" href="Text/Mart_9780553897852_epub_c36_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c37" href="Text/Mart_9780553897852_epub_c37_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c38" href="Text/Mart_9780553897852_epub_c38_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c39" href="Text/Mart_9780553897852_epub_c39_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c40" href="Text/Mart_9780553897852_epub_c40_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c41" href="Text/Mart_9780553897852_epub_c41_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c42" href="Text/Mart_9780553897852_epub_c42_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c43" href="Text/Mart_9780553897852_epub_c43_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c44" href="Text/Mart_9780553897852_epub_c44_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c45" href="Text/Mart_9780553897852_epub_c45_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c46" href="Text/Mart_9780553897852_epub_c46_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c47" href="Text/Mart_9780553897852_epub_c47_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c48" href="Text/Mart_9780553897852_epub_c48_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c49" href="Text/Mart_9780553897852_epub_c49_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c50" href="Text/Mart_9780553897852_epub_c50_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c51" href="Text/Mart_9780553897852_epub_c51_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c52" href="Text/Mart_9780553897852_epub_c52_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c53" href="Text/Mart_9780553897852_epub_c53_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c54" href="Text/Mart_9780553897852_epub_c54_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c55" href="Text/Mart_9780553897852_epub_c55_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c56" href="Text/Mart_9780553897852_epub_c56_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c57" href="Text/Mart_9780553897852_epub_c57_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c58" href="Text/Mart_9780553897852_epub_c58_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c59" href="Text/Mart_9780553897852_epub_c59_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c60" href="Text/Mart_9780553897852_epub_c60_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c61" href="Text/Mart_9780553897852_epub_c61_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c62" href="Text/Mart_9780553897852_epub_c62_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c63" href="Text/Mart_9780553897852_epub_c63_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c64" href="Text/Mart_9780553897852_epub_c64_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c65" href="Text/Mart_9780553897852_epub_c65_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c66" href="Text/Mart_9780553897852_epub_c66_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c67" href="Text/Mart_9780553897852_epub_c67_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c68" href="Text/Mart_9780553897852_epub_c68_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-c69" href="Text/Mart_9780553897852_epub_c69_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-app" href="Text/Mart_9780553897852_epub_app_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-bm" href="Text/Mart_9780553897852_epub_bm_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-ack" href="Text/Mart_9780553897852_epub_ack_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-cop" href="Text/Mart_9780553897852_epub_cop_r1.htm" media-type="application/xhtml+xml"/>
+    <item id="b02-cover-image" href="Images/Mart_9780553897852_epub_cvi_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id2182224" href="Images/Mart_9780553897852_epub_a01_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id2235231" href="Images/Mart_9780553897852_epub_a02_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1208082" href="Images/Mart_9780553897852_epub_a03_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1190433" href="Images/Mart_9780553897852_epub_a04_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1344120" href="Images/Mart_9780553897852_epub_a05_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id2517717" href="Images/Mart_9780553897852_epub_a06_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1233482" href="Images/Mart_9780553897852_epub_a07_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1491108" href="Images/Mart_9780553897852_epub_a08_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1500203" href="Images/Mart_9780553897852_epub_a09_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1184086" href="Images/Mart_9780553897852_epub_a10_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1371281" href="Images/Mart_9780553897852_epub_a11_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id1219283" href="Images/Mart_9780553897852_epub_a12_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id2384769" href="Images/Mart_9780553897852_epub_a13_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id2222502" href="Images/Mart_9780553897852_epub_a14_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id2545288" href="Images/Mart_9780553897852_epub_a15_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id2238633" href="Images/Mart_9780553897852_epub_a16_r1.jpg" media-type="image/jpeg"/>
+    <item id="b02-id2277767" href="Images/Mart_9780553897852_epub_a17_r1.jpg" media-type="image/jpeg"/>
+    <item id="page-template.xpgt" href="Styles/page-template.xpgt" media-type="application/vnd.adobe-page-template+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="b02-cvi" linear="yes"/>
+    <itemref idref="b02-tp"/>
+    <itemref idref="b02-cop"/>
+    <itemref idref="b02-toc"/>
+    <itemref idref="b02-ded"/>
+    <itemref idref="b02-fm1"/>
+    <itemref idref="b02-fm2"/>
+    <itemref idref="b02-prl"/>
+    <itemref idref="b02-c01"/>
+    <itemref idref="b02-c02"/>
+    <itemref idref="b02-c03"/>
+    <itemref idref="b02-c04"/>
+    <itemref idref="b02-c05"/>
+    <itemref idref="b02-c06"/>
+    <itemref idref="b02-c07"/>
+    <itemref idref="b02-c08"/>
+    <itemref idref="b02-c09"/>
+    <itemref idref="b02-c10"/>
+    <itemref idref="b02-c11"/>
+    <itemref idref="b02-c12"/>
+    <itemref idref="b02-c13"/>
+    <itemref idref="b02-c14"/>
+    <itemref idref="b02-c15"/>
+    <itemref idref="b02-c16"/>
+    <itemref idref="b02-c17"/>
+    <itemref idref="b02-c18"/>
+    <itemref idref="b02-c19"/>
+    <itemref idref="b02-c20"/>
+    <itemref idref="b02-c21"/>
+    <itemref idref="b02-c22"/>
+    <itemref idref="b02-c23"/>
+    <itemref idref="b02-c24"/>
+    <itemref idref="b02-c25"/>
+    <itemref idref="b02-c26"/>
+    <itemref idref="b02-c27"/>
+    <itemref idref="b02-c28"/>
+    <itemref idref="b02-c29"/>
+    <itemref idref="b02-c30"/>
+    <itemref idref="b02-c31"/>
+    <itemref idref="b02-c32"/>
+    <itemref idref="b02-c33"/>
+    <itemref idref="b02-c34"/>
+    <itemref idref="b02-c35"/>
+    <itemref idref="b02-c36"/>
+    <itemref idref="b02-c37"/>
+    <itemref idref="b02-c38"/>
+    <itemref idref="b02-c39"/>
+    <itemref idref="b02-c40"/>
+    <itemref idref="b02-c41"/>
+    <itemref idref="b02-c42"/>
+    <itemref idref="b02-c43"/>
+    <itemref idref="b02-c44"/>
+    <itemref idref="b02-c45"/>
+    <itemref idref="b02-c46"/>
+    <itemref idref="b02-c47"/>
+    <itemref idref="b02-c48"/>
+    <itemref idref="b02-c49"/>
+    <itemref idref="b02-c50"/>
+    <itemref idref="b02-c51"/>
+    <itemref idref="b02-c52"/>
+    <itemref idref="b02-c53"/>
+    <itemref idref="b02-c54"/>
+    <itemref idref="b02-c55"/>
+    <itemref idref="b02-c56"/>
+    <itemref idref="b02-c57"/>
+    <itemref idref="b02-c58"/>
+    <itemref idref="b02-c59"/>
+    <itemref idref="b02-c60"/>
+    <itemref idref="b02-c61"/>
+    <itemref idref="b02-c62"/>
+    <itemref idref="b02-c63"/>
+    <itemref idref="b02-c64"/>
+    <itemref idref="b02-c65"/>
+    <itemref idref="b02-c66"/>
+    <itemref idref="b02-c67"/>
+    <itemref idref="b02-c68"/>
+    <itemref idref="b02-c69"/>
+    <itemref idref="b02-app"/>
+    <itemref idref="b02-bm"/>
+    <itemref idref="b02-ack"/>
+  </spine>
+  <guide>
+    <reference type="toc" title="Table Of Contents" href="Text/Mart_9780553897852_epub_toc_r1.htm"/>
+    <reference type="text" title="Text" href="Text/Mart_9780553897852_epub_prl_r1.htm"/>
+    <reference type="cover" title="Cover" href="Text/Mart_9780553897852_epub_cvi_r1.htm"/>
+  </guide>
+</package>

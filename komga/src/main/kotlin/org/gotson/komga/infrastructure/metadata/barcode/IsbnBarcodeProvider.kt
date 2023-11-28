@@ -39,7 +39,7 @@ class IsbnBarcodeProvider(
     setOf(BookMetadataPatchCapability.ISBN)
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
-    val pagesToTry = (1..book.media.pages.size).toList().let {
+    val pagesToTry = (1..book.media.pageCount).toList().let {
       (it.takeLast(PAGES_LAST).reversed() + it.take(PAGES_FIRST)).distinct()
     }
 

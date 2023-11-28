@@ -194,7 +194,7 @@
                   <v-btn color="accent"
                          small
                          :title="$t('browse_book.read_book')"
-                         :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
+                         :to="{name: readRouteName, params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
                          :disabled="!canRead"
                   >
                     <v-icon left small>mdi-book-open-page-variant</v-icon>
@@ -205,7 +205,7 @@
                 <v-col cols="auto">
                   <v-btn small
                          :title="$t('browse_book.read_incognito')"
-                         :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
+                         :to="{name: readRouteName, params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
                          :disabled="!canRead"
                   >
                     <v-icon left small>mdi-incognito</v-icon>
@@ -240,7 +240,7 @@
             <v-btn color="accent"
                    small
                    :title="$t('browse_book.read_book')"
-                   :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
+                   :to="{name: readRouteName, params: { bookId: bookId}, query: { context: context.origin, contextId: context.id}}"
                    :disabled="!canRead"
             >
               <v-icon left small>mdi-book-open-page-variant</v-icon>
@@ -251,7 +251,7 @@
           <v-col cols="auto">
             <v-btn small
                    :title="$t('browse_book.read_incognito')"
-                   :to="{name: 'read-book', params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
+                   :to="{name: readRouteName, params: { bookId: bookId}, query: { context: context.origin, contextId: context.id, incognito: true}}"
                    :disabled="!canRead"
             >
               <v-icon left small>mdi-incognito</v-icon>
@@ -409,7 +409,7 @@ import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import {groupAuthorsByRole} from '@/functions/authors'
-import {getBookFormatFromMediaType} from '@/functions/book-format'
+import {getBookFormatFromMediaType, getBookReadRouteFromMediaProfile} from '@/functions/book-format'
 import {getPagesLeft, getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
@@ -487,6 +487,9 @@ export default Vue.extend({
     next()
   },
   computed: {
+    readRouteName(): string {
+      return getBookReadRouteFromMediaProfile(this.book.media.mediaProfile)
+    },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
