@@ -339,6 +339,7 @@ import {SeriesDto} from '@/types/komga-series'
 import jsFileDownloader from 'js-file-downloader'
 import screenfull from 'screenfull'
 import {ItemTypes} from '@/types/items'
+import {getBookReadRouteFromMediaProfile} from '@/functions/book-format'
 
 export default Vue.extend({
   name: 'BookReader',
@@ -741,7 +742,7 @@ export default Vue.extend({
       if (!this.$_.isEmpty(this.siblingPrevious)) {
         this.jumpToPreviousBook = false
         this.$router.push({
-          name: 'read-book',
+          name: getBookReadRouteFromMediaProfile(this.siblingPrevious.media.mediaProfile),
           params: {bookId: this.siblingPrevious.id.toString()},
           query: {context: this.context.origin, contextId: this.context.id, incognito: this.incognito.toString()},
         })
@@ -753,7 +754,7 @@ export default Vue.extend({
       } else {
         this.jumpToNextBook = false
         this.$router.push({
-          name: 'read-book',
+          name: getBookReadRouteFromMediaProfile(this.siblingNext.media.mediaProfile),
           params: {bookId: this.siblingNext.id.toString()},
           query: {context: this.context.origin, contextId: this.context.id, incognito: this.incognito.toString()},
         })

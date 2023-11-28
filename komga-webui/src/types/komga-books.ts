@@ -27,7 +27,8 @@ export interface MediaDto {
   status: string,
   mediaType: string,
   pagesCount: number,
-  comment: string
+  comment: string,
+  mediaProfile: string,
 }
 
 export interface PageDto {

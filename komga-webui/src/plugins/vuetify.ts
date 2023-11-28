@@ -6,6 +6,7 @@ import colors from 'vuetify/lib/util/colors'
 
 import {Touch} from 'vuetify/lib/directives'
 import i18n from '@/i18n'
+import IconFormatLineSpacingDown from '@/components/icons/IconFormatLineSpacingDown.vue'
 
 Vue.use(Vuetify, {
   directives: {
@@ -16,6 +17,11 @@ Vue.use(Vuetify, {
 export default new Vuetify({
   icons: {
     iconfont: 'mdi',
+    values: {
+      formatLineSpacingDown: {
+        component: IconFormatLineSpacingDown,
+      },
+    },
   },
 
   lang: {
