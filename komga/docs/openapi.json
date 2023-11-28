@@ -12872,6 +12872,9 @@
             "type": "number",
             "format": "double"
           },
+          "concrete": {
+            "type": "boolean"
+          },
           "wildcardType": {
             "type": "boolean"
           },
@@ -12880,9 +12883,6 @@
           },
           "subtypeSuffix": {
             "type": "string"
-          },
-          "concrete": {
-            "type": "boolean"
           },
           "charset": {
             "type": "string"

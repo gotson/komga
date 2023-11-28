@@ -1,3 +1,8 @@
+# [1.8.1](https://github.com/gotson/komga/compare/1.8.0...1.8.1) (2023-11-28)
+## 🐛 Fixes
+**api**
+- set X-Frame-Options header to same origin for epubreader ([85cae8a](https://github.com/gotson/komga/commits/85cae8a))
+
 # [1.8.0](https://github.com/gotson/komga/compare/1.7.2...1.8.0) (2023-11-28)
 ## 🚀 Features
 **api**
