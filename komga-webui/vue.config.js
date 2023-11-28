@@ -24,7 +24,7 @@ module.exports = {
           ],
           type: 'asset/resource',
           generator: {
-            filename: '[hash].css[query]',
+            filename: 'css/[hash].css[query]',
           },
         },
       ],
