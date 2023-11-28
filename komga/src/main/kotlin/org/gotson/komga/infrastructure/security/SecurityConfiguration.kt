@@ -87,6 +87,7 @@ class SecurityConfiguration(
       }
       .headers { headersConfigurer ->
         headersConfigurer.cacheControl { it.disable() } // headers are set in WebMvcConfiguration
+        headersConfigurer.frameOptions { it.sameOrigin() } // for epubreader iframes
       }
       .httpBasic {
         it.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
