@@ -11,7 +11,7 @@
   "dependencies": {
     "@d-i-t-a/reader": "https://github.com/gotson/R2D2BC.git#fork",
     "@saekitominaga/isbn-verify": "^2.0.1",
-    "axios": "^1.5.0",
+    "axios": "^1.6.0",
     "chart.js": "^2.9.4",
     "core-js": "^3.8.3",
     "date-fns": "^2.30.0",
