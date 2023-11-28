@@ -102,7 +102,7 @@ class BookConverter(
 
       media
         .pages.map { it.fileName }
-        .union(media.files)
+        .union(media.files.map { it.fileName })
         .forEach { entry ->
           zipStream.putArchiveEntry(ZipArchiveEntry(entry))
           zipStream.write(bookAnalyzer.getFileContent(BookWithMedia(book, media), entry))
@@ -133,8 +133,8 @@ class BookConverter(
           .containsAll(media.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType })
         -> throw BookConversionException("Converted file does not contain all pages from existing file, aborting conversion")
 
-        !convertedMedia.files.map { FilenameUtils.getName(it) }
-          .containsAll(media.files.map { FilenameUtils.getName(it) })
+        !convertedMedia.files.map { FilenameUtils.getName(it.fileName) }
+          .containsAll(media.files.map { FilenameUtils.getName(it.fileName) })
         -> throw BookConversionException("Converted file does not contain all files from existing file, aborting conversion")
       }
     } catch (e: BookConversionException) {

@@ -689,14 +689,16 @@ class OpdsController(
     val mediaTypes = when (media.profile) {
       MediaProfile.DIVINA -> media.pages.map { it.mediaType }.distinct()
       MediaProfile.PDF -> listOf(pdfImageType.mediaType)
-      null -> emptyList()
+      MediaProfile.EPUB, null -> emptyList()
     }
 
-    val opdsLinkPageStreaming = if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
-      OpdsLinkPageStreaming(mediaTypes.first(), uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}", media.pageCount, readProgress?.page, readProgress?.readDate)
-    } else {
-      OpdsLinkPageStreaming("image/jpeg", uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?convert=jpeg", media.pageCount, readProgress?.page, readProgress?.readDate)
-    }
+    val opdsLinkPageStreaming =
+      if (mediaTypes.isEmpty()) null
+      else if (mediaTypes.size == 1 && mediaTypes.first() in opdsPseSupportedFormats) {
+        OpdsLinkPageStreaming(mediaTypes.first(), uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}", media.pageCount, readProgress?.page, readProgress?.readDate)
+      } else {
+        OpdsLinkPageStreaming("image/jpeg", uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?convert=jpeg", media.pageCount, readProgress?.page, readProgress?.readDate)
+      }
 
     return OpdsEntryAcquisition(
       title = "${prepend(this)}${metadata.title}",
@@ -707,7 +709,7 @@ class OpdsController(
         if (metadata.summary.isNotBlank()) append("\n\n${metadata.summary}")
       },
       authors = metadata.authors.map { OpdsAuthor(it.name) },
-      links = listOf(
+      links = listOfNotNull(
         OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail/small").toUriString()),
         OpdsLinkImage(if (media.profile == MediaProfile.PDF) pdfImageType.mediaType else media.pages[0].mediaType, uriBuilder("books/$id/thumbnail").toUriString()),
         OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),

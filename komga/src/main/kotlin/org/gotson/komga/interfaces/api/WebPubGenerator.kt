@@ -1,7 +1,10 @@
 package org.gotson.komga.interfaces.api
 
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaExtensionEpub
+import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.service.BookAnalyzer
@@ -16,6 +19,7 @@ import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.api.dto.PROFILE_DIVINA
+import org.gotson.komga.interfaces.api.dto.PROFILE_EPUB
 import org.gotson.komga.interfaces.api.dto.PROFILE_PDF
 import org.gotson.komga.interfaces.api.dto.WPBelongsToDto
 import org.gotson.komga.interfaces.api.dto.WPContributorDto
@@ -36,8 +40,6 @@ import org.gotson.komga.domain.model.MediaType as KomgaMediaType
 
 @Service
 class WebPubGenerator(
-  @Qualifier("pdfImageType")
-  private val pdfImageType: ImageType,
   @Qualifier("thumbnailType")
   private val thumbnailType: ImageType,
   private val imageConverter: ImageConverter,
@@ -128,6 +130,45 @@ class WebPubGenerator(
     }
   }
 
+  fun toManifestEpub(bookDto: BookDto, media: Media, seriesMetadata: SeriesMetadata): WPPublicationDto {
+    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
+    val extension = media.extension as MediaExtensionEpub?
+    return bookDto.toBasePublicationDto().let { publication ->
+      publication.copy(
+        mediaType = MEDIATYPE_WEBPUB_JSON,
+        metadata = publication.metadata
+          .withSeriesMetadata(seriesMetadata)
+          .copy(conformsTo = PROFILE_EPUB),
+        readingOrder = media.files.filter { it.subType == MediaFile.SubType.EPUB_PAGE }.map {
+          WPLinkDto(
+            href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/").path(it.fileName).toUriString(),
+            type = it.mediaType,
+          )
+        },
+        resources = buildThumbnailLinkDtos(bookDto.id) +
+          media.files.filter { it.subType == MediaFile.SubType.EPUB_ASSET }.map {
+            WPLinkDto(
+              href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/").path(it.fileName).toUriString(),
+              type = it.mediaType,
+            )
+          },
+        toc = extension?.toc?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
+        landmarks = extension?.landmarks?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
+        pageList = extension?.pageList?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
+      )
+    }
+  }
+
+  private fun EpubTocEntry.toWPLinkDto(uriBuilder: UriComponentsBuilder): WPLinkDto = WPLinkDto(
+    title = title,
+    href = href?.let {
+      val fragment = it.substringAfterLast("#", "")
+      val h = it.removeSuffix("#$fragment")
+      uriBuilder.cloneBuilder().path(h).toUriString() + if (fragment.isNotEmpty()) "#$fragment" else ""
+    },
+    children = children.map { it.toWPLinkDto(uriBuilder) },
+  )
+
   private fun BookDto.toWPMetadataDto(includeOpdsLinks: Boolean = false) = WPMetadataDto(
     title = metadata.title,
     description = metadata.summary,
@@ -196,6 +237,7 @@ class WebPubGenerator(
   private fun mediaProfileToWebPub(profile: MediaProfile?): String = when (profile) {
     MediaProfile.DIVINA -> MEDIATYPE_DIVINA_JSON_VALUE
     MediaProfile.PDF -> MEDIATYPE_WEBPUB_JSON_VALUE
+    MediaProfile.EPUB -> MEDIATYPE_WEBPUB_JSON_VALUE
     null -> MEDIATYPE_WEBPUB_JSON_VALUE
   }
 }

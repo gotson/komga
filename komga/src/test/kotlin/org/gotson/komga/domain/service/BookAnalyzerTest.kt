@@ -130,7 +130,7 @@ class BookAnalyzerTest(
 
     assertThat(media.mediaType).isEqualTo("application/epub+zip")
     assertThat(media.status).isEqualTo(Media.Status.READY)
-    assertThat(media.pages).hasSize(2)
+    assertThat(media.pages).hasSize(0)
   }
 
   @Test

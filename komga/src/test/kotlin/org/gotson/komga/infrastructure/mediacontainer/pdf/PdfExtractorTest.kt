@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.mediacontainer
+package org.gotson.komga.infrastructure.mediacontainer.pdf
 
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.infrastructure.image.ImageType

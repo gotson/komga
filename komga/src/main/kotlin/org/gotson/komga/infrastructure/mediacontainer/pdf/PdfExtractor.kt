@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.mediacontainer
+package org.gotson.komga.infrastructure.mediacontainer.pdf
 
 import mu.KotlinLogging
 import org.apache.pdfbox.io.MemoryUsageSetting
@@ -28,8 +28,6 @@ class PdfExtractor(
   @Qualifier("pdfResolution")
   private val resolution: Float,
 ) {
-  fun getPageCount(path: Path): Int = PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf -> pdf.numberOfPages }
-
   fun getPages(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
     PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
       (0 until pdf.numberOfPages).map { index ->

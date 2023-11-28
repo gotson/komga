@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import mu.KotlinLogging
+import org.apache.commons.io.FilenameUtils
 import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
@@ -38,7 +40,6 @@ import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
-import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
@@ -77,6 +78,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.util.AntPathMatcher
 import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -94,7 +96,9 @@ import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.HandlerMapping
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
+import org.springframework.web.util.UriUtils
 import java.io.FileNotFoundException
 import java.io.OutputStream
 import java.nio.charset.StandardCharsets.UTF_8
@@ -105,6 +109,7 @@ import kotlin.io.path.name
 import org.gotson.komga.domain.model.MediaType as KomgaMediaType
 
 private val logger = KotlinLogging.logger {}
+private val FONT_EXTENSIONS = listOf("otf", "woff", "woff2", "eot", "ttf", "svg")
 
 @RestController
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -122,7 +127,6 @@ class BookController(
   private val imageAnalyzer: ImageAnalyzer,
   private val eventPublisher: ApplicationEventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
-  private val imageConverter: ImageConverter,
   private val webPubGenerator: WebPubGenerator,
 ) {
 
@@ -657,8 +661,73 @@ class BookController(
       when (KomgaMediaType.fromMediaType(media.mediaType)?.profile) {
         MediaProfile.DIVINA -> getWebPubManifestDivina(principal, bookId)
         MediaProfile.PDF -> getWebPubManifestPdf(principal, bookId)
+        MediaProfile.EPUB -> getWebPubManifestEpub(principal, bookId)
         null -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
       }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping(
+    value = ["api/v1/books/{bookId}/resource/**"],
+    produces = ["*/*"],
+  )
+  fun getBookResource(
+    request: HttpServletRequest,
+    @AuthenticationPrincipal principal: KomgaPrincipal?,
+    @PathVariable bookId: String,
+  ): ResponseEntity<ByteArray> {
+    val resourceName = AntPathMatcher().extractPathWithinPattern(request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE) as String, request.requestURI).let { UriUtils.decode(it, UTF_8) }
+    val isFont = FONT_EXTENSIONS.contains(FilenameUtils.getExtension(resourceName).lowercase())
+
+    if (!isFont && principal == null) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+
+    val book = bookRepository.findByIdOrNull(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val media = mediaRepository.findById(book.id)
+
+    if (ServletWebRequest(request).checkNotModified(getBookLastModified(media))) {
+      return ResponseEntity
+        .status(HttpStatus.NOT_MODIFIED)
+        .setNotModified(media)
+        .body(ByteArray(0))
+    }
+
+    if (media.profile != MediaProfile.EPUB) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${media.mediaType}' not compatible with requested profile")
+    if (!isFont) principal!!.user.checkContentRestriction(book)
+
+    val res = media.files.firstOrNull { it.fileName == resourceName } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val bytes = bookAnalyzer.getFileContent(BookWithMedia(book, media), resourceName)
+
+    return ResponseEntity.ok()
+      .headers(
+        HttpHeaders().apply {
+          contentDisposition = ContentDisposition.builder("inline")
+            .filename(FilenameUtils.getName(resourceName), UTF_8)
+            .build()
+        },
+      )
+      .contentType(getMediaTypeOrDefault(res.mediaType))
+      .setNotModified(media)
+      .body(bytes)
+  }
+
+  @GetMapping(
+    value = ["api/v1/books/{bookId}/manifest/epub"],
+    produces = [MEDIATYPE_WEBPUB_JSON_VALUE],
+  )
+  fun getWebPubManifestEpub(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<WPPublicationDto> =
+    bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
+      if (bookDto.media.mediaProfile != MediaProfile.EPUB.name) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
+      principal.user.checkContentRestriction(bookDto)
+      val manifest = webPubGenerator.toManifestEpub(
+        bookDto,
+        mediaRepository.findById(bookId),
+        seriesMetadataRepository.findById(bookDto.seriesId),
+      )
+      ResponseEntity.ok()
+        .contentType(manifest.mediaType)
+        .body(manifest)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(

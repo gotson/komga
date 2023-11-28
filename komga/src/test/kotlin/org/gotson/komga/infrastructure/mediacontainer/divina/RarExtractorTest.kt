@@ -1,9 +1,10 @@
-package org.gotson.komga.infrastructure.mediacontainer
+package org.gotson.komga.infrastructure.mediacontainer.divina
 
 import org.apache.tika.config.TikaConfig
 import org.assertj.core.api.Assertions
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 

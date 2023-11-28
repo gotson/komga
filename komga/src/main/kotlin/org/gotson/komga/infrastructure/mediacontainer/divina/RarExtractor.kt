@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.mediacontainer
+package org.gotson.komga.infrastructure.mediacontainer.divina
 
 import com.github.junrar.Archive
 import mu.KotlinLogging
@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.springframework.stereotype.Service
 import java.nio.file.Path
 
@@ -16,7 +17,7 @@ private val logger = KotlinLogging.logger {}
 class RarExtractor(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
-) : MediaContainerExtractor {
+) : DivinaExtractor {
 
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 

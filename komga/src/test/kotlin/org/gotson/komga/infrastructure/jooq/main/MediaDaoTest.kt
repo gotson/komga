@@ -4,7 +4,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Dimension
+import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaExtensionEpub
+import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -73,7 +76,11 @@ class MediaDaoTest(
           fileSize = 10,
         ),
       ),
-      files = listOf("ComicInfo.xml"),
+      files = listOf(MediaFile("ComicInfo.xml", "application/xml", MediaFile.SubType.EPUB_ASSET, 3)),
+      extension = MediaExtensionEpub(
+        toc = listOf(EpubTocEntry("title", "href", listOf(EpubTocEntry("subtitle", "subhref")))),
+        landmarks = listOf(EpubTocEntry("title2", "href2", listOf(EpubTocEntry("subtitle2", "subhref2")))),
+      ),
       comment = "comment",
       bookId = book.id,
     )
@@ -96,7 +103,15 @@ class MediaDaoTest(
       assertThat(fileSize).isEqualTo(media.pages.first().fileSize)
     }
     assertThat(created.files).hasSize(1)
-    assertThat(created.files.first()).isEqualTo(media.files.first())
+    with(created.files.first()) {
+      assertThat(fileName).isEqualTo(media.files.first().fileName)
+      assertThat(mediaType).isEqualTo(media.files.first().mediaType)
+      assertThat(subType).isEqualTo(media.files.first().subType)
+      assertThat(fileSize).isEqualTo(media.files.first().fileSize)
+    }
+    assertThat(created.extension).isNotNull
+    assertThat(created.extension).isInstanceOf(MediaExtensionEpub::class.java)
+    assertThat(created.extension).isEqualTo(media.extension)
   }
 
   @Test
@@ -125,7 +140,10 @@ class MediaDaoTest(
           mediaType = "image/jpeg",
         ),
       ),
-      files = listOf("ComicInfo.xml"),
+      files = listOf(MediaFile("ComicInfo.xml", "application/xml", MediaFile.SubType.EPUB_ASSET, 5)),
+      extension = MediaExtensionEpub(
+        landmarks = listOf(EpubTocEntry("title2", "href2", listOf(EpubTocEntry("subtitle2", "subhref2")))),
+      ),
       comment = "comment",
       bookId = book.id,
     )
@@ -146,7 +164,10 @@ class MediaDaoTest(
             fileSize = 10,
           ),
         ),
-        files = listOf("id.txt"),
+        files = listOf(MediaFile("id.txt")),
+        extension = MediaExtensionEpub(
+          toc = listOf(EpubTocEntry("title", "href", listOf(EpubTocEntry("subtitle", "subhref")))),
+        ),
         comment = "comment2",
       )
     }
@@ -167,7 +188,11 @@ class MediaDaoTest(
     assertThat(modified.pages.first().dimension).isEqualTo(updated.pages.first().dimension)
     assertThat(modified.pages.first().fileHash).isEqualTo(updated.pages.first().fileHash)
     assertThat(modified.pages.first().fileSize).isEqualTo(updated.pages.first().fileSize)
-    assertThat(modified.files.first()).isEqualTo(updated.files.first())
+    assertThat(modified.files.first().fileName).isEqualTo(updated.files.first().fileName)
+    assertThat(modified.files.first().mediaType).isEqualTo(updated.files.first().mediaType)
+    assertThat(modified.files.first().subType).isEqualTo(updated.files.first().subType)
+    assertThat(modified.files.first().fileSize).isEqualTo(updated.files.first().fileSize)
+    assertThat(modified.extension).isEqualTo(updated.extension)
   }
 
   @Test
@@ -181,7 +206,7 @@ class MediaDaoTest(
           mediaType = "image/jpeg",
         ),
       ),
-      files = listOf("ComicInfo.xml"),
+      files = listOf(MediaFile("ComicInfo.xml")),
       comment = "comment",
       bookId = book.id,
     )
