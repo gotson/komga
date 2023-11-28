@@ -1,3 +1,8 @@
+# [1.8.2](https://github.com/gotson/komga/compare/1.8.1...1.8.2) (2023-11-28)
+## 🐛 Fixes
+**epubreader**
+- page cannot load because of incorrect css mime type ([dbc5b3d](https://github.com/gotson/komga/commits/dbc5b3d))
+
 # [1.8.1](https://github.com/gotson/komga/compare/1.8.0...1.8.1) (2023-11-28)
 ## 🐛 Fixes
 **api**
