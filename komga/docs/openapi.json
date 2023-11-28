@@ -7978,6 +7978,47 @@
         }
       }
     },
+    "/api/v1/books/{bookId}/resource/**": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getBookResource",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/books/{bookId}/readlists": {
       "get": {
         "tags": [
@@ -8380,6 +8421,46 @@
           "book-controller"
         ],
         "operationId": "getWebPubManifestPdf",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/webpub+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/manifest/epub": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getWebPubManifestEpub",
         "parameters": [
           {
             "name": "bookId",
@@ -11208,8 +11289,10 @@
       "WPPublicationDto": {
         "required": [
           "images",
+          "landmarks",
           "links",
           "metadata",
+          "pageList",
           "readingOrder",
           "resources",
           "toc"
@@ -11247,6 +11330,18 @@
             }
           },
           "toc": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "landmarks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          },
+          "pageList": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/WPLinkDto"
@@ -12228,6 +12323,7 @@
       "MediaDto": {
         "required": [
           "comment",
+          "mediaProfile",
           "mediaType",
           "pagesCount",
           "status"
@@ -12245,6 +12341,9 @@
             "format": "int32"
           },
           "comment": {
+            "type": "string"
+          },
+          "mediaProfile": {
             "type": "string"
           }
         }
@@ -12773,9 +12872,6 @@
             "type": "number",
             "format": "double"
           },
-          "concrete": {
-            "type": "boolean"
-          },
           "wildcardType": {
             "type": "boolean"
           },
@@ -12784,6 +12880,9 @@
           },
           "subtypeSuffix": {
             "type": "string"
+          },
+          "concrete": {
+            "type": "boolean"
           },
           "charset": {
             "type": "string"
