@@ -9,7 +9,7 @@
 
 # ![app icon](https://github.com/gotson/komga/raw/master/.github/readme-images/app-icon.png) Komga
 
-[Komga](https://github.com/gotson/komga) is a free and open source comics/mangas/magazines server.
+[Komga](https://github.com/gotson/komga) is a media server for your comics, mangas, BDs, magazines and eBooks.
 
 ## Usage
 
