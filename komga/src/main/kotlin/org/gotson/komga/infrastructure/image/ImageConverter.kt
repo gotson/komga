@@ -9,10 +9,14 @@ import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import javax.imageio.ImageIO
+import javax.imageio.spi.IIORegistry
+import javax.imageio.spi.ImageReaderSpi
 import kotlin.math.max
 import kotlin.math.min
 
 private val logger = KotlinLogging.logger {}
+
+private const val webpNightMonkeys = "com.github.gotson.nightmonkeys.webp.imageio.plugins.WebpImageReaderSpi"
 
 @Service
 class ImageConverter(
@@ -26,10 +30,29 @@ class ImageConverter(
   val supportedWriteMediaTypes by lazy { ImageIO.getWriterMIMETypes().toList() }
 
   init {
+    chooseWebpReader()
     logger.info { "Supported read formats: $supportedReadFormats" }
     logger.info { "Supported read mediaTypes: $supportedReadMediaTypes" }
     logger.info { "Supported write formats: $supportedWriteFormats" }
     logger.info { "Supported write mediaTypes: $supportedWriteMediaTypes" }
+  }
+
+  private fun chooseWebpReader() {
+    val providers = IIORegistry.getDefaultInstance().getServiceProviders(
+      ImageReaderSpi::class.java,
+      { it is ImageReaderSpi && it.mimeTypes.contains("image/webp") },
+      false,
+    ).asSequence().toList()
+
+    if (providers.size > 1) {
+      logger.debug { "WebP reader providers: ${providers.map { it.javaClass.canonicalName }}" }
+      providers.firstOrNull { it.javaClass.canonicalName == webpNightMonkeys }?.let { nightMonkeys ->
+        (providers - nightMonkeys).forEach {
+          logger.debug { "Deregister provider: ${it.javaClass.canonicalName}" }
+          IIORegistry.getDefaultInstance().deregisterServiceProvider(it)
+        }
+      }
+    }
   }
 
   private val supportsTransparency = listOf("png")
