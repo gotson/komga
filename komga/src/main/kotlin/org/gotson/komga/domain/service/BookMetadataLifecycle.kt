@@ -47,7 +47,12 @@ class BookMetadataLifecycle(
 
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
-          val patch = provider.getBookMetadataFromBook(BookWithMedia(book, media))
+          val patch = try {
+            provider.getBookMetadataFromBook(BookWithMedia(book, media))
+          } catch (e: Exception) {
+            logger.error(e) { "Error while getting metadata from ${provider.javaClass.simpleName} for book: $book" }
+            null
+          }
 
           if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.BOOK)) {
             handlePatchForBookMetadata(patch, book)

@@ -53,7 +53,14 @@ class SeriesMetadataLifecycle(
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patches = bookRepository.findAllBySeriesId(series.id)
-            .mapNotNull { provider.getSeriesMetadataFromBook(BookWithMedia(it, mediaRepository.findById(it.id)), library) }
+            .mapNotNull { book ->
+              try {
+                provider.getSeriesMetadataFromBook(BookWithMedia(book, mediaRepository.findById(book.id)), library)
+              } catch (e: Exception) {
+                logger.error(e) { "Error while getting metadata from ${provider.javaClass.simpleName} for book: $book" }
+                null
+              }
+            }
 
           if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES)) {
             handlePatchForSeriesMetadata(patches, series)
@@ -73,7 +80,12 @@ class SeriesMetadataLifecycle(
           logger.info { "Library is not set to import series metadata for this provider, skipping: ${provider.javaClass.simpleName}" }
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
-          val patch = provider.getSeriesMetadata(series)
+          val patch = try {
+            provider.getSeriesMetadata(series)
+          } catch (e: Exception) {
+            logger.error(e) { "Error while getting metadata from ${provider::class.simpleName} for series: $series" }
+            null
+          }
 
           if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES)) {
             handlePatchForSeriesMetadata(patch, series)
