@@ -700,6 +700,11 @@ class OpdsController(
         OpdsLinkPageStreaming("image/jpeg", uriBuilder("books/$id/pages/").toUriString() + "{pageNumber}?convert=jpeg", media.pageCount, readProgress?.page, readProgress?.readDate)
       }
 
+    val thumbnailMediaType = when (media.profile) {
+      MediaProfile.PDF -> pdfImageType.mediaType
+      else -> "image/jpeg"
+    }
+
     return OpdsEntryAcquisition(
       title = "${prepend(this)}${metadata.title}",
       updated = lastModified.toCurrentTimeZone().atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
@@ -711,7 +716,7 @@ class OpdsController(
       authors = metadata.authors.map { OpdsAuthor(it.name) },
       links = listOfNotNull(
         OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail/small").toUriString()),
-        OpdsLinkImage(if (media.profile == MediaProfile.PDF) pdfImageType.mediaType else media.pages[0].mediaType, uriBuilder("books/$id/thumbnail").toUriString()),
+        OpdsLinkImage(thumbnailMediaType, uriBuilder("books/$id/thumbnail").toUriString()),
         OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),
         opdsLinkPageStreaming,
       ),
