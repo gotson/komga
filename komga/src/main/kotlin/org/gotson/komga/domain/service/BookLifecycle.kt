@@ -3,7 +3,6 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookAction
-import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
@@ -16,6 +15,7 @@ import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.HistoricalEventRepository
@@ -181,7 +181,7 @@ class BookLifecycle(
     return selected
   }
 
-  fun getThumbnailBytes(bookId: String, resizeTo: Int? = null): BookPageContent? {
+  fun getThumbnailBytes(bookId: String, resizeTo: Int? = null): TypedBytes? {
     getThumbnail(bookId)?.let {
       val thumbnailBytes = when {
         it.thumbnail != null -> it.thumbnail
@@ -191,7 +191,7 @@ class BookLifecycle(
 
       if (resizeTo != null) {
         try {
-          return BookPageContent(
+          return TypedBytes(
             imageConverter.resizeImageToByteArray(thumbnailBytes, resizeTargetFormat, resizeTo),
             resizeTargetFormat.mediaType,
           )
@@ -200,12 +200,12 @@ class BookLifecycle(
         }
       }
 
-      return BookPageContent(thumbnailBytes, it.mediaType)
+      return TypedBytes(thumbnailBytes, it.mediaType)
     }
     return null
   }
 
-  fun getThumbnailBytesOriginal(bookId: String): BookPageContent? {
+  fun getThumbnailBytesOriginal(bookId: String): TypedBytes? {
     val thumbnail = getThumbnail(bookId) ?: return null
     return if (thumbnail.type == ThumbnailBook.Type.GENERATED) {
       val book = bookRepository.findByIdOrNull(bookId) ?: return null
@@ -266,7 +266,7 @@ class BookLifecycle(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class,
   )
-  fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
+  fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): TypedBytes {
     val media = mediaRepository.findById(book.id)
     val pageContent = bookAnalyzer.getPageContent(BookWithMedia(book, media), number)
     val pageMediaType =
@@ -280,7 +280,7 @@ class BookLifecycle(
         logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
         throw e
       }
-      return BookPageContent(convertedPage, resizeTargetFormat.mediaType)
+      return TypedBytes(convertedPage, resizeTargetFormat.mediaType)
     } else {
       convertTo?.let {
         val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"
@@ -302,10 +302,10 @@ class BookLifecycle(
           logger.error(e) { "$msg: conversion failed" }
           throw e
         }
-        return BookPageContent(convertedPage, it.mediaType)
+        return TypedBytes(convertedPage, it.mediaType)
       }
 
-      return BookPageContent(pageContent, pageMediaType)
+      return TypedBytes(pageContent, pageMediaType)
     }
   }
 

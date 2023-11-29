@@ -670,7 +670,7 @@ class OpdsController(
     principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
     val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else komgaSettingsProvider.thumbnailSize.maxEdge)?.content
+    return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else komgaSettingsProvider.thumbnailSize.maxEdge)?.bytes
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 

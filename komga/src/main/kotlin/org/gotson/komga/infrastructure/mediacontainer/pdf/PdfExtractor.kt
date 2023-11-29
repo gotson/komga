@@ -7,10 +7,10 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.rendering.ImageType.RGB
 import org.apache.pdfbox.rendering.PDFRenderer
-import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.MediaType
+import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
@@ -37,7 +37,7 @@ class PdfExtractor(
       }
     }
 
-  fun getPageContentAsImage(path: Path, pageNumber: Int): BookPageContent {
+  fun getPageContentAsImage(path: Path, pageNumber: Int): TypedBytes {
     PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
       val page = pdf.getPage(pageNumber)
       val image = PDFRenderer(pdf).renderImage(pageNumber - 1, page.getScale(), RGB)
@@ -45,17 +45,17 @@ class PdfExtractor(
         ImageIO.write(image, imageType.imageIOFormat, out)
         out.toByteArray()
       }
-      return BookPageContent(bytes, imageType.mediaType)
+      return TypedBytes(bytes, imageType.mediaType)
     }
   }
 
-  fun getPageContentAsPdf(path: Path, pageNumber: Int): BookPageContent {
+  fun getPageContentAsPdf(path: Path, pageNumber: Int): TypedBytes {
     PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
       val bytes = ByteArrayOutputStream().use { out ->
         PageExtractor(pdf, pageNumber, pageNumber).extract().save(out)
         out.toByteArray()
       }
-      return BookPageContent(bytes, MediaType.PDF.type)
+      return TypedBytes(bytes, MediaType.PDF.type)
     }
   }
 

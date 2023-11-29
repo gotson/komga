@@ -2,9 +2,9 @@ package org.gotson.komga.infrastructure.mediacontainer.epub
 
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
-import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.domain.model.MediaFile
+import org.gotson.komga.domain.model.TypedBytes
 import org.springframework.stereotype.Service
 import java.nio.file.Path
 import kotlin.math.ceil
@@ -23,7 +23,7 @@ class EpubExtractor {
   /**
    * Retrieves the book cover along with its mediaType from the epub 2/3 manifest
    */
-  fun getCover(path: Path): BookPageContent? =
+  fun getCover(path: Path): TypedBytes? =
     path.epub { (zip, opfDoc, opfDir, manifest) ->
       val coverManifestItem =
         // EPUB 3 - try to get cover from manifest properties 'cover-image'
@@ -35,7 +35,7 @@ class EpubExtractor {
         val href = coverManifestItem.href
         val mediaType = coverManifestItem.mediaType
         val coverPath = normalizeHref(opfDir, href)
-        BookPageContent(
+        TypedBytes(
           zip.getInputStream(zip.getEntry(coverPath)).readAllBytes(),
           mediaType,
         )

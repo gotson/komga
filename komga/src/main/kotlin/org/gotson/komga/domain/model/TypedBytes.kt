@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.model
 
-class BookPageContent(
-  val content: ByteArray,
+class TypedBytes(
+  val bytes: ByteArray,
   val mediaType: String,
 )

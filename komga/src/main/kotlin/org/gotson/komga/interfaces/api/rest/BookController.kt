@@ -298,7 +298,7 @@ class BookController(
   ): ByteArray {
     principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
 
-    return bookLifecycle.getThumbnailBytes(bookId)?.content ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    return bookLifecycle.getThumbnailBytes(bookId)?.bytes ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
@@ -543,7 +543,7 @@ class BookController(
         )
         .contentType(getMediaTypeOrDefault(pageContent.mediaType))
         .setNotModified(media)
-        .body(pageContent.content)
+        .body(pageContent.bytes)
     } catch (ex: IndexOutOfBoundsException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
     } catch (ex: ImageConversionException) {
@@ -596,7 +596,7 @@ class BookController(
       )
       .contentType(getMediaTypeOrDefault(pageContent.mediaType))
       .setNotModified(media)
-      .body(pageContent.content)
+      .body(pageContent.bytes)
   } catch (ex: IndexOutOfBoundsException) {
     throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
   } catch (ex: MediaUnsupportedException) {
@@ -636,7 +636,7 @@ class BookController(
         ResponseEntity.ok()
           .contentType(getMediaTypeOrDefault(pageContent.mediaType))
           .setNotModified(media)
-          .body(pageContent.content)
+          .body(pageContent.bytes)
       } catch (ex: IndexOutOfBoundsException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
       } catch (ex: ImageConversionException) {

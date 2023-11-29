@@ -40,7 +40,7 @@ class OpdsCommonController(
   ): ByteArray {
     principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
     val poster = bookLifecycle.getThumbnailBytesOriginal(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    return if (poster.mediaType != ImageType.JPEG.mediaType) imageConverter.convertImage(poster.content, ImageType.JPEG.imageIOFormat)
-    else poster.content
+    return if (poster.mediaType != ImageType.JPEG.mediaType) imageConverter.convertImage(poster.bytes, ImageType.JPEG.imageIOFormat)
+    else poster.bytes
   }
 }

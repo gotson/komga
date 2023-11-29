@@ -3,7 +3,6 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
-import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
@@ -14,6 +13,7 @@ import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
@@ -137,7 +137,7 @@ class BookAnalyzer(
 
     val thumbnail = try {
       getPoster(book)?.let { cover ->
-        imageConverter.resizeImageToByteArray(cover.content, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
+        imageConverter.resizeImageToByteArray(cover.bytes, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
       }
     } catch (ex: Exception) {
       logger.warn(ex) { "Could not generate thumbnail for book: $book" }
@@ -154,9 +154,9 @@ class BookAnalyzer(
     )
   }
 
-  fun getPoster(book: BookWithMedia): BookPageContent? = when (book.media.profile) {
+  fun getPoster(book: BookWithMedia): TypedBytes? = when (book.media.profile) {
     MediaProfile.DIVINA -> divinaExtractors[book.media.mediaType]?.getEntryStream(book.book.path, book.media.pages.first().fileName)?.let {
-      BookPageContent(
+      TypedBytes(
         it,
         book.media.pages.first().mediaType,
       )
@@ -186,7 +186,7 @@ class BookAnalyzer(
 
     return when (book.media.profile) {
       MediaProfile.DIVINA -> divinaExtractors.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
-      MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, number).content
+      MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, number).bytes
       MediaProfile.EPUB -> throw MediaUnsupportedException("Epub profile does not support getting page content")
       null -> throw MediaNotReadyException()
     }
@@ -196,7 +196,7 @@ class BookAnalyzer(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class,
   )
-  fun getPageContentRaw(book: BookWithMedia, number: Int): BookPageContent {
+  fun getPageContentRaw(book: BookWithMedia, number: Int): TypedBytes {
     logger.debug { "Get raw page #$number for book: $book" }
     if (book.media.profile != MediaProfile.PDF) throw MediaUnsupportedException("Extractor does not support raw extraction of pages")
 

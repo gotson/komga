@@ -71,7 +71,7 @@ class TransientBooksController(
 
         ResponseEntity.ok()
           .contentType(getMediaTypeOrDefault(pageContent.mediaType))
-          .body(pageContent.content)
+                .body(pageContent.bytes)
       } catch (ex: IndexOutOfBoundsException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
       } catch (ex: MediaNotReadyException) {

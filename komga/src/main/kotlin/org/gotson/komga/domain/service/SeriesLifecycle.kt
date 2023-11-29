@@ -257,7 +257,7 @@ class SeriesLifecycle(
           ?: bookRepository.findLastIdInSeriesOrNull(seriesId)
         Library.SeriesCover.LAST -> bookRepository.findLastIdInSeriesOrNull(seriesId)
       }
-      if (bookId != null) return bookLifecycle.getThumbnailBytes(bookId)?.content
+      if (bookId != null) return bookLifecycle.getThumbnailBytes(bookId)?.bytes
     }
 
     return null
