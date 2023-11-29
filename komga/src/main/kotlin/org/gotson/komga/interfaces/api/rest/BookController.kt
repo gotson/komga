@@ -298,7 +298,7 @@ class BookController(
   ): ByteArray {
     principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
 
-    return bookLifecycle.getThumbnailBytes(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    return bookLifecycle.getThumbnailBytes(bookId)?.content ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])

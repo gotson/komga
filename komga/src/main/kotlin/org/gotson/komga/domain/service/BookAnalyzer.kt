@@ -136,13 +136,8 @@ class BookAnalyzer(
     }
 
     val thumbnail = try {
-      when (book.media.profile) {
-        MediaProfile.DIVINA -> divinaExtractors[book.media.mediaType]?.getEntryStream(book.book.path, book.media.pages.first().fileName)
-        MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, 1).content
-        MediaProfile.EPUB -> epubExtractor.getCover(book.book.path)?.content
-        null -> null
-      }?.let { cover ->
-        imageConverter.resizeImageToByteArray(cover, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
+      getPoster(book)?.let { cover ->
+        imageConverter.resizeImageToByteArray(cover.content, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
       }
     } catch (ex: Exception) {
       logger.warn(ex) { "Could not generate thumbnail for book: $book" }
@@ -157,6 +152,19 @@ class BookAnalyzer(
       dimension = thumbnail?.let { imageAnalyzer.getDimension(it.inputStream()) } ?: Dimension(0, 0),
       fileSize = thumbnail?.size?.toLong() ?: 0,
     )
+  }
+
+  fun getPoster(book: BookWithMedia): BookPageContent? = when (book.media.profile) {
+    MediaProfile.DIVINA -> divinaExtractors[book.media.mediaType]?.getEntryStream(book.book.path, book.media.pages.first().fileName)?.let {
+      BookPageContent(
+        it,
+        book.media.pages.first().mediaType,
+      )
+    }
+
+    MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, 1)
+    MediaProfile.EPUB -> epubExtractor.getCover(book.book.path)
+    null -> null
   }
 
   @Throws(

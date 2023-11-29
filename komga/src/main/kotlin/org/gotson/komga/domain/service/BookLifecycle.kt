@@ -181,7 +181,7 @@ class BookLifecycle(
     return selected
   }
 
-  fun getThumbnailBytes(bookId: String, resizeTo: Int? = null): ByteArray? {
+  fun getThumbnailBytes(bookId: String, resizeTo: Int? = null): BookPageContent? {
     getThumbnail(bookId)?.let {
       val thumbnailBytes = when {
         it.thumbnail != null -> it.thumbnail
@@ -190,17 +190,30 @@ class BookLifecycle(
       }
 
       if (resizeTo != null) {
-        return try {
-          imageConverter.resizeImageToByteArray(thumbnailBytes, resizeTargetFormat, resizeTo)
+        try {
+          return BookPageContent(
+            imageConverter.resizeImageToByteArray(thumbnailBytes, resizeTargetFormat, resizeTo),
+            resizeTargetFormat.mediaType,
+          )
         } catch (e: Exception) {
           logger.error(e) { "Resize thumbnail of book $bookId to $resizeTo: failed" }
-          thumbnailBytes
         }
       }
 
-      return thumbnailBytes
+      return BookPageContent(thumbnailBytes, it.mediaType)
     }
     return null
+  }
+
+  fun getThumbnailBytesOriginal(bookId: String): BookPageContent? {
+    val thumbnail = getThumbnail(bookId) ?: return null
+    return if (thumbnail.type == ThumbnailBook.Type.GENERATED) {
+      val book = bookRepository.findByIdOrNull(bookId) ?: return null
+      val media = mediaRepository.findById(book.id)
+      bookAnalyzer.getPoster(BookWithMedia(book, media))
+    } else {
+      getThumbnailBytes(bookId)
+    }
   }
 
   fun getThumbnailBytesByThumbnailId(thumbnailId: String): ByteArray? =

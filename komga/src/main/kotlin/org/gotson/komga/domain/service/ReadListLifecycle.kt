@@ -117,7 +117,7 @@ class ReadListLifecycle(
       this.take(4)
     }
 
-    val images = ids.mapNotNull { bookLifecycle.getThumbnailBytes(it) }
+    val images = ids.mapNotNull { bookLifecycle.getThumbnailBytes(it)?.content }
     return mosaicGenerator.createMosaic(images)
   }
 
