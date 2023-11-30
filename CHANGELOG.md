@@ -1,3 +1,34 @@
+# [1.8.3](https://github.com/gotson/komga/compare/1.8.2...1.8.3) (2023-11-30)
+## 🐛 Fixes
+**api**
+- epub resources could not be retrieved if komga is running with a servlet context path ([0d94ae2](https://github.com/gotson/komga/commits/0d94ae2))
+
+**komga**
+- better handling of collection/readlist creation/update when using multiple threads ([a4384a6](https://github.com/gotson/komga/commits/a4384a6)), closes [#1317](https://github.com/gotson/komga/issues/1317)
+- don't repair extension for broken EPUB files ([f41af61](https://github.com/gotson/komga/commits/f41af61))
+- mark broken EPUB files as ERROR instead of falling back to CBZ ([acf080b](https://github.com/gotson/komga/commits/acf080b))
+- use NightMonkeys WebP reader if present ([7b1a9e4](https://github.com/gotson/komga/commits/7b1a9e4)), closes [#1294](https://github.com/gotson/komga/issues/1294)
+- better error handling during metadata refresh ([8832a0d](https://github.com/gotson/komga/commits/8832a0d)), closes [#1311](https://github.com/gotson/komga/issues/1311)
+
+**opds**
+- cannot retrieve full size poster for epub books ([5a71cf7](https://github.com/gotson/komga/commits/5a71cf7)), closes [#1312](https://github.com/gotson/komga/issues/1312)
+- index out of bounds error ([d6246ed](https://github.com/gotson/komga/commits/d6246ed)), closes [#1309](https://github.com/gotson/komga/issues/1309)
+
+## 🔄️ Changes
+**komga**
+- rename class ([74210f8](https://github.com/gotson/komga/commits/74210f8))
+
+## 🛠  Build
+**docker**
+- add native webp library for docker amd64 and arm64 ([8cf8f47](https://github.com/gotson/komga/commits/8cf8f47)), closes [#1294](https://github.com/gotson/komga/issues/1294)
+
+**komga-tray**
+- add native heif library for Windows ([a3439dd](https://github.com/gotson/komga/commits/a3439dd))
+- add native webp library for macOS application ([86f0fcd](https://github.com/gotson/komga/commits/86f0fcd))
+
+**release**
+- use BackBlaze B2 for binaries storage instead of Github ([f704685](https://github.com/gotson/komga/commits/f704685))
+
 # [1.8.2](https://github.com/gotson/komga/compare/1.8.1...1.8.2) (2023-11-28)
 ## 🐛 Fixes
 **epubreader**
