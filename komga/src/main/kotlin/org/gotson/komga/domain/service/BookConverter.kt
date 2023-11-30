@@ -178,6 +178,12 @@ class BookConverter(
     if (!mediaTypeToExtension.keys.contains(media.mediaType))
       throw MediaUnsupportedException("${media.mediaType} cannot be repaired. Must be one of ${mediaTypeToExtension.keys}")
 
+    if (book.path.extension.lowercase() == "epub" && media.mediaType == MediaType.ZIP.type) {
+      skippedRepairs += book.id
+      logger.info("EPUB file detected as zip should not be repaired, skipping: ${book.path}")
+      return
+    }
+
     val actualExtension = book.path.extension
     val correctExtension = mediaTypeToExtension[media.mediaType]
 
