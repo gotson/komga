@@ -78,7 +78,6 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.util.AntPathMatcher
 import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -96,9 +95,7 @@ import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
-import org.springframework.web.servlet.HandlerMapping
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
-import org.springframework.web.util.UriUtils
 import java.io.FileNotFoundException
 import java.io.OutputStream
 import java.nio.charset.StandardCharsets.UTF_8
@@ -667,15 +664,16 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
-    value = ["api/v1/books/{bookId}/resource/**"],
+    value = ["api/v1/books/{bookId}/resource/{*resource}"],
     produces = ["*/*"],
   )
   fun getBookResource(
     request: HttpServletRequest,
     @AuthenticationPrincipal principal: KomgaPrincipal?,
     @PathVariable bookId: String,
+    @PathVariable resource: String,
   ): ResponseEntity<ByteArray> {
-    val resourceName = AntPathMatcher().extractPathWithinPattern(request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE) as String, request.requestURI).let { UriUtils.decode(it, UTF_8) }
+    val resourceName = resource.removePrefix("/")
     val isFont = FONT_EXTENSIONS.contains(FilenameUtils.getExtension(resourceName).lowercase())
 
     if (!isFont && principal == null) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
