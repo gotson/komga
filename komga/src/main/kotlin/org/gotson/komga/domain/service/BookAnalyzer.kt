@@ -30,6 +30,7 @@ import java.io.ByteArrayOutputStream
 import java.nio.file.AccessDeniedException
 import java.nio.file.NoSuchFileException
 import javax.imageio.ImageIO
+import kotlin.io.path.extension
 
 private val logger = KotlinLogging.logger {}
 
@@ -60,6 +61,11 @@ class BookAnalyzer(
       val mediaType = contentDetector.detectMediaType(book.path).let {
         logger.info { "Detected media type: $it" }
         MediaType.fromMediaType(it) ?: return Media(mediaType = it, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
+      }
+
+      if (book.path.extension.lowercase() == "epub" && mediaType != MediaType.EPUB) {
+        logger.warn { "Epub file detected as zip, file is probably broken: ${book.path}" }
+        return Media(mediaType = mediaType.type, status = Media.Status.ERROR, comment = "ERR_1032", bookId = book.id)
       }
 
       when (mediaType.profile) {
