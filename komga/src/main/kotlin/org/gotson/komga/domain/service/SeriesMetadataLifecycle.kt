@@ -5,14 +5,12 @@ import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.Series
-import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
-import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
@@ -34,7 +32,6 @@ class SeriesMetadataLifecycle(
   private val bookMetadataAggregationRepository: BookMetadataAggregationRepository,
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
-  private val collectionRepository: SeriesCollectionRepository,
   private val collectionLifecycle: SeriesCollectionLifecycle,
   private val eventPublisher: ApplicationEventPublisher,
 ) {
@@ -68,7 +65,9 @@ class SeriesMetadataLifecycle(
           }
 
           if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.COLLECTION)) {
-            handlePatchForCollections(patches, series)
+            patches.flatMap { it.collections }.distinct().forEach { collection ->
+              collectionLifecycle.addSeriesToCollection(collection, series)
+            }
           }
         }
       }
@@ -96,34 +95,6 @@ class SeriesMetadataLifecycle(
     }
 
     if (changed) eventPublisher.publishEvent(DomainEvent.SeriesUpdated(series))
-  }
-
-  private fun handlePatchForCollections(
-    patches: List<SeriesMetadataPatch>,
-    series: Series,
-  ) {
-    patches.flatMap { it.collections }.distinct().forEach { collection ->
-      collectionRepository.findByNameOrNull(collection).let { existing ->
-        if (existing != null) {
-          if (existing.seriesIds.contains(series.id))
-            logger.debug { "Series is already in existing collection '${existing.name}'" }
-          else {
-            logger.debug { "Adding series '${series.name}' to existing collection '${existing.name}'" }
-            collectionLifecycle.updateCollection(
-              existing.copy(seriesIds = existing.seriesIds + series.id),
-            )
-          }
-        } else {
-          logger.debug { "Adding series '${series.name}' to new collection '$collection'" }
-          collectionLifecycle.addCollection(
-            SeriesCollection(
-              name = collection,
-              seriesIds = listOf(series.id),
-            ),
-          )
-        }
-      }
-    }
   }
 
   private fun handlePatchForSeriesMetadata(
