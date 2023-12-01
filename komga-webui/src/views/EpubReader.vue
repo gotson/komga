@@ -139,6 +139,9 @@
             <span id="chapter-title"></span>
           </div>
         </div>
+        <div style="position: fixed; bottom: 0; right: 10px;height: 32px; font-size: .85rem" :class="appearanceClass">
+          <span>{{ totalProgression }}</span>
+        </div>
       </main>
       <a id="previous-chapter" rel="prev" role="button" aria-labelledby="previous-label"
          style="left: 50%;position: fixed;color: #000;height: 24px;background: #d3d3d33b; width: 150px;transform: translate(-50%, 0); display: block"
@@ -276,7 +279,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import D2Reader, {Locator} from '@d-i-t-a/reader'
-import {bookManifestUrl} from '@/functions/urls'
+import {bookManifestUrl, bookPositionsUrl} from '@/functions/urls'
 import {BookDto} from '@/types/komga-books'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {SeriesDto} from '@/types/komga-series'
@@ -400,6 +403,11 @@ export default Vue.extend({
     next()
   },
   computed: {
+    totalProgression(): string {
+      const p = this.currentLocation?.locations?.totalProgression
+      if (p) return `${Math.round(p * 100)}%`
+      return ''
+    },
     shortcutsHelp(): object {
       return {
         [this.$t('bookreader.shortcuts.reader_navigation').toString()]: [...shortcutsD2Reader],
@@ -639,6 +647,9 @@ export default Vue.extend({
           enableHistory: true,
           enableCitations: false,
           enableConsumption: false,
+        },
+        services: {
+          positions: new URL(bookPositionsUrl(this.bookId)),
         },
         api: {
           updateCurrentLocation: this.updateCurrentLocation,
