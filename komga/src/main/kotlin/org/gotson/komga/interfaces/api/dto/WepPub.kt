@@ -35,9 +35,11 @@ data class WPPublicationDto(
   val images: List<WPLinkDto> = emptyList(),
   val readingOrder: List<WPLinkDto> = emptyList(),
   val resources: List<WPLinkDto> = emptyList(),
+  // epub specific fields
   val toc: List<WPLinkDto> = emptyList(),
   val landmarks: List<WPLinkDto> = emptyList(),
   val pageList: List<WPLinkDto> = emptyList(),
+  val layout: String? = null,
 )
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)

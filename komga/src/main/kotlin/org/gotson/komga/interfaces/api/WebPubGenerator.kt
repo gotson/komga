@@ -154,6 +154,11 @@ class WebPubGenerator(
         toc = extension?.toc?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
         landmarks = extension?.landmarks?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
         pageList = extension?.pageList?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
+        layout = when (extension?.isFixedLayout) {
+          true -> "fixed"
+          false -> "reflowable"
+          else -> null
+        },
       )
     }
   }
