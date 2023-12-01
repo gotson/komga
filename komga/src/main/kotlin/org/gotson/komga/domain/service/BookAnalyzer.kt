@@ -124,7 +124,18 @@ class BookAnalyzer(
 
   private fun analyzeEpub(book: Book): Media {
     val manifest = epubExtractor.getManifest(book.path)
-    return Media(status = Media.Status.READY, files = manifest.resources, pageCount = manifest.pageCount, extension = MediaExtensionEpub(toc = manifest.toc, landmarks = manifest.landmarks, pageList = manifest.pageList))
+    return Media(
+      status = Media.Status.READY,
+      files = manifest.resources,
+      pageCount = manifest.pageCount,
+      extension = MediaExtensionEpub(
+        toc = manifest.toc,
+        landmarks = manifest.landmarks,
+        pageList = manifest.pageList,
+        isFixedLayout = manifest.isFixedLayout,
+        positions = manifest.positions,
+      ),
+    )
   }
 
   private fun analyzePdf(book: Book, analyzeDimensions: Boolean): Media {

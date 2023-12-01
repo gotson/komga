@@ -4,10 +4,12 @@ import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.domain.model.MediaFile
+import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.TypedBytes
 import org.springframework.stereotype.Service
 import java.nio.file.Path
 import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 @Service
 class EpubExtractor {
@@ -44,12 +46,16 @@ class EpubExtractor {
 
   fun getManifest(path: Path): EpubManifest =
     path.epub { epub ->
+      val resources = getResources(epub)
+      val isFixedLayout = isFixedLayout(epub)
       EpubManifest(
-        resources = getResources(epub),
+        resources = resources,
         toc = getToc(epub),
         landmarks = getLandmarks(epub),
         pageList = getPageList(epub),
         pageCount = computePageCount(epub),
+        isFixedLayout = isFixedLayout,
+        positions = computePositions(resources, isFixedLayout),
       )
     }
 
@@ -84,6 +90,40 @@ class EpubExtractor {
       .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
 
     return epub.zip.entries.toList().filter { it.name in spine }.sumOf { ceil(it.compressedSize / 1024.0).toInt() }
+  }
+
+  private fun isFixedLayout(epub: EpubPackage) =
+    epub.opfDoc.selectFirst("metadata > *|meta[property=rendition:layout]")?.text()?.ifBlank { null } == "pre-paginated"
+
+  private fun computePositions(resources: List<MediaFile>, isFixedLayout: Boolean): List<R2Locator> {
+    val readingOrder = resources.filter { it.subType == MediaFile.SubType.EPUB_PAGE }
+
+    var startPosition = 1
+    val positions = if (isFixedLayout) {
+      readingOrder.map {
+        R2Locator(
+          href = it.fileName,
+          type = it.mediaType!!,
+          locations = R2Locator.Location(progression = 0F, position = startPosition++),
+        )
+      }
+    } else {
+      readingOrder.flatMap { file ->
+        val positionCount = maxOf(1, ceil(file.fileSize!! / 1024.0).roundToInt())
+        (0 until positionCount).map { p ->
+          R2Locator(
+            href = file.fileName,
+            type = file.mediaType!!,
+            locations = R2Locator.Location(progression = p.toFloat() / positionCount, position = startPosition++),
+          )
+        }
+      }
+    }
+
+    return positions.map { locator ->
+      val totalProgression = locator.locations?.position?.let { it.toFloat() / positions.size }
+      locator.copy(locations = locator.locations?.copy(totalProgression = totalProgression))
+    }
   }
 
   private fun getToc(epub: EpubPackage): List<EpubTocEntry> {

@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaExtension
 import org.gotson.komga.domain.model.MediaFile
+import org.gotson.komga.domain.model.ProxyExtension
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
@@ -20,8 +21,11 @@ import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.io.ByteArrayOutputStream
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 
 private val logger = KotlinLogging.logger {}
 
@@ -37,13 +41,30 @@ class MediaDao(
   private val f = Tables.MEDIA_FILE
   private val b = Tables.BOOK
 
-  private val groupFields = arrayOf(*m.fields(), *p.fields())
+  private val groupFields = arrayOf(
+    m.BOOK_ID,
+    m.MEDIA_TYPE,
+    m.STATUS,
+    m.CREATED_DATE,
+    m.LAST_MODIFIED_DATE,
+    m.COMMENT,
+    m.PAGE_COUNT,
+    m.EXTENSION_CLASS,
+    *p.fields(),
+  )
 
   override fun findById(bookId: String): Media =
     find(dsl, bookId)!!
 
   override fun findByIdOrNull(bookId: String): Media? =
     find(dsl, bookId)
+
+  override fun findExtensionByIdOrNull(bookId: String): MediaExtension? =
+    dsl.select(m.EXTENSION_CLASS, m.EXTENSION_VALUE_BLOB)
+      .from(m)
+      .where(m.BOOK_ID.eq(bookId))
+      .fetchOne()
+      ?.map { deserializeExtension(it.get(m.EXTENSION_CLASS), it.get(m.EXTENSION_VALUE_BLOB)) }
 
   override fun findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(libraryId: String, mediaTypes: Collection<String>, pageHashing: Int): Collection<String> {
     val pagesCount = DSL.count(p.BOOK_ID)
@@ -114,7 +135,7 @@ class MediaDao(
             m.COMMENT,
             m.PAGE_COUNT,
             m.EXTENSION_CLASS,
-            m.EXTENSION_VALUE,
+            m.EXTENSION_VALUE_BLOB,
           ).values(null as String?, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach { media ->
@@ -124,8 +145,8 @@ class MediaDao(
               media.mediaType,
               media.comment,
               media.pageCount,
-              media.extension?.let { it::class.qualifiedName },
-              media.extension?.let { mapper.writeValueAsString(it) },
+              media.extension?.let { if (it is ProxyExtension) null else it::class.qualifiedName },
+              media.extension?.let { if (it is ProxyExtension) null else serializeExtension(it) },
             )
           }
         }.execute()
@@ -207,8 +228,12 @@ class MediaDao(
       .set(m.MEDIA_TYPE, media.mediaType)
       .set(m.COMMENT, media.comment)
       .set(m.PAGE_COUNT, media.pageCount)
-      .set(m.EXTENSION_CLASS, media.extension?.let { it::class.qualifiedName })
-      .set(m.EXTENSION_VALUE, media.extension?.let { mapper.writeValueAsString(it) })
+      .apply {
+        if (media.extension != null && media.extension !is ProxyExtension) {
+          set(m.EXTENSION_CLASS, media.extension::class.qualifiedName)
+          set(m.EXTENSION_VALUE_BLOB, serializeExtension(media.extension))
+        }
+      }
       .set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(m.BOOK_ID.eq(media.bookId))
       .execute()
@@ -250,19 +275,33 @@ class MediaDao(
       pages = pages,
       pageCount = pageCount,
       files = files,
-      extension = deserializeExtension(extensionClass, extensionValue),
+      extension = ProxyExtension.of(extensionClass),
       comment = comment,
       bookId = bookId,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
-
-  private fun deserializeExtension(extensionClass: String?, extensionValue: String?): MediaExtension? {
-    if (extensionClass == null && extensionValue == null) return null
-    return try {
-      mapper.readValue(extensionValue, Class.forName(extensionClass)) as MediaExtension
+  fun serializeExtension(extension: MediaExtension): ByteArray? =
+    try {
+      ByteArrayOutputStream().use { baos ->
+        GZIPOutputStream(baos).use { gz ->
+          mapper.writeValue(gz, extension)
+          baos.toByteArray()
+        }
+      }
     } catch (e: Exception) {
-      logger.error(e) { "Could not deserialize media extension class: $extensionClass, value: $extensionValue" }
+      logger.error(e) { "Could not serialize media extension" }
+      null
+    }
+
+  fun deserializeExtension(extensionClass: String?, extensionBlob: ByteArray?): MediaExtension? {
+    if (extensionClass == null || extensionBlob == null) return null
+    return try {
+      GZIPInputStream(extensionBlob.inputStream()).use { gz ->
+        mapper.readValue(gz, Class.forName(extensionClass)) as MediaExtension
+      }
+    } catch (e: Exception) {
+      logger.error(e) { "Could not deserialize media extension class: $extensionClass" }
       null
     }
   }

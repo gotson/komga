@@ -23,6 +23,7 @@ import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaUnsupportedException
@@ -51,6 +52,8 @@ import org.gotson.komga.infrastructure.web.setCachePrivate
 import org.gotson.komga.interfaces.api.WebPubGenerator
 import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_POSITION_LIST_JSON
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_POSITION_LIST_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.WPPublicationDto
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
@@ -58,6 +61,7 @@ import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.BookImportBatchDto
 import org.gotson.komga.interfaces.api.rest.dto.BookMetadataUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.PageDto
+import org.gotson.komga.interfaces.api.rest.dto.R2Positions
 import org.gotson.komga.interfaces.api.rest.dto.ReadListDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadProgressUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.ThumbnailBookDto
@@ -706,6 +710,36 @@ class BookController(
       .setNotModified(media)
       .body(bytes)
   }
+
+  @GetMapping(
+    value = ["api/v1/books/{bookId}/positions"],
+    produces = [MEDIATYPE_POSITION_LIST_JSON_VALUE],
+  )
+  fun getPositions(
+    request: HttpServletRequest,
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<R2Positions> =
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      val media = mediaRepository.findById(book.id)
+
+      if (ServletWebRequest(request).checkNotModified(getBookLastModified(media))) {
+        return ResponseEntity
+          .status(HttpStatus.NOT_MODIFIED)
+          .setNotModified(media)
+          .body(null)
+      }
+
+      principal.user.checkContentRestriction(book)
+
+      val extension = mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
+        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+      ResponseEntity.ok()
+        .contentType(MEDIATYPE_POSITION_LIST_JSON)
+        .setNotModified(media)
+        .body(R2Positions(extension.positions.size, extension.positions))
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
     value = ["api/v1/books/{bookId}/manifest/epub"],

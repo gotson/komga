@@ -4,6 +4,7 @@ import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.parser.Parser
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -17,7 +18,7 @@ data class EpubPackage(
 inline fun <R> Path.epub(block: (EpubPackage) -> R): R =
   ZipFile(this.toFile()).use { zip ->
     val opfFile = zip.getPackagePath()
-    val opfDoc = zip.getInputStream(zip.getEntry(opfFile)).use { Jsoup.parse(it, null, "") }
+    val opfDoc = zip.getInputStream(zip.getEntry(opfFile)).use { Jsoup.parse(it, null, "", Parser.xmlParser()) }
     val opfDir = Paths.get(opfFile).parent
     block(EpubPackage(zip, opfDoc, opfDir, opfDoc.getManifest()))
   }
