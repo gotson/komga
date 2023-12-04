@@ -149,7 +149,7 @@
       "previous_page": "上一页",
       "reader_navigation": "阅读方向",
       "right_to_left": "从右到左",
-      "settings": "设定",
+      "settings": "设置",
       "show_hide_help": "显示/隐藏帮助",
       "show_hide_settings": "显示/隐藏设置菜单",
       "show_hide_thumbnails": "显示/隐藏缩略图资源管理器",
@@ -435,7 +435,7 @@
       "field_import_local_artwork": "本地图片(插图)",
       "field_import_mylar_series": "系列元数据",
       "field_name": "名称",
-      "field_oneshotsdirectory": "一键目录",
+      "field_oneshotsdirectory": "单行本目录",
       "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
       "field_scan_interval": "扫描间隔",
@@ -636,6 +636,18 @@
       "HARDLINK": "硬链接/复制文件",
       "MOVE": "移动文件"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "日间",
+        "night": "夜间",
+        "sepia": "棕褐色"
+      },
+      "column_count": {
+        "auto": "自动",
+        "one": "一列",
+        "two": "两列"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "书籍已转换",
       "BookFileDeleted": "书籍文件已删除",
@@ -688,6 +700,29 @@
       "XLARGE": "超大 (1200px)"
     }
   },
+  "epubreader": {
+    "settings": {
+      "column_count": "列数",
+      "layout": "布局",
+      "layout_paginated": "分页",
+      "layout_scroll": "滚屏",
+      "page_margins": "页边距",
+      "viewing_theme": "查看主题"
+    },
+    "shortcuts": {
+      "cycle_pagination": "列数切换",
+      "cycle_viewing_theme": "查看主题切换",
+      "font_size_decrease": "减小字体大小",
+      "font_size_increase": "增加字体大小",
+      "menus": "菜单",
+      "next": "下一页",
+      "previous": "上一页",
+      "reader_navigation": "阅读方向",
+      "scroll": "更改布局为滚屏",
+      "settings": "设置",
+      "show_hide_toc": "显示/隐藏目录"
+    }
+  },
   "error_codes": {
     "ERR_1000": "分析期间无法访问文件",
     "ERR_1001": "不支持的媒体类型",
@@ -715,7 +750,8 @@
     "ERR_1028": "OpenID Connect 登录错误：没有 email 属性",
     "ERR_1029": "ComicRack CBL 文件中没有书籍",
     "ERR_1030": "ComicRack CBL 文件中没有书名元素",
-    "ERR_1031": "ComicRack CBL 文件中的书籍没有系列或书号"
+    "ERR_1031": "ComicRack CBL 文件中的书籍没有系列或书号",
+    "ERR_1032": "EPUB 文件的媒体类型错误"
   },
   "filter": {
     "age_rating": "年龄限制",
