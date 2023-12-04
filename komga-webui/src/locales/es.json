@@ -636,6 +636,18 @@
       "HARDLINK": "Crear enlace físico/Copiar archivos",
       "MOVE": "Mover archivos"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "Día",
+        "night": "Noche",
+        "sepia": "Sepia"
+      },
+      "column_count": {
+        "auto": "Automático",
+        "one": "Uno",
+        "two": "Dos"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "Libro convertido",
       "BookFileDeleted": "Archivo de libro eliminado",
@@ -688,6 +700,29 @@
       "XLARGE": "Extra grande (1200px)"
     }
   },
+  "epubreader": {
+    "settings": {
+      "column_count": "Número de columnas",
+      "layout": "Diseño",
+      "layout_paginated": "Paginado",
+      "layout_scroll": "Desplazarse",
+      "page_margins": "Márgenes de la página",
+      "viewing_theme": "Tema de visualización"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Alternar cantidad de columnas",
+      "cycle_viewing_theme": "Alternar tema de visualización",
+      "font_size_decrease": "Reducir el tamaño de la letra",
+      "font_size_increase": "Aumentar el tamaño de la letra",
+      "menus": "Menús",
+      "next": "Avanzar",
+      "previous": "Atrás",
+      "reader_navigation": "Navegación del lector",
+      "scroll": "Cambiar el diseño para desplazarse",
+      "settings": "Ajustes",
+      "show_hide_toc": "Mostrar/ocultar índice de contenidos"
+    }
+  },
   "error_codes": {
     "ERR_1000": "No se pudo acceder al archivo durante el análisis",
     "ERR_1001": "Tipo de medio no soportado",
@@ -715,7 +750,8 @@
     "ERR_1028": "Error de inicio de sesión de OpenID Connect: sin atributo email",
     "ERR_1029": "El ComicRack CBL no contiene ningún elemento Libro",
     "ERR_1030": "El ComicRack CBL no tiene ningún elemento Nombre",
-    "ERR_1031": "Al libro del ComicRack CBL le falta la serie o el número"
+    "ERR_1031": "Al libro del ComicRack CBL le falta la serie o el número",
+    "ERR_1032": "El archivo EPUB tiene un tipo de medio incorrecto"
   },
   "filter": {
     "age_rating": "clasificación de edad",
