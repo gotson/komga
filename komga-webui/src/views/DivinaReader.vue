@@ -342,7 +342,7 @@ import {ItemTypes} from '@/types/items'
 import {getBookReadRouteFromMediaProfile} from '@/functions/book-format'
 
 export default Vue.extend({
-  name: 'BookReader',
+  name: 'DivinaReader',
   components: {
     ContinuousReader,
     PagedReader,

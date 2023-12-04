@@ -260,7 +260,7 @@ const router = new Router({
     {
       path: '/book/:bookId/read',
       name: 'read-book',
-      component: () => import(/* webpackChunkName: "read-book" */ './views/BookReader.vue'),
+      component: () => import(/* webpackChunkName: "read-book" */ './views/DivinaReader.vue'),
       props: (route) => ({bookId: route.params.bookId}),
     },
     {
