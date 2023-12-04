@@ -199,6 +199,7 @@
     "books_n": "Aucun livre | 1 livre | {count} livres",
     "books_total": "{count} / {total} livres",
     "cancel": "Annuler",
+    "cbx": "Archive des bandes dessinées",
     "choose_image": "Sélectionner une image",
     "close": "Fermer",
     "collections": "Collections",
@@ -635,6 +636,18 @@
       "HARDLINK": "Fichiers Hardlink/Copier",
       "MOVE": "Déplacer les fichiers"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "Jour",
+        "night": "Nuit",
+        "sepia": "Sépia"
+      },
+      "column_count": {
+        "auto": "Automatique",
+        "one": "Une",
+        "two": "Deux"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "Livre converti",
       "BookFileDeleted": "Fichier de livre détecté",
@@ -685,6 +698,21 @@
       "LARGE": "Large (900px)",
       "MEDIUM": "Medium (600px)",
       "XLARGE": "X-Large (1200px)"
+    }
+  },
+  "epubreader": {
+    "settings": {
+      "column_count": "Nombre de colonnes",
+      "layout": "Disposition",
+      "page_margins": "Marge des pages"
+    },
+    "shortcuts": {
+      "font_size_decrease": "Réduire la taille du texte",
+      "font_size_increase": "Augmenter la taille du texte",
+      "menus": "Menus",
+      "previous": "Retour",
+      "settings": "Paramètres",
+      "show_hide_toc": "Afficher/cacher la table des matières"
     }
   },
   "error_codes": {
