@@ -21,6 +21,7 @@
                        :key="`spread${i}`"
                        :eager="eagerLoad(i)"
                        class="full-height"
+                       :class="preRender(i) ? 'pre-render' : ''"
                        :transition="animations ? undefined : false"
                        :reverse-transition="animations ? undefined : false"
       >
@@ -219,6 +220,9 @@ export default Vue.extend({
     eagerLoad(spreadIndex: number): boolean {
       return Math.abs(this.carouselPage - spreadIndex) <= 2
     },
+    preRender(spreadIndex: number): boolean {
+      return Math.abs(this.carouselPage - spreadIndex) > (this.animations ? 1 : 0)
+    },
     centerClick() {
       this.$emit('menu')
     },
@@ -367,5 +371,11 @@ export default Vue.extend({
 .img-double-fit-screen {
   max-width: 50vw;
   height: 100vh;
+}
+
+.pre-render {
+  display: block !important;
+  position: fixed;
+  right: -100vw;
 }
 </style>
