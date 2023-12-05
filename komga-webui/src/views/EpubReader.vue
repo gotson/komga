@@ -37,13 +37,6 @@
           <v-icon>mdi-help-circle</v-icon>
         </v-btn>
 
-        <!--      <v-btn-->
-        <!--        icon-->
-        <!--        @click="showExplorer = !showExplorer"-->
-        <!--      >-->
-        <!--        <v-icon>mdi-view-grid</v-icon>-->
-        <!--      </v-btn>-->
-
         <v-btn
           icon
           @click="toggleSettings"
@@ -76,6 +69,10 @@
         >
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
+
+        <span v-if="verticalScroll" class="mx-2" style="font-size: 0.85em">
+          {{ progressionTotalPercentage }}
+        </span>
 
         <v-btn
           icon
@@ -130,18 +127,6 @@
       <main tabindex=-1 id="iframe-wrapper" style="height: 100vh">
         <div id="reader-loading"></div>
         <div id="reader-error"></div>
-        <div id="reader-info-top">
-          <span class="book-title"></span>
-        </div>
-        <div id="reader-info-bottom">
-          <div style="display: flex;justify-content: center;">
-            <span id="chapter-position"></span>&nbsp;
-            <span id="chapter-title"></span>
-          </div>
-        </div>
-        <div style="position: fixed; bottom: 0; right: 10px;height: 32px; font-size: .85rem" :class="appearanceClass">
-          <span>{{ totalProgression }}</span>
-        </div>
       </main>
       <a id="previous-chapter" rel="prev" role="button" aria-labelledby="previous-label"
          style="left: 50%;position: fixed;color: #000;height: 24px;background: #d3d3d33b; width: 150px;transform: translate(-50%, 0); display: block"
@@ -173,6 +158,20 @@
         <v-icon style="top: calc(50% - 12px);position: relative;">mdi-chevron-right</v-icon>
       </a>
     </footer>
+
+    <v-container fluid class="full-width" style="position: fixed; bottom: 0; font-size: .85rem"
+                 :class="appearanceClass()"
+                 v-if="!verticalScroll"
+    >
+      <v-row>
+        <v-col cols="auto">
+          {{ $t('epubreader.page_of', {page: progressionPage, count: progressionPageCount}) }}
+          ({{ progressionTitle || $t('epubreader.current_chapter') }})
+        </v-col>
+        <v-spacer/>
+        <v-col cols="auto">{{ progressionTotalPercentage }}</v-col>
+      </v-row>
+    </v-container>
 
     <v-bottom-sheet
       v-model="showSettings"
@@ -387,6 +386,9 @@ export default Vue.extend({
       },
       clickTimer: undefined,
       forceUpdate: false,
+      progressionTitle: undefined as string,
+      progressionPage: undefined as number,
+      progressionPageCount: undefined as number,
     }
   },
   created() {
@@ -427,7 +429,7 @@ export default Vue.extend({
     next()
   },
   computed: {
-    totalProgression(): string {
+    progressionTotalPercentage(): string {
       const p = this.currentLocation?.locations?.totalProgression
       if (p) return `${Math.round(p * 100)}%`
       return ''
@@ -705,6 +707,8 @@ export default Vue.extend({
           updateCurrentLocation: this.updateCurrentLocation,
           keydownFallthrough: this.keyPressed,
           clickThrough: this.clickThrough,
+          positionInfo: this.updatePositionInfo,
+          chapterInfo: this.updateChapterInfo,
         },
       })
 
@@ -748,6 +752,13 @@ export default Vue.extend({
       return new Promise(function (resolve, _) {
         resolve(location)
       })
+    },
+    updatePositionInfo(location: Locator) {
+      this.progressionPage = location.displayInfo?.resourceScreenIndex
+      this.progressionPageCount = location.displayInfo?.resourceScreenCount
+    },
+    updateChapterInfo(title?: string) {
+      this.progressionTitle = title
     },
     appearanceClass(suffix?: string): string {
       let c = this.appearance.replace('readium-', '').replace('-on', '').replace('default', 'day')
@@ -852,7 +863,7 @@ export default Vue.extend({
 }
 
 .sepia {
-  color: #faf4e8;
+  color: #5B5852;
 }
 
 .day-bg {
@@ -860,7 +871,7 @@ export default Vue.extend({
 }
 
 .day {
-  color: #fff;
+  color: #5B5852;
 }
 
 .night-bg {
@@ -868,7 +879,7 @@ export default Vue.extend({
 }
 
 .night {
-  color: #000000;
+  color: #DADADA;
 }
 
 .scrolltab {

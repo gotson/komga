@@ -701,6 +701,8 @@
     }
   },
   "epubreader": {
+    "current_chapter": "Current chapter",
+    "page_of": "Page {page} of {count}",
     "settings": {
       "column_count": "Column count",
       "layout": "Layout",
