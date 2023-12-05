@@ -706,6 +706,12 @@
       "layout": "Layout",
       "layout_paginated": "Paginated",
       "layout_scroll": "Scroll",
+      "navigation_mode": "Navigation mode",
+      "navigation_options": {
+        "both": "Both",
+        "buttons": "Buttons",
+        "click": "Click / Tap"
+      },
       "page_margins": "Page margins",
       "viewing_theme": "Viewing theme"
     },
