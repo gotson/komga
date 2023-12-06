@@ -1,3 +1,32 @@
+# [1.8.4](https://github.com/gotson/komga/compare/1.8.3...1.8.4) (2023-12-06)
+## 🐛 Fixes
+**webui**
+- force pre-render of images in the webreader ([7ab5eb3](https://github.com/gotson/komga/commits/7ab5eb3)), closes [#1323](https://github.com/gotson/komga/issues/1323)
+- update browserlist ([0a0eaca](https://github.com/gotson/komga/commits/0a0eaca)), closes [#1253](https://github.com/gotson/komga/issues/1253)
+
+## 🔄️ Changes
+**webui**
+- rename BookReader to DivinaReader ([c628807](https://github.com/gotson/komga/commits/c628807))
+
+## 🛠  Build
+**conveyor**
+- disable update escape hatch for MS Store ([6e4a3ec](https://github.com/gotson/komga/commits/6e4a3ec))
+
+## 🌐 Translation
+**komga-tray**
+- add empty translation files for all languages ([8de029d](https://github.com/gotson/komga/commits/8de029d))
+- internationalization for desktop app tray menu ([1ad0cd2](https://github.com/gotson/komga/commits/1ad0cd2))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([2260da1](https://github.com/gotson/komga/commits/2260da1))
+- translated using Weblate (Finnish) ([f04e03c](https://github.com/gotson/komga/commits/f04e03c))
+- translated using Weblate (French) ([f7480ce](https://github.com/gotson/komga/commits/f7480ce))
+- translated using Weblate (Spanish) ([af14751](https://github.com/gotson/komga/commits/af14751))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/setup-java from 3 to 4 ([c97a322](https://github.com/gotson/komga/commits/c97a322))
+
 # [1.8.3](https://github.com/gotson/komga/compare/1.8.2...1.8.3) (2023-11-30)
 ## 🐛 Fixes
 **api**
