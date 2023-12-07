@@ -5,10 +5,10 @@ import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.model.PageHashMatch
 import org.gotson.komga.domain.model.PageHashUnknown
 import org.gotson.komga.domain.persistence.PageHashRepository
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.PageHashRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.data.domain.Page

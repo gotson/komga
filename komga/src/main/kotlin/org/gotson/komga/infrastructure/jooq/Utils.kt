@@ -39,9 +39,6 @@ fun Field<String>.inOrNoCondition(list: Collection<String>?): Condition =
     else -> this.`in`(list)
   }
 
-fun LocalDateTime.toCurrentTimeZone(): LocalDateTime =
-  this.atZone(ZoneId.of("Z")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
-
 fun Field<String>.udfStripAccents() =
   DSL.function(SqliteUdfDataSource.udfStripAccents, String::class.java, this)
 

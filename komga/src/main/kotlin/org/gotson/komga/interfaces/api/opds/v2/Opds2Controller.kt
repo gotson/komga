@@ -13,7 +13,6 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
 import org.gotson.komga.interfaces.api.WebPubGenerator
@@ -28,6 +27,7 @@ import org.gotson.komga.interfaces.api.opds.v2.dto.FeedMetadataDto
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
+import org.gotson.komga.language.toZonedDateTime
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -641,7 +641,7 @@ class Opds2Controller(
       FeedDto(
         metadata = FeedMetadataDto(
           title = series.metadata.title,
-          modified = series.lastModified.toCurrentTimeZone().atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+          modified = series.lastModified.toZonedDateTime(),
           description = series.metadata.summary.ifBlank { series.booksMetadata.summary },
           page = entries,
         ),

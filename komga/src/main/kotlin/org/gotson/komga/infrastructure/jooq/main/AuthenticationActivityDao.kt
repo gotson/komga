@@ -3,10 +3,10 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.AuthenticationActivity
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.AuthenticationActivityRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL

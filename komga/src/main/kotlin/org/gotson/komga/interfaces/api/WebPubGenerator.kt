@@ -12,7 +12,6 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
@@ -31,13 +30,12 @@ import org.gotson.komga.interfaces.api.dto.WPPublicationDto
 import org.gotson.komga.interfaces.api.dto.WPReadingProgressionDto
 import org.gotson.komga.interfaces.api.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
+import org.gotson.komga.language.toZonedDateTime
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import org.gotson.komga.domain.model.MediaType as KomgaMediaType
 
 @Service
@@ -177,7 +175,7 @@ class WebPubGenerator(
     title = metadata.title,
     description = metadata.summary,
     numberOfPages = this.media.pagesCount,
-    modified = lastModified.toCurrentTimeZone().atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+    modified = lastModified.toZonedDateTime(),
     published = metadata.releaseDate,
     subject = metadata.tags.toList(),
     identifier = if (metadata.isbn.isNotBlank()) "urn:isbn:${metadata.isbn}" else null,

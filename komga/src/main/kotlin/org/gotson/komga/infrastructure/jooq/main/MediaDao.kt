@@ -11,11 +11,12 @@ import org.gotson.komga.domain.model.ProxyExtension
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
+import org.gotson.komga.infrastructure.jooq.serializeJsonGz
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.MediaFileRecord
 import org.gotson.komga.jooq.main.tables.records.MediaPageRecord
 import org.gotson.komga.jooq.main.tables.records.MediaRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Value

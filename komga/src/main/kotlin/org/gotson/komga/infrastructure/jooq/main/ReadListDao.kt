@@ -9,12 +9,12 @@ import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toCondition
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.jooq.toSortField
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ReadlistRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery

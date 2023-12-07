@@ -6,9 +6,9 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SeriesRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL

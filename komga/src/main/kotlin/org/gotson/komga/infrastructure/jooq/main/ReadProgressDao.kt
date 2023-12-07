@@ -4,9 +4,9 @@ import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ReadProgressRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.gotson.komga.language.toUTC
 import org.jooq.DSLContext
 import org.jooq.Query

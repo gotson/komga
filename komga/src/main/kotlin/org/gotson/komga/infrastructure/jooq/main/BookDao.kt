@@ -5,10 +5,10 @@ import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
