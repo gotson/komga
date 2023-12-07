@@ -307,6 +307,8 @@ import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import screenfull from 'screenfull'
 import {getBookReadRouteFromMediaProfile} from '@/functions/book-format'
 import SettingsSelect from '@/components/SettingsSelect.vue'
+import {createR2Progression, r2ProgressionToReadingPosition} from '@/functions/readium'
+import {debounce} from 'lodash'
 
 export default Vue.extend({
   name: 'EpubReader',
@@ -631,6 +633,9 @@ export default Vue.extend({
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
 
+      let initialLocation = await this.$komgaBooks.getProgression(bookId)
+      if (initialLocation) initialLocation = r2ProgressionToReadingPosition(initialLocation)
+
       // parse query params to get context and contextId
       if (this.$route.query.contextId && this.$route.query.context
         && Object.values(ContextOrigin).includes(this.$route.query.context as ContextOrigin)) {
@@ -652,6 +657,7 @@ export default Vue.extend({
         url: new URL(bookManifestUrl(this.bookId)),
         userSettings: this.settings,
         storageType: 'memory',
+        lastReadingPosition: initialLocation,
         injectables: [
           // webpack will process the new URL (https://webpack.js.org/guides/asset-modules/#url-assets)
           // we use a different extension so that the css-loader rule is not used (see vue.config.js)
@@ -692,7 +698,7 @@ export default Vue.extend({
           enableDefinitions: false,
           enableContentProtection: false,
           enableMediaOverlays: false,
-          enablePageBreaks: true,
+          enablePageBreaks: false,
           autoGeneratePositions: false,
           enableLineFocus: false,
           customKeyboardEvents: false,
@@ -748,6 +754,7 @@ export default Vue.extend({
       this.historyCanGoBack = this.d2Reader.historyCurrentIndex > 0
       this.historyCanGoForward = this.d2Reader.historyCurrentIndex < this.d2Reader.history?.length - 1
 
+      this.markProgress(location)
       this.currentLocation = location
       return new Promise(function (resolve, _) {
         resolve(location)
@@ -841,6 +848,11 @@ export default Vue.extend({
       this.notification.message = message
       this.notification.enabled = true
     },
+    markProgress: debounce(function (this: any, location: Locator) {
+      if (!this.incognito) {
+        this.$komgaBooks.updateProgression(this.bookId, createR2Progression(location))
+      }
+    }, 500),
   },
 })
 </script>
