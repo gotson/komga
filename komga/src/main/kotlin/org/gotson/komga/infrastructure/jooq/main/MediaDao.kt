@@ -22,11 +22,9 @@ import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.io.ByteArrayOutputStream
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.zip.GZIPInputStream
-import java.util.zip.GZIPOutputStream
 
 private val logger = KotlinLogging.logger {}
 
@@ -147,7 +145,7 @@ class MediaDao(
               media.comment,
               media.pageCount,
               media.extension?.let { if (it is ProxyExtension) null else it::class.qualifiedName },
-              media.extension?.let { if (it is ProxyExtension) null else serializeExtension(it) },
+              media.extension?.let { if (it is ProxyExtension) null else mapper.serializeJsonGz(it) },
             )
           }
         }.execute()
@@ -232,7 +230,7 @@ class MediaDao(
       .apply {
         if (media.extension != null && media.extension !is ProxyExtension) {
           set(m.EXTENSION_CLASS, media.extension::class.qualifiedName)
-          set(m.EXTENSION_VALUE_BLOB, serializeExtension(media.extension))
+          set(m.EXTENSION_VALUE_BLOB, mapper.serializeJsonGz(media.extension))
         }
       }
       .set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
@@ -282,18 +280,6 @@ class MediaDao(
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
-  fun serializeExtension(extension: MediaExtension): ByteArray? =
-    try {
-      ByteArrayOutputStream().use { baos ->
-        GZIPOutputStream(baos).use { gz ->
-          mapper.writeValue(gz, extension)
-          baos.toByteArray()
-        }
-      }
-    } catch (e: Exception) {
-      logger.error(e) { "Could not serialize media extension" }
-      null
-    }
 
   fun deserializeExtension(extensionClass: String?, extensionBlob: ByteArray?): MediaExtension? {
     if (extensionClass == null || extensionBlob == null) return null

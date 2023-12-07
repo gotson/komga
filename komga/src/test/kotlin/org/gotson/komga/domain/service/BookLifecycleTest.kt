@@ -7,10 +7,17 @@ import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatNoException
+import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaExtensionEpub
+import org.gotson.komga.domain.model.MediaFile
+import org.gotson.komga.domain.model.R2Device
+import org.gotson.komga.domain.model.R2Locator
+import org.gotson.komga.domain.model.R2Progression
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
@@ -26,11 +33,16 @@ import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.time.ZonedDateTime
 
 @SpringBootTest
 class BookLifecycleTest(
@@ -275,6 +287,176 @@ class BookLifecycleTest(
       assertThat(Files.exists(seriesPath))
       assertThat(Files.exists(filePath))
       assertThat(Files.notExists(bookPath))
+    }
+  }
+
+  @Nested
+  inner class Progression {
+    @BeforeEach
+    fun setup() {
+      makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).let { created ->
+          val books = listOf(makeBook("1", libraryId = library.id))
+          seriesLifecycle.addBooks(created, books)
+        }
+      }
+    }
+
+    private val device = R2Device("abc", "device")
+    private val epubResources = listOf(
+      MediaFile("ch1.xhtml", "application/xhtml+xml"),
+      MediaFile("ch2.xhtml", "application/xhtml+xml"),
+      MediaFile("ch3.xhtml", "application/xhtml+xml"),
+    )
+
+    private fun makeEpubPositions(): List<R2Locator> {
+      var startPosition = 1
+      return epubResources.flatMap { file ->
+        (1..10).map {
+          R2Locator(file.fileName, file.mediaType!!, locations = R2Locator.Location(position = startPosition++, progression = it.toFloat()))
+        }
+      }
+    }
+
+    @Test
+    fun `given book when marking progress older than saved then it fails`() {
+      val book = bookRepository.findAll().first()
+      mediaRepository.findById(book.id).let { media ->
+        mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = "application/zip", pageCount = 10))
+      }
+
+      val progress = R2Progression(ZonedDateTime.now(), device, R2Locator("", "", locations = R2Locator.Location(position = 5)))
+
+      bookLifecycle.markProgression(book, user1, progress)
+
+      // when
+      val thrown = catchThrowable {
+        bookLifecycle.markProgression(book, user1, progress.copy(modified = progress.modified.minusHours(1)))
+      }
+
+      // then
+      assertThat(thrown)
+        .isInstanceOf(IllegalStateException::class.java)
+        .hasMessageContaining("older than existing")
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["application/zip", "application/pdf"])
+    fun `given divina or pdf book when marking progress over the page count then it fails`(mediaType: String) {
+      val book = bookRepository.findAll().first()
+      mediaRepository.findById(book.id).let { media ->
+        mediaRepository.update(media.copy(status = Media.Status.READY, pageCount = 10, mediaType = mediaType))
+      }
+
+      // when
+      val thrown = catchThrowable {
+        bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("", "", locations = R2Locator.Location(position = 15))))
+      }
+
+      // then
+      assertThat(thrown)
+        .isInstanceOf(IllegalArgumentException::class.java)
+        .hasMessageContaining("must be within 1 and book page count")
+    }
+
+    @Test
+    fun `given epub book when marking progress with non-existing href then it fails`() {
+      val book = bookRepository.findAll().first()
+      mediaRepository.findById(book.id).let { media ->
+        mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = "application/epub+zip", files = epubResources))
+      }
+
+      // when
+      val thrown = catchThrowable {
+        bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch5.xhtml", "", locations = R2Locator.Location(position = 15))))
+      }
+
+      // then
+      assertThat(thrown)
+        .isInstanceOf(IllegalArgumentException::class.java)
+        .hasMessageContaining("Resource does not exist in book")
+    }
+
+    @Test
+    fun `given epub book when marking progress without location progression then it fails`() {
+      val book = bookRepository.findAll().first()
+      mediaRepository.findById(book.id).let { media ->
+        mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = "application/epub+zip", files = epubResources))
+      }
+
+      // when
+      val thrown = catchThrowable {
+        bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch1.xhtml", "", locations = R2Locator.Location(position = 15))))
+      }
+
+      // then
+      assertThat(thrown)
+        .isInstanceOf(IllegalArgumentException::class.java)
+        .hasMessageContaining("location.progression is required")
+    }
+
+    @Test
+    fun `given epub book without extension when marking progress then it fails`() {
+      val book = bookRepository.findAll().first()
+      mediaRepository.findById(book.id).let { media ->
+        mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = "application/epub+zip", files = epubResources))
+      }
+
+      // when
+      val thrown = catchThrowable {
+        bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch1.xhtml", "", locations = R2Locator.Location(progression = 0.3F))))
+      }
+
+      // then
+      assertThat(thrown)
+        .isInstanceOf(IllegalArgumentException::class.java)
+        .hasMessageContaining("extension not found")
+    }
+
+    @Test
+    fun `given epub book when marking progress with exact position then it succeeds`() {
+      val book = bookRepository.findAll().first()
+      val epubPositions = makeEpubPositions()
+      mediaRepository.findById(book.id).let { media ->
+        mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = "application/epub+zip", files = epubResources, extension = MediaExtensionEpub(positions = epubPositions)))
+      }
+
+      // when
+      val newProgression = R2Progression(ZonedDateTime.now(), device, epubPositions.first())
+      assertThatNoException().isThrownBy {
+        bookLifecycle.markProgression(book, user1, newProgression)
+      }
+      val savedProgression = readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user1.id)
+
+      // then
+      assertThat(savedProgression).isNotNull
+      assertThat(savedProgression!!.locator).isEqualTo(newProgression.locator)
+    }
+
+    @Test
+    fun `given epub book when marking progress with skewed position then it succeeds`() {
+      val book = bookRepository.findAll().first()
+      val epubPositions = makeEpubPositions()
+      mediaRepository.findById(book.id).let { media ->
+        mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = "application/epub+zip", files = epubResources, extension = MediaExtensionEpub(positions = epubPositions)))
+      }
+
+      // when
+      val newProgression = R2Progression(
+        ZonedDateTime.now(),
+        device,
+        with(epubPositions[0]) {
+          copy(locations = locations!!.copy(progression = locations!!.progression!! + 0.5F))
+        },
+      )
+      assertThatNoException().isThrownBy {
+        bookLifecycle.markProgression(book, user1, newProgression)
+      }
+      val savedProgression = readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user1.id)
+
+      // then
+      assertThat(savedProgression).isNotNull
+      assertThat(savedProgression!!.locator).isEqualTo(newProgression.locator)
     }
   }
 }

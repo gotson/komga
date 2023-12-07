@@ -480,5 +480,7 @@ class BookDtoDao(
       readDate = readDate,
       created = createdDate,
       lastModified = lastModifiedDate,
+      deviceId = deviceId,
+      deviceName = deviceName,
     )
 }

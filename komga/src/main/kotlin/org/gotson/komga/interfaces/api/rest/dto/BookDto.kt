@@ -79,4 +79,6 @@ data class ReadProgressDto(
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val lastModified: LocalDateTime,
+  val deviceId: String,
+  val deviceName: String,
 )

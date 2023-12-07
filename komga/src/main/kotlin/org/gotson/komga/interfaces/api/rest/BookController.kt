@@ -27,15 +27,18 @@ import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaUnsupportedException
+import org.gotson.komga.domain.model.R2Progression
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.toR2Progression
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
+import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
@@ -54,6 +57,7 @@ import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_POSITION_LIST_JSON
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_POSITION_LIST_JSON_VALUE
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_PROGRESSION_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.WPPublicationDto
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
@@ -119,6 +123,7 @@ class BookController(
   private val bookAnalyzer: BookAnalyzer,
   private val bookLifecycle: BookLifecycle,
   private val bookRepository: BookRepository,
+  private val readProgressRepository: ReadProgressRepository,
   private val bookMetadataRepository: BookMetadataRepository,
   private val seriesMetadataRepository: SeriesMetadataRepository,
   private val mediaRepository: MediaRepository,
@@ -740,6 +745,42 @@ class BookController(
         .setNotModified(media)
         .body(R2Positions(extension.positions.size, extension.positions))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping(
+    value = ["api/v1/books/{bookId}/progression"],
+    produces = [MEDIATYPE_PROGRESSION_JSON_VALUE],
+  )
+  fun getProgression(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<R2Progression> =
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      principal.user.checkContentRestriction(book)
+
+      readProgressRepository.findByBookIdAndUserIdOrNull(bookId, principal.user.id)?.let {
+        ResponseEntity.ok(it.toR2Progression())
+      } ?: ResponseEntity.noContent().build()
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @PutMapping("api/v1/books/{bookId}/progression")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markProgression(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+    @RequestBody progression: R2Progression,
+  ) {
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      principal.user.checkContentRestriction(book)
+
+      try {
+        bookLifecycle.markProgression(book, principal.user, progression)
+      } catch (e: IllegalStateException) {
+        throw ResponseStatusException(HttpStatus.CONFLICT, e.message)
+      } catch (e: IllegalArgumentException) {
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 
   @GetMapping(
     value = ["api/v1/books/{bookId}/manifest/epub"],
