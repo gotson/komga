@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.BookMetadataPatch
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.model.makeBook
@@ -39,7 +40,7 @@ class ComicInfoProviderTest {
   private val media = Media(
     status = Media.Status.READY,
     mediaType = "application/zip",
-    files = listOf("ComicInfo.xml"),
+    files = listOf(MediaFile("ComicInfo.xml")),
   )
 
   @Nested

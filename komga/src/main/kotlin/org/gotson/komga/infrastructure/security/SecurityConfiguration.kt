@@ -74,6 +74,8 @@ class SecurityConfiguration(
           "/api/v1/claim",
           // used by webui
           "/api/v1/oauth2/providers",
+          // epub resources - fonts are always requested anonymously, so we check for authorization within the controller method directly
+          "api/v1/books/{bookId}/resource/**",
         ).permitAll()
 
         // all other endpoints are restricted to authenticated users
@@ -85,6 +87,7 @@ class SecurityConfiguration(
       }
       .headers { headersConfigurer ->
         headersConfigurer.cacheControl { it.disable() } // headers are set in WebMvcConfiguration
+        headersConfigurer.frameOptions { it.sameOrigin() } // for epubreader iframes
       }
       .httpBasic {
         it.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)

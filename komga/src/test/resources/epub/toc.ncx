@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN"
+    "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en-US">
+    <head>
+        <meta content="978-0-553-89784-5" name="dtb:uid"/>
+        <meta content="2" name="dtb:depth"/>
+        <meta content="0" name="dtb:totalPageCount"/>
+        <meta content="0" name="dtb:maxPageNumber"/>
+    </head>
+    <docTitle>
+        <text>A Clash of Kings</text>
+    </docTitle>
+    <docAuthor>
+        <text>George R. R. Martin</text>
+    </docAuthor>
+    <navMap>
+        <navPoint id="b02" playOrder="95">
+            <navLabel>
+                <text>COVER</text>
+            </navLabel>
+            <content src="Text/Mart_9780553897852_epub_cvi_r1.htm#b02-cvi"/>
+        </navPoint>
+        <navPoint id="b02-c69" playOrder="171">
+            <navLabel>
+                <text>BRAN</text>
+            </navLabel>
+            <content src="Text/Mart_9780553897852_epub_c69_r1.htm"/>
+        </navPoint>
+        <navPoint id="b02-app" playOrder="172">
+            <navLabel>
+                <text>APPENDIX</text>
+            </navLabel>
+            <content src="Text/Mart_9780553897852_epub_app_r1.htm"/>
+            <navPoint id="b02-apps01.00" playOrder="173">
+                <navLabel>
+                    <text>THE KINGS AND THEIR COURTS</text>
+                </navLabel>
+                <content src="Text/Mart_9780553897852_epub_app_r1.htm#apps01.00"/>
+            </navPoint>
+            <navPoint id="b02-apps01.01" playOrder="174">
+                <navLabel>
+                    <text>THE KING ON THE IRON THRONE</text>
+                </navLabel>
+                <content src="Text/Mart_9780553897852_epub_app_r1.htm#apps01.01"/>
+            </navPoint>
+            <navPoint id="b02-apps01.02" playOrder="175">
+                <navLabel>
+                    <text>THE KING IN THE NARROW SEA</text>
+                </navLabel>
+                <content src="Text/Mart_9780553897852_epub_app_r1.htm#apps01.02"/>
+            </navPoint>
+            <navPoint id="b02-apps01.03" playOrder="176">
+                <navLabel>
+                    <text>THE KING IN HIGHGARDEN</text>
+                </navLabel>
+                <content src="Text/Mart_9780553897852_epub_app_r1.htm#apps01.03"/>
+            </navPoint>
+            <navPoint id="b02-apps01.04" playOrder="177">
+                <navLabel>
+                    <text>THE KING IN THE NORTH</text>
+                </navLabel>
+                <content src="Text/Mart_9780553897852_epub_app_r1.htm#apps01.04"/>
+            </navPoint>
+            <navPoint id="b02-apps01.05" playOrder="178">
+                <navLabel>
+                    <text>THE QUEEN ACROSS THE WATER</text>
+                </navLabel>
+                <content src="Text/Mart_9780553897852_epub_app_r1.htm#apps01.05"/>
+                <navPoint id="b02-apps01.00" playOrder="173">
+                    <navLabel>
+                        <text>Another level</text>
+                    </navLabel>
+                    <content src="Text/Mart_9780553897852 epub_app_r1.htm#apps01.06"/>
+                </navPoint>
+                <navPoint id="b02-apps01.01" playOrder="174">
+                    <navLabel>
+                        <text>Yet another level</text>
+                    </navLabel>
+                    <content src="Text/Mart_9780553897852%20epub_app_r1.htm#apps01.07"/>
+                </navPoint>
+            </navPoint>
+        </navPoint>
+        <navPoint id="b02-ack" playOrder="188">
+            <navLabel>
+                <text>ACKNOWLEDGMENTS</text>
+            </navLabel>
+            <content src="Text/Mart_9780553897852_epub_ack_r1.htm"/>
+        </navPoint>
+    </navMap>
+    <pageList>
+        <pageTarget type="normal" id="id_cov" value="Cover Page">
+            <navLabel>
+                <text>Cover Page</text>
+            </navLabel>
+            <content src="xhtml/cover.xhtml"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_iii" value="iii">
+            <navLabel>
+                <text>iii</text>
+            </navLabel>
+            <content src="xhtml/title.xhtml#pg_iii"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_v" value="v">
+            <navLabel>
+                <text>v</text>
+            </navLabel>
+            <content src="xhtml/dedication.xhtml#pg_v"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_vii" value="vii">
+            <navLabel>
+                <text>vii</text>
+            </navLabel>
+            <content src="xhtml/formoreinformation.xhtml#pg_vii"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_viii" value="viii">
+            <navLabel>
+                <text>viii</text>
+            </navLabel>
+            <content src="xhtml/formoreinformation.xhtml#pg_viii"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_ix" value="ix">
+            <navLabel>
+                <text>ix</text>
+            </navLabel>
+            <content src="xhtml/formoreinformation.xhtml#pg_ix"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_x" value="x">
+            <navLabel>
+                <text>x</text>
+            </navLabel>
+            <content src="xhtml/formoreinformation.xhtml#pg_x"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_xi" value="xi">
+            <navLabel>
+                <text>xi</text>
+            </navLabel>
+            <content src="xhtml/formoreinformation.xhtml#pg_xi"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_1" value="1">
+            <navLabel>
+                <text>1</text>
+            </navLabel>
+            <content src="xhtml/chapter1.xhtml#pg_1"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_2" value="2">
+            <navLabel>
+                <text>2</text>
+            </navLabel>
+            <content src="xhtml/chapter1.xhtml#pg_2"/>
+        </pageTarget>
+        <pageTarget type="normal" id="id_3" value="3">
+            <navLabel>
+                <text>3</text>
+            </navLabel>
+            <content src="xhtml/chapter1.xhtml#pg_3"/>
+        </pageTarget>
+    </pageList>
+</ncx>

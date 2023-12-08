@@ -3,7 +3,6 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookAction
-import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
@@ -13,8 +12,10 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.HistoricalEventRepository
@@ -27,6 +28,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -58,6 +60,8 @@ class BookLifecycle(
   private val hasher: Hasher,
   private val historicalEventRepository: HistoricalEventRepository,
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Qualifier("pdfImageType")
+  private val pdfImageType: ImageType,
 ) {
 
   private val resizeTargetFormat = ImageType.JPEG
@@ -69,9 +73,9 @@ class BookLifecycle(
     transactionTemplate.executeWithoutResult {
       // if the number of pages has changed, delete all read progress for that book
       mediaRepository.findById(book.id).let { previous ->
-        if (previous.status == Media.Status.OUTDATED && previous.pages.size != media.pages.size) {
+        if (previous.status == Media.Status.OUTDATED && previous.pageCount != media.pageCount) {
           val adjustedProgress = readProgressRepository.findAllByBookId(book.id)
-            .map { it.copy(page = if (it.completed) media.pages.size else 1) }
+            .map { it.copy(page = if (it.completed) media.pageCount else 1) }
           if (adjustedProgress.isNotEmpty()) {
             logger.info { "Number of pages differ, adjust read progress for book" }
             readProgressRepository.save(adjustedProgress)
@@ -177,7 +181,7 @@ class BookLifecycle(
     return selected
   }
 
-  fun getThumbnailBytes(bookId: String, resizeTo: Int? = null): ByteArray? {
+  fun getThumbnailBytes(bookId: String, resizeTo: Int? = null): TypedBytes? {
     getThumbnail(bookId)?.let {
       val thumbnailBytes = when {
         it.thumbnail != null -> it.thumbnail
@@ -186,17 +190,30 @@ class BookLifecycle(
       }
 
       if (resizeTo != null) {
-        return try {
-          imageConverter.resizeImageToByteArray(thumbnailBytes, resizeTargetFormat, resizeTo)
+        try {
+          return TypedBytes(
+            imageConverter.resizeImageToByteArray(thumbnailBytes, resizeTargetFormat, resizeTo),
+            resizeTargetFormat.mediaType,
+          )
         } catch (e: Exception) {
           logger.error(e) { "Resize thumbnail of book $bookId to $resizeTo: failed" }
-          thumbnailBytes
         }
       }
 
-      return thumbnailBytes
+      return TypedBytes(thumbnailBytes, it.mediaType)
     }
     return null
+  }
+
+  fun getThumbnailBytesOriginal(bookId: String): TypedBytes? {
+    val thumbnail = getThumbnail(bookId) ?: return null
+    return if (thumbnail.type == ThumbnailBook.Type.GENERATED) {
+      val book = bookRepository.findByIdOrNull(bookId) ?: return null
+      val media = mediaRepository.findById(book.id)
+      bookAnalyzer.getPoster(BookWithMedia(book, media))
+    } else {
+      getThumbnailBytes(bookId)
+    }
   }
 
   fun getThumbnailBytesByThumbnailId(thumbnailId: String): ByteArray? =
@@ -249,10 +266,12 @@ class BookLifecycle(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class,
   )
-  fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): BookPageContent {
+  fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): TypedBytes {
     val media = mediaRepository.findById(book.id)
     val pageContent = bookAnalyzer.getPageContent(BookWithMedia(book, media), number)
-    val pageMediaType = media.pages[number - 1].mediaType
+    val pageMediaType =
+      if (media.profile == MediaProfile.PDF) pdfImageType.mediaType
+      else media.pages[number - 1].mediaType
 
     if (resizeTo != null) {
       val convertedPage = try {
@@ -261,7 +280,7 @@ class BookLifecycle(
         logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
         throw e
       }
-      return BookPageContent(convertedPage, resizeTargetFormat.mediaType)
+      return TypedBytes(convertedPage, resizeTargetFormat.mediaType)
     } else {
       convertTo?.let {
         val msg = "Convert page #$number of book $book from $pageMediaType to ${it.mediaType}"
@@ -283,10 +302,10 @@ class BookLifecycle(
           logger.error(e) { "$msg: conversion failed" }
           throw e
         }
-        return BookPageContent(convertedPage, it.mediaType)
+        return TypedBytes(convertedPage, it.mediaType)
       }
 
-      return BookPageContent(pageContent, pageMediaType)
+      return TypedBytes(pageContent, pageMediaType)
     }
   }
 
@@ -345,7 +364,7 @@ class BookLifecycle(
   fun markReadProgressCompleted(bookId: String, user: KomgaUser) {
     val media = mediaRepository.findById(bookId)
 
-    val progress = ReadProgress(bookId, user.id, media.pages.size, true)
+    val progress = ReadProgress(bookId, user.id, media.pageCount, true)
     readProgressRepository.save(progress)
     eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(progress))
   }

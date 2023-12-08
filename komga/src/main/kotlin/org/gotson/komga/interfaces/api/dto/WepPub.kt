@@ -21,9 +21,10 @@ data class WPLinkDto(
   @Positive
   val height: Int? = null,
   val alternate: List<WPLinkDto> = emptyList(),
+  val children: List<WPLinkDto> = emptyList(),
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class WPPublicationDto(
   @JsonIgnore
   val mediaType: MediaType,
@@ -35,6 +36,8 @@ data class WPPublicationDto(
   val readingOrder: List<WPLinkDto> = emptyList(),
   val resources: List<WPLinkDto> = emptyList(),
   val toc: List<WPLinkDto> = emptyList(),
+  val landmarks: List<WPLinkDto> = emptyList(),
+  val pageList: List<WPLinkDto> = emptyList(),
 )
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)

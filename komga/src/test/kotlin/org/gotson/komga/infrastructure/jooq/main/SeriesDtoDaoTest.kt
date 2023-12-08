@@ -282,7 +282,7 @@ class SeriesDtoDaoTest(
       seriesLifecycle.createSeries(makeSeries("Batman", library.id))
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -307,7 +307,7 @@ class SeriesDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -332,7 +332,7 @@ class SeriesDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -357,7 +357,7 @@ class SeriesDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -382,7 +382,7 @@ class SeriesDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -407,7 +407,7 @@ class SeriesDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -438,7 +438,7 @@ class SeriesDtoDaoTest(
 
       seriesMetadataLifecycle.aggregateMetadata(series)
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val foundByBookTag = seriesDtoDao.findAll(
@@ -506,7 +506,7 @@ class SeriesDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -531,7 +531,7 @@ class SeriesDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -564,7 +564,7 @@ class SeriesDtoDaoTest(
       }
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -598,7 +598,7 @@ class SeriesDtoDaoTest(
 
       seriesMetadataLifecycle.aggregateMetadata(series)
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val foundGeneric = seriesDtoDao.findAll(
@@ -643,7 +643,7 @@ class SeriesDtoDaoTest(
 
       seriesMetadataLifecycle.aggregateMetadata(series)
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(
@@ -664,7 +664,7 @@ class SeriesDtoDaoTest(
       seriesLifecycle.createSeries(makeSeries("Batman and Robin", library.id))
 
       searchIndexLifecycle.rebuildIndex()
-      Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
       val found = seriesDtoDao.findAll(

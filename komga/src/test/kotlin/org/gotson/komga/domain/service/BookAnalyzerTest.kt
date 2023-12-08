@@ -130,7 +130,19 @@ class BookAnalyzerTest(
 
     assertThat(media.mediaType).isEqualTo("application/epub+zip")
     assertThat(media.status).isEqualTo(Media.Status.READY)
-    assertThat(media.pages).hasSize(2)
+    assertThat(media.pages).hasSize(0)
+  }
+
+  @Test
+  fun `given broken epub archive when analyzing then media status is ERROR`() {
+    val file = ClassPathResource("archives/zip-as-epub.epub")
+    val book = Book("book", file.url, LocalDateTime.now())
+
+    val media = bookAnalyzer.analyze(book, false)
+
+    assertThat(media.mediaType).isEqualTo("application/zip")
+    assertThat(media.status).isEqualTo(Media.Status.ERROR)
+    assertThat(media.pages).hasSize(0)
   }
 
   @Test

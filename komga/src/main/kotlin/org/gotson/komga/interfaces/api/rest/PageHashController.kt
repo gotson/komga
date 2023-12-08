@@ -87,7 +87,7 @@ class PageHashController(
     pageHashLifecycle.getPage(pageHash, resize)?.let {
       ResponseEntity.ok()
         .contentType(getMediaTypeOrDefault(it.mediaType))
-        .body(it.content)
+        .body(it.bytes)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PutMapping

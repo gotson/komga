@@ -36,12 +36,12 @@
     "user_agent": "用户代理"
   },
   "author_roles": {
-    "colorist": "上色者",
+    "colorist": "上色师",
     "cover": "封面",
     "editor": "主编",
-    "inker": "画图者",
-    "letterer": "嵌字者",
-    "penciller": "铅稿",
+    "inker": "上墨师",
+    "letterer": "嵌字师",
+    "penciller": "线稿师",
     "translator": "翻译者",
     "writer": "作者"
   },
@@ -94,7 +94,7 @@
     "move_next": "再次单击或按“下一步”前往下一本书。",
     "move_next_exit": "再次单击或按“下一步”退出阅读。",
     "move_previous": "再次单击或按“上一页”前往上一本书。",
-    "notification_poster_set_book": "图书海报现已设为当前页面。",
+    "notification_poster_set_book": "书籍海报现已设为当前页面。",
     "notification_poster_set_readlist": "阅读清单海报现已设为当前页面。",
     "notification_poster_set_series": "系列海报已设为当前页。",
     "paged_reader_layout": {
@@ -149,7 +149,7 @@
       "previous_page": "上一页",
       "reader_navigation": "阅读方向",
       "right_to_left": "从右到左",
-      "settings": "设定",
+      "settings": "设置",
       "show_hide_help": "显示/隐藏帮助",
       "show_hide_settings": "显示/隐藏设置菜单",
       "show_hide_thumbnails": "显示/隐藏缩略图资源管理器",
@@ -214,19 +214,19 @@
     "email": "邮箱",
     "epub": "Epub",
     "filename": "文件名",
-    "filter_no_matches": "过滤器没有匹配的结果",
+    "filter_no_matches": "筛选器没有匹配的结果",
     "genre": "风格",
     "go_to_collection": "转到收藏",
     "go_to_library": "转到库",
     "go_to_readlist": "转到阅读列表",
     "go_to_series": "转到系列",
-    "library": "书库",
+    "library": "库",
     "locale_name": "简体中文",
     "locale_rtl": "false",
     "lock_all": "锁定全部",
     "n_selected": "已选择 {count}",
-    "nothing_to_show": "没有什么可显示",
-    "oneshot": "一次性",
+    "nothing_to_show": "无任何项目",
+    "oneshot": "单行本",
     "outdated": "过时的",
     "page": "页面",
     "page_number": "页码",
@@ -243,7 +243,7 @@
     "readlists": "阅读列表",
     "remember-me": "记住账号",
     "required": "必填",
-    "reset_filters": "重置过滤器",
+    "reset_filters": "重置筛选器",
     "roles": "角色",
     "save_changes": "保存更改",
     "series": "系列 | 系列",
@@ -252,13 +252,13 @@
     "unavailable": "不可用",
     "unlock_all": "解锁全部",
     "url": "URL",
-    "use_filter_panel_to_change_filter": "使用过滤器修改过滤项",
+    "use_filter_panel_to_change_filter": "使用筛选器修改筛选项",
     "year": "年"
   },
   "dashboard": {
     "keep_reading": "继续阅读",
     "on_deck": "导航",
-    "recently_added_books": "最近添加的书",
+    "recently_added_books": "最近添加的书籍",
     "recently_added_series": "最近添加的系列",
     "recently_read_books": "最近阅读的书籍",
     "recently_released_books": "最近发布的书籍",
@@ -321,7 +321,7 @@
       "title": "分析库"
     },
     "book_picker": {
-      "filter": "按序号、标题或发行日期过滤",
+      "filter": "按序号、标题或发行日期筛选",
       "title": "选择书籍"
     },
     "delete_book": {
@@ -435,7 +435,7 @@
       "field_import_local_artwork": "本地图片(插图)",
       "field_import_mylar_series": "系列元数据",
       "field_name": "名称",
-      "field_oneshotsdirectory": "一键目录",
+      "field_oneshotsdirectory": "单行本目录",
       "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
       "field_scan_interval": "扫描间隔",
@@ -524,7 +524,7 @@
     "empty_trash": {
       "body": "默认情况下，媒体服务器不会立即删除媒体的信息。这对驱动器暂时断开连接的情况有所帮助。清理垃圾时，所有丢失媒体相关的信息都会被删除。",
       "button_confirm": "清理",
-      "title": "清理书库垃圾"
+      "title": "清理库垃圾"
     },
     "file_browser": {
       "button_cancel": "取消",
@@ -636,6 +636,18 @@
       "HARDLINK": "硬链接/复制文件",
       "MOVE": "移动文件"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "日间",
+        "night": "夜间",
+        "sepia": "棕褐色"
+      },
+      "column_count": {
+        "auto": "自动",
+        "one": "一列",
+        "two": "两列"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "书籍已转换",
       "BookFileDeleted": "书籍文件已删除",
@@ -688,6 +700,29 @@
       "XLARGE": "超大 (1200px)"
     }
   },
+  "epubreader": {
+    "settings": {
+      "column_count": "列数",
+      "layout": "布局",
+      "layout_paginated": "分页",
+      "layout_scroll": "滚屏",
+      "page_margins": "页边距",
+      "viewing_theme": "查看主题"
+    },
+    "shortcuts": {
+      "cycle_pagination": "列数切换",
+      "cycle_viewing_theme": "查看主题切换",
+      "font_size_decrease": "减小字体大小",
+      "font_size_increase": "增加字体大小",
+      "menus": "菜单",
+      "next": "下一页",
+      "previous": "上一页",
+      "reader_navigation": "阅读方向",
+      "scroll": "更改布局为滚屏",
+      "settings": "设置",
+      "show_hide_toc": "显示/隐藏目录"
+    }
+  },
   "error_codes": {
     "ERR_1000": "分析期间无法访问文件",
     "ERR_1001": "不支持的媒体类型",
@@ -701,7 +736,7 @@
     "ERR_1009": "已存在该名称的阅读列表",
     "ERR_1015": "反序列化 ComicRack CBL 文件时出错",
     "ERR_1016": "目录不可访问",
-    "ERR_1017": "无法扫描作为现有库一部分的文件夹",
+    "ERR_1017": "无法扫描属于现有库的文件夹",
     "ERR_1018": "文件未找到",
     "ERR_1019": "无法导入属于现有库的文件",
     "ERR_1020": "要升级的书籍不属于提供的系列",
@@ -715,17 +750,18 @@
     "ERR_1028": "OpenID Connect 登录错误：没有 email 属性",
     "ERR_1029": "ComicRack CBL 文件中没有书籍",
     "ERR_1030": "ComicRack CBL 文件中没有书名元素",
-    "ERR_1031": "ComicRack CBL 文件中的书籍没有系列或书号"
+    "ERR_1031": "ComicRack CBL 文件中的书籍没有系列或书号",
+    "ERR_1032": "EPUB 文件的媒体类型错误"
   },
   "filter": {
     "age_rating": "年龄限制",
     "age_rating_none": "无",
     "complete": "完结",
     "genre": "风格",
-    "in_progress": "正在进行",
+    "in_progress": "继续阅读",
     "language": "语言",
     "library": "库",
-    "oneshot": "一次性",
+    "oneshot": "单行本",
     "publisher": "出版商",
     "read": "已读",
     "release_date": "发行日期",
@@ -735,7 +771,7 @@
     "unread": "未读"
   },
   "filter_drawer": {
-    "filter": "过滤",
+    "filter": "筛选",
     "sort": "排序"
   },
   "history": {
@@ -841,10 +877,10 @@
   "server": {
     "server_management": {
       "button_cancel_all_tasks": "取消所有任务",
-      "button_empty_trash": "清理所有书库的垃圾",
-      "button_scan_libraries": "扫描所有书库",
+      "button_empty_trash": "清理所有库的垃圾",
+      "button_scan_libraries": "扫描所有库",
       "button_scan_libraries_deep": "扫描所有库（深度）",
-      "button_shutdown": "关机",
+      "button_shutdown": "关闭服务器",
       "notification_tasks_cancelled": "无可取消任务 | 取消了一个任务 | 取消了 {count} 个任务",
       "section_title": "服务器管理"
     },

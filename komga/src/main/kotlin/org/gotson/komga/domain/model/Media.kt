@@ -6,12 +6,17 @@ data class Media(
   val status: Status = Status.UNKNOWN,
   val mediaType: String? = null,
   val pages: List<BookPage> = emptyList(),
-  val files: List<String> = emptyList(),
+  val pageCount: Int = pages.size,
+  val files: List<MediaFile> = emptyList(),
   val comment: String? = null,
+  val extension: MediaExtension? = null,
   val bookId: String = "",
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
+
+  @delegate:Transient
+  val profile: MediaProfile? by lazy { MediaType.fromMediaType(mediaType)?.profile }
 
   enum class Status {
     UNKNOWN, ERROR, READY, UNSUPPORTED, OUTDATED

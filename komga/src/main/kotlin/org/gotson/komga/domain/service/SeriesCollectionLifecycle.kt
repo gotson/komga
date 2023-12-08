@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
+import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.ThumbnailSeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
@@ -10,6 +11,7 @@ import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
 import org.gotson.komga.infrastructure.image.MosaicGenerator
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 
 private val logger = KotlinLogging.logger {}
@@ -27,6 +29,7 @@ class SeriesCollectionLifecycle(
   @Throws(
     DuplicateNameException::class,
   )
+  @Transactional
   fun addCollection(collection: SeriesCollection): SeriesCollection {
     logger.info { "Adding new collection: $collection" }
 
@@ -40,6 +43,7 @@ class SeriesCollectionLifecycle(
     return collectionRepository.findByIdOrNull(collection.id)!!
   }
 
+  @Transactional
   fun updateCollection(toUpdate: SeriesCollection) {
     logger.info { "Update collection: $toUpdate" }
 
@@ -60,6 +64,34 @@ class SeriesCollectionLifecycle(
       collectionRepository.delete(collection.id)
     }
     eventPublisher.publishEvent(DomainEvent.CollectionDeleted(collection))
+  }
+
+  /**
+   * Add series to collection by name.
+   * Collection will be created if it doesn't exist.
+   */
+  @Transactional
+  fun addSeriesToCollection(collectionName: String, series: Series) {
+    collectionRepository.findByNameOrNull(collectionName).let { existing ->
+      if (existing != null) {
+        if (existing.seriesIds.contains(series.id))
+          logger.debug { "Series is already in existing collection '${existing.name}'" }
+        else {
+          logger.debug { "Adding series '${series.name}' to existing collection '${existing.name}'" }
+          updateCollection(
+            existing.copy(seriesIds = existing.seriesIds + series.id),
+          )
+        }
+      } else {
+        logger.debug { "Adding series '${series.name}' to new collection '$collectionName'" }
+        addCollection(
+          SeriesCollection(
+            name = collectionName,
+            seriesIds = listOf(series.id),
+          ),
+        )
+      }
+    }
   }
 
   fun deleteEmptyCollections() {

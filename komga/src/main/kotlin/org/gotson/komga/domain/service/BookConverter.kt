@@ -102,7 +102,7 @@ class BookConverter(
 
       media
         .pages.map { it.fileName }
-        .union(media.files)
+        .union(media.files.map { it.fileName })
         .forEach { entry ->
           zipStream.putArchiveEntry(ZipArchiveEntry(entry))
           zipStream.write(bookAnalyzer.getFileContent(BookWithMedia(book, media), entry))
@@ -133,8 +133,8 @@ class BookConverter(
           .containsAll(media.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType })
         -> throw BookConversionException("Converted file does not contain all pages from existing file, aborting conversion")
 
-        !convertedMedia.files.map { FilenameUtils.getName(it) }
-          .containsAll(media.files.map { FilenameUtils.getName(it) })
+        !convertedMedia.files.map { FilenameUtils.getName(it.fileName) }
+          .containsAll(media.files.map { FilenameUtils.getName(it.fileName) })
         -> throw BookConversionException("Converted file does not contain all files from existing file, aborting conversion")
       }
     } catch (e: BookConversionException) {
@@ -177,6 +177,12 @@ class BookConverter(
 
     if (!mediaTypeToExtension.keys.contains(media.mediaType))
       throw MediaUnsupportedException("${media.mediaType} cannot be repaired. Must be one of ${mediaTypeToExtension.keys}")
+
+    if (book.path.extension.lowercase() == "epub" && media.mediaType == MediaType.ZIP.type) {
+      skippedRepairs += book.id
+      logger.info("EPUB file detected as zip should not be repaired, skipping: ${book.path}")
+      return
+    }
 
     val actualExtension = book.path.extension
     val correctExtension = mediaTypeToExtension[media.mediaType]

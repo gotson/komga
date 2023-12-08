@@ -15,12 +15,12 @@ jobs:
     name: Test server
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: 21
           java-package: 'jdk'
           distribution: 'temurin'
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: 17
           java-package: 'jdk'
@@ -46,17 +46,20 @@ jobs:
           path: komga/build/reports/tests/
 
       - name: Conveyor - compute JDK module list
-        uses: hydraulic-software/conveyor/actions/build@v12.0
+        if: github.event_name == 'push'
+        uses: hydraulic-software/conveyor/actions/build@v12.1
         with:
           command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
 
       - name: Compare JDK required modules
+        id: conveyor_compare
+        if: github.event_name == 'push'
         run: diff --unified  ./komga-tray/conveyor/required-jdk-modules.txt ./output/required-jdk-modules.txt
 
       - name: Upload JDK required modules
-        if: failure()
+        if: steps.conveyor_compare.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
           name: conveyor-required-jdk-modules
@@ -69,7 +72,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: komga-webui/package-lock.json
       - name: npm install

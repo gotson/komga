@@ -4,6 +4,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.window.Tray
 import androidx.compose.ui.window.application
+import org.gotson.komga.RB
 import org.gotson.komga.openExplorer
 import org.gotson.komga.openUrl
 import org.springframework.beans.factory.annotation.Value
@@ -41,10 +42,10 @@ class TrayIconRunner(
       Tray(
         icon = loadSvgPainter(ClassPathResource("icons/$iconFileName").inputStream, LocalDensity.current),
         menu = {
-          Item("Open Komga", onClick = { openUrl(komgaUrl) })
-          Item("Show log file", onClick = { openExplorer(logFile) })
-          Item("Open configuration directory", onClick = { openExplorer(komgaConfigDir) })
-          Item("Quit Komga", onClick = ::exitApplication)
+          Item(RB.getString("menu.open_komga"), onClick = { openUrl(komgaUrl) })
+          Item(RB.getString("menu.show_log"), onClick = { openExplorer(logFile) })
+          Item(RB.getString("menu.show_conf_dir"), onClick = { openExplorer(komgaConfigDir) })
+          Item(RB.getString("menu.quit"), onClick = ::exitApplication)
         },
       )
     }

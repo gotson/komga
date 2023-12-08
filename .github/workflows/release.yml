@@ -82,17 +82,17 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: komga-webui/package-lock.json
 
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: 21
           java-package: 'jdk'
           distribution: 'temurin'
 
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: 17
           java-package: 'jdk'
@@ -170,11 +170,11 @@ jobs:
           mkdir ./secret
           echo $APPLE_PRIVATE_KEY | base64 --decode > ./secret/apple_private_key.p8
 
-      - name: Conveyor build apps
-        uses: hydraulic-software/conveyor/actions/build@v12.0
+      - name: Conveyor make site
+        uses: hydraulic-software/conveyor/actions/build@v12.1
         if: inputs.github_release
         with:
-          command: -f conveyor.ci.conf make site -o ./output/release
+          command: -f conveyor.ci.conf make site -o ./output/site
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
@@ -187,20 +187,38 @@ jobs:
           name: conveyor-make-site
           path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
 
-      - name: Adjust Conveyor output
+      - name: Conveyor make old-site
+        uses: hydraulic-software/conveyor/actions/build@v12.1
+        if: inputs.github_release
+        with:
+          command: -f conveyor.ci.conf make old-site -o ./output/old-site
+          signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
+          agree_to_license: 1
+        env:
+          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+      - name: Upload Conveyor log
+        if: always() && inputs.github_release
+        uses: actions/upload-artifact@v3
+        with:
+          name: conveyor-make-old-site
+          path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
+
+      - name: Adjust Conveyor old-site output
         if: inputs.github_release
         run: |
-          mkdir ./output/site
-          mv ./output/release/download.html ./output/site/index.html
-          mv ./output/release/icon.svg ./output/site/
+          rm ./output/old-site/download.html
+          rm ./output/old-site/icon.svg
 
-      - name: Deploy download page to Github Pages
+      - name: Upload Conveyor site to B2
         if: inputs.github_release
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./output/site
-          cname: download.komga.org
+        uses: jakejarvis/s3-sync-action@master
+        env:
+          AWS_S3_BUCKET: ${{ secrets.B2_BUCKET }}
+          AWS_S3_ENDPOINT: 'https://s3.us-east-005.backblazeb2.com'
+          AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: 'output/site'
 
       - name: JReleaser Release
         if: inputs.github_release
@@ -255,7 +273,7 @@ jobs:
             build/jreleaser/output.properties
 
       - name: Conveyor - publish to Microsoft Store
-        uses: hydraulic-software/conveyor/actions/build@v12.0
+        uses: hydraulic-software/conveyor/actions/build@v12.1
         if: inputs.msstore_release
         with:
           command: -f conveyor.msstore.ci.conf make ms-store-release -o ./output/msstore

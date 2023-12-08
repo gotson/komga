@@ -1,11 +1,11 @@
 package org.gotson.komga.domain.model
 
-enum class MediaType(val type: String, val fileExtension: String, val exportType: String = type) {
-  ZIP("application/zip", "cbz", "application/vnd.comicbook+zip"),
-  RAR_GENERIC("application/x-rar-compressed", "cbr", "application/vnd.comicbook-rar"),
-  RAR_4("application/x-rar-compressed; version=4", "cbr", "application/vnd.comicbook-rar"),
-  EPUB("application/epub+zip", "epub"),
-  PDF("application/pdf", "pdf"),
+enum class MediaType(val type: String, val profile: MediaProfile, val fileExtension: String, val exportType: String = type) {
+  ZIP("application/zip", MediaProfile.DIVINA, "cbz", "application/vnd.comicbook+zip"),
+  RAR_GENERIC("application/x-rar-compressed", MediaProfile.DIVINA, "cbr", "application/vnd.comicbook-rar"),
+  RAR_4("application/x-rar-compressed; version=4", MediaProfile.DIVINA, "cbr", "application/vnd.comicbook-rar"),
+  EPUB("application/epub+zip", MediaProfile.EPUB, "epub"),
+  PDF("application/pdf", MediaProfile.PDF, "pdf"),
   ;
 
   companion object {

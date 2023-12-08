@@ -7,6 +7,7 @@ const val MEDIATYPE_DIVINA_JSON_VALUE = "application/divina+json"
 const val MEDIATYPE_WEBPUB_JSON_VALUE = "application/webpub+json"
 
 const val PROFILE_DIVINA = "https://readium.org/webpub-manifest/profiles/divina"
+const val PROFILE_EPUB = "https://readium.org/webpub-manifest/profiles/epub"
 const val PROFILE_PDF = "https://readium.org/webpub-manifest/profiles/pdf"
 
 val MEDIATYPE_OPDS_PUBLICATION_JSON = MediaType("application", "opds-publication+json")

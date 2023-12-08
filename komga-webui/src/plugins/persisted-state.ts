@@ -20,6 +20,7 @@ export const persistedModule: Module<any, any> = {
       animations: true,
       background: '',
     },
+    epubreader: {},
     browsingPageSize: undefined as unknown as number,
     collection: {
       filter: {},
@@ -112,6 +113,9 @@ export const persistedModule: Module<any, any> = {
     },
     setWebreaderBackground(state, val) {
       state.webreader.background = val
+    },
+    setEpubreaderSettings(state, val) {
+      state.epubreader = val
     },
     setBrowsingPageSize(state, val) {
       state.browsingPageSize = val

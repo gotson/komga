@@ -14,7 +14,7 @@ updates:
     open-pull-requests-limit: 0
     commit-message:
       prefix: "deps(komga)"
-      include: "scope"
+    #      include: "scope"
     schedule:
       interval: "weekly"
 
@@ -23,7 +23,7 @@ updates:
     open-pull-requests-limit: 0
     commit-message:
       prefix: "deps(komga-tray)"
-      include: "scope"
+    #      include: "scope"
     schedule:
       interval: "weekly"
 
@@ -32,6 +32,6 @@ updates:
     directory: "/"
     commit-message:
       prefix: "deps(ci)"
-      include: "scope"
+    #      include: "scope"
     schedule:
       interval: "weekly"

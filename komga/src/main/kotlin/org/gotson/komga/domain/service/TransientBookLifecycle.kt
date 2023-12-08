@@ -1,12 +1,15 @@
 package org.gotson.komga.domain.service
 
-import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.PathContainedInPath
+import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.TransientBookRepository
+import org.gotson.komga.infrastructure.image.ImageType
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
 
@@ -16,6 +19,8 @@ class TransientBookLifecycle(
   private val bookAnalyzer: BookAnalyzer,
   private val fileSystemScanner: FileSystemScanner,
   private val libraryRepository: LibraryRepository,
+  @Qualifier("pdfImageType")
+  private val pdfImageType: ImageType,
 ) {
 
   fun scanAndPersist(filePath: String): List<BookWithMedia> {
@@ -45,10 +50,12 @@ class TransientBookLifecycle(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class,
   )
-  fun getBookPage(transientBook: BookWithMedia, number: Int): BookPageContent {
+  fun getBookPage(transientBook: BookWithMedia, number: Int): TypedBytes {
     val pageContent = bookAnalyzer.getPageContent(transientBook, number)
-    val pageMediaType = transientBook.media.pages[number - 1].mediaType
+    val pageMediaType =
+      if (transientBook.media.profile == MediaProfile.PDF) pdfImageType.mediaType
+      else transientBook.media.pages[number - 1].mediaType
 
-    return BookPageContent(pageContent, pageMediaType)
+    return TypedBytes(pageContent, pageMediaType)
   }
 }

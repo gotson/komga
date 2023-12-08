@@ -11,7 +11,7 @@ import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
-import org.gotson.komga.infrastructure.mediacontainer.EpubExtractor
+import org.gotson.komga.infrastructure.mediacontainer.epub.getPackageFile
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.language.stripAccents
@@ -24,7 +24,6 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class EpubMetadataProvider(
-  private val epubExtractor: EpubExtractor,
   private val isbnValidator: ISBNValidator,
 ) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
@@ -49,7 +48,7 @@ class EpubMetadataProvider(
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     if (book.media.mediaType != MediaType.EPUB.type) return null
-    epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
+    getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val title = opf.selectFirst("metadata > dc|title")?.text()?.ifBlank { null }
@@ -87,7 +86,7 @@ class EpubMetadataProvider(
 
   override fun getSeriesMetadataFromBook(book: BookWithMedia, library: Library): SeriesMetadataPatch? {
     if (book.media.mediaType != MediaType.EPUB.type) return null
-    epubExtractor.getPackageFile(book.book.path)?.let { packageFile ->
+    getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val series = opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")?.text()?.ifBlank { null }

@@ -269,7 +269,13 @@ const router = new Router({
     {
       path: '/book/:bookId/read',
       name: 'read-book',
-      component: () => import(/* webpackChunkName: "read-book" */ './views/BookReader.vue'),
+      component: () => import(/* webpackChunkName: "read-book" */ './views/DivinaReader.vue'),
+      props: (route) => ({bookId: route.params.bookId}),
+    },
+    {
+      path: '/book/:bookId/read-epub',
+      name: 'read-epub',
+      component: () => import(/* webpackChunkName: "read-epub" */ './views/EpubReader.vue'),
       props: (route) => ({bookId: route.params.bookId}),
     },
     {
@@ -290,7 +296,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!['read-book', 'browse-book', 'browse-series'].includes(<string>to.name)) {
+  if (!['read-book', 'read-epub', 'browse-book', 'browse-series'].includes(<string>to.name)) {
     document.title = 'Komga'
   }
 

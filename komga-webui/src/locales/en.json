@@ -636,6 +636,18 @@
       "HARDLINK": "Hardlink/Copy Files",
       "MOVE": "Move Files"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "Day",
+        "night": "Night",
+        "sepia": "Sepia"
+      },
+      "column_count": {
+        "auto": "Auto",
+        "one": "One",
+        "two": "Two"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "Book converted",
       "BookFileDeleted": "Book file deleted",
@@ -694,6 +706,29 @@
       "XLARGE": "X-Large (1200px)"
     }
   },
+  "epubreader": {
+    "settings": {
+      "column_count": "Column count",
+      "layout": "Layout",
+      "layout_paginated": "Paginated",
+      "layout_scroll": "Scroll",
+      "page_margins": "Page margins",
+      "viewing_theme": "Viewing theme"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Cycle column count",
+      "cycle_viewing_theme": "Cycle viewing theme",
+      "font_size_decrease": "Decrease font size",
+      "font_size_increase": "Increase font size",
+      "menus": "Menus",
+      "next": "Forward",
+      "previous": "Back",
+      "reader_navigation": "Reader Navigation",
+      "scroll": "Change layout to scroll",
+      "settings": "Settings",
+      "show_hide_toc": "Show/hide table of contents"
+    }
+  },
   "error_codes": {
     "ERR_1000": "File could not be accessed during analysis",
     "ERR_1001": "Media type is not supported",
@@ -721,7 +756,8 @@
     "ERR_1028": "OpenID Connect login error: no email attribute",
     "ERR_1029": "ComicRack CBL does not contain any Book element",
     "ERR_1030": "ComicRack CBL has no Name element",
-    "ERR_1031": "ComicRack CBL Book is missing series or number"
+    "ERR_1031": "ComicRack CBL Book is missing series or number",
+    "ERR_1032": "EPUB file has wrong media type"
   },
   "filter": {
     "age_rating": "age rating",

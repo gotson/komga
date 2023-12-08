@@ -3,98 +3,133 @@ package org.gotson.komga.domain.service
 import mu.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
-import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaExtensionEpub
+import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.MediaNotReadyException
+import org.gotson.komga.domain.model.MediaProfile
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
-import org.gotson.komga.infrastructure.mediacontainer.CoverExtractor
-import org.gotson.komga.infrastructure.mediacontainer.MediaContainerExtractor
-import org.gotson.komga.infrastructure.mediacontainer.MediaContainerRawExtractor
+import org.gotson.komga.infrastructure.mediacontainer.divina.DivinaExtractor
+import org.gotson.komga.infrastructure.mediacontainer.epub.EpubExtractor
+import org.gotson.komga.infrastructure.mediacontainer.pdf.PdfExtractor
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
 import java.nio.file.AccessDeniedException
 import java.nio.file.NoSuchFileException
 import javax.imageio.ImageIO
+import kotlin.io.path.extension
 
 private val logger = KotlinLogging.logger {}
 
 @Service
 class BookAnalyzer(
   private val contentDetector: ContentDetector,
-  extractors: List<MediaContainerExtractor>,
+  extractors: List<DivinaExtractor>,
+  private val pdfExtractor: PdfExtractor,
+  private val epubExtractor: EpubExtractor,
   private val imageConverter: ImageConverter,
   private val imageAnalyzer: ImageAnalyzer,
   private val hasher: Hasher,
   @Value("#{@komgaProperties.pageHashing}") private val pageHashing: Int,
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Qualifier("thumbnailType")
   private val thumbnailType: ImageType,
+  @Qualifier("pdfImageType")
+  private val pdfImageType: ImageType,
 ) {
 
-  val supportedMediaTypes = extractors
+  val divinaExtractors = extractors
     .flatMap { e -> e.mediaTypes().map { it to e } }
     .toMap()
+
   fun analyze(book: Book, analyzeDimensions: Boolean): Media {
     logger.info { "Trying to analyze book: $book" }
-    try {
-      val mediaType = contentDetector.detectMediaType(book.path)
-      logger.info { "Detected media type: $mediaType" }
-      if (!supportedMediaTypes.containsKey(mediaType))
-        return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
-
-      val entries = try {
-        supportedMediaTypes.getValue(mediaType).getEntries(book.path, analyzeDimensions)
-      } catch (ex: MediaUnsupportedException) {
-        return Media(mediaType = mediaType, status = Media.Status.UNSUPPORTED, comment = ex.code, bookId = book.id)
-      } catch (ex: Exception) {
-        logger.error(ex) { "Error while analyzing book: $book" }
-        return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1008", bookId = book.id)
+    return try {
+      val mediaType = contentDetector.detectMediaType(book.path).let {
+        logger.info { "Detected media type: $it" }
+        MediaType.fromMediaType(it) ?: return Media(mediaType = it, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
       }
 
-      val (pages, others) = entries
-        .partition { entry ->
-          entry.mediaType?.let { contentDetector.isImage(it) } ?: false
-        }.let { (images, others) ->
-          Pair(
-            images.map { BookPage(fileName = it.name, mediaType = it.mediaType!!, dimension = it.dimension, fileSize = it.fileSize) },
-            others,
-          )
-        }
-
-      val entriesErrorSummary = others
-        .filter { it.mediaType.isNullOrBlank() }
-        .map { it.name }
-        .ifEmpty { null }
-        ?.joinToString(prefix = "ERR_1007 [", postfix = "]") { it }
-
-      if (pages.isEmpty()) {
-        logger.warn { "Book $book does not contain any pages" }
-        return Media(mediaType = mediaType, status = Media.Status.ERROR, comment = "ERR_1006", bookId = book.id)
+      if (book.path.extension.lowercase() == "epub" && mediaType != MediaType.EPUB) {
+        logger.warn { "Epub file detected as zip, file is probably broken: ${book.path}" }
+        return Media(mediaType = mediaType.type, status = Media.Status.ERROR, comment = "ERR_1032", bookId = book.id)
       }
-      logger.info { "Book has ${pages.size} pages" }
 
-      val files = others.map { it.name }
-
-      return Media(mediaType = mediaType, status = Media.Status.READY, pages = pages, files = files, comment = entriesErrorSummary, bookId = book.id)
+      when (mediaType.profile) {
+        MediaProfile.DIVINA -> analyzeDivina(book, mediaType, analyzeDimensions)
+        MediaProfile.PDF -> analyzePdf(book, analyzeDimensions)
+        MediaProfile.EPUB -> analyzeEpub(book)
+      }.copy(mediaType = mediaType.type)
     } catch (ade: AccessDeniedException) {
       logger.error(ade) { "Error while analyzing book: $book" }
-      return Media(status = Media.Status.ERROR, comment = "ERR_1000", bookId = book.id)
+      Media(status = Media.Status.ERROR, comment = "ERR_1000")
     } catch (ex: NoSuchFileException) {
       logger.error(ex) { "Error while analyzing book: $book" }
-      return Media(status = Media.Status.ERROR, comment = "ERR_1018", bookId = book.id)
+      Media(status = Media.Status.ERROR, comment = "ERR_1018")
     } catch (ex: Exception) {
       logger.error(ex) { "Error while analyzing book: $book" }
-      return Media(status = Media.Status.ERROR, comment = "ERR_1005", bookId = book.id)
+      Media(status = Media.Status.ERROR, comment = "ERR_1005")
+    }.copy(bookId = book.id)
+  }
+
+  private fun analyzeDivina(book: Book, mediaType: MediaType, analyzeDimensions: Boolean): Media {
+    val entries = try {
+      divinaExtractors.getValue(mediaType.type).getEntries(book.path, analyzeDimensions)
+    } catch (ex: MediaUnsupportedException) {
+      return Media(status = Media.Status.UNSUPPORTED, comment = ex.code)
+    } catch (ex: Exception) {
+      logger.error(ex) { "Error while analyzing book: $book" }
+      return Media(status = Media.Status.ERROR, comment = "ERR_1008")
     }
+
+    val (pages, others) = entries
+      .partition { entry ->
+        entry.mediaType?.let { contentDetector.isImage(it) } ?: false
+      }.let { (images, others) ->
+        Pair(
+          images.map { BookPage(fileName = it.name, mediaType = it.mediaType!!, dimension = it.dimension, fileSize = it.fileSize) },
+          others,
+        )
+      }
+
+    val entriesErrorSummary = others
+      .filter { it.mediaType.isNullOrBlank() }
+      .map { it.name }
+      .ifEmpty { null }
+      ?.joinToString(prefix = "ERR_1007 [", postfix = "]") { it }
+
+    if (pages.isEmpty()) {
+      logger.warn { "Book $book does not contain any pages" }
+      return Media(status = Media.Status.ERROR, comment = "ERR_1006")
+    }
+    logger.info { "Book has ${pages.size} pages" }
+
+    val files = others.map { MediaFile(fileName = it.name, mediaType = it.mediaType, fileSize = it.fileSize) }
+
+    return Media(status = Media.Status.READY, pages = pages, pageCount = pages.size, files = files, comment = entriesErrorSummary)
+  }
+
+  private fun analyzeEpub(book: Book): Media {
+    val manifest = epubExtractor.getManifest(book.path)
+    return Media(status = Media.Status.READY, files = manifest.resources, pageCount = manifest.pageCount, extension = MediaExtensionEpub(toc = manifest.toc, landmarks = manifest.landmarks, pageList = manifest.pageList))
+  }
+
+  private fun analyzePdf(book: Book, analyzeDimensions: Boolean): Media {
+    val pages = pdfExtractor.getPages(book.path, analyzeDimensions).map { BookPage(it.name, "", it.dimension) }
+    return Media(status = Media.Status.READY, pages = pages)
   }
 
   @Throws(MediaNotReadyException::class)
@@ -107,21 +142,8 @@ class BookAnalyzer(
     }
 
     val thumbnail = try {
-      val extractor = supportedMediaTypes.getValue(book.media.mediaType!!)
-      // try to get the cover from a CoverExtractor first
-      var coverBytes: ByteArray? = if (extractor is CoverExtractor) {
-        try {
-          extractor.getCoverStream(book.book.path)
-        } catch (e: Exception) {
-          logger.warn(e) { "Error while extracting cover. Falling back to first page. Book: $book" }
-          null
-        }
-      } else null
-      // if no cover could be found, get the first page
-      if (coverBytes == null) coverBytes = extractor.getEntryStream(book.book.path, book.media.pages.first().fileName)
-
-      coverBytes.let { cover ->
-        imageConverter.resizeImageToByteArray(cover, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
+      getPoster(book)?.let { cover ->
+        imageConverter.resizeImageToByteArray(cover.bytes, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
       }
     } catch (ex: Exception) {
       logger.warn(ex) { "Could not generate thumbnail for book: $book" }
@@ -138,6 +160,19 @@ class BookAnalyzer(
     )
   }
 
+  fun getPoster(book: BookWithMedia): TypedBytes? = when (book.media.profile) {
+    MediaProfile.DIVINA -> divinaExtractors[book.media.mediaType]?.getEntryStream(book.book.path, book.media.pages.first().fileName)?.let {
+      TypedBytes(
+        it,
+        book.media.pages.first().mediaType,
+      )
+    }
+
+    MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, 1)
+    MediaProfile.EPUB -> epubExtractor.getCover(book.book.path)
+    null -> null
+  }
+
   @Throws(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class,
@@ -150,35 +185,38 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    if (number > book.media.pages.size || number <= 0) {
-      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pages.size} pages" }
+    if (number > book.media.pageCount || number <= 0) {
+      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pageCount} pages" }
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
-    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+    return when (book.media.profile) {
+      MediaProfile.DIVINA -> divinaExtractors.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+      MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, number).bytes
+      MediaProfile.EPUB -> throw MediaUnsupportedException("Epub profile does not support getting page content")
+      null -> throw MediaNotReadyException()
+    }
   }
 
   @Throws(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class,
   )
-  fun getPageContentRaw(book: BookWithMedia, number: Int): BookPageContent {
+  fun getPageContentRaw(book: BookWithMedia, number: Int): TypedBytes {
     logger.debug { "Get raw page #$number for book: $book" }
+    if (book.media.profile != MediaProfile.PDF) throw MediaUnsupportedException("Extractor does not support raw extraction of pages")
 
     if (book.media.status != Media.Status.READY) {
       logger.warn { "Book media is not ready, cannot get pages" }
       throw MediaNotReadyException()
     }
 
-    if (number > book.media.pages.size || number <= 0) {
-      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pages.size} pages" }
+    if (number > book.media.pageCount || number <= 0) {
+      logger.error { "Page number #$number is out of bounds. Book has ${book.media.pageCount} pages" }
       throw IndexOutOfBoundsException("Page $number does not exist")
     }
 
-    val extractor = supportedMediaTypes.getValue(book.media.mediaType!!)
-    if (extractor !is MediaContainerRawExtractor) throw MediaUnsupportedException("Extractor does not support raw extraction of pages")
-
-    return extractor.getRawEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+    return pdfExtractor.getPageContentAsPdf(book.book.path, number)
   }
 
   @Throws(
@@ -192,7 +230,11 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    return supportedMediaTypes.getValue(book.media.mediaType!!).getEntryStream(book.book.path, fileName)
+    return when (book.media.profile) {
+      MediaProfile.DIVINA -> divinaExtractors.getValue(book.media.mediaType!!).getEntryStream(book.book.path, fileName)
+      MediaProfile.EPUB -> epubExtractor.getEntryStream(book.book.path, fileName)
+      MediaProfile.PDF, null -> throw MediaUnsupportedException("Extractor does not support extraction of files")
+    }
   }
 
   /**
@@ -203,7 +245,7 @@ class BookAnalyzer(
    */
   fun hashPages(book: BookWithMedia): Media {
     val hashedPages = book.media.pages.mapIndexed { index, bookPage ->
-      if (bookPage.fileHash.isBlank() && (index < pageHashing || index >= (book.media.pages.size - pageHashing))) {
+      if (bookPage.fileHash.isBlank() && (index < pageHashing || index >= (book.media.pageCount - pageHashing))) {
         val content = getPageContent(book, index + 1)
         val hash = hashPage(bookPage, content)
         bookPage.copy(fileHash = hash)
@@ -229,5 +271,16 @@ class BookAnalyzer(
       } else content
 
     return hasher.computeHash(bytes.inputStream())
+  }
+
+  fun getPdfPagesDynamic(media: Media): List<BookPage> {
+    if (media.profile != MediaProfile.PDF) throw MediaUnsupportedException("Cannot get synthetic pages for non-PDF media")
+
+    return media.pages.map { page ->
+      page.copy(
+        mediaType = pdfImageType.mediaType,
+        dimension = page.dimension?.let { pdfExtractor.scaleDimension(it) },
+      )
+    }
   }
 }
