@@ -29,6 +29,8 @@ const getLibraryRoute = (libraryId: string) => {
       return 'browse-readlists'
     case LIBRARY_ROUTE.BROWSE:
       return 'browse-libraries'
+    case LIBRARY_ROUTE.BROWSE_BY_BOOK:
+      return 'browse-libraries-by-book'
     case LIBRARY_ROUTE.RECOMMENDED:
     default:
       return libraryId === LIBRARIES_ALL ? 'browse-libraries' : 'recommended-libraries'
@@ -173,6 +175,13 @@ const router = new Router({
           name: 'browse-libraries',
           beforeEnter: noLibraryGuard,
           component: () => import(/* webpackChunkName: "browse-libraries" */ './views/BrowseLibraries.vue'),
+          props: (route) => ({libraryId: route.params.libraryId}),
+        },
+        {
+          path: '/libraries/:libraryId/books',
+          name: 'browse-libraries-by-book',
+          beforeEnter: noLibraryGuard,
+          component: () => import(/* webpackChunkName: "browse-libraries" */ './views/BrowseLibrariesByBook.vue'),
           props: (route) => ({libraryId: route.params.libraryId}),
         },
         {

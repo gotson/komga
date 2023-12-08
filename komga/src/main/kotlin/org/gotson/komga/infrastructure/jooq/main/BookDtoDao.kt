@@ -65,6 +65,9 @@ class BookDtoDao(
   private val rlb = Tables.READLIST_BOOK
   private val bt = Tables.BOOK_METADATA_TAG
   private val bl = Tables.BOOK_METADATA_LINK
+  private val st = Tables.SERIES_METADATA_TAG
+  private val sg = Tables.SERIES_METADATA_GENRE
+  private val sl = Tables.SERIES_METADATA_SHARING
 
   private val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
   private val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
@@ -144,6 +147,10 @@ class BookDtoDao(
           .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
           .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
           .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
+          .leftJoin(st).on(b.SERIES_ID.eq(st.SERIES_ID))
+          .leftJoin(sl).on(b.SERIES_ID.eq(sl.SERIES_ID))
+          .leftJoin(sg).on(b.SERIES_ID.eq(sg.SERIES_ID))
+          .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID))
           .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
           .apply { if (selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
           .where(conditions)
@@ -337,18 +344,23 @@ class BookDtoDao(
   }
 
   private fun selectBase(userId: String, selectReadListNumber: Boolean = false) =
-    dsl.select(
+    dsl.selectDistinct(
       *b.fields(),
       *m.fields(),
       *d.fields(),
       *r.fields(),
       sd.TITLE,
+      sd.PUBLISHER,
     ).apply { if (selectReadListNumber) select(rlb.NUMBER) }
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
       .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
       .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
+      .leftJoin(st).on(b.SERIES_ID.eq(st.SERIES_ID))
+      .leftJoin(sg).on(b.SERIES_ID.eq(sg.SERIES_ID))
+      .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID))
+      .leftJoin(sl).on(b.SERIES_ID.eq(sl.SERIES_ID))
       .apply { if (selectReadListNumber) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID)) }
 
   private fun ResultQuery<Record>.fetchAndMap(): MutableList<BookDto> {
@@ -357,6 +369,9 @@ class BookDtoDao(
 
     lateinit var authors: Map<String, List<AuthorDto>>
     lateinit var tags: Map<String, List<String>>
+    lateinit var seriesTags: Map<String, List<String>>
+    lateinit var seriesGenres: Map<String, List<String>>
+    lateinit var seriesSharingLabels: Map<String, List<String>>
     lateinit var links: Map<String, List<WebLinkDto>>
     transactionTemplate.executeWithoutResult {
       dsl.insertTempStrings(batchSize, bookIds)
@@ -372,6 +387,24 @@ class BookDtoDao(
       links = dsl.selectFrom(bl)
         .where(bl.BOOK_ID.`in`(dsl.selectTempStrings()))
         .groupBy({ it.bookId }, { WebLinkDto(it.label, it.url) })
+
+      seriesTags = dsl.select(st)
+        .from(st)
+        .innerJoin(b).on(b.SERIES_ID.eq(st.SERIES_ID))
+        .where(b.ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.value1().seriesId }, { it.value1().tag })
+
+      seriesGenres = dsl.select(sg)
+        .from(sg)
+        .innerJoin(b).on(b.SERIES_ID.eq(sg.SERIES_ID))
+        .where(b.ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.value1().seriesId }, { it.value1().genre })
+
+      seriesSharingLabels = dsl.select(sl)
+        .from(sl)
+        .innerJoin(b).on(b.SERIES_ID.eq(sl.SERIES_ID))
+        .where(b.ID.`in`(dsl.selectTempStrings()))
+        .groupBy({ it.value1().seriesId }, { it.value1().label })
     }
 
     return records
@@ -381,8 +414,18 @@ class BookDtoDao(
         val dr = rec.into(d)
         val rr = rec.into(r)
         val seriesTitle = rec.into(sd.TITLE).component1()
+        val publisher = rec.into(sd.PUBLISHER).component1()
 
-        br.toDto(mr.toDto(), dr.toDto(authors[br.id].orEmpty(), tags[br.id].orEmpty().toSet(), links[br.id].orEmpty()), if (rr.userId != null) rr.toDto() else null, seriesTitle)
+        br.toDto(
+          mr.toDto(),
+          dr.toDto(authors[br.id].orEmpty(), tags[br.id].orEmpty().toSet(), links[br.id].orEmpty()),
+          if (rr.userId != null) rr.toDto() else null,
+          seriesTitle,
+          publisher,
+          seriesTags[br.seriesId].orEmpty().toSet(),
+          seriesGenres[br.seriesId].orEmpty().toSet(),
+          seriesSharingLabels[br.seriesId].orEmpty().toSet(),
+        )
       }
   }
 
@@ -395,8 +438,18 @@ class BookDtoDao(
     if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
     if (releasedAfter != null) c = c.and(d.RELEASE_DATE.gt(releasedAfter))
-    if (!tags.isNullOrEmpty()) c = c.and(b.ID.`in`(dsl.select(bt.BOOK_ID).from(bt).where(bt.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags))))
-
+    if (!tags.isNullOrEmpty()) c = c.and(st.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags).or(bt.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags)))
+    if (!publishers.isNullOrEmpty()) c = c.and(sd.PUBLISHER.`in`(publishers))
+    if (!seriesPrefix.isNullOrEmpty()) c = c.and(sd.TITLE_SORT.likeRegex(seriesPrefix))
+    if (!releaseYears.isNullOrEmpty()) c = c.and(DSL.year(d.RELEASE_DATE).cast(String::class.java).`in`(releaseYears))
+    if (!sharingLabels.isNullOrEmpty()) c = c.and(sl.LABEL.collate(SqliteUdfDataSource.collationUnicode3).`in`(sharingLabels))
+    if (!languages.isNullOrEmpty()) c = c.and(sd.LANGUAGE.collate(SqliteUdfDataSource.collationUnicode3).`in`(languages))
+    if (!genres.isNullOrEmpty()) c = c.and(sg.GENRE.collate(SqliteUdfDataSource.collationUnicode3).`in`(genres))
+    if (!ageRatings.isNullOrEmpty()) {
+      val c1 = if (ageRatings.contains(null)) sd.AGE_RATING.isNull else DSL.noCondition()
+      val c2 = if (ageRatings.filterNotNull().isNotEmpty()) sd.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.noCondition()
+      c = c.and(c1.or(c2))
+    }
     if (readStatus != null) {
       val cr = readStatus.map {
         when (it) {
@@ -420,7 +473,16 @@ class BookDtoDao(
     return c
   }
 
-  private fun BookRecord.toDto(media: MediaDto, metadata: BookMetadataDto, readProgress: ReadProgressDto?, seriesTitle: String) =
+  private fun BookRecord.toDto(
+    media: MediaDto,
+    metadata: BookMetadataDto,
+    readProgress: ReadProgressDto?,
+    seriesTitle: String,
+    publisher: String?,
+    seriesTags: Set<String>?,
+    seriesGenres: Set<String>?,
+    seriesSharingLabels: Set<String>?,
+  ) =
     BookDto(
       id = id,
       seriesId = seriesId,
@@ -439,6 +501,10 @@ class BookDtoDao(
       deleted = deletedDate != null,
       fileHash = fileHash,
       oneshot = oneshot,
+      publisher = publisher,
+      seriesTags = seriesTags,
+      seriesGenres = seriesGenres,
+      seriesSharingLabels = seriesSharingLabels,
     )
 
   private fun MediaRecord.toDto() =

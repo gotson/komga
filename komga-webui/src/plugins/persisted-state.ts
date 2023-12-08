@@ -31,6 +31,8 @@ export const persistedModule: Module<any, any> = {
     library: {
       filter: {},
       sort: {},
+      bookFilter: {},
+      bookSort: {},
       route: {},
     },
     importPath: '',
@@ -67,6 +69,12 @@ export const persistedModule: Module<any, any> = {
     },
     getLibrarySort: (state) => (id: string) => {
       return state.library.sort[id]
+    },
+    getLibraryBookFilter: (state) => (id: string) => {
+      return state.library.bookFilter[id]
+    },
+    getLibraryBookSort: (state) => (id: string) => {
+      return state.library.bookSort[id]
     },
     getLibraryRoute: (state) => (id: string) => {
       return state.library.route[id]
@@ -123,6 +131,12 @@ export const persistedModule: Module<any, any> = {
     },
     setLibrarySort(state, {id, sort}) {
       state.library.sort[id] = sort
+    },
+    setLibraryBookFilter(state, {id, filter}) {
+      state.library.bookFilter[id] = filter
+    },
+    setLibraryBookSort(state, {id, sort}) {
+      state.library.bookSort[id] = sort
     },
     setLibraryRoute(state, {id, route}) {
       state.library.route[id] = route
