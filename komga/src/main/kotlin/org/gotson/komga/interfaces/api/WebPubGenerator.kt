@@ -136,7 +136,14 @@ class WebPubGenerator(
     return bookDto.toBasePublicationDto().let { publication ->
       publication.copy(
         mediaType = MEDIATYPE_WEBPUB_JSON,
-        metadata = publication.metadata.withSeriesMetadata(seriesMetadata).copy(conformsTo = PROFILE_EPUB),
+        metadata = publication.metadata.withSeriesMetadata(seriesMetadata).copy(
+          conformsTo = PROFILE_EPUB,
+          rendition = when (extension?.isFixedLayout) {
+            true -> mapOf("layout" to "fixed")
+            false -> mapOf("layout" to "reflowable")
+            else -> emptyMap()
+          },
+        ),
         readingOrder = media.files.filter { it.subType == MediaFile.SubType.EPUB_PAGE }.map {
           WPLinkDto(
             href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/").path(it.fileName).toUriString(),
@@ -152,11 +159,6 @@ class WebPubGenerator(
         toc = extension?.toc?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
         landmarks = extension?.landmarks?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
         pageList = extension?.pageList?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
-        layout = when (extension?.isFixedLayout) {
-          true -> "fixed"
-          false -> "reflowable"
-          else -> null
-        },
       )
     }
   }
