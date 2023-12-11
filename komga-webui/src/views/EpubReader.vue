@@ -363,6 +363,8 @@ export default Vue.extend({
         fontSize: 100,
         verticalScroll: false,
         columnCount: 'auto',
+        fixedLayoutMargin: 0,
+        fixedLayoutShadow: false,
         // Epub Reader
         alwaysFullscreen: false,
         navigationClick: true,
