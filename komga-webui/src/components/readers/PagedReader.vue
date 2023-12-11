@@ -376,6 +376,7 @@ export default Vue.extend({
 .pre-render {
   display: block !important;
   position: fixed;
-  right: -100vw;
+  right: -1000vw;
+  top: -1000vh;
 }
 </style>
