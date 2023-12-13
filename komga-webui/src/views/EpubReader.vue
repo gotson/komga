@@ -124,7 +124,7 @@
     <header id="headerMenu"/>
 
     <div id="D2Reader-Container" style="height: 100vh" :class="appearanceClass('bg')">
-      <main tabindex=-1 id="iframe-wrapper" style="height: 100vh">
+      <main tabindex=-1 id="iframe-wrapper" style="height: 100vh" @click="clickThrough">
         <div id="reader-loading"></div>
         <div id="reader-error"></div>
       </main>
@@ -191,6 +191,13 @@
         <v-card-text class="pa-0">
           <v-list class="full-height full-width">
             <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.general') }}</v-subheader>
+            <v-list-item v-if="fixedLayout">
+              <settings-select
+                :items="readingDirs"
+                v-model="readingDirection"
+                :label="$t('bookreader.settings.reading_mode')"
+              />
+            </v-list-item>
             <v-list-item>
               <settings-switch v-model="alwaysFullscreen" :label="$t('bookreader.settings.always_fullscreen')"
                                :disabled="!screenfull.isEnabled"/>
@@ -221,7 +228,7 @@
               </v-btn>
             </v-list-item>
 
-            <v-list-item>
+            <v-list-item v-if="!fixedLayout">
               <v-list-item-title>{{ $t('epubreader.settings.layout') }}</v-list-item-title>
               <v-btn-toggle mandatory v-model="verticalScroll" class="py-3">
                 <v-btn :value="true">{{ $t('epubreader.settings.layout_scroll') }}</v-btn>
@@ -301,7 +308,14 @@ import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import {TocEntry} from '@/types/epub'
 import TocList from '@/components/TocList.vue'
 import {Locations} from '@d-i-t-a/reader/dist/types/model/Locator'
-import {epubShortcutsMenus, epubShortcutsSettings, shortcutsD2Reader} from '@/functions/shortcuts/epubreader'
+import {
+  epubShortcutsMenus,
+  epubShortcutsSettings,
+  epubShortcutsSettingsScroll,
+  shortcutsD2Reader,
+  shortcutsD2ReaderLTR,
+  shortcutsD2ReaderRTL,
+} from '@/functions/shortcuts/epubreader'
 import {flattenToc} from '@/functions/toc'
 import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import screenfull from 'screenfull'
@@ -329,7 +343,20 @@ export default Vue.extend({
       showToolbars: false,
       showToc: false,
       showHelp: false,
-      shortcuts: {} as any,
+      readingDirs: [
+        {
+          text: this.$t('enums.epubreader.reading_direction.auto').toString(),
+          value: 'auto',
+        },
+        {
+          text: this.$t('enums.epubreader.reading_direction.ltr').toString(),
+          value: 'ltr',
+        },
+        {
+          text: this.$t('enums.epubreader.reading_direction.rtl').toString(),
+          value: 'rtl',
+        },
+      ],
       appearances: [
         {
           text: this.$t('enums.epubreader.appearances.day').toString(),
@@ -365,6 +392,7 @@ export default Vue.extend({
         columnCount: 'auto',
         fixedLayoutMargin: 0,
         fixedLayoutShadow: false,
+        direction: 'auto',
         // Epub Reader
         alwaysFullscreen: false,
         navigationClick: true,
@@ -393,11 +421,12 @@ export default Vue.extend({
       progressionTitle: undefined as string,
       progressionPage: undefined as number,
       progressionPageCount: undefined as number,
+      effectiveDirection: 'ltr',
+      fixedLayout: false,
     }
   },
   created() {
     this.$vuetify.rtl = false
-    this.shortcuts = this.$_.keyBy([...epubShortcutsSettings, ...epubShortcutsMenus], x => x.key)
     if (screenfull.isEnabled) screenfull.on('change', this.fullscreenChanged)
   },
   beforeDestroy() {
@@ -433,14 +462,23 @@ export default Vue.extend({
     next()
   },
   computed: {
+    shortcuts(): any {
+      const shortcuts = [...epubShortcutsSettings, ...epubShortcutsMenus]
+      if (!this.fixedLayout) shortcuts.push(...epubShortcutsSettingsScroll)
+      return this.$_.keyBy(shortcuts, x => x.key)
+    },
     progressionTotalPercentage(): string {
       const p = this.currentLocation?.locations?.totalProgression
       if (p) return `${Math.round(p * 100)}%`
       return ''
     },
     shortcutsHelp(): object {
+      let nav = []
+      if (this.effectiveDirection === 'rtl') nav.push(...shortcutsD2ReaderRTL)
+      else nav.push(...shortcutsD2ReaderLTR)
+      nav.push(...shortcutsD2Reader)
       return {
-        [this.$t('bookreader.shortcuts.reader_navigation').toString()]: [...shortcutsD2Reader],
+        [this.$t('bookreader.shortcuts.reader_navigation').toString()]: nav,
         [this.$t('bookreader.shortcuts.settings').toString()]: [...epubShortcutsSettings],
         [this.$t('bookreader.shortcuts.menus').toString()]: epubShortcutsMenus,
       }
@@ -501,6 +539,18 @@ export default Vue.extend({
         if (this.columnCounts.map(x => x.value).includes(value)) {
           this.settings.columnCount = value
           this.d2Reader.applyUserSettings({columnCount: value})
+          this.$store.commit('setEpubreaderSettings', this.settings)
+        }
+      },
+    },
+    readingDirection: {
+      get: function (): boolean {
+        return this.settings.direction
+      },
+      set: function (value: string): void {
+        if (this.readingDirs.map(x => x.value).includes(value)) {
+          this.settings.direction = value
+          this.d2Reader.applyUserSettings({direction: value})
           this.$store.commit('setEpubreaderSettings', this.settings)
         }
       },
@@ -728,8 +778,11 @@ export default Vue.extend({
           clickThrough: this.clickThrough,
           positionInfo: this.updatePositionInfo,
           chapterInfo: this.updateChapterInfo,
+          direction: this.updateDirection,
         },
       })
+
+      this.fixedLayout = this.d2Reader.publicationLayout === 'fixed'
 
       this.tocs.toc = this.d2Reader.tableOfContents
       this.tocs.landmarks = this.d2Reader.landmarks
@@ -779,6 +832,9 @@ export default Vue.extend({
     },
     updateChapterInfo(title?: string) {
       this.progressionTitle = title
+    },
+    updateDirection(dir: string) {
+      this.effectiveDirection = dir
     },
     appearanceClass(suffix?: string): string {
       let c = this.appearance.replace('readium-', '').replace('-on', '').replace('default', 'day')

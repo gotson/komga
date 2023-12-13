@@ -646,6 +646,11 @@
         "auto": "Auto",
         "one": "One",
         "two": "Two"
+      },
+      "reading_direction": {
+        "auto": "Automatic",
+        "ltr": "Left to right",
+        "rtl": "Right to left"
       }
     },
     "historical_event_type": {
