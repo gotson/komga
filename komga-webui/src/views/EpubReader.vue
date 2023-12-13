@@ -608,25 +608,36 @@ export default Vue.extend({
       this.shortcuts[e.key]?.execute(this)
     },
     clickThrough(e: MouseEvent) {
+      let x = e.x
+      let y = e.y
+      if (e.target.ownerDocument != document) {
+        const iframe = e.view.frameElement
+        const iframeWrapper = iframe.parentElement.parentElement
+        const scaleComputed = iframeWrapper.getBoundingClientRect().width / iframeWrapper.offsetWidth
+        const rect = iframe.getBoundingClientRect()
+        x = rect.left + (e.x * scaleComputed)
+        y = rect.top + (e.y * scaleComputed)
+      }
+
       if (e.detail === 1) {
         this.clickTimer = setTimeout(() => {
-          this.singleClick(e)
+          this.singleClick(x, y)
         }, 200)
       }
       if (e.detail === 2) {
         clearTimeout(this.clickTimer)
       }
     },
-    singleClick(e: MouseEvent) {
+    singleClick(x: number, y: number) {
       if (this.verticalScroll) {
         if (this.settings.navigationClick) {
-          if (e.y < this.$vuetify.breakpoint.height / 4) return this.d2Reader.previousPage()
-          if (e.y > this.$vuetify.breakpoint.height * .75) return this.d2Reader.nextPage()
+          if (y < this.$vuetify.breakpoint.height / 4) return this.d2Reader.previousPage()
+          if (y > this.$vuetify.breakpoint.height * .75) return this.d2Reader.nextPage()
         }
       } else {
         if (this.settings.navigationClick) {
-          if (e.x < this.$vuetify.breakpoint.width / 4) return this.d2Reader.previousPage()
-          if (e.x > this.$vuetify.breakpoint.width * .75) return this.d2Reader.nextPage()
+          if (x < this.$vuetify.breakpoint.width / 4) return this.d2Reader.previousPage()
+          if (x > this.$vuetify.breakpoint.width * .75) return this.d2Reader.nextPage()
         }
       }
       this.toggleToolbars()
