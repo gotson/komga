@@ -15,6 +15,7 @@ open class CodedException : Exception {
 fun Exception.withCode(code: String) = CodedException(this, code)
 
 class MediaNotReadyException : Exception()
+class NoThumbnailFoundException : Exception()
 class MediaUnsupportedException(message: String, code: String = "") : CodedException(message, code)
 class ImageConversionException(message: String, code: String = "") : CodedException(message, code)
 class DirectoryNotFoundException(message: String, code: String = "") : CodedException(message, code)

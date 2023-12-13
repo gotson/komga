@@ -14,6 +14,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
+import org.gotson.komga.domain.model.NoThumbnailFoundException
 import org.gotson.komga.domain.model.R2Progression
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ThumbnailBook
@@ -121,6 +122,8 @@ class BookLifecycle(
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
       addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))), MarkSelectedPreference.IF_NONE_OR_GENERATED)
+    } catch (ex: NoThumbnailFoundException) {
+      logger.error { "Error while creating thumbnail" }
     } catch (ex: Exception) {
       logger.error(ex) { "Error while creating thumbnail" }
     }

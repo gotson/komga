@@ -12,6 +12,7 @@ import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
+import org.gotson.komga.domain.model.NoThumbnailFoundException
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
@@ -143,7 +144,10 @@ class BookAnalyzer(
     return Media(status = Media.Status.READY, pages = pages)
   }
 
-  @Throws(MediaNotReadyException::class)
+  @Throws(
+    MediaNotReadyException::class,
+    NoThumbnailFoundException::class,
+  )
   fun generateThumbnail(book: BookWithMedia): ThumbnailBook {
     logger.info { "Generate thumbnail for book: $book" }
 
@@ -152,22 +156,17 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    val thumbnail = try {
-      getPoster(book)?.let { cover ->
-        imageConverter.resizeImageToByteArray(cover.bytes, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
-      }
-    } catch (ex: Exception) {
-      logger.warn(ex) { "Could not generate thumbnail for book: $book" }
-      null
-    }
+    val thumbnail = getPoster(book)?.let { cover ->
+      imageConverter.resizeImageToByteArray(cover.bytes, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
+    } ?: throw NoThumbnailFoundException()
 
     return ThumbnailBook(
       thumbnail = thumbnail,
       type = ThumbnailBook.Type.GENERATED,
       bookId = book.book.id,
       mediaType = thumbnailType.mediaType,
-      dimension = thumbnail?.let { imageAnalyzer.getDimension(it.inputStream()) } ?: Dimension(0, 0),
-      fileSize = thumbnail?.size?.toLong() ?: 0,
+      dimension = imageAnalyzer.getDimension(thumbnail.inputStream()) ?: Dimension(0, 0),
+      fileSize = thumbnail.size.toLong(),
     )
   }
 
