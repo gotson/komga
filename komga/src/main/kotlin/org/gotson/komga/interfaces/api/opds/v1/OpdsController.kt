@@ -689,7 +689,8 @@ class OpdsController(
     val mediaTypes = when (media.profile) {
       MediaProfile.DIVINA -> media.pages.map { it.mediaType }.distinct()
       MediaProfile.PDF -> listOf(pdfImageType.mediaType)
-      MediaProfile.EPUB, null -> emptyList()
+      MediaProfile.EPUB -> if (media.epubDivinaCompatible) media.pages.map { it.mediaType }.distinct() else emptyList()
+      null -> emptyList()
     }
 
     val opdsLinkPageStreaming =
