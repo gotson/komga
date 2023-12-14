@@ -1,0 +1,969 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} de {2}"
+    },
+    "dataIterator": {
+      "loadingText": "S'estan carregant els elements...",
+      "noResultsText": "No s'han trobat registres coincidents"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Files per pàgina:",
+      "sortBy": "Ordena per"
+    },
+    "fileInput": {
+      "counter": "{0} fitxers",
+      "counterSize": "{0} fitxers ({1} en total)"
+    },
+    "noDataText": "Sense dades disponibles"
+  },
+  "account_settings": {
+    "account_settings": "Paràmetres del compte",
+    "change_password": "canvia la contrasenya"
+  },
+  "announcements": {
+    "mark_all_read": "Marca tot com a llegit",
+    "mark_read": "Marca com a llegit",
+    "tab_title": "Avisos"
+  },
+  "authentication_activity": {
+    "datetime": "Data i hora",
+    "email": "Correu electrònic",
+    "error": "Error",
+    "ip": "IP",
+    "source": "Font",
+    "success": "Correcte",
+    "user_agent": "Agent d'usuari"
+  },
+  "author_roles": {
+    "colorist": "coloristes",
+    "cover": "coberta",
+    "editor": "editors",
+    "inker": "entintador",
+    "letterer": "retolista",
+    "penciller": "llapis final",
+    "translator": "traductors",
+    "writer": "guionistes"
+  },
+  "book_card": {
+    "error": "Error",
+    "no_release_date": "Sense data d'aparició",
+    "unknown": "Cal analitzar",
+    "unread": "Per llegir",
+    "unsupported": "No admès"
+  },
+  "book_import": {
+    "button_browse": "Navega",
+    "button_import": "Importa",
+    "button_scan": "Escaneja",
+    "button_select_series": "Selecciona la sèrie",
+    "field_import_path": "Importa des d'una carpeta",
+    "info_part1": "Aquesta pantalla permet importar fitxers que no són a les biblioteques existents. Només podeu importar fitxers per a una sèrie que ja existeix; aleshores, Komga mourà o copiarà els fitxers al directori de la sèrie que heu escollit.",
+    "info_part2": "Si heu triat un nombre per a un llibre i ja n'hi ha un que el té assignat podeu comparar tots dos llibres. Si decidiu importar-lo Komga l'actualitzarà amb el llibre nou i reemplaçarà el fitxer antic amb el nou.",
+    "no_files_found": "No s'ha trobat cap fitxer",
+    "notification": {
+      "go_to_book": "Vés al llibre",
+      "import_failure": "La importació del llibre ha fallat: {file}",
+      "import_successful": "El llibre s'ha importat amb èxit: {book}",
+      "source_file": "Fitxer d'origen: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Primer cal analitzar el llibre",
+      "error_choose_series": "Trieu una sèrie",
+      "error_only_import_no_errors": "Només podeu importar llibres sense errors",
+      "warning_upgrade": "S'actualitza el llibre que ja existeix"
+    },
+    "table": {
+      "destination_name": "Nom de la destinació",
+      "file_name": "Nom del fitxer",
+      "number": "Nombre",
+      "series": "Sèrie"
+    },
+    "title": "Importa",
+    "try_another_directory": "Proveu de cercar a un altre directori"
+  },
+  "bookreader": {
+    "beginning_of_book": "Sou al començament del llibre.",
+    "changing_reading_direction": "S'està canviant la direcció de lectura a",
+    "cycling_page_layout": "S'està canviant la disposició de la pàgina",
+    "cycling_scale": "S'està canviant l'escala",
+    "cycling_side_padding": "S'està canviant el farciment lateral",
+    "download_current_page": "Baixa la pàgina actual",
+    "end_of_book": "Heu arrivat al final del llibre.",
+    "from_series_metadata": "de les metadades de la sèrie",
+    "move_next": "Feu clic o premeu de nou \"Següent\" per anar al llibre següent.",
+    "move_next_exit": "Feu clic o premeu de nou \"Següent\" per sortir del lector.",
+    "move_previous": "Feu clic o premeu de nou \"Anterior\" per anar al llibre anterior.",
+    "notification_poster_set_book": "El cartell del llibre s'ha assignat a la pàgina actual.",
+    "notification_poster_set_readlist": "El cartell de la llista de lectura s'ha assignat a la pàgina actual.",
+    "notification_poster_set_series": "El cartell de la sèrie s'ha assignat a la pàgina actual.",
+    "paged_reader_layout": {
+      "double": "Pàgines dobles",
+      "double_no_cover": "Pàgines dobles (sense coberta)",
+      "single": "Pàgina única"
+    },
+    "reader_settings": "Paràmetres del lector",
+    "scale_type": {
+      "continuous_original": "Original",
+      "continuous_width": "Ajusta a l'amplada",
+      "height": "Ajusta l'alçada",
+      "original": "Original",
+      "screen": "Pantalla",
+      "width": "Ajusta a l'amplada",
+      "width_shrink_only": "Ajusta a l'amplada (només encongeix)"
+    },
+    "set_current_page_as_book_poster": "Estableix la pàgina com el cartell del llibre",
+    "set_current_page_as_readlist_poster": "Estableix la pàgina com el cartell de la llista de lectura",
+    "set_current_page_as_series_poster": "Estableix la pàgina com el cartell de la sèrie",
+    "settings": {
+      "always_fullscreen": "Sempre pantalla completa",
+      "animate_page_transitions": "Anima en passar pàgina",
+      "background_color": "Color de fons",
+      "background_colors": {
+        "black": "Negre",
+        "gray": "Gris",
+        "white": "Blanc"
+      },
+      "display": "Pantalla",
+      "general": "General",
+      "gestures": "Gestos",
+      "page_layout": "Disposició de la pàgina",
+      "paged": "Opcions del lector per pàgines",
+      "reading_mode": "Mode de lectura",
+      "scale_type": "Tipus d'escala",
+      "side_padding": "Farciment lateral",
+      "side_padding_none": "Cap",
+      "webtoon": "Opcions del lector Webtoon"
+    },
+    "shortcuts": {
+      "close": "Tanca",
+      "cycle_page_layout": "Canvia la disposició de la pàgina",
+      "cycle_scale": "Canvia l'escala",
+      "cycle_side_padding": "Canvia el farciment lateral",
+      "first_page": "Primera pàgina",
+      "fullscreen": "Entra/surt de la pantalla completa",
+      "last_page": "Última pàgina",
+      "left_to_right": "De esquerra a dreta",
+      "menus": "Menús",
+      "next_page": "Pàgina següent",
+      "previous_page": "Pàgina anterior",
+      "reader_navigation": "Navegació del lector",
+      "right_to_left": "De dreta a esquerra",
+      "settings": "Paràmetres",
+      "show_hide_help": "Mostra/amaga l'ajuda",
+      "show_hide_settings": "Mostra/amaga el menú de paràmetres",
+      "show_hide_thumbnails": "Mostra/amaga l'explorador de miniatures",
+      "show_hide_toolbars": "Mostra/amaga les barres d'eines",
+      "vertical": "Vertical",
+      "webtoon": "Webtoon"
+    },
+    "tooltip_incognito": "El progrés de lectura no es desa"
+  },
+  "browse_book": {
+    "comment": "COMENTARI",
+    "download_file": "Baixa el fitxer",
+    "file": "FITXER",
+    "format": "FORMAT",
+    "isbn": "ISBN",
+    "links": "ENLLAÇOS",
+    "navigation_within_readlist": "Navegació dins la llista de lectura: {name}",
+    "outdated_tooltip": "El fitxer d'aquest llibre ha canviat, cal analitzar-lo de nou",
+    "read_book": "Llegeix el llibre",
+    "read_incognito": "Llegeix en privat",
+    "size": "MIDA"
+  },
+  "browse_collection": {
+    "edit_collection": "Edita la col·lecció",
+    "edit_elements": "Edita els elements",
+    "manual_ordering": "ordenació manual"
+  },
+  "browse_readlist": {
+    "edit_elements": "Edita els elements",
+    "edit_readlist": "Edita la llista de lectura",
+    "manual_ordering": "ordenació manual"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Aquest és l'any més antic de totes les dates de publicació dels llibres de la sèrie",
+    "series_no_summary": "Aquesta sèrie no té resum, us n'hem triat un!",
+    "summary_from_book": "Resum del llibre {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Gestiona la col·lecció",
+    "title": "Col·lecció {name}"
+  },
+  "common": {
+    "age": "Edat",
+    "all_libraries": "Totes les biblioteques",
+    "book": "Llibre",
+    "books": "Llibres",
+    "books_n": "Cap llibre | 1 llibre | {count} llibres",
+    "books_total": "{count} / {total} llibres",
+    "cancel": "Cancel·la",
+    "cbx": "Arxius de còmic",
+    "choose_image": "Tria una imatge",
+    "close": "Tanca",
+    "collections": "Col·leccions",
+    "create": "Crea",
+    "delete": "Suprimeix",
+    "dimension": "ampl.: {width}, alç.: {height}",
+    "discard": "Descarta",
+    "disk_space": "Espai al disc",
+    "dismiss": "Descarta",
+    "download": "Baixa",
+    "drag_drop": "arrossega i deixa anar",
+    "email": "Correu electrònic",
+    "epub": "Epub",
+    "filename": "Nom del fitxer",
+    "filter_no_matches": "No hi ha coincidències amb el filtre actiu",
+    "genre": "Gènere",
+    "go_to_collection": "Ves a la col·lecció",
+    "go_to_library": "Ves a la biblioteca",
+    "go_to_readlist": "Ves a la llista de lectura",
+    "go_to_series": "Ves a la sèrie",
+    "library": "Biblioteca",
+    "locale_name": "Anglès",
+    "locale_rtl": "false",
+    "lock_all": "Bloca tot",
+    "n_selected": "seleccionats {count}",
+    "nothing_to_show": "Res a mostrar",
+    "oneshot": "Únic",
+    "outdated": "Desactualitzat",
+    "page": "Pàgina",
+    "page_number": "Nombre de la pàgina",
+    "pages": "pàgines",
+    "pages_left": "No queden pàgines | queda 1 pàgina | queden {count} pàgines",
+    "pages_n": "Sense pàgines | 1 pàgina | {count} pagines",
+    "password": "Contrasenya",
+    "pdf": "PDF",
+    "pending_tasks": "Sense tasques pendents | 1 tasca pendent | {count} tasques pendents",
+    "publisher": "Editor",
+    "read": "Llegiu",
+    "read_on": "Llegit el {date}",
+    "readlist": "Llista de lectura",
+    "readlists": "Llistes de lectura",
+    "remember-me": "Recorda",
+    "required": "Obligatori",
+    "reset_filters": "Reinicialitza els filtres",
+    "roles": "Rols",
+    "save_changes": "Desa els canvis",
+    "series": "Sèrie | Sèries",
+    "sidecars": "Accessoris",
+    "tags": "Etiquetes",
+    "unavailable": "No disponible",
+    "unlock_all": "Desbloqueja tot",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "Feu servir el panell de filtres per canviar el filtre actiu",
+    "year": "any"
+  },
+  "dashboard": {
+    "keep_reading": "Seguiu llegint",
+    "on_deck": "En curs",
+    "recently_added_books": "Llibres acabats d'afegir",
+    "recently_added_series": "Sèrie acabada d'afegir",
+    "recently_read_books": "Llibres acabats de llegir",
+    "recently_released_books": "Llibres acabats de publicar",
+    "recently_updated_series": "Sèrie acabada d'actualitzar"
+  },
+  "data_import": {
+    "book_number": "Nombre del llibre: {name}",
+    "book_series": "Sèrie: {name}",
+    "button_import": "Importa",
+    "button_match": "Fes coincidir",
+    "comicrack_preambule_html": "Podeu importar llistes de lectura de ComicRack amb el format <code>.cbl</code>. <br>Komga provarà de fer coincidir la sèrie i el nombre del llibre amb les sèries i llibres que ja són a les biblioteques.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} llibres no coincideixen",
+      "create": "Crea igualment",
+      "title": "Alguns llibres no coincideixen"
+    },
+    "field_file_label": "Llista de lectura de ComicRack (.cbl)",
+    "field_files_label": "Llistes de lectura de ComicRack (.cbl)",
+    "import_read_lists": "Importa la llista de lectura",
+    "imported_as": "Importa com {name}",
+    "readlist_created": "S'ha creat la llista de lectura: {name}",
+    "requested_number": "Nombre demanat",
+    "requested_series": "Sèrie demanada",
+    "results_preambule": "El resultat de la importació es mostra a sota. També podeu comprovar els llibres no coincidents per a cadascun dels fitxers.",
+    "size_limit": "El fitxer ha de fer menys de {size} MB",
+    "tab_title": "Importa les dades"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Crea",
+      "card_collection_subtitle": "Sense sèrie | 1 sèrie | {count} sèries",
+      "dialog_title": "Afegeix a la col·lecció",
+      "field_search_create": "Cerca o crea una col·lecció",
+      "field_search_create_error": "Una col·lecció amb aquest nom ja existeix",
+      "label_no_matching_collection": "Cap col·lecció coincident"
+    },
+    "add_to_readlist": {
+      "button_create": "Crea",
+      "card_readlist_subtitle": "Cap llibre | 1 llibre | {count} llibres",
+      "dialog_title": "Afegeix a la llista de lectura",
+      "field_search_create": "Cerca o crea una llista de lectura",
+      "field_search_create_error": "Una llista de lectura amb aquest nom ja existeix",
+      "label_no_matching_readlist": "Cap llista de lectura coincident"
+    },
+    "add_user": {
+      "button_cancel": "Cancel·la",
+      "button_confirm": "Afegeix",
+      "dialog_title": "Afegeix un usuari",
+      "field_email": "Correu electrònic",
+      "field_email_error": "Ha de ser un correu electrònic vàlid",
+      "field_password": "Contrasenya",
+      "field_role_administrator": "Administrador",
+      "field_role_file_download": "Baixa el fitxer",
+      "field_role_page_streaming": "Pàgines en continu",
+      "label_roles": "Rols"
+    },
+    "analyze_library": {
+      "body": "Analitza tots els fitxers multimedia de la biblioteca i n'obté informació. Segons la mida de la biblioteca és possible que trigui molt.",
+      "button_confirm": "Analitza",
+      "title": "Analitza la biblioteca"
+    },
+    "book_picker": {
+      "filter": "Filtra pel nombre del llibre, el títol o la data de publicació",
+      "title": "Selecciona un llibre"
+    },
+    "delete_book": {
+      "button_confirm": "Suprimeix",
+      "confirm_delete": "Sí, suprimeix el llibre \"{name}\" i els seus fitxers",
+      "confirm_delete_multiple": "Sí, suprimeix {count} llibres i els seus fitxers",
+      "dialog_title": "Suprimeix el llibre",
+      "dialog_title_multiple": "Suprimeix els llibres",
+      "warning_html": "Se suprimirà el llibre <b>{name}</b> d'aquest servidor així com els seus fitxers multimedia. Un cop fet <b>no es poden recuperar</b>. Voleu continuar?",
+      "warning_multiple_html": "Se suprimiran {count} llibres d'aquest servidor així com els seus fitxers multimedia. Un cop fet <b>no es poden recuperar</b>. Voleu continuar?"
+    },
+    "delete_collection": {
+      "button_confirm": "Suprimeix",
+      "confirm_delete": "Sí, suprimeix la col·lecció \"{name}\"",
+      "confirm_delete_multiple": "Sí, suprimeix {count} col·leccions",
+      "dialog_title": "Suprimeix la col·lecció",
+      "dialog_title_multiple": "Suprimeix les col·leccions",
+      "warning_html": "Se suprimirà la col·lecció <b>{name}</b> d'aquest servidor però no els seus fitxers multimedia. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?",
+      "warning_multiple_html": "Se suprimiran {count} col·leccions d'aquest servidor però no els seus fitxers multimedia. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?"
+    },
+    "delete_library": {
+      "button_confirm": "Suprimeix",
+      "confirm_delete": "Sí, suprimeix la biblioteca \"{name}\"",
+      "title": "Suprimeix la biblioteca",
+      "warning_html": "Se suprimirà la biblioteca <b>{name}</b> d'aquest servidor però no els seus fitxers multimedia. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?"
+    },
+    "delete_readlist": {
+      "button_confirm": "Suprimeix",
+      "confirm_delete": "Sí, suprimeix la llista de lectura \"{name}\"",
+      "confirm_delete_multiple": "Sí, suprimeix {count} llistes de lectura",
+      "dialog_title": "Suprimeix la llista de lectura",
+      "dialog_title_multiple": "Suprimeix les llistes de lectura",
+      "warning_html": "Se suprimirà la llista de lectura <b>{name}</b> d'aquest servidor però no els seus fitxers multimedia. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?",
+      "warning_multiple_html": "Se suprimiran {count} llistes de lectura d'aquest servidor però no els seus fitxers multimedia. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?"
+    },
+    "delete_series": {
+      "button_confirm": "Suprimeix",
+      "confirm_delete": "Sí, suprimeix la sèrie \"{name}\" i els seus fitxers",
+      "confirm_delete_multiple": "Sí, suprimeix {count} sèries i els seus fitxers",
+      "dialog_title": "Suprimeix la sèrie",
+      "warning_html": "Se suprimirà la sèrie <b>{name}</b> d'aquest servidor amb els seus fitxers multimedia. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?",
+      "warning_multiple_html": "Se suprimiran {count} sèries d'aquest servidor amb els seus fitxers multimedia. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?"
+    },
+    "delete_user": {
+      "button_confirm": "Suprimeix",
+      "confirm_delete": "Sí, suprimeix l'usuari \"{name}\"",
+      "dialog_title": "Suprimeix l'usuari",
+      "warning_html": "Se suprimirà l'usuari <b>{name}</b> d'aquest servidor. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?"
+    },
+    "edit_books": {
+      "add_author_role_error_duplicate": "Ja existeix",
+      "authors_notice_multiple_edit": "Esteu editant els autors de diversos llibres i això en sobreescriurà els autors.",
+      "button_cancel": "Cancel·la",
+      "button_confirm": "Desa els canvis",
+      "copy_from": "Copia de {field}",
+      "dialog_title_multiple": "Edita {count} llibre | Edita {count} llibres",
+      "dialog_title_single": "Edita {book}",
+      "field_alternate_title": "Alterna el títol",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Cal que sigui un codi ISBN 13 vàlid",
+      "field_link_label": "Etiqueta",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Ha de ser http or https",
+      "field_link_url_error_url": "Ha de ser una URL vàlida",
+      "field_number": "Nombre",
+      "field_number_sort": "Nombre d'ordre",
+      "field_number_sort_hint": "Podeu fer servir nombres decimals",
+      "field_release_date": "Data de publicació",
+      "field_release_date_error": "Ha de ser una data vàlida amb format YYYY-MM-DD",
+      "field_summary": "Resum",
+      "field_tags": "Etiquetes",
+      "field_title": "Títol",
+      "number_sort_decrement": "Redueix tots amb 1",
+      "number_sort_increment": "Augmenta tots amb 1",
+      "tab_authors": "Autors",
+      "tab_general": "General",
+      "tab_links": "Enllaços",
+      "tab_poster": "Cartell",
+      "tab_tags": "Etiquetes",
+      "tags_notice_multiple_edit": "Esteu editant les etiquetes de diversos llibres i això en sobreescriurà les etiquetes."
+    },
+    "edit_collection": {
+      "button_cancel": "Cancel·la",
+      "button_confirm": "Desa els canvis",
+      "dialog_title": "Edita la col·lecció",
+      "field_manual_ordering": "Ordenació manual",
+      "label_ordering": "Les sèries d'una col·lecció s'ordenen pel nom per defecte. Podeu activar la ordenació manual i ordenar els llibres pel vostre ordre.",
+      "tab_general": "General",
+      "tab_poster": "Cartell"
+    },
+    "edit_library": {
+      "button_browse": "Navega",
+      "button_cancel": "Cancel·la",
+      "button_confirm_add": "Afegeix",
+      "button_confirm_edit": "Edita",
+      "button_next": "Següent",
+      "dialog_title_add": "Afegeix una biblioteca",
+      "dialot_title_edit": "Edita la biblioteca",
+      "field_analysis_analyze_dimensions": "Analitza les dimensions de les pàgines",
+      "field_analysis_hash_files": "Calcula l'emprempta dels fitxers",
+      "field_analysis_hash_pages": "Calcula l'emprempta de les pàgines",
+      "field_convert_to_cbz": "Converteix automàticament a CBZ",
+      "field_import_barcode_isbn": "Codi de barres ISBN",
+      "field_import_comicinfo_book": "Metadades del llibre",
+      "field_import_comicinfo_collections": "Col·leccions",
+      "field_import_comicinfo_readlists": "Llistes de lectura",
+      "field_import_comicinfo_series": "Metadades de la sèrie",
+      "field_import_comicinfo_series_append_volume": "Afegeix el volum al títol de la sèrie",
+      "field_import_epub_book": "Metadades del llibre",
+      "field_import_epub_series": "Metadades de la sèrie",
+      "field_import_local_artwork": "Il·lustració local",
+      "field_import_mylar_series": "Metadades de la sèrie",
+      "field_name": "Nom",
+      "field_oneshotsdirectory": "Directori de llibres individuals",
+      "field_repair_extensions": "Repara automàticament les extensions de fitxer incorrectes",
+      "field_root_folder": "Directori arrel",
+      "field_scan_interval": "Interval d'escanejat",
+      "field_scanner_empty_trash_after_scan": "Després de cada escaneig buida la paperera automàticament",
+      "field_scanner_force_directory_modified_time": "Força la data de modificació del directori",
+      "field_scanner_scan_startup": "Escaneja en iniciar",
+      "field_series_cover": "Coberta de la sèrie",
+      "file_browser_dialog_button_confirm": "Tria",
+      "file_browser_dialog_title": "Directori arrel de la biblioteca",
+      "label_analysis": "Anàlisi",
+      "label_file_management": "Gestió de fitxers",
+      "label_import_barcode_isbn": "Importa l'ISBN dins el codi de barres",
+      "label_import_comicinfo": "Importa les metadades pels fitxers CBR/CBZ que contenen un fitxer ComicInfo.xml",
+      "label_import_epub": "Importa les metadades dels fitxers EPUB",
+      "label_import_local": "Importa els recursos multimedia locals",
+      "label_import_mylar": "Importa les metadades generades per Mylar",
+      "label_scan_directory_exclusions": "Directoris exclosos",
+      "label_scan_types": "Escaneja aquests tipus de fitxers",
+      "label_scanner": "Escàner",
+      "label_series_cover": "Coberta de la sèrie",
+      "tab_general": "General",
+      "tab_metadata": "Metadada",
+      "tab_options": "Opcions",
+      "tooltip_oneshotsdirectory": "Deixa buit per desactivar",
+      "tooltip_scanner_force_modified_time": "Habilita si la biblioteca és a un Google Drive",
+      "tooltip_use_resources": "Es poden fer servir molts recursos en grans biblioteques o amb maquinari lent"
+    },
+    "edit_readlist": {
+      "button_cancel": "Cancel·la",
+      "button_confirm": "Desa els canvis",
+      "dialog_title": "Edita la llista de lectura",
+      "field_manual_ordering": "Ordenació manual",
+      "field_name": "Nom",
+      "field_summary": "Resum",
+      "label_ordering": "Els llibres d'una llista de lectura s'ordenen manualment per defecte. Podeu desactivar la ordenació manual i ordenar els llibres per data de publicació.",
+      "tab_general": "General",
+      "tab_poster": "Cartell"
+    },
+    "edit_series": {
+      "button_cancel": "Cancel·la",
+      "button_confirm": "Desa els canvis",
+      "dialog_title_multiple": "Edita {count} sèrie | Edita {count} sèries",
+      "dialog_title_single": "Edita {series}",
+      "field_age_rating": "Edat mínima",
+      "field_age_rating_error": "Cal que el mínim d'edat sigui 0 o superior",
+      "field_genres": "Gèneres",
+      "field_labels": "Etiquetes",
+      "field_language": "Idioma",
+      "field_language_hint": "Etiqueta d'idioma IETF BCP 47",
+      "field_publisher": "Editor",
+      "field_reading_direction": "Direcció de lectura",
+      "field_sort_title": "Títol de la ordenació",
+      "field_status": "Estat",
+      "field_summary": "Resum",
+      "field_tags": "Etiquetes",
+      "field_title": "Títol",
+      "field_total_book_count": "Recompte total de llibres",
+      "field_total_book_count_error": "Cal que el recompte total de llibres sigui 1 o superior",
+      "mixed": "MIXT",
+      "tab_general": "General",
+      "tab_poster": "Cartell",
+      "tab_sharing": "Compartir",
+      "tab_tags": "Etiquetes",
+      "tab_titles": "Títols alternatius",
+      "tags_notice_multiple_edit": "Esteu editant les etiquetes de diverses sèries i això en sobreescriurà les etiquetes."
+    },
+    "edit_user": {
+      "button_cancel": "Cancel·la",
+      "button_confirm": "Desa els canvis",
+      "dialog_title": "Edita l'usuari",
+      "label_roles_for": "Rols de {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Permet només als menors de",
+        "exclude_over": "Exclou els majors de",
+        "none": "Sense restricció"
+      },
+      "edit_restrictions_for": "Edita les restriccions per {name}",
+      "label_age_restriction": "Restriccions d'edat",
+      "label_allow_only_labels": "Permet només les etiquetes",
+      "label_exclude_labels": "Exclou les etiquetes",
+      "tab_content_restrictions": "Restriccions del contingut",
+      "tab_shared_libraries": "Biblioteques compartides"
+    },
+    "empty_trash": {
+      "body": "El servidor no suprimeix immediatament la informació dels documents. Això és útil si una unitat es desconnecta temporalment. Si buideu la paperera d'una biblioteca s'esborra tota la informació de les unitats no connectades.",
+      "button_confirm": "Buida",
+      "title": "Buida la paperera de la biblioteca"
+    },
+    "file_browser": {
+      "button_cancel": "Cancel·la",
+      "button_confirm_default": "Tria",
+      "dialog_title_default": "Navegador de fitxers",
+      "parent_directory": "Directori superior"
+    },
+    "filename_chooser": {
+      "button_choose": "Tria",
+      "field_destination_filename": "Nom del fitxer de destinació",
+      "label_source_filename": "Nom del fitxer font",
+      "table": {
+        "existing_file": "El fitxer ja existeix",
+        "order": "Ordre"
+      },
+      "title": "Nom del fitxer de destinació"
+    },
+    "password_change": {
+      "button_cancel": "Cancel·la",
+      "button_confirm": "Canvia la contrasenya",
+      "dialog_title": "Canvia la contrasenya",
+      "field_new_password": "Nova contrasenya",
+      "field_new_password_error": "Es necessita una nova contrasenya.",
+      "field_repeat_password": "Repeteix la nova contrasenya",
+      "field_repeat_password_error": "Cal que les contrasenyes siguin idèntiques."
+    },
+    "refresh_library_metadata": {
+      "body": "Refresca les metadates de tots els fitxers multimedia de la biblioteca. Segons la mida de la biblioteca és possible que trigui molt.",
+      "button_confirm": "Actualitza",
+      "title": "Actualitza les metadates de la biblioteca"
+    },
+    "series_picker": {
+      "label_search_series": "Cerca una sèrie",
+      "no_results": "No s'ha trobat la sèrie",
+      "title": "Selecciona la sèrie"
+    },
+    "server_stop": {
+      "button_confirm": "Atura",
+      "confirmation_message": "Esteu segur que voleu aturar Komga?",
+      "dialog_title": "Atura el servidor"
+    },
+    "shortcut_help": {
+      "label_description": "Descripció",
+      "label_key": "Tecla"
+    },
+    "transient_book_details": {
+      "label_candidate": "Candidat",
+      "label_existing": "Ja existeix",
+      "label_format": "Format",
+      "label_name": "Nom",
+      "label_pages": "Pàgines",
+      "label_size": "Mida",
+      "pages_table": {
+        "filename": "Nom del fitxer",
+        "height": "Alçada",
+        "index": "Índex",
+        "media_type": "Tipus de fitxer",
+        "size": "Mida",
+        "width": "Amplada"
+      },
+      "title": "Detalls del llibre",
+      "title_comparison": "Comparació de llibres"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Candidat",
+      "label_existing": "Ja existeix",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Inspecciona el llibre",
+      "title_comparison": "Comparació de llibres"
+    }
+  },
+  "duplicate_pages": {
+    "action_auto_delete_remaining": "Suprimeix automàticament els restants ({count})",
+    "action_delete_auto": "Suprimeix automàticament",
+    "action_delete_manual": "Suprimeix manualment",
+    "action_delete_matches": "Suprimeix les coincidències",
+    "action_ignore": "Ignora",
+    "action_ignore_remaining": "Ignora els restants ({count})",
+    "action_manual_delete_remaining": "Suprimeix manualment els restants ({count})",
+    "confirm_auto_delete_remaining": "Es marcaran les empremptes restants de la pàgina ({count}) per a ser suprimides automàticament.",
+    "confirm_manual_delete_remaining": "Es marcaran totes les empremptes restants de la pàgina ({count}) per a ser suprimides manualment.",
+    "delete_to_save": "Suprimeix per estalviar {size}",
+    "deleted_count": "Suprimit {count} vegades",
+    "empty_title": "No s'ha trobat cap pàgina duplicada",
+    "filter": {
+      "count": "Compta",
+      "delete_count": "Compta els esborrats",
+      "delete_size": "Espai estalviat",
+      "match_count": "Compta els coincidents",
+      "size": "Mida",
+      "total_size": "Mida total"
+    },
+    "info": "Si esborreu pàgines duplicades els fitxers es modifiquen. Feu una còpia de seguretat dels fitxers i suprimiu manualment abans de suprimir automàticament.",
+    "known": "Conegut",
+    "matches_n": "Cap coincidència | 1 coincidència | {count} coincidències",
+    "new": "Nou",
+    "saved_size": "S'ha estalviat {size}",
+    "title": "Duplica les pàgines",
+    "unknown_size": "Mida desconeguda"
+  },
+  "duplicates": {
+    "file_hash": "Empremta del fitxer",
+    "size": "Mida",
+    "title": "Fitxers duplicats",
+    "url": "URL"
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "Crea un enllaç físic/Copia els fitxers",
+      "MOVE": "Mou els fitxers"
+    },
+    "epubreader": {
+      "appearances": {
+        "day": "Dia",
+        "night": "Nit",
+        "sepia": "Sèpia"
+      },
+      "column_count": {
+        "auto": "Automàtic",
+        "one": "Un",
+        "two": "Dos"
+      }
+    },
+    "historical_event_type": {
+      "BookConverted": "S'ha convertit el llibre",
+      "BookFileDeleted": "S'ha suprimit el fitxer del llibre",
+      "BookImported": "S'ha importat el llibre",
+      "DuplicatePageDeleted": "S'ha suprimit la pàgina duplicada",
+      "SeriesFolderDeleted": "S'ha suprimit la carpeta de la sèrie"
+    },
+    "media_status": {
+      "ERROR": "Error",
+      "OUTDATED": "Desactualitzat",
+      "READY": "Preparat",
+      "UNKNOWN": "Desconegut",
+      "UNSUPPORTED": "No admès"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Suprimeix automàticament",
+      "DELETE_MANUAL": "Suprimeix manualment",
+      "IGNORE": "Ignora"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "De esquerra a dreta",
+      "RIGHT_TO_LEFT": "De dreta a esquerra",
+      "VERTICAL": "Vertical",
+      "WEBTOON": "Webtoon"
+    },
+    "scan_interval": {
+      "DAILY": "Diàriament",
+      "DISABLED": "Desactivat",
+      "EVERY_12H": "Cada 12 hores",
+      "EVERY_6H": "Cada 6 hores",
+      "HOURLY": "Cada hora",
+      "WEEKLY": "Cada setmana"
+    },
+    "series_cover": {
+      "FIRST": "Primer",
+      "FIRST_UNREAD_OR_FIRST": "El primer sense llegir sinó el primer",
+      "FIRST_UNREAD_OR_LAST": "El primer sense llegir sinó l'últim",
+      "LAST": "Últim"
+    },
+    "series_status": {
+      "ABANDONED": "Abandonat",
+      "ENDED": "Acabat",
+      "HIATUS": "Hiatus",
+      "ONGOING": "En curs"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Per defecte (300px)",
+      "LARGE": "Gran (900px)",
+      "MEDIUM": "Mitjà (600px)",
+      "XLARGE": "Extra gran (1200px)"
+    }
+  },
+  "epubreader": {
+    "settings": {
+      "column_count": "Nombre de columnes",
+      "layout": "Disposició",
+      "layout_paginated": "Paginat",
+      "layout_scroll": "Desplaçament",
+      "page_margins": "Marges de la pàgina",
+      "viewing_theme": "Tema de visualització"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Canvia el recompte de columnes",
+      "cycle_viewing_theme": "Canvia el tema de visualització",
+      "font_size_decrease": "Redueix la mida de la lletra",
+      "font_size_increase": "Augmenta la mida de la lletra",
+      "menus": "Menús",
+      "next": "Endavant",
+      "previous": "Enrere",
+      "reader_navigation": "Navegació del lector",
+      "scroll": "Canvia la disposició al mode desplaçament",
+      "settings": "Paràmetres",
+      "show_hide_toc": "Mostra/amaga la taula de continguts"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "No s'ha pogut accedir al fitxer durant l'anàlisi",
+    "ERR_1001": "El tipus de fitxer no s'admet",
+    "ERR_1002": "No s'admeten arxius RAR xifrats",
+    "ERR_1003": "No s'admeten arxius RAR compactes",
+    "ERR_1004": "No s'admeten arxius RAR multivolum",
+    "ERR_1005": "S'ha trobat un error desconegut en analitzar el llibre",
+    "ERR_1006": "El llibre no té cap pàgina",
+    "ERR_1007": "No s'ha pogut analitzar algunes entrades",
+    "ERR_1008": "S'ha trobat un error desconegut en obtenirles entrades del llibre",
+    "ERR_1009": "Ja existeix una llista de lectura amb aquest nom",
+    "ERR_1015": "S'ha trobat un error en deserialitzar ComicRack CBL",
+    "ERR_1016": "No es pot accedir al directori o no és un directori",
+    "ERR_1017": "No es pot examinar una carpeta que és part d'una biblioteca que ja existeix",
+    "ERR_1018": "No s'ha trobat el fitxer",
+    "ERR_1019": "No es pot importar un fitxer que és part d'una biblioteca que ja existeix",
+    "ERR_1020": "El llibre que voleu actualitzar no és de la sèrie indicada",
+    "ERR_1021": "El fitxer de destí ja existeix",
+    "ERR_1022": "No es pot escanejar el llibre acabat d'importar",
+    "ERR_1023": "El llibre ja existeix a la llista de lectura",
+    "ERR_1024": "Error d'inici de sessió OAuth2: sense l'atribut del correu electrònic",
+    "ERR_1025": "Error d'inici de sessió OAuth2: no existeix cap usuari local amb aquest correu electrònic",
+    "ERR_1026": "Error d'inici de sessió d'OpenID Connect: no s'ha verificat el correu electrònic",
+    "ERR_1027": "Error d'inici de sessió d'OpenID Connect: sense l'atribut email_verified",
+    "ERR_1028": "Error d'inici de sessió d'OpenID Connect: sense l'atribut del correu electrònic",
+    "ERR_1029": "No hi ha cap llibre al fitxer CBL de ComicRack",
+    "ERR_1030": "No existeix l'element Nom al fitxer CBL de ComicRack",
+    "ERR_1031": "No hi ha cap sèrie ni nombre al fitxer CBL de ComicRack",
+    "ERR_1032": "El fitxer EPUB té un tipus de dades incorrecte"
+  },
+  "filter": {
+    "age_rating": "edat mínima",
+    "age_rating_none": "Cap",
+    "complete": "Completat",
+    "genre": "gènere",
+    "in_progress": "En curs",
+    "language": "idioma",
+    "library": "biblioteca",
+    "oneshot": "Únic",
+    "publisher": "editor",
+    "read": "Llegit",
+    "release_date": "data de publicació",
+    "sharing_label": "Etiqueta compartir",
+    "status": "Estat",
+    "tag": "etiqueta",
+    "unread": "Per llegir"
+  },
+  "filter_drawer": {
+    "filter": "filtra",
+    "sort": "ordena"
+  },
+  "history": {
+    "header": {
+      "book": "Llibre",
+      "date": "Data",
+      "details": "Detalls",
+      "series": "Sèrie",
+      "type": "Tipus"
+    },
+    "title": "Historial"
+  },
+  "home": {
+    "theme": "Tema",
+    "translation": "Traducció"
+  },
+  "library_navigation": {
+    "browse": "Navega",
+    "collections": "Col·leccions",
+    "readlists": "Llistes de lectura",
+    "recommended": "Recomanat"
+  },
+  "login": {
+    "create_user_account": "Crea un compte d'usuari",
+    "login": "Inicia la sessió",
+    "unclaimed_html": "El servidor Komga encara no és actiu, cal crear un compte d'usuari per poder-hi accedir.<br><br>Trieu un <strong>correu electrònic</strong> i una <strong>contrasenya</strong> i feu clic a <strong>Crea un compte d'usuari</strong>."
+  },
+  "media_analysis": {
+    "comment": "Comentari",
+    "media_analysis": "Anàlisi del fitxer",
+    "media_type": "Tipus de fitxer",
+    "name": "Nom",
+    "size": "Mida",
+    "status": "Estat",
+    "url": "URL"
+  },
+  "media_management": {
+    "title": "Gestiona els fitxers"
+  },
+  "menu": {
+    "add_to_collection": "Afegeix a la col·lecció",
+    "add_to_readlist": "Afegeix a la llista de lectura",
+    "analyze": "Analitza",
+    "bulk_edit_metadata": "Edita les metadades en massa",
+    "delete": "Suprimeix",
+    "deselect_all": "Desmarca-ho tot",
+    "download_readlist": "Baixa la llista de lectura",
+    "download_series": "Baixa la sèrie",
+    "edit": "Edita",
+    "edit_metadata": "Edita les metadades",
+    "empty_trash": "Buida la paperera",
+    "mark_read": "Marca com a llegit",
+    "mark_unread": "Marca com a no llegit",
+    "refresh_metadata": "Actualitza les metadates",
+    "scan_library_files": "Escaneja els fitxers de la biblioteca",
+    "scan_library_files_deep": "Escaneja els fitxers de la biblioteca (a fons)",
+    "select_all": "Selecciona-ho tot"
+  },
+  "metrics": {
+    "library_books": "Llibres per biblioteca",
+    "library_disk_space": "Espai de disc de la biblioteca",
+    "library_series": "Sèries per biblioteca",
+    "library_sidecars": "Accesoris per biblioteca",
+    "tasks_executed": "Tasques executades",
+    "tasks_total_time": "Temps total de les tasques",
+    "title": "Mètriques"
+  },
+  "navigation": {
+    "home": "Inici",
+    "libraries": "Biblioteques",
+    "logout": "Tanca la sessió"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Ves a la pàgina d'inici",
+    "page_does_not_exist": "La pàgina que busqueu no existeix.",
+    "page_not_found": "No s'ha trobat la pàgina"
+  },
+  "read_more": {
+    "less": "Llegeix-ne menys",
+    "more": "Llegeix-ne més"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Llibre duplicat",
+      "error_choose_book": "Tria un llibre"
+    }
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Gestiona la llista de lectura",
+    "title": "Llista de lectura {name}"
+  },
+  "search": {
+    "no_results": "La cerca no ha trobat cap resultat",
+    "search": "Cerca",
+    "search_for_something_else": "Proveu de cercar una altra cosa",
+    "search_results_for": "Resultats de la cerca per \"{name}\""
+  },
+  "searchbox": {
+    "in_library": "a {library}",
+    "no_results": "Cap resultat",
+    "search_all": "Cerca tot…"
+  },
+  "server": {
+    "server_management": {
+      "button_cancel_all_tasks": "Cancel·la totes les tasques",
+      "button_empty_trash": "Buida la paperera de totes les biblioteques",
+      "button_scan_libraries": "Escaneja totes les biblioteques",
+      "button_scan_libraries_deep": "Escaneja totes les biblioteques (a fons)",
+      "button_shutdown": "Atura",
+      "notification_tasks_cancelled": "Cap tasca per cancel·lar | Una tasca cancel·lada | {count} tasques cancel·lades",
+      "section_title": "Gestió del servidor"
+    },
+    "tab_title": "Servidor"
+  },
+  "server_settings": {
+    "config_precedence": "Té prioritat sobre el fitxer de configuració",
+    "dialog_regenerate_thumbnails": {
+      "body": "La mida de les miniatures ha canviat. Voleu generar-ne de nou les dels llibres?",
+      "btn_alternate": "Sí, tots els llibres",
+      "btn_cancel": "No",
+      "btn_confirm": "Sí, però només si són més grans",
+      "title": "Genera de nou les miniatures"
+    },
+    "label_delete_empty_collections": "Després d'escanejar suprimeix les col·leccions buides",
+    "label_delete_empty_readlists": "Després d'escanejar suprimeix lesllistes de lectura buides",
+    "label_rememberme_duration": "Durada de \"Recorda\" (en dies)",
+    "label_server_context_path": "URL base",
+    "label_server_port": "Port del servidor",
+    "label_task_pool_size": "Fils de tasques",
+    "label_thumbnail_size": "Mida de les miniatures",
+    "requires_restart": "Cal reiniciar per fer-se efectiu",
+    "server_settings": "Configuració del servidor"
+  },
+  "settings_user": {
+    "change_password": "Canvia la contrasenya",
+    "edit_restrictions": "Edita les restriccions",
+    "edit_user": "Edita l'usuari",
+    "latest_activity": "Activitat més recent: {date}",
+    "no_recent_activity": "Sense activitat recent",
+    "role_administrator": "Administrador",
+    "role_user": "Usuari"
+  },
+  "sort": {
+    "books_count": "Nombre de llibres",
+    "date_added": "Data d'addició",
+    "date_updated": "Data d'actualització",
+    "file_name": "Nom del fitxer",
+    "file_size": "Mida del fitxer",
+    "folder_name": "Nom de la carpeta",
+    "name": "Nom",
+    "number": "Nombre",
+    "release_date": "Data de publicació"
+  },
+  "theme": {
+    "dark": "Fosc",
+    "light": "Clar",
+    "system": "Sistema"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Suprimeix",
+    "tooltip_generated": "S'han generat les il·lustracions",
+    "tooltip_mark_as_selected": "Marca com seleccionat",
+    "tooltip_selected": "Seleccionat",
+    "tooltip_sidecar": "Il·lustració local",
+    "tooltip_to_be_deleted": "Per suprimir",
+    "tooltip_to_be_uploaded": "Per pujar",
+    "tooltip_too_big": "El fitxer és massa gran!",
+    "tooltip_user_uploaded": "Pujat per l'usuari"
+  },
+  "titles_more": {
+    "less": "Menys títols",
+    "more": "Més títols"
+  },
+  "user_roles": {
+    "ADMIN": "Administrador",
+    "FILE_DOWNLOAD": "Baixa el fitxer",
+    "PAGE_STREAMING": "Transmissió de pàgines",
+    "USER": "Usuari"
+  },
+  "users": {
+    "authentication_activity": "Activitat d'autenticació",
+    "users": "Usuaris"
+  },
+  "validation": {
+    "context_path": "Cal que comenci per '/', no ha d'acabar amb '/-_', i només podeu fer servir '/-_a-z0-9'",
+    "one_or_more": "Cal que sigui 1 o més",
+    "tcp_port": "Cal que sigui entre 1 i 65535",
+    "zero_or_more": "Cal que sigui 0 o més"
+  },
+  "welcome": {
+    "add_library": "Afegeix una biblioteca",
+    "no_libraries_yet": "Encara no s'hi ha afegit cap biblioteca!",
+    "welcome_message": "Benvinguts a Komga"
+  }
+}
