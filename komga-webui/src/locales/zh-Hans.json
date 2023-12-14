@@ -646,6 +646,11 @@
         "auto": "自动",
         "one": "一列",
         "two": "两列"
+      },
+      "reading_direction": {
+        "auto": "自动",
+        "ltr": "从左到右",
+        "rtl": "从右到左"
       }
     },
     "historical_event_type": {
@@ -701,11 +706,14 @@
     }
   },
   "epubreader": {
+    "current_chapter": "当前章节",
+    "page_of": "第 {page} 页，共 {count} 页",
     "settings": {
       "column_count": "列数",
       "layout": "布局",
       "layout_paginated": "分页",
       "layout_scroll": "滚屏",
+      "navigation_mode": "导航模式",
       "page_margins": "页边距",
       "viewing_theme": "查看主题"
     },
