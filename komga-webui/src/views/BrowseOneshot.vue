@@ -484,7 +484,7 @@ import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import {groupAuthorsByRole} from '@/functions/authors'
-import {getBookFormatFromMediaType, getBookReadRouteFromMediaProfile} from '@/functions/book-format'
+import {getBookFormatFromMediaType, getBookReadRouteFromMedia} from '@/functions/book-format'
 import {getPagesLeft, getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {bookFileUrl, seriesThumbnailUrl} from '@/functions/urls'
@@ -597,7 +597,7 @@ export default Vue.extend({
   },
   computed: {
     readRouteName(): string {
-      return getBookReadRouteFromMediaProfile(this.book.media.mediaProfile)
+      return getBookReadRouteFromMedia(this.book.media)
     },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin

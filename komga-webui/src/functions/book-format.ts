@@ -1,4 +1,4 @@
-import {BookFormat} from '@/types/komga-books'
+import {BookFormat, MediaDto} from '@/types/komga-books'
 import {lowerCase} from 'lodash'
 
 export function getBookFormatFromMediaType(mediaType: string): BookFormat {
@@ -19,10 +19,10 @@ export function getBookFormatFromMediaType(mediaType: string): BookFormat {
   }
 }
 
-export function getBookReadRouteFromMediaProfile(mediaProfile: string): string {
-  switch (lowerCase(mediaProfile)) {
+export function getBookReadRouteFromMedia(media: MediaDto): string {
+  switch (lowerCase(media.mediaProfile)) {
     case 'epub':
-      return 'read-epub'
+      return media.epubDivinaCompatible ? 'read-book' : 'read-epub'
     default:
       return 'read-book'
   }

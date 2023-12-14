@@ -319,7 +319,7 @@ import {
 import {flattenToc} from '@/functions/toc'
 import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import screenfull from 'screenfull'
-import {getBookReadRouteFromMediaProfile} from '@/functions/book-format'
+import {getBookReadRouteFromMedia} from '@/functions/book-format'
 import SettingsSelect from '@/components/SettingsSelect.vue'
 import {createR2Progression, r2ProgressionToReadingPosition} from '@/functions/readium'
 import {debounce} from 'lodash'
@@ -462,6 +462,9 @@ export default Vue.extend({
     next()
   },
   computed: {
+    isRtl(): boolean {
+      return this.effectiveDirection === 'rtl'
+    },
     shortcuts(): any {
       const shortcuts = [...epubShortcutsSettings, ...epubShortcutsMenus]
       if (!this.fixedLayout) shortcuts.push(...epubShortcutsSettingsScroll)
@@ -614,7 +617,7 @@ export default Vue.extend({
       if (!this.$_.isEmpty(this.siblingPrevious)) {
         this.jumpToPreviousBook = false
         this.$router.push({
-          name: getBookReadRouteFromMediaProfile(this.siblingPrevious.media.mediaProfile),
+          name: getBookReadRouteFromMedia(this.siblingPrevious.media),
           params: {bookId: this.siblingPrevious.id.toString()},
           query: {context: this.context.origin, contextId: this.context.id, incognito: this.incognito.toString()},
         })
@@ -626,7 +629,7 @@ export default Vue.extend({
       } else {
         this.jumpToNextBook = false
         this.$router.push({
-          name: getBookReadRouteFromMediaProfile(this.siblingNext.media.mediaProfile),
+          name: getBookReadRouteFromMedia(this.siblingNext.media),
           params: {bookId: this.siblingNext.id.toString()},
           query: {context: this.context.origin, contextId: this.context.id, incognito: this.incognito.toString()},
         })
@@ -686,8 +689,8 @@ export default Vue.extend({
         }
       } else {
         if (this.settings.navigationClick) {
-          if (x < this.$vuetify.breakpoint.width / 4) return this.d2Reader.previousPage()
-          if (x > this.$vuetify.breakpoint.width * .75) return this.d2Reader.nextPage()
+          if (x < this.$vuetify.breakpoint.width / 4) return this.isRtl ? this.d2Reader.nextPage() : this.d2Reader.previousPage()
+          if (x > this.$vuetify.breakpoint.width * .75) return this.isRtl ? this.d2Reader.previousPage() : this.d2Reader.nextPage()
         }
       }
       this.toggleToolbars()
