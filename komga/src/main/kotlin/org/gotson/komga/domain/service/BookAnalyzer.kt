@@ -59,14 +59,17 @@ class BookAnalyzer(
   fun analyze(book: Book, analyzeDimensions: Boolean): Media {
     logger.info { "Trying to analyze book: $book" }
     return try {
-      val mediaType = contentDetector.detectMediaType(book.path).let {
+      var mediaType = contentDetector.detectMediaType(book.path).let {
         logger.info { "Detected media type: $it" }
         MediaType.fromMediaType(it) ?: return Media(mediaType = it, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
       }
 
       if (book.path.extension.lowercase() == "epub" && mediaType != MediaType.EPUB) {
-        logger.warn { "Epub file detected as zip, file is probably broken: ${book.path}" }
-        return Media(mediaType = mediaType.type, status = Media.Status.ERROR, comment = "ERR_1032", bookId = book.id)
+        if (epubExtractor.isEpub(book.path)) mediaType = MediaType.EPUB
+        else {
+          logger.warn { "Epub file is malformed, file is probably broken: ${book.path}" }
+          return Media(mediaType = mediaType.type, status = Media.Status.ERROR, comment = "ERR_1032", bookId = book.id)
+        }
       }
 
       when (mediaType.profile) {
@@ -208,6 +211,7 @@ class BookAnalyzer(
       MediaProfile.EPUB ->
         if (book.media.epubDivinaCompatible) epubExtractor.getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
         else throw MediaUnsupportedException("Epub profile does not support getting page content")
+
       null -> throw MediaNotReadyException()
     }
   }
