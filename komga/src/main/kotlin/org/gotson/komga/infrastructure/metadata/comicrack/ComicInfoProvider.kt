@@ -35,17 +35,16 @@ class ComicInfoProvider(
   private val isbnValidator: ISBNValidator,
 ) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
-  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
-    setOf(
-      BookMetadataPatchCapability.TITLE,
-      BookMetadataPatchCapability.SUMMARY,
-      BookMetadataPatchCapability.NUMBER,
-      BookMetadataPatchCapability.NUMBER_SORT,
-      BookMetadataPatchCapability.RELEASE_DATE,
-      BookMetadataPatchCapability.AUTHORS,
-      BookMetadataPatchCapability.READ_LISTS,
-      BookMetadataPatchCapability.LINKS,
-    )
+  override val capabilities = setOf(
+    BookMetadataPatchCapability.TITLE,
+    BookMetadataPatchCapability.SUMMARY,
+    BookMetadataPatchCapability.NUMBER,
+    BookMetadataPatchCapability.NUMBER_SORT,
+    BookMetadataPatchCapability.RELEASE_DATE,
+    BookMetadataPatchCapability.AUTHORS,
+    BookMetadataPatchCapability.READ_LISTS,
+    BookMetadataPatchCapability.LINKS,
+  )
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     getComicInfo(book)?.let { comicInfo ->

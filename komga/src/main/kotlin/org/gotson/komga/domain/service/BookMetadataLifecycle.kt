@@ -36,7 +36,7 @@ class BookMetadataLifecycle(
 
     bookMetadataProviders.forEach { provider ->
       when {
-        capabilities.intersect(provider.getCapabilities()).isEmpty() ->
+        capabilities.intersect(provider.capabilities).isEmpty() ->
           logger.info { "Provider does not support requested capabilities, skipping: ${provider.javaClass.simpleName}" }
 
         !(provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.BOOK) || provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.READLIST)) ->

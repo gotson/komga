@@ -36,8 +36,7 @@ class IsbnBarcodeProvider(
     DecodeHintType.TRY_HARDER to true,
   )
 
-  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
-    setOf(BookMetadataPatchCapability.ISBN)
+  override val capabilities = setOf(BookMetadataPatchCapability.ISBN)
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     if (book.media.profile == MediaProfile.EPUB) return null

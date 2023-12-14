@@ -31,7 +31,7 @@ class TransientBookLifecycle(
   bookMetadataProviders: List<BookMetadataProvider>,
 ) {
 
-  val bookMetadataProviders = bookMetadataProviders.filter { it.getCapabilities().contains(BookMetadataPatchCapability.NUMBER_SORT) }
+  val bookMetadataProviders = bookMetadataProviders.filter { it.capabilities.contains(BookMetadataPatchCapability.NUMBER_SORT) }
 
   fun scanAndPersist(filePath: String): List<TransientBook> {
     val folderToScan = Paths.get(filePath)
