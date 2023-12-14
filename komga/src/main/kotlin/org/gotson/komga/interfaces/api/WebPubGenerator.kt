@@ -227,14 +227,15 @@ class WebPubGenerator(
 
   private fun BookDto.toWPLinkDtos(uriBuilder: UriComponentsBuilder): List<WPLinkDto> {
     val komgaMediaType = KomgaMediaType.fromMediaType(media.mediaType)
-    return listOfNotNull(
+    return buildList {
       // most appropriate manifest
-      WPLinkDto(rel = OpdsLinkRel.SELF, href = uriBuilder.cloneBuilder().path("books/$id/manifest").toUriString(), type = mediaProfileToWebPub(komgaMediaType?.profile)),
-      // PDF is also available under the Divina profile
-      if (komgaMediaType?.profile == MediaProfile.PDF) WPLinkDto(href = uriBuilder.cloneBuilder().path("books/$id/manifest/divina").toUriString(), type = MEDIATYPE_DIVINA_JSON_VALUE) else null,
+      add(WPLinkDto(rel = OpdsLinkRel.SELF, href = uriBuilder.cloneBuilder().path("books/$id/manifest").toUriString(), type = mediaProfileToWebPub(komgaMediaType?.profile)))
+      // PDF is also available under the Divina profile / EPUB that are Divina compatible
+      if (komgaMediaType?.profile == MediaProfile.PDF || (komgaMediaType?.profile == MediaProfile.EPUB && media.epubDivinaCompatible))
+        add(WPLinkDto(href = uriBuilder.cloneBuilder().path("books/$id/manifest/divina").toUriString(), type = MEDIATYPE_DIVINA_JSON_VALUE))
       // main acquisition link
-      WPLinkDto(rel = OpdsLinkRel.ACQUISITION, type = komgaMediaType?.exportType ?: media.mediaType, href = uriBuilder.cloneBuilder().path("books/$id/file").toUriString()),
-    )
+      add(WPLinkDto(rel = OpdsLinkRel.ACQUISITION, type = komgaMediaType?.exportType ?: media.mediaType, href = uriBuilder.cloneBuilder().path("books/$id/file").toUriString()))
+    }
   }
 
   private fun mediaProfileToWebPub(profile: MediaProfile?): String = when (profile) {

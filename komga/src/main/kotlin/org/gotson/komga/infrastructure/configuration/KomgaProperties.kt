@@ -43,6 +43,9 @@ class KomgaProperties {
   @Positive
   var pageHashing: Int = 3
 
+  @Positive
+  var epubDivinaLetterCountThreshold: Int = 15
+
   @Deprecated("Moved to server settings since 1.5.0")
   var rememberMe = RememberMe()
 

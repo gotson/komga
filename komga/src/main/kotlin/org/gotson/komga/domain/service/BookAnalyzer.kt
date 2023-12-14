@@ -72,7 +72,7 @@ class BookAnalyzer(
       when (mediaType.profile) {
         MediaProfile.DIVINA -> analyzeDivina(book, mediaType, analyzeDimensions)
         MediaProfile.PDF -> analyzePdf(book, analyzeDimensions)
-        MediaProfile.EPUB -> analyzeEpub(book)
+        MediaProfile.EPUB -> analyzeEpub(book, analyzeDimensions)
       }.copy(mediaType = mediaType.type)
     } catch (ade: AccessDeniedException) {
       logger.error(ade) { "Error while analyzing book: $book" }
@@ -123,12 +123,14 @@ class BookAnalyzer(
     return Media(status = Media.Status.READY, pages = pages, pageCount = pages.size, files = files, comment = entriesErrorSummary)
   }
 
-  private fun analyzeEpub(book: Book): Media {
-    val manifest = epubExtractor.getManifest(book.path)
+  private fun analyzeEpub(book: Book, analyzeDimensions: Boolean): Media {
+    val manifest = epubExtractor.getManifest(book.path, analyzeDimensions)
     return Media(
       status = Media.Status.READY,
+      pages = manifest.divinaPages,
       files = manifest.resources,
       pageCount = manifest.pageCount,
+      epubDivinaCompatible = manifest.divinaPages.isNotEmpty(),
       extension = MediaExtensionEpub(
         toc = manifest.toc,
         landmarks = manifest.landmarks,
@@ -203,7 +205,9 @@ class BookAnalyzer(
     return when (book.media.profile) {
       MediaProfile.DIVINA -> divinaExtractors.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
       MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, number).bytes
-      MediaProfile.EPUB -> throw MediaUnsupportedException("Epub profile does not support getting page content")
+      MediaProfile.EPUB ->
+        if (book.media.epubDivinaCompatible) epubExtractor.getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+        else throw MediaUnsupportedException("Epub profile does not support getting page content")
       null -> throw MediaNotReadyException()
     }
   }

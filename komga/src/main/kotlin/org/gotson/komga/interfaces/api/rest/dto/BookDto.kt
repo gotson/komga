@@ -39,6 +39,7 @@ data class MediaDto(
   val mediaType: String,
   val pagesCount: Int,
   val comment: String,
+  val epubDivinaCompatible: Boolean,
 ) {
   val mediaProfile: String by lazy { MediaType.fromMediaType(mediaType)?.profile?.name ?: "" }
 }
