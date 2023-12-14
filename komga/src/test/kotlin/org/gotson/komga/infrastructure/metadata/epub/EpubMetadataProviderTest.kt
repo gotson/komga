@@ -10,7 +10,6 @@ import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
-import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.infrastructure.mediacontainer.epub.getPackageFile
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
@@ -122,15 +121,13 @@ class EpubMetadataProviderTest {
   @Nested
   inner class Series {
 
-    private val library = makeLibrary()
-
     @Test
     fun `given epub 3 opf when getting series metadata then metadata patch is valid`() {
       val opf = ClassPathResource("epub/Panik im Paradies.opf")
       mockkStatic(::getPackageFile)
       every { getPackageFile(any()) } returns opf.file.readText()
 
-      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)
+      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), true)
 
       with(patch!!) {
         assertThat(title).isEqualTo("Die drei ??? Kids")
@@ -148,7 +145,7 @@ class EpubMetadataProviderTest {
       mockkStatic(::getPackageFile)
       every { getPackageFile(any()) } returns opf.file.readText()
 
-      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)
+      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), true)
 
       with(patch!!) {
         assertThat(title).isEqualTo("Die drei ??? Kids")
@@ -166,7 +163,7 @@ class EpubMetadataProviderTest {
       mockkStatic(::getPackageFile)
       every { getPackageFile(any()) } returns opf.file.readText()
 
-      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), library)
+      val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), true)
 
       with(patch!!) {
         assertThat(title).isNull()

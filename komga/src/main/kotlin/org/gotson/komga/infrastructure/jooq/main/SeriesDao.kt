@@ -67,11 +67,11 @@ class SeriesDao(
       .firstOrNull()
       ?.toDomain()
 
-  override fun findAllByTitle(title: String): Collection<Series> =
+  override fun findAllByTitleContaining(title: String): Collection<Series> =
     dsl.selectDistinct(*s.fields())
       .from(s)
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-      .where(d.TITLE.equalIgnoreCase(title))
+      .where(d.TITLE.containsIgnoreCase(title))
       .fetchInto(s)
       .map { it.toDomain() }
 
