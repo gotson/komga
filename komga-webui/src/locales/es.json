@@ -646,6 +646,11 @@
         "auto": "Automático",
         "one": "Uno",
         "two": "Dos"
+      },
+      "reading_direction": {
+        "auto": "Automático",
+        "ltr": "Izquierda a derecha",
+        "rtl": "Derecha a izquierda"
       }
     },
     "historical_event_type": {
@@ -701,11 +706,19 @@
     }
   },
   "epubreader": {
+    "current_chapter": "Capítulo actual",
+    "page_of": "Página {page} de {count}",
     "settings": {
       "column_count": "Número de columnas",
       "layout": "Diseño",
       "layout_paginated": "Paginado",
       "layout_scroll": "Desplazarse",
+      "navigation_mode": "Modo de navegación",
+      "navigation_options": {
+        "both": "Ambos",
+        "buttons": "Botones",
+        "click": "Clic / Toque"
+      },
       "page_margins": "Márgenes de la página",
       "viewing_theme": "Tema de visualización"
     },
