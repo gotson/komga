@@ -437,6 +437,8 @@ import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
 import {ReadListDto} from '@/types/komga-readlists'
+import { LIBRARIES_ALL } from '@/types/library'
+
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -608,8 +610,13 @@ export default Vue.extend({
           id: this.$route.query.contextId as string,
         }
         this.book.context = this.context
-        this.$komgaReadLists.getOneReadList(this.context.id)
-          .then(v => this.contextName = v.name)
+        if (this.$route.query.context === ContextOrigin.READLIST) {
+          this.$komgaReadLists.getOneReadList(this.context.id).then(v => this.contextName = v.name)
+        } else if (this.$route.query.context === ContextOrigin.LIBRARY && this.$route.query.contextId !== LIBRARIES_ALL) {
+          this.$komgaLibraries.getLibrary(this.context.id).then(v => this.contextName = v.name)
+        }  
+
+
       }
 
       // Get siblings depending on origin
