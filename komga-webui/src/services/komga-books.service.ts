@@ -1,5 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {
+  AuthorDto,
   BookDto,
   BookImportBatchDto,
   BookMetadataUpdateBatchDto,
@@ -23,24 +24,28 @@ export default class KomgaBooksService {
     this.http = http
   }
 
-  async getBooks(libraryId?: string, pageRequest?: PageRequest, search?: string, mediaStatus?: string[], readStatus?: string[], releasedAfter?: Date): Promise<Page<BookDto>> {
+  async getBooks(libraryId?: string, pageRequest?: PageRequest, search?: string, mediaStatus?: string[], 
+                 readStatus?: string[], releasedAfter?: Date, seriesPrefix?: string, publisher? : string[],
+                 releaseDate?: string[], tag?: string[], authors?: AuthorDto[], sharingLabel?: string[], 
+                 genre?: string[], language?: string[], ageRating?: string[]) : Promise<Page<BookDto>> {
     try {
       const params = {...pageRequest} as any
-      if (libraryId) {
-        params.library_id = libraryId
-      }
-      if (search) {
-        params.search = search
-      }
-      if (mediaStatus) {
-        params.media_status = mediaStatus
-      }
-      if (readStatus) {
-        params.read_status = readStatus
-      }
-      if (releasedAfter) {
-        params.released_after = formatISO(releasedAfter, {representation: 'date'})
-      }
+
+      if (libraryId) params.library_id = libraryId
+      if (search) params.search = search
+      if (mediaStatus) params.media_status = mediaStatus
+      if (readStatus) params.read_status = readStatus
+      if (releasedAfter) params.released_after = formatISO(releasedAfter, { representation: 'date' })
+      if (seriesPrefix) params.series_prefix = seriesPrefix
+      if (publisher) params.publisher = publisher
+      if (releaseDate) params.release_year = releaseDate
+      if (tag) params.tag = tag
+      if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
+      if (sharingLabel) params.sharing_label = sharingLabel
+      if (genre) params.genre = genre
+      if (language) params.language = language
+      if (ageRating) params.age_rating = ageRating
+
       return (await this.http.get(API_BOOKS, {
         params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),

@@ -660,6 +660,12 @@
       "DuplicatePageDeleted": "Duplicate page deleted",
       "SeriesFolderDeleted": "Series folder deleted"
     },
+    "item_types": {
+      "BOOK": "Book",
+      "COLLECTION": "Collection",
+      "READLIST": "Read List",
+      "SERIES": "Series"
+    },
     "media_status": {
       "ERROR": "Error",
       "OUTDATED": "Outdated",
