@@ -1,3 +1,74 @@
+# [1.9.0](https://github.com/gotson/komga/compare/1.8.4...1.9.0) (2023-12-15)
+## 🚀 Features
+**api**
+- increase PDF image resolution ([e856d4f](https://github.com/gotson/komga/commits/e856d4f))
+- make pre-paginated epub containing only images compatible with divina profile ([c2a4d17](https://github.com/gotson/komga/commits/c2a4d17))
+- add basic metadata for transient books ([1050f52](https://github.com/gotson/komga/commits/1050f52))
+- add Readium Progression API ([20799ad](https://github.com/gotson/komga/commits/20799ad))
+- add layout attribute on epub manifest ([5096364](https://github.com/gotson/komga/commits/5096364))
+- add positions endpoint to get pre-computed positions of epub books ([eb8a644](https://github.com/gotson/komga/commits/eb8a644))
+
+**epubreader**
+- handle reading direction ([77b8a32](https://github.com/gotson/komga/commits/77b8a32))
+- remove margin and dropshadow for pre-paginated publications ([10e2597](https://github.com/gotson/komga/commits/10e2597))
+- mark read progress ([1172911](https://github.com/gotson/komga/commits/1172911))
+- adjust display of current progress ([b234586](https://github.com/gotson/komga/commits/b234586))
+- add navigation modes with click/tap, buttons, or both ([2f0f94d](https://github.com/gotson/komga/commits/2f0f94d))
+- display percentage of total progression ([3a14990](https://github.com/gotson/komga/commits/3a14990))
+
+**komga**
+- relax epub validity controls ([fad93ad](https://github.com/gotson/komga/commits/fad93ad))
+
+**komga-tray**
+- display dialog with error detail on application startup failure ([0fdcb2a](https://github.com/gotson/komga/commits/0fdcb2a)), closes [#1336](https://github.com/gotson/komga/issues/1336)
+
+**opds-v1**
+- add OPDS-PSE links for divina-compatible EPUBs ([0c96054](https://github.com/gotson/komga/commits/0c96054))
+- use static xml namespace prefix for opds-pse ([834b51d](https://github.com/gotson/komga/commits/834b51d))
+
+**webui**
+- use divina reader for compatible epub ([809a794](https://github.com/gotson/komga/commits/809a794)), closes [#1324](https://github.com/gotson/komga/issues/1324)
+- autofill series and number from metadata during book import ([5b75345](https://github.com/gotson/komga/commits/5b75345)), closes [#998](https://github.com/gotson/komga/issues/998)
+
+## 🐛 Fixes
+**api**
+- properly set layout property in webpub manifest ([e11ce46](https://github.com/gotson/komga/commits/e11ce46))
+- cannot get last page of PDF ([721c5d1](https://github.com/gotson/komga/commits/721c5d1)), closes [#1341](https://github.com/gotson/komga/issues/1341)
+
+**epubreader**
+- properly handle clicks in iframes ([4db0542](https://github.com/gotson/komga/commits/4db0542))
+
+**komga**
+- empty generated thumbnails would be saved in DB ([15920b7](https://github.com/gotson/komga/commits/15920b7)), closes [#1338](https://github.com/gotson/komga/issues/1338)
+- use an in-process lock for Lucene ([1a30bf9](https://github.com/gotson/komga/commits/1a30bf9))
+
+**webui**
+- pre-render page could overlap current page in some specific conditions ([7a8d50c](https://github.com/gotson/komga/commits/7a8d50c)), closes [#1339](https://github.com/gotson/komga/issues/1339)
+
+## 🏎 Perf
+**komga**
+- convert BookMetadataProvider to property ([3843f77](https://github.com/gotson/komga/commits/3843f77))
+
+## 🔄️ Changes
+**komga**
+- move date utils to language package ([fbc1034](https://github.com/gotson/komga/commits/fbc1034))
+
+**komga-tray**
+- catch any exception on startup ([b312847](https://github.com/gotson/komga/commits/b312847))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Chinese (Simplified)) ([142326c](https://github.com/gotson/komga/commits/142326c))
+- translated using Weblate (Finnish) ([d19e1a5](https://github.com/gotson/komga/commits/d19e1a5))
+- translated using Weblate (Spanish) ([ad6a8c9](https://github.com/gotson/komga/commits/ad6a8c9))
+
+**webui**
+- fix language file name ([ac59fca](https://github.com/gotson/komga/commits/ac59fca)), closes [#1345](https://github.com/gotson/komga/issues/1345)
+- translated using Weblate (Chinese (Simplified)) ([0274308](https://github.com/gotson/komga/commits/0274308))
+- translated using Weblate (Spanish) ([37abfbf](https://github.com/gotson/komga/commits/37abfbf))
+- translated using Weblate (Catalan) ([32e9a0c](https://github.com/gotson/komga/commits/32e9a0c))
+- translated using Weblate (German) ([d2a91ac](https://github.com/gotson/komga/commits/d2a91ac))
+
 # [1.8.4](https://github.com/gotson/komga/compare/1.8.3...1.8.4) (2023-12-06)
 ## 🐛 Fixes
 **webui**

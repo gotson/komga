@@ -606,6 +606,87 @@
         }
       }
     },
+    "/api/v1/books/{bookId}/progression": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getProgression",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.readium.progression+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/R2Progression"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "markProgression",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/R2Progression"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/api/v1/books/thumbnails": {
       "put": {
         "tags": [
@@ -8110,6 +8191,46 @@
         }
       }
     },
+    "/api/v1/books/{bookId}/positions": {
+      "get": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "getPositions",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.readium.position-list+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/R2Positions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/books/{bookId}/pages": {
       "get": {
         "tags": [
@@ -9509,6 +9630,105 @@
         },
         "description": "Fields to update. You can omit fields you don\u0027t want to update."
       },
+      "Location": {
+        "required": [
+          "fragments"
+        ],
+        "type": "object",
+        "properties": {
+          "fragments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "progression": {
+            "type": "number",
+            "format": "float"
+          },
+          "position": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalProgression": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "R2Device": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "R2Locator": {
+        "required": [
+          "href",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "locations": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "text": {
+            "$ref": "#/components/schemas/Text"
+          }
+        }
+      },
+      "R2Progression": {
+        "required": [
+          "device",
+          "locator",
+          "modified"
+        ],
+        "type": "object",
+        "properties": {
+          "modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "device": {
+            "$ref": "#/components/schemas/R2Device"
+          },
+          "locator": {
+            "$ref": "#/components/schemas/R2Locator"
+          }
+        }
+      },
+      "Text": {
+        "type": "object",
+        "properties": {
+          "after": {
+            "type": "string"
+          },
+          "before": {
+            "type": "string"
+          },
+          "highlight": {
+            "type": "string"
+          }
+        }
+      },
       "UserCreationDto": {
         "required": [
           "email",
@@ -9707,6 +9927,13 @@
             }
           },
           "comment": {
+            "type": "string"
+          },
+          "number": {
+            "type": "number",
+            "format": "float"
+          },
+          "seriesId": {
             "type": "string"
           }
         }
@@ -11165,6 +11392,7 @@
           "letterer",
           "penciler",
           "publisher",
+          "rendition",
           "subject",
           "title",
           "translator"
@@ -11291,6 +11519,12 @@
           },
           "belongsTo": {
             "$ref": "#/components/schemas/WPBelongsToDto"
+          },
+          "rendition": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
           }
         }
       },
@@ -11590,10 +11824,10 @@
             "type": "integer",
             "format": "int32"
           },
-          "paged": {
+          "unpaged": {
             "type": "boolean"
           },
-          "unpaged": {
+          "paged": {
             "type": "boolean"
           },
           "offset": {
@@ -12331,6 +12565,7 @@
       "MediaDto": {
         "required": [
           "comment",
+          "epubDivinaCompatible",
           "mediaProfile",
           "mediaType",
           "pagesCount",
@@ -12350,6 +12585,9 @@
           },
           "comment": {
             "type": "string"
+          },
+          "epubDivinaCompatible": {
+            "type": "boolean"
           },
           "mediaProfile": {
             "type": "string"
@@ -12406,6 +12644,8 @@
         "required": [
           "completed",
           "created",
+          "deviceId",
+          "deviceName",
           "lastModified",
           "page",
           "readDate"
@@ -12430,6 +12670,12 @@
           "lastModified": {
             "type": "string",
             "format": "date-time"
+          },
+          "deviceId": {
+            "type": "string"
+          },
+          "deviceName": {
+            "type": "string"
           }
         }
       },
@@ -12858,6 +13104,25 @@
         "properties": {
           "isClaimed": {
             "type": "boolean"
+          }
+        }
+      },
+      "R2Positions": {
+        "required": [
+          "positions",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/R2Locator"
+            }
           }
         }
       },
