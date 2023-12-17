@@ -646,6 +646,11 @@
         "auto": "Auto",
         "one": "Einseitig",
         "two": "Zweiseitig"
+      },
+      "reading_direction": {
+        "auto": "Automatisch",
+        "ltr": "Links nach rechts",
+        "rtl": "Rechts nach links"
       }
     },
     "historical_event_type": {
@@ -701,11 +706,19 @@
     }
   },
   "epubreader": {
+    "current_chapter": "Aktuelles Kapitel",
+    "page_of": "Seite {page} von {count}",
     "settings": {
       "column_count": "Spaltenzahl",
       "layout": "Layout",
       "layout_paginated": "Blättern",
       "layout_scroll": "Scrollen",
+      "navigation_mode": "Navigationsmodus",
+      "navigation_options": {
+        "both": "Beides",
+        "buttons": "Knöpfe",
+        "click": "Klicken / Tapsen"
+      },
       "page_margins": "Seitenabstände",
       "viewing_theme": "Anzeigethema"
     },
@@ -900,6 +913,7 @@
     "label_rememberme_duration": "Laufzeit der Erinnere dich an mich Funktion (in Tagen)",
     "label_server_context_path": "Basis URL",
     "label_server_port": "Server Port",
+    "label_task_pool_size": "Aufgabenthreads",
     "label_thumbnail_size": "Vorschaubildergröße",
     "requires_restart": "Neustart erforderlich um die Änderung nutzbar zu machen",
     "server_settings": "Servereinstellungen"
