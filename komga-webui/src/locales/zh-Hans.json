@@ -707,13 +707,18 @@
   },
   "epubreader": {
     "current_chapter": "当前章节",
-    "page_of": "第 {page} 页，共 {count} 页",
+    "page_of": "页 {page} 共 {count}页",
     "settings": {
       "column_count": "列数",
       "layout": "布局",
       "layout_paginated": "分页",
       "layout_scroll": "滚屏",
       "navigation_mode": "导航模式",
+      "navigation_options": {
+        "both": "两者皆用",
+        "buttons": "按钮图标",
+        "click": "单击 / 点击"
+      },
       "page_margins": "页边距",
       "viewing_theme": "查看主题"
     },
