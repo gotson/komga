@@ -643,7 +643,7 @@
         "sepia": "Sepia"
       },
       "column_count": {
-        "auto": "Automático",
+        "auto": "Auto",
         "one": "Uno",
         "two": "Dos"
       },
@@ -729,7 +729,7 @@
       "font_size_increase": "Aumentar el tamaño de la letra",
       "menus": "Menús",
       "next": "Avanzar",
-      "previous": "Atrás",
+      "previous": "Retroceder",
       "reader_navigation": "Navegación del lector",
       "scroll": "Cambiar el diseño para desplazarse",
       "settings": "Ajustes",
