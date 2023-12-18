@@ -1,3 +1,11 @@
+# [1.9.2](https://github.com/gotson/komga/compare/1.9.1...1.9.2) (2023-12-18)
+## 🛠  Build
+**release**
+- re-enable npm cache ([d65ee39](https://github.com/gotson/komga/commits/d65ee39))
+
+**webui**
+- build would pull incorrect version of dependency ([de0e854](https://github.com/gotson/komga/commits/de0e854)), closes [#1353](https://github.com/gotson/komga/issues/1353)
+
 # [1.9.1](https://github.com/gotson/komga/compare/1.9.0...1.9.1) (2023-12-18)
 ## 🐛 Fixes
 **api**
