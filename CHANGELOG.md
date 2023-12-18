@@ -1,3 +1,30 @@
+# [1.9.1](https://github.com/gotson/komga/compare/1.9.0...1.9.1) (2023-12-18)
+## 🐛 Fixes
+**api**
+- incorrect progression date check ([3daa194](https://github.com/gotson/komga/commits/3daa194))
+
+**epubreader**
+- ignore progression without locator ([d168c0a](https://github.com/gotson/komga/commits/d168c0a)), closes [#1352](https://github.com/gotson/komga/issues/1352)
+
+## 🔄️ Changes
+
+- remove announcement workaround for links ([c4d6868](https://github.com/gotson/komga/commits/c4d6868))
+
+## 🛠  Build
+**release**
+- disable npm cache ([4f79fbf](https://github.com/gotson/komga/commits/4f79fbf)), closes [#1353](https://github.com/gotson/komga/issues/1353)
+
+## 🌐 Translation
+**komga-tray**
+- use UTF-8 for properties ([4c922c4](https://github.com/gotson/komga/commits/4c922c4))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([b4c05a2](https://github.com/gotson/komga/commits/b4c05a2))
+- translated using Weblate (Finnish) ([341b42b](https://github.com/gotson/komga/commits/341b42b))
+- translated using Weblate (Spanish) ([754d016](https://github.com/gotson/komga/commits/754d016))
+- translated using Weblate (Italian) ([744b6f5](https://github.com/gotson/komga/commits/744b6f5))
+- translated using Weblate (German) ([5f96700](https://github.com/gotson/komga/commits/5f96700))
+
 # [1.9.0](https://github.com/gotson/komga/compare/1.8.4...1.9.0) (2023-12-15)
 ## 🚀 Features
 **api**
