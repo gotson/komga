@@ -32,18 +32,22 @@ function locationsToR2Location(location: Locations): R2Location {
   }
 }
 
-export function r2ProgressionToReadingPosition(progression: R2Progression): ReadingPosition {
-  return {
-    created: progression.modified,
-    href: progression.locator.href,
-    type: progression.locator.type,
-    title: progression.locator.title,
-    locations: {
-      fragment: progression.locator.locations.fragment ? progression.locator.locations.fragment[0] : undefined,
-      position: progression.locator.locations.position,
-      progression: progression.locator.locations.progression,
-      totalProgression: progression.locator.locations.totalProgression,
-    },
-    text: progression.locator.text,
+export function r2ProgressionToReadingPosition(progression?: R2Progression): ReadingPosition | undefined {
+  try {
+    return {
+      created: progression.modified,
+      href: progression.locator.href,
+      type: progression.locator.type,
+      title: progression.locator.title,
+      locations: {
+        fragment: progression.locator.locations.fragment ? progression.locator.locations.fragment[0] : undefined,
+        position: progression.locator.locations.position,
+        progression: progression.locator.locations.progression,
+        totalProgression: progression.locator.locations.totalProgression,
+      },
+      text: progression.locator.text,
+    }
+  } catch (e) {
+    return undefined
   }
 }
