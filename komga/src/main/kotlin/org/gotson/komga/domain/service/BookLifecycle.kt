@@ -31,6 +31,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.gotson.komga.language.toCurrentTimeZone
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Sort
@@ -385,7 +386,7 @@ class BookLifecycle(
 
   fun markProgression(book: Book, user: KomgaUser, newProgression: R2Progression) {
     readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user.id)?.let { savedProgress ->
-      check(newProgression.modified.toLocalDateTime().isAfter(savedProgress.readDate)) { "Progression is older than existing" }
+      check(newProgression.modified.toLocalDateTime().toCurrentTimeZone().isAfter(savedProgress.readDate)) { "Progression is older than existing" }
     }
 
     val media = mediaRepository.findById(book.id)
