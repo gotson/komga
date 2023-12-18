@@ -174,7 +174,7 @@ jobs:
         uses: hydraulic-software/conveyor/actions/build@v12.1
         if: inputs.github_release
         with:
-          command: -f conveyor.ci.conf make site -o ./output/site
+          command: --cache-limit=2.0 -f conveyor.ci.conf make site -o ./output/site
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
@@ -191,7 +191,7 @@ jobs:
         uses: hydraulic-software/conveyor/actions/build@v12.1
         if: inputs.github_release
         with:
-          command: -f conveyor.ci.conf make old-site -o ./output/old-site
+          command: --cache-limit=2.0 -f conveyor.ci.conf make old-site -o ./output/old-site
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
@@ -276,7 +276,7 @@ jobs:
         uses: hydraulic-software/conveyor/actions/build@v12.1
         if: inputs.msstore_release
         with:
-          command: -f conveyor.msstore.ci.conf make ms-store-release -o ./output/msstore
+          command: --cache-limit=2.0 -f conveyor.msstore.ci.conf make ms-store-release -o ./output/msstore
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
