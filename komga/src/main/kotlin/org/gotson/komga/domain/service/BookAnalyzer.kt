@@ -91,7 +91,8 @@ class BookAnalyzer(
 
   private fun analyzeDivina(book: Book, mediaType: MediaType, analyzeDimensions: Boolean): Media {
     val entries = try {
-      divinaExtractors.getValue(mediaType.type).getEntries(book.path, analyzeDimensions)
+      divinaExtractors[mediaType.type]?.getEntries(book.path, analyzeDimensions)
+        ?: return Media(status = Media.Status.UNSUPPORTED)
     } catch (ex: MediaUnsupportedException) {
       return Media(status = Media.Status.UNSUPPORTED, comment = ex.code)
     } catch (ex: Exception) {
