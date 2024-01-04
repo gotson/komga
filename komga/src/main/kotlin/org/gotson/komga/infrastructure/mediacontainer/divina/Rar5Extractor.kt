@@ -14,7 +14,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.context.annotation.Configuration
 import java.nio.file.Path
 
-
 private val logger = KotlinLogging.logger {}
 
 @Configuration
