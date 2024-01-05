@@ -205,7 +205,7 @@
     "collections": "Collections",
     "create": "Créer",
     "delete": "Supprimer",
-    "dimension": "l: {width}, h: {height}",
+    "dimension": "l : {width}, h : {height}",
     "discard": "Renoncer",
     "disk_space": "Espace disque",
     "dismiss": "Masquer",
@@ -646,6 +646,11 @@
         "auto": "Automatique",
         "one": "Une",
         "two": "Deux"
+      },
+      "reading_direction": {
+        "auto": "Automatique",
+        "ltr": "De gauche à droite",
+        "rtl": "De droite à gauche"
       }
     },
     "historical_event_type": {
@@ -701,16 +706,27 @@
     }
   },
   "epubreader": {
+    "current_chapter": "Chapitre actuel",
+    "page_of": "Page {page} sur {count}",
     "settings": {
       "column_count": "Nombre de colonnes",
       "layout": "Disposition",
-      "page_margins": "Marge des pages"
+      "layout_paginated": "Paginé",
+      "navigation_mode": "Mode de navigation",
+      "navigation_options": {
+        "buttons": "Boutons",
+        "click": "Cliquer / Appuyer"
+      },
+      "page_margins": "Marge des pages",
+      "viewing_theme": "Thème d'affichage"
     },
     "shortcuts": {
       "font_size_decrease": "Réduire la taille du texte",
       "font_size_increase": "Augmenter la taille du texte",
       "menus": "Menus",
+      "next": "Prochain",
       "previous": "Retour",
+      "scroll": "Changer la disposition pour le mode déroulement",
       "settings": "Paramètres",
       "show_hide_toc": "Afficher/cacher la table des matières"
     }
@@ -742,7 +758,8 @@
     "ERR_1028": "Erreur de connexion OpenID Connect : Pas d'attribut email",
     "ERR_1029": "Le fichier ComicRack CBL ne contient aucun livre",
     "ERR_1030": "La liste de livres ComicRack n'a pas de nom",
-    "ERR_1031": "il manque la série oule numéro à ComicRack CBL Book"
+    "ERR_1031": "il manque la série oule numéro à ComicRack CBL Book",
+    "ERR_1032": "Le fichier EPUB a un type de fichier erroné"
   },
   "filter": {
     "age_rating": "Âge minimal",
