@@ -221,7 +221,7 @@
     "go_to_readlist": "Ves a la llista de lectura",
     "go_to_series": "Ves a la sèrie",
     "library": "Biblioteca",
-    "locale_name": "Anglès",
+    "locale_name": "Català",
     "locale_rtl": "false",
     "lock_all": "Bloca tot",
     "n_selected": "seleccionats {count}",
@@ -646,6 +646,11 @@
         "auto": "Automàtic",
         "one": "Un",
         "two": "Dos"
+      },
+      "reading_direction": {
+        "auto": "Automàtic",
+        "ltr": "De esquerra a dreta",
+        "rtl": "De dreta a esquerra"
       }
     },
     "historical_event_type": {
@@ -701,11 +706,17 @@
     }
   },
   "epubreader": {
+    "current_chapter": "Capítol actual",
+    "page_of": "Pàgina {page} de {count}",
     "settings": {
       "column_count": "Nombre de columnes",
       "layout": "Disposició",
       "layout_paginated": "Paginat",
       "layout_scroll": "Desplaçament",
+      "navigation_mode": "Mode de navegació",
+      "navigation_options": {
+        "both": "Tots dos"
+      },
       "page_margins": "Marges de la pàgina",
       "viewing_theme": "Tema de visualització"
     },
