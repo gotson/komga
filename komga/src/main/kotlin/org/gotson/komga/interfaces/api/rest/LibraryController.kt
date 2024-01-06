@@ -15,6 +15,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
+import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.filePathToUrl
 import org.gotson.komga.interfaces.api.rest.dto.LibraryCreationDto
@@ -48,6 +49,7 @@ class LibraryController(
   private val libraryRepository: LibraryRepository,
   private val bookRepository: BookRepository,
   private val seriesRepository: SeriesRepository,
+  private val seriesLifecycle: SeriesLifecycle,
 ) {
 
   @GetMapping
@@ -103,6 +105,7 @@ class LibraryController(
           convertToCbz = library.convertToCbz,
           emptyTrashAfterScan = library.emptyTrashAfterScan,
           seriesCover = library.seriesCover.toDomain(),
+          seriesSort = library.seriesSort.toDomain(),
           hashFiles = library.hashFiles,
           hashPages = library.hashPages,
           analyzeDimensions = library.analyzeDimensions,
@@ -171,6 +174,7 @@ class LibraryController(
           convertToCbz = convertToCbz ?: existing.convertToCbz,
           emptyTrashAfterScan = emptyTrashAfterScan ?: existing.emptyTrashAfterScan,
           seriesCover = seriesCover?.toDomain() ?: existing.seriesCover,
+          seriesSort = seriesSort?.toDomain() ?: existing.seriesSort,
           hashFiles = hashFiles ?: existing.hashFiles,
           hashPages = hashPages ?: existing.hashPages,
           analyzeDimensions = analyzeDimensions ?: existing.analyzeDimensions,
@@ -179,6 +183,9 @@ class LibraryController(
       }
       try {
         libraryLifecycle.updateLibrary(toUpdate)
+        if (toUpdate.seriesSort != existing.seriesSort) {
+          seriesRepository.findAllByLibraryId(libraryId).forEach {seriesLifecycle.sortBooks(it)}
+        }
       } catch (e: Exception) {
         when (e) {
           is FileNotFoundException,

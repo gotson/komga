@@ -30,6 +30,7 @@ data class Library(
   val convertToCbz: Boolean = false,
   val emptyTrashAfterScan: Boolean = false,
   val seriesCover: SeriesCover = SeriesCover.FIRST,
+  val seriesSort: SeriesSort = SeriesSort.NAME_NATURAL,
   val hashFiles: Boolean = true,
   val hashPages: Boolean = false,
   val analyzeDimensions: Boolean = true,
@@ -42,6 +43,12 @@ data class Library(
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
+
+  enum class SeriesSort {
+    NAME_NATURAL,
+    FILE_MODIFIED_ASC,
+    FILE_MODIFIED_DESC,
+  }
 
   enum class SeriesCover {
     FIRST,

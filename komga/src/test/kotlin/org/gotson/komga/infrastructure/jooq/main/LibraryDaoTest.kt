@@ -66,6 +66,7 @@ class LibraryDaoTest(
         convertToCbz = true,
         emptyTrashAfterScan = true,
         seriesCover = Library.SeriesCover.LAST,
+        seriesSort = Library.SeriesSort.FILE_MODIFIED_ASC,
         hashFiles = false,
         hashPages = true,
         analyzeDimensions = false,
@@ -104,6 +105,7 @@ class LibraryDaoTest(
     assertThat(modified.convertToCbz).isEqualTo(updated.convertToCbz)
     assertThat(modified.emptyTrashAfterScan).isEqualTo(updated.emptyTrashAfterScan)
     assertThat(modified.seriesCover).isEqualTo(updated.seriesCover)
+    assertThat(modified.seriesSort).isEqualTo(updated.seriesSort)
     assertThat(modified.hashFiles).isEqualTo(updated.hashFiles)
     assertThat(modified.hashPages).isEqualTo(updated.hashPages)
     assertThat(modified.analyzeDimensions).isEqualTo(updated.analyzeDimensions)

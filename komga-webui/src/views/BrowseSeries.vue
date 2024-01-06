@@ -578,6 +578,7 @@ export default Vue.extend({
       return [
         {name: this.$t('sort.number').toString(), key: 'metadata.numberSort'},
         {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
+        {name: this.$t('sort.file_updated').toString(), key: 'fileLastModified'},
         {name: this.$t('sort.release_date').toString(), key: 'metadata.releaseDate'},
         {name: this.$t('sort.file_size').toString(), key: 'fileSize'},
         {name: this.$t('sort.file_name').toString(), key: 'name'},

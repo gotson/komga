@@ -39,6 +39,7 @@ class LibraryUpdateDto {
   val convertToCbz: Boolean? = null
   val emptyTrashAfterScan: Boolean? = null
   val seriesCover: SeriesCoverDto? = null
+  val seriesSort: SeriesSortDto? = null
   val hashFiles: Boolean? = null
   val hashPages: Boolean? = null
   val analyzeDimensions: Boolean? = null

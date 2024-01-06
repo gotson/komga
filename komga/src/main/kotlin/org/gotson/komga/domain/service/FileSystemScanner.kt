@@ -216,6 +216,7 @@ class FileSystemScanner(
       url = path.toUri().toURL(),
       fileLastModified = attrs.getUpdatedTime(),
       fileSize = attrs.size(),
+      createdDate = attrs.lastModifiedTime().toLocalDateTime(), // attrs.getUpdatedTime(), // fileLastModified,
     )
 }
 

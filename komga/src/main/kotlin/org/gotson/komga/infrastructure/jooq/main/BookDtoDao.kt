@@ -76,6 +76,7 @@ class BookDtoDao(
     "createdDate" to b.CREATED_DATE,
     "lastModified" to b.LAST_MODIFIED_DATE,
     "lastModifiedDate" to b.LAST_MODIFIED_DATE,
+    "fileLastModified" to b.FILE_LAST_MODIFIED,
     "fileSize" to b.FILE_SIZE,
     "size" to b.FILE_SIZE,
     "fileHash" to b.FILE_HASH,

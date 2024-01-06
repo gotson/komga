@@ -5,6 +5,12 @@ export enum SeriesCoverDto {
   LAST = 'LAST',
 }
 
+export enum SeriesSortDto {
+  NAME_NATURAL = 'NAME_NATURAL',
+  FILE_MODIFIED_ASC = 'FILE_MODIFIED_ASC',
+  FILE_MODIFIED_DESC = 'FILE_MODIFIED_DESC', 
+}
+
 export enum ScanIntervalDto {
   DISABLED = 'DISABLED',
   HOURLY = 'HOURLY',

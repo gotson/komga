@@ -1,4 +1,4 @@
-import {ScanIntervalDto, SeriesCoverDto} from '@/types/enum-libraries'
+import {ScanIntervalDto, SeriesCoverDto, SeriesSortDto} from '@/types/enum-libraries'
 
 export interface LibraryDto {
   id: string,
@@ -25,6 +25,7 @@ export interface LibraryDto {
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
   seriesCover: SeriesCoverDto,
+  seriesSort: SeriesSortDto,
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,
@@ -56,6 +57,7 @@ export interface LibraryCreationDto {
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
   seriesCover: SeriesCoverDto,
+  seriesSort: SeriesSortDto,
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,
@@ -86,6 +88,7 @@ export interface LibraryUpdateDto {
   convertToCbz: boolean,
   emptyTrashAfterScan: boolean,
   seriesCover: SeriesCoverDto,
+  seriesSort: SeriesSortDto,
   hashFiles: boolean,
   hashPages: boolean,
   analyzeDimensions: boolean,

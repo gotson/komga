@@ -73,15 +73,23 @@ class SeriesLifecycle(
     logger.debug { "Existing books: $books" }
     logger.debug { "Existing metadata: $metadatas" }
 
-    val sorted = books
-      .sortedWith(
-        compareBy(natSortComparator) {
+    val library = libraryRepository.findById(series.libraryId)
+
+    val comparator : Comparator<Book> = when (library.seriesSort) {
+      Library.SeriesSort.FILE_MODIFIED_ASC -> compareBy { it.fileLastModified }
+      Library.SeriesSort.FILE_MODIFIED_DESC -> compareByDescending { it.fileLastModified }
+      else  ->  compareBy(natSortComparator) {
           it.name
             .trim()
             .stripAccents()
             .replace(whitespacePattern, " ")
-        },
-      )
+        }
+    }
+
+    // val comparator : Comparator<Book> = compareBy { it.fileLastModified }
+
+    val sorted = books
+      .sortedWith(comparator)
       .map { book -> book to metadatas.first { it.bookId == book.id } }
     logger.debug { "Sorted books: $sorted" }
 

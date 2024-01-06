@@ -275,6 +275,19 @@
                       />
                     </v-col>
                   </v-row>
+                  <v-row>
+                    <v-col>
+                      <span class="text-subtitle-1 text--primary">{{
+                          $t('dialog.edit_library.label_series_sort')
+                        }}</span>
+                      <v-select :items="seriesSort"
+                                v-model="form.seriesSort"
+                                :label="$t('dialog.edit_library.field_series_sort')"
+                                solo
+                                flat
+                      />
+                    </v-col>
+                  </v-row>
 
                 </v-container>
               </v-card>
@@ -430,7 +443,7 @@ import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 import Vue from 'vue'
 import {required} from 'vuelidate/lib/validators'
 import {ERROR} from '@/types/events'
-import {ScanIntervalDto, SeriesCoverDto} from '@/types/enum-libraries'
+import {ScanIntervalDto, SeriesCoverDto, SeriesSortDto} from '@/types/enum-libraries'
 import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
@@ -463,6 +476,7 @@ export default Vue.extend({
         convertToCbz: false,
         emptyTrashAfterScan: false,
         seriesCover: SeriesCoverDto.FIRST as SeriesCoverDto,
+        seriesSort: SeriesSortDto.NAME_NATURAL as SeriesSortDto,
         hashFiles: true,
         hashPages: false,
         analyzeDimensions: true,
@@ -484,6 +498,12 @@ export default Vue.extend({
     seriesCover(): any[] {
       return Object.keys(SeriesCoverDto).map(x => ({
         text: this.$t(`enums.series_cover.${x}`),
+        value: x,
+      }))
+    },
+    seriesSort(): any[] {
+      return Object.keys(SeriesSortDto).map(x => ({
+        text: this.$t(`enums.series_sort.${x}`),
         value: x,
       }))
     },
@@ -622,6 +642,7 @@ export default Vue.extend({
       this.form.convertToCbz = library ? library.convertToCbz : false
       this.form.emptyTrashAfterScan = library ? library.emptyTrashAfterScan : false
       this.form.seriesCover = library ? library.seriesCover : SeriesCoverDto.FIRST
+      this.form.seriesSort = library ? library.seriesSort : SeriesSortDto.NAME_NATURAL
       this.form.hashFiles = library ? library.hashFiles : true
       this.form.hashPages = library ? library.hashPages : false
       this.form.analyzeDimensions = library ? library.analyzeDimensions : true
@@ -656,6 +677,7 @@ export default Vue.extend({
           convertToCbz: this.form.convertToCbz,
           emptyTrashAfterScan: this.form.emptyTrashAfterScan,
           seriesCover: this.form.seriesCover,
+          seriesSort: this.form.seriesSort,
           hashFiles: this.form.hashFiles,
           hashPages: this.form.hashPages,
           analyzeDimensions: this.form.analyzeDimensions,

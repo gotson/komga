@@ -443,6 +443,7 @@
       "field_scanner_force_directory_modified_time": "Forcer l'heure de modification des dossiers",
       "field_scanner_scan_startup": "Scan au démarrage",
       "field_series_cover": "Couverture de la série",
+      "field_series_sort": "Tri de la série",
       "file_browser_dialog_button_confirm": "Sélectionner",
       "file_browser_dialog_title": "Dossier racine de la bibliothèque",
       "label_analysis": "Analyse",
@@ -456,6 +457,7 @@
       "label_scan_types": "Scanner ces types de fichiers",
       "label_scanner": "Scanneur",
       "label_series_cover": "Couverture de la série",
+      "label_series_sort": "Tri de la série",
       "tab_general": "Général",
       "tab_metadata": "Métadonnées",
       "tab_options": "Options",
@@ -687,6 +689,11 @@
       "FIRST_UNREAD_OR_LAST": "Premier non lu ou dernier",
       "LAST": "Dernier"
     },
+    "series_sort": {
+      "NAME_NATURAL": "Nom",
+      "FILE_MODIFIED_ASC": "Fichier le plus ancien en premier",
+      "FILE_MODIFIED_DESC": "Fichier le plus récent en premier"
+    },
     "series_status": {
       "ABANDONED": "Abandonnée",
       "ENDED": "Terminée",
@@ -908,6 +915,7 @@
     "books_count": "Nombre de livres",
     "date_added": "Date d'ajout",
     "date_updated": "Date de mise à jour",
+    "file_updated": "Mise à jour du fichier",
     "file_name": "Nom du ficher",
     "file_size": "Taille du fichier",
     "folder_name": "Nom du répertoire",

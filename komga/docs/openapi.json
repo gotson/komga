@@ -9487,6 +9487,14 @@
               "LAST"
             ]
           },
+          "seriesSort": {
+            "type": "string",
+            "enum": [
+              "NAME_NATURAL",
+              "FIRST_MODIFIED_ASC",
+              "FIRST_MODIFIED_DESC"
+            ]
+          },
           "hashFiles": {
             "type": "boolean"
           },
