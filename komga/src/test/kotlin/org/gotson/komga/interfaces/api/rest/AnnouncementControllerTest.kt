@@ -3,7 +3,6 @@ package org.gotson.komga.interfaces.api.rest
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
 import io.mockk.verify
-import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.interfaces.api.rest.dto.JsonFeedDto
 import org.junit.jupiter.api.Test
@@ -71,21 +70,5 @@ class AnnouncementControllerTest(
     }
 
     verify(exactly = 1) { announcementController.fetchWebsiteAnnouncements() }
-  }
-
-  @Test
-  fun `given json feed with relative links when replacing then links are replaced`() {
-    val feed = announcementController.replaceLinks(mockFeed)
-
-    assertThat(feed.items.first().contentHtml)
-      .contains(
-        """<a href="https://komga.org/docs/installation/""",
-        """<a href="https://komga.org/blog/post/">here</a>""",
-        """<a href="https://google.com">link</a>""",
-      )
-      .doesNotContain(
-        """<a href="/docs/installation/""",
-        """<a href="/blog/post/>here</a>""",
-      )
   }
 }

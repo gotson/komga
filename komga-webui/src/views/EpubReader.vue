@@ -37,13 +37,6 @@
           <v-icon>mdi-help-circle</v-icon>
         </v-btn>
 
-        <!--      <v-btn-->
-        <!--        icon-->
-        <!--        @click="showExplorer = !showExplorer"-->
-        <!--      >-->
-        <!--        <v-icon>mdi-view-grid</v-icon>-->
-        <!--      </v-btn>-->
-
         <v-btn
           icon
           @click="toggleSettings"
@@ -76,6 +69,10 @@
         >
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
+
+        <span v-if="verticalScroll" class="mx-2" style="font-size: 0.85em">
+          {{ progressionTotalPercentage }}
+        </span>
 
         <v-btn
           icon
@@ -127,43 +124,54 @@
     <header id="headerMenu"/>
 
     <div id="D2Reader-Container" style="height: 100vh" :class="appearanceClass('bg')">
-      <main tabindex=-1 id="iframe-wrapper" style="height: 100vh">
+      <main tabindex=-1 id="iframe-wrapper" style="height: 100vh" @click="clickThrough">
         <div id="reader-loading"></div>
         <div id="reader-error"></div>
-        <div id="reader-info-top">
-          <span class="book-title"></span>
-        </div>
-        <div id="reader-info-bottom">
-          <div style="display: flex;justify-content: center;">
-            <span id="chapter-position"></span>&nbsp;
-            <span id="chapter-title"></span>
-          </div>
-        </div>
       </main>
       <a id="previous-chapter" rel="prev" role="button" aria-labelledby="previous-label"
          style="left: 50%;position: fixed;color: #000;height: 24px;background: #d3d3d33b; width: 150px;transform: translate(-50%, 0); display: block"
          :style="`top: ${showToolbars ? 48 : 0}px`"
+         :class="settings.navigationButtons ? '' : 'hidden'"
       >
         <v-icon style="left: calc(50% - 12px); position: relative;">mdi-chevron-up</v-icon>
       </a>
       <a id="next-chapter" rel="next" role="button" aria-labelledby="next-label"
+         :class="settings.navigationButtons ? '' : 'hidden'"
          style="bottom: 0;left: 50%;position: fixed;color: #000;height: 24px;background: #d3d3d33b; width: 150px;transform: translate(-50%, 0); display: block">
         <v-icon style="left: calc(50% - 12px);position: relative;">mdi-chevron-down</v-icon>
       </a>
     </div>
 
     <footer id="footerMenu">
-      <a rel="prev" class="disabled" role="button" aria-labelledby="previous-label" style="top: 50%;left:0;position: fixed;height: 100px;
-                    background: #d3d3d33b;">
+      <a rel="prev" class="disabled" role="button" aria-labelledby="previous-label"
+         style="top: 50%;left:0;position: fixed;height: 100px;background: #d3d3d33b;"
+         :class="settings.navigationButtons ? '' : 'hidden'"
+      >
         <v-icon style="top: calc(50% - 12px);
                         position: relative;">mdi-chevron-left
         </v-icon>
       </a>
-      <a rel="next" class="disabled" role="button" aria-labelledby="next-label" style="top: 50%;right:0;position: fixed;height: 100px;
-                    background: #d3d3d33b;">
+      <a rel="next" class="disabled" role="button" aria-labelledby="next-label"
+         style="top: 50%;right:0;position: fixed;height: 100px;background: #d3d3d33b;"
+         :class="settings.navigationButtons ? '' : 'hidden'"
+      >
         <v-icon style="top: calc(50% - 12px);position: relative;">mdi-chevron-right</v-icon>
       </a>
     </footer>
+
+    <v-container fluid class="full-width" style="position: fixed; bottom: 0; font-size: .85rem"
+                 :class="appearanceClass()"
+                 v-if="!verticalScroll"
+    >
+      <v-row>
+        <v-col cols="auto">
+          {{ $t('epubreader.page_of', {page: progressionPage, count: progressionPageCount}) }}
+          ({{ progressionTitle || $t('epubreader.current_chapter') }})
+        </v-col>
+        <v-spacer/>
+        <v-col cols="auto">{{ progressionTotalPercentage }}</v-col>
+      </v-row>
+    </v-container>
 
     <v-bottom-sheet
       v-model="showSettings"
@@ -183,9 +191,24 @@
         <v-card-text class="pa-0">
           <v-list class="full-height full-width">
             <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.general') }}</v-subheader>
+            <v-list-item v-if="fixedLayout">
+              <settings-select
+                :items="readingDirs"
+                v-model="readingDirection"
+                :label="$t('bookreader.settings.reading_mode')"
+              />
+            </v-list-item>
             <v-list-item>
               <settings-switch v-model="alwaysFullscreen" :label="$t('bookreader.settings.always_fullscreen')"
                                :disabled="!screenfull.isEnabled"/>
+            </v-list-item>
+
+            <v-list-item>
+              <settings-select
+                :items="navigationOptions"
+                v-model="navigationMode"
+                :label="$t('epubreader.settings.navigation_mode')"
+              />
             </v-list-item>
 
             <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.display') }}</v-subheader>
@@ -205,7 +228,7 @@
               </v-btn>
             </v-list-item>
 
-            <v-list-item>
+            <v-list-item v-if="!fixedLayout">
               <v-list-item-title>{{ $t('epubreader.settings.layout') }}</v-list-item-title>
               <v-btn-toggle mandatory v-model="verticalScroll" class="py-3">
                 <v-btn :value="true">{{ $t('epubreader.settings.layout_scroll') }}</v-btn>
@@ -275,8 +298,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import D2Reader, {Locator} from '@d-i-t-a/reader'
-import {bookManifestUrl} from '@/functions/urls'
+import D2Reader, {Locator, ReadingPosition} from '@d-i-t-a/reader'
+import {bookManifestUrl, bookPositionsUrl} from '@/functions/urls'
 import {BookDto} from '@/types/komga-books'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {SeriesDto} from '@/types/komga-series'
@@ -285,15 +308,25 @@ import SettingsSwitch from '@/components/SettingsSwitch.vue'
 import {TocEntry} from '@/types/epub'
 import TocList from '@/components/TocList.vue'
 import {Locations} from '@d-i-t-a/reader/dist/types/model/Locator'
-import {epubShortcutsMenus, epubShortcutsSettings, shortcutsD2Reader} from '@/functions/shortcuts/epubreader'
+import {
+  epubShortcutsMenus,
+  epubShortcutsSettings,
+  epubShortcutsSettingsScroll,
+  shortcutsD2Reader,
+  shortcutsD2ReaderLTR,
+  shortcutsD2ReaderRTL,
+} from '@/functions/shortcuts/epubreader'
 import {flattenToc} from '@/functions/toc'
 import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import screenfull from 'screenfull'
-import {getBookReadRouteFromMediaProfile} from '@/functions/book-format'
+import {getBookReadRouteFromMedia} from '@/functions/book-format'
+import SettingsSelect from '@/components/SettingsSelect.vue'
+import {createR2Progression, r2ProgressionToReadingPosition} from '@/functions/readium'
+import {debounce} from 'lodash'
 
 export default Vue.extend({
   name: 'EpubReader',
-  components: {ShortcutHelpDialog, TocList, SettingsSwitch},
+  components: {SettingsSelect, ShortcutHelpDialog, TocList, SettingsSwitch},
   data: function () {
     return {
       screenfull,
@@ -310,7 +343,20 @@ export default Vue.extend({
       showToolbars: false,
       showToc: false,
       showHelp: false,
-      shortcuts: {} as any,
+      readingDirs: [
+        {
+          text: this.$t('enums.epubreader.reading_direction.auto').toString(),
+          value: 'auto',
+        },
+        {
+          text: this.$t('enums.epubreader.reading_direction.ltr').toString(),
+          value: 'ltr',
+        },
+        {
+          text: this.$t('enums.epubreader.reading_direction.rtl').toString(),
+          value: 'rtl',
+        },
+      ],
       appearances: [
         {
           text: this.$t('enums.epubreader.appearances.day').toString(),
@@ -337,14 +383,26 @@ export default Vue.extend({
         {text: this.$t('enums.epubreader.column_count.two').toString(), value: '2'},
       ],
       settings: {
+        // R2D2BC
         appearance: 'readium-default-on',
         pageMargins: 1,
         lineHeight: 1,
         fontSize: 100,
         verticalScroll: false,
         columnCount: 'auto',
+        fixedLayoutMargin: 0,
+        fixedLayoutShadow: false,
+        direction: 'auto',
+        // Epub Reader
         alwaysFullscreen: false,
+        navigationClick: true,
+        navigationButtons: true,
       },
+      navigationOptions: [
+        {text: this.$t('epubreader.settings.navigation_options.buttons').toString(), value: 'button'},
+        {text: this.$t('epubreader.settings.navigation_options.click').toString(), value: 'click'},
+        {text: this.$t('epubreader.settings.navigation_options.both').toString(), value: 'buttonclick'},
+      ],
       tocs: {
         toc: undefined as unknown as TocEntry[],
         landmarks: undefined as unknown as TocEntry[],
@@ -360,11 +418,15 @@ export default Vue.extend({
       },
       clickTimer: undefined,
       forceUpdate: false,
+      progressionTitle: undefined as string,
+      progressionPage: undefined as number,
+      progressionPageCount: undefined as number,
+      effectiveDirection: 'ltr',
+      fixedLayout: false,
     }
   },
   created() {
     this.$vuetify.rtl = false
-    this.shortcuts = this.$_.keyBy([...epubShortcutsSettings, ...epubShortcutsMenus], x => x.key)
     if (screenfull.isEnabled) screenfull.on('change', this.fullscreenChanged)
   },
   beforeDestroy() {
@@ -400,9 +462,26 @@ export default Vue.extend({
     next()
   },
   computed: {
+    isRtl(): boolean {
+      return this.effectiveDirection === 'rtl'
+    },
+    shortcuts(): any {
+      const shortcuts = [...epubShortcutsSettings, ...epubShortcutsMenus]
+      if (!this.fixedLayout) shortcuts.push(...epubShortcutsSettingsScroll)
+      return this.$_.keyBy(shortcuts, x => x.key)
+    },
+    progressionTotalPercentage(): string {
+      const p = this.currentLocation?.locations?.totalProgression
+      if (p) return `${Math.round(p * 100)}%`
+      return ''
+    },
     shortcutsHelp(): object {
+      let nav = []
+      if (this.effectiveDirection === 'rtl') nav.push(...shortcutsD2ReaderRTL)
+      else nav.push(...shortcutsD2ReaderLTR)
+      nav.push(...shortcutsD2Reader)
       return {
-        [this.$t('bookreader.shortcuts.reader_navigation').toString()]: [...shortcutsD2Reader],
+        [this.$t('bookreader.shortcuts.reader_navigation').toString()]: nav,
         [this.$t('bookreader.shortcuts.settings').toString()]: [...epubShortcutsSettings],
         [this.$t('bookreader.shortcuts.menus').toString()]: epubShortcutsMenus,
       }
@@ -467,6 +546,18 @@ export default Vue.extend({
         }
       },
     },
+    readingDirection: {
+      get: function (): boolean {
+        return this.settings.direction
+      },
+      set: function (value: string): void {
+        if (this.readingDirs.map(x => x.value).includes(value)) {
+          this.settings.direction = value
+          this.d2Reader.applyUserSettings({direction: value})
+          this.$store.commit('setEpubreaderSettings', this.settings)
+        }
+      },
+    },
     pageMargins: {
       get: function (): number {
         return this.settings.pageMargins
@@ -508,13 +599,25 @@ export default Vue.extend({
         else screenfull.isEnabled && screenfull.exit()
       },
     },
+    navigationMode: {
+      get: function (): string {
+        let r = this.settings.navigationButtons ? 'button' : ''
+        if (this.settings.navigationClick) r += 'click'
+        return r
+      },
+      set: function (value: string): void {
+        this.settings.navigationButtons = value.includes('button')
+        this.settings.navigationClick = value.includes('click')
+        this.$store.commit('setEpubreaderSettings', this.settings)
+      },
+    },
   },
   methods: {
     previousBook() {
       if (!this.$_.isEmpty(this.siblingPrevious)) {
         this.jumpToPreviousBook = false
         this.$router.push({
-          name: getBookReadRouteFromMediaProfile(this.siblingPrevious.media.mediaProfile),
+          name: getBookReadRouteFromMedia(this.siblingPrevious.media),
           params: {bookId: this.siblingPrevious.id.toString()},
           query: {context: this.context.origin, contextId: this.context.id, incognito: this.incognito.toString()},
         })
@@ -526,7 +629,7 @@ export default Vue.extend({
       } else {
         this.jumpToNextBook = false
         this.$router.push({
-          name: getBookReadRouteFromMediaProfile(this.siblingNext.media.mediaProfile),
+          name: getBookReadRouteFromMedia(this.siblingNext.media),
           params: {bookId: this.siblingNext.id.toString()},
           query: {context: this.context.origin, contextId: this.context.id, incognito: this.incognito.toString()},
         })
@@ -558,18 +661,46 @@ export default Vue.extend({
       this.shortcuts[e.key]?.execute(this)
     },
     clickThrough(e: MouseEvent) {
+      let x = e.x
+      let y = e.y
+      if (e.target.ownerDocument != document) {
+        const iframe = e.view.frameElement
+        const iframeWrapper = iframe.parentElement.parentElement
+        const scaleComputed = iframeWrapper.getBoundingClientRect().width / iframeWrapper.offsetWidth
+        const rect = iframe.getBoundingClientRect()
+        x = rect.left + (e.x * scaleComputed)
+        y = rect.top + (e.y * scaleComputed)
+      }
+
       if (e.detail === 1) {
         this.clickTimer = setTimeout(() => {
-          this.toggleToolbars()
+          this.singleClick(x, y)
         }, 200)
       }
       if (e.detail === 2) {
         clearTimeout(this.clickTimer)
       }
     },
+    singleClick(x: number, y: number) {
+      if (this.verticalScroll) {
+        if (this.settings.navigationClick) {
+          if (y < this.$vuetify.breakpoint.height / 4) return this.d2Reader.previousPage()
+          if (y > this.$vuetify.breakpoint.height * .75) return this.d2Reader.nextPage()
+        }
+      } else {
+        if (this.settings.navigationClick) {
+          if (x < this.$vuetify.breakpoint.width / 4) return this.isRtl ? this.d2Reader.nextPage() : this.d2Reader.previousPage()
+          if (x > this.$vuetify.breakpoint.width * .75) return this.isRtl ? this.d2Reader.previousPage() : this.d2Reader.nextPage()
+        }
+      }
+      this.toggleToolbars()
+    },
     async setup(bookId: string) {
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
+
+      const progression = await this.$komgaBooks.getProgression(bookId)
+      const initialLocation = r2ProgressionToReadingPosition(progression)
 
       // parse query params to get context and contextId
       if (this.$route.query.contextId && this.$route.query.context
@@ -592,6 +723,7 @@ export default Vue.extend({
         url: new URL(bookManifestUrl(this.bookId)),
         userSettings: this.settings,
         storageType: 'memory',
+        lastReadingPosition: initialLocation,
         injectables: [
           // webpack will process the new URL (https://webpack.js.org/guides/asset-modules/#url-assets)
           // we use a different extension so that the css-loader rule is not used (see vue.config.js)
@@ -632,7 +764,7 @@ export default Vue.extend({
           enableDefinitions: false,
           enableContentProtection: false,
           enableMediaOverlays: false,
-          enablePageBreaks: true,
+          enablePageBreaks: false,
           autoGeneratePositions: false,
           enableLineFocus: false,
           customKeyboardEvents: false,
@@ -640,12 +772,20 @@ export default Vue.extend({
           enableCitations: false,
           enableConsumption: false,
         },
+        services: {
+          positions: new URL(bookPositionsUrl(this.bookId)),
+        },
         api: {
           updateCurrentLocation: this.updateCurrentLocation,
           keydownFallthrough: this.keyPressed,
           clickThrough: this.clickThrough,
+          positionInfo: this.updatePositionInfo,
+          chapterInfo: this.updateChapterInfo,
+          direction: this.updateDirection,
         },
       })
+
+      this.fixedLayout = this.d2Reader.publicationLayout === 'fixed'
 
       this.tocs.toc = this.d2Reader.tableOfContents
       this.tocs.landmarks = this.d2Reader.landmarks
@@ -683,10 +823,21 @@ export default Vue.extend({
       this.historyCanGoBack = this.d2Reader.historyCurrentIndex > 0
       this.historyCanGoForward = this.d2Reader.historyCurrentIndex < this.d2Reader.history?.length - 1
 
+      this.markProgress(location)
       this.currentLocation = location
       return new Promise(function (resolve, _) {
         resolve(location)
       })
+    },
+    updatePositionInfo(location: Locator) {
+      this.progressionPage = location.displayInfo?.resourceScreenIndex
+      this.progressionPageCount = location.displayInfo?.resourceScreenCount
+    },
+    updateChapterInfo(title?: string) {
+      this.progressionTitle = title
+    },
+    updateDirection(dir: string) {
+      this.effectiveDirection = dir
     },
     appearanceClass(suffix?: string): string {
       let c = this.appearance.replace('readium-', '').replace('-on', '').replace('default', 'day')
@@ -769,6 +920,11 @@ export default Vue.extend({
       this.notification.message = message
       this.notification.enabled = true
     },
+    markProgress: debounce(function (this: any, location: Locator) {
+      if (!this.incognito) {
+        this.$komgaBooks.updateProgression(this.bookId, createR2Progression(location))
+      }
+    }, 500),
   },
 })
 </script>
@@ -791,7 +947,7 @@ export default Vue.extend({
 }
 
 .sepia {
-  color: #faf4e8;
+  color: #5B5852;
 }
 
 .day-bg {
@@ -799,7 +955,7 @@ export default Vue.extend({
 }
 
 .day {
-  color: #fff;
+  color: #5B5852;
 }
 
 .night-bg {
@@ -807,7 +963,7 @@ export default Vue.extend({
 }
 
 .night {
-  color: #000000;
+  color: #DADADA;
 }
 
 .scrolltab {
@@ -816,5 +972,9 @@ export default Vue.extend({
 
 .scrolltab-content {
   max-height: calc(100vh - 48px);
+}
+
+.hidden {
+  display: none !important;
 }
 </style>

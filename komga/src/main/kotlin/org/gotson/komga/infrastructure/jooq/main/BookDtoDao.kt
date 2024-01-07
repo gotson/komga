@@ -448,6 +448,7 @@ class BookDtoDao(
       mediaType = mediaType ?: "",
       pagesCount = pageCount.toInt(),
       comment = comment ?: "",
+      epubDivinaCompatible = epubDivinaCompatible,
     )
 
   private fun BookMetadataRecord.toDto(authors: List<AuthorDto>, tags: Set<String>, links: List<WebLinkDto>) =
@@ -481,5 +482,7 @@ class BookDtoDao(
       readDate = readDate,
       created = createdDate,
       lastModified = lastModifiedDate,
+      deviceId = deviceId,
+      deviceName = deviceName,
     )
 }

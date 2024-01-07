@@ -1,16 +1,32 @@
 package org.gotson.komga.infrastructure.mediacontainer.epub
 
+import mu.KotlinLogging
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
+import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.domain.model.MediaFile
+import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.TypedBytes
+import org.gotson.komga.infrastructure.image.ImageAnalyzer
+import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.jsoup.Jsoup
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.nio.file.Path
+import kotlin.io.path.Path
+import kotlin.io.path.invariantSeparatorsPathString
 import kotlin.math.ceil
+import kotlin.math.roundToInt
+
+private val logger = KotlinLogging.logger {}
 
 @Service
-class EpubExtractor {
+class EpubExtractor(
+  private val contentDetector: ContentDetector,
+  private val imageAnalyzer: ImageAnalyzer,
+  @Value("#{@komgaProperties.epubDivinaLetterCountThreshold}") private val letterCountThreshold: Int,
+) {
 
   /**
    * Retrieves a specific entry by name from the zip archive
@@ -18,6 +34,13 @@ class EpubExtractor {
   fun getEntryStream(path: Path, entryName: String): ByteArray =
     ZipFile(path.toFile()).use { zip ->
       zip.getInputStream(zip.getEntry(entryName)).use { it.readBytes() }
+    }
+
+  fun isEpub(path: Path): Boolean =
+    try {
+      getEntryStream(path, "mimetype").decodeToString() == "application/epub+zip"
+    } catch (e: Exception) {
+      false
     }
 
   /**
@@ -42,14 +65,20 @@ class EpubExtractor {
       } else null
     }
 
-  fun getManifest(path: Path): EpubManifest =
+  fun getManifest(path: Path, analyzeDimensions: Boolean): EpubManifest =
     path.epub { epub ->
+      val resources = getResources(epub)
+      val isFixedLayout = isFixedLayout(epub)
+      val pageCount = computePageCount(epub)
       EpubManifest(
-        resources = getResources(epub),
+        resources = resources,
         toc = getToc(epub),
         landmarks = getLandmarks(epub),
         pageList = getPageList(epub),
-        pageCount = computePageCount(epub),
+        pageCount = pageCount,
+        isFixedLayout = isFixedLayout,
+        positions = computePositions(resources, isFixedLayout),
+        divinaPages = getDivinaPages(epub, isFixedLayout, pageCount, analyzeDimensions),
       )
     }
 
@@ -78,12 +107,92 @@ class EpubExtractor {
     }
   }
 
+  private fun getDivinaPages(epub: EpubPackage, isFixedLayout: Boolean, pageCount: Int, analyzeDimensions: Boolean): List<BookPage> {
+    if (!isFixedLayout) return emptyList()
+
+    try {
+      val pagesWithImages = epub.opfDoc.select("spine > itemref")
+        .map { it.attr("idref") }
+        .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
+        .map { pagePath ->
+          val doc = epub.zip.getInputStream(epub.zip.getEntry(pagePath)).use { Jsoup.parse(it, null, "") }
+
+          // if a page has text over the threshold then the book is not divina compatible
+          if (doc.body().text().length > letterCountThreshold) return emptyList()
+
+          val img = doc.getElementsByTag("img")
+            .map { it.attr("src") } // get the src, which can be a relative path
+
+          val svg = doc.select("svg > image[xlink:href]")
+            .map { it.attr("xlink:href") } // get the source, which can be a relative path
+
+          (img + svg).map { (Path(pagePath).parent ?: Path("")).resolve(it).normalize().invariantSeparatorsPathString } // resolve it against the page folder
+        }
+
+      if (pagesWithImages.size != pageCount) return emptyList()
+      val imagesPath = pagesWithImages.flatten()
+      if (imagesPath.size != pageCount) return emptyList()
+
+      val divinaPages = imagesPath.mapNotNull { imagePath ->
+        val mediaType = epub.manifest.values.firstOrNull { normalizeHref(epub.opfDir, it.href) == imagePath }?.mediaType ?: return@mapNotNull null
+        val zipEntry = epub.zip.getEntry(imagePath)
+        if (!contentDetector.isImage(mediaType)) return@mapNotNull null
+
+        val dimension =
+          if (analyzeDimensions) epub.zip.getInputStream(zipEntry).use { imageAnalyzer.getDimension(it) }
+          else null
+        val fileSize = if (zipEntry.size == ArchiveEntry.SIZE_UNKNOWN) null else zipEntry.size
+        BookPage(fileName = imagePath, mediaType = mediaType, dimension = dimension, fileSize = fileSize)
+      }
+
+      if (divinaPages.size != pageCount) return emptyList()
+      return divinaPages
+    } catch (e: Exception) {
+      logger.warn(e) { "Error while getting divina pages" }
+      return emptyList()
+    }
+  }
+
   private fun computePageCount(epub: EpubPackage): Int {
     val spine = epub.opfDoc.select("spine > itemref")
       .map { it.attr("idref") }
       .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
 
     return epub.zip.entries.toList().filter { it.name in spine }.sumOf { ceil(it.compressedSize / 1024.0).toInt() }
+  }
+
+  private fun isFixedLayout(epub: EpubPackage) =
+    epub.opfDoc.selectFirst("metadata > *|meta[property=rendition:layout]")?.text()?.ifBlank { null } == "pre-paginated"
+
+  private fun computePositions(resources: List<MediaFile>, isFixedLayout: Boolean): List<R2Locator> {
+    val readingOrder = resources.filter { it.subType == MediaFile.SubType.EPUB_PAGE }
+
+    var startPosition = 1
+    val positions = if (isFixedLayout) {
+      readingOrder.map {
+        R2Locator(
+          href = it.fileName,
+          type = it.mediaType!!,
+          locations = R2Locator.Location(progression = 0F, position = startPosition++),
+        )
+      }
+    } else {
+      readingOrder.flatMap { file ->
+        val positionCount = maxOf(1, ceil(file.fileSize!! / 1024.0).roundToInt())
+        (0 until positionCount).map { p ->
+          R2Locator(
+            href = file.fileName,
+            type = file.mediaType!!,
+            locations = R2Locator.Location(progression = p.toFloat() / positionCount, position = startPosition++),
+          )
+        }
+      }
+    }
+
+    return positions.map { locator ->
+      val totalProgression = locator.locations?.position?.let { it.toFloat() / positions.size }
+      locator.copy(locations = locator.locations?.copy(totalProgression = totalProgression))
+    }
   }
 
   private fun getToc(epub: EpubPackage): List<EpubTocEntry> {

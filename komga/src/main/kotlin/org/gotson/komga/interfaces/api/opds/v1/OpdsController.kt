@@ -25,7 +25,6 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.image.ImageType
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
 import org.gotson.komga.interfaces.api.checkContentRestriction
@@ -49,6 +48,7 @@ import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
+import org.gotson.komga.language.toZonedDateTime
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -527,7 +527,7 @@ class OpdsController(
       OpdsFeedAcquisition(
         id = series.id,
         title = series.metadata.title,
-        updated = series.lastModified.toCurrentTimeZone().atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+        updated = series.lastModified.toZonedDateTime(),
         author = komgaAuthor,
         links = listOf(
           OpdsLinkFeedNavigation(OpdsLinkRel.SELF, uriBuilder.toUriString()),
@@ -689,7 +689,8 @@ class OpdsController(
     val mediaTypes = when (media.profile) {
       MediaProfile.DIVINA -> media.pages.map { it.mediaType }.distinct()
       MediaProfile.PDF -> listOf(pdfImageType.mediaType)
-      MediaProfile.EPUB, null -> emptyList()
+      MediaProfile.EPUB -> if (media.epubDivinaCompatible) media.pages.map { it.mediaType }.distinct() else emptyList()
+      null -> emptyList()
     }
 
     val opdsLinkPageStreaming =
@@ -707,7 +708,7 @@ class OpdsController(
 
     return OpdsEntryAcquisition(
       title = "${prepend(this)}${metadata.title}",
-      updated = lastModified.toCurrentTimeZone().atZone(ZoneId.systemDefault()) ?: ZonedDateTime.now(),
+      updated = lastModified.toZonedDateTime(),
       id = id,
       content = buildString {
         append("${FilenameUtils.getExtension(url).lowercase()} - $size")

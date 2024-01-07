@@ -33,21 +33,21 @@ jobs:
 
       - name: Upload Unit Test Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: komga/build/test-results/
 
       - name: Upload Unit Test Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-reports
           path: komga/build/reports/tests/
 
       - name: Conveyor - compute JDK module list
         if: github.event_name == 'push'
-        uses: hydraulic-software/conveyor/actions/build@v12.1
+        uses: hydraulic-software/conveyor/actions/build@v13.0
         with:
           command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
@@ -60,7 +60,7 @@ jobs:
 
       - name: Upload JDK required modules
         if: steps.conveyor_compare.outcome == 'failure'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: conveyor-required-jdk-modules
           path: ./output/required-jdk-modules.txt

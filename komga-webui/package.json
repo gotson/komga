@@ -9,7 +9,7 @@
     "lint": "vue-cli-service lint --mode production"
   },
   "dependencies": {
-    "@d-i-t-a/reader": "https://github.com/gotson/R2D2BC.git#fork",
+    "@d-i-t-a/reader": "github:gotson/R2D2BC#fork",
     "@saekitominaga/isbn-verify": "^2.0.1",
     "axios": "^1.6.0",
     "chart.js": "^2.9.4",

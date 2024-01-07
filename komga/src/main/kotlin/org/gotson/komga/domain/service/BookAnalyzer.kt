@@ -12,6 +12,7 @@ import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MediaUnsupportedException
+import org.gotson.komga.domain.model.NoThumbnailFoundException
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
@@ -58,20 +59,23 @@ class BookAnalyzer(
   fun analyze(book: Book, analyzeDimensions: Boolean): Media {
     logger.info { "Trying to analyze book: $book" }
     return try {
-      val mediaType = contentDetector.detectMediaType(book.path).let {
+      var mediaType = contentDetector.detectMediaType(book.path).let {
         logger.info { "Detected media type: $it" }
         MediaType.fromMediaType(it) ?: return Media(mediaType = it, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
       }
 
       if (book.path.extension.lowercase() == "epub" && mediaType != MediaType.EPUB) {
-        logger.warn { "Epub file detected as zip, file is probably broken: ${book.path}" }
-        return Media(mediaType = mediaType.type, status = Media.Status.ERROR, comment = "ERR_1032", bookId = book.id)
+        if (epubExtractor.isEpub(book.path)) mediaType = MediaType.EPUB
+        else {
+          logger.warn { "Epub file is malformed, file is probably broken: ${book.path}" }
+          return Media(mediaType = mediaType.type, status = Media.Status.ERROR, comment = "ERR_1032", bookId = book.id)
+        }
       }
 
       when (mediaType.profile) {
         MediaProfile.DIVINA -> analyzeDivina(book, mediaType, analyzeDimensions)
         MediaProfile.PDF -> analyzePdf(book, analyzeDimensions)
-        MediaProfile.EPUB -> analyzeEpub(book)
+        MediaProfile.EPUB -> analyzeEpub(book, analyzeDimensions)
       }.copy(mediaType = mediaType.type)
     } catch (ade: AccessDeniedException) {
       logger.error(ade) { "Error while analyzing book: $book" }
@@ -87,7 +91,8 @@ class BookAnalyzer(
 
   private fun analyzeDivina(book: Book, mediaType: MediaType, analyzeDimensions: Boolean): Media {
     val entries = try {
-      divinaExtractors.getValue(mediaType.type).getEntries(book.path, analyzeDimensions)
+      divinaExtractors[mediaType.type]?.getEntries(book.path, analyzeDimensions)
+        ?: return Media(status = Media.Status.UNSUPPORTED)
     } catch (ex: MediaUnsupportedException) {
       return Media(status = Media.Status.UNSUPPORTED, comment = ex.code)
     } catch (ex: Exception) {
@@ -122,9 +127,22 @@ class BookAnalyzer(
     return Media(status = Media.Status.READY, pages = pages, pageCount = pages.size, files = files, comment = entriesErrorSummary)
   }
 
-  private fun analyzeEpub(book: Book): Media {
-    val manifest = epubExtractor.getManifest(book.path)
-    return Media(status = Media.Status.READY, files = manifest.resources, pageCount = manifest.pageCount, extension = MediaExtensionEpub(toc = manifest.toc, landmarks = manifest.landmarks, pageList = manifest.pageList))
+  private fun analyzeEpub(book: Book, analyzeDimensions: Boolean): Media {
+    val manifest = epubExtractor.getManifest(book.path, analyzeDimensions)
+    return Media(
+      status = Media.Status.READY,
+      pages = manifest.divinaPages,
+      files = manifest.resources,
+      pageCount = manifest.pageCount,
+      epubDivinaCompatible = manifest.divinaPages.isNotEmpty(),
+      extension = MediaExtensionEpub(
+        toc = manifest.toc,
+        landmarks = manifest.landmarks,
+        pageList = manifest.pageList,
+        isFixedLayout = manifest.isFixedLayout,
+        positions = manifest.positions,
+      ),
+    )
   }
 
   private fun analyzePdf(book: Book, analyzeDimensions: Boolean): Media {
@@ -132,7 +150,10 @@ class BookAnalyzer(
     return Media(status = Media.Status.READY, pages = pages)
   }
 
-  @Throws(MediaNotReadyException::class)
+  @Throws(
+    MediaNotReadyException::class,
+    NoThumbnailFoundException::class,
+  )
   fun generateThumbnail(book: BookWithMedia): ThumbnailBook {
     logger.info { "Generate thumbnail for book: $book" }
 
@@ -141,22 +162,17 @@ class BookAnalyzer(
       throw MediaNotReadyException()
     }
 
-    val thumbnail = try {
-      getPoster(book)?.let { cover ->
-        imageConverter.resizeImageToByteArray(cover.bytes, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
-      }
-    } catch (ex: Exception) {
-      logger.warn(ex) { "Could not generate thumbnail for book: $book" }
-      null
-    }
+    val thumbnail = getPoster(book)?.let { cover ->
+      imageConverter.resizeImageToByteArray(cover.bytes, thumbnailType, komgaSettingsProvider.thumbnailSize.maxEdge)
+    } ?: throw NoThumbnailFoundException()
 
     return ThumbnailBook(
       thumbnail = thumbnail,
       type = ThumbnailBook.Type.GENERATED,
       bookId = book.book.id,
       mediaType = thumbnailType.mediaType,
-      dimension = thumbnail?.let { imageAnalyzer.getDimension(it.inputStream()) } ?: Dimension(0, 0),
-      fileSize = thumbnail?.size?.toLong() ?: 0,
+      dimension = imageAnalyzer.getDimension(thumbnail.inputStream()) ?: Dimension(0, 0),
+      fileSize = thumbnail.size.toLong(),
     )
   }
 
@@ -193,7 +209,10 @@ class BookAnalyzer(
     return when (book.media.profile) {
       MediaProfile.DIVINA -> divinaExtractors.getValue(book.media.mediaType!!).getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
       MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, number).bytes
-      MediaProfile.EPUB -> throw MediaUnsupportedException("Epub profile does not support getting page content")
+      MediaProfile.EPUB ->
+        if (book.media.epubDivinaCompatible) epubExtractor.getEntryStream(book.book.path, book.media.pages[number - 1].fileName)
+        else throw MediaUnsupportedException("Epub profile does not support getting page content")
+
       null -> throw MediaNotReadyException()
     }
   }

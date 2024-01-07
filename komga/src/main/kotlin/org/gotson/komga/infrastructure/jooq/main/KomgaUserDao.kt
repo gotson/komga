@@ -5,9 +5,9 @@ import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.AnnouncementsReadRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery

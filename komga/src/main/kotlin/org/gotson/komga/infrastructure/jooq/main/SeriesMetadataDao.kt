@@ -6,9 +6,9 @@ import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SeriesMetadataRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component

@@ -147,7 +147,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Changelog output
         if: always() &&  needs.version.outputs.should_release
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jreleaser-changelog
           path: |
@@ -170,36 +170,44 @@ jobs:
           mkdir ./secret
           echo $APPLE_PRIVATE_KEY | base64 --decode > ./secret/apple_private_key.p8
 
-      - name: Conveyor make site
-        uses: hydraulic-software/conveyor/actions/build@v12.1
+      - name: Conveyor make copied-site
+        uses: hydraulic-software/conveyor/actions/build@v13.0
         if: inputs.github_release
         with:
-          command: -f conveyor.ci.conf make site -o ./output/site
+          command: --cache-limit=2.0 -f conveyor.ci.conf make site -o ./output/site
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          AWS_S3_BUCKET: ${{ secrets.B2_BUCKET }}
+          AWS_S3_ENDPOINT: 'https://s3.us-east-005.backblazeb2.com'
+          AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
       - name: Upload Conveyor log
         if: always() && inputs.github_release
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: conveyor-make-site
           path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
 
       - name: Conveyor make old-site
-        uses: hydraulic-software/conveyor/actions/build@v12.1
+        uses: hydraulic-software/conveyor/actions/build@v13.0
         if: inputs.github_release
         with:
-          command: -f conveyor.ci.conf make old-site -o ./output/old-site
+          command: --cache-limit=2.0 -f conveyor.ci.conf make old-site -o ./output/old-site
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          AWS_S3_BUCKET: ${{ secrets.B2_BUCKET }}
+          AWS_S3_ENDPOINT: 'https://s3.us-east-005.backblazeb2.com'
+          AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
       - name: Upload Conveyor log
         if: always() && inputs.github_release
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: conveyor-make-old-site
           path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
@@ -210,16 +218,6 @@ jobs:
           rm ./output/old-site/download.html
           rm ./output/old-site/icon.svg
 
-      - name: Upload Conveyor site to B2
-        if: inputs.github_release
-        uses: jakejarvis/s3-sync-action@master
-        env:
-          AWS_S3_BUCKET: ${{ secrets.B2_BUCKET }}
-          AWS_S3_ENDPOINT: 'https://s3.us-east-005.backblazeb2.com'
-          AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
-          SOURCE_DIR: 'output/site'
-
       - name: JReleaser Release
         if: inputs.github_release
         uses: gradle/gradle-build-action@v2
@@ -229,7 +227,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Release output
         if: always() && inputs.github_release
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jreleaser-release
           path: |
@@ -245,7 +243,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Announce output
         if: always() && inputs.github_release
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jreleaser-announce
           path: |
@@ -265,7 +263,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Publish output
         if: always() && inputs.docker_release
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jreleaser-publish
           path: |
@@ -273,19 +271,23 @@ jobs:
             build/jreleaser/output.properties
 
       - name: Conveyor - publish to Microsoft Store
-        uses: hydraulic-software/conveyor/actions/build@v12.1
+        uses: hydraulic-software/conveyor/actions/build@v13.0
         if: inputs.msstore_release
         with:
-          command: -f conveyor.msstore.ci.conf make ms-store-release -o ./output/msstore
+          command: --cache-limit=2.0 -f conveyor.msstore.ci.conf make ms-store-release -o ./output/msstore
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
           CONVEYOR_MSSTORE_CLIENT_ID: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_ID }}
           CONVEYOR_MSSTORE_CLIENT_SECRET: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_SECRET }}
           CONVEYOR_MSSTORE_TENANT_ID: ${{ secrets.CONVEYOR_MSSTORE_TENANT_ID }}
+          AWS_S3_BUCKET: ${{ secrets.B2_BUCKET }}
+          AWS_S3_ENDPOINT: 'https://s3.us-east-005.backblazeb2.com'
+          AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
       - name: Upload Conveyor log
         if: always() && inputs.msstore_release
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: conveyor-ms-store-release
           path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt

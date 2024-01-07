@@ -6,9 +6,9 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SeriesRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
@@ -67,11 +67,11 @@ class SeriesDao(
       .firstOrNull()
       ?.toDomain()
 
-  override fun findAllByTitle(title: String): Collection<Series> =
+  override fun findAllByTitleContaining(title: String): Collection<Series> =
     dsl.selectDistinct(*s.fields())
       .from(s)
       .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-      .where(d.TITLE.equalIgnoreCase(title))
+      .where(d.TITLE.containsIgnoreCase(title))
       .fetchInto(s)
       .map { it.toDomain() }
 

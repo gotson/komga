@@ -32,7 +32,7 @@ tasks {
 dependencies {
   implementation(project(":komga"))
 
-  implementation(compose.desktop.common)
+  implementation(compose.desktop.currentOs)
 
   linuxAmd64(compose.desktop.linux_x64)
   macAmd64(compose.desktop.macos_x64)

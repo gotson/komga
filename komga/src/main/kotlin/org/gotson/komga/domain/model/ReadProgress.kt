@@ -8,6 +8,9 @@ data class ReadProgress(
   val page: Int,
   val completed: Boolean,
   val readDate: LocalDateTime = LocalDateTime.now(),
+  val deviceId: String = "",
+  val deviceName: String = "",
+  val locator: R2Locator? = null,
 
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,

@@ -21,6 +21,11 @@
     "account_settings": "Impostazioni Profilo",
     "change_password": "cambia password"
   },
+  "announcements": {
+    "mark_all_read": "Segna tutti come letti",
+    "mark_read": "Segna come letto",
+    "tab_title": "Annunci"
+  },
   "authentication_activity": {
     "datetime": "Data / Ora",
     "email": "E-mail",
@@ -199,11 +204,13 @@
     "collections": "Collezioni",
     "create": "Crea",
     "delete": "Elimina",
+    "discard": "Scarta",
     "disk_space": "Spazio su disco",
     "dismiss": "Chiudi",
     "download": "Scarica",
     "drag_drop": "trascina e rilascia",
     "email": "E-mail",
+    "epub": "Epub",
     "filename": "Nome file",
     "filter_no_matches": "Il filtro attivo non ha corrispondenze",
     "genre": "Genere",
@@ -230,6 +237,7 @@
     "read_on": "Letto il {date}",
     "readlist": "Elenco di lettura",
     "readlists": "Liste di lettura",
+    "remember-me": "Ricordami",
     "required": "Richiesto",
     "reset_filters": "Rimuovi filtri",
     "roles": "Permessi",
@@ -425,8 +433,10 @@
       "field_name": "Nome",
       "field_repair_extensions": "Ripara automaticamente le estensioni errate dei file",
       "field_root_folder": "Cartella principale",
+      "field_scan_interval": "Intervallo di scansione",
       "field_scanner_empty_trash_after_scan": "Svuota il cestino in automatico dopo ogni scansione",
       "field_scanner_force_directory_modified_time": "Usa data di modifica delle cartelle",
+      "field_scanner_scan_startup": "Scansiona all'avvio",
       "field_series_cover": "Copertina della serie",
       "file_browser_dialog_button_confirm": "Scegli",
       "file_browser_dialog_title": "Cartella principale della libreria",
@@ -437,11 +447,13 @@
       "label_import_epub": "Importa metadati dai file EPUB",
       "label_import_local": "Importa risorse multimediali locali",
       "label_import_mylar": "Importa i metadati generati da Mylar",
+      "label_scan_types": "Scasiona file di questo tipo",
       "label_scanner": "Scanner",
       "label_series_cover": "Copertina della serie",
       "tab_general": "Generale",
       "tab_metadata": "Metadati",
       "tab_options": "Opzioni",
+      "tooltip_oneshotsdirectory": "Lasciare vuoto per disabilitare",
       "tooltip_scanner_force_modified_time": "Abilita se la libreria si trova su Google Drive",
       "tooltip_use_resources": "Può consumare molte risorse su librerie di grandi dimensioni o hardware lento"
     },
@@ -614,6 +626,21 @@
       "HARDLINK": "Hardlink / Copia File",
       "MOVE": "Sposta i file"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "Giorno",
+        "night": "Notte"
+      },
+      "column_count": {
+        "one": "Uno",
+        "two": "Due"
+      },
+      "reading_direction": {
+        "auto": "Automatico",
+        "ltr": "Da sinistra a destra",
+        "rtl": "Da destra a sinistra"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "Libro convertito",
       "BookFileDeleted": "File cancellato",
@@ -639,6 +666,14 @@
       "VERTICAL": "Verticale",
       "WEBTOON": "Webtoon"
     },
+    "scan_interval": {
+      "DAILY": "Quotidiano",
+      "DISABLED": "Disabilitato",
+      "EVERY_12H": "Ogni 12 ore",
+      "EVERY_6H": "Ogni 6 ore",
+      "HOURLY": "Ogni ora",
+      "WEEKLY": "Settimanalmente"
+    },
     "series_cover": {
       "FIRST": "Primo",
       "FIRST_UNREAD_OR_FIRST": "Primo numero non letto, altrimenti primo",
@@ -650,6 +685,30 @@
       "ENDED": "Concluso",
       "HIATUS": "Hiatus",
       "ONGOING": "In corso"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "Capitolo attuale",
+    "page_of": "Pagina {page} di {count}",
+    "settings": {
+      "column_count": "Numero di colonna",
+      "layout_paginated": "Paginato",
+      "layout_scroll": "Scorri",
+      "navigation_mode": "Modalità di navigazione",
+      "navigation_options": {
+        "both": "Entrambi",
+        "buttons": "Tasti"
+      },
+      "page_margins": "Margini di pagina",
+      "viewing_theme": "Tema"
+    },
+    "shortcuts": {
+      "font_size_decrease": "Diminuisci la dimensione del font",
+      "font_size_increase": "Aumenta la dimensione del font",
+      "menus": "Menù",
+      "previous": "Indietro",
+      "settings": "Impostazioni",
+      "show_hide_toc": "Mostra/Nascondi indice dei contenuti"
     }
   },
   "error_codes": {
@@ -813,6 +872,16 @@
     "tab_title": "Server"
   },
   "server_settings": {
+    "config_precedence": "Ha precedenza rispetto al file di configurazione",
+    "dialog_regenerate_thumbnails": {
+      "body": "La dimensione delle miniature è cambiata. Vuoi rigenerare le miniature dei libri?",
+      "btn_alternate": "Si, per tutti i libri",
+      "btn_cancel": "No",
+      "btn_confirm": "Si, ma solo sono se sono più grandi",
+      "title": "Rigenera le miniature"
+    },
+    "label_delete_empty_collections": "Cancella le collezioni vuote dopo la scansione",
+    "label_delete_empty_readlists": "Cancella le liste di lettura vuote dopo la scansione",
     "server_settings": "Impostazioni Server"
   },
   "settings_user": {

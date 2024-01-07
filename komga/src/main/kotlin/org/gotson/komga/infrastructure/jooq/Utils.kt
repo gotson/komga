@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
@@ -10,8 +11,9 @@ import org.jooq.Field
 import org.jooq.SortField
 import org.jooq.impl.DSL
 import org.springframework.data.domain.Sort
-import java.time.LocalDateTime
-import java.time.ZoneId
+import java.io.ByteArrayOutputStream
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 
 fun Field<String>.noCase() = this.collate("NOCASE")
 
@@ -38,9 +40,6 @@ fun Field<String>.inOrNoCondition(list: Collection<String>?): Condition =
     list.isEmpty() -> DSL.falseCondition()
     else -> this.`in`(list)
   }
-
-fun LocalDateTime.toCurrentTimeZone(): LocalDateTime =
-  this.atZone(ZoneId.of("Z")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
 
 fun Field<String>.udfStripAccents() =
   DSL.function(SqliteUdfDataSource.udfStripAccents, String::class.java, this)
@@ -92,4 +91,27 @@ fun ContentRestrictions.toCondition(dsl: DSLContext): Condition {
 
   return ageAllowed.or(labelAllowed)
     .and(ageDenied.and(labelDenied))
+}
+
+fun ObjectMapper.serializeJsonGz(obj: Any): ByteArray? =
+  try {
+    ByteArrayOutputStream().use { baos ->
+      GZIPOutputStream(baos).use { gz ->
+        this.writeValue(gz, obj)
+        baos.toByteArray()
+      }
+    }
+  } catch (e: Exception) {
+    null
+  }
+
+inline fun <reified T> ObjectMapper.deserializeJsonGz(gzJson: ByteArray?): T? {
+  if (gzJson == null) return null
+  return try {
+    GZIPInputStream(gzJson.inputStream()).use { gz ->
+      this.readValue(gz, T::class.java) as T
+    }
+  } catch (e: Exception) {
+    null
+  }
 }

@@ -646,6 +646,11 @@
         "auto": "Automaattinen",
         "one": "Yksi",
         "two": "Kaksi"
+      },
+      "reading_direction": {
+        "auto": "Automaattinen",
+        "ltr": "Vasemmalta oikealle",
+        "rtl": "Oikealta vasemmalle"
       }
     },
     "historical_event_type": {
@@ -701,11 +706,19 @@
     }
   },
   "epubreader": {
+    "current_chapter": "Nykyinen luku",
+    "page_of": "Sivu {page}/{count}",
     "settings": {
       "column_count": "Sarakkeiden määrä",
       "layout": "Asettelu",
       "layout_paginated": "Sivutettu",
       "layout_scroll": "Rullaa",
+      "navigation_mode": "Navigointitila",
+      "navigation_options": {
+        "both": "Molemmat",
+        "buttons": "Napit",
+        "click": "Klikkaa / kosketa"
+      },
       "page_margins": "Sivun marginaalit",
       "viewing_theme": "Katselun teema"
     },

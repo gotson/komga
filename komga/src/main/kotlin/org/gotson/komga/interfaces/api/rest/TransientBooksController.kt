@@ -2,11 +2,11 @@ package org.gotson.komga.interfaces.api.rest
 
 import com.jakewharton.byteunits.BinaryByteUnit
 import mu.KotlinLogging
-import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.TransientBook
 import org.gotson.komga.domain.persistence.TransientBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.TransientBookLifecycle
@@ -81,8 +81,7 @@ class TransientBooksController(
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-  private fun BookWithMedia.toDto(): TransientBookDto {
+  private fun TransientBook.toDto(): TransientBookDto {
     val pages = if (media.profile == MediaProfile.PDF) bookAnalyzer.getPdfPagesDynamic(media) else media.pages
     return TransientBookDto(
       id = book.id,
@@ -104,6 +103,8 @@ class TransientBooksController(
       },
       files = media.files.map { it.fileName },
       comment = media.comment ?: "",
+      number = metadata.number,
+      seriesId = metadata.seriesId,
     )
   }
 }
@@ -124,4 +125,6 @@ data class TransientBookDto(
   val pages: List<PageDto>,
   val files: List<String>,
   val comment: String,
+  val number: Float?,
+  val seriesId: String?,
 )

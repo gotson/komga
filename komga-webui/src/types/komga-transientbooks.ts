@@ -12,4 +12,6 @@ export interface TransientBookDto {
   pages: PageDto[],
   files: string[],
   comment: string,
+  number?: number,
+  seriesId?: string,
 }

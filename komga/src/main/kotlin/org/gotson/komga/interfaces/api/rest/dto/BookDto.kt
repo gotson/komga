@@ -39,6 +39,7 @@ data class MediaDto(
   val mediaType: String,
   val pagesCount: Int,
   val comment: String,
+  val epubDivinaCompatible: Boolean,
 ) {
   val mediaProfile: String by lazy { MediaType.fromMediaType(mediaType)?.profile?.name ?: "" }
 }
@@ -79,4 +80,6 @@ data class ReadProgressDto(
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val lastModified: LocalDateTime,
+  val deviceId: String,
+  val deviceName: String,
 )

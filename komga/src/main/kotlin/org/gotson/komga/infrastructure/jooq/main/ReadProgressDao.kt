@@ -1,12 +1,16 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.infrastructure.jooq.deserializeJsonGz
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
+import org.gotson.komga.infrastructure.jooq.serializeJsonGz
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ReadProgressRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.gotson.komga.language.toUTC
 import org.jooq.DSLContext
 import org.jooq.Query
@@ -21,6 +25,7 @@ import java.time.ZoneId
 class ReadProgressDao(
   private val dsl: DSLContext,
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  private val mapper: ObjectMapper,
 ) : ReadProgressRepository {
 
   private val r = Tables.READ_PROGRESS
@@ -84,6 +89,9 @@ class ReadProgressDao(
       r.PAGE,
       r.COMPLETED,
       r.READ_DATE,
+      r.DEVICE_ID,
+      r.DEVICE_NAME,
+      r.LOCATOR,
     )
       .values(
         bookId,
@@ -91,12 +99,18 @@ class ReadProgressDao(
         page,
         completed,
         readDate.toUTC(),
+        deviceId,
+        deviceName,
+        locator?.let { mapper.serializeJsonGz(it) },
       )
       .onDuplicateKeyUpdate()
       .set(r.PAGE, page)
       .set(r.COMPLETED, completed)
       .set(r.READ_DATE, readDate.toUTC())
       .set(r.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      .set(r.DEVICE_ID, deviceId)
+      .set(r.DEVICE_NAME, deviceName)
+      .set(r.LOCATOR, locator?.let { mapper.serializeJsonGz(it) })
 
   @Transactional
   override fun delete(bookId: String, userId: String) {
@@ -179,5 +193,8 @@ class ReadProgressDao(
       readDate = readDate.toCurrentTimeZone(),
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
+      deviceId = deviceId,
+      deviceName = deviceName,
+      locator = mapper.deserializeJsonGz<R2Locator>(locator),
     )
 }

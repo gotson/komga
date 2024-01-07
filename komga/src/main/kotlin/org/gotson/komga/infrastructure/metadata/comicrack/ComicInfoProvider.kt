@@ -35,17 +35,16 @@ class ComicInfoProvider(
   private val isbnValidator: ISBNValidator,
 ) : BookMetadataProvider, SeriesMetadataFromBookProvider {
 
-  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
-    setOf(
-      BookMetadataPatchCapability.TITLE,
-      BookMetadataPatchCapability.SUMMARY,
-      BookMetadataPatchCapability.NUMBER,
-      BookMetadataPatchCapability.NUMBER_SORT,
-      BookMetadataPatchCapability.RELEASE_DATE,
-      BookMetadataPatchCapability.AUTHORS,
-      BookMetadataPatchCapability.READ_LISTS,
-      BookMetadataPatchCapability.LINKS,
-    )
+  override val capabilities = setOf(
+    BookMetadataPatchCapability.TITLE,
+    BookMetadataPatchCapability.SUMMARY,
+    BookMetadataPatchCapability.NUMBER,
+    BookMetadataPatchCapability.NUMBER_SORT,
+    BookMetadataPatchCapability.RELEASE_DATE,
+    BookMetadataPatchCapability.AUTHORS,
+    BookMetadataPatchCapability.READ_LISTS,
+    BookMetadataPatchCapability.LINKS,
+  )
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     getComicInfo(book)?.let { comicInfo ->
@@ -119,7 +118,9 @@ class ComicInfoProvider(
     return null
   }
 
-  override fun getSeriesMetadataFromBook(book: BookWithMedia, library: Library): SeriesMetadataPatch? {
+  override val supportsAppendVolume = true
+
+  override fun getSeriesMetadataFromBook(book: BookWithMedia, appendVolumeToTitle: Boolean): SeriesMetadataPatch? {
     getComicInfo(book)?.let { comicInfo ->
       val readingDirection = when (comicInfo.manga) {
         Manga.NO -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
@@ -128,7 +129,7 @@ class ComicInfoProvider(
       }
 
       val genres = comicInfo.genre?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
-      val series = if (library.importComicInfoSeriesAppendVolume) computeSeriesFromSeriesAndVolume(comicInfo.series, comicInfo.volume) else comicInfo.series
+      val series = if (appendVolumeToTitle) computeSeriesFromSeriesAndVolume(comicInfo.series, comicInfo.volume) else comicInfo.series
 
       return SeriesMetadataPatch(
         title = series,

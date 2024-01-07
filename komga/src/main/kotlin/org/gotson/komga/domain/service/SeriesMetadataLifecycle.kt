@@ -52,7 +52,7 @@ class SeriesMetadataLifecycle(
           val patches = bookRepository.findAllBySeriesId(series.id)
             .mapNotNull { book ->
               try {
-                provider.getSeriesMetadataFromBook(BookWithMedia(book, mediaRepository.findById(book.id)), library)
+                provider.getSeriesMetadataFromBook(BookWithMedia(book, mediaRepository.findById(book.id)), library.importComicInfoSeriesAppendVolume)
               } catch (e: Exception) {
                 logger.error(e) { "Error while getting metadata from ${provider.javaClass.simpleName} for book: $book" }
                 null

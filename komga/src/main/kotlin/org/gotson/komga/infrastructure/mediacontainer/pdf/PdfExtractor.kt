@@ -39,7 +39,7 @@ class PdfExtractor(
 
   fun getPageContentAsImage(path: Path, pageNumber: Int): TypedBytes {
     PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
-      val page = pdf.getPage(pageNumber)
+      val page = pdf.getPage(pageNumber - 1)
       val image = PDFRenderer(pdf).renderImage(pageNumber - 1, page.getScale(), RGB)
       val bytes = ByteArrayOutputStream().use { out ->
         ImageIO.write(image, imageType.imageIOFormat, out)

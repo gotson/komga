@@ -11,8 +11,11 @@ import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
+import org.gotson.komga.domain.model.NoThumbnailFoundException
+import org.gotson.komga.domain.model.R2Progression
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.TypedBytes
@@ -28,11 +31,13 @@ import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.gotson.komga.language.toCurrentTimeZone
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
+import org.springframework.web.util.UriUtils
 import java.io.File
 import java.time.LocalDateTime
 import kotlin.io.path.deleteIfExists
@@ -41,6 +46,7 @@ import kotlin.io.path.isWritable
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.notExists
 import kotlin.io.path.toPath
+import kotlin.math.roundToInt
 
 private val logger = KotlinLogging.logger {}
 
@@ -117,6 +123,8 @@ class BookLifecycle(
     logger.info { "Generate thumbnail and persist for book: $book" }
     try {
       addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))), MarkSelectedPreference.IF_NONE_OR_GENERATED)
+    } catch (ex: NoThumbnailFoundException) {
+      logger.error { "Error while creating thumbnail" }
     } catch (ex: Exception) {
       logger.error(ex) { "Error while creating thumbnail" }
     }
@@ -374,6 +382,71 @@ class BookLifecycle(
       readProgressRepository.delete(book.id, user.id)
       eventPublisher.publishEvent(DomainEvent.ReadProgressDeleted(progress))
     }
+  }
+
+  fun markProgression(book: Book, user: KomgaUser, newProgression: R2Progression) {
+    readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user.id)?.let { savedProgress ->
+      check(newProgression.modified.toLocalDateTime().toCurrentTimeZone().isAfter(savedProgress.readDate)) { "Progression is older than existing" }
+    }
+
+    val media = mediaRepository.findById(book.id)
+    requireNotNull(media.profile) { "Media has no profile" }
+    val progress = when (media.profile!!) {
+      MediaProfile.DIVINA,
+      MediaProfile.PDF,
+      -> {
+        require(newProgression.locator.locations?.position in 1..media.pageCount) { "Page argument (${newProgression.locator.locations?.position}) must be within 1 and book page count (${media.pageCount})" }
+        ReadProgress(
+          book.id,
+          user.id,
+          newProgression.locator.locations!!.position!!,
+          newProgression.locator.locations.position == media.pageCount,
+          newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
+          newProgression.device.id,
+          newProgression.device.name,
+          newProgression.locator,
+        )
+      }
+
+      MediaProfile.EPUB -> {
+        val href = newProgression.locator.href
+          .replaceBefore("/resource/", "").removePrefix("/resource/")
+          .replaceAfter("#", "").removeSuffix("#")
+          .let { UriUtils.decode(it, Charsets.UTF_8) }
+        require(href in media.files.map { it.fileName }) { "Resource does not exist in book: $href" }
+        requireNotNull(newProgression.locator.locations?.progression) { "location.progression is required" }
+
+        val extension = mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
+          ?: throw IllegalArgumentException("Epub extension not found")
+        // match progression with positions
+        val matchingPositions = extension.positions.filter { it.href == href }
+        val matchedPosition =
+          matchingPositions.firstOrNull { it.locations!!.progression == newProgression.locator.locations!!.progression }
+            ?: run {
+              // no exact match
+              val before = matchingPositions.filter { it.locations!!.progression!! < newProgression.locator.locations!!.progression!! }.maxByOrNull { it.locations!!.position!! }
+              val after = matchingPositions.filter { it.locations!!.progression!! > newProgression.locator.locations!!.progression!! }.minByOrNull { it.locations!!.position!! }
+              if (before == null || after == null || before.locations!!.position!! > after.locations!!.position!!)
+                throw IllegalArgumentException("Invalid progression")
+              before
+            }
+
+        val totalProgression = matchedPosition.locations?.totalProgression
+        ReadProgress(
+          book.id,
+          user.id,
+          totalProgression?.let { (media.pageCount * it).roundToInt() } ?: 0,
+          totalProgression?.let { it >= 0.99F } ?: false,
+          newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
+          newProgression.device.id,
+          newProgression.device.name,
+          newProgression.locator,
+        )
+      }
+    }
+
+    readProgressRepository.save(progress)
+    eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(progress))
   }
 
   fun deleteBookFiles(book: Book) {

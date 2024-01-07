@@ -37,14 +37,13 @@ class EpubMetadataProvider(
     "trl" to "translator",
   )
 
-  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
-    setOf(
-      BookMetadataPatchCapability.TITLE,
-      BookMetadataPatchCapability.SUMMARY,
-      BookMetadataPatchCapability.RELEASE_DATE,
-      BookMetadataPatchCapability.AUTHORS,
-      BookMetadataPatchCapability.ISBN,
-    )
+  override val capabilities = setOf(
+    BookMetadataPatchCapability.TITLE,
+    BookMetadataPatchCapability.SUMMARY,
+    BookMetadataPatchCapability.RELEASE_DATE,
+    BookMetadataPatchCapability.AUTHORS,
+    BookMetadataPatchCapability.ISBN,
+  )
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     if (book.media.mediaType != MediaType.EPUB.type) return null
@@ -84,7 +83,9 @@ class EpubMetadataProvider(
     return null
   }
 
-  override fun getSeriesMetadataFromBook(book: BookWithMedia, library: Library): SeriesMetadataPatch? {
+  override val supportsAppendVolume = false
+
+  override fun getSeriesMetadataFromBook(book: BookWithMedia, appendVolumeToTitle: Boolean): SeriesMetadataPatch? {
     if (book.media.mediaType != MediaType.EPUB.type) return null
     getPackageFile(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())

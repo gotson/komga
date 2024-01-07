@@ -5,10 +5,10 @@ import org.gotson.komga.domain.model.BookMetadataAggregation
 import org.gotson.komga.domain.persistence.BookMetadataAggregationRepository
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAggregationAuthorRecord
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAggregationRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
