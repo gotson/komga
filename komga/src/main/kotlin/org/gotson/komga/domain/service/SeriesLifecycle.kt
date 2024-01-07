@@ -75,15 +75,15 @@ class SeriesLifecycle(
 
     val library = libraryRepository.findById(series.libraryId)
 
-    val comparator : Comparator<Book> = when (library.seriesSort) {
+    val comparator: Comparator<Book> = when (library.seriesSort) {
       Library.SeriesSort.FILE_MODIFIED_ASC -> compareBy { it.fileLastModified }
       Library.SeriesSort.FILE_MODIFIED_DESC -> compareByDescending { it.fileLastModified }
-      else  ->  compareBy(natSortComparator) {
-          it.name
-            .trim()
-            .stripAccents()
-            .replace(whitespacePattern, " ")
-        }
+      else -> compareBy(natSortComparator) {
+        it.name
+          .trim()
+          .stripAccents()
+          .replace(whitespacePattern, " ")
+      }
     }
 
     // val comparator : Comparator<Book> = compareBy { it.fileLastModified }

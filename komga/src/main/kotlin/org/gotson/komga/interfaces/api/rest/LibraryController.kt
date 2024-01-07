@@ -184,7 +184,7 @@ class LibraryController(
       try {
         libraryLifecycle.updateLibrary(toUpdate)
         if (toUpdate.seriesSort != existing.seriesSort) {
-          seriesRepository.findAllByLibraryId(libraryId).forEach {seriesLifecycle.sortBooks(it)}
+          seriesRepository.findAllByLibraryId(libraryId).forEach { seriesLifecycle.sortBooks(it) }
         }
       } catch (e: Exception) {
         when (e) {

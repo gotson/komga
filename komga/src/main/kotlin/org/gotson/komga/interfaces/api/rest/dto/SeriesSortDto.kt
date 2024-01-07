@@ -3,9 +3,9 @@ package org.gotson.komga.interfaces.api.rest.dto
 import org.gotson.komga.domain.model.Library
 
 enum class SeriesSortDto {
-    NAME_NATURAL,
-    FILE_MODIFIED_ASC,
-    FILE_MODIFIED_DESC,
+  NAME_NATURAL,
+  FILE_MODIFIED_ASC,
+  FILE_MODIFIED_DESC,
 }
 
 fun Library.SeriesSort.toDto() = when (this) {
