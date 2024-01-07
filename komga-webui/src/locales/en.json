@@ -443,6 +443,7 @@
       "field_scanner_force_directory_modified_time": "Force directory modified time",
       "field_scanner_scan_startup": "Scan on startup",
       "field_series_cover": "Series cover",
+      "field_series_sort": "Series default sort",
       "file_browser_dialog_button_confirm": "Choose",
       "file_browser_dialog_title": "Library's root folder",
       "label_analysis": "Analysis",
@@ -456,6 +457,7 @@
       "label_scan_types": "Scan for these file types",
       "label_scanner": "Scanner",
       "label_series_cover": "Series cover",
+      "label_series_sort": "Series default sort",
       "tab_general": "General",
       "tab_metadata": "Metadata",
       "tab_options": "Options",
@@ -691,6 +693,11 @@
       "FIRST_UNREAD_OR_FIRST": "First unread else first",
       "FIRST_UNREAD_OR_LAST": "First unread else last",
       "LAST": "Last"
+    },
+    "series_sort": {
+      "NAME_NATURAL": "Name",
+      "FILE_MODIFIED_ASC": "First modified file first",
+      "FILE_MODIFIED_DESC": "Last modified file first"
     },
     "series_status": {
       "ABANDONED": "Abandoned",
