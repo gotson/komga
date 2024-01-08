@@ -1,3 +1,53 @@
+# [1.10.0](https://github.com/gotson/komga/compare/1.9.2...1.10.0) (2024-01-08)
+## 🚀 Features
+**docker**
+- add libarchive for RAR5 support ([6f8467a](https://github.com/gotson/komga/commits/6f8467a))
+
+**komga**
+- support for RAR5 via libarchive ([4c1301f](https://github.com/gotson/komga/commits/4c1301f))
+
+**komga-tray**
+- add libarchive for RAR5 support on macOS ([536d478](https://github.com/gotson/komga/commits/536d478))
+
+## 🐛 Fixes
+**api**
+- mark progression fragment handling ([eb24470](https://github.com/gotson/komga/commits/eb24470))
+- mark progression timezone handling ([ec97da6](https://github.com/gotson/komga/commits/ec97da6)), closes [#1363](https://github.com/gotson/komga/issues/1363)
+
+**webui**
+- webreader crash when reading one-shot from collection context ([bdf9ec9](https://github.com/gotson/komga/commits/bdf9ec9)), closes [#1374](https://github.com/gotson/komga/issues/1374)
+
+## 🔄️ Changes
+
+- ktlint ([8c4a5e3](https://github.com/gotson/komga/commits/8c4a5e3))
+
+## 🛠  Build
+**release**
+- upload to B2 with conveyor ([cccbc39](https://github.com/gotson/komga/commits/cccbc39))
+- limit conveyor cache size ([cabed41](https://github.com/gotson/komga/commits/cabed41))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Chinese (Simplified)) ([58ca293](https://github.com/gotson/komga/commits/58ca293))
+- translated using Weblate (Finnish) ([d955db2](https://github.com/gotson/komga/commits/d955db2))
+- translated using Weblate (French) ([e623c46](https://github.com/gotson/komga/commits/e623c46))
+- translated using Weblate (Spanish) ([5758f6d](https://github.com/gotson/komga/commits/5758f6d))
+- translated using Weblate (Dutch) ([8fa8989](https://github.com/gotson/komga/commits/8fa8989))
+- added translation using Weblate (Catalan) ([e28c8eb](https://github.com/gotson/komga/commits/e28c8eb))
+- translated using Weblate (Russian) ([609368f](https://github.com/gotson/komga/commits/609368f))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([19000da](https://github.com/gotson/komga/commits/19000da))
+- translated using Weblate (French) ([ea4bead](https://github.com/gotson/komga/commits/ea4bead))
+- translated using Weblate (Dutch) ([86b2ec9](https://github.com/gotson/komga/commits/86b2ec9))
+- translated using Weblate (Catalan) ([2150ddc](https://github.com/gotson/komga/commits/2150ddc))
+- translated using Weblate (Russian) ([3bbe7b9](https://github.com/gotson/komga/commits/3bbe7b9))
+
+## ⚙️ Dependencies
+**ci**
+- bump conveyor to 13.0 ([7dd05a5](https://github.com/gotson/komga/commits/7dd05a5))
+- bump actions/upload-artifact from 3 to 4 ([6d7dfdd](https://github.com/gotson/komga/commits/6d7dfdd))
+
 # [1.9.2](https://github.com/gotson/komga/compare/1.9.1...1.9.2) (2023-12-18)
 ## 🛠  Build
 **release**
