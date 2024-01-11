@@ -162,7 +162,8 @@ class EpubExtractor(
   }
 
   private fun isFixedLayout(epub: EpubPackage) =
-    epub.opfDoc.selectFirst("metadata > *|meta[property=rendition:layout]")?.text()?.ifBlank { null } == "pre-paginated"
+    epub.opfDoc.selectFirst("metadata > *|meta[property=rendition:layout]")?.text() == "pre-paginated" ||
+      epub.opfDoc.selectFirst("metadata > *|meta[name=fixed-layout]")?.attr("content") == "true"
 
   private fun computePositions(resources: List<MediaFile>, isFixedLayout: Boolean): List<R2Locator> {
     val readingOrder = resources.filter { it.subType == MediaFile.SubType.EPUB_PAGE }
