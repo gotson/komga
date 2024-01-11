@@ -174,7 +174,7 @@ jobs:
         uses: hydraulic-software/conveyor/actions/build@v13.0
         if: inputs.github_release
         with:
-          command: --cache-limit=2.0 -f conveyor.ci.conf make site -o ./output/site
+          command: --cache-limit=2.0 -f conveyor.ci.conf make copied-site -o ./output/site
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
           agree_to_license: 1
         env:
@@ -188,7 +188,7 @@ jobs:
         if: always() && inputs.github_release
         uses: actions/upload-artifact@v4
         with:
-          name: conveyor-make-site
+          name: conveyor-make-copied-site
           path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
 
       - name: Conveyor make old-site
