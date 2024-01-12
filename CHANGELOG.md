@@ -1,3 +1,23 @@
+# [1.10.1](https://github.com/gotson/komga/compare/1.10.0...1.10.1) (2024-01-12)
+## 🚀 Features
+**windows**
+- add libarchive for RAR5 support ([3e11e90](https://github.com/gotson/komga/commits/3e11e90))
+
+## 🐛 Fixes
+**komga**
+- detect older epub as fixed-layout ([e08cea8](https://github.com/gotson/komga/commits/e08cea8)), closes [#1385](https://github.com/gotson/komga/issues/1385)
+
+## 🛠  Build
+**release**
+- fix missing upload to B2 ([5d85585](https://github.com/gotson/komga/commits/5d85585)), closes [#1388](https://github.com/gotson/komga/issues/1388)
+
+**windows**
+- replace native libraries with vcpkg-built ones ([834306f](https://github.com/gotson/komga/commits/834306f))
+
+## ⚙️ Dependencies
+**webui**
+- bump follow-redirects from 1.15.2 to 1.15.4 in /komga-webui ([056b4e7](https://github.com/gotson/komga/commits/056b4e7))
+
 # [1.10.0](https://github.com/gotson/komga/compare/1.9.2...1.10.0) (2024-01-08)
 ## 🚀 Features
 **docker**
