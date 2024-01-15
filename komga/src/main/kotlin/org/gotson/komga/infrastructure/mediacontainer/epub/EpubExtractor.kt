@@ -4,6 +4,7 @@ import mu.KotlinLogging
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.BookPage
+import org.gotson.komga.domain.model.EntryNotFoundException
 import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.R2Locator
@@ -33,7 +34,8 @@ class EpubExtractor(
    */
   fun getEntryStream(path: Path, entryName: String): ByteArray =
     ZipFile(path.toFile()).use { zip ->
-      zip.getInputStream(zip.getEntry(entryName)).use { it.readBytes() }
+      zip.getEntry(entryName)?.let { entry -> zip.getInputStream(entry).use { it.readBytes() } }
+        ?: throw EntryNotFoundException("Entry does not exist: $entryName")
     }
 
   fun isEpub(path: Path): Boolean =
@@ -173,17 +175,17 @@ class EpubExtractor(
       readingOrder.map {
         R2Locator(
           href = it.fileName,
-          type = it.mediaType!!,
+          type = it.mediaType ?: "application/octet-stream",
           locations = R2Locator.Location(progression = 0F, position = startPosition++),
         )
       }
     } else {
       readingOrder.flatMap { file ->
-        val positionCount = maxOf(1, ceil(file.fileSize!! / 1024.0).roundToInt())
+        val positionCount = maxOf(1, ceil((file.fileSize ?: 0) / 1024.0).roundToInt())
         (0 until positionCount).map { p ->
           R2Locator(
             href = file.fileName,
-            type = file.mediaType!!,
+            type = file.mediaType ?: "application/octet-stream",
             locations = R2Locator.Location(progression = p.toFloat() / positionCount, position = startPosition++),
           )
         }

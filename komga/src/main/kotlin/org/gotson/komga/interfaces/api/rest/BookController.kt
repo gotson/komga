@@ -19,6 +19,7 @@ import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.EntryNotFoundException
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
@@ -701,7 +702,11 @@ class BookController(
     if (!isFont) principal!!.user.checkContentRestriction(book)
 
     val res = media.files.firstOrNull { it.fileName == resourceName } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    val bytes = bookAnalyzer.getFileContent(BookWithMedia(book, media), resourceName)
+    val bytes = try {
+      bookAnalyzer.getFileContent(BookWithMedia(book, media), resourceName)
+    } catch (e: EntryNotFoundException) {
+      throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    }
 
     return ResponseEntity.ok()
       .headers(
