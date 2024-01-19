@@ -69,11 +69,12 @@ class EpubExtractor(
 
   fun getManifest(path: Path, analyzeDimensions: Boolean): EpubManifest =
     path.epub { epub ->
-      val resources = getResources(epub)
+      val (resources, missingResources) = getResources(epub).partition { it.fileSize != null }
       val isFixedLayout = isFixedLayout(epub)
       val pageCount = computePageCount(epub)
       EpubManifest(
         resources = resources,
+        missingResources = missingResources,
         toc = getToc(epub),
         landmarks = getLandmarks(epub),
         pageList = getPageList(epub),

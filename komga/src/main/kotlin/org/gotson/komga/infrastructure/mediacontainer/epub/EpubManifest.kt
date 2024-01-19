@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.R2Locator
 
 data class EpubManifest(
   val resources: List<MediaFile>,
+  val missingResources: List<MediaFile>,
   val toc: List<EpubTocEntry>,
   val landmarks: List<EpubTocEntry>,
   val pageList: List<EpubTocEntry>,

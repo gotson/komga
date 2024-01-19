@@ -129,6 +129,10 @@ class BookAnalyzer(
 
   private fun analyzeEpub(book: Book, analyzeDimensions: Boolean): Media {
     val manifest = epubExtractor.getManifest(book.path, analyzeDimensions)
+    val entriesErrorSummary = manifest.missingResources
+      .map { it.fileName }
+      .ifEmpty { null }
+      ?.joinToString(prefix = "ERR_1033 [", postfix = "]") { it }
     return Media(
       status = Media.Status.READY,
       pages = manifest.divinaPages,
@@ -142,6 +146,7 @@ class BookAnalyzer(
         isFixedLayout = manifest.isFixedLayout,
         positions = manifest.positions,
       ),
+      comment = entriesErrorSummary,
     )
   }
 

@@ -36,3 +36,4 @@
 | ERR_1030     | ComicRack CBL has no Name element                       |
 | ERR_1031     | ComicRack CBL Book is missing series or number          |
 | ERR_1032     | EPUB file has wrong media type                          |
+| ERR_1033     | Some entries are missing                                |
