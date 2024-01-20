@@ -205,6 +205,7 @@
     "collections": "コレクション",
     "create": "作成",
     "delete": "削除",
+    "dimension": "幅: {width}, 高さ: {height}",
     "discard": "破棄",
     "disk_space": "使用容量",
     "dismiss": "却下",
@@ -635,6 +636,23 @@
       "HARDLINK": "ハードリンク/コピーファイル",
       "MOVE": "ファイルを移動します"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "昼",
+        "night": "夜",
+        "sepia": "セピア"
+      },
+      "column_count": {
+        "auto": "自動",
+        "one": "一列",
+        "two": "二列"
+      },
+      "reading_direction": {
+        "auto": "自動",
+        "ltr": "左から右",
+        "rtl": "右から左"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "書籍が変換されました",
       "BookFileDeleted": "書籍ファイルが削除されました",
@@ -679,6 +697,43 @@
       "ENDED": "完結",
       "HIATUS": "休載",
       "ONGOING": "連載中"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "デフォルト (300px)",
+      "LARGE": "大 (900px)",
+      "MEDIUM": "中 (600px)",
+      "XLARGE": "特大 (1200px)"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "現在の章",
+    "page_of": "{page} / {count} ページ",
+    "settings": {
+      "column_count": "列数",
+      "layout": "レイアウト",
+      "layout_paginated": "ページごと",
+      "layout_scroll": "スクロール",
+      "navigation_mode": "操作モード",
+      "navigation_options": {
+        "both": "両方",
+        "buttons": "ボタン",
+        "click": "クリック/タップ"
+      },
+      "page_margins": "ページ余白",
+      "viewing_theme": "表示テーマ"
+    },
+    "shortcuts": {
+      "cycle_pagination": "列数の切り替え",
+      "cycle_viewing_theme": "表示テーマの切り替え",
+      "font_size_decrease": "文字サイズを縮小",
+      "font_size_increase": "文字サイズを拡大",
+      "menus": "メニュー",
+      "next": "進む",
+      "previous": "戻る",
+      "reader_navigation": "リーダーのページ移動",
+      "scroll": "レイアウトをスクロールに変更",
+      "settings": "設定",
+      "show_hide_toc": "目次を表示/隠す"
     }
   },
   "error_codes": {
@@ -708,7 +763,9 @@
     "ERR_1028": "OpenID Connectログインエラー：email 属性がありません",
     "ERR_1029": "ComicRack CBLは本が一冊もありません",
     "ERR_1030": "ComicRack CBLにはName要素がありません",
-    "ERR_1031": "ComicRack CBL Bookにシリーズまたは番号がありません"
+    "ERR_1031": "ComicRack CBL Bookにシリーズまたは番号がありません",
+    "ERR_1032": "EPUBのメディアタイプが間違っています",
+    "ERR_1033": "いくつかの項目が欠落しています"
   },
   "filter": {
     "age_rating": "年齢レーティング",
@@ -844,6 +901,22 @@
     "tab_title": "サーバ"
   },
   "server_settings": {
+    "config_precedence": "設定ファイルよりも優先されます",
+    "dialog_regenerate_thumbnails": {
+      "body": "サムネイルサイズが変更されました。本のサムネイルを再生成しますか?",
+      "btn_alternate": "はい(全ての本)",
+      "btn_cancel": "いいえ",
+      "btn_confirm": "はい(大きい場合のみ)",
+      "title": "サムネイルを再生成"
+    },
+    "label_delete_empty_collections": "スキャン後に空のコレクションを削除する",
+    "label_delete_empty_readlists": "スキャン後に空の読書リストを削除する",
+    "label_rememberme_duration": "「ログイン状態を保持」の時間 (日)",
+    "label_server_context_path": "ベースURL",
+    "label_server_port": "サーバーのポート",
+    "label_task_pool_size": "タスクのスレッド数",
+    "label_thumbnail_size": "サムネイルサイズ",
+    "requires_restart": "変更の適用には再起動が必要です",
     "server_settings": "サーバ設定"
   },
   "settings_user": {
@@ -897,6 +970,9 @@
     "users": "ユーザ"
   },
   "validation": {
+    "context_path": "'/'で始まり、'/-_'で終わらず、'/-_a-z0-9'のみを含んでいなければなりません",
+    "one_or_more": "1以上である必要があります",
+    "tcp_port": "1から65535である必要があります",
     "zero_or_more": "0以上でなければなりません"
   },
   "welcome": {
