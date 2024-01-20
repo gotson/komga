@@ -1,0 +1,66 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} de {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Estanse a descargar os elementos...",
+      "noResultsText": "Non se atoparon rexistros coincidentes"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Filas por páxina:",
+      "sortBy": "Ordea por"
+    },
+    "fileInput": {
+      "counter": "{0} arquivos",
+      "counterSize": "{0} arquivos ({1} en total)"
+    },
+    "noDataText": "Non hai datos dispoñibles"
+  },
+  "account_settings": {
+    "account_settings": "Configuración da conta",
+    "change_password": "Cambiar o contrasinal"
+  },
+  "announcements": {
+    "mark_all_read": "Marcar todo como lido",
+    "mark_read": "Marcar como lido",
+    "tab_title": "Avisos"
+  },
+  "authentication_activity": {
+    "datetime": "Data e Hora",
+    "email": "Correo electrónico",
+    "error": "Erro",
+    "ip": "IP",
+    "source": "Fonte",
+    "success": "Éxito",
+    "user_agent": "Axente de usuario"
+  },
+  "author_roles": {
+    "colorist": "coloristas",
+    "cover": "Careta",
+    "editor": "editores",
+    "inker": "entintador",
+    "letterer": "letristas",
+    "penciller": "debuxantes",
+    "translator": "tradutor",
+    "writer": "guionistas"
+  },
+  "book_card": {
+    "error": "Erro",
+    "no_release_date": "Sen data de lanzamento",
+    "unknown": "Pendente de análise",
+    "unread": "Non lido",
+    "unsupported": "Non soportado"
+  },
+  "book_import": {
+    "button_browse": "Explorar",
+    "button_import": "Importar",
+    "button_scan": "Escanear",
+    "button_select_series": "Escolle a serie",
+    "field_import_path": "Importar dende un cartafol",
+    "info_part1": "Esta pantalla permitiralle importar arquivos que están fóra das súas bibliotecas existentes. Só pódese importar arquivos a series que xa existan, nese caso Komga moverá ou copiará os arquivos cara o directorio da serie escollida."
+  },
+  "common": {
+    "locale_name": "Galego"
+  }
+}
