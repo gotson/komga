@@ -21,6 +21,11 @@
     "account_settings": "Настройки на акаунта",
     "change_password": "смени парола"
   },
+  "announcements": {
+    "mark_all_read": "Отбележи всички като прочетени",
+    "mark_read": "Отбележи като прочетено",
+    "tab_title": "Обявления"
+  },
   "authentication_activity": {
     "datetime": "Дата Време",
     "email": "Имейл",
@@ -199,11 +204,14 @@
     "collections": "Колекции",
     "create": "Създай",
     "delete": "Изтрий",
+    "dimension": "ш: {width}, в: {height}",
+    "discard": "Отмени",
     "disk_space": "Дисково пространство",
     "dismiss": "Отхвърли",
     "download": "Свали",
     "drag_drop": "теглене и пускане",
     "email": "Имейл",
+    "epub": "Epub",
     "filename": "Име на файл",
     "filter_no_matches": "Активният филтър няма съвпадения",
     "genre": "Жанр",
@@ -217,6 +225,7 @@
     "lock_all": "Заключи всички",
     "n_selected": "{count} избрани",
     "nothing_to_show": "Нищо за показване",
+    "oneshot": "Единично",
     "outdated": "Остарял",
     "page": "Страница",
     "page_number": "Номер на страницата",
@@ -224,12 +233,14 @@
     "pages_left": "Няма останали страници | Остава 1 страница | Остават {count} страници",
     "pages_n": "Няма страници | 1 страница | {count} страници",
     "password": "Парола",
+    "pdf": "PDF",
     "pending_tasks": "Няма чакащи задачи | 1 чакаща задача | {count} чакащи задачи",
     "publisher": "Издател",
     "read": "Чети",
     "read_on": "Четено на {date}",
     "readlist": "Списък за четене",
     "readlists": "Списък на прочетени",
+    "remember-me": "Запомни ме",
     "required": "Задължително",
     "reset_filters": "Нулиране на филтри",
     "roles": "Роли",
@@ -423,10 +434,13 @@
       "field_import_local_artwork": "Местни изображения",
       "field_import_mylar_series": "Метаданни за поредицата",
       "field_name": "Име",
+      "field_oneshotsdirectory": "Папка Единични",
       "field_repair_extensions": "Автоматично поправяне на неправилни файлови разширения",
       "field_root_folder": "Основна папка",
+      "field_scan_interval": "Интервал на сканиране",
       "field_scanner_empty_trash_after_scan": "Автоматично изпразване на кошчето след всяко сканиране",
       "field_scanner_force_directory_modified_time": "Принудителна промяна на време на промяна на директорията",
+      "field_scanner_scan_startup": "Сканиране на стартиране",
       "field_series_cover": "Корица на поредицата",
       "file_browser_dialog_button_confirm": "Избери",
       "file_browser_dialog_title": "Основната папка на библиотеката",
@@ -437,11 +451,14 @@
       "label_import_epub": "Вмъкване на метаданни от EPUB файлове",
       "label_import_local": "Вмъкване на локални медийни активи",
       "label_import_mylar": "Вмъкване на метаданни, генерирани от Mylar",
+      "label_scan_directory_exclusions": "Изключени папки",
+      "label_scan_types": "Сканирай за тези типове файлове",
       "label_scanner": "Скенер",
       "label_series_cover": "Корица на поредицата",
       "tab_general": "Основни",
       "tab_metadata": "Метаданни",
       "tab_options": "Опции",
+      "tooltip_oneshotsdirectory": "Остави празно за да деактивираш",
       "tooltip_scanner_force_modified_time": "Активирайте, ако библиотеката е в Google Drive",
       "tooltip_use_resources": "Може да изразходва много ресурси при големи библиотеки или бавен хардуер"
     },
@@ -579,16 +596,23 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Автоматични изтриване на останалите ({count})",
     "action_delete_auto": "Автоматично изтриване",
     "action_delete_manual": "Ръчно изтриване",
     "action_delete_matches": "Изтриване на съвпадения",
     "action_ignore": "Игнорирай",
+    "action_ignore_remaining": "Игнорирай останалите ({count})",
+    "action_manual_delete_remaining": "Ръчно изтриване на останалите ({count})",
+    "confirm_auto_delete_remaining": "Всички останали хешове на страници на тази страница ({count}) ще бъдът отбелязани за автоматично изтриване.",
+    "confirm_manual_delete_remaining": "Всички останали хешове на страници на тази страница ({count}) ще бъдът отбелязани за ръчно изтриване.",
     "delete_to_save": "Изтрийте, за да запазите {size}",
     "deleted_count": "Изтрит {count} пъти",
+    "empty_title": "Не са намерани дублирани страници",
     "filter": {
       "count": "Брой",
       "delete_count": "Брой изтрити",
       "delete_size": "Спестено място",
+      "match_count": "Брой съвпадения",
       "size": "Размер",
       "total_size": "Общ размер"
     },
@@ -610,6 +634,11 @@
     "copy_mode": {
       "HARDLINK": "Hardlink/Копиране на файлове",
       "MOVE": "Преместване на файлове"
+    },
+    "epubreader": {
+      "appearances": {
+        "day": "Ден"
+      }
     },
     "historical_event_type": {
       "BookConverted": "Книгата е преобразувана",
@@ -649,6 +678,35 @@
       "ONGOING": "Продължава"
     }
   },
+  "epubreader": {
+    "settings": {
+      "column_count": "Брой колони",
+      "layout": "Оформление",
+      "layout_paginated": "Страницирано",
+      "layout_scroll": "Позициониране",
+      "navigation_mode": "Метод на навигация",
+      "navigation_options": {
+        "both": "И двете",
+        "buttons": "Бутони",
+        "click": "Цъкни / Тапни"
+      },
+      "page_margins": "Маржове на страници",
+      "viewing_theme": "Тема на излед"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Премини през брой колони",
+      "cycle_viewing_theme": "Премини през теми",
+      "font_size_decrease": "Намали размер на шрифт",
+      "font_size_increase": "Увеличи размер на шрифт",
+      "menus": "Менюта",
+      "next": "Напред",
+      "previous": "Назад",
+      "reader_navigation": "Навигация на четец",
+      "scroll": "Промени оформление към позициониране",
+      "settings": "Настройки",
+      "show_hide_toc": "Покажи/скрий съдържание"
+    }
+  },
   "error_codes": {
     "ERR_1000": "Файлът не можа да бъде достъпен по време на анализа",
     "ERR_1001": "Типът на медията не се поддържа",
@@ -676,7 +734,8 @@
     "ERR_1028": "Грешка при влизане в OpenID Connect: няма атрибут за имейл",
     "ERR_1029": "ComicRack CBL не съдържа никакъв елемент Book",
     "ERR_1030": "ComicRack CBL няма елемент Name",
-    "ERR_1031": "ComicRack CBL в Book липсва серия или номер"
+    "ERR_1031": "ComicRack CBL в Book липсва серия или номер",
+    "ERR_1032": "EPUB файл е с грешен тип медия"
   },
   "filter": {
     "age_rating": "възрастова оценка",
@@ -686,9 +745,11 @@
     "in_progress": "В Обръщение",
     "language": "език",
     "library": "библиотека",
+    "oneshot": "Единично",
     "publisher": "издателство",
     "read": "Прочетени",
     "release_date": "дата на издаване",
+    "sharing_label": "Етикет за споделяне",
     "status": "статус",
     "tag": "таг",
     "unread": "Непрочетени"
@@ -750,6 +811,7 @@
     "mark_unread": "Отбележи като непрочетено",
     "refresh_metadata": "Опресняване на метаданните",
     "scan_library_files": "Сканирайте библиотечните файлове",
+    "scan_library_files_deep": "Сканирай библиотека за файлове (дълбоко)",
     "select_all": "Изберете всички"
   },
   "metrics": {
@@ -801,6 +863,7 @@
       "button_cancel_all_tasks": "Отменете всички задачи",
       "button_empty_trash": "Изпразване на кошчето за всички библиотеки",
       "button_scan_libraries": "Сканиране на всички библиотеки",
+      "button_scan_libraries_deep": "Сканирай всички библиотеки (дълбоко)",
       "button_shutdown": "Изключване",
       "notification_tasks_cancelled": "Няма задачи за отмяна | Една отменена задача | {count} отменени задачи",
       "section_title": "Управление на сървъра"
@@ -808,6 +871,22 @@
     "tab_title": "Сървър"
   },
   "server_settings": {
+    "config_precedence": "Има предимство пред конфигурационния файл",
+    "dialog_regenerate_thumbnails": {
+      "body": "Размера на тъмбнейловете е променен. Искате ли да регенерирате тъмбнейла на книгата?",
+      "btn_alternate": "Да, всички книги",
+      "btn_cancel": "Не",
+      "btn_confirm": "Да, но само за по-големите",
+      "title": "Регенерирай тъмбнейловете"
+    },
+    "label_delete_empty_collections": "Изтрий празни колекций след сканиране",
+    "label_delete_empty_readlists": "Изтрий празни листове след сканиране",
+    "label_rememberme_duration": "Запомни ме за период (в дни)",
+    "label_server_context_path": "Базов URL",
+    "label_server_port": "Прот на сървъра",
+    "label_task_pool_size": "Нишки на задчи",
+    "label_thumbnail_size": "Размер на тъмбнейлове",
+    "requires_restart": "Изиква рестартиране за да има ефект",
     "server_settings": "Настройки на сървъра"
   },
   "settings_user": {
@@ -861,6 +940,9 @@
     "users": "Потребители"
   },
   "validation": {
+    "context_path": "Трябва да започва с '/', на не завършва с '/-_', и да съдържа само'/-_a-z0-9'",
+    "one_or_more": "Трябва да е 1 или повече",
+    "tcp_port": "Трябва да е между 1 и 65535",
     "zero_or_more": "Трябва да е 0 или повече"
   },
   "welcome": {
