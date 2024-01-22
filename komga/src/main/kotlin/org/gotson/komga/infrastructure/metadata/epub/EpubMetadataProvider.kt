@@ -103,7 +103,7 @@ class EpubMetadataProvider(
       val language = opf.selectFirst("metadata > dc|language")?.text()?.ifBlank { null }
       val genres =
         opf.select("metadata > dc|subject")
-          .mapNotNull { it?.text()?.trim()?.ifBlank { null } }
+          .mapNotNull { it.text().trim().ifBlank { null } }
           .toSet()
           .ifEmpty { null }
 
