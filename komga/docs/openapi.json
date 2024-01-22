@@ -9617,15 +9617,15 @@
           "analyzeDimensions": {
             "type": "boolean"
           },
-          "oneshotsDirectory": {
-            "type": "string"
-          },
           "scanDirectoryExclusions": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
             }
+          },
+          "oneshotsDirectory": {
+            "type": "string"
           }
         },
         "description": "Fields to update. You can omit fields you don\u0027t want to update."
@@ -10813,6 +10813,9 @@
               "type": "string"
             }
           },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
+          },
           "labelsAllow": {
             "uniqueItems": true,
             "type": "array",
@@ -10826,9 +10829,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "ageRestriction": {
-            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
           "sharedLibraries": {
             "$ref": "#/components/schemas/SharedLibrariesUpdateDto"

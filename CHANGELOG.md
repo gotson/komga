@@ -1,3 +1,78 @@
+# [1.10.2](https://github.com/gotson/komga/compare/1.10.1...1.10.2) (2024-01-22)
+## 🐛 Fixes
+**komga**
+- ignore missing epub resources ([22c2131](https://github.com/gotson/komga/commits/22c2131)), closes [#1386](https://github.com/gotson/komga/issues/1386)
+- add safeguards for malformed epub ([270a50c](https://github.com/gotson/komga/commits/270a50c)), closes [#1386](https://github.com/gotson/komga/issues/1386)
+
+## 🔄️ Changes
+**komga**
+- remove unnecessary null checks ([98f20cb](https://github.com/gotson/komga/commits/98f20cb))
+- replace deprecated TaskExecutorBuilder with ThreadPoolTaskExecutorBuilder ([864dba6](https://github.com/gotson/komga/commits/864dba6))
+- use lazy logging statement ([479aff2](https://github.com/gotson/komga/commits/479aff2))
+
+**unscoped**
+- ktlint format ([d9bba60](https://github.com/gotson/komga/commits/d9bba60))
+
+## 🛠  Build
+**docker**
+- use new Spring Boot jar launcher ([fbb2b6b](https://github.com/gotson/komga/commits/fbb2b6b))
+
+**release**
+- set conveyor consistency-checks to warn only ([966a5d3](https://github.com/gotson/komga/commits/966a5d3))
+- more knobs to handle broken releases ([e730b74](https://github.com/gotson/komga/commits/e730b74))
+
+**tests**
+- ignore komga-tray translations ([814b94d](https://github.com/gotson/komga/commits/814b94d))
+
+**unscoped**
+- bump Gradle from 8.4 to 8.5 ([c5b9baa](https://github.com/gotson/komga/commits/c5b9baa))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Japanese) ([9265c5a](https://github.com/gotson/komga/commits/9265c5a))
+- translated using Weblate (German) ([d420648](https://github.com/gotson/komga/commits/d420648))
+- added translation using Weblate (Galician) ([1c88058](https://github.com/gotson/komga/commits/1c88058))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([6b50968](https://github.com/gotson/komga/commits/6b50968))
+- translated using Weblate (Spanish) ([6c7dedd](https://github.com/gotson/komga/commits/6c7dedd))
+- translated using Weblate (Japanese) ([7e89f54](https://github.com/gotson/komga/commits/7e89f54))
+- translated using Weblate (Bulgarian) ([99d94da](https://github.com/gotson/komga/commits/99d94da))
+- translated using Weblate (Portuguese (Brazil)) ([ec988b4](https://github.com/gotson/komga/commits/ec988b4))
+- translated using Weblate (Galician) ([e2f0dc2](https://github.com/gotson/komga/commits/e2f0dc2))
+
+## ⚙️ Dependencies
+**komga**
+- bump Spring Boot to 3.2.2 ([3b25396](https://github.com/gotson/komga/commits/3b25396))
+- bump nu.studer.jooq to 9.0 ([f9aafae](https://github.com/gotson/komga/commits/f9aafae))
+- bump ksp to 1.9.21-1.0.16 ([fb2e05d](https://github.com/gotson/komga/commits/fb2e05d))
+- bump mockk to 1.13.9 ([24e095a](https://github.com/gotson/komga/commits/24e095a))
+- remove hawtio ([4128e96](https://github.com/gotson/komga/commits/4128e96))
+- bump archunit-junit5 to 1.2.1 ([76586eb](https://github.com/gotson/komga/commits/76586eb))
+- bump tsid-creator to 5.2.6 ([c49a80e](https://github.com/gotson/komga/commits/c49a80e))
+- bump twelvemonkeys.imageio to 3.10.1 ([c54261b](https://github.com/gotson/komga/commits/c54261b))
+- bump jsoup to 1.17.2 ([6de7a14](https://github.com/gotson/komga/commits/6de7a14))
+- bump commons-compress to 1.25.0 ([c1259f3](https://github.com/gotson/komga/commits/c1259f3))
+- bump icu4j to 74.2 ([a404ce6](https://github.com/gotson/komga/commits/a404ce6))
+- bump commons-io to 2.15.1 ([71a6a48](https://github.com/gotson/komga/commits/71a6a48))
+- bump commons-lang3 to 3.14.0 ([2af8293](https://github.com/gotson/komga/commits/2af8293))
+- bump commons-validator to 1.8.0 ([78971a5](https://github.com/gotson/komga/commits/78971a5))
+- bump sqlite-jdbc to 3.45.0.0 ([056101f](https://github.com/gotson/komga/commits/056101f))
+- bump lucene to 9.9.1 ([7f3cc9c](https://github.com/gotson/komga/commits/7f3cc9c))
+- bump org.apache.pdfbox:pdfbox from 2.0.28 to 3.0.1 ([38fcde9](https://github.com/gotson/komga/commits/38fcde9)), closes [#1334](https://github.com/gotson/komga/issues/1334)
+
+**komga-tray**
+- bump org.jetbrains.compose to 1.5.11 ([c7a695d](https://github.com/gotson/komga/commits/c7a695d))
+- bump conveyor.gradle.plugin to 1.8 ([b141f21](https://github.com/gotson/komga/commits/b141f21))
+
+**unscoped**
+- bump Kotlin to 1.9.21 ([b87bec8](https://github.com/gotson/komga/commits/b87bec8))
+- bump ktlint to 1.1.1 ([e01b324](https://github.com/gotson/komga/commits/e01b324))
+- bump org.jlleitschuh.gradle.ktlint to 12.1.0 ([80ed686](https://github.com/gotson/komga/commits/80ed686))
+- bump jreleaser to 1.10.0 ([446bb5a](https://github.com/gotson/komga/commits/446bb5a))
+- bump com.github.ben-manes.versions from 0.48.0 to 0.50.0 ([1daa4b8](https://github.com/gotson/komga/commits/1daa4b8))
+- bump io.github.microutils:kotlin-logging-jvm:3.0.5 to io.github.oshai:kotlin-logging-jvm:6.0.3 ([295bfaf](https://github.com/gotson/komga/commits/295bfaf))
+
 # [1.10.1](https://github.com/gotson/komga/compare/1.10.0...1.10.1) (2024-01-12)
 ## 🚀 Features
 **windows**
