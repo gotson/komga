@@ -17,8 +17,7 @@ plugins {
   id("org.flywaydb.flyway") version "9.7.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
-  id("com.google.devtools.ksp") version "1.8.22-1.0.11"
-
+  id("com.google.devtools.ksp") version "1.9.21-1.0.16"
   jacoco
 }
 
@@ -349,6 +348,12 @@ tasks.named<JooqGenerate>("generateTasksJooq") {
   sqliteMigrationDirs["tasks"]?.forEach { inputs.dir(it) }
   allInputsDeclared = true
   dependsOn("flywayMigrateTasks")
+}
+
+tasks.whenTaskAdded {
+  if (name == "kaptGenerateStubsKotlin") {
+    dependsOn("generateTasksJooq")
+  }
 }
 
 sourceSets {
