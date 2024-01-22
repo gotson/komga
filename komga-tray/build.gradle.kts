@@ -7,7 +7,7 @@ plugins {
   }
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
   id("org.jetbrains.compose") version "1.5.10"
-  id("dev.hydraulic.conveyor") version "1.6"
+  id("dev.hydraulic.conveyor") version "1.8"
   application
 }
 
