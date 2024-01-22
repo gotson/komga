@@ -6,15 +6,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.prefixIfNot
 
 plugins {
-  run {
-    kotlin("jvm")
-    kotlin("plugin.spring")
-    kotlin("kapt")
-  }
-  id("org.springframework.boot") version "3.1.2"
+  kotlin("jvm")
+  kotlin("plugin.spring")
+  kotlin("kapt")
+  id("org.springframework.boot") version "3.2.2"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
-  id("org.flywaydb.flyway") version "9.7.0"
   id("nu.studer.jooq") version "9.0"
+  id("org.flywaydb.flyway") version "9.22.3"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("com.google.devtools.ksp") version "1.9.21-1.0.16"
@@ -44,7 +42,7 @@ dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
 
-  api(platform("org.springframework.boot:spring-boot-dependencies:3.1.2"))
+  api(platform("org.springframework.boot:spring-boot-dependencies:3.2.2"))
 
   api("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -58,13 +56,13 @@ dependencies {
   implementation("com.github.gotson:spring-session-caffeine:2.0.0")
   implementation("org.springframework.data:spring-data-commons")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:3.1.2")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:3.2.2")
 
   implementation("org.flywaydb:flyway-core")
 
   api("io.github.oshai:kotlin-logging-jvm:6.0.3")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
@@ -133,9 +131,9 @@ dependencies {
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.37")
   kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.37")
-  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.1.2")
+  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.2.2")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:3.1.2")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:3.2.2")
 }
 
 val webui = "$rootDir/komga-webui"
@@ -301,7 +299,7 @@ task("flywayMigrateTasks", FlywayMigrateTask::class) {
 }
 
 jooq {
-  version = "3.18.4"
+  version = "3.18.7"
   configurations {
     create("main") {
       jooqConfiguration.apply {
