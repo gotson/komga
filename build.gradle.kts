@@ -147,16 +147,6 @@ jreleaser {
     }
   }
 
-  files {
-    active = Active.RELEASE
-    // workaround as glob doesn't seem to work https://github.com/jreleaser/jreleaser/issues/1466
-    file("./output/old-site").listFiles()?.forEach {
-      artifact {
-        path = it
-      }
-    }
-  }
-
   distributions {
     create("komga") {
       active = Active.RELEASE
