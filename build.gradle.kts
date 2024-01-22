@@ -13,7 +13,7 @@ plugins {
     kotlin("kapt") version kotlinVersion
   }
   id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
-  id("com.github.ben-manes.versions") version "0.48.0"
+  id("com.github.ben-manes.versions") version "0.50.0"
   id("org.jreleaser") version "1.9.0"
 }
 
