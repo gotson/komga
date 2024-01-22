@@ -95,9 +95,9 @@ dependencies {
   implementation("org.jsoup:jsoup:1.17.2")
 
   implementation("net.coobird:thumbnailator:0.4.20")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.10.0")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.10.0")
-  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.10.0")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.10.1")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.10.1")
+  runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.10.1")
   runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.6.2")
   runtimeOnly("com.github.gotson.nightmonkeys:imageio-heif:0.6.2")
   runtimeOnly("com.github.gotson.nightmonkeys:imageio-webp:0.6.2")
