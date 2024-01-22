@@ -14,7 +14,7 @@ plugins {
   }
   id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
   id("com.github.ben-manes.versions") version "0.50.0"
-  id("org.jreleaser") version "1.9.0"
+  id("org.jreleaser") version "1.10.0"
 }
 
 fun isNonStable(version: String): Boolean {
