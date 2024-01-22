@@ -44,7 +44,7 @@ allprojects {
   }
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version = "0.48.2"
+    version = "1.1.1"
   }
 }
 
