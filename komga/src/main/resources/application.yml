@@ -11,6 +11,7 @@ logging:
     name: \${komga.config-dir}/logs/komga.log
   level:
     org.apache.activemq.audit: WARN
+    org.apache.fontbox.cff.Type1CharString: ERROR
 
 komga:
   database:

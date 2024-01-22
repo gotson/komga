@@ -1,9 +1,8 @@
 package org.gotson.komga.infrastructure.mediacontainer.pdf
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.apache.pdfbox.io.MemoryUsageSetting
+import org.apache.pdfbox.Loader
 import org.apache.pdfbox.multipdf.PageExtractor
-import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.rendering.ImageType.RGB
 import org.apache.pdfbox.rendering.PDFRenderer
@@ -29,7 +28,7 @@ class PdfExtractor(
   private val resolution: Float,
 ) {
   fun getPages(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
-    PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
+    Loader.loadPDF(path.toFile()).use { pdf ->
       (0 until pdf.numberOfPages).map { index ->
         val page = pdf.getPage(index)
         val dimension = if (analyzeDimensions) Dimension(page.cropBox.width.roundToInt(), page.cropBox.height.roundToInt()) else null
@@ -38,7 +37,7 @@ class PdfExtractor(
     }
 
   fun getPageContentAsImage(path: Path, pageNumber: Int): TypedBytes {
-    PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
+    Loader.loadPDF(path.toFile()).use { pdf ->
       val page = pdf.getPage(pageNumber - 1)
       val image = PDFRenderer(pdf).renderImage(pageNumber - 1, page.getScale(), RGB)
       val bytes = ByteArrayOutputStream().use { out ->
@@ -50,7 +49,7 @@ class PdfExtractor(
   }
 
   fun getPageContentAsPdf(path: Path, pageNumber: Int): TypedBytes {
-    PDDocument.load(path.toFile(), MemoryUsageSetting.setupTempFileOnly()).use { pdf ->
+    Loader.loadPDF(path.toFile()).use { pdf ->
       val bytes = ByteArrayOutputStream().use { out ->
         PageExtractor(pdf, pageNumber, pageNumber).extract().save(out)
         out.toByteArray()
