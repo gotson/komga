@@ -7,7 +7,7 @@ import kotlin.io.path.exists
 
 plugins {
   run {
-    val kotlinVersion = "1.8.22"
+    val kotlinVersion = "1.9.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
