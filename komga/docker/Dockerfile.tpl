@@ -45,6 +45,6 @@ COPY --from=builder application/ ./
 ENV KOMGA_CONFIGDIR="/config"
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/x86_64-linux-gnu"
-ENTRYPOINT ["java", "--enable-preview", "--enable-native-access=ALL-UNNAMED", "org.springframework.boot.loader.JarLauncher", "--spring.config.additional-location=file:/config/"]
+ENTRYPOINT ["java", "--enable-preview", "--enable-native-access=ALL-UNNAMED", "org.springframework.boot.loader.launch.JarLauncher", "--spring.config.additional-location=file:/config/"]
 EXPOSE 25600
 LABEL org.opencontainers.image.source="https://github.com/gotson/komga"
