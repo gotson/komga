@@ -12,7 +12,7 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
+  id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
   id("com.github.ben-manes.versions") version "0.50.0"
   id("org.jreleaser") version "1.10.0"
 }
