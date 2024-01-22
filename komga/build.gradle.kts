@@ -72,7 +72,7 @@ dependencies {
 
   implementation("commons-io:commons-io:2.15.0")
   implementation("org.apache.commons:commons-lang3:3.13.0")
-  implementation("commons-validator:commons-validator:1.7")
+  implementation("commons-validator:commons-validator:1.8.0")
 
   run {
     val luceneVersion = "9.9.1"
