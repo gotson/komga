@@ -13,8 +13,8 @@ plugins {
   }
   id("org.springframework.boot") version "3.1.2"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
-  id("nu.studer.jooq") version "8.2.1"
   id("org.flywaydb.flyway") version "9.7.0"
+  id("nu.studer.jooq") version "9.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("com.google.devtools.ksp") version "1.9.21-1.0.16"
