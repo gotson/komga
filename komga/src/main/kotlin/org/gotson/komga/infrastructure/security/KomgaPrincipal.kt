@@ -14,7 +14,6 @@ class KomgaPrincipal(
   val oAuth2User: OAuth2User? = null,
   val oidcUser: OidcUser? = null,
 ) : UserDetails, OAuth2User, OidcUser {
-
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
     user.roles
       .map { SimpleGrantedAuthority("ROLE_$it") }

@@ -7,7 +7,6 @@ import java.net.URI
 data class OpdsAuthor(
   @JacksonXmlProperty(namespace = ATOM)
   val name: String,
-
   @JsonInclude(JsonInclude.Include.NON_NULL)
   @JacksonXmlProperty(namespace = ATOM)
   val uri: URI? = null,

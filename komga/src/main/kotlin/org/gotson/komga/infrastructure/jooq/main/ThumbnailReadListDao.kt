@@ -40,17 +40,19 @@ class ThumbnailReadListDao(
       .firstOrNull()
 
   override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailReadList> {
-    val query = dsl.selectFrom(tr)
-      .where(tr.FILE_SIZE.eq(0))
-      .or(tr.MEDIA_TYPE.eq(""))
-      .or(tr.WIDTH.eq(0))
-      .or(tr.HEIGHT.eq(0))
+    val query =
+      dsl.selectFrom(tr)
+        .where(tr.FILE_SIZE.eq(0))
+        .or(tr.MEDIA_TYPE.eq(""))
+        .or(tr.WIDTH.eq(0))
+        .or(tr.HEIGHT.eq(0))
 
     val count = query.count()
-    val items = query
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(tr)
-      .map { it.toDomain() }
+    val items =
+      query
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(tr)
+        .map { it.toDomain() }
 
     return PageImpl(items, pageable, count.toLong())
   }

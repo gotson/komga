@@ -37,7 +37,6 @@ class TransientBooksController(
   private val transientBookRepository: TransientBookRepository,
   private val bookAnalyzer: BookAnalyzer,
 ) {
-
   @PostMapping
   fun scanForTransientBooks(
     @RequestBody request: ScanRequestDto,
@@ -53,9 +52,10 @@ class TransientBooksController(
   @PostMapping("{id}/analyze")
   fun analyze(
     @PathVariable id: String,
-  ): TransientBookDto = transientBookRepository.findByIdOrNull(id)?.let {
-    transientBookLifecycle.analyzeAndPersist(it).toDto()
-  } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  ): TransientBookDto =
+    transientBookRepository.findByIdOrNull(id)?.let {
+      transientBookLifecycle.analyzeAndPersist(it).toDto()
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
     value = ["{id}/pages/{pageNumber}"],
@@ -81,6 +81,7 @@ class TransientBooksController(
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
   private fun TransientBook.toDto(): TransientBookDto {
     val pages = if (media.profile == MediaProfile.PDF) bookAnalyzer.getPdfPagesDynamic(media) else media.pages
     return TransientBookDto(
@@ -91,16 +92,17 @@ class TransientBooksController(
       sizeBytes = book.fileSize,
       status = media.status.toString(),
       mediaType = media.mediaType ?: "",
-      pages = pages.mapIndexed { index, bookPage ->
-        PageDto(
-          number = index + 1,
-          fileName = bookPage.fileName,
-          mediaType = bookPage.mediaType,
-          width = bookPage.dimension?.width,
-          height = bookPage.dimension?.height,
-          sizeBytes = bookPage.fileSize,
-        )
-      },
+      pages =
+        pages.mapIndexed { index, bookPage ->
+          PageDto(
+            number = index + 1,
+            fileName = bookPage.fileName,
+            mediaType = bookPage.mediaType,
+            width = bookPage.dimension?.width,
+            height = bookPage.dimension?.height,
+            sizeBytes = bookPage.fileSize,
+          )
+        },
       files = media.files.map { it.fileName },
       comment = media.comment ?: "",
       number = metadata.number,

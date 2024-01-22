@@ -88,7 +88,8 @@ class SettingsControllerTest(
     val rememberMeKey = komgaSettingsProvider.rememberMeKey
 
     //language=JSON
-    val jsonString = """
+    val jsonString =
+      """
       {
         "deleteEmptyCollections": false,
         "rememberMeDurationDays": 15,
@@ -98,7 +99,7 @@ class SettingsControllerTest(
         "serverPort": 5678,
         "serverContextPath": "/komga-hyphen/subpath123"
       }
-    """.trimIndent()
+      """.trimIndent()
 
     mockMvc.patch("/api/v1/settings") {
       contentType = MediaType.APPLICATION_JSON
@@ -132,7 +133,8 @@ class SettingsControllerTest(
     val rememberMeKey = komgaSettingsProvider.rememberMeKey
 
     //language=JSON
-    val jsonString = """
+    val jsonString =
+      """
       {
         "deleteEmptyCollections": null,
         "rememberMeDurationDays": null,
@@ -142,7 +144,7 @@ class SettingsControllerTest(
         "serverPort": null,
         "serverContextPath": null
       }
-    """.trimIndent()
+      """.trimIndent()
 
     mockMvc.patch("/api/v1/settings") {
       contentType = MediaType.APPLICATION_JSON

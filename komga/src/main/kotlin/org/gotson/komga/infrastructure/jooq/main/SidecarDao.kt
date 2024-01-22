@@ -25,7 +25,10 @@ class SidecarDao(
   override fun findAll(): Collection<SidecarStored> =
     dsl.selectFrom(sc).fetch().map { it.toDomain() }
 
-  override fun save(libraryId: String, sidecar: Sidecar) {
+  override fun save(
+    libraryId: String,
+    sidecar: Sidecar,
+  ) {
     dsl.insertInto(sc)
       .values(
         sidecar.url.toString(),
@@ -41,7 +44,10 @@ class SidecarDao(
   }
 
   @Transactional
-  override fun deleteByLibraryIdAndUrls(libraryId: String, urls: Collection<URL>) {
+  override fun deleteByLibraryIdAndUrls(
+    libraryId: String,
+    urls: Collection<URL>,
+  ) {
     dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
     dsl.deleteFrom(sc)

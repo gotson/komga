@@ -29,7 +29,6 @@ import kotlin.io.path.toPath
 class BookAnalyzerTest(
   @Autowired private val komgaProperties: KomgaProperties,
 ) {
-
   @SpykBean
   private lateinit var bookAnalyzer: BookAnalyzer
 
@@ -207,9 +206,10 @@ class BookAnalyzerTest(
 
     val mediaType = "image/${directory.fileName.extension}"
 
-    val hashes = files.map {
-      bookAnalyzer.hashPage(BookPage(it.name, mediaType = mediaType), it.inputStream().readBytes())
-    }
+    val hashes =
+      files.map {
+        bookAnalyzer.hashPage(BookPage(it.name, mediaType = mediaType), it.inputStream().readBytes())
+      }
 
     assertThat(hashes.first()).isEqualTo(hashes.last())
   }

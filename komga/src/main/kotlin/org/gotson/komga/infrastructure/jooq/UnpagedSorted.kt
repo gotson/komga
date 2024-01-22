@@ -6,7 +6,6 @@ import org.springframework.data.domain.Sort
 class UnpagedSorted(
   private val sort: Sort,
 ) : Pageable {
-
   override fun getPageNumber(): Int {
     throw UnsupportedOperationException()
   }

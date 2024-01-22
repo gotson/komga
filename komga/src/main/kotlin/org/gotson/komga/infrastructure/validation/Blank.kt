@@ -15,8 +15,10 @@ annotation class Blank(
 )
 
 class BlankValidator : ConstraintValidator<Blank, String> {
-
-  override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
+  override fun isValid(
+    value: String?,
+    context: ConstraintValidatorContext?,
+  ): Boolean {
     if (value == null) return false
     return value.isBlank()
   }

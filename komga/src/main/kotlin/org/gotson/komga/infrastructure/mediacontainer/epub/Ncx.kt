@@ -15,13 +15,20 @@ fun EpubPackage.getNcxResource(): ResourceContent? =
     zip.getInputStream(zip.getEntry(href)).use { ResourceContent(Path(href), it.readBytes().decodeToString()) }
   }
 
-fun processNcx(document: ResourceContent, navType: Epub2Nav): List<EpubTocEntry> =
+fun processNcx(
+  document: ResourceContent,
+  navType: Epub2Nav,
+): List<EpubTocEntry> =
   Jsoup.parse(document.content)
     .select("${navType.level1} > ${navType.level2}")
     .toList()
     .mapNotNull { ncxElementToTocEntry(navType, it, document.path.parent) }
 
-private fun ncxElementToTocEntry(navType: Epub2Nav, element: Element, ncxDir: Path?): EpubTocEntry? {
+private fun ncxElementToTocEntry(
+  navType: Epub2Nav,
+  element: Element,
+  ncxDir: Path?,
+): EpubTocEntry? {
   val title = element.selectFirst("navLabel > text")?.text()
   val href = element.selectFirst("content")?.attr("src")?.let { UriUtils.decode(it, Charsets.UTF_8) }
   val children = element.select(":root > ${navType.level2}").toList().mapNotNull { ncxElementToTocEntry(navType, it, ncxDir) }

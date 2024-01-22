@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional
 class HistoricalEventDao(
   private val dsl: DSLContext,
 ) : HistoricalEventRepository {
-
   private val e = Tables.HISTORICAL_EVENT
   private val ep = Tables.HISTORICAL_EVENT_PROPERTIES
 

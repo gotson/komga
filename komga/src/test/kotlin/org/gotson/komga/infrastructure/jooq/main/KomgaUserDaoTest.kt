@@ -21,7 +21,6 @@ class KomgaUserDaoTest(
   @Autowired private val komgaUserDao: KomgaUserDao,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val library = makeLibrary()
 
   @BeforeAll
@@ -43,13 +42,14 @@ class KomgaUserDaoTest(
   @Test
   fun `given a user when saving it then it is persisted`() {
     val now = LocalDateTime.now()
-    val user = KomgaUser(
-      email = "user@example.org",
-      password = "password",
-      roleAdmin = false,
-      sharedLibrariesIds = setOf(library.id),
-      sharedAllLibraries = false,
-    )
+    val user =
+      KomgaUser(
+        email = "user@example.org",
+        password = "password",
+        roleAdmin = false,
+        sharedLibrariesIds = setOf(library.id),
+        sharedAllLibraries = false,
+      )
 
     komgaUserDao.insert(user)
     val created = komgaUserDao.findByIdOrNull(user.id)!!
@@ -71,18 +71,20 @@ class KomgaUserDaoTest(
 
   @Test
   fun `given existing user when modifying and saving it then it is persisted`() {
-    val user = KomgaUser(
-      email = "user@example.org",
-      password = "password",
-      roleAdmin = false,
-      sharedLibrariesIds = setOf(library.id),
-      sharedAllLibraries = false,
-      restrictions = ContentRestrictions(
-        ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
-        labelsAllow = setOf("allow"),
-        labelsExclude = setOf("exclude"),
-      ),
-    )
+    val user =
+      KomgaUser(
+        email = "user@example.org",
+        password = "password",
+        roleAdmin = false,
+        sharedLibrariesIds = setOf(library.id),
+        sharedAllLibraries = false,
+        restrictions =
+          ContentRestrictions(
+            ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
+            labelsAllow = setOf("allow"),
+            labelsExclude = setOf("exclude"),
+          ),
+      )
 
     komgaUserDao.insert(user)
     val created = komgaUserDao.findByIdOrNull(user.id)!!
@@ -94,18 +96,20 @@ class KomgaUserDaoTest(
       assertThat(restrictions.labelsExclude).containsExactly("exclude")
     }
 
-    val modified = created.copy(
-      email = "user2@example.org",
-      password = "password2",
-      roleAdmin = true,
-      sharedLibrariesIds = emptySet(),
-      sharedAllLibraries = true,
-      restrictions = ContentRestrictions(
-        ageRestriction = AgeRestriction(16, AllowExclude.EXCLUDE),
-        labelsAllow = setOf("allow2"),
-        labelsExclude = setOf("exclude2"),
-      ),
-    )
+    val modified =
+      created.copy(
+        email = "user2@example.org",
+        password = "password2",
+        roleAdmin = true,
+        sharedLibrariesIds = emptySet(),
+        sharedAllLibraries = true,
+        restrictions =
+          ContentRestrictions(
+            ageRestriction = AgeRestriction(16, AllowExclude.EXCLUDE),
+            labelsAllow = setOf("allow2"),
+            labelsExclude = setOf("exclude2"),
+          ),
+      )
     val modifiedDate = LocalDateTime.now()
     komgaUserDao.update(modified)
     val modifiedSaved = komgaUserDao.findByIdOrNull(modified.id)!!

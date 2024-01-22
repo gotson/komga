@@ -60,8 +60,13 @@ class BookImporter(
   private val taskEmitter: TaskEmitter,
   private val historicalEventRepository: HistoricalEventRepository,
 ) {
-
-  fun importBook(sourceFile: Path, series: Series, copyMode: CopyMode, destinationName: String? = null, upgradeBookId: String? = null): Book {
+  fun importBook(
+    sourceFile: Path,
+    series: Series,
+    copyMode: CopyMode,
+    destinationName: String? = null,
+    upgradeBookId: String? = null,
+  ): Book {
     try {
       if (sourceFile.notExists()) throw FileNotFoundException("File not found: $sourceFile").withCode("ERR_1018")
       if (series.oneshot) throw IllegalArgumentException("Destination series is oneshot")
@@ -70,23 +75,31 @@ class BookImporter(
         if (sourceFile.startsWith(library.path)) throw PathContainedInPath("Cannot import file that is part of an existing library", "ERR_1019")
       }
 
-      val destFile = series.path.resolve(
-        if (destinationName != null) Paths.get("$destinationName.${sourceFile.extension}").name
-        else sourceFile.name,
-      )
-      val sidecars = fileSystemScanner.scanBookSidecars(sourceFile).associateWith {
+      val destFile =
         series.path.resolve(
-          if (destinationName != null) it.url.toURI().toPath().name.replace(sourceFile.nameWithoutExtension, destinationName, true)
-          else it.url.toURI().toPath().name,
+          if (destinationName != null)
+            Paths.get("$destinationName.${sourceFile.extension}").name
+          else
+            sourceFile.name,
         )
-      }
+      val sidecars =
+        fileSystemScanner.scanBookSidecars(sourceFile).associateWith {
+          series.path.resolve(
+            if (destinationName != null)
+              it.url.toURI().toPath().name.replace(sourceFile.nameWithoutExtension, destinationName, true)
+            else
+              it.url.toURI().toPath().name,
+          )
+        }
 
       val bookToUpgrade =
         if (upgradeBookId != null) {
           bookRepository.findByIdOrNull(upgradeBookId)?.also {
             if (it.seriesId != series.id) throw IllegalArgumentException("Book to upgrade ($upgradeBookId) does not belong to series: $series").withCode("ERR_1020")
           }
-        } else null
+        } else {
+          null
+        }
 
       var deletedUpgradedFile = false
       when {
@@ -135,28 +148,30 @@ class BookImporter(
           }
         }
 
-        CopyMode.HARDLINK -> try {
-          logger.info { "Hardlink file $sourceFile to $destFile" }
-          Files.createLink(destFile, sourceFile)
-          sidecars.forEach {
-            it.key.url.toURI().toPath().let { sourcePath ->
-              logger.info { "Hardlink file $sourcePath to ${it.value}" }
-              it.value.deleteIfExists()
-              Files.createLink(it.value, sourcePath)
+        CopyMode.HARDLINK ->
+          try {
+            logger.info { "Hardlink file $sourceFile to $destFile" }
+            Files.createLink(destFile, sourceFile)
+            sidecars.forEach {
+              it.key.url.toURI().toPath().let { sourcePath ->
+                logger.info { "Hardlink file $sourcePath to ${it.value}" }
+                it.value.deleteIfExists()
+                Files.createLink(it.value, sourcePath)
+              }
+            }
+          } catch (e: Exception) {
+            logger.warn(e) { "Filesystem does not support hardlinks, copying instead" }
+            sourceFile.copyTo(destFile)
+            sidecars.forEach {
+              it.key.url.toURI().toPath().copyTo(it.value, true)
             }
           }
-        } catch (e: Exception) {
-          logger.warn(e) { "Filesystem does not support hardlinks, copying instead" }
-          sourceFile.copyTo(destFile)
-          sidecars.forEach {
-            it.key.url.toURI().toPath().copyTo(it.value, true)
-          }
-        }
       }
 
-      val importedBook = fileSystemScanner.scanFile(destFile)
-        ?.copy(libraryId = series.libraryId)
-        ?: throw IllegalStateException("Newly imported book could not be scanned: $destFile").withCode("ERR_1022")
+      val importedBook =
+        fileSystemScanner.scanFile(destFile)
+          ?.copy(libraryId = series.libraryId)
+          ?: throw IllegalStateException("Newly imported book could not be scanned: $destFile").withCode("ERR_1022")
 
       seriesLifecycle.addBooks(series, listOf(importedBook))
 
@@ -208,11 +223,12 @@ class BookImporter(
           Sidecar.Type.ARTWORK -> taskEmitter.refreshBookLocalArtwork(importedBook)
           Sidecar.Type.METADATA -> taskEmitter.refreshBookMetadata(importedBook)
         }
-        val destSidecar = sourceSidecar.copy(
-          url = destPath.toUri().toURL(),
-          parentUrl = destPath.parent.toUri().toURL(),
-          lastModifiedTime = destPath.readAttributes<BasicFileAttributes>().getUpdatedTime(),
-        )
+        val destSidecar =
+          sourceSidecar.copy(
+            url = destPath.toUri().toURL(),
+            parentUrl = destPath.parent.toUri().toURL(),
+            lastModifiedTime = destPath.readAttributes<BasicFileAttributes>().getUpdatedTime(),
+          )
         sidecarRepository.save(importedBook.libraryId, destSidecar)
       }
 

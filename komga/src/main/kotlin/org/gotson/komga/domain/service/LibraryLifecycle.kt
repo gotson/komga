@@ -30,7 +30,6 @@ class LibraryLifecycle(
   private val transactionTemplate: TransactionTemplate,
   private val libraryScanScheduler: LibraryScanScheduler,
 ) {
-
   @Throws(
     FileNotFoundException::class,
     DirectoryNotFoundException::class,
@@ -70,7 +69,10 @@ class LibraryLifecycle(
     eventPublisher.publishEvent(DomainEvent.LibraryUpdated(toUpdate))
   }
 
-  private fun checkLibraryShouldRescan(existing: Library, updated: Library): Boolean {
+  private fun checkLibraryShouldRescan(
+    existing: Library,
+    updated: Library,
+  ): Boolean {
     if (existing.root != updated.root) return true
     if (existing.oneshotsDirectory != updated.oneshotsDirectory) return true
     if (existing.scanCbx != updated.scanCbx) return true
@@ -81,7 +83,10 @@ class LibraryLifecycle(
     return false
   }
 
-  private fun checkLibraryValidity(library: Library, existing: Collection<Library>) {
+  private fun checkLibraryValidity(
+    library: Library,
+    existing: Collection<Library>,
+  ) {
     if (!Files.exists(library.path))
       throw FileNotFoundException("Library root folder does not exist: ${library.root}")
 

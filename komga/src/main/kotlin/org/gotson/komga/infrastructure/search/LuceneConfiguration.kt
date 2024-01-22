@@ -14,7 +14,6 @@ import java.nio.file.Paths
 class LuceneConfiguration(
   private val komgaProperties: KomgaProperties,
 ) {
-
   @Bean
   fun indexAnalyzer() =
     with(komgaProperties.lucene.indexAnalyzer) {

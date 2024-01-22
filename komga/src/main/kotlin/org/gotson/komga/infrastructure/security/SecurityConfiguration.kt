@@ -43,7 +43,6 @@ class SecurityConfiguration(
   private val sessionRegistry: SessionRegistry,
   clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) {
-
   private val oauth2Enabled = clientRegistrationRepository != null
 
   @Bean
@@ -115,10 +114,11 @@ class SecurityConfiguration(
         oauth2.loginPage("/login")
           .defaultSuccessUrl("/?server_redirect=Y", true)
           .failureHandler { request, response, exception ->
-            val errorMessage = when (exception) {
-              is OAuth2AuthenticationException -> exception.error.errorCode
-              else -> exception.message
-            }
+            val errorMessage =
+              when (exception) {
+                is OAuth2AuthenticationException -> exception.error.errorCode
+                else -> exception.message
+              }
             val url = "/login?server_redirect=Y&error=$errorMessage"
             SimpleUrlAuthenticationFailureHandler(url).onAuthenticationFailure(request, response, exception)
           }

@@ -27,7 +27,6 @@ class LocalArtworkProvider(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
 ) : SidecarSeriesConsumer, SidecarBookConsumer {
-
   val supportedExtensions = listOf("png", "jpeg", "jpg", "tbn", "webp")
   val supportedSeriesFiles = listOf("cover", "default", "folder", "poster", "series")
 
@@ -93,7 +92,10 @@ class LocalArtworkProvider(
   override fun getSidecarBookPrefilter(): List<Regex> =
     supportedExtensions.map { ext -> ".*(-\\d+)?\\.$ext".toRegex(RegexOption.IGNORE_CASE) }
 
-  override fun isSidecarBookMatch(basename: String, sidecar: String): Boolean =
+  override fun isSidecarBookMatch(
+    basename: String,
+    sidecar: String,
+  ): Boolean =
     "${Regex.escape(basename)}(-\\d+)?".toRegex(RegexOption.IGNORE_CASE).matches(FilenameUtils.getBaseName(sidecar))
 
   override fun getSidecarSeriesType(): Sidecar.Type = Sidecar.Type.ARTWORK

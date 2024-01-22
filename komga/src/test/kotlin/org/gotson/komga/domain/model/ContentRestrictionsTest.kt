@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ContentRestrictionsTest {
-
   @Test
   fun `given no arguments when creating restriction then all restrictions are null`() {
     val restriction = ContentRestrictions()
@@ -40,10 +39,11 @@ class ContentRestrictionsTest {
 
   @Test
   fun `given empty labels when creating restriction then label restrictions are normalized`() {
-    val restriction = ContentRestrictions(
-      labelsAllow = setOf("", " "),
-      labelsExclude = setOf("", " "),
-    )
+    val restriction =
+      ContentRestrictions(
+        labelsAllow = setOf("", " "),
+        labelsExclude = setOf("", " "),
+      )
 
     assertThat(restriction.labelsAllow).isEmpty()
     assertThat(restriction.labelsExclude).isEmpty()
@@ -51,10 +51,11 @@ class ContentRestrictionsTest {
 
   @Test
   fun `given labels with duplicate values when creating restriction then label restrictions are normalized`() {
-    val restriction = ContentRestrictions(
-      labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
-      labelsExclude = setOf("c", "d", "D", "d ", "d", " D "),
-    )
+    val restriction =
+      ContentRestrictions(
+        labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
+        labelsExclude = setOf("c", "d", "D", "d ", "d", " D "),
+      )
 
     assertThat(restriction.labelsAllow).containsExactlyInAnyOrder("a", "b")
     assertThat(restriction.labelsExclude).containsExactlyInAnyOrder("c", "d")
@@ -62,10 +63,11 @@ class ContentRestrictionsTest {
 
   @Test
   fun `given labels with same value in both allow and exclude when creating restriction then exclude labels are removed from allow labels`() {
-    val restriction = ContentRestrictions(
-      labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
-      labelsExclude = setOf(" A ", "d", "D", "d ", "d", " D "),
-    )
+    val restriction =
+      ContentRestrictions(
+        labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
+        labelsExclude = setOf(" A ", "d", "D", "d ", "d", " D "),
+      )
 
     assertThat(restriction.labelsAllow).containsExactlyInAnyOrder("b")
     assertThat(restriction.labelsExclude).containsExactlyInAnyOrder("a", "d")
@@ -73,10 +75,11 @@ class ContentRestrictionsTest {
 
   @Test
   fun `given allow labels with all values in exclude labels when creating restriction then allow labels is null`() {
-    val restriction = ContentRestrictions(
-      labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
-      labelsExclude = setOf(" A ", "b", "B", "B ", "b", " B "),
-    )
+    val restriction =
+      ContentRestrictions(
+        labelsAllow = setOf("a", "b", "B", "b ", "b", " B "),
+        labelsExclude = setOf(" A ", "b", "B", "B ", "b", " B "),
+      )
 
     assertThat(restriction.labelsAllow).isEmpty()
     assertThat(restriction.labelsExclude).containsExactlyInAnyOrder("a", "b")

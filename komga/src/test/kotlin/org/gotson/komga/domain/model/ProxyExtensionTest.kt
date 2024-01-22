@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ProxyExtensionTest {
-
   @Test
   fun `when creating proxy of MediaExtension class then it is created`() {
     val proxy = ProxyExtension.of(MediaExtensionEpub::class.qualifiedName)

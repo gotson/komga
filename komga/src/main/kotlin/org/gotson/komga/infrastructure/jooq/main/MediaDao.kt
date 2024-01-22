@@ -34,24 +34,24 @@ class MediaDao(
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val mapper: ObjectMapper,
 ) : MediaRepository {
-
   private val m = Tables.MEDIA
   private val p = Tables.MEDIA_PAGE
   private val f = Tables.MEDIA_FILE
   private val b = Tables.BOOK
 
-  private val groupFields = arrayOf(
-    m.BOOK_ID,
-    m.MEDIA_TYPE,
-    m.STATUS,
-    m.CREATED_DATE,
-    m.LAST_MODIFIED_DATE,
-    m.COMMENT,
-    m.PAGE_COUNT,
-    m.EXTENSION_CLASS,
-    m.EPUB_DIVINA_COMPATIBLE,
-    *p.fields(),
-  )
+  private val groupFields =
+    arrayOf(
+      m.BOOK_ID,
+      m.MEDIA_TYPE,
+      m.STATUS,
+      m.CREATED_DATE,
+      m.LAST_MODIFIED_DATE,
+      m.COMMENT,
+      m.PAGE_COUNT,
+      m.EXTENSION_CLASS,
+      m.EPUB_DIVINA_COMPATIBLE,
+      *p.fields(),
+    )
 
   override fun findById(bookId: String): Media =
     find(dsl, bookId)!!
@@ -66,7 +66,11 @@ class MediaDao(
       .fetchOne()
       ?.map { deserializeExtension(it.get(m.EXTENSION_CLASS), it.get(m.EXTENSION_VALUE_BLOB)) }
 
-  override fun findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(libraryId: String, mediaTypes: Collection<String>, pageHashing: Int): Collection<String> {
+  override fun findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(
+    libraryId: String,
+    mediaTypes: Collection<String>,
+    pageHashing: Int,
+  ): Collection<String> {
     val pagesCount = DSL.count(p.BOOK_ID)
     val hashedCount = DSL.sum(DSL.`when`(p.FILE_HASH.eq(""), 0).otherwise(1)).cast(Int::class.java)
     val neededHash = pageHashing * 2
@@ -99,7 +103,10 @@ class MediaDao(
       .fetch()
       .map { Pair(it[m.BOOK_ID], it[m.PAGE_COUNT]) }
 
-  private fun find(dsl: DSLContext, bookId: String): Media? =
+  private fun find(
+    dsl: DSLContext,
+    bookId: String,
+  ): Media? =
     dsl.select(*groupFields)
       .from(m)
       .leftJoin(p).on(m.BOOK_ID.eq(p.BOOK_ID))
@@ -110,9 +117,10 @@ class MediaDao(
         { it.into(m) },
         { it.into(p) },
       ).map { (mr, pr) ->
-        val files = dsl.selectFrom(f)
-          .where(f.BOOK_ID.eq(bookId))
-          .fetchInto(f)
+        val files =
+          dsl.selectFrom(f)
+            .where(f.BOOK_ID.eq(bookId))
+            .fetchInto(f)
 
         mr.toDomain(pr.filterNot { it.bookId == null }.map { it.toDomain() }, files.map { it.toDomain() })
       }.firstOrNull()
@@ -271,7 +279,10 @@ class MediaDao(
 
   override fun count(): Long = dsl.fetchCount(m).toLong()
 
-  private fun MediaRecord.toDomain(pages: List<BookPage>, files: List<MediaFile>) =
+  private fun MediaRecord.toDomain(
+    pages: List<BookPage>,
+    files: List<MediaFile>,
+  ) =
     Media(
       status = Media.Status.valueOf(status),
       mediaType = mediaType,
@@ -286,7 +297,10 @@ class MediaDao(
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
 
-  fun deserializeExtension(extensionClass: String?, extensionBlob: ByteArray?): MediaExtension? {
+  fun deserializeExtension(
+    extensionClass: String?,
+    extensionBlob: ByteArray?,
+  ): MediaExtension? {
     if (extensionClass == null || extensionBlob == null) return null
     return try {
       GZIPInputStream(extensionBlob.inputStream()).use { gz ->

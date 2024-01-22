@@ -35,16 +35,20 @@ class BookDao(
   private val d = Tables.BOOK_METADATA
   private val r = Tables.READ_PROGRESS
 
-  private val sorts = mapOf(
-    "createdDate" to b.CREATED_DATE,
-    "seriesId" to b.SERIES_ID,
-    "number" to b.NUMBER,
-  )
+  private val sorts =
+    mapOf(
+      "createdDate" to b.CREATED_DATE,
+      "seriesId" to b.SERIES_ID,
+      "number" to b.NUMBER,
+    )
 
   override fun findByIdOrNull(bookId: String): Book? =
     findByIdOrNull(dsl, bookId)
 
-  override fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book? =
+  override fun findNotDeletedByLibraryIdAndUrlOrNull(
+    libraryId: String,
+    url: URL,
+  ): Book? =
     dsl.selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.eq(url.toString())))
       .and(b.DELETED_DATE.isNull)
@@ -53,7 +57,10 @@ class BookDao(
       .firstOrNull()
       ?.toDomain()
 
-  private fun findByIdOrNull(dsl: DSLContext, bookId: String): Book? =
+  private fun findByIdOrNull(
+    dsl: DSLContext,
+    bookId: String,
+  ): Book? =
     dsl.selectFrom(b)
       .where(b.ID.eq(bookId))
       .fetchOneInto(b)
@@ -72,7 +79,10 @@ class BookDao(
       .map { it.toDomain() }
 
   @Transactional
-  override fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Book> {
+  override fun findAllNotDeletedByLibraryIdAndUrlNotIn(
+    libraryId: String,
+    urls: Collection<URL>,
+  ): Collection<Book> {
     dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
     return dsl.selectFrom(b)
@@ -103,33 +113,40 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
-  override fun findAll(bookSearch: BookSearch, pageable: Pageable): Page<Book> {
+  override fun findAll(
+    bookSearch: BookSearch,
+    pageable: Pageable,
+  ): Page<Book> {
     val conditions = bookSearch.toCondition()
 
-    val count = dsl.selectCount()
-      .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-      .where(conditions)
-      .fetchOne(0, Long::class.java) ?: 0
+    val count =
+      dsl.selectCount()
+        .from(b)
+        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+        .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+        .where(conditions)
+        .fetchOne(0, Long::class.java) ?: 0
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val items = dsl.select(*b.fields())
-      .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-      .where(conditions)
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(b)
-      .map { it.toDomain() }
+    val items =
+      dsl.select(*b.fields())
+        .from(b)
+        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+        .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+        .where(conditions)
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(b)
+        .map { it.toDomain() }
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
+      if (pageable.isPaged)
+        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else
+        PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
       count,
     )
   }
@@ -164,7 +181,10 @@ class BookDao(
       .limit(1)
       .fetchOne(b.ID)
 
-  override fun findFirstUnreadIdInSeriesOrNull(seriesId: String, userId: String): String? =
+  override fun findFirstUnreadIdInSeriesOrNull(
+    seriesId: String,
+    userId: String,
+  ): String? =
     dsl.select(b.ID)
       .from(b)
       .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
@@ -193,7 +213,10 @@ class BookDao(
       .where(b.LIBRARY_ID.eq(libraryId))
       .fetch(b.ID)
 
-  override fun findAllIds(bookSearch: BookSearch, sort: Sort): Collection<String> {
+  override fun findAllIds(
+    bookSearch: BookSearch,
+    sort: Sort,
+  ): Collection<String> {
     val conditions = bookSearch.toCondition()
 
     val orderBy = sort.toOrderBy(sorts)
@@ -207,7 +230,10 @@ class BookDao(
       .fetch(b.ID)
   }
 
-  override fun findAllByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<Book> =
+  override fun findAllByLibraryIdAndMediaTypes(
+    libraryId: String,
+    mediaTypes: Collection<String>,
+  ): Collection<Book> =
     dsl.select(*b.fields())
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
@@ -216,7 +242,11 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
-  override fun findAllByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<Book> =
+  override fun findAllByLibraryIdAndMismatchedExtension(
+    libraryId: String,
+    mediaType: String,
+    extension: String,
+  ): Collection<Book> =
     dsl.select(*b.fields())
       .from(b)
       .leftJoin(m).on(b.ID.eq(m.BOOK_ID))

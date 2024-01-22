@@ -18,12 +18,14 @@ class ZipExtractor(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
 ) : DivinaExtractor {
-
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   override fun mediaTypes(): List<String> = listOf(MediaType.ZIP.type)
 
-  override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
+  override fun getEntries(
+    path: Path,
+    analyzeDimensions: Boolean,
+  ): List<MediaContainerEntry> =
     ZipFile(path.toFile()).use { zip ->
       zip.entries.toList()
         .filter { !it.isDirectory }
@@ -31,10 +33,11 @@ class ZipExtractor(
           try {
             zip.getInputStream(entry).buffered().use { stream ->
               val mediaType = contentDetector.detectMediaType(stream)
-              val dimension = if (analyzeDimensions && contentDetector.isImage(mediaType))
-                imageAnalyzer.getDimension(stream)
-              else
-                null
+              val dimension =
+                if (analyzeDimensions && contentDetector.isImage(mediaType))
+                  imageAnalyzer.getDimension(stream)
+                else
+                  null
               val fileSize = if (entry.size == ArchiveEntry.SIZE_UNKNOWN) null else entry.size
               MediaContainerEntry(name = entry.name, mediaType = mediaType, dimension = dimension, fileSize = fileSize)
             }
@@ -46,7 +49,10 @@ class ZipExtractor(
         .sortedWith(compareBy(natSortComparator) { it.name })
     }
 
-  override fun getEntryStream(path: Path, entryName: String): ByteArray =
+  override fun getEntryStream(
+    path: Path,
+    entryName: String,
+  ): ByteArray =
     ZipFile(path.toFile()).use { zip ->
       zip.getInputStream(zip.getEntry(entryName)).use { it.readBytes() }
     }

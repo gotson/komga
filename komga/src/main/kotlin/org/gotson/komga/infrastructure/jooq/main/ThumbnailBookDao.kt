@@ -29,7 +29,10 @@ class ThumbnailBookDao(
       .fetchInto(tb)
       .map { it.toDomain() }
 
-  override fun findAllByBookIdAndType(bookId: String, type: ThumbnailBook.Type): Collection<ThumbnailBook> =
+  override fun findAllByBookIdAndType(
+    bookId: String,
+    type: ThumbnailBook.Type,
+  ): Collection<ThumbnailBook> =
     dsl.selectFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
       .and(tb.TYPE.eq(type.toString()))
@@ -52,22 +55,27 @@ class ThumbnailBookDao(
       .firstOrNull()
 
   override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailBook> {
-    val query = dsl.selectFrom(tb)
-      .where(tb.FILE_SIZE.eq(0))
-      .or(tb.MEDIA_TYPE.eq(""))
-      .or(tb.WIDTH.eq(0))
-      .or(tb.HEIGHT.eq(0))
+    val query =
+      dsl.selectFrom(tb)
+        .where(tb.FILE_SIZE.eq(0))
+        .or(tb.MEDIA_TYPE.eq(""))
+        .or(tb.WIDTH.eq(0))
+        .or(tb.HEIGHT.eq(0))
 
     val count = dsl.fetchCount(query)
-    val items = query
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(tb)
-      .map { it.toDomain() }
+    val items =
+      query
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(tb)
+        .map { it.toDomain() }
 
     return PageImpl(items, pageable, count.toLong())
   }
 
-  override fun findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(type: ThumbnailBook.Type, size: Int): Collection<String> =
+  override fun findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(
+    type: ThumbnailBook.Type,
+    size: Int,
+  ): Collection<String> =
     dsl.select(tb.BOOK_ID)
       .from(tb)
       .where(tb.TYPE.eq(type.toString()))
@@ -149,7 +157,10 @@ class ThumbnailBookDao(
     dsl.deleteFrom(tb).where(tb.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
-  override fun deleteByBookIdAndType(bookId: String, type: ThumbnailBook.Type) {
+  override fun deleteByBookIdAndType(
+    bookId: String,
+    type: ThumbnailBook.Type,
+  ) {
     dsl.deleteFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
       .and(tb.TYPE.eq(type.toString()))

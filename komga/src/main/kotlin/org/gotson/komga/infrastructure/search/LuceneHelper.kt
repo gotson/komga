@@ -44,10 +44,11 @@ class LuceneHelper(
   fun indexExists(): Boolean = DirectoryReader.indexExists(directory)
 
   fun setIndexVersion(version: Int) {
-    val doc = Document().apply {
-      add(StringField("index_version", version.toString(), Field.Store.YES))
-      add(StringField("type", "index_version", Field.Store.NO))
-    }
+    val doc =
+      Document().apply {
+        add(StringField("index_version", version.toString(), Field.Store.YES))
+        add(StringField("type", "index_version", Field.Store.NO))
+      }
     updateDocument(Term("type", "index_version"), doc)
     logger.info { "Lucene index version: ${getIndexVersion()}" }
   }
@@ -58,19 +59,24 @@ class LuceneHelper(
     return topDocs.scoreDocs.map { searcher.storedFields().document(it.doc)["index_version"] }.firstOrNull()?.toIntOrNull() ?: 1
   }
 
-  fun searchEntitiesIds(searchTerm: String?, entity: LuceneEntity): List<String>? {
+  fun searchEntitiesIds(
+    searchTerm: String?,
+    entity: LuceneEntity,
+  ): List<String>? {
     return if (!searchTerm.isNullOrBlank()) {
       try {
-        val fieldsQuery = MultiFieldQueryParser(entity.defaultFields, searchAnalyzer).apply {
-          defaultOperator = QueryParser.Operator.AND
-        }.parse("$searchTerm *:*")
+        val fieldsQuery =
+          MultiFieldQueryParser(entity.defaultFields, searchAnalyzer).apply {
+            defaultOperator = QueryParser.Operator.AND
+          }.parse("$searchTerm *:*")
 
         val typeQuery = TermQuery(Term(LuceneEntity.TYPE, entity.type))
 
-        val booleanQuery = BooleanQuery.Builder()
-          .add(fieldsQuery, BooleanClause.Occur.MUST)
-          .add(typeQuery, BooleanClause.Occur.MUST)
-          .build()
+        val booleanQuery =
+          BooleanQuery.Builder()
+            .add(fieldsQuery, BooleanClause.Occur.MUST)
+            .add(typeQuery, BooleanClause.Occur.MUST)
+            .build()
 
         val searcher = searcherManager.acquire()
         val topDocs = searcher.search(booleanQuery, Int.MAX_VALUE)
@@ -81,7 +87,9 @@ class LuceneHelper(
         logger.error(e) { "Error fetching entities from index" }
         emptyList()
       }
-    } else null
+    } else {
+      null
+    }
   }
 
   fun upgradeIndex() {
@@ -99,7 +107,10 @@ class LuceneHelper(
     commitAndMaybeRefresh()
   }
 
-  fun updateDocument(term: Term, doc: Document) {
+  fun updateDocument(
+    term: Term,
+    doc: Document,
+  ) {
     indexWriter.updateDocument(term, doc)
     commitAndMaybeRefresh()
   }
@@ -112,10 +123,11 @@ class LuceneHelper(
   @Volatile
   private var commitFuture: ScheduledFuture<*>? = null
 
-  private val commitRunnable = Runnable {
-    indexWriter.commit()
-    searcherManager.maybeRefresh()
-  }
+  private val commitRunnable =
+    Runnable {
+      indexWriter.commit()
+      searcherManager.maybeRefresh()
+    }
 
   private fun commitAndMaybeRefresh() {
     if (commitFuture == null || commitFuture!!.isDone)

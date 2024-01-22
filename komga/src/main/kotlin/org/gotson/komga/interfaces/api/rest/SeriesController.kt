@@ -115,7 +115,6 @@ class SeriesController(
   private val imageAnalyzer: ImageAnalyzer,
   private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,
 ) {
-
   @PageableAsQueryParam
   @AuthorsAsQueryParam
   @Parameters(
@@ -159,38 +158,42 @@ class SeriesController(
       }
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
-    val seriesSearch = SeriesSearchWithReadProgress(
-      libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-      collectionIds = collectionIds,
-      searchTerm = searchTerm,
-      searchRegex = searchRegex?.let {
-        when (it.second.lowercase()) {
-          "title" -> Pair(it.first, SeriesSearch.SearchField.TITLE)
-          "title_sort" -> Pair(it.first, SeriesSearch.SearchField.TITLE_SORT)
-          else -> null
-        }
-      },
-      metadataStatus = metadataStatus,
-      publishers = publishers,
-      deleted = deleted,
-      complete = complete,
-      oneshot = oneshot,
-      languages = languages,
-      genres = genres,
-      tags = tags,
-      ageRatings = ageRatings?.map { it.toIntOrNull() },
-      releaseYears = releaseYears,
-      readStatus = readStatus,
-      authors = authors,
-      sharingLabels = sharingLabels,
-    )
+    val seriesSearch =
+      SeriesSearchWithReadProgress(
+        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+        collectionIds = collectionIds,
+        searchTerm = searchTerm,
+        searchRegex =
+          searchRegex?.let {
+            when (it.second.lowercase()) {
+              "title" -> Pair(it.first, SeriesSearch.SearchField.TITLE)
+              "title_sort" -> Pair(it.first, SeriesSearch.SearchField.TITLE_SORT)
+              else -> null
+            }
+          },
+        metadataStatus = metadataStatus,
+        publishers = publishers,
+        deleted = deleted,
+        complete = complete,
+        oneshot = oneshot,
+        languages = languages,
+        genres = genres,
+        tags = tags,
+        ageRatings = ageRatings?.map { it.toIntOrNull() },
+        releaseYears = releaseYears,
+        readStatus = readStatus,
+        authors = authors,
+        sharingLabels = sharingLabels,
+      )
 
     return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest, principal.user.restrictions)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
@@ -229,31 +232,33 @@ class SeriesController(
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable,
   ): List<GroupCountDto> {
-    val seriesSearch = SeriesSearchWithReadProgress(
-      libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-      collectionIds = collectionIds,
-      searchTerm = searchTerm,
-      searchRegex = searchRegex?.let {
-        when (it.second.lowercase()) {
-          "title" -> Pair(it.first, SeriesSearch.SearchField.TITLE)
-          "title_sort" -> Pair(it.first, SeriesSearch.SearchField.TITLE_SORT)
-          else -> null
-        }
-      },
-      metadataStatus = metadataStatus,
-      publishers = publishers,
-      deleted = deleted,
-      complete = complete,
-      oneshot = oneshot,
-      languages = languages,
-      genres = genres,
-      tags = tags,
-      ageRatings = ageRatings?.map { it.toIntOrNull() },
-      releaseYears = releaseYears,
-      readStatus = readStatus,
-      authors = authors,
-      sharingLabels = sharingLabels,
-    )
+    val seriesSearch =
+      SeriesSearchWithReadProgress(
+        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+        collectionIds = collectionIds,
+        searchTerm = searchTerm,
+        searchRegex =
+          searchRegex?.let {
+            when (it.second.lowercase()) {
+              "title" -> Pair(it.first, SeriesSearch.SearchField.TITLE)
+              "title_sort" -> Pair(it.first, SeriesSearch.SearchField.TITLE_SORT)
+              else -> null
+            }
+          },
+        metadataStatus = metadataStatus,
+        publishers = publishers,
+        deleted = deleted,
+        complete = complete,
+        oneshot = oneshot,
+        languages = languages,
+        genres = genres,
+        tags = tags,
+        ageRatings = ageRatings?.map { it.toIntOrNull() },
+        releaseYears = releaseYears,
+        readStatus = readStatus,
+        authors = authors,
+        sharingLabels = sharingLabels,
+      )
 
     return seriesDtoRepository.countByFirstCharacter(seriesSearch, principal.user.id, principal.user.restrictions)
   }
@@ -272,12 +277,14 @@ class SeriesController(
     val sort = Sort.by(Sort.Order.desc("lastModified"))
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
     return seriesDtoRepository.findAll(
       SeriesSearchWithReadProgress(
@@ -305,12 +312,14 @@ class SeriesController(
     val sort = Sort.by(Sort.Order.desc("created"))
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
     return seriesDtoRepository.findAll(
       SeriesSearchWithReadProgress(
@@ -338,12 +347,14 @@ class SeriesController(
     val sort = Sort.by(Sort.Order.desc("lastModified"))
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
     return seriesDtoRepository.findAllRecentlyUpdated(
       SeriesSearchWithReadProgress(
@@ -478,16 +489,20 @@ class SeriesController(
     principal.user.checkContentRestriction(seriesId)
 
     val sort =
-      if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.asc("metadata.numberSort"))
+      if (page.sort.isSorted)
+        page.sort
+      else
+        Sort.by(Sort.Order.asc("metadata.numberSort"))
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
     return bookDtoRepository.findAll(
       BookSearchWithReadProgress(
@@ -517,14 +532,18 @@ class SeriesController(
   @PostMapping("v1/series/{seriesId}/analyze")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun analyze(@PathVariable seriesId: String) {
+  fun analyze(
+    @PathVariable seriesId: String,
+  ) {
     taskEmitter.analyzeBook(bookRepository.findAllBySeriesId(seriesId), HIGH_PRIORITY)
   }
 
   @PostMapping("v1/series/{seriesId}/metadata/refresh")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun refreshMetadata(@PathVariable seriesId: String) {
+  fun refreshMetadata(
+    @PathVariable seriesId: String,
+  ) {
     val books = bookRepository.findAllBySeriesId(seriesId)
     taskEmitter.refreshBookMetadata(books, priority = HIGH_PRIORITY)
     taskEmitter.refreshBookLocalArtwork(books, priority = HIGH_PRIORITY)
@@ -543,48 +562,64 @@ class SeriesController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) =
     seriesMetadataRepository.findByIdOrNull(seriesId)?.let { existing ->
-      val updated = with(newMetadata) {
-        existing.copy(
-          status = status ?: existing.status,
-          statusLock = statusLock ?: existing.statusLock,
-          title = title ?: existing.title,
-          titleLock = titleLock ?: existing.titleLock,
-          titleSort = titleSort ?: existing.titleSort,
-          titleSortLock = titleSortLock ?: existing.titleSortLock,
-          summary = summary ?: existing.summary,
-          summaryLock = summaryLock ?: existing.summaryLock,
-          language = language ?: existing.language,
-          languageLock = languageLock ?: existing.languageLock,
-          readingDirection = if (isSet("readingDirection")) readingDirection else existing.readingDirection,
-          readingDirectionLock = readingDirectionLock ?: existing.readingDirectionLock,
-          publisher = publisher ?: existing.publisher,
-          publisherLock = publisherLock ?: existing.publisherLock,
-          ageRating = if (isSet("ageRating")) ageRating else existing.ageRating,
-          ageRatingLock = ageRatingLock ?: existing.ageRatingLock,
-          genres = if (isSet("genres")) {
-            if (genres != null) genres!! else emptySet()
-          } else existing.genres,
-          genresLock = genresLock ?: existing.genresLock,
-          tags = if (isSet("tags")) {
-            if (tags != null) tags!! else emptySet()
-          } else existing.tags,
-          tagsLock = tagsLock ?: existing.tagsLock,
-          totalBookCount = if (isSet("totalBookCount")) totalBookCount else existing.totalBookCount,
-          totalBookCountLock = totalBookCountLock ?: existing.totalBookCountLock,
-          sharingLabels = if (isSet("sharingLabels")) {
-            if (sharingLabels != null) sharingLabels!! else emptySet()
-          } else existing.sharingLabels,
-          sharingLabelsLock = sharingLabelsLock ?: existing.sharingLabelsLock,
-          links = if (isSet("links")) {
-            if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
-          } else existing.links,
-          linksLock = linksLock ?: existing.linksLock,
-          alternateTitles = if (isSet("alternateTitles")) {
-            if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
-          } else existing.alternateTitles,
-          alternateTitlesLock = alternateTitlesLock ?: existing.alternateTitlesLock,
-        )
-      }
+      val updated =
+        with(newMetadata) {
+          existing.copy(
+            status = status ?: existing.status,
+            statusLock = statusLock ?: existing.statusLock,
+            title = title ?: existing.title,
+            titleLock = titleLock ?: existing.titleLock,
+            titleSort = titleSort ?: existing.titleSort,
+            titleSortLock = titleSortLock ?: existing.titleSortLock,
+            summary = summary ?: existing.summary,
+            summaryLock = summaryLock ?: existing.summaryLock,
+            language = language ?: existing.language,
+            languageLock = languageLock ?: existing.languageLock,
+            readingDirection = if (isSet("readingDirection")) readingDirection else existing.readingDirection,
+            readingDirectionLock = readingDirectionLock ?: existing.readingDirectionLock,
+            publisher = publisher ?: existing.publisher,
+            publisherLock = publisherLock ?: existing.publisherLock,
+            ageRating = if (isSet("ageRating")) ageRating else existing.ageRating,
+            ageRatingLock = ageRatingLock ?: existing.ageRatingLock,
+            genres =
+              if (isSet("genres")) {
+                if (genres != null) genres!! else emptySet()
+              } else {
+                existing.genres
+              },
+            genresLock = genresLock ?: existing.genresLock,
+            tags =
+              if (isSet("tags")) {
+                if (tags != null) tags!! else emptySet()
+              } else {
+                existing.tags
+              },
+            tagsLock = tagsLock ?: existing.tagsLock,
+            totalBookCount = if (isSet("totalBookCount")) totalBookCount else existing.totalBookCount,
+            totalBookCountLock = totalBookCountLock ?: existing.totalBookCountLock,
+            sharingLabels =
+              if (isSet("sharingLabels")) {
+                if (sharingLabels != null) sharingLabels!! else emptySet()
+              } else {
+                existing.sharingLabels
+              },
+            sharingLabelsLock = sharingLabelsLock ?: existing.sharingLabelsLock,
+            links =
+              if (isSet("links")) {
+                if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
+              } else {
+                existing.links
+              },
+            linksLock = linksLock ?: existing.linksLock,
+            alternateTitles =
+              if (isSet("alternateTitles")) {
+                if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
+              } else {
+                existing.alternateTitles
+              },
+            alternateTitlesLock = alternateTitlesLock ?: existing.alternateTitlesLock,
+          )
+        }
       seriesMetadataRepository.update(updated)
 
       seriesRepository.findByIdOrNull(seriesId)?.let { eventPublisher.publishEvent(DomainEvent.SeriesUpdated(it)) }
@@ -654,34 +689,36 @@ class SeriesController(
 
     val books = bookRepository.findAllBySeriesId(seriesId)
 
-    val streamingResponse = StreamingResponseBody { responseStream: OutputStream ->
-      ZipArchiveOutputStream(responseStream).use { zipStream ->
-        zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
-        zipStream.setLevel(Deflater.NO_COMPRESSION)
-        zipStream.setUseZip64(Zip64Mode.Always)
-        books.forEach { book ->
-          val file = FileSystemResource(book.path)
-          if (!file.exists()) {
-            logger.warn { "Book file not found, skipping archive entry: ${file.path}" }
-            return@forEach
-          }
+    val streamingResponse =
+      StreamingResponseBody { responseStream: OutputStream ->
+        ZipArchiveOutputStream(responseStream).use { zipStream ->
+          zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
+          zipStream.setLevel(Deflater.NO_COMPRESSION)
+          zipStream.setUseZip64(Zip64Mode.Always)
+          books.forEach { book ->
+            val file = FileSystemResource(book.path)
+            if (!file.exists()) {
+              logger.warn { "Book file not found, skipping archive entry: ${file.path}" }
+              return@forEach
+            }
 
-          logger.debug { "Adding file to zip archive: ${file.path}" }
-          file.inputStream.use {
-            zipStream.putArchiveEntry(ZipArchiveEntry(file.filename))
-            IOUtils.copyLarge(it, zipStream, ByteArray(8192))
-            zipStream.closeArchiveEntry()
+            logger.debug { "Adding file to zip archive: ${file.path}" }
+            file.inputStream.use {
+              zipStream.putArchiveEntry(ZipArchiveEntry(file.filename))
+              IOUtils.copyLarge(it, zipStream, ByteArray(8192))
+              zipStream.closeArchiveEntry()
+            }
           }
         }
       }
-    }
 
     return ResponseEntity.ok()
       .headers(
         HttpHeaders().apply {
-          contentDisposition = ContentDisposition.builder("attachment")
-            .filename(seriesMetadataRepository.findById(seriesId).title + ".zip", UTF_8)
-            .build()
+          contentDisposition =
+            ContentDisposition.builder("attachment")
+              .filename(seriesMetadataRepository.findById(seriesId).title + ".zip", UTF_8)
+              .build()
         },
       )
       .contentType(MediaType.parseMediaType(ZIP.type))
@@ -712,8 +749,9 @@ class SeriesController(
         if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     }
-    if (restrictions.isRestricted) seriesMetadataRepository.findById(seriesId).let {
-      if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    }
+    if (restrictions.isRestricted)
+      seriesMetadataRepository.findById(seriesId).let {
+        if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      }
   }
 }

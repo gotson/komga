@@ -8,8 +8,9 @@ data class PageHashUnknownDto(
   val matchCount: Int,
 )
 
-fun PageHashUnknown.toDto() = PageHashUnknownDto(
-  hash = hash,
-  size = size,
-  matchCount = matchCount,
-)
+fun PageHashUnknown.toDto() =
+  PageHashUnknownDto(
+    hash = hash,
+    size = size,
+    matchCount = matchCount,
+  )

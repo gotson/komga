@@ -40,17 +40,19 @@ class ThumbnailSeriesCollectionDao(
       .map { it.toDomain() }
 
   override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailSeriesCollection> {
-    val query = dsl.selectFrom(tc)
-      .where(tc.FILE_SIZE.eq(0))
-      .or(tc.MEDIA_TYPE.eq(""))
-      .or(tc.WIDTH.eq(0))
-      .or(tc.HEIGHT.eq(0))
+    val query =
+      dsl.selectFrom(tc)
+        .where(tc.FILE_SIZE.eq(0))
+        .or(tc.MEDIA_TYPE.eq(""))
+        .or(tc.WIDTH.eq(0))
+        .or(tc.HEIGHT.eq(0))
 
     val count = query.count()
-    val items = query
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(tc)
-      .map { it.toDomain() }
+    val items =
+      query
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(tc)
+        .map { it.toDomain() }
 
     return PageImpl(items, pageable, count.toLong())
   }

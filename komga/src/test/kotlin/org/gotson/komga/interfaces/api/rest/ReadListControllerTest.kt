@@ -49,7 +49,6 @@ class ReadListControllerTest(
   @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
 ) {
-
   private val library1 = makeLibrary("Library1", id = "1")
   private val library2 = makeLibrary("Library2", id = "2")
   private val seriesLib1 = makeSeries("Series1", library1.id)
@@ -88,26 +87,29 @@ class ReadListControllerTest(
   }
 
   private fun makeReadLists() {
-    rlLib1 = readListLifecycle.addReadList(
-      ReadList(
-        name = "Lib1",
-        bookIds = booksLibrary1.map { it.id }.toIndexedMap(),
-      ),
-    )
+    rlLib1 =
+      readListLifecycle.addReadList(
+        ReadList(
+          name = "Lib1",
+          bookIds = booksLibrary1.map { it.id }.toIndexedMap(),
+        ),
+      )
 
-    rlLib2 = readListLifecycle.addReadList(
-      ReadList(
-        name = "Lib2",
-        bookIds = booksLibrary2.map { it.id }.toIndexedMap(),
-      ),
-    )
+    rlLib2 =
+      readListLifecycle.addReadList(
+        ReadList(
+          name = "Lib2",
+          bookIds = booksLibrary2.map { it.id }.toIndexedMap(),
+        ),
+      )
 
-    rlLibBoth = readListLifecycle.addReadList(
-      ReadList(
-        name = "Lib1+2",
-        bookIds = (booksLibrary1 + booksLibrary2).map { it.id }.toIndexedMap(),
-      ),
-    )
+    rlLibBoth =
+      readListLifecycle.addReadList(
+        ReadList(
+          name = "Lib1+2",
+          bookIds = (booksLibrary1 + booksLibrary2).map { it.id }.toIndexedMap(),
+        ),
+      )
   }
 
   @Nested
@@ -203,26 +205,29 @@ class ReadListControllerTest(
         }
       }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(book10.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(book10.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          bookIds = listOf(book10.id, book.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            bookIds = listOf(book10.id, book.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(book.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(book.id).toIndexedMap(),
+          ),
+        )
 
       mockMvc.get("/api/v1/readlists")
         .andExpect {
@@ -326,27 +331,30 @@ class ReadListControllerTest(
       bookMetadataRepository.findById(book16.id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2002, 1, 1))) }
       bookMetadataRepository.findById(book18.id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2003, 1, 1))) }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(book10.id, book.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(book10.id, book.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          ordered = false,
-          bookIds = listOf(book10.id, book.id, book16.id, book18.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            ordered = false,
+            bookIds = listOf(book10.id, book.id, book16.id, book18.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(book16.id, book18.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(book16.id, book18.id).toIndexedMap(),
+          ),
+        )
 
       mockMvc.get("/api/v1/readlists")
         .andExpect {
@@ -457,26 +465,29 @@ class ReadListControllerTest(
         }
       }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(bookAdult.id, book.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(bookAdult.id, book.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          bookIds = listOf(bookKids.id, book.id, bookAdult.id, bookCute.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            bookIds = listOf(bookKids.id, book.id, bookAdult.id, bookCute.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(bookKids.id, bookCute.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(bookKids.id, bookCute.id).toIndexedMap(),
+          ),
+        )
 
       mockMvc.get("/api/v1/readlists")
         .andExpect {
@@ -558,26 +569,29 @@ class ReadListControllerTest(
         }
       }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(bookKids.id, bookCute.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(bookKids.id, bookCute.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          bookIds = listOf(bookKids.id, book.id, bookAdult.id, bookCute.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            bookIds = listOf(bookKids.id, book.id, bookAdult.id, bookCute.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(bookAdult.id, book.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(bookAdult.id, book.id).toIndexedMap(),
+          ),
+        )
 
       mockMvc.get("/api/v1/readlists")
         .andExpect {
@@ -640,26 +654,29 @@ class ReadListControllerTest(
         }
       }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(bookTeen.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(bookTeen.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          bookIds = listOf(bookTeen16.id, bookTeen.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            bookIds = listOf(bookTeen16.id, bookTeen.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(bookTeen16.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(bookTeen16.id).toIndexedMap(),
+          ),
+        )
 
       mockMvc.get("/api/v1/readlists")
         .andExpect {
@@ -830,9 +847,10 @@ class ReadListControllerTest(
     @WithMockCustomUser
     fun `given non-admin user when creating read list then return forbidden`() {
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"readlist","bookIds":["3"]}
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.post("/api/v1/readlists") {
         contentType = MediaType.APPLICATION_JSON
@@ -846,9 +864,10 @@ class ReadListControllerTest(
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when creating read list then return ok`() {
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"readlist","summary":"summary","bookIds":["${booksLibrary1.first().id}"]}
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.post("/api/v1/readlists") {
         contentType = MediaType.APPLICATION_JSON
@@ -867,9 +886,10 @@ class ReadListControllerTest(
       makeReadLists()
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"Lib1","bookIds":["${booksLibrary1.first().id}"]}
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.post("/api/v1/readlists") {
         contentType = MediaType.APPLICATION_JSON
@@ -883,9 +903,10 @@ class ReadListControllerTest(
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given read list with duplicate bookIds when creating read list then return bad request`() {
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"Lib1","bookIds":["${booksLibrary1.first().id}","${booksLibrary1.first().id}"]}
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.post("/api/v1/readlists") {
         contentType = MediaType.APPLICATION_JSON
@@ -902,9 +923,10 @@ class ReadListControllerTest(
     @WithMockCustomUser
     fun `given non-admin user when updating read list then return forbidden`() {
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"readlist","bookIds":["3"]}
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/readlists/5") {
         contentType = MediaType.APPLICATION_JSON
@@ -920,9 +942,10 @@ class ReadListControllerTest(
       makeReadLists()
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"updated","summary":"updatedSummary","bookIds":["${booksLibrary1.first().id}"]}
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -1053,8 +1076,9 @@ class ReadListControllerTest(
     @WithMockCustomUser
     fun `given readlist with Unicode name when getting readlist file then attachment name is correct`() {
       val name = "アキラ"
-      val tempFile = Files.createTempFile(name, ".cbz")
-        .also { it.toFile().deleteOnExit() }
+      val tempFile =
+        Files.createTempFile(name, ".cbz")
+          .also { it.toFile().deleteOnExit() }
       val book = makeBook(name, libraryId = library1.id, url = tempFile.toUri().toURL())
       makeSeries(name = "series", libraryId = library1.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
@@ -1063,12 +1087,13 @@ class ReadListControllerTest(
         }
       }
 
-      val readlist = readListLifecycle.addReadList(
-        ReadList(
-          name = name,
-          bookIds = listOf(book.id).toIndexedMap(),
-        ),
-      )
+      val readlist =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = name,
+            bookIds = listOf(book.id).toIndexedMap(),
+          ),
+        )
 
       mockMvc.get("/api/v1/readlists/${readlist.id}/file")
         .andExpect {
@@ -1103,29 +1128,32 @@ class ReadListControllerTest(
 
     @BeforeEach
     fun makeReadLists() {
-      rlAllDiffDates = readListLifecycle.addReadList(
-        ReadList(
-          name = "All different dates",
-          ordered = false,
-          bookIds = listOf(2, 1).map { books[it].id }.toIndexedMap(),
-        ),
-      )
+      rlAllDiffDates =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "All different dates",
+            ordered = false,
+            bookIds = listOf(2, 1).map { books[it].id }.toIndexedMap(),
+          ),
+        )
 
-      rlAllNullDates = readListLifecycle.addReadList(
-        ReadList(
-          name = "All null dates",
-          ordered = false,
-          bookIds = books.drop(3).map { it.id }.toIndexedMap(),
-        ),
-      )
+      rlAllNullDates =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "All null dates",
+            ordered = false,
+            bookIds = books.drop(3).map { it.id }.toIndexedMap(),
+          ),
+        )
 
-      rlAllBooks = readListLifecycle.addReadList(
-        ReadList(
-          name = "All books",
-          ordered = false,
-          bookIds = books.map { it.id }.toIndexedMap(),
-        ),
-      )
+      rlAllBooks =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "All books",
+            ordered = false,
+            bookIds = books.map { it.id }.toIndexedMap(),
+          ),
+        )
     }
 
     @Test
@@ -1280,14 +1308,15 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given cbl file without books when matching then return bad request`() {
-      val content = """
+      val content =
+        """
         <?xml version="1.0"?>
         <ReadingList>
           <Name>RL</Name>
           <Books>
           </Books>
         </ReadingList>
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.multipart("/api/v1/readlists/match/comicrack") {
         file("file", content.toByteArray())
@@ -1303,7 +1332,8 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given cbl file without name when matching then return bad request`() {
-      val content = """
+      val content =
+        """
         <?xml version="1.0"?>
         <ReadingList>
           <Name></Name>
@@ -1311,7 +1341,7 @@ class ReadListControllerTest(
             <Book Series="Civil War" Number="1" Volume="2006" Year="2006"/>
           </Books>
         </ReadingList>
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.multipart("/api/v1/readlists/match/comicrack") {
         file("file", content.toByteArray())
@@ -1327,7 +1357,8 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given cbl file with book without series when matching then return bad request`() {
-      val content = """
+      val content =
+        """
         <?xml version="1.0"?>
         <ReadingList>
           <Name>RL</Name>
@@ -1335,7 +1366,7 @@ class ReadListControllerTest(
             <Book Number="1" Volume="2006" Year="2006"/>
           </Books>
         </ReadingList>
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.multipart("/api/v1/readlists/match/comicrack") {
         file("file", content.toByteArray())

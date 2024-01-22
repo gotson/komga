@@ -6,13 +6,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ReadingListTest {
-
   private val mapper = XmlMapper()
 
   @Test
   fun `given valid xml file when deserializing then properties are available`() {
     // language=XML
-    val cbl = """
+    val cbl =
+      """
       <?xml version="1.0"?>
       <ReadingList>
         <Name>Civil War</Name>
@@ -32,7 +32,7 @@ class ReadingListTest {
         </Books>
         <Matchers />
       </ReadingList>
-    """.trimIndent()
+      """.trimIndent()
     val readingList = mapper.readValue<ReadingList>(cbl)
 
     with(readingList) {
@@ -68,7 +68,8 @@ class ReadingListTest {
   @Test
   fun `given valid xml file for smart list when deserializing then properties are available`() {
     // language=XML
-    val cbl = """
+    val cbl =
+      """
       <?xml version="1.0"?>
       <ReadingList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <Name>Golden Age</Name>
@@ -82,7 +83,7 @@ class ReadingListTest {
           </ComicBookMatcher>
         </Matchers>
       </ReadingList>
-    """.trimIndent()
+      """.trimIndent()
     val readingList = mapper.readValue<ReadingList>(cbl)
 
     with(readingList) {

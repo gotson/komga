@@ -18,17 +18,17 @@ import org.springframework.core.io.ClassPathResource
 import java.time.LocalDate
 
 class EpubMetadataProviderTest {
-
   private val isbnValidator = ISBNValidator(true)
   private val epubMetadataProvider = EpubMetadataProvider(isbnValidator)
 
   private val epubMetadataProviderProper = EpubMetadataProvider(ISBNValidator(true))
 
   private val book = makeBook("book")
-  private val media = Media(
-    status = Media.Status.READY,
-    mediaType = "application/epub+zip",
-  )
+  private val media =
+    Media(
+      status = Media.Status.READY,
+      mediaType = "application/epub+zip",
+    )
 
   @AfterEach
   fun cleanup() {
@@ -37,7 +37,6 @@ class EpubMetadataProviderTest {
 
   @Nested
   inner class Book {
-
     @Test
     fun `given epub 3 opf when getting book metadata then metadata patch is valid`() {
       val opf = ClassPathResource("epub/Panik im Paradies.opf")
@@ -81,10 +80,11 @@ class EpubMetadataProviderTest {
     @Test
     fun `given real epub 3 when getting book metadata then metadata patch is valid`() {
       val epubResource = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
-      val epubBook = BookWithMedia(
-        makeBook("Epub", url = epubResource.url),
-        media,
-      )
+      val epubBook =
+        BookWithMedia(
+          makeBook("Epub", url = epubResource.url),
+          media,
+        )
 
       val patch = epubMetadataProviderProper.getBookMetadataFromBook(epubBook)
 
@@ -120,7 +120,6 @@ class EpubMetadataProviderTest {
 
   @Nested
   inner class Series {
-
     @Test
     fun `given epub 3 opf when getting series metadata then metadata patch is valid`() {
       val opf = ClassPathResource("epub/Panik im Paradies.opf")

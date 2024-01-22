@@ -18,11 +18,12 @@ fun filePathToUrl(filePath: String): URL =
 fun ResponseEntity.BodyBuilder.setCachePrivate() =
   this.cacheControl(cachePrivate)
 
-val cachePrivate = CacheControl
-  .maxAge(0, TimeUnit.SECONDS)
-  .noTransform()
-  .cachePrivate()
-  .mustRevalidate()
+val cachePrivate =
+  CacheControl
+    .maxAge(0, TimeUnit.SECONDS)
+    .noTransform()
+    .cachePrivate()
+    .mustRevalidate()
 
 fun getMediaTypeOrDefault(mediaTypeString: String?): MediaType {
   mediaTypeString?.let {

@@ -22,10 +22,10 @@ class BookSearchWithReadProgress(
   val readStatus: Collection<ReadStatus>? = null,
   val authors: Collection<Author>? = null,
 ) : BookSearch(
-  libraryIds = libraryIds,
-  seriesIds = seriesIds,
-  searchTerm = searchTerm,
-  mediaStatus = mediaStatus,
-  deleted = deleted,
-  releasedAfter = releasedAfter,
-)
+    libraryIds = libraryIds,
+    seriesIds = seriesIds,
+    searchTerm = searchTerm,
+    mediaStatus = mediaStatus,
+    deleted = deleted,
+    releasedAfter = releasedAfter,
+  )

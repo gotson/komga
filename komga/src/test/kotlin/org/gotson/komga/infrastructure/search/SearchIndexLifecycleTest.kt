@@ -48,7 +48,6 @@ class SearchIndexLifecycleTest(
   @Autowired private val searchIndexLifecycle: SearchIndexLifecycle,
   @Autowired private val luceneHelper: LuceneHelper,
 ) {
-
   private val library = makeLibrary()
 
   @MockkBean

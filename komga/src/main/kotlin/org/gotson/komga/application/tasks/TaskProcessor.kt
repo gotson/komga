@@ -43,10 +43,13 @@ class TaskProcessor(
   fun processAvailableTask() {
     if (processTasks) {
       logger.debug { "Active count: ${executor.activeCount}, Core Pool Size: ${executor.corePoolSize}, Pool Size: ${executor.poolSize}" }
-      if (executor.corePoolSize == 1) executor.execute { takeAndProcess() }
-      // fan out while threads are available
-      else while (tasksRepository.hasAvailable() && executor.activeCount < executor.corePoolSize)
+      if (executor.corePoolSize == 1) {
         executor.execute { takeAndProcess() }
+      } else {
+        // fan out while threads are available
+        while (tasksRepository.hasAvailable() && executor.activeCount < executor.corePoolSize)
+          executor.execute { takeAndProcess() }
+      }
     } else {
       logger.debug { "Not processing tasks" }
     }

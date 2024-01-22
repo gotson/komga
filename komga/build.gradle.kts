@@ -26,12 +26,13 @@ kotlin {
   jvmToolchain(17)
 }
 
-val benchmarkSourceSet = sourceSets.create("benchmark") {
-  java {
-    compileClasspath += sourceSets.main.get().output
-    runtimeClasspath += sourceSets.main.get().runtimeClasspath
+val benchmarkSourceSet =
+  sourceSets.create("benchmark") {
+    java {
+      compileClasspath += sourceSets.main.get().output
+      runtimeClasspath += sourceSets.main.get().runtimeClasspath
+    }
   }
-}
 
 val benchmarkImplementation by configurations.getting {
   extendsFrom(configurations.testImplementation.get())
@@ -147,10 +148,11 @@ tasks {
   withType<KotlinCompile> {
     kotlinOptions {
       jvmTarget = "17"
-      freeCompilerArgs = listOf(
-        "-Xjsr305=strict",
-        "-opt-in=kotlin.time.ExperimentalTime",
-      )
+      freeCompilerArgs =
+        listOf(
+          "-Xjsr305=strict",
+          "-opt-in=kotlin.time.ExperimentalTime",
+        )
     }
   }
 
@@ -243,31 +245,36 @@ springBoot {
   }
 }
 
-val sqliteUrls = mapOf(
-  "main" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/main/database.sqlite",
-  "tasks" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/tasks/tasks.sqlite",
-)
-val sqliteMigrationDirs = mapOf(
-  "main" to listOf(
-    "$projectDir/src/flyway/resources/db/migration/sqlite",
-    "$projectDir/src/flyway/kotlin/db/migration/sqlite",
-  ),
-  "tasks" to listOf(
-    "$projectDir/src/flyway/resources/tasks/migration/sqlite",
+val sqliteUrls =
+  mapOf(
+    "main" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/main/database.sqlite",
+    "tasks" to "jdbc:sqlite:${project.layout.buildDirectory.get()}/generated/flyway/tasks/tasks.sqlite",
+  )
+val sqliteMigrationDirs =
+  mapOf(
+    "main" to
+      listOf(
+        "$projectDir/src/flyway/resources/db/migration/sqlite",
+        "$projectDir/src/flyway/kotlin/db/migration/sqlite",
+      ),
+    "tasks" to
+      listOf(
+        "$projectDir/src/flyway/resources/tasks/migration/sqlite",
 //    "$projectDir/src/flyway/kotlin/tasks/migration/sqlite",
-  ),
-)
+      ),
+  )
 
 task("flywayMigrateMain", FlywayMigrateTask::class) {
   val id = "main"
   url = sqliteUrls[id]
   locations = arrayOf("classpath:db/migration/sqlite")
-  placeholders = mapOf(
-    "library-file-hashing" to "true",
-    "library-scan-startup" to "false",
-    "delete-empty-collections" to "true",
-    "delete-empty-read-lists" to "true",
-  )
+  placeholders =
+    mapOf(
+      "library-file-hashing" to "true",
+      "library-scan-startup" to "false",
+      "delete-empty-collections" to "true",
+      "delete-empty-read-lists" to "true",
+    )
   // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
   dependsOn("flywayClasses")
   sqliteMigrationDirs[id]?.forEach { inputs.dir(it) }

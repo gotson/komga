@@ -25,7 +25,12 @@ class DelimitedPairHandlerMethodArgumentResolver : HandlerMethodArgumentResolver
     return parseParameterIntoPairs(param.first())
   }
 
-  private fun parseParameterIntoPairs(source: String, delimiter: String = ","): Pair<String, String>? =
-    if (!source.contains(delimiter)) null
-    else Pair(source.substringBeforeLast(delimiter), source.substringAfterLast(delimiter))
+  private fun parseParameterIntoPairs(
+    source: String,
+    delimiter: String = ",",
+  ): Pair<String, String>? =
+    if (!source.contains(delimiter))
+      null
+    else
+      Pair(source.substringBeforeLast(delimiter), source.substringAfterLast(delimiter))
 }

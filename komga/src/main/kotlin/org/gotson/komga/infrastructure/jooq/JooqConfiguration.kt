@@ -19,7 +19,6 @@ import javax.sql.DataSource
 // as advised in https://docs.spring.io/spring-boot/docs/3.1.4/reference/htmlsingle/#howto.data-access.configure-jooq-with-multiple-datasources
 @Configuration
 class JooqConfiguration {
-
   @Bean("dslContext")
   @Primary
   fun mainDslContext(
@@ -37,12 +36,17 @@ class JooqConfiguration {
   ): DSLContext =
     createDslContext(dataSource, transactionProvider, executeListenerProviders)
 
-  private fun createDslContext(dataSource: DataSource, transactionProvider: ObjectProvider<TransactionProvider?>, executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>) = DefaultDSLContext(
-    DefaultConfiguration().also { configuration ->
-      configuration.set(SQLDialect.SQLITE)
-      configuration.set(DataSourceConnectionProvider(TransactionAwareDataSourceProxy(dataSource)))
-      transactionProvider.ifAvailable { newTransactionProvider: TransactionProvider? -> configuration.set(newTransactionProvider) }
-      configuration.set(*executeListenerProviders.orderedStream().toList().toTypedArray())
-    },
-  )
+  private fun createDslContext(
+    dataSource: DataSource,
+    transactionProvider: ObjectProvider<TransactionProvider?>,
+    executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>,
+  ) =
+    DefaultDSLContext(
+      DefaultConfiguration().also { configuration ->
+        configuration.set(SQLDialect.SQLITE)
+        configuration.set(DataSourceConnectionProvider(TransactionAwareDataSourceProxy(dataSource)))
+        transactionProvider.ifAvailable { newTransactionProvider: TransactionProvider? -> configuration.set(newTransactionProvider) }
+        configuration.set(*executeListenerProviders.orderedStream().toList().toTypedArray())
+      },
+    )
 }

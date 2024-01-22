@@ -33,25 +33,31 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
   override fun createSecurityContext(customUser: WithMockCustomUser): SecurityContext {
     val context = SecurityContextHolder.createEmptyContext()
 
-    val principal = KomgaPrincipal(
-      KomgaUser(
-        email = customUser.email,
-        password = "",
-        roleAdmin = customUser.roles.contains(ROLE_ADMIN),
-        roleFileDownload = customUser.roles.contains(ROLE_FILE_DOWNLOAD),
-        rolePageStreaming = customUser.roles.contains(ROLE_PAGE_STREAMING),
-        sharedAllLibraries = customUser.sharedAllLibraries,
-        sharedLibrariesIds = customUser.sharedLibraries.toSet(),
-        restrictions = ContentRestrictions(
-          ageRestriction = if (customUser.allowAgeUnder >= 0) AgeRestriction(customUser.allowAgeUnder, AllowExclude.ALLOW_ONLY)
-          else if (customUser.excludeAgeOver >= 0) AgeRestriction(customUser.excludeAgeOver, AllowExclude.EXCLUDE)
-          else null,
-          labelsAllow = customUser.allowLabels.toSet(),
-          labelsExclude = customUser.excludeLabels.toSet(),
+    val principal =
+      KomgaPrincipal(
+        KomgaUser(
+          email = customUser.email,
+          password = "",
+          roleAdmin = customUser.roles.contains(ROLE_ADMIN),
+          roleFileDownload = customUser.roles.contains(ROLE_FILE_DOWNLOAD),
+          rolePageStreaming = customUser.roles.contains(ROLE_PAGE_STREAMING),
+          sharedAllLibraries = customUser.sharedAllLibraries,
+          sharedLibrariesIds = customUser.sharedLibraries.toSet(),
+          restrictions =
+            ContentRestrictions(
+              ageRestriction =
+                if (customUser.allowAgeUnder >= 0)
+                  AgeRestriction(customUser.allowAgeUnder, AllowExclude.ALLOW_ONLY)
+                else if (customUser.excludeAgeOver >= 0)
+                  AgeRestriction(customUser.excludeAgeOver, AllowExclude.EXCLUDE)
+                else
+                  null,
+              labelsAllow = customUser.allowLabels.toSet(),
+              labelsExclude = customUser.excludeLabels.toSet(),
+            ),
+          id = customUser.id,
         ),
-        id = customUser.id,
-      ),
-    )
+      )
     val auth = UsernamePasswordAuthenticationToken(principal, "", principal.authorities)
     context.authentication = auth
     return context

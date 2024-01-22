@@ -14,7 +14,6 @@ private const val SEED = 0
 
 @Component
 class Hasher {
-
   fun computeHash(path: Path): String {
     logger.debug { "Hashing: $path" }
 
@@ -38,7 +37,8 @@ class Hasher {
   }
 
   @OptIn(ExperimentalUnsignedTypes::class)
-  private fun ByteArray.toHexString(): String = asUByteArray().joinToString("") {
-    it.toString(16).padStart(2, '0')
-  }
+  private fun ByteArray.toHexString(): String =
+    asUByteArray().joinToString("") {
+      it.toString(16).padStart(2, '0')
+    }
 }

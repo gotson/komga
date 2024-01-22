@@ -26,8 +26,10 @@ class BookMetadataLifecycle(
   private val readListLifecycle: ReadListLifecycle,
   private val eventPublisher: ApplicationEventPublisher,
 ) {
-
-  fun refreshMetadata(book: Book, capabilities: Set<BookMetadataPatchCapability>) {
+  fun refreshMetadata(
+    book: Book,
+    capabilities: Set<BookMetadataPatchCapability>,
+  ) {
     logger.info { "Refresh metadata for book: $book with capabilities: $capabilities" }
     val media = mediaRepository.findById(book.id)
 
@@ -44,12 +46,13 @@ class BookMetadataLifecycle(
 
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
-          val patch = try {
-            provider.getBookMetadataFromBook(BookWithMedia(book, media))
-          } catch (e: Exception) {
-            logger.error(e) { "Error while getting metadata from ${provider.javaClass.simpleName} for book: $book" }
-            null
-          }
+          val patch =
+            try {
+              provider.getBookMetadataFromBook(BookWithMedia(book, media))
+            } catch (e: Exception) {
+              logger.error(e) { "Error while getting metadata from ${provider.javaClass.simpleName} for book: $book" }
+              null
+            }
 
           if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.BOOK)) {
             handlePatchForBookMetadata(patch, book)

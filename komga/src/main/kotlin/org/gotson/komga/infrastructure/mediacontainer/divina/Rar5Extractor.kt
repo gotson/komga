@@ -37,22 +37,25 @@ class Rar5Extractor(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
 ) : DivinaExtractor {
-
   private val natSortComparator: Comparator<String> = CaseInsensitiveSimpleNaturalComparator.getInstance()
 
   override fun mediaTypes(): List<String> = listOf(MediaType.RAR_5.type)
 
-  override fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry> =
+  override fun getEntries(
+    path: Path,
+    analyzeDimensions: Boolean,
+  ): List<MediaContainerEntry> =
     Archive(path).use { rar ->
       generateSequence { rar.nextEntry }
         .map { entry ->
           try {
             val buffer = rar.inputStream.use { it.readBytes() }
             val mediaType = buffer.inputStream().use { contentDetector.detectMediaType(it) }
-            val dimension = if (analyzeDimensions && contentDetector.isImage(mediaType))
-              buffer.inputStream().use { imageAnalyzer.getDimension(it) }
-            else
-              null
+            val dimension =
+              if (analyzeDimensions && contentDetector.isImage(mediaType))
+                buffer.inputStream().use { imageAnalyzer.getDimension(it) }
+              else
+                null
             val fileSize = entry.size
             MediaContainerEntry(name = entry.name, mediaType = mediaType, dimension = dimension, fileSize = fileSize)
           } catch (e: Exception) {
@@ -64,6 +67,9 @@ class Rar5Extractor(
         .toList()
     }
 
-  override fun getEntryStream(path: Path, entryName: String): ByteArray =
+  override fun getEntryStream(
+    path: Path,
+    entryName: String,
+  ): ByteArray =
     Archive.getInputStream(path, entryName).use { it?.readBytes() ?: ByteArray(0) }
 }

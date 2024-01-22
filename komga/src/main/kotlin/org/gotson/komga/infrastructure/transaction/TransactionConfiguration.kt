@@ -7,7 +7,6 @@ import org.springframework.transaction.support.TransactionTemplate
 
 @Configuration
 class TransactionConfiguration {
-
   @Bean
   fun transactionTemplate(transactionManager: PlatformTransactionManager) =
     TransactionTemplate(transactionManager)

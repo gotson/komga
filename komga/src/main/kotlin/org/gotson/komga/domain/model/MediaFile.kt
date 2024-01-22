@@ -7,6 +7,7 @@ data class MediaFile(
   val fileSize: Long? = null,
 ) {
   enum class SubType {
-    EPUB_PAGE, EPUB_ASSET
+    EPUB_PAGE,
+    EPUB_ASSET,
   }
 }

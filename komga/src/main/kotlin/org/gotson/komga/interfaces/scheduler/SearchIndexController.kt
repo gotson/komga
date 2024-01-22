@@ -18,7 +18,6 @@ class SearchIndexController(
   private val luceneHelper: LuceneHelper,
   private val taskEmitter: TaskEmitter,
 ) {
-
   @EventListener(ApplicationReadyEvent::class)
   fun createIndexIfNoneExist() {
     if (!luceneHelper.indexExists()) {

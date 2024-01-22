@@ -14,7 +14,6 @@ import javax.sql.DataSource
 class DataSourcesConfiguration(
   private val komgaProperties: KomgaProperties,
 ) {
-
   @Bean("sqliteDataSource")
   @Primary
   fun sqliteDataSource(): DataSource =
@@ -28,17 +27,25 @@ class DataSourcesConfiguration(
         this.maximumPoolSize = 1
       }
 
-  private fun buildDataSource(poolName: String, dataSourceClass: Class<out SQLiteDataSource>, databaseProps: KomgaProperties.Database): HikariDataSource {
-    val extraPragmas = databaseProps.pragmas.let {
-      if (it.isEmpty()) ""
-      else "?" + it.map { (key, value) -> "$key=$value" }.joinToString(separator = "&")
-    }
+  private fun buildDataSource(
+    poolName: String,
+    dataSourceClass: Class<out SQLiteDataSource>,
+    databaseProps: KomgaProperties.Database,
+  ): HikariDataSource {
+    val extraPragmas =
+      databaseProps.pragmas.let {
+        if (it.isEmpty())
+          ""
+        else
+          "?" + it.map { (key, value) -> "$key=$value" }.joinToString(separator = "&")
+      }
 
-    val dataSource = DataSourceBuilder.create()
-      .driverClassName("org.sqlite.JDBC")
-      .url("jdbc:sqlite:${databaseProps.file}$extraPragmas")
-      .type(dataSourceClass)
-      .build()
+    val dataSource =
+      DataSourceBuilder.create()
+        .driverClassName("org.sqlite.JDBC")
+        .url("jdbc:sqlite:${databaseProps.file}$extraPragmas")
+        .type(dataSourceClass)
+        .build()
 
     dataSource.setEnforceForeignKeys(true)
     with(databaseProps) {
@@ -47,9 +54,12 @@ class DataSourcesConfiguration(
     }
 
     val poolSize =
-      if (databaseProps.file.contains(":memory:") || databaseProps.file.contains("mode=memory")) 1
-      else if (databaseProps.poolSize != null) databaseProps.poolSize!!
-      else Runtime.getRuntime().availableProcessors().coerceAtMost(databaseProps.maxPoolSize)
+      if (databaseProps.file.contains(":memory:") || databaseProps.file.contains("mode=memory"))
+        1
+      else if (databaseProps.poolSize != null)
+        databaseProps.poolSize!!
+      else
+        Runtime.getRuntime().availableProcessors().coerceAtMost(databaseProps.maxPoolSize)
 
     return HikariDataSource(
       HikariConfig().apply {

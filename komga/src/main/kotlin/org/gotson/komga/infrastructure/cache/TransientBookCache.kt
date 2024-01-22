@@ -11,9 +11,10 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class TransientBookCache : TransientBookRepository {
-  private val cache = Caffeine.newBuilder()
-    .expireAfterAccess(1, TimeUnit.HOURS)
-    .build<String, TransientBook>()
+  private val cache =
+    Caffeine.newBuilder()
+      .expireAfterAccess(1, TimeUnit.HOURS)
+      .build<String, TransientBook>()
 
   override fun findByIdOrNull(transientBookId: String): TransientBook? = cache.getIfPresent(transientBookId)
 

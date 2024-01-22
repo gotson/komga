@@ -15,11 +15,11 @@ private val logger = KotlinLogging.logger {}
 class ContentDetector(
   private val tika: TikaConfig,
 ) {
-
   fun detectMediaType(path: Path): String {
-    val metadata = Metadata().also {
-      it[Metadata.TIKA_MIME_FILE] = path.name
-    }
+    val metadata =
+      Metadata().also {
+        it[Metadata.TIKA_MIME_FILE] = path.name
+      }
 
     return TikaInputStream.get(path).use {
       val mediaType = tika.detector.detect(it, metadata)

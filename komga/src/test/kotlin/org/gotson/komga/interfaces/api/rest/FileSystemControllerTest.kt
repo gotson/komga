@@ -47,7 +47,9 @@ class FileSystemControllerTest(
 
   @Test
   @WithMockUser(roles = [ROLE_USER, ROLE_ADMIN])
-  fun `given non-existent path param when getDirectoryListing then return bad request`(@TempDir parent: Path) {
+  fun `given non-existent path param when getDirectoryListing then return bad request`(
+    @TempDir parent: Path,
+  ) {
     Files.delete(parent)
 
     mockMvc.post(route) {

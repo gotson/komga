@@ -27,7 +27,6 @@ class ReadProgressDao(
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val mapper: ObjectMapper,
 ) : ReadProgressRepository {
-
   private val r = Tables.READ_PROGRESS
   private val rs = Tables.READ_PROGRESS_SERIES
   private val b = Tables.BOOK
@@ -37,7 +36,10 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
-  override fun findByBookIdAndUserIdOrNull(bookId: String, userId: String): ReadProgress? =
+  override fun findByBookIdAndUserIdOrNull(
+    bookId: String,
+    userId: String,
+  ): ReadProgress? =
     dsl.selectFrom(r)
       .where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId)))
       .fetchOneInto(r)
@@ -55,7 +57,10 @@ class ReadProgressDao(
       .fetchInto(r)
       .map { it.toDomain() }
 
-  override fun findAllByBookIdsAndUserId(bookIds: Collection<String>, userId: String): Collection<ReadProgress> =
+  override fun findAllByBookIdsAndUserId(
+    bookIds: Collection<String>,
+    userId: String,
+  ): Collection<ReadProgress> =
     dsl.selectFrom(r)
       .where(r.BOOK_ID.`in`(bookIds).and(r.USER_ID.eq(userId)))
       .fetchInto(r)
@@ -113,7 +118,10 @@ class ReadProgressDao(
       .set(r.LOCATOR, locator?.let { mapper.serializeJsonGz(it) })
 
   @Transactional
-  override fun delete(bookId: String, userId: String) {
+  override fun delete(
+    bookId: String,
+    userId: String,
+  ) {
     dsl.deleteFrom(r).where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId))).execute()
     aggregateSeriesProgress(listOf(bookId), userId)
   }
@@ -146,7 +154,10 @@ class ReadProgressDao(
   }
 
   @Transactional
-  override fun deleteByBookIdsAndUserId(bookIds: Collection<String>, userId: String) {
+  override fun deleteByBookIdsAndUserId(
+    bookIds: Collection<String>,
+    userId: String,
+  ) {
     dsl.insertTempStrings(batchSize, bookIds)
 
     dsl.deleteFrom(r).where(r.BOOK_ID.`in`(dsl.selectTempStrings())).and(r.USER_ID.eq(userId)).execute()
@@ -159,12 +170,16 @@ class ReadProgressDao(
     dsl.deleteFrom(rs).execute()
   }
 
-  private fun aggregateSeriesProgress(bookIds: Collection<String>, userId: String? = null) {
+  private fun aggregateSeriesProgress(
+    bookIds: Collection<String>,
+    userId: String? = null,
+  ) {
     dsl.insertTempStrings(batchSize, bookIds)
 
-    val seriesIdsQuery = dsl.select(b.SERIES_ID)
-      .from(b)
-      .where(b.ID.`in`(dsl.selectTempStrings()))
+    val seriesIdsQuery =
+      dsl.select(b.SERIES_ID)
+        .from(b)
+        .where(b.ID.`in`(dsl.selectTempStrings()))
 
     dsl.deleteFrom(rs)
       .where(rs.SERIES_ID.`in`(seriesIdsQuery))

@@ -5,5 +5,9 @@ import org.gotson.komga.domain.model.SeriesMetadataPatch
 
 interface SeriesMetadataFromBookProvider : MetadataProvider {
   val supportsAppendVolume: Boolean
-  fun getSeriesMetadataFromBook(book: BookWithMedia, appendVolumeToTitle: Boolean): SeriesMetadataPatch?
+
+  fun getSeriesMetadataFromBook(
+    book: BookWithMedia,
+    appendVolumeToTitle: Boolean,
+  ): SeriesMetadataPatch?
 }

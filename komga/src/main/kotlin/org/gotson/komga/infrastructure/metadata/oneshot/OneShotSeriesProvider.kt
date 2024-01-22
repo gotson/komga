@@ -33,6 +33,9 @@ class OneShotSeriesProvider(
     )
   }
 
-  override fun shouldLibraryHandlePatch(library: Library, target: MetadataPatchTarget): Boolean =
+  override fun shouldLibraryHandlePatch(
+    library: Library,
+    target: MetadataPatchTarget,
+  ): Boolean =
     target == MetadataPatchTarget.SERIES
 }

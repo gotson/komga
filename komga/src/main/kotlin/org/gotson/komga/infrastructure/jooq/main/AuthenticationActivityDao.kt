@@ -22,25 +22,28 @@ import java.time.LocalDateTime
 class AuthenticationActivityDao(
   private val dsl: DSLContext,
 ) : AuthenticationActivityRepository {
-
   private val aa = Tables.AUTHENTICATION_ACTIVITY
 
-  private val sorts = mapOf(
-    "dateTime" to aa.DATE_TIME,
-    "email" to aa.EMAIL,
-    "success" to aa.SUCCESS,
-    "ip" to aa.IP,
-    "error" to aa.ERROR,
-    "userId" to aa.USER_ID,
-    "userAgent" to aa.USER_AGENT,
-  )
+  private val sorts =
+    mapOf(
+      "dateTime" to aa.DATE_TIME,
+      "email" to aa.EMAIL,
+      "success" to aa.SUCCESS,
+      "ip" to aa.IP,
+      "error" to aa.ERROR,
+      "userId" to aa.USER_ID,
+      "userAgent" to aa.USER_AGENT,
+    )
 
   override fun findAll(pageable: Pageable): Page<AuthenticationActivity> {
     val conditions: Condition = DSL.trueCondition()
     return findAll(conditions, pageable)
   }
 
-  override fun findAllByUser(user: KomgaUser, pageable: Pageable): Page<AuthenticationActivity> {
+  override fun findAllByUser(
+    user: KomgaUser,
+    pageable: Pageable,
+  ): Page<AuthenticationActivity> {
     val conditions = aa.USER_ID.eq(user.id).or(aa.EMAIL.eq(user.email))
     return findAll(conditions, pageable)
   }
@@ -54,23 +57,29 @@ class AuthenticationActivityDao(
       .fetchOne()
       ?.toDomain()
 
-  private fun findAll(conditions: Condition, pageable: Pageable): PageImpl<AuthenticationActivity> {
+  private fun findAll(
+    conditions: Condition,
+    pageable: Pageable,
+  ): PageImpl<AuthenticationActivity> {
     val count = dsl.fetchCount(aa, conditions)
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val items = dsl.selectFrom(aa)
-      .where(conditions)
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(aa)
-      .map { it.toDomain() }
+    val items =
+      dsl.selectFrom(aa)
+        .where(conditions)
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(aa)
+        .map { it.toDomain() }
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, maxOf(count, 20), pageSort),
+      if (pageable.isPaged)
+        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else
+        PageRequest.of(0, maxOf(count, 20), pageSort),
       count.toLong(),
     )
   }

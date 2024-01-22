@@ -32,7 +32,6 @@ class SettingsController(
   serverProperties: ServerProperties,
   servletContext: ServletContext,
 ) {
-
   private val effectiveServerPort = serverProperties.port
   private val effectiveServerContextPath = servletContext.contextPath
 

@@ -8,7 +8,6 @@ import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConve
 
 @Configuration
 class MappingJackson2XmlHttpMessageConverterConfiguration {
-
   @Bean
   fun mappingJackson2XmlHttpMessageConverter(builder: Jackson2ObjectMapperBuilder) =
     MappingJackson2XmlHttpMessageConverter(

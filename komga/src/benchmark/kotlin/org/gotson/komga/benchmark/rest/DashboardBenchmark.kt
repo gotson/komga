@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit
 
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 class DashboardBenchmark : AbstractRestBenchmark() {
-
   companion object {
     lateinit var bookLatestReleaseDate: LocalDate
   }

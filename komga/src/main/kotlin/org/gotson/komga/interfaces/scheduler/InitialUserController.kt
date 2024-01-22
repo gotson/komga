@@ -19,7 +19,6 @@ class InitialUserController(
   private val userLifecycle: KomgaUserLifecycle,
   private val initialUsers: List<KomgaUser>,
 ) {
-
   @EventListener(ApplicationReadyEvent::class)
   fun createInitialUserOnStartupIfNoneExist() {
     if (userLifecycle.countUsers() == 0L) {
@@ -38,17 +37,19 @@ class InitialUserController(
 @Profile("dev")
 class InitialUsersDevConfiguration {
   @Bean
-  fun initialUsers(): List<KomgaUser> = listOf(
-    KomgaUser("admin@example.org", "admin", roleAdmin = true),
-    KomgaUser("user@example.org", "user", roleAdmin = false),
-  )
+  fun initialUsers(): List<KomgaUser> =
+    listOf(
+      KomgaUser("admin@example.org", "admin", roleAdmin = true),
+      KomgaUser("user@example.org", "user", roleAdmin = false),
+    )
 }
 
 @Configuration
 @Profile("!dev")
 class InitialUsersProdConfiguration {
   @Bean
-  fun initialUsers(): List<KomgaUser> = listOf(
-    KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), roleAdmin = true),
-  )
+  fun initialUsers(): List<KomgaUser> =
+    listOf(
+      KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), roleAdmin = true),
+    )
 }

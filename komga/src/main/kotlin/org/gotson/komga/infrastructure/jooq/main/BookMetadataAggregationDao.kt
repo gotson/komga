@@ -132,16 +132,17 @@ class BookMetadataAggregationDao(
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun BookMetadataAggregationRecord.toDomain(authors: List<Author>, tags: Set<String>) =
+  private fun BookMetadataAggregationRecord.toDomain(
+    authors: List<Author>,
+    tags: Set<String>,
+  ) =
     BookMetadataAggregation(
       authors = authors,
       tags = tags,
       releaseDate = releaseDate,
       summary = summary,
       summaryNumber = summaryNumber,
-
       seriesId = seriesId,
-
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )

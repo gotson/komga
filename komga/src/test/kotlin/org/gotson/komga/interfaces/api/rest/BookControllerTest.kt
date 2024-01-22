@@ -70,7 +70,6 @@ class BookControllerTest(
   @Autowired private val userLifecycle: KomgaUserLifecycle,
   @Autowired private val mockMvc: MockMvc,
 ) {
-
   private val library = makeLibrary(id = "1")
   private val user = KomgaUser("user@example.org", "", false, id = "1")
   private val user2 = KomgaUser("user2@example.org", "", false, id = "2")
@@ -663,7 +662,6 @@ class BookControllerTest(
 
   @Nested
   inner class Siblings {
-
     @Test
     @WithMockCustomUser
     fun `given series with multiple books when getting siblings then it is returned or not found`() {
@@ -712,12 +710,13 @@ class BookControllerTest(
     @Test
     @WithMockCustomUser
     fun `given regular user when getting books then full url is hidden`() {
-      val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
-        seriesLifecycle.createSeries(series).also { created ->
-          val books = listOf(makeBook("1.cbr", libraryId = library.id))
-          seriesLifecycle.addBooks(created, books)
+      val createdSeries =
+        makeSeries(name = "series", libraryId = library.id).let { series ->
+          seriesLifecycle.createSeries(series).also { created ->
+            val books = listOf(makeBook("1.cbr", libraryId = library.id))
+            seriesLifecycle.addBooks(created, books)
+          }
         }
-      }
 
       val book = bookRepository.findAll().first()
 
@@ -745,12 +744,13 @@ class BookControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
     fun `given admin user when getting books then full url is available`() {
-      val createdSeries = makeSeries(name = "series", libraryId = library.id).let { series ->
-        seriesLifecycle.createSeries(series).also { created ->
-          val books = listOf(makeBook("1.cbr", libraryId = library.id))
-          seriesLifecycle.addBooks(created, books)
+      val createdSeries =
+        makeSeries(name = "series", libraryId = library.id).let { series ->
+          seriesLifecycle.createSeries(series).also { created ->
+            val books = listOf(makeBook("1.cbr", libraryId = library.id))
+            seriesLifecycle.addBooks(created, books)
+          }
         }
-      }
 
       val book = bookRepository.findAll().first()
 
@@ -803,8 +803,9 @@ class BookControllerTest(
 
       val url = "/api/v1/books/${book.id}/thumbnail"
 
-      val response = mockMvc.get(url)
-        .andReturn().response
+      val response =
+        mockMvc.get(url)
+          .andReturn().response
 
       mockMvc.get(url) {
         headers {
@@ -829,8 +830,9 @@ class BookControllerTest(
 
       val url = "/api/v1/books/${book.id}/pages/1"
 
-      val lastModified = mockMvc.get(url)
-        .andReturn().response.getHeader(HttpHeaders.LAST_MODIFIED)
+      val lastModified =
+        mockMvc.get(url)
+          .andReturn().response.getHeader(HttpHeaders.LAST_MODIFIED)
 
       mockMvc.get(url) {
         headers {
@@ -937,7 +939,8 @@ class BookControllerTest(
       val bookId = bookRepository.findAll().first().id
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "title":"newTitle",
           "titleLock":true,
@@ -965,7 +968,7 @@ class BookControllerTest(
           "isbn":"978-161-729-045-9abc xxxoefj",
           "isbnLock":true
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/books/$bookId/metadata") {
         contentType = MediaType.APPLICATION_JSON
@@ -1014,21 +1017,23 @@ class BookControllerTest(
 
       val bookId = bookRepository.findAll().first().id
       bookMetadataRepository.findById(bookId).let { metadata ->
-        val updated = metadata.copy(
-          summary = "summary",
-          isbn = "9781617290459",
-        )
+        val updated =
+          metadata.copy(
+            summary = "summary",
+            isbn = "9781617290459",
+          )
 
         bookMetadataRepository.update(updated)
       }
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "summary":"",
           "isbn":""
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/books/$bookId/metadata") {
         contentType = MediaType.APPLICATION_JSON
@@ -1058,13 +1063,14 @@ class BookControllerTest(
 
       val bookId = bookRepository.findAll().first().id
       bookMetadataRepository.findById(bookId).let { metadata ->
-        val updated = metadata.copy(
-          authors = metadata.authors.toMutableList().also { it.add(Author("Author", "role")) },
-          releaseDate = testDate,
-          tags = setOf("tag"),
-          summary = "summary",
-          isbn = "9781617290459",
-        )
+        val updated =
+          metadata.copy(
+            authors = metadata.authors.toMutableList().also { it.add(Author("Author", "role")) },
+            releaseDate = testDate,
+            tags = setOf("tag"),
+            summary = "summary",
+            isbn = "9781617290459",
+          )
 
         bookMetadataRepository.update(updated)
       }
@@ -1076,7 +1082,8 @@ class BookControllerTest(
       }
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "authors":null,
           "releaseDate":null,
@@ -1084,7 +1091,7 @@ class BookControllerTest(
           "summary":null,
           "isbn":null
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/books/$bookId/metadata") {
         contentType = MediaType.APPLICATION_JSON
@@ -1117,26 +1124,28 @@ class BookControllerTest(
 
       val bookId = bookRepository.findAll().first().id
       bookMetadataRepository.findById(bookId).let { metadata ->
-        val updated = metadata.copy(
-          authors = metadata.authors.toMutableList().also { it.add(Author("Author", "role")) },
-          releaseDate = testDate,
-          summary = "summary",
-          number = "number",
-          numberLock = true,
-          numberSort = 2F,
-          numberSortLock = true,
-          title = "title",
-          isbn = "9781617290459",
-        )
+        val updated =
+          metadata.copy(
+            authors = metadata.authors.toMutableList().also { it.add(Author("Author", "role")) },
+            releaseDate = testDate,
+            summary = "summary",
+            number = "number",
+            numberLock = true,
+            numberSort = 2F,
+            numberSortLock = true,
+            title = "title",
+            isbn = "9781617290459",
+          )
 
         bookMetadataRepository.update(updated)
       }
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/books/$bookId/metadata") {
         contentType = MediaType.APPLICATION_JSON
@@ -1160,7 +1169,6 @@ class BookControllerTest(
 
   @Nested
   inner class ReadProgress {
-
     @ParameterizedTest
     @ValueSource(
       strings = [
@@ -1201,11 +1209,12 @@ class BookControllerTest(
       }
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "page": 5
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/books/${book.id}/read-progress") {
         contentType = MediaType.APPLICATION_JSON
@@ -1244,11 +1253,12 @@ class BookControllerTest(
       }
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "completed": true
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/books/${book.id}/read-progress") {
         contentType = MediaType.APPLICATION_JSON
@@ -1287,12 +1297,13 @@ class BookControllerTest(
       }
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "page": 5,
           "completed": false
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v1/books/${book.id}/read-progress") {
         contentType = MediaType.APPLICATION_JSON
@@ -1335,11 +1346,12 @@ class BookControllerTest(
     }
 
     // language=JSON
-    val jsonString = """
-        {
-          "completed": true
-        }
-    """.trimIndent()
+    val jsonString =
+      """
+      {
+        "completed": true
+      }
+      """.trimIndent()
 
     mockMvc.perform(
       MockMvcRequestBuilders
@@ -1372,8 +1384,9 @@ class BookControllerTest(
   @WithMockCustomUser
   fun `given book with Unicode name when getting book file then attachment name is correct`() {
     val bookName = "アキラ"
-    val tempFile = Files.createTempFile(bookName, ".cbz")
-      .also { it.toFile().deleteOnExit() }
+    val tempFile =
+      Files.createTempFile(bookName, ".cbz")
+        .also { it.toFile().deleteOnExit() }
     makeSeries(name = "series", libraryId = library.id).let { series ->
       seriesLifecycle.createSeries(series).let { created ->
         val books = listOf(makeBook(bookName, libraryId = library.id, url = tempFile.toUri().toURL()))

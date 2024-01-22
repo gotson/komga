@@ -69,7 +69,6 @@ class BookLifecycle(
   @Qualifier("pdfImageType")
   private val pdfImageType: ImageType,
 ) {
-
   private val resizeTargetFormat = ImageType.JPEG
 
   fun analyzeAndPersist(book: Book): Set<BookAction> {
@@ -80,8 +79,9 @@ class BookLifecycle(
       // if the number of pages has changed, delete all read progress for that book
       mediaRepository.findById(book.id).let { previous ->
         if (previous.status == Media.Status.OUTDATED && previous.pageCount != media.pageCount) {
-          val adjustedProgress = readProgressRepository.findAllByBookId(book.id)
-            .map { it.copy(page = if (it.completed) media.pageCount else 1) }
+          val adjustedProgress =
+            readProgressRepository.findAllByBookId(book.id)
+              .map { it.copy(page = if (it.completed) media.pageCount else 1) }
           if (adjustedProgress.isNotEmpty()) {
             logger.info { "Number of pages differ, adjust read progress for book" }
             readProgressRepository.save(adjustedProgress)
@@ -130,7 +130,10 @@ class BookLifecycle(
     }
   }
 
-  fun addThumbnailForBook(thumbnail: ThumbnailBook, markSelected: MarkSelectedPreference): ThumbnailBook {
+  fun addThumbnailForBook(
+    thumbnail: ThumbnailBook,
+    markSelected: MarkSelectedPreference,
+  ): ThumbnailBook {
     when (thumbnail.type) {
       ThumbnailBook.Type.GENERATED -> {
         // only one generated thumbnail is allowed
@@ -153,18 +156,21 @@ class BookLifecycle(
       }
     }
 
-    val selected = when (markSelected) {
-      MarkSelectedPreference.YES -> true
-      MarkSelectedPreference.IF_NONE_OR_GENERATED -> {
-        val selectedThumbnail = thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId)
-        selectedThumbnail == null || selectedThumbnail.type == ThumbnailBook.Type.GENERATED
+    val selected =
+      when (markSelected) {
+        MarkSelectedPreference.YES -> true
+        MarkSelectedPreference.IF_NONE_OR_GENERATED -> {
+          val selectedThumbnail = thumbnailBookRepository.findSelectedByBookIdOrNull(thumbnail.bookId)
+          selectedThumbnail == null || selectedThumbnail.type == ThumbnailBook.Type.GENERATED
+        }
+
+        MarkSelectedPreference.NO -> false
       }
 
-      MarkSelectedPreference.NO -> false
-    }
-
-    if (selected) thumbnailBookRepository.markSelected(thumbnail)
-    else thumbnailsHouseKeeping(thumbnail.bookId)
+    if (selected)
+      thumbnailBookRepository.markSelected(thumbnail)
+    else
+      thumbnailsHouseKeeping(thumbnail.bookId)
 
     val newThumbnail = thumbnail.copy(selected = selected)
     eventPublisher.publishEvent(DomainEvent.ThumbnailBookAdded(newThumbnail))
@@ -189,13 +195,17 @@ class BookLifecycle(
     return selected
   }
 
-  fun getThumbnailBytes(bookId: String, resizeTo: Int? = null): TypedBytes? {
+  fun getThumbnailBytes(
+    bookId: String,
+    resizeTo: Int? = null,
+  ): TypedBytes? {
     getThumbnail(bookId)?.let {
-      val thumbnailBytes = when {
-        it.thumbnail != null -> it.thumbnail
-        it.url != null -> File(it.url.toURI()).readBytes()
-        else -> return null
-      }
+      val thumbnailBytes =
+        when {
+          it.thumbnail != null -> it.thumbnail
+          it.url != null -> File(it.url.toURI()).readBytes()
+          else -> return null
+        }
 
       if (resizeTo != null) {
         try {
@@ -238,14 +248,17 @@ class BookLifecycle(
 
   private fun thumbnailsHouseKeeping(bookId: String) {
     logger.info { "House keeping thumbnails for book: $bookId" }
-    val all = thumbnailBookRepository.findAllByBookId(bookId)
-      .mapNotNull {
-        if (!it.exists()) {
-          logger.warn { "Thumbnail doesn't exist, removing entry" }
-          thumbnailBookRepository.delete(it.id)
-          null
-        } else it
-      }
+    val all =
+      thumbnailBookRepository.findAllByBookId(bookId)
+        .mapNotNull {
+          if (!it.exists()) {
+            logger.warn { "Thumbnail doesn't exist, removing entry" }
+            thumbnailBookRepository.delete(it.id)
+            null
+          } else {
+            it
+          }
+        }
 
     val selected = all.filter { it.selected }
     when {
@@ -274,20 +287,28 @@ class BookLifecycle(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class,
   )
-  fun getBookPage(book: Book, number: Int, convertTo: ImageType? = null, resizeTo: Int? = null): TypedBytes {
+  fun getBookPage(
+    book: Book,
+    number: Int,
+    convertTo: ImageType? = null,
+    resizeTo: Int? = null,
+  ): TypedBytes {
     val media = mediaRepository.findById(book.id)
     val pageContent = bookAnalyzer.getPageContent(BookWithMedia(book, media), number)
     val pageMediaType =
-      if (media.profile == MediaProfile.PDF) pdfImageType.mediaType
-      else media.pages[number - 1].mediaType
+      if (media.profile == MediaProfile.PDF)
+        pdfImageType.mediaType
+      else
+        media.pages[number - 1].mediaType
 
     if (resizeTo != null) {
-      val convertedPage = try {
-        imageConverter.resizeImageToByteArray(pageContent, resizeTargetFormat, resizeTo)
-      } catch (e: Exception) {
-        logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
-        throw e
-      }
+      val convertedPage =
+        try {
+          imageConverter.resizeImageToByteArray(pageContent, resizeTargetFormat, resizeTo)
+        } catch (e: Exception) {
+          logger.error(e) { "Resize page #$number of book $book to $resizeTo: failed" }
+          throw e
+        }
       return TypedBytes(convertedPage, resizeTargetFormat.mediaType)
     } else {
       convertTo?.let {
@@ -304,12 +325,13 @@ class BookLifecycle(
         }
 
         logger.info { msg }
-        val convertedPage = try {
-          imageConverter.convertImage(pageContent, it.imageIOFormat)
-        } catch (e: Exception) {
-          logger.error(e) { "$msg: conversion failed" }
-          throw e
-        }
+        val convertedPage =
+          try {
+            imageConverter.convertImage(pageContent, it.imageIOFormat)
+          } catch (e: Exception) {
+            logger.error(e) { "$msg: conversion failed" }
+            throw e
+          }
         return TypedBytes(convertedPage, it.mediaType)
       }
 
@@ -360,7 +382,11 @@ class BookLifecycle(
     books.forEach { eventPublisher.publishEvent(DomainEvent.BookDeleted(it)) }
   }
 
-  fun markReadProgress(book: Book, user: KomgaUser, page: Int) {
+  fun markReadProgress(
+    book: Book,
+    user: KomgaUser,
+    page: Int,
+  ) {
     val pages = mediaRepository.getPagesSize(book.id)
     require(page in 1..pages) { "Page argument ($page) must be within 1 and book page count ($pages)" }
 
@@ -369,7 +395,10 @@ class BookLifecycle(
     eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(progress))
   }
 
-  fun markReadProgressCompleted(bookId: String, user: KomgaUser) {
+  fun markReadProgressCompleted(
+    bookId: String,
+    user: KomgaUser,
+  ) {
     val media = mediaRepository.findById(bookId)
 
     val progress = ReadProgress(bookId, user.id, media.pageCount, true)
@@ -377,73 +406,83 @@ class BookLifecycle(
     eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(progress))
   }
 
-  fun deleteReadProgress(book: Book, user: KomgaUser) {
+  fun deleteReadProgress(
+    book: Book,
+    user: KomgaUser,
+  ) {
     readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user.id)?.let { progress ->
       readProgressRepository.delete(book.id, user.id)
       eventPublisher.publishEvent(DomainEvent.ReadProgressDeleted(progress))
     }
   }
 
-  fun markProgression(book: Book, user: KomgaUser, newProgression: R2Progression) {
+  fun markProgression(
+    book: Book,
+    user: KomgaUser,
+    newProgression: R2Progression,
+  ) {
     readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user.id)?.let { savedProgress ->
       check(newProgression.modified.toLocalDateTime().toCurrentTimeZone().isAfter(savedProgress.readDate)) { "Progression is older than existing" }
     }
 
     val media = mediaRepository.findById(book.id)
     requireNotNull(media.profile) { "Media has no profile" }
-    val progress = when (media.profile!!) {
-      MediaProfile.DIVINA,
-      MediaProfile.PDF,
-      -> {
-        require(newProgression.locator.locations?.position in 1..media.pageCount) { "Page argument (${newProgression.locator.locations?.position}) must be within 1 and book page count (${media.pageCount})" }
-        ReadProgress(
-          book.id,
-          user.id,
-          newProgression.locator.locations!!.position!!,
-          newProgression.locator.locations.position == media.pageCount,
-          newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
-          newProgression.device.id,
-          newProgression.device.name,
-          newProgression.locator,
-        )
+    val progress =
+      when (media.profile!!) {
+        MediaProfile.DIVINA,
+        MediaProfile.PDF,
+        -> {
+          require(newProgression.locator.locations?.position in 1..media.pageCount) { "Page argument (${newProgression.locator.locations?.position}) must be within 1 and book page count (${media.pageCount})" }
+          ReadProgress(
+            book.id,
+            user.id,
+            newProgression.locator.locations!!.position!!,
+            newProgression.locator.locations.position == media.pageCount,
+            newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
+            newProgression.device.id,
+            newProgression.device.name,
+            newProgression.locator,
+          )
+        }
+
+        MediaProfile.EPUB -> {
+          val href =
+            newProgression.locator.href
+              .replaceBefore("/resource/", "").removePrefix("/resource/")
+              .replaceAfter("#", "").removeSuffix("#")
+              .let { UriUtils.decode(it, Charsets.UTF_8) }
+          require(href in media.files.map { it.fileName }) { "Resource does not exist in book: $href" }
+          requireNotNull(newProgression.locator.locations?.progression) { "location.progression is required" }
+
+          val extension =
+            mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
+              ?: throw IllegalArgumentException("Epub extension not found")
+          // match progression with positions
+          val matchingPositions = extension.positions.filter { it.href == href }
+          val matchedPosition =
+            matchingPositions.firstOrNull { it.locations!!.progression == newProgression.locator.locations!!.progression }
+              ?: run {
+                // no exact match
+                val before = matchingPositions.filter { it.locations!!.progression!! < newProgression.locator.locations!!.progression!! }.maxByOrNull { it.locations!!.position!! }
+                val after = matchingPositions.filter { it.locations!!.progression!! > newProgression.locator.locations!!.progression!! }.minByOrNull { it.locations!!.position!! }
+                if (before == null || after == null || before.locations!!.position!! > after.locations!!.position!!)
+                  throw IllegalArgumentException("Invalid progression")
+                before
+              }
+
+          val totalProgression = matchedPosition.locations?.totalProgression
+          ReadProgress(
+            book.id,
+            user.id,
+            totalProgression?.let { (media.pageCount * it).roundToInt() } ?: 0,
+            totalProgression?.let { it >= 0.99F } ?: false,
+            newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
+            newProgression.device.id,
+            newProgression.device.name,
+            newProgression.locator,
+          )
+        }
       }
-
-      MediaProfile.EPUB -> {
-        val href = newProgression.locator.href
-          .replaceBefore("/resource/", "").removePrefix("/resource/")
-          .replaceAfter("#", "").removeSuffix("#")
-          .let { UriUtils.decode(it, Charsets.UTF_8) }
-        require(href in media.files.map { it.fileName }) { "Resource does not exist in book: $href" }
-        requireNotNull(newProgression.locator.locations?.progression) { "location.progression is required" }
-
-        val extension = mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
-          ?: throw IllegalArgumentException("Epub extension not found")
-        // match progression with positions
-        val matchingPositions = extension.positions.filter { it.href == href }
-        val matchedPosition =
-          matchingPositions.firstOrNull { it.locations!!.progression == newProgression.locator.locations!!.progression }
-            ?: run {
-              // no exact match
-              val before = matchingPositions.filter { it.locations!!.progression!! < newProgression.locator.locations!!.progression!! }.maxByOrNull { it.locations!!.position!! }
-              val after = matchingPositions.filter { it.locations!!.progression!! > newProgression.locator.locations!!.progression!! }.minByOrNull { it.locations!!.position!! }
-              if (before == null || after == null || before.locations!!.position!! > after.locations!!.position!!)
-                throw IllegalArgumentException("Invalid progression")
-              before
-            }
-
-        val totalProgression = matchedPosition.locations?.totalProgression
-        ReadProgress(
-          book.id,
-          user.id,
-          totalProgression?.let { (media.pageCount * it).roundToInt() } ?: 0,
-          totalProgression?.let { it >= 0.99F } ?: false,
-          newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
-          newProgression.device.id,
-          newProgression.device.name,
-          newProgression.locator,
-        )
-      }
-    }
 
     readProgressRepository.save(progress)
     eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(progress))
@@ -453,9 +492,10 @@ class BookLifecycle(
     if (book.path.notExists()) return logger.info { "Cannot delete book file, path does not exist: ${book.path}" }
     if (!book.path.isWritable()) return logger.info { "Cannot delete book file, path is not writable: ${book.path}" }
 
-    val thumbnails = thumbnailBookRepository.findAllByBookIdAndType(book.id, ThumbnailBook.Type.SIDECAR)
-      .mapNotNull { it.url?.toURI()?.toPath() }
-      .filter { it.exists() && it.isWritable() }
+    val thumbnails =
+      thumbnailBookRepository.findAllByBookIdAndType(book.id, ThumbnailBook.Type.SIDECAR)
+        .mapNotNull { it.url?.toURI()?.toPath() }
+        .filter { it.exists() && it.isWritable() }
 
     if (book.path.deleteIfExists()) {
       logger.info { "Deleted file: ${book.path}" }

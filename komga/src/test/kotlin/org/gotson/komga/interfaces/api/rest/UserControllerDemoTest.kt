@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.patch
 @ActiveProfiles("demo", "test")
 class UserControllerDemoTest(
   @Autowired private val mockMvc: MockMvc,
-
 ) {
   @Test
   @WithMockCustomUser

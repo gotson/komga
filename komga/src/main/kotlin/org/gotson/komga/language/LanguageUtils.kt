@@ -46,7 +46,10 @@ fun Iterable<String>.lowerNotBlank() =
 fun <T> Iterable<T>.toSetOrNull() =
   this.toSet().ifEmpty { null }
 
-fun LocalDateTime.notEquals(other: LocalDateTime, precision: TemporalUnit = ChronoUnit.MILLIS) =
+fun LocalDateTime.notEquals(
+  other: LocalDateTime,
+  precision: TemporalUnit = ChronoUnit.MILLIS,
+) =
   this.truncatedTo(precision) != other.truncatedTo(precision)
 
 fun String.stripAccents(): String = StringUtils.stripAccents(this)

@@ -9,8 +9,10 @@ class BracketParamsRequestWrapper(request: HttpServletRequest) : HttpServletRequ
   override fun getParameter(name: String): String? {
     val nameWithoutSuffix = name.removeSuffix("[]")
     val values = listOfNotNull(super.getParameter(nameWithoutSuffix), super.getParameter("$nameWithoutSuffix[]"))
-    return if (values.isEmpty()) null
-    else values.joinToString(",")
+    return if (values.isEmpty())
+      null
+    else
+      values.joinToString(",")
   }
 
   override fun getParameterValues(name: String): Array<String>? {
@@ -18,8 +20,10 @@ class BracketParamsRequestWrapper(request: HttpServletRequest) : HttpServletRequ
     val regular = super.getParameterValues(nameWithoutSuffix)
     val suffix = super.getParameterValues("$nameWithoutSuffix[]")
     val values = listOfNotNull(regular, suffix)
-    return if (values.isEmpty()) null
-    else values.reduce { acc, strings -> acc + strings }
+    return if (values.isEmpty())
+      null
+    else
+      values.reduce { acc, strings -> acc + strings }
   }
 
   override fun getParameterNames(): Enumeration<String> =

@@ -20,7 +20,6 @@ import java.time.ZoneId
 class KomgaUserDao(
   private val dsl: DSLContext,
 ) : KomgaUserRepository {
-
   private val u = Tables.USER
   private val ul = Tables.USER_LIBRARY_SHARING
   private val us = Tables.USER_SHARING
@@ -48,9 +47,10 @@ class KomgaUserDao(
   private fun ResultQuery<Record>.fetchAndMap() =
     this.fetchGroups({ it.into(u) }, { it.into(ul) })
       .map { (ur, ulr) ->
-        val usr = dsl.selectFrom(us)
-          .where(us.USER_ID.eq(ur.id))
-          .toList()
+        val usr =
+          dsl.selectFrom(us)
+            .where(us.USER_ID.eq(ur.id))
+            .toList()
         KomgaUser(
           email = ur.email,
           password = ur.password,
@@ -59,13 +59,16 @@ class KomgaUserDao(
           rolePageStreaming = ur.rolePageStreaming,
           sharedLibrariesIds = ulr.mapNotNull { it.libraryId }.toSet(),
           sharedAllLibraries = ur.sharedAllLibraries,
-          restrictions = ContentRestrictions(
-            ageRestriction = if (ur.ageRestriction != null && ur.ageRestrictionAllowOnly != null)
-              AgeRestriction(ur.ageRestriction, if (ur.ageRestrictionAllowOnly) AllowExclude.ALLOW_ONLY else AllowExclude.EXCLUDE)
-            else null,
-            labelsAllow = usr.filter { it.allow }.map { it.label }.toSet(),
-            labelsExclude = usr.filterNot { it.allow }.map { it.label }.toSet(),
-          ),
+          restrictions =
+            ContentRestrictions(
+              ageRestriction =
+                if (ur.ageRestriction != null && ur.ageRestrictionAllowOnly != null)
+                  AgeRestriction(ur.ageRestriction, if (ur.ageRestrictionAllowOnly) AllowExclude.ALLOW_ONLY else AllowExclude.EXCLUDE)
+                else
+                  null,
+              labelsAllow = usr.filter { it.allow }.map { it.label }.toSet(),
+              labelsExclude = usr.filterNot { it.allow }.map { it.label }.toSet(),
+            ),
           id = ur.id,
           createdDate = ur.createdDate.toCurrentTimeZone(),
           lastModifiedDate = ur.lastModifiedDate.toCurrentTimeZone(),
@@ -131,7 +134,10 @@ class KomgaUserDao(
     insertSharingRestrictions(user)
   }
 
-  override fun saveAnnouncementIdsRead(user: KomgaUser, announcementIds: Set<String>) {
+  override fun saveAnnouncementIdsRead(
+    user: KomgaUser,
+    announcementIds: Set<String>,
+  ) {
     dsl.batchStore(announcementIds.map { AnnouncementsReadRecord(user.id, it) }).execute()
   }
 

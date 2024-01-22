@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController
 class OAuth2Controller(
   clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) {
-
-  val registrationIds = clientRegistrationRepository?.map {
-    OAuth2ClientDto(it.clientName, it.registrationId)
-  } ?: emptyList()
+  val registrationIds =
+    clientRegistrationRepository?.map {
+      OAuth2ClientDto(it.clientName, it.registrationId)
+    } ?: emptyList()
 
   @RequestMapping("providers")
   fun getProviders() = registrationIds

@@ -28,25 +28,27 @@ class GithubOAuth2UserService : DefaultOAuth2UserService() {
       oAuth2User.getAttribute<String>("email") == null
     ) {
       try {
-        val email = RestTemplate().exchange(
-          RequestEntity<Any>(
-            HttpHeaders().apply { setBearerAuth(userRequest.accessToken.tokenValue) },
-            HttpMethod.GET,
-            UriComponentsBuilder.fromUriString("${userRequest.clientRegistration.providerDetails.userInfoEndpoint.uri}/emails").build().toUri(),
-          ),
-          parameterizedResponseType,
-        )
-          .body?.let { emails ->
-          emails
-            .filter { it["verified"] == true }
-            .filter { it["primary"] == true }
-            .firstNotNullOfOrNull { it["email"].toString() }
-        }
-        oAuth2User = DefaultOAuth2User(
-          oAuth2User.authorities,
-          oAuth2User.attributes.toMutableMap().apply { put("email", email) },
-          userRequest.clientRegistration.providerDetails.userInfoEndpoint.userNameAttributeName,
-        )
+        val email =
+          RestTemplate().exchange(
+            RequestEntity<Any>(
+              HttpHeaders().apply { setBearerAuth(userRequest.accessToken.tokenValue) },
+              HttpMethod.GET,
+              UriComponentsBuilder.fromUriString("${userRequest.clientRegistration.providerDetails.userInfoEndpoint.uri}/emails").build().toUri(),
+            ),
+            parameterizedResponseType,
+          )
+            .body?.let { emails ->
+              emails
+                .filter { it["verified"] == true }
+                .filter { it["primary"] == true }
+                .firstNotNullOfOrNull { it["email"].toString() }
+            }
+        oAuth2User =
+          DefaultOAuth2User(
+            oAuth2User.authorities,
+            oAuth2User.attributes.toMutableMap().apply { put("email", email) },
+            userRequest.clientRegistration.providerDetails.userInfoEndpoint.userNameAttributeName,
+          )
       } catch (e: Exception) {
         logger.warn { "Could not retrieve emails" }
       }

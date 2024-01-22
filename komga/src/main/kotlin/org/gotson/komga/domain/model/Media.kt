@@ -15,12 +15,15 @@ data class Media(
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
-
   @delegate:Transient
   val profile: MediaProfile? by lazy { MediaType.fromMediaType(mediaType)?.profile }
 
   enum class Status {
-    UNKNOWN, ERROR, READY, UNSUPPORTED, OUTDATED
+    UNKNOWN,
+    ERROR,
+    READY,
+    UNSUPPORTED,
+    OUTDATED,
   }
 
   override fun toString(): String {

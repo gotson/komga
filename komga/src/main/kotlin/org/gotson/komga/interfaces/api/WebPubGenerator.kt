@@ -45,18 +45,19 @@ class WebPubGenerator(
   private val bookAnalyzer: BookAnalyzer,
   private val mediaRepository: MediaRepository,
 ) {
-  private val wpKnownRoles = listOf(
-    "author",
-    "translator",
-    "editor",
-    "artist",
-    "illustrator",
-    "letterer",
-    "penciler",
-    "penciller",
-    "colorist",
-    "inker",
-  )
+  private val wpKnownRoles =
+    listOf(
+      "author",
+      "translator",
+      "editor",
+      "artist",
+      "illustrator",
+      "letterer",
+      "penciler",
+      "penciller",
+      "colorist",
+      "inker",
+    )
 
   private val recommendedImageMediaTypes = listOf("image/jpeg", "image/png", "image/gif")
 
@@ -70,92 +71,120 @@ class WebPubGenerator(
     )
   }
 
-  fun toOpdsPublicationDto(bookDto: BookDto, includeOpdsLinks: Boolean = false): WPPublicationDto {
+  fun toOpdsPublicationDto(
+    bookDto: BookDto,
+    includeOpdsLinks: Boolean = false,
+  ): WPPublicationDto {
     return bookDto.toBasePublicationDto(includeOpdsLinks).copy(images = buildThumbnailLinkDtos(bookDto.id))
   }
 
-  private fun buildThumbnailLinkDtos(bookId: String) = listOf(
-    WPLinkDto(
-      href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1").path("books/$bookId/thumbnail").toUriString(),
-      type = thumbnailType.mediaType,
-    ),
-  )
+  private fun buildThumbnailLinkDtos(bookId: String) =
+    listOf(
+      WPLinkDto(
+        href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1").path("books/$bookId/thumbnail").toUriString(),
+        type = thumbnailType.mediaType,
+      ),
+    )
 
-  fun toManifestDivina(bookDto: BookDto, media: Media, seriesMetadata: SeriesMetadata): WPPublicationDto {
+  fun toManifestDivina(
+    bookDto: BookDto,
+    media: Media,
+    seriesMetadata: SeriesMetadata,
+  ): WPPublicationDto {
     val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
     return bookDto.toBasePublicationDto().let {
       val pages = if (media.profile == MediaProfile.PDF) bookAnalyzer.getPdfPagesDynamic(media) else media.pages
       it.copy(
         mediaType = MEDIATYPE_DIVINA_JSON,
         metadata = it.metadata.withSeriesMetadata(seriesMetadata).copy(conformsTo = PROFILE_DIVINA),
-        readingOrder = pages.mapIndexed { index: Int, page: BookPage ->
-          WPLinkDto(
-            href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}").toUriString(),
-            type = page.mediaType,
-            width = page.dimension?.width,
-            height = page.dimension?.height,
-            alternate = if (!recommendedImageMediaTypes.contains(page.mediaType) && imageConverter.canConvertMediaType(page.mediaType, MediaType.IMAGE_JPEG_VALUE)) listOf(
-              WPLinkDto(
-                href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}").queryParam("convert", "jpeg").toUriString(),
-                type = MediaType.IMAGE_JPEG_VALUE,
-                width = page.dimension?.width,
-                height = page.dimension?.height,
-              ),
-            ) else emptyList(),
-          )
-        },
+        readingOrder =
+          pages.mapIndexed { index: Int, page: BookPage ->
+            WPLinkDto(
+              href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}").toUriString(),
+              type = page.mediaType,
+              width = page.dimension?.width,
+              height = page.dimension?.height,
+              alternate =
+                if (!recommendedImageMediaTypes.contains(page.mediaType) && imageConverter.canConvertMediaType(page.mediaType, MediaType.IMAGE_JPEG_VALUE))
+                  listOf(
+                    WPLinkDto(
+                      href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}").queryParam("convert", "jpeg").toUriString(),
+                      type = MediaType.IMAGE_JPEG_VALUE,
+                      width = page.dimension?.width,
+                      height = page.dimension?.height,
+                    ),
+                  )
+                else
+                  emptyList(),
+            )
+          },
         resources = buildThumbnailLinkDtos(bookDto.id),
       )
     }
   }
 
-  fun toManifestPdf(bookDto: BookDto, media: Media, seriesMetadata: SeriesMetadata): WPPublicationDto {
+  fun toManifestPdf(
+    bookDto: BookDto,
+    media: Media,
+    seriesMetadata: SeriesMetadata,
+  ): WPPublicationDto {
     val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
     return bookDto.toBasePublicationDto().let {
       it.copy(
         mediaType = MEDIATYPE_WEBPUB_JSON,
         metadata = it.metadata.withSeriesMetadata(seriesMetadata).copy(conformsTo = PROFILE_PDF),
-        readingOrder = List(media.pageCount) { index: Int ->
-          WPLinkDto(
-            href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}/raw").toUriString(),
-            type = KomgaMediaType.PDF.type,
-          )
-        },
+        readingOrder =
+          List(media.pageCount) { index: Int ->
+            WPLinkDto(
+              href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}/raw").toUriString(),
+              type = KomgaMediaType.PDF.type,
+            )
+          },
         resources = buildThumbnailLinkDtos(bookDto.id),
       )
     }
   }
 
-  fun toManifestEpub(bookDto: BookDto, media: Media, seriesMetadata: SeriesMetadata): WPPublicationDto {
+  fun toManifestEpub(
+    bookDto: BookDto,
+    media: Media,
+    seriesMetadata: SeriesMetadata,
+  ): WPPublicationDto {
     val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
-    val extension = when {
-      media.extension is ProxyExtension && media.extension.proxyForType<MediaExtensionEpub>() -> mediaRepository.findExtensionByIdOrNull(media.bookId) as? MediaExtensionEpub
-      media.extension is MediaExtensionEpub -> media.extension
-      else -> null
-    }
+    val extension =
+      when {
+        media.extension is ProxyExtension && media.extension.proxyForType<MediaExtensionEpub>() -> mediaRepository.findExtensionByIdOrNull(media.bookId) as? MediaExtensionEpub
+        media.extension is MediaExtensionEpub -> media.extension
+        else -> null
+      }
     return bookDto.toBasePublicationDto().let { publication ->
       publication.copy(
         mediaType = MEDIATYPE_WEBPUB_JSON,
-        metadata = publication.metadata.withSeriesMetadata(seriesMetadata).copy(
-          conformsTo = PROFILE_EPUB,
-          rendition = when (extension?.isFixedLayout) {
-            true -> mapOf("layout" to "fixed")
-            false -> mapOf("layout" to "reflowable")
-            else -> emptyMap()
+        metadata =
+          publication.metadata.withSeriesMetadata(seriesMetadata).copy(
+            conformsTo = PROFILE_EPUB,
+            rendition =
+              when (extension?.isFixedLayout) {
+                true -> mapOf("layout" to "fixed")
+                false -> mapOf("layout" to "reflowable")
+                else -> emptyMap()
+              },
+          ),
+        readingOrder =
+          media.files.filter { it.subType == MediaFile.SubType.EPUB_PAGE }.map {
+            WPLinkDto(
+              href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/").path(it.fileName).toUriString(),
+              type = it.mediaType,
+            )
           },
-        ),
-        readingOrder = media.files.filter { it.subType == MediaFile.SubType.EPUB_PAGE }.map {
-          WPLinkDto(
-            href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/").path(it.fileName).toUriString(),
-            type = it.mediaType,
-          )
-        },
-        resources = buildThumbnailLinkDtos(bookDto.id) + media.files.filter { it.subType == MediaFile.SubType.EPUB_ASSET }.map {
-          WPLinkDto(
-            href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/").path(it.fileName).toUriString(),
-            type = it.mediaType,
-          )
-        },
+        resources =
+          buildThumbnailLinkDtos(bookDto.id) +
+            media.files.filter { it.subType == MediaFile.SubType.EPUB_ASSET }.map {
+              WPLinkDto(
+                href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/").path(it.fileName).toUriString(),
+                type = it.mediaType,
+              )
+            },
         toc = extension?.toc?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
         landmarks = extension?.landmarks?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
         pageList = extension?.pageList?.map { it.toWPLinkDto(uriBuilder.cloneBuilder().path("books/${bookDto.id}/resource/")) } ?: emptyList(),
@@ -163,50 +192,60 @@ class WebPubGenerator(
     }
   }
 
-  private fun EpubTocEntry.toWPLinkDto(uriBuilder: UriComponentsBuilder): WPLinkDto = WPLinkDto(
-    title = title,
-    href = href?.let {
-      val fragment = it.substringAfterLast("#", "")
-      val h = it.removeSuffix("#$fragment")
-      uriBuilder.cloneBuilder().path(h).toUriString() + if (fragment.isNotEmpty()) "#$fragment" else ""
-    },
-    children = children.map { it.toWPLinkDto(uriBuilder) },
-  )
+  private fun EpubTocEntry.toWPLinkDto(uriBuilder: UriComponentsBuilder): WPLinkDto =
+    WPLinkDto(
+      title = title,
+      href =
+        href?.let {
+          val fragment = it.substringAfterLast("#", "")
+          val h = it.removeSuffix("#$fragment")
+          uriBuilder.cloneBuilder().path(h).toUriString() + if (fragment.isNotEmpty()) "#$fragment" else ""
+        },
+      children = children.map { it.toWPLinkDto(uriBuilder) },
+    )
 
-  private fun BookDto.toWPMetadataDto(includeOpdsLinks: Boolean = false) = WPMetadataDto(
-    title = metadata.title,
-    description = metadata.summary,
-    numberOfPages = this.media.pagesCount,
-    modified = lastModified.toZonedDateTime(),
-    published = metadata.releaseDate,
-    subject = metadata.tags.toList(),
-    identifier = if (metadata.isbn.isNotBlank()) "urn:isbn:${metadata.isbn}" else null,
-    belongsTo = WPBelongsToDto(
-      series = listOf(
-        WPContributorDto(
-          seriesTitle,
-          metadata.numberSort,
-          if (includeOpdsLinks) listOf(
-            WPLinkDto(
-              href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v2").path("series/$seriesId").toUriString(),
-              type = MEDIATYPE_OPDS_JSON_VALUE,
+  private fun BookDto.toWPMetadataDto(includeOpdsLinks: Boolean = false) =
+    WPMetadataDto(
+      title = metadata.title,
+      description = metadata.summary,
+      numberOfPages = this.media.pagesCount,
+      modified = lastModified.toZonedDateTime(),
+      published = metadata.releaseDate,
+      subject = metadata.tags.toList(),
+      identifier = if (metadata.isbn.isNotBlank()) "urn:isbn:${metadata.isbn}" else null,
+      belongsTo =
+        WPBelongsToDto(
+          series =
+            listOf(
+              WPContributorDto(
+                seriesTitle,
+                metadata.numberSort,
+                if (includeOpdsLinks)
+                  listOf(
+                    WPLinkDto(
+                      href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v2").path("series/$seriesId").toUriString(),
+                      type = MEDIATYPE_OPDS_JSON_VALUE,
+                    ),
+                  )
+                else
+                  emptyList(),
+              ),
             ),
-          ) else emptyList(),
         ),
-      ),
-    ),
-  )
+    )
 
-  private fun WPMetadataDto.withSeriesMetadata(seriesMetadata: SeriesMetadata) = copy(
-    language = seriesMetadata.language,
-    readingProgression = when (seriesMetadata.readingDirection) {
-      SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT -> WPReadingProgressionDto.LTR
-      SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT -> WPReadingProgressionDto.RTL
-      SeriesMetadata.ReadingDirection.VERTICAL -> WPReadingProgressionDto.TTB
-      SeriesMetadata.ReadingDirection.WEBTOON -> WPReadingProgressionDto.TTB
-      null -> null
-    },
-  )
+  private fun WPMetadataDto.withSeriesMetadata(seriesMetadata: SeriesMetadata) =
+    copy(
+      language = seriesMetadata.language,
+      readingProgression =
+        when (seriesMetadata.readingDirection) {
+          SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT -> WPReadingProgressionDto.LTR
+          SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT -> WPReadingProgressionDto.RTL
+          SeriesMetadata.ReadingDirection.VERTICAL -> WPReadingProgressionDto.TTB
+          SeriesMetadata.ReadingDirection.WEBTOON -> WPReadingProgressionDto.TTB
+          null -> null
+        },
+    )
 
   private fun WPMetadataDto.withAuthors(authors: List<AuthorDto>): WPMetadataDto {
     val groups = authors.groupBy({ it.role }, { it.name })
@@ -238,10 +277,11 @@ class WebPubGenerator(
     }
   }
 
-  private fun mediaProfileToWebPub(profile: MediaProfile?): String = when (profile) {
-    MediaProfile.DIVINA -> MEDIATYPE_DIVINA_JSON_VALUE
-    MediaProfile.PDF -> MEDIATYPE_WEBPUB_JSON_VALUE
-    MediaProfile.EPUB -> MEDIATYPE_WEBPUB_JSON_VALUE
-    null -> MEDIATYPE_WEBPUB_JSON_VALUE
-  }
+  private fun mediaProfileToWebPub(profile: MediaProfile?): String =
+    when (profile) {
+      MediaProfile.DIVINA -> MEDIATYPE_DIVINA_JSON_VALUE
+      MediaProfile.PDF -> MEDIATYPE_WEBPUB_JSON_VALUE
+      MediaProfile.EPUB -> MEDIATYPE_WEBPUB_JSON_VALUE
+      null -> MEDIATYPE_WEBPUB_JSON_VALUE
+    }
 }

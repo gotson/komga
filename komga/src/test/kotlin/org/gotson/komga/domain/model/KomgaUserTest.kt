@@ -5,12 +5,10 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class KomgaUserTest {
-
   val defaultUser = KomgaUser("user@example.org", "aPassword", false)
 
   @Nested
   inner class ContentRestriction {
-
     @Test
     fun `given user with age AllowOnlyUnder restriction when checking for content restriction then it is accurate`() {
       val user = defaultUser.copy(restrictions = ContentRestrictions(AgeRestriction(5, AllowExclude.ALLOW_ONLY)))
@@ -54,12 +52,14 @@ class KomgaUserTest {
 
     @Test
     fun `given user with both sharing label AllowOnly and Exclude restriction when checking for content restriction then it is accurate`() {
-      val user = defaultUser.copy(
-        restrictions = ContentRestrictions(
-          labelsAllow = setOf("allow", "both"),
-          labelsExclude = setOf("exclude", "both"),
-        ),
-      )
+      val user =
+        defaultUser.copy(
+          restrictions =
+            ContentRestrictions(
+              labelsAllow = setOf("allow", "both"),
+              labelsExclude = setOf("exclude", "both"),
+            ),
+        )
 
       assertThat(user.isContentAllowed(sharingLabels = setOf("allow"))).isTrue
       assertThat(user.isContentAllowed(sharingLabels = setOf("allow", "other"))).isTrue
@@ -70,12 +70,14 @@ class KomgaUserTest {
 
     @Test
     fun `given user with both age AllowOnlyUnder restriction and sharing label AllowOnly restriction when checking for content restriction then it is accurate`() {
-      val user = defaultUser.copy(
-        restrictions = ContentRestrictions(
-          ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
-          labelsAllow = setOf("allow"),
-        ),
-      )
+      val user =
+        defaultUser.copy(
+          restrictions =
+            ContentRestrictions(
+              ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
+              labelsAllow = setOf("allow"),
+            ),
+        )
 
       assertThat(user.isContentAllowed(ageRating = 5)).`as`("age 5 only is sufficient").isTrue
       assertThat(user.isContentAllowed(ageRating = 15)).`as`("age 15 is not allowed").isFalse
@@ -91,12 +93,14 @@ class KomgaUserTest {
 
     @Test
     fun `given user with both age AllowOnlyUnder restriction and sharing label Exclude restriction when checking for content restriction then it is accurate`() {
-      val user = defaultUser.copy(
-        restrictions = ContentRestrictions(
-          ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
-          labelsExclude = setOf("exclude"),
-        ),
-      )
+      val user =
+        defaultUser.copy(
+          restrictions =
+            ContentRestrictions(
+              ageRestriction = AgeRestriction(10, AllowExclude.ALLOW_ONLY),
+              labelsExclude = setOf("exclude"),
+            ),
+        )
 
       assertThat(user.isContentAllowed(ageRating = 5)).isTrue
       assertThat(user.isContentAllowed(ageRating = 15)).isFalse

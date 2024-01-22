@@ -43,7 +43,6 @@ class PageHashController(
   private val pageHashLifecycle: PageHashLifecycle,
   private val taskEmitter: TaskEmitter,
 ) {
-
   @GetMapping
   @PageableAsQueryParam
   fun getKnownPageHashes(
@@ -114,19 +113,20 @@ class PageHashController(
   fun performDelete(
     @PathVariable pageHash: String,
   ) {
-    val toRemove = pageHashRepository.findMatchesByHash(pageHash, Pageable.unpaged())
-      .groupBy(
-        { it.bookId },
-        {
-          BookPageNumbered(
-            fileName = it.fileName,
-            mediaType = it.mediaType,
-            fileHash = pageHash,
-            fileSize = it.fileSize,
-            pageNumber = it.pageNumber,
-          )
-        },
-      )
+    val toRemove =
+      pageHashRepository.findMatchesByHash(pageHash, Pageable.unpaged())
+        .groupBy(
+          { it.bookId },
+          {
+            BookPageNumbered(
+              fileName = it.fileName,
+              mediaType = it.mediaType,
+              fileHash = pageHash,
+              fileSize = it.fileSize,
+              pageNumber = it.pageNumber,
+            )
+          },
+        )
 
     taskEmitter.removeDuplicatePages(toRemove)
   }
@@ -137,18 +137,19 @@ class PageHashController(
     @PathVariable pageHash: String,
     @RequestBody matchDto: PageHashMatchDto,
   ) {
-    val toRemove = Pair(
-      matchDto.bookId,
-      listOf(
-        BookPageNumbered(
-          fileName = matchDto.fileName,
-          mediaType = matchDto.mediaType,
-          fileHash = pageHash,
-          fileSize = matchDto.fileSize,
-          pageNumber = matchDto.pageNumber,
+    val toRemove =
+      Pair(
+        matchDto.bookId,
+        listOf(
+          BookPageNumbered(
+            fileName = matchDto.fileName,
+            mediaType = matchDto.mediaType,
+            fileHash = pageHash,
+            fileSize = matchDto.fileSize,
+            pageNumber = matchDto.pageNumber,
+          ),
         ),
-      ),
-    )
+      )
 
     taskEmitter.removeDuplicatePages(toRemove.first, toRemove.second)
   }

@@ -30,7 +30,6 @@ class TransientBookLifecycle(
   private val seriesMetadataProviders: List<SeriesMetadataFromBookProvider>,
   bookMetadataProviders: List<BookMetadataProvider>,
 ) {
-
   val bookMetadataProviders = bookMetadataProviders.filter { it.capabilities.contains(BookMetadataPatchCapability.NUMBER_SORT) }
 
   fun scanAndPersist(filePath: String): List<TransientBook> {
@@ -60,15 +59,16 @@ class TransientBookLifecycle(
   fun getMetadata(transientBook: TransientBook): Pair<String?, Float?> {
     val bookWithMedia = transientBook.toBookWithMedia()
     val number = bookMetadataProviders.firstNotNullOfOrNull { it.getBookMetadataFromBook(bookWithMedia)?.numberSort }
-    val series = seriesMetadataProviders
-      .flatMap {
-        buildList {
-          if (it.supportsAppendVolume) add(it.getSeriesMetadataFromBook(bookWithMedia, true)?.title)
-          add(it.getSeriesMetadataFromBook(bookWithMedia, false)?.title)
+    val series =
+      seriesMetadataProviders
+        .flatMap {
+          buildList {
+            if (it.supportsAppendVolume) add(it.getSeriesMetadataFromBook(bookWithMedia, true)?.title)
+            add(it.getSeriesMetadataFromBook(bookWithMedia, false)?.title)
+          }
         }
-      }
-      .filterNotNull()
-      .firstNotNullOfOrNull { seriesRepository.findAllByTitleContaining(it).firstOrNull() }
+        .filterNotNull()
+        .firstNotNullOfOrNull { seriesRepository.findAllByTitleContaining(it).firstOrNull() }
 
     return series?.id to number
   }
@@ -77,11 +77,16 @@ class TransientBookLifecycle(
     MediaNotReadyException::class,
     IndexOutOfBoundsException::class,
   )
-  fun getBookPage(transientBook: TransientBook, number: Int): TypedBytes {
+  fun getBookPage(
+    transientBook: TransientBook,
+    number: Int,
+  ): TypedBytes {
     val pageContent = bookAnalyzer.getPageContent(transientBook.toBookWithMedia(), number)
     val pageMediaType =
-      if (transientBook.media.profile == MediaProfile.PDF) pdfImageType.mediaType
-      else transientBook.media.pages[number - 1].mediaType
+      if (transientBook.media.profile == MediaProfile.PDF)
+        pdfImageType.mediaType
+      else
+        transientBook.media.pages[number - 1].mediaType
 
     return TypedBytes(pageContent, pageMediaType)
   }

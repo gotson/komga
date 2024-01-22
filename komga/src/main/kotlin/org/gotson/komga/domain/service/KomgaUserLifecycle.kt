@@ -26,8 +26,11 @@ class KomgaUserLifecycle(
   private val transactionTemplate: TransactionTemplate,
   private val eventPublisher: ApplicationEventPublisher,
 ) {
-
-  fun updatePassword(user: KomgaUser, newPassword: String, expireSessions: Boolean) {
+  fun updatePassword(
+    user: KomgaUser,
+    newPassword: String,
+    expireSessions: Boolean,
+  ) {
     logger.info { "Changing password for user ${user.email}" }
     val updatedUser = user.copy(password = passwordEncoder.encode(newPassword))
     userRepository.update(updatedUser)
@@ -45,10 +48,11 @@ class KomgaUserLifecycle(
     logger.info { "Update user: $toUpdate" }
     userRepository.update(toUpdate)
 
-    val expireSessions = existing.roles != user.roles ||
-      existing.restrictions != user.restrictions ||
-      existing.sharedAllLibraries != user.sharedAllLibraries ||
-      existing.sharedLibrariesIds != user.sharedLibrariesIds
+    val expireSessions =
+      existing.roles != user.roles ||
+        existing.restrictions != user.restrictions ||
+        existing.sharedAllLibraries != user.sharedAllLibraries ||
+        existing.sharedLibrariesIds != user.sharedLibrariesIds
 
     if (expireSessions) expireSessions(toUpdate)
 

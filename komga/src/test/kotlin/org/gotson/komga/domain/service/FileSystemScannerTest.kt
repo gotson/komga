@@ -164,10 +164,11 @@ class FileSystemScannerTest {
       val root = fs.getPath("/root")
       Files.createDirectory(root)
 
-      val subDirs = listOf(
-        "series1" to listOf("volume1.cbz", "volume2.cbz"),
-        "series2" to listOf("book1.cbz", "book2.cbz"),
-      ).toMap()
+      val subDirs =
+        listOf(
+          "series1" to listOf("volume1.cbz", "volume2.cbz"),
+          "series2" to listOf("book1.cbz", "book2.cbz"),
+        ).toMap()
 
       subDirs.forEach { (dir, files) ->
         makeSubDir(root, dir, files)
@@ -205,10 +206,11 @@ class FileSystemScannerTest {
       val link = fs.getPath("/link")
       Files.createSymbolicLink(link, root)
 
-      val subDirs = listOf(
-        "series1" to listOf("volume1.cbz", "volume2.cbz"),
-        "series2" to listOf("book1.cbz", "book2.cbz"),
-      ).toMap()
+      val subDirs =
+        listOf(
+          "series1" to listOf("volume1.cbz", "volume2.cbz"),
+          "series2" to listOf("book1.cbz", "book2.cbz"),
+        ).toMap()
 
       subDirs.forEach { (dir, files) ->
         makeSubDir(root, dir, files)
@@ -243,10 +245,11 @@ class FileSystemScannerTest {
       val root = fs.getPath("/root")
       Files.createDirectory(root)
 
-      val subDirs = listOf(
-        "series1" to listOf("volume1.cbz", "volume2.cbz"),
-        "series2" to listOf("book1.cbz", "book2.cbz"),
-      ).toMap()
+      val subDirs =
+        listOf(
+          "series1" to listOf("volume1.cbz", "volume2.cbz"),
+          "series2" to listOf("book1.cbz", "book2.cbz"),
+        ).toMap()
 
       subDirs.forEach { (dir, files) ->
         makeSubDir(root, dir, files)
@@ -393,7 +396,11 @@ class FileSystemScannerTest {
     }
   }
 
-  private fun makeSubDir(root: Path, name: String, files: List<String>): Path {
+  private fun makeSubDir(
+    root: Path,
+    name: String,
+    files: List<String>,
+  ): Path {
     val dir = root.resolve(name)
     Files.createDirectory(dir)
     files.forEach { Files.createFile(root.resolve(root.fileSystem.getPath(name, it))) }

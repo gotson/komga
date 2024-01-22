@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.get
 class ActuatorTest(
   @Autowired private val mockMvc: MockMvc,
 ) {
-
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getting actuator endpoints then returns unauthorized`() {

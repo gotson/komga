@@ -8,7 +8,12 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface BookDtoRepository {
-  fun findAll(search: BookSearchWithReadProgress, userId: String, pageable: Pageable, restrictions: ContentRestrictions = ContentRestrictions()): Page<BookDto>
+  fun findAll(
+    search: BookSearchWithReadProgress,
+    userId: String,
+    pageable: Pageable,
+    restrictions: ContentRestrictions = ContentRestrictions(),
+  ): Page<BookDto>
 
   /**
    * Find books that are part of a readlist, optionally filtered by library
@@ -22,10 +27,20 @@ interface BookDtoRepository {
     restrictions: ContentRestrictions = ContentRestrictions(),
   ): Page<BookDto>
 
-  fun findByIdOrNull(bookId: String, userId: String): BookDto?
+  fun findByIdOrNull(
+    bookId: String,
+    userId: String,
+  ): BookDto?
 
-  fun findPreviousInSeriesOrNull(bookId: String, userId: String): BookDto?
-  fun findNextInSeriesOrNull(bookId: String, userId: String): BookDto?
+  fun findPreviousInSeriesOrNull(
+    bookId: String,
+    userId: String,
+  ): BookDto?
+
+  fun findNextInSeriesOrNull(
+    bookId: String,
+    userId: String,
+  ): BookDto?
 
   fun findPreviousInReadListOrNull(
     readList: ReadList,
@@ -43,7 +58,15 @@ interface BookDtoRepository {
     restrictions: ContentRestrictions = ContentRestrictions(),
   ): BookDto?
 
-  fun findAllOnDeck(userId: String, filterOnLibraryIds: Collection<String>?, pageable: Pageable, restrictions: ContentRestrictions = ContentRestrictions()): Page<BookDto>
+  fun findAllOnDeck(
+    userId: String,
+    filterOnLibraryIds: Collection<String>?,
+    pageable: Pageable,
+    restrictions: ContentRestrictions = ContentRestrictions(),
+  ): Page<BookDto>
 
-  fun findAllDuplicates(userId: String, pageable: Pageable): Page<BookDto>
+  fun findAllDuplicates(
+    userId: String,
+    pageable: Pageable,
+  ): Page<BookDto>
 }

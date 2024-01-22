@@ -14,7 +14,6 @@ class BookMetadata(
   tags: Set<String> = emptySet(),
   val isbn: String = "",
   val links: List<WebLink> = emptyList(),
-
   val titleLock: Boolean = false,
   val summaryLock: Boolean = false,
   val numberLock: Boolean = false,
@@ -24,13 +23,10 @@ class BookMetadata(
   val tagsLock: Boolean = false,
   val isbnLock: Boolean = false,
   val linksLock: Boolean = false,
-
   val bookId: String = "",
-
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
-
   val title = title.trim()
   val summary = summary.trim()
   val number = number.trim()

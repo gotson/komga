@@ -12,7 +12,9 @@ open class SeriesSearch(
   val oneshot: Boolean? = null,
 ) {
   enum class SearchField {
-    NAME, TITLE, TITLE_SORT
+    NAME,
+    TITLE,
+    TITLE_SORT,
   }
 }
 
@@ -35,13 +37,13 @@ class SeriesSearchWithReadProgress(
   val authors: Collection<Author>? = null,
   val sharingLabels: Collection<String>? = null,
 ) : SeriesSearch(
-  libraryIds = libraryIds,
-  collectionIds = collectionIds,
-  searchTerm = searchTerm,
-  searchRegex = searchRegex,
-  metadataStatus = metadataStatus,
-  publishers = publishers,
-  deleted = deleted,
-  complete = complete,
-  oneshot = oneshot,
-)
+    libraryIds = libraryIds,
+    collectionIds = collectionIds,
+    searchTerm = searchTerm,
+    searchRegex = searchRegex,
+    metadataStatus = metadataStatus,
+    publishers = publishers,
+    deleted = deleted,
+    complete = complete,
+    oneshot = oneshot,
+  )

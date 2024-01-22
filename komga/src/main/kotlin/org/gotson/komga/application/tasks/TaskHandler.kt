@@ -47,7 +47,6 @@ class TaskHandler(
   private val thumbnailLifecycle: ThumbnailLifecycle,
   private val meterRegistry: MeterRegistry,
 ) {
-
   fun handleTask(task: Task) {
     logger.info { "Executing task: $task" }
     try {
@@ -162,8 +161,10 @@ class TaskHandler(
 
           is Task.DeleteBook -> {
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
-              if (book.oneshot) seriesLifecycle.deleteSeriesFiles(seriesRepository.findByIdOrNull(book.seriesId)!!)
-              else bookLifecycle.deleteBookFiles(book)
+              if (book.oneshot)
+                seriesLifecycle.deleteSeriesFiles(seriesRepository.findByIdOrNull(book.seriesId)!!)
+              else
+                bookLifecycle.deleteBookFiles(book)
             }
           }
 

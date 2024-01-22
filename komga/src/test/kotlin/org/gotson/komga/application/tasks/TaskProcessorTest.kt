@@ -20,14 +20,16 @@ class TaskProcessorTest(
   @Autowired private val taskEmitter: TaskEmitter,
   @Autowired private val taskProcessor: TaskProcessor,
 ) {
-
   @MockkBean
   private lateinit var mockBookLifecycle: BookLifecycle
 
   @MockkBean
   private lateinit var mockBookRepository: BookRepository
 
-  fun testTasks(sleep: Duration = 3.seconds, block: () -> Unit) {
+  fun testTasks(
+    sleep: Duration = 3.seconds,
+    block: () -> Unit,
+  ) {
     taskProcessor.processTasks = false
     block()
     taskProcessor.processTasks = true

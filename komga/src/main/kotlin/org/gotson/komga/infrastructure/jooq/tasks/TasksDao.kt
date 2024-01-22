@@ -47,19 +47,20 @@ class TasksDao(
 
   @Transactional
   override fun takeFirst(owner: String): Task? {
-    val task = selectBase()
-      .where(tasksAvailableCondition)
-      .orderBy(t.PRIORITY.desc(), t.LAST_MODIFIED_DATE)
-      .limit(1)
-      .fetchOne()
-      ?.let {
-        try {
-          objectMapper.readValue(it.value2(), Class.forName(it.value1())) as Task
-        } catch (e: Exception) {
-          logger.error(e) { "Could not deserialize object of type: ${it.value1()}" }
-          null
-        }
-      } ?: return null
+    val task =
+      selectBase()
+        .where(tasksAvailableCondition)
+        .orderBy(t.PRIORITY.desc(), t.LAST_MODIFIED_DATE)
+        .limit(1)
+        .fetchOne()
+        ?.let {
+          try {
+            objectMapper.readValue(it.value2(), Class.forName(it.value1())) as Task
+          } catch (e: Exception) {
+            logger.error(e) { "Could not deserialize object of type: ${it.value1()}" }
+            null
+          }
+        } ?: return null
 
     dsl.update(t)
       .set(t.OWNER, owner)

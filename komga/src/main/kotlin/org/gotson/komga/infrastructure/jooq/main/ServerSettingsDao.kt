@@ -8,16 +8,21 @@ import org.springframework.stereotype.Component
 class ServerSettingsDao(
   private val dsl: DSLContext,
 ) {
-
   private val s = Tables.SERVER_SETTINGS
 
-  fun <T> getSettingByKey(key: String, clazz: Class<T>): T? =
+  fun <T> getSettingByKey(
+    key: String,
+    clazz: Class<T>,
+  ): T? =
     dsl.select(s.VALUE)
       .from(s)
       .where(s.KEY.eq(key))
       .fetchOneInto(clazz)
 
-  fun saveSetting(key: String, value: String) {
+  fun saveSetting(
+    key: String,
+    value: String,
+  ) {
     dsl.insertInto(s)
       .values(key, value)
       .onDuplicateKeyUpdate()
@@ -25,11 +30,17 @@ class ServerSettingsDao(
       .execute()
   }
 
-  fun saveSetting(key: String, value: Boolean) {
+  fun saveSetting(
+    key: String,
+    value: Boolean,
+  ) {
     saveSetting(key, value.toString())
   }
 
-  fun saveSetting(key: String, value: Int) {
+  fun saveSetting(
+    key: String,
+    value: Int,
+  ) {
     saveSetting(key, value.toString())
   }
 

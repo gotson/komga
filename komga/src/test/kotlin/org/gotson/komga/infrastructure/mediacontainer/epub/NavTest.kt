@@ -12,7 +12,11 @@ import kotlin.io.path.Path
 class NavTest {
   @ParameterizedTest
   @MethodSource("paramSource")
-  fun `given nav document when parsing nav section then nav entries are valid`(navType: Epub3Nav, prefix: String?, expectedProvider: (String) -> List<EpubTocEntry>) {
+  fun `given nav document when parsing nav section then nav entries are valid`(
+    navType: Epub3Nav,
+    prefix: String?,
+    expectedProvider: (String) -> List<EpubTocEntry>,
+  ) {
     // given
     val navResource = ClassPathResource("epub/nav.xhtml")
     val navString = navResource.inputStream.readAllBytes().decodeToString()
@@ -37,38 +41,42 @@ class NavTest {
     )
   }
 
-  private fun getExpectedNavToc(prefix: String = "") = listOf(
-    EpubTocEntry("Cover", "${prefix}cover.xhtml"),
-    EpubTocEntry("Title Page", "${prefix}titlepage.xhtml"),
-    EpubTocEntry("Copyright", "${prefix}copyright.xhtml"),
-    EpubTocEntry("Table of Contents", "${prefix}toc.xhtml"),
-    EpubTocEntry("An unlinked heading", null),
-    EpubTocEntry(
-      "Introduction",
-      "${prefix}introduction.xhtml",
-      children = listOf(
-        EpubTocEntry("Spring", "${prefix}chapter 001.xhtml"),
-        EpubTocEntry("Summer", "${prefix}chapter 027.xhtml"),
-        EpubTocEntry("Fall", "${prefix}chapter053.xhtml"),
-        EpubTocEntry("Winter", "${prefix}chapter079.xhtml"),
+  private fun getExpectedNavToc(prefix: String = "") =
+    listOf(
+      EpubTocEntry("Cover", "${prefix}cover.xhtml"),
+      EpubTocEntry("Title Page", "${prefix}titlepage.xhtml"),
+      EpubTocEntry("Copyright", "${prefix}copyright.xhtml"),
+      EpubTocEntry("Table of Contents", "${prefix}toc.xhtml"),
+      EpubTocEntry("An unlinked heading", null),
+      EpubTocEntry(
+        "Introduction",
+        "${prefix}introduction.xhtml",
+        children =
+          listOf(
+            EpubTocEntry("Spring", "${prefix}chapter 001.xhtml"),
+            EpubTocEntry("Summer", "${prefix}chapter 027.xhtml"),
+            EpubTocEntry("Fall", "${prefix}chapter053.xhtml"),
+            EpubTocEntry("Winter", "${prefix}chapter079.xhtml"),
+          ),
       ),
-    ),
-    EpubTocEntry("Acknowledgments", "${prefix}acknowledgements.xhtml"),
-  )
+      EpubTocEntry("Acknowledgments", "${prefix}acknowledgements.xhtml"),
+    )
 
-  private fun getExpectedNavLandmarks(prefix: String = "") = listOf(
-    EpubTocEntry("Begin Reading", "${prefix}cover.xhtml#coverimage"),
-    EpubTocEntry("Table of Contents", "${prefix}toc.xhtml"),
-  )
+  private fun getExpectedNavLandmarks(prefix: String = "") =
+    listOf(
+      EpubTocEntry("Begin Reading", "${prefix}cover.xhtml#coverimage"),
+      EpubTocEntry("Table of Contents", "${prefix}toc.xhtml"),
+    )
 
-  private fun getExpectedNavPageList(prefix: String = "") = listOf(
-    EpubTocEntry("Cover Page", "${prefix}xhtml/cover.xhtml"),
-    EpubTocEntry("iii", "${prefix}xhtml/title.xhtml#pg_iii"),
-    EpubTocEntry("1", "${prefix}xhtml/chapter1.xhtml#pg_1"),
-    EpubTocEntry("2", "${prefix}xhtml/chapter1.xhtml#pg_2"),
-    EpubTocEntry("107", "${prefix}xhtml/acknowledgments.xhtml#pg_107"),
-    EpubTocEntry("ii", "${prefix}xhtml/adcard.xhtml#pg_ii"),
-    EpubTocEntry("109", "${prefix}xhtml/abouttheauthor.xhtml#pg_109"),
-    EpubTocEntry("iv", "${prefix}xhtml/copyright.xhtml#pg_iv"),
-  )
+  private fun getExpectedNavPageList(prefix: String = "") =
+    listOf(
+      EpubTocEntry("Cover Page", "${prefix}xhtml/cover.xhtml"),
+      EpubTocEntry("iii", "${prefix}xhtml/title.xhtml#pg_iii"),
+      EpubTocEntry("1", "${prefix}xhtml/chapter1.xhtml#pg_1"),
+      EpubTocEntry("2", "${prefix}xhtml/chapter1.xhtml#pg_2"),
+      EpubTocEntry("107", "${prefix}xhtml/acknowledgments.xhtml#pg_107"),
+      EpubTocEntry("ii", "${prefix}xhtml/adcard.xhtml#pg_ii"),
+      EpubTocEntry("109", "${prefix}xhtml/abouttheauthor.xhtml#pg_109"),
+      EpubTocEntry("iv", "${prefix}xhtml/copyright.xhtml#pg_iv"),
+    )
 }

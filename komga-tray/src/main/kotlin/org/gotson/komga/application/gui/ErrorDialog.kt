@@ -30,21 +30,26 @@ import org.gotson.komga.RB
 import org.springframework.core.io.ClassPathResource
 
 @Preview
-fun showErrorDialog(text: String, stackTrace: String? = null) {
+fun showErrorDialog(
+  text: String,
+  stackTrace: String? = null,
+) {
   application {
     Window(
       title = RB.getString("dialog_error.title"),
       onCloseRequest = ::exitApplication,
       visible = true,
       resizable = false,
-      state = WindowState(
-        placement = WindowPlacement.Floating,
-        position = WindowPosition(alignment = Alignment.Center),
-        size = DpSize(
-          if (stackTrace != null) 800.dp else Dp.Unspecified,
-          Dp.Unspecified,
+      state =
+        WindowState(
+          placement = WindowPlacement.Floating,
+          position = WindowPosition(alignment = Alignment.Center),
+          size =
+            DpSize(
+              if (stackTrace != null) 800.dp else Dp.Unspecified,
+              Dp.Unspecified,
+            ),
         ),
-      ),
       icon = loadSvgPainter(ClassPathResource("icons/komga-color.svg").inputStream, LocalDensity.current),
     ) {
       Column(
@@ -57,9 +62,10 @@ fun showErrorDialog(text: String, stackTrace: String? = null) {
           Image(
             painter = loadSvgPainter(ClassPathResource("icons/komga-color.svg").inputStream, LocalDensity.current),
             contentDescription = "Komga logo",
-            modifier = Modifier
-              .size(96.dp)
-              .align(Alignment.Top),
+            modifier =
+              Modifier
+                .size(96.dp)
+                .align(Alignment.Top),
           )
           Text(
             text,
@@ -77,10 +83,11 @@ fun showErrorDialog(text: String, stackTrace: String? = null) {
 
         Row(
           horizontalArrangement = if (stackTrace != null) Arrangement.SpaceBetween else Arrangement.End,
-          modifier = if (stackTrace != null)
-            Modifier.align(Alignment.End).fillMaxWidth()
-          else
-            Modifier.align(Alignment.End),
+          modifier =
+            if (stackTrace != null)
+              Modifier.align(Alignment.End).fillMaxWidth()
+            else
+              Modifier.align(Alignment.End),
         ) {
           if (stackTrace != null) {
             val clipboardManager = LocalClipboardManager.current

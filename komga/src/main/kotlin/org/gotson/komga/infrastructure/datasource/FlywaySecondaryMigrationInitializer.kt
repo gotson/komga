@@ -11,7 +11,6 @@ class FlywaySecondaryMigrationInitializer(
   @Qualifier("tasksDataSource")
   private val tasksDataSource: DataSource,
 ) : InitializingBean {
-
   // by default Spring Boot will perform migration only on the @Primary datasource
   override fun afterPropertiesSet() {
     Flyway.configure()

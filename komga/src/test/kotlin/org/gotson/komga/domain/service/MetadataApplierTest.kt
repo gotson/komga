@@ -13,40 +13,40 @@ import java.net.URI
 import java.time.LocalDate
 
 class MetadataApplierTest {
-
   private val metadataApplier = MetadataApplier()
 
   @Nested
   inner class Book {
-
     @Test
     fun `given locked metadata when applying patch then metadata is not changed`() {
-      val metadata = BookMetadata(
-        title = "title",
-        number = "1",
-        numberSort = 1F,
-        titleLock = true,
-        summaryLock = true,
-        numberLock = true,
-        numberSortLock = true,
-        releaseDateLock = true,
-        authorsLock = true,
-        tagsLock = true,
-        isbnLock = true,
-        linksLock = true,
-      )
+      val metadata =
+        BookMetadata(
+          title = "title",
+          number = "1",
+          numberSort = 1F,
+          titleLock = true,
+          summaryLock = true,
+          numberLock = true,
+          numberSortLock = true,
+          releaseDateLock = true,
+          authorsLock = true,
+          tagsLock = true,
+          isbnLock = true,
+          linksLock = true,
+        )
 
-      val patch = BookMetadataPatch(
-        title = "new title",
-        summary = "new summary",
-        number = "2",
-        numberSort = 2F,
-        releaseDate = LocalDate.of(2020, 12, 2),
-        authors = listOf(Author("Marcel", "writer")),
-        isbn = "9782811632397",
-        links = listOf(WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888"))),
-        tags = setOf("tag1", "tag2"),
-      )
+      val patch =
+        BookMetadataPatch(
+          title = "new title",
+          summary = "new summary",
+          number = "2",
+          numberSort = 2F,
+          releaseDate = LocalDate.of(2020, 12, 2),
+          authors = listOf(Author("Marcel", "writer")),
+          isbn = "9782811632397",
+          links = listOf(WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888"))),
+          tags = setOf("tag1", "tag2"),
+        )
 
       val patched = metadataApplier.apply(patch, metadata)
 
@@ -64,23 +64,25 @@ class MetadataApplierTest {
 
     @Test
     fun `given unlocked metadata when applying patch then metadata is changed`() {
-      val metadata = BookMetadata(
-        title = "title",
-        number = "1",
-        numberSort = 1F,
-      )
+      val metadata =
+        BookMetadata(
+          title = "title",
+          number = "1",
+          numberSort = 1F,
+        )
 
-      val patch = BookMetadataPatch(
-        title = "new title",
-        summary = "new summary",
-        number = "2",
-        numberSort = 2F,
-        releaseDate = LocalDate.of(2020, 12, 2),
-        authors = listOf(Author("Marcel", "writer")),
-        isbn = "9782811632397",
-        links = listOf(WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888"))),
-        tags = setOf("tag1", "tag2"),
-      )
+      val patch =
+        BookMetadataPatch(
+          title = "new title",
+          summary = "new summary",
+          number = "2",
+          numberSort = 2F,
+          releaseDate = LocalDate.of(2020, 12, 2),
+          authors = listOf(Author("Marcel", "writer")),
+          isbn = "9782811632397",
+          links = listOf(WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888"))),
+          tags = setOf("tag1", "tag2"),
+        )
 
       val patched = metadataApplier.apply(patch, metadata)
 
@@ -108,37 +110,38 @@ class MetadataApplierTest {
 
   @Nested
   inner class Series {
-
     @Test
     fun `given locked metadata when applying patch then metadata is not changed`() {
-      val metadata = SeriesMetadata(
-        title = "title",
-        statusLock = true,
-        titleLock = true,
-        titleSortLock = true,
-        summaryLock = true,
-        readingDirectionLock = true,
-        publisherLock = true,
-        ageRatingLock = true,
-        languageLock = true,
-        genresLock = true,
-        tagsLock = true,
-        totalBookCountLock = true,
-      )
+      val metadata =
+        SeriesMetadata(
+          title = "title",
+          statusLock = true,
+          titleLock = true,
+          titleSortLock = true,
+          summaryLock = true,
+          readingDirectionLock = true,
+          publisherLock = true,
+          ageRatingLock = true,
+          languageLock = true,
+          genresLock = true,
+          tagsLock = true,
+          totalBookCountLock = true,
+        )
 
-      val patch = SeriesMetadataPatch(
-        title = "new title",
-        titleSort = "new title sort",
-        status = SeriesMetadata.Status.ENDED,
-        summary = "new summary",
-        readingDirection = SeriesMetadata.ReadingDirection.VERTICAL,
-        publisher = "new publisher",
-        ageRating = 12,
-        language = "en",
-        genres = setOf("shonen"),
-        totalBookCount = 12,
-        collections = emptySet(),
-      )
+      val patch =
+        SeriesMetadataPatch(
+          title = "new title",
+          titleSort = "new title sort",
+          status = SeriesMetadata.Status.ENDED,
+          summary = "new summary",
+          readingDirection = SeriesMetadata.ReadingDirection.VERTICAL,
+          publisher = "new publisher",
+          ageRating = 12,
+          language = "en",
+          genres = setOf("shonen"),
+          totalBookCount = 12,
+          collections = emptySet(),
+        )
 
       val patched = metadataApplier.apply(patch, metadata)
 
@@ -157,23 +160,25 @@ class MetadataApplierTest {
 
     @Test
     fun `given unlocked metadata when applying patch then metadata is changed`() {
-      val metadata = SeriesMetadata(
-        title = "title",
-      )
+      val metadata =
+        SeriesMetadata(
+          title = "title",
+        )
 
-      val patch = SeriesMetadataPatch(
-        title = "new title",
-        titleSort = "new title sort",
-        status = SeriesMetadata.Status.ENDED,
-        summary = "new summary",
-        readingDirection = SeriesMetadata.ReadingDirection.VERTICAL,
-        publisher = "new publisher",
-        ageRating = 12,
-        language = "en",
-        genres = setOf("shonen"),
-        totalBookCount = 12,
-        collections = emptySet(),
-      )
+      val patch =
+        SeriesMetadataPatch(
+          title = "new title",
+          titleSort = "new title sort",
+          status = SeriesMetadata.Status.ENDED,
+          summary = "new summary",
+          readingDirection = SeriesMetadata.ReadingDirection.VERTICAL,
+          publisher = "new publisher",
+          ageRating = 12,
+          language = "en",
+          genres = setOf("shonen"),
+          totalBookCount = 12,
+          collections = emptySet(),
+        )
 
       val patched = metadataApplier.apply(patch, metadata)
 

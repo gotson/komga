@@ -9,7 +9,6 @@ private val logger = KotlinLogging.logger {}
 
 @Component
 class SessionListener {
-
   @EventListener
   fun sessionEventLogging(event: AbstractSessionEvent) {
     logger.debug { "${event.javaClass.simpleName}: ${event.sessionId}" }

@@ -15,7 +15,6 @@ private val logger = KotlinLogging.logger {}
 class AuthenticationActivityCleanupController(
   private val authenticationActivityRepository: AuthenticationActivityRepository,
 ) {
-
   // Run every day
   @Scheduled(fixedRate = 86_400_000)
   fun cleanup() {

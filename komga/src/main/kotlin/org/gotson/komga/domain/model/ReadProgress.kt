@@ -11,7 +11,6 @@ data class ReadProgress(
   val deviceId: String = "",
   val deviceName: String = "",
   val locator: R2Locator? = null,
-
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable

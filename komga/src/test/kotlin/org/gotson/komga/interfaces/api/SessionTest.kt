@@ -25,7 +25,6 @@ class SessionTest(
   @Autowired private val sessionHeaderName: String,
   @Autowired private val sessionCookieName: String,
 ) {
-
   private lateinit var user: KomgaUser
 
   @BeforeAll
@@ -70,10 +69,11 @@ class SessionTest(
 
   @Test
   fun `given existing session when exchanging for cookies then session is returned in cookies`() {
-    val sessionId = mockMvc.get("/api/v2/users/me") {
-      with(httpBasic(user.email, user.password))
-      header(sessionHeaderName, "")
-    }.andReturn().response.getHeader(this.sessionHeaderName)
+    val sessionId =
+      mockMvc.get("/api/v2/users/me") {
+        with(httpBasic(user.email, user.password))
+        header(sessionHeaderName, "")
+      }.andReturn().response.getHeader(this.sessionHeaderName)
 
     assertThat(sessionId).isNotNull
 
@@ -93,10 +93,11 @@ class SessionTest(
 
   @Test
   fun `given existing session when logging out then session cookie is cleared`() {
-    val sessionId = mockMvc.get("/api/v2/users/me") {
-      with(httpBasic(user.email, user.password))
-      header(sessionHeaderName, "")
-    }.andReturn().response.getHeader(this.sessionHeaderName)
+    val sessionId =
+      mockMvc.get("/api/v2/users/me") {
+        with(httpBasic(user.email, user.password))
+        header(sessionHeaderName, "")
+      }.andReturn().response.getHeader(this.sessionHeaderName)
 
     assertThat(sessionId).isNotNull
 

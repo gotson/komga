@@ -36,7 +36,6 @@ class FileSystemScanner(
   private val sidecarBookConsumers: List<SidecarBookConsumer>,
   private val sidecarSeriesConsumers: List<SidecarSeriesConsumer>,
 ) {
-
   private data class TempSidecar(
     val name: String,
     val url: URL,
@@ -55,11 +54,12 @@ class FileSystemScanner(
     scanEpub: Boolean = true,
     directoryExclusions: Set<String> = emptySet(),
   ): ScanResult {
-    val scanForExtensions = buildList {
-      if (scanCbx) addAll(listOf("cbz", "zip", "cbr", "rar"))
-      if (scanPdf) add("pdf")
-      if (scanEpub) add("epub")
-    }
+    val scanForExtensions =
+      buildList {
+        if (scanCbx) addAll(listOf("cbz", "zip", "cbr", "rar"))
+        if (scanPdf) add("pdf")
+        if (scanEpub) add("epub")
+      }
     logger.info { "Scanning folder: $root" }
     logger.info { "Scan for extensions: $scanForExtensions" }
     logger.info { "Excluded directory patterns: $directoryExclusions" }
@@ -84,24 +84,32 @@ class FileSystemScanner(
         setOf(FileVisitOption.FOLLOW_LINKS),
         Integer.MAX_VALUE,
         object : FileVisitor<Path> {
-          override fun preVisitDirectory(dir: Path, attrs: BasicFileAttributes): FileVisitResult {
+          override fun preVisitDirectory(
+            dir: Path,
+            attrs: BasicFileAttributes,
+          ): FileVisitResult {
             logger.trace { "preVisit: $dir (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }
             if (dir.name.startsWith(".") ||
               directoryExclusions.any { exclude ->
                 dir.pathString.contains(exclude, true)
               }
-            ) return FileVisitResult.SKIP_SUBTREE
-
-            pathToSeries[dir] = Series(
-              name = dir.name.ifBlank { dir.pathString },
-              url = dir.toUri().toURL(),
-              fileLastModified = attrs.getUpdatedTime(),
             )
+              return FileVisitResult.SKIP_SUBTREE
+
+            pathToSeries[dir] =
+              Series(
+                name = dir.name.ifBlank { dir.pathString },
+                url = dir.toUri().toURL(),
+                fileLastModified = attrs.getUpdatedTime(),
+              )
 
             return FileVisitResult.CONTINUE
           }
 
-          override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult {
+          override fun visitFile(
+            file: Path,
+            attrs: BasicFileAttributes,
+          ): FileVisitResult {
             logger.trace { "visitFile: $file (regularFile:${attrs.isRegularFile}, directory:${attrs.isDirectory}, symbolicLink:${attrs.isSymbolicLink}, other:${attrs.isOther})" }
             if (!attrs.isSymbolicLink && !attrs.isDirectory) {
               if (scanForExtensions.contains(file.extension.lowercase()) &&
@@ -131,24 +139,31 @@ class FileSystemScanner(
             return FileVisitResult.CONTINUE
           }
 
-          override fun visitFileFailed(file: Path?, exc: IOException?): FileVisitResult {
+          override fun visitFileFailed(
+            file: Path?,
+            exc: IOException?,
+          ): FileVisitResult {
             logger.warn { "Could not access: $file" }
             return FileVisitResult.SKIP_SUBTREE
           }
 
-          override fun postVisitDirectory(dir: Path, exc: IOException?): FileVisitResult {
+          override fun postVisitDirectory(
+            dir: Path,
+            exc: IOException?,
+          ): FileVisitResult {
             logger.trace { "postVisit: $dir" }
             val books = pathToBooks[dir]
             val tempSeries = pathToSeries[dir]
             if (!books.isNullOrEmpty() && tempSeries !== null) {
               if (!oneshotsDir.isNullOrBlank() && dir.pathString.contains(oneshotsDir, true)) {
                 books.forEach { book ->
-                  val series = Series(
-                    name = book.name,
-                    url = book.url,
-                    fileLastModified = book.fileLastModified,
-                    oneshot = true,
-                  )
+                  val series =
+                    Series(
+                      name = book.name,
+                      url = book.url,
+                      fileLastModified = book.fileLastModified,
+                      oneshot = true,
+                    )
                   scannedSeries[series] = listOf(book.copy(oneshot = true))
                 }
               } else {
@@ -166,12 +181,13 @@ class FileSystemScanner(
 
               // book sidecars are matched here, with the actual list of books
               books.forEach { book ->
-                val sidecars = pathToBookSidecars[dir]
-                  ?.mapNotNull { sidecar ->
-                    sidecarBookConsumers.firstOrNull { it.isSidecarBookMatch(book.name, sidecar.name) }?.let {
-                      sidecar to it.getSidecarBookType()
-                    }
-                  }?.toMap() ?: emptyMap()
+                val sidecars =
+                  pathToBookSidecars[dir]
+                    ?.mapNotNull { sidecar ->
+                      sidecarBookConsumers.firstOrNull { it.isSidecarBookMatch(book.name, sidecar.name) }?.let {
+                        sidecar to it.getSidecarBookType()
+                      }
+                    }?.toMap() ?: emptyMap()
                 pathToBookSidecars[dir]?.minusAssign(sidecars.keys)
 
                 sidecars.mapTo(scannedSidecars) { (sidecar, type) ->
@@ -210,7 +226,10 @@ class FileSystemScanner(
       }
   }
 
-  private fun pathToBook(path: Path, attrs: BasicFileAttributes): Book =
+  private fun pathToBook(
+    path: Path,
+    attrs: BasicFileAttributes,
+  ): Book =
     Book(
       name = path.nameWithoutExtension,
       url = path.toUri().toURL(),

@@ -12,7 +12,6 @@ data class BookMetadataPatch(
   val isbn: String? = null,
   val links: List<WebLink>? = null,
   val tags: Set<String>? = null,
-
   val readLists: List<ReadListEntry> = emptyList(),
 ) {
   data class ReadListEntry(

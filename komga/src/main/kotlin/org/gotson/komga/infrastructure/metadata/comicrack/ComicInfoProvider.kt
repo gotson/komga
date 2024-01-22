@@ -34,23 +34,24 @@ class ComicInfoProvider(
   private val bookAnalyzer: BookAnalyzer,
   private val isbnValidator: ISBNValidator,
 ) : BookMetadataProvider, SeriesMetadataFromBookProvider {
-
-  override val capabilities = setOf(
-    BookMetadataPatchCapability.TITLE,
-    BookMetadataPatchCapability.SUMMARY,
-    BookMetadataPatchCapability.NUMBER,
-    BookMetadataPatchCapability.NUMBER_SORT,
-    BookMetadataPatchCapability.RELEASE_DATE,
-    BookMetadataPatchCapability.AUTHORS,
-    BookMetadataPatchCapability.READ_LISTS,
-    BookMetadataPatchCapability.LINKS,
-  )
+  override val capabilities =
+    setOf(
+      BookMetadataPatchCapability.TITLE,
+      BookMetadataPatchCapability.SUMMARY,
+      BookMetadataPatchCapability.NUMBER,
+      BookMetadataPatchCapability.NUMBER_SORT,
+      BookMetadataPatchCapability.RELEASE_DATE,
+      BookMetadataPatchCapability.AUTHORS,
+      BookMetadataPatchCapability.READ_LISTS,
+      BookMetadataPatchCapability.LINKS,
+    )
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     getComicInfo(book)?.let { comicInfo ->
-      val releaseDate = comicInfo.year?.let {
-        LocalDate.of(comicInfo.year!!, comicInfo.month ?: 1, comicInfo.day ?: 1)
-      }
+      val releaseDate =
+        comicInfo.year?.let {
+          LocalDate.of(comicInfo.year!!, comicInfo.month ?: 1, comicInfo.day ?: 1)
+        }
 
       val authors = mutableListOf<Author>()
       comicInfo.writer?.splitWithRole("writer")?.let { authors += it }
@@ -88,15 +89,16 @@ class ComicInfoProvider(
         }
       }
 
-      val link = comicInfo.web?.let {
-        try {
-          val uri = URI(it)
-          listOf(WebLink(uri.host, uri))
-        } catch (e: Exception) {
-          logger.error(e) { "Could not parse Web element as valid URI: $it" }
-          null
+      val link =
+        comicInfo.web?.let {
+          try {
+            val uri = URI(it)
+            listOf(WebLink(uri.host, uri))
+          } catch (e: Exception) {
+            logger.error(e) { "Could not parse Web element as valid URI: $it" }
+            null
+          }
         }
-      }
 
       val tags = comicInfo.tags?.split(',')?.mapNotNull { it.trim().lowercase().ifBlank { null } }
 
@@ -120,13 +122,17 @@ class ComicInfoProvider(
 
   override val supportsAppendVolume = true
 
-  override fun getSeriesMetadataFromBook(book: BookWithMedia, appendVolumeToTitle: Boolean): SeriesMetadataPatch? {
+  override fun getSeriesMetadataFromBook(
+    book: BookWithMedia,
+    appendVolumeToTitle: Boolean,
+  ): SeriesMetadataPatch? {
     getComicInfo(book)?.let { comicInfo ->
-      val readingDirection = when (comicInfo.manga) {
-        Manga.NO -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
-        Manga.YES_AND_RIGHT_TO_LEFT -> SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
-        else -> null
-      }
+      val readingDirection =
+        when (comicInfo.manga) {
+          Manga.NO -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
+          Manga.YES_AND_RIGHT_TO_LEFT -> SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
+          else -> null
+        }
 
       val genres = comicInfo.genre?.split(',')?.mapNotNull { it.trim().ifBlank { null } }
       val series = if (appendVolumeToTitle) computeSeriesFromSeriesAndVolume(comicInfo.series, comicInfo.volume) else comicInfo.series
@@ -148,7 +154,10 @@ class ComicInfoProvider(
     return null
   }
 
-  override fun shouldLibraryHandlePatch(library: Library, target: MetadataPatchTarget): Boolean =
+  override fun shouldLibraryHandlePatch(
+    library: Library,
+    target: MetadataPatchTarget,
+  ): Boolean =
     when (target) {
       MetadataPatchTarget.BOOK -> library.importComicInfoBook
       MetadataPatchTarget.SERIES -> library.importComicInfoSeries
@@ -177,7 +186,10 @@ class ComicInfoProvider(
     }
 }
 
-fun computeSeriesFromSeriesAndVolume(series: String?, volume: Int?): String? =
+fun computeSeriesFromSeriesAndVolume(
+  series: String?,
+  volume: Int?,
+): String? =
   series?.ifBlank { null }?.let { s ->
     s + (volume?.let { if (it != 1) " ($it)" else "" } ?: "")
   }

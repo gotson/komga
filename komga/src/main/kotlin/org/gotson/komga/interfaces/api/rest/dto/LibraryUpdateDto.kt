@@ -5,6 +5,7 @@ import kotlin.properties.Delegates
 
 class LibraryUpdateDto {
   private val isSet = mutableMapOf<String, Boolean>()
+
   fun isSet(prop: String) = isSet.getOrDefault(prop, false)
 
   @get:NullOrNotBlank

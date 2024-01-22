@@ -6,5 +6,6 @@ data class AgeRestriction(
 )
 
 enum class AllowExclude {
-  ALLOW_ONLY, EXCLUDE,
+  ALLOW_ONLY,
+  EXCLUDE,
 }

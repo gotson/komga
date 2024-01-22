@@ -23,19 +23,21 @@ class PageHashLifecycle(
   private val bookRepository: BookRepository,
   private val komgaProperties: KomgaProperties,
 ) {
-
   private val hashableMediaTypes = listOf(MediaType.ZIP.type)
 
   fun getBookIdsWithMissingPageHash(library: Library): Collection<String> =
-    if (library.hashPages)
+    if (library.hashPages) {
       mediaRepository.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(library.id, hashableMediaTypes, komgaProperties.pageHashing)
         .also { logger.info { "Found ${it.size} books with missing page hash" } }
-    else {
+    } else {
       logger.info { "Page hashing is not enabled, skipping" }
       emptyList()
     }
 
-  fun getPage(pageHash: String, resizeTo: Int? = null): TypedBytes? {
+  fun getPage(
+    pageHash: String,
+    resizeTo: Int? = null,
+  ): TypedBytes? {
     val match = pageHashRepository.findMatchesByHash(pageHash, Pageable.ofSize(1)).firstOrNull() ?: return null
     val book = bookRepository.findByIdOrNull(match.bookId) ?: return null
 

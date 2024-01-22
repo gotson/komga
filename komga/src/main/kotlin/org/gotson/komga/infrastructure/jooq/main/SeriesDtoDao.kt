@@ -61,7 +61,6 @@ class SeriesDtoDao(
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val transactionTemplate: TransactionTemplate,
 ) : SeriesDtoRepository {
-
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val rs = Tables.READ_PROGRESS_SERIES
@@ -75,26 +74,33 @@ class SeriesDtoDao(
   private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
 
-  private val groupFields = arrayOf(
-    *s.fields(),
-    *d.fields(),
-    *bma.fields(),
-    *rs.fields(),
-  )
+  private val groupFields =
+    arrayOf(
+      *s.fields(),
+      *d.fields(),
+      *bma.fields(),
+      *rs.fields(),
+    )
 
-  private val sorts = mapOf(
-    "metadata.titleSort" to d.TITLE_SORT.noCase(),
-    "createdDate" to s.CREATED_DATE,
-    "created" to s.CREATED_DATE,
-    "lastModifiedDate" to s.LAST_MODIFIED_DATE,
-    "lastModified" to s.LAST_MODIFIED_DATE,
-    "booksMetadata.releaseDate" to bma.RELEASE_DATE,
-    "collection.number" to cs.NUMBER,
-    "name" to s.NAME.collate(SqliteUdfDataSource.collationUnicode3),
-    "booksCount" to s.BOOK_COUNT,
-  )
+  private val sorts =
+    mapOf(
+      "metadata.titleSort" to d.TITLE_SORT.noCase(),
+      "createdDate" to s.CREATED_DATE,
+      "created" to s.CREATED_DATE,
+      "lastModifiedDate" to s.LAST_MODIFIED_DATE,
+      "lastModified" to s.LAST_MODIFIED_DATE,
+      "booksMetadata.releaseDate" to bma.RELEASE_DATE,
+      "collection.number" to cs.NUMBER,
+      "name" to s.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "booksCount" to s.BOOK_COUNT,
+    )
 
-  override fun findAll(search: SeriesSearchWithReadProgress, userId: String, pageable: Pageable, restrictions: ContentRestrictions): Page<SeriesDto> {
+  override fun findAll(
+    search: SeriesSearchWithReadProgress,
+    userId: String,
+    pageable: Pageable,
+    restrictions: ContentRestrictions,
+  ): Page<SeriesDto> {
     val conditions = search.toCondition().and(restrictions.toCondition(dsl))
 
     return findAll(conditions, userId, pageable, search.toJoinConditions(), search.searchTerm)
@@ -119,14 +125,19 @@ class SeriesDtoDao(
     restrictions: ContentRestrictions,
     pageable: Pageable,
   ): Page<SeriesDto> {
-    val conditions = search.toCondition()
-      .and(restrictions.toCondition(dsl))
-      .and(s.CREATED_DATE.notEqual(s.LAST_MODIFIED_DATE))
+    val conditions =
+      search.toCondition()
+        .and(restrictions.toCondition(dsl))
+        .and(s.CREATED_DATE.notEqual(s.LAST_MODIFIED_DATE))
 
     return findAll(conditions, userId, pageable, search.toJoinConditions(), search.searchTerm)
   }
 
-  override fun countByFirstCharacter(search: SeriesSearchWithReadProgress, userId: String, restrictions: ContentRestrictions): List<GroupCountDto> {
+  override fun countByFirstCharacter(
+    search: SeriesSearchWithReadProgress,
+    userId: String,
+    restrictions: ContentRestrictions,
+  ): List<GroupCountDto> {
     val conditions = search.toCondition().and(restrictions.toCondition(dsl))
     val joinConditions = search.toJoinConditions()
     val seriesIds = luceneHelper.searchEntitiesIds(search.searchTerm, LuceneEntity.Series)
@@ -155,7 +166,10 @@ class SeriesDtoDao(
       }
   }
 
-  override fun findByIdOrNull(seriesId: String, userId: String): SeriesDto? =
+  override fun findByIdOrNull(
+    seriesId: String,
+    userId: String,
+  ): SeriesDto? =
     selectBase(userId)
       .where(s.ID.eq(seriesId))
       .groupBy(*groupFields)
@@ -192,42 +206,48 @@ class SeriesDtoDao(
     val seriesIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Series)
     val searchCondition = s.ID.inOrNoCondition(seriesIds)
 
-    val count = dsl.select(countDistinct(s.ID))
-      .from(s)
-      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-      .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
-      .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
-      .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
-      .apply {
-        if (joinConditions.tag)
-          leftJoin(st).on(s.ID.eq(st.SERIES_ID))
-            .leftJoin(bmat).on(s.ID.eq(bmat.SERIES_ID))
-      }
-      .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
-      .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
-      .apply { if (joinConditions.sharingLabel) leftJoin(sl).on(s.ID.eq(sl.SERIES_ID)) }
-      .where(conditions)
-      .and(searchCondition)
-      .fetchOne(countDistinct(s.ID)) ?: 0
+    val count =
+      dsl.select(countDistinct(s.ID))
+        .from(s)
+        .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+        .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
+        .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
+        .apply { if (joinConditions.genre) leftJoin(g).on(s.ID.eq(g.SERIES_ID)) }
+        .apply {
+          if (joinConditions.tag)
+            leftJoin(st).on(s.ID.eq(st.SERIES_ID))
+              .leftJoin(bmat).on(s.ID.eq(bmat.SERIES_ID))
+        }
+        .apply { if (joinConditions.collection) leftJoin(cs).on(s.ID.eq(cs.SERIES_ID)) }
+        .apply { if (joinConditions.aggregationAuthor) leftJoin(bmaa).on(s.ID.eq(bmaa.SERIES_ID)) }
+        .apply { if (joinConditions.sharingLabel) leftJoin(sl).on(s.ID.eq(sl.SERIES_ID)) }
+        .where(conditions)
+        .and(searchCondition)
+        .fetchOne(countDistinct(s.ID)) ?: 0
 
     val orderBy =
       pageable.sort.mapNotNull {
-        if (it.property == "relevance" && !seriesIds.isNullOrEmpty()) s.ID.sortByValues(seriesIds, it.isAscending)
-        else it.toSortField(sorts)
+        if (it.property == "relevance" && !seriesIds.isNullOrEmpty())
+          s.ID.sortByValues(seriesIds, it.isAscending)
+        else
+          it.toSortField(sorts)
       }
 
-    val dtos = selectBase(userId, joinConditions)
-      .where(conditions)
-      .and(searchCondition)
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchAndMap()
+    val dtos =
+      selectBase(userId, joinConditions)
+        .where(conditions)
+        .and(searchCondition)
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap()
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       dtos,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, maxOf(count, 20), pageSort),
+      if (pageable.isPaged)
+        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else
+        PageRequest.of(0, maxOf(count, 20), pageSort),
       count.toLong(),
     )
   }
@@ -247,34 +267,41 @@ class SeriesDtoDao(
     lateinit var aggregatedTags: Map<String, List<String>>
     transactionTemplate.executeWithoutResult {
       dsl.insertTempStrings(batchSize, seriesIds)
-      genres = dsl.selectFrom(g)
-        .where(g.SERIES_ID.`in`(dsl.selectTempStrings()))
-        .groupBy({ it.seriesId }, { it.genre })
+      genres =
+        dsl.selectFrom(g)
+          .where(g.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .groupBy({ it.seriesId }, { it.genre })
 
-      tags = dsl.selectFrom(st)
-        .where(st.SERIES_ID.`in`(dsl.selectTempStrings()))
-        .groupBy({ it.seriesId }, { it.tag })
+      tags =
+        dsl.selectFrom(st)
+          .where(st.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .groupBy({ it.seriesId }, { it.tag })
 
-      sharingLabels = dsl.selectFrom(sl)
-        .where(sl.SERIES_ID.`in`(dsl.selectTempStrings()))
-        .groupBy({ it.seriesId }, { it.label })
+      sharingLabels =
+        dsl.selectFrom(sl)
+          .where(sl.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .groupBy({ it.seriesId }, { it.label })
 
-      links = dsl.selectFrom(slk)
-        .where(slk.SERIES_ID.`in`(dsl.selectTempStrings()))
-        .groupBy({ it.seriesId }, { WebLinkDto(it.label, it.url) })
+      links =
+        dsl.selectFrom(slk)
+          .where(slk.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .groupBy({ it.seriesId }, { WebLinkDto(it.label, it.url) })
 
-      alternateTitles = dsl.selectFrom(sat)
-        .where(sat.SERIES_ID.`in`(dsl.selectTempStrings()))
-        .groupBy({ it.seriesId }, { AlternateTitleDto(it.label, it.title) })
+      alternateTitles =
+        dsl.selectFrom(sat)
+          .where(sat.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .groupBy({ it.seriesId }, { AlternateTitleDto(it.label, it.title) })
 
-      aggregatedAuthors = dsl.selectFrom(bmaa)
-        .where(bmaa.SERIES_ID.`in`(dsl.selectTempStrings()))
-        .filter { it.name != null }
-        .groupBy({ it.seriesId }, { AuthorDto(it.name, it.role) })
+      aggregatedAuthors =
+        dsl.selectFrom(bmaa)
+          .where(bmaa.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .filter { it.name != null }
+          .groupBy({ it.seriesId }, { AuthorDto(it.name, it.role) })
 
-      aggregatedTags = dsl.selectFrom(bmat)
-        .where(bmat.SERIES_ID.`in`(dsl.selectTempStrings()))
-        .groupBy({ it.seriesId }, { it.tag })
+      aggregatedTags =
+        dsl.selectFrom(bmat)
+          .where(bmat.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .groupBy({ it.seriesId }, { it.tag })
     }
 
     return records
@@ -305,15 +332,15 @@ class SeriesDtoDao(
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
     if (!metadataStatus.isNullOrEmpty()) c = c.and(d.STATUS.`in`(metadataStatus))
-    if (!publishers.isNullOrEmpty()) c = c.and(d.PUBLISHER.collate(SqliteUdfDataSource.collationUnicode3).`in`(publishers))
+    if (!publishers.isNullOrEmpty()) c = c.and(d.PUBLISHER.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).`in`(publishers))
     if (deleted == true) c = c.and(s.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(s.DELETED_DATE.isNull)
     if (complete == false) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.ne(s.BOOK_COUNT)))
     if (complete == true) c = c.and(d.TOTAL_BOOK_COUNT.isNotNull.and(d.TOTAL_BOOK_COUNT.eq(s.BOOK_COUNT)))
     if (oneshot != null) c = c.and(s.ONESHOT.eq(oneshot))
-    if (!languages.isNullOrEmpty()) c = c.and(d.LANGUAGE.collate(SqliteUdfDataSource.collationUnicode3).`in`(languages))
-    if (!genres.isNullOrEmpty()) c = c.and(g.GENRE.collate(SqliteUdfDataSource.collationUnicode3).`in`(genres))
-    if (!tags.isNullOrEmpty()) c = c.and(st.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags).or(bmat.TAG.collate(SqliteUdfDataSource.collationUnicode3).`in`(tags)))
+    if (!languages.isNullOrEmpty()) c = c.and(d.LANGUAGE.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).`in`(languages))
+    if (!genres.isNullOrEmpty()) c = c.and(g.GENRE.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).`in`(genres))
+    if (!tags.isNullOrEmpty()) c = c.and(st.TAG.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).`in`(tags).or(bmat.TAG.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).`in`(tags)))
     if (!ageRatings.isNullOrEmpty()) {
       val c1 = if (ageRatings.contains(null)) d.AGE_RATING.isNull else DSL.noCondition()
       val c2 = if (ageRatings.filterNotNull().isNotEmpty()) d.AGE_RATING.`in`(ageRatings.filterNotNull()) else DSL.noCondition()
@@ -328,15 +355,16 @@ class SeriesDtoDao(
       }
       c = c.and(ca)
     }
-    if (!sharingLabels.isNullOrEmpty()) c = c.and(sl.LABEL.collate(SqliteUdfDataSource.collationUnicode3).`in`(sharingLabels))
+    if (!sharingLabels.isNullOrEmpty()) c = c.and(sl.LABEL.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).`in`(sharingLabels))
     if (!readStatus.isNullOrEmpty()) {
-      val cr = readStatus.map {
-        when (it) {
-          ReadStatus.UNREAD -> rs.READ_COUNT.isNull
-          ReadStatus.READ -> rs.READ_COUNT.eq(s.BOOK_COUNT)
-          ReadStatus.IN_PROGRESS -> rs.READ_COUNT.ne(s.BOOK_COUNT)
-        }
-      }.reduce { acc, condition -> acc.or(condition) }
+      val cr =
+        readStatus.map {
+          when (it) {
+            ReadStatus.UNREAD -> rs.READ_COUNT.isNull
+            ReadStatus.READ -> rs.READ_COUNT.eq(s.BOOK_COUNT)
+            ReadStatus.IN_PROGRESS -> rs.READ_COUNT.ne(s.BOOK_COUNT)
+          }
+        }.reduce { acc, condition -> acc.or(condition) }
       c = c.and(cr)
     }
 
@@ -394,7 +422,13 @@ class SeriesDtoDao(
       oneshot = oneshot,
     )
 
-  private fun SeriesMetadataRecord.toDto(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, links: List<WebLinkDto>, alternateTitles: List<AlternateTitleDto>) =
+  private fun SeriesMetadataRecord.toDto(
+    genres: Set<String>,
+    tags: Set<String>,
+    sharingLabels: Set<String>,
+    links: List<WebLinkDto>,
+    alternateTitles: List<AlternateTitleDto>,
+  ) =
     SeriesMetadataDto(
       status = status,
       statusLock = statusLock,
@@ -428,14 +462,16 @@ class SeriesDtoDao(
       alternateTitlesLock = alternateTitlesLock,
     )
 
-  private fun BookMetadataAggregationRecord.toDto(authors: List<AuthorDto>, tags: Set<String>) =
+  private fun BookMetadataAggregationRecord.toDto(
+    authors: List<AuthorDto>,
+    tags: Set<String>,
+  ) =
     BookMetadataAggregationDto(
       authors = authors,
       tags = tags,
       releaseDate = releaseDate,
       summary = summary,
       summaryNumber = summaryNumber,
-
       created = createdDate,
       lastModified = lastModifiedDate,
     )

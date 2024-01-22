@@ -20,40 +20,40 @@ import java.time.ZoneOffset
 class AnnouncementControllerTest(
   @Autowired private val mockMvc: MockMvc,
 ) {
-
   @SpykBean
   private lateinit var announcementController: AnnouncementController
 
-  private val mockFeed = JsonFeedDto(
-    "https://jsonfeed.org/version/1",
-    "Announcements",
-    "https://komga.org/blog",
-    "Latest Komga announcements",
-    listOf(
-      JsonFeedDto.ItemDto(
-        "https://komga.org/blog/prepare-v1",
-        "https://komga.org/blog/prepare-v1",
-        "Prepare for v1.0.0",
-        "The future v1.0.0 will bring some breaking changes, this guide will help you to prepare for the next major version.",
-        """
+  private val mockFeed =
+    JsonFeedDto(
+      "https://jsonfeed.org/version/1",
+      "Announcements",
+      "https://komga.org/blog",
+      "Latest Komga announcements",
+      listOf(
+        JsonFeedDto.ItemDto(
+          "https://komga.org/blog/prepare-v1",
+          "https://komga.org/blog/prepare-v1",
+          "Prepare for v1.0.0",
+          "The future v1.0.0 will bring some breaking changes, this guide will help you to prepare for the next major version.",
+          """
           You can still change the port <a href="/docs/installation/configuration#server_port--serverport-port">through configuration</a>
           Another link <a href="/blog/post/">here</a>.
           A normal <a href="https://google.com">link</a>.
-        """.trimIndent(),
-        OffsetDateTime.of(
-          LocalDate.of(2023, 3, 21).atStartOfDay(),
-          ZoneOffset.UTC,
+          """.trimIndent(),
+          OffsetDateTime.of(
+            LocalDate.of(2023, 3, 21).atStartOfDay(),
+            ZoneOffset.UTC,
+          ),
+          JsonFeedDto.AuthorDto("gotson", "https://github.com/gotson"),
+          setOf(
+            "breaking change",
+            "upgrade",
+            "komga",
+          ),
+          null,
         ),
-        JsonFeedDto.AuthorDto("gotson", "https://github.com/gotson"),
-        setOf(
-          "breaking change",
-          "upgrade",
-          "komga",
-        ),
-        null,
       ),
-    ),
-  )
+    )
 
   @Test
   @WithMockCustomUser(roles = [ROLE_ADMIN])

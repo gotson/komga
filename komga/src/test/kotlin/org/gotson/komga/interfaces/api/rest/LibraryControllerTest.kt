@@ -29,7 +29,6 @@ class LibraryControllerTest(
   @Autowired private val mockMvc: MockMvc,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val route = "/api/v1/libraries"
 
   private val library = makeLibrary(path = "file:/library1", id = "1")
@@ -161,15 +160,18 @@ class LibraryControllerTest(
 
     @Test
     @WithMockCustomUser(roles = [ROLE_ADMIN])
-    fun `given library with exclusions when updating library then exclusions are updated`(@TempDir tmp: Path) {
+    fun `given library with exclusions when updating library then exclusions are updated`(
+      @TempDir tmp: Path,
+    ) {
       libraryRepository.update(library.copy(root = tmp.toUri().toURL(), scanDirectoryExclusions = setOf("test", "value")))
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "scanDirectoryExclusions": ["updated"]
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("$route/${library.id}") {
         contentType = MediaType.APPLICATION_JSON

@@ -26,7 +26,6 @@ class TrayIconRunner(
   @Value("\${server.port}") serverPort: Int,
   env: Environment,
 ) : ApplicationRunner {
-
   val komgaUrl = "http://localhost:$serverPort$servletContextPath"
   val komgaConfigDir = File(komgaConfigDir)
   val logFile = File(logFileName)

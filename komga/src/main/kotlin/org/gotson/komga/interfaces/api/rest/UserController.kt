@@ -54,11 +54,12 @@ class UserController(
   private val authenticationActivityRepository: AuthenticationActivityRepository,
   env: Environment,
 ) {
-
   private val demo = env.activeProfiles.contains("demo")
 
   @GetMapping("me")
-  fun getMe(@AuthenticationPrincipal principal: KomgaPrincipal): UserDto =
+  fun getMe(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): UserDto =
     principal.toDto()
 
   @PatchMapping("me/password")
@@ -114,28 +115,48 @@ class UserController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     userRepository.findByIdOrNull(id)?.let { existing ->
-      val updatedUser = with(patch) {
-        existing.copy(
-          roleAdmin = if (isSet("roles")) roles!!.contains(ROLE_ADMIN) else existing.roleAdmin,
-          roleFileDownload = if (isSet("roles")) roles!!.contains(ROLE_FILE_DOWNLOAD) else existing.roleFileDownload,
-          rolePageStreaming = if (isSet("roles")) roles!!.contains(ROLE_PAGE_STREAMING) else existing.rolePageStreaming,
-          sharedAllLibraries = if (isSet("sharedLibraries")) sharedLibraries!!.all else existing.sharedAllLibraries,
-          sharedLibrariesIds = if (isSet("sharedLibraries")) {
-            if (sharedLibraries!!.all) emptySet()
-            else libraryRepository.findAllByIds(sharedLibraries!!.libraryIds).map { it.id }.toSet()
-          } else existing.sharedLibrariesIds,
-          restrictions = ContentRestrictions(
-            ageRestriction = if (isSet("ageRestriction")) {
-              if (ageRestriction == null) null
-              else AgeRestriction(ageRestriction!!.age, ageRestriction!!.restriction)
-            } else existing.restrictions.ageRestriction,
-            labelsAllow = if (isSet("labelsAllow")) labelsAllow
-              ?: emptySet() else existing.restrictions.labelsAllow,
-            labelsExclude = if (isSet("labelsExclude")) labelsExclude
-              ?: emptySet() else existing.restrictions.labelsExclude,
-          ),
-        )
-      }
+      val updatedUser =
+        with(patch) {
+          existing.copy(
+            roleAdmin = if (isSet("roles")) roles!!.contains(ROLE_ADMIN) else existing.roleAdmin,
+            roleFileDownload = if (isSet("roles")) roles!!.contains(ROLE_FILE_DOWNLOAD) else existing.roleFileDownload,
+            rolePageStreaming = if (isSet("roles")) roles!!.contains(ROLE_PAGE_STREAMING) else existing.rolePageStreaming,
+            sharedAllLibraries = if (isSet("sharedLibraries")) sharedLibraries!!.all else existing.sharedAllLibraries,
+            sharedLibrariesIds =
+              if (isSet("sharedLibraries")) {
+                if (sharedLibraries!!.all)
+                  emptySet()
+                else
+                  libraryRepository.findAllByIds(sharedLibraries!!.libraryIds).map { it.id }.toSet()
+              } else {
+                existing.sharedLibrariesIds
+              },
+            restrictions =
+              ContentRestrictions(
+                ageRestriction =
+                  if (isSet("ageRestriction")) {
+                    if (ageRestriction == null)
+                      null
+                    else
+                      AgeRestriction(ageRestriction!!.age, ageRestriction!!.restriction)
+                  } else {
+                    existing.restrictions.ageRestriction
+                  },
+                labelsAllow =
+                  if (isSet("labelsAllow"))
+                    labelsAllow
+                      ?: emptySet()
+                  else
+                    existing.restrictions.labelsAllow,
+                labelsExclude =
+                  if (isSet("labelsExclude"))
+                    labelsExclude
+                      ?: emptySet()
+                  else
+                    existing.restrictions.labelsExclude,
+              ),
+          )
+        }
       userLifecycle.updateUser(updatedUser)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -164,16 +185,20 @@ class UserController(
   ): Page<AuthenticationActivityDto> {
     if (demo && !principal.user.roleAdmin) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     val sort =
-      if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.desc("dateTime"))
+      if (page.sort.isSorted)
+        page.sort
+      else
+        Sort.by(Sort.Order.desc("dateTime"))
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
     return authenticationActivityRepository.findAllByUser(principal.user, pageRequest).map { it.toDto() }
   }
@@ -186,16 +211,20 @@ class UserController(
     @Parameter(hidden = true) page: Pageable,
   ): Page<AuthenticationActivityDto> {
     val sort =
-      if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.desc("dateTime"))
+      if (page.sort.isSorted)
+        page.sort
+      else
+        Sort.by(Sort.Order.desc("dateTime"))
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
     return authenticationActivityRepository.findAll(pageRequest).map { it.toDto() }
   }

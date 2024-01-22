@@ -29,7 +29,6 @@ class ReadListLifecycle(
   private val eventPublisher: ApplicationEventPublisher,
   private val transactionTemplate: TransactionTemplate,
 ) {
-
   @Throws(
     DuplicateNameException::class,
   )
@@ -50,8 +49,9 @@ class ReadListLifecycle(
   @Transactional
   fun updateReadList(toUpdate: ReadList) {
     logger.info { "Update read list: $toUpdate" }
-    val existing = readListRepository.findByIdOrNull(toUpdate.id)
-      ?: throw IllegalArgumentException("Cannot update read list that does not exist")
+    val existing =
+      readListRepository.findByIdOrNull(toUpdate.id)
+        ?: throw IllegalArgumentException("Cannot update read list that does not exist")
 
     if (!existing.name.equals(toUpdate.name, true) && readListRepository.existsByName(toUpdate.name))
       throw DuplicateNameException("Read list name already exists")
@@ -75,20 +75,25 @@ class ReadListLifecycle(
    * Read list will be created if it doesn't exist.
    */
   @Transactional
-  fun addBookToReadList(readListName: String, book: Book, numberInList: Int?) {
+  fun addBookToReadList(
+    readListName: String,
+    book: Book,
+    numberInList: Int?,
+  ) {
     readListRepository.findByNameOrNull(readListName).let { existing ->
       if (existing != null) {
-        if (existing.bookIds.containsValue(book.id))
+        if (existing.bookIds.containsValue(book.id)) {
           logger.debug { "Book is already in existing read list '${existing.name}'" }
-        else {
+        } else {
           val map = existing.bookIds.toSortedMap()
-          val key = if (numberInList != null && existing.bookIds.containsKey(numberInList)) {
-            logger.debug { "Existing read list '${existing.name}' already contains a book at position $numberInList, adding book '${book.name}' at the end" }
-            existing.bookIds.lastKey() + 1
-          } else {
-            logger.debug { "Adding book '${book.name}' to existing read list '${existing.name}'" }
-            numberInList ?: (existing.bookIds.lastKey() + 1)
-          }
+          val key =
+            if (numberInList != null && existing.bookIds.containsKey(numberInList)) {
+              logger.debug { "Existing read list '${existing.name}' already contains a book at position $numberInList, adding book '${book.name}' at the end" }
+              existing.bookIds.lastKey() + 1
+            } else {
+              logger.debug { "Adding book '${book.name}' to existing read list '${existing.name}'" }
+              numberInList ?: (existing.bookIds.lastKey() + 1)
+            }
           map[key] = book.id
           updateReadList(
             existing.copy(bookIds = map),
@@ -150,12 +155,13 @@ class ReadListLifecycle(
       return it.thumbnail
     }
 
-    val ids = with(mutableListOf<String>()) {
-      while (size < 4) {
-        this += readList.bookIds.values.take(4)
+    val ids =
+      with(mutableListOf<String>()) {
+        while (size < 4) {
+          this += readList.bookIds.values.take(4)
+        }
+        this.take(4)
       }
-      this.take(4)
-    }
 
     val images = ids.mapNotNull { bookLifecycle.getThumbnailBytes(it)?.bytes }
     return mosaicGenerator.createMosaic(images)

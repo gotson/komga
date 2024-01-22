@@ -14,12 +14,16 @@ class WebServerConfiguration(
 ) : WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
   override fun customize(factory: ConfigurableServletWebServerFactory) {
     settingsProvider.serverPort?.let {
-      if (it > 1) factory.setPort(it)
-      else logger.warn { "Ignoring invalid server port: $it" }
+      if (it > 1)
+        factory.setPort(it)
+      else
+        logger.warn { "Ignoring invalid server port: $it" }
     }
     settingsProvider.serverContextPath?.let {
-      if (it.startsWith("/") && !it.endsWith("/")) factory.setContextPath(it)
-      else logger.warn { "Ignoring invalid server context path: $it" }
+      if (it.startsWith("/") && !it.endsWith("/"))
+        factory.setContextPath(it)
+      else
+        logger.warn { "Ignoring invalid server context path: $it" }
     }
   }
 }

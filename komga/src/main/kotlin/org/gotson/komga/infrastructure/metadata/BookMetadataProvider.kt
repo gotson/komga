@@ -6,5 +6,6 @@ import org.gotson.komga.domain.model.BookWithMedia
 
 interface BookMetadataProvider : MetadataProvider {
   val capabilities: Set<BookMetadataPatchCapability>
+
   fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch?
 }

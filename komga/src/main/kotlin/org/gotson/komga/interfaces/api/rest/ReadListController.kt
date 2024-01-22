@@ -97,7 +97,6 @@ class ReadListController(
   private val bookLifecycle: BookLifecycle,
   private val eventPublisher: ApplicationEventPublisher,
 ) {
-
   @PageableWithoutSortAsQueryParam
   @GetMapping
   fun getAll(
@@ -107,19 +106,22 @@ class ReadListController(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<ReadListDto> {
-    val sort = when {
-      page.sort.isSorted -> page.sort
-      !searchTerm.isNullOrBlank() -> Sort.by("relevance")
-      else -> Sort.by(Sort.Order.asc("name"))
-    }
+    val sort =
+      when {
+        page.sort.isSorted -> page.sort
+        !searchTerm.isNullOrBlank() -> Sort.by("relevance")
+        else -> Sort.by(Sort.Order.asc("name"))
+      }
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
     return readListRepository.findAll(principal.user.getAuthorizedLibraryIds(libraryIds), principal.user.getAuthorizedLibraryIds(null), searchTerm, pageRequest, principal.user.restrictions)
       .map { it.toDto() }
@@ -268,12 +270,13 @@ class ReadListController(
     readList: ReadListUpdateDto,
   ) {
     readListRepository.findByIdOrNull(id)?.let { existing ->
-      val updated = existing.copy(
-        name = readList.name ?: existing.name,
-        summary = readList.summary ?: existing.summary,
-        ordered = readList.ordered ?: existing.ordered,
-        bookIds = readList.bookIds?.toIndexedMap() ?: existing.bookIds,
-      )
+      val updated =
+        existing.copy(
+          name = readList.name ?: existing.name,
+          summary = readList.summary ?: existing.summary,
+          ordered = readList.ordered ?: existing.ordered,
+          bookIds = readList.bookIds?.toIndexedMap() ?: existing.bookIds,
+        )
       try {
         readListLifecycle.updateReadList(updated)
       } catch (e: DuplicateNameException) {
@@ -310,25 +313,30 @@ class ReadListController(
   ): Page<BookDto> =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
       val sort =
-        if (readList.ordered) Sort.by(Sort.Order.asc("readList.number"))
-        else Sort.by(Sort.Order.asc("metadata.releaseDate"))
+        if (readList.ordered)
+          Sort.by(Sort.Order.asc("readList.number"))
+        else
+          Sort.by(Sort.Order.asc("metadata.releaseDate"))
 
       val pageRequest =
-        if (unpaged) UnpagedSorted(sort)
-        else PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-          sort,
-        )
+        if (unpaged)
+          UnpagedSorted(sort)
+        else
+          PageRequest.of(
+            page.pageNumber,
+            page.pageSize,
+            sort,
+          )
 
-      val bookSearch = BookSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-        readStatus = readStatus,
-        mediaStatus = mediaStatus,
-        deleted = deleted,
-        tags = tags,
-        authors = authors,
-      )
+      val bookSearch =
+        BookSearchWithReadProgress(
+          libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+          readStatus = readStatus,
+          mediaStatus = mediaStatus,
+          deleted = deleted,
+          tags = tags,
+          authors = authors,
+        )
 
       bookDtoRepository.findAllByReadListId(
         readList.id,
@@ -416,38 +424,41 @@ class ReadListController(
   ): ResponseEntity<StreamingResponseBody> {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
 
-      val books = readList.bookIds
-        .mapNotNull { bookRepository.findByIdOrNull(it.value)?.let { book -> it.key to book } }
-        .toMap()
+      val books =
+        readList.bookIds
+          .mapNotNull { bookRepository.findByIdOrNull(it.value)?.let { book -> it.key to book } }
+          .toMap()
 
-      val streamingResponse = StreamingResponseBody { responseStream: OutputStream ->
-        ZipArchiveOutputStream(responseStream).use { zipStream ->
-          zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
-          zipStream.setLevel(Deflater.NO_COMPRESSION)
-          zipStream.setUseZip64(Zip64Mode.Always)
-          books.forEach { (index, book) ->
-            val file = FileSystemResource(book.path)
-            if (!file.exists()) {
-              logger.warn { "Book file not found, skipping archive entry: ${file.path}" }
-              return@forEach
-            }
+      val streamingResponse =
+        StreamingResponseBody { responseStream: OutputStream ->
+          ZipArchiveOutputStream(responseStream).use { zipStream ->
+            zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
+            zipStream.setLevel(Deflater.NO_COMPRESSION)
+            zipStream.setUseZip64(Zip64Mode.Always)
+            books.forEach { (index, book) ->
+              val file = FileSystemResource(book.path)
+              if (!file.exists()) {
+                logger.warn { "Book file not found, skipping archive entry: ${file.path}" }
+                return@forEach
+              }
 
-            logger.debug { "Adding file to zip archive: ${file.path}" }
-            file.inputStream.use {
-              zipStream.putArchiveEntry(ZipArchiveEntry("${index + 1} - ${file.filename}"))
-              IOUtils.copyLarge(it, zipStream, ByteArray(8192))
-              zipStream.closeArchiveEntry()
+              logger.debug { "Adding file to zip archive: ${file.path}" }
+              file.inputStream.use {
+                zipStream.putArchiveEntry(ZipArchiveEntry("${index + 1} - ${file.filename}"))
+                IOUtils.copyLarge(it, zipStream, ByteArray(8192))
+                zipStream.closeArchiveEntry()
+              }
             }
           }
         }
-      }
 
       return ResponseEntity.ok()
         .headers(
           HttpHeaders().apply {
-            contentDisposition = ContentDisposition.builder("attachment")
-              .filename(readList.name + ".zip", UTF_8)
-              .build()
+            contentDisposition =
+              ContentDisposition.builder("attachment")
+                .filename(readList.name + ".zip", UTF_8)
+                .build()
           },
         )
         .contentType(MediaType.parseMediaType(ZIP.type))

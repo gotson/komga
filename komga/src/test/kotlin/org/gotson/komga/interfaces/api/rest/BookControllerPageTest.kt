@@ -75,7 +75,12 @@ class BookControllerPageTest(
   @ParameterizedTest
   @MethodSource("arguments")
   @WithMockCustomUser
-  fun `given pdf book when getting page with Accept header then returns page in correct format`(bookType: String, acceptTypes: List<MediaType>, success: Boolean, resultType: String?) {
+  fun `given pdf book when getting page with Accept header then returns page in correct format`(
+    bookType: String,
+    acceptTypes: List<MediaType>,
+    success: Boolean,
+    resultType: String?,
+  ) {
     makeSeries(name = "series", libraryId = library.id).let { series ->
       seriesLifecycle.createSeries(series).let { created ->
         val books = listOf(makeBook("1", libraryId = library.id))

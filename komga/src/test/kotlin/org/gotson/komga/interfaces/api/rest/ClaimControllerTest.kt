@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.post
 @ActiveProfiles("test")
 class ClaimControllerTest(
   @Autowired private val mockMvc: MockMvc,
-
 ) {
   @ParameterizedTest
   @ValueSource(strings = ["user", "user@domain"])

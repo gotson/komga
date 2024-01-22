@@ -18,7 +18,6 @@ class PeriodicScannerController(
   private val libraryRepository: LibraryRepository,
   private val libraryScanScheduler: LibraryScanScheduler,
 ) {
-
   @EventListener(classes = [ApplicationReadyEvent::class])
   fun scanOnStartup() {
     libraryRepository.findAll()

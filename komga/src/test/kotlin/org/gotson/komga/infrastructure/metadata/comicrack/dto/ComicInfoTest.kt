@@ -6,13 +6,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class ComicInfoTest {
-
   private val mapper = XmlMapper()
 
   @Test
   fun `given valid xml file when deserializing then properties are available`() {
     // language=XML
-    val xml = """
+    val xml =
+      """
       <?xml version="1.0"?>
       <ComicInfo>
         <Title>v01 - Preludes &amp; Nocturnes - 30th Anniversary Edition</Title>
@@ -51,7 +51,7 @@ class ComicInfoTest {
         <GTIN>ABC123</GTIN>
         <ScanInformation></ScanInformation>
       </ComicInfo>
-    """.trimIndent()
+      """.trimIndent()
     val comicInfo = mapper.readValue<ComicInfo>(xml)
 
     with(comicInfo) {
@@ -80,7 +80,8 @@ class ComicInfoTest {
   @Test
   fun `given another valid xml file when deserializing then properties are available`() {
     // language=XML
-    val xml = """
+    val xml =
+      """
       <?xml version="1.0"?>
       <ComicInfo>
           <Title>v01 - Preludes &amp; Nocturnes - 30th Anniversary Edition</Title>
@@ -119,7 +120,7 @@ class ComicInfoTest {
           <SeriesGroup>Sandman</SeriesGroup>
           <ScanInformation></ScanInformation>
       </ComicInfo>
-    """.trimIndent()
+      """.trimIndent()
     val comicInfo = mapper.readValue<ComicInfo>(xml)
 
     with(comicInfo) {
@@ -148,14 +149,15 @@ class ComicInfoTest {
   @Test
   fun `given incorrect enum values when deserializing then it is ignored`() {
     // language=XML
-    val xml = """
+    val xml =
+      """
       <?xml version="1.0"?>
       <ComicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <AgeRating>Non existent</AgeRating>
         <BlackAndWhite>Non existent</BlackAndWhite>
         <Manga>Non existent</Manga>
       </ComicInfo>
-    """.trimIndent()
+      """.trimIndent()
     val comicInfo = mapper.readValue<ComicInfo>(xml)
 
     with(comicInfo) {
@@ -168,13 +170,14 @@ class ComicInfoTest {
   @Test
   fun `given valid xml file with StoryArc fields when deserializing then properties are available`() {
     // language=XML
-    val xml = """
+    val xml =
+      """
       <?xml version="1.0"?>
       <ComicInfo>
           <StoryArc>Arc</StoryArc>
           <StoryArcNumber>2</StoryArcNumber>
       </ComicInfo>
-    """.trimIndent()
+      """.trimIndent()
     val comicInfo = mapper.readValue<ComicInfo>(xml)
 
     with(comicInfo) {

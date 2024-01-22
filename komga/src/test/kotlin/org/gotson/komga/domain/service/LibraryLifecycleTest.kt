@@ -24,7 +24,6 @@ class LibraryLifecycleTest(
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val libraryLifecycle: LibraryLifecycle,
 ) {
-
   @AfterEach
   fun `clear repositories`() {
     libraryRepository.deleteAll()
@@ -44,45 +43,53 @@ class LibraryLifecycleTest(
     @Test
     fun `when adding library with non-directory root folder then exception is thrown`() {
       // when
-      val thrown = catchThrowable {
-        libraryLifecycle.addLibrary(
-          Library(
-            "test",
-            Files.createTempFile(null, null)
-              .also { it.toFile().deleteOnExit() }
-              .toUri().toURL(),
-          ),
-        )
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.addLibrary(
+            Library(
+              "test",
+              Files.createTempFile(null, null)
+                .also { it.toFile().deleteOnExit() }
+                .toUri().toURL(),
+            ),
+          )
+        }
 
       // then
       assertThat(thrown).isInstanceOf(DirectoryNotFoundException::class.java)
     }
 
     @Test
-    fun `given existing library when adding library with same name then exception is thrown`(@TempDir path1: Path, @TempDir path2: Path) {
+    fun `given existing library when adding library with same name then exception is thrown`(
+      @TempDir path1: Path,
+      @TempDir path2: Path,
+    ) {
       // given
       libraryLifecycle.addLibrary(Library("test", path1.toUri().toURL()))
 
       // when
-      val thrown = catchThrowable {
-        libraryLifecycle.addLibrary(Library("test", path2.toUri().toURL()))
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.addLibrary(Library("test", path2.toUri().toURL()))
+        }
 
       // then
       assertThat(thrown).isInstanceOf(DuplicateNameException::class.java)
     }
 
     @Test
-    fun `given existing library when adding library with root folder as child of existing library then exception is thrown`(@TempDir parent: Path) {
+    fun `given existing library when adding library with root folder as child of existing library then exception is thrown`(
+      @TempDir parent: Path,
+    ) {
       // given
       libraryLifecycle.addLibrary(Library("parent", parent.toUri().toURL()))
 
       // when
       val child = Files.createTempDirectory(parent, "")
-      val thrown = catchThrowable {
-        libraryLifecycle.addLibrary(Library("child", child.toUri().toURL()))
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.addLibrary(Library("child", child.toUri().toURL()))
+        }
 
       // then
       assertThat(thrown)
@@ -91,15 +98,18 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given existing library when adding library with root folder as parent of existing library then exception is thrown`(@TempDir parent: Path) {
+    fun `given existing library when adding library with root folder as parent of existing library then exception is thrown`(
+      @TempDir parent: Path,
+    ) {
       // given
       val child = Files.createTempDirectory(parent, null)
       libraryLifecycle.addLibrary(Library("child", child.toUri().toURL()))
 
       // when
-      val thrown = catchThrowable {
-        libraryLifecycle.addLibrary(Library("parent", parent.toUri().toURL()))
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.addLibrary(Library("parent", parent.toUri().toURL()))
+        }
 
       // then
       assertThat(thrown)
@@ -114,7 +124,9 @@ class LibraryLifecycleTest(
     private lateinit var library: Library
 
     @BeforeAll
-    fun setup(@TempDir root: Path) {
+    fun setup(
+      @TempDir root: Path,
+    ) {
       rootFolder = root
       library = Library("Existing", rootFolder.toUri().toURL())
     }
@@ -138,14 +150,17 @@ class LibraryLifecycleTest(
       val existing = libraryLifecycle.addLibrary(library)
 
       // when
-      val toUpdate = existing.copy(
-        name = "test",
-        root = Files.createTempFile(null, null)
-          .also { it.toFile().deleteOnExit() }.toUri().toURL(),
-      )
-      val thrown = catchThrowable {
-        libraryLifecycle.updateLibrary(toUpdate)
-      }
+      val toUpdate =
+        existing.copy(
+          name = "test",
+          root =
+            Files.createTempFile(null, null)
+              .also { it.toFile().deleteOnExit() }.toUri().toURL(),
+        )
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.updateLibrary(toUpdate)
+        }
 
       // then
       assertThat(thrown).isInstanceOf(DirectoryNotFoundException::class.java)
@@ -157,25 +172,30 @@ class LibraryLifecycleTest(
       val existing = libraryLifecycle.addLibrary(library)
 
       // when
-      val thrown = catchThrowable {
-        libraryLifecycle.updateLibrary(existing)
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.updateLibrary(existing)
+        }
 
       // then
       assertThat(thrown).doesNotThrowAnyException()
     }
 
     @Test
-    fun `given existing library when updating library with same name then exception is thrown`(@TempDir path1: Path, @TempDir path2: Path) {
+    fun `given existing library when updating library with same name then exception is thrown`(
+      @TempDir path1: Path,
+      @TempDir path2: Path,
+    ) {
       // given
       libraryLifecycle.addLibrary(Library("test", path1.toUri().toURL()))
       val existing = libraryLifecycle.addLibrary(library)
 
       // when
       val toUpdate = existing.copy(name = "test", root = path2.toUri().toURL())
-      val thrown = catchThrowable {
-        libraryLifecycle.updateLibrary(toUpdate)
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.updateLibrary(toUpdate)
+        }
 
       // then
       assertThat(thrown).isInstanceOf(DuplicateNameException::class.java)
@@ -189,16 +209,19 @@ class LibraryLifecycleTest(
       // when
       val child = Files.createTempDirectory(rootFolder, "")
       val toUpdate = existing.copy(root = child.toUri().toURL())
-      val thrown = catchThrowable {
-        libraryLifecycle.updateLibrary(toUpdate)
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.updateLibrary(toUpdate)
+        }
 
       // then
       assertThat(thrown).doesNotThrowAnyException()
     }
 
     @Test
-    fun `given existing library when updating library with root folder as child of existing library then exception is thrown`(@TempDir parent: Path) {
+    fun `given existing library when updating library with root folder as child of existing library then exception is thrown`(
+      @TempDir parent: Path,
+    ) {
       // given
       libraryLifecycle.addLibrary(Library("parent", parent.toUri().toURL()))
       val existing = libraryLifecycle.addLibrary(library)
@@ -206,9 +229,10 @@ class LibraryLifecycleTest(
       // when
       val child = Files.createTempDirectory(parent, "")
       val toUpdate = existing.copy(root = child.toUri().toURL())
-      val thrown = catchThrowable {
-        libraryLifecycle.updateLibrary(toUpdate)
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.updateLibrary(toUpdate)
+        }
 
       // then
       assertThat(thrown)
@@ -217,23 +241,28 @@ class LibraryLifecycleTest(
     }
 
     @Test
-    fun `given single existing library when updating library with root folder as parent of existing library then no exception is thrown`(@TempDir parent: Path) {
+    fun `given single existing library when updating library with root folder as parent of existing library then no exception is thrown`(
+      @TempDir parent: Path,
+    ) {
       // given
       val child = Files.createTempDirectory(parent, null)
       val existing = libraryLifecycle.addLibrary(Library("child", child.toUri().toURL()))
 
       // when
       val toUpdate = existing.copy(root = parent.toUri().toURL())
-      val thrown = catchThrowable {
-        libraryLifecycle.updateLibrary(toUpdate)
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.updateLibrary(toUpdate)
+        }
 
       // then
       assertThat(thrown).doesNotThrowAnyException()
     }
 
     @Test
-    fun `given existing library when updating library with root folder as parent of existing library then exception is thrown`(@TempDir parent: Path) {
+    fun `given existing library when updating library with root folder as parent of existing library then exception is thrown`(
+      @TempDir parent: Path,
+    ) {
       // given
       val child = Files.createTempDirectory(parent, null)
       libraryLifecycle.addLibrary(Library("child", child.toUri().toURL()))
@@ -241,9 +270,10 @@ class LibraryLifecycleTest(
 
       // when
       val toUpdate = existing.copy(root = parent.toUri().toURL())
-      val thrown = catchThrowable {
-        libraryLifecycle.updateLibrary(toUpdate)
-      }
+      val thrown =
+        catchThrowable {
+          libraryLifecycle.updateLibrary(toUpdate)
+        }
 
       // then
       assertThat(thrown)

@@ -10,7 +10,6 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class ImageAnalyzer {
-
   /**
    * Returns the Dimension of the image contained in the stream.
    * The stream will not be closed, nor marked or reset.

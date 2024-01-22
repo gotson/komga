@@ -7,10 +7,12 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
 class BCP47TagValidatorTest {
-
   @ParameterizedTest
   @MethodSource("languagesNormalized")
-  fun `given source languageTag when normalizing then result is expected`(source: String?, expected: String) {
+  fun `given source languageTag when normalizing then result is expected`(
+    source: String?,
+    expected: String,
+  ) {
     assertThat(BCP47TagValidator.normalize(source)).isEqualTo(expected)
   }
 
@@ -28,7 +30,10 @@ class BCP47TagValidatorTest {
 
   @ParameterizedTest
   @MethodSource("languagesValid")
-  fun `given source languageTag when validating then result is expected`(source: String?, expected: Boolean) {
+  fun `given source languageTag when validating then result is expected`(
+    source: String?,
+    expected: Boolean,
+  ) {
     assertThat(BCP47TagValidator.isValid(source)).isEqualTo(expected)
   }
 

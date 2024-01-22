@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController
 class ReferentialController(
   private val referentialRepository: ReferentialRepository,
 ) {
-
   @GetMapping("v1/authors")
   fun getAuthorsV1(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -52,11 +51,13 @@ class ReferentialController(
     @Parameter(hidden = true) page: Pageable,
   ): Page<AuthorDto> {
     val pageRequest =
-      if (unpaged) Pageable.unpaged()
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-      )
+      if (unpaged)
+        Pageable.unpaged()
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+        )
 
     return when {
       libraryId != null -> referentialRepository.findAllAuthorsByNameAndLibrary(search, role, libraryId, principal.user.getAuthorizedLibraryIds(null), pageRequest)

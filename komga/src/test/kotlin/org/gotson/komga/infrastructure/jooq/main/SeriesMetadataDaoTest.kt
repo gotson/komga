@@ -25,7 +25,6 @@ class SeriesMetadataDaoTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val library = makeLibrary()
 
   @BeforeAll
@@ -51,36 +50,37 @@ class SeriesMetadataDaoTest(
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
     val now = LocalDateTime.now()
-    val metadata = SeriesMetadata(
-      status = SeriesMetadata.Status.ENDED,
-      title = "Series",
-      titleSort = "Series, The",
-      summary = "Summary",
-      readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
-      publisher = "publisher",
-      ageRating = 18,
-      genres = setOf("Action", "Adventure"),
-      tags = setOf("tag", "another"),
-      language = "en",
-      totalBookCount = 5,
-      sharingLabels = setOf("kids"),
-      links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange/4050-2676/"))),
-      alternateTitles = listOf(AlternateTitle("fr", "La Series")),
-      titleLock = true,
-      titleSortLock = true,
-      summaryLock = true,
-      readingDirectionLock = true,
-      publisherLock = true,
-      ageRatingLock = true,
-      genresLock = true,
-      languageLock = true,
-      tagsLock = true,
-      totalBookCountLock = true,
-      sharingLabelsLock = true,
-      linksLock = true,
-      alternateTitlesLock = true,
-      seriesId = series.id,
-    )
+    val metadata =
+      SeriesMetadata(
+        status = SeriesMetadata.Status.ENDED,
+        title = "Series",
+        titleSort = "Series, The",
+        summary = "Summary",
+        readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
+        publisher = "publisher",
+        ageRating = 18,
+        genres = setOf("Action", "Adventure"),
+        tags = setOf("tag", "another"),
+        language = "en",
+        totalBookCount = 5,
+        sharingLabels = setOf("kids"),
+        links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange/4050-2676/"))),
+        alternateTitles = listOf(AlternateTitle("fr", "La Series")),
+        titleLock = true,
+        titleSortLock = true,
+        summaryLock = true,
+        readingDirectionLock = true,
+        publisherLock = true,
+        ageRatingLock = true,
+        genresLock = true,
+        languageLock = true,
+        tagsLock = true,
+        totalBookCountLock = true,
+        sharingLabelsLock = true,
+        linksLock = true,
+        alternateTitlesLock = true,
+        seriesId = series.id,
+      )
 
     seriesMetadataDao.insert(metadata)
     val created = seriesMetadataDao.findById(metadata.seriesId)
@@ -131,10 +131,11 @@ class SeriesMetadataDaoTest(
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
     val now = LocalDateTime.now()
-    val metadata = SeriesMetadata(
-      title = "Series",
-      seriesId = series.id,
-    )
+    val metadata =
+      SeriesMetadata(
+        title = "Series",
+        seriesId = series.id,
+      )
 
     seriesMetadataDao.insert(metadata)
     val created = seriesMetadataDao.findById(metadata.seriesId)
@@ -178,12 +179,13 @@ class SeriesMetadataDaoTest(
   fun `given existing seriesMetadata when finding by id then metadata is returned`() {
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
-    val metadata = SeriesMetadata(
-      status = SeriesMetadata.Status.ENDED,
-      title = "Series",
-      titleSort = "Series, The",
-      seriesId = series.id,
-    )
+    val metadata =
+      SeriesMetadata(
+        status = SeriesMetadata.Status.ENDED,
+        title = "Series",
+        titleSort = "Series, The",
+        seriesId = series.id,
+      )
 
     seriesMetadataDao.insert(metadata)
 
@@ -211,60 +213,62 @@ class SeriesMetadataDaoTest(
   fun `given a seriesMetadata when updating then it is persisted`() {
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
-    val metadata = SeriesMetadata(
-      status = SeriesMetadata.Status.ENDED,
-      title = "Series",
-      titleSort = "Series, The",
-      summary = "Summary",
-      readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
-      publisher = "publisher",
-      ageRating = 18,
-      language = "en",
-      genres = setOf("Action"),
-      tags = setOf("tag"),
-      totalBookCount = 3,
-      sharingLabels = setOf("kids"),
-      links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange/4050-2676/"))),
-      alternateTitles = listOf(AlternateTitle("fr", "La Series")),
-      seriesId = series.id,
-    )
+    val metadata =
+      SeriesMetadata(
+        status = SeriesMetadata.Status.ENDED,
+        title = "Series",
+        titleSort = "Series, The",
+        summary = "Summary",
+        readingDirection = SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT,
+        publisher = "publisher",
+        ageRating = 18,
+        language = "en",
+        genres = setOf("Action"),
+        tags = setOf("tag"),
+        totalBookCount = 3,
+        sharingLabels = setOf("kids"),
+        links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange/4050-2676/"))),
+        alternateTitles = listOf(AlternateTitle("fr", "La Series")),
+        seriesId = series.id,
+      )
     seriesMetadataDao.insert(metadata)
     val created = seriesMetadataDao.findById(metadata.seriesId)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = with(created) {
-      copy(
-        status = SeriesMetadata.Status.HIATUS,
-        title = "Changed",
-        titleSort = "Changed, The",
-        summary = "SummaryUpdated",
-        readingDirection = SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT,
-        publisher = "publisher2",
-        ageRating = 15,
-        language = "jp",
-        genres = setOf("Adventure"),
-        tags = setOf("Another"),
-        totalBookCount = 8,
-        sharingLabels = setOf("adult"),
-        links = emptyList(),
-        alternateTitles = emptyList(),
-        statusLock = true,
-        titleLock = true,
-        titleSortLock = true,
-        summaryLock = true,
-        readingDirectionLock = true,
-        publisherLock = true,
-        ageRatingLock = true,
-        languageLock = true,
-        genresLock = true,
-        tagsLock = true,
-        totalBookCountLock = true,
-        sharingLabelsLock = true,
-        linksLock = true,
-        alternateTitlesLock = true,
-      )
-    }
+    val updated =
+      with(created) {
+        copy(
+          status = SeriesMetadata.Status.HIATUS,
+          title = "Changed",
+          titleSort = "Changed, The",
+          summary = "SummaryUpdated",
+          readingDirection = SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT,
+          publisher = "publisher2",
+          ageRating = 15,
+          language = "jp",
+          genres = setOf("Adventure"),
+          tags = setOf("Another"),
+          totalBookCount = 8,
+          sharingLabels = setOf("adult"),
+          links = emptyList(),
+          alternateTitles = emptyList(),
+          statusLock = true,
+          titleLock = true,
+          titleSortLock = true,
+          summaryLock = true,
+          readingDirectionLock = true,
+          publisherLock = true,
+          ageRatingLock = true,
+          languageLock = true,
+          genresLock = true,
+          tagsLock = true,
+          totalBookCountLock = true,
+          sharingLabelsLock = true,
+          linksLock = true,
+          alternateTitlesLock = true,
+        )
+      }
 
     seriesMetadataDao.update(updated)
     val modified = seriesMetadataDao.findById(updated.seriesId)

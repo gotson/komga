@@ -9,7 +9,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ReadingList {
-
   @JsonProperty(value = "Name")
   var name: String? = null
 

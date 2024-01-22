@@ -11,14 +11,10 @@ data class ReadList(
    * Indicates whether the read list is ordered manually
    */
   val ordered: Boolean = true,
-
   val bookIds: SortedMap<Int, String> = sortedMapOf(),
-
   val id: String = TsidCreator.getTsid256().toString(),
-
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-
   /**
    * Indicates that the bookIds have been filtered and is not exhaustive.
    */

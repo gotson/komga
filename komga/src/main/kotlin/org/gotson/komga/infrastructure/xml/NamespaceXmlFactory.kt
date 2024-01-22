@@ -15,11 +15,16 @@ class NamespaceXmlFactory(
   private val defaultNamespace: String? = null,
   private val prefixToNamespace: Map<String, String> = emptyMap(),
 ) : XmlFactory() {
-
-  override fun _createXmlWriter(ctxt: IOContext?, w: Writer?): XMLStreamWriter =
+  override fun _createXmlWriter(
+    ctxt: IOContext?,
+    w: Writer?,
+  ): XMLStreamWriter =
     super._createXmlWriter(ctxt, w).apply { configure() }
 
-  override fun createGenerator(out: OutputStream?, enc: JsonEncoding?): ToXmlGenerator =
+  override fun createGenerator(
+    out: OutputStream?,
+    enc: JsonEncoding?,
+  ): ToXmlGenerator =
     super.createGenerator(out, enc).apply { staxWriter.configure() }
 
   override fun createGenerator(out: OutputStream?): ToXmlGenerator =
@@ -28,7 +33,10 @@ class NamespaceXmlFactory(
   override fun createGenerator(out: Writer?): ToXmlGenerator =
     super.createGenerator(out).apply { staxWriter.configure() }
 
-  override fun createGenerator(f: File?, enc: JsonEncoding?): ToXmlGenerator =
+  override fun createGenerator(
+    f: File?,
+    enc: JsonEncoding?,
+  ): ToXmlGenerator =
     super.createGenerator(f, enc).apply { staxWriter.configure() }
 
   override fun createGenerator(sw: XMLStreamWriter?): ToXmlGenerator =

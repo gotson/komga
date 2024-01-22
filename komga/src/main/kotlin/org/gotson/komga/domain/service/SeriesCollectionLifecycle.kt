@@ -25,7 +25,6 @@ class SeriesCollectionLifecycle(
   private val eventPublisher: ApplicationEventPublisher,
   private val transactionTemplate: TransactionTemplate,
 ) {
-
   @Throws(
     DuplicateNameException::class,
   )
@@ -47,8 +46,9 @@ class SeriesCollectionLifecycle(
   fun updateCollection(toUpdate: SeriesCollection) {
     logger.info { "Update collection: $toUpdate" }
 
-    val existing = collectionRepository.findByIdOrNull(toUpdate.id)
-      ?: throw IllegalArgumentException("Cannot update collection that does not exist")
+    val existing =
+      collectionRepository.findByIdOrNull(toUpdate.id)
+        ?: throw IllegalArgumentException("Cannot update collection that does not exist")
 
     if (!existing.name.equals(toUpdate.name, true) && collectionRepository.existsByName(toUpdate.name))
       throw DuplicateNameException("Collection name already exists")
@@ -71,12 +71,15 @@ class SeriesCollectionLifecycle(
    * Collection will be created if it doesn't exist.
    */
   @Transactional
-  fun addSeriesToCollection(collectionName: String, series: Series) {
+  fun addSeriesToCollection(
+    collectionName: String,
+    series: Series,
+  ) {
     collectionRepository.findByNameOrNull(collectionName).let { existing ->
       if (existing != null) {
-        if (existing.seriesIds.contains(series.id))
+        if (existing.seriesIds.contains(series.id)) {
           logger.debug { "Series is already in existing collection '${existing.name}'" }
-        else {
+        } else {
           logger.debug { "Adding series '${series.name}' to existing collection '${existing.name}'" }
           updateCollection(
             existing.copy(seriesIds = existing.seriesIds + series.id),
@@ -133,17 +136,21 @@ class SeriesCollectionLifecycle(
   fun getThumbnailBytes(thumbnailId: String): ByteArray? =
     thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.thumbnail
 
-  fun getThumbnailBytes(collection: SeriesCollection, userId: String): ByteArray {
+  fun getThumbnailBytes(
+    collection: SeriesCollection,
+    userId: String,
+  ): ByteArray {
     thumbnailSeriesCollectionRepository.findSelectedByCollectionIdOrNull(collection.id)?.let {
       return it.thumbnail
     }
 
-    val ids = with(mutableListOf<String>()) {
-      while (size < 4) {
-        this += collection.seriesIds.take(4)
+    val ids =
+      with(mutableListOf<String>()) {
+        while (size < 4) {
+          this += collection.seriesIds.take(4)
+        }
+        this.take(4)
       }
-      this.take(4)
-    }
 
     val images = ids.mapNotNull { seriesLifecycle.getThumbnailBytes(it, userId) }
     return mosaicGenerator.createMosaic(images)

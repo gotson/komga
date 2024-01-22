@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 internal const val DEFAULT_PAGE_SIZE = 20
 
 abstract class AbstractRestBenchmark : AbstractBenchmark() {
-
   companion object {
     lateinit var userRepository: KomgaUserRepository
     lateinit var seriesController: SeriesController
@@ -38,9 +37,10 @@ abstract class AbstractRestBenchmark : AbstractBenchmark() {
 
   @Setup(Level.Trial)
   fun prepareData() {
-    principal = KomgaPrincipal(
-      userRepository.findByEmailIgnoreCaseOrNull("admin@example.org")
-        ?: throw IllegalStateException("no user found"),
-    )
+    principal =
+      KomgaPrincipal(
+        userRepository.findByEmailIgnoreCaseOrNull("admin@example.org")
+          ?: throw IllegalStateException("no user found"),
+      )
   }
 }

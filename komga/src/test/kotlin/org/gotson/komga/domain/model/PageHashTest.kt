@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class PageHashTest {
-
   @Test
   fun `given negative size when creating a PageHash then its size is null`() {
     val pageHash = PageHash("abc", -5)

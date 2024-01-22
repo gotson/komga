@@ -55,7 +55,6 @@ class BookLifecycleTest(
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val thumbnailBookRepository: ThumbnailBookRepository,
 ) {
-
   @SpykBean
   private lateinit var bookLifecycle: BookLifecycle
 
@@ -303,11 +302,12 @@ class BookLifecycleTest(
     }
 
     private val device = R2Device("abc", "device")
-    private val epubResources = listOf(
-      MediaFile("ch1.xhtml", "application/xhtml+xml"),
-      MediaFile("ch2.xhtml", "application/xhtml+xml"),
-      MediaFile("ch3.xhtml", "application/xhtml+xml"),
-    )
+    private val epubResources =
+      listOf(
+        MediaFile("ch1.xhtml", "application/xhtml+xml"),
+        MediaFile("ch2.xhtml", "application/xhtml+xml"),
+        MediaFile("ch3.xhtml", "application/xhtml+xml"),
+      )
 
     private fun makeEpubPositions(): List<R2Locator> {
       var startPosition = 1
@@ -330,9 +330,10 @@ class BookLifecycleTest(
       bookLifecycle.markProgression(book, user1, progress)
 
       // when
-      val thrown = catchThrowable {
-        bookLifecycle.markProgression(book, user1, progress.copy(modified = progress.modified.minusHours(1)))
-      }
+      val thrown =
+        catchThrowable {
+          bookLifecycle.markProgression(book, user1, progress.copy(modified = progress.modified.minusHours(1)))
+        }
 
       // then
       assertThat(thrown)
@@ -349,9 +350,10 @@ class BookLifecycleTest(
       }
 
       // when
-      val thrown = catchThrowable {
-        bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("", "", locations = R2Locator.Location(position = 15))))
-      }
+      val thrown =
+        catchThrowable {
+          bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("", "", locations = R2Locator.Location(position = 15))))
+        }
 
       // then
       assertThat(thrown)
@@ -367,9 +369,10 @@ class BookLifecycleTest(
       }
 
       // when
-      val thrown = catchThrowable {
-        bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch5.xhtml", "", locations = R2Locator.Location(position = 15))))
-      }
+      val thrown =
+        catchThrowable {
+          bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch5.xhtml", "", locations = R2Locator.Location(position = 15))))
+        }
 
       // then
       assertThat(thrown)
@@ -385,9 +388,10 @@ class BookLifecycleTest(
       }
 
       // when
-      val thrown = catchThrowable {
-        bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch1.xhtml", "", locations = R2Locator.Location(position = 15))))
-      }
+      val thrown =
+        catchThrowable {
+          bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch1.xhtml", "", locations = R2Locator.Location(position = 15))))
+        }
 
       // then
       assertThat(thrown)
@@ -403,9 +407,10 @@ class BookLifecycleTest(
       }
 
       // when
-      val thrown = catchThrowable {
-        bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch1.xhtml", "", locations = R2Locator.Location(progression = 0.3F))))
-      }
+      val thrown =
+        catchThrowable {
+          bookLifecycle.markProgression(book, user1, R2Progression(ZonedDateTime.now(), device, R2Locator("ch1.xhtml", "", locations = R2Locator.Location(progression = 0.3F))))
+        }
 
       // then
       assertThat(thrown)
@@ -442,13 +447,14 @@ class BookLifecycleTest(
       }
 
       // when
-      val newProgression = R2Progression(
-        ZonedDateTime.now(),
-        device,
-        with(epubPositions[0]) {
-          copy(locations = locations!!.copy(progression = locations!!.progression!! + 0.5F))
-        },
-      )
+      val newProgression =
+        R2Progression(
+          ZonedDateTime.now(),
+          device,
+          with(epubPositions[0]) {
+            copy(locations = locations!!.copy(progression = locations!!.progression!! + 0.5F))
+          },
+        )
       assertThatNoException().isThrownBy {
         bookLifecycle.markProgression(book, user1, newProgression)
       }

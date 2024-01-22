@@ -8,12 +8,20 @@ import org.springframework.stereotype.Service
 
 @Service
 class MetadataApplier {
+  private fun <T> getIfNotLocked(
+    original: T,
+    patched: T?,
+    lock: Boolean,
+  ): T =
+    if (patched != null && !lock)
+      patched
+    else
+      original
 
-  private fun <T> getIfNotLocked(original: T, patched: T?, lock: Boolean): T =
-    if (patched != null && !lock) patched
-    else original
-
-  fun apply(patch: BookMetadataPatch, metadata: BookMetadata): BookMetadata =
+  fun apply(
+    patch: BookMetadataPatch,
+    metadata: BookMetadata,
+  ): BookMetadata =
     with(metadata) {
       copy(
         title = getIfNotLocked(title, patch.title, titleLock),
@@ -28,7 +36,10 @@ class MetadataApplier {
       )
     }
 
-  fun apply(patch: SeriesMetadataPatch, metadata: SeriesMetadata): SeriesMetadata =
+  fun apply(
+    patch: SeriesMetadataPatch,
+    metadata: SeriesMetadata,
+  ): SeriesMetadata =
     with(metadata) {
       copy(
         status = getIfNotLocked(status, patch.status, statusLock),

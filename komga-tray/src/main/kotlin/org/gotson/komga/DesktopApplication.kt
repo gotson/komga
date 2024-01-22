@@ -22,10 +22,11 @@ fun main(args: Array<String>) {
       run(*args)
     }
   } catch (e: Exception) {
-    val (message, stackTrace) = when (e.cause) {
-      is PortInUseException -> RB.getString("error_message.port_in_use", (e.cause as PortInUseException).port) to null
-      else -> RB.getString("error_message.unexpected") to e.stackTraceToString()
-    }
+    val (message, stackTrace) =
+      when (e.cause) {
+        is PortInUseException -> RB.getString("error_message.port_in_use", (e.cause as PortInUseException).port) to null
+        else -> RB.getString("error_message.unexpected") to e.stackTraceToString()
+      }
 
     showErrorDialog(message, stackTrace)
   }

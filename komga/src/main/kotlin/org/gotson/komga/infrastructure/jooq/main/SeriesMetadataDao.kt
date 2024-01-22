@@ -22,7 +22,6 @@ class SeriesMetadataDao(
   private val dsl: DSLContext,
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SeriesMetadataRepository {
-
   private val d = Tables.SERIES_METADATA
   private val g = Tables.SERIES_METADATA_GENRE
   private val st = Tables.SERIES_METADATA_TAG
@@ -265,15 +264,22 @@ class SeriesMetadataDao(
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun SeriesMetadataRecord.toDomain(genres: Set<String>, tags: Set<String>, sharingLabels: Set<String>, links: List<WebLink>, alternateTitles: List<AlternateTitle>) =
+  private fun SeriesMetadataRecord.toDomain(
+    genres: Set<String>,
+    tags: Set<String>,
+    sharingLabels: Set<String>,
+    links: List<WebLink>,
+    alternateTitles: List<AlternateTitle>,
+  ) =
     SeriesMetadata(
       status = SeriesMetadata.Status.valueOf(status),
       title = title,
       titleSort = titleSort,
       summary = summary,
-      readingDirection = readingDirection?.let {
-        SeriesMetadata.ReadingDirection.valueOf(readingDirection)
-      },
+      readingDirection =
+        readingDirection?.let {
+          SeriesMetadata.ReadingDirection.valueOf(readingDirection)
+        },
       publisher = publisher,
       ageRating = ageRating,
       language = language,
@@ -283,7 +289,6 @@ class SeriesMetadataDao(
       sharingLabels = sharingLabels,
       links = links,
       alternateTitles = alternateTitles,
-
       statusLock = statusLock,
       titleLock = titleLock,
       titleSortLock = titleSortLock,
@@ -298,9 +303,7 @@ class SeriesMetadataDao(
       sharingLabelsLock = sharingLabelsLock,
       linksLock = linksLock,
       alternateTitlesLock = alternateTitlesLock,
-
       seriesId = seriesId,
-
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )

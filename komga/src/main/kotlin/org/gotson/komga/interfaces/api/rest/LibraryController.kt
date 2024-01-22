@@ -49,7 +49,6 @@ class LibraryController(
   private val bookRepository: BookRepository,
   private val seriesRepository: SeriesRepository,
 ) {
-
   @GetMapping
   fun getAll(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -145,38 +144,39 @@ class LibraryController(
     library: LibraryUpdateDto,
   ) {
     libraryRepository.findByIdOrNull(libraryId)?.let { existing ->
-      val toUpdate = with(library) {
-        existing.copy(
-          id = libraryId,
-          name = name ?: existing.name,
-          root = root?.let { filePathToUrl(root!!) } ?: existing.root,
-          importComicInfoBook = importComicInfoBook ?: existing.importComicInfoBook,
-          importComicInfoSeries = importComicInfoSeries ?: existing.importComicInfoSeries,
-          importComicInfoCollection = importComicInfoCollection ?: existing.importComicInfoCollection,
-          importComicInfoReadList = importComicInfoReadList ?: existing.importComicInfoReadList,
-          importComicInfoSeriesAppendVolume = importComicInfoSeriesAppendVolume ?: existing.importComicInfoSeriesAppendVolume,
-          importEpubBook = importEpubBook ?: existing.importEpubBook,
-          importEpubSeries = importEpubSeries ?: existing.importEpubSeries,
-          importMylarSeries = importMylarSeries ?: existing.importMylarSeries,
-          importLocalArtwork = importLocalArtwork ?: existing.importLocalArtwork,
-          importBarcodeIsbn = importBarcodeIsbn ?: existing.importBarcodeIsbn,
-          scanForceModifiedTime = scanForceModifiedTime ?: existing.scanForceModifiedTime,
-          scanInterval = scanInterval?.toDomain() ?: existing.scanInterval,
-          scanOnStartup = scanOnStartup ?: existing.scanOnStartup,
-          scanCbx = scanCbx ?: existing.scanCbx,
-          scanPdf = scanPdf ?: existing.scanPdf,
-          scanEpub = scanEpub ?: existing.scanEpub,
-          scanDirectoryExclusions = if (isSet("scanDirectoryExclusions")) scanDirectoryExclusions ?: emptySet() else existing.scanDirectoryExclusions,
-          repairExtensions = repairExtensions ?: existing.repairExtensions,
-          convertToCbz = convertToCbz ?: existing.convertToCbz,
-          emptyTrashAfterScan = emptyTrashAfterScan ?: existing.emptyTrashAfterScan,
-          seriesCover = seriesCover?.toDomain() ?: existing.seriesCover,
-          hashFiles = hashFiles ?: existing.hashFiles,
-          hashPages = hashPages ?: existing.hashPages,
-          analyzeDimensions = analyzeDimensions ?: existing.analyzeDimensions,
-          oneshotsDirectory = if (isSet("oneshotsDirectory")) oneshotsDirectory?.ifBlank { null } else existing.oneshotsDirectory,
-        )
-      }
+      val toUpdate =
+        with(library) {
+          existing.copy(
+            id = libraryId,
+            name = name ?: existing.name,
+            root = root?.let { filePathToUrl(root!!) } ?: existing.root,
+            importComicInfoBook = importComicInfoBook ?: existing.importComicInfoBook,
+            importComicInfoSeries = importComicInfoSeries ?: existing.importComicInfoSeries,
+            importComicInfoCollection = importComicInfoCollection ?: existing.importComicInfoCollection,
+            importComicInfoReadList = importComicInfoReadList ?: existing.importComicInfoReadList,
+            importComicInfoSeriesAppendVolume = importComicInfoSeriesAppendVolume ?: existing.importComicInfoSeriesAppendVolume,
+            importEpubBook = importEpubBook ?: existing.importEpubBook,
+            importEpubSeries = importEpubSeries ?: existing.importEpubSeries,
+            importMylarSeries = importMylarSeries ?: existing.importMylarSeries,
+            importLocalArtwork = importLocalArtwork ?: existing.importLocalArtwork,
+            importBarcodeIsbn = importBarcodeIsbn ?: existing.importBarcodeIsbn,
+            scanForceModifiedTime = scanForceModifiedTime ?: existing.scanForceModifiedTime,
+            scanInterval = scanInterval?.toDomain() ?: existing.scanInterval,
+            scanOnStartup = scanOnStartup ?: existing.scanOnStartup,
+            scanCbx = scanCbx ?: existing.scanCbx,
+            scanPdf = scanPdf ?: existing.scanPdf,
+            scanEpub = scanEpub ?: existing.scanEpub,
+            scanDirectoryExclusions = if (isSet("scanDirectoryExclusions")) scanDirectoryExclusions ?: emptySet() else existing.scanDirectoryExclusions,
+            repairExtensions = repairExtensions ?: existing.repairExtensions,
+            convertToCbz = convertToCbz ?: existing.convertToCbz,
+            emptyTrashAfterScan = emptyTrashAfterScan ?: existing.emptyTrashAfterScan,
+            seriesCover = seriesCover?.toDomain() ?: existing.seriesCover,
+            hashFiles = hashFiles ?: existing.hashFiles,
+            hashPages = hashPages ?: existing.hashPages,
+            analyzeDimensions = analyzeDimensions ?: existing.analyzeDimensions,
+            oneshotsDirectory = if (isSet("oneshotsDirectory")) oneshotsDirectory?.ifBlank { null } else existing.oneshotsDirectory,
+          )
+        }
       try {
         libraryLifecycle.updateLibrary(toUpdate)
       } catch (e: Exception) {
@@ -197,7 +197,9 @@ class LibraryController(
   @DeleteMapping("/{libraryId}")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun deleteOne(@PathVariable libraryId: String) {
+  fun deleteOne(
+    @PathVariable libraryId: String,
+  ) {
     libraryRepository.findByIdOrNull(libraryId)?.let {
       libraryLifecycle.deleteLibrary(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -218,14 +220,18 @@ class LibraryController(
   @PostMapping("{libraryId}/analyze")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun analyze(@PathVariable libraryId: String) {
+  fun analyze(
+    @PathVariable libraryId: String,
+  ) {
     taskEmitter.analyzeBook(bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId))), HIGH_PRIORITY)
   }
 
   @PostMapping("{libraryId}/metadata/refresh")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun refreshMetadata(@PathVariable libraryId: String) {
+  fun refreshMetadata(
+    @PathVariable libraryId: String,
+  ) {
     val books = bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId)))
     taskEmitter.refreshBookMetadata(books, priority = HIGH_PRIORITY)
     taskEmitter.refreshBookLocalArtwork(books, priority = HIGH_PRIORITY)
@@ -235,7 +241,9 @@ class LibraryController(
   @PostMapping("{libraryId}/empty-trash")
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun emptyTrash(@PathVariable libraryId: String) {
+  fun emptyTrash(
+    @PathVariable libraryId: String,
+  ) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->
       taskEmitter.emptyTrash(library.id, HIGH_PRIORITY)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

@@ -18,7 +18,6 @@ import java.time.ZoneId
 class LibraryDao(
   private val dsl: DSLContext,
 ) : LibraryRepository {
-
   private val l = Tables.LIBRARY
   private val ul = Tables.USER_LIBRARY_SHARING
   private val le = Tables.LIBRARY_EXCLUSIONS
@@ -36,6 +35,7 @@ class LibraryDao(
   private fun findOne(libraryId: String) =
     selectBase()
       .where(l.ID.eq(libraryId))
+
   override fun findAll(): Collection<Library> =
     selectBase()
       .fetchAndMap()
@@ -145,6 +145,7 @@ class LibraryDao(
   }
 
   override fun count(): Long = dsl.fetchCount(l).toLong()
+
   fun findDirectoryExclusions(libraryId: String): Set<String> =
     dsl.select(le.EXCLUSION)
       .from(le)
@@ -193,7 +194,6 @@ class LibraryDao(
       hashPages = hashPages,
       analyzeDimensions = analyzeDimensions,
       oneshotsDirectory = oneshotsDirectory,
-
       unavailableDate = unavailableDate,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),

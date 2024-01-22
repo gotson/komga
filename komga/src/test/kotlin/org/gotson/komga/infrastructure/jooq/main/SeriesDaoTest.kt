@@ -20,7 +20,6 @@ class SeriesDaoTest(
   @Autowired private val seriesDao: SeriesDao,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val library = makeLibrary()
 
   @BeforeAll
@@ -42,13 +41,14 @@ class SeriesDaoTest(
   @Test
   fun `given a series when inserting then it is persisted`() {
     val now = LocalDateTime.now()
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = now,
-      libraryId = library.id,
-      deletedDate = now,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = now,
+        libraryId = library.id,
+        deletedDate = now,
+      )
 
     seriesDao.insert(series)
     val created = seriesDao.findByIdOrNull(series.id)!!
@@ -65,24 +65,26 @@ class SeriesDaoTest(
   @Test
   fun `given a series when updating then it is persisted`() {
     val now = LocalDateTime.now()
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = now,
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = now,
+        libraryId = library.id,
+      )
 
     seriesDao.insert(series)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = seriesDao.findByIdOrNull(series.id)!!.copy(
-      name = "Updated",
-      url = URL("file://updated"),
-      fileLastModified = modificationDate,
-      bookCount = 5,
-      deletedDate = LocalDateTime.now(),
-    )
+    val updated =
+      seriesDao.findByIdOrNull(series.id)!!.copy(
+        name = "Updated",
+        url = URL("file://updated"),
+        fileLastModified = modificationDate,
+        bookCount = 5,
+        deletedDate = LocalDateTime.now(),
+      )
 
     seriesDao.update(updated)
     val modified = seriesDao.findByIdOrNull(updated.id)!!
@@ -101,12 +103,13 @@ class SeriesDaoTest(
 
   @Test
   fun `given a series when deleting then it is deleted`() {
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = LocalDateTime.now(),
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = LocalDateTime.now(),
+        libraryId = library.id,
+      )
 
     seriesDao.insert(series)
     assertThat(seriesDao.count()).isEqualTo(1)
@@ -119,19 +122,21 @@ class SeriesDaoTest(
   @Test
   fun `given series when deleting all then all are deleted`() {
     val now = LocalDateTime.now()
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = now,
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = now,
+        libraryId = library.id,
+      )
 
-    val series2 = Series(
-      name = "Series2",
-      url = URL("file://series2"),
-      fileLastModified = now,
-      libraryId = library.id,
-    )
+    val series2 =
+      Series(
+        name = "Series2",
+        url = URL("file://series2"),
+        fileLastModified = now,
+        libraryId = library.id,
+      )
 
     seriesDao.insert(series)
     seriesDao.insert(series2)
@@ -145,19 +150,21 @@ class SeriesDaoTest(
   @Test
   fun `given series when finding all then all are returned`() {
     val now = LocalDateTime.now()
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = now,
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = now,
+        libraryId = library.id,
+      )
 
-    val series2 = Series(
-      name = "Series2",
-      url = URL("file://series2"),
-      fileLastModified = now,
-      libraryId = library.id,
-    )
+    val series2 =
+      Series(
+        name = "Series2",
+        url = URL("file://series2"),
+        fileLastModified = now,
+        libraryId = library.id,
+      )
 
     seriesDao.insert(series)
     seriesDao.insert(series2)
@@ -170,12 +177,13 @@ class SeriesDaoTest(
 
   @Test
   fun `given existing series when finding by id then series is returned`() {
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = LocalDateTime.now(),
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = LocalDateTime.now(),
+        libraryId = library.id,
+      )
 
     seriesDao.insert(series)
 
@@ -194,18 +202,20 @@ class SeriesDaoTest(
 
   @Test
   fun `given existing series when searching then result is returned`() {
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = LocalDateTime.now(),
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = LocalDateTime.now(),
+        libraryId = library.id,
+      )
 
     seriesDao.insert(series)
 
-    val search = SeriesSearch(
-      libraryIds = listOf(library.id),
-    )
+    val search =
+      SeriesSearch(
+        libraryIds = listOf(library.id),
+      )
     val found = seriesDao.findAll(search)
 
     assertThat(found).hasSize(1)
@@ -213,12 +223,13 @@ class SeriesDaoTest(
 
   @Test
   fun `given existing series when searching by regex then result is returned`() {
-    val series = Series(
-      name = "my Series",
-      url = URL("file://series"),
-      fileLastModified = LocalDateTime.now(),
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "my Series",
+        url = URL("file://series"),
+        fileLastModified = LocalDateTime.now(),
+        libraryId = library.id,
+      )
     seriesDao.insert(series)
 
     assertThat(seriesDao.findAll(SeriesSearch(searchRegex = Pair("^my", SeriesSearch.SearchField.NAME)))).hasSize(1)
@@ -228,12 +239,13 @@ class SeriesDaoTest(
 
   @Test
   fun `given existing series when finding by libraryId then series are returned`() {
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = LocalDateTime.now(),
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = LocalDateTime.now(),
+        libraryId = library.id,
+      )
     seriesDao.insert(series)
 
     val found = seriesDao.findAllByLibraryId(library.id)
@@ -244,12 +256,13 @@ class SeriesDaoTest(
 
   @Test
   fun `given existing series when finding by other libraryId then empty list is returned`() {
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = LocalDateTime.now(),
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = LocalDateTime.now(),
+        libraryId = library.id,
+      )
     seriesDao.insert(series)
 
     val found = seriesDao.findAllByLibraryId(library.id + 1)
@@ -259,12 +272,13 @@ class SeriesDaoTest(
 
   @Test
   fun `given existing series when finding by libraryId and Url not in list then results are returned`() {
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = LocalDateTime.now(),
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = LocalDateTime.now(),
+        libraryId = library.id,
+      )
     seriesDao.insert(series)
 
     val found = seriesDao.findAllNotDeletedByLibraryIdAndUrlNotIn(library.id, listOf(URL("file://series2")))
@@ -278,12 +292,13 @@ class SeriesDaoTest(
 
   @Test
   fun `given existing series when finding by libraryId and Url in list then results are returned`() {
-    val series = Series(
-      name = "Series",
-      url = URL("file://series"),
-      fileLastModified = LocalDateTime.now(),
-      libraryId = library.id,
-    )
+    val series =
+      Series(
+        name = "Series",
+        url = URL("file://series"),
+        fileLastModified = LocalDateTime.now(),
+        libraryId = library.id,
+      )
     seriesDao.insert(series)
 
     val found = seriesDao.findNotDeletedByLibraryIdAndUrlOrNull(library.id, URL("file://series"))

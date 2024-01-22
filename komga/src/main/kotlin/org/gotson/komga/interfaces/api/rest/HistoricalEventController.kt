@@ -18,21 +18,23 @@ import org.springframework.web.bind.annotation.RestController
 class HistoricalEventController(
   private val historicalEventDtoRepository: HistoricalEventDtoRepository,
 ) {
-
   @GetMapping
   @PageableAsQueryParam
   fun getAll(
     @Parameter(hidden = true) page: Pageable,
   ): Page<HistoricalEventDto> {
     val sort =
-      if (page.sort.isSorted) page.sort
-      else Sort.by(Sort.Order.desc("timestamp"))
+      if (page.sort.isSorted)
+        page.sort
+      else
+        Sort.by(Sort.Order.desc("timestamp"))
 
-    val pageRequest = PageRequest.of(
-      page.pageNumber,
-      page.pageSize,
-      sort,
-    )
+    val pageRequest =
+      PageRequest.of(
+        page.pageNumber,
+        page.pageSize,
+        sort,
+      )
 
     return historicalEventDtoRepository.findAll(pageRequest)
   }

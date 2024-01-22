@@ -19,19 +19,19 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.TimeUnit
 
-private const val website = "https://komga.org"
+private const val WEBSITE = "https://komga.org"
 
 @RestController
 @RequestMapping("api/v1/announcements", produces = [MediaType.APPLICATION_JSON_VALUE])
 class AnnouncementController(
   private val userRepository: KomgaUserRepository,
 ) {
+  private val webClient = WebClient.create("$WEBSITE/blog/feed.json")
 
-  private val webClient = WebClient.create("$website/blog/feed.json")
-
-  private val cache = Caffeine.newBuilder()
-    .expireAfterAccess(1, TimeUnit.DAYS)
-    .build<String, JsonFeedDto>()
+  private val cache =
+    Caffeine.newBuilder()
+      .expireAfterAccess(1, TimeUnit.DAYS)
+      .build<String, JsonFeedDto>()
 
   @GetMapping
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
@@ -57,10 +57,11 @@ class AnnouncementController(
   }
 
   fun fetchWebsiteAnnouncements(): JsonFeedDto? {
-    val response = webClient.get()
-      .retrieve()
-      .toEntity(JsonFeedDto::class.java)
-      .block()
+    val response =
+      webClient.get()
+        .retrieve()
+        .toEntity(JsonFeedDto::class.java)
+        .block()
     return response?.body
   }
 }

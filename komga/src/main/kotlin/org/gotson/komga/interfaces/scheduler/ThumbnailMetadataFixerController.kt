@@ -15,7 +15,6 @@ private val logger = KotlinLogging.logger {}
 class ThumbnailMetadataFixerController(
   private val taskEmitter: TaskEmitter,
 ) {
-
   @EventListener(ApplicationReadyEvent::class)
   fun findThumbnailsWithoutMetadata() {
     logger.info { "Find and fix thumbnails without metadata" }

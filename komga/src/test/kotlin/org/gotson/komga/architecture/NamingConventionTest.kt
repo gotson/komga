@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class])
 class NamingConventionTest {
-
   @ArchTest
-  val services_should_not_have_names_containing_service_or_manager: ArchRule =
+  val servicesShouldNotHaveNamesContainingServiceOrManager: ArchRule =
     noClasses()
       .that().resideInAnyPackage("..domain..service..", "..application..service..")
       .should().haveSimpleNameContaining("service")
@@ -24,7 +23,7 @@ class NamingConventionTest {
       .because("it doesn't bear any intent")
 
   @ArchTest
-  val controllers_should_be_suffixed: ArchRule =
+  val controllersShouldBeSuffixed: ArchRule =
     classes()
       .that().areAnnotatedWith(RestController::class.java)
       .or().areAnnotatedWith(Controller::class.java)

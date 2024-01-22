@@ -8,10 +8,8 @@ import java.time.LocalDateTime
 open class OpdsLink(
   @get:JacksonXmlProperty(isAttribute = true)
   val type: String,
-
   @get:JacksonXmlProperty(isAttribute = true)
   val rel: String,
-
   @get:JacksonXmlProperty(isAttribute = true)
   val href: String,
 )
@@ -61,18 +59,15 @@ class OpdsLinkSearch(href: String) : OpdsLink(
 class OpdsLinkPageStreaming(
   mediaType: String,
   href: String,
-
   @get:JacksonXmlProperty(isAttribute = true, namespace = OPDS_PSE)
   val count: Int,
-
   @get:JacksonXmlProperty(isAttribute = true, namespace = OPDS_PSE)
   val lastRead: Int?,
-
   @get:JacksonXmlProperty(isAttribute = true, namespace = OPDS_PSE)
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val lastReadDate: LocalDateTime?,
 ) : OpdsLink(
-  type = mediaType,
-  rel = "http://vaemendis.net/opds-pse/stream",
-  href = href,
-)
+    type = mediaType,
+    rel = "http://vaemendis.net/opds-pse/stream",
+    href = href,
+  )

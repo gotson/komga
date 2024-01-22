@@ -75,7 +75,6 @@ class LibraryContentLifecycleTest(
   @Autowired private val seriesDtoRepository: SeriesDtoRepository,
   @Autowired private val thumbnailBookRepository: ThumbnailBookRepository,
 ) {
-
   @MockkBean
   private lateinit var mockScanner: FileSystemScanner
 
@@ -515,10 +514,11 @@ class LibraryContentLifecycleTest(
       val library = makeLibrary().copy(emptyTrashAfterScan = true)
       libraryRepository.insert(library)
 
-      every { mockScanner.scanRootFolder(any()) } returns mapOf(
-        makeSeries(name = "series") to listOf(makeBook("book1"), makeBook("book3")),
-        makeSeries(name = "series2") to listOf(makeBook("book2")),
-      ).toScanResult() andThenThrows DirectoryNotFoundException("")
+      every { mockScanner.scanRootFolder(any()) } returns
+        mapOf(
+          makeSeries(name = "series") to listOf(makeBook("book1"), makeBook("book3")),
+          makeSeries(name = "series2") to listOf(makeBook("book2")),
+        ).toScanResult() andThenThrows DirectoryNotFoundException("")
 
       libraryContentLifecycle.scanRootFolder(library)
 

@@ -16,7 +16,6 @@ import org.springframework.session.web.http.HttpSessionIdResolver
 @EnableCaffeineHttpSession
 @Configuration
 class SessionConfiguration {
-
   @Bean
   fun sessionCookieName() = "SESSION"
 
@@ -30,7 +29,10 @@ class SessionConfiguration {
     }
 
   @Bean
-  fun httpSessionIdResolver(sessionHeaderName: String, cookieSerializer: CookieSerializer): HttpSessionIdResolver =
+  fun httpSessionIdResolver(
+    sessionHeaderName: String,
+    cookieSerializer: CookieSerializer,
+  ): HttpSessionIdResolver =
     SmartHttpSessionIdResolver(sessionHeaderName, cookieSerializer)
 
   @Bean

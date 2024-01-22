@@ -38,7 +38,6 @@ class UserControllerTest(
   @Autowired private val libraryLifecycle: LibraryLifecycle,
   @Autowired private val userRepository: KomgaUserRepository,
 ) {
-
   @Autowired
   private lateinit var userLifecycle: KomgaUserLifecycle
 
@@ -92,11 +91,12 @@ class UserControllerTest(
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "roles": ["$ROLE_FILE_DOWNLOAD","$ROLE_PAGE_STREAMING"]
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -120,11 +120,12 @@ class UserControllerTest(
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "roles": []
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -148,14 +149,15 @@ class UserControllerTest(
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "sharedLibraries": {
             "all": "false",
             "libraryIds" : ["1", "2"]
           }
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -178,14 +180,15 @@ class UserControllerTest(
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "sharedLibraries": {
             "all": "false",
             "libraryIds" : ["2"]
           }
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -208,14 +211,15 @@ class UserControllerTest(
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "sharedLibraries": {
             "all": "true",
             "libraryIds": []
           }
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -238,12 +242,13 @@ class UserControllerTest(
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "labelsAllow": ["cute", "kids"],
           "labelsExclude": ["adult"]
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -262,25 +267,28 @@ class UserControllerTest(
     @Test
     @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
     fun `given user with labels restrictions when removing restrictions then restrictions are updated`() {
-      val user = KomgaUser(
-        "user@example.org",
-        "",
-        false,
-        id = "user",
-        restrictions = ContentRestrictions(
-          labelsAllow = setOf("kids", "cute"),
-          labelsExclude = setOf("adult"),
-        ),
-      )
+      val user =
+        KomgaUser(
+          "user@example.org",
+          "",
+          false,
+          id = "user",
+          restrictions =
+            ContentRestrictions(
+              labelsAllow = setOf("kids", "cute"),
+              labelsExclude = setOf("adult"),
+            ),
+        )
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "labelsAllow": [],
           "labelsExclude": null
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -303,14 +311,15 @@ class UserControllerTest(
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "ageRestriction": {
             "age": 12,
             "restriction": "ALLOW_ONLY"
           }
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -334,14 +343,15 @@ class UserControllerTest(
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "ageRestriction": {
             "age": -12,
             "restriction": "ALLOW_ONLY"
           }
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -354,23 +364,26 @@ class UserControllerTest(
     @Test
     @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
     fun `given user with age restriction when removing restriction then restrictions are updated`() {
-      val user = KomgaUser(
-        "user@example.org",
-        "",
-        false,
-        id = "user",
-        restrictions = ContentRestrictions(
-          ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
-        ),
-      )
+      val user =
+        KomgaUser(
+          "user@example.org",
+          "",
+          false,
+          id = "user",
+          restrictions =
+            ContentRestrictions(
+              ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
+            ),
+        )
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "ageRestriction": null
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON
@@ -388,26 +401,29 @@ class UserControllerTest(
     @Test
     @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
     fun `given user with age restriction when changing restriction then restrictions are updated`() {
-      val user = KomgaUser(
-        "user@example.org",
-        "",
-        false,
-        id = "user",
-        restrictions = ContentRestrictions(
-          ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
-        ),
-      )
+      val user =
+        KomgaUser(
+          "user@example.org",
+          "",
+          false,
+          id = "user",
+          restrictions =
+            ContentRestrictions(
+              ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
+            ),
+        )
       userLifecycle.createUser(user)
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "ageRestriction": {
             "age": 16,
             "restriction": "EXCLUDE"
           }
         }
-      """.trimIndent()
+        """.trimIndent()
 
       mockMvc.patch("/api/v2/users/${user.id}") {
         contentType = MediaType.APPLICATION_JSON

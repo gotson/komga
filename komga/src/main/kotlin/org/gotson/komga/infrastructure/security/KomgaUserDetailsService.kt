@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component
 class KomgaUserDetailsService(
   private val userRepository: KomgaUserRepository,
 ) : UserDetailsService {
-
   override fun loadUserByUsername(username: String): UserDetails =
     userRepository.findByEmailIgnoreCaseOrNull(username)?.let {
       KomgaPrincipal(it)

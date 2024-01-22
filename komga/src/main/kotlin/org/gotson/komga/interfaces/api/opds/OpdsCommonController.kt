@@ -25,7 +25,6 @@ class OpdsCommonController(
   private val bookLifecycle: BookLifecycle,
   private val imageConverter: ImageConverter,
 ) {
-
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
     value = [
@@ -40,7 +39,9 @@ class OpdsCommonController(
   ): ByteArray {
     principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
     val poster = bookLifecycle.getThumbnailBytesOriginal(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-    return if (poster.mediaType != ImageType.JPEG.mediaType) imageConverter.convertImage(poster.bytes, ImageType.JPEG.imageIOFormat)
-    else poster.bytes
+    return if (poster.mediaType != ImageType.JPEG.mediaType)
+      imageConverter.convertImage(poster.bytes, ImageType.JPEG.imageIOFormat)
+    else
+      poster.bytes
   }
 }

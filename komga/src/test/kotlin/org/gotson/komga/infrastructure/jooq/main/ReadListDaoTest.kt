@@ -26,7 +26,6 @@ class ReadListDaoTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val library = makeLibrary()
   private val library2 = makeLibrary("library2")
 
@@ -56,11 +55,12 @@ class ReadListDaoTest(
     val books = (1..10).map { makeBook("Book $it", libraryId = library.id, seriesId = series.id) }
     books.forEach { bookRepository.insert(it) }
 
-    val readList = ReadList(
-      name = "MyReadList",
-      summary = "summary",
-      bookIds = books.map { it.id }.toIndexedMap(),
-    )
+    val readList =
+      ReadList(
+        name = "MyReadList",
+        summary = "summary",
+        bookIds = books.map { it.id }.toIndexedMap(),
+      )
 
     // when
     val now = LocalDateTime.now()
@@ -85,19 +85,21 @@ class ReadListDaoTest(
     val books = (1..10).map { makeBook("Book $it", libraryId = library.id, seriesId = series.id) }
     books.forEach { bookRepository.insert(it) }
 
-    val readList = ReadList(
-      name = "MyReadList",
-      bookIds = books.map { it.id }.toIndexedMap(),
-    )
+    val readList =
+      ReadList(
+        name = "MyReadList",
+        bookIds = books.map { it.id }.toIndexedMap(),
+      )
 
     readListDao.insert(readList)
 
     // when
-    val updatedReadList = readList.copy(
-      name = "UpdatedReadList",
-      summary = "summary",
-      bookIds = readList.bookIds.values.take(5).toIndexedMap(),
-    )
+    val updatedReadList =
+      readList.copy(
+        name = "UpdatedReadList",
+        summary = "summary",
+        bookIds = readList.bookIds.values.take(5).toIndexedMap(),
+      )
 
     val now = LocalDateTime.now()
     readListDao.update(updatedReadList)
@@ -121,16 +123,18 @@ class ReadListDaoTest(
     val books = (1..10).map { makeBook("Book $it", libraryId = library.id, seriesId = series.id) }
     books.forEach { bookRepository.insert(it) }
 
-    val readList1 = ReadList(
-      name = "MyReadList",
-      bookIds = books.map { it.id }.toIndexedMap(),
-    )
+    val readList1 =
+      ReadList(
+        name = "MyReadList",
+        bookIds = books.map { it.id }.toIndexedMap(),
+      )
     readListDao.insert(readList1)
 
-    val readList2 = ReadList(
-      name = "MyReadList",
-      bookIds = books.map { it.id }.take(5).toIndexedMap(),
-    )
+    val readList2 =
+      ReadList(
+        name = "MyReadList",
+        bookIds = books.map { it.id }.take(5).toIndexedMap(),
+      )
     readListDao.insert(readList2)
 
     // when

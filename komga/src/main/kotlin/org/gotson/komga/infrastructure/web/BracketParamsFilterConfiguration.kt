@@ -22,7 +22,11 @@ class BracketParamsFilterConfiguration {
       }
 
   inner class BracketParamsFilter : Filter {
-    override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
+    override fun doFilter(
+      request: ServletRequest?,
+      response: ServletResponse?,
+      chain: FilterChain?,
+    ) {
       chain?.doFilter(BracketParamsRequestWrapper(request as HttpServletRequest), response)
     }
   }

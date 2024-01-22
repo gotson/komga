@@ -77,10 +77,10 @@ jreleaser {
         links = true
         content = (if (Path("./release_notes/release_notes.md").exists()) "{{#f_file_read}}{{basedir}}/release_notes/release_notes.md{{/f_file_read}}" else "") +
           """
-            ## Changelog
+          ## Changelog
 
-            {{changelogChanges}}
-            {{changelogContributors}}
+          {{changelogChanges}}
+          {{changelogContributors}}
           """.trimIndent()
         format = "- {{#commitIsConventional}}{{#conventionalCommitIsBreakingChange}}🚨 {{/conventionalCommitIsBreakingChange}}{{#conventionalCommitScope}}**{{conventionalCommitScope}}**: {{/conventionalCommitScope}}{{conventionalCommitDescription}}{{#conventionalCommitBreakingChangeContent}}: *{{conventionalCommitBreakingChangeContent}}*{{/conventionalCommitBreakingChangeContent}} ({{commitShortHash}}){{/commitIsConventional}}{{^commitIsConventional}}{{commitTitle}} ({{commitShortHash}}){{/commitIsConventional}}{{#commitHasIssues}}, closes{{#commitIssues}} {{issue}}{{/commitIssues}}{{/commitHasIssues}}"
         hide {
@@ -126,10 +126,11 @@ jreleaser {
           enabled = true
           title = "# [{{projectVersion}}]({{repoUrl}}/compare/{{previousTagName}}...{{tagName}}) ({{#f_now}}YYYY-MM-dd{{/f_now}})"
           target = rootDir.resolve("CHANGELOG.md")
-          content = """
+          content =
+            """
             {{changelogTitle}}
             {{changelogChanges}}
-          """.trimIndent()
+            """.trimIndent()
         }
       }
 
@@ -173,11 +174,12 @@ jreleaser {
       templateDirectory = rootDir.resolve("komga/docker")
       repository.active = Active.NEVER
       buildArgs = listOf("--cache-from", "gotson/komga:latest")
-      imageNames = listOf(
-        "komga:latest",
-        "komga:{{projectVersion}}",
-        "komga:{{projectVersionMajor}}.x",
-      )
+      imageNames =
+        listOf(
+          "komga:latest",
+          "komga:{{projectVersion}}",
+          "komga:{{projectVersionMajor}}.x",
+        )
       registries {
         create("docker.io") { externalLogin = true }
         create("ghcr.io") { externalLogin = true }
@@ -185,11 +187,12 @@ jreleaser {
       buildx {
         enabled = true
         createBuilder = false
-        platforms = listOf(
-          "linux/amd64",
-          "linux/arm/v7",
-          "linux/arm64/v8",
-        )
+        platforms =
+          listOf(
+            "linux/amd64",
+            "linux/arm/v7",
+            "linux/arm64/v8",
+          )
       }
     }
   }

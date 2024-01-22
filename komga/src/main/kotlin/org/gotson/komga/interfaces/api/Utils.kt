@@ -23,15 +23,20 @@ fun KomgaUser.checkContentRestriction(series: SeriesDto) {
  *
  * @throws[ResponseStatusException] if the user cannot access the content
  */
-fun KomgaUser.checkContentRestriction(bookId: String, bookRepository: BookRepository, seriesMetadataRepository: SeriesMetadataRepository) {
+fun KomgaUser.checkContentRestriction(
+  bookId: String,
+  bookRepository: BookRepository,
+  seriesMetadataRepository: SeriesMetadataRepository,
+) {
   if (!sharedAllLibraries) {
     bookRepository.getLibraryIdOrNull(bookId)?.let {
       if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
-  if (restrictions.isRestricted) bookRepository.getSeriesIdOrNull(bookId)?.let { seriesId ->
-    seriesMetadataRepository.findById(seriesId).let {
-      if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
-    }
-  } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  if (restrictions.isRestricted)
+    bookRepository.getSeriesIdOrNull(bookId)?.let { seriesId ->
+      seriesMetadataRepository.findById(seriesId).let {
+        if (!isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }

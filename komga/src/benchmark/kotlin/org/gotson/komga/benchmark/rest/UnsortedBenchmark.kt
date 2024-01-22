@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit
 
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 class UnsortedBenchmark : AbstractRestBenchmark() {
-
   companion object {
     private lateinit var biggestSeriesId: String
   }
@@ -23,9 +22,10 @@ class UnsortedBenchmark : AbstractRestBenchmark() {
     super.prepareData()
 
     // find series with most books
-    biggestSeriesId = seriesController.getAllSeries(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("booksCount"))))
-      .content.first()
-      .id
+    biggestSeriesId =
+      seriesController.getAllSeries(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("booksCount"))))
+        .content.first()
+        .id
   }
 
   @Benchmark

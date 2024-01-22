@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController
 class TaskController(
   private val tasksRepository: TasksRepository,
 ) {
-
   @DeleteMapping("api/v1/tasks")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasRole('$ROLE_ADMIN')")

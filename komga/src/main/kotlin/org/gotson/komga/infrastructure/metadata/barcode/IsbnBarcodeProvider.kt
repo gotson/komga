@@ -30,20 +30,21 @@ class IsbnBarcodeProvider(
   private val bookAnalyzer: BookAnalyzer,
   private val validator: ISBNValidator,
 ) : BookMetadataProvider {
-
-  private val hints = mapOf(
-    DecodeHintType.POSSIBLE_FORMATS to EnumSet.of(BarcodeFormat.EAN_13),
-    DecodeHintType.TRY_HARDER to true,
-  )
+  private val hints =
+    mapOf(
+      DecodeHintType.POSSIBLE_FORMATS to EnumSet.of(BarcodeFormat.EAN_13),
+      DecodeHintType.TRY_HARDER to true,
+    )
 
   override val capabilities = setOf(BookMetadataPatchCapability.ISBN)
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     if (book.media.profile == MediaProfile.EPUB) return null
 
-    val pagesToTry = (1..book.media.pageCount).toList().let {
-      (it.takeLast(PAGES_LAST).reversed() + it.take(PAGES_FIRST)).distinct()
-    }
+    val pagesToTry =
+      (1..book.media.pageCount).toList().let {
+        (it.takeLast(PAGES_LAST).reversed() + it.take(PAGES_FIRST)).distinct()
+      }
 
     for (p in pagesToTry) {
       try {
@@ -53,11 +54,12 @@ class IsbnBarcodeProvider(
           val source = RGBLuminanceSource(image.width, image.height, pixels)
           val bitmap = BinaryBitmap(HybridBinarizer(source))
 
-          val result = try {
-            MultiFormatReader().decode(bitmap, hints)
-          } catch (e: Exception) {
-            null
-          }
+          val result =
+            try {
+              MultiFormatReader().decode(bitmap, hints)
+            } catch (e: Exception) {
+              null
+            }
 
           if (result == null || result.text == null) {
             logger.debug { "Book page $p does not contain a barcode: $book" }
@@ -78,7 +80,10 @@ class IsbnBarcodeProvider(
     return null
   }
 
-  override fun shouldLibraryHandlePatch(library: Library, target: MetadataPatchTarget): Boolean =
+  override fun shouldLibraryHandlePatch(
+    library: Library,
+    target: MetadataPatchTarget,
+  ): Boolean =
     when (target) {
       MetadataPatchTarget.BOOK -> library.importBarcodeIsbn
       else -> false

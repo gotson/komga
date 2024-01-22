@@ -73,7 +73,6 @@ class SeriesCollectionController(
   private val thumbnailSeriesCollectionRepository: ThumbnailSeriesCollectionRepository,
   private val eventPublisher: ApplicationEventPublisher,
 ) {
-
   @PageableWithoutSortAsQueryParam
   @GetMapping
   fun getAll(
@@ -83,18 +82,21 @@ class SeriesCollectionController(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<CollectionDto> {
-    val sort = when {
-      !searchTerm.isNullOrBlank() -> Sort.by("relevance")
-      else -> Sort.by(Sort.Order.asc("name"))
-    }
+    val sort =
+      when {
+        !searchTerm.isNullOrBlank() -> Sort.by("relevance")
+        else -> Sort.by(Sort.Order.asc("name"))
+      }
 
     val pageRequest =
-      if (unpaged) UnpagedSorted(sort)
-      else PageRequest.of(
-        page.pageNumber,
-        page.pageSize,
-        sort,
-      )
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
 
     return collectionRepository.findAll(principal.user.getAuthorizedLibraryIds(libraryIds), principal.user.getAuthorizedLibraryIds(null), searchTerm, pageRequest, principal.user.restrictions)
       .map { it.toDto() }
@@ -231,11 +233,12 @@ class SeriesCollectionController(
     collection: CollectionUpdateDto,
   ) {
     collectionRepository.findByIdOrNull(id)?.let { existing ->
-      val updated = existing.copy(
-        name = collection.name ?: existing.name,
-        ordered = collection.ordered ?: existing.ordered,
-        seriesIds = collection.seriesIds ?: existing.seriesIds,
-      )
+      val updated =
+        existing.copy(
+          name = collection.name ?: existing.name,
+          ordered = collection.ordered ?: existing.ordered,
+          seriesIds = collection.seriesIds ?: existing.seriesIds,
+        )
       try {
         collectionLifecycle.updateCollection(updated)
       } catch (e: DuplicateNameException) {
@@ -278,31 +281,36 @@ class SeriesCollectionController(
   ): Page<SeriesDto> =
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
       val sort =
-        if (collection.ordered) Sort.by(Sort.Order.asc("collection.number"))
-        else Sort.by(Sort.Order.asc("metadata.titleSort"))
+        if (collection.ordered)
+          Sort.by(Sort.Order.asc("collection.number"))
+        else
+          Sort.by(Sort.Order.asc("metadata.titleSort"))
 
       val pageRequest =
-        if (unpaged) UnpagedSorted(sort)
-        else PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-          sort,
-        )
+        if (unpaged)
+          UnpagedSorted(sort)
+        else
+          PageRequest.of(
+            page.pageNumber,
+            page.pageSize,
+            sort,
+          )
 
-      val seriesSearch = SeriesSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-        metadataStatus = metadataStatus,
-        publishers = publishers,
-        deleted = deleted,
-        complete = complete,
-        languages = languages,
-        genres = genres,
-        tags = tags,
-        ageRatings = ageRatings?.map { it.toIntOrNull() },
-        releaseYears = releaseYears,
-        readStatus = readStatus,
-        authors = authors,
-      )
+      val seriesSearch =
+        SeriesSearchWithReadProgress(
+          libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
+          metadataStatus = metadataStatus,
+          publishers = publishers,
+          deleted = deleted,
+          complete = complete,
+          languages = languages,
+          genres = genres,
+          tags = tags,
+          ageRatings = ageRatings?.map { it.toIntOrNull() },
+          releaseYears = releaseYears,
+          readStatus = readStatus,
+          authors = authors,
+        )
 
       seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest, principal.user.restrictions)
         .map { it.restrictUrl(!principal.user.roleAdmin) }

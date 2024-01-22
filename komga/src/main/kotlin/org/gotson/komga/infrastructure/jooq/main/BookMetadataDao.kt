@@ -23,7 +23,6 @@ class BookMetadataDao(
   private val dsl: DSLContext,
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookMetadataRepository {
-
   private val d = Tables.BOOK_METADATA
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val bt = Tables.BOOK_METADATA_TAG
@@ -40,7 +39,10 @@ class BookMetadataDao(
   override fun findAllByIds(bookIds: Collection<String>): Collection<BookMetadata> =
     find(dsl, bookIds)
 
-  private fun find(dsl: DSLContext, bookIds: Collection<String>) =
+  private fun find(
+    dsl: DSLContext,
+    bookIds: Collection<String>,
+  ) =
     dsl.select(*groupFields)
       .from(d)
       .leftJoin(a).on(d.BOOK_ID.eq(a.BOOK_ID))
@@ -242,7 +244,11 @@ class BookMetadataDao(
 
   override fun count(): Long = dsl.fetchCount(d).toLong()
 
-  private fun BookMetadataRecord.toDomain(authors: List<Author>, tags: Set<String>, links: List<WebLink>) =
+  private fun BookMetadataRecord.toDomain(
+    authors: List<Author>,
+    tags: Set<String>,
+    links: List<WebLink>,
+  ) =
     BookMetadata(
       title = title,
       summary = summary,
@@ -253,12 +259,9 @@ class BookMetadataDao(
       tags = tags,
       isbn = isbn,
       links = links,
-
       bookId = bookId,
-
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
-
       titleLock = titleLock,
       summaryLock = summaryLock,
       numberLock = numberLock,

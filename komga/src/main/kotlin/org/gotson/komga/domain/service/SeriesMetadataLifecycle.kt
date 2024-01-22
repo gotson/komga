@@ -35,7 +35,6 @@ class SeriesMetadataLifecycle(
   private val collectionLifecycle: SeriesCollectionLifecycle,
   private val eventPublisher: ApplicationEventPublisher,
 ) {
-
   fun refreshMetadata(series: Series) {
     logger.info { "Refresh metadata for series: $series" }
 
@@ -49,15 +48,16 @@ class SeriesMetadataLifecycle(
 
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
-          val patches = bookRepository.findAllBySeriesId(series.id)
-            .mapNotNull { book ->
-              try {
-                provider.getSeriesMetadataFromBook(BookWithMedia(book, mediaRepository.findById(book.id)), library.importComicInfoSeriesAppendVolume)
-              } catch (e: Exception) {
-                logger.error(e) { "Error while getting metadata from ${provider.javaClass.simpleName} for book: $book" }
-                null
+          val patches =
+            bookRepository.findAllBySeriesId(series.id)
+              .mapNotNull { book ->
+                try {
+                  provider.getSeriesMetadataFromBook(BookWithMedia(book, mediaRepository.findById(book.id)), library.importComicInfoSeriesAppendVolume)
+                } catch (e: Exception) {
+                  logger.error(e) { "Error while getting metadata from ${provider.javaClass.simpleName} for book: $book" }
+                  null
+                }
               }
-            }
 
           if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES)) {
             handlePatchForSeriesMetadata(patches, series)
@@ -79,12 +79,13 @@ class SeriesMetadataLifecycle(
           logger.info { "Library is not set to import series metadata for this provider, skipping: ${provider.javaClass.simpleName}" }
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
-          val patch = try {
-            provider.getSeriesMetadata(series)
-          } catch (e: Exception) {
-            logger.error(e) { "Error while getting metadata from ${provider::class.simpleName} for series: $series" }
-            null
-          }
+          val patch =
+            try {
+              provider.getSeriesMetadata(series)
+            } catch (e: Exception) {
+              logger.error(e) { "Error while getting metadata from ${provider::class.simpleName} for series: $series" }
+              null
+            }
 
           if (provider.shouldLibraryHandlePatch(library, MetadataPatchTarget.SERIES)) {
             handlePatchForSeriesMetadata(patch, series)
@@ -101,19 +102,20 @@ class SeriesMetadataLifecycle(
     patches: List<SeriesMetadataPatch>,
     series: Series,
   ) {
-    val aggregatedPatch = SeriesMetadataPatch(
-      title = patches.mostFrequent { it.title },
-      titleSort = patches.mostFrequent { it.titleSort },
-      status = patches.mostFrequent { it.status },
-      genres = patches.mapNotNull { it.genres }.flatten().toSet().ifEmpty { null },
-      language = patches.mostFrequent { it.language },
-      summary = null,
-      readingDirection = patches.mostFrequent { it.readingDirection },
-      ageRating = patches.mapNotNull { it.ageRating }.maxOrNull(),
-      publisher = patches.mostFrequent { it.publisher },
-      totalBookCount = patches.mapNotNull { it.totalBookCount }.maxOrNull(),
-      collections = emptySet(),
-    )
+    val aggregatedPatch =
+      SeriesMetadataPatch(
+        title = patches.mostFrequent { it.title },
+        titleSort = patches.mostFrequent { it.titleSort },
+        status = patches.mostFrequent { it.status },
+        genres = patches.mapNotNull { it.genres }.flatten().toSet().ifEmpty { null },
+        language = patches.mostFrequent { it.language },
+        summary = null,
+        readingDirection = patches.mostFrequent { it.readingDirection },
+        ageRating = patches.mapNotNull { it.ageRating }.maxOrNull(),
+        publisher = patches.mostFrequent { it.publisher },
+        totalBookCount = patches.mapNotNull { it.totalBookCount }.maxOrNull(),
+        collections = emptySet(),
+      )
 
     handlePatchForSeriesMetadata(aggregatedPatch, series)
   }

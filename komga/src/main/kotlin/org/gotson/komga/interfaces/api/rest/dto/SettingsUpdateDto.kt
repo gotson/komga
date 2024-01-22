@@ -7,6 +7,7 @@ import kotlin.properties.Delegates
 
 class SettingsUpdateDto {
   private val isSet = mutableMapOf<String, Boolean>()
+
   fun isSet(prop: String) = isSet.getOrDefault(prop, false)
 
   var deleteEmptyCollections: Boolean? = null

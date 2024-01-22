@@ -44,7 +44,6 @@ data class R2Locator(
    */
   val text: Text? = null,
 ) {
-
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   data class Location(
     /**
