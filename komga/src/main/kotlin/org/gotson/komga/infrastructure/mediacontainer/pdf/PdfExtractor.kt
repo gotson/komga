@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.mediacontainer.pdf
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.pdfbox.io.MemoryUsageSetting
 import org.apache.pdfbox.multipdf.PageExtractor
 import org.apache.pdfbox.pdmodel.PDDocument

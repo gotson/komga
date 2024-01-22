@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.metadata.mylar
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.Series

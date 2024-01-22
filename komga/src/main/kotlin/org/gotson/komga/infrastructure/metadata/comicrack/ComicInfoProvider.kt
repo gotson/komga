@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.metadata.comicrack
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.validator.routines.ISBNValidator
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BCP47TagValidator

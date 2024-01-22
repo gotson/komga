@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.hash
 
 import com.appmattus.crypto.Algorithm
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.InputStream
 import java.nio.file.Path

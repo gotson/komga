@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.metadata.comicrack
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.ComicRackListException
 import org.gotson.komga.domain.model.ReadListRequest
 import org.gotson.komga.domain.model.ReadListRequestBook

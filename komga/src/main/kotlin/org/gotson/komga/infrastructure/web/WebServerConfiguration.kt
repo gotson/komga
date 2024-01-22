@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.web
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.springframework.boot.web.server.WebServerFactoryCustomizer
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory

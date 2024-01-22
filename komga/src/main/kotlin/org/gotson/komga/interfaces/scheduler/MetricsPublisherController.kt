@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.scheduler
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.MeterRegistry
@@ -7,7 +8,6 @@ import io.micrometer.core.instrument.MultiGauge
 import io.micrometer.core.instrument.MultiGauge.Row
 import io.micrometer.core.instrument.Tags
 import io.micrometer.core.instrument.Timer
-import mu.KotlinLogging
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository

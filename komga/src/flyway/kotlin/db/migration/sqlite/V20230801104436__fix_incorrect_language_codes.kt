@@ -1,7 +1,7 @@
 package db.migration.sqlite
 
 import com.ibm.icu.util.ULocale
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.springframework.jdbc.core.JdbcTemplate

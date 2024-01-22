@@ -1,7 +1,7 @@
 package org.gotson.komga.application.tasks
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.micrometer.core.instrument.MeterRegistry
-import mu.KotlinLogging
 import org.gotson.komga.domain.model.BookAction
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository

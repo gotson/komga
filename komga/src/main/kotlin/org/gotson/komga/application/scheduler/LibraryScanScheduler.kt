@@ -1,6 +1,6 @@
 package org.gotson.komga.application.scheduler
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Library.ScanInterval.DAILY

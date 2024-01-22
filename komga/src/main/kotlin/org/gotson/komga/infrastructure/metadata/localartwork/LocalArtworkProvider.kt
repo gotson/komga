@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.metadata.localartwork
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.Dimension

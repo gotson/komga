@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -7,7 +8,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
-import mu.KotlinLogging
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.io.IOUtils
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY

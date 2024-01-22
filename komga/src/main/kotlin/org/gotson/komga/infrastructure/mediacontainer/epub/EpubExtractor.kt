@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.mediacontainer.epub
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.BookPage

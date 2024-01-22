@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.service
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book

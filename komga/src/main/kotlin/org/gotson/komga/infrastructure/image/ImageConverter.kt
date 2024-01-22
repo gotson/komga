@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.image
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.coobird.thumbnailator.Thumbnails
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.springframework.stereotype.Service

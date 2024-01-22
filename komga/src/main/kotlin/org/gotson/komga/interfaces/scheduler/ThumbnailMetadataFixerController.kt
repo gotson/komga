@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.scheduler
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.tasks.LOWEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.springframework.boot.context.event.ApplicationReadyEvent

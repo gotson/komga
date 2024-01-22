@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.mediacontainer
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.tika.config.TikaConfig
 import org.apache.tika.io.TikaInputStream
 import org.apache.tika.metadata.Metadata

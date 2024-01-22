@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.scheduler
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.service.KomgaUserLifecycle

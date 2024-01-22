@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.security.oauth2
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository

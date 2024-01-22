@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.service
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.ThumbnailReadList

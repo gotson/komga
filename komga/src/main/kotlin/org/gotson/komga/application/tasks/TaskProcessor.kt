@@ -1,6 +1,6 @@
 package org.gotson.komga.application.tasks
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.boot.context.event.ApplicationReadyEvent

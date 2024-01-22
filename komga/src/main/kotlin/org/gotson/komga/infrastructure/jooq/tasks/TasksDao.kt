@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.jooq.tasks
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.tasks.Task
 import org.gotson.komga.application.tasks.TasksRepository
 import org.gotson.komga.jooq.tasks.Tables

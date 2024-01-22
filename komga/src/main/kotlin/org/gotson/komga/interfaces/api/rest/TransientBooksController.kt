@@ -1,7 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
 import com.jakewharton.byteunits.BinaryByteUnit
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile

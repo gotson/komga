@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.mediacontainer.divina
 
 import com.github.gotson.nightcompress.Archive
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.MediaType

@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.datasource
 
 import com.ibm.icu.text.Collator
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.language.stripAccents
 import org.sqlite.Collation
 import org.sqlite.Function

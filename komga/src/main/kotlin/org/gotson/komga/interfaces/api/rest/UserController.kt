@@ -1,8 +1,8 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
-import mu.KotlinLogging
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ROLE_ADMIN

@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.search
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.lucene.document.Document
 import org.apache.lucene.index.Term
 import org.gotson.komga.domain.model.BookSearchWithReadProgress

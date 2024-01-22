@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.service
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.MediaType

@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.apprunner
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner

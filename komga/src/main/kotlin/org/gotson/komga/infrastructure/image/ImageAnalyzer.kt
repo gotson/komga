@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.image
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.Dimension
 import org.springframework.stereotype.Service
 import java.io.InputStream
