@@ -180,7 +180,7 @@ class BookConverter(
 
     if (book.path.extension.lowercase() == "epub" && media.mediaType == MediaType.ZIP.type) {
       skippedRepairs += book.id
-      logger.info("EPUB file detected as zip should not be repaired, skipping: ${book.path}")
+      logger.info { "EPUB file detected as zip should not be repaired, skipping: ${book.path}" }
       return
     }
 
