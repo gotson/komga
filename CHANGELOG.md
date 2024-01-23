@@ -1,3 +1,16 @@
+# [1.10.3](https://github.com/gotson/komga/compare/1.10.2...1.10.3) (2024-01-23)
+## 🐛 Fixes
+**komga**
+- add field alias for Mylar series.json ([bc5a73a](https://github.com/gotson/komga/commits/bc5a73a))
+
+## 🔄️ Changes
+**komga**
+- remove deprecated property ([2ec3265](https://github.com/gotson/komga/commits/2ec3265))
+
+## 🛠  Build
+**release**
+- stop publishing Conveyor old-site ([9d1b82a](https://github.com/gotson/komga/commits/9d1b82a))
+
 # [1.10.2](https://github.com/gotson/komga/compare/1.10.1...1.10.2) (2024-01-22)
 ## 🐛 Fixes
 **komga**
