@@ -82,7 +82,7 @@ class SeriesTest(
           "booktype": "Print",
           "age_rating": null,
           "collects": null,
-          "ComicImage": "https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg",
+          "comic_image": "https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg",
           "total_issues": 20,
           "publication_run": "June 2019 - Present",
           "status": "Ended"

@@ -22,7 +22,8 @@ data class MylarMetadata(
   val bookType: String,
   @field:JsonProperty("age_rating")
   val ageRating: AgeRating?,
-  @field:JsonProperty("ComicImage")
+  @field:JsonProperty("comic_image")
+  @field:JsonAlias("ComicImage")
   val comicImage: String,
   @field:JsonProperty("total_issues")
   val totalIssues: Int,
