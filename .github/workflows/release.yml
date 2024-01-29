@@ -122,14 +122,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: :komga:prepareThymeLeaf :komga:bootJar :komga-tray:jar
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
 
       - name: Generate OpenAPI docs
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         if: needs.version.outputs.should_release #only redo if the version changed
         with:
           arguments: :komga:generateOpenApiDocs
@@ -143,7 +143,7 @@ jobs:
           echo ""
 
       - name: JReleaser Changelog append
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         if: needs.version.outputs.should_release #only redo if the version changed
         with:
           arguments: jreleaserChangelog
@@ -197,7 +197,7 @@ jobs:
 
       - name: JReleaser Release
         if: inputs.github_release
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: jreleaserRelease
         env:
@@ -213,7 +213,7 @@ jobs:
 
       - name: JReleaser Announce
         if: inputs.github_release
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: jreleaserAnnounce
         env:
@@ -233,7 +233,7 @@ jobs:
 
       - name: JReleaser Publish
         if: inputs.docker_release
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: jreleaserPublish
         env:
