@@ -86,10 +86,10 @@ class AnilistSeriesProvider : SeriesMetadataProvider {
 
         if (isYearMatch) {
           logger.debug { "The year matches, saving metadata for series: $cleanedTitle" }
-          return convertAnilistMetadataToSeriesProvider(it);
+          return convertAnilistMetadataToSeriesProvider(it)
         } else if (isTitleMatch) {
           logger.debug { "Exact title match found among variants, saving metadata for series: $cleanedTitle" }
-          return convertAnilistMetadataToSeriesProvider(it);
+          return convertAnilistMetadataToSeriesProvider(it)
         } else {
           // Neither year matches nor titles match exactly
           logger.debug { "No matching data found for series: $cleanedTitle" }
