@@ -27,6 +27,7 @@ import org.gotson.komga.jooq.main.tables.records.BookMetadataRecord
 import org.gotson.komga.jooq.main.tables.records.BookRecord
 import org.gotson.komga.jooq.main.tables.records.MediaRecord
 import org.gotson.komga.jooq.main.tables.records.ReadProgressRecord
+import org.gotson.komga.language.toUTC
 import org.jooq.AggregateFunction
 import org.jooq.Condition
 import org.jooq.DSLContext
@@ -486,7 +487,7 @@ class BookDtoDao(
       number = number,
       created = createdDate,
       lastModified = lastModifiedDate,
-      fileLastModified = fileLastModified,
+      fileLastModified = fileLastModified.toUTC(),
       sizeBytes = fileSize,
       media = media,
       metadata = metadata,
