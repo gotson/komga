@@ -22,7 +22,7 @@ data class Media(
   val coverImage: CoverImage,
   val isAdult: Boolean,
   val siteUrl: String,
-  val volumes: Int?
+  val volumes: Int?,
 )
 
 data class Title(

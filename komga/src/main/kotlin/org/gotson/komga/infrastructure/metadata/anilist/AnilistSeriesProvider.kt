@@ -31,7 +31,8 @@ class AnilistSeriesProvider : SeriesMetadataProvider {
 
     logger.debug { "Fetching AniList metadata for cleaned series title: $cleanedTitle" }
 
-    val query = """
+    val query =
+      """
       {
         Media(search:"$cleanedTitle", type: MANGA) {
           description
@@ -60,22 +61,23 @@ class AnilistSeriesProvider : SeriesMetadataProvider {
           volumes
         }
       }
-    """.trimIndent()
+      """.trimIndent()
 
     val bodyValue = mapOf("query" to query)
 
     try {
-      val anilistResponseMono = webClient.post()
-        .uri("/")
-        .bodyValue(bodyValue)
-        .retrieve()
-        .bodyToMono(Root::class.java)
-        .onErrorResume { e ->
-          logger.error { "Error fetching AniList metadata: ${e.message}" }
-          Mono.empty()
-        }
-        .delaySubscription(rateLimitDelay)
-        .block()
+      val anilistResponseMono =
+        webClient.post()
+          .uri("/")
+          .bodyValue(bodyValue)
+          .retrieve()
+          .bodyToMono(Root::class.java)
+          .onErrorResume { e ->
+            logger.error { "Error fetching AniList metadata: ${e.message}" }
+            Mono.empty()
+          }
+          .delaySubscription(rateLimitDelay)
+          .block()
 
       anilistResponseMono?.let { it ->
         val media = it.data.media
@@ -129,29 +131,35 @@ class AnilistSeriesProvider : SeriesMetadataProvider {
   fun convertAnilistMetadataToSeriesProvider(anilistData: Root): SeriesMetadataPatch {
     val anilistMetadata = anilistData.data.media
 
-    val status = when (anilistMetadata.status.uppercase()) {
-      "FINISHED" -> SeriesMetadata.Status.ENDED
-      "RELEASING" -> SeriesMetadata.Status.ONGOING
-      "CANCELLED" -> SeriesMetadata.Status.ABANDONED
-      "HIATUS" -> SeriesMetadata.Status.HIATUS
+    val status =
+      when (anilistMetadata.status.uppercase()) {
+        "FINISHED" -> SeriesMetadata.Status.ENDED
+        "RELEASING" -> SeriesMetadata.Status.ONGOING
+        "CANCELLED" -> SeriesMetadata.Status.ABANDONED
+        "HIATUS" -> SeriesMetadata.Status.HIATUS
 
-      else -> null
-    }
+        else -> null
+      }
 
     val genresSet = anilistMetadata.genres.toSet()
 
     val ageRating = if (anilistMetadata.isAdult) 18 else null
 
-    val cleanDescription = anilistMetadata.description
-      .replace(Regex("<br\\s*/?>"), "\n") // Converts <br> and <br/> to newline characters
-      .replace(Regex("<[^>]*>"), "") // Removes remaining HTML tags
-      .replace(Regex("\\s+"), " ") // Replaces multiple spaces with a single space
-      .replace(Regex("\\n "), "\n") // Removes any spaces right after new lines
-      .trim() // Trims leading and trailing whitespace
+    val cleanDescription =
+      anilistMetadata.description
+        // Converts <br> and <br/> to newline characters
+        .replace(Regex("<br\\s*/?>"), "\n")
+        // Removes remaining HTML tags
+        .replace(Regex("<[^>]*>"), "")
+        // Replaces multiple spaces with a single space
+        .replace(Regex("\\s+"), " ")
+        // Removes any spaces right after new lines
+        .replace(Regex("\\n "), "\n")
+        .trim()
 
     return SeriesMetadataPatch(
       title = anilistMetadata.title.english.ifBlank { null },
-      titleSort = anilistMetadata.title.romaji.ifBlank { anilistMetadata.title.english.ifBlank { null } }, // Example logic for titleSort
+      titleSort = anilistMetadata.title.romaji.ifBlank { anilistMetadata.title.english.ifBlank { null } },
       status = status,
       summary = cleanDescription.ifBlank { null },
       readingDirection = null,
@@ -160,7 +168,7 @@ class AnilistSeriesProvider : SeriesMetadataProvider {
       language = anilistMetadata.countryOfOrigin.ifBlank { null },
       genres = genresSet,
       totalBookCount = anilistMetadata.volumes,
-      collections = emptySet()
+      collections = emptySet(),
     )
   }
 
@@ -170,5 +178,4 @@ class AnilistSeriesProvider : SeriesMetadataProvider {
       .replace(Regex("\\s+"), " ")
       .trim()
   }
-
 }
