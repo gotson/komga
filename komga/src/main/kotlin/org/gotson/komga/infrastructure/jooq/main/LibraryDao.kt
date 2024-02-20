@@ -84,6 +84,7 @@ class LibraryDao(
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
       .set(l.IMPORT_MYLAR_SERIES, library.importMylarSeries)
+      .set(l.IMPORT_ANILIST_SERIES, library.importAnilistSeries)
       .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
       .set(l.IMPORT_BARCODE_ISBN, library.importBarcodeIsbn)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
@@ -119,6 +120,7 @@ class LibraryDao(
       .set(l.IMPORT_EPUB_BOOK, library.importEpubBook)
       .set(l.IMPORT_EPUB_SERIES, library.importEpubSeries)
       .set(l.IMPORT_MYLAR_SERIES, library.importMylarSeries)
+      .set(l.IMPORT_ANILIST_SERIES, library.importAnilistSeries)
       .set(l.IMPORT_LOCAL_ARTWORK, library.importLocalArtwork)
       .set(l.IMPORT_BARCODE_ISBN, library.importBarcodeIsbn)
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
@@ -177,6 +179,7 @@ class LibraryDao(
       importEpubBook = importEpubBook,
       importEpubSeries = importEpubSeries,
       importMylarSeries = importMylarSeries,
+      importAnilistSeries = importAnilistSeries,
       importLocalArtwork = importLocalArtwork,
       importBarcodeIsbn = importBarcodeIsbn,
       scanForceModifiedTime = scanForceModifiedTime,

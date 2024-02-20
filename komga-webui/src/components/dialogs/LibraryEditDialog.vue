@@ -372,6 +372,19 @@
                   <v-row>
                     <v-col>
                       <span class="text-subtitle-1 text--primary">{{
+                          $t('dialog.edit_library.label_import_anilist')
+                        }}</span>
+                      <v-checkbox
+                        v-model="form.importAnilistSeries"
+                        :label="$t('dialog.edit_library.field_import_anilist')"
+                        hide-details
+                        class="mx-4"
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col>
+                      <span class="text-subtitle-1 text--primary">{{
                           $t('dialog.edit_library.label_import_local')
                         }}</span>
                       <v-checkbox
@@ -452,6 +465,7 @@ export default Vue.extend({
         importEpubBook: true,
         importEpubSeries: true,
         importMylarSeries: true,
+        importAnilistSeries: false,
         importLocalArtwork: true,
         importBarcodeIsbn: false,
         scanForceModifiedTime: false,
@@ -607,6 +621,7 @@ export default Vue.extend({
       this.form.importEpubBook = library ? library.importEpubBook : true
       this.form.importEpubSeries = library ? library.importEpubSeries : true
       this.form.importMylarSeries = library ? library.importMylarSeries : true
+      this.form.importAnilistSeries = library ? library.importAnilistSeries : false
       this.form.importLocalArtwork = library ? library.importLocalArtwork : true
       this.form.importBarcodeIsbn = library ? library.importBarcodeIsbn : false
       this.form.scanForceModifiedTime = library ? library.scanForceModifiedTime : false
@@ -643,6 +658,7 @@ export default Vue.extend({
           importEpubBook: this.form.importEpubBook,
           importEpubSeries: this.form.importEpubSeries,
           importMylarSeries: this.form.importMylarSeries,
+          importAnilistSeries: this.form.importAnilistSeries,
           importLocalArtwork: this.form.importLocalArtwork,
           importBarcodeIsbn: this.form.importBarcodeIsbn,
           scanForceModifiedTime: this.form.scanForceModifiedTime,

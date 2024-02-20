@@ -13,6 +13,7 @@ data class LibraryCreationDto(
   val importEpubBook: Boolean = true,
   val importEpubSeries: Boolean = true,
   val importMylarSeries: Boolean = true,
+  val importAnilistSeries: Boolean = false,
   val importLocalArtwork: Boolean = true,
   val importBarcodeIsbn: Boolean = true,
   val scanForceModifiedTime: Boolean = false,

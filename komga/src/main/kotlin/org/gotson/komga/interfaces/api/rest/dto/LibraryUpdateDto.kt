@@ -22,6 +22,7 @@ class LibraryUpdateDto {
   val importEpubBook: Boolean? = null
   val importEpubSeries: Boolean? = null
   val importMylarSeries: Boolean? = null
+  val importAnilistSeries: Boolean? = null
   val importLocalArtwork: Boolean? = null
   val importBarcodeIsbn: Boolean? = null
 
