@@ -46,25 +46,25 @@ jobs:
           name: test-reports
           path: komga/build/reports/tests/
 
-      - name: Conveyor - compute JDK module list
-        if: github.event_name == 'push'
-        uses: hydraulic-software/conveyor/actions/build@v13.1
-        with:
-          command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
-          signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
-          agree_to_license: 1
-
-      - name: Compare JDK required modules
-        id: conveyor_compare
-        if: github.event_name == 'push'
-        run: diff --unified  ./komga-tray/conveyor/required-jdk-modules.txt ./output/required-jdk-modules.txt
-
-      - name: Upload JDK required modules
-        if: steps.conveyor_compare.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: conveyor-required-jdk-modules
-          path: ./output/required-jdk-modules.txt
+#      - name: Conveyor - compute JDK module list
+#        if: github.event_name == 'push'
+#        uses: hydraulic-software/conveyor/actions/build@v13.1
+#        with:
+#          command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
+#          signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
+#          agree_to_license: 1
+#
+#      - name: Compare JDK required modules
+#        id: conveyor_compare
+#        if: github.event_name == 'push'
+#        run: diff --unified  ./komga-tray/conveyor/required-jdk-modules.txt ./output/required-jdk-modules.txt
+#
+#      - name: Upload JDK required modules
+#        if: steps.conveyor_compare.outcome == 'failure'
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: conveyor-required-jdk-modules
+#          path: ./output/required-jdk-modules.txt
 
   webui:
     runs-on: ubuntu-latest
