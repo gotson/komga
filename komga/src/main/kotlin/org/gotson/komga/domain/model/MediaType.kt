@@ -7,6 +7,7 @@ enum class MediaType(val type: String, val profile: MediaProfile, val fileExtens
   RAR_5("application/x-rar-compressed; version=5", MediaProfile.DIVINA, "cbr", "application/vnd.comicbook-rar"),
   EPUB("application/epub+zip", MediaProfile.EPUB, "epub"),
   PDF("application/pdf", MediaProfile.PDF, "pdf"),
+  MOBI("application/x-mobipocket-ebook", MediaProfile.MOBI, "mobi"),
   ;
 
   companion object {

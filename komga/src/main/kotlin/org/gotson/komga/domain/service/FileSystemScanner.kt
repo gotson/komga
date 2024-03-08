@@ -52,6 +52,7 @@ class FileSystemScanner(
     scanCbx: Boolean = true,
     scanPdf: Boolean = true,
     scanEpub: Boolean = true,
+    scanMobi: Boolean = true,
     directoryExclusions: Set<String> = emptySet(),
   ): ScanResult {
     val scanForExtensions =
@@ -59,6 +60,7 @@ class FileSystemScanner(
         if (scanCbx) addAll(listOf("cbz", "zip", "cbr", "rar"))
         if (scanPdf) add("pdf")
         if (scanEpub) add("epub")
+        if (scanMobi) add("mobi")
       }
     logger.info { "Scanning folder: $root" }
     logger.info { "Scan for extensions: $scanForExtensions" }

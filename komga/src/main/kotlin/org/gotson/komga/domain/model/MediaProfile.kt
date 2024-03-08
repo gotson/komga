@@ -4,4 +4,5 @@ enum class MediaProfile {
   DIVINA,
   PDF,
   EPUB,
+  MOBI,
 }

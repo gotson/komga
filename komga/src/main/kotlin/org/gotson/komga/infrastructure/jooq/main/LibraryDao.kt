@@ -89,6 +89,7 @@ class LibraryDao(
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
       .set(l.SCAN_CBX, library.scanCbx)
       .set(l.SCAN_PDF, library.scanPdf)
+      .set(l.SCAN_MOBI, library.scanMobi)
       .set(l.SCAN_EPUB, library.scanEpub)
       .set(l.SCAN_STARTUP, library.scanOnStartup)
       .set(l.SCAN_INTERVAL, library.scanInterval.toString())
@@ -124,6 +125,7 @@ class LibraryDao(
       .set(l.SCAN_FORCE_MODIFIED_TIME, library.scanForceModifiedTime)
       .set(l.SCAN_CBX, library.scanCbx)
       .set(l.SCAN_PDF, library.scanPdf)
+      .set(l.SCAN_MOBI, library.scanMobi)
       .set(l.SCAN_EPUB, library.scanEpub)
       .set(l.SCAN_STARTUP, library.scanOnStartup)
       .set(l.SCAN_INTERVAL, library.scanInterval.toString())
@@ -183,6 +185,7 @@ class LibraryDao(
       scanCbx = scanCbx,
       scanPdf = scanPdf,
       scanEpub = scanEpub,
+      scanMobi = scanMobi,
       scanOnStartup = scanStartup,
       scanInterval = Library.ScanInterval.valueOf(scanInterval),
       scanDirectoryExclusions = directoryExclusions,

@@ -78,6 +78,7 @@ class LibraryLifecycle(
     if (existing.scanCbx != updated.scanCbx) return true
     if (existing.scanPdf != updated.scanPdf) return true
     if (existing.scanEpub != updated.scanEpub) return true
+    if (existing.scanMobi != updated.scanMobi) return true
     if (existing.scanForceModifiedTime != updated.scanForceModifiedTime) return true
     if (existing.scanDirectoryExclusions != updated.scanDirectoryExclusions) return true
     return false

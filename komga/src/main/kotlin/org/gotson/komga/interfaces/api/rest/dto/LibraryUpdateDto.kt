@@ -30,6 +30,7 @@ class LibraryUpdateDto {
   val scanOnStartup: Boolean? = null
   val scanCbx: Boolean? = null
   val scanPdf: Boolean? = null
+  val scanMobi: Boolean? = null
   val scanEpub: Boolean? = null
   var scanDirectoryExclusions: Set<String>?
     by Delegates.observable(null) { prop, _, _ ->

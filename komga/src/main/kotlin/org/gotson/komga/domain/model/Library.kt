@@ -24,6 +24,7 @@ data class Library(
   val scanInterval: ScanInterval = ScanInterval.EVERY_6H,
   val scanCbx: Boolean = true,
   val scanPdf: Boolean = true,
+  val scanMobi: Boolean = true,
   val scanEpub: Boolean = true,
   val scanDirectoryExclusions: Set<String> = emptySet(),
   val repairExtensions: Boolean = false,

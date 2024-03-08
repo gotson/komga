@@ -14,4 +14,10 @@ class StaticConfiguration {
 
   @Bean("pdfResolution")
   fun pdfResolution(): Float = 3200F
+
+  @Bean("mobiImageType")
+  fun mobiImageType() = ImageType.JPEG
+
+  @Bean("mobiResolution")
+  fun mobiResolution(): Float = 3200F
 }

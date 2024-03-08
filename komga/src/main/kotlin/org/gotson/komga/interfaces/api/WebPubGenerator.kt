@@ -123,6 +123,28 @@ class WebPubGenerator(
     }
   }
 
+  fun toManifestMobi(
+    bookDto: BookDto,
+    media: Media,
+    seriesMetadata: SeriesMetadata,
+  ): WPPublicationDto {
+    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
+    return bookDto.toBasePublicationDto().let {
+      it.copy(
+        mediaType = MEDIATYPE_WEBPUB_JSON,
+        metadata = it.metadata.withSeriesMetadata(seriesMetadata).copy(conformsTo = PROFILE_PDF),
+        readingOrder =
+        List(media.pageCount) { index: Int ->
+          WPLinkDto(
+            href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}/raw").toUriString(),
+            type = KomgaMediaType.MOBI.type,
+          )
+        },
+        resources = buildThumbnailLinkDtos(bookDto.id),
+      )
+    }
+  }
+
   fun toManifestPdf(
     bookDto: BookDto,
     media: Media,
@@ -282,6 +304,7 @@ class WebPubGenerator(
       MediaProfile.DIVINA -> MEDIATYPE_DIVINA_JSON_VALUE
       MediaProfile.PDF -> MEDIATYPE_WEBPUB_JSON_VALUE
       MediaProfile.EPUB -> MEDIATYPE_WEBPUB_JSON_VALUE
+      MediaProfile.MOBI -> MEDIATYPE_WEBPUB_JSON_VALUE
       null -> MEDIATYPE_WEBPUB_JSON_VALUE
     }
 }

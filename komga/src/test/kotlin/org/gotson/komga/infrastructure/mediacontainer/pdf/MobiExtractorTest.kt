@@ -5,7 +5,7 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 
-class PdfExtractorTest {
+class MobiExtractorTest {
   private val pdfExtractor = PdfExtractor(ImageType.JPEG, 1000F)
 
   @Test

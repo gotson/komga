@@ -298,6 +298,8 @@ class BookLifecycle(
     val pageMediaType =
       if (media.profile == MediaProfile.PDF)
         pdfImageType.mediaType
+      else if (media.profile == MediaProfile.MOBI)
+      pdfImageType.mediaType
       else
         media.pages[number - 1].mediaType
 
@@ -430,6 +432,7 @@ class BookLifecycle(
     val progress =
       when (media.profile!!) {
         MediaProfile.DIVINA,
+        MediaProfile.MOBI,
         MediaProfile.PDF,
         -> {
           require(newProgression.locator.locations?.position in 1..media.pageCount) { "Page argument (${newProgression.locator.locations?.position}) must be within 1 and book page count (${media.pageCount})" }

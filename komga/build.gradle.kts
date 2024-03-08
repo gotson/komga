@@ -5,6 +5,12 @@ import org.flywaydb.gradle.task.FlywayMigrateTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.prefixIfNot
 
+repositories {
+  maven {
+    url = uri("https://raw.github.com/rrauschenbach/mobi-api4java/mvn-repo/")
+  }
+}
+
 plugins {
   kotlin("jvm")
   kotlin("plugin.spring")
@@ -113,6 +119,8 @@ dependencies {
 
   implementation("org.xerial:sqlite-jdbc:3.45.0.0")
   jooqGenerator("org.xerial:sqlite-jdbc:3.45.0.0")
+
+  implementation("org.rr:mobi-api4java:0.0.2-SNAPSHOT")
 
   if (version.toString().endsWith(".0.0")) {
     ksp("com.github.gotson.bestbefore:bestbefore-processor-kotlin:0.1.0")

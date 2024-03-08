@@ -692,6 +692,7 @@ class BookController(
       when (KomgaMediaType.fromMediaType(media.mediaType)?.profile) {
         MediaProfile.DIVINA -> getWebPubManifestDivina(principal, bookId)
         MediaProfile.PDF -> getWebPubManifestPdf(principal, bookId)
+        MediaProfile.MOBI -> getWebPubManifestMobi(principal, bookId)
         MediaProfile.EPUB -> getWebPubManifestEpub(principal, bookId)
         null -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
       }
@@ -849,6 +850,28 @@ class BookController(
       principal.user.checkContentRestriction(bookDto)
       val manifest =
         webPubGenerator.toManifestPdf(
+          bookDto,
+          mediaRepository.findById(bookDto.id),
+          seriesMetadataRepository.findById(bookDto.seriesId),
+        )
+      ResponseEntity.ok()
+        .contentType(manifest.mediaType)
+        .body(manifest)
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping(
+    value = ["api/v1/books/{bookId}/manifest/mobi"],
+    produces = [MEDIATYPE_WEBPUB_JSON_VALUE],
+  )
+  fun getWebPubManifestMobi(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<WPPublicationDto> =
+    bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
+      if (bookDto.media.mediaProfile != MediaProfile.MOBI.name) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
+      principal.user.checkContentRestriction(bookDto)
+      val manifest =
+        webPubGenerator.toManifestMobi(
           bookDto,
           mediaRepository.findById(bookDto.id),
           seriesMetadataRepository.findById(bookDto.seriesId),

@@ -83,7 +83,14 @@ class TransientBooksController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   private fun TransientBook.toDto(): TransientBookDto {
-    val pages = if (media.profile == MediaProfile.PDF) bookAnalyzer.getPdfPagesDynamic(media) else media.pages
+    var pages = media.pages
+
+    if (media.profile == MediaProfile.PDF) {
+      pages = bookAnalyzer.getPdfPagesDynamic(media)
+    }
+    if (media.profile == MediaProfile.MOBI) {
+      pages = bookAnalyzer.getMobiPagesDynamic(media)
+    }
     return TransientBookDto(
       id = book.id,
       name = book.name,

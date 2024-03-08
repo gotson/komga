@@ -21,6 +21,7 @@ data class LibraryCreationDto(
   val scanCbx: Boolean = true,
   val scanPdf: Boolean = true,
   val scanEpub: Boolean = true,
+  val scanMobi: Boolean = true,
   val scanDirectoryExclusions: Set<String> = emptySet(),
   val repairExtensions: Boolean = false,
   val convertToCbz: Boolean = false,
