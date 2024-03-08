@@ -28,6 +28,8 @@ import java.util.concurrent.ScheduledFuture
 
 private val logger = KotlinLogging.logger {}
 
+private const val MAX_RESULTS = 1000
+
 @Component
 class LuceneHelper(
   private val directory: Directory,
@@ -79,7 +81,7 @@ class LuceneHelper(
             .build()
 
         val searcher = searcherManager.acquire()
-        val topDocs = searcher.search(booleanQuery, Int.MAX_VALUE)
+        val topDocs = searcher.search(booleanQuery, MAX_RESULTS)
         topDocs.scoreDocs.map { searcher.storedFields().document(it.doc)[entity.id] }
       } catch (e: ParseException) {
         emptyList()
