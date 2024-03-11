@@ -107,6 +107,7 @@ import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import java.io.FileNotFoundException
 import java.io.OutputStream
+import java.net.URLDecoder
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.NoSuchFileException
 import java.time.LocalDate
@@ -725,7 +726,7 @@ class BookController(
     if (media.profile != MediaProfile.EPUB) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${media.mediaType}' not compatible with requested profile")
     if (!isFont) principal!!.user.checkContentRestriction(book)
 
-    val res = media.files.firstOrNull { it.fileName == resourceName } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val res = media.files.firstOrNull { URLDecoder.decode(it.fileName, "UTF-8") == resourceName } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     val bytes =
       try {
         bookAnalyzer.getFileContent(BookWithMedia(book, media), resourceName)
