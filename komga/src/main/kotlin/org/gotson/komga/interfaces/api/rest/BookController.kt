@@ -726,7 +726,7 @@ class BookController(
     if (media.profile != MediaProfile.EPUB) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${media.mediaType}' not compatible with requested profile")
     if (!isFont) principal!!.user.checkContentRestriction(book)
 
-    val res = media.files.firstOrNull { URLDecoder.decode(it.fileName, "UTF-8") == resourceName } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    val res = media.files.firstOrNull { listOf(it.fileName, URLDecoder.decode(it.fileName, "UTF-8")).contains(resourceName) } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     val bytes =
       try {
         bookAnalyzer.getFileContent(BookWithMedia(book, media), resourceName)
