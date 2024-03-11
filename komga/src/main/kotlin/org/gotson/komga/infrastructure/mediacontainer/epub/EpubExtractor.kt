@@ -42,7 +42,7 @@ class EpubExtractor(
 
   fun isEpub(path: Path): Boolean =
     try {
-      getEntryStream(path, "mimetype").decodeToString() == "application/epub+zip"
+      getEntryStream(path, "mimetype").decodeToString().startsWith("application/epub+zip")
     } catch (e: Exception) {
       false
     }
