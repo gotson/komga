@@ -856,7 +856,7 @@
   "navigation": {
     "home": "主页",
     "libraries": "库",
-    "logout": "注销"
+    "logout": "退出"
   },
   "page_not_found": {
     "go_back_to_home_page": "返回主页",
@@ -880,7 +880,7 @@
   "search": {
     "no_results": "搜索没有任何结果",
     "search": "搜索",
-    "search_for_something_else": "尝试寻找其他的东西",
+    "search_for_something_else": "尝试搜索其他内容",
     "search_results_for": "“{name}” 的搜索结果"
   },
   "searchbox": {
