@@ -199,16 +199,20 @@
     "books_n": "없음 | 1 권 | {count} 권",
     "books_total": "{count} / {total} 권",
     "cancel": "취소",
+    "cbx": "만화 아카이브",
     "choose_image": "이미지 선택",
     "close": "닫기",
     "collections": "모음집",
     "create": "만들기",
     "delete": "삭제",
+    "dimension": "너비: {width}, 높이: {height}",
+    "discard": "취소",
     "disk_space": "디스크 공간",
     "dismiss": "닫기",
     "download": "다운로드",
     "drag_drop": "드래그 앤 드롭",
     "email": "이메일",
+    "epub": "Epub",
     "filename": "파일 이름",
     "filter_no_matches": "선택된 필터에 일치하는 항목이 없습니다",
     "genre": "장르",
@@ -222,6 +226,7 @@
     "lock_all": "모두 잠금",
     "n_selected": "{count} 선택됨",
     "nothing_to_show": "내용 없음",
+    "oneshot": "단행본",
     "outdated": "구식의",
     "page": "페이지",
     "page_number": "페이지 번호",
@@ -229,12 +234,14 @@
     "pages_left": "남은 페이지 없음 | 1 페이지 남음 | {count} 페이지 남음",
     "pages_n": "페이지 없음 | 1 페이지 | {count} 페이지",
     "password": "비밀번호",
+    "pdf": "PDF",
     "pending_tasks": "보류 중인 작업 없음 | 1개의 보류중인 작업 | {count}개의 보류중인 작업",
     "publisher": "출판사",
     "read": "읽기",
     "read_on": "{date} 읽음",
     "readlist": "읽기 목록",
     "readlists": "읽기 목록",
+    "remember-me": "로그인 상태 유지",
     "required": "필요",
     "reset_filters": "필터 재설정",
     "roles": "역할",
@@ -428,10 +435,13 @@
       "field_import_local_artwork": "로컬 아트웍스",
       "field_import_mylar_series": "시리즈 메타데이터",
       "field_name": "이름",
+      "field_oneshotsdirectory": "단행본 디렉토리",
       "field_repair_extensions": "잘못된 파일 확장명 자동 복구",
       "field_root_folder": "루트 폴더",
+      "field_scan_interval": "스캔 간격",
       "field_scanner_empty_trash_after_scan": "스캔 후 자동으로 휴지통 비우기",
       "field_scanner_force_directory_modified_time": "디렉토리 수정 시간 강제 적용",
+      "field_scanner_scan_startup": "시작 시 스캔",
       "field_series_cover": "시리즈 표지",
       "file_browser_dialog_button_confirm": "선택",
       "file_browser_dialog_title": "서재의 루트 폴더",
@@ -442,11 +452,14 @@
       "label_import_epub": "EPUB 파일에서 메타데이터 가져오기",
       "label_import_local": "로컬 미디어 에셋 가져오기",
       "label_import_mylar": "Mylar에서 생성된 메타데이터 가져오기",
+      "label_scan_directory_exclusions": "디렉토리 제외",
+      "label_scan_types": "다음 파일 형식 스캔",
       "label_scanner": "스캐너",
       "label_series_cover": "시리즈 표지",
       "tab_general": "일반",
       "tab_metadata": "메타데이터",
       "tab_options": "옵션",
+      "tooltip_oneshotsdirectory": "비활성화 하려면 비워두세요",
       "tooltip_scanner_force_modified_time": "라이브러리가 구글 드라이브에 있으면 활성화",
       "tooltip_use_resources": "큰 라이브러리 또는 저사양 하드웨어에서 많은 자원을 소모할 수 있음"
     },
@@ -623,6 +636,23 @@
       "HARDLINK": "하드 링크/파일 복사",
       "MOVE": "파일 이동"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "낮",
+        "night": "밤",
+        "sepia": "세피아"
+      },
+      "column_count": {
+        "auto": "자동",
+        "one": "1열",
+        "two": "2열"
+      },
+      "reading_direction": {
+        "auto": "자동",
+        "ltr": "왼쪽에서 오른쪽",
+        "rtl": "오른쪽에서 왼쪽"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "책 변환됨",
       "BookFileDeleted": "책 파일 삭제됨",
@@ -648,6 +678,14 @@
       "VERTICAL": "수직으로",
       "WEBTOON": "웹툰"
     },
+    "scan_interval": {
+      "DAILY": "매일",
+      "DISABLED": "비활성화",
+      "EVERY_12H": "매 12시간",
+      "EVERY_6H": "매 6시간",
+      "HOURLY": "매시간",
+      "WEEKLY": "주간"
+    },
     "series_cover": {
       "FIRST": "처음",
       "FIRST_UNREAD_OR_FIRST": "읽지 않은 항목의 처음",
@@ -659,6 +697,43 @@
       "ENDED": "완결",
       "HIATUS": "휴재",
       "ONGOING": "연재"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "기본 (300px)",
+      "LARGE": "크게 (900px)",
+      "MEDIUM": "중간 (600px)",
+      "XLARGE": "매우 크게 (1200px)"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "현재 챕터",
+    "page_of": "{page} / {count} 페이지",
+    "settings": {
+      "column_count": "열 개수",
+      "layout": "레이아웃",
+      "layout_paginated": "페이지 매김",
+      "layout_scroll": "스크롤",
+      "navigation_mode": "탐색 모드",
+      "navigation_options": {
+        "both": "둘 다 사용",
+        "buttons": "버튼",
+        "click": "클릭 / 탭"
+      },
+      "page_margins": "페이지 여백",
+      "viewing_theme": "표시 테마"
+    },
+    "shortcuts": {
+      "cycle_pagination": "열 개수 전환",
+      "cycle_viewing_theme": "표시 테마 전환",
+      "font_size_decrease": "폰트 크기 축소",
+      "font_size_increase": "폰트 크기 확대",
+      "menus": "메뉴",
+      "next": "앞으로",
+      "previous": "뒤로",
+      "reader_navigation": "읽는 방향",
+      "scroll": "레이아웃을 스크롤로 변경",
+      "settings": "설정",
+      "show_hide_toc": "목차 표시/숨기기"
     }
   },
   "error_codes": {
@@ -688,7 +763,9 @@
     "ERR_1028": "OpenID Connect 로그인 오류: 이메일 속성 없음",
     "ERR_1029": "ComicRack CBL에서 책 항목을 찾을 수 없음",
     "ERR_1030": "ComicRack CBL에 이름 항목이 없음",
-    "ERR_1031": "ComicRack CBL 책에 시리즈 또는 번호가 없음"
+    "ERR_1031": "ComicRack CBL 책에 시리즈 또는 번호가 없음",
+    "ERR_1032": "EPUB 파일의 미디어 타입이 잘못됨",
+    "ERR_1033": "일부 항목이 누락됨"
   },
   "filter": {
     "age_rating": "연령 등급",
@@ -698,6 +775,7 @@
     "in_progress": "읽는 중",
     "language": "언어",
     "library": "서재",
+    "oneshot": "단행본",
     "publisher": "출판사",
     "read": "읽음",
     "release_date": "발매일",
@@ -823,6 +901,22 @@
     "tab_title": "서버"
   },
   "server_settings": {
+    "config_precedence": "구성 파일보다 우선함",
+    "dialog_regenerate_thumbnails": {
+      "body": "썸네일 크기가 변경되었습니다. 썸네일을 재생성하시겠습니까?",
+      "btn_alternate": "예 (모든 책)",
+      "btn_cancel": "아니요",
+      "btn_confirm": "예 (더 큰 경우에만)",
+      "title": "썸네일 재생성"
+    },
+    "label_delete_empty_collections": "스캔 후 빈 모음집 삭제",
+    "label_delete_empty_readlists": "스캔 후 빈 읽기 목록 삭제",
+    "label_rememberme_duration": "로그인 상태 유지 시간 (일)",
+    "label_server_context_path": "기본 URL",
+    "label_server_port": "서버 포트",
+    "label_task_pool_size": "작업 스레드",
+    "label_thumbnail_size": "썸네일 크기",
+    "requires_restart": "적용하려면 다시 시작해야 합니다",
     "server_settings": "서버 설정"
   },
   "settings_user": {
@@ -876,6 +970,9 @@
     "users": "사용자"
   },
   "validation": {
+    "context_path": "'/'로 시작해야 하고, '/-_'로 끝나지 않으며, '/-_a-z0-9'만 포함해야 합니다",
+    "one_or_more": "1 이상이어야 합니다",
+    "tcp_port": "1에서 65535 사이여야 합니다",
     "zero_or_more": "0 또는 그 이상이어야 함"
   },
   "welcome": {
