@@ -199,11 +199,13 @@
     "books_n": "Nessun fumetto | 1 fumetto | {count} fumetti",
     "books_total": "{count} / {total} libri",
     "cancel": "Annulla",
+    "cbx": "Archivio Fumetti",
     "choose_image": "Scegli un'immagine",
     "close": "Chiudi",
     "collections": "Collezioni",
     "create": "Crea",
     "delete": "Elimina",
+    "dimension": "l: {width}, a: {height}",
     "discard": "Scarta",
     "disk_space": "Spazio su disco",
     "dismiss": "Chiudi",
@@ -224,6 +226,7 @@
     "lock_all": "Blocca tutti",
     "n_selected": "{count} selezionati",
     "nothing_to_show": "Niente da mostrare",
+    "oneshot": "One-shot",
     "outdated": "Scaduto",
     "page": "Pagina",
     "page_number": "Numero pagina",
@@ -231,6 +234,7 @@
     "pages_left": "Nessuna pagina rimanente | 1 pagina rimanente | {count} pagine rimanenti",
     "pages_n": "Nessuna pagina | 1 pagina | {count} pagine",
     "password": "Password",
+    "pdf": "PDF",
     "pending_tasks": "Nessuna attività in sospeso | 1 attività in sospeso | {count} attività in sospeso",
     "publisher": "Editore",
     "read": "Leggi",
@@ -431,6 +435,7 @@
       "field_import_local_artwork": "Copertine locali",
       "field_import_mylar_series": "Metadati della serie",
       "field_name": "Nome",
+      "field_oneshotsdirectory": "Cartella One-Shot",
       "field_repair_extensions": "Ripara automaticamente le estensioni errate dei file",
       "field_root_folder": "Cartella principale",
       "field_scan_interval": "Intervallo di scansione",
@@ -447,6 +452,7 @@
       "label_import_epub": "Importa metadati dai file EPUB",
       "label_import_local": "Importa risorse multimediali locali",
       "label_import_mylar": "Importa i metadati generati da Mylar",
+      "label_scan_directory_exclusions": "Esclusione cartelle",
       "label_scan_types": "Scasiona file di questo tipo",
       "label_scanner": "Scanner",
       "label_series_cover": "Copertina della serie",
@@ -591,11 +597,15 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "Eliminazioni automatiche rimanenti ({count})",
     "action_delete_auto": "Elimina automatico",
     "action_delete_manual": "Elimina manuale",
     "action_delete_matches": "Elimina corrispondenze",
     "action_ignore": "Ignora",
     "action_ignore_remaining": "Ignora rimanenti ({count})",
+    "action_manual_delete_remaining": "Eliminazioni manuali rimanenti ({count})",
+    "confirm_auto_delete_remaining": "Tutti gli hash rimanenti su questa pagina ({count}) verranno contrassegnati per l'eliminazione automatica.",
+    "confirm_manual_delete_remaining": "Tutti gli hash rimanenti su questa pagina ({count}) verranno contrassegnati per l'eliminazione manuale.",
     "delete_to_save": "Elimina per salvare {size}",
     "deleted_count": "Eliminato {count} volte",
     "empty_title": "Nessuna pagina duplicata trovata",
@@ -629,9 +639,11 @@
     "epubreader": {
       "appearances": {
         "day": "Giorno",
-        "night": "Notte"
+        "night": "Notte",
+        "sepia": "Seppia"
       },
       "column_count": {
+        "auto": "Automatico",
         "one": "Uno",
         "two": "Due"
       },
@@ -685,6 +697,12 @@
       "ENDED": "Concluso",
       "HIATUS": "Hiatus",
       "ONGOING": "In corso"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Standard (300px)",
+      "LARGE": "Grande (900px)",
+      "MEDIUM": "Media (600px)",
+      "XLARGE": "Extra grande (1200px)"
     }
   },
   "epubreader": {
@@ -692,12 +710,14 @@
     "page_of": "Pagina {page} di {count}",
     "settings": {
       "column_count": "Numero di colonna",
+      "layout": "Layout",
       "layout_paginated": "Paginato",
       "layout_scroll": "Scorri",
       "navigation_mode": "Modalità di navigazione",
       "navigation_options": {
         "both": "Entrambi",
-        "buttons": "Tasti"
+        "buttons": "Tasti",
+        "click": "Clicca / Tocca"
       },
       "page_margins": "Margini di pagina",
       "viewing_theme": "Tema"
@@ -706,6 +726,7 @@
       "font_size_decrease": "Diminuisci la dimensione del font",
       "font_size_increase": "Aumenta la dimensione del font",
       "menus": "Menù",
+      "next": "Avanti",
       "previous": "Indietro",
       "settings": "Impostazioni",
       "show_hide_toc": "Mostra/Nascondi indice dei contenuti"
@@ -738,7 +759,8 @@
     "ERR_1028": "Errore login connessione OpenID: nessun attributo mail",
     "ERR_1029": "ComicRack CBL non contiene alcun libro",
     "ERR_1030": "ComicRack CBL non ha l'elemento Nome",
-    "ERR_1031": "Al libro ComicRack CBL manca la serie o il numero"
+    "ERR_1031": "Al libro ComicRack CBL manca la serie o il numero",
+    "ERR_1033": "Mancano alcune voci"
   },
   "filter": {
     "age_rating": "Fascia d'età",
@@ -748,6 +770,7 @@
     "in_progress": "In corso",
     "language": "lingua",
     "library": "libreria",
+    "oneshot": "One-shot",
     "publisher": "editore",
     "read": "Letti",
     "release_date": "data di pubblicazione",
@@ -882,6 +905,10 @@
     },
     "label_delete_empty_collections": "Cancella le collezioni vuote dopo la scansione",
     "label_delete_empty_readlists": "Cancella le liste di lettura vuote dopo la scansione",
+    "label_server_context_path": "URL Base",
+    "label_server_port": "Porta del server",
+    "label_thumbnail_size": "Dimensione della copertina",
+    "requires_restart": "Richiede riavvio per apportare le modifiche",
     "server_settings": "Impostazioni Server"
   },
   "settings_user": {
@@ -935,6 +962,9 @@
     "users": "Utenti"
   },
   "validation": {
+    "context_path": "Deve iniziare con '/', non terminare con '/-_', e contenere solo '/-_a-z0-9'",
+    "one_or_more": "Deve essere 1 o più",
+    "tcp_port": "Deve essere tra 1 e 65535",
     "zero_or_more": "Deve essere uguale o superiore a 0"
   },
   "welcome": {
