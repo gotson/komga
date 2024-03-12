@@ -764,7 +764,8 @@
     "ERR_1029": "ComicRack CBL ei sisällä ainuttakaan Kirja elementtiä",
     "ERR_1030": "ComicRack CBL ei sisällä Nimi elementtiä",
     "ERR_1031": "ComicRack CBL Kirjasta puuttuu sarja tai numero",
-    "ERR_1032": "EPUB-tiedostossa on väärä mediatyyppi"
+    "ERR_1032": "EPUB-tiedostossa on väärä mediatyyppi",
+    "ERR_1033": "Jotkin merkinnät puuttuvat"
   },
   "filter": {
     "age_rating": "ikäluokitus",
