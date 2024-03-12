@@ -59,9 +59,211 @@
     "button_select_series": "Seri Seç",
     "field_import_path": "Klasörden içe aktar",
     "info_part1": "Bu ekran dosyaları içeri aktarmanıza ve var olan kütüphanelerinizi dışarı çıkartmanıza olanak tanır. Sadece var olan serileri içeri aktarabilirsiniz, bu durumda Komga dosyaları seçilen serilere kopyalacak veya taşıyacaktır.",
-    "no_files_found": "Herhangi bir dosya bulunamadı"
+    "info_part2": "Bir kitap için bir numara seçerseniz ve bu numaraya sahip bir kitap zaten mevcutsa, 2 kitabı karşılaştırabilirsiniz. Kitabı içe aktarmaya karar verirseniz, Komga mevcut kitabı yenisiyle değiştirecektir.",
+    "no_files_found": "Herhangi bir dosya bulunamadı",
+    "notification": {
+      "go_to_book": "Kitaba git",
+      "import_failure": "Kitab içeri aktarma başarısız: {file}",
+      "import_successful": "Kitap başarılı bir şekilde içe aktarıldı: {book}",
+      "source_file": "Kaynak Dosya: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Öncelikle kitabın analiz edilmesi gerekiyor",
+      "error_choose_series": "Seri seçin",
+      "error_only_import_no_errors": "Yalnızca hatasız kitaplar içe aktarabilir",
+      "warning_upgrade": "Mevcut kitap güncellenecektir"
+    },
+    "table": {
+      "destination_name": "Hedef adı",
+      "file_name": "Dosya adı",
+      "number": "Sayı",
+      "series": "Seri"
+    },
+    "title": "İçeri Aktar",
+    "try_another_directory": "Başka bir dizinde aramayı deneyin"
+  },
+  "bookreader": {
+    "beginning_of_book": "Kitabın başındasın.",
+    "changing_reading_direction": "Okuma Yönünü Değiştirme",
+    "cycling_page_layout": "Çevrim Sayfa Düzeni",
+    "cycling_scale": "Çevrim Ölçeği",
+    "cycling_side_padding": "Çevrim Yan Dolgusu",
+    "download_current_page": "Sayfayı indir",
+    "end_of_book": "Kitabın sonuna ulaştınız.",
+    "from_series_metadata": "seri meta verilerinden",
+    "move_next": "Bir sonraki kitaba geçmek için tıklayın veya \"İleri\" düğmesine basın.",
+    "move_next_exit": "Okuyucudan çıkmak için tıklayın veya \"İleri \"ye basın.",
+    "move_previous": "Bir önceki kitaba geçmek için tıklayın veya \"Önceki\" tuşuna basın.",
+    "notification_poster_set_book": "Kitap posteri artık geçerli sayfaya ayarlanmıştır.",
+    "scale_type": {
+      "continuous_original": "Orijinal",
+      "original": "Orijinal"
+    },
+    "settings": {
+      "always_fullscreen": "Her Zaman Tam Ekran",
+      "background_color": "Arkaplan rengi",
+      "background_colors": {
+        "black": "Siyah",
+        "gray": "Gri",
+        "white": "Beyaz"
+      },
+      "display": "Ekran",
+      "general": "Genel",
+      "side_padding_none": "Yok"
+    },
+    "shortcuts": {
+      "settings": "Ayarlar",
+      "show_hide_help": "Göster/Gizle yardım",
+      "show_hide_settings": "Ayar menüsünü Göster/Gizle",
+      "show_hide_toolbars": "Araç Çubuğunu Göster/Gizle",
+      "vertical": "Dikey"
+    }
+  },
+  "browse_book": {
+    "comment": "YORUM",
+    "download_file": "Dosyayı indir",
+    "file": "DOSYA",
+    "format": "FORMAT",
+    "isbn": "ISBN",
+    "links": "LİNKLER",
+    "size": "BOYUT"
   },
   "common": {
-    "locale_name": "Türkçe"
+    "age": "Yaş",
+    "all_libraries": "Tüm Kütüphaneler",
+    "book": "Kitap",
+    "books": "Kitaplar",
+    "books_n": "Kitap Yok | 1 Kitap | {count} Kitap",
+    "books_total": "{count} / {total} Kitap",
+    "cancel": "İptal",
+    "close": "Kapat",
+    "collections": "Koleksiyonlar",
+    "create": "Oluştur",
+    "delete": "Sil",
+    "disk_space": "Disk boyutu",
+    "download": "İndir",
+    "drag_drop": "sürükle bırak",
+    "email": "E-Mail",
+    "epub": "ePub",
+    "filename": "Dosya Adı",
+    "locale_name": "Türkçe",
+    "page": "Sayfa",
+    "page_number": "Sayfa Numarası",
+    "pages": "sayfalar",
+    "password": "Şifre",
+    "pdf": "PDF",
+    "roles": "Roller",
+    "save_changes": "Değişiklikleri kaydet",
+    "tags": "Taglar",
+    "unavailable": "Kullanılamıyor",
+    "url": "URL",
+    "year": "yıl"
+  },
+  "data_import": {
+    "button_import": "İçeri Aktar",
+    "dialog_confirmation": {
+      "create": "Yine de oluştur",
+      "title": "Bazı kitaplar eşleşmiyor"
+    },
+    "field_file_label": "ComicRack Okuma Listesi (.cbl)",
+    "field_files_label": "ComicRack Okuma Listeleri(.cbl)",
+    "import_read_lists": "Okuma Listeleri İçe Aktar",
+    "imported_as": "{name} olarak içe aktarıldı",
+    "readlist_created": "Okuma Listesi oluşturuldu: {name}",
+    "size_limit": "Boyut {size} MB değerinden küçük olmalıdır",
+    "tab_title": "İçeri Aktar"
+  },
+  "dialog": {
+    "add_to_collection": {
+      "button_create": "Oluştur",
+      "card_collection_subtitle": "Seri yok | 1 seri | {count} seri",
+      "dialog_title": "Koleksiyona ekle",
+      "field_search_create": "Koleksiyon ara veya oluştur"
+    },
+    "add_user": {
+      "button_confirm": "Ekle",
+      "dialog_title": "Kullanıcı Ekle",
+      "field_email": "e-Posta",
+      "field_email_error": "Geçerli bir e-posta adresi olmalıdır",
+      "field_password": "Şifre",
+      "field_role_administrator": "Yönetici",
+      "field_role_file_download": "Dosya İndirme",
+      "field_role_page_streaming": "Sayfa Yayınlama",
+      "label_roles": "Roller"
+    },
+    "analyze_library": {
+      "body": "Kitaplıktaki tüm medya dosyalarını analiz eder. Analiz, medya hakkındaki bilgileri yakalar. Kitaplığınızın boyutuna bağlı olarak bu işlem uzun sürebilir.",
+      "button_confirm": "Analiz",
+      "title": "Kütüphane analizi"
+    },
+    "book_picker": {
+      "filter": "Kitap numarasına, başlığa veya çıkış tarihine göre filtreleme",
+      "title": "Kitap Seç"
+    },
+    "delete_book": {
+      "button_confirm": "Sil",
+      "confirm_delete": "Evet, \"{name}\" kitabını ve dosyalarını sil",
+      "dialog_title": "Kitap Sil",
+      "dialog_title_multiple": "Kitapları Sil",
+      "warning_html": "<b>{name}</b> kitabı, depolanan tüm dosyalarla birlikte silinecektir. Bu işlem <b>geri alınamaz</b>. Devam edelim mi?"
+    },
+    "delete_collection": {
+      "button_confirm": "Sil"
+    },
+    "delete_library": {
+      "button_confirm": "Sil"
+    },
+    "delete_series": {
+      "button_confirm": "Sil"
+    },
+    "delete_user": {
+      "dialog_title": "Kullanıcı Silme"
+    }
+  },
+  "navigation": {
+    "home": "Anasayfa",
+    "libraries": "Kütüphaneler",
+    "logout": "Çıkış Yap"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Ana sayfaya geri dön",
+    "page_does_not_exist": "Aradığınız sayfa mevcut değil.",
+    "page_not_found": "Sayfa bulunamadı"
+  },
+  "search": {
+    "search": "Ara",
+    "search_for_something_else": "Başka bir şey aramayı deneyin"
+  },
+  "searchbox": {
+    "no_results": "Sonuç Yok"
+  },
+  "server": {
+    "server_management": {
+      "button_shutdown": "Kapat"
+    }
+  },
+  "sort": {
+    "file_name": "Dosya Adına",
+    "file_size": "Boyuta",
+    "folder_name": "Klasör Adına"
+  },
+  "theme": {
+    "dark": "Koyu",
+    "light": "Açık",
+    "system": "Sistem"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Sil"
+  },
+  "user_roles": {
+    "USER": "Kullanıcı"
+  },
+  "users": {
+    "users": "Kullanıcılar"
+  },
+  "welcome": {
+    "add_library": "Kütüphane Ekle",
+    "no_libraries_yet": "Henüz kütüphane eklenmemiş!",
+    "welcome_message": "Komga'ya Hoş Geldiniz"
   }
 }
