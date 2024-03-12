@@ -230,6 +230,7 @@
     "page": "Página",
     "page_number": "Número da página",
     "pages": "páginas",
+    "pages_left": "Nenhuma página faltando | 1 página faltando | {count} páginas faltando",
     "pages_n": "Nenhuma página | 1 página | {count} páginas",
     "password": "Senha",
     "pdf": "PDF",
@@ -245,6 +246,7 @@
     "roles": "Funções",
     "save_changes": "Salvar mudanças",
     "series": "Séries | Séries",
+    "sidecars": "Carrinho",
     "tags": "Tags",
     "unavailable": "Indisponível",
     "unlock_all": "Desbloquear tudo",
@@ -268,8 +270,11 @@
     "button_match": "Igualar",
     "comicrack_preambule_html": "Você pode importar Listas de Leitura do ComicRack existentes no formato <code>.cbl</code><br>Komga tentará combinar a série fornecida e o número do livro com as séries e livros em suas bibliotecas.",
     "dialog_confirmation": {
-      "create": "Criar de todo modo"
+      "body": "{unmatched} / {total} livro(s) não foram marcados",
+      "create": "Criar de todo modo",
+      "title": "Alguns livros não estão combinados"
     },
+    "field_file_label": "Lista de Leitura ComicRack (.cbl)",
     "field_files_label": "Listas de Leitura do ComicRack (.cbl)",
     "import_read_lists": "Importar Listas de Leitura",
     "imported_as": "Importado como {name}",
@@ -355,7 +360,9 @@
       "button_confirm": "Excluir",
       "confirm_delete": "Sim, exclua a série \"{name}\" e seus arquivos",
       "confirm_delete_multiple": "Sim, exclua {count} séries e seus arquivos",
-      "dialog_title": "Excluir Série"
+      "dialog_title": "Excluir Série",
+      "warning_html": "A edição <b>{name}</b> será removida deste servidor junto aos arquivos de mídia armazenados. Essa ação <b>não</b> pode ser desfeita. Continuar?",
+      "warning_multiple_html": "{count} edições serão removidas deste servidor junto aos arquivos de mídia armazenados. Essa ação <b>não pode</b> ser desfeita. Continuar?"
     },
     "delete_user": {
       "button_confirm": "Excluir",
@@ -364,13 +371,20 @@
       "warning_html": "O usuário <b>{name}</b> será excluído deste servidor. Isso <b>não poderá</b> ser desfeito. Prosseguir?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Já existe",
       "authors_notice_multiple_edit": "Você está editando autores para múltiplos livros. Isso irá sobrescrever os autores existentes para cada livro.",
       "button_cancel": "Cancelar",
       "button_confirm": "Salvar mudanças",
+      "copy_from": "Copiar de {field}",
       "dialog_title_multiple": "Editar {count} livro | Editar {count} livros",
       "dialog_title_single": "Editar {book}",
+      "field_alternate_title": "Título alternativo",
       "field_isbn": "ISBN",
       "field_isbn_error": "Deve ser um ISBN 13 valido",
+      "field_link_label": "Rótulo",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Deve ser http ou https",
+      "field_link_url_error_url": "Deve ser uma URL válida",
       "field_number": "Número",
       "field_number_sort": "Número para Ordenação",
       "field_number_sort_hint": "Você pode usar números decimais",
@@ -379,8 +393,11 @@
       "field_summary": "Resumo",
       "field_tags": "Tags",
       "field_title": "Título",
+      "number_sort_decrement": "Decrementar todos por 1",
+      "number_sort_increment": "Incrementar todos por 1",
       "tab_authors": "Autores",
       "tab_general": "Geral",
+      "tab_links": "Links",
       "tab_poster": "Pôster",
       "tab_tags": "Tags",
       "tags_notice_multiple_edit": "Você está editando tags para múltiplos livros. Isso irá sobrescrever os tags existentes para cada livro."
@@ -391,6 +408,7 @@
       "dialog_title": "Editar Coleção",
       "field_manual_ordering": "Ordenação manual",
       "label_ordering": "Por padrão, séries em uma coleção serão ordenadas por nome. Você pode ativar a ordenação manual para definir sua própria ordem.",
+      "tab_general": "Geral",
       "tab_poster": "Pôster"
     },
     "edit_library": {
@@ -401,12 +419,16 @@
       "button_next": "Próximo",
       "dialog_title_add": "Adicionar Biblioteca",
       "dialot_title_edit": "Editar Biblioteca",
+      "field_analysis_analyze_dimensions": "Analisar as dimensões das paginas",
+      "field_analysis_hash_files": "Computar hash para arquivos",
+      "field_analysis_hash_pages": "Computar hash para páginas",
       "field_convert_to_cbz": "Converter automaticamente para CBZ",
       "field_import_barcode_isbn": "Código de barra ISBN",
       "field_import_comicinfo_book": "Metadados de livros",
       "field_import_comicinfo_collections": "Coleções",
       "field_import_comicinfo_readlists": "Listas de leitura",
       "field_import_comicinfo_series": "Metadados de séries",
+      "field_import_comicinfo_series_append_volume": "Anexar volume para o título da série",
       "field_import_epub_book": "Metadados de livros",
       "field_import_epub_series": "Metadados de séries",
       "field_import_local_artwork": "Mídia local",
@@ -414,29 +436,40 @@
       "field_name": "Nome",
       "field_repair_extensions": "Reparar extensões de arquivo incorretas automaticamente",
       "field_root_folder": "Pasta raíz",
+      "field_scan_interval": "Intervalo de scan",
       "field_scanner_empty_trash_after_scan": "Esvazie a lixeira automaticamente após cada verificação",
       "field_scanner_force_directory_modified_time": "Forçar data de modificação da pasta",
+      "field_scanner_scan_startup": "Scanear ao iniciar",
       "field_series_cover": "Capa da série",
       "file_browser_dialog_button_confirm": "Selecione",
       "file_browser_dialog_title": "Pasta raiz da biblioteca",
+      "label_analysis": "Análise",
       "label_file_management": "Gerenciamento de Arquivo",
       "label_import_barcode_isbn": "Importar ISBN no código de barra",
       "label_import_comicinfo": "Importar metadados para CBR/CBZ que contenham um arquivo ComicInfo.xml",
       "label_import_epub": "Importar metadados de arquivos EPUB",
       "label_import_local": "Importar recursos de mídia locais",
       "label_import_mylar": "Importar metadados gerados por Mylar",
+      "label_scan_directory_exclusions": "Exclusões de diretórios",
+      "label_scan_types": "Scanear para esses tipos de arquivos",
       "label_scanner": "Fazer varredura",
       "label_series_cover": "Capa da série",
       "tab_general": "Geral",
       "tab_metadata": "Metadados",
-      "tab_options": "Opções"
+      "tab_options": "Opções",
+      "tooltip_oneshotsdirectory": "Deixar vazio para desabilitar",
+      "tooltip_scanner_force_modified_time": "Habilitar se uma biblioteca está em um Google Drive",
+      "tooltip_use_resources": "Pode consumir muitos recursos em bibliotecas grandes ou hardware lento"
     },
     "edit_readlist": {
       "button_cancel": "Cancelar",
       "button_confirm": "Salvar mudanças",
       "dialog_title": "Editar lista de leitura",
+      "field_manual_ordering": "Ordenação manual",
       "field_name": "Nome",
       "field_summary": "Resumo",
+      "label_ordering": "Por padrão, livros em uma lista de leitura são ordenados manualmente. Você pode desativar a ordenação manual para ordenar os livros por data de lançamento.",
+      "tab_general": "Geral",
       "tab_poster": "Pôster"
     },
     "edit_series": {
@@ -447,6 +480,7 @@
       "field_age_rating": "Classificação Etária",
       "field_age_rating_error": "Classificação etária precisa ser igual ou maior que 0",
       "field_genres": "Gêneros",
+      "field_labels": "Rótulos",
       "field_language": "Idioma",
       "field_language_hint": "Tag de idioma IETF BCP 47",
       "field_publisher": "Editora",
@@ -461,7 +495,9 @@
       "mixed": "MISTURADO",
       "tab_general": "Geral",
       "tab_poster": "Pôster",
+      "tab_sharing": "Compartilhamento",
       "tab_tags": "Tags",
+      "tab_titles": "Títulos alternativos",
       "tags_notice_multiple_edit": "Você está editando tags para múltiplas séries. Isso irá sobrescrever os tags existentes para cada série."
     },
     "edit_user": {
@@ -469,6 +505,19 @@
       "button_confirm": "Salvar mudanças",
       "dialog_title": "Editar usuário",
       "label_roles_for": "Cargos para {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Permitir somente abaixo de",
+        "exclude_over": "Excluir acima de",
+        "none": "Sem restrição"
+      },
+      "edit_restrictions_for": "Editar restrições para {name}",
+      "label_age_restriction": "Restrição de idade",
+      "label_allow_only_labels": "Permitir somente rótulos",
+      "label_exclude_labels": "Excluir rótulos",
+      "tab_content_restrictions": "Restrições de conteúdo",
+      "tab_shared_libraries": "Bibliotecas Compartilhadas"
     },
     "empty_trash": {
       "body": "Por padrão, o servidor de mídia não remove as informações da mídia imediatamente. Isso ajuda se uma unidade estiver temporariamente desconectada. Quando você esvazia a lixeira de uma biblioteca, todas as informações sobre mídia ausente são excluídas.",
@@ -550,7 +599,8 @@
     }
   },
   "duplicates": {
-    "size": "Tamanho"
+    "size": "Tamanho",
+    "url": "URL"
   },
   "enums": {
     "copy_mode": {
@@ -624,6 +674,11 @@
   "filter_drawer": {
     "filter": "filtro",
     "sort": "ordenar"
+  },
+  "history": {
+    "header": {
+      "book": "Livro"
+    }
   },
   "home": {
     "theme": "Tema",
