@@ -14,8 +14,6 @@ import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
-import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
-import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_PUBLICATION_JSON
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_WEBPUB_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
@@ -33,55 +31,35 @@ import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.language.toZonedDateTime
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.MediaType
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
 import org.gotson.komga.domain.model.MediaType as KomgaMediaType
 
-@Service
+@Component
 class WebPubGenerator(
   @Qualifier("thumbnailType") private val thumbnailType: ImageType,
   private val imageConverter: ImageConverter,
   private val bookAnalyzer: BookAnalyzer,
   private val mediaRepository: MediaRepository,
+  protected val pathSegments: List<String> = listOf("api", "v1"),
 ) {
-  private val wpKnownRoles =
-    listOf(
-      "author",
-      "translator",
-      "editor",
-      "artist",
-      "illustrator",
-      "letterer",
-      "penciler",
-      "penciller",
-      "colorist",
-      "inker",
-    )
-
-  private val recommendedImageMediaTypes = listOf("image/jpeg", "image/png", "image/gif")
-
-  private fun BookDto.toBasePublicationDto(includeOpdsLinks: Boolean = false): WPPublicationDto {
-    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
+  protected fun toBasePublicationDto(bookDto: BookDto): WPPublicationDto {
+    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray())
     return WPPublicationDto(
-      mediaType = MEDIATYPE_OPDS_PUBLICATION_JSON,
+      mediaType = getDefaultMediaType(),
       context = "https://readium.org/webpub-manifest/context.jsonld",
-      metadata = toWPMetadataDto(includeOpdsLinks).withAuthors(metadata.authors),
-      links = toWPLinkDtos(uriBuilder),
+      metadata = toWPMetadataDto(bookDto).withAuthors(bookDto.metadata.authors),
+      links = bookDto.toWPLinkDtos(uriBuilder),
     )
   }
 
-  fun toOpdsPublicationDto(
-    bookDto: BookDto,
-    includeOpdsLinks: Boolean = false,
-  ): WPPublicationDto {
-    return bookDto.toBasePublicationDto(includeOpdsLinks).copy(images = buildThumbnailLinkDtos(bookDto.id))
-  }
+  protected open fun getDefaultMediaType(): MediaType = MEDIATYPE_WEBPUB_JSON
 
-  private fun buildThumbnailLinkDtos(bookId: String) =
+  protected fun buildThumbnailLinkDtos(bookId: String) =
     listOf(
       WPLinkDto(
-        href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1").path("books/$bookId/thumbnail").toUriString(),
+        href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray()).path("books/$bookId/thumbnail").toUriString(),
         type = thumbnailType.mediaType,
       ),
     )
@@ -91,8 +69,8 @@ class WebPubGenerator(
     media: Media,
     seriesMetadata: SeriesMetadata,
   ): WPPublicationDto {
-    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
-    return bookDto.toBasePublicationDto().let {
+    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray())
+    return toBasePublicationDto(bookDto).let {
       val pages = if (media.profile == MediaProfile.PDF) bookAnalyzer.getPdfPagesDynamic(media) else media.pages
       it.copy(
         mediaType = MEDIATYPE_DIVINA_JSON,
@@ -128,8 +106,8 @@ class WebPubGenerator(
     media: Media,
     seriesMetadata: SeriesMetadata,
   ): WPPublicationDto {
-    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
-    return bookDto.toBasePublicationDto().let {
+    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray())
+    return toBasePublicationDto(bookDto).let {
       it.copy(
         mediaType = MEDIATYPE_WEBPUB_JSON,
         metadata = it.metadata.withSeriesMetadata(seriesMetadata).copy(conformsTo = PROFILE_PDF),
@@ -150,14 +128,14 @@ class WebPubGenerator(
     media: Media,
     seriesMetadata: SeriesMetadata,
   ): WPPublicationDto {
-    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("api", "v1")
+    val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray())
     val extension =
       when {
         media.extension is ProxyExtension && media.extension.proxyForType<MediaExtensionEpub>() -> mediaRepository.findExtensionByIdOrNull(media.bookId) as? MediaExtensionEpub
         media.extension is MediaExtensionEpub -> media.extension
         else -> null
       }
-    return bookDto.toBasePublicationDto().let { publication ->
+    return toBasePublicationDto(bookDto).let { publication ->
       publication.copy(
         mediaType = MEDIATYPE_WEBPUB_JSON,
         metadata =
@@ -204,35 +182,29 @@ class WebPubGenerator(
       children = children.map { it.toWPLinkDto(uriBuilder) },
     )
 
-  private fun BookDto.toWPMetadataDto(includeOpdsLinks: Boolean = false) =
+  protected open fun toWPMetadataDto(bookDto: BookDto) =
     WPMetadataDto(
-      title = metadata.title,
-      description = metadata.summary,
-      numberOfPages = this.media.pagesCount,
-      modified = lastModified.toZonedDateTime(),
-      published = metadata.releaseDate,
-      subject = metadata.tags.toList(),
-      identifier = if (metadata.isbn.isNotBlank()) "urn:isbn:${metadata.isbn}" else null,
+      title = bookDto.metadata.title,
+      description = bookDto.metadata.summary,
+      numberOfPages = bookDto.media.pagesCount,
+      modified = bookDto.lastModified.toZonedDateTime(),
+      published = bookDto.metadata.releaseDate,
+      subject = bookDto.metadata.tags.toList(),
+      identifier = if (bookDto.metadata.isbn.isNotBlank()) "urn:isbn:${bookDto.metadata.isbn}" else null,
       belongsTo =
         WPBelongsToDto(
           series =
             listOf(
               WPContributorDto(
-                seriesTitle,
-                metadata.numberSort,
-                if (includeOpdsLinks)
-                  listOf(
-                    WPLinkDto(
-                      href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v2").path("series/$seriesId").toUriString(),
-                      type = MEDIATYPE_OPDS_JSON_VALUE,
-                    ),
-                  )
-                else
-                  emptyList(),
+                bookDto.seriesTitle,
+                bookDto.metadata.numberSort,
+                getBookSeriesLink(bookDto),
               ),
             ),
         ),
     )
+
+  protected open fun getBookSeriesLink(bookDto: BookDto): List<WPLinkDto> = emptyList()
 
   private fun WPMetadataDto.withSeriesMetadata(seriesMetadata: SeriesMetadata) =
     copy(
@@ -284,4 +256,21 @@ class WebPubGenerator(
       MediaProfile.EPUB -> MEDIATYPE_WEBPUB_JSON_VALUE
       null -> MEDIATYPE_WEBPUB_JSON_VALUE
     }
+
+  companion object {
+    private val wpKnownRoles =
+      listOf(
+        "author",
+        "translator",
+        "editor",
+        "artist",
+        "illustrator",
+        "letterer",
+        "penciler",
+        "penciller",
+        "colorist",
+        "inker",
+      )
+    private val recommendedImageMediaTypes = listOf("image/jpeg", "image/png", "image/gif")
+  }
 }

@@ -3,6 +3,8 @@ package org.gotson.komga.interfaces.api.dto
 import org.springframework.http.MediaType
 
 const val MEDIATYPE_OPDS_JSON_VALUE = "application/opds+json"
+const val MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE = "application/opds-publication+json"
+const val MEDIATYPE_OPDS_AUTHENTICATION_JSON_VALUE = "application/opds-authentication+json"
 const val MEDIATYPE_DIVINA_JSON_VALUE = "application/divina+json"
 const val MEDIATYPE_WEBPUB_JSON_VALUE = "application/webpub+json"
 const val MEDIATYPE_POSITION_LIST_JSON_VALUE = "application/vnd.readium.position-list+json"

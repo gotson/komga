@@ -53,9 +53,11 @@ import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.setCachePrivate
+import org.gotson.komga.interfaces.api.OpdsGenerator
 import org.gotson.komga.interfaces.api.WebPubGenerator
 import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_DIVINA_JSON_VALUE
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_POSITION_LIST_JSON
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_POSITION_LIST_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_PROGRESSION_JSON_VALUE
@@ -135,6 +137,7 @@ class BookController(
   private val eventPublisher: ApplicationEventPublisher,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val webPubGenerator: WebPubGenerator,
+  private val opdsGenerator: OpdsGenerator,
 ) {
   @PageableAsQueryParam
   @GetMapping("api/v1/books")
@@ -403,6 +406,8 @@ class BookController(
       "api/v1/books/{bookId}/file",
       "api/v1/books/{bookId}/file/*",
       "opds/v1.2/books/{bookId}/file/*",
+      "opds/v2/books/{bookId}/file",
+      "opds/v2/books/{bookId}/file/*",
     ],
     produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
   )
@@ -495,7 +500,10 @@ class BookController(
     getBookPageInternal(bookId, pageNumber + 1, convertTo, request, principal, null)
 
   @ApiResponse(content = [Content(mediaType = "image/*", schema = Schema(type = "string", format = "binary"))])
-  @GetMapping("api/v1/books/{bookId}/pages/{pageNumber}", produces = [MediaType.ALL_VALUE])
+  @GetMapping(
+    value = ["api/v1/books/{bookId}/pages/{pageNumber}"],
+    produces = [MediaType.ALL_VALUE],
+  )
   @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
   fun getBookPage(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -516,6 +524,26 @@ class BookController(
     acceptHeaders: MutableList<MediaType>?,
   ): ResponseEntity<ByteArray> =
     getBookPageInternal(bookId, if (zeroBasedIndex) pageNumber + 1 else pageNumber, convertTo, request, principal, acceptHeaders)
+
+  @ApiResponse(content = [Content(mediaType = "image/*", schema = Schema(type = "string", format = "binary"))])
+  @GetMapping(
+    value = ["opds/v2/books/{bookId}/pages/{pageNumber}"],
+    produces = [MediaType.ALL_VALUE],
+  )
+  @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
+  fun getBookPageOpdsv2(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    request: ServletWebRequest,
+    @PathVariable bookId: String,
+    @PathVariable pageNumber: Int,
+    @Parameter(
+      description = "Convert the image to the provided format.",
+      schema = Schema(allowableValues = ["jpeg", "png"]),
+    )
+    @RequestParam(value = "convert", required = false)
+    convertTo: String?,
+  ): ResponseEntity<ByteArray> =
+    getBookPageInternal(bookId, pageNumber, convertTo, request, principal, null)
 
   private fun getBookPageInternal(
     bookId: String,
@@ -582,7 +610,10 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
-    value = ["api/v1/books/{bookId}/pages/{pageNumber}/raw"],
+    value = [
+      "api/v1/books/{bookId}/pages/{pageNumber}/raw",
+      "opds/v2/books/{bookId}/pages/{pageNumber}/raw",
+    ],
     produces = [MediaType.ALL_VALUE],
   )
   @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
@@ -687,18 +718,42 @@ class BookController(
   fun getWebPubManifest(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
-  ): ResponseEntity<WPPublicationDto> =
+  ): ResponseEntity<WPPublicationDto> {
+    val manifest = getWebPubManifestInternal(principal, bookId, webPubGenerator)
+    return ResponseEntity.ok()
+      .contentType(manifest.mediaType)
+      .body(manifest)
+  }
+
+  @GetMapping(
+    value = ["opds/v2/books/{bookId}/manifest"],
+    produces = [MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE],
+  )
+  fun getWebPubManifestOpds(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): WPPublicationDto =
+    getWebPubManifestInternal(principal, bookId, opdsGenerator)
+
+  private fun getWebPubManifestInternal(
+    principal: KomgaPrincipal,
+    bookId: String,
+    webPubGenerator: WebPubGenerator,
+  ) =
     mediaRepository.findByIdOrNull(bookId)?.let { media ->
       when (KomgaMediaType.fromMediaType(media.mediaType)?.profile) {
-        MediaProfile.DIVINA -> getWebPubManifestDivina(principal, bookId)
-        MediaProfile.PDF -> getWebPubManifestPdf(principal, bookId)
-        MediaProfile.EPUB -> getWebPubManifestEpub(principal, bookId)
+        MediaProfile.DIVINA -> getWebPubManifestDivinaInternal(principal, bookId, webPubGenerator)
+        MediaProfile.PDF -> getWebPubManifestPdfInternal(principal, bookId, webPubGenerator)
+        MediaProfile.EPUB -> getWebPubManifestEpubInternal(principal, bookId, webPubGenerator)
         null -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
-    value = ["api/v1/books/{bookId}/resource/{*resource}"],
+    value = [
+      "api/v1/books/{bookId}/resource/{*resource}",
+      "opds/v2/books/{bookId}/resource/{*resource}",
+    ],
     produces = ["*/*"],
   )
   fun getBookResource(
@@ -821,19 +876,32 @@ class BookController(
   fun getWebPubManifestEpub(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
-  ): ResponseEntity<WPPublicationDto> =
+  ): WPPublicationDto =
+    getWebPubManifestEpubInternal(principal, bookId, webPubGenerator)
+
+  @GetMapping(
+    value = ["opds/v2/books/{bookId}/manifest/epub"],
+    produces = [MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE],
+  )
+  fun getWebPubManifestEpubOpds(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): WPPublicationDto =
+    getWebPubManifestEpubInternal(principal, bookId, opdsGenerator)
+
+  private fun getWebPubManifestEpubInternal(
+    principal: KomgaPrincipal,
+    bookId: String,
+    webPubGenerator: WebPubGenerator,
+  ) =
     bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
       if (bookDto.media.mediaProfile != MediaProfile.EPUB.name) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
       principal.user.checkContentRestriction(bookDto)
-      val manifest =
-        webPubGenerator.toManifestEpub(
-          bookDto,
-          mediaRepository.findById(bookId),
-          seriesMetadataRepository.findById(bookDto.seriesId),
-        )
-      ResponseEntity.ok()
-        .contentType(manifest.mediaType)
-        .body(manifest)
+      webPubGenerator.toManifestEpub(
+        bookDto,
+        mediaRepository.findById(bookId),
+        seriesMetadataRepository.findById(bookDto.seriesId),
+      )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
@@ -843,19 +911,32 @@ class BookController(
   fun getWebPubManifestPdf(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
-  ): ResponseEntity<WPPublicationDto> =
+  ): WPPublicationDto =
+    getWebPubManifestPdfInternal(principal, bookId, webPubGenerator)
+
+  @GetMapping(
+    value = ["opds/v2/books/{bookId}/manifest/pdf"],
+    produces = [MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE],
+  )
+  fun getWebPubManifestPdfOpds(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): WPPublicationDto =
+    getWebPubManifestPdfInternal(principal, bookId, opdsGenerator)
+
+  private fun getWebPubManifestPdfInternal(
+    principal: KomgaPrincipal,
+    bookId: String,
+    webPubGenerator: WebPubGenerator,
+  ) =
     bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
       if (bookDto.media.mediaProfile != MediaProfile.PDF.name) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
       principal.user.checkContentRestriction(bookDto)
-      val manifest =
-        webPubGenerator.toManifestPdf(
-          bookDto,
-          mediaRepository.findById(bookDto.id),
-          seriesMetadataRepository.findById(bookDto.seriesId),
-        )
-      ResponseEntity.ok()
-        .contentType(manifest.mediaType)
-        .body(manifest)
+      webPubGenerator.toManifestPdf(
+        bookDto,
+        mediaRepository.findById(bookDto.id),
+        seriesMetadataRepository.findById(bookDto.seriesId),
+      )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
@@ -865,18 +946,31 @@ class BookController(
   fun getWebPubManifestDivina(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
-  ): ResponseEntity<WPPublicationDto> =
+  ): WPPublicationDto =
+    getWebPubManifestDivinaInternal(principal, bookId, webPubGenerator)
+
+  @GetMapping(
+    value = ["opds/v2/books/{bookId}/manifest/divina"],
+    produces = [MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE],
+  )
+  fun getWebPubManifestDivinaOpds(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): WPPublicationDto =
+    getWebPubManifestDivinaInternal(principal, bookId, opdsGenerator)
+
+  private fun getWebPubManifestDivinaInternal(
+    principal: KomgaPrincipal,
+    bookId: String,
+    webPubGenerator: WebPubGenerator,
+  ) =
     bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
       principal.user.checkContentRestriction(bookDto)
-      val manifest =
-        webPubGenerator.toManifestDivina(
-          bookDto,
-          mediaRepository.findById(bookDto.id),
-          seriesMetadataRepository.findById(bookDto.seriesId),
-        )
-      ResponseEntity.ok()
-        .contentType(manifest.mediaType)
-        .body(manifest)
+      webPubGenerator.toManifestDivina(
+        bookDto,
+        mediaRepository.findById(bookDto.id),
+        seriesMetadataRepository.findById(bookDto.seriesId),
+      )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PostMapping("api/v1/books/{bookId}/analyze")
