@@ -78,7 +78,7 @@ class WebPubGenerator(
         readingOrder =
           pages.mapIndexed { index: Int, page: BookPage ->
             WPLinkDto(
-              href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}").toUriString(),
+              href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}").queryParam("contentNegotiation", "false").toUriString(),
               type = page.mediaType,
               width = page.dimension?.width,
               height = page.dimension?.height,
@@ -86,7 +86,7 @@ class WebPubGenerator(
                 if (!recommendedImageMediaTypes.contains(page.mediaType) && imageConverter.canConvertMediaType(page.mediaType, MediaType.IMAGE_JPEG_VALUE))
                   listOf(
                     WPLinkDto(
-                      href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}").queryParam("convert", "jpeg").toUriString(),
+                      href = uriBuilder.cloneBuilder().path("books/${bookDto.id}/pages/${index + 1}").queryParam("contentNegotiation", "false").queryParam("convert", "jpeg").toUriString(),
                       type = MediaType.IMAGE_JPEG_VALUE,
                       width = page.dimension?.width,
                       height = page.dimension?.height,

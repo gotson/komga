@@ -436,8 +436,10 @@ class BookController(
     @Parameter(description = "Some very limited server driven content negotiation is handled. If a book is a PDF book, and the Accept header contains 'application/pdf' as a more specific type than other 'image/' types, a raw PDF page will be returned.")
     @RequestHeader(HttpHeaders.ACCEPT, required = false)
     acceptHeaders: MutableList<MediaType>?,
+    @RequestParam(value = "contentNegotiation", defaultValue = "true")
+    contentNegotiation: Boolean,
   ): ResponseEntity<ByteArray> =
-    commonBookController.getBookPageInternal(bookId, if (zeroBasedIndex) pageNumber + 1 else pageNumber, convertTo, request, principal, acceptHeaders)
+    commonBookController.getBookPageInternal(bookId, if (zeroBasedIndex) pageNumber + 1 else pageNumber, convertTo, request, principal, if (contentNegotiation) acceptHeaders else null)
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
