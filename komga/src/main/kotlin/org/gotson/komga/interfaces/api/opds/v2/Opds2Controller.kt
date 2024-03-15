@@ -1,10 +1,14 @@
 package org.gotson.komga.interfaces.api.opds.v2
 
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesCollection
@@ -15,12 +19,15 @@ import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
+import org.gotson.komga.interfaces.api.CommonBookController
+import org.gotson.komga.interfaces.api.ContentRestrictionChecker
 import org.gotson.komga.interfaces.api.OpdsGenerator
-import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_AUTHENTICATION_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.api.dto.WPLinkDto
+import org.gotson.komga.interfaces.api.dto.WPPublicationDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FacetDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FeedDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FeedGroupDto
@@ -34,12 +41,16 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
@@ -60,7 +71,9 @@ class Opds2Controller(
   private val seriesDtoRepository: SeriesDtoRepository,
   private val bookDtoRepository: BookDtoRepository,
   private val referentialRepository: ReferentialRepository,
+  private val commonBookController: CommonBookController,
   private val opdsGenerator: OpdsGenerator,
+  private val contentRestrictionChecker: ContentRestrictionChecker,
 ) {
   private fun linkStart() =
     WPLinkDto(
@@ -683,7 +696,7 @@ class Opds2Controller(
     @Parameter(hidden = true) page: Pageable,
   ): FeedDto =
     seriesDtoRepository.findByIdOrNull(id, "principal.user.id")?.let { series ->
-      principal.user.checkContentRestriction(series)
+      contentRestrictionChecker.checkContentRestriction(principal.user, series)
 
       val bookSearch =
         BookSearchWithReadProgress(
@@ -804,6 +817,66 @@ class Opds2Controller(
 
   @GetMapping(value = [ROUTE_AUTH], produces = [MEDIATYPE_OPDS_AUTHENTICATION_JSON_VALUE])
   fun getAuthDocument() = opdsGenerator.generateOpdsAuthDocument()
+
+  @ApiResponse(content = [Content(mediaType = "image/*", schema = Schema(type = "string", format = "binary"))])
+  @GetMapping(
+    value = ["books/{bookId}/pages/{pageNumber}"],
+    produces = [MediaType.ALL_VALUE],
+  )
+  @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
+  fun getBookPage(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    request: ServletWebRequest,
+    @PathVariable bookId: String,
+    @PathVariable pageNumber: Int,
+    @Parameter(
+      description = "Convert the image to the provided format.",
+      schema = Schema(allowableValues = ["jpeg", "png"]),
+    )
+    @RequestParam(value = "convert", required = false)
+    convertTo: String?,
+  ): ResponseEntity<ByteArray> =
+    commonBookController.getBookPageInternal(bookId, pageNumber, convertTo, request, principal, null)
+
+  @GetMapping(
+    value = ["books/{bookId}/manifest"],
+    produces = [MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE],
+  )
+  fun getWebPubManifest(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): WPPublicationDto =
+    commonBookController.getWebPubManifestInternal(principal, bookId, opdsGenerator)
+
+  @GetMapping(
+    value = ["books/{bookId}/manifest/epub"],
+    produces = [MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE],
+  )
+  fun getWebPubManifestEpub(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): WPPublicationDto =
+    commonBookController.getWebPubManifestEpubInternal(principal, bookId, opdsGenerator)
+
+  @GetMapping(
+    value = ["books/{bookId}/manifest/pdf"],
+    produces = [MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE],
+  )
+  fun getWebPubManifestPdf(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): WPPublicationDto =
+    commonBookController.getWebPubManifestPdfInternal(principal, bookId, opdsGenerator)
+
+  @GetMapping(
+    value = ["books/{bookId}/manifest/divina"],
+    produces = [MEDIATYPE_OPDS_PUBLICATION_JSON_VALUE],
+  )
+  fun getWebPubManifestDivina(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): WPPublicationDto =
+    commonBookController.getWebPubManifestDivinaInternal(principal, bookId, opdsGenerator)
 
   private fun Library.toWPLinkDto(): WPLinkDto =
     WPLinkDto(

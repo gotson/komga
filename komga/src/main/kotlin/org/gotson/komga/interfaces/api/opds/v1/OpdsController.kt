@@ -10,24 +10,24 @@ import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaProfile
+import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.model.ThumbnailBook
-import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
-import org.gotson.komga.interfaces.api.checkContentRestriction
+import org.gotson.komga.interfaces.api.CommonBookController
+import org.gotson.komga.interfaces.api.ContentRestrictionChecker
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsAuthor
@@ -56,12 +56,15 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriComponentsBuilder
@@ -105,13 +108,13 @@ class OpdsController(
   private val collectionRepository: SeriesCollectionRepository,
   private val readListRepository: ReadListRepository,
   private val seriesDtoRepository: SeriesDtoRepository,
-  private val seriesMetadataRepository: SeriesMetadataRepository,
   private val bookDtoRepository: BookDtoRepository,
   private val mediaRepository: MediaRepository,
   private val referentialRepository: ReferentialRepository,
-  private val bookRepository: BookRepository,
   private val bookLifecycle: BookLifecycle,
+  private val commonBookController: CommonBookController,
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  private val contentRestrictionChecker: ContentRestrictionChecker,
   @Qualifier("pdfImageType")
   private val pdfImageType: ImageType,
 ) {
@@ -539,7 +542,7 @@ class OpdsController(
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let { series ->
-      principal.user.checkContentRestriction(series)
+      contentRestrictionChecker.checkContentRestriction(principal.user, series)
 
       val bookSearch =
         BookSearchWithReadProgress(
@@ -713,12 +716,29 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ByteArray {
-    principal.user.checkContentRestriction(bookId, bookRepository, seriesMetadataRepository)
+    contentRestrictionChecker.checkContentRestriction(principal.user, bookId)
     val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else komgaSettingsProvider.thumbnailSize.maxEdge)?.bytes
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
+
+  @ApiResponse(content = [Content(mediaType = "image/*", schema = Schema(type = "string", format = "binary"))])
+  @GetMapping("books/{bookId}/pages/{pageNumber}", produces = ["image/png", "image/gif", "image/jpeg"])
+  @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
+  fun getBookPageOpds(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    request: ServletWebRequest,
+    @PathVariable bookId: String,
+    @PathVariable pageNumber: Int,
+    @Parameter(
+      description = "Convert the image to the provided format.",
+      schema = Schema(allowableValues = ["jpeg", "png"]),
+    )
+    @RequestParam(value = "convert", required = false)
+    convertTo: String?,
+  ): ResponseEntity<ByteArray> =
+    commonBookController.getBookPageInternal(bookId, pageNumber + 1, convertTo, request, principal, null)
 
   private fun SeriesDto.toOpdsEntry(prepend: Int? = null): OpdsEntryNavigation {
     val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
