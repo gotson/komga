@@ -48,7 +48,7 @@ jobs:
 
       - name: Conveyor - compute JDK module list
         if: github.event_name == 'push'
-        uses: hydraulic-software/conveyor/actions/build@v13.1
+        uses: hydraulic-software/conveyor/actions/build@v14.0
         with:
           command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
