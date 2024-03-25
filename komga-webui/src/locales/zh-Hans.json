@@ -856,7 +856,7 @@
   "navigation": {
     "home": "主页",
     "libraries": "库",
-    "logout": "退出"
+    "logout": "退出登录"
   },
   "page_not_found": {
     "go_back_to_home_page": "返回主页",
