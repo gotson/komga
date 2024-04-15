@@ -746,7 +746,14 @@
     "ERR_1009": "Er bestaat al een leeslijst met deze naam",
     "ERR_1015": "Fout bij het deserialiseren van ComicRack Leeslijst",
     "ERR_1016": "Map niet toegankelijk of geen map",
-    "ERR_1017": "Kan map die deel uitmaakt van een bestaande bibliotheek niet scannen"
+    "ERR_1017": "Kan map die deel uitmaakt van een bestaande bibliotheek niet scannen",
+    "ERR_1018": "Bestand niet gevonden",
+    "ERR_1019": "Importeren niet mogelijk als het bestand onderdeel is van een bestaande bibliotheek",
+    "ERR_1021": "Doelbestand bestaat al",
+    "ERR_1022": "Recent geïmporteerd boek kan niet worden gescanned",
+    "ERR_1023": "Boek bestaat al in Leeslijst",
+    "ERR_1025": "OAuth2 login error: geen bestaande gebruiker met dit emailadres",
+    "ERR_1026": "OpenID Connect login error: email niet bevestigd"
   },
   "filter": {
     "age_rating": "leeftijdsclassificatie",
