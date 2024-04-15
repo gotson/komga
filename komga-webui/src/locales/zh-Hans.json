@@ -856,7 +856,7 @@
   "navigation": {
     "home": "主页",
     "libraries": "库",
-    "logout": "退出"
+    "logout": "退出登录"
   },
   "page_not_found": {
     "go_back_to_home_page": "返回主页",
@@ -905,8 +905,8 @@
     "dialog_regenerate_thumbnails": {
       "body": "缩略图大小已更改。您想重新生成书籍缩略图吗？",
       "btn_alternate": "是，所有书籍",
-      "btn_cancel": "不是",
-      "btn_confirm": "是的，但前提是更大",
+      "btn_cancel": "否",
+      "btn_confirm": "是，但前提是更大",
       "title": "重新生成缩略图"
     },
     "label_delete_empty_collections": "扫描后删除空的收藏",
