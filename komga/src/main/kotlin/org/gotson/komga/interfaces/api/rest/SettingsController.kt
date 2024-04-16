@@ -1,16 +1,15 @@
 package org.gotson.komga.interfaces.api.rest
 
-import jakarta.servlet.ServletContext
 import jakarta.validation.Valid
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
+import org.gotson.komga.infrastructure.web.WebServerEffectiveSettings
 import org.gotson.komga.interfaces.api.rest.dto.SettingMultiSource
 import org.gotson.komga.interfaces.api.rest.dto.SettingsDto
 import org.gotson.komga.interfaces.api.rest.dto.SettingsUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.toDomain
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -29,12 +28,8 @@ class SettingsController(
   private val komgaSettingsProvider: KomgaSettingsProvider,
   @Value("\${server.port:#{null}}") private val configServerPort: Int?,
   @Value("\${server.servlet.context-path:#{null}}") private val configServerContextPath: String?,
-  serverProperties: ServerProperties,
-  servletContext: ServletContext,
+  private val serverSettings: WebServerEffectiveSettings,
 ) {
-  private val effectiveServerPort = serverProperties.port
-  private val effectiveServerContextPath = servletContext.contextPath
-
   @GetMapping
   fun getSettings(): SettingsDto =
     SettingsDto(
@@ -43,8 +38,8 @@ class SettingsController(
       komgaSettingsProvider.rememberMeDuration.inWholeDays,
       komgaSettingsProvider.thumbnailSize.toDto(),
       komgaSettingsProvider.taskPoolSize,
-      SettingMultiSource(configServerPort, komgaSettingsProvider.serverPort, effectiveServerPort),
-      SettingMultiSource(configServerContextPath, komgaSettingsProvider.serverContextPath, effectiveServerContextPath),
+      SettingMultiSource(configServerPort, komgaSettingsProvider.serverPort, serverSettings.effectiveServerPort),
+      SettingMultiSource(configServerContextPath, komgaSettingsProvider.serverContextPath, serverSettings.effectiveServletContextPath),
     )
 
   @PatchMapping
