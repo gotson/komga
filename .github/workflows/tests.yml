@@ -27,10 +27,10 @@ jobs:
           java-package: 'jdk'
           distribution: 'temurin'
 
+      - uses: gradle/actions/setup-gradle@v3
+
       - name: Build
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: build :komga-tray:jar
+        run: ./gradlew build :komga-tray:jar
 
       - name: Upload Unit Test Results
         if: always()

@@ -121,18 +121,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: gradle/actions/setup-gradle@v3
+
       - name: Build
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: :komga:prepareThymeLeaf :komga:bootJar :komga-tray:jar
+        run: ./gradlew :komga:prepareThymeLeaf :komga:bootJar :komga-tray:jar
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
 
       - name: Generate OpenAPI docs
-        uses: gradle/actions/setup-gradle@v3
         if: needs.version.outputs.should_release #only redo if the version changed
-        with:
-          arguments: :komga:generateOpenApiDocs
+        run: ./gradlew :komga:generateOpenApiDocs
 
       - name: Create release notes
         run: |
@@ -143,10 +141,8 @@ jobs:
           echo ""
 
       - name: JReleaser Changelog append
-        uses: gradle/actions/setup-gradle@v3
         if: needs.version.outputs.should_release #only redo if the version changed
-        with:
-          arguments: jreleaserChangelog
+        run: ./gradlew jreleaserChangelog
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Changelog output
@@ -197,9 +193,7 @@ jobs:
 
       - name: JReleaser Release
         if: inputs.github_release
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: jreleaserRelease
+        run: ./gradlew jreleaserRelease
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Release output
@@ -213,9 +207,7 @@ jobs:
 
       - name: JReleaser Announce
         if: inputs.github_release
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: jreleaserAnnounce
+        run: ./gradlew jreleaserAnnounce
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Announce output
@@ -233,9 +225,7 @@ jobs:
 
       - name: JReleaser Publish
         if: inputs.docker_release
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: jreleaserPublish
+        run: ./gradlew jreleaserPublish
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Publish output
