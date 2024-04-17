@@ -53,7 +53,7 @@ class LibraryController(
   fun getAll(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): List<LibraryDto> =
-    if (principal.user.sharedAllLibraries) {
+    if (principal.user.canAccessAllLibraries()) {
       libraryRepository.findAll()
     } else {
       libraryRepository.findAllByIds(principal.user.sharedLibrariesIds)

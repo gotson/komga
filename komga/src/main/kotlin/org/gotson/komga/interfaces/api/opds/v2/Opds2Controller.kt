@@ -134,7 +134,7 @@ class Opds2Controller(
     principal: KomgaPrincipal,
   ): FeedGroupDto {
     val libraries =
-      if (principal.user.sharedAllLibraries) {
+      if (principal.user.canAccessAllLibraries()) {
         libraryRepository.findAll()
       } else {
         libraryRepository.findAllByIds(principal.user.sharedLibrariesIds)

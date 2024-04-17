@@ -745,7 +745,7 @@ class SeriesController(
    * @throws[ResponseStatusException] if the user cannot access the content
    */
   private fun KomgaUser.checkContentRestriction(seriesId: String) {
-    if (!sharedAllLibraries) {
+    if (!canAccessAllLibraries()) {
       seriesRepository.getLibraryId(seriesId)?.let {
         if (!canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

@@ -429,7 +429,7 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): OpdsFeed {
     val libraries =
-      if (principal.user.sharedAllLibraries) {
+      if (principal.user.canAccessAllLibraries()) {
         libraryRepository.findAll()
       } else {
         libraryRepository.findAllByIds(principal.user.sharedLibrariesIds)

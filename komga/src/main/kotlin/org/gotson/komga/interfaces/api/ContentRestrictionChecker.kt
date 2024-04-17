@@ -59,7 +59,7 @@ class ContentRestrictionChecker(
     komgaUser: KomgaUser,
     bookId: String,
   ) {
-    if (!komgaUser.sharedAllLibraries) {
+    if (!komgaUser.canAccessAllLibraries()) {
       bookRepository.getLibraryIdOrNull(bookId)?.let {
         if (!komgaUser.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

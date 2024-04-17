@@ -45,10 +45,10 @@ data class KomgaUser(
   fun getAuthorizedLibraryIds(libraryIds: Collection<String>?): Collection<String>? =
     when {
       // limited user & libraryIds are specified: filter on provided libraries intersecting user's authorized libraries
-      !sharedAllLibraries && libraryIds != null -> libraryIds.intersect(sharedLibrariesIds)
+      !canAccessAllLibraries() && libraryIds != null -> libraryIds.intersect(sharedLibrariesIds)
 
       // limited user: filter on user's authorized libraries
-      !sharedAllLibraries && libraryIds == null -> sharedLibrariesIds
+      !canAccessAllLibraries() && libraryIds == null -> sharedLibrariesIds
 
       // non-limited user & libraryIds are specified: filter on provided libraries
       libraryIds != null -> libraryIds
@@ -57,12 +57,13 @@ data class KomgaUser(
       else -> null
     }
 
-  fun canAccessLibrary(libraryId: String): Boolean =
-    sharedAllLibraries || sharedLibrariesIds.any { it == libraryId }
+  fun canAccessAllLibraries(): Boolean = sharedAllLibraries || roleAdmin
 
-  fun canAccessLibrary(library: Library): Boolean {
-    return sharedAllLibraries || sharedLibrariesIds.any { it == library.id }
-  }
+  fun canAccessLibrary(libraryId: String): Boolean =
+    canAccessAllLibraries() || sharedLibrariesIds.any { it == libraryId }
+
+  fun canAccessLibrary(library: Library): Boolean =
+    canAccessAllLibraries() || sharedLibrariesIds.any { it == library.id }
 
   fun isContentAllowed(
     ageRating: Int? = null,
