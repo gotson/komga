@@ -160,7 +160,7 @@ class SeriesDao(
   private fun SeriesSearch.toCondition(): Condition {
     var c: Condition = DSL.trueCondition()
 
-    if (!libraryIds.isNullOrEmpty()) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
+    if (libraryIds != null) c = c.and(s.LIBRARY_ID.`in`(libraryIds))
     if (!collectionIds.isNullOrEmpty()) c = c.and(cs.COLLECTION_ID.`in`(collectionIds))
     searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
     searchRegex?.let { c = c.and((it.second.toColumn()).likeRegex(it.first)) }
