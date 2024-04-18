@@ -1,3 +1,49 @@
+# [1.11.0](https://github.com/gotson/komga/compare/1.10.4...1.11.0) (2024-04-18)
+## 🚀 Features
+**opds**
+- discoverable Progression API, used by Aldiko/Cantook ([443d8a7](https://github.com/gotson/komga/commits/443d8a7))
+- add authenticate property for Aldiko/Cantook ([aaf958d](https://github.com/gotson/komga/commits/aaf958d))
+- support authentication for OPDS ([3250c12](https://github.com/gotson/komga/commits/3250c12))
+
+## 🐛 Fixes
+**api**
+- broken links in webpub manifests ([14bee17](https://github.com/gotson/komga/commits/14bee17))
+- library access is not properly applied in some cases for admins ([77bad31](https://github.com/gotson/komga/commits/77bad31)), closes [#1470](https://github.com/gotson/komga/issues/1470)
+- library restrictions are not properly apply in some cases ([aa0a9b4](https://github.com/gotson/komga/commits/aa0a9b4)), closes [#1474](https://github.com/gotson/komga/issues/1474)
+- disable content negotiation for images in webpub manifest ([5a94ee1](https://github.com/gotson/komga/commits/5a94ee1))
+
+**komga-tray**
+- open komga menu does not use custom port ([edc1223](https://github.com/gotson/komga/commits/edc1223)), closes [#1468](https://github.com/gotson/komga/issues/1468)
+
+## 🔄️ Changes
+
+- reorganize code shared between REST and OPDS ([ec3eb44](https://github.com/gotson/komga/commits/ec3eb44))
+
+## 🛠  Build
+
+- fix failing test ([39e8d1d](https://github.com/gotson/komga/commits/39e8d1d))
+- adjust usage of setup-gradle to new syntax ([edc0762](https://github.com/gotson/komga/commits/edc0762))
+- migrate to gradle/actions/wrapper-validation@v3 ([bcafbd8](https://github.com/gotson/komga/commits/bcafbd8))
+
+## 🌐 Translation
+**webui**
+- translated using Weblate (Norwegian Bokmål) ([9ac00bc](https://github.com/gotson/komga/commits/9ac00bc))
+- translated using Weblate (Chinese (Simplified)) ([e81c342](https://github.com/gotson/komga/commits/e81c342))
+- translated using Weblate (Dutch) ([8797a77](https://github.com/gotson/komga/commits/8797a77))
+- translated using Weblate (Arabic) ([3e623dd](https://github.com/gotson/komga/commits/3e623dd))
+- translated using Weblate (Portuguese) ([1d6add1](https://github.com/gotson/komga/commits/1d6add1))
+- translated using Weblate (German) ([44064cd](https://github.com/gotson/komga/commits/44064cd))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 14.0 to 14.1 ([38261f1](https://github.com/gotson/komga/commits/38261f1))
+- bump hydraulic-software/conveyor from 13.1 to 14.0 ([38c5699](https://github.com/gotson/komga/commits/38c5699))
+
+**webui**
+- bump express from 4.18.2 to 4.19.2 in /komga-webui ([dea7acd](https://github.com/gotson/komga/commits/dea7acd))
+- bump webpack-dev-middleware in /komga-webui ([b5b6d13](https://github.com/gotson/komga/commits/b5b6d13))
+- bump follow-redirects from 1.15.4 to 1.15.6 in /komga-webui ([3e4f705](https://github.com/gotson/komga/commits/3e4f705))
+
 # [1.10.4](https://github.com/gotson/komga/compare/1.10.3...1.10.4) (2024-03-12)
 ## 🐛 Fixes
 **api**

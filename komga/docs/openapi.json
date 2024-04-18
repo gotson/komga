@@ -20,6 +20,168 @@
     }
   ],
   "paths": {
+    "/opds/v2/books/{bookId}/progression": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "operationId": "getProgression",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.readium.progression+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/R2Progression"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "operationId": "markProgression",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/R2Progression"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/progression": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "operationId": "getProgression_1",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.readium.progression+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/R2Progression"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "operationId": "markProgression_1",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/R2Progression"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/api/v2/series/{seriesId}/read-progress/tachiyomi": {
       "get": {
         "tags": [
@@ -602,87 +764,6 @@
           },
           "202": {
             "description": "Accepted"
-          }
-        }
-      }
-    },
-    "/api/v1/books/{bookId}/progression": {
-      "get": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "getProgression",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/vnd.readium.progression+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/R2Progression"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "markProgression",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/R2Progression"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
           }
         }
       }
@@ -3840,6 +3921,693 @@
         }
       }
     },
+    "/api/v1/books/{bookId}/resource/{*resource}": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "operationId": "getBookResource",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resource",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/resource/{*resource}": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "operationId": "getBookResource_1",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resource",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/pages/{pageNumber}": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getBookPage",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "convert",
+            "in": "query",
+            "description": "Convert the image to the provided format.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "jpeg",
+                "png"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/pages/{pageNumber}/raw": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "operationId": "getBookPageRaw",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/pages/{pageNumber}/raw": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "operationId": "getBookPageRaw_1",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/manifest": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getWebPubManifest",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds-publication+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/manifest/pdf": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getWebPubManifestPdf",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds-publication+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/manifest/epub": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getWebPubManifestEpub",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds-publication+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/manifest/divina": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getWebPubManifestDivina",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds-publication+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WPPublicationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/file": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "description": "Download the book file.",
+        "operationId": "getBookFile",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponseBody"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "book-controller"
+        ],
+        "operationId": "deleteBook",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/file/*": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "description": "Download the book file.",
+        "operationId": "getBookFile_1",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/file/*": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "description": "Download the book file.",
+        "operationId": "getBookFile_2",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v1.2/books/{bookId}/file/*": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "description": "Download the book file.",
+        "operationId": "getBookFile_3",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/books/{bookId}/file": {
+      "get": {
+        "tags": [
+          "common-book-controller"
+        ],
+        "description": "Download the book file.",
+        "operationId": "getBookFile_4",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opds/v2/auth": {
+      "get": {
+        "tags": [
+          "opds-2-controller"
+        ],
+        "operationId": "getAuthDocument",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/opds-authentication+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationDocumentDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/opds/v1.2/series": {
       "get": {
         "tags": [
@@ -4687,7 +5455,7 @@
     "/opds/v1.2/books/{bookId}/pages/{pageNumber}": {
       "get": {
         "tags": [
-          "book-controller"
+          "opds-controller"
         ],
         "operationId": "getBookPageOpds",
         "parameters": [
@@ -8059,55 +8827,6 @@
         }
       }
     },
-    "/api/v1/books/{bookId}/resource/{*resource}": {
-      "get": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "getBookResource",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "resource",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string",
-                  "format": "byte"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/books/{bookId}/readlists": {
       "get": {
         "tags": [
@@ -8279,7 +8998,7 @@
         "tags": [
           "book-controller"
         ],
-        "operationId": "getBookPage",
+        "operationId": "getBookPage_1",
         "parameters": [
           {
             "name": "bookId",
@@ -8331,6 +9050,15 @@
               "items": {
                 "$ref": "#/components/schemas/MediaType"
               }
+            }
+          },
+          {
+            "name": "contentNegotiation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
             }
           }
         ],
@@ -8409,56 +9137,6 @@
         }
       }
     },
-    "/api/v1/books/{bookId}/pages/{pageNumber}/raw": {
-      "get": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "getBookPageRaw",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pageNumber",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string",
-                  "format": "byte"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/books/{bookId}/next": {
       "get": {
         "tags": [
@@ -8504,7 +9182,7 @@
         "tags": [
           "book-controller"
         ],
-        "operationId": "getWebPubManifest",
+        "operationId": "getWebPubManifest_1",
         "parameters": [
           {
             "name": "bookId",
@@ -8549,7 +9227,7 @@
         "tags": [
           "book-controller"
         ],
-        "operationId": "getWebPubManifestPdf",
+        "operationId": "getWebPubManifestPdf_1",
         "parameters": [
           {
             "name": "bookId",
@@ -8589,7 +9267,7 @@
         "tags": [
           "book-controller"
         ],
-        "operationId": "getWebPubManifestEpub",
+        "operationId": "getWebPubManifestEpub_1",
         "parameters": [
           {
             "name": "bookId",
@@ -8629,7 +9307,7 @@
         "tags": [
           "book-controller"
         ],
-        "operationId": "getWebPubManifestDivina",
+        "operationId": "getWebPubManifestDivina_1",
         "parameters": [
           {
             "name": "bookId",
@@ -8657,160 +9335,6 @@
               "application/divina+json": {
                 "schema": {
                   "$ref": "#/components/schemas/WPPublicationDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/books/{bookId}/file": {
-      "get": {
-        "tags": [
-          "book-controller"
-        ],
-        "description": "Download the book file.",
-        "operationId": "getBookFile",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "$ref": "#/components/schemas/StreamingResponseBody"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "book-controller"
-        ],
-        "operationId": "deleteBook",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "202": {
-            "description": "Accepted"
-          }
-        }
-      }
-    },
-    "/api/v1/books/{bookId}/file/*": {
-      "get": {
-        "tags": [
-          "book-controller"
-        ],
-        "description": "Download the book file.",
-        "operationId": "getBookFile_1",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "$ref": "#/components/schemas/StreamingResponseBody"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/opds/v1.2/books/{bookId}/file/*": {
-      "get": {
-        "tags": [
-          "book-controller"
-        ],
-        "description": "Download the book file.",
-        "operationId": "getBookFile_2",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "$ref": "#/components/schemas/StreamingResponseBody"
                 }
               }
             }
@@ -9477,6 +10001,105 @@
           }
         }
       },
+      "Location": {
+        "required": [
+          "fragments"
+        ],
+        "type": "object",
+        "properties": {
+          "fragments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "progression": {
+            "type": "number",
+            "format": "float"
+          },
+          "position": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalProgression": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "R2Device": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "R2Locator": {
+        "required": [
+          "href",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "locations": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "text": {
+            "$ref": "#/components/schemas/Text"
+          }
+        }
+      },
+      "R2Progression": {
+        "required": [
+          "device",
+          "locator",
+          "modified"
+        ],
+        "type": "object",
+        "properties": {
+          "modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "device": {
+            "$ref": "#/components/schemas/R2Device"
+          },
+          "locator": {
+            "$ref": "#/components/schemas/R2Locator"
+          }
+        }
+      },
+      "Text": {
+        "type": "object",
+        "properties": {
+          "after": {
+            "type": "string"
+          },
+          "before": {
+            "type": "string"
+          },
+          "highlight": {
+            "type": "string"
+          }
+        }
+      },
       "TachiyomiReadProgressUpdateV2Dto": {
         "required": [
           "lastBookNumberSortRead"
@@ -9629,105 +10252,6 @@
           }
         },
         "description": "Fields to update. You can omit fields you don\u0027t want to update."
-      },
-      "Location": {
-        "required": [
-          "fragments"
-        ],
-        "type": "object",
-        "properties": {
-          "fragments": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "progression": {
-            "type": "number",
-            "format": "float"
-          },
-          "position": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalProgression": {
-            "type": "number",
-            "format": "float"
-          }
-        }
-      },
-      "R2Device": {
-        "required": [
-          "id",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "R2Locator": {
-        "required": [
-          "href",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "locations": {
-            "$ref": "#/components/schemas/Location"
-          },
-          "text": {
-            "$ref": "#/components/schemas/Text"
-          }
-        }
-      },
-      "R2Progression": {
-        "required": [
-          "device",
-          "locator",
-          "modified"
-        ],
-        "type": "object",
-        "properties": {
-          "modified": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "device": {
-            "$ref": "#/components/schemas/R2Device"
-          },
-          "locator": {
-            "$ref": "#/components/schemas/R2Locator"
-          }
-        }
-      },
-      "Text": {
-        "type": "object",
-        "properties": {
-          "after": {
-            "type": "string"
-          },
-          "before": {
-            "type": "string"
-          },
-          "highlight": {
-            "type": "string"
-          }
-        }
       },
       "UserCreationDto": {
         "required": [
@@ -11353,6 +11877,9 @@
         }
       },
       "WPLinkDto": {
+        "required": [
+          "properties"
+        ],
         "type": "object",
         "properties": {
           "title": {
@@ -11377,6 +11904,15 @@
           "height": {
             "type": "integer",
             "format": "int32"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
           }
         }
       },
@@ -11588,6 +12124,78 @@
             "items": {
               "$ref": "#/components/schemas/WPLinkDto"
             }
+          }
+        }
+      },
+      "StreamingResponseBody": {
+        "type": "object"
+      },
+      "AuthenticationDocumentDto": {
+        "required": [
+          "authentication",
+          "id",
+          "links",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "authentication": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthenticationFlowDto"
+            }
+          },
+          "title": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          }
+        }
+      },
+      "AuthenticationFlowDto": {
+        "required": [
+          "links",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "http://opds-spec.org/auth/basic",
+              "http://opds-spec.org/auth/oauth/implicit",
+              "http://opds-spec.org/auth/oauth/password"
+            ]
+          },
+          "labels": {
+            "$ref": "#/components/schemas/LabelsDto"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WPLinkDto"
+            }
+          }
+        }
+      },
+      "LabelsDto": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
           }
         }
       },
@@ -12375,9 +12983,6 @@
             "type": "string"
           }
         }
-      },
-      "StreamingResponseBody": {
-        "type": "object"
       },
       "BookDto": {
         "required": [
