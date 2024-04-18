@@ -42,8 +42,9 @@ class WebPubGenerator(
   private val imageConverter: ImageConverter,
   private val bookAnalyzer: BookAnalyzer,
   private val mediaRepository: MediaRepository,
-  protected val pathSegments: List<String> = listOf("api", "v1"),
 ) {
+  protected val pathSegments = listOf("api", "v1")
+
   protected fun toBasePublicationDto(bookDto: BookDto): WPPublicationDto {
     val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray())
     return WPPublicationDto(
