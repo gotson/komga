@@ -54,13 +54,14 @@ class WebPubGenerator(
     )
   }
 
-  protected open fun getDefaultMediaType(): MediaType = MEDIATYPE_WEBPUB_JSON
+  protected fun getDefaultMediaType(): MediaType = MEDIATYPE_WEBPUB_JSON
 
   protected fun buildThumbnailLinkDtos(bookId: String) =
     listOf(
       WPLinkDto(
         href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray()).path("books/$bookId/thumbnail").toUriString(),
         type = thumbnailType.mediaType,
+        properties = getExtraLinkProperties(),
       ),
     )
 
@@ -204,7 +205,7 @@ class WebPubGenerator(
         ),
     )
 
-  protected open fun getBookSeriesLink(bookDto: BookDto): List<WPLinkDto> = emptyList()
+  protected fun getBookSeriesLink(bookDto: BookDto): List<WPLinkDto> = emptyList()
 
   private fun WPMetadataDto.withSeriesMetadata(seriesMetadata: SeriesMetadata) =
     copy(
@@ -236,16 +237,18 @@ class WebPubGenerator(
     )
   }
 
+  protected fun getExtraLinkProperties(): Map<String, Map<String, Any>> = emptyMap()
+
   private fun BookDto.toWPLinkDtos(uriBuilder: UriComponentsBuilder): List<WPLinkDto> {
     val komgaMediaType = KomgaMediaType.fromMediaType(media.mediaType)
     return buildList {
       // most appropriate manifest
-      add(WPLinkDto(rel = OpdsLinkRel.SELF, href = uriBuilder.cloneBuilder().path("books/$id/manifest").toUriString(), type = mediaProfileToWebPub(komgaMediaType?.profile)))
+      add(WPLinkDto(rel = OpdsLinkRel.SELF, href = uriBuilder.cloneBuilder().path("books/$id/manifest").toUriString(), type = mediaProfileToWebPub(komgaMediaType?.profile), properties = getExtraLinkProperties()))
       // PDF is also available under the Divina profile / EPUB that are Divina compatible
       if (komgaMediaType?.profile == MediaProfile.PDF || (komgaMediaType?.profile == MediaProfile.EPUB && media.epubDivinaCompatible))
-        add(WPLinkDto(href = uriBuilder.cloneBuilder().path("books/$id/manifest/divina").toUriString(), type = MEDIATYPE_DIVINA_JSON_VALUE))
+        add(WPLinkDto(href = uriBuilder.cloneBuilder().path("books/$id/manifest/divina").toUriString(), type = MEDIATYPE_DIVINA_JSON_VALUE, properties = getExtraLinkProperties()))
       // main acquisition link
-      add(WPLinkDto(rel = OpdsLinkRel.ACQUISITION, type = komgaMediaType?.exportType ?: media.mediaType, href = uriBuilder.cloneBuilder().path("books/$id/file").toUriString()))
+      add(WPLinkDto(rel = OpdsLinkRel.ACQUISITION, type = komgaMediaType?.exportType ?: media.mediaType, href = uriBuilder.cloneBuilder().path("books/$id/file").toUriString(), properties = getExtraLinkProperties()))
     }
   }
 

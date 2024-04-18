@@ -22,6 +22,7 @@ data class WPLinkDto(
   val height: Int? = null,
   val alternate: List<WPLinkDto> = emptyList(),
   val children: List<WPLinkDto> = emptyList(),
+  val properties: Map<String, Map<String, Any>> = emptyMap(),
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

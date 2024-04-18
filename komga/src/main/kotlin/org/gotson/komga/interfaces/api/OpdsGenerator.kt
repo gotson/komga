@@ -4,6 +4,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_AUTHENTICATION_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_PUBLICATION_JSON
 import org.gotson.komga.interfaces.api.dto.WPLinkDto
@@ -37,6 +38,15 @@ class OpdsGenerator(
         href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray()).path("series/${bookDto.seriesId}").toUriString(),
         type = MEDIATYPE_OPDS_JSON_VALUE,
       ),
+    )
+
+  override fun getExtraLinkProperties(): Map<String, Map<String, Any>> =
+    mapOf(
+      "authenticate" to
+        mapOf(
+          "href" to ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v2").path(ROUTE_AUTH).toUriString(),
+          "type" to MEDIATYPE_OPDS_AUTHENTICATION_JSON_VALUE,
+        ),
     )
 
   fun generateOpdsAuthDocument() =
