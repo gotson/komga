@@ -14,6 +14,8 @@ const val PROFILE_DIVINA = "https://readium.org/webpub-manifest/profiles/divina"
 const val PROFILE_EPUB = "https://readium.org/webpub-manifest/profiles/epub"
 const val PROFILE_PDF = "https://readium.org/webpub-manifest/profiles/pdf"
 
+const val REL_PROGRESSION_API = "http://www.cantook.com/api/progression"
+
 val MEDIATYPE_OPDS_PUBLICATION_JSON = MediaType("application", "opds-publication+json")
 val MEDIATYPE_DIVINA_JSON = MediaType("application", "divina+json")
 val MEDIATYPE_WEBPUB_JSON = MediaType("application", "webpub+json")

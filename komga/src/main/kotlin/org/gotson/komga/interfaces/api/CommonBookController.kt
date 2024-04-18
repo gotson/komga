@@ -13,10 +13,13 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaUnsupportedException
+import org.gotson.komga.domain.model.R2Progression
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
+import org.gotson.komga.domain.model.toR2Progression
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.BookLifecycle
@@ -24,6 +27,7 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
+import org.gotson.komga.interfaces.api.dto.MEDIATYPE_PROGRESSION_JSON_VALUE
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.springframework.core.io.FileSystemResource
 import org.springframework.http.ContentDisposition
@@ -36,7 +40,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.server.ResponseStatusException
@@ -61,6 +68,7 @@ class CommonBookController(
   private val bookAnalyzer: BookAnalyzer,
   private val contentRestrictionChecker: ContentRestrictionChecker,
   private val contentDetector: ContentDetector,
+  private val readProgressRepository: ReadProgressRepository,
 ) {
   fun getWebPubManifestInternal(
     principal: KomgaPrincipal,
@@ -345,4 +353,48 @@ class CommonBookController(
         throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping(
+    value = [
+      "api/v1/books/{bookId}/progression",
+      "opds/v2/books/{bookId}/progression",
+    ],
+    produces = [MEDIATYPE_PROGRESSION_JSON_VALUE],
+  )
+  fun getProgression(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<R2Progression> =
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      contentRestrictionChecker.checkContentRestriction(principal.user, book)
+
+      readProgressRepository.findByBookIdAndUserIdOrNull(bookId, principal.user.id)?.let {
+        ResponseEntity.ok(it.toR2Progression())
+      } ?: ResponseEntity.noContent().build()
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @PutMapping(
+    value = [
+      "api/v1/books/{bookId}/progression",
+      "opds/v2/books/{bookId}/progression",
+    ],
+  )
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun markProgression(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+    @RequestBody progression: R2Progression,
+  ) {
+    bookRepository.findByIdOrNull(bookId)?.let { book ->
+      contentRestrictionChecker.checkContentRestriction(principal.user, book)
+
+      try {
+        bookLifecycle.markProgression(book, principal.user, progression)
+      } catch (e: IllegalStateException) {
+        throw ResponseStatusException(HttpStatus.CONFLICT, e.message)
+      } catch (e: IllegalArgumentException) {
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
+      }
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
 }

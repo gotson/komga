@@ -240,6 +240,8 @@ class WebPubGenerator(
 
   protected fun getExtraLinkProperties(): Map<String, Map<String, Any>> = emptyMap()
 
+  protected fun getExtraLinks(bookId: String): List<WPLinkDto> = emptyList()
+
   private fun BookDto.toWPLinkDtos(uriBuilder: UriComponentsBuilder): List<WPLinkDto> {
     val komgaMediaType = KomgaMediaType.fromMediaType(media.mediaType)
     return buildList {
@@ -250,6 +252,8 @@ class WebPubGenerator(
         add(WPLinkDto(href = uriBuilder.cloneBuilder().path("books/$id/manifest/divina").toUriString(), type = MEDIATYPE_DIVINA_JSON_VALUE, properties = getExtraLinkProperties()))
       // main acquisition link
       add(WPLinkDto(rel = OpdsLinkRel.ACQUISITION, type = komgaMediaType?.exportType ?: media.mediaType, href = uriBuilder.cloneBuilder().path("books/$id/file").toUriString(), properties = getExtraLinkProperties()))
+      // extra links
+      addAll(getExtraLinks(id))
     }
   }
 
