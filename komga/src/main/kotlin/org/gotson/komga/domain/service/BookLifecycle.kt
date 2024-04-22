@@ -448,7 +448,6 @@ class BookLifecycle(
         MediaProfile.EPUB -> {
           val href =
             newProgression.locator.href
-              .replaceBefore("/resource/", "").removePrefix("/resource/")
               .replaceAfter("#", "").removeSuffix("#")
               .let { UriUtils.decode(it, Charsets.UTF_8) }
           require(href in media.files.map { it.fileName }) { "Resource does not exist in book: $href" }
