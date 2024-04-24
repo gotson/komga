@@ -1,3 +1,11 @@
+# [1.11.1](https://github.com/gotson/komga/compare/1.11.0...1.11.1) (2024-04-24)
+## 🐛 Fixes
+**api**
+- first unread cover should include in progress books ([77c15f9](https://github.com/gotson/komga/commits/77c15f9))
+
+**unscoped**
+- sync progress not compatible between Cantook and web reader ([0211096](https://github.com/gotson/komga/commits/0211096)), closes [#1477](https://github.com/gotson/komga/issues/1477)
+
 # [1.11.0](https://github.com/gotson/komga/compare/1.10.4...1.11.0) (2024-04-18)
 ## 🚀 Features
 **opds**
