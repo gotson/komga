@@ -11,6 +11,8 @@ logging:
   level:
     org.apache.activemq.audit.message: WARN
     org.gotson.komga: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    reactor.netty.http.client: DEBUG
 #    org.jooq: DEBUG
 #    org.jooq.tools.LoggerListener: DEBUG
 #    web: DEBUG

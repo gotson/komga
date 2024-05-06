@@ -64,3 +64,6 @@ fun LocalDateTime.toZonedDateTime(): ZonedDateTime =
 
 fun LocalDateTime.toCurrentTimeZone(): LocalDateTime =
   this.atZone(ZoneId.of("Z")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+
+fun Iterable<String>.contains(s: String, ignoreCase: Boolean = false): Boolean =
+  any { it.equals(s, ignoreCase) }
