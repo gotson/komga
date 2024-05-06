@@ -6,19 +6,13 @@ import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.interfaces.api.kobo.dto.AuthDto
 import org.gotson.komga.interfaces.api.kobo.dto.ResourcesDto
 import org.gotson.komga.interfaces.api.kobo.dto.TestsDto
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -31,15 +25,15 @@ const val X_KOBO_USERKEY = "X-Kobo-userkey"
 class KoboController(
   private val koboProxy: KoboProxy,
 ) {
-
-//  @GetMapping("/v1/initialization")
+  //  @GetMapping("/v1/initialization")
   fun initialization(): ResponseEntity<ResourcesDto> {
-    val resources = try {
+    val resources =
+      try {
         koboProxy.proxyCurrentRequest().body?.get("Resources")
-    } catch (e: Exception) {
-      logger.warn { "Failed to get response from Kobo's init endpoint, fallback to noproxy" }
-      null
-    } ?: koboProxy.nativeKoboResources
+      } catch (e: Exception) {
+        logger.warn { "Failed to get response from Kobo's init endpoint, fallback to noproxy" }
+        null
+      } ?: koboProxy.nativeKoboResources
 
     return ResponseEntity.ok()
       .header("x-kobo-apitoken", "e30=")
@@ -50,12 +44,13 @@ class KoboController(
   fun authDevice(
     @RequestBody body: JsonNode,
   ): AuthDto {
-    val response = AuthDto(
-      accessToken = RandomStringUtils.randomAlphanumeric(24),
-      refreshToken = RandomStringUtils.randomAlphanumeric(24),
-      trackingId = UUID.randomUUID().toString(),
-      userKey = body.get("UserKey").asText(),
-    )
+    val response =
+      AuthDto(
+        accessToken = RandomStringUtils.randomAlphanumeric(24),
+        refreshToken = RandomStringUtils.randomAlphanumeric(24),
+        trackingId = UUID.randomUUID().toString(),
+        userKey = body.get("UserKey").asText(),
+      )
 
     logger.debug { "Auth response: $response" }
     return response
@@ -69,17 +64,18 @@ class KoboController(
     testKey = userKey ?: "",
   )
 
+  @GetMapping("v1/library/sync")
+  fun syncLibrary(): ResponseEntity<JsonNode> {
+    return koboProxy.proxyCurrentRequest(includeSyncToken = true)
+  }
+
   @RequestMapping(
     value = ["{*path}"],
     method = [RequestMethod.GET, RequestMethod.PUT, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD, RequestMethod.PATCH],
   )
   fun catchAll(
-    @PathVariable path: String,
-    @RequestParam params: MultiValueMap<String, String>,
-    @RequestHeader headers: HttpHeaders,
     @RequestBody body: Any?,
-    method: HttpMethod,
-  ): Any {
+  ): ResponseEntity<JsonNode> {
     return koboProxy.proxyCurrentRequest(body)
   }
 }

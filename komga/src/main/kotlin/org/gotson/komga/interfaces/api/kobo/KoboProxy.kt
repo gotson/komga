@@ -3,6 +3,8 @@ package org.gotson.komga.interfaces.api.kobo
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.gotson.komga.domain.model.KomgaSyncToken
+import org.gotson.komga.infrastructure.kobo.KomgaSyncTokenGenerator
 import org.gotson.komga.language.contains
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -21,67 +23,110 @@ import kotlin.time.toJavaDuration
 
 private val logger = KotlinLogging.logger {}
 
+const val X_KOBO_SYNCTOKEN = "x-kobo-synctoken"
+
 @Component
 class KoboProxy(
   private val objectMapper: ObjectMapper,
+  private val komgaSyncTokenGenerator: KomgaSyncTokenGenerator,
 ) {
-  private val koboApiClient = RestClient.builder()
-    .baseUrl("https://storeapi.kobo.com")
-    .requestFactory(
-      ReactorNettyClientRequestFactory().apply {
-        setConnectTimeout(1.minutes.toJavaDuration())
-        setReadTimeout(1.minutes.toJavaDuration())
-        setExchangeTimeout(1.minutes.toJavaDuration())
-      },
-    )
-    .build()
+  private val koboApiClient =
+    RestClient.builder()
+      .baseUrl("https://storeapi.kobo.com")
+      .requestFactory(
+        ReactorNettyClientRequestFactory().apply {
+          setConnectTimeout(1.minutes.toJavaDuration())
+          setReadTimeout(1.minutes.toJavaDuration())
+          setExchangeTimeout(1.minutes.toJavaDuration())
+        },
+      )
+      .build()
 
   private val pathRegex = """\/kobo\/[-\w]*(.*)""".toRegex()
 
-  private val headersOutFilter = setOf(
-    HttpHeaders.AUTHORIZATION,
-    HttpHeaders.USER_AGENT,
-    HttpHeaders.ACCEPT,
-    HttpHeaders.ACCEPT_LANGUAGE,
-  )
+  private val headersOutInclude =
+    setOf(
+      HttpHeaders.AUTHORIZATION,
+      HttpHeaders.USER_AGENT,
+      HttpHeaders.ACCEPT,
+      HttpHeaders.ACCEPT_LANGUAGE,
+    )
+
+  private val headersOutExclude =
+    setOf(
+      X_KOBO_SYNCTOKEN,
+    )
 
   private fun isKoboHeader(headerName: String) = headerName.startsWith("x-kobo-", true)
 
-  fun proxyCurrentRequest(body: Any? = null): ResponseEntity<JsonNode> {
+  fun proxyCurrentRequest(
+    body: Any? = null,
+    includeSyncToken: Boolean = false,
+  ): ResponseEntity<JsonNode> {
     val requestAttributes = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes? ?: throw IllegalStateException("Could not get current request")
     val request = requestAttributes.request
     val (path) = pathRegex.find(request.requestURI)?.destructured ?: throw IllegalStateException("Could not get path from current request")
     logger.debug { "Proxy path: $path" }
 
-    val response = koboApiClient.method(HttpMethod.valueOf(request.method))
-      .uri { uriBuilder ->
-        uriBuilder.path(path)
-          .queryParams(LinkedMultiValueMap(request.parameterMap.mapValues { it.value.toList() }))
-          .build()
-          .also { logger.debug { "Proxy URL: $it" } }
+    val syncToken =
+      if (includeSyncToken) {
+        val syncTokenB64 = request.getHeader(X_KOBO_SYNCTOKEN)
+        if (syncTokenB64 != null)
+          komgaSyncTokenGenerator.fromBase64(syncTokenB64)
+        else
+          null
+      } else {
+        null
       }
-      .headers { headersOut ->
-        request.headerNames.toList()
-          .filter { headersOutFilter.contains(it, true) || isKoboHeader(it) }
-          .forEach {
-            headersOut.addAll(it, request.getHeaders(it)?.toList() ?: emptyList())
+
+    val response =
+      koboApiClient.method(HttpMethod.valueOf(request.method))
+        .uri { uriBuilder ->
+          uriBuilder.path(path)
+            .queryParams(LinkedMultiValueMap(request.parameterMap.mapValues { it.value.toList() }))
+            .build()
+            .also { logger.debug { "Proxy URL: $it" } }
+        }
+        .headers { headersOut ->
+          request.headerNames.toList()
+            .filterNot { headersOutExclude.contains(it, true) }
+            .filter { headersOutInclude.contains(it, true) || isKoboHeader(it) }
+            .forEach {
+              headersOut.addAll(it, request.getHeaders(it)?.toList() ?: emptyList())
+            }
+          if (includeSyncToken && syncToken != null) {
+            headersOut.add(X_KOBO_SYNCTOKEN, syncToken.rawKoboSyncToken)
           }
-        logger.debug { "Headers out: $headersOut" }
-      }
-      .apply { if (body != null) body(body) }
-      .retrieve()
-      .onStatus(HttpStatusCode::isError) { _, response ->
-        throw ResponseStatusException(response.statusCode, response.statusText)
-      }
-      .toEntity<JsonNode>()
+          logger.debug { "Headers out: $headersOut" }
+        }
+        .apply { if (body != null) body(body) }
+        .retrieve()
+        .onStatus(HttpStatusCode::isError) { _, response ->
+          throw ResponseStatusException(response.statusCode, response.statusText)
+        }
+        .toEntity<JsonNode>()
 
     logger.debug { "Kobo response code: ${response.statusCode}" }
     logger.debug { "Kobo response headers: ${response.headers}" }
     logger.debug { "Kobo response body: ${response.body}" }
 
+    val headersToReturn =
+      response.headers
+        .filterKeys { isKoboHeader(it) }
+        .toMutableMap()
+        .apply {
+          if (keys.contains(X_KOBO_SYNCTOKEN, true)) {
+            val koboSyncToken = this[X_KOBO_SYNCTOKEN]?.firstOrNull()
+            if (koboSyncToken != null) {
+              val komgaSyncToken = syncToken?.copy(rawKoboSyncToken = koboSyncToken) ?: KomgaSyncToken(rawKoboSyncToken = koboSyncToken)
+              this[X_KOBO_SYNCTOKEN] = listOf(komgaSyncTokenGenerator.toBase64(komgaSyncToken))
+            }
+          }
+        }
+
     return ResponseEntity(
       response.body,
-      LinkedMultiValueMap(response.headers.filterKeys { isKoboHeader(it) }),
+      LinkedMultiValueMap(headersToReturn),
       response.statusCode,
     )
   }
