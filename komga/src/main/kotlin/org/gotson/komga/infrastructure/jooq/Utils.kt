@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gotson.komga.domain.model.AllowExclude
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.main.Tables
@@ -66,6 +67,20 @@ fun DSLContext.insertTempStrings(
 }
 
 fun DSLContext.selectTempStrings() = this.select(Tables.TEMP_STRING_LIST.STRING).from(Tables.TEMP_STRING_LIST)
+
+fun BookSearch.toCondition(): Condition {
+  var c: Condition = DSL.trueCondition()
+
+  if (libraryIds != null) c = c.and(Tables.BOOK.LIBRARY_ID.`in`(libraryIds))
+  if (!seriesIds.isNullOrEmpty()) c = c.and(Tables.BOOK.SERIES_ID.`in`(seriesIds))
+  searchTerm?.let { c = c.and(Tables.BOOK_METADATA.TITLE.containsIgnoreCase(it)) }
+  if (!mediaStatus.isNullOrEmpty()) c = c.and(Tables.MEDIA.STATUS.`in`(mediaStatus))
+  if (deleted == true) c = c.and(Tables.BOOK.DELETED_DATE.isNotNull)
+  if (deleted == false) c = c.and(Tables.BOOK.DELETED_DATE.isNull)
+  if (releasedAfter != null) c = c.and(Tables.BOOK_METADATA.RELEASE_DATE.gt(releasedAfter))
+
+  return c
+}
 
 fun ContentRestrictions.toCondition(dsl: DSLContext): Condition {
   val ageAllowed =

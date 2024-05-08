@@ -56,6 +56,9 @@ fun String.stripAccents(): String = StringUtils.stripAccents(this)
 
 fun LocalDate.toDate(): Date = Date.from(this.atStartOfDay(ZoneId.of("Z")).toInstant())
 
+/**
+ * Warning: this is not idempotent
+ */
 fun LocalDateTime.toUTC(): LocalDateTime =
   atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
 
