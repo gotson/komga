@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.domain.persistence.SyncPointRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.core.session.SessionRegistry
@@ -21,6 +22,7 @@ class KomgaUserLifecycle(
   private val userRepository: KomgaUserRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val authenticationActivityRepository: AuthenticationActivityRepository,
+  private val syncPointRepository: SyncPointRepository,
   private val passwordEncoder: PasswordEncoder,
   private val sessionRegistry: SessionRegistry,
   private val transactionTemplate: TransactionTemplate,
@@ -78,6 +80,7 @@ class KomgaUserLifecycle(
     transactionTemplate.executeWithoutResult {
       readProgressRepository.deleteByUserId(user.id)
       authenticationActivityRepository.deleteByUser(user)
+      syncPointRepository.deleteByUserId(user.id)
       userRepository.delete(user.id)
     }
 

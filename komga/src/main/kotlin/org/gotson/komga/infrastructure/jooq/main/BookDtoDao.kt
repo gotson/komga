@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.ContentRestrictions
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
@@ -442,6 +443,7 @@ class BookDtoDao(
     if (libraryIds != null) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
     if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
     if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
+    if (!mediaProfile.isNullOrEmpty()) c = c.and(m.MEDIA_TYPE.`in`(mediaProfile.flatMap { profile -> MediaType.matchingMediaProfile(profile).map { it.type } }.toSet()))
     if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
     if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
     if (releasedAfter != null) c = c.and(d.RELEASE_DATE.gt(releasedAfter))

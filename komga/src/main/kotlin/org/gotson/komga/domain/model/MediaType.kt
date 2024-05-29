@@ -10,6 +10,8 @@ enum class MediaType(val type: String, val profile: MediaProfile, val fileExtens
   ;
 
   companion object {
-    fun fromMediaType(mediaType: String?): MediaType? = values().firstOrNull { it.type == mediaType }
+    fun fromMediaType(mediaType: String?): MediaType? = entries.firstOrNull { it.type == mediaType }
+
+    fun matchingMediaProfile(mediaProfile: MediaProfile): Collection<MediaType> = entries.filter { it.profile == mediaProfile }
   }
 }
