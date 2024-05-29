@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.ContentRestrictions
+import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
@@ -15,11 +16,14 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.interfaces.api.rest.dto.ApiKeyDto
+import org.gotson.komga.interfaces.api.rest.dto.ApiKeyRequestDto
 import org.gotson.komga.interfaces.api.rest.dto.AuthenticationActivityDto
 import org.gotson.komga.interfaces.api.rest.dto.PasswordUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.UserCreationDto
 import org.gotson.komga.interfaces.api.rest.dto.UserDto
 import org.gotson.komga.interfaces.api.rest.dto.UserUpdateDto
+import org.gotson.komga.interfaces.api.rest.dto.redacted
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springdoc.core.converters.models.PageableAsQueryParam
 import org.springframework.core.env.Environment
@@ -239,4 +243,37 @@ class UserController(
       authenticationActivityRepository.findMostRecentByUser(user)?.toDto()
         ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+  @GetMapping("me/api-keys")
+  fun getApiKeys(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): Collection<ApiKeyDto> {
+    if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    return userRepository.findApiKeyByUserId(principal.user.id).map { it.toDto().redacted() }
+  }
+
+  @PostMapping("me/api-keys")
+  fun createApiKey(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @Valid @RequestBody apiKeyRequest: ApiKeyRequestDto,
+  ): ApiKeyDto {
+    if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    return try {
+      userLifecycle.createApiKey(principal.user, apiKeyRequest.comment)?.toDto()
+    } catch (e: DuplicateNameException) {
+      throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.code)
+    }
+      ?: throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Failed to generate API key")
+  }
+
+  @DeleteMapping("me/api-keys/{keyId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun deleteApiKey(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable keyId: String,
+  ) {
+    if (!userRepository.existsApiKeyByIdAndUserId(keyId, principal.user.id))
+      throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    userRepository.deleteApiKeyByIdAndUserId(keyId, principal.user.id)
+  }
 }

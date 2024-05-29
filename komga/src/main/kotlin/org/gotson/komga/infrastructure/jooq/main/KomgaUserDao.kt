@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.AllowExclude
+import org.gotson.komga.domain.model.ApiKey
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.KomgaUserRepository
@@ -24,12 +25,28 @@ class KomgaUserDao(
   private val ul = Tables.USER_LIBRARY_SHARING
   private val us = Tables.USER_SHARING
   private val ar = Tables.ANNOUNCEMENTS_READ
+  private val uak = Tables.USER_API_KEY
 
   override fun count(): Long = dsl.fetchCount(u).toLong()
 
   override fun findAll(): Collection<KomgaUser> =
     selectBase()
       .fetchAndMap()
+
+  override fun findApiKeyByUserId(userId: String): Collection<ApiKey> =
+    dsl.selectFrom(uak)
+      .where(uak.USER_ID.eq(userId))
+      .fetchInto(uak)
+      .map {
+        ApiKey(
+          id = it.id,
+          userId = it.userId,
+          key = it.apiKey,
+          comment = it.comment,
+          createdDate = it.createdDate.toCurrentTimeZone(),
+          lastModifiedDate = it.lastModifiedDate.toCurrentTimeZone(),
+        )
+      }
 
   override fun findByIdOrNull(id: String): KomgaUser? =
     selectBase()
@@ -100,6 +117,15 @@ class KomgaUserDao(
     insertSharingRestrictions(user)
   }
 
+  override fun insert(apiKey: ApiKey) {
+    dsl.insertInto(uak)
+      .set(uak.ID, apiKey.id)
+      .set(uak.USER_ID, apiKey.userId)
+      .set(uak.API_KEY, apiKey.key)
+      .set(uak.COMMENT, apiKey.comment)
+      .execute()
+  }
+
   @Transactional
   override fun update(user: KomgaUser) {
     dsl.update(u)
@@ -168,6 +194,7 @@ class KomgaUserDao(
 
   @Transactional
   override fun delete(userId: String) {
+    dsl.deleteFrom(uak).where(uak.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(ar).where(ar.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(us).where(us.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(ul).where(ul.USER_ID.equal(userId)).execute()
@@ -176,10 +203,25 @@ class KomgaUserDao(
 
   @Transactional
   override fun deleteAll() {
+    dsl.deleteFrom(uak).execute()
     dsl.deleteFrom(ar).execute()
     dsl.deleteFrom(us).execute()
     dsl.deleteFrom(ul).execute()
     dsl.deleteFrom(u).execute()
+  }
+
+  override fun deleteApiKeyByIdAndUserId(
+    apiKeyId: String,
+    userId: String,
+  ) {
+    dsl.deleteFrom(uak)
+      .where(uak.ID.eq(apiKeyId))
+      .and(uak.USER_ID.eq(userId))
+      .execute()
+  }
+
+  override fun deleteApiKeyByUserId(userId: String) {
+    dsl.deleteFrom(uak).where(uak.USER_ID.eq(userId)).execute()
   }
 
   override fun findAnnouncementIdsReadByUserId(userId: String): Set<String> =
@@ -194,9 +236,28 @@ class KomgaUserDao(
         .where(u.EMAIL.equalIgnoreCase(email)),
     )
 
+  override fun existsApiKeyByIdAndUserId(
+    apiKeyId: String,
+    userId: String,
+  ): Boolean =
+    dsl.fetchExists(uak, uak.ID.eq(apiKeyId).and(uak.USER_ID.eq(userId)))
+
+  override fun existsApiKeyByCommentAndUserId(
+    comment: String,
+    userId: String,
+  ): Boolean =
+    dsl.fetchExists(uak, uak.COMMENT.equalIgnoreCase(comment).and(uak.USER_ID.eq(userId)))
+
   override fun findByEmailIgnoreCaseOrNull(email: String): KomgaUser? =
     selectBase()
       .where(u.EMAIL.equalIgnoreCase(email))
+      .fetchAndMap()
+      .firstOrNull()
+
+  override fun findByApiKeyOrNull(apiKey: String): KomgaUser? =
+    selectBase()
+      .leftJoin(uak).on(u.ID.eq(uak.USER_ID))
+      .where(uak.API_KEY.eq(apiKey))
       .fetchAndMap()
       .firstOrNull()
 }

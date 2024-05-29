@@ -62,6 +62,9 @@ fun LocalDate.toDate(): Date = Date.from(this.atStartOfDay(ZoneId.of("Z")).toIns
 fun LocalDateTime.toUTC(): LocalDateTime =
   atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
 
+fun LocalDateTime.toUTCZoned(): ZonedDateTime =
+  atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC)
+
 fun LocalDateTime.toZonedDateTime(): ZonedDateTime =
   this.atZone(ZoneId.of("Z")).withZoneSameInstant(ZoneId.systemDefault())
 

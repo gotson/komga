@@ -4,6 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.AuthenticationActivity
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
+import org.gotson.komga.infrastructure.security.apikey.ApiKeyAuthenticationToken
 import org.springframework.context.event.EventListener
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.RememberMeAuthenticationToken
@@ -28,6 +29,7 @@ class LoginListener(
     val source =
       when (event.source) {
         is OAuth2LoginAuthenticationToken -> "OAuth2:${(event.source as OAuth2LoginAuthenticationToken).clientRegistration.clientName}"
+        is ApiKeyAuthenticationToken -> "ApiKey"
         is UsernamePasswordAuthenticationToken -> "Password"
         is RememberMeAuthenticationToken -> "RememberMe"
         else -> null
@@ -52,6 +54,7 @@ class LoginListener(
     val source =
       when (event.source) {
         is OAuth2LoginAuthenticationToken -> "OAuth2:${(event.source as OAuth2LoginAuthenticationToken).clientRegistration.clientName}"
+        is ApiKeyAuthenticationToken -> "ApiKey"
         is UsernamePasswordAuthenticationToken -> "Password"
         is RememberMeAuthenticationToken -> "RememberMe"
         else -> null
