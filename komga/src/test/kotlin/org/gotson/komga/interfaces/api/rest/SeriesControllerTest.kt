@@ -1067,6 +1067,7 @@ class SeriesControllerTest(
             media.copy(
               status = Media.Status.READY,
               pages = (1..10).map { BookPage("$it", "image/jpeg") },
+              pageCount = 10,
             ),
           )
         }

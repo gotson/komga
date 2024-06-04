@@ -153,7 +153,7 @@ class ThumbnailLifecycle(
 
   private fun getMetadata(url: URL): ThumbnailMetadata =
     ThumbnailMetadata(
-      mediaType = contentDetector.detectMediaType(url.toURI().toPath().inputStream()),
+      mediaType = contentDetector.detectMediaType(url.toURI().toPath()),
       fileSize = Path.of(url.toURI()).fileSize(),
       dimension = imageAnalyzer.getDimension(url.toURI().toPath().inputStream()) ?: Dimension(0, 0),
     )

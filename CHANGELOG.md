@@ -1,3 +1,106 @@
+# [1.8.2](https://github.com/gotson/komga/compare/1.8.1...1.8.2) (2023-11-28)
+## 🐛 Fixes
+**epubreader**
+- page cannot load because of incorrect css mime type ([dbc5b3d](https://github.com/gotson/komga/commits/dbc5b3d))
+
+# [1.8.1](https://github.com/gotson/komga/compare/1.8.0...1.8.1) (2023-11-28)
+## 🐛 Fixes
+**api**
+- set X-Frame-Options header to same origin for epubreader ([85cae8a](https://github.com/gotson/komga/commits/85cae8a))
+
+# [1.8.0](https://github.com/gotson/komga/compare/1.7.2...1.8.0) (2023-11-28)
+## 🚀 Features
+**api**
+- epub ebook support ([a7252f8](https://github.com/gotson/komga/commits/a7252f8)), closes [#221](https://github.com/gotson/komga/issues/221)
+
+**webui**
+- epubreader ([3d69e19](https://github.com/gotson/komga/commits/3d69e19)), closes [#221](https://github.com/gotson/komga/issues/221)
+
+## 🐛 Fixes
+**komga**
+- better error handling of sse connections ([ab34781](https://github.com/gotson/komga/commits/ab34781))
+
+## 🔄️ Changes
+**komga**
+- introduce media profile for PDF ([d6680a4](https://github.com/gotson/komga/commits/d6680a4))
+- make Media.pageCount explicit ([21e3e7a](https://github.com/gotson/komga/commits/21e3e7a))
+
+**webui**
+- remove unused imports ([92b721c](https://github.com/gotson/komga/commits/92b721c))
+
+## 🛠  Build
+**dependabot**
+- pr format ([35f9196](https://github.com/gotson/komga/commits/35f9196))
+
+**komga**
+- fix epub tests ([f3a0a32](https://github.com/gotson/komga/commits/f3a0a32))
+
+**tests**
+- only check conveyor modules on push ([06d0d4a](https://github.com/gotson/komga/commits/06d0d4a))
+
+**webui**
+- use node 18 ([dedb01f](https://github.com/gotson/komga/commits/dedb01f))
+
+## 📝 Documentation
+
+- update readme description ([c93760b](https://github.com/gotson/komga/commits/c93760b))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([6b5eba1](https://github.com/gotson/komga/commits/6b5eba1))
+- translated using Weblate (French) ([2bf2df9](https://github.com/gotson/komga/commits/2bf2df9))
+- translated using Weblate (Japanese) ([d199684](https://github.com/gotson/komga/commits/d199684))
+
+## ⚙️ Dependencies
+**ci**
+- bump dessant/lock-threads from 4 to 5 ([9db0f07](https://github.com/gotson/komga/commits/9db0f07))
+- bump hydraulic-software/conveyor from 12.0 to 12.1 ([82e5887](https://github.com/gotson/komga/commits/82e5887))
+
+**webui**
+- bump axios from 1.5.0 to 1.6.0 in /komga-webui ([aa65180](https://github.com/gotson/komga/commits/aa65180))
+
+# [1.7.2](https://github.com/gotson/komga/compare/1.7.1...1.7.2) (2023-11-09)
+## 🐛 Fixes
+**komga**
+- check temp directory exists and is writable on startup ([4999edd](https://github.com/gotson/komga/commits/4999edd)), closes [#1283](https://github.com/gotson/komga/issues/1283)
+- task FixThumbnailsWithoutMetadata could not fix sidecar covers ([9d2d007](https://github.com/gotson/komga/commits/9d2d007)), closes [#1287](https://github.com/gotson/komga/issues/1287)
+
+## 🔄️ Changes
+**komga**
+- ktlint format ([ea52a5e](https://github.com/gotson/komga/commits/ea52a5e))
+
+## 🛠  Build
+**conveyor**
+- remove space in windows installer name ([d51fdeb](https://github.com/gotson/komga/commits/d51fdeb))
+- adjust JDK module list ([74d04d0](https://github.com/gotson/komga/commits/74d04d0))
+- bump conveyor from 11.4 to 12.0 ([e30a93b](https://github.com/gotson/komga/commits/e30a93b))
+- change windows installer name ([2c87700](https://github.com/gotson/komga/commits/2c87700))
+- hard-code module list ([5911431](https://github.com/gotson/komga/commits/5911431))
+- fix config file ([b80de03](https://github.com/gotson/komga/commits/b80de03))
+- use the Apple notarization API ([0704e9f](https://github.com/gotson/komga/commits/0704e9f))
+
+**jreleaser**
+- add release introduction to the release notes ([d52ba95](https://github.com/gotson/komga/commits/d52ba95))
+
+**release**
+- upload conveyor logs ([e631313](https://github.com/gotson/komga/commits/e631313))
+- fix secret decoding ([0995c26](https://github.com/gotson/komga/commits/0995c26))
+- create secret folder before decoding ([4ddd51e](https://github.com/gotson/komga/commits/4ddd51e))
+
+**tests**
+- use conveyor detect config file ([0f6b7cc](https://github.com/gotson/komga/commits/0f6b7cc))
+- add missing config for conveyor ([39825e4](https://github.com/gotson/komga/commits/39825e4))
+- build jdk module list and compare with historical ([33e10f5](https://github.com/gotson/komga/commits/33e10f5))
+
+## 🌐 Translation
+
+- translated using Weblate (Chinese (Simplified)) ([091015e](https://github.com/gotson/komga/commits/091015e))
+- translated using Weblate (Finnish) ([44a8db0](https://github.com/gotson/komga/commits/44a8db0))
+
+## ⚙️ Dependencies
+**komga**
+- bump nightmonkeys imageio from 0.6.1 to 0.6.2 ([25eb6c0](https://github.com/gotson/komga/commits/25eb6c0)), closes [#1289](https://github.com/gotson/komga/issues/1289)
+
 # [1.7.1](https://github.com/gotson/komga/compare/1.7.0...1.7.1) (2023-11-02)
 ## 🐛 Fixes
 **docker**

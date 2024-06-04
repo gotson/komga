@@ -16,11 +16,11 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
+import org.gotson.komga.interfaces.api.WebPubGenerator
 import org.gotson.komga.interfaces.api.checkContentRestriction
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
 import org.gotson.komga.interfaces.api.dto.OpdsLinkRel
 import org.gotson.komga.interfaces.api.dto.WPLinkDto
-import org.gotson.komga.interfaces.api.dto.toOpdsPublicationDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FacetDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FeedDto
 import org.gotson.komga.interfaces.api.opds.v2.dto.FeedGroupDto
@@ -58,6 +58,7 @@ class Opds2Controller(
   private val seriesDtoRepository: SeriesDtoRepository,
   private val bookDtoRepository: BookDtoRepository,
   private val referentialRepository: ReferentialRepository,
+  private val webPubGenerator: WebPubGenerator,
 ) {
   private fun linkStart() = WPLinkDto(
     title = "Home",
@@ -154,14 +155,14 @@ class Opds2Controller(
       principal.user.id,
       PageRequest.of(0, RECOMMENDED_ITEMS_NUMBER, Sort.by(Sort.Order.desc("readProgress.readDate"))),
       principal.user.restrictions,
-    ).map { it.toOpdsPublicationDto(true) }
+    ).map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
     val onDeck = bookDtoRepository.findAllOnDeck(
       principal.user.id,
       authorizedLibraryIds,
       Pageable.ofSize(RECOMMENDED_ITEMS_NUMBER),
       principal.user.restrictions,
-    ).map { it.toOpdsPublicationDto(true) }
+    ).map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
     val latestBooks = bookDtoRepository.findAll(
       BookSearchWithReadProgress(
@@ -172,7 +173,7 @@ class Opds2Controller(
       principal.user.id,
       PageRequest.of(0, RECOMMENDED_ITEMS_NUMBER, Sort.by(Sort.Order.desc("createdDate"))),
       principal.user.restrictions,
-    ).map { it.toOpdsPublicationDto(true) }
+    ).map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
     val latestSeries = seriesDtoRepository.findAll(
       SeriesSearchWithReadProgress(
@@ -244,7 +245,7 @@ class Opds2Controller(
       principal.user.id,
       PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("readProgress.readDate"))),
       principal.user.restrictions,
-    ).map { it.toOpdsPublicationDto(true) }
+    ).map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
     val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/keep-reading")
 
@@ -279,7 +280,7 @@ class Opds2Controller(
       authorizedLibraryIds,
       page,
       principal.user.restrictions,
-    ).map { it.toOpdsPublicationDto(true) }
+    ).map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
     val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/on-deck")
 
@@ -318,7 +319,7 @@ class Opds2Controller(
       principal.user.id,
       PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("createdDate"))),
       principal.user.restrictions,
-    ).map { it.toOpdsPublicationDto(true) }
+    ).map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
     val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/books/latest")
 
@@ -570,9 +571,7 @@ class Opds2Controller(
         principal.user.restrictions,
       )
 
-      val entries = booksPage.map { bookDto ->
-        bookDto.toOpdsPublicationDto(true)
-      }
+      val entries = booksPage.map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
       val uriBuilder = uriBuilder("readlists/$id")
 
@@ -625,7 +624,7 @@ class Opds2Controller(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.numberSort")))
 
       val entries = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable, principal.user.restrictions)
-        .map { bookDto -> bookDto.toOpdsPublicationDto(true) }
+        .map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
       val uriBuilder = uriBuilder("series/$id")
 
@@ -690,7 +689,7 @@ class Opds2Controller(
         principal.user.id,
         pageable,
         principal.user.restrictions,
-      ).map { it.toOpdsPublicationDto(true) }
+      ).map { webPubGenerator.toOpdsPublicationDto(it, true) }
 
     val resultsCollections = collectionRepository.findAll(
       principal.user.getAuthorizedLibraryIds(null),

@@ -90,6 +90,7 @@ class BookLifecycleTest(
         media.copy(
           status = Media.Status.OUTDATED,
           pages = (1..10).map { BookPage("$it", "image/jpeg") },
+          pageCount = 10,
         ),
       )
     }
@@ -130,6 +131,7 @@ class BookLifecycleTest(
         media.copy(
           status = Media.Status.OUTDATED,
           pages = (1..10).map { BookPage("$it", "image/jpeg") },
+          pageCount = 10,
         ),
       )
     }

@@ -7,7 +7,7 @@ Thanks a lot for contributing to Komga!
 You will need:
 
 - Java JDK version 17 & 21
-- Nodejs version 16+
+- Nodejs version 18+ (check the `.nvmrc` file)
 
 ## Setting up the project
 

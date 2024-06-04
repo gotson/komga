@@ -113,7 +113,6 @@ class PageHashDaoTest(
             fileSize = it.toLong(),
           )
         },
-        files = listOf("ComicInfo.xml"),
         comment = "comment",
         bookId = books.first().id,
       )

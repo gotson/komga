@@ -157,7 +157,7 @@ class ComicInfoProvider(
 
   private fun getComicInfo(book: BookWithMedia): ComicInfo? {
     try {
-      if (book.media.files.none { it == COMIC_INFO }) {
+      if (book.media.files.none { it.fileName == COMIC_INFO }) {
         logger.debug { "Book does not contain any $COMIC_INFO file: $book" }
         return null
       }

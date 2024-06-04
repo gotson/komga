@@ -6,6 +6,7 @@ import i18n from '@/i18n'
 import {MediaStatus} from '@/types/enum-books'
 import {getFileSize} from '@/functions/file'
 import {ReadListDto} from '@/types/komga-readlists'
+import {getBookReadRouteFromMediaProfile} from '@/functions/book-format'
 
 export enum ItemTypes {
   BOOK, SERIES, COLLECTION, READLIST
@@ -169,7 +170,7 @@ export class BookItem extends Item<BookDto> {
 
   fabTo(): RawLocation {
     return {
-      name: 'read-book',
+      name: getBookReadRouteFromMediaProfile(this.item?.media?.mediaProfile),
       params: {bookId: this.item.id},
       query: {context: this.item?.context?.origin, contextId: this.item?.context?.id},
     }

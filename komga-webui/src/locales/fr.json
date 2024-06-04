@@ -204,11 +204,14 @@
     "collections": "Collections",
     "create": "Créer",
     "delete": "Supprimer",
+    "dimension": "l: {width}, h: {height}",
+    "discard": "Renoncer",
     "disk_space": "Espace disque",
     "dismiss": "Masquer",
     "download": "Télécharger",
     "drag_drop": "glissez-déposez",
     "email": "E-mail",
+    "epub": "Epub",
     "filename": "Nom du fichier",
     "filter_no_matches": "Aucun résultats avec les filtres actuels",
     "genre": "Genre",
@@ -230,12 +233,14 @@
     "pages_left": "Plus de page | 1 page restante | {count} pages restantes",
     "pages_n": "Aucune page | 1 page | {count} pages",
     "password": "Mot de passe",
+    "pdf": "PDF",
     "pending_tasks": "Aucune tâche en cours | 1 tâche en cours | {count} tâches en cours",
     "publisher": "Éditeur",
     "read": "Lire",
     "read_on": "Lu le {date}",
     "readlist": "Liste de lecture",
     "readlists": "Listes de lecture",
+    "remember-me": "Se souvenir de moi",
     "required": "Requis",
     "reset_filters": "Réinitialiser les filtres",
     "roles": "Rôles",
@@ -432,8 +437,10 @@
       "field_oneshotsdirectory": "Répertoire des One-shots",
       "field_repair_extensions": "Réparer automatiquement les extensions de fichier incorrectes",
       "field_root_folder": "Dossier racine",
+      "field_scan_interval": "Intervalle de Scan",
       "field_scanner_empty_trash_after_scan": "Vider la corbeille automatiquement après chaque analyse",
       "field_scanner_force_directory_modified_time": "Forcer l'heure de modification des dossiers",
+      "field_scanner_scan_startup": "Scan au démarrage",
       "field_series_cover": "Couverture de la série",
       "file_browser_dialog_button_confirm": "Sélectionner",
       "file_browser_dialog_title": "Dossier racine de la bibliothèque",
@@ -444,6 +451,8 @@
       "label_import_epub": "Importer les métadonnées des fichiers EPUB",
       "label_import_local": "Importer les médias locaux",
       "label_import_mylar": "Importer les métadonnées générées par Mylar",
+      "label_scan_directory_exclusions": "Répertoires exclus",
+      "label_scan_types": "Scanner ces types de fichiers",
       "label_scanner": "Scanneur",
       "label_series_cover": "Couverture de la série",
       "tab_general": "Général",
@@ -651,6 +660,14 @@
       "VERTICAL": "Vertical",
       "WEBTOON": "Webtoon"
     },
+    "scan_interval": {
+      "DAILY": "Quotidien",
+      "DISABLED": "Désactivé",
+      "EVERY_12H": "Toutes les 12 heures",
+      "EVERY_6H": "Toutes les 6 heures",
+      "HOURLY": "Toutes les heures",
+      "WEEKLY": "Hebdomadaire"
+    },
     "series_cover": {
       "FIRST": "Premier",
       "FIRST_UNREAD_OR_FIRST": "Premier non lu ou premier",
@@ -662,6 +679,12 @@
       "ENDED": "Terminée",
       "HIATUS": "Hiatus",
       "ONGOING": "En cours"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Par défaut (300px)",
+      "LARGE": "Large (900px)",
+      "MEDIUM": "Medium (600px)",
+      "XLARGE": "X-Large (1200px)"
     }
   },
   "error_codes": {
@@ -827,6 +850,21 @@
     "tab_title": "Serveur"
   },
   "server_settings": {
+    "config_precedence": "Prioritaire par rapport au fichier de configuration",
+    "dialog_regenerate_thumbnails": {
+      "body": "La taille des vignettes a changé. Voulez-vous regénérer les miniatures des livres ?",
+      "btn_alternate": "Oui, tous",
+      "btn_cancel": "Non",
+      "btn_confirm": "Oui, mais seulement si la vignette est plus grande",
+      "title": "Regénérer les vignettes"
+    },
+    "label_delete_empty_collections": "Supprimer les collections vides après le scan",
+    "label_delete_empty_readlists": "Supprimer les listes de lecture vides après le scan",
+    "label_rememberme_duration": "Durée de maintien de connexion active (en jours)",
+    "label_server_context_path": "URL de base",
+    "label_server_port": "Port serveur",
+    "label_thumbnail_size": "Taille de vignette",
+    "requires_restart": "Nécessite un redémarrage pour prendre effet",
     "server_settings": "Paramètres du serveur"
   },
   "settings_user": {
@@ -880,6 +918,9 @@
     "users": "Utilisateurs"
   },
   "validation": {
+    "context_path": "Doit commencer par '/', ne pas se terminer par '/-_' et contenir uniquement '/-_a-z0-9'",
+    "one_or_more": "Doit être 1 ou plus",
+    "tcp_port": "Doit être compris entre 1 et 65535",
     "zero_or_more": "Doit être supérieur ou égal à 0"
   },
   "welcome": {

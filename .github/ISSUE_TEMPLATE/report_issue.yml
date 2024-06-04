@@ -54,7 +54,7 @@ body:
       label: Komga version
       description: You can find your Komga version at the bottom of the side bar.
       placeholder: |
-        Example: "0.143.0"
+        Example: "1.7.1"
     validations:
       required: true
 
@@ -64,6 +64,20 @@ body:
       label: Operating system
       placeholder: |
         Example: "Windows 11"
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Installation method
+      description: How did you install Komga?
+      multiple: false
+      options:
+        - jar
+        - Docker
+        - Microsoft Store
+        - from download.komga.org
+        - other (please provide more details below)
     validations:
       required: true
 
@@ -80,7 +94,7 @@ body:
       label: Acknowledgements
       description: Read this carefully, we will close and ignore your issue if you skimmed through this.
       options:
-        - label: I have searched the existing issues and this is a new ticket, **NOT** a duplicate or related to another open issue.
+        - label: I have searched the existing issues (open AND closed) and this is a new ticket, **NOT** a duplicate or related to another open issue.
           required: true
         - label: I have written a short but informative title.
           required: true

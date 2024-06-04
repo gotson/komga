@@ -100,7 +100,7 @@ class BookPageEditor(
       zipStream.setLevel(Deflater.NO_COMPRESSION)
 
       pagesToKeep.map { it.fileName }
-        .union(media.files)
+        .union(media.files.map { it.fileName })
         .forEach { entry ->
           zipStream.putArchiveEntry(ZipArchiveEntry(entry))
           zipStream.write(bookAnalyzer.getFileContent(BookWithMedia(book, media), entry))
@@ -131,8 +131,8 @@ class BookPageEditor(
           .containsAll(pagesToKeep.map { FilenameUtils.getName(it.fileName) to it.mediaType })
         -> throw BookConversionException("Created file does not contain all pages to keep from existing file, aborting conversion")
 
-        !createdMedia.files.map { FilenameUtils.getName(it) }
-          .containsAll(media.files.map { FilenameUtils.getName(it) })
+        !createdMedia.files.map { FilenameUtils.getName(it.fileName) }
+          .containsAll(media.files.map { FilenameUtils.getName(it.fileName) })
         -> throw BookConversionException("Created file does not contain all files from existing file, aborting page removal")
       }
     } catch (e: BookConversionException) {

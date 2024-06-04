@@ -1,10 +1,10 @@
-package org.gotson.komga.infrastructure.mediacontainer
+package org.gotson.komga.infrastructure.mediacontainer.divina
 
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import java.nio.file.Path
 
-interface MediaContainerExtractor {
+interface DivinaExtractor {
   fun mediaTypes(): List<String>
 
   @Throws(MediaUnsupportedException::class)
