@@ -35,10 +35,14 @@ export default class KomgaSeriesService {
       if (sharingLabel) params.sharing_label = sharingLabel
       if (oneshot !== undefined) params.oneshot = oneshot
 
-      return (await this.http.get(API_SERIES, {
+      const data = await this.http.get(API_SERIES, {
         params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
-      })).data
+      })
+
+      data.data.content = data.data.content.filter((c: any) => tag?.every(val => c.metadata.tags.includes(val)))
+
+      return data.data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve series'
       if (e.response.data.message) {
