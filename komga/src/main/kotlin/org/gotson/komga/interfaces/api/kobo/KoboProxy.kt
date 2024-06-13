@@ -23,7 +23,7 @@ import kotlin.time.toJavaDuration
 
 private val logger = KotlinLogging.logger {}
 
-const val X_KOBO_SYNCTOKEN = "x-kobo-synctoken"
+private const val X_KOBO_SYNCTOKEN = "x-kobo-synctoken"
 
 @Component
 class KoboProxy(
@@ -66,7 +66,6 @@ class KoboProxy(
     val requestAttributes = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes? ?: throw IllegalStateException("Could not get current request")
     val request = requestAttributes.request
     val (path) = pathRegex.find(request.requestURI)?.destructured ?: throw IllegalStateException("Could not get path from current request")
-    logger.debug { "Proxy path: $path" }
 
     val syncToken =
       if (includeSyncToken) {
@@ -106,9 +105,7 @@ class KoboProxy(
         }
         .toEntity<JsonNode>()
 
-    logger.debug { "Kobo response code: ${response.statusCode}" }
-    logger.debug { "Kobo response headers: ${response.headers}" }
-    logger.debug { "Kobo response body: ${response.body}" }
+    logger.debug { "Kobo response: $response" }
 
     val headersToReturn =
       response.headers

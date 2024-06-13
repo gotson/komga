@@ -21,7 +21,7 @@ private val logger = KotlinLogging.logger {}
 const val X_KOBO_USERKEY = "X-Kobo-userkey"
 
 @RestController
-@RequestMapping(value = ["/kobo/{deviceToken}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(value = ["/kobo/*/"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class KoboController(
   private val koboProxy: KoboProxy,
 ) {
