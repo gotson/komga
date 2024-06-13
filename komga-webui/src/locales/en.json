@@ -911,6 +911,7 @@
     },
     "label_delete_empty_collections": "Delete empty collections after scan",
     "label_delete_empty_readlists": "Delete empty read lists after scan",
+    "label_kobo_proxy": "Proxy Kobo Sync requests to Kobo Store",
     "label_rememberme_duration": "Remember me duration (in days)",
     "label_server_context_path": "Base URL",
     "label_server_port": "Server Port",

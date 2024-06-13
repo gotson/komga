@@ -85,6 +85,13 @@ class KomgaSettingsProvider(
         serverSettingsDao.deleteSetting(Settings.SERVER_CONTEXT_PATH.name)
       field = value
     }
+
+  var koboProxy: Boolean =
+    serverSettingsDao.getSettingByKey(Settings.KOBO_PROXY.name, Boolean::class.java) ?: false
+    set(value) {
+      serverSettingsDao.saveSetting(Settings.KOBO_PROXY.name, value)
+      field = value
+    }
 }
 
 private enum class Settings {
@@ -96,4 +103,5 @@ private enum class Settings {
   TASK_POOL_SIZE,
   SERVER_PORT,
   SERVER_CONTEXT_PATH,
+  KOBO_PROXY,
 }

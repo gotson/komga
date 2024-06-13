@@ -36,4 +36,6 @@ class SettingsUpdateDto {
     by Delegates.observable(null) { prop, _, _ ->
       isSet[prop.name] = true
     }
+
+  var koboProxy: Boolean? = null
 }
