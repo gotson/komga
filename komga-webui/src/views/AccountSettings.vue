@@ -29,7 +29,18 @@
       <v-col>
         <v-btn color="primary"
                @click.prevent="modalPasswordChange = true"
-        >{{ $t('account_settings.change_password') }}</v-btn>
+        >{{ $t('account_settings.change_password') }}
+        </v-btn>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col class="text-h5">{{ $t('users.api_keys') }}</v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12" md="10" lg="8" xl="4">
+        <api-key-table/>
       </v-col>
     </v-row>
 
@@ -54,11 +65,12 @@
 import PasswordChangeDialog from '@/components/dialogs/PasswordChangeDialog.vue'
 import Vue from 'vue'
 import AuthenticationActivityTable from '@/components/AuthenticationActivityTable.vue'
-import { UserDto } from '@/types/komga-users'
+import {UserDto} from '@/types/komga-users'
+import ApiKeyTable from '@/components/ApiKeyTable.vue'
 
 export default Vue.extend({
   name: 'AccountSettings',
-  components: {AuthenticationActivityTable, PasswordChangeDialog },
+  components: {ApiKeyTable, AuthenticationActivityTable, PasswordChangeDialog},
   data: () => {
     return {
       modalPasswordChange: false,
@@ -66,7 +78,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    me (): UserDto {
+    me(): UserDto {
       return this.$store.state.komgaUsers.me
     },
   },

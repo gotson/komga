@@ -47,3 +47,16 @@ export interface AuthenticationActivityDto {
   dateTime: Date,
   source?: string,
 }
+
+export interface ApiKeyDto {
+  id: string,
+  userId: string,
+  key: string,
+  comment: string,
+  createdDate: Date,
+  lastModifiedDate: Date
+}
+
+export interface ApiKeyRequestDto {
+  comment: string,
+}

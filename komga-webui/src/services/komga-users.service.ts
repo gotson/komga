@@ -1,5 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {
+  ApiKeyDto, ApiKeyRequestDto,
   AuthenticationActivityDto,
   PasswordUpdateDto,
   UserCreationDto,
@@ -167,6 +168,42 @@ export default class KomgaUsersService {
       return (await this.http.get(`${API_USERS}/${user.id}/authentication-activity/latest`)).data
     } catch (e) {
       let msg = `An error occurred while trying to retrieve latest authentication activity for user ${user.email}`
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getApiKeys(): Promise<ApiKeyDto[]> {
+    try {
+      return (await this.http.get(`${API_USERS}/me/api-keys`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve api keys'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async createApiKey(apiKeyRequest: ApiKeyRequestDto): Promise<ApiKeyDto> {
+    try {
+      return (await this.http.post(`${API_USERS}/me/api-keys`, apiKeyRequest)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to create api key'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async deleteApiKey(apiKeyId: string) {
+    try {
+      await this.http.delete(`${API_USERS}/me/api-keys/${apiKeyId}`)
+    } catch (e) {
+      let msg = `An error occurred while trying to delete api key ${apiKeyId}`
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

@@ -19,6 +19,11 @@
   },
   "account_settings": {
     "account_settings": "Account Settings",
+    "api_key": {
+      "created_date": "Created date: {date}",
+      "generate_api_key": "Generate API key",
+      "no_keys": "No API Keys created yet"
+    },
     "change_password": "change password"
   },
   "announcements": {
@@ -203,6 +208,7 @@
     "choose_image": "Choose an image",
     "close": "Close",
     "collections": "Collections",
+    "copied": "Copied!",
     "create": "Create",
     "delete": "Delete",
     "dimension": "w: {width}, h: {height}",
@@ -287,6 +293,14 @@
     "tab_title": "Data Import"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Generate",
+      "context": "API Keys can be used to authenticate through the Kobo Sync protocol.",
+      "dialog_title": "Generate new API key",
+      "field_comment": "Comment",
+      "field_comment_hint": "What's this API key for?",
+      "info_copy": "Make sure to copy your API key now. You won't be able to see it again!"
+    },
     "add_to_collection": {
       "button_create": "Create",
       "card_collection_subtitle": "No series | 1 series | {count} series",
@@ -323,6 +337,12 @@
     "book_picker": {
       "filter": "Filter by book number, title, or release date",
       "title": "Select Book"
+    },
+    "delete_apikey": {
+      "button_confirm": "Delete",
+      "confirm_delete": "I understand, delete the API key \"{name}\"",
+      "dialog_title": "Delete API key",
+      "warning_html": "Any applications or scripts using this API key will no longer be able to access the Komga API. You cannot undo this action."
     },
     "delete_book": {
       "button_confirm": "Delete",
@@ -765,7 +785,8 @@
     "ERR_1030": "ComicRack CBL has no Name element",
     "ERR_1031": "ComicRack CBL Book is missing series or number",
     "ERR_1032": "EPUB file has wrong media type",
-    "ERR_1033": "Some entries are missing"
+    "ERR_1033": "Some entries are missing",
+    "ERR_1034": "An API key with that comment already exists"
   },
   "filter": {
     "age_rating": "age rating",
@@ -967,6 +988,7 @@
     "USER": "User"
   },
   "users": {
+    "api_keys": "API Keys",
     "authentication_activity": "Authentication Activity",
     "users": "Users"
   },
