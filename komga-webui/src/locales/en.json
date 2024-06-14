@@ -323,11 +323,7 @@
       "dialog_title": "Add User",
       "field_email": "Email",
       "field_email_error": "Must be a valid email address",
-      "field_password": "Password",
-      "field_role_administrator": "Administrator",
-      "field_role_file_download": "File Download",
-      "field_role_page_streaming": "Page Streaming",
-      "label_roles": "Roles"
+      "field_password": "Password"
     },
     "analyze_library": {
       "body": "Analyzes all the media files in the library. The analysis captures information about the media. Depending on your library size, this may take a long time.",
@@ -984,7 +980,8 @@
   "user_roles": {
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "File download",
-    "PAGE_STREAMING": "Stream pages",
+    "KOBO_SYNC": "Kobo Sync",
+    "PAGE_STREAMING": "Page streaming",
     "USER": "User"
   },
   "users": {
