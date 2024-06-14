@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
+import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.KomgaUserRepository
@@ -97,7 +98,7 @@ class UserControllerTest(
       val jsonString =
         """
         {
-          "roles": ["$ROLE_FILE_DOWNLOAD","$ROLE_PAGE_STREAMING"]
+          "roles": ["$ROLE_FILE_DOWNLOAD","$ROLE_PAGE_STREAMING","$ROLE_KOBO_SYNC"]
         }
         """.trimIndent()
 
@@ -112,6 +113,7 @@ class UserControllerTest(
         assertThat(this).isNotNull
         assertThat(this!!.roleFileDownload).isTrue
         assertThat(this.rolePageStreaming).isTrue
+        assertThat(this.roleKoboSync).isTrue
         assertThat(this.roleAdmin).isFalse
       }
     }

@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.security
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.Filter
 import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
 import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.security.apikey.ApiKeyAuthenticationFilter
@@ -176,7 +177,7 @@ class SecurityConfiguration(
 
       securityMatcher("/kobo/**")
       authorizeHttpRequests {
-        authorize(anyRequest, hasRole(ROLE_USER)) // TODO: update to ROLE_KOBO
+        authorize(anyRequest, hasRole(ROLE_KOBO_SYNC))
       }
 
       headers {

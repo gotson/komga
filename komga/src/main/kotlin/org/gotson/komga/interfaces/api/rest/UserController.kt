@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
+import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
@@ -125,6 +126,7 @@ class UserController(
             roleAdmin = if (isSet("roles")) roles!!.contains(ROLE_ADMIN) else existing.roleAdmin,
             roleFileDownload = if (isSet("roles")) roles!!.contains(ROLE_FILE_DOWNLOAD) else existing.roleFileDownload,
             rolePageStreaming = if (isSet("roles")) roles!!.contains(ROLE_PAGE_STREAMING) else existing.rolePageStreaming,
+            roleKoboSync = if (isSet("roles")) roles!!.contains(ROLE_KOBO_SYNC) else existing.roleKoboSync,
             sharedAllLibraries = if (isSet("sharedLibraries")) sharedLibraries!!.all else existing.sharedAllLibraries,
             sharedLibrariesIds =
               if (isSet("sharedLibraries")) {

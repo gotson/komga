@@ -74,6 +74,7 @@ class KomgaUserDao(
           roleAdmin = ur.roleAdmin,
           roleFileDownload = ur.roleFileDownload,
           rolePageStreaming = ur.rolePageStreaming,
+          roleKoboSync = ur.roleKoboSync,
           sharedLibrariesIds = ulr.mapNotNull { it.libraryId }.toSet(),
           sharedAllLibraries = ur.sharedAllLibraries,
           restrictions =
@@ -101,6 +102,7 @@ class KomgaUserDao(
       .set(u.ROLE_ADMIN, user.roleAdmin)
       .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
       .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
+      .set(u.ROLE_KOBO_SYNC, user.roleKoboSync)
       .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
       .set(u.AGE_RESTRICTION, user.restrictions.ageRestriction?.age)
       .set(
@@ -134,6 +136,7 @@ class KomgaUserDao(
       .set(u.ROLE_ADMIN, user.roleAdmin)
       .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
       .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
+      .set(u.ROLE_KOBO_SYNC, user.roleKoboSync)
       .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
       .set(u.AGE_RESTRICTION, user.restrictions.ageRestriction?.age)
       .set(
