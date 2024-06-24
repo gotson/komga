@@ -40,6 +40,7 @@ export default new Vuex.Store({
     updateBooksDialog: false,
     deleteBooks: {} as BookDto | BookDto[],
     deleteBookDialog: false,
+    updateBooksAdditionalRoles: [] as string[],
     // books bulk
     updateBulkBooks: [] as BookDto[],
     updateBulkBooksDialog: false,
@@ -47,6 +48,7 @@ export default new Vuex.Store({
     // oneshots
     updateOneshots: {} as Oneshot | Oneshot[],
     updateOneshotsDialog: false,
+    updateOneshotsAdditionalRoles: [] as string[],
 
     // series
     updateSeries: {} as SeriesDto | SeriesDto[],
@@ -134,6 +136,9 @@ export default new Vuex.Store({
     setUpdateBulkBooks(state, books) {
       state.updateBulkBooks = books
     },
+    setUpdateBooksAdditionalRoles(state, roles) {
+      state.updateBooksAdditionalRoles = roles
+    },
     setUpdateBulkBooksDialog(state, dialog) {
       state.updateBulkBooksDialog = dialog
     },
@@ -143,6 +148,9 @@ export default new Vuex.Store({
     },
     setUpdateOneshotsDialog(state, dialog) {
       state.updateOneshotsDialog = dialog
+    },
+    setUpdateOneshotsAdditionalRoles(state, roles) {
+      state.updateOneshotsAdditionalRoles = roles
     },
     // Series
     setUpdateSeries(state, series) {
@@ -229,8 +237,9 @@ export default new Vuex.Store({
       commit('setDeleteLibraryDialog', value)
     },
     // books
-    dialogUpdateBooks({commit}, books) {
+    dialogUpdateBooks({commit}, {books, roles}) {
       commit('setUpdateBooks', books)
+      commit('setUpdateBooksAdditionalRoles', roles || [])
       commit('setUpdateBooksDialog', true)
     },
     dialogUpdateBooksDisplay({commit}, value) {
@@ -252,8 +261,9 @@ export default new Vuex.Store({
       commit('setUpdateBulkBooksDialog', value)
     },
     // oneshots
-    dialogUpdateOneshots({commit}, oneshots) {
+    dialogUpdateOneshots({commit}, {oneshots, roles}) {
       commit('setUpdateOneshots', oneshots)
+      commit('setUpdateOneshotsAdditionalRoles', roles || [])
       commit('setUpdateOneshotsDialog', true)
     },
     dialogUpdateOneshotsDisplay({commit}, value) {
