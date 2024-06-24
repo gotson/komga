@@ -4,16 +4,15 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.ApplicationEventMulticaster
 import org.springframework.context.event.SimpleApplicationEventMulticaster
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import org.springframework.core.task.AsyncTaskExecutor
 
 @Configuration
 class AsynchronousSpringEventsConfig(
-  private val taskExecutor: ThreadPoolTaskExecutor,
+  private val taskExecutor: AsyncTaskExecutor,
 ) {
   @Bean("applicationEventMulticaster")
-  fun simpleApplicationEventMulticaster(): ApplicationEventMulticaster {
-    val eventMulticaster = SimpleApplicationEventMulticaster()
-    eventMulticaster.setTaskExecutor(taskExecutor)
-    return eventMulticaster
-  }
+  fun simpleApplicationEventMulticaster(): ApplicationEventMulticaster =
+    SimpleApplicationEventMulticaster().apply {
+      setTaskExecutor(taskExecutor)
+    }
 }
