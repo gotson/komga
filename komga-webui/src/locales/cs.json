@@ -23,7 +23,8 @@
   },
   "announcements": {
     "mark_all_read": "Označit všechny jako přečtené",
-    "mark_read": "Označit jako přečtené"
+    "mark_read": "Označit jako přečtené",
+    "tab_title": "Upozornění"
   },
   "authentication_activity": {
     "datetime": "Datum a čas",
@@ -94,6 +95,7 @@
     "move_next_exit": "Znovu použít \"Další\" pro opuštění čtečky.",
     "move_previous": "Znovu použít \"Předchozí\" pro přechod na předchozí knížku.",
     "notification_poster_set_book": "Současná stránka byla nastavena jako přebal knihy.",
+    "notification_poster_set_readlist": "Současná stránka byla nastavena jako přebal listu.",
     "notification_poster_set_series": "Současná stránka byla nastavena jako přebal série.",
     "paged_reader_layout": {
       "double": "Dvojstránka",
@@ -111,6 +113,8 @@
       "width_shrink_only": "Přizpůsobit šířce (pouze zmenšení)"
     },
     "set_current_page_as_book_poster": "Nastavit stránku jako přebal knihy",
+    "set_current_page_as_readlist_poster": "Natavit stránku jako přebal listu",
+    "set_current_page_as_series_poster": "Nastavit stránku jako přebal série",
     "settings": {
       "always_fullscreen": "Vždy na celou obrazovku",
       "animate_page_transitions": "Animovat přechody stránek",
@@ -124,15 +128,18 @@
       "general": "Obecný",
       "gestures": "Gesta",
       "page_layout": "Rozložení stránky",
+      "paged": "Nastavení zobrazení stránek",
       "reading_mode": "Režim čtení",
       "scale_type": "Typ úpravy velikosti",
       "side_padding": "Boční odsazení",
-      "side_padding_none": "Žádný"
+      "side_padding_none": "Žádný",
+      "webtoon": "Nastavení webtoon komiksů"
     },
     "shortcuts": {
       "close": "Zavřít",
       "cycle_page_layout": "Změnit rozložení stránky",
       "cycle_scale": "Změnit měřítko",
+      "cycle_side_padding": "Procházet bočním odsazením",
       "first_page": "První stránka",
       "fullscreen": "Spustit/ukončit režim celé obrazovky",
       "last_page": "Poslední stránka",
@@ -172,6 +179,7 @@
   },
   "browse_readlist": {
     "edit_elements": "Upravit element",
+    "edit_readlist": "Upravit list přečtených knih",
     "manual_ordering": "ruční řazení"
   },
   "browse_series": {
@@ -191,16 +199,20 @@
     "books_n": "Žádná knížka | 1 knížka | {count} knížek",
     "books_total": "{count} / {total} knížek",
     "cancel": "Zrušit",
+    "cbx": "Komiksové Archivy",
     "choose_image": "Vybrat obrázek",
     "close": "Zavřít",
     "collections": "Kolekce",
     "create": "Vytvořit",
     "delete": "Odstranit",
+    "dimension": "w: {width}, h: {height}",
+    "discard": "Vyřadit",
     "disk_space": "Místo na disku",
     "dismiss": "Odejít",
     "download": "Stáhnout",
     "drag_drop": "přetáhnout",
     "email": "Email",
+    "epub": "Epub",
     "filename": "Jméno souboru",
     "filter_no_matches": "Zadaný filtr nemá žádné výsledky",
     "genre": "Žánr",
@@ -214,6 +226,7 @@
     "lock_all": "Uzamknout vše",
     "n_selected": "{count} vybráno",
     "nothing_to_show": "Není co ukázat",
+    "oneshot": "Jednorázovka",
     "outdated": "Zastaralé",
     "page": "Strana",
     "page_number": "Číslo strany",
@@ -221,11 +234,14 @@
     "pages_left": "Nezbývají žádné stránky | Zbývá 1 stránka | Zbývá {count} stránek",
     "pages_n": "Žádné stránky | 1 stránka | {count} stránek",
     "password": "Heslo",
+    "pdf": "PDF",
     "pending_tasks": "Žádné čekající úlohy | 1 čekající úloha | {count} čekajících úloh",
     "publisher": "Vydavatel",
     "read": "Číst",
     "read_on": "Přečíst dne {date}",
+    "readlist": "Seznam čtení",
     "readlists": "Seznam čtení",
+    "remember-me": "Zapamatovat",
     "required": "Vyžadováno",
     "reset_filters": "Zresetovat Filtr",
     "roles": "Role",

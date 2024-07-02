@@ -881,7 +881,7 @@
     "no_results": "검색 결과 없음",
     "search": "검색",
     "search_for_something_else": "다른 항목을 검색해 보세요",
-    "search_results_for": "\"{name}\"검색 결과"
+    "search_results_for": "\"{name}\" 검색 결과"
   },
   "searchbox": {
     "in_library": "{library} 에서",

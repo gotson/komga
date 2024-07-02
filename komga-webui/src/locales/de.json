@@ -881,7 +881,7 @@
     "no_results": "Die Suche lieferte keine Treffer",
     "search": "Suche",
     "search_for_something_else": "Versuche ein anderes Suchkriterium",
-    "search_results_for": "Suchergegnis für „{name}“"
+    "search_results_for": "Suchergebnis für „{name}“"
   },
   "searchbox": {
     "in_library": "in {library}",
