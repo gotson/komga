@@ -1,0 +1,111 @@
+{
+  "$vuetify": {
+    "dataTable": {
+      "sortBy": "Sortiraj po"
+    },
+    "fileInput": {
+      "counter": "{0} datoteka",
+      "counterSize": "{0} datoteka ({1} ukupno)"
+    }
+  },
+  "account_settings": {
+    "change_password": "promijeni lozinku"
+  },
+  "announcements": {
+    "mark_all_read": "Označi sve kao pročitano",
+    "mark_read": "Označi kao pročitano",
+    "tab_title": "Najave"
+  },
+  "authentication_activity": {
+    "email": "E-Mail",
+    "error": "Greška",
+    "ip": "IP",
+    "source": "Izvor"
+  },
+  "author_roles": {
+    "translator": "prevoditelji"
+  },
+  "book_card": {
+    "error": "Greška",
+    "unread": "Nepročitano",
+    "unsupported": "Nepodržano"
+  },
+  "book_import": {
+    "table": {
+      "file_name": "Ime datoteke",
+      "number": "Broj"
+    }
+  },
+  "bookreader": {
+    "download_current_page": "Preuzmi trenutnu stranicu",
+    "settings": {
+      "background_colors": {
+        "black": "Crna",
+        "gray": "Siva",
+        "white": "Bijela"
+      },
+      "display": "Zaslon",
+      "general": "Općenito"
+    },
+    "shortcuts": {
+      "close": "Zatvori",
+      "first_page": "Prva stranica",
+      "last_page": "Posljednja stranica",
+      "next_page": "Sljedeća stranica",
+      "settings": "Postavke",
+      "webtoon": "Webtoon"
+    }
+  },
+  "browse_book": {
+    "download_file": "Preuzmi datoteku",
+    "file": "DATOTEKA",
+    "format": "FORMAT",
+    "isbn": "ISBN",
+    "links": "LINKOVI",
+    "read_book": "Pročitaj knjigu",
+    "size": "VELIČINA"
+  },
+  "common": {
+    "age": "Dob",
+    "book": "Knjiga",
+    "books": "Knjige",
+    "choose_image": "Odaberi sliku",
+    "delete": "Obriši",
+    "download": "Preuzmi",
+    "email": "E-Mail",
+    "filename": "Ime datoteke",
+    "library": "Biblioteka",
+    "locale_name": "Hrvatski",
+    "locale_rtl": "false",
+    "oneshot": "One-shot",
+    "page": "Stranica",
+    "page_number": "Broj stranice",
+    "pages": "stranice",
+    "password": "Lozinka",
+    "pdf": "PDF",
+    "required": "Obavezno",
+    "roles": "Uloge",
+    "url": "URL",
+    "year": "godina"
+  },
+  "dashboard": {
+    "keep_reading": "Nastavi Čitati"
+  },
+  "dialog": {
+    "add_user": {
+      "button_confirm": "Dodaj",
+      "dialog_title": "Dodaj Korisnika",
+      "field_email": "E-Mail",
+      "field_password": "Lozinka",
+      "field_role_administrator": "Administrator",
+      "label_roles": "Uloge"
+    },
+    "analyze_library": {
+      "button_confirm": "Analiziraj",
+      "title": "Analiziraj biblioteku"
+    },
+    "delete_book": {
+      "button_confirm": "Obriši"
+    }
+  }
+}
