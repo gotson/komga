@@ -3,28 +3,62 @@
     "dataFooter": {
       "pageText": "{0}-{1} จาก {2}"
     },
+    "dataIterator": {
+      "loadingText": "กำลังโหลดรายการ...",
+      "noResultsText": "ไม่พบบันทึกที่ตรงกัน"
+    },
+    "dataTable": {
+      "itemsPerPageText": "แถวต่อหน้า:",
+      "sortBy": "เรียงตาม"
+    },
     "fileInput": {
-      "counter": "{0} ไฟล์"
-    }
+      "counter": "{0} ไฟล์",
+      "counterSize": "{0} ไฟล์ (รวม {1})"
+    },
+    "noDataText": "ไม่มีข้อมูลพร้อมใช้งาน"
   },
   "account_settings": {
     "account_settings": "การตั้งค่าบัญชี",
     "change_password": "เปลี่ยนรหัสผ่าน"
   },
+  "announcements": {
+    "mark_all_read": "ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว",
+    "mark_read": "ทำเครื่องหมายว่าอ่านแล้ว",
+    "tab_title": "ประกาศ"
+  },
   "authentication_activity": {
+    "datetime": "วันและเวลา",
     "email": "อีเมล",
     "error": "ผิดพลาด",
-    "source": "ที่มา",
-    "success": "สำเร็จ"
+    "ip": "IP",
+    "source": "แหล่งที่มา",
+    "success": "สำเร็จ",
+    "user_agent": "User Agent"
+  },
+  "author_roles": {
+    "colorist": "ผู้ลงสี",
+    "cover": "ปก",
+    "editor": "ผู้แก้ไข",
+    "inker": "ผู้ลงหมึก",
+    "letterer": "ผู้ลงตัวอักษร",
+    "penciller": "ผู้วาดร่าง",
+    "translator": "ผู้แปล",
+    "writer": "ผู้เขียน"
   },
   "book_card": {
     "error": "ผิดพลาด",
+    "no_release_date": "ไม่มีวันที่เผยแพร่",
+    "unknown": "กำลังจะวิเคราะห์",
+    "unread": "ยังไม่ได้อ่าน",
     "unsupported": "ไม่สนับสนุน"
   },
   "book_import": {
     "button_browse": "เรียกดู",
     "button_import": "นำเข้า",
+    "button_scan": "สแกน",
+    "button_select_series": "เลือกซีรีส์",
     "field_import_path": "นำเข้าจากโฟลเดอร์",
+    "info_part1": "คุณสามารถนำเข้าไฟล์ที่อยู่นอกไลบรารีที่มีอยู่ได้ผ่านหน้านี้ คุณสามารถนำเข้าไฟล์ลงในซีรีส์ที่มีอยู่ได้เท่านั้น ซึ่งในกรณีนี้ Komga จะย้ายหรือคัดลอกไฟล์ไปยังไดเร็กทอรีของซีรีส์ที่เลือก",
     "no_files_found": "ไม่พบไฟล์",
     "table": {
       "file_name": "ชื่อไฟล์",
