@@ -4,7 +4,8 @@
       "pageText": "{0}-{1} / {2}"
     },
     "dataIterator": {
-      "loadingText": "Elemek betöltése..."
+      "loadingText": "Elemek betöltése...",
+      "noResultsText": "Nebyli nalezeny žádné podobné výsledky"
     },
     "dataTable": {
       "itemsPerPageText": "Sorok oldalanként:",
@@ -19,6 +20,10 @@
   "account_settings": {
     "account_settings": "Fiókbeállítások",
     "change_password": "jelszó módosítása"
+  },
+  "announcements": {
+    "mark_all_read": "Označit vše jako přečtené",
+    "mark_read": "Označit jako přečtené"
   },
   "authentication_activity": {
     "datetime": "Dátum / idő",
