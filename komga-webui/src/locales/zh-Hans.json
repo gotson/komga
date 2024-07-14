@@ -435,7 +435,7 @@
       "field_import_local_artwork": "本地图片(插图)",
       "field_import_mylar_series": "系列元数据",
       "field_name": "名称",
-      "field_oneshotsdirectory": "单行本目录",
+      "field_oneshotsdirectory": "单篇",
       "field_repair_extensions": "自动修复不正确的文件扩展名",
       "field_root_folder": "根文件夹",
       "field_scan_interval": "扫描间隔",
