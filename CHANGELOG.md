@@ -1,3 +1,44 @@
+# [1.11.2](https://github.com/gotson/komga/compare/1.11.1...1.11.2) (2024-07-25)
+## 🐛 Fixes
+**docker**
+- native libraries would not load on aarch64 ([16e8b97](https://github.com/gotson/komga/commits/16e8b97))
+
+**unscoped**
+- do not share IndexWriterConfig instances across IndexWriters ([90db07c](https://github.com/gotson/komga/commits/90db07c)), closes [#1603](https://github.com/gotson/komga/issues/1603)
+
+## 🔄️ Changes
+
+- replace task executor type with interface ([19b846b](https://github.com/gotson/komga/commits/19b846b))
+
+## 🛠  Build
+**benchmark**
+- fix properties following gradle change ([1236594](https://github.com/gotson/komga/commits/1236594))
+
+## 🌐 Translation
+**komga-tray**
+- added translation using Weblate (Chinese (Simplified)) ([c66db8e](https://github.com/gotson/komga/commits/c66db8e))
+- translated using Weblate (Swedish) ([5e7c42c](https://github.com/gotson/komga/commits/5e7c42c))
+- added translation using Weblate (Croatian) ([d9a8cc6](https://github.com/gotson/komga/commits/d9a8cc6))
+- translated using Weblate (Czech) ([57bbe5e](https://github.com/gotson/komga/commits/57bbe5e))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([5d4fc14](https://github.com/gotson/komga/commits/5d4fc14))
+- translated using Weblate (Korean) ([8182d50](https://github.com/gotson/komga/commits/8182d50))
+- translated using Weblate (Hungarian) ([a844587](https://github.com/gotson/komga/commits/a844587))
+- translated using Weblate (Croatian) ([0ddb3d8](https://github.com/gotson/komga/commits/0ddb3d8))
+- translated using Weblate (Czech) ([c4a428f](https://github.com/gotson/komga/commits/c4a428f))
+- translated using Weblate (Russian) ([a9eadae](https://github.com/gotson/komga/commits/a9eadae))
+- translated using Weblate (German) ([7ea825d](https://github.com/gotson/komga/commits/7ea825d))
+- translated using Weblate (Thai) ([3da499e](https://github.com/gotson/komga/commits/3da499e))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 14.2 to 14.3 ([4d8b7d4](https://github.com/gotson/komga/commits/4d8b7d4))
+- bump hydraulic-software/conveyor from 14.1 to 14.2 ([d7ee49c](https://github.com/gotson/komga/commits/d7ee49c))
+
+**webui**
+- bump braces from 3.0.2 to 3.0.3 in /komga-webui ([fbc7ce1](https://github.com/gotson/komga/commits/fbc7ce1))
+
 # [1.11.1](https://github.com/gotson/komga/compare/1.11.0...1.11.1) (2024-04-24)
 ## 🐛 Fixes
 **api**
