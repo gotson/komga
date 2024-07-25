@@ -35,12 +35,11 @@ class LuceneHelper(
   private val directory: Directory,
   private val searchAnalyzer: Analyzer,
   private val taskScheduler: TaskScheduler,
-  indexAnalyzer: Analyzer,
+  private val indexAnalyzer: Analyzer,
   @Value("#{@komgaProperties.lucene.commitDelay}")
   private val commitDelay: Duration,
 ) {
-  private val indexWriterConfig = IndexWriterConfig(indexAnalyzer)
-  private val indexWriter: IndexWriter = IndexWriter(directory, indexWriterConfig)
+  private val indexWriter: IndexWriter = IndexWriter(directory, IndexWriterConfig(indexAnalyzer))
   private val searcherManager = SearcherManager(indexWriter, SearcherFactory())
 
   fun indexExists(): Boolean = DirectoryReader.indexExists(directory)
@@ -95,7 +94,7 @@ class LuceneHelper(
   }
 
   fun upgradeIndex() {
-    IndexUpgrader(directory, indexWriterConfig, true).upgrade()
+    IndexUpgrader(directory, IndexWriterConfig(indexAnalyzer), true).upgrade()
     logger.info { "Lucene index upgraded" }
   }
 
