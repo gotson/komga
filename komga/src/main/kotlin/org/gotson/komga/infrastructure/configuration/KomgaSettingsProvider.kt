@@ -5,6 +5,7 @@ import org.gotson.komga.application.tasks.TaskPoolSizeChangedEvent
 import org.gotson.komga.domain.model.ThumbnailSize
 import org.gotson.komga.infrastructure.jooq.main.ServerSettingsDao
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm
 import org.springframework.stereotype.Service
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
@@ -85,6 +86,22 @@ class KomgaSettingsProvider(
         serverSettingsDao.deleteSetting(Settings.SERVER_CONTEXT_PATH.name)
       field = value
     }
+
+  var oauth2PKCE: Boolean =
+    serverSettingsDao.getSettingByKey(Settings.OAUTH2_PKCE.name, Boolean::class.java) ?: true
+    set(value) {
+      serverSettingsDao.saveSetting(Settings.OAUTH2_PKCE.name, value)
+      field = value
+    }
+
+  var oauth2IdTokenSigningAlgorithm: SignatureAlgorithm =
+    serverSettingsDao.getSettingByKey(Settings.OAUTH2_ID_TOKEN_SIGNING_ALGORITHM.name, String::class.java)?.let {
+      SignatureAlgorithm.valueOf(it)
+    } ?: SignatureAlgorithm.ES256
+    set(value) {
+      serverSettingsDao.saveSetting(Settings.OAUTH2_ID_TOKEN_SIGNING_ALGORITHM.name, value.toString())
+      field = value
+    }
 }
 
 private enum class Settings {
@@ -96,4 +113,6 @@ private enum class Settings {
   TASK_POOL_SIZE,
   SERVER_PORT,
   SERVER_CONTEXT_PATH,
+  OAUTH2_PKCE,
+  OAUTH2_ID_TOKEN_SIGNING_ALGORITHM
 }

@@ -15,13 +15,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.oauth2.client.oidc.authentication.OidcIdTokenDecoderFactory
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
+import org.springframework.security.oauth2.client.registration.ClientRegistration
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestCustomizers
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
+import org.springframework.security.oauth2.jwt.JwtDecoderFactory
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -43,9 +49,19 @@ class SecurityConfiguration(
   private val userAgentWebAuthenticationDetailsSource: WebAuthenticationDetailsSource,
   private val sessionRegistry: SessionRegistry,
   private val opdsAuthenticationEntryPoint: OpdsAuthenticationEntryPoint,
-  clientRegistrationRepository: InMemoryClientRegistrationRepository?,
+  private val clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) {
   private val oauth2Enabled = clientRegistrationRepository != null
+
+  // Configures the oidc id token signing algorithm
+  @Bean
+  fun idTokenDecoderFactory(): JwtDecoderFactory<ClientRegistration> {
+    val idTokenDecoderFactory = OidcIdTokenDecoderFactory()
+    idTokenDecoderFactory.setJwsAlgorithmResolver { _: ClientRegistration ->
+      komgaSettingsProvider.oauth2IdTokenSigningAlgorithm
+    }
+    return idTokenDecoderFactory
+  }
 
   @Bean
   fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -116,6 +132,18 @@ class SecurityConfiguration(
         oauth2.userInfoEndpoint {
           it.userService(oauth2UserService)
           it.oidcUserService(oidcUserService)
+        }
+        if (komgaSettingsProvider.oauth2PKCE) {
+          // Configures PKCE support inside spring boot
+          val resolver  = DefaultOAuth2AuthorizationRequestResolver(
+            clientRegistrationRepository,
+            DEFAULT_AUTHORIZATION_REQUEST_BASE_URI,
+          )
+          resolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce())
+
+          oauth2.authorizationEndpoint {
+            it.authorizationRequestResolver(resolver)
+          }
         }
         oauth2.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
         oauth2.loginPage("/login")
