@@ -16,28 +16,40 @@ interface SyncPointRepository {
 
   fun findBooksById(
     syncPointId: String,
+    onlyNotSynced: Boolean,
     pageable: Pageable,
   ): Page<SyncPoint.Book>
 
   fun findBooksAdded(
     fromSyncPointId: String,
     toSyncPointId: String,
+    onlyNotSynced: Boolean,
     pageable: Pageable,
   ): Page<SyncPoint.Book>
 
   fun findBooksRemoved(
     fromSyncPointId: String,
     toSyncPointId: String,
+    onlyNotSynced: Boolean,
     pageable: Pageable,
   ): Page<SyncPoint.Book>
 
   fun findBooksChanged(
     fromSyncPointId: String,
     toSyncPointId: String,
+    onlyNotSynced: Boolean,
     pageable: Pageable,
   ): Page<SyncPoint.Book>
 
+  fun markBooksSynced(
+    syncPointId: String,
+    forRemovedBooks: Boolean,
+    bookIds: Collection<String>,
+  )
+
   fun deleteByUserId(userId: String)
+
+  fun deleteOne(syncPointId: String)
 
   fun deleteAll()
 }

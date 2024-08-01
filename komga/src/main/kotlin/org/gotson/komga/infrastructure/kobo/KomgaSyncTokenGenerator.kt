@@ -3,7 +3,9 @@ package org.gotson.komga.infrastructure.kobo
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.servlet.http.HttpServletRequest
 import org.gotson.komga.domain.model.KomgaSyncToken
+import org.gotson.komga.infrastructure.kobo.KoboHeaders.X_KOBO_SYNCTOKEN
 import org.springframework.stereotype.Component
 import java.util.Base64
 
@@ -56,4 +58,9 @@ class KomgaSyncTokenGenerator(
 
   fun toBase64(token: KomgaSyncToken): String =
     KOMGA_TOKEN_PREFIX + base64Encoder.encodeToString(objectMapper.writeValueAsString(token).toByteArray())
+
+  fun fromRequestHeaders(request: HttpServletRequest): KomgaSyncToken? {
+    val syncTokenB64 = request.getHeader(X_KOBO_SYNCTOKEN)
+    return if (syncTokenB64 != null) fromBase64(syncTokenB64) else null
+  }
 }

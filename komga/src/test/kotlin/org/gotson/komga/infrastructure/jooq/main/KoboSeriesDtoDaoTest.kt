@@ -42,7 +42,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @SpringBootTest
-class SeriesDtoDaoTest(
+class KoboSeriesDtoDaoTest(
   @Autowired private val seriesDtoDao: SeriesDtoDao,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val seriesRepository: SeriesRepository,

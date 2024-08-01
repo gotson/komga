@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.ContentRestrictions
+import org.gotson.komga.domain.model.MediaExtension
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.main.Tables
@@ -139,6 +140,20 @@ inline fun <reified T> ObjectMapper.deserializeJsonGz(gzJson: ByteArray?): T? {
   return try {
     GZIPInputStream(gzJson.inputStream()).use { gz ->
       this.readValue(gz, T::class.java) as T
+    }
+  } catch (e: Exception) {
+    null
+  }
+}
+
+fun ObjectMapper.deserializeMediaExtension(
+  extensionClass: String?,
+  extensionBlob: ByteArray?,
+): MediaExtension? {
+  if (extensionClass == null || extensionBlob == null) return null
+  return try {
+    GZIPInputStream(extensionBlob.inputStream()).use { gz ->
+      this.readValue(gz, Class.forName(extensionClass)) as MediaExtension
     }
   } catch (e: Exception) {
     null

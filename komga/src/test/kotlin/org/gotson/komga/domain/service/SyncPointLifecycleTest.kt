@@ -19,6 +19,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SyncPointRepository
+import org.gotson.komga.language.toZonedDateTime
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -127,7 +128,7 @@ class SyncPointLifecycleTest(
 
     // when
     val syncPoint = syncPointLifecycle.createSyncPoint(user1, listOf(library1.id))
-    val syncPointBooks = syncPointRepository.findBooksById(syncPoint.id, Pageable.unpaged())
+    val syncPointBooks = syncPointRepository.findBooksById(syncPoint.id, false, Pageable.unpaged())
 
     // then
     assertThat(syncPoint.userId).isEqualTo(user1.id)
@@ -136,7 +137,7 @@ class SyncPointLifecycleTest(
       assertThat(this.bookId).isEqualTo(bookValid.id)
       assertThat(this.fileHash).isEqualTo(bookValid.fileHash)
       assertThat(this.fileSize).isEqualTo(bookValid.fileSize)
-      assertThat(this.fileLastModified).isCloseTo(bookValid.fileLastModified, within(1, ChronoUnit.SECONDS))
+      assertThat(this.fileLastModified).isCloseTo(bookValid.fileLastModified.toZonedDateTime(), within(1, ChronoUnit.SECONDS))
     }
   }
 
@@ -158,15 +159,27 @@ class SyncPointLifecycleTest(
 
     // when
     val book2 = makeBook("valid", libraryId = library1.id)
-    seriesLifecycle.addBooks(series, listOf(book2))
+    val book3 = makeBook("valid", libraryId = library1.id)
+    seriesLifecycle.addBooks(series, listOf(book2, book3))
     mediaRepository.findById(book2.id).let { media -> mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = MediaType.EPUB.type)) }
+    mediaRepository.findById(book3.id).let { media -> mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = MediaType.EPUB.type)) }
 
     val syncPoint2 = syncPointLifecycle.createSyncPoint(user1, listOf(library1.id))
-    val booksAdded = syncPointRepository.findBooksAdded(syncPoint1.id, syncPoint2.id, Pageable.unpaged())
+    val booksAdded = syncPointRepository.findBooksAdded(syncPoint1.id, syncPoint2.id, false, Pageable.unpaged())
+    val page1 = syncPointLifecycle.takeBooksAdded(syncPoint1.id, syncPoint2.id, Pageable.ofSize(1))
+    val page2 = syncPointLifecycle.takeBooksAdded(syncPoint1.id, syncPoint2.id, Pageable.ofSize(1))
 
     // then
-    assertThat(booksAdded).hasSize(1)
-    assertThat(booksAdded.first().bookId).isEqualTo(book2.id)
+    assertThat(booksAdded).hasSize(2)
+    assertThat(booksAdded.map { it.bookId }).containsExactlyInAnyOrder(book2.id, book3.id)
+    assertThat(page1).hasSize(1)
+    assertThat(page1.map { it.bookId })
+      .containsAnyElementsOf(listOf(book2.id, book3.id))
+      .doesNotContainAnyElementsOf(page2.map { it.bookId })
+    assertThat(page2).hasSize(1)
+    assertThat(page2.map { it.bookId })
+      .containsAnyElementsOf(listOf(book2.id, book3.id))
+      .doesNotContainAnyElementsOf(page1.map { it.bookId })
   }
 
   @Test
@@ -192,11 +205,21 @@ class SyncPointLifecycleTest(
     bookLifecycle.deleteOne(bookRepository.findByIdOrNull(book3.id)!!)
 
     val syncPoint2 = syncPointLifecycle.createSyncPoint(user1, listOf(library1.id))
-    val booksRemoved = syncPointRepository.findBooksRemoved(syncPoint1.id, syncPoint2.id, Pageable.unpaged())
+    val booksRemoved = syncPointRepository.findBooksRemoved(syncPoint1.id, syncPoint2.id, false, Pageable.unpaged())
+    val page1 = syncPointLifecycle.takeBooksRemoved(syncPoint1.id, syncPoint2.id, Pageable.ofSize(1))
+    val page2 = syncPointLifecycle.takeBooksRemoved(syncPoint1.id, syncPoint2.id, Pageable.ofSize(1))
 
     // then
     assertThat(booksRemoved).hasSize(2)
     assertThat(booksRemoved.map { it.bookId }).containsExactlyInAnyOrder(book2.id, book3.id)
+    assertThat(page1).hasSize(1)
+    assertThat(page1.map { it.bookId })
+      .containsAnyElementsOf(listOf(book2.id, book3.id))
+      .doesNotContainAnyElementsOf(page2.map { it.bookId })
+    assertThat(page2).hasSize(1)
+    assertThat(page2.map { it.bookId })
+      .containsAnyElementsOf(listOf(book2.id, book3.id))
+      .doesNotContainAnyElementsOf(page1.map { it.bookId })
   }
 
   @Test
@@ -225,19 +248,25 @@ class SyncPointLifecycleTest(
     bookRepository.findByIdOrNull(book4.id)?.let { bookRepository.update(it.copy(fileHash = "hash")) } // not included in changed books if it had no hash before
 
     val syncPoint2 = syncPointLifecycle.createSyncPoint(user1, listOf(library1.id))
-    val booksRemoved = syncPointRepository.findBooksChanged(syncPoint1.id, syncPoint2.id, Pageable.unpaged())
-    val page1 = syncPointRepository.findBooksChanged(syncPoint1.id, syncPoint2.id, PageRequest.of(0, 1))
-    val page2 = syncPointRepository.findBooksChanged(syncPoint1.id, syncPoint2.id, PageRequest.of(1, 1))
-    val page3 = syncPointRepository.findBooksChanged(syncPoint1.id, syncPoint2.id, PageRequest.of(2, 1))
+    val booksChanged = syncPointRepository.findBooksChanged(syncPoint1.id, syncPoint2.id, false, Pageable.unpaged())
+    val page1 = syncPointLifecycle.takeBooksChanged(syncPoint1.id, syncPoint2.id, PageRequest.ofSize(1))
+    val page2 = syncPointLifecycle.takeBooksChanged(syncPoint1.id, syncPoint2.id, PageRequest.ofSize(1))
+    val page3 = syncPointLifecycle.takeBooksChanged(syncPoint1.id, syncPoint2.id, PageRequest.ofSize(1))
 
     // then
-    assertThat(booksRemoved).hasSize(3)
-    assertThat(booksRemoved.map { it.bookId }).containsExactlyInAnyOrder(book1.id, book2.id, book3.id)
+    assertThat(booksChanged).hasSize(3)
+    assertThat(booksChanged.map { it.bookId }).containsExactlyInAnyOrder(book1.id, book2.id, book3.id)
     assertThat(page1).hasSize(1)
-    assertThat(page1.map { it.bookId }).containsAnyElementsOf(listOf(book1.id, book2.id, book3.id))
+    assertThat(page1.map { it.bookId })
+      .containsAnyElementsOf(listOf(book1.id, book2.id, book3.id))
+      .doesNotContainAnyElementsOf((page2 + page3).map { it.bookId })
     assertThat(page2).hasSize(1)
-    assertThat(page2.map { it.bookId }).containsAnyElementsOf(listOf(book1.id, book2.id, book3.id))
+    assertThat(page2.map { it.bookId })
+      .containsAnyElementsOf(listOf(book1.id, book2.id, book3.id))
+      .doesNotContainAnyElementsOf((page1 + page3).map { it.bookId })
     assertThat(page3).hasSize(1)
-    assertThat(page3.map { it.bookId }).containsAnyElementsOf(listOf(book1.id, book2.id, book3.id))
+    assertThat(page3.map { it.bookId })
+      .containsAnyElementsOf(listOf(book1.id, book2.id, book3.id))
+      .doesNotContainAnyElementsOf((page1 + page2).map { it.bookId })
   }
 }

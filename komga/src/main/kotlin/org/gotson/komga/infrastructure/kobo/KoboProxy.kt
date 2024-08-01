@@ -1,10 +1,12 @@
-package org.gotson.komga.interfaces.api.kobo
+package org.gotson.komga.infrastructure.kobo
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.KomgaSyncToken
-import org.gotson.komga.infrastructure.kobo.KomgaSyncTokenGenerator
+import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
+import org.gotson.komga.infrastructure.kobo.KoboHeaders.X_KOBO_SYNCTOKEN
+import org.gotson.komga.infrastructure.web.getCurrentRequest
 import org.gotson.komga.language.contains
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -15,20 +17,17 @@ import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.toEntity
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
 import org.springframework.web.server.ResponseStatusException
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.toJavaDuration
 
 private val logger = KotlinLogging.logger {}
 
-private const val X_KOBO_SYNCTOKEN = "x-kobo-synctoken"
-
 @Component
 class KoboProxy(
   private val objectMapper: ObjectMapper,
   private val komgaSyncTokenGenerator: KomgaSyncTokenGenerator,
+  private val komgaSettingsProvider: KomgaSettingsProvider,
 ) {
   private val koboApiClient =
     RestClient.builder()
@@ -59,24 +58,22 @@ class KoboProxy(
 
   private fun isKoboHeader(headerName: String) = headerName.startsWith("x-kobo-", true)
 
+  fun isEnabled() = komgaSettingsProvider.koboProxy
+
   fun proxyCurrentRequest(
     body: Any? = null,
     includeSyncToken: Boolean = false,
   ): ResponseEntity<JsonNode> {
-    val requestAttributes = RequestContextHolder.getRequestAttributes() as ServletRequestAttributes? ?: throw IllegalStateException("Could not get current request")
-    val request = requestAttributes.request
+    if (!komgaSettingsProvider.koboProxy) throw IllegalStateException("kobo proxying is disabled")
+
+    val request = getCurrentRequest()
     val (path) = pathRegex.find(request.requestURI)?.destructured ?: throw IllegalStateException("Could not get path from current request")
 
     val syncToken =
-      if (includeSyncToken) {
-        val syncTokenB64 = request.getHeader(X_KOBO_SYNCTOKEN)
-        if (syncTokenB64 != null)
-          komgaSyncTokenGenerator.fromBase64(syncTokenB64)
-        else
-          null
-      } else {
+      if (includeSyncToken)
+        komgaSyncTokenGenerator.fromRequestHeaders(request)
+      else
         null
-      }
 
     val response =
       koboApiClient.method(HttpMethod.valueOf(request.method))
@@ -93,8 +90,10 @@ class KoboProxy(
             .forEach {
               headersOut.addAll(it, request.getHeaders(it)?.toList() ?: emptyList())
             }
-          if (includeSyncToken && syncToken != null) {
+          if (includeSyncToken && syncToken != null && syncToken.rawKoboSyncToken.isNotBlank()) {
             headersOut.add(X_KOBO_SYNCTOKEN, syncToken.rawKoboSyncToken)
+          } else {
+            throw IllegalStateException("request must include sync token, but no raw Kobo sync token found")
           }
           logger.debug { "Headers out: $headersOut" }
         }

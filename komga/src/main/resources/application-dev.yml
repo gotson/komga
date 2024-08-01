@@ -19,6 +19,7 @@ logging:
 #    com.zaxxer.hikari: DEBUG
 #    org.springframework.boot.autoconfigure: DEBUG
 #    org.springframework.security.web.FilterChainProxy: DEBUG
+#    org.springframework.security.web.authentication.rememberme: DEBUG
   logback:
     rollingpolicy:
       max-history: 1

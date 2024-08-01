@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.SyncPoint
 import org.gotson.komga.domain.persistence.SyncPointRepository
 import org.gotson.komga.infrastructure.jooq.toCondition
 import org.gotson.komga.jooq.main.Tables
+import org.gotson.komga.language.toZonedDateTime
 import org.jooq.DSLContext
 import org.jooq.SelectConditionStep
 import org.jooq.impl.DSL
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Component
 class SyncPointDao(
@@ -29,6 +31,7 @@ class SyncPointDao(
   private val sd = Tables.SERIES_METADATA
   private val sp = Tables.SYNC_POINT
   private val spb = Tables.SYNC_POINT_BOOK
+  private val spbs = Tables.SYNC_POINT_BOOK_REMOVED_SYNCED
 
   @Transactional
   override fun create(
@@ -55,6 +58,8 @@ class SyncPointDao(
       spb,
       spb.SYNC_POINT_ID,
       spb.BOOK_ID,
+      spb.BOOK_CREATED_DATE,
+      spb.BOOK_LAST_MODIFIED_DATE,
       spb.BOOK_FILE_LAST_MODIFIED,
       spb.BOOK_FILE_SIZE,
       spb.BOOK_FILE_HASH,
@@ -63,6 +68,8 @@ class SyncPointDao(
       dsl.select(
         DSL.`val`(syncPointId),
         b.ID,
+        b.CREATED_DATE,
+        b.LAST_MODIFIED_DATE,
         b.FILE_LAST_MODIFIED,
         b.FILE_SIZE,
         b.FILE_HASH,
@@ -85,17 +92,23 @@ class SyncPointDao(
         SyncPoint(
           id = it.id,
           userId = it.userId,
-          createdDate = it.createdDate,
+          createdDate = it.createdDate.toZonedDateTime(),
         )
       }.firstOrNull()
 
   override fun findBooksById(
     syncPointId: String,
+    onlyNotSynced: Boolean,
     pageable: Pageable,
   ): Page<SyncPoint.Book> {
     val query =
       dsl.selectFrom(spb)
         .where(spb.SYNC_POINT_ID.eq(syncPointId))
+        .apply {
+          if (onlyNotSynced) {
+            and(spb.SYNCED.isFalse)
+          }
+        }
 
     return queryToPage(query, pageable)
   }
@@ -103,11 +116,17 @@ class SyncPointDao(
   override fun findBooksAdded(
     fromSyncPointId: String,
     toSyncPointId: String,
+    onlyNotSynced: Boolean,
     pageable: Pageable,
   ): Page<SyncPoint.Book> {
     val query =
       dsl.selectFrom(spb)
         .where(spb.SYNC_POINT_ID.eq(toSyncPointId))
+        .apply {
+          if (onlyNotSynced) {
+            and(spb.SYNCED.isFalse)
+          }
+        }
         .and(
           spb.BOOK_ID.notIn(
             dsl.select(spb.BOOK_ID).from(spb).where(spb.SYNC_POINT_ID.eq(fromSyncPointId)),
@@ -120,6 +139,7 @@ class SyncPointDao(
   override fun findBooksRemoved(
     fromSyncPointId: String,
     toSyncPointId: String,
+    onlyNotSynced: Boolean,
     pageable: Pageable,
   ): Page<SyncPoint.Book> {
     val query =
@@ -130,6 +150,14 @@ class SyncPointDao(
             dsl.select(spb.BOOK_ID).from(spb).where(spb.SYNC_POINT_ID.eq(toSyncPointId)),
           ),
         )
+        .apply {
+          if (onlyNotSynced)
+            and(
+              spb.BOOK_ID.notIn(
+                dsl.select(spbs.BOOK_ID).from(spbs).where(spbs.SYNC_POINT_ID.eq(toSyncPointId)),
+              ),
+            )
+        }
 
     return queryToPage(query, pageable)
   }
@@ -137,6 +165,7 @@ class SyncPointDao(
   override fun findBooksChanged(
     fromSyncPointId: String,
     toSyncPointId: String,
+    onlyNotSynced: Boolean,
     pageable: Pageable,
   ): Page<SyncPoint.Book> {
     val spbFrom = spb.`as`("spbFrom")
@@ -146,6 +175,11 @@ class SyncPointDao(
         .join(spbFrom).on(spb.BOOK_ID.eq(spbFrom.BOOK_ID))
         .where(spb.SYNC_POINT_ID.eq(toSyncPointId))
         .and(spbFrom.SYNC_POINT_ID.eq(fromSyncPointId))
+        .apply {
+          if (onlyNotSynced) {
+            and(spb.SYNCED.isFalse)
+          }
+        }
         .and(
           spb.BOOK_FILE_LAST_MODIFIED.ne(spbFrom.BOOK_FILE_LAST_MODIFIED)
             .or(spb.BOOK_FILE_SIZE.ne(spbFrom.BOOK_FILE_SIZE))
@@ -156,7 +190,33 @@ class SyncPointDao(
     return queryToPage(query, pageable)
   }
 
+  override fun markBooksSynced(
+    syncPointId: String,
+    forRemovedBooks: Boolean,
+    bookIds: Collection<String>,
+  ) {
+    // removed books are not present in the 'to' SyncPoint, only in the 'from' SyncPoint
+    // we store status in a separate table
+    if (forRemovedBooks)
+      dsl.batch(
+        dsl.insertInto(spbs, spbs.SYNC_POINT_ID, spbs.BOOK_ID).values(null as String?, null).onDuplicateKeyIgnore(),
+      ).also { step ->
+        bookIds.map { step.bind(syncPointId, it) }
+      }.execute()
+    else
+      dsl.update(spb)
+        .set(spb.SYNCED, true)
+        .where(spb.SYNC_POINT_ID.eq(syncPointId))
+        .and(spb.BOOK_ID.`in`(bookIds))
+        .execute()
+  }
+
   override fun deleteByUserId(userId: String) {
+    dsl.deleteFrom(spbs).where(
+      spbs.SYNC_POINT_ID.`in`(
+        dsl.select(sp.ID).from(sp).where(sp.USER_ID.eq(userId)),
+      ),
+    ).execute()
     dsl.deleteFrom(spb).where(
       spb.SYNC_POINT_ID.`in`(
         dsl.select(sp.ID).from(sp).where(sp.USER_ID.eq(userId)),
@@ -165,7 +225,14 @@ class SyncPointDao(
     dsl.deleteFrom(sp).where(sp.USER_ID.eq(userId)).execute()
   }
 
+  override fun deleteOne(syncPointId: String) {
+    dsl.deleteFrom(spbs).where(spbs.SYNC_POINT_ID.eq(syncPointId)).execute()
+    dsl.deleteFrom(spb).where(spb.SYNC_POINT_ID.eq(syncPointId)).execute()
+    dsl.deleteFrom(sp).where(sp.ID.eq(syncPointId)).execute()
+  }
+
   override fun deleteAll() {
+    dsl.deleteFrom(spbs).execute()
     dsl.deleteFrom(spb).execute()
     dsl.deleteFrom(sp).execute()
   }
@@ -184,10 +251,13 @@ class SyncPointDao(
           SyncPoint.Book(
             syncPointId = it.syncPointId,
             bookId = it.bookId,
-            fileLastModified = it.bookFileLastModified,
+            createdDate = it.bookCreatedDate.atZone(ZoneId.of("Z")),
+            lastModifiedDate = it.bookLastModifiedDate.atZone(ZoneId.of("Z")),
+            fileLastModified = it.bookFileLastModified.atZone(ZoneId.of("Z")),
             fileSize = it.bookFileSize,
             fileHash = it.bookFileHash,
-            metadataLastModifiedDate = it.bookMetadataLastModifiedDate,
+            metadataLastModifiedDate = it.bookMetadataLastModifiedDate.atZone(ZoneId.of("Z")),
+            synced = it.synced,
           )
         }
 
