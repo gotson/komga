@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.kobo
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.KomgaSyncToken
@@ -95,6 +96,7 @@ class KoboController(
   private val komgaSyncTokenGenerator: KomgaSyncTokenGenerator,
   private val komgaProperties: KomgaProperties,
   private val koboDtoRepository: KoboDtoRepository,
+  private val mapper: ObjectMapper,
 ) {
   @GetMapping("ping")
   fun ping() = "pong"
@@ -262,7 +264,7 @@ class KoboController(
     return if (koboProxy.isEnabled())
       koboProxy.proxyCurrentRequest(body)
     else
-      ResponseEntity.ok().build()
+      ResponseEntity.ok().body(mapper.createObjectNode())
   }
 
   /**
