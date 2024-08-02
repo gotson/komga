@@ -7,14 +7,12 @@ interface SyncResultDto
 
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
 data class NewEntitlementDto(
-  val newEntitlement: BookEntitlementDto,
-  val bookMetadata: KoboBookMetadataDto,
+  val newEntitlement: BookEntitlementContainerDto,
 ) : SyncResultDto
 
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
 data class ChangedEntitlementDto(
-  val changedEntitlement: BookEntitlementDto,
-  val bookMetadata: KoboBookMetadataDto,
+  val changedEntitlement: BookEntitlementContainerDto,
 ) : SyncResultDto
 
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)

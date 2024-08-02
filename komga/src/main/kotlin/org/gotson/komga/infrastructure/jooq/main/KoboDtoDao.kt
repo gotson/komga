@@ -28,7 +28,10 @@ class KoboDtoDao(
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val sd = Tables.SERIES_METADATA
 
-  override fun findBookMetadataByIds(bookIds: Collection<String>, downloadUriBuilder: UriBuilder): Collection<KoboBookMetadataDto> {
+  override fun findBookMetadataByIds(
+    bookIds: Collection<String>,
+    downloadUriBuilder: UriBuilder,
+  ): Collection<KoboBookMetadataDto> {
     val records =
       dsl.select(
         d.BOOK_ID,
@@ -44,6 +47,7 @@ class KoboDtoDao(
         sd.PUBLISHER,
         sd.LANGUAGE,
         b.FILE_SIZE,
+        b.ONESHOT,
         m.EXTENSION_CLASS,
         m.EXTENSION_VALUE_BLOB,
       ).from(b)
@@ -71,7 +75,7 @@ class KoboDtoDao(
         contributors = authors[dr.bookId].orEmpty().map { it.name },
         coverImageId = dr.bookId,
         crossRevisionId = dr.bookId,
-        description = dr.summary,
+        description = dr.summary.ifBlank { null },
         downloadUrls =
           listOf(
             DownloadUrlDto(
@@ -81,18 +85,21 @@ class KoboDtoDao(
             ),
           ),
         entitlementId = dr.bookId,
-        isbn = dr.isbn,
-        language = sr.language.take(2),
+        isbn = dr.isbn.ifBlank { null },
+        language = sr.language.take(2).ifBlank { "en" },
         publicationDate = dr.releaseDate?.atStartOfDay(ZoneId.of("Z")) ?: dr.createdDate.atZone(ZoneId.of("Z")),
         publisher = PublisherDto(name = sr.publisher),
         revisionId = dr.bookId,
         series =
-          KoboSeriesDto(
-            id = sr.seriesId,
-            name = sr.title,
-            number = dr.number,
-            numberFloat = dr.numberSort,
-          ),
+          if (!br.oneshot)
+            KoboSeriesDto(
+              id = sr.seriesId,
+              name = sr.title,
+              number = dr.number,
+              numberFloat = dr.numberSort,
+            )
+          else
+            null,
         title = dr.title,
         workId = dr.bookId,
       )

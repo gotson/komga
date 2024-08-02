@@ -18,6 +18,7 @@ import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.getCurrentRequest
 import org.gotson.komga.interfaces.api.CommonBookController
 import org.gotson.komga.interfaces.api.kobo.dto.AuthDto
+import org.gotson.komga.interfaces.api.kobo.dto.BookEntitlementContainerDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedEntitlementDto
 import org.gotson.komga.interfaces.api.kobo.dto.NewEntitlementDto
 import org.gotson.komga.interfaces.api.kobo.dto.ResourcesDto
@@ -204,24 +205,30 @@ class KoboController(
           addAll(
             booksAdded.content.map {
               NewEntitlementDto(
-                newEntitlement = it.toBookEntitlementDto(false),
-                bookMetadata = metadata[it.bookId]!!,
+                BookEntitlementContainerDto(
+                  bookEntitlement = it.toBookEntitlementDto(false),
+                  bookMetadata = metadata[it.bookId]!!,
+                ),
               )
             },
           )
           addAll(
             booksChanged.content.map {
               ChangedEntitlementDto(
-                changedEntitlement = it.toBookEntitlementDto(false),
-                bookMetadata = metadata[it.bookId]!!,
+                BookEntitlementContainerDto(
+                  bookEntitlement = it.toBookEntitlementDto(false),
+                  bookMetadata = metadata[it.bookId]!!,
+                ),
               )
             },
           )
           addAll(
             booksAdded.content.map {
               ChangedEntitlementDto(
-                changedEntitlement = it.toBookEntitlementDto(true),
-                bookMetadata = metadata[it.bookId]!!,
+                BookEntitlementContainerDto(
+                  bookEntitlement = it.toBookEntitlementDto(true),
+                  bookMetadata = metadata[it.bookId]!!,
+                ),
               )
             },
           )
@@ -236,8 +243,10 @@ class KoboController(
         val metadata = koboDtoRepository.findBookMetadataByIds(books.content.map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
         books.content.map {
           NewEntitlementDto(
-            newEntitlement = it.toBookEntitlementDto(false),
-            bookMetadata = metadata[it.bookId]!!,
+            BookEntitlementContainerDto(
+              bookEntitlement = it.toBookEntitlementDto(false),
+              bookMetadata = metadata[it.bookId]!!,
+            ),
           )
         }
       }
