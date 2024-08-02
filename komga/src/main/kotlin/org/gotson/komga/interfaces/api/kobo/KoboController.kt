@@ -197,6 +197,8 @@ class KoboController(
           else
             Page.empty()
 
+        logger.debug { "Library sync: ${booksAdded.numberOfElements} books added, ${booksChanged.numberOfElements} books changed, ${booksRemoved.numberOfElements} books removed" }
+
         val metadata = koboDtoRepository.findBookMetadataByIds((booksAdded.content + booksChanged.content + booksRemoved.content).map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
         buildList {
           addAll(
@@ -228,6 +230,8 @@ class KoboController(
         // no starting point, sync everything
         val books = syncPointLifecycle.takeBooks(toSyncPoint.id, Pageable.ofSize(komgaProperties.kobo.syncItemLimit))
         shouldContinueSync = books.hasNext()
+
+        logger.debug { "Library sync: ${books.numberOfElements} books" }
 
         val metadata = koboDtoRepository.findBookMetadataByIds(books.content.map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
         books.content.map {
