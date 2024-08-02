@@ -184,13 +184,13 @@ class SecurityConfiguration(
         cacheControl { disable() }
       }
 
-      sessionManagement {
-        sessionCreationPolicy = SessionCreationPolicy.IF_REQUIRED
-        sessionConcurrency {
-          sessionRegistry = theSessionRegistry
-          maximumSessions = -1
-        }
-      }
+//      sessionManagement {
+//        sessionCreationPolicy = SessionCreationPolicy.STATELESS
+//        sessionConcurrency {
+//          sessionRegistry = theSessionRegistry
+//          maximumSessions = -1
+//        }
+//      }
 
       addFilterBefore<AnonymousAuthenticationFilter>(koboAuthenticationFilter())
     }
