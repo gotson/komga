@@ -14,6 +14,7 @@ import org.gotson.komga.interfaces.api.kobo.persistence.KoboDtoRepository
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
+import org.springframework.web.util.UriBuilder
 import java.time.ZoneId
 
 @Component
@@ -25,10 +26,9 @@ class KoboDtoDao(
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
   private val a = Tables.BOOK_METADATA_AUTHOR
-  private val s = Tables.SERIES
   private val sd = Tables.SERIES_METADATA
 
-  override fun findBookMetadataByIds(bookIds: Collection<String>): Collection<KoboBookMetadataDto> {
+  override fun findBookMetadataByIds(bookIds: Collection<String>, downloadUriBuilder: UriBuilder): Collection<KoboBookMetadataDto> {
     val records =
       dsl.select(
         d.BOOK_ID,
@@ -77,8 +77,7 @@ class KoboDtoDao(
             DownloadUrlDto(
               format = if (mediaExtension?.isFixedLayout == true) FormatDto.EPUB3FL else FormatDto.EPUB,
               size = br.fileSize,
-              // TODO: use correct kobo download url
-              url = "",
+              url = downloadUriBuilder.build(dr.bookId).toURL().toString(),
             ),
           ),
         entitlementId = dr.bookId,

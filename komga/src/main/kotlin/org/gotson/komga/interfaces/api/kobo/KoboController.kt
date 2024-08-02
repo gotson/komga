@@ -16,6 +16,7 @@ import org.gotson.komga.infrastructure.kobo.KoboProxy
 import org.gotson.komga.infrastructure.kobo.KomgaSyncTokenGenerator
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.getCurrentRequest
+import org.gotson.komga.interfaces.api.CommonBookController
 import org.gotson.komga.interfaces.api.kobo.dto.AuthDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedEntitlementDto
 import org.gotson.komga.interfaces.api.kobo.dto.NewEntitlementDto
@@ -30,12 +31,16 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import org.springframework.web.util.UriBuilder
 import java.util.UUID
 
 private val logger = KotlinLogging.logger {}
@@ -88,7 +93,7 @@ private val logger = KotlinLogging.logger {}
  * and avoid having to lookup the API key in database.
  */
 @RestController
-@RequestMapping(value = ["/kobo/*/"], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping(value = ["/kobo/{authToken}/"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class KoboController(
   private val koboProxy: KoboProxy,
   private val syncPointLifecycle: SyncPointLifecycle,
@@ -97,6 +102,7 @@ class KoboController(
   private val komgaProperties: KomgaProperties,
   private val koboDtoRepository: KoboDtoRepository,
   private val mapper: ObjectMapper,
+  private val commonBookController: CommonBookController,
 ) {
   @GetMapping("ping")
   fun ping() = "pong"
@@ -149,6 +155,7 @@ class KoboController(
   @GetMapping("v1/library/sync")
   fun syncLibrary(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable authToken: String,
   ): ResponseEntity<Collection<SyncResultDto>> {
     val syncToken = komgaSyncTokenGenerator.fromRequestHeaders(getCurrentRequest()) ?: KomgaSyncToken()
 
@@ -190,7 +197,7 @@ class KoboController(
           else
             Page.empty()
 
-        val metadata = koboDtoRepository.findBookMetadataByIds((booksAdded.content + booksChanged.content + booksRemoved.content).map { it.bookId }).associateBy { it.entitlementId }
+        val metadata = koboDtoRepository.findBookMetadataByIds((booksAdded.content + booksChanged.content + booksRemoved.content).map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
         buildList {
           addAll(
             booksAdded.content.map {
@@ -222,7 +229,7 @@ class KoboController(
         val books = syncPointLifecycle.takeBooks(toSyncPoint.id, Pageable.ofSize(komgaProperties.kobo.syncItemLimit))
         shouldContinueSync = books.hasNext()
 
-        val metadata = koboDtoRepository.findBookMetadataByIds(books.content.map { it.bookId }).associateBy { it.entitlementId }
+        val metadata = koboDtoRepository.findBookMetadataByIds(books.content.map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
         books.content.map {
           NewEntitlementDto(
             newEntitlement = it.toBookEntitlementDto(false),
@@ -254,6 +261,15 @@ class KoboController(
       .body(syncResult)
   }
 
+  @GetMapping(
+    value = ["v1/books/{bookId}/file"],
+    produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
+  )
+  fun getBookFile(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable bookId: String,
+  ): ResponseEntity<StreamingResponseBody> = commonBookController.getBookFileInternal(principal, bookId)
+
   @RequestMapping(
     value = ["{*path}"],
     method = [RequestMethod.GET, RequestMethod.PUT, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD, RequestMethod.PATCH],
@@ -266,6 +282,9 @@ class KoboController(
     else
       ResponseEntity.ok().body(mapper.createObjectNode())
   }
+
+  private fun getDownloadUrlBuilder(token: String): UriBuilder =
+    ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("kobo", token, "v1", "books", "{bookId}", "file")
 
   /**
    * Retrieve a SyncPoint by ID, and verifies it belongs to the same userId

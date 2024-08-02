@@ -321,6 +321,11 @@ class CommonBookController(
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
+  ): ResponseEntity<StreamingResponseBody> = getBookFileInternal(principal, bookId)
+
+  fun getBookFileInternal(
+    principal: KomgaPrincipal,
+    bookId: String,
   ): ResponseEntity<StreamingResponseBody> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
       contentRestrictionChecker.checkContentRestriction(principal.user, book)
