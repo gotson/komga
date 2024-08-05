@@ -121,7 +121,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@v4
 
       - name: Build
         run: ./gradlew :komga:prepareThymeLeaf :komga:bootJar :komga-tray:jar
