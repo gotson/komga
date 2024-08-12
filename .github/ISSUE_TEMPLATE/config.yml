@@ -7,5 +7,5 @@ contact_links:
     url: https://komga.org/docs/faq
     about: Guides, troubleshooting, and answers to common questions
   - name: ⚠️ Mihon extension
-    url: https://github.com/keiyoushi/extensions
+    url: https://github.com/keiyoushi/extensions-source
     about: Issues and requests about the Mihon extension should be opened in the keiyoushi/extensions repository instead
