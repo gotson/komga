@@ -54,6 +54,8 @@ class EpubMetadataProviderTest {
           Author("The Editor", "editor"),
         )
         assertThat(isbn).isEqualTo("9783440077894")
+        assertThat(number).isEqualTo("1.5")
+        assertThat(numberSort).isEqualTo(1.5f)
       }
     }
 
@@ -74,6 +76,8 @@ class EpubMetadataProviderTest {
           Author("Stefanie Wegner", "writer"),
         )
         assertThat(isbn).isEqualTo("9783440077931")
+        assertThat(number).isEqualTo("3")
+        assertThat(numberSort).isEqualTo(3f)
       }
     }
 
@@ -94,6 +98,8 @@ class EpubMetadataProviderTest {
         assertThat(releaseDate).isEqualTo(LocalDate.of(2021, 6, 20))
         assertThat(authors).containsExactlyInAnyOrder(Author("Ralph Burke", "writer"))
         assertThat(isbn).isNull()
+        assertThat(number).isNull()
+        assertThat(numberSort).isNull()
       }
     }
 
@@ -114,6 +120,8 @@ class EpubMetadataProviderTest {
           Author("The Editor", "editor"),
         )
         assertThat(isbn).isNull()
+        assertThat(number).isNull()
+        assertThat(numberSort).isNull()
       }
     }
   }

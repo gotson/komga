@@ -28,7 +28,7 @@
         <opf:meta property="calibre:rating">6</opf:meta>
         <opf:meta property="belongs-to-collection" id="id-2">Die drei ??? Kids</opf:meta>
         <opf:meta refines="#id-2" property="collection-type">series</opf:meta>
-        <opf:meta refines="#id-2" property="group-position">1</opf:meta>
+        <opf:meta refines="#id-2" property="group-position">1.5</opf:meta>
         <opf:meta property="calibre:author_link_map">{"Ulf Blanck": ""}</opf:meta>
     </metadata>
     <manifest>
