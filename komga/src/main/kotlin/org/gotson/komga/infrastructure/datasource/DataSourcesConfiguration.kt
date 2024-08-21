@@ -17,11 +17,11 @@ class DataSourcesConfiguration(
   @Bean("sqliteDataSource")
   @Primary
   fun sqliteDataSource(): DataSource =
-    buildDataSource("SqliteUdfPool", SqliteUdfDataSource::class.java, komgaProperties.database)
+    buildDataSource("SqliteMainPool", SqliteUdfDataSource::class.java, komgaProperties.database)
 
   @Bean("tasksDataSource")
   fun tasksDataSource(): DataSource =
-    buildDataSource("SqliteTaskPool", SQLiteDataSource::class.java, komgaProperties.tasksDb)
+    buildDataSource("SqliteTasksPool", SQLiteDataSource::class.java, komgaProperties.tasksDb)
       .apply {
         // force pool size to 1 for tasks datasource
         this.maximumPoolSize = 1
