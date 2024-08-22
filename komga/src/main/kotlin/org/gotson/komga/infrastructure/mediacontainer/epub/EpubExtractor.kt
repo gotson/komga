@@ -2,15 +2,14 @@ package org.gotson.komga.infrastructure.mediacontainer.epub
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.compress.archivers.ArchiveEntry
-import org.apache.commons.compress.archivers.zip.ZipFile
 import org.gotson.komga.domain.model.BookPage
-import org.gotson.komga.domain.model.EntryNotFoundException
 import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.gotson.komga.infrastructure.util.getZipEntryBytes
 import org.jsoup.Jsoup
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -35,11 +34,7 @@ class EpubExtractor(
   fun getEntryStream(
     path: Path,
     entryName: String,
-  ): ByteArray =
-    ZipFile(path.toFile()).use { zip ->
-      zip.getEntry(entryName)?.let { entry -> zip.getInputStream(entry).use { it.readBytes() } }
-        ?: throw EntryNotFoundException("Entry does not exist: $entryName")
-    }
+  ): ByteArray = getZipEntryBytes(path, entryName)
 
   fun isEpub(path: Path): Boolean =
     try {
