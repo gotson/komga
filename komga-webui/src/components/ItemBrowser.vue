@@ -8,6 +8,8 @@
                  :class="flexClass"
                  handle=".handle"
                  v-bind="dragOptions"
+                 :forceFallback="true"
+                 :scroll-sensitivity="200"
       >
         <transition-group type="transition"
                           :name="!draggable ? 'flip-list' : null"
