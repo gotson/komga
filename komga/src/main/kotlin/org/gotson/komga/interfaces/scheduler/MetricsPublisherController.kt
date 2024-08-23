@@ -113,10 +113,10 @@ class MetricsPublisherController(
       COLLECTIONS -> noTagGauges[COLLECTIONS]?.set(collectionRepository.count())
       READLISTS -> noTagGauges[READLISTS]?.set(readListRepository.count())
 
-      SERIES -> multiGauges[SERIES]?.register(seriesRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) })
-      BOOKS -> multiGauges[BOOKS]?.register(bookRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) })
-      BOOKS_FILESIZE -> bookFileSizeGauge.register(bookRepository.getFilesizeGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) })
-      SIDECARS -> multiGauges[SIDECARS]?.register(sidecarRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) })
+      SERIES -> multiGauges[SERIES]?.register(seriesRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) }, true)
+      BOOKS -> multiGauges[BOOKS]?.register(bookRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) }, true)
+      BOOKS_FILESIZE -> bookFileSizeGauge.register(bookRepository.getFilesizeGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) }, true)
+      SIDECARS -> multiGauges[SIDECARS]?.register(sidecarRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) }, true)
     }
   }
 }
