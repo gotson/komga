@@ -387,10 +387,23 @@ class BookLifecycle(
     user: KomgaUser,
     page: Int,
   ) {
-    val pages = mediaRepository.getPagesSize(book.id)
-    require(page in 1..pages) { "Page argument ($page) must be within 1 and book page count ($pages)" }
+    val media = mediaRepository.findById(book.id)
+    require(page in 1..media.pageCount) { "Page argument ($page) must be within 1 and book page count (${media.pageCount})" }
 
-    val progress = ReadProgress(book.id, user.id, page, page == pages)
+    val locator =
+      if (media.profile == MediaProfile.EPUB) {
+        require(media.epubDivinaCompatible) { "epub book is not Divina compatible" }
+
+        val extension =
+          mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
+            ?: throw IllegalArgumentException("Epub extension not found")
+        extension.positions[page - 1]
+      } else {
+        null
+      }
+
+    val progress = ReadProgress(book.id, user.id, page, page == media.pageCount, locator = locator)
+
     readProgressRepository.save(progress)
     eventPublisher.publishEvent(DomainEvent.ReadProgressChanged(progress))
   }

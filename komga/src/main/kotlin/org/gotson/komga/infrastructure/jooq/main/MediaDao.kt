@@ -89,13 +89,6 @@ class MediaDao(
       .map { it.value1() }
   }
 
-  override fun getPagesSize(bookId: String): Int =
-    dsl.select(m.PAGE_COUNT)
-      .from(m)
-      .where(m.BOOK_ID.eq(bookId))
-      .fetch(m.PAGE_COUNT)
-      .first()
-
   override fun getPagesSizes(bookIds: Collection<String>): Collection<Pair<String, Int>> =
     dsl.select(m.BOOK_ID, m.PAGE_COUNT)
       .from(m)

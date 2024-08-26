@@ -14,8 +14,6 @@ interface MediaRepository {
     pageHashing: Int,
   ): Collection<String>
 
-  fun getPagesSize(bookId: String): Int
-
   fun getPagesSizes(bookIds: Collection<String>): Collection<Pair<String, Int>>
 
   fun findExtensionByIdOrNull(bookId: String): MediaExtension?
