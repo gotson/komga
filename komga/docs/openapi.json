@@ -11337,6 +11337,9 @@
               "type": "string"
             }
           },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
+          },
           "labelsAllow": {
             "uniqueItems": true,
             "type": "array",
@@ -11350,9 +11353,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "ageRestriction": {
-            "$ref": "#/components/schemas/AgeRestrictionUpdateDto"
           },
           "sharedLibraries": {
             "$ref": "#/components/schemas/SharedLibrariesUpdateDto"
@@ -13750,9 +13750,6 @@
             "type": "number",
             "format": "double"
           },
-          "concrete": {
-            "type": "boolean"
-          },
           "wildcardType": {
             "type": "boolean"
           },
@@ -13761,6 +13758,9 @@
           },
           "subtypeSuffix": {
             "type": "string"
+          },
+          "concrete": {
+            "type": "boolean"
           },
           "charset": {
             "type": "string"

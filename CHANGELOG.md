@@ -1,3 +1,41 @@
+# [1.11.3](https://github.com/gotson/komga/compare/1.11.2...1.11.3) (2024-08-26)
+## 🐛 Fixes
+**api**
+- some metrics are not updated ([da35140](https://github.com/gotson/komga/commits/da35140)), closes [#1643](https://github.com/gotson/komga/issues/1643)
+- known page hash cannot be sorted by file size ([bf71f8e](https://github.com/gotson/komga/commits/bf71f8e)), closes [#1610](https://github.com/gotson/komga/issues/1610)
+
+**docker**
+- broken Dockerfile ([796a4ed](https://github.com/gotson/komga/commits/796a4ed))
+
+**komga-tray**
+- libheif.dll had no avif support ([f743aae](https://github.com/gotson/komga/commits/f743aae)), closes [#1624](https://github.com/gotson/komga/issues/1624)
+
+**webui**
+- footer text displayed over book content ([6794e24](https://github.com/gotson/komga/commits/6794e24)), closes [#1489](https://github.com/gotson/komga/issues/1489)
+- auto-scroll upward does not work when dragging elements ([835bff4](https://github.com/gotson/komga/commits/835bff4)), closes [#1652](https://github.com/gotson/komga/issues/1652)
+
+## 🏎 Perf
+
+- faster zip entry extraction ([eeb5898](https://github.com/gotson/komga/commits/eeb5898))
+
+## 🔄️ Changes
+
+- better logging for sqlite pools ([6a51f34](https://github.com/gotson/komga/commits/6a51f34))
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([eec2474](https://github.com/gotson/komga/commits/eec2474))
+
+**unscoped**
+- add browserlist update action ([b93459a](https://github.com/gotson/komga/commits/b93459a))
+
+## ⚙️ Dependencies
+**ci**
+- bump gradle/actions from 3 to 4 ([6482b34](https://github.com/gotson/komga/commits/6482b34))
+
+**webui**
+- bump axios from 1.6.0 to 1.7.4 in /komga-webui ([f177fab](https://github.com/gotson/komga/commits/f177fab))
+
 # [1.11.2](https://github.com/gotson/komga/compare/1.11.1...1.11.2) (2024-07-25)
 ## 🐛 Fixes
 **docker**
