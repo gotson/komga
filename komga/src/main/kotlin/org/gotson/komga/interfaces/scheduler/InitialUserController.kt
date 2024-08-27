@@ -39,7 +39,7 @@ class InitialUsersDevConfiguration {
   @Bean
   fun initialUsers(): List<KomgaUser> =
     listOf(
-      KomgaUser("admin@example.org", "admin", roleAdmin = true),
+      KomgaUser("admin@example.org", "admin", roleAdmin = true, roleKoboSync = true),
       KomgaUser("user@example.org", "user", roleAdmin = false),
     )
 }

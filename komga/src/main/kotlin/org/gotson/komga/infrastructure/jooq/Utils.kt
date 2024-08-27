@@ -2,7 +2,10 @@ package org.gotson.komga.infrastructure.jooq
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gotson.komga.domain.model.AllowExclude
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.ContentRestrictions
+import org.gotson.komga.domain.model.MediaExtension
+import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.Condition
@@ -67,6 +70,21 @@ fun DSLContext.insertTempStrings(
 
 fun DSLContext.selectTempStrings() = this.select(Tables.TEMP_STRING_LIST.STRING).from(Tables.TEMP_STRING_LIST)
 
+fun BookSearch.toCondition(): Condition {
+  var c: Condition = DSL.noCondition()
+
+  if (libraryIds != null) c = c.and(Tables.BOOK.LIBRARY_ID.`in`(libraryIds))
+  if (!seriesIds.isNullOrEmpty()) c = c.and(Tables.BOOK.SERIES_ID.`in`(seriesIds))
+  searchTerm?.let { c = c.and(Tables.BOOK_METADATA.TITLE.containsIgnoreCase(it)) }
+  if (!mediaStatus.isNullOrEmpty()) c = c.and(Tables.MEDIA.STATUS.`in`(mediaStatus))
+  if (!mediaProfile.isNullOrEmpty()) c = c.and(Tables.MEDIA.MEDIA_TYPE.`in`(mediaProfile.flatMap { profile -> MediaType.matchingMediaProfile(profile).map { it.type } }.toSet()))
+  if (deleted == true) c = c.and(Tables.BOOK.DELETED_DATE.isNotNull)
+  if (deleted == false) c = c.and(Tables.BOOK.DELETED_DATE.isNull)
+  if (releasedAfter != null) c = c.and(Tables.BOOK_METADATA.RELEASE_DATE.gt(releasedAfter))
+
+  return c
+}
+
 fun ContentRestrictions.toCondition(dsl: DSLContext): Condition {
   val ageAllowed =
     if (ageRestriction?.restriction == AllowExclude.ALLOW_ONLY) {
@@ -122,6 +140,20 @@ inline fun <reified T> ObjectMapper.deserializeJsonGz(gzJson: ByteArray?): T? {
   return try {
     GZIPInputStream(gzJson.inputStream()).use { gz ->
       this.readValue(gz, T::class.java) as T
+    }
+  } catch (e: Exception) {
+    null
+  }
+}
+
+fun ObjectMapper.deserializeMediaExtension(
+  extensionClass: String?,
+  extensionBlob: ByteArray?,
+): MediaExtension? {
+  if (extensionClass == null || extensionBlob == null) return null
+  return try {
+    GZIPInputStream(extensionBlob.inputStream()).use { gz ->
+      this.readValue(gz, Class.forName(extensionClass)) as MediaExtension
     }
   } catch (e: Exception) {
     null

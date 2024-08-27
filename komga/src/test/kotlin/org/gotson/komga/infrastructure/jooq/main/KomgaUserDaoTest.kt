@@ -47,6 +47,9 @@ class KomgaUserDaoTest(
         email = "user@example.org",
         password = "password",
         roleAdmin = false,
+        rolePageStreaming = false,
+        roleFileDownload = false,
+        roleKoboSync = false,
         sharedLibrariesIds = setOf(library.id),
         sharedAllLibraries = false,
       )
@@ -61,6 +64,9 @@ class KomgaUserDaoTest(
       assertThat(email).isEqualTo("user@example.org")
       assertThat(password).isEqualTo("password")
       assertThat(roleAdmin).isFalse
+      assertThat(rolePageStreaming).isFalse
+      assertThat(roleFileDownload).isFalse
+      assertThat(roleKoboSync).isFalse
       assertThat(sharedLibrariesIds).containsExactly(library.id)
       assertThat(sharedAllLibraries).isFalse
       assertThat(restrictions.ageRestriction).isNull()
@@ -76,6 +82,9 @@ class KomgaUserDaoTest(
         email = "user@example.org",
         password = "password",
         roleAdmin = false,
+        rolePageStreaming = false,
+        roleFileDownload = false,
+        roleKoboSync = false,
         sharedLibrariesIds = setOf(library.id),
         sharedAllLibraries = false,
         restrictions =
@@ -101,6 +110,9 @@ class KomgaUserDaoTest(
         email = "user2@example.org",
         password = "password2",
         roleAdmin = true,
+        rolePageStreaming = true,
+        roleFileDownload = true,
+        roleKoboSync = true,
         sharedLibrariesIds = emptySet(),
         sharedAllLibraries = true,
         restrictions =
@@ -123,6 +135,9 @@ class KomgaUserDaoTest(
       assertThat(email).isEqualTo("user2@example.org")
       assertThat(password).isEqualTo("password2")
       assertThat(roleAdmin).isTrue
+      assertThat(rolePageStreaming).isTrue
+      assertThat(roleFileDownload).isTrue
+      assertThat(roleKoboSync).isTrue
       assertThat(sharedLibrariesIds).isEmpty()
       assertThat(sharedAllLibraries).isTrue
       assertThat(restrictions.ageRestriction).isNotNull

@@ -472,15 +472,18 @@ class BookLifecycle(
           // match progression with positions
           val matchingPositions = extension.positions.filter { it.href == href }
           val matchedPosition =
-            matchingPositions.firstOrNull { it.locations!!.progression == newProgression.locator.locations!!.progression }
-              ?: run {
-                // no exact match
-                val before = matchingPositions.filter { it.locations!!.progression!! < newProgression.locator.locations!!.progression!! }.maxByOrNull { it.locations!!.position!! }
-                val after = matchingPositions.filter { it.locations!!.progression!! > newProgression.locator.locations!!.progression!! }.minByOrNull { it.locations!!.position!! }
-                if (before == null || after == null || before.locations!!.position!! > after.locations!!.position!!)
-                  throw IllegalArgumentException("Invalid progression")
-                before
-              }
+            if (extension.isFixedLayout && matchingPositions.size == 1)
+              matchingPositions.first()
+            else
+              matchingPositions.firstOrNull { it.locations!!.progression == newProgression.locator.locations!!.progression }
+                ?: run {
+                  // no exact match
+                  val before = matchingPositions.filter { it.locations!!.progression!! < newProgression.locator.locations!!.progression!! }.maxByOrNull { it.locations!!.position!! }
+                  val after = matchingPositions.filter { it.locations!!.progression!! > newProgression.locator.locations!!.progression!! }.minByOrNull { it.locations!!.position!! }
+                  if (before == null || after == null || before.locations!!.position!! > after.locations!!.position!!)
+                    throw IllegalArgumentException("Invalid progression")
+                  before
+                }
 
           val totalProgression = matchedPosition.locations?.totalProgression
           ReadProgress(
@@ -491,7 +494,8 @@ class BookLifecycle(
             newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
             newProgression.device.id,
             newProgression.device.name,
-            newProgression.locator,
+            // use the type we have instead of the one provided
+            newProgression.locator.copy(type = matchedPosition.type),
           )
         }
       }

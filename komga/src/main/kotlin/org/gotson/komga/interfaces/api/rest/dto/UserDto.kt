@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
+import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 
@@ -54,6 +55,7 @@ data class UserCreationDto(
       roleAdmin = roles.contains(ROLE_ADMIN),
       roleFileDownload = roles.contains(ROLE_FILE_DOWNLOAD),
       rolePageStreaming = roles.contains(ROLE_PAGE_STREAMING),
+      roleKoboSync = roles.contains(ROLE_KOBO_SYNC),
     )
 }
 

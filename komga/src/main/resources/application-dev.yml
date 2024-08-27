@@ -11,12 +11,15 @@ logging:
   level:
     org.apache.activemq.audit.message: WARN
     org.gotson.komga: DEBUG
+#    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+#    reactor.netty.http.client: DEBUG
 #    org.jooq: DEBUG
 #    org.jooq.tools.LoggerListener: DEBUG
 #    web: DEBUG
 #    com.zaxxer.hikari: DEBUG
 #    org.springframework.boot.autoconfigure: DEBUG
 #    org.springframework.security.web.FilterChainProxy: DEBUG
+#    org.springframework.security.web.authentication.rememberme: DEBUG
   logback:
     rollingpolicy:
       max-history: 1

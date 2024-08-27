@@ -5,11 +5,11 @@ import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
+import org.gotson.komga.infrastructure.jooq.toCondition
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookRecord
 import org.gotson.komga.language.toCurrentTimeZone
-import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Value
@@ -230,6 +230,9 @@ class BookDao(
       .fetch(b.ID)
   }
 
+  override fun existsById(bookId: String): Boolean =
+    dsl.fetchExists(b, b.ID.eq(bookId))
+
   override fun findAllByLibraryIdAndMediaTypes(
     libraryId: String,
     mediaTypes: Collection<String>,
@@ -363,20 +366,6 @@ class BookDao(
       .from(b)
       .groupBy(b.LIBRARY_ID)
       .fetchMap(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
-
-  private fun BookSearch.toCondition(): Condition {
-    var c: Condition = DSL.trueCondition()
-
-    if (libraryIds != null) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
-    if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
-    searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
-    if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
-    if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
-    if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
-    if (releasedAfter != null) c = c.and(d.RELEASE_DATE.gt(releasedAfter))
-
-    return c
-  }
 
   private fun BookRecord.toDomain() =
     Book(

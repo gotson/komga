@@ -73,6 +73,8 @@ interface BookRepository {
     sort: Sort,
   ): Collection<String>
 
+  fun existsById(bookId: String): Boolean
+
   fun insert(book: Book)
 
   fun insert(books: Collection<Book>)

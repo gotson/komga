@@ -40,6 +40,7 @@ class SettingsController(
       komgaSettingsProvider.taskPoolSize,
       SettingMultiSource(configServerPort, komgaSettingsProvider.serverPort, serverSettings.effectiveServerPort),
       SettingMultiSource(configServerContextPath, komgaSettingsProvider.serverContextPath, serverSettings.effectiveServletContextPath),
+      komgaSettingsProvider.koboProxy,
     )
 
   @PatchMapping
@@ -57,5 +58,7 @@ class SettingsController(
 
     if (newSettings.isSet("serverPort")) komgaSettingsProvider.serverPort = newSettings.serverPort
     if (newSettings.isSet("serverContextPath")) komgaSettingsProvider.serverContextPath = newSettings.serverContextPath
+
+    newSettings.koboProxy?.let { komgaSettingsProvider.koboProxy = it }
   }
 }

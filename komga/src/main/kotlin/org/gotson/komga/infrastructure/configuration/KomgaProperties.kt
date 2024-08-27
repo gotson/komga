@@ -67,6 +67,8 @@ class KomgaProperties {
 
   var configDir: String? = null
 
+  var kobo = Kobo()
+
   @Positive
   @Deprecated("Artemis has been replaced")
   var taskConsumers: Int = 1
@@ -129,5 +131,10 @@ class KomgaProperties {
 
       var preserveOriginal: Boolean = true
     }
+  }
+
+  class Kobo {
+    @get:Positive
+    var syncItemLimit: Int = 100
   }
 }

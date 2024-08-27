@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
+import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.security.apikey.ApiKeyAuthenticationToken
@@ -20,7 +21,7 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 @WithSecurityContext(factory = WithMockCustomUserSecurityContextFactory::class, setupBefore = TestExecutionEvent.TEST_EXECUTION)
 annotation class WithMockCustomUser(
   val email: String = "user@example.org",
-  val roles: Array<String> = [ROLE_FILE_DOWNLOAD, ROLE_PAGE_STREAMING],
+  val roles: Array<String> = [ROLE_FILE_DOWNLOAD, ROLE_PAGE_STREAMING, ROLE_KOBO_SYNC],
   val sharedAllLibraries: Boolean = true,
   val sharedLibraries: Array<String> = [],
   val id: String = "0",
@@ -43,6 +44,7 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
           roleAdmin = customUser.roles.contains(ROLE_ADMIN),
           roleFileDownload = customUser.roles.contains(ROLE_FILE_DOWNLOAD),
           rolePageStreaming = customUser.roles.contains(ROLE_PAGE_STREAMING),
+          roleKoboSync = customUser.roles.contains(ROLE_KOBO_SYNC),
           sharedAllLibraries = customUser.sharedAllLibraries,
           sharedLibrariesIds = customUser.sharedLibraries.toSet(),
           restrictions =

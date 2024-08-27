@@ -9,6 +9,7 @@ import org.gotson.komga.domain.model.MediaExtension
 import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.ProxyExtension
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.infrastructure.jooq.deserializeMediaExtension
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.serializeJsonGz
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.zip.GZIPInputStream
 
 private val logger = KotlinLogging.logger {}
 
@@ -64,7 +64,7 @@ class MediaDao(
       .from(m)
       .where(m.BOOK_ID.eq(bookId))
       .fetchOne()
-      ?.map { deserializeExtension(it.get(m.EXTENSION_CLASS), it.get(m.EXTENSION_VALUE_BLOB)) }
+      ?.map { mapper.deserializeMediaExtension(it.get(m.EXTENSION_CLASS), it.get(m.EXTENSION_VALUE_BLOB)) }
 
   override fun findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(
     libraryId: String,
@@ -289,21 +289,6 @@ class MediaDao(
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )
-
-  fun deserializeExtension(
-    extensionClass: String?,
-    extensionBlob: ByteArray?,
-  ): MediaExtension? {
-    if (extensionClass == null || extensionBlob == null) return null
-    return try {
-      GZIPInputStream(extensionBlob.inputStream()).use { gz ->
-        mapper.readValue(gz, Class.forName(extensionClass)) as MediaExtension
-      }
-    } catch (e: Exception) {
-      logger.error(e) { "Could not deserialize media extension class: $extensionClass" }
-      null
-    }
-  }
 
   private fun MediaPageRecord.toDomain() =
     BookPage(
