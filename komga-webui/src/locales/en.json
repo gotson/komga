@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "Account Settings",
+    "api_key": {
+      "created_date": "Created date: {date}",
+      "force_kobo_sync": "Force Kobo sync",
+      "generate_api_key": "Generate API key",
+      "no_keys": "No API Keys created yet"
+    },
     "change_password": "change password"
   },
   "announcements": {
@@ -27,6 +33,7 @@
     "tab_title": "Announcements"
   },
   "authentication_activity": {
+    "api_key": "API Key",
     "datetime": "Date Time",
     "email": "Email",
     "error": "Error",
@@ -203,6 +210,7 @@
     "choose_image": "Choose an image",
     "close": "Close",
     "collections": "Collections",
+    "copied": "Copied!",
     "create": "Create",
     "delete": "Delete",
     "dimension": "w: {width}, h: {height}",
@@ -220,6 +228,7 @@
     "go_to_library": "Go to library",
     "go_to_readlist": "Go to read list",
     "go_to_series": "Go to series",
+    "i_understand": "I understand",
     "library": "Library",
     "locale_name": "English",
     "locale_rtl": "false",
@@ -287,6 +296,14 @@
     "tab_title": "Data Import"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Generate",
+      "context": "API Keys can be used to authenticate through the Kobo Sync protocol.",
+      "dialog_title": "Generate new API key",
+      "field_comment": "Comment",
+      "field_comment_hint": "What's this API key for?",
+      "info_copy": "Make sure to copy your API key now. You won't be able to see it again!"
+    },
     "add_to_collection": {
       "button_create": "Create",
       "card_collection_subtitle": "No series | 1 series | {count} series",
@@ -309,11 +326,7 @@
       "dialog_title": "Add User",
       "field_email": "Email",
       "field_email_error": "Must be a valid email address",
-      "field_password": "Password",
-      "field_role_administrator": "Administrator",
-      "field_role_file_download": "File Download",
-      "field_role_page_streaming": "Page Streaming",
-      "label_roles": "Roles"
+      "field_password": "Password"
     },
     "analyze_library": {
       "body": "Analyzes all the media files in the library. The analysis captures information about the media. Depending on your library size, this may take a long time.",
@@ -323,6 +336,12 @@
     "book_picker": {
       "filter": "Filter by book number, title, or release date",
       "title": "Select Book"
+    },
+    "delete_apikey": {
+      "button_confirm": "Delete",
+      "confirm_delete": "I understand, delete the API key \"{name}\"",
+      "dialog_title": "Delete API key",
+      "warning_html": "Any applications or scripts using this API key will no longer be able to access the Komga API. You cannot undo this action."
     },
     "delete_book": {
       "button_confirm": "Delete",
@@ -541,6 +560,10 @@
         "order": "Order"
       },
       "title": "Destination File Name"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Force Kobo sync",
+      "warning_html": "This will delete all sync history for this API key. Your Kobo will sync everything on the next sync."
     },
     "password_change": {
       "button_cancel": "Cancel",
@@ -765,7 +788,8 @@
     "ERR_1030": "ComicRack CBL has no Name element",
     "ERR_1031": "ComicRack CBL Book is missing series or number",
     "ERR_1032": "EPUB file has wrong media type",
-    "ERR_1033": "Some entries are missing"
+    "ERR_1033": "Some entries are missing",
+    "ERR_1034": "An API key with that comment already exists"
   },
   "filter": {
     "age_rating": "age rating",
@@ -911,6 +935,7 @@
     },
     "label_delete_empty_collections": "Delete empty collections after scan",
     "label_delete_empty_readlists": "Delete empty read lists after scan",
+    "label_kobo_proxy": "Proxy Kobo Sync requests to Kobo Store",
     "label_rememberme_duration": "Remember me duration (in days)",
     "label_server_context_path": "Base URL",
     "label_server_port": "Server Port",
@@ -962,10 +987,12 @@
   "user_roles": {
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "File download",
-    "PAGE_STREAMING": "Stream pages",
+    "KOBO_SYNC": "Kobo Sync",
+    "PAGE_STREAMING": "Page streaming",
     "USER": "User"
   },
   "users": {
+    "api_keys": "API Keys",
     "authentication_activity": "Authentication Activity",
     "users": "Users"
   },

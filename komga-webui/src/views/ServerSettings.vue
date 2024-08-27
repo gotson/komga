@@ -106,6 +106,13 @@
             </v-tooltip>
           </template>
         </v-text-field>
+
+        <v-checkbox
+          v-model="form.koboProxy"
+          @change="$v.form.koboProxy.$touch()"
+          :label="$t('server_settings.label_kobo_proxy')"
+          hide-details
+        />
       </v-col>
     </v-row>
     <v-row>
@@ -158,6 +165,7 @@ export default Vue.extend({
       taskPoolSize: 1,
       serverPort: 25600,
       serverContextPath: '',
+      koboProxy: false,
     },
     existingSettings: {} as SettingsDto,
     dialogRegenerateThumbnails: false,
@@ -183,6 +191,7 @@ export default Vue.extend({
       serverContextPath: {
         contextPath,
       },
+      koboProxy: {},
     },
   },
   mounted() {
@@ -259,6 +268,10 @@ export default Vue.extend({
       if (this.$v.form?.serverContextPath?.$dirty)
         // coerce empty string to null
         this.$_.merge(newSettings, {serverContextPath: this.form.serverContextPath || null})
+
+      if (this.$v.form?.koboProxy?.$dirty)
+        this.$_.merge(newSettings, {koboProxy: this.form.koboProxy})
+
 
       await this.$komgaSettings.updateSettings(newSettings)
       await this.refreshSettings()
