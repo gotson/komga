@@ -48,10 +48,14 @@ class AuthenticationActivityDao(
     return findAll(conditions, pageable)
   }
 
-  override fun findMostRecentByUser(user: KomgaUser): AuthenticationActivity? =
+  override fun findMostRecentByUser(
+    user: KomgaUser,
+    apiKeyId: String?,
+  ): AuthenticationActivity? =
     dsl.selectFrom(aa)
       .where(aa.USER_ID.eq(user.id))
       .or(aa.EMAIL.eq(user.email))
+      .apply { apiKeyId?.let { and(aa.API_KEY_ID.eq(it)) } }
       .orderBy(aa.DATE_TIME.desc())
       .limit(1)
       .fetchOne()
@@ -85,8 +89,8 @@ class AuthenticationActivityDao(
   }
 
   override fun insert(activity: AuthenticationActivity) {
-    dsl.insertInto(aa, aa.USER_ID, aa.EMAIL, aa.IP, aa.USER_AGENT, aa.SUCCESS, aa.ERROR, aa.SOURCE)
-      .values(activity.userId, activity.email, activity.ip, activity.userAgent, activity.success, activity.error, activity.source)
+    dsl.insertInto(aa, aa.USER_ID, aa.EMAIL, aa.API_KEY_ID, aa.API_KEY_COMMENT, aa.IP, aa.USER_AGENT, aa.SUCCESS, aa.ERROR, aa.SOURCE)
+      .values(activity.userId, activity.email, activity.apiKeyId, activity.apiKeyComment, activity.ip, activity.userAgent, activity.success, activity.error, activity.source)
       .execute()
   }
 
@@ -107,6 +111,8 @@ class AuthenticationActivityDao(
     AuthenticationActivity(
       userId = userId,
       email = email,
+      apiKeyId = apiKeyId,
+      apiKeyComment = apiKeyComment,
       ip = ip,
       userAgent = userAgent,
       success = success,

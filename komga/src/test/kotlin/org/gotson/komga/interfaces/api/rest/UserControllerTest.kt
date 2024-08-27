@@ -13,6 +13,7 @@ import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
+import org.hamcrest.text.MatchesPattern
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -26,6 +27,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
@@ -438,6 +441,98 @@ class UserControllerTest(
         assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(16)
         assertThat(this.restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.EXCLUDE)
       }
+    }
+  }
+
+  @Nested
+  inner class ApiKey {
+    @AfterEach
+    fun cleanup() {
+      userRepository.deleteApiKeyByUserId(admin.id)
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin")
+    fun `given user when creating API key then it is returned in plain text`() {
+      // language=JSON
+      val jsonString =
+        """
+        {
+          "comment": "test api key"
+        }
+        """.trimIndent()
+
+      mockMvc.post("/api/v2/users/me/api-keys") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isOk() }
+        jsonPath("$.userId") { value(admin.id) }
+        jsonPath("$.key") { value(MatchesPattern(Regex("""[^*]+""").toPattern())) }
+        jsonPath("$.comment") { value("test api key") }
+      }
+
+      with(userRepository.findApiKeyByUserId(admin.id)) {
+        assertThat(this).hasSize(1)
+        with(this.first()!!) {
+          assertThat(this.userId).isEqualTo(admin.id)
+          assertThat(this.comment).isEqualTo("test api key")
+        }
+      }
+
+      mockMvc.get("/api/v2/users/me/api-keys")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.length()") { value(1) }
+          jsonPath("$[0].userId") { value(admin.id) }
+          jsonPath("$[0].key") { value(MatchesPattern(Regex("""[*]+""").toPattern())) }
+          jsonPath("$[0].comment") { value("test api key") }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin")
+    fun `given user when creating API key without comment then returns bad request`() {
+      // language=JSON
+      val jsonString =
+        """
+        {
+          "comment": ""
+        }
+        """.trimIndent()
+
+      mockMvc.post("/api/v2/users/me/api-keys") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isBadRequest() }
+      }
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin")
+    fun `given user with api key when deleting API key then it is deleted`() {
+      val apiKey = userLifecycle.createApiKey(admin, "test")!!
+
+      mockMvc.delete("/api/v2/users/me/api-keys/${apiKey.id}")
+        .andExpect {
+          status { isNoContent() }
+        }
+
+      assertThat(userRepository.findApiKeyByUserId(admin.id)).isEmpty()
+    }
+
+    @Test
+    @WithMockCustomUser(id = "admin")
+    fun `given user with api key when deleting different API key ID then returns bad request`() {
+      val apiKey = userLifecycle.createApiKey(admin, "test")!!
+
+      mockMvc.delete("/api/v2/users/me/api-keys/abc123")
+        .andExpect {
+          status { isNotFound() }
+        }
+
+      assertThat(userRepository.findApiKeyByUserId(admin.id)).isNotEmpty()
     }
   }
 }

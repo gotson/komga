@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.security.apikey.ApiKeyAuthenticationToken
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -27,6 +28,7 @@ annotation class WithMockCustomUser(
   val excludeAgeOver: Int = -1,
   val allowLabels: Array<String> = [],
   val excludeLabels: Array<String> = [],
+  val apiKey: String = "",
 )
 
 class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<WithMockCustomUser> {
@@ -58,7 +60,11 @@ class WithMockCustomUserSecurityContextFactory : WithSecurityContextFactory<With
           id = customUser.id,
         ),
       )
-    val auth = UsernamePasswordAuthenticationToken(principal, "", principal.authorities)
+    val auth =
+      if (customUser.apiKey.isNotEmpty())
+        ApiKeyAuthenticationToken.authenticated(customUser.apiKey, customUser.apiKey, principal.authorities)
+      else
+        UsernamePasswordAuthenticationToken(principal, "", principal.authorities)
     context.authentication = auth
     return context
   }

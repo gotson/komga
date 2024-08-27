@@ -14,7 +14,10 @@ interface AuthenticationActivityRepository {
     pageable: Pageable,
   ): Page<AuthenticationActivity>
 
-  fun findMostRecentByUser(user: KomgaUser): AuthenticationActivity?
+  fun findMostRecentByUser(
+    user: KomgaUser,
+    apiKeyId: String?,
+  ): AuthenticationActivity?
 
   fun insert(activity: AuthenticationActivity)
 

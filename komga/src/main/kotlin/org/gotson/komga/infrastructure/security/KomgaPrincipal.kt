@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.security
 
+import org.gotson.komga.domain.model.ApiKey
 import org.gotson.komga.domain.model.KomgaUser
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -13,6 +14,8 @@ class KomgaPrincipal(
   val user: KomgaUser,
   val oAuth2User: OAuth2User? = null,
   val oidcUser: OidcUser? = null,
+  val apiKey: ApiKey? = null,
+  private val name: String = user.email,
 ) : UserDetails, OAuth2User, OidcUser {
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
     user.roles
@@ -21,7 +24,7 @@ class KomgaPrincipal(
 
   override fun isEnabled() = true
 
-  override fun getUsername() = user.email
+  override fun getUsername() = name
 
   override fun isCredentialsNonExpired() = true
 
@@ -31,7 +34,7 @@ class KomgaPrincipal(
 
   override fun isAccountNonLocked() = true
 
-  override fun getName() = user.email
+  override fun getName() = name
 
   override fun getAttributes(): MutableMap<String, Any> = oAuth2User?.attributes ?: mutableMapOf()
 

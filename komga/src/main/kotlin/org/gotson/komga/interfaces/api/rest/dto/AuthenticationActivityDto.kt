@@ -8,6 +8,8 @@ import java.time.LocalDateTime
 data class AuthenticationActivityDto(
   val userId: String?,
   val email: String?,
+  val apiKeyId: String? = null,
+  val apiKeyComment: String? = null,
   val ip: String?,
   val userAgent: String?,
   val success: Boolean,
@@ -21,6 +23,8 @@ fun AuthenticationActivity.toDto() =
   AuthenticationActivityDto(
     userId = userId,
     email = email,
+    apiKeyId = apiKeyId,
+    apiKeyComment = apiKeyComment,
     ip = ip,
     userAgent = userAgent,
     success = success,
