@@ -309,11 +309,7 @@
       "dialog_title": "ユーザを追加",
       "field_email": "メールアドレス",
       "field_email_error": "有効なメールアドレスにしてください",
-      "field_password": "パスワード",
-      "field_role_administrator": "管理者",
-      "field_role_file_download": "ファイルのダウンロード",
-      "field_role_page_streaming": "ストリーム配信",
-      "label_roles": "役割"
+      "field_password": "パスワード"
     },
     "analyze_library": {
       "body": "ライブラリ内のすべてのメディアファイルを解析します。解析によりメディアの情報を収集します。ライブラリのサイズによっては、時間がかかる場合があります。",
