@@ -303,11 +303,7 @@
       "dialog_title": "Dodaj użytkownika",
       "field_email": "E-mail",
       "field_email_error": "Adres e-mail musi być poprawny",
-      "field_password": "Hasło",
-      "field_role_administrator": "Administrator",
-      "field_role_file_download": "Pobieranie plików",
-      "field_role_page_streaming": "Strumieniowanie stron",
-      "label_roles": "Role"
+      "field_password": "Hasło"
     },
     "analyze_library": {
       "body": "Analizuje wszystkie pliki w bibliotece. Analiza zbiera informacje o mediach. W zależności od rozmiaru biblioteki może to zająć dużo czasu.",
