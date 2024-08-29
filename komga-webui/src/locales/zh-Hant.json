@@ -309,11 +309,7 @@
       "dialog_title": "添加用戶",
       "field_email": "信箱",
       "field_email_error": "必須是有效的電子信箱地址",
-      "field_password": "密碼",
-      "field_role_administrator": "管理員",
-      "field_role_file_download": "檔案下載",
-      "field_role_page_streaming": "允許瀏覽",
-      "label_roles": "角色"
+      "field_password": "密碼"
     },
     "analyze_library": {
       "body": "分析書庫中的所有媒體檔案。該分析獲取有關媒體的信息。根據書庫的大小，這可能需要很長的時間。",
@@ -636,6 +632,23 @@
       "HARDLINK": "硬鏈結/複製檔案",
       "MOVE": "移動檔案"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "日間",
+        "night": "夜間",
+        "sepia": "棕褐色"
+      },
+      "column_count": {
+        "auto": "自動",
+        "one": "一列",
+        "two": "兩列"
+      },
+      "reading_direction": {
+        "auto": "自動",
+        "ltr": "從左到右",
+        "rtl": "從右到左"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "書籍已轉換",
       "BookFileDeleted": "書籍檔案已删除",
@@ -688,6 +701,37 @@
       "XLARGE": "超大 (1200px)"
     }
   },
+  "epubreader": {
+    "current_chapter": "當前章節",
+    "page_of": "頁 {page} 共 {count}頁",
+    "settings": {
+      "column_count": "列數",
+      "layout": "佈局",
+      "layout_paginated": "分頁",
+      "layout_scroll": "滾動",
+      "navigation_mode": "導航模式",
+      "navigation_options": {
+        "both": "兩者皆用",
+        "buttons": "按鈕",
+        "click": "單擊/點擊"
+      },
+      "page_margins": "頁邊距",
+      "viewing_theme": "觀看主題"
+    },
+    "shortcuts": {
+      "cycle_pagination": "循環列數",
+      "cycle_viewing_theme": "循環觀看主題",
+      "font_size_decrease": "減小字體大小",
+      "font_size_increase": "增加字體大小",
+      "menus": "菜單",
+      "next": "向前",
+      "previous": "向後",
+      "reader_navigation": "讀者導航",
+      "scroll": "更改佈局以滾動",
+      "settings": "設定",
+      "show_hide_toc": "顯示/隱藏目錄"
+    }
+  },
   "error_codes": {
     "ERR_1000": "分析期間無法訪問檔案",
     "ERR_1001": "不支持的媒體類型",
@@ -715,7 +759,9 @@
     "ERR_1028": "OpenID Connect 錯誤：没有 email 屬性",
     "ERR_1029": "ComicRack CBL 檔案中没有書籍",
     "ERR_1030": "ComicRack CBL 檔案中没有書名元素",
-    "ERR_1031": "ComicRack CBL 檔案中的書籍没有系列或書號"
+    "ERR_1031": "ComicRack CBL 檔案中的書籍没有系列或書號",
+    "ERR_1032": "EPUB 檔案的媒體類型錯誤",
+    "ERR_1033": "部分條目缺失"
   },
   "filter": {
     "age_rating": "年齡限制",
@@ -851,6 +897,7 @@
     "tab_title": "伺服器"
   },
   "server_settings": {
+    "config_precedence": "優先於設定檔",
     "dialog_regenerate_thumbnails": {
       "body": "縮圖大小已變更。您想重新產生書籍縮圖嗎？",
       "btn_alternate": "是,所有書籍",
@@ -861,6 +908,8 @@
     "label_delete_empty_collections": "掃描後刪除空的收藏",
     "label_delete_empty_readlists": "掃描後刪除空的讀取清單",
     "label_rememberme_duration": "記住我的持續時間（天）",
+    "label_server_context_path": "基本網址",
+    "label_server_port": "伺服器連接埠",
     "label_task_pool_size": "任務執行緒",
     "label_thumbnail_size": "縮圖尺寸",
     "requires_restart": "需要重啟才能生效",
@@ -917,7 +966,9 @@
     "users": "用戶"
   },
   "validation": {
+    "context_path": "必須以“/”開頭，不能以“/-_”結尾，並且僅包含“/-_a-z0-9”",
     "one_or_more": "必須為 1 或更大",
+    "tcp_port": "必須介於 1 到 65535 之間",
     "zero_or_more": "必須為 0 或更大"
   },
   "welcome": {
