@@ -269,11 +269,7 @@
       "dialog_title": "Aldoni Uzanton",
       "field_email": "Retpoŝta adreso",
       "field_email_error": "Devas esti valida retpoŝta adreso",
-      "field_password": "Pasvorto",
-      "field_role_administrator": "Administranto",
-      "field_role_file_download": "Elŝutanto de Dosieroj",
-      "field_role_page_streaming": "Popaĝa Leganto",
-      "label_roles": "Roloj"
+      "field_password": "Pasvorto"
     },
     "analyze_library": {
       "body": "Analizi ĉiujn dosierojn en la biblioteko. La analizo eltiras informojn pri la dosieroj. Depende de la grando de via biblioteko, tio eble daŭros longe.",
