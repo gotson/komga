@@ -20,6 +20,194 @@
     }
   ],
   "paths": {
+    "/kobo/{authToken}/{*path}": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "catchAll",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonNode"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "catchAll_2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonNode"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "catchAll_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonNode"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "catchAll_4",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonNode"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "catchAll_3",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonNode"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/opds/v2/books/{bookId}/progression": {
       "get": {
         "tags": [
@@ -178,6 +366,102 @@
           },
           "204": {
             "description": "No Content"
+          }
+        }
+      }
+    },
+    "/kobo/{authToken}/v1/library/{bookId}/state": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "getState",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "updateState",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Kobo-deviceid",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadingStateStateUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         }
       }
@@ -866,6 +1150,46 @@
         }
       }
     },
+    "/kobo/{authToken}/v1/auth/device": {
+      "post": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "authDevice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/users": {
       "get": {
         "tags": [
@@ -930,6 +1254,77 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/users/me/api-keys": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getApiKeys",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiKeyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "createApiKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiKeyRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyDto"
                 }
               }
             }
@@ -5565,6 +5960,343 @@
         }
       }
     },
+    "/kobo/{authToken}/v1/library/{bookId}/metadata": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "getBookMetadata",
+        "parameters": [
+          {
+            "name": "authToken",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kobo/{authToken}/v1/library/sync": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "syncLibrary",
+        "parameters": [
+          {
+            "name": "authToken",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kobo/{authToken}/v1/initialization": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "initialization",
+        "parameters": [
+          {
+            "name": "authToken",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourcesDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kobo/{authToken}/v1/books/{bookId}/thumbnail/{width}/{height}/{quality}/{isGreyScale}/image.jpg": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "getBookCover",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "height",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "quality",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isGreyScale",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kobo/{authToken}/v1/books/{bookId}/thumbnail/{width}/{height}/{isGreyScale}/image.jpg": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "getBookCover_1",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "height",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isGreyScale",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kobo/{authToken}/v1/books/{bookId}/file/epub": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "getBookFile_5",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamingResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kobo/{authToken}/ping": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "ping",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json;charset\u003dutf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/users/{id}/authentication-activity/latest": {
       "get": {
         "tags": [
@@ -5576,6 +6308,14 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "apikey_id",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -8432,7 +9172,7 @@
             }
           },
           {
-            "name": "release_years",
+            "name": "release_year",
             "in": "query",
             "required": false,
             "schema": {
@@ -9723,6 +10463,39 @@
         }
       }
     },
+    "/api/v2/users/me/api-keys/{keyId}": {
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "deleteApiKey",
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/api/v1/tasks": {
       "delete": {
         "tags": [
@@ -9750,6 +10523,42 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/syncpoints/me": {
+      "delete": {
+        "tags": [
+          "sync-point-controller"
+        ],
+        "operationId": "deleteMySyncPointsByApiKey",
+        "parameters": [
+          {
+            "name": "key_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -10001,6 +10810,9 @@
           }
         }
       },
+      "JsonNode": {
+        "type": "object"
+      },
       "Location": {
         "required": [
           "fragments"
@@ -10097,6 +10909,149 @@
           },
           "highlight": {
             "type": "string"
+          }
+        }
+      },
+      "BookmarkDto": {
+        "required": [
+          "LastModified"
+        ],
+        "type": "object",
+        "properties": {
+          "LastModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ProgressPercent": {
+            "type": "number",
+            "format": "float"
+          },
+          "ContentSourceProgressPercent": {
+            "type": "number",
+            "format": "float"
+          },
+          "Location": {
+            "$ref": "#/components/schemas/LocationDto"
+          }
+        }
+      },
+      "LocationDto": {
+        "required": [
+          "Source"
+        ],
+        "type": "object",
+        "properties": {
+          "Value": {
+            "type": "string"
+          },
+          "Type": {
+            "type": "string"
+          },
+          "Source": {
+            "type": "string"
+          }
+        }
+      },
+      "ReadingStateDto": {
+        "required": [
+          "CurrentBookmark",
+          "EntitlementId",
+          "LastModified",
+          "Statistics",
+          "StatusInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "Created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "CurrentBookmark": {
+            "$ref": "#/components/schemas/BookmarkDto"
+          },
+          "EntitlementId": {
+            "type": "string"
+          },
+          "LastModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "PriorityTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Statistics": {
+            "$ref": "#/components/schemas/StatisticsDto"
+          },
+          "StatusInfo": {
+            "$ref": "#/components/schemas/StatusInfoDto"
+          }
+        }
+      },
+      "ReadingStateStateUpdateDto": {
+        "required": [
+          "ReadingStates"
+        ],
+        "type": "object",
+        "properties": {
+          "ReadingStates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadingStateDto"
+            }
+          }
+        }
+      },
+      "StatisticsDto": {
+        "required": [
+          "LastModified"
+        ],
+        "type": "object",
+        "properties": {
+          "LastModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "RemainingTimeMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SpentReadingMinutes": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "StatusInfoDto": {
+        "required": [
+          "LastModified",
+          "Status"
+        ],
+        "type": "object",
+        "properties": {
+          "LastModified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Status": {
+            "type": "string",
+            "enum": [
+              "ReadyToRead",
+              "Finished",
+              "Reading"
+            ]
+          },
+          "TimesStartedReading": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "LastTimeFinished": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastTimeStartedReading": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -10346,6 +11301,50 @@
           },
           "ageRestriction": {
             "$ref": "#/components/schemas/AgeRestrictionDto"
+          }
+        }
+      },
+      "ApiKeyRequestDto": {
+        "required": [
+          "comment"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiKeyDto": {
+        "required": [
+          "comment",
+          "createdDate",
+          "id",
+          "key",
+          "lastModifiedDate",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -11399,6 +12398,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "koboProxy": {
+            "type": "boolean"
+          },
           "serverPort": {
             "maximum": 65535,
             "type": "integer",
@@ -12341,6 +13343,17 @@
           }
         }
       },
+      "ResourcesDto": {
+        "required": [
+          "Resources"
+        ],
+        "type": "object",
+        "properties": {
+          "Resources": {
+            "$ref": "#/components/schemas/JsonNode"
+          }
+        }
+      },
       "AuthenticationActivityDto": {
         "required": [
           "dateTime",
@@ -12352,6 +13365,12 @@
             "type": "string"
           },
           "email": {
+            "type": "string"
+          },
+          "apiKeyId": {
+            "type": "string"
+          },
+          "apiKeyComment": {
             "type": "string"
           },
           "ip": {
@@ -12604,6 +13623,7 @@
         "required": [
           "deleteEmptyCollections",
           "deleteEmptyReadLists",
+          "koboProxy",
           "rememberMeDurationDays",
           "serverContextPath",
           "serverPort",
@@ -12640,6 +13660,9 @@
           },
           "serverContextPath": {
             "$ref": "#/components/schemas/SettingMultiSourceString"
+          },
+          "koboProxy": {
+            "type": "boolean"
           }
         }
       },

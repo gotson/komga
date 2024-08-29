@@ -1,3 +1,35 @@
+# [1.12.0](https://github.com/gotson/komga/compare/1.11.3...1.12.0) (2024-08-29)
+## 🚀 Features
+**kobo**
+- initial Kobo Sync support ([210c7b1](https://github.com/gotson/komga/commits/210c7b1))
+- add API key support ([a4747e8](https://github.com/gotson/komga/commits/a4747e8))
+
+**metadata**
+- use group-position for epub series index ([4354581](https://github.com/gotson/komga/commits/4354581))
+
+**webui**
+- api key support ([c1e1da6](https://github.com/gotson/komga/commits/c1e1da6))
+
+## 🐛 Fixes
+**api**
+- incorrect query param name ([85a9934](https://github.com/gotson/komga/commits/85a9934)), closes [#1670](https://github.com/gotson/komga/issues/1670)
+- properly handle simple read progress for divina compatible epub ([0d19aa1](https://github.com/gotson/komga/commits/0d19aa1))
+
+## 🛠  Build
+
+- ignore conveyor steps on forks ([cefd527](https://github.com/gotson/komga/commits/cefd527))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Hungarian) ([95df315](https://github.com/gotson/komga/commits/95df315))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/checkout from 3 to 4 ([14887f5](https://github.com/gotson/komga/commits/14887f5))
+
+**webui**
+- bump webpack from 5.88.2 to 5.94.0 in /komga-webui ([f3bce23](https://github.com/gotson/komga/commits/f3bce23))
+
 # [1.11.3](https://github.com/gotson/komga/compare/1.11.2...1.11.3) (2024-08-26)
 ## 🐛 Fixes
 **api**
