@@ -309,11 +309,7 @@
       "dialog_title": "Adicionar Utilizador",
       "field_email": "Email",
       "field_email_error": "Precisa ser um endereço de email válido",
-      "field_password": "Palavra-passe",
-      "field_role_administrator": "Administrador",
-      "field_role_file_download": "Descarregar Ficheiros",
-      "field_role_page_streaming": "Streaming de Páginas",
-      "label_roles": "Cargos"
+      "field_password": "Palavra-passe"
     },
     "analyze_library": {
       "body": "Analisa todos os ficheiros de mídia da biblioteca. A análise captura informações sobre a mídia. Dependendo do tamanho da sua biblioteca, isso pode levar muito tempo.",
