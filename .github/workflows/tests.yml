@@ -50,7 +50,7 @@ jobs:
           path: komga/build/reports/tests/
 
       - name: Conveyor - compute JDK module list
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.repository_owner == 'gotson'
         uses: hydraulic-software/conveyor/actions/build@v14.3
         with:
           command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
@@ -59,7 +59,7 @@ jobs:
 
       - name: Compare JDK required modules
         id: conveyor_compare
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.repository_owner == 'gotson'
         run: diff --unified  ./komga-tray/conveyor/required-jdk-modules.txt ./output/required-jdk-modules.txt
 
       - name: Upload JDK required modules
