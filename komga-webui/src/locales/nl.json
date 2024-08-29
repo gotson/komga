@@ -308,11 +308,7 @@
       "dialog_title": "Voeg gebruiker toe",
       "field_email": "E-mail",
       "field_email_error": "Moet een geldig e-mailadres zijn",
-      "field_password": "Wachtwoord",
-      "field_role_administrator": "Administrator",
-      "field_role_file_download": "Bestand downloaden",
-      "field_role_page_streaming": "Paginastreaming",
-      "label_roles": "Rollen"
+      "field_password": "Wachtwoord"
     },
     "analyze_library": {
       "body": "Analyseert alle media bestanden in de bibliotheek. De analyse vangt informatie over de media. Afhankelijk van uw de grootte van uw bibliotheek kan dit lang duren.",
