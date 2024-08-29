@@ -303,11 +303,7 @@
       "dialog_title": "Lägg till användare",
       "field_email": "E-post",
       "field_email_error": "Måste vara en giltig e-postadress",
-      "field_password": "Lösenord",
-      "field_role_administrator": "Administratör",
-      "field_role_file_download": "Filnerladdning",
-      "field_role_page_streaming": "Sidströmmning",
-      "label_roles": "Roller"
+      "field_password": "Lösenord"
     },
     "analyze_library": {
       "body": "Analyserar alla mediefiler i biblioteket. Analysen samlar in information om medierna. Beroende på bibliotekets storlek kan detta ta lång tid.",
