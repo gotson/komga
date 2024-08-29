@@ -77,12 +77,19 @@ class EpubMetadataProvider(
           .map { it.text().lowercase().removePrefix("isbn:") }
           .firstNotNullOfOrNull { isbnValidator.validate(it) }
 
+      val seriesIndex =
+        opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")?.attr("id")?.let { id ->
+          opf.selectFirst("metadata > *|meta[refines=#$id][property=group-position]")
+        }?.text()
+
       return BookMetadataPatch(
         title = title,
         summary = description,
         releaseDate = date,
         authors = authors,
         isbn = isbn,
+        number = seriesIndex?.ifBlank { null },
+        numberSort = seriesIndex?.toFloatOrNull(),
       )
     }
     return null
