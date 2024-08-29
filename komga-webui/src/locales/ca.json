@@ -309,11 +309,7 @@
       "dialog_title": "Afegeix un usuari",
       "field_email": "Correu electrònic",
       "field_email_error": "Ha de ser un correu electrònic vàlid",
-      "field_password": "Contrasenya",
-      "field_role_administrator": "Administrador",
-      "field_role_file_download": "Baixa el fitxer",
-      "field_role_page_streaming": "Pàgines en continu",
-      "label_roles": "Rols"
+      "field_password": "Contrasenya"
     },
     "analyze_library": {
       "body": "Analitza tots els fitxers multimedia de la biblioteca i n'obté informació. Segons la mida de la biblioteca és possible que trigui molt.",
