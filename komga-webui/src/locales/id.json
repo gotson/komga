@@ -303,11 +303,7 @@
       "dialog_title": "Tambahkan Pengguna",
       "field_email": "Email",
       "field_email_error": "Harus alamat email yang valid",
-      "field_password": "Kata sandi",
-      "field_role_administrator": "Administrator",
-      "field_role_file_download": "Unduh Berkas",
-      "field_role_page_streaming": "Streaming Halaman",
-      "label_roles": "Peran"
+      "field_password": "Kata sandi"
     },
     "analyze_library": {
       "body": "Menganalisis semua berkas media di perpustakaan. Analisis menangkap informasi tentang media. Tergantung pada ukuran perpustakaan Anda, ini mungkin memakan waktu lama.",
