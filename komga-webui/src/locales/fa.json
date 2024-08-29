@@ -281,11 +281,7 @@
       "dialog_title": "افزودن کاربر",
       "field_email": "پست الکترونیک",
       "field_email_error": "می بایست یک ایمیل ادرس معتبر باشد",
-      "field_password": "کلمه عبور",
-      "field_role_administrator": "مدیر",
-      "field_role_file_download": "دانلود فایل",
-      "field_role_page_streaming": "جریان صفحه",
-      "label_roles": "نقش ها"
+      "field_password": "کلمه عبور"
     },
     "analyze_library": {
       "body": "تمام فایل های رسانه ای موجود در کتابخانه را تجزیه و تحلیل می کند. تجزیه و تحلیل اطلاعات مربوط به رسانه ها را جمع آوری می کند. بسته به اندازه کتابخانه شما، ممکن است زمان زیادی طول بکشد.",
