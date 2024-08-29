@@ -308,11 +308,7 @@
       "dialog_title": "إضافة مستخدم",
       "field_email": "البريد الإلكتروني",
       "field_email_error": "يجب أن يكون عنوان بريد إلكتروني صالح",
-      "field_password": "كلمة السر",
-      "field_role_administrator": "مدير",
-      "field_role_file_download": "تحميل الملف",
-      "field_role_page_streaming": "تدفق الصفحة",
-      "label_roles": "أدوار"
+      "field_password": "كلمة السر"
     },
     "analyze_library": {
       "body": "يحلل جميع ملفات الوسائط في المكتبة. التحليل يلتقط معلومات حول وسائل الإعلام. اعتمادًا على حجم مكتبتك ، قد يستغرق هذا وقتًا طويلاً.",
