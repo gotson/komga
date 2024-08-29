@@ -44,7 +44,9 @@ body:
     attributes:
       label: Logs
       description: |
-        If applicable, add an excerpt of the log file (max 20 lines) _AND_ attach the complete log file or a link to a gist/pastebin containing the log file ([where to find the logs](https://komga.org/faq/#where-can-i-find-the-log-files)).
+        :warning: **Do not share logs with Kobo Sync information publicly !**
+
+        If applicable, add an excerpt of the log file (max 20 lines) _AND_ attach the complete log file or a link to a gist/pastebin containing the log file ([where to find the logs](https://komga.org/docs/faq#where-can-i-find-the-log-files)).
       placeholder: |
         You can paste the logs in pure text or upload it as an attachment.
 
