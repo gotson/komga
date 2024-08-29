@@ -57,19 +57,23 @@ class EpubMetadataProvider(
 
       val authorRoles = opf.select("metadata > *|meta[property=role][scheme=marc:relators]").associate { it.attr("refines").removePrefix("#") to it.text() }
       val authors =
-        opf.select("metadata > dc|creator").mapNotNull { el ->
-          val name = el.text().trim()
-          if (name.isBlank()) {
-            null
-          } else {
-            val opfRole = el.attr("opf:role").ifBlank { null }
-            val id = el.attr("id").ifBlank { null }
-            val refineRole = authorRoles[id]?.ifBlank { null }
-            Author(name, relators[opfRole ?: refineRole] ?: "writer")
-          }
-        }.ifEmpty { null }
+        opf.select("metadata > dc|creator")
+          .mapNotNull { el ->
+            val name = el.text().trim()
+            if (name.isBlank()) {
+              null
+            } else {
+              val opfRole = el.attr("opf:role").ifBlank { null }
+              val id = el.attr("id").ifBlank { null }
+              val refineRole = authorRoles[id]?.ifBlank { null }
+              Author(name, relators[opfRole ?: refineRole] ?: "writer")
+            }
+          }.ifEmpty { null }
 
-      val isbn = opf.select("metadata > dc|identifier").map { it.text().lowercase().removePrefix("isbn:") }.firstNotNullOfOrNull { isbnValidator.validate(it) }
+      val isbn =
+        opf.select("metadata > dc|identifier")
+          .map { it.text().lowercase().removePrefix("isbn:") }
+          .firstNotNullOfOrNull { isbnValidator.validate(it) }
 
       val seriesIndex =
         opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")?.attr("id")?.let { id ->
@@ -102,7 +106,11 @@ class EpubMetadataProvider(
       val series = opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")?.text()?.ifBlank { null }
       val publisher = opf.selectFirst("metadata > dc|publisher")?.text()?.ifBlank { null }
       val language = opf.selectFirst("metadata > dc|language")?.text()?.ifBlank { null }
-      val genres = opf.select("metadata > dc|subject").mapNotNull { it.text().trim().ifBlank { null } }.toSet().ifEmpty { null }
+      val genres =
+        opf.select("metadata > dc|subject")
+          .mapNotNull { it.text().trim().ifBlank { null } }
+          .toSet()
+          .ifEmpty { null }
 
       val direction =
         opf.getElementsByTag("spine").first()?.attr("page-progression-direction")?.let {
