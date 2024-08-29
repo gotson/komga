@@ -55,7 +55,9 @@ class EpubMetadataProvider(
       val description = opf.selectFirst("metadata > dc|description")?.text()?.let { Jsoup.clean(it, Safelist.none()) }?.ifBlank { null }
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
 
-      val authorRoles = opf.select("metadata > *|meta[property=role][scheme=marc:relators]").associate { it.attr("refines").removePrefix("#") to it.text() }
+      val authorRoles =
+        opf.select("metadata > *|meta[property=role][scheme=marc:relators]")
+          .associate { it.attr("refines").removePrefix("#") to it.text() }
       val authors =
         opf.select("metadata > dc|creator")
           .mapNotNull { el ->
