@@ -22,6 +22,8 @@ Komga is a media server for your comics, mangas, BDs, magazines and eBooks.
 - Webreader with multiple reading modes
 - Manage multiple users, with per-library access control, age restrictions, and labels restrictions
 - Offers a REST API, many community tools and scripts can interact with Komga
+- OPDS v1 and v2 support
+- Kobo Sync with your Kobo eReader
 - Download book files, whole series, or read lists
 - Duplicate files detection
 - Duplicate pages detection and removal
