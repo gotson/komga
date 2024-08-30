@@ -49,7 +49,7 @@ class LoginListener(
         source = source,
       )
 
-    logger.info { activity }
+    logger.debug { activity }
     authenticationActivityRepository.insert(activity)
   }
 
@@ -78,7 +78,7 @@ class LoginListener(
         error = event.exception.message,
       )
 
-    logger.info { activity }
+    logger.debug { activity }
     authenticationActivityRepository.insert(activity)
   }
 
