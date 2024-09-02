@@ -8,12 +8,14 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.KomgaSyncToken
+import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.R2Device
 import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.R2Progression
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.SyncPoint
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SyncPointRepository
 import org.gotson.komga.domain.service.BookLifecycle
@@ -141,6 +143,7 @@ class KoboController(
   private val bookRepository: BookRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val imageConverter: ImageConverter,
+  private val mediaRepository: MediaRepository,
 ) {
   @GetMapping("ping")
   fun ping() = "pong"
@@ -432,15 +435,20 @@ class KoboController(
             name = principal.apiKey?.comment ?: "unknown",
           ),
         locator =
-          R2Locator(
-            href = koboUpdate.currentBookmark.location.source,
-            // assume default, will be overwritten by the correct type when saved
-            type = "application/xhtml+xml",
-            locations =
-              R2Locator.Location(
-                progression = koboUpdate.currentBookmark.contentSourceProgressPercent / 100,
-              ),
-          ),
+          if (koboUpdate.statusInfo.status == StatusDto.FINISHED) {
+            // If the book is finished, Kobo sends the first resource instead of the last, so we can't trust what Kobo sent
+            (mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub ?: throw IllegalArgumentException("Epub extension not found")).positions.last()
+          } else {
+            R2Locator(
+              href = koboUpdate.currentBookmark.location.source,
+              // assume default, will be overwritten by the correct type when saved
+              type = "application/xhtml+xml",
+              locations =
+                R2Locator.Location(
+                  progression = koboUpdate.currentBookmark.contentSourceProgressPercent / 100,
+                ),
+            )
+          },
       )
 
     val response =
