@@ -13,15 +13,16 @@ plugins {
 
 group = "org.gotson"
 
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
+
 kotlin {
   jvmToolchain(21)
 }
 
 tasks {
-  withType<JavaCompile> {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
-  }
   withType<KotlinCompile> {
     kotlinOptions {
       jvmTarget = "17"
