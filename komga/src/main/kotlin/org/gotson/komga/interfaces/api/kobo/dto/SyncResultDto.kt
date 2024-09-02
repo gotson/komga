@@ -16,6 +16,11 @@ data class ChangedEntitlementDto(
 ) : SyncResultDto
 
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
+data class ChangedProductMetadataDto(
+  val changedProductMetadata: KoboBookMetadataDto,
+) : SyncResultDto
+
+@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
 data class NewTagDto(
   val newTag: TagDto,
 ) : SyncResultDto

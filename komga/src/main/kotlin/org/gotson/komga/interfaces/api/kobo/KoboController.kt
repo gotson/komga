@@ -36,6 +36,7 @@ import org.gotson.komga.interfaces.api.kobo.dto.AuthDto
 import org.gotson.komga.interfaces.api.kobo.dto.BookEntitlementContainerDto
 import org.gotson.komga.interfaces.api.kobo.dto.BookmarkDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedEntitlementDto
+import org.gotson.komga.interfaces.api.kobo.dto.ChangedProductMetadataDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedReadingStateDto
 import org.gotson.komga.interfaces.api.kobo.dto.KoboBookMetadataDto
 import org.gotson.komga.interfaces.api.kobo.dto.NewEntitlementDto
@@ -282,13 +283,18 @@ class KoboController(
           )
           addAll(
             booksChanged.content.map {
-              ChangedEntitlementDto(
+              NewEntitlementDto(
                 BookEntitlementContainerDto(
                   bookEntitlement = it.toBookEntitlementDto(false),
                   bookMetadata = metadata[it.bookId]!!,
                   readingState = readProgress[it.bookId]?.toDto() ?: getEmptyReadProgressForBook(it.bookId, it.createdDate),
                 ),
               )
+            },
+          )
+          addAll(
+            booksChanged.content.map {
+              ChangedProductMetadataDto(metadata[it.bookId]!!)
             },
           )
           addAll(
