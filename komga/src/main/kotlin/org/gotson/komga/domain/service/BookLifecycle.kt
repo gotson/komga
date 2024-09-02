@@ -494,8 +494,8 @@ class BookLifecycle(
             newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
             newProgression.device.id,
             newProgression.device.name,
-            // use the type we have instead of the one provided, as well as the total progression we computed
-            newProgression.locator.copy(type = matchedPosition.type, locations = newProgression.locator.locations?.copy(totalProgression = totalProgression)),
+            // use the type we have instead of the one provided
+            newProgression.locator.copy(type = matchedPosition.type),
           )
         }
       }

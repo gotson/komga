@@ -452,6 +452,7 @@ class KoboController(
               locations =
                 R2Locator.Location(
                   progression = koboUpdate.currentBookmark.contentSourceProgressPercent / 100,
+                  totalProgression = koboUpdate.currentBookmark.progressPercent?.div(100),
                 ),
             )
           },
