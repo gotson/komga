@@ -36,7 +36,7 @@
               <v-icon color="success">mdi-check</v-icon>
               {{ apiKey.key }}
 
-              <v-tooltip top v-model="copied">
+              <v-tooltip top v-model="copied" v-if="isClipboardApiAvailable">
                 <template v-slot:activator="on">
                   <v-btn v-on="on"
                          icon
@@ -59,7 +59,7 @@
       <v-card-actions>
         <v-spacer/>
         <v-btn text @click="dialogClose">{{ $t('common.close') }}</v-btn>
-        <v-btn color="primary" @click="generateApiKey" :disabled="apiKey">{{ $t('dialog.add_api_key.button_confirm') }}</v-btn>
+        <v-btn color="primary" @click="generateApiKey" :disabled="!!apiKey">{{ $t('dialog.add_api_key.button_confirm') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -107,6 +107,11 @@ export default Vue.extend({
   validations: {
     form: {
       comment: {required, validComment},
+    },
+  },
+  computed: {
+    isClipboardApiAvailable(): boolean {
+      return !!navigator.clipboard
     },
   },
   methods: {
