@@ -933,8 +933,10 @@
       "btn_confirm": "Yes, but only if bigger",
       "title": "Regenerate thumbnails"
     },
+    "hint_kobo_port": "Set only in case of sync issues with covers and downloads",
     "label_delete_empty_collections": "Delete empty collections after scan",
     "label_delete_empty_readlists": "Delete empty read lists after scan",
+    "label_kobo_port": "Kobo Sync external port",
     "label_kobo_proxy": "Proxy Kobo Sync requests to Kobo Store",
     "label_rememberme_duration": "Remember me duration (in days)",
     "label_server_context_path": "Base URL",

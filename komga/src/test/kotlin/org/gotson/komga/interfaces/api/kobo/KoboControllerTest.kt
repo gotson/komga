@@ -16,16 +16,23 @@ import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.kobo.KoboHeaders
 import org.gotson.komga.infrastructure.kobo.KomgaSyncTokenGenerator
+import org.gotson.komga.infrastructure.web.WebServerEffectiveSettings
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import java.util.stream.Stream
 
 @SpringBootTest(properties = ["komga.kobo.sync-item-limit=1"])
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
@@ -39,6 +46,7 @@ class KoboControllerTest(
   @Autowired private val mediaRepository: MediaRepository,
   @Autowired private val komgaSyncTokenGenerator: KomgaSyncTokenGenerator,
   @Autowired private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Autowired private val serverSettings: WebServerEffectiveSettings,
 ) {
   private val library1 = makeLibrary()
   private val user1 =
@@ -127,5 +135,63 @@ class KoboControllerTest(
     } finally {
       komgaSettingsProvider.koboProxy = false
     }
+  }
+
+  @Nested
+  inner class HostHeader(
+    @Value("\${server.port:#{null}}") private val configServerPort: Int?,
+  ) {
+    @ParameterizedTest
+    @MethodSource("headers")
+    fun `given partial host header when getting initialization then img urls are correct`(
+      hostHeader: String,
+      expected: String,
+      extraHeaders: Map<String, String>?,
+      koboPort: Int?,
+    ) {
+      // ServletWebServerInitializedEvent is not triggered during tests
+      serverSettings.effectiveServerPort = configServerPort
+
+      val oldPort = komgaSettingsProvider.koboPort
+      koboPort?.let { komgaSettingsProvider.koboPort = it }
+
+      try {
+        mockMvc.get("/kobo/$apiKey/v1/initialization") {
+          header(HttpHeaders.HOST, hostHeader)
+          extraHeaders?.forEach { (h, v) -> header(h, v) }
+        }
+          .andExpect {
+            jsonPath("Resources.image_host") { value(expected) }
+          }.andReturn()
+      } finally {
+        komgaSettingsProvider.koboPort = oldPort
+      }
+    }
+
+    private fun headers(): Stream<Arguments> =
+      Stream.of(
+        Arguments.of("127.0.0.1", "http://127.0.0.1:$configServerPort", null, null),
+        Arguments.of("localhost", "http://localhost:$configServerPort", null, null),
+        Arguments.of(
+          "127.0.0.1",
+          "https://demo.komga.org",
+          mapOf(
+            "X-Forwarded-Proto" to "https",
+            "X-Forwarded-Host" to "demo.komga.org",
+          ),
+          null,
+        ),
+        Arguments.of("127.0.0.1", "http://127.0.0.1:8085", null, 8085),
+        Arguments.of("localhost", "http://localhost:8085", null, 8085),
+        Arguments.of(
+          "127.0.0.1",
+          "https://demo.komga.org",
+          mapOf(
+            "X-Forwarded-Proto" to "https",
+            "X-Forwarded-Host" to "demo.komga.org",
+          ),
+          8085,
+        ),
+      )
   }
 }
