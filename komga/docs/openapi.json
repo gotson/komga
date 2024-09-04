@@ -12409,6 +12409,11 @@
           "serverContextPath": {
             "pattern": "^\\/[\\w-\\/]*[a-zA-Z0-9]$",
             "type": "string"
+          },
+          "koboPort": {
+            "maximum": 65535,
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -13663,6 +13668,10 @@
           },
           "koboProxy": {
             "type": "boolean"
+          },
+          "koboPort": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
