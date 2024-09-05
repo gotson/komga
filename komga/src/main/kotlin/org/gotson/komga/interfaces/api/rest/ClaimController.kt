@@ -42,6 +42,9 @@ class ClaimController(
         email = email,
         password = password,
         roleAdmin = true,
+        roleFileDownload = true,
+        rolePageStreaming = true,
+        roleKoboSync = true,
       ),
     ).toDto()
   }
