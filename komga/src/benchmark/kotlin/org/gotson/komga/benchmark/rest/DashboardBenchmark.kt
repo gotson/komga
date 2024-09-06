@@ -36,6 +36,16 @@ class DashboardBenchmark : AbstractRestBenchmark() {
       }
     }
 
+    // mark some books read for on deck
+    bookController.getBooksOnDeck(principal, page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).let { page ->
+      if (page.totalElements < DEFAULT_PAGE_SIZE) {
+        seriesController.getAllSeries(principal, readStatus = listOf(ReadStatus.UNREAD), oneshot = false, page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).content.forEach { series ->
+          val book = seriesController.getAllBooksBySeries(principal, series.id, page = Pageable.ofSize(1)).content.first()
+          bookController.markReadProgress(book.id, ReadProgressUpdateDto(null, true), principal)
+        }
+      }
+    }
+
     // retrieve most recent book release date
     bookLatestReleaseDate = bookController.getAllBooks(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("metadata.releaseDate"))))
       .content.firstOrNull()?.metadata?.releaseDate ?: LocalDate.now()
