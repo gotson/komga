@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "Paramètres du compte",
+    "api_key": {
+      "created_date": "Date de création : {date}",
+      "force_kobo_sync": "Forcer synchronisation Kobo",
+      "generate_api_key": "Créer une clé API",
+      "no_keys": "Aucune clé API créée"
+    },
     "change_password": "Modifier le mot de passe"
   },
   "announcements": {
@@ -27,6 +33,7 @@
     "tab_title": "Annonces"
   },
   "authentication_activity": {
+    "api_key": "Clé API",
     "datetime": "Date et heure",
     "email": "Adresse e-mail",
     "error": "Erreur",
@@ -203,6 +210,7 @@
     "choose_image": "Sélectionner une image",
     "close": "Fermer",
     "collections": "Collections",
+    "copied": "Copié !",
     "create": "Créer",
     "delete": "Supprimer",
     "dimension": "l : {width}, h : {height}",
@@ -220,6 +228,7 @@
     "go_to_library": "Aller à la bibliothèque",
     "go_to_readlist": "Aller à la liste de lecture",
     "go_to_series": "Aller à la série",
+    "i_understand": "Je comprends",
     "library": "Bibliothèque",
     "locale_name": "Français",
     "locale_rtl": "false",
@@ -287,6 +296,14 @@
     "tab_title": "Import de données"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Créer",
+      "context": "Les clés API peuvent être utilisés pour s'authentifier auprès du protocol Kobo Sync.",
+      "dialog_title": "Créer une nouvelle clé API",
+      "field_comment": "Commentaire",
+      "field_comment_hint": "À quoi sert cette clé API ?",
+      "info_copy": "Assurez-vous de copier votre clé API maintenant. Vous ne serez plus capable de la voir !"
+    },
     "add_to_collection": {
       "button_create": "Créer",
       "card_collection_subtitle": "Aucune série | 1 série | {count} séries",
@@ -319,6 +336,12 @@
     "book_picker": {
       "filter": "Filtrer par numéro de livre, titre ou date de sortie",
       "title": "Sélectionner un livre"
+    },
+    "delete_apikey": {
+      "button_confirm": "Supprimer",
+      "confirm_delete": "Je comprends, supprimer la clé API \"{name}\"",
+      "dialog_title": "Supprimer clé API",
+      "warning_html": "Tout application ou script utilisant cette clé API ne sera plus capable d'accéder à l'API Komga. Vous ne pouvez pas annuler cette action."
     },
     "delete_book": {
       "button_confirm": "Supprimer",
@@ -537,6 +560,9 @@
         "order": "Ordre"
       },
       "title": "Nom du fichier de destination"
+    },
+    "force_kobo_sync": {
+      "warning_html": "Ceci supprimera l'historique de synchronisation pour cette clé API. Votre Kobo tout synchronisera au moment de la prochaine synchronisation."
     },
     "password_change": {
       "button_cancel": "Annuler",
