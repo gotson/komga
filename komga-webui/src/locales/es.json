@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "Ajustes de cuenta",
+    "api_key": {
+      "created_date": "Fecha de creación: {date}",
+      "force_kobo_sync": "Forzar sinc. Kobo",
+      "generate_api_key": "Generar clave API",
+      "no_keys": "Aún no se han creado claves API"
+    },
     "change_password": "cambiar contraseña"
   },
   "announcements": {
@@ -27,6 +33,7 @@
     "tab_title": "Anuncios"
   },
   "authentication_activity": {
+    "api_key": "Clave API",
     "datetime": "Fecha y hora",
     "email": "Correo electrónico",
     "error": "Error",
@@ -203,6 +210,7 @@
     "choose_image": "Elegir una imagen",
     "close": "Cerrar",
     "collections": "Colecciones",
+    "copied": "¡Copiado!",
     "create": "Crear",
     "delete": "Eliminar",
     "dimension": "anch: {width}, alt: {height}",
@@ -220,6 +228,7 @@
     "go_to_library": "Ir a la biblioteca",
     "go_to_readlist": "Ir a la lista de lectura",
     "go_to_series": "Ir a la serie",
+    "i_understand": "Entiendo",
     "library": "Biblioteca",
     "locale_name": "Español",
     "locale_rtl": "false",
@@ -287,6 +296,14 @@
     "tab_title": "Importación de datos"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Generar",
+      "context": "Las claves API se pueden utilizar para autenticarse a través del protocolo Kobo Sync.",
+      "dialog_title": "Generar nueva clave API",
+      "field_comment": "Comentario",
+      "field_comment_hint": "¿Para qué es esta clave API?",
+      "info_copy": "Asegúrate de copiar tu clave API ahora. ¡No podrás verla de nuevo!"
+    },
     "add_to_collection": {
       "button_create": "Crear",
       "card_collection_subtitle": "Sin series | 1 serie | {count} series",
@@ -319,6 +336,12 @@
     "book_picker": {
       "filter": "Filtrar por número de libro, título o fecha de publicación",
       "title": "Seleccionar un libro"
+    },
+    "delete_apikey": {
+      "button_confirm": "Eliminar",
+      "confirm_delete": "Entiendo, eliminar la clave API «{name}»",
+      "dialog_title": "Eliminar clave API",
+      "warning_html": "Cualquier aplicación o script que use esta clave API no podrá acceder más a la API de Komga. No puedes deshacer esta acción."
     },
     "delete_book": {
       "button_confirm": "Borrar",
@@ -537,6 +560,10 @@
         "order": "Ordenar"
       },
       "title": "Nombre de archivo destino"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Forzar sinc. Kobo",
+      "warning_html": "Esto eliminará todo el historial de sincronización para esta clave API. Tu Kobo sincronizará todo en la próxima sincronización."
     },
     "password_change": {
       "button_cancel": "Cancelar",
@@ -761,7 +788,8 @@
     "ERR_1030": "El ComicRack CBL no tiene ningún elemento Nombre",
     "ERR_1031": "Al libro del ComicRack CBL le falta la serie o el número",
     "ERR_1032": "El archivo EPUB tiene un tipo de medio incorrecto",
-    "ERR_1033": "Faltan algunos datos"
+    "ERR_1033": "Faltan algunos datos",
+    "ERR_1034": "Una clave API con ese comentario ya existe"
   },
   "filter": {
     "age_rating": "clasificación de edad",
@@ -905,8 +933,11 @@
       "btn_confirm": "Sí, pero solo si son más grandes",
       "title": "Regenerar miniaturas"
     },
+    "hint_kobo_port": "Establecer solo en caso de problemas de sincronización con carátulas y descargas",
     "label_delete_empty_collections": "Eliminar las colecciones vacías después de escanear",
     "label_delete_empty_readlists": "Eliminar las listas de lectura vacías después de escanear",
+    "label_kobo_port": "Puerto externo Kobo Sync",
+    "label_kobo_proxy": "Hacer proxy a las solicitudes Kobo Sync hacia Kobo Store",
     "label_rememberme_duration": "Duración de «recordarme» (en días)",
     "label_server_context_path": "URL base",
     "label_server_port": "Puerto del servidor",
@@ -958,10 +989,12 @@
   "user_roles": {
     "ADMIN": "Administrador",
     "FILE_DOWNLOAD": "Descarga de archivos",
+    "KOBO_SYNC": "Kobo Sync",
     "PAGE_STREAMING": "Streaming de páginas",
     "USER": "Usuario"
   },
   "users": {
+    "api_keys": "Claves API",
     "authentication_activity": "Actividad de autenticación",
     "users": "Usuarios"
   },
