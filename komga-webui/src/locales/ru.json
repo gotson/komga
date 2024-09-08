@@ -19,6 +19,11 @@
   },
   "account_settings": {
     "account_settings": "Настройки Аккаунта",
+    "api_key": {
+      "created_date": "Дата создания: {date}",
+      "generate_api_key": "Сгенерировать API ключ",
+      "no_keys": "Ни одного ключа API еще не создано"
+    },
     "change_password": "изменить пароль"
   },
   "announcements": {
@@ -27,6 +32,7 @@
     "tab_title": "Объявления"
   },
   "authentication_activity": {
+    "api_key": "API Ключ",
     "datetime": "Дата / Время",
     "email": "Эл. почта",
     "error": "Ошибка",
@@ -203,6 +209,7 @@
     "choose_image": "Выберите изображение",
     "close": "Закрыть",
     "collections": "Коллекции",
+    "copied": "Скопировано!",
     "create": "Создать",
     "delete": "Удалить",
     "dimension": "шир.: {width} выс.: {height}",
