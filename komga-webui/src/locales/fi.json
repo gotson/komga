@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "Tilin asetukset",
+    "api_key": {
+      "created_date": "Luomispäivä:{date}",
+      "force_kobo_sync": "Pakota Kobo synkronointi",
+      "generate_api_key": "Luo API-avain",
+      "no_keys": "API-avaimia ei ole vielä luotu"
+    },
     "change_password": "Vaihda salasana"
   },
   "announcements": {
@@ -27,6 +33,7 @@
     "tab_title": "Tiedotteet"
   },
   "authentication_activity": {
+    "api_key": "API-avain",
     "datetime": "Päivämäärä & Aika",
     "email": "Sähköposti",
     "error": "Virhe",
@@ -203,6 +210,7 @@
     "choose_image": "Valitse kuva",
     "close": "Sulje",
     "collections": "Kokoelmat",
+    "copied": "Kopioitu!",
     "create": "Luo",
     "delete": "Poista",
     "dimension": "l: {width}, k:{height}",
@@ -220,6 +228,7 @@
     "go_to_library": "Siirry kirjastoon",
     "go_to_readlist": "Siirry lukulistaan",
     "go_to_series": "Siirry sarjaan",
+    "i_understand": "Ymmärrän",
     "library": "Kirjasto",
     "locale_name": "Suomi",
     "locale_rtl": "false",
@@ -287,6 +296,14 @@
     "tab_title": "Tietojen tuonti"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Luo",
+      "context": "API-avaimia voidaan käyttää todentamiseen Kobo Sync-protokollan kautta.",
+      "dialog_title": "Luo uusi API-avain",
+      "field_comment": "Kommentti",
+      "field_comment_hint": "Mihin API-avainta käytetään?",
+      "info_copy": "Ole huolellinen, että kopioit API-avainmesi nyt. Et voi enää nähdä sitä uudestaan!"
+    },
     "add_to_collection": {
       "button_create": "Luo",
       "card_collection_subtitle": "Ei sarjaa | Yksi sarja | {count} sarjaa",
@@ -319,6 +336,12 @@
     "book_picker": {
       "filter": "Suodata kirjan numeron, nimen tai julkaisupäivän mukaan",
       "title": "Valitse kirja"
+    },
+    "delete_apikey": {
+      "button_confirm": "Poista",
+      "confirm_delete": "Ymmärrän, poista API-avain \"{name}\"",
+      "dialog_title": "Poista API-avain",
+      "warning_html": "Minkään ohjelma tai skripti, jotka käyttävät tätä API-avainta, ei enää pääse käyttämään Komgan API-rajapintaa. Tätä toimintoa ei voi perua."
     },
     "delete_book": {
       "button_confirm": "Poista",
@@ -537,6 +560,10 @@
         "order": "Järjestys"
       },
       "title": "Kohdetiedoston nimi"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Pakota Kobo synkronointi",
+      "warning_html": "Tämä poistaa tämän API-avaimen synkronointihistorian kokonaan. Kobosi synkronoi kaiken seuraavalla kerralla."
     },
     "password_change": {
       "button_cancel": "Peruuta",
@@ -761,7 +788,8 @@
     "ERR_1030": "ComicRack CBL ei sisällä Nimi elementtiä",
     "ERR_1031": "ComicRack CBL Kirjasta puuttuu sarja tai numero",
     "ERR_1032": "EPUB-tiedostossa on väärä mediatyyppi",
-    "ERR_1033": "Jotkin merkinnät puuttuvat"
+    "ERR_1033": "Jotkin merkinnät puuttuvat",
+    "ERR_1034": "API-avain samalla kommentilla on jo olemassa"
   },
   "filter": {
     "age_rating": "ikäluokitus",
@@ -905,8 +933,11 @@
       "btn_confirm": "Kyllä, mutta vain jos suurempi",
       "title": "Luo pikkukuvat uudestaan"
     },
+    "hint_kobo_port": "Aseta vain, jos kansien ja latausten synkronoinnissa on ongelmia",
     "label_delete_empty_collections": "Poista tyhjät kokoelmat skannauksen jälkeen",
     "label_delete_empty_readlists": "Poista tyhjät luettujen listat skannauksen jälkeen",
+    "label_kobo_port": "Kobo Syncin ulkoinen portti",
+    "label_kobo_proxy": "Lähetä Kobo Syncin pyynnöt välityspalvelimen yli Kobo Storeen",
     "label_rememberme_duration": "Muista minut ajan pituus (päivää)",
     "label_server_context_path": "Perusosoite",
     "label_server_port": "Palvelimen portti",
@@ -958,10 +989,12 @@
   "user_roles": {
     "ADMIN": "Järjestelmänvalvoja",
     "FILE_DOWNLOAD": "Tiedostojen lataus",
-    "PAGE_STREAMING": "Suoratoista sivuja",
+    "KOBO_SYNC": "Kobo synkronointi",
+    "PAGE_STREAMING": "Sivujen suoratoisto",
     "USER": "Käyttäjä"
   },
   "users": {
+    "api_keys": "API-avaimet",
     "authentication_activity": "Todentamisaktiviteetti",
     "users": "Käyttäjät"
   },
