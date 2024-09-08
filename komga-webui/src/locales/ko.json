@@ -958,7 +958,7 @@
   "user_roles": {
     "ADMIN": "관리자",
     "FILE_DOWNLOAD": "파일 다운로드",
-    "PAGE_STREAMING": "스트리밍",
+    "PAGE_STREAMING": "페이지 스트리밍",
     "USER": "사용자"
   },
   "users": {
