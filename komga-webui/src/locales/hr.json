@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "Postavke računa",
+    "api_key": {
+      "created_date": "Datum kreiranja: {date}",
+      "force_kobo_sync": "Koristi Kobo sinkronizaciju",
+      "generate_api_key": "Generiraj API ključ",
+      "no_keys": "Još nije stvoren nijedan API ključ"
+    },
     "change_password": "promijeni lozinku"
   },
   "announcements": {
@@ -27,8 +33,9 @@
     "tab_title": "Najave"
   },
   "authentication_activity": {
+    "api_key": "API ključ",
     "datetime": "Datum / Vrijeme",
-    "email": "E-mail",
+    "email": "E-mail adresa",
     "error": "Greška",
     "ip": "IP",
     "source": "Izvor",
@@ -203,6 +210,7 @@
     "choose_image": "Odaberi sliku",
     "close": "Zatvori",
     "collections": "Zbirke",
+    "copied": "Kopirano!",
     "create": "Stvori",
     "delete": "Izbriši",
     "dimension": "š: {width}, v: {height}",
@@ -211,7 +219,7 @@
     "dismiss": "Ukloni",
     "download": "Preuzmi",
     "drag_drop": "povuci i ispusti",
-    "email": "E-mail",
+    "email": "E-mail adresa",
     "epub": "Epub",
     "filename": "Ime datoteke",
     "filter_no_matches": "Aktivni filtar nema podudaranja",
@@ -220,6 +228,7 @@
     "go_to_library": "Idi na biblioteku",
     "go_to_readlist": "Idi na listu čitanja",
     "go_to_series": "Idi na seriju",
+    "i_understand": "Razumijem",
     "library": "Biblioteka",
     "locale_name": "Hrvatski",
     "locale_rtl": "false",
@@ -268,8 +277,12 @@
     "book_number": "Broj knjige: {name}",
     "book_series": "Serija: {name}",
     "button_import": "Uvezi",
+    "button_match": "Usporedi",
+    "comicrack_preambule_html": "Postojeće ComicRack liste čitanja možeš uvesti u <code>.cbl</code> formatu.<br>Komga će pokušati uskladiti danu seriju i broj knjige sa serijama i knjigama u tvojim bibliotekema.",
     "dialog_confirmation": {
-      "create": "Svejedno stvori"
+      "body": "{unmatched} / {total} knjiga se ne podudaraju",
+      "create": "Svejedno stvori",
+      "title": "Neke se knjige ne podudaraju"
     },
     "field_file_label": "ComicRack lista čitanja (.cbl)",
     "field_files_label": "ComicRack liste čitanja (.cbl)",
@@ -278,29 +291,40 @@
     "readlist_created": "Stvorena lista čitanja: {name}",
     "requested_number": "Zatraženi broj",
     "requested_series": "Zatražene serije",
+    "results_preambule": "Ispod se nalazi rezultat uvoza. Pored toga možeš provjeriti nepodudarajuće knjige za svaku datu datoteku.",
     "size_limit": "Veličina bi trebala biti manja od {size} MB",
     "tab_title": "Uvoz podataka"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Generiraj",
+      "context": "API ključevi se mogu koristiti za autentifikaciju putem protokola Kobo sinkronizacije.",
+      "dialog_title": "Generiraj novi API ključ",
+      "field_comment": "Komentar",
+      "field_comment_hint": "Čemu služi ovaj API ključ?",
+      "info_copy": "Obavezno sada kopiraj svoj API ključ. Nećeš ga više moći vidjeti!"
+    },
     "add_to_collection": {
       "button_create": "Stvori",
       "card_collection_subtitle": "Nema serije | 1 serija | {count} serije",
       "dialog_title": "Dodaj u zbirku",
       "field_search_create": "Traži ili stvori zbirku",
-      "field_search_create_error": "Zbirka s ovim imenom već postoji"
+      "field_search_create_error": "Zbirka s ovim imenom već postoji",
+      "label_no_matching_collection": "Nema podudarajuće zbirke"
     },
     "add_to_readlist": {
       "button_create": "Stvori",
       "card_readlist_subtitle": "Nema knjige | 1 knjiga | {count} knjige",
       "dialog_title": "Dodaj u listu čitanja",
       "field_search_create": "Traži ili stvori listu čitanja",
-      "field_search_create_error": "Lista čitanja s ovim imenom već postoji"
+      "field_search_create_error": "Lista čitanja s ovim imenom već postoji",
+      "label_no_matching_readlist": "Nema podudarajuće liste čitanja"
     },
     "add_user": {
       "button_cancel": "Odustani",
       "button_confirm": "Dodaj",
       "dialog_title": "Dodaj Korisnika",
-      "field_email": "E-mail",
+      "field_email": "E-mail adresa",
       "field_email_error": "Mora biti važeća e-mail adresa",
       "field_password": "Lozinka"
     },
@@ -312,6 +336,12 @@
     "book_picker": {
       "filter": "Filtriraj prema broju knjige, naslovu ili datumu izdanja",
       "title": "Odaberi knjigu"
+    },
+    "delete_apikey": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Razumijem, izbriši API ključ „{name}”",
+      "dialog_title": "Izbriši API ključ",
+      "warning_html": "Sve aplikacije ili skripta koje koriste ovaj API ključ više neće moći pristupiti Komga API-ju. Ovo je nepovratna radnja."
     },
     "delete_book": {
       "button_confirm": "Izbriši",
@@ -325,30 +355,40 @@
     "delete_collection": {
       "button_confirm": "Izbriši",
       "confirm_delete": "Da, izbriši zbirku „{name}”",
+      "confirm_delete_multiple": "Da, izbriši {count} zbirke",
       "dialog_title": "Izbriši zbirku",
-      "dialog_title_multiple": "Izbriši zbirke"
+      "dialog_title_multiple": "Izbriši zbirke",
+      "warning_html": "Zbirka <b>{name}</b> će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?",
+      "warning_multiple_html": "{count} zbirke će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
     },
     "delete_library": {
       "button_confirm": "Izbriši",
       "confirm_delete": "Da, izbriši biblioteku „{name}”",
-      "title": "Izbriši biblioteku"
+      "title": "Izbriši biblioteku",
+      "warning_html": "Biblioteka <b>{name}</b> će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
     },
     "delete_readlist": {
       "button_confirm": "Izbriši",
-      "confirm_delete": "Da, izbriši popis čitanja „{name}”",
+      "confirm_delete": "Da, izbriši listu čitanja „{name}”",
+      "confirm_delete_multiple": "Da, izbriši {count} liste čitanja",
       "dialog_title": "Izbriši listu čitanja",
-      "dialog_title_multiple": "Izbriši liste čitanja"
+      "dialog_title_multiple": "Izbriši liste čitanja",
+      "warning_html": "Lista čitanja <b>{name}</b> će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?",
+      "warning_multiple_html": "{count} lista čitanja će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
     },
     "delete_series": {
       "button_confirm": "Izbriši",
       "confirm_delete": "Da, izbriši seriju „{name}” i sve njene datoteke",
-      "confirm_delete_multiple": "Da, izbriši {count} serija i njene datoteke",
-      "dialog_title": "Izbriši serije"
+      "confirm_delete_multiple": "Da, izbriši {count} serija i njihove datoteke",
+      "dialog_title": "Izbriši serije",
+      "warning_html": "Serija <b>{name}</b> će se ukloniti s ovog servera zajedno sa spremljenim medijskim datotekama. Ovo je <b>nepovratna radnja</b>. Nastaviti?",
+      "warning_multiple_html": "{count} serije će se ukloniti s ovog servera zajedno sa spremljenim medijskim datotekama. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
     },
     "delete_user": {
       "button_confirm": "Izbriši",
       "confirm_delete": "Da, izbriši korisnika „{name}”",
-      "dialog_title": "Izbriši korisnika"
+      "dialog_title": "Izbriši korisnika",
+      "warning_html": "Korisnik <b>{name}</b> će se ukloniti s ovog servera. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
     },
     "edit_books": {
       "add_author_role_error_duplicate": "Već postoji",
@@ -400,6 +440,8 @@
       "dialog_title_add": "Dodaj biblioteku",
       "dialot_title_edit": "Uredi biblioteku",
       "field_analysis_analyze_dimensions": "Analiziraj dimenzije stranica",
+      "field_analysis_hash_files": "Izračunaj šifre za datoteke",
+      "field_analysis_hash_pages": "Izračunaj šifre za stranice",
       "field_convert_to_cbz": "Automatski konvertiraj u CBZ",
       "field_import_barcode_isbn": "ISBN barkod",
       "field_import_comicinfo_book": "Metapodaci knjige",
@@ -499,6 +541,7 @@
       "tab_shared_libraries": "Dijeljene biblioteke"
     },
     "empty_trash": {
+      "body": "Server medija standardno ne uklanja informacije za medije odmah. To pomaže ako je pogon privremeno isključen. Kada isprazniš smeće za biblioteku, brišu se sve informacije o medijima koji nedostaju.",
       "button_confirm": "Isprazni",
       "title": "Isprazni smeće za biblioteku"
     },
@@ -517,6 +560,10 @@
         "order": "Redoslijed"
       },
       "title": "Odredišno ime datoteke"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Koristi Kobo sinkronizaciju",
+      "warning_html": "Ovo će izbrisati svu povijest sinkronizacije za ovaj API ključ. Tvoj Kobo će sinkronizirati sve pri sljedećoj sinkronizaciji."
     },
     "password_change": {
       "button_cancel": "Odustani",
@@ -580,6 +627,8 @@
     "action_ignore": "Zanemari",
     "action_ignore_remaining": "Zanemari preostale ({count})",
     "action_manual_delete_remaining": "Ručno izbriši preostale ({count})",
+    "confirm_auto_delete_remaining": "Sve preostale šifre stranice na ovoj stranici ({count}) će se označiti za automatsko brisanje.",
+    "confirm_manual_delete_remaining": "Sve preostale šifre stranice na ovoj stranici ({count}) će se označiti za ručno brisanje.",
     "delete_to_save": "Izbriši i uštedi {size}",
     "deleted_count": "Izbrisano {count} puta",
     "empty_title": "Duple stranice nisu pronađene",
@@ -600,6 +649,7 @@
     "unknown_size": "Nepoznata veličina"
   },
   "duplicates": {
+    "file_hash": "Šifra datoteke",
     "size": "Veličina",
     "title": "Duple datoteke",
     "url": "URL"
@@ -738,7 +788,8 @@
     "ERR_1030": "ComicRack CBL ne sadrži nijedan element „Ime”",
     "ERR_1031": "ComicRack CBL knjizi nedostaje serija ili broj",
     "ERR_1032": "EPUB datoteka sadrži neispravnu vrstu medija",
-    "ERR_1033": "Neki unosi nedostaju"
+    "ERR_1033": "Neki unosi nedostaju",
+    "ERR_1034": "API ključ s tim komentarom već postoji"
   },
   "filter": {
     "age_rating": "dobna kategorija",
@@ -884,6 +935,7 @@
     },
     "label_delete_empty_collections": "Izbriši prazne zbirke nakon pretraživanja",
     "label_delete_empty_readlists": "Izbriši prazne liste čitanja nakon pretraživanja",
+    "label_kobo_proxy": "Zahtjevi servera Kobo sinkronizacije za Kobo trgovinu",
     "label_rememberme_duration": "„Zapamti me” trajanje (u danima)",
     "label_server_context_path": "Osnovni URL",
     "label_server_port": "Priključak servera",
@@ -935,10 +987,12 @@
   "user_roles": {
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "Preuzimanje datoteke",
-    "PAGE_STREAMING": "Online čitanje",
+    "KOBO_SYNC": "Kobo sinkronizacija",
+    "PAGE_STREAMING": "Internetski prijenos stranica",
     "USER": "Korisnik"
   },
   "users": {
+    "api_keys": "API ključevi",
     "authentication_activity": "Aktivnost autentifikacije",
     "users": "Korisnici"
   },
