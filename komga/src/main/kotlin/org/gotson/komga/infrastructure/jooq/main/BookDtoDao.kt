@@ -29,14 +29,12 @@ import org.gotson.komga.jooq.main.tables.records.BookRecord
 import org.gotson.komga.jooq.main.tables.records.MediaRecord
 import org.gotson.komga.jooq.main.tables.records.ReadProgressRecord
 import org.gotson.komga.language.toUTC
-import org.jooq.AggregateFunction
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.falseCondition
-import org.jooq.impl.DSL.inline
 import org.jooq.impl.DSL.noCondition
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
@@ -46,7 +44,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionTemplate
-import java.math.BigDecimal
 import java.net.URL
 
 @Component
@@ -55,11 +52,13 @@ class BookDtoDao(
   private val luceneHelper: LuceneHelper,
   @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val transactionTemplate: TransactionTemplate,
+  private val bookCommonDao: BookCommonDao,
 ) : BookDtoRepository {
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
   private val r = Tables.READ_PROGRESS
+  private val rs = Tables.READ_PROGRESS_SERIES
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val s = Tables.SERIES
   private val sd = Tables.SERIES_METADATA
@@ -67,9 +66,7 @@ class BookDtoDao(
   private val bt = Tables.BOOK_METADATA_TAG
   private val bl = Tables.BOOK_METADATA_LINK
 
-  private val countUnread: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isNull, 1).otherwise(0))
-  private val countRead: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0))
-  private val countInProgress: AggregateFunction<BigDecimal> = DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0))
+  private val onDeckFields = b.fields() + m.fields() + d.fields() + r.fields() + sd.TITLE
 
   private val sorts =
     mapOf(
@@ -231,39 +228,22 @@ class BookDtoDao(
     pageable: Pageable,
     restrictions: ContentRestrictions,
   ): Page<BookDto> {
-    val seriesIds =
-      dsl.select(s.ID)
-        .from(s)
-        .leftJoin(b).on(s.ID.eq(b.SERIES_ID))
-        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-        .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
-        .where(restrictions.toCondition(dsl))
-        .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-        .groupBy(s.ID)
-        .having(countUnread.ge(inline(1.toBigDecimal())))
-        .and(countRead.ge(inline(1.toBigDecimal())))
-        .and(countInProgress.eq(inline(0.toBigDecimal())))
-        .orderBy(DSL.max(r.LAST_MODIFIED_DATE).desc())
-        .fetchInto(String::class.java)
+    val (query, sortField, _) = bookCommonDao.getBooksOnDeckQuery(userId, restrictions, filterOnLibraryIds, onDeckFields)
 
+    val count = dsl.fetchCount(query)
     val dtos =
-      seriesIds
-        .drop(pageable.pageNumber * pageable.pageSize)
-        .take(pageable.pageSize)
-        .mapNotNull { seriesId ->
-          selectBase(userId)
-            .where(b.SERIES_ID.eq(seriesId))
-            .and(r.COMPLETED.isNull)
-            .orderBy(d.NUMBER_SORT.asc())
-            .limit(1)
-            .fetchAndMap()
-            .firstOrNull()
-        }
+      query
+        .orderBy(sortField.desc())
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchAndMap()
 
     return PageImpl(
       dtos,
-      PageRequest.of(pageable.pageNumber, pageable.pageSize, pageable.sort),
-      seriesIds.size.toLong(),
+      if (pageable.isPaged)
+        PageRequest.of(pageable.pageNumber, pageable.pageSize, Sort.unsorted())
+      else
+        PageRequest.of(0, maxOf(count, 20), Sort.unsorted()),
+      count.toLong(),
     )
   }
 

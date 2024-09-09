@@ -16,3 +16,4 @@ logging:
   level:
     org.gotson.komga: DEBUG
 #    org.jooq: DEBUG
+#    org.jooq.tools.LoggerListener: DEBUG

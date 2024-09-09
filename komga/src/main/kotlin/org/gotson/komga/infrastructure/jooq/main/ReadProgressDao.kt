@@ -191,6 +191,8 @@ class ReadProgressDao(
         dsl.select(b.SERIES_ID, r.USER_ID)
           .select(DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0)))
           .select(DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0)))
+          .select(DSL.max(r.READ_DATE))
+          .select(DSL.currentTimestamp())
           .from(b)
           .innerJoin(r).on(b.ID.eq(r.BOOK_ID))
           .where(b.SERIES_ID.`in`(seriesIdsQuery))

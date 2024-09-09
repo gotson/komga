@@ -376,12 +376,12 @@ class BookDtoDaoTest(
       seriesLifecycle.addBooks(
         series,
         (1..3).map {
-          makeBook("$it", seriesId = series.id, libraryId = library.id)
+          makeBook("$it", seriesId = series.id, libraryId = library.id).copy(number = it)
         },
       )
 
       val books = bookRepository.findAll().sortedBy { it.name }
-      books.elementAt(0).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
+      books.first().let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
 
       // when
       val found =
