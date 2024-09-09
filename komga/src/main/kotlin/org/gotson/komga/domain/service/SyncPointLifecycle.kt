@@ -18,17 +18,24 @@ class SyncPointLifecycle(
     user: KomgaUser,
     apiKeyId: String?,
     libraryIds: List<String>?,
-  ): SyncPoint =
-    syncPointRepository.create(
-      user,
-      apiKeyId,
-      BookSearch(
-        libraryIds = user.getAuthorizedLibraryIds(libraryIds),
-        mediaStatus = setOf(Media.Status.READY),
-        mediaProfile = listOf(MediaProfile.EPUB),
-        deleted = false,
-      ),
-    )
+  ): SyncPoint {
+    val authorizedLibraryIds = user.getAuthorizedLibraryIds(libraryIds)
+    val syncPoint =
+      syncPointRepository.create(
+        user,
+        apiKeyId,
+        BookSearch(
+          libraryIds = authorizedLibraryIds,
+          mediaStatus = setOf(Media.Status.READY),
+          mediaProfile = listOf(MediaProfile.EPUB),
+          deleted = false,
+        ),
+      )
+
+    syncPointRepository.addOnDeck(syncPoint.id, user, authorizedLibraryIds)
+
+    return syncPoint
+  }
 
   /**
    * Retrieve a page of un-synced books and mark them as synced.
@@ -83,4 +90,35 @@ class SyncPointLifecycle(
   ): Page<SyncPoint.Book> =
     syncPointRepository.findBooksReadProgressChanged(fromSyncPointId, toSyncPointId, true, pageable)
       .also { page -> syncPointRepository.markBooksSynced(toSyncPointId, false, page.content.map { it.bookId }) }
+
+  fun takeReadLists(
+    toSyncPointId: String,
+    pageable: Pageable,
+  ): Page<SyncPoint.ReadList> =
+    syncPointRepository.findReadListsById(toSyncPointId, true, pageable)
+      .also { page -> syncPointRepository.markReadListsSynced(toSyncPointId, false, page.content.map { it.readListId }) }
+
+  fun takeReadListsAdded(
+    fromSyncPointId: String,
+    toSyncPointId: String,
+    pageable: Pageable,
+  ): Page<SyncPoint.ReadList> =
+    syncPointRepository.findReadListsAdded(fromSyncPointId, toSyncPointId, true, pageable)
+      .also { page -> syncPointRepository.markReadListsSynced(toSyncPointId, false, page.content.map { it.readListId }) }
+
+  fun takeReadListsChanged(
+    fromSyncPointId: String,
+    toSyncPointId: String,
+    pageable: Pageable,
+  ): Page<SyncPoint.ReadList> =
+    syncPointRepository.findReadListsChanged(fromSyncPointId, toSyncPointId, true, pageable)
+      .also { page -> syncPointRepository.markReadListsSynced(toSyncPointId, false, page.content.map { it.readListId }) }
+
+  fun takeReadListsRemoved(
+    fromSyncPointId: String,
+    toSyncPointId: String,
+    pageable: Pageable,
+  ): Page<SyncPoint.ReadList> =
+    syncPointRepository.findReadListsRemoved(fromSyncPointId, toSyncPointId, true, pageable)
+      .also { page -> syncPointRepository.markReadListsSynced(toSyncPointId, true, page.content.map { it.readListId }) }
 }

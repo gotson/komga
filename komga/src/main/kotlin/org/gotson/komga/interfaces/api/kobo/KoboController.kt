@@ -38,8 +38,11 @@ import org.gotson.komga.interfaces.api.kobo.dto.BookmarkDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedEntitlementDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedProductMetadataDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedReadingStateDto
+import org.gotson.komga.interfaces.api.kobo.dto.ChangedTagDto
+import org.gotson.komga.interfaces.api.kobo.dto.DeletedTagDto
 import org.gotson.komga.interfaces.api.kobo.dto.KoboBookMetadataDto
 import org.gotson.komga.interfaces.api.kobo.dto.NewEntitlementDto
+import org.gotson.komga.interfaces.api.kobo.dto.NewTagDto
 import org.gotson.komga.interfaces.api.kobo.dto.ReadingStateDto
 import org.gotson.komga.interfaces.api.kobo.dto.ReadingStateStateUpdateDto
 import org.gotson.komga.interfaces.api.kobo.dto.ReadingStateUpdateResultDto
@@ -50,10 +53,12 @@ import org.gotson.komga.interfaces.api.kobo.dto.StatisticsDto
 import org.gotson.komga.interfaces.api.kobo.dto.StatusDto
 import org.gotson.komga.interfaces.api.kobo.dto.StatusInfoDto
 import org.gotson.komga.interfaces.api.kobo.dto.SyncResultDto
+import org.gotson.komga.interfaces.api.kobo.dto.TagItemDto
 import org.gotson.komga.interfaces.api.kobo.dto.TestsDto
 import org.gotson.komga.interfaces.api.kobo.dto.WrappedReadingStateDto
 import org.gotson.komga.interfaces.api.kobo.dto.toBookEntitlementDto
 import org.gotson.komga.interfaces.api.kobo.dto.toDto
+import org.gotson.komga.interfaces.api.kobo.dto.toWrappedTagDto
 import org.gotson.komga.interfaces.api.kobo.persistence.KoboDtoRepository
 import org.gotson.komga.language.toUTCZoned
 import org.springframework.data.domain.Page
@@ -264,10 +269,38 @@ class KoboController(
           else
             Page.empty()
 
-        logger.debug { "Library sync: ${booksAdded.numberOfElements} books added, ${booksChanged.numberOfElements} books changed, ${booksRemoved.numberOfElements} books removed, ${changedReadingState.numberOfElements} books with changed reading state" }
+        val readListsAdded =
+          if (changedReadingState.isLast && maxRemainingCount > 0)
+            syncPointLifecycle.takeReadListsAdded(fromSyncPoint.id, toSyncPoint.id, Pageable.ofSize(maxRemainingCount)).also {
+              maxRemainingCount -= it.numberOfElements
+              shouldContinueSync = shouldContinueSync || it.hasNext()
+            }
+          else
+            Page.empty()
+
+        val readListsChanged =
+          if (readListsAdded.isLast && maxRemainingCount > 0)
+            syncPointLifecycle.takeReadListsChanged(fromSyncPoint.id, toSyncPoint.id, Pageable.ofSize(maxRemainingCount)).also {
+              maxRemainingCount -= it.numberOfElements
+              shouldContinueSync = shouldContinueSync || it.hasNext()
+            }
+          else
+            Page.empty()
+
+        val readListsRemoved =
+          if (readListsChanged.isLast && maxRemainingCount > 0)
+            syncPointLifecycle.takeReadListsRemoved(fromSyncPoint.id, toSyncPoint.id, Pageable.ofSize(maxRemainingCount)).also {
+              maxRemainingCount -= it.numberOfElements
+              shouldContinueSync = shouldContinueSync || it.hasNext()
+            }
+          else
+            Page.empty()
+
+        logger.debug { "Library sync: ${booksAdded.numberOfElements} books added, ${booksChanged.numberOfElements} books changed, ${booksRemoved.numberOfElements} books removed, ${changedReadingState.numberOfElements} books with changed reading state, $readListsAdded readlists added, $readListsChanged readlists changed, $readListsRemoved removed" }
 
         val metadata = koboDtoRepository.findBookMetadataByIds((booksAdded.content + booksChanged.content).map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
         val readProgress = readProgressRepository.findAllByBookIdsAndUserId((booksAdded.content + booksChanged.content + changedReadingState.content).map { it.bookId }, principal.user.id).associateBy { it.bookId }
+        val readListsBooks = syncPointRepository.findBookIdsByReadListIds(toSyncPoint.id, (readListsAdded.content + readListsChanged.content).map { it.readListId }).groupBy { it.readListId }
 
         buildList {
           addAll(
@@ -319,24 +352,63 @@ class KoboController(
               }
             },
           )
+          addAll(
+            readListsAdded.content.map {
+              NewTagDto(it.toWrappedTagDto(readListsBooks[it.readListId]?.map { b -> TagItemDto(b.bookId) }))
+            },
+          )
+          addAll(
+            readListsChanged.content.map {
+              ChangedTagDto(it.toWrappedTagDto(readListsBooks[it.readListId]?.map { b -> TagItemDto(b.bookId) }))
+            },
+          )
+          addAll(
+            readListsRemoved.content.map {
+              DeletedTagDto(it.toWrappedTagDto())
+            },
+          )
         }
       } else {
         // no starting point, sync everything
-        val books = syncPointLifecycle.takeBooks(toSyncPoint.id, Pageable.ofSize(komgaProperties.kobo.syncItemLimit))
-        shouldContinueSync = books.hasNext()
+        var maxRemainingCount = komgaProperties.kobo.syncItemLimit
 
-        logger.debug { "Library sync: ${books.numberOfElements} books" }
+        val books =
+          syncPointLifecycle.takeBooks(toSyncPoint.id, Pageable.ofSize(maxRemainingCount)).also {
+            maxRemainingCount -= it.numberOfElements
+            shouldContinueSync = it.hasNext()
+          }
+
+        val readLists =
+          if (books.isLast && maxRemainingCount > 0)
+            syncPointLifecycle.takeReadLists(toSyncPoint.id, Pageable.ofSize(maxRemainingCount)).also {
+              maxRemainingCount -= it.numberOfElements
+              shouldContinueSync = shouldContinueSync || it.hasNext()
+            }
+          else
+            Page.empty()
+
+        logger.debug { "Library sync: ${books.numberOfElements} books, ${readLists.numberOfElements} readlists" }
 
         val metadata = koboDtoRepository.findBookMetadataByIds(books.content.map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
         val readProgress = readProgressRepository.findAllByBookIdsAndUserId(books.content.map { it.bookId }, principal.user.id).associateBy { it.bookId }
+        val readListsBooks = syncPointRepository.findBookIdsByReadListIds(toSyncPoint.id, readLists.content.map { it.readListId }).groupBy { it.readListId }
 
-        books.content.map {
-          NewEntitlementDto(
-            BookEntitlementContainerDto(
-              bookEntitlement = it.toBookEntitlementDto(false),
-              bookMetadata = metadata[it.bookId]!!,
-              readingState = readProgress[it.bookId]?.toDto() ?: getEmptyReadProgressForBook(it.bookId, it.createdDate),
-            ),
+        buildList {
+          addAll(
+            books.content.map {
+              NewEntitlementDto(
+                BookEntitlementContainerDto(
+                  bookEntitlement = it.toBookEntitlementDto(false),
+                  bookMetadata = metadata[it.bookId]!!,
+                  readingState = readProgress[it.bookId]?.toDto() ?: getEmptyReadProgressForBook(it.bookId, it.createdDate),
+                ),
+              )
+            },
+          )
+          addAll(
+            readLists.content.map {
+              NewTagDto(it.toWrappedTagDto(readListsBooks[it.readListId]?.map { b -> TagItemDto(b.bookId) }))
+            },
           )
         }
       }

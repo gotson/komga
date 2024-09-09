@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaType
+import org.gotson.komga.domain.model.SyncPoint.ReadList.Companion.ON_DECK_ID
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -29,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 @SpringBootTest
@@ -39,13 +41,12 @@ class SyncPointLifecycleTest(
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val bookRepository: BookRepository,
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
+  @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val mediaRepository: MediaRepository,
 ) {
-  @Autowired
-  private lateinit var bookLifecycle: BookLifecycle
   private val library1 = makeLibrary()
   private val library2 = makeLibrary()
   private val library3 = makeLibrary()
@@ -268,5 +269,97 @@ class SyncPointLifecycleTest(
     assertThat(page3.map { it.bookId })
       .containsAnyElementsOf(listOf(book1.id, book2.id, book3.id))
       .doesNotContainAnyElementsOf((page1 + page2).map { it.bookId })
+  }
+
+  @Test
+  fun `given syncpoint when books are read then syncpoint diff contains on deck read list`() {
+    // given
+    val book1 = makeBook("book 1", libraryId = library1.id).copy(fileHash = "hash", fileSize = 12, fileLastModified = LocalDateTime.now(), number = 1)
+    val book2 = makeBook("book 2", libraryId = library1.id).copy(fileHash = "hash", fileSize = 12, fileLastModified = LocalDateTime.now(), number = 2)
+    val book3 = makeBook("book 3", libraryId = library1.id).copy(fileHash = "hash", fileSize = 12, fileLastModified = LocalDateTime.now(), number = 3)
+
+    makeSeries(name = "series1", libraryId = library1.id).let { series ->
+      seriesLifecycle.createSeries(series).let { created ->
+        seriesLifecycle.addBooks(created, listOf(book1, book2, book3))
+      }
+    }
+
+    bookRepository.findAll().forEach { mediaRepository.findById(it.id).let { media -> mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = MediaType.EPUB.type)) } }
+
+    // first sync point
+    val syncPoint1 = syncPointLifecycle.createSyncPoint(user1, null, listOf(library1.id))
+    val syncPoint1ReadLists = syncPointRepository.findReadListsById(syncPoint1.id, false, Pageable.unpaged())
+
+    assertThat(syncPoint1ReadLists).isEmpty()
+
+    // book marked as read
+    bookLifecycle.markReadProgressCompleted(book1.id, user1)
+    val syncPoint2 = syncPointLifecycle.createSyncPoint(user1, null, listOf(library1.id))
+
+    // on deck is present and has 1 book
+    val syncPoint2ReadLists = syncPointRepository.findReadListsById(syncPoint2.id, false, Pageable.unpaged())
+    val rlAdded1to2 = syncPointRepository.findReadListsAdded(syncPoint1.id, syncPoint2.id, false, Pageable.unpaged())
+    val rlChanged1to2 = syncPointRepository.findReadListsChanged(syncPoint1.id, syncPoint2.id, false, Pageable.unpaged())
+    val rlRemoved1to2 = syncPointRepository.findReadListsRemoved(syncPoint1.id, syncPoint2.id, false, Pageable.unpaged())
+    val syncPoint2Page1 = syncPointLifecycle.takeReadListsAdded(syncPoint1.id, syncPoint2.id, Pageable.ofSize(1))
+    val syncPoint2Page2 = syncPointLifecycle.takeReadListsAdded(syncPoint1.id, syncPoint2.id, Pageable.ofSize(1))
+
+    assertThat(syncPoint2ReadLists).hasSize(1)
+    assertThat(rlAdded1to2).containsExactlyInAnyOrderElementsOf(syncPoint2ReadLists)
+    assertThat(rlChanged1to2).isEmpty()
+    assertThat(rlRemoved1to2).isEmpty()
+    with(syncPoint2ReadLists.first()) {
+      assertThat(this.readListId).isEqualTo(ON_DECK_ID)
+      assertThat(this.createdDate).isCloseTo(ZonedDateTime.now(), within(1, ChronoUnit.SECONDS))
+      assertThat(this.lastModifiedDate).isCloseTo(ZonedDateTime.now(), within(1, ChronoUnit.SECONDS))
+    }
+    assertThat(syncPoint2Page1).containsExactlyInAnyOrderElementsOf(rlAdded1to2)
+    assertThat(syncPoint2Page2).isEmpty()
+    val syncPoint2OnDeckBooks = syncPointRepository.findBookIdsByReadListIds(syncPoint2.id, listOf(ON_DECK_ID))
+    assertThat(syncPoint2OnDeckBooks.map { it.bookId })
+      .hasSize(1)
+      .containsExactlyInAnyOrder(book2.id)
+
+    // 2nd book marked as read, on deck is still present but has changed
+    bookLifecycle.markReadProgressCompleted(book2.id, user1)
+    val syncPoint3 = syncPointLifecycle.createSyncPoint(user1, null, listOf(library1.id))
+
+    val syncPoint3ReadLists = syncPointRepository.findReadListsById(syncPoint3.id, false, Pageable.unpaged())
+    val rlAdded2to3 = syncPointRepository.findReadListsAdded(syncPoint2.id, syncPoint3.id, false, Pageable.unpaged())
+    val rlChanged2to3 = syncPointRepository.findReadListsChanged(syncPoint2.id, syncPoint3.id, false, Pageable.unpaged())
+    val rlRemoved2to3 = syncPointRepository.findReadListsRemoved(syncPoint2.id, syncPoint3.id, false, Pageable.unpaged())
+    val syncPoint3Page1 = syncPointLifecycle.takeReadListsChanged(syncPoint2.id, syncPoint3.id, Pageable.ofSize(1))
+    val syncPoint3Page2 = syncPointLifecycle.takeReadListsChanged(syncPoint2.id, syncPoint3.id, Pageable.ofSize(1))
+
+    assertThat(syncPoint3ReadLists.map { it.readListId }).containsExactlyInAnyOrder(ON_DECK_ID)
+    assertThat(rlChanged2to3.map { it.readListId }).containsExactlyInAnyOrder(ON_DECK_ID)
+    assertThat(rlAdded2to3).isEmpty()
+    assertThat(rlRemoved2to3).isEmpty()
+    assertThat(syncPoint3Page1).containsExactlyInAnyOrderElementsOf(rlChanged2to3)
+    assertThat(syncPoint3Page2).isEmpty()
+
+    val syncPoint3OnDeckBooks = syncPointRepository.findBookIdsByReadListIds(syncPoint3.id, listOf(ON_DECK_ID))
+    assertThat(syncPoint3OnDeckBooks.map { it.bookId })
+      .hasSize(1)
+      .containsExactlyInAnyOrder(book3.id)
+
+    // 3rd book marked as read, whole series is read now - on deck is not present anymore
+    bookLifecycle.markReadProgressCompleted(book3.id, user1)
+    val syncPoint4 = syncPointLifecycle.createSyncPoint(user1, null, listOf(library1.id))
+
+    val syncPoint4ReadLists = syncPointRepository.findReadListsById(syncPoint4.id, false, Pageable.unpaged())
+    val rlAdded3to4 = syncPointRepository.findReadListsAdded(syncPoint3.id, syncPoint4.id, false, Pageable.unpaged())
+    val rlChanged3to4 = syncPointRepository.findReadListsChanged(syncPoint3.id, syncPoint4.id, false, Pageable.unpaged())
+    val rlRemoved3to4 = syncPointRepository.findReadListsRemoved(syncPoint3.id, syncPoint4.id, false, Pageable.unpaged())
+    val syncPoint4Page1 = syncPointLifecycle.takeReadListsRemoved(syncPoint3.id, syncPoint4.id, Pageable.ofSize(1))
+    val syncPoint4Page2 = syncPointLifecycle.takeReadListsRemoved(syncPoint3.id, syncPoint4.id, Pageable.ofSize(1))
+
+    assertThat(syncPoint4ReadLists).isEmpty()
+    assertThat(rlAdded3to4).isEmpty()
+    assertThat(rlChanged3to4).isEmpty()
+    assertThat(rlRemoved3to4).hasSize(1)
+    assertThat(rlRemoved3to4.map { it.readListId }).containsExactlyInAnyOrder(ON_DECK_ID)
+    assertThat(syncPoint4Page1).containsExactlyInAnyOrderElementsOf(rlRemoved3to4)
+    assertThat(syncPoint4Page2).isEmpty()
   }
 }

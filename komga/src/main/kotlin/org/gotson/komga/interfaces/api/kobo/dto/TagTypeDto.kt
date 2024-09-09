@@ -1,10 +1,11 @@
 package org.gotson.komga.interfaces.api.kobo.dto
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies
-import com.fasterxml.jackson.databind.annotation.JsonNaming
+import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
 enum class TagTypeDto {
+  @JsonProperty("SystemTag")
   SYSTEM_TAG,
+
+  @JsonProperty("UserTag")
   USER_TAG,
 }

@@ -19,4 +19,23 @@ data class SyncPoint(
     val metadataLastModifiedDate: ZonedDateTime,
     val synced: Boolean,
   )
+
+  data class ReadList(
+    val syncPointId: String,
+    val readListId: String,
+    val readListName: String,
+    val createdDate: ZonedDateTime,
+    val lastModifiedDate: ZonedDateTime,
+    val synced: Boolean,
+  ) {
+    companion object {
+      const val ON_DECK_ID = "KOMGA-ONDECK"
+    }
+
+    data class Book(
+      val syncPointId: String,
+      val readListId: String,
+      val bookId: String,
+    )
+  }
 }

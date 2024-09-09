@@ -13,6 +13,12 @@ interface SyncPointRepository {
     search: BookSearch,
   ): SyncPoint
 
+  fun addOnDeck(
+    syncPointId: String,
+    user: KomgaUser,
+    filterOnLibraryIds: Collection<String>?,
+  )
+
   fun findByIdOrNull(syncPointId: String): SyncPoint?
 
   fun findBooksById(
@@ -49,10 +55,48 @@ interface SyncPointRepository {
     pageable: Pageable,
   ): Page<SyncPoint.Book>
 
+  fun findReadListsById(
+    syncPointId: String,
+    onlyNotSynced: Boolean,
+    pageable: Pageable,
+  ): Page<SyncPoint.ReadList>
+
+  fun findReadListsAdded(
+    fromSyncPointId: String,
+    toSyncPointId: String,
+    onlyNotSynced: Boolean,
+    pageable: Pageable,
+  ): Page<SyncPoint.ReadList>
+
+  fun findReadListsChanged(
+    fromSyncPointId: String,
+    toSyncPointId: String,
+    onlyNotSynced: Boolean,
+    pageable: Pageable,
+  ): Page<SyncPoint.ReadList>
+
+  fun findReadListsRemoved(
+    fromSyncPointId: String,
+    toSyncPointId: String,
+    onlyNotSynced: Boolean,
+    pageable: Pageable,
+  ): Page<SyncPoint.ReadList>
+
+  fun findBookIdsByReadListIds(
+    syncPointId: String,
+    readListIds: Collection<String>,
+  ): List<SyncPoint.ReadList.Book>
+
   fun markBooksSynced(
     syncPointId: String,
     forRemovedBooks: Boolean,
     bookIds: Collection<String>,
+  )
+
+  fun markReadListsSynced(
+    syncPointId: String,
+    forRemovedReadLists: Boolean,
+    readListIds: Collection<String>,
   )
 
   fun deleteByUserId(userId: String)

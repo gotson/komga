@@ -22,12 +22,17 @@ data class ChangedProductMetadataDto(
 
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
 data class NewTagDto(
-  val newTag: TagDto,
+  val newTag: WrappedTagDto,
 ) : SyncResultDto
 
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
 data class ChangedTagDto(
-  val changedTag: TagDto,
+  val changedTag: WrappedTagDto,
+) : SyncResultDto
+
+@JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
+data class DeletedTagDto(
+  val deletedTag: WrappedTagDto,
 ) : SyncResultDto
 
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
