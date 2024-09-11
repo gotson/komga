@@ -163,6 +163,8 @@ export default Vue.extend({
         {name: this.$t('duplicate_pages.filter.size').toString(), key: 'fileSize'},
         {name: this.$t('duplicate_pages.filter.delete_count').toString(), key: 'deleteCount'},
         {name: this.$t('duplicate_pages.filter.match_count').toString(), key: 'matchCount'},
+        {name: this.$t('duplicate_pages.filter.date_added').toString(), key: 'createdDate'},
+        {name: this.$t('duplicate_pages.filter.date_modified').toString(), key: 'lastModifiedDate'},
       ]
     },
     paginationVisible(): number {

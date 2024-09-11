@@ -634,6 +634,8 @@
     "empty_title": "No duplicate pages found",
     "filter": {
       "count": "Count",
+      "date_added": "Date added",
+      "date_modified": "Date modified",
       "delete_count": "Deletion count",
       "delete_size": "Space saved",
       "match_count": "Match count",
