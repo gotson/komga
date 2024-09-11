@@ -1,3 +1,39 @@
+# [1.13.0](https://github.com/gotson/komga/compare/1.12.1...1.13.0) (2024-09-11)
+## 🚀 Features
+**kobo**
+- sync On Deck as a Kobo collection ([f07be06](https://github.com/gotson/komga/commits/f07be06))
+
+**metadata**
+- support multiple values in Web field from ComicInfo.xml ([d12f3b3](https://github.com/gotson/komga/commits/d12f3b3)), closes [#1639](https://github.com/gotson/komga/issues/1639)
+
+**webui**
+- add sort criteria for known page hash ([be4911d](https://github.com/gotson/komga/commits/be4911d)), closes [#1609](https://github.com/gotson/komga/issues/1609)
+
+## 🐛 Fixes
+
+- admin user created by claiming does not have kobo sync role ([bf8bbdd](https://github.com/gotson/komga/commits/bf8bbdd)), closes [#1686](https://github.com/gotson/komga/issues/1686)
+
+## 🏎 Perf
+**api**
+- make on deck much faster ([e72ff78](https://github.com/gotson/komga/commits/e72ff78))
+
+## 🛠  Build
+**benchmark**
+- mark some books as read for on deck ([0047a91](https://github.com/gotson/komga/commits/0047a91))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Croatian) ([b8f2cea](https://github.com/gotson/komga/commits/b8f2cea))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([bc913ad](https://github.com/gotson/komga/commits/bc913ad))
+- translated using Weblate (Korean) ([41c93fd](https://github.com/gotson/komga/commits/41c93fd))
+- translated using Weblate (Finnish) ([026c696](https://github.com/gotson/komga/commits/026c696))
+- translated using Weblate (French) ([c725d73](https://github.com/gotson/komga/commits/c725d73))
+- translated using Weblate (Spanish) ([ffc7bc3](https://github.com/gotson/komga/commits/ffc7bc3))
+- translated using Weblate (Croatian) ([15eb9a4](https://github.com/gotson/komga/commits/15eb9a4))
+- translated using Weblate (Russian) ([8249e0f](https://github.com/gotson/komga/commits/8249e0f))
+
 # [1.12.1](https://github.com/gotson/komga/compare/1.12.0...1.12.1) (2024-09-04)
 ## 🐛 Fixes
 **kobo**
