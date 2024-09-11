@@ -89,16 +89,18 @@ class ComicInfoProvider(
         }
       }
 
-      val link =
-        comicInfo.web?.let {
-          try {
-            val uri = URI(it)
-            listOf(WebLink(uri.host, uri))
-          } catch (e: Exception) {
-            logger.error(e) { "Could not parse Web element as valid URI: $it" }
-            null
+      val links =
+        comicInfo.web
+          ?.split(" ")
+          ?.filter { it.isNotBlank() }
+          ?.mapNotNull {
+            try {
+              URI(it.trim()).let { uri -> WebLink(uri.host, uri) }
+            } catch (e: Exception) {
+              logger.error(e) { "Could not parse Web element as valid URI: $it" }
+              null
+            }
           }
-        }
 
       val tags = comicInfo.tags?.split(',')?.mapNotNull { it.trim().lowercase().ifBlank { null } }
 
@@ -112,7 +114,7 @@ class ComicInfoProvider(
         releaseDate = releaseDate,
         authors = authors.ifEmpty { null },
         readLists = readLists,
-        links = link,
+        links = links?.ifEmpty { null },
         tags = if (!tags.isNullOrEmpty()) tags.toSet() else null,
         isbn = isbn,
       )

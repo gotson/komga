@@ -57,7 +57,7 @@ class ComicInfoProviderTest {
           alternateSeries = "story arc"
           alternateNumber = "5"
           storyArc = "one, two, three"
-          web = "https://www.comixology.com/Sandman/digital-comic/727888"
+          web = "   https://www.comixology.com/Sandman/digital-comic/727888    https://www.comics.com/Sandman/digital-comic/727889   "
           tags = "dark, Occult"
           gtin = "9783440077894"
         }
@@ -84,14 +84,33 @@ class ComicInfoProviderTest {
           )
 
         assertThat(links)
-          .hasSize(1)
           .containsExactlyInAnyOrder(
             WebLink("www.comixology.com", URI("https://www.comixology.com/Sandman/digital-comic/727888")),
+            WebLink("www.comics.com", URI("https://www.comics.com/Sandman/digital-comic/727889")),
           )
 
         assertThat(tags as Iterable<String>)
           .hasSize(2)
           .containsExactlyInAnyOrder("dark", "occult")
+      }
+    }
+
+    @Test
+    fun `given comicInfo with single link when getting book metadata then metadata patch is valid`() {
+      val comicInfo =
+        ComicInfo().apply {
+          web = "https://www.comixology.com/Sandman/digital-comic/727888"
+        }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(links)
+          .containsExactlyInAnyOrder(
+            WebLink("www.comixology.com", URI("https://www.comixology.com/Sandman/digital-comic/727888")),
+          )
       }
     }
 
@@ -236,6 +255,7 @@ class ComicInfoProviderTest {
           storyArc = ""
           penciller = ""
           gtin = ""
+          web = ""
         }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -250,6 +270,7 @@ class ComicInfoProviderTest {
         assertThat(authors).isNull()
         assertThat(readLists).isEmpty()
         assertThat(isbn).isNull()
+        assertThat(links).isNull()
       }
     }
 
