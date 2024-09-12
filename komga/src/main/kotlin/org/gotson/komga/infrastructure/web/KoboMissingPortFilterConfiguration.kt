@@ -12,7 +12,7 @@ import org.springframework.web.filter.ForwardedHeaderFilter
 class KoboMissingPortFilterConfiguration(
   private val komgaSettingsProvider: KomgaSettingsProvider,
   private val serverSettings: WebServerEffectiveSettings,
-  private val forwardedHeaderFilter: FilterRegistrationBean<ForwardedHeaderFilter>,
+  private val forwardedHeaderFilter: FilterRegistrationBean<ForwardedHeaderFilter>?,
 ) {
   @Bean
   fun koboMissingPortFilter(): FilterRegistrationBean<out KoboMissingPortFilter> =
@@ -30,6 +30,6 @@ class KoboMissingPortFilterConfiguration(
   fun adjustForwardHeaderFilterOrder() {
     // the ForwardHeaderFilter must be after the KoboMissingPortFilter, as the latter's detection is based on forwarded headers
     // that the former will remove
-    forwardedHeaderFilter.order = Ordered.HIGHEST_PRECEDENCE + 1
+    forwardedHeaderFilter?.order = Ordered.HIGHEST_PRECEDENCE + 1
   }
 }
