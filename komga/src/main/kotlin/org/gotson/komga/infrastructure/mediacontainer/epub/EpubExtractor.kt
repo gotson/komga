@@ -9,6 +9,8 @@ import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.gotson.komga.infrastructure.util.getEntryBytes
+import org.gotson.komga.infrastructure.util.getEntryInputStream
 import org.gotson.komga.infrastructure.util.getZipEntryBytes
 import org.jsoup.Jsoup
 import org.springframework.beans.factory.annotation.Value
@@ -59,7 +61,7 @@ class EpubExtractor(
         val mediaType = coverManifestItem.mediaType
         val coverPath = normalizeHref(opfDir, href)
         TypedBytes(
-          zip.getInputStream(zip.getEntry(coverPath)).readAllBytes(),
+          zip.getEntryBytes(coverPath),
           mediaType,
         )
       } else {
@@ -129,7 +131,7 @@ class EpubExtractor(
           .map { it.attr("idref") }
           .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
           .map { pagePath ->
-            val doc = epub.zip.getInputStream(epub.zip.getEntry(pagePath)).use { Jsoup.parse(it, null, "") }
+            val doc = epub.zip.getEntryInputStream(pagePath).use { Jsoup.parse(it, null, "") }
 
             // if a page has text over the threshold then the book is not divina compatible
             if (doc.body().text().length > letterCountThreshold) return emptyList()
