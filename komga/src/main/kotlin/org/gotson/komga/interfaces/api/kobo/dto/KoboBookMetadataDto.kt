@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.api.kobo.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
@@ -40,4 +41,10 @@ data class KoboBookMetadataDto(
   val subTitle: String? = null,
   val title: String,
   val workId: String,
+  @JsonIgnore
+  val isKepub: Boolean,
+  @JsonIgnore
+  val isPrePaginated: Boolean,
+  @JsonIgnore
+  val fileSize: Long,
 )

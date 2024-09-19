@@ -40,6 +40,8 @@ import org.gotson.komga.interfaces.api.kobo.dto.ChangedProductMetadataDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedReadingStateDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedTagDto
 import org.gotson.komga.interfaces.api.kobo.dto.DeletedTagDto
+import org.gotson.komga.interfaces.api.kobo.dto.DownloadUrlDto
+import org.gotson.komga.interfaces.api.kobo.dto.FormatDto
 import org.gotson.komga.interfaces.api.kobo.dto.KoboBookMetadataDto
 import org.gotson.komga.interfaces.api.kobo.dto.NewEntitlementDto
 import org.gotson.komga.interfaces.api.kobo.dto.NewTagDto
@@ -231,6 +233,7 @@ class KoboController(
     logger.debug { "Library sync from SyncPoint $fromSyncPoint, to SyncPoint: $toSyncPoint" }
 
     var shouldContinueSync: Boolean
+    val downloadUriBuilder = getDownloadUrlBuilder(authToken)
     val syncResultKomga: Collection<SyncResultDto> =
       if (fromSyncPoint != null) {
         // find books added/changed/removed and map to DTO
@@ -298,7 +301,8 @@ class KoboController(
 
         logger.debug { "Library sync: ${booksAdded.numberOfElements} books added, ${booksChanged.numberOfElements} books changed, ${booksRemoved.numberOfElements} books removed, ${changedReadingState.numberOfElements} books with changed reading state, $readListsAdded readlists added, $readListsChanged readlists changed, $readListsRemoved removed" }
 
-        val metadata = koboDtoRepository.findBookMetadataByIds((booksAdded.content + booksChanged.content).map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
+        val metadata = koboDtoRepository.findBookMetadataByIds((booksAdded.content + booksChanged.content).map { it.bookId }).associateBy { it.entitlementId }
+          .mapValues { it.value.withDownloadUrls(downloadUriBuilder) }
         val readProgress = readProgressRepository.findAllByBookIdsAndUserId((booksAdded.content + booksChanged.content + changedReadingState.content).map { it.bookId }, principal.user.id).associateBy { it.bookId }
         val readListsBooks = syncPointRepository.findBookIdsByReadListIds(toSyncPoint.id, (readListsAdded.content + readListsChanged.content).map { it.readListId }).groupBy { it.readListId }
 
@@ -389,7 +393,8 @@ class KoboController(
 
         logger.debug { "Library sync: ${books.numberOfElements} books, ${readLists.numberOfElements} readlists" }
 
-        val metadata = koboDtoRepository.findBookMetadataByIds(books.content.map { it.bookId }, getDownloadUrlBuilder(authToken)).associateBy { it.entitlementId }
+        val metadata = koboDtoRepository.findBookMetadataByIds(books.content.map { it.bookId }).associateBy { it.entitlementId }
+          .mapValues { it.value.withDownloadUrls(downloadUriBuilder) }
         val readProgress = readProgressRepository.findAllByBookIdsAndUserId(books.content.map { it.bookId }, principal.user.id).associateBy { it.bookId }
         val readListsBooks = syncPointRepository.findBookIdsByReadListIds(toSyncPoint.id, readLists.content.map { it.readListId }).groupBy { it.readListId }
 
@@ -462,7 +467,7 @@ class KoboController(
     if (!bookRepository.existsById(bookId) && koboProxy.isEnabled())
       koboProxy.proxyCurrentRequest()
     else
-      ResponseEntity.ok(koboDtoRepository.findBookMetadataByIds(listOf(bookId), getDownloadUrlBuilder(authToken)))
+      ResponseEntity.ok(koboDtoRepository.findBookMetadataByIds(listOf(bookId)).map { it.withDownloadUrls(getDownloadUrlBuilder(authToken)) })
 
   /**
    * @return an array of [ReadingStateDto]
@@ -621,6 +626,30 @@ class KoboController(
   private fun getDownloadUrlBuilder(token: String): UriBuilder =
     ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("kobo", token, "v1", "books", "{bookId}", "file", "epub")
 
+  private fun KoboBookMetadataDto.withDownloadUrls(downloadUriBuilder: UriBuilder) =
+    this.copy(
+      downloadUrls = buildList {
+        add(
+          DownloadUrlDto(
+            format = when {
+              isPrePaginated -> FormatDto.EPUB3FL
+              isKepub -> FormatDto.KEPUB
+              else -> FormatDto.EPUB3
+            },
+            size = fileSize,
+            url = downloadUriBuilder.build(entitlementId, false).toURL().toString(),
+          ),
+        )
+        add(
+          DownloadUrlDto(
+            format = FormatDto.EPUB,
+            size = fileSize,
+            url = downloadUriBuilder.build(entitlementId, false).toURL().toString(),
+          ),
+        )
+      },
+    )
+
   /**
    * Retrieve a SyncPoint by ID, and verifies it belongs to the same userId
    */
@@ -644,6 +673,9 @@ class KoboController(
       revisionId = bookId,
       workId = bookId,
       title = bookId,
+      isKepub = false,
+      isPrePaginated = false,
+      fileSize = 0,
     )
 
   private fun getEmptyReadProgressForBook(book: Book): ReadingStateDto {
