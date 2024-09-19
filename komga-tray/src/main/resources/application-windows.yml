@@ -1,2 +1,3 @@
 komga:
   config-dir: ${LOCALAPPDATA}/Komga
+  kobo.kepubify-path: kepubify.exe

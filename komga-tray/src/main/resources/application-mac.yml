@@ -3,3 +3,4 @@ logging:
     name: ${user.home}/Library/Logs/Komga/komga.log
 komga:
   config-dir: ${user.home}/Library/Application Support/Komga
+  kobo.kepubify-path: kepubify
