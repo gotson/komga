@@ -4,11 +4,15 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.treeToValue
+import com.github.benmanes.caffeine.cache.Caffeine
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.KomgaSyncToken
 import org.gotson.komga.domain.model.MediaExtensionEpub
+import org.gotson.komga.domain.model.MediaType.EPUB
 import org.gotson.komga.domain.model.R2Device
 import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.R2Progression
@@ -23,6 +27,7 @@ import org.gotson.komga.domain.service.SyncPointLifecycle
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.image.ImageConverter
 import org.gotson.komga.infrastructure.image.ImageType
+import org.gotson.komga.infrastructure.kobo.KepubConverter
 import org.gotson.komga.infrastructure.kobo.KoboHeaders.X_KOBO_DEVICEID
 import org.gotson.komga.infrastructure.kobo.KoboHeaders.X_KOBO_SYNC
 import org.gotson.komga.infrastructure.kobo.KoboHeaders.X_KOBO_SYNCTOKEN
@@ -31,7 +36,9 @@ import org.gotson.komga.infrastructure.kobo.KoboProxy
 import org.gotson.komga.infrastructure.kobo.KomgaSyncTokenGenerator
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.getCurrentRequest
+import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.interfaces.api.CommonBookController
+import org.gotson.komga.interfaces.api.ContentRestrictionChecker
 import org.gotson.komga.interfaces.api.kobo.dto.AuthDto
 import org.gotson.komga.interfaces.api.kobo.dto.BookEntitlementContainerDto
 import org.gotson.komga.interfaces.api.kobo.dto.BookmarkDto
@@ -63,8 +70,11 @@ import org.gotson.komga.interfaces.api.kobo.dto.toDto
 import org.gotson.komga.interfaces.api.kobo.dto.toWrappedTagDto
 import org.gotson.komga.interfaces.api.kobo.persistence.KoboDtoRepository
 import org.gotson.komga.language.toUTCZoned
+import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -78,14 +88,23 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import org.springframework.web.util.UriBuilder
 import org.springframework.web.util.UriComponentsBuilder
+import java.io.FileNotFoundException
+import java.io.OutputStream
+import java.nio.charset.StandardCharsets
+import java.nio.file.Path
 import java.time.ZonedDateTime
 import java.util.UUID
+import java.util.concurrent.TimeUnit
+import kotlin.io.path.deleteIfExists
+import kotlin.io.path.exists
+import kotlin.io.path.nameWithoutExtension
 
 private val logger = KotlinLogging.logger {}
 
@@ -140,6 +159,7 @@ private val logger = KotlinLogging.logger {}
 @RequestMapping(value = ["/kobo/{authToken}/"], produces = ["application/json; charset=utf-8"])
 class KoboController(
   private val koboProxy: KoboProxy,
+  private val kepubConverter: KepubConverter,
   private val syncPointLifecycle: SyncPointLifecycle,
   private val syncPointRepository: SyncPointRepository,
   private val komgaSyncTokenGenerator: KomgaSyncTokenGenerator,
@@ -152,7 +172,16 @@ class KoboController(
   private val readProgressRepository: ReadProgressRepository,
   private val imageConverter: ImageConverter,
   private val mediaRepository: MediaRepository,
+  private val contentRestrictionChecker: ContentRestrictionChecker,
 ) {
+  private val cachedKepub =
+    Caffeine.newBuilder()
+      .expireAfterAccess(5, TimeUnit.MINUTES)
+      .removalListener<String, Path> { _, value, _ ->
+        if(value?.deleteIfExists() == true) logger.debug { "Deleted cached kepub: $value" }
+      }
+      .build<String, Path>()
+
   @GetMapping("ping")
   fun ping() = "pong"
 
@@ -513,26 +542,26 @@ class KoboController(
       R2Progression(
         modified = koboUpdate.lastModified,
         device =
-          R2Device(
-            id = principal.apiKey?.id ?: "unknown",
-            name = principal.apiKey?.comment ?: "unknown",
-          ),
+        R2Device(
+          id = principal.apiKey?.id ?: "unknown",
+          name = principal.apiKey?.comment ?: "unknown",
+        ),
         locator =
-          if (koboUpdate.statusInfo.status == StatusDto.FINISHED) {
-            // If the book is finished, Kobo sends the first resource instead of the last, so we can't trust what Kobo sent
-            (mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub ?: throw IllegalArgumentException("Epub extension not found")).positions.last()
-          } else {
-            R2Locator(
-              href = koboUpdate.currentBookmark.location.source,
-              // assume default, will be overwritten by the correct type when saved
-              type = "application/xhtml+xml",
-              locations =
-                R2Locator.Location(
-                  progression = koboUpdate.currentBookmark.contentSourceProgressPercent / 100,
-                  totalProgression = koboUpdate.currentBookmark.progressPercent?.div(100),
-                ),
-            )
-          },
+        if (koboUpdate.statusInfo.status == StatusDto.FINISHED) {
+          // If the book is finished, Kobo sends the first resource instead of the last, so we can't trust what Kobo sent
+          (mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub ?: throw IllegalArgumentException("Epub extension not found")).positions.last()
+        } else {
+          R2Locator(
+            href = koboUpdate.currentBookmark.location.source,
+            // assume default, will be overwritten by the correct type when saved
+            type = "application/xhtml+xml",
+            locations =
+            R2Locator.Location(
+              progression = koboUpdate.currentBookmark.contentSourceProgressPercent / 100,
+              totalProgression = koboUpdate.currentBookmark.progressPercent?.div(100),
+            ),
+          )
+        },
       )
 
     val response =
@@ -542,28 +571,28 @@ class KoboController(
         RequestResultDto(
           requestResult = ResultDto.SUCCESS,
           updateResults =
-            listOf(
-              ReadingStateUpdateResultDto(
-                entitlementId = bookId,
-                currentBookmarkResult = ResultDto.SUCCESS.wrapped(),
-                statisticsResult = ResultDto.IGNORED.wrapped(),
-                statusInfoResult = ResultDto.SUCCESS.wrapped(),
-              ),
+          listOf(
+            ReadingStateUpdateResultDto(
+              entitlementId = bookId,
+              currentBookmarkResult = ResultDto.SUCCESS.wrapped(),
+              statisticsResult = ResultDto.IGNORED.wrapped(),
+              statusInfoResult = ResultDto.SUCCESS.wrapped(),
             ),
+          ),
         )
       } catch (e: Exception) {
         logger.error(e) { "Could not update progression" }
         RequestResultDto(
           requestResult = ResultDto.FAILURE,
           updateResults =
-            listOf(
-              ReadingStateUpdateResultDto(
-                entitlementId = bookId,
-                currentBookmarkResult = ResultDto.FAILURE.wrapped(),
-                statisticsResult = ResultDto.FAILURE.wrapped(),
-                statusInfoResult = ResultDto.FAILURE.wrapped(),
-              ),
+          listOf(
+            ReadingStateUpdateResultDto(
+              entitlementId = bookId,
+              currentBookmarkResult = ResultDto.FAILURE.wrapped(),
+              statisticsResult = ResultDto.FAILURE.wrapped(),
+              statusInfoResult = ResultDto.FAILURE.wrapped(),
             ),
+          ),
         )
       }
 
@@ -578,7 +607,61 @@ class KoboController(
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
-  ): ResponseEntity<StreamingResponseBody> = commonBookController.getBookFileInternal(principal, bookId)
+    @RequestParam(required = false, name = "convert_kepub") convertToKepub: Boolean = false,
+  ): ResponseEntity<StreamingResponseBody> {
+    if(convertToKepub) {
+      bookRepository.findByIdOrNull(bookId)?.let { book ->
+        contentRestrictionChecker.checkContentRestriction(principal.user, book)
+
+        // check cache
+        val cacheKey = book.computeCacheKey()
+        var kepubPath = cachedKepub.getIfPresent(cacheKey)?.let { if (it.exists()) it else null }
+
+        if(kepubPath == null) {
+          // convert
+          val converted = kepubConverter.convertEpubToKepub(BookWithMedia(book, mediaRepository.findById(bookId)))
+            ?: throw ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Kepub conversion failed")
+          converted.toFile().deleteOnExit()
+          cachedKepub.put(cacheKey, converted)
+          kepubPath = converted
+        } else {
+          logger.debug { "Found kepub in cache" }
+        }
+
+        try {
+          with(FileSystemResource(kepubPath)) {
+            if (!exists()) throw FileNotFoundException(path)
+            val stream =
+              StreamingResponseBody { os: OutputStream ->
+                this.inputStream.use {
+                  IOUtils.copyLarge(it, os, ByteArray(8192))
+                  os.close()
+                }
+              }
+            return ResponseEntity.ok()
+              .headers(
+                HttpHeaders().apply {
+                  contentDisposition =
+                    ContentDisposition.builder("attachment")
+                      .filename("${book.path.nameWithoutExtension}.kepub.epub", StandardCharsets.UTF_8)
+                      .build()
+                },
+              )
+              .contentType(getMediaTypeOrDefault(EPUB.type))
+              .contentLength(contentLength())
+              .body(stream)
+          }
+        } catch (ex: FileNotFoundException) {
+          logger.warn(ex) { "File not found: $kepubPath" }
+          throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
+        }
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    } else {
+      return commonBookController.getBookFileInternal(principal, bookId)
+    }
+  }
+
+  private fun Book.computeCacheKey() = "$id-$fileLastModified"
 
   @GetMapping(
     value = [
@@ -624,11 +707,22 @@ class KoboController(
   }
 
   private fun getDownloadUrlBuilder(token: String): UriBuilder =
-    ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("kobo", token, "v1", "books", "{bookId}", "file", "epub")
+    ServletUriComponentsBuilder
+      .fromCurrentContextPath()
+      .pathSegment("kobo", token, "v1", "books", "{bookId}", "file", "epub")
+      .query("convert_kepub={convert}")
 
   private fun KoboBookMetadataDto.withDownloadUrls(downloadUriBuilder: UriBuilder) =
     this.copy(
       downloadUrls = buildList {
+        if (!isKepub && kepubConverter.isAvailable) add(
+          DownloadUrlDto(
+            format = FormatDto.KEPUB,
+            // incorrect
+            size = fileSize,
+            url = downloadUriBuilder.build(entitlementId, true).toURL().toString(),
+          ),
+        )
         add(
           DownloadUrlDto(
             format = when {
@@ -688,11 +782,11 @@ class KoboController(
       currentBookmark = BookmarkDto(createdDateUTC),
       statistics = StatisticsDto(createdDateUTC),
       statusInfo =
-        StatusInfoDto(
-          lastModified = createdDateUTC,
-          status = StatusDto.READY_TO_READ,
-          timesStartedReading = 0,
-        ),
+      StatusInfoDto(
+        lastModified = createdDateUTC,
+        status = StatusDto.READY_TO_READ,
+        timesStartedReading = 0,
+      ),
     )
   }
 
@@ -708,11 +802,11 @@ class KoboController(
       currentBookmark = BookmarkDto(createdDate),
       statistics = StatisticsDto(createdDate),
       statusInfo =
-        StatusInfoDto(
-          lastModified = createdDate,
-          status = StatusDto.READY_TO_READ,
-          timesStartedReading = 0,
-        ),
+      StatusInfoDto(
+        lastModified = createdDate,
+        status = StatusDto.READY_TO_READ,
+        timesStartedReading = 0,
+      ),
     )
   }
 }

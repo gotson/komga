@@ -136,5 +136,7 @@ class KomgaProperties {
   class Kobo {
     @get:Positive
     var syncItemLimit: Int = 100
+
+    var kepubifyPath: String? = null
   }
 }

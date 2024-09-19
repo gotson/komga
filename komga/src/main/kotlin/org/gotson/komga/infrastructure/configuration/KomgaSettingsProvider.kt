@@ -101,6 +101,17 @@ class KomgaSettingsProvider(
         serverSettingsDao.deleteSetting(Settings.KOBO_PORT.name)
       field = value
     }
+
+  var kepubifyPath: String? =
+    serverSettingsDao.getSettingByKey(Settings.KEPUBIFY_PATH.name, String::class.java)?.ifBlank { null }
+    set(value) {
+      if (value != null)
+        serverSettingsDao.saveSetting(Settings.KEPUBIFY_PATH.name, value)
+      else
+        serverSettingsDao.deleteSetting(Settings.KEPUBIFY_PATH.name)
+      field = value
+      eventPublisher.publishEvent(SettingChangedEvent.KepubifyPath)
+    }
 }
 
 private enum class Settings {
@@ -114,4 +125,5 @@ private enum class Settings {
   SERVER_CONTEXT_PATH,
   KOBO_PROXY,
   KOBO_PORT,
+  KEPUBIFY_PATH,
 }
