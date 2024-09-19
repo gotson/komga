@@ -128,6 +128,41 @@
           max="65535"
           class="mt-4"
         />
+
+        <file-browser-dialog
+          v-model="modalFileBrowserKepubify"
+          @confirm="$v.form.kepubifyPath.$touch()"
+          :path.sync="form.kepubifyPath"
+          :show-files="true"
+        />
+
+        <v-text-field
+          v-model="form.kepubifyPath"
+          @input="$v.form.kepubifyPath.$touch()"
+          @blur="$v.form.kepubifyPath.$touch()"
+          :error-messages="serverContextPathErrors"
+          :placeholder="existingSettings.kepubifyPath?.configurationSource"
+          :persistent-placeholder="!!existingSettings.kepubifyPath?.configurationSource"
+          clearable
+          :label="$t('server_settings.label_kepubify_path')"
+          class="mt-4"
+        >
+          <template v-slot:append v-if="!!existingSettings.kepubifyPath?.configurationSource">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on">
+                  mdi-information-outline
+                </v-icon>
+              </template>
+              {{ $t('server_settings.config_precedence') }}
+            </v-tooltip>
+          </template>
+
+          <template v-slot:append-outer>
+            <v-btn small @click="modalFileBrowserKepubify = true">{{ $t('dialog.edit_library.button_browse') }}</v-btn>
+          </template>
+        </v-text-field>
+
       </v-col>
     </v-row>
     <v-row>
@@ -164,12 +199,13 @@ import {SettingsDto, ThumbnailSizeDto} from '@/types/komga-settings'
 import Vue from 'vue'
 import {helpers, maxValue, minValue, required} from 'vuelidate/lib/validators'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 
 const contextPath = helpers.regex('contextPath', /^\/[-a-zA-Z0-9_\/]*[a-zA-Z0-9]$/)
 
 export default Vue.extend({
   name: 'ServerSettings',
-  components: {ConfirmationDialog},
+  components: {FileBrowserDialog, ConfirmationDialog},
   data: () => ({
     form: {
       deleteEmptyCollections: false,
@@ -182,9 +218,11 @@ export default Vue.extend({
       serverContextPath: '',
       koboProxy: false,
       koboPort: undefined,
+      kepubifyPath: undefined,
     },
     existingSettings: {} as SettingsDto,
     dialogRegenerateThumbnails: false,
+    modalFileBrowserKepubify: false,
   }),
   validations: {
     form: {
@@ -212,6 +250,7 @@ export default Vue.extend({
         minValue: minValue(1),
         maxValue: maxValue(65535),
       },
+      kepubifyPath: {},
     },
   },
   mounted() {
@@ -269,6 +308,7 @@ export default Vue.extend({
       this.$_.merge(this.form, settings)
       this.form.serverPort = settings.serverPort.databaseSource
       this.form.serverContextPath = settings.serverContextPath.databaseSource
+      this.form.kepubifyPath = settings.kepubifyPath.databaseSource
       this.$_.merge(this.existingSettings, settings)
       this.$v.form.$reset()
     },
@@ -299,6 +339,8 @@ export default Vue.extend({
         this.$_.merge(newSettings, {koboProxy: this.form.koboProxy})
       if (this.$v.form?.koboPort?.$dirty)
         this.$_.merge(newSettings, {koboPort: this.form.koboPort})
+      if (this.$v.form?.kepubifyPath?.$dirty)
+        this.$_.merge(newSettings, {kepubifyPath: this.form.kepubifyPath})
 
 
       await this.$komgaSettings.updateSettings(newSettings)

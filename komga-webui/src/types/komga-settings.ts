@@ -8,6 +8,7 @@ export interface SettingsDto {
   serverContextPath: SettingMultiSource<string>,
   koboProxy: boolean,
   koboPort?: number,
+  kepubifyPath: SettingMultiSource<string>,
 }
 
 export interface SettingMultiSource<T> {
@@ -27,6 +28,7 @@ export interface SettingsUpdateDto {
   serverContextPath?: string,
   koboProxy?: boolean,
   koboPort?: number,
+  kepubifyPath?: string,
 }
 
 export enum ThumbnailSizeDto {
