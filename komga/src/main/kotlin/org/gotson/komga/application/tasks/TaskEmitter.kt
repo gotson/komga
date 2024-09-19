@@ -275,12 +275,12 @@ class TaskEmitter(
   private fun submitTask(task: Task) {
     logger.info { "Sending task: $task" }
     tasksRepository.save(task)
-    eventPublisher.publishEvent(TaskAddedEvent())
+    eventPublisher.publishEvent(TaskAddedEvent)
   }
 
   private fun submitTasks(tasks: Collection<Task>) {
     logger.info { "Sending tasks: $tasks" }
     tasksRepository.save(tasks)
-    eventPublisher.publishEvent(TaskAddedEvent())
+    eventPublisher.publishEvent(TaskAddedEvent)
   }
 }

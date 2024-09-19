@@ -1,7 +1,6 @@
 package org.gotson.komga.infrastructure.configuration
 
 import org.apache.commons.lang3.RandomStringUtils
-import org.gotson.komga.application.tasks.TaskPoolSizeChangedEvent
 import org.gotson.komga.domain.model.ThumbnailSize
 import org.gotson.komga.infrastructure.jooq.main.ServerSettingsDao
 import org.springframework.context.ApplicationEventPublisher
@@ -63,7 +62,7 @@ class KomgaSettingsProvider(
     set(value) {
       serverSettingsDao.saveSetting(Settings.TASK_POOL_SIZE.name, value)
       field = value
-      eventPublisher.publishEvent(TaskPoolSizeChangedEvent())
+      eventPublisher.publishEvent(SettingChangedEvent.TaskPoolSize)
     }
 
   var serverPort: Int? =
