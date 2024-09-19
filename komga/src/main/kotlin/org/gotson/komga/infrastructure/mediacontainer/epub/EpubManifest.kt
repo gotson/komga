@@ -15,4 +15,5 @@ data class EpubManifest(
   val isFixedLayout: Boolean,
   val positions: List<R2Locator>,
   val divinaPages: List<BookPage>,
+  val isKepub: Boolean,
 )

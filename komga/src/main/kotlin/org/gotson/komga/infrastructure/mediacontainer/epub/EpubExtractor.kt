@@ -87,6 +87,7 @@ class EpubExtractor(
         isFixedLayout = isFixedLayout,
         positions = computePositions(resources, isFixedLayout),
         divinaPages = getDivinaPages(epub, isFixedLayout, pageCount, analyzeDimensions),
+        isKepub = isKepub(epub, resources)
       )
     }
 
@@ -172,6 +173,23 @@ class EpubExtractor(
       logger.warn(e) { "Error while getting divina pages" }
       return emptyList()
     }
+  }
+
+  private fun isKepub(
+    epub: EpubPackage,
+    resources: List<MediaFile>
+  ): Boolean {
+    try {
+      val readingOrder = resources.filter { it.subType == MediaFile.SubType.EPUB_PAGE }
+
+      readingOrder.forEach { mediaFile ->
+        val doc = epub.zip.getEntryInputStream(mediaFile.fileName).use { Jsoup.parse(it, null, "") }
+        if(!doc.getElementsByClass("koboSpan").isNullOrEmpty()) return true
+      }
+    } catch (e: Exception) {
+      logger.warn(e) { "Error while checking if EPUB is KEPUB" }
+    }
+    return false
   }
 
   private fun computePageCount(epub: EpubPackage): Int {

@@ -12,6 +12,7 @@ data class Media(
   val extension: MediaExtension? = null,
   val bookId: String = "",
   val epubDivinaCompatible: Boolean = false,
+  val epubIsKepub: Boolean = false,
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {

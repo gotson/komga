@@ -50,6 +50,7 @@ class MediaDao(
       m.PAGE_COUNT,
       m.EXTENSION_CLASS,
       m.EPUB_DIVINA_COMPATIBLE,
+      m.EPUB_IS_KEPUB,
       *p.fields(),
     )
 
@@ -136,9 +137,10 @@ class MediaDao(
             m.COMMENT,
             m.PAGE_COUNT,
             m.EPUB_DIVINA_COMPATIBLE,
+            m.EPUB_IS_KEPUB,
             m.EXTENSION_CLASS,
             m.EXTENSION_VALUE_BLOB,
-          ).values(null as String?, null, null, null, null, null, null, null),
+          ).values(null as String?, null, null, null, null, null, null, null, null),
         ).also { step ->
           chunk.forEach { media ->
             step.bind(
@@ -148,6 +150,7 @@ class MediaDao(
               media.comment,
               media.pageCount,
               media.epubDivinaCompatible,
+              media.epubIsKepub,
               media.extension?.let { if (it is ProxyExtension) null else it::class.qualifiedName },
               media.extension?.let { if (it is ProxyExtension) null else mapper.serializeJsonGz(it) },
             )
@@ -232,6 +235,7 @@ class MediaDao(
       .set(m.COMMENT, media.comment)
       .set(m.PAGE_COUNT, media.pageCount)
       .set(m.EPUB_DIVINA_COMPATIBLE, media.epubDivinaCompatible)
+      .set(m.EPUB_IS_KEPUB, media.epubIsKepub)
       .apply {
         if (media.extension != null && media.extension !is ProxyExtension) {
           set(m.EXTENSION_CLASS, media.extension::class.qualifiedName)
@@ -286,6 +290,7 @@ class MediaDao(
       comment = comment,
       bookId = bookId,
       epubDivinaCompatible = epubDivinaCompatible,
+      epubIsKepub = epubIsKepub,
       createdDate = createdDate.toCurrentTimeZone(),
       lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     )

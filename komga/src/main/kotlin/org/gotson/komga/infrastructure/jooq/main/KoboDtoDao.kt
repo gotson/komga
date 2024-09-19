@@ -47,6 +47,7 @@ class KoboDtoDao(
         sd.LANGUAGE,
         b.FILE_SIZE,
         b.ONESHOT,
+        m.EPUB_IS_KEPUB,
         m.EXTENSION_CLASS,
         m.EXTENSION_VALUE_BLOB,
       ).from(b)
@@ -107,6 +108,7 @@ class KoboDtoDao(
             null,
         title = dr.title,
         workId = dr.bookId,
+        isKepub = mr.epubIsKepub,
       )
     }
   }
