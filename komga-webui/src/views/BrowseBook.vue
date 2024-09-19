@@ -409,7 +409,7 @@ import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import {groupAuthorsByRole} from '@/functions/authors'
-import {getBookFormatFromMediaType, getBookReadRouteFromMedia} from '@/functions/book-format'
+import {getBookFormatFromMedia, getBookReadRouteFromMedia} from '@/functions/book-format'
 import {getPagesLeft, getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
@@ -509,7 +509,7 @@ export default Vue.extend({
       return bookFileUrl(this.bookId)
     },
     format(): BookFormat {
-      return getBookFormatFromMediaType(this.book.media.mediaType)
+      return getBookFormatFromMedia(this.book.media)
     },
     authorsByRole(): any {
       return groupAuthorsByRole(this.book.metadata.authors)

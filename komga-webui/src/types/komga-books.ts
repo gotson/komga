@@ -30,6 +30,7 @@ export interface MediaDto {
   comment: string,
   mediaProfile: string,
   epubDivinaCompatible: boolean,
+  epubIsKepub: boolean,
 }
 
 export interface PageDto {

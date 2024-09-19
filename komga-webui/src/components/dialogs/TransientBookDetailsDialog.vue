@@ -69,7 +69,7 @@
 import Vue, {PropType} from 'vue'
 import {TransientBookDto} from '@/types/komga-transientbooks'
 import {BookDto, PageDto} from '@/types/komga-books'
-import {getBookFormatFromMediaType} from '@/functions/book-format'
+import {getBookFormatFromMedia} from '@/functions/book-format'
 import PagesTable from '@/components/PagesTable.vue'
 
 export default Vue.extend({
@@ -78,7 +78,7 @@ export default Vue.extend({
   data: () => {
     return {
       modal: false,
-      getBookFormatFromMediaType,
+      getBookFormatFromMediaType: getBookFormatFromMedia,
     }
   },
   props: {
