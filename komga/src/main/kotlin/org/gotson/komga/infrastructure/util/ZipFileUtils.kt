@@ -8,6 +8,7 @@ import java.nio.file.Path
 inline fun <R> ZipFile.Builder.use(block: (ZipFile) -> R) = this.get().use(block)
 
 fun ZipFile.getEntryInputStream(entryName: String): InputStream = this.getInputStream(this.getEntry(entryName))
+
 fun ZipFile.getEntryBytes(entryName: String): ByteArray = this.getInputStream(this.getEntry(entryName)).use { it.readBytes() }
 
 fun getZipEntryBytes(

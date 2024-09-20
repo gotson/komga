@@ -8,17 +8,21 @@ import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
+import org.gotson.komga.infrastructure.kobo.KepubConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.util.getEntryBytes
 import org.gotson.komga.infrastructure.util.getEntryInputStream
 import org.gotson.komga.infrastructure.util.getZipEntryBytes
 import org.jsoup.Jsoup
+import org.jsoup.parser.Parser
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.util.UriUtils
 import java.nio.file.Path
 import kotlin.io.path.Path
+import kotlin.io.path.deleteIfExists
 import kotlin.io.path.invariantSeparatorsPathString
+import kotlin.math.absoluteValue
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
@@ -28,6 +32,7 @@ private val logger = KotlinLogging.logger {}
 class EpubExtractor(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
+  private val kepubConverter: KepubConverter,
   @Value("#{@komgaProperties.epubDivinaLetterCountThreshold}") private val letterCountThreshold: Int,
 ) {
   /**
@@ -77,6 +82,7 @@ class EpubExtractor(
       val (resources, missingResources) = getResources(epub).partition { it.fileSize != null }
       val isFixedLayout = isFixedLayout(epub)
       val pageCount = computePageCount(epub)
+      val isKepub = isKepub(epub, resources)
       EpubManifest(
         resources = resources,
         missingResources = missingResources,
@@ -85,9 +91,9 @@ class EpubExtractor(
         pageList = getPageList(epub),
         pageCount = pageCount,
         isFixedLayout = isFixedLayout,
-        positions = computePositions(resources, isFixedLayout),
+        positions = computePositions(epub, path, resources, isFixedLayout, isKepub),
         divinaPages = getDivinaPages(epub, isFixedLayout, pageCount, analyzeDimensions),
-        isKepub = isKepub(epub, resources)
+        isKepub = isKepub,
       )
     }
 
@@ -177,14 +183,14 @@ class EpubExtractor(
 
   private fun isKepub(
     epub: EpubPackage,
-    resources: List<MediaFile>
+    resources: List<MediaFile>,
   ): Boolean {
     try {
       val readingOrder = resources.filter { it.subType == MediaFile.SubType.EPUB_PAGE }
 
       readingOrder.forEach { mediaFile ->
         val doc = epub.zip.getEntryInputStream(mediaFile.fileName).use { Jsoup.parse(it, null, "") }
-        if(!doc.getElementsByClass("koboSpan").isNullOrEmpty()) return true
+        if (!doc.getElementsByClass("koboSpan").isNullOrEmpty()) return true
       }
     } catch (e: Exception) {
       logger.warn(e) { "Error while checking if EPUB is KEPUB" }
@@ -206,39 +212,104 @@ class EpubExtractor(
       epub.opfDoc.selectFirst("metadata > *|meta[name=fixed-layout]")?.attr("content") == "true"
 
   private fun computePositions(
+    epub: EpubPackage,
+    path: Path,
     resources: List<MediaFile>,
     isFixedLayout: Boolean,
+    isKepub: Boolean,
   ): List<R2Locator> {
     val readingOrder = resources.filter { it.subType == MediaFile.SubType.EPUB_PAGE }
 
     var startPosition = 1
+
+    val koboPositions =
+      when {
+        isFixedLayout -> emptyMap()
+        isKepub -> computePositionsFromKoboSpan(readingOrder) { filename -> epub.zip.getEntryInputStream(filename).use { it.readBytes().decodeToString() } }
+        kepubConverter.isAvailable -> {
+          try {
+            val kepub =
+              kepubConverter.convertEpubToKepubWithoutChecks(path)
+                ?.also { it.toFile().deleteOnExit() }
+                // if the conversion failed, throw an exception that will be caught in the catch block
+                ?: throw IllegalStateException()
+            val positions = computePositionsFromKoboSpan(readingOrder) { filename -> getZipEntryBytes(kepub, filename).decodeToString() }
+            kepub.deleteIfExists()
+            positions
+          } catch (e: Exception) {
+            logger.warn { "Could not convert to Kepub to compute positions: $path" }
+            emptyMap()
+          }
+        }
+
+        else -> emptyMap()
+      }
+
     val positions =
       if (isFixedLayout) {
+        // for fixed-layout book we create 1 position per page
         readingOrder.map {
           R2Locator(
             href = it.fileName,
             type = it.mediaType ?: "application/octet-stream",
+            koboSpan = "kobo.1.1",
             locations = R2Locator.Location(progression = 0F, position = startPosition++),
           )
         }
       } else {
+        // this is the Readium algorithm
+        // we create 1 position every 1024 bytes
         readingOrder.flatMap { file ->
           val positionCount = maxOf(1, ceil((file.fileSize ?: 0) / 1024.0).roundToInt())
           (0 until positionCount).map { p ->
+            val progression = p.toFloat() / positionCount
+            val koboSpan =
+              if (positionCount == 1 || p == 0)
+                "kobo.1.1"
+              else
+                koboPositions[file.fileName]
+                  ?.minByOrNull { (progression - it.second).absoluteValue }
+                  ?.first
+
             R2Locator(
               href = file.fileName,
               type = file.mediaType ?: "application/octet-stream",
-              locations = R2Locator.Location(progression = p.toFloat() / positionCount, position = startPosition++),
+              locations = R2Locator.Location(progression = progression, position = startPosition++),
+              koboSpan = koboSpan,
             )
           }
         }
       }
 
+    // finally we compute the total progression for each position
     return positions.map { locator ->
       val totalProgression = locator.locations?.position?.let { it.toFloat() / positions.size }
       locator.copy(locations = locator.locations?.copy(totalProgression = totalProgression))
     }
   }
+
+  /**
+   * Builds the positions for a KEPUB book, based on koboSpan tags.
+   * @return a [Map] where the key is the resource name, and the value is a [List] of [Pair] containing the koboSpan ID and the progression as a Float between 0 and 1.
+   */
+  private fun computePositionsFromKoboSpan(
+    readingOrder: List<MediaFile>,
+    resourceSupplier: (String) -> String,
+  ): Map<String, List<Pair<String, Float>>> =
+    readingOrder.associate { file ->
+      val doc = Jsoup.parse(resourceSupplier(file.fileName), Parser.htmlParser().setTrackPosition(true))
+      file.fileName to
+        doc.select("span.koboSpan").mapNotNull { koboSpan ->
+          val id = koboSpan.id()
+          if (!id.isNullOrBlank()) {
+            // progression is built from the position in the file of each koboSpan, divided by the file size
+            val progression = koboSpan.sourceRange().endPos().toFloat() / file.fileSize!!.toFloat()
+            Pair(id, progression)
+          } else {
+            null
+          }
+        }
+    }
 
   private fun getToc(epub: EpubPackage): List<EpubTocEntry> {
     // Epub 3

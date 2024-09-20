@@ -93,7 +93,7 @@ class KoboDtoDao(
         workId = dr.bookId,
         isKepub = mr.epubIsKepub,
         isPrePaginated = mediaExtension?.isFixedLayout == true,
-        fileSize = br.fileSize
+        fileSize = br.fileSize,
       )
     }
   }

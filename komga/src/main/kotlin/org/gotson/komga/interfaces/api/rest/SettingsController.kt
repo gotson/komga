@@ -44,7 +44,7 @@ class SettingsController(
       SettingMultiSource(configServerContextPath, komgaSettingsProvider.serverContextPath, serverSettings.effectiveServletContextPath),
       komgaSettingsProvider.koboProxy,
       komgaSettingsProvider.koboPort,
-      SettingMultiSource(kepubConverter.kepubifyConfigurationPath, komgaSettingsProvider.kepubifyPath, kepubConverter.kepubifyPath?.toString())
+      SettingMultiSource(kepubConverter.kepubifyConfigurationPath, komgaSettingsProvider.kepubifyPath, kepubConverter.kepubifyPath?.toString()),
     )
 
   @PatchMapping

@@ -43,6 +43,10 @@ data class R2Locator(
    * Textual context of the locator.
    */
   val text: Text? = null,
+  /**
+   * Komga specific, used to have a mapping between a [R2Locator] and a koboSpan
+   */
+  val koboSpan: String? = null,
 ) {
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   data class Location(

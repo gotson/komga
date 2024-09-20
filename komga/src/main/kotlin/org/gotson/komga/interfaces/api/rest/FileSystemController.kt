@@ -33,17 +33,18 @@ class FileSystemController {
     } else {
       val path = fs.getPath(request.path)
       if (!path.isAbsolute) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Path must be absolute")
-      val directory = if(path.isDirectory()) path else path.parent
+      val directory = if (path.isDirectory()) path else path.parent
       try {
-        val (directories, files) = Files.list(directory).use { dirStream ->
-          dirStream.asSequence()
-            .apply { if(!request.showFiles) filter { Files.isDirectory(it) } }
-            .filter { !Files.isHidden(it) }
-            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.toString() })
-            .map { it.toDto() }
-            .toList()
-            .partition { it.type == "directory" }
-        }
+        val (directories, files) =
+          Files.list(directory).use { dirStream ->
+            dirStream.asSequence()
+              .apply { if (!request.showFiles) filter { Files.isDirectory(it) } }
+              .filter { !Files.isHidden(it) }
+              .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.toString() })
+              .map { it.toDto() }
+              .toList()
+              .partition { it.type == "directory" }
+          }
         DirectoryListingDto(
           parent = (path.parent ?: "").toString(),
           directories = directories,

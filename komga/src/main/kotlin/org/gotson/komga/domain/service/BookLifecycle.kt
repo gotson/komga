@@ -494,8 +494,14 @@ class BookLifecycle(
             newProgression.modified.toLocalDateTime().toCurrentTimeZone(),
             newProgression.device.id,
             newProgression.device.name,
-            // use the type we have instead of the one provided
-            newProgression.locator.copy(type = matchedPosition.type),
+            newProgression.locator.copy(
+              // use the type we have instead of the one provided
+              type = matchedPosition.type,
+              // if no koboSpan is provided, use the one we matched
+              koboSpan = newProgression.locator.koboSpan ?: matchedPosition.koboSpan,
+              // don't trust the provided total progression, the one from Kobo can be wrong
+              locations = newProgression.locator.locations?.copy(totalProgression = totalProgression),
+            ),
           )
         }
       }

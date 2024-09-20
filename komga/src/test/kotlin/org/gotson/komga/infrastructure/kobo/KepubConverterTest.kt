@@ -20,7 +20,9 @@ class KepubConverterTest(
   @Autowired private val kepubConverter: KepubConverter,
 ) {
   @BeforeAll
-  fun setup(@TempDir tmpDir: Path) {
+  fun setup(
+    @TempDir tmpDir: Path,
+  ) {
     tmpDir.resolve("kepubify").apply {
       createFile()
       toFile().setExecutable(true)
@@ -29,7 +31,9 @@ class KepubConverterTest(
   }
 
   @Test
-  fun `given kepub book when converting then IllegalArgument is thrown`(@TempDir dir: Path){
+  fun `given kepub book when converting then IllegalArgument is thrown`(
+    @TempDir dir: Path,
+  ) {
     // given
     val book = makeBook("book", url = dir.resolve("book.epub").toUri().toURL())
     val media = Media(mediaType = MediaType.EPUB.type, epubIsKepub = true)
@@ -42,7 +46,9 @@ class KepubConverterTest(
   }
 
   @Test
-  fun `given non-EPUB book when converting then IllegalArgument is thrown`(@TempDir dir: Path){
+  fun `given non-EPUB book when converting then IllegalArgument is thrown`(
+    @TempDir dir: Path,
+  ) {
     // given
     val book = makeBook("book", url = dir.resolve("book.epub").toUri().toURL())
     val media = Media(mediaType = MediaType.ZIP.type)
@@ -55,7 +61,9 @@ class KepubConverterTest(
   }
 
   @Test
-  fun `given non-existent file when converting then IllegalArgument is thrown`(@TempDir dir: Path){
+  fun `given non-existent file when converting then IllegalArgument is thrown`(
+    @TempDir dir: Path,
+  ) {
     // given
     val book = makeBook("book", url = dir.resolve("book.epub").toUri().toURL())
     val media = Media(mediaType = MediaType.EPUB.type)
@@ -68,7 +76,9 @@ class KepubConverterTest(
   }
 
   @Test
-  fun `given existing book file and dummy kepubify when converting then conversion fails`(@TempDir dir: Path){
+  fun `given existing book file and dummy kepubify when converting then conversion fails`(
+    @TempDir dir: Path,
+  ) {
     // given
     val source = Files.createTempFile(dir, "book", ".epub")
 

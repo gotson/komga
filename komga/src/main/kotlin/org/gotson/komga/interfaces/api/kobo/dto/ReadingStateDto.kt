@@ -36,7 +36,7 @@ fun ReadProgress.toDto() =
         lastModified = this.lastModifiedDate.toUTCZoned(),
         progressPercent = this.locator?.locations?.totalProgression?.times(100),
         contentSourceProgressPercent = this.locator?.locations?.progression?.times(100),
-        location = this.locator?.let { LocationDto(source = it.href) },
+        location = this.locator?.let { LocationDto(source = it.href, value = it.koboSpan) },
       ),
     statistics =
       StatisticsDto(

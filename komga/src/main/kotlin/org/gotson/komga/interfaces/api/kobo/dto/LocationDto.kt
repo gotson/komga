@@ -12,7 +12,7 @@ data class LocationDto(
   /**
    * Typically "KoboSpan"
    */
-  val type: String? = null,
+  val type: String? = "KoboSpan",
   /**
    * The epub HTML resource
    */

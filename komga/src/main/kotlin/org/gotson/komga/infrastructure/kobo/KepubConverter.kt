@@ -34,9 +34,12 @@ class KepubConverter(
 
   @PostConstruct
   private fun configureKepubifyOnStartup() {
-    if (!settingsProvider.kepubifyPath.isNullOrBlank()) configureKepubify(settingsProvider.kepubifyPath, true)
-    else if (!kepubifyConfigurationPath.isNullOrBlank()) configureKepubify(kepubifyConfigurationPath)
-    else logger.info { "Kepub conversion unavailable. kepubify path is not set" }
+    if (!settingsProvider.kepubifyPath.isNullOrBlank())
+      configureKepubify(settingsProvider.kepubifyPath, true)
+    else if (!kepubifyConfigurationPath.isNullOrBlank())
+      configureKepubify(kepubifyConfigurationPath)
+    else
+      logger.info { "Kepub conversion unavailable. kepubify path is not set" }
   }
 
   @EventListener(SettingChangedEvent.KepubifyPath::class)
@@ -49,7 +52,10 @@ class KepubConverter(
    * @param newValue path to kepubify
    * @param fallback whether to fallback to configuration properties in case [newValue] is invalid
    */
-  fun configureKepubify(newValue: String?, fallback: Boolean = false) {
+  fun configureKepubify(
+    newValue: String?,
+    fallback: Boolean = false,
+  ) {
     if (newValue.isNullOrBlank()) {
       isAvailable = false
       kepubifyPath = null
@@ -94,23 +100,42 @@ class KepubConverter(
    * @throws IllegalArgumentException if the source book is not an EPUB, or is already a KEPUB
    * @return the [Path] of the converted file in case of success, else null
    */
-  fun convertEpubToKepub(bookWithMedia: BookWithMedia, destinationDir: Path? = null): Path? {
-    check(isAvailable) { "Kepub conversion is not available, kepubify path may not be set, or may be invalid" }
+  fun convertEpubToKepub(
+    bookWithMedia: BookWithMedia,
+    destinationDir: Path? = null,
+  ): Path? {
     require(bookWithMedia.media.mediaType == MediaType.EPUB.type) { "Cannot convert, not an EPUB: ${bookWithMedia.book.path}" }
     require(!bookWithMedia.media.epubIsKepub) { "Cannot convert, EPUB is already a KEPUB: ${bookWithMedia.book.path}" }
     require(bookWithMedia.book.path.exists()) { "Source file does not exist: ${bookWithMedia.book.path}" }
-    if(destinationDir != null) require(destinationDir.isDirectory()) { "Destination directory does not exist: $destinationDir" }
+
+    return convertEpubToKepubWithoutChecks(bookWithMedia.book.path, destinationDir)
+  }
+
+  /**
+   * Converts an EPUB book to KEPUB. The destination filename will be built from the original file name.
+   * This function does not check whether the file is an EPUB, or is already a KEPUB, or if the source file exists.
+   *
+   * This is intended for internal use in the EpubExtractor
+   */
+  fun convertEpubToKepubWithoutChecks(
+    epub: Path,
+    destinationDir: Path? = null,
+  ): Path? {
+    check(isAvailable) { "Kepub conversion is not available, kepubify path may not be set, or may be invalid" }
+
+    if (destinationDir != null) require(destinationDir.isDirectory()) { "Destination directory does not exist: $destinationDir" }
 
     // kepubify will only convert when the destination name has the .kepub.epub extension, so we have to force it
-    val destinationPath = (destinationDir ?: tmpDir).resolve(bookWithMedia.book.path.nameWithoutExtension + ".kepub.epub")
+    val destinationPath = (destinationDir ?: tmpDir).resolve(epub.nameWithoutExtension + ".kepub.epub")
     destinationPath.deleteIfExists()
 
-    val command = arrayOf(
-      kepubifyPath.toString(),
-      bookWithMedia.book.path.toString(),
-      "-o",
-      destinationPath.toString(),
-    )
+    val command =
+      arrayOf(
+        kepubifyPath.toString(),
+        epub.toString(),
+        "-o",
+        destinationPath.toString(),
+      )
     logger.debug { "Starting conversion with: ${command.joinToString(" ")}" }
     val process = Runtime.getRuntime().exec(command)
     if (!process.waitFor(10, TimeUnit.SECONDS)) {
