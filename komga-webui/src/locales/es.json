@@ -634,6 +634,8 @@
     "empty_title": "No se encontraron páginas duplicadas",
     "filter": {
       "count": "Cantidad",
+      "date_added": "Fecha en que se añadió",
+      "date_modified": "Fecha de modificación",
       "delete_count": "Cantidad de borrados",
       "delete_size": "Espacio recuperado",
       "match_count": "Cantidad de coincidencias",
