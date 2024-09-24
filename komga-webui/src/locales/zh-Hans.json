@@ -247,7 +247,7 @@
     "pending_tasks": "无挂起任务 | 1个挂起任务 | {count} 个挂起任务",
     "publisher": "出版商",
     "read": "阅读",
-    "read_on": "于 {date} 阅读",
+    "read_on": "阅读于 {date}",
     "readlist": "阅读列表",
     "readlists": "阅读列表",
     "remember-me": "记住账号",
@@ -529,8 +529,8 @@
     },
     "edit_user_restrictions": {
       "age_restriction": {
-        "allow_under": "仅允许适合多少岁以下人士的漫画",
-        "exclude_over": "排除适合高于多少岁人士的漫画",
+        "allow_under": "仅限定年龄以下",
+        "exclude_over": "排除超过限定年龄",
         "none": "无限制"
       },
       "edit_restrictions_for": "编辑 {name} 的限制",
@@ -634,6 +634,8 @@
     "empty_title": "未找到重复页面",
     "filter": {
       "count": "数目",
+      "date_added": "添加日期",
+      "date_modified": "修改日期",
       "delete_count": "删除计数",
       "delete_size": "节省的空间",
       "match_count": "匹配数",
@@ -938,7 +940,7 @@
     "label_delete_empty_readlists": "扫描后删除空的阅读列表",
     "label_kobo_port": "Kobo 同步外部端口",
     "label_kobo_proxy": "代理 Kobo 同步请求至 Kobo 商店",
-    "label_rememberme_duration": "记住我的持续时间（天数）",
+    "label_rememberme_duration": "保持登录状态的时间（天数）",
     "label_server_context_path": "基本网址",
     "label_server_port": "服务器端口",
     "label_task_pool_size": "任务线程",
@@ -990,7 +992,7 @@
     "ADMIN": "管理员",
     "FILE_DOWNLOAD": "允许下载",
     "KOBO_SYNC": "Kobo 同步",
-    "PAGE_STREAMING": "页面流式传输",
+    "PAGE_STREAMING": "允许浏览",
     "USER": "用户"
   },
   "users": {
