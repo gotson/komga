@@ -19,6 +19,10 @@
   },
   "account_settings": {
     "account_settings": "Configurações de conta",
+    "api_key": {
+      "generate_api_key": "Gerar chave de API",
+      "no_keys": "Nenhuma chave de API criada ainda"
+    },
     "change_password": "alterar palavra-passe"
   },
   "announcements": {
@@ -27,6 +31,7 @@
     "tab_title": "Anúncios"
   },
   "authentication_activity": {
+    "api_key": "Chave de API",
     "datetime": "Data e Hora",
     "email": "E-mail",
     "error": "Erro",
@@ -203,6 +208,7 @@
     "choose_image": "Escolher uma imagem",
     "close": "Fechar",
     "collections": "Coleções",
+    "copied": "Copiado!",
     "create": "Criar",
     "delete": "Apagar",
     "dimension": "l: {width}, a:{height}",
@@ -287,6 +293,10 @@
     "tab_title": "Importação de Dados"
   },
   "dialog": {
+    "add_api_key": {
+      "dialog_title": "Gerar nova chave de API",
+      "field_comment": "Comentário"
+    },
     "add_to_collection": {
       "button_create": "Criar",
       "card_collection_subtitle": "Nenhuma série | 1 série | {count} série",
@@ -319,6 +329,9 @@
     "book_picker": {
       "filter": "Filtrar por número, título ou data de lançamento",
       "title": "Selecionar livro"
+    },
+    "delete_apikey": {
+      "button_confirm": "Apagar"
     },
     "delete_book": {
       "button_confirm": "Apagar",
@@ -598,6 +611,7 @@
     "deleted_count": "Apagado(s) {count} vez(es)",
     "filter": {
       "count": "Quantidade",
+      "date_added": "Data de adição",
       "delete_size": "Espaço poupado",
       "size": "Tamanho",
       "total_size": "Tamanho total"
@@ -605,6 +619,7 @@
     "info": "Apagar páginas duplicadas irá modificar os seus ficheiros. Faça backup dos seus ficheiros e use a exclusão manual antes de usar a exclusão automática.",
     "known": "Conhecido",
     "new": "Novo",
+    "title": "Páginas duplicadas",
     "unknown_size": "Tamanho desconhecido"
   },
   "duplicates": {
@@ -731,7 +746,9 @@
   },
   "history": {
     "header": {
-      "book": "Livro"
+      "book": "Livro",
+      "date": "Data",
+      "details": "Detalhes"
     }
   },
   "home": {
@@ -776,6 +793,10 @@
     "scan_library_files": "Varrer ficheiros na biblioteca",
     "select_all": "Selecionar todas"
   },
+  "metrics": {
+    "tasks_executed": "Tarefas executadas",
+    "title": "Métricas"
+  },
   "navigation": {
     "home": "Início",
     "libraries": "Bibliotecas",
@@ -789,6 +810,12 @@
   "read_more": {
     "less": "Ver menos",
     "more": "Ver mais"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Livro duplicado",
+      "error_choose_book": "Escolha um livro"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Gerir lista de leitura",
@@ -817,10 +844,15 @@
     "tab_title": "Servidor"
   },
   "server_settings": {
+    "dialog_regenerate_thumbnails": {
+      "btn_alternate": "Sim, todos os livros",
+      "btn_cancel": "Não"
+    },
     "server_settings": "Configurações do Servidor"
   },
   "settings_user": {
     "change_password": "Alterar palavra-passe",
+    "edit_restrictions": "Editar restrições",
     "edit_user": "Editar Utilizador",
     "latest_activity": "Última atividade: {date}",
     "no_recent_activity": "Nenhuma atividade recente",
@@ -860,6 +892,7 @@
     "USER": "Utilizador"
   },
   "users": {
+    "api_keys": "Chaves de API",
     "authentication_activity": "Atividade de Autenticação",
     "users": "Utilizadores"
   },
