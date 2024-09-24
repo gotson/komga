@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "Kontoeinstellungen",
+    "api_key": {
+      "created_date": "Erstellungsdatum: {date}",
+      "force_kobo_sync": "Erzwinge Kobo Sync",
+      "generate_api_key": "Erzeuge API Schlüssel",
+      "no_keys": "Bisher keine API Schlüssel vorhanden"
+    },
     "change_password": "Passwort ändern"
   },
   "announcements": {
@@ -27,6 +33,7 @@
     "tab_title": "Ankündigungen"
   },
   "authentication_activity": {
+    "api_key": "API Schlüssel",
     "datetime": "Datum/Uhrzeit",
     "email": "E-Mail",
     "error": "Fehler",
@@ -203,6 +210,7 @@
     "choose_image": "Wähle ein Bild aus",
     "close": "Schließen",
     "collections": "Sammlungen",
+    "copied": "Kopiert!",
     "create": "Erstellen",
     "delete": "Löschen",
     "dimension": "b:{width}, h:{height}",
@@ -220,6 +228,7 @@
     "go_to_library": "Gehe zu Bibliothek",
     "go_to_readlist": "Zur Leseliste gehen",
     "go_to_series": "Zu Serien gehen",
+    "i_understand": "Ich akzeptiere",
     "library": "Bibliothek",
     "locale_name": "Deutsch",
     "locale_rtl": "false",
@@ -287,6 +296,14 @@
     "tab_title": "Datenübernahme"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Erzeuge",
+      "context": "Der API Schlüssel kann für die Authentifizierung durch das Kobo Sync Protokol verwendet werden.",
+      "dialog_title": "Erzeuge neuen API Schlüssel",
+      "field_comment": "Hinweise",
+      "field_comment_hint": "Wofür ist dieser API Schlüssel nutzbar?",
+      "info_copy": "Kopiere jetzt den API Schlüssel und bewahre ihn gut auf. Er wird kein zweites Mal angezeigt!"
+    },
     "add_to_collection": {
       "button_create": "Erstellen",
       "card_collection_subtitle": "Keine Serie | 1 Serie | {count} Serien",
@@ -319,6 +336,12 @@
     "book_picker": {
       "filter": "Filter nach Buchnummer, Titel oder Erscheinungsdatum",
       "title": "Buch auswählen"
+    },
+    "delete_apikey": {
+      "button_confirm": "Löschen",
+      "confirm_delete": "Ich akzeptiere, dass der API Schlüssel \"{name}\" gelöscht wird",
+      "dialog_title": "Lösche API Schlüssel",
+      "warning_html": "Alle Applikationen oder Skripte, welche den API Schlüssel nutzen, werden nicht mehr in der Lage sein mit diesem Schlüssel die Komga API aufzurufen. Dieser Schritt ist nicht mehr rückgängig zu machen."
     },
     "delete_book": {
       "button_confirm": "Löschen",
@@ -538,6 +561,10 @@
       },
       "title": "Zieldateiname"
     },
+    "force_kobo_sync": {
+      "dialog_title": "Erzwinge Kobo Sync",
+      "warning_html": "Dies löscht die komplette Sync Historie für diesen API Schlüssel. Dein Kobo wird einen vollständigen Sync beim nächsten Mal durchführen."
+    },
     "password_change": {
       "button_cancel": "Abbrechen",
       "button_confirm": "Passwort ändern",
@@ -607,6 +634,8 @@
     "empty_title": "Keine doppelten Seiten gefunden",
     "filter": {
       "count": "Anzahl",
+      "date_added": "Hinzugefügt am",
+      "date_modified": "Verändert am",
       "delete_count": "Anzahl der Löschungen",
       "delete_size": "Speicherersparnis",
       "match_count": "Match Anzahl",
@@ -761,7 +790,8 @@
     "ERR_1030": "ComicRack CBL hat kein Name Element",
     "ERR_1031": "ComicRack CBL für das Buch fehlt die Serie oder Nummer",
     "ERR_1032": "EPUB-Datei hat falschen Medientyp",
-    "ERR_1033": "Es fehlen einige Eingaben"
+    "ERR_1033": "Es fehlen einige Eingaben",
+    "ERR_1034": "Ein API Schlüssel mit diesem Hinweis existiert bereits"
   },
   "filter": {
     "age_rating": "Altersfreigabe",
@@ -905,8 +935,11 @@
       "btn_confirm": "Ja, aber nur wenn diese größer sind als",
       "title": "Vorschaubilder neu generieren"
     },
+    "hint_kobo_port": "Nur zu setzen wenn es Sync Probleme mit Covers und Downloads gibt",
     "label_delete_empty_collections": "Lösche leere Kollectionen nach der Prüfung (Scan)",
     "label_delete_empty_readlists": "Lösche leere Leselisten nach der Überprüfung (Scan)",
+    "label_kobo_port": "Kobo Sync externer Port",
+    "label_kobo_proxy": "Proxy Kobo Sync Anfrage für den Kobo Store",
     "label_rememberme_duration": "Laufzeit der Erinnere dich an mich Funktion (in Tagen)",
     "label_server_context_path": "Basis URL",
     "label_server_port": "Server Port",
@@ -958,10 +991,12 @@
   "user_roles": {
     "ADMIN": "Systemverwalter",
     "FILE_DOWNLOAD": "Datei-Herunterladen",
+    "KOBO_SYNC": "Kobo Sync",
     "PAGE_STREAMING": "Online lesen",
     "USER": "Benutzer"
   },
   "users": {
+    "api_keys": "API Schlüssel",
     "authentication_activity": "Authentifizierungsaktivität",
     "users": "Benutzer"
   },
