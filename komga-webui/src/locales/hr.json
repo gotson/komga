@@ -512,7 +512,7 @@
       "field_tags": "Oznake",
       "field_title": "Naslov",
       "field_total_book_count": "Ukupni broj knjiga",
-      "field_total_book_count_error": "Ukupni broj knjiga mora biti 1 ili veći",
+      "field_total_book_count_error": "Ukupni broj knjiga mora biti 1 ili više",
       "mixed": "MJEŠOVITO",
       "tab_general": "Općenito",
       "tab_poster": "Poster",
@@ -634,6 +634,8 @@
     "empty_title": "Duple stranice nisu pronađene",
     "filter": {
       "count": "Broj",
+      "date_added": "Datum dodavanja",
+      "date_modified": "Datum promjene",
       "delete_count": "Broj brisanja",
       "delete_size": "Ušteđena memorija",
       "match_count": "Broj podudaranja",
@@ -933,8 +935,10 @@
       "btn_confirm": "Da, ali samo ako su veće",
       "title": "Nanovo generiraj minijature"
     },
+    "hint_kobo_port": "Postavi samo u slučaju problema sa sinkronizacijom omota i preuzimanja",
     "label_delete_empty_collections": "Izbriši prazne zbirke nakon pretraživanja",
     "label_delete_empty_readlists": "Izbriši prazne liste čitanja nakon pretraživanja",
+    "label_kobo_port": "Eksterni priključak Kobo sinkronizacije",
     "label_kobo_proxy": "Zahtjevi servera Kobo sinkronizacije za Kobo trgovinu",
     "label_rememberme_duration": "„Zapamti me” trajanje (u danima)",
     "label_server_context_path": "Osnovni URL",
