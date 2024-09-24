@@ -634,6 +634,8 @@
     "empty_title": "Sivujen kaksoiskappaleita ei löytynyt",
     "filter": {
       "count": "Määrä",
+      "date_added": "Lisäyspäivämäärä",
+      "date_modified": "Muokkauspäivämäärä",
       "delete_count": "Poistojen määrä",
       "delete_size": "Tilaa säästetty",
       "match_count": "Osumien määrä",
