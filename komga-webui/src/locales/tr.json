@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "Hesap Ayarları",
+    "api_key": {
+      "created_date": "Oluşturulma tarihi: {date}",
+      "force_kobo_sync": "Kobo ile eşleşmeye zorla",
+      "generate_api_key": "API anahtarı oluştur",
+      "no_keys": "Henüz API anahtarı oluşturulmamış"
+    },
     "change_password": "Şifreni Değiştir"
   },
   "announcements": {
@@ -27,8 +33,9 @@
     "tab_title": "Duyurular"
   },
   "authentication_activity": {
+    "api_key": "API Anahtarı",
     "datetime": "Tarih ve Saat",
-    "email": "Email",
+    "email": "e-Posta",
     "error": "Hata",
     "ip": "IP Adresi",
     "source": "Kaynak",
@@ -90,7 +97,7 @@
     "cycling_side_padding": "Çevrim Yan Dolgusu",
     "download_current_page": "Sayfayı indir",
     "end_of_book": "Kitabın sonuna ulaştınız.",
-    "from_series_metadata": "seri meta verilerinden",
+    "from_series_metadata": "seri üstverisinden",
     "move_next": "Bir sonraki kitaba geçmek için tıklayın veya \"İleri\" düğmesine basın.",
     "move_next_exit": "Okuyucudan çıkmak için tıklayın veya \"İleri \"ye basın.",
     "move_previous": "Bir önceki kitaba geçmek için tıklayın veya \"Önceki\" tuşuna basın.",
@@ -203,6 +210,7 @@
     "choose_image": "Bir resim seç",
     "close": "Kapat",
     "collections": "Koleksiyonlar",
+    "copied": "Kopyalandı!",
     "create": "Oluştur",
     "delete": "Sil",
     "dimension": "e: {width}, b: {height}",
@@ -211,7 +219,7 @@
     "dismiss": "Çöpe at",
     "download": "İndir",
     "drag_drop": "sürükle bırak",
-    "email": "E-Mail",
+    "email": "e-Posta",
     "epub": "ePub",
     "filename": "Dosya Adı",
     "filter_no_matches": "Etkin filtre için eşleşme yok",
@@ -220,6 +228,7 @@
     "go_to_library": "Kitaplığa git",
     "go_to_readlist": "Okuma listesine git",
     "go_to_series": "Seriye git",
+    "i_understand": "Anladım",
     "library": "Kütüphane",
     "locale_name": "Türkçe",
     "locale_rtl": "hayır",
@@ -287,6 +296,14 @@
     "tab_title": "İçeri Aktar"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Oluştur",
+      "context": "API Anahtarları Kobo Sync protokolüyle kimlik doğrulamak için kullanılabilir.",
+      "dialog_title": "Yeni API anahtarı oluştur",
+      "field_comment": "Yorum",
+      "field_comment_hint": "Bu API anahtarı ne için kullanılıyor ?",
+      "info_copy": "API anahtarınızı kopyaladığınızdan emin olun. Daha sonradan API anahtarını göremeyeceksiniz !"
+    },
     "add_to_collection": {
       "button_create": "Oluştur",
       "card_collection_subtitle": "Seri yok | 1 seri | {count} seri",
@@ -319,6 +336,12 @@
     "book_picker": {
       "filter": "Kitap numarasına, başlığa veya çıkış tarihine göre filtreleme",
       "title": "Kitap Seç"
+    },
+    "delete_apikey": {
+      "button_confirm": "Sil",
+      "confirm_delete": "Anladım, \"{name}\" API anahtarını sil",
+      "dialog_title": "API anahtarını sil",
+      "warning_html": "Bu API anahtarını kullanan uygulamalar Komga API'a erişimi kaybedecek. Bunu işlemi geri alamazsınız."
     },
     "delete_book": {
       "button_confirm": "Sil",
@@ -538,6 +561,10 @@
       },
       "title": "Hedef Dosya Adı"
     },
+    "force_kobo_sync": {
+      "dialog_title": "Kobo ile eşleşmeye zorla",
+      "warning_html": "Bu işlem bu API anahtarı ile bağlantılı bütün eşleşme geçmişini temizleyecek. Kobo'nuz bir sonraki eşleşmede her şeyi tekrardan eşleştirecek."
+    },
     "password_change": {
       "button_cancel": "İptal",
       "button_confirm": "Şifre değiştir",
@@ -607,6 +634,8 @@
     "empty_title": "Eş sayfa bulunamadı",
     "filter": {
       "count": "Sayı",
+      "date_added": "Eklenme tarihi",
+      "date_modified": "Değiştirilme tarihi",
       "delete_count": "Silme sayısı",
       "delete_size": "Kazanılan alan",
       "match_count": "Eşleşme sayısı",
@@ -752,16 +781,17 @@
     "ERR_1021": "Hedef dosya zaten mevcut",
     "ERR_1022": "Az önce içe aktarılmış kitap taranamadı",
     "ERR_1023": "Kitap zaten okuma listesinde mevcut",
-    "ERR_1024": "OAuth2 giriş hatası: email öğesi eksik",
-    "ERR_1025": "OAuth2 giriş hatası: bu email ile bir kullanıcı mevcut değil",
-    "ERR_1026": "OpenID Connect giriş hatası: email doğrulanmadı",
+    "ERR_1024": "OAuth2 giriş hatası: e-posta öğesi eksik",
+    "ERR_1025": "OAuth2 giriş hatası: bu e-posta ile bir kullanıcı mevcut değil",
+    "ERR_1026": "OpenID Connect giriş hatası: e-posta doğrulanmadı",
     "ERR_1027": "OpenID Connect giriş hatası: email_verified öğesi mevcut değil",
-    "ERR_1028": "OpenID Connect giriş hatası: email öğesi mevcut değil",
+    "ERR_1028": "OpenID Connect giriş hatası: e-posta öğesi mevcut değil",
     "ERR_1029": "ComicRack CBL Kitap öğresi içermiyor",
     "ERR_1030": "ComicRack CBL İsim öğesi içermiyor",
     "ERR_1031": "ComicRack CBL kitabında seri veya numara eksik",
     "ERR_1032": "EPUB dosyası hatalı medya tipinde",
-    "ERR_1033": "Bazı öğeler eksik"
+    "ERR_1033": "Bazı öğeler eksik",
+    "ERR_1034": "Bu yorum ile bir API anahtarı zaten mevcut"
   },
   "filter": {
     "age_rating": "yaş sınırı",
@@ -807,7 +837,7 @@
   "login": {
     "create_user_account": "Kullanıcı hesabı oluştur",
     "login": "Giriş yap",
-    "unclaimed_html": "Bu Komga sunucusu henüz aktif değil, ulaşmak için bir kullanıcı hesabı oluşturmalısınız.<br><br><strong>Email</strong> ve güçlü bir <strong>şifre</strong> seçin, sonrasında <strong>Kullanıcı hesabı oluştur</strong> butonuna tıklayın."
+    "unclaimed_html": "Bu Komga sunucusu henüz aktif değil, ulaşmak için bir kullanıcı hesabı oluşturmalısınız.<br><br><strong>e-Posta</strong> ve güçlü bir <strong>şifre</strong> seçin, sonrasında <strong>Kullanıcı hesabı oluştur</strong> butonuna tıklayın."
   },
   "media_analysis": {
     "comment": "Yorum",
@@ -842,7 +872,7 @@
   },
   "metrics": {
     "library_books": "Kütüphane başına kitap",
-    "library_disk_space": "Kütüphanenin diskte kapladığı alan",
+    "library_disk_space": "Kütüphanelerin diskte kapladığı alan",
     "library_series": "Kütüphane başına seri",
     "library_sidecars": "Kütüphane başına ek bilgi",
     "tasks_executed": "Çalıştırılan görevler",
@@ -905,8 +935,11 @@
       "btn_confirm": "Evet, ama sadece daha büyükse",
       "title": "Önizlemeleri tekrar oluştur"
     },
+    "hint_kobo_port": "Sadece kapak ve indirmelerde eşleşme hatası oluşuyorsa işaretleyin",
     "label_delete_empty_collections": "Boş koleksiyonları taramadan sonra sil",
     "label_delete_empty_readlists": "Boş okuma listelerini taramadan sonra sil",
+    "label_kobo_port": "Kobo Sync portu",
+    "label_kobo_proxy": "Kobo Sync isteklerini Kobo Store'a yönlendir",
     "label_rememberme_duration": "Beni hatırla süresi (gün)",
     "label_server_context_path": "Esas URL",
     "label_server_port": "Sunucu Portu",
@@ -958,10 +991,12 @@
   "user_roles": {
     "ADMIN": "Yönetici",
     "FILE_DOWNLOAD": "Dosya indirme",
-    "PAGE_STREAMING": "Sayfaları yayınla",
+    "KOBO_SYNC": "Kobo Sync",
+    "PAGE_STREAMING": "Sayfa yayınlama",
     "USER": "Kullanıcı"
   },
   "users": {
+    "api_keys": "API Anahtarları",
     "authentication_activity": "Doğrulama Aktivitesi",
     "users": "Kullanıcılar"
   },
