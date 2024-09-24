@@ -562,6 +562,7 @@
       "title": "Nom du fichier de destination"
     },
     "force_kobo_sync": {
+      "dialog_title": "Forcer la synchronisation Kobo",
       "warning_html": "Ceci supprimera l'historique de synchronisation pour cette clé API. Votre Kobo tout synchronisera au moment de la prochaine synchronisation."
     },
     "password_change": {
@@ -633,6 +634,8 @@
     "empty_title": "Aucune page dupliquée trouvée",
     "filter": {
       "count": "Nombre",
+      "date_added": "Date ajoutée",
+      "date_modified": "Date modifiée",
       "delete_count": "Compteur de suppression",
       "delete_size": "Espace économisé",
       "match_count": "Nombre de concordances",
@@ -734,8 +737,10 @@
       "column_count": "Nombre de colonnes",
       "layout": "Disposition",
       "layout_paginated": "Paginé",
+      "layout_scroll": "Faire défiler",
       "navigation_mode": "Mode de navigation",
       "navigation_options": {
+        "both": "Les deux",
         "buttons": "Boutons",
         "click": "Cliquer / Appuyer"
       },
@@ -743,11 +748,14 @@
       "viewing_theme": "Thème d'affichage"
     },
     "shortcuts": {
+      "cycle_pagination": "Changer le nombre de colonnes",
+      "cycle_viewing_theme": "Changer le thème de visionnage",
       "font_size_decrease": "Réduire la taille du texte",
       "font_size_increase": "Augmenter la taille du texte",
       "menus": "Menus",
       "next": "Prochain",
       "previous": "Retour",
+      "reader_navigation": "Navigation du lecteur",
       "scroll": "Changer la disposition pour le mode déroulement",
       "settings": "Paramètres",
       "show_hide_toc": "Afficher/cacher la table des matières"
@@ -781,7 +789,9 @@
     "ERR_1029": "Le fichier ComicRack CBL ne contient aucun livre",
     "ERR_1030": "La liste de livres ComicRack n'a pas de nom",
     "ERR_1031": "il manque la série oule numéro à ComicRack CBL Book",
-    "ERR_1032": "Le fichier EPUB a un type de fichier erroné"
+    "ERR_1032": "Le fichier EPUB a un type de fichier erroné",
+    "ERR_1033": "Entrées manquantes",
+    "ERR_1034": "Une clé API avec ce commentaire existe déjà"
   },
   "filter": {
     "age_rating": "Âge minimal",
