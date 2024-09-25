@@ -83,6 +83,8 @@ class ThumbnailBookDao(
       .and(tb.HEIGHT.lt(size))
       .fetch(tb.BOOK_ID)
 
+  override fun existsById(thumbnailId: String): Boolean = dsl.fetchExists(tb, tb.ID.eq(thumbnailId))
+
   override fun insert(thumbnail: ThumbnailBook) {
     dsl.insertInto(tb)
       .set(tb.ID, thumbnail.id)

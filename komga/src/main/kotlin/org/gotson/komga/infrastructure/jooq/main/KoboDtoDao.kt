@@ -23,6 +23,7 @@ class KoboDtoDao(
   private val d = Tables.BOOK_METADATA
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val sd = Tables.SERIES_METADATA
+  private val bt = Tables.THUMBNAIL_BOOK
 
   override fun findBookMetadataByIds(
     bookIds: Collection<String>,
@@ -46,10 +47,12 @@ class KoboDtoDao(
         m.EPUB_IS_KEPUB,
         m.EXTENSION_CLASS,
         m.EXTENSION_VALUE_BLOB,
+        bt.ID,
       ).from(b)
         .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
         .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
         .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+        .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)).and(bt.SELECTED.isTrue)
         .where(d.BOOK_ID.`in`(bookIds))
         .fetch()
 
@@ -58,6 +61,7 @@ class KoboDtoDao(
       val dr = rec.into(d)
       val sr = rec.into(sd)
       val mr = rec.into(m)
+      val btr = rec.into(bt)
       val mediaExtension = mapper.deserializeMediaExtension(mr.extensionClass, mr.extensionValueBlob) as? MediaExtensionEpub
 
       val authors =
@@ -69,7 +73,7 @@ class KoboDtoDao(
       KoboBookMetadataDto(
         contributorRoles = authors[dr.bookId].orEmpty().map { ContributorDto(it.name) },
         contributors = authors[dr.bookId].orEmpty().map { it.name },
-        coverImageId = dr.bookId,
+        coverImageId = btr.id,
         crossRevisionId = dr.bookId,
         // if null or empty Kobo will not update it, force it to blank
         description = dr.summary.ifEmpty { " " },

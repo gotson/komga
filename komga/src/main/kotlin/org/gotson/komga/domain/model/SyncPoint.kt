@@ -17,6 +17,7 @@ data class SyncPoint(
     val fileSize: Long,
     val fileHash: String,
     val metadataLastModifiedDate: ZonedDateTime,
+    val thumbnailId: String?,
     val synced: Boolean,
   )
 

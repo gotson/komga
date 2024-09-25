@@ -234,9 +234,11 @@ class BookLifecycle(
     }
   }
 
-  fun getThumbnailBytesByThumbnailId(thumbnailId: String): ByteArray? =
-    thumbnailBookRepository.findByIdOrNull(thumbnailId)?.let {
-      getBytesFromThumbnailBook(it)
+  fun getThumbnailBytesByThumbnailId(thumbnailId: String): TypedBytes? =
+    thumbnailBookRepository.findByIdOrNull(thumbnailId)?.let { thumbnail ->
+      getBytesFromThumbnailBook(thumbnail)?.let { bytes ->
+        TypedBytes(bytes, thumbnail.mediaType)
+      }
     }
 
   private fun getBytesFromThumbnailBook(thumbnail: ThumbnailBook): ByteArray? =

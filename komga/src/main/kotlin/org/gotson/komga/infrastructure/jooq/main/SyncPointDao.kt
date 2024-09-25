@@ -32,6 +32,7 @@ class SyncPointDao(
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
+  private val bt = Tables.THUMBNAIL_BOOK
   private val r = Tables.READ_PROGRESS
   private val sd = Tables.SERIES_METADATA
   private val sp = Tables.SYNC_POINT
@@ -76,6 +77,7 @@ class SyncPointDao(
       spb.BOOK_FILE_HASH,
       spb.BOOK_METADATA_LAST_MODIFIED_DATE,
       spb.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE,
+      spb.BOOK_THUMBNAIL_ID,
     ).select(
       dsl.select(
         DSL.`val`(syncPointId),
@@ -87,11 +89,13 @@ class SyncPointDao(
         b.FILE_HASH,
         d.LAST_MODIFIED_DATE,
         r.LAST_MODIFIED_DATE,
+        bt.ID,
       ).from(b)
         .join(m).on(b.ID.eq(m.BOOK_ID))
         .join(d).on(b.ID.eq(d.BOOK_ID))
         .join(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
         .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(user.id))
+        .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)).and(bt.SELECTED.isTrue)
         .where(conditions),
     ).execute()
 
@@ -236,7 +240,8 @@ class SyncPointDao(
           spb.BOOK_FILE_LAST_MODIFIED.ne(spbFrom.BOOK_FILE_LAST_MODIFIED)
             .or(spb.BOOK_FILE_SIZE.ne(spbFrom.BOOK_FILE_SIZE))
             .or(spb.BOOK_FILE_HASH.ne(spbFrom.BOOK_FILE_HASH).and(spbFrom.BOOK_FILE_HASH.isNotNull))
-            .or(spb.BOOK_METADATA_LAST_MODIFIED_DATE.ne(spbFrom.BOOK_METADATA_LAST_MODIFIED_DATE)),
+            .or(spb.BOOK_METADATA_LAST_MODIFIED_DATE.ne(spbFrom.BOOK_METADATA_LAST_MODIFIED_DATE))
+            .or(spb.BOOK_THUMBNAIL_ID.ne(spbFrom.BOOK_THUMBNAIL_ID)),
         )
 
     return queryToPageBook(query, pageable)
@@ -266,6 +271,7 @@ class SyncPointDao(
             .and(spb.BOOK_FILE_SIZE.eq(spbFrom.BOOK_FILE_SIZE))
             .and(spb.BOOK_FILE_HASH.eq(spbFrom.BOOK_FILE_HASH).or(spbFrom.BOOK_FILE_HASH.isNull))
             .and(spb.BOOK_METADATA_LAST_MODIFIED_DATE.eq(spbFrom.BOOK_METADATA_LAST_MODIFIED_DATE))
+            .and(spb.BOOK_THUMBNAIL_ID.eq(spbFrom.BOOK_THUMBNAIL_ID))
             // with changed read progress
             .and(
               spb.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE.ne(spbFrom.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE)
@@ -477,6 +483,7 @@ class SyncPointDao(
             fileSize = it.bookFileSize,
             fileHash = it.bookFileHash,
             metadataLastModifiedDate = it.bookMetadataLastModifiedDate.atZone(ZoneId.of("Z")),
+            thumbnailId = it.bookThumbnailId,
             synced = it.synced,
           )
         }

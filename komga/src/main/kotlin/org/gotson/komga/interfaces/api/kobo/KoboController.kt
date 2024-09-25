@@ -22,6 +22,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SyncPointRepository
+import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.SyncPointLifecycle
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
@@ -169,6 +170,7 @@ class KoboController(
   private val commonBookController: CommonBookController,
   private val bookLifecycle: BookLifecycle,
   private val bookRepository: BookRepository,
+  private val thumbnailBookRepository: ThumbnailBookRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val imageConverter: ImageConverter,
   private val mediaRepository: MediaRepository,
@@ -670,26 +672,26 @@ class KoboController(
 
   @GetMapping(
     value = [
-      "v1/books/{bookId}/thumbnail/{width}/{height}/{isGreyScale}/image.jpg",
-      "v1/books/{bookId}/thumbnail/{width}/{height}/{quality}/{isGreyScale}/image.jpg",
+      "v1/books/{thumbnailId}/thumbnail/{width}/{height}/{isGreyScale}/image.jpg",
+      "v1/books/{thumbnailId}/thumbnail/{width}/{height}/{quality}/{isGreyScale}/image.jpg",
     ],
     produces = [MediaType.IMAGE_JPEG_VALUE],
   )
   fun getBookCover(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @PathVariable bookId: String,
+    @PathVariable thumbnailId: String,
     @PathVariable width: String?,
     @PathVariable height: String?,
     @PathVariable quality: String?,
     @PathVariable isGreyScale: String?,
   ): ResponseEntity<Any> =
-    if (!bookRepository.existsById(bookId) && koboProxy.isEnabled()) {
+    if (!thumbnailBookRepository.existsById(thumbnailId) && koboProxy.isEnabled()) {
       ResponseEntity
         .status(HttpStatus.TEMPORARY_REDIRECT)
-        .location(UriComponentsBuilder.fromHttpUrl(koboProxy.imageHostUrl).buildAndExpand(bookId, width, height).toUri())
+        .location(UriComponentsBuilder.fromHttpUrl(koboProxy.imageHostUrl).buildAndExpand(thumbnailId, width, height).toUri())
         .build()
     } else {
-      val poster = bookLifecycle.getThumbnailBytes(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      val poster = bookLifecycle.getThumbnailBytesByThumbnailId(thumbnailId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
       val posterBytes =
         if (poster.mediaType != ImageType.JPEG.mediaType)
           imageConverter.convertImage(poster.bytes, ImageType.JPEG.imageIOFormat)

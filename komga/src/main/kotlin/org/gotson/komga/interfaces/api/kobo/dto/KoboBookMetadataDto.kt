@@ -14,7 +14,7 @@ data class KoboBookMetadataDto(
   val categories: List<String> = listOf(DUMMY_ID),
   val contributorRoles: List<ContributorDto> = emptyList(),
   val contributors: List<String> = emptyList(),
-  val coverImageId: String,
+  val coverImageId: String? = null,
   val crossRevisionId: String,
   val currentDisplayPrice: AmountDto = AmountDto("USD", 0),
   val currentLoveDisplayPrice: AmountDto = AmountDto(totalAmount = 0),
