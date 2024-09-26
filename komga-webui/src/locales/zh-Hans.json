@@ -938,6 +938,7 @@
     "hint_kobo_port": "仅在封面和下载同步出现问题时设置",
     "label_delete_empty_collections": "扫描后删除空的收藏",
     "label_delete_empty_readlists": "扫描后删除空的阅读列表",
+    "label_kepubify_path": "kepubify 的路径",
     "label_kobo_port": "Kobo 同步外部端口",
     "label_kobo_proxy": "代理 Kobo 同步请求至 Kobo 商店",
     "label_rememberme_duration": "保持登录状态的时间（天数）",
