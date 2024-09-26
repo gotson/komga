@@ -938,6 +938,7 @@
     "hint_kobo_port": "Establecer solo en caso de problemas de sincronización con carátulas y descargas",
     "label_delete_empty_collections": "Eliminar las colecciones vacías después de escanear",
     "label_delete_empty_readlists": "Eliminar las listas de lectura vacías después de escanear",
+    "label_kepubify_path": "Ruta a kepubify",
     "label_kobo_port": "Puerto externo Kobo Sync",
     "label_kobo_proxy": "Hacer proxy a las solicitudes Kobo Sync hacia Kobo Store",
     "label_rememberme_duration": "Duración de «recordarme» (en días)",
