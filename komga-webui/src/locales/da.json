@@ -4,11 +4,11 @@
       "pageText": "{0}-{1} af {2}"
     },
     "dataIterator": {
-      "loadingText": "Indlæser...",
+      "loadingText": "Indlæser emner...",
       "noResultsText": "Ingen passende resultater fundet"
     },
     "dataTable": {
-      "itemsPerPageText": "Rækker per side:",
+      "itemsPerPageText": "Rækker pr. side:",
       "sortBy": "Sortér efter"
     },
     "fileInput": {
@@ -18,25 +18,37 @@
     "noDataText": "Ingen data tilgængelig"
   },
   "account_settings": {
-    "account_settings": "Konto Indstillinger",
+    "account_settings": "Kontoindstillinger",
+    "api_key": {
+      "created_date": "Oprettelsesdato: {date}",
+      "force_kobo_sync": "Gennemtving Kobo-synkronisering",
+      "generate_api_key": "Generér API-nøgle",
+      "no_keys": "Ingen API-nøgler er oprettet endnu"
+    },
     "change_password": "skift adgangskode"
   },
+  "announcements": {
+    "mark_all_read": "Marker alle som læst",
+    "mark_read": "Marker som læst",
+    "tab_title": "Meddelelser"
+  },
   "authentication_activity": {
-    "datetime": "Dato",
-    "email": "Email",
+    "api_key": "API-nøgle",
+    "datetime": "Dato og tid",
+    "email": "E-mail",
     "error": "Fejl",
     "ip": "IP",
     "source": "Kilde",
     "success": "Succes",
-    "user_agent": "Bruger Agent"
+    "user_agent": "Brugeragent"
   },
   "author_roles": {
     "colorist": "farvelæggere",
-    "cover": "forside",
+    "cover": "omslag",
     "editor": "redaktører",
-    "inker": "formvalser",
-    "letterer": "skribent",
-    "penciller": "tegner",
+    "inker": "rentegnere",
+    "letterer": "skribenter",
+    "penciller": "tegnere",
     "translator": "oversættere",
     "writer": "forfattere"
   },
@@ -51,49 +63,53 @@
     "button_browse": "Gennemse",
     "button_import": "Importér",
     "button_scan": "Skan",
-    "button_select_series": "Vælg Serier",
+    "button_select_series": "Vælg serie",
     "field_import_path": "Importér fra mappe",
-    "info_part1": "Denne side lader dig importére filer, der er uden for dine eksisterende biblioteker. Du kan kun importére filer ind i eksisterende Serier, i hvilket tilfælde Komga vil flytte eller kopiere filerne ind i mappen af den valgte Serie.",
-    "info_part2": "Hvis du vælger et tal for en bog, og en bog allerede eksistere med det nummer, så får du mulighed for at sammenligne de 2 bøger. Hvis du vælger at importére bogen, Komga vil opgradere den eksisterende bog med den nye, hvor den udskifter den gamle fil med den nye.",
+    "info_part1": "Denne side lader dig importere filer, der ligger uden for dine eksisterende biblioteker. Du kan kun importere filer til eksisterende serier, hvor Komga enten flytter eller kopierer filerne til mappen for den valgte serie.",
+    "info_part2": "Hvis du vælger et nummer til en bog, og der allerede findes en bog med det nummer, vil du kunne sammenligne de 2 bøger. Hvis du beslutter dig for at importere bogen, vil Komga opgradere den eksisterende bog med den nye, og den gamle fil vil blive erstattet med den nye.",
     "no_files_found": "Ingen filer fundet",
     "notification": {
       "go_to_book": "Gå til bog",
-      "import_failure": "Kunne ikke importére bog: {file}",
-      "import_successful": "Bog importéret succesfuldt: {book}",
-      "source_file": "Kilde fil: {file}"
+      "import_failure": "Kunne ikke importere bog: {file}",
+      "import_successful": "Bog importeret med succes: {book}",
+      "source_file": "Kildefil: {file}"
     },
     "row": {
-      "error_analyze_first": "Bog skal blive analyseret først",
+      "error_analyze_first": "Bogen skal først analyseres",
       "error_choose_series": "Vælg en serie",
-      "error_only_import_no_errors": "Kan kun importére bøger uden fejl",
-      "warning_upgrade": "Eksisterende bog bliver opgraderet"
+      "error_only_import_no_errors": "Kan kun importere bøger uden fejl",
+      "warning_upgrade": "Den eksisterende bog vil blive opgraderet"
     },
     "table": {
-      "destination_name": "Destination navn",
-      "file_name": "Fil navn",
+      "destination_name": "Destinationsnavn",
+      "file_name": "Filnavn",
       "number": "Nummer",
       "series": "Serie"
     },
     "title": "Importér",
-    "try_another_directory": "Prøv at søge i et andet bibliotek"
+    "try_another_directory": "Prøv at søge i en anden mappe"
   },
   "bookreader": {
     "beginning_of_book": "Du er i begyndelsen af bogen.",
-    "changing_reading_direction": "Skifter læse retning til",
-    "download_current_page": "Gem nuværende side",
-    "end_of_book": "Du har nået enden af bogen.",
-    "from_series_metadata": "fra serie metadata",
-    "move_next": "Klik \"Næste\" igen for at gå til den næste bog.",
-    "move_next_exit": "Klik \"Næste\" igen for at gå ud af læseren.",
-    "move_previous": "Klik \"Forrige\" igen for at gå til den forrige bog.",
-    "notification_poster_set_book": "Bogomslaget er nu indstillet til den aktuelle side.",
-    "notification_poster_set_readlist": "Læselisteforsiden er nu sat til den aktuelle side.",
+    "changing_reading_direction": "Ændrer læseretningen til",
+    "cycling_page_layout": "Skifter sidelayout",
+    "cycling_scale": "Skifter skalering",
+    "cycling_side_padding": "Skifter sideafstand",
+    "download_current_page": "Download nuværende side",
+    "end_of_book": "Du er nået til slutningen af bogen.",
+    "from_series_metadata": "fra seriens metadata",
+    "move_next": "Klik eller tryk på \"Næste\" igen for at gå til den næste bog.",
+    "move_next_exit": "Klik eller tryk på \"Næste\" igen for at afslutte boglæseren.",
+    "move_previous": "Klik eller tryk på \"Forrige\" igen for at gå til den forrige bog.",
+    "notification_poster_set_book": "Bogens plakat er nu indstillet til den aktuelle side.",
+    "notification_poster_set_readlist": "Læselisteplakaten er nu indstillet til den aktuelle side.",
+    "notification_poster_set_series": "Seriens plakat er nu indstillet til den aktuelle side.",
     "paged_reader_layout": {
-      "double": "Dobblet sider",
-      "double_no_cover": "Dobbelt sider (ingen forside)",
-      "single": "Enkelt side"
+      "double": "Dobbeltsider",
+      "double_no_cover": "Dobbeltsider (uden forside)",
+      "single": "Enkelside"
     },
-    "reader_settings": "Læser Indstillinger",
+    "reader_settings": "Læserindstillinger",
     "scale_type": {
       "continuous_original": "Original",
       "continuous_width": "Pas bredde",
@@ -144,7 +160,15 @@
     "isbn": "ISBN"
   },
   "common": {
+    "all_libraries": "Alle biblioteker",
     "locale_name": "Dansk"
+  },
+  "dashboard": {
+    "keep_reading": "Fortsæt med at læse",
+    "on_deck": "Igangværende",
+    "recently_added_books": "Nyligt tilføjede bøger",
+    "recently_added_series": "Nyligt tilføjede serier",
+    "recently_updated_series": "Nyligt opdaterede serier"
   },
   "history": {
     "title": "Historik"
@@ -156,10 +180,18 @@
   "library_navigation": {
     "browse": "Gennemse",
     "collections": "Samlinger",
-    "readlists": "Læseliste"
+    "readlists": "Læselister"
   },
   "media_management": {
     "title": "Mediehåndtering"
+  },
+  "navigation": {
+    "home": "Hjem",
+    "libraries": "Biblioteker",
+    "logout": "Log ud"
+  },
+  "server_settings": {
+    "server_settings": "Serverindstillinger"
   },
   "settings_user": {
     "role_user": "Bruger"
@@ -167,7 +199,7 @@
   "sort": {
     "books_count": "Bog antal",
     "date_added": "Tilføjelsesdato",
-    "date_updated": "Dato opdateret",
+    "date_updated": "Opdateringsdato",
     "file_name": "Filnavn",
     "file_size": "Filstørrelse",
     "folder_name": "Mappenavn",
