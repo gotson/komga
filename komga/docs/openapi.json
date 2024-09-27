@@ -6091,7 +6091,7 @@
         }
       }
     },
-    "/kobo/{authToken}/v1/books/{bookId}/thumbnail/{width}/{height}/{quality}/{isGreyScale}/image.jpg": {
+    "/kobo/{authToken}/v1/books/{thumbnailId}/thumbnail/{width}/{height}/{isGreyScale}/image.jpg": {
       "get": {
         "tags": [
           "kobo-controller"
@@ -6099,7 +6099,71 @@
         "operationId": "getBookCover",
         "parameters": [
           {
-            "name": "bookId",
+            "name": "thumbnailId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "width",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "height",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isGreyScale",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kobo/{authToken}/v1/books/{thumbnailId}/thumbnail/{width}/{height}/{quality}/{isGreyScale}/image.jpg": {
+      "get": {
+        "tags": [
+          "kobo-controller"
+        ],
+        "operationId": "getBookCover_1",
+        "parameters": [
+          {
+            "name": "thumbnailId",
             "in": "path",
             "required": true,
             "schema": {
@@ -6163,70 +6227,6 @@
         }
       }
     },
-    "/kobo/{authToken}/v1/books/{bookId}/thumbnail/{width}/{height}/{isGreyScale}/image.jpg": {
-      "get": {
-        "tags": [
-          "kobo-controller"
-        ],
-        "operationId": "getBookCover_1",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "width",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "height",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "isGreyScale",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "image/jpeg": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/kobo/{authToken}/v1/books/{bookId}/file/epub": {
       "get": {
         "tags": [
@@ -6240,6 +6240,14 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "convert_kepub",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -10875,6 +10883,9 @@
           },
           "text": {
             "$ref": "#/components/schemas/Text"
+          },
+          "koboSpan": {
+            "type": "string"
           }
         }
       },
@@ -12052,18 +12063,23 @@
       },
       "DirectoryRequestDto": {
         "required": [
-          "path"
+          "path",
+          "showFiles"
         ],
         "type": "object",
         "properties": {
           "path": {
             "type": "string"
+          },
+          "showFiles": {
+            "type": "boolean"
           }
         }
       },
       "DirectoryListingDto": {
         "required": [
-          "directories"
+          "directories",
+          "files"
         ],
         "type": "object",
         "properties": {
@@ -12071,6 +12087,12 @@
             "type": "string"
           },
           "directories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PathDto"
+            }
+          },
+          "files": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PathDto"
@@ -12414,6 +12436,9 @@
             "maximum": 65535,
             "type": "integer",
             "format": "int32"
+          },
+          "kepubifyPath": {
+            "type": "string"
           }
         }
       },
@@ -13628,6 +13653,7 @@
         "required": [
           "deleteEmptyCollections",
           "deleteEmptyReadLists",
+          "kepubifyPath",
           "koboProxy",
           "rememberMeDurationDays",
           "serverContextPath",
@@ -13672,6 +13698,9 @@
           "koboPort": {
             "type": "integer",
             "format": "int32"
+          },
+          "kepubifyPath": {
+            "$ref": "#/components/schemas/SettingMultiSourceString"
           }
         }
       },
@@ -14203,6 +14232,7 @@
         "required": [
           "comment",
           "epubDivinaCompatible",
+          "epubIsKepub",
           "mediaProfile",
           "mediaType",
           "pagesCount",
@@ -14224,6 +14254,9 @@
             "type": "string"
           },
           "epubDivinaCompatible": {
+            "type": "boolean"
+          },
+          "epubIsKepub": {
             "type": "boolean"
           },
           "mediaProfile": {
