@@ -47,7 +47,10 @@ class DataSourcesConfiguration(
         .type(dataSourceClass)
         .build()
 
-    dataSource.setEnforceForeignKeys(true)
+    with(dataSource) {
+      setEnforceForeignKeys(true)
+      setGetGeneratedKeys(false)
+    }
     with(databaseProps) {
       journalMode?.let { dataSource.setJournalMode(it.name) }
       busyTimeout?.let { dataSource.config.busyTimeout = it.toMillis().toInt() }

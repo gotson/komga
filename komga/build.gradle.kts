@@ -111,8 +111,8 @@ dependencies {
 
   implementation("com.github.ben-manes.caffeine:caffeine")
 
-  implementation("org.xerial:sqlite-jdbc:3.45.0.0")
-  jooqGenerator("org.xerial:sqlite-jdbc:3.45.0.0")
+  implementation("org.xerial:sqlite-jdbc:3.46.1.3")
+  jooqGenerator("org.xerial:sqlite-jdbc:3.46.1.3")
 
   if (version.toString().endsWith(".0.0")) {
     ksp("com.github.gotson.bestbefore:bestbefore-processor-kotlin:0.1.0")
