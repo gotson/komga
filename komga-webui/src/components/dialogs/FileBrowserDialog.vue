@@ -17,7 +17,7 @@
 
           <template v-if="directoryListing.hasOwnProperty('parent')">
             <v-list-item
-              @click.prevent="select(directoryListing.parent)"
+              @click.prevent="selectParent(directoryListing.parent)"
             >
               <v-list-item-icon>
                 <v-icon>mdi-arrow-left</v-icon>
@@ -149,6 +149,10 @@ export default Vue.extend({
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }
+    },
+    selectParent(path: string) {
+      this.selectedPath = path
+      this.getDirs(path)
     },
     select(path: PathDto) {
       this.selectedPath = path.path
