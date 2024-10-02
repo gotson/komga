@@ -710,8 +710,10 @@ export default Vue.extend({
           id: this.$route.query.contextId as string,
         }
         this.book.context = this.context
-        this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
-        document.title = `Komga - ${this.contextName} - ${this.book.metadata.title}`
+        if (this?.context.origin === ContextOrigin.READLIST) {
+          this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
+          document.title = `Komga - ${this.contextName} - ${this.book.metadata.title}`
+        }
       } else {
         document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
       }
