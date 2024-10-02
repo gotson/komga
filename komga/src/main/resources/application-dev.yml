@@ -20,6 +20,8 @@ logging:
 #    org.springframework.boot.autoconfigure: DEBUG
 #    org.springframework.security.web.FilterChainProxy: DEBUG
 #    org.springframework.security.web.authentication.rememberme: DEBUG
+#    org.springframework.boot.context.config.ConfigDataEnvironment: TRACE
+#    org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor: TRACE
   logback:
     rollingpolicy:
       max-history: 1
