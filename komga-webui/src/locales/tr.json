@@ -25,7 +25,7 @@
       "generate_api_key": "API anahtarı oluştur",
       "no_keys": "Henüz API anahtarı oluşturulmamış"
     },
-    "change_password": "Şifreni Değiştir"
+    "change_password": "Şifre Değiştir"
   },
   "announcements": {
     "mark_all_read": "Hepsini okundu olarak işaretle",
@@ -43,7 +43,7 @@
     "user_agent": "Kullanıcı Tarayıcı Kimliği"
   },
   "author_roles": {
-    "colorist": "Renk Uzmanı",
+    "colorist": "Renklendirme",
     "cover": "Kapak",
     "editor": "Editör",
     "inker": "Mürekkepleme Sanatçısı",
@@ -55,7 +55,7 @@
   "book_card": {
     "error": "Hata",
     "no_release_date": "Yayın Tarihi yok",
-    "unknown": "Analiz daha edilmedi",
+    "unknown": "Analiz edilecek",
     "unread": "Okunmamış",
     "unsupported": "Desteklenmiyor"
   },
@@ -75,7 +75,7 @@
       "source_file": "Kaynak Dosya: {file}"
     },
     "row": {
-      "error_analyze_first": "Öncelikle kitabın analiz edilmesi gerekiyor",
+      "error_analyze_first": "Önce kitabın analiz edilmesi gerekiyor",
       "error_choose_series": "Seri seçin",
       "error_only_import_no_errors": "Yalnızca hatasız kitaplar içe aktarabilir",
       "warning_upgrade": "Mevcut kitap güncellenecektir"
@@ -90,7 +90,7 @@
     "try_another_directory": "Başka bir dizinde aramayı deneyin"
   },
   "bookreader": {
-    "beginning_of_book": "Kitabın başındasın.",
+    "beginning_of_book": "Kitabın başındasınız.",
     "changing_reading_direction": "Okuma Yönünü Değiştirme",
     "cycling_page_layout": "Çevrim Sayfa Düzeni",
     "cycling_scale": "Çevrim Ölçeği",
@@ -157,7 +157,7 @@
       "reader_navigation": "Okuyucu Kontrolleri",
       "right_to_left": "Sağdan Sola",
       "settings": "Ayarlar",
-      "show_hide_help": "Göster/Gizle yardım",
+      "show_hide_help": "Yardımcı işaretleri Göster/Gizle",
       "show_hide_settings": "Ayar menüsünü Göster/Gizle",
       "show_hide_thumbnails": "Önizlemeleri göster/gizle",
       "show_hide_toolbars": "Araç Çubuğunu Göster/Gizle",
@@ -938,6 +938,7 @@
     "hint_kobo_port": "Sadece kapak ve indirmelerde eşleşme hatası oluşuyorsa işaretleyin",
     "label_delete_empty_collections": "Boş koleksiyonları taramadan sonra sil",
     "label_delete_empty_readlists": "Boş okuma listelerini taramadan sonra sil",
+    "label_kepubify_path": "Kepubify yolu",
     "label_kobo_port": "Kobo Sync portu",
     "label_kobo_proxy": "Kobo Sync isteklerini Kobo Store'a yönlendir",
     "label_rememberme_duration": "Beni hatırla süresi (gün)",
@@ -997,7 +998,7 @@
   },
   "users": {
     "api_keys": "API Anahtarları",
-    "authentication_activity": "Doğrulama Aktivitesi",
+    "authentication_activity": "Giriş Aktivitesi",
     "users": "Kullanıcılar"
   },
   "validation": {
@@ -1008,7 +1009,7 @@
   },
   "welcome": {
     "add_library": "Kütüphane ekle",
-    "no_libraries_yet": "Henüz kütüphane eklenmemiş!",
+    "no_libraries_yet": "Henüz bir kütüphane eklenmemiş!",
     "welcome_message": "Komga'ya Hoş Geldiniz"
   }
 }
