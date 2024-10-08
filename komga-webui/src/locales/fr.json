@@ -756,7 +756,7 @@
       "next": "Prochain",
       "previous": "Retour",
       "reader_navigation": "Navigation du lecteur",
-      "scroll": "Changer la disposition pour le mode déroulement",
+      "scroll": "Changer la disposition du mode déroulement",
       "settings": "Paramètres",
       "show_hide_toc": "Afficher/cacher la table des matières"
     }
@@ -788,7 +788,7 @@
     "ERR_1028": "Erreur de connexion OpenID Connect : Pas d'attribut email",
     "ERR_1029": "Le fichier ComicRack CBL ne contient aucun livre",
     "ERR_1030": "La liste de livres ComicRack n'a pas de nom",
-    "ERR_1031": "il manque la série oule numéro à ComicRack CBL Book",
+    "ERR_1031": "Série ou numéro manquant au livre ComicRack CBL",
     "ERR_1032": "Le fichier EPUB a un type de fichier erroné",
     "ERR_1033": "Entrées manquantes",
     "ERR_1034": "Une clé API avec ce commentaire existe déjà"
@@ -935,11 +935,16 @@
       "btn_confirm": "Oui, mais seulement si la vignette est plus grande",
       "title": "Regénérer les vignettes"
     },
+    "hint_kobo_port": "À utiliser uniquement en cas de problème de synchronisation avec les couvertures ou les téléchargements",
     "label_delete_empty_collections": "Supprimer les collections vides après le scan",
     "label_delete_empty_readlists": "Supprimer les listes de lecture vides après le scan",
+    "label_kepubify_path": "Chemin vers kepubify",
+    "label_kobo_port": "Port externe de synchronisation Kobo",
+    "label_kobo_proxy": "Utiliser un proxy pour les requêtes vers le Kobo Store",
     "label_rememberme_duration": "Durée de maintien de connexion active (en jours)",
     "label_server_context_path": "URL de base",
     "label_server_port": "Port serveur",
+    "label_task_pool_size": "Nombre de threads pour les tâches",
     "label_thumbnail_size": "Taille de vignette",
     "requires_restart": "Nécessite un redémarrage pour prendre effet",
     "server_settings": "Paramètres du serveur"
@@ -987,10 +992,12 @@
   "user_roles": {
     "ADMIN": "Administrateur",
     "FILE_DOWNLOAD": "Téléchargement de fichier",
+    "KOBO_SYNC": "Synchronisation Kobo",
     "PAGE_STREAMING": "Lecture en ligne",
     "USER": "Utilisateur"
   },
   "users": {
+    "api_keys": "Clés API",
     "authentication_activity": "Activité d'authentification",
     "users": "Utilisateurs"
   },
