@@ -8,7 +8,7 @@
       "noResultsText": "Vastaavia tietueita ei löytynyt"
     },
     "dataTable": {
-      "itemsPerPageText": "Riviä/sivu:",
+      "itemsPerPageText": "Riviä sivua kohti:",
       "sortBy": "Lajittelu"
     },
     "fileInput": {
@@ -28,7 +28,7 @@
     "change_password": "Vaihda salasana"
   },
   "announcements": {
-    "mark_all_read": "Merkitse kaikki luetuksi",
+    "mark_all_read": "Merkitse kaikki luetuiksi",
     "mark_read": "Merkitse luetuksi",
     "tab_title": "Tiedotteet"
   },
@@ -530,13 +530,13 @@
     "edit_user_restrictions": {
       "age_restriction": {
         "allow_under": "Salli vain alle",
-        "exclude_over": "Älä sisällytä yli",
+        "exclude_over": "Älä salli yli",
         "none": "Ei rajoituksia"
       },
       "edit_restrictions_for": "Muokkaa käyttäjän {name} rajoituksia",
       "label_age_restriction": "Ikärajoitus",
-      "label_allow_only_labels": "Salli vain tunnisteet",
-      "label_exclude_labels": "Älä sisällytä tunnisteita",
+      "label_allow_only_labels": "Vain sallitut tunnisteet",
+      "label_exclude_labels": "Kielletyt tunnisteet",
       "tab_content_restrictions": "Sisältörajoitukset",
       "tab_shared_libraries": "Jaetut kirjastot"
     },
@@ -777,7 +777,7 @@
     "ERR_1017": "Ei voida skannata kansiota, joka on osa jo olemassa olevaa kirjastoa",
     "ERR_1018": "Tiedostoa ei löydy",
     "ERR_1019": "Ei voida tuoda tiedostoa joka on osa jo olemassa olevaa kirjastoa",
-    "ERR_1020": "Päivityksen kohdekirja ei ole osa annettua sarjaa",
+    "ERR_1020": "Päivityksen kohdekirja ei kuulu annettuun sarjaan",
     "ERR_1021": "Kohdetiedosto on jo olemassa",
     "ERR_1022": "Äskettäin tuotua kirjaa ei voitu skannata",
     "ERR_1023": "Kirja on jo lukulistalla",
@@ -857,7 +857,7 @@
     "analyze": "Analysoi",
     "bulk_edit_metadata": "Metatietojen joukkomuokkaus",
     "delete": "Poista",
-    "deselect_all": "Poista kaikkien valinta",
+    "deselect_all": "Poista valinta",
     "download_readlist": "Lataa lukulista",
     "download_series": "Lataa sarja",
     "edit": "Muokkaa",
@@ -937,7 +937,8 @@
     },
     "hint_kobo_port": "Aseta vain, jos kansien ja latausten synkronoinnissa on ongelmia",
     "label_delete_empty_collections": "Poista tyhjät kokoelmat skannauksen jälkeen",
-    "label_delete_empty_readlists": "Poista tyhjät luettujen listat skannauksen jälkeen",
+    "label_delete_empty_readlists": "Poista tyhjät lukulistat skannauksen jälkeen",
+    "label_kepubify_path": "Kepubifyn polku",
     "label_kobo_port": "Kobo Syncin ulkoinen portti",
     "label_kobo_proxy": "Lähetä Kobo Syncin pyynnöt välityspalvelimen yli Kobo Storeen",
     "label_rememberme_duration": "Muista minut ajan pituus (päivää)",
@@ -1003,7 +1004,7 @@
   "validation": {
     "context_path": "Täytyy alkaa '/', ei voi päättyä '/-_' ja voi sisältää vain '/-_a-z0-9'",
     "one_or_more": "Pitää olla vähintään yksi",
-    "tcp_port": "Pitää olla väliltä 1 ja 65535",
+    "tcp_port": "Pitää olla 1 ja 65535 väliltä",
     "zero_or_more": "On oltava vähintään 0"
   },
   "welcome": {
