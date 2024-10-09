@@ -723,36 +723,22 @@ class KoboController(
     this.copy(
       downloadUrls =
         buildList {
-          // Kobo is not smart enough to choose the best format, so if KEPUB is available we don't provide others
-          if (isKepub || kepubConverter.isAvailable) {
-            add(
-              DownloadUrlDto(
-                format = FormatDto.KEPUB,
-                // incorrect
-                size = fileSize,
-                url = downloadUriBuilder.build(entitlementId, !isKepub).toURL().toString(),
-              ),
-            )
-          } else {
-            add(
-              DownloadUrlDto(
-                format =
-                  when {
-                    isPrePaginated -> FormatDto.EPUB3FL
-                    else -> FormatDto.EPUB3
-                  },
-                size = fileSize,
-                url = downloadUriBuilder.build(entitlementId, false).toURL().toString(),
-              ),
-            )
-            add(
-              DownloadUrlDto(
-                format = FormatDto.EPUB,
-                size = fileSize,
-                url = downloadUriBuilder.build(entitlementId, false).toURL().toString(),
-              ),
-            )
-          }
+          val (format, convert) =
+            when {
+              // for fixed layout we always send EPUB3FL, so the Kobo can display in full screen
+              // no conversion to Kepub is necessary, as there is already 1 chapter per page, which is sufficient for progress tracking
+              isPrePaginated -> FormatDto.EPUB3FL to false
+              // provide Kepub if available, or convert if possible
+              isKepub || kepubConverter.isAvailable -> FormatDto.KEPUB to !isKepub
+              else -> FormatDto.EPUB3 to false
+            }
+          add(
+            DownloadUrlDto(
+              format = format,
+              size = fileSize,
+              url = downloadUriBuilder.build(entitlementId, convert).toURL().toString(),
+            ),
+          )
         },
     )
 
