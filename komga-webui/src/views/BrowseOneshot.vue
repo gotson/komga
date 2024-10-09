@@ -784,7 +784,8 @@ export default Vue.extend({
       this.$komgaBooks.refreshMetadata(this.book)
     },
     editBook() {
-      this.$store.dispatch('dialogUpdateOneshots', {series: this.series, book: this.book} as Oneshot)
+      const oneshots = {series: this.series, book: this.book} as Oneshot
+      this.$store.dispatch('dialogUpdateOneshots', {oneshots})
     },
   },
 })
