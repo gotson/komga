@@ -1,3 +1,38 @@
+# [1.14.1](https://github.com/gotson/komga/compare/1.14.0...1.14.1) (2024-10-15)
+## 🐛 Fixes
+**api**
+- file system listing does not respect showFiles=false ([836cfa4](https://github.com/gotson/komga/commits/836cfa4)), closes [#1721](https://github.com/gotson/komga/issues/1721)
+
+**kobo**
+- better display of fixed layout books ([406274d](https://github.com/gotson/komga/commits/406274d)), closes [#1732](https://github.com/gotson/komga/issues/1732)
+
+**komga-tray**
+- load optional application configuration files inside config directory ([2b41fef](https://github.com/gotson/komga/commits/2b41fef))
+
+**webui**
+- book import filename chooser dialog would not reopen in some scenarios ([f910ef4](https://github.com/gotson/komga/commits/f910ef4))
+- bulk edit metadata numberSort increment does not work as expected after editing ([e1b9296](https://github.com/gotson/komga/commits/e1b9296)), closes [#1727](https://github.com/gotson/komga/issues/1727)
+- epub reader crash when reading one-shot from collection context ([e7ef2bc](https://github.com/gotson/komga/commits/e7ef2bc)), closes [#1718](https://github.com/gotson/komga/issues/1718)
+- file system browser parent button does not work ([fa006c0](https://github.com/gotson/komga/commits/fa006c0)), closes [#1721](https://github.com/gotson/komga/issues/1721)
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([b382cd6](https://github.com/gotson/komga/commits/b382cd6))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Czech) ([a05ad44](https://github.com/gotson/komga/commits/a05ad44))
+
+**webui**
+- translated using Weblate (Finnish) ([c185395](https://github.com/gotson/komga/commits/c185395))
+- translated using Weblate (French) ([246c539](https://github.com/gotson/komga/commits/246c539))
+- translated using Weblate (Czech) ([a23d893](https://github.com/gotson/komga/commits/a23d893))
+- translated using Weblate (Turkish) ([833f4b3](https://github.com/gotson/komga/commits/833f4b3))
+
+## ⚙️ Dependencies
+**webui**
+- bump cookie and express in /komga-webui ([64094ff](https://github.com/gotson/komga/commits/64094ff))
+
 # [1.14.0](https://github.com/gotson/komga/compare/1.13.0...1.14.0) (2024-09-27)
 ## 🚀 Features
 **docker**
