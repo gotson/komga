@@ -938,6 +938,7 @@
     "hint_kobo_port": "Nur zu setzen wenn es Sync Probleme mit Covers und Downloads gibt",
     "label_delete_empty_collections": "Lösche leere Kollectionen nach der Prüfung (Scan)",
     "label_delete_empty_readlists": "Lösche leere Leselisten nach der Überprüfung (Scan)",
+    "label_kepubify_path": "Dateipfad zu kepubify",
     "label_kobo_port": "Kobo Sync externer Port",
     "label_kobo_proxy": "Proxy Kobo Sync Anfrage für den Kobo Store",
     "label_rememberme_duration": "Laufzeit der Erinnere dich an mich Funktion (in Tagen)",
