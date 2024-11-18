@@ -11,7 +11,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.io.IOUtils
 import org.gotson.komga.domain.model.Author
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
@@ -22,6 +22,9 @@ import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.ThumbnailReadList
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
@@ -329,23 +332,20 @@ class ReadListController(
           )
 
       val bookSearch =
-        BookSearchWithReadProgress(
-          libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-          readStatus = readStatus,
-          mediaStatus = mediaStatus,
-          deleted = deleted,
-          tags = tags,
-          authors = authors,
+        BookSearch(
+          SearchCondition.AllOfBook(
+            buildList {
+              add(SearchCondition.ReadListId(SearchOperator.Is(readList.id)))
+              if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfBook(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+              if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfBook(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
+              if (!mediaStatus.isNullOrEmpty()) add(SearchCondition.AnyOfBook(mediaStatus.map { SearchCondition.MediaStatus(SearchOperator.Is(it)) }))
+              if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfBook(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
+              if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfBook(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
+              deleted?.let { add(SearchCondition.Deleted(if (deleted) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            },
+          ),
         )
-
-      bookDtoRepository.findAllByReadListId(
-        readList.id,
-        principal.user.id,
-        principal.user.getAuthorizedLibraryIds(null),
-        bookSearch,
-        pageRequest,
-        principal.user.restrictions,
-      )
+      bookDtoRepository.findAll(bookSearch, SearchContext(principal.user), pageRequest)
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -401,14 +401,8 @@ class ReadListController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
-      bookDtoRepository.findAllByReadListId(
-        readList.id,
-        principal.user.id,
-        principal.user.getAuthorizedLibraryIds(null),
-        BookSearchWithReadProgress(),
-        UnpagedSorted(Sort.by(Sort.Order.asc("readList.number"))),
-        principal.user.restrictions,
-      ).filterIndexed { index, _ -> index < readProgress.lastBookRead }
+      bookDtoRepository.findAll(BookSearch(SearchCondition.ReadListId(SearchOperator.Is(readList.id))), SearchContext(principal.user), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number"))))
+        .filterIndexed { index, _ -> index < readProgress.lastBookRead }
         .forEach { book ->
           if (book.readProgress?.completed != true)
             bookLifecycle.markReadProgressCompleted(book.id, principal.user)

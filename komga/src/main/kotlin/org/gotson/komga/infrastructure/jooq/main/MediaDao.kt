@@ -266,7 +266,7 @@ class MediaDao(
   }
 
   @Transactional
-  override fun deleteByBookIds(bookIds: Collection<String>) {
+  override fun delete(bookIds: Collection<String>) {
     dsl.insertTempStrings(batchSize, bookIds)
 
     dsl.deleteFrom(p).where(p.BOOK_ID.`in`(dsl.selectTempStrings())).execute()

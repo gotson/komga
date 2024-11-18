@@ -42,7 +42,7 @@ data class KomgaUser(
 
   /**
    * Return the list of LibraryIds this user is authorized to view, intersecting the provided list of LibraryIds.
-   *
+   * @param libraryIds an optional list of LibraryIds to filter on
    * @return a list of authorised LibraryIds, or null if the user is authorized to see all libraries
    */
   fun getAuthorizedLibraryIds(libraryIds: Collection<String>?): Collection<String>? =

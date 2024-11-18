@@ -56,7 +56,7 @@ class ReadListDao(
     selectBase(restrictions.isRestricted)
       .where(rl.ID.eq(readListId))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
       .firstOrNull()
 
@@ -74,7 +74,7 @@ class ReadListDao(
       searchCondition
         .and(b.LIBRARY_ID.inOrNoCondition(belongsToLibraryIds))
         .and(b.LIBRARY_ID.inOrNoCondition(filterOnLibraryIds))
-        .and(restrictions.toCondition(dsl))
+        .and(restrictions.toCondition())
 
     val queryIds =
       if (belongsToLibraryIds == null && filterOnLibraryIds == null && !restrictions.isRestricted)
@@ -131,12 +131,12 @@ class ReadListDao(
         .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
         .apply { if (restrictions.isRestricted) leftJoin(b).on(rlb.BOOK_ID.eq(b.ID)).leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
         .where(rlb.BOOK_ID.eq(containsBookId))
-        .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
+        .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
 
     return selectBase(restrictions.isRestricted)
       .where(rl.ID.`in`(queryIds))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
   }
 
@@ -178,7 +178,7 @@ class ReadListDao(
             .apply { if (restrictions.isRestricted) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
             .where(rlb.READLIST_ID.eq(rr.id))
             .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-            .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
+            .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
             .orderBy(rlb.NUMBER.asc())
             .fetchInto(rlb)
             .mapNotNull { it.number to it.bookId }

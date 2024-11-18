@@ -18,7 +18,7 @@ import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.AlternateTitle
 import org.gotson.komga.domain.model.Author
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.KomgaUser
@@ -28,9 +28,12 @@ import org.gotson.komga.domain.model.MediaType.ZIP
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchField
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesSearch
-import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.BookRepository
@@ -93,6 +96,8 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import java.io.OutputStream
 import java.net.URI
 import java.nio.charset.StandardCharsets.UTF_8
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.zip.Deflater
 
 private val logger = KotlinLogging.logger {}
@@ -116,6 +121,7 @@ class SeriesController(
   private val thumbnailsSeriesRepository: ThumbnailSeriesRepository,
   private val contentRestrictionChecker: ContentRestrictionChecker,
 ) {
+  @Deprecated("use /v1/series/list instead")
   @PageableAsQueryParam
   @AuthorsAsQueryParam
   @Parameters(
@@ -169,37 +175,83 @@ class SeriesController(
         )
 
     val seriesSearch =
-      SeriesSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-        collectionIds = collectionIds,
-        searchTerm = searchTerm,
-        searchRegex =
-          searchRegex?.let {
-            when (it.second.lowercase()) {
-              "title" -> Pair(it.first, SeriesSearch.SearchField.TITLE)
-              "title_sort" -> Pair(it.first, SeriesSearch.SearchField.TITLE_SORT)
-              else -> null
-            }
+      SeriesSearch(
+        condition =
+        SearchCondition.AllOfSeries(
+          buildList {
+            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+            if (!collectionIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(collectionIds.map { SearchCondition.CollectionId(SearchOperator.Is(it)) }))
+            if (!metadataStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(metadataStatus.map { SearchCondition.SeriesStatus(SearchOperator.Is(it)) }))
+            if (!publishers.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(publishers.map { SearchCondition.Publisher(SearchOperator.Is(it)) }))
+            if (!languages.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(languages.map { SearchCondition.Language(SearchOperator.Is(it)) }))
+            if (!genres.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(genres.map { SearchCondition.Genre(SearchOperator.Is(it)) }))
+            if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
+            if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
+            if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
+            if (!ageRatings.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(ageRatings.map { it.toIntOrNull()?.let { ageRating -> SearchCondition.AgeRating(SearchOperator.Is(ageRating)) } ?: SearchCondition.AgeRating(SearchOperator.IsNullT()) }))
+            if (!releaseYears.isNullOrEmpty())
+              add(
+                SearchCondition.AnyOfSeries(
+                  releaseYears.mapNotNull { it.toIntOrNull() }.map { releaseYear ->
+                    SearchCondition.AllOfSeries(
+                      SearchCondition.ReleaseDate(SearchOperator.After(ZonedDateTime.of(releaseYear - 1, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC))),
+                      SearchCondition.ReleaseDate(SearchOperator.Before(ZonedDateTime.of(releaseYear + 1, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC))),
+                    )
+                  },
+                ),
+              )
+
+            if (!sharingLabels.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(sharingLabels.map { SearchCondition.SharingLabel(SearchOperator.Is(it)) }))
+            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            complete?.let { add(SearchCondition.Complete(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
           },
-        metadataStatus = metadataStatus,
-        publishers = publishers,
-        deleted = deleted,
-        complete = complete,
-        oneshot = oneshot,
-        languages = languages,
-        genres = genres,
-        tags = tags,
-        ageRatings = ageRatings?.map { it.toIntOrNull() },
-        releaseYears = releaseYears,
-        readStatus = readStatus,
-        authors = authors,
-        sharingLabels = sharingLabels,
+        ),
+        fullTextSearch = searchTerm,
+        regexSearch =
+        searchRegex?.let {
+          when (it.second.lowercase()) {
+            "title" -> Pair(it.first, SearchField.TITLE)
+            "title_sort" -> Pair(it.first, SearchField.TITLE_SORT)
+            else -> null
+          }
+        },
       )
 
-    return seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageRequest, principal.user.restrictions)
+    return seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageRequest)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
+  @PageableAsQueryParam
+  @PostMapping("v1/series/list")
+  fun getSeriesList(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestBody search: SeriesSearch,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) page: Pageable,
+  ): Page<SeriesDto> {
+    val sort =
+      when {
+        page.sort.isSorted -> page.sort
+        !search.fullTextSearch.isNullOrBlank() -> Sort.by("relevance")
+        else -> Sort.unsorted()
+      }
+
+    val pageRequest =
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
+
+    return seriesDtoRepository.findAll(search, SearchContext(principal.user), pageRequest)
+      .map { it.restrictUrl(!principal.user.roleAdmin) }
+  }
+
+  @Deprecated("use /v1/series/list/alphabetical-groups instead")
   @AuthorsAsQueryParam
   @Parameters(
     Parameter(
@@ -234,35 +286,57 @@ class SeriesController(
     @Parameter(hidden = true) page: Pageable,
   ): List<GroupCountDto> {
     val seriesSearch =
-      SeriesSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-        collectionIds = collectionIds,
-        searchTerm = searchTerm,
-        searchRegex =
-          searchRegex?.let {
-            when (it.second.lowercase()) {
-              "title" -> Pair(it.first, SeriesSearch.SearchField.TITLE)
-              "title_sort" -> Pair(it.first, SeriesSearch.SearchField.TITLE_SORT)
-              else -> null
-            }
+      SeriesSearch(
+        condition =
+        SearchCondition.AllOfSeries(
+          buildList {
+            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+            if (!collectionIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(collectionIds.map { SearchCondition.CollectionId(SearchOperator.Is(it)) }))
+            if (!metadataStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(metadataStatus.map { SearchCondition.SeriesStatus(SearchOperator.Is(it)) }))
+            if (!publishers.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(publishers.map { SearchCondition.Publisher(SearchOperator.Is(it)) }))
+            if (!languages.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(languages.map { SearchCondition.Language(SearchOperator.Is(it)) }))
+            if (!genres.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(genres.map { SearchCondition.Genre(SearchOperator.Is(it)) }))
+            if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
+            if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
+            if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
+            if (!ageRatings.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(ageRatings.map { it.toIntOrNull()?.let { ageRating -> SearchCondition.AgeRating(SearchOperator.Is(ageRating)) } ?: SearchCondition.AgeRating(SearchOperator.IsNullT()) }))
+            if (!releaseYears.isNullOrEmpty())
+              add(
+                SearchCondition.AnyOfSeries(
+                  releaseYears.mapNotNull { it.toIntOrNull() }.map { releaseYear ->
+                    SearchCondition.AllOfSeries(
+                      SearchCondition.ReleaseDate(SearchOperator.After(ZonedDateTime.of(releaseYear - 1, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC))),
+                      SearchCondition.ReleaseDate(SearchOperator.Before(ZonedDateTime.of(releaseYear + 1, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC))),
+                    )
+                  },
+                ),
+              )
+
+            if (!sharingLabels.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(sharingLabels.map { SearchCondition.SharingLabel(SearchOperator.Is(it)) }))
+            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            complete?.let { add(SearchCondition.Complete(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
           },
-        metadataStatus = metadataStatus,
-        publishers = publishers,
-        deleted = deleted,
-        complete = complete,
-        oneshot = oneshot,
-        languages = languages,
-        genres = genres,
-        tags = tags,
-        ageRatings = ageRatings?.map { it.toIntOrNull() },
-        releaseYears = releaseYears,
-        readStatus = readStatus,
-        authors = authors,
-        sharingLabels = sharingLabels,
+        ),
+        fullTextSearch = searchTerm,
+        regexSearch =
+        searchRegex?.let {
+          when (it.second.lowercase()) {
+            "title" -> Pair(it.first, SearchField.TITLE)
+            "title_sort" -> Pair(it.first, SearchField.TITLE_SORT)
+            else -> null
+          }
+        },
       )
 
-    return seriesDtoRepository.countByFirstCharacter(seriesSearch, principal.user.id, principal.user.restrictions)
+    return seriesDtoRepository.countByFirstCharacter(seriesSearch, SearchContext(principal.user))
   }
+
+  @PostMapping("v1/series/list/alphabetical-groups")
+  fun getSeriesListByAlphabeticalGroups(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestBody search: SeriesSearch,
+  ): List<GroupCountDto> = seriesDtoRepository.countByFirstCharacter(search, SearchContext(principal.user))
 
   @Operation(description = "Return recently added or updated series.")
   @PageableWithoutSortAsQueryParam
@@ -288,14 +362,17 @@ class SeriesController(
         )
 
     return seriesDtoRepository.findAll(
-      SeriesSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-        deleted = deleted,
-        oneshot = oneshot,
+      SeriesSearch(
+        SearchCondition.AllOfSeries(
+          buildList {
+            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+          },
+        ),
       ),
-      principal.user.id,
+      SearchContext(principal.user),
       pageRequest,
-      principal.user.restrictions,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -323,14 +400,17 @@ class SeriesController(
         )
 
     return seriesDtoRepository.findAll(
-      SeriesSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-        deleted = deleted,
-        oneshot = oneshot,
+      SeriesSearch(
+        SearchCondition.AllOfSeries(
+          buildList {
+            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+          },
+        ),
       ),
-      principal.user.id,
+      SearchContext(principal.user),
       pageRequest,
-      principal.user.restrictions,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -358,13 +438,16 @@ class SeriesController(
         )
 
     return seriesDtoRepository.findAllRecentlyUpdated(
-      SeriesSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-        deleted = deleted,
-        oneshot = oneshot,
+      SeriesSearch(
+        SearchCondition.AllOfSeries(
+          buildList {
+            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+          },
+        ),
       ),
-      principal.user.id,
-      principal.user.restrictions,
+      SearchContext(principal.user),
       pageRequest,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
@@ -505,16 +588,22 @@ class SeriesController(
           sort,
         )
 
+    val search =
+      BookSearch(
+        SearchCondition.AllOfBook(
+          buildList {
+            add(SearchCondition.SeriesId(SearchOperator.Is(seriesId)))
+            if (!mediaStatus.isNullOrEmpty()) add(SearchCondition.AnyOfBook(mediaStatus.map { SearchCondition.MediaStatus(SearchOperator.Is(it)) }))
+            if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfBook(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
+            if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfBook(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
+            if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfBook(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
+            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+          },
+        ),
+      )
     return bookDtoRepository.findAll(
-      BookSearchWithReadProgress(
-        seriesIds = listOf(seriesId),
-        mediaStatus = mediaStatus,
-        deleted = deleted,
-        readStatus = readStatus,
-        tags = tags,
-        authors = authors,
-      ),
-      principal.user.id,
+      search,
+      SearchContext(principal.user),
       pageRequest,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
@@ -583,41 +672,41 @@ class SeriesController(
             ageRating = if (isSet("ageRating")) ageRating else existing.ageRating,
             ageRatingLock = ageRatingLock ?: existing.ageRatingLock,
             genres =
-              if (isSet("genres")) {
-                if (genres != null) genres!! else emptySet()
-              } else {
-                existing.genres
-              },
+            if (isSet("genres")) {
+              if (genres != null) genres!! else emptySet()
+            } else {
+              existing.genres
+            },
             genresLock = genresLock ?: existing.genresLock,
             tags =
-              if (isSet("tags")) {
-                if (tags != null) tags!! else emptySet()
-              } else {
-                existing.tags
-              },
+            if (isSet("tags")) {
+              if (tags != null) tags!! else emptySet()
+            } else {
+              existing.tags
+            },
             tagsLock = tagsLock ?: existing.tagsLock,
             totalBookCount = if (isSet("totalBookCount")) totalBookCount else existing.totalBookCount,
             totalBookCountLock = totalBookCountLock ?: existing.totalBookCountLock,
             sharingLabels =
-              if (isSet("sharingLabels")) {
-                if (sharingLabels != null) sharingLabels!! else emptySet()
-              } else {
-                existing.sharingLabels
-              },
+            if (isSet("sharingLabels")) {
+              if (sharingLabels != null) sharingLabels!! else emptySet()
+            } else {
+              existing.sharingLabels
+            },
             sharingLabelsLock = sharingLabelsLock ?: existing.sharingLabelsLock,
             links =
-              if (isSet("links")) {
-                if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
-              } else {
-                existing.links
-              },
+            if (isSet("links")) {
+              if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
+            } else {
+              existing.links
+            },
             linksLock = linksLock ?: existing.linksLock,
             alternateTitles =
-              if (isSet("alternateTitles")) {
-                if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
-              } else {
-                existing.alternateTitles
-              },
+            if (isSet("alternateTitles")) {
+              if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
+            } else {
+              existing.alternateTitles
+            },
             alternateTitlesLock = alternateTitlesLock ?: existing.alternateTitlesLock,
           )
         }
@@ -670,8 +759,8 @@ class SeriesController(
     principal.user.checkContentRestriction(seriesId)
 
     bookDtoRepository.findAll(
-      BookSearchWithReadProgress(seriesIds = listOf(seriesId)),
-      principal.user.id,
+      BookSearch(SearchCondition.SeriesId(SearchOperator.Is(seriesId))),
+      SearchContext(principal.user),
       UnpagedSorted(Sort.by(Sort.Order.asc("metadata.numberSort"))),
     ).toList().filter { book -> book.metadata.numberSort <= readProgress.lastBookNumberSortRead }
       .forEach { book ->

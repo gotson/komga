@@ -1,30 +1,25 @@
 package org.gotson.komga.interfaces.api.persistence
 
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface BookDtoRepository {
+  fun findAll(pageable: Pageable): Page<BookDto>
+
   fun findAll(
-    search: BookSearchWithReadProgress,
-    userId: String,
+    context: SearchContext,
     pageable: Pageable,
-    restrictions: ContentRestrictions = ContentRestrictions(),
   ): Page<BookDto>
 
-  /**
-   * Find books that are part of a readlist, optionally filtered by library
-   */
-  fun findAllByReadListId(
-    readListId: String,
-    userId: String,
-    filterOnLibraryIds: Collection<String>?,
-    search: BookSearchWithReadProgress,
+  fun findAll(
+    search: BookSearch,
+    context: SearchContext,
     pageable: Pageable,
-    restrictions: ContentRestrictions = ContentRestrictions(),
   ): Page<BookDto>
 
   fun findByIdOrNull(

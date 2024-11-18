@@ -1,15 +1,18 @@
 package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.infrastructure.jooq.BookSearchHelper
+import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCondition
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookRecord
 import org.gotson.komga.language.toCurrentTimeZone
+import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Value
@@ -33,7 +36,9 @@ class BookDao(
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
+  private val sd = Tables.SERIES_METADATA
   private val r = Tables.READ_PROGRESS
+  private val rlb = Tables.READLIST_BOOK
 
   private val sorts =
     mapOf(
@@ -104,26 +109,35 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
-  override fun findAll(bookSearch: BookSearch): Collection<Book> =
-    dsl.select(*b.fields())
-      .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-      .where(bookSearch.toCondition())
-      .fetchInto(b)
-      .map { it.toDomain() }
-
   override fun findAll(
-    bookSearch: BookSearch,
+    searchCondition: SearchCondition.Book?,
+    searchContext: SearchContext,
     pageable: Pageable,
   ): Page<Book> {
-    val conditions = bookSearch.toCondition()
+    val bookCondition = BookSearchHelper(searchContext).toCondition(searchCondition)
+    return findAll(bookCondition.first, bookCondition.second, pageable)
+  }
 
+  private fun findAll(
+    conditions: Condition,
+    joins: Set<RequiredJoin>,
+    pageable: Pageable,
+  ): PageImpl<Book> {
     val count =
       dsl.selectCount()
         .from(b)
-        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-        .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+        .apply {
+          joins.forEach { join ->
+            when (join) {
+              RequiredJoin.BookMetadata -> innerJoin(d).on(b.ID.eq(d.BOOK_ID))
+              RequiredJoin.SeriesMetadata -> innerJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
+              RequiredJoin.Media -> innerJoin(m).on(b.ID.eq(m.BOOK_ID))
+              is RequiredJoin.ReadProgress -> leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(join.userId))
+              // shouldn't be required for books
+              RequiredJoin.BookMetadataAggregation -> Unit
+            }
+          }
+        }
         .where(conditions)
         .fetchOne(0, Long::class.java) ?: 0
 
@@ -132,8 +146,18 @@ class BookDao(
     val items =
       dsl.select(*b.fields())
         .from(b)
-        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-        .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+        .apply {
+          joins.forEach { join ->
+            when (join) {
+              RequiredJoin.BookMetadata -> innerJoin(d).on(b.ID.eq(d.BOOK_ID))
+              RequiredJoin.SeriesMetadata -> innerJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
+              RequiredJoin.Media -> innerJoin(m).on(b.ID.eq(m.BOOK_ID))
+              is RequiredJoin.ReadProgress -> leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(join.userId))
+              // shouldn't be required for books
+              RequiredJoin.BookMetadataAggregation -> Unit
+            }
+          }
+        }
         .where(conditions)
         .orderBy(orderBy)
         .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
@@ -201,34 +225,11 @@ class BookDao(
       .where(b.SERIES_ID.eq(seriesId))
       .fetch(b.ID)
 
-  override fun findAllIdsBySeriesIds(seriesIds: Collection<String>): Collection<String> =
-    dsl.select(b.ID)
-      .from(b)
-      .where(b.SERIES_ID.`in`(seriesIds))
-      .fetch(0, String::class.java)
-
   override fun findAllIdsByLibraryId(libraryId: String): Collection<String> =
     dsl.select(b.ID)
       .from(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .fetch(b.ID)
-
-  override fun findAllIds(
-    bookSearch: BookSearch,
-    sort: Sort,
-  ): Collection<String> {
-    val conditions = bookSearch.toCondition()
-
-    val orderBy = sort.toOrderBy(sorts)
-
-    return dsl.select(b.ID)
-      .from(b)
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .where(conditions)
-      .orderBy(orderBy)
-      .fetch(b.ID)
-  }
 
   override fun existsById(bookId: String): Boolean =
     dsl.fetchExists(b, b.ID.eq(bookId))

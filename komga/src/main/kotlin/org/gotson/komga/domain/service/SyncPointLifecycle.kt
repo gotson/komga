@@ -4,6 +4,9 @@ import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaProfile
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SyncPoint
 import org.gotson.komga.domain.persistence.SyncPointRepository
 import org.springframework.data.domain.Page
@@ -19,20 +22,32 @@ class SyncPointLifecycle(
     apiKeyId: String?,
     libraryIds: List<String>?,
   ): SyncPoint {
-    val authorizedLibraryIds = user.getAuthorizedLibraryIds(libraryIds)
+    val context = SearchContext(user)
+
     val syncPoint =
-      syncPointRepository.create(
-        user,
+      syncPointRepository.
+      create(
         apiKeyId,
         BookSearch(
-          libraryIds = authorizedLibraryIds,
-          mediaStatus = setOf(Media.Status.READY),
-          mediaProfile = listOf(MediaProfile.EPUB),
-          deleted = false,
+          SearchCondition.AllOfBook(
+            buildList {
+              libraryIds?.let {
+                add(
+                  SearchCondition.AnyOfBook(
+                    it.map { libraryId -> SearchCondition.LibraryId(SearchOperator.Is(libraryId)) },
+                  ),
+                )
+              }
+              add(SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)))
+              add(SearchCondition.MediaProfile(SearchOperator.Is(MediaProfile.EPUB)))
+              add(SearchCondition.Deleted(SearchOperator.IsFalse))
+            },
+          ),
         ),
+        context,
       )
 
-    syncPointRepository.addOnDeck(syncPoint.id, user, authorizedLibraryIds)
+    syncPointRepository.addOnDeck(syncPoint.id, context, libraryIds)
 
     return syncPoint
   }

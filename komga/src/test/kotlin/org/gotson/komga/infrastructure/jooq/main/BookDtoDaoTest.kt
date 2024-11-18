@@ -7,11 +7,14 @@ import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatCode
 import org.gotson.komga.domain.model.Author
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -133,8 +136,13 @@ class BookDtoDaoTest(
       // when
       val page =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(tags = setOf("tag1", "tag2")),
-          user.id,
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.Tag(SearchOperator.Is("tag1")),
+              SearchCondition.Tag(SearchOperator.Is("tag2")),
+            ),
+          ),
+          SearchContext(user),
           Pageable.unpaged(),
         )
 
@@ -167,8 +175,13 @@ class BookDtoDaoTest(
       // when
       val page =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))),
-          user.id,
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch("Mark", "writer"))),
+              SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch("Jim", "inker"))),
+            ),
+          ),
+          SearchContext(user),
           Pageable.unpaged(),
         )
 
@@ -189,8 +202,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ)),
-          user.id,
+          BookSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ))),
+          SearchContext(user),
           PageRequest.of(0, 20),
         )
 
@@ -208,8 +221,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD)),
-          user.id,
+          BookSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD))),
+          SearchContext(user),
           PageRequest.of(0, 20),
         )
 
@@ -227,8 +240,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(readStatus = listOf(ReadStatus.IN_PROGRESS)),
-          user.id,
+          BookSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS))),
+          SearchContext(user),
           PageRequest.of(0, 20),
         )
 
@@ -246,8 +259,13 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.UNREAD)),
-          user.id,
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+            ),
+          ),
+          SearchContext(user),
           PageRequest.of(0, 20),
         )
 
@@ -264,8 +282,13 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.IN_PROGRESS)),
-          user.id,
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+            ),
+          ),
+          SearchContext(user),
           PageRequest.of(0, 20),
         )
 
@@ -282,8 +305,13 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD, ReadStatus.IN_PROGRESS)),
-          user.id,
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+            ),
+          ),
+          SearchContext(user),
           PageRequest.of(0, 20),
         )
 
@@ -300,8 +328,14 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD, ReadStatus.IN_PROGRESS, ReadStatus.READ)),
-          user.id,
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+            ),
+          ),
+          SearchContext(user),
           PageRequest.of(0, 20),
         )
 
@@ -318,8 +352,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(),
-          user.id,
+          BookSearch(),
+          SearchContext(user),
           PageRequest.of(0, 20),
         )
 
@@ -418,8 +452,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "batman"),
-          user.id,
+          BookSearch(fullTextSearch = "batman"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -446,28 +480,28 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "book"),
-          user.id,
+          BookSearch(fullTextSearch = "book"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("name")),
         ).content
       val pages =
         (0..2).map {
           bookDtoDao.findAll(
-            BookSearchWithReadProgress(searchTerm = "book"),
-            user.id,
+            BookSearch(fullTextSearch = "book"),
+            SearchContext(user),
             PageRequest.of(it, 1, Sort.by("name")),
           )
         }
       val page0 =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "book"),
-          user.id,
+          BookSearch(fullTextSearch = "book"),
+          SearchContext(user),
           PageRequest.of(0, 2, Sort.by("name")),
         )
       val page1 =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "book"),
-          user.id,
+          BookSearch(fullTextSearch = "book"),
+          SearchContext(user),
           PageRequest.of(1, 2, Sort.by("name")),
         )
 
@@ -511,8 +545,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "eric"),
-          user.id,
+          BookSearch(fullTextSearch = "eric"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -545,8 +579,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "9782413016878"),
-          user.id,
+          BookSearch(fullTextSearch = "9782413016878"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -576,8 +610,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "tag:tag1"),
-          user.id,
+          BookSearch(fullTextSearch = "tag:tag1"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -607,20 +641,20 @@ class BookDtoDaoTest(
       // when
       val foundGeneric =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "author:bob"),
-          user.id,
+          BookSearch(fullTextSearch = "author:bob"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
       val foundByRole =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "writer:bob"),
-          user.id,
+          BookSearch(fullTextSearch = "writer:bob"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
       val notFound =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "penciller:bob"),
-          user.id,
+          BookSearch(fullTextSearch = "penciller:bob"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -648,8 +682,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "release_date:1999"),
-          user.id,
+          BookSearch(fullTextSearch = "release_date:1999"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -678,8 +712,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "release_date:[1990 TO 2010]"),
-          user.id,
+          BookSearch(fullTextSearch = "release_date:[1990 TO 2010]"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -704,8 +738,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "status:error"),
-          user.id,
+          BookSearch(fullTextSearch = "status:error"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -734,8 +768,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "deleted:true"),
-          user.id,
+          BookSearch(fullTextSearch = "deleted:true"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -761,8 +795,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "s.w.o.r.d."),
-          user.id,
+          BookSearch(fullTextSearch = "s.w.o.r.d"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -790,8 +824,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "batman robin"),
-          user.id,
+          BookSearch(fullTextSearch = "batman robin"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -818,8 +852,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "x-men"),
-          user.id,
+          BookSearch(fullTextSearch = "x-men"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -834,8 +868,8 @@ class BookDtoDaoTest(
         // when
         val found =
           bookDtoDao.findAll(
-            BookSearchWithReadProgress(searchTerm = "publisher:batman"),
-            user.id,
+            BookSearch(fullTextSearch = "publisher:batman"),
+            SearchContext(user),
             UnpagedSorted(Sort.by("relevance")),
           ).content
 
@@ -860,8 +894,8 @@ class BookDtoDaoTest(
       // when
       val found =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "不道德"),
-          user.id,
+          BookSearch(fullTextSearch = "不道德"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 

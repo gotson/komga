@@ -45,7 +45,7 @@ class BookCommonDao(
             .innerJoin(sd).on(s.ID.eq(sd.SERIES_ID))
             .where(rs.IN_PROGRESS_COUNT.eq(0))
             .and(rs.READ_COUNT.ne(s.BOOK_COUNT))
-            .and(restrictions.toCondition(dsl))
+            .and(restrictions.toCondition())
             .apply { filterOnLibraryIds?.let<Collection<String>, Unit> { and(s.LIBRARY_ID.`in`(it)) } },
         )
 

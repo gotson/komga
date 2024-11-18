@@ -5,12 +5,14 @@ import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
-import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
@@ -22,6 +24,7 @@ import org.gotson.komga.interfaces.api.rest.dto.LibraryDto
 import org.gotson.komga.interfaces.api.rest.dto.LibraryUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.toDomain
 import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -223,7 +226,13 @@ class LibraryController(
   fun analyze(
     @PathVariable libraryId: String,
   ) {
-    taskEmitter.analyzeBook(bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId))), HIGH_PRIORITY)
+    val books =
+      bookRepository.findAll(
+        SearchCondition.LibraryId(SearchOperator.Is(libraryId)),
+        SearchContext.empty(),
+        Pageable.unpaged(),
+      ).content
+    taskEmitter.analyzeBook(books, HIGH_PRIORITY)
   }
 
   @PostMapping("{libraryId}/metadata/refresh")
@@ -232,7 +241,12 @@ class LibraryController(
   fun refreshMetadata(
     @PathVariable libraryId: String,
   ) {
-    val books = bookRepository.findAll(BookSearch(libraryIds = listOf(libraryId)))
+    val books =
+      bookRepository.findAll(
+        SearchCondition.LibraryId(SearchOperator.Is(libraryId)),
+        SearchContext.empty(),
+        Pageable.unpaged(),
+      ).content
     taskEmitter.refreshBookMetadata(books, priority = HIGH_PRIORITY)
     taskEmitter.refreshBookLocalArtwork(books, priority = HIGH_PRIORITY)
     taskEmitter.refreshSeriesLocalArtwork(seriesRepository.findAllIdsByLibraryId(libraryId), priority = HIGH_PRIORITY)

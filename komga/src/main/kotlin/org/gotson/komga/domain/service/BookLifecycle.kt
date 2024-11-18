@@ -3,7 +3,6 @@ package org.gotson.komga.domain.service
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookAction
-import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.HistoricalEvent
@@ -17,6 +16,9 @@ import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.NoThumbnailFoundException
 import org.gotson.komga.domain.model.R2Progression
 import org.gotson.komga.domain.model.ReadProgress
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.domain.persistence.BookMetadataRepository
@@ -34,7 +36,7 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.language.toCurrentTimeZone
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import org.springframework.web.util.UriUtils
@@ -280,7 +282,7 @@ class BookLifecycle(
     return if (forBiggerResultOnly) {
       thumbnailBookRepository.findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(ThumbnailBook.Type.GENERATED, komgaSettingsProvider.thumbnailSize.maxEdge)
     } else {
-      bookRepository.findAllIds(BookSearch(deleted = false), Sort.unsorted())
+      bookRepository.findAll(SearchCondition.Deleted(SearchOperator.IsFalse), SearchContext.empty(), Pageable.unpaged()).content.map { it.id }
     }
   }
 
@@ -374,7 +376,7 @@ class BookLifecycle(
       readProgressRepository.deleteByBookIds(bookIds)
       readListRepository.removeBooksFromAll(bookIds)
 
-      mediaRepository.deleteByBookIds(bookIds)
+      mediaRepository.delete(bookIds)
       thumbnailBookRepository.deleteByBookIds(bookIds)
       bookMetadataRepository.delete(bookIds)
 

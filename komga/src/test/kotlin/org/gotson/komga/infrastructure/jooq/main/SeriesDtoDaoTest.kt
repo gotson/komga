@@ -9,8 +9,11 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SeriesMetadata
-import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -133,8 +136,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.READ)),
-          user.id,
+          SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ))),
+          SearchContext(user),
           PageRequest.of(0, 20),
         ).sortedBy { it.name }
 
@@ -153,8 +156,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD)),
-          user.id,
+          SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD))),
+          SearchContext(user),
           PageRequest.of(0, 20),
         ).sortedBy { it.name }
 
@@ -173,8 +176,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.IN_PROGRESS)),
-          user.id,
+          SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS))),
+          SearchContext(user),
           PageRequest.of(0, 20),
         ).sortedBy { it.name }
 
@@ -196,8 +199,13 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.UNREAD)),
-          user.id,
+          SeriesSearch(
+            SearchCondition.AnyOfSeries(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+            ),
+          ),
+          SearchContext(user),
           PageRequest.of(0, 20),
         ).sortedBy { it.name }
 
@@ -214,8 +222,13 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.IN_PROGRESS)),
-          user.id,
+          SeriesSearch(
+            SearchCondition.AnyOfSeries(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+            ),
+          ),
+          SearchContext(user),
           PageRequest.of(0, 20),
         ).sortedBy { it.name }
 
@@ -232,8 +245,13 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD, ReadStatus.IN_PROGRESS)),
-          user.id,
+          SeriesSearch(
+            SearchCondition.AnyOfSeries(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+            ),
+          ),
+          SearchContext(user),
           PageRequest.of(0, 20),
         ).sortedBy { it.name }
 
@@ -250,8 +268,14 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.IN_PROGRESS, ReadStatus.UNREAD)),
-          user.id,
+          SeriesSearch(
+            SearchCondition.AnyOfSeries(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+            ),
+          ),
+          SearchContext(user),
           PageRequest.of(0, 20),
         ).sortedBy { it.name }
 
@@ -268,8 +292,7 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(),
-          user.id,
+          SearchContext(user),
           PageRequest.of(0, 20),
         ).sortedBy { it.name }
 
@@ -294,8 +317,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "batman"),
-          user.id,
+          SeriesSearch(fullTextSearch = "batman"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -320,8 +343,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "publisher:vertigo"),
-          user.id,
+          SeriesSearch(fullTextSearch = "publisher:vertigo"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -346,8 +369,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "status:hiatus"),
-          user.id,
+          SeriesSearch(fullTextSearch = "status:hiatus"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -372,8 +395,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "reading_direction:left_to_right"),
-          user.id,
+          SeriesSearch(fullTextSearch = "reading_direction:left_to_right"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -398,8 +421,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "age_rating:12"),
-          user.id,
+          SeriesSearch(fullTextSearch = "age_rating:12"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -424,8 +447,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "language:en-us"),
-          user.id,
+          SeriesSearch(fullTextSearch = "language:en-us"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -456,43 +479,43 @@ class SeriesDtoDaoTest(
       // when
       val foundByBookTag =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "book_tag:booktag"),
-          user.id,
+          SeriesSearch(fullTextSearch = "book_tag:booktag"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
       val notFoundByBookTag =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "book_tag:seriestag"),
-          user.id,
+          SeriesSearch(fullTextSearch = "book_tag:seriestag"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
       val foundBySeriesTag =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "series_tag:seriestag"),
-          user.id,
+          SeriesSearch(fullTextSearch = "series_tag:seriestag"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
       val notFoundBySeriesTag =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "series_tag:booktag"),
-          user.id,
+          SeriesSearch(fullTextSearch = "series_tag:booktag"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
       val foundByTagFromBook =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "tag:booktag"),
-          user.id,
+          SeriesSearch(fullTextSearch = "tag:booktag"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
       val foundByTagFromSeries =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "tag:seriestag"),
-          user.id,
+          SeriesSearch(fullTextSearch = "tag:seriestag"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -530,8 +553,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "genre:action"),
-          user.id,
+          SeriesSearch(fullTextSearch = "genre:action"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -556,8 +579,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "total_book_count:5"),
-          user.id,
+          SeriesSearch(fullTextSearch = "total_book_count:5"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -590,8 +613,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "book_count:2"),
-          user.id,
+          SeriesSearch(fullTextSearch = "book_count:2"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -626,22 +649,22 @@ class SeriesDtoDaoTest(
       // when
       val foundGeneric =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "author:david"),
-          user.id,
+          SeriesSearch(fullTextSearch = "author:david"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
       val foundByRole =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "penciller:david"),
-          user.id,
+          SeriesSearch(fullTextSearch = "penciller:david"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
       val notFoundByRole =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "writer:david"),
-          user.id,
+          SeriesSearch(fullTextSearch = "writer:david"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -674,8 +697,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "release_date:1999"),
-          user.id,
+          SeriesSearch(fullTextSearch = "release_date:1999"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 
@@ -696,8 +719,8 @@ class SeriesDtoDaoTest(
       // when
       val found =
         seriesDtoDao.findAll(
-          SeriesSearchWithReadProgress(searchTerm = "deleted:true"),
-          user.id,
+          SeriesSearch(fullTextSearch = "deleted:true"),
+          SearchContext(user),
           UnpagedSorted(Sort.by("relevance")),
         ).content
 

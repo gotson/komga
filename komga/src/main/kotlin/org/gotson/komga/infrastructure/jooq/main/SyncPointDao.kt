@@ -2,11 +2,12 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import com.github.f4b6a3.tsid.TsidCreator
 import org.gotson.komga.domain.model.BookSearch
-import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SyncPoint
 import org.gotson.komga.domain.model.SyncPoint.ReadList.Companion.ON_DECK_ID
 import org.gotson.komga.domain.persistence.SyncPointRepository
-import org.gotson.komga.infrastructure.jooq.toCondition
+import org.gotson.komga.infrastructure.jooq.BookSearchHelper
+import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.language.toZonedDateTime
 import org.jooq.DSLContext
@@ -44,11 +45,13 @@ class SyncPointDao(
 
   @Transactional
   override fun create(
-    user: KomgaUser,
     apiKeyId: String?,
     search: BookSearch,
+    context: SearchContext,
   ): SyncPoint {
-    val conditions = search.toCondition().and(user.restrictions.toCondition(dsl))
+    requireNotNull(context.userId) { "userId is required to create a SyncPoint" }
+
+    val (condition, joins) = BookSearchHelper(context).toCondition(search.condition)
 
     val syncPointId = TsidCreator.getTsid256().toString()
     val createdAt = LocalDateTime.now(ZoneId.of("Z"))
@@ -61,7 +64,7 @@ class SyncPointDao(
       sp.CREATED_DATE,
     ).values(
       syncPointId,
-      user.id,
+      context.userId,
       apiKeyId,
       createdAt,
     ).execute()
@@ -91,12 +94,24 @@ class SyncPointDao(
         r.LAST_MODIFIED_DATE,
         bt.ID,
       ).from(b)
+        .apply {
+          joins.forEach {
+            when (it) {
+              // we don't have to handle those since we already join on those tables anyway, the 'when' is here for future proofing
+              RequiredJoin.BookMetadata -> Unit
+              RequiredJoin.SeriesMetadata -> Unit
+              RequiredJoin.Media -> Unit
+              is RequiredJoin.ReadProgress -> Unit
+              RequiredJoin.BookMetadataAggregation -> Unit
+            }
+          }
+        }
         .join(m).on(b.ID.eq(m.BOOK_ID))
         .join(d).on(b.ID.eq(d.BOOK_ID))
         .join(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
-        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(user.id))
+        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(context.userId))
         .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)).and(bt.SELECTED.isTrue)
-        .where(conditions),
+        .where(condition),
     ).execute()
 
     return findByIdOrNull(syncPointId)!!
@@ -105,13 +120,15 @@ class SyncPointDao(
   @Transactional
   override fun addOnDeck(
     syncPointId: String,
-    user: KomgaUser,
-    filterOnLibraryIds: Collection<String>?,
+    context: SearchContext,
+    filterOnLibraryIds: List<String>?,
   ) {
+    requireNotNull(context.userId) { "Missing userId in search context" }
+
     val createdAt = LocalDateTime.now(ZoneId.of("Z"))
     val onDeckFields: Array<Field<*>> = arrayOf(DSL.`val`(syncPointId), DSL.`val`(ON_DECK_ID), b.ID)
 
-    val (query, _, queryMostRecentDate) = bookCommonDao.getBooksOnDeckQuery(user.id, user.restrictions, filterOnLibraryIds, onDeckFields)
+    val (query, _, queryMostRecentDate) = bookCommonDao.getBooksOnDeckQuery(context.userId, context.restrictions, filterOnLibraryIds, onDeckFields)
 
     val count =
       dsl.insertInto(sprlb)

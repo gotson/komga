@@ -82,12 +82,11 @@ class KoboControllerTest(
     val book1 = makeBook("valid", libraryId = library1.id)
     val book2 = makeBook("valid", libraryId = library1.id)
 
-    val series =
-      makeSeries(name = "series1", libraryId = library1.id).also { series ->
-        seriesLifecycle.createSeries(series).let { created ->
-          seriesLifecycle.addBooks(created, listOf(book1, book2))
-        }
+    makeSeries(name = "series1", libraryId = library1.id).also { series ->
+      seriesLifecycle.createSeries(series).let { created ->
+        seriesLifecycle.addBooks(created, listOf(book1, book2))
       }
+    }
 
     mediaRepository.findById(book1.id).let { media -> mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = MediaType.EPUB.type)) }
     mediaRepository.findById(book2.id).let { media -> mediaRepository.update(media.copy(status = Media.Status.READY, mediaType = MediaType.EPUB.type)) }

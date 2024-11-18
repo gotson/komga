@@ -12,7 +12,7 @@ import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.LOWEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ImageConversionException
@@ -24,6 +24,9 @@ import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
@@ -92,6 +95,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
 import java.nio.file.NoSuchFileException
 import java.time.LocalDate
+import java.time.ZoneOffset
 
 private val logger = KotlinLogging.logger {}
 
@@ -148,16 +152,20 @@ class BookController(
         )
 
     val bookSearch =
-      BookSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-        searchTerm = searchTerm,
-        mediaStatus = mediaStatus,
-        readStatus = readStatus,
-        releasedAfter = releasedAfter,
-        tags = tags,
+      BookSearch(
+        SearchCondition.AllOfBook(
+          buildList {
+            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfBook(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+            if (!mediaStatus.isNullOrEmpty()) add(SearchCondition.AnyOfBook(mediaStatus.map { SearchCondition.MediaStatus(SearchOperator.Is(it)) }))
+            if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfBook(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
+            if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfBook(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
+            releasedAfter?.let { add(SearchCondition.ReleaseDate(SearchOperator.After(it.atStartOfDay(ZoneOffset.UTC)))) }
+          },
+        ),
+        searchTerm,
       )
 
-    return bookDtoRepository.findAll(bookSearch, principal.user.id, pageRequest, principal.user.restrictions)
+    return bookDtoRepository.findAll(bookSearch, SearchContext(principal.user), pageRequest)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -182,12 +190,8 @@ class BookController(
         )
 
     return bookDtoRepository.findAll(
-      BookSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(null),
-      ),
-      principal.user.id,
+      SearchContext(principal.user),
       pageRequest,
-      principal.user.restrictions,
     ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 

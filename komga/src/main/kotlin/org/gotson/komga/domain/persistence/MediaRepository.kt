@@ -26,7 +26,7 @@ interface MediaRepository {
 
   fun delete(bookId: String)
 
-  fun deleteByBookIds(bookIds: Collection<String>)
+  fun delete(bookIds: Collection<String>)
 
   fun count(): Long
 }

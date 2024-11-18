@@ -4,10 +4,12 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookPageNumbered
-import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.CopyMode
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.service.BookConverter
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
@@ -43,10 +45,14 @@ class TaskEmitter(
   fun analyzeUnknownAndOutdatedBooks(library: Library) {
     bookRepository
       .findAll(
-        BookSearch(
-          libraryIds = listOf(library.id),
-          mediaStatus = listOf(Media.Status.UNKNOWN, Media.Status.OUTDATED),
+        SearchCondition.AllOfBook(
+          SearchCondition.LibraryId(SearchOperator.Is(library.id)),
+          SearchCondition.AnyOfBook(
+            SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.UNKNOWN)),
+            SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.OUTDATED)),
+          ),
         ),
+        SearchContext.empty(),
         UnpagedSorted(Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))),
       )
       .content

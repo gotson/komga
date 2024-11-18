@@ -96,6 +96,7 @@ class SeriesCollectionControllerTest(
         SeriesCollection(
           name = "Lib1+2",
           seriesIds = (seriesLibrary1 + seriesLibrary2).map { it.id },
+          ordered = true,
         ),
       )
   }
@@ -141,6 +142,12 @@ class SeriesCollectionControllerTest(
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(10) }
           jsonPath("$.filtered") { value(false) }
+        }
+
+      mockMvc.get("/api/v1/collections/${colLibBoth.id}/series")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.content.length()") { value(10) }
         }
     }
 
@@ -950,7 +957,7 @@ class SeriesCollectionControllerTest(
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Lib1+2") }
-          jsonPath("$.ordered") { value(false) }
+          jsonPath("$.ordered") { value(true) }
           jsonPath("$.seriesIds.length()") { value(1) }
         }
     }

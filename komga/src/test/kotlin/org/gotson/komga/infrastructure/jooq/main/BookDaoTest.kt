@@ -2,7 +2,9 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Pageable
 import java.net.URL
 import java.time.LocalDateTime
 
@@ -159,11 +162,11 @@ class BookDaoTest(
     bookDao.insert(makeBook("2", libraryId = library.id, seriesId = series.id))
 
     val search =
-      BookSearch(
-        libraryIds = listOf(library.id),
-        seriesIds = listOf(series.id),
+      SearchCondition.AllOfBook(
+        SearchCondition.LibraryId(SearchOperator.Is(library.id)),
+        SearchCondition.SeriesId(SearchOperator.Is(series.id)),
       )
-    val found = bookDao.findAll(search)
+    val found = bookDao.findAll(search, SearchContext.empty(), Pageable.unpaged()).content
 
     assertThat(found).hasSize(2)
   }

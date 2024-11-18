@@ -2,7 +2,6 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Series
-import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.infrastructure.jooq.offset
@@ -198,43 +197,6 @@ class SeriesDaoTest(
     val found = seriesDao.findByIdOrNull("1287746")
 
     assertThat(found).isNull()
-  }
-
-  @Test
-  fun `given existing series when searching then result is returned`() {
-    val series =
-      Series(
-        name = "Series",
-        url = URL("file://series"),
-        fileLastModified = LocalDateTime.now(),
-        libraryId = library.id,
-      )
-
-    seriesDao.insert(series)
-
-    val search =
-      SeriesSearch(
-        libraryIds = listOf(library.id),
-      )
-    val found = seriesDao.findAll(search)
-
-    assertThat(found).hasSize(1)
-  }
-
-  @Test
-  fun `given existing series when searching by regex then result is returned`() {
-    val series =
-      Series(
-        name = "my Series",
-        url = URL("file://series"),
-        fileLastModified = LocalDateTime.now(),
-        libraryId = library.id,
-      )
-    seriesDao.insert(series)
-
-    assertThat(seriesDao.findAll(SeriesSearch(searchRegex = Pair("^my", SeriesSearch.SearchField.NAME)))).hasSize(1)
-    assertThat(seriesDao.findAll(SeriesSearch(searchRegex = Pair("ries$", SeriesSearch.SearchField.NAME)))).hasSize(1)
-    assertThat(seriesDao.findAll(SeriesSearch(searchRegex = Pair("series", SeriesSearch.SearchField.NAME)))).hasSize(1)
   }
 
   @Test

@@ -3,11 +3,9 @@ package org.gotson.komga.infrastructure.search
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.lucene.document.Document
 import org.apache.lucene.index.Term
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.SeriesCollection
-import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
@@ -45,8 +43,8 @@ class SearchIndexLifecycle(
 
     targetEntities.forEach {
       when (it) {
-        LuceneEntity.Book -> rebuildIndex(it, { p: Pageable -> bookDtoRepository.findAll(BookSearchWithReadProgress(), "unused", p) }, { e: BookDto -> e.bookToDocument() })
-        LuceneEntity.Series -> rebuildIndex(it, { p: Pageable -> seriesDtoRepository.findAll(SeriesSearchWithReadProgress(), "unused", p) }, { e: SeriesDto -> e.toDocument() })
+        LuceneEntity.Book -> rebuildIndex(it, { p: Pageable -> bookDtoRepository.findAll(p) }, { e: BookDto -> e.bookToDocument() })
+        LuceneEntity.Series -> rebuildIndex(it, { p: Pageable -> seriesDtoRepository.findAll(p) }, { e: SeriesDto -> e.toDocument() })
         LuceneEntity.Collection -> rebuildIndex(it, { p: Pageable -> collectionRepository.findAll(pageable = p) }, { e: SeriesCollection -> e.toDocument() })
         LuceneEntity.ReadList -> rebuildIndex(it, { p: Pageable -> readListRepository.findAll(pageable = p) }, { e: ReadList -> e.toDocument() })
       }

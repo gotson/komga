@@ -1,7 +1,10 @@
 package org.gotson.komga.domain.persistence
 
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.Series
-import org.gotson.komga.domain.model.SeriesSearch
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import java.net.URL
 
 interface SeriesRepository {
@@ -23,7 +26,11 @@ interface SeriesRepository {
 
   fun findAllByTitleContaining(title: String): Collection<Series>
 
-  fun findAll(search: SeriesSearch): Collection<Series>
+  fun findAll(
+    searchCondition: SearchCondition.Series?,
+    searchContext: SearchContext,
+    pageable: Pageable,
+  ): Page<Series>
 
   fun getLibraryId(seriesId: String): String?
 

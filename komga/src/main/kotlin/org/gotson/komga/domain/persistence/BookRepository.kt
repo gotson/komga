@@ -1,10 +1,10 @@
 package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
 import java.math.BigDecimal
 import java.net.URL
 
@@ -27,10 +27,9 @@ interface BookRepository {
     urls: Collection<URL>,
   ): Collection<Book>
 
-  fun findAll(bookSearch: BookSearch): Collection<Book>
-
   fun findAll(
-    bookSearch: BookSearch,
+    searchCondition: SearchCondition.Book?,
+    searchContext: SearchContext,
     pageable: Pageable,
   ): Page<Book>
 
@@ -64,14 +63,7 @@ interface BookRepository {
 
   fun findAllIdsBySeriesId(seriesId: String): Collection<String>
 
-  fun findAllIdsBySeriesIds(seriesIds: Collection<String>): Collection<String>
-
   fun findAllIdsByLibraryId(libraryId: String): Collection<String>
-
-  fun findAllIds(
-    bookSearch: BookSearch,
-    sort: Sort,
-  ): Collection<String>
 
   fun existsById(bookId: String): Boolean
 

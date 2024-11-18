@@ -1,22 +1,22 @@
 package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.BookSearch
-import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SyncPoint
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface SyncPointRepository {
   fun create(
-    user: KomgaUser,
     apiKeyId: String?,
     search: BookSearch,
+    context: SearchContext,
   ): SyncPoint
 
   fun addOnDeck(
     syncPointId: String,
-    user: KomgaUser,
-    filterOnLibraryIds: Collection<String>?,
+    context: SearchContext,
+    filterOnLibraryIds: List<String>?,
   )
 
   fun findByIdOrNull(syncPointId: String): SyncPoint?

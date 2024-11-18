@@ -53,7 +53,7 @@ class SeriesCollectionDao(
     selectBase(restrictions.isRestricted)
       .where(c.ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
       .firstOrNull()
 
@@ -71,7 +71,7 @@ class SeriesCollectionDao(
       searchCondition
         .and(s.LIBRARY_ID.inOrNoCondition(belongsToLibraryIds))
         .and(s.LIBRARY_ID.inOrNoCondition(filterOnLibraryIds))
-        .and(restrictions.toCondition(dsl))
+        .and(restrictions.toCondition())
 
     val queryIds =
       if (belongsToLibraryIds == null && filterOnLibraryIds == null && !restrictions.isRestricted)
@@ -128,12 +128,12 @@ class SeriesCollectionDao(
         .leftJoin(cs).on(c.ID.eq(cs.COLLECTION_ID))
         .apply { if (restrictions.isRestricted) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
         .where(cs.SERIES_ID.eq(containsSeriesId))
-        .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
+        .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
 
     return selectBase(restrictions.isRestricted)
       .where(c.ID.`in`(queryIds))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-      .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
+      .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
       .fetchAndMap(filterOnLibraryIds, restrictions)
   }
 
@@ -175,7 +175,7 @@ class SeriesCollectionDao(
             .apply { if (restrictions.isRestricted) leftJoin(sd).on(cs.SERIES_ID.eq(sd.SERIES_ID)) }
             .where(cs.COLLECTION_ID.eq(cr.id))
             .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-            .apply { if (restrictions.isRestricted) and(restrictions.toCondition(dsl)) }
+            .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
             .orderBy(cs.NUMBER.asc())
             .fetchInto(cs)
             .mapNotNull { it.seriesId }

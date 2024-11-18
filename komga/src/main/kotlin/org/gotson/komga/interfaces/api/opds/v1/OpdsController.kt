@@ -6,15 +6,18 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.apache.commons.io.FilenameUtils
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SeriesCollection
-import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -281,19 +284,19 @@ class OpdsController(
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("readProgress.readDate")))
 
     val bookSearch =
-      BookSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(null),
-        readStatus = setOf(ReadStatus.IN_PROGRESS),
-        mediaStatus = setOf(Media.Status.READY),
-        deleted = false,
+      BookSearch(
+        SearchCondition.AllOfBook(
+          SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+          SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)),
+          SearchCondition.Deleted(SearchOperator.IsFalse),
+        ),
       )
 
     val bookPage =
       bookDtoRepository.findAll(
         bookSearch,
-        principal.user.id,
+        SearchContext(principal.user),
         pageable,
-        principal.user.restrictions,
       )
 
     val builder = uriBuilder(ROUTE_ON_DECK)
@@ -329,14 +332,17 @@ class OpdsController(
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, sort)
 
     val seriesSearch =
-      SeriesSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(null),
-        searchTerm = searchTerm,
-        publishers = publishers,
-        deleted = false,
+      SeriesSearch(
+        SearchCondition.AllOfSeries(
+          buildList {
+            searchTerm?.let { add(SearchCondition.Title(SearchOperator.Contains(it))) }
+            publishers?.let { add(SearchCondition.AnyOfSeries(it.map { publisher -> SearchCondition.Publisher(SearchOperator.Is(publisher)) })) }
+            add(SearchCondition.Deleted(SearchOperator.IsFalse))
+          },
+        ),
       )
 
-    val seriesPage = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable, principal.user.restrictions)
+    val seriesPage = seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageable)
 
     val builder =
       uriBuilder(ROUTE_SERIES_ALL)
@@ -366,13 +372,9 @@ class OpdsController(
   ): OpdsFeed {
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("lastModified")))
 
-    val seriesSearch =
-      SeriesSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(null),
-        deleted = false,
-      )
+    val seriesSearch = SeriesSearch(SearchCondition.Deleted(SearchOperator.IsFalse))
 
-    val seriesPage = seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable, principal.user.restrictions)
+    val seriesPage = seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageable)
 
     val uriBuilder = uriBuilder(ROUTE_SERIES_LATEST)
 
@@ -398,14 +400,15 @@ class OpdsController(
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
     val bookSearch =
-      BookSearchWithReadProgress(
-        libraryIds = principal.user.getAuthorizedLibraryIds(null),
-        mediaStatus = setOf(Media.Status.READY),
-        deleted = false,
+      BookSearch(
+        SearchCondition.AllOfBook(
+          SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)),
+          SearchCondition.Deleted(SearchOperator.IsFalse),
+        ),
       )
     val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("createdDate")))
 
-    val bookPage = bookDtoRepository.findAll(bookSearch, principal.user.id, pageable, principal.user.restrictions)
+    val bookPage = bookDtoRepository.findAll(bookSearch, SearchContext(principal.user), pageable)
 
     val uriBuilder = uriBuilder(ROUTE_BOOKS_LATEST)
 
@@ -545,15 +548,17 @@ class OpdsController(
       contentRestrictionChecker.checkContentRestriction(principal.user, series)
 
       val bookSearch =
-        BookSearchWithReadProgress(
-          seriesIds = listOf(id),
-          mediaStatus = setOf(Media.Status.READY),
-          deleted = false,
+        BookSearch(
+          SearchCondition.AllOfBook(
+            SearchCondition.SeriesId(SearchOperator.Is(series.id)),
+            SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)),
+            SearchCondition.Deleted(SearchOperator.IsFalse),
+          ),
         )
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.numberSort")))
 
       val entries =
-        bookDtoRepository.findAll(bookSearch, principal.user.id, pageable, principal.user.restrictions)
+        bookDtoRepository.findAll(bookSearch, SearchContext(principal.user), pageable)
           .map { it.toOpdsEntry(mediaRepository.findById(it.id)) }
 
       val uriBuilder = uriBuilder("series/$id")
@@ -584,15 +589,17 @@ class OpdsController(
       if (!principal.user.canAccessLibrary(library)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
 
       val seriesSearch =
-        SeriesSearchWithReadProgress(
-          libraryIds = setOf(library.id),
-          deleted = false,
+        SeriesSearch(
+          SearchCondition.AllOfSeries(
+            SearchCondition.LibraryId(SearchOperator.Is(library.id)),
+            SearchCondition.Deleted(SearchOperator.IsFalse),
+          ),
         )
 
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.titleSort")))
 
       val entries =
-        seriesDtoRepository.findAll(seriesSearch, principal.user.id, pageable, principal.user.restrictions)
+        seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageable)
           .map { it.toOpdsEntry() }
 
       val uriBuilder = uriBuilder("libraries/$id")
@@ -628,13 +635,15 @@ class OpdsController(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, sort)
 
       val seriesSearch =
-        SeriesSearchWithReadProgress(
-          libraryIds = principal.user.getAuthorizedLibraryIds(null),
-          deleted = false,
+        SeriesSearch(
+          SearchCondition.AllOfSeries(
+            SearchCondition.CollectionId(SearchOperator.Is(collection.id)),
+            SearchCondition.Deleted(SearchOperator.IsFalse),
+          ),
         )
 
       val entries =
-        seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageable, principal.user.restrictions)
+        seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageable)
           .map { it.toOpdsEntry() }
 
       val uriBuilder = uriBuilder("collections/$id")
@@ -670,20 +679,14 @@ class OpdsController(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, sort)
 
       val bookSearch =
-        BookSearchWithReadProgress(
-          mediaStatus = setOf(Media.Status.READY),
-          deleted = false,
+        BookSearch(
+          SearchCondition.AllOfBook(
+            SearchCondition.ReadListId(SearchOperator.Is(readList.id)),
+            SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)),
+            SearchCondition.Deleted(SearchOperator.IsFalse),
+          ),
         )
-
-      val booksPage =
-        bookDtoRepository.findAllByReadListId(
-          readList.id,
-          principal.user.id,
-          principal.user.getAuthorizedLibraryIds(null),
-          bookSearch,
-          pageable,
-          principal.user.restrictions,
-        )
+      val booksPage = bookDtoRepository.findAll(bookSearch, SearchContext(principal.user), pageable)
 
       val entries =
         booksPage.map { bookDto ->

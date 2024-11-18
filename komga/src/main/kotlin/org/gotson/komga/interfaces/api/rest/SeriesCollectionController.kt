@@ -12,9 +12,12 @@ import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.SeriesMetadata
-import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
+import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.ThumbnailSeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
@@ -58,6 +61,8 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.server.ResponseStatusException
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
@@ -296,23 +301,38 @@ class SeriesCollectionController(
             sort,
           )
 
-      val seriesSearch =
-        SeriesSearchWithReadProgress(
-          libraryIds = principal.user.getAuthorizedLibraryIds(libraryIds),
-          metadataStatus = metadataStatus,
-          publishers = publishers,
-          deleted = deleted,
-          complete = complete,
-          languages = languages,
-          genres = genres,
-          tags = tags,
-          ageRatings = ageRatings?.map { it.toIntOrNull() },
-          releaseYears = releaseYears,
-          readStatus = readStatus,
-          authors = authors,
+      val search =
+        SeriesSearch(
+          SearchCondition.AllOfSeries(
+            buildList {
+              add(SearchCondition.CollectionId(SearchOperator.Is(collection.id)))
+              if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+              deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              complete?.let { add(SearchCondition.Complete(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              if (!metadataStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(metadataStatus.map { SearchCondition.SeriesStatus(SearchOperator.Is(it)) }))
+              if (!publishers.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(publishers.map { SearchCondition.Publisher(SearchOperator.Is(it)) }))
+              if (!languages.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(languages.map { SearchCondition.Language(SearchOperator.Is(it)) }))
+              if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
+              if (!genres.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(genres.map { SearchCondition.Genre(SearchOperator.Is(it)) }))
+              if (!ageRatings.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(ageRatings.map { it.toIntOrNull()?.let { ageRating -> SearchCondition.AgeRating(SearchOperator.Is(ageRating)) } ?: SearchCondition.AgeRating(SearchOperator.IsNullT()) }))
+              if (!releaseYears.isNullOrEmpty())
+                add(
+                  SearchCondition.AnyOfSeries(
+                    releaseYears.mapNotNull { it.toIntOrNull() }.map { releaseYear ->
+                      SearchCondition.AllOfSeries(
+                        SearchCondition.ReleaseDate(SearchOperator.After(ZonedDateTime.of(releaseYear - 1, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC))),
+                        SearchCondition.ReleaseDate(SearchOperator.Before(ZonedDateTime.of(releaseYear + 1, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC))),
+                      )
+                    },
+                  ),
+                )
+              if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
+              if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
+            },
+          ),
         )
 
-      seriesDtoRepository.findAllByCollectionId(collection.id, seriesSearch, principal.user.id, pageRequest, principal.user.restrictions)
+      seriesDtoRepository.findAll(search, SearchContext(principal.user), pageRequest)
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }

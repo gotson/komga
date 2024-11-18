@@ -503,7 +503,7 @@ class ReferentialDao(
       .orderBy(sd.PUBLISHER.collate(SqliteUdfDataSource.COLLATION_UNICODE_3))
       .fetchSet(sd.PUBLISHER)
 
-  override fun findAllAgeRatings(filterOnLibraryIds: Collection<String>?): Set<Int> =
+  override fun findAllAgeRatings(filterOnLibraryIds: Collection<String>?): Set<Int?> =
     dsl.selectDistinct(sd.AGE_RATING)
       .from(sd)
       .apply {
@@ -518,7 +518,7 @@ class ReferentialDao(
   override fun findAllAgeRatingsByLibrary(
     libraryId: String,
     filterOnLibraryIds: Collection<String>?,
-  ): Set<Int> =
+  ): Set<Int?> =
     dsl.selectDistinct(sd.AGE_RATING)
       .from(sd)
       .leftJoin(s).on(sd.SERIES_ID.eq(s.ID))

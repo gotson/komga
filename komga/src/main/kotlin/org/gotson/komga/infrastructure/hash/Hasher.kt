@@ -37,7 +37,7 @@ class Hasher {
   }
 
   @OptIn(ExperimentalUnsignedTypes::class)
-  private fun ByteArray.toHexString(): String =
+  fun ByteArray.toHexString(): String =
     asUByteArray().joinToString("") {
       it.toString(16).padStart(2, '0')
     }
