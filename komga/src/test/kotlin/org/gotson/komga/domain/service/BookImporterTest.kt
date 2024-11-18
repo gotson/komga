@@ -13,10 +13,13 @@ import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.CopyMode
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -372,6 +375,8 @@ class BookImporterTest(
         )
       }
 
+      bookLifecycle.addThumbnailForBook(ThumbnailBook(ByteArray(10), type = ThumbnailBook.Type.USER_UPLOADED, mediaType = "image/jpeg", fileSize = 10L, dimension = Dimension(1, 1), bookId = bookToUpgrade.id), MarkSelectedPreference.YES)
+
       // when
       bookImporter.importBook(sourceFile, series, CopyMode.MOVE, upgradeBookId = bookToUpgrade.id)
 
@@ -394,6 +399,11 @@ class BookImporterTest(
         assertThat(numberSort).isEqualTo(100F)
         assertThat(numberSortLock).isTrue
       }
+
+      val thumbnail = bookLifecycle.getThumbnail(books[2].id)
+      assertThat(thumbnail).isNotNull
+      assertThat(thumbnail!!.type).isEqualTo(ThumbnailBook.Type.USER_UPLOADED)
+      assertThat(thumbnail.fileSize).isEqualTo(10L)
 
       assertThat(sourceFile).doesNotExist()
     }

@@ -11,6 +11,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.Sidecar
+import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.withCode
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
@@ -20,6 +21,7 @@ import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
+import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.language.toIndexedMap
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
@@ -52,6 +54,7 @@ class BookImporter(
   private val bookRepository: BookRepository,
   private val mediaRepository: MediaRepository,
   private val metadataRepository: BookMetadataRepository,
+  private val thumbnailBookRepository: ThumbnailBookRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val readListRepository: ReadListRepository,
   private val libraryRepository: LibraryRepository,
@@ -189,6 +192,11 @@ class BookImporter(
         // copy metadata
         metadataRepository.findById(bookToUpgrade.id).let {
           metadataRepository.update(it.copy(bookId = importedBook.id))
+        }
+
+        // copy user uploaded thumbnails
+        thumbnailBookRepository.findAllByBookIdAndType(bookToUpgrade.id, setOf(ThumbnailBook.Type.USER_UPLOADED)).forEach { deleted ->
+          thumbnailBookRepository.update(deleted.copy(bookId = importedBook.id))
         }
 
         // copy read progress
