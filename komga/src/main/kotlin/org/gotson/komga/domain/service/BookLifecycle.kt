@@ -143,7 +143,7 @@ class BookLifecycle(
 
       ThumbnailBook.Type.SIDECAR -> {
         // delete existing thumbnail with the same url
-        thumbnailBookRepository.findAllByBookIdAndType(thumbnail.bookId, ThumbnailBook.Type.SIDECAR)
+        thumbnailBookRepository.findAllByBookIdAndType(thumbnail.bookId, setOf(ThumbnailBook.Type.SIDECAR))
           .filter { it.url == thumbnail.url }
           .forEach {
             thumbnailBookRepository.delete(it.id)
@@ -517,7 +517,7 @@ class BookLifecycle(
     if (!book.path.isWritable()) return logger.info { "Cannot delete book file, path is not writable: ${book.path}" }
 
     val thumbnails =
-      thumbnailBookRepository.findAllByBookIdAndType(book.id, ThumbnailBook.Type.SIDECAR)
+      thumbnailBookRepository.findAllByBookIdAndType(book.id, setOf(ThumbnailBook.Type.SIDECAR))
         .mapNotNull { it.url?.toURI()?.toPath() }
         .filter { it.exists() && it.isWritable() }
 

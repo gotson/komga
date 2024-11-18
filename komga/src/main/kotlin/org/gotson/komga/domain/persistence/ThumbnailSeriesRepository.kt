@@ -20,6 +20,8 @@ interface ThumbnailSeriesRepository {
 
   fun insert(thumbnail: ThumbnailSeries)
 
+  fun update(thumbnail: ThumbnailSeries)
+
   fun updateMetadata(thumbnails: Collection<ThumbnailSeries>)
 
   fun markSelected(thumbnail: ThumbnailSeries)

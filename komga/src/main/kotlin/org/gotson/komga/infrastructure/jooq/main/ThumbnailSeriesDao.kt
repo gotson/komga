@@ -87,6 +87,21 @@ class ThumbnailSeriesDao(
       .execute()
   }
 
+  override fun update(thumbnail: ThumbnailSeries) {
+    dsl.update(ts)
+      .set(ts.SERIES_ID, thumbnail.seriesId)
+      .set(ts.THUMBNAIL, thumbnail.thumbnail)
+      .set(ts.URL, thumbnail.url?.toString())
+      .set(ts.SELECTED, thumbnail.selected)
+      .set(ts.TYPE, thumbnail.type.toString())
+      .set(ts.MEDIA_TYPE, thumbnail.mediaType)
+      .set(ts.WIDTH, thumbnail.dimension.width)
+      .set(ts.HEIGHT, thumbnail.dimension.height)
+      .set(ts.FILE_SIZE, thumbnail.fileSize)
+      .where(ts.ID.eq(thumbnail.id))
+      .execute()
+  }
+
   override fun updateMetadata(thumbnails: Collection<ThumbnailSeries>) {
     dsl.batched { c ->
       thumbnails.forEach {

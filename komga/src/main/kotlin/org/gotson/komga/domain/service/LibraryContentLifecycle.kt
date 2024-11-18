@@ -13,6 +13,7 @@ import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -24,6 +25,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.language.notEquals
@@ -60,6 +62,7 @@ class LibraryContentLifecycle(
   private val collectionRepository: SeriesCollectionRepository,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val eventPublisher: ApplicationEventPublisher,
+  private val thumbnailSeriesRepository: ThumbnailSeriesRepository,
 ) {
   fun scanRootFolder(
     library: Library,
@@ -313,6 +316,11 @@ class LibraryContentLifecycle(
             )
           }
 
+          // copy user uploaded thumbnails
+          thumbnailSeriesRepository.findAllBySeriesIdIdAndType(match.first.id, ThumbnailSeries.Type.USER_UPLOADED).forEach { deleted ->
+            thumbnailSeriesRepository.update(deleted.copy(seriesId = newSeries.id))
+          }
+
           // replace deleted series by new series in collections
           collectionRepository.findAllContainingSeriesId(match.first.id, filterOnLibraryIds = null)
             .forEach { col ->
@@ -368,8 +376,8 @@ class LibraryContentLifecycle(
               mediaRepository.update(deleted.copy(bookId = bookToAdd.id))
             }
 
-            // copy generated thumbnails
-            thumbnailBookRepository.findAllByBookIdAndType(match.id, ThumbnailBook.Type.GENERATED).forEach { deleted ->
+            // copy generated and user uploaded thumbnails
+            thumbnailBookRepository.findAllByBookIdAndType(match.id, setOf(ThumbnailBook.Type.GENERATED, ThumbnailBook.Type.USER_UPLOADED)).forEach { deleted ->
               thumbnailBookRepository.update(deleted.copy(bookId = bookToAdd.id))
             }
 

@@ -13,7 +13,7 @@ interface ThumbnailBookRepository {
 
   fun findAllByBookIdAndType(
     bookId: String,
-    type: ThumbnailBook.Type,
+    type: Set<ThumbnailBook.Type>,
   ): Collection<ThumbnailBook>
 
   fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailBook>

@@ -31,11 +31,11 @@ class ThumbnailBookDao(
 
   override fun findAllByBookIdAndType(
     bookId: String,
-    type: ThumbnailBook.Type,
+    type: Set<ThumbnailBook.Type>,
   ): Collection<ThumbnailBook> =
     dsl.selectFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
-      .and(tb.TYPE.eq(type.toString()))
+      .and(tb.TYPE.`in`(type.map { it.name }))
       .fetchInto(tb)
       .map { it.toDomain() }
 

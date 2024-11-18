@@ -20,6 +20,7 @@ import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeBookPage
 import org.gotson.komga.domain.model.makeLibrary
@@ -566,6 +567,8 @@ class LibraryContentLifecycleTest(
       bookRepository.findByIdOrNull(book2.id)?.let {
         bookRepository.update(it.copy(fileHash = "sameHash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
+        bookMetadataRepository.update(bookMetadataRepository.findById(it.id).copy(tags = setOf("my-tag")))
+        bookLifecycle.addThumbnailForBook(ThumbnailBook(ByteArray(10), type = ThumbnailBook.Type.USER_UPLOADED, mediaType = "image/jpeg", fileSize = 10L, dimension = Dimension(1, 1), bookId = it.id), MarkSelectedPreference.YES)
       }
 
       every { mockHasher.computeHash(any<Path>()) } returns "sameHash"
@@ -587,6 +590,11 @@ class LibraryContentLifecycleTest(
 
       with(allBooks.last()) {
         assertThat(mediaRepository.findById(id).status).`as` { "Book media should be kept intact" }.isEqualTo(Media.Status.READY)
+        assertThat(bookMetadataRepository.findById(id).tags).containsExactlyInAnyOrder("my-tag")
+        val thumbnail = bookLifecycle.getThumbnail(id)
+        assertThat(thumbnail).isNotNull
+        assertThat(thumbnail!!.type).isEqualTo(ThumbnailBook.Type.USER_UPLOADED)
+        assertThat(thumbnail.fileSize).isEqualTo(10L)
       }
     }
 
@@ -609,6 +617,11 @@ class LibraryContentLifecycleTest(
         mediaRepository.findById(book.id).let { mediaRepository.update(it.copy(status = Media.Status.READY)) }
       }
 
+      seriesRepository.findAll().forEach { series ->
+        seriesMetadataRepository.findById(series.id).let { seriesMetadataRepository.update(it.copy(language = "en")) }
+        seriesLifecycle.addThumbnailForSeries(ThumbnailSeries(ByteArray(10), type = ThumbnailSeries.Type.USER_UPLOADED, mediaType = "image/jpeg", fileSize = 10L, dimension = Dimension(1, 1), seriesId = series.id), MarkSelectedPreference.YES)
+      }
+
       val slot = slot<Path>()
       every { mockHasher.computeHash(capture(slot)) } answers {
         "HASH-${slot.captured.nameWithoutExtension}"
@@ -627,6 +640,15 @@ class LibraryContentLifecycleTest(
 
       assertThat(allSeries.map { it.deletedDate }).containsOnlyNulls()
       assertThat(allSeries).hasSize(1)
+
+      allSeries.forEach { series ->
+        assertThat(seriesMetadataRepository.findById(series.id).language).isEqualTo("en")
+        val thumbnail = seriesLifecycle.getSelectedThumbnail(series.id)
+        assertThat(thumbnail).isNotNull
+        assertThat(thumbnail!!.type).isEqualTo(ThumbnailSeries.Type.USER_UPLOADED)
+        assertThat(thumbnail.fileSize).isEqualTo(10L)
+      }
+
       assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
       assertThat(allBooks).hasSize(2)
 
@@ -678,8 +700,8 @@ class LibraryContentLifecycleTest(
       with(allBooks.last()) {
         assertThat(name).`as` { "Book name should have changed to match the filename" }.isEqualTo("book3")
         assertThat(mediaRepository.findById(id).status).`as` { "Book media should be kept intact" }.isEqualTo(Media.Status.READY)
-        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, ThumbnailBook.Type.SIDECAR)).hasSize(0)
-        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, ThumbnailBook.Type.GENERATED)).hasSize(1)
+        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, setOf(ThumbnailBook.Type.SIDECAR))).hasSize(0)
+        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, setOf(ThumbnailBook.Type.GENERATED))).hasSize(1)
       }
     }
 
@@ -724,8 +746,8 @@ class LibraryContentLifecycleTest(
       with(allBooks.last()) {
         assertThat(name).`as` { "Book name should have changed to match the filename" }.isEqualTo("book3")
         assertThat(mediaRepository.findById(id).status).`as` { "Book media should be kept intact" }.isEqualTo(Media.Status.READY)
-        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, ThumbnailBook.Type.SIDECAR)).hasSize(0)
-        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, ThumbnailBook.Type.GENERATED)).hasSize(1)
+        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, setOf(ThumbnailBook.Type.SIDECAR))).hasSize(0)
+        assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, setOf(ThumbnailBook.Type.GENERATED))).hasSize(1)
       }
     }
 
