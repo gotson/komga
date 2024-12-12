@@ -476,7 +476,7 @@ class UserControllerTest(
 
       with(userRepository.findApiKeyByUserId(admin.id)) {
         assertThat(this).hasSize(1)
-        with(this.first()!!) {
+        with(this.first()) {
           assertThat(this.userId).isEqualTo(admin.id)
           assertThat(this.comment).isEqualTo("test api key")
         }
@@ -527,7 +527,7 @@ class UserControllerTest(
     @Test
     @WithMockCustomUser(id = "admin")
     fun `given user with api key when deleting different API key ID then returns bad request`() {
-      val apiKey = userLifecycle.createApiKey(admin, "test")!!
+      userLifecycle.createApiKey(admin, "test")!!
 
       mockMvc.delete("/api/v2/users/me/api-keys/abc123")
         .andExpect {
