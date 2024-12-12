@@ -58,6 +58,7 @@
         <filter-panels
           :filters-options="filterOptionsPanel"
           :filters-active.sync="filters"
+          :filters-active-mode.sync="filtersMode"
         />
       </template>
 
@@ -131,9 +132,9 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {parseBooleanFilter, parseQuerySort} from '@/functions/query-params'
+import {parseQuerySort} from '@/functions/query-params'
 import {ReadStatus} from '@/types/enum-books'
-import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
+import {SeriesStatus} from '@/types/enum-series'
 import {
   LIBRARY_CHANGED,
   LIBRARY_DELETED,
@@ -150,15 +151,51 @@ import FilterDrawer from '@/components/FilterDrawer.vue'
 import SortList from '@/components/SortList.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
 import FilterList from '@/components/FilterList.vue'
-import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
+import {
+  extractFilterOptionsValues,
+  mergeFilterParams,
+  sortOrFilterActive,
+  toNameValueCondition,
+} from '@/functions/filter'
 import {GroupCountDto, Oneshot, SeriesDto} from '@/types/komga-series'
-import {AuthorDto} from '@/types/komga-books'
 import {authorRoles} from '@/types/author-roles'
 import {LibrarySseDto, ReadProgressSeriesSseDto, SeriesSseDto} from '@/types/komga-sse'
 import {throttle} from 'lodash'
 import AlphabeticalNavigation from '@/components/AlphabeticalNavigation.vue'
 import {LibraryDto} from '@/types/komga-libraries'
 import {ItemContext} from '@/types/items'
+import {
+  SearchConditionAgeRating,
+  SearchConditionAllOfSeries,
+  SearchConditionAnyOfSeries,
+  SearchConditionAuthor,
+  SearchConditionComplete,
+  SearchConditionGenre,
+  SearchConditionLanguage,
+  SearchConditionLibraryId,
+  SearchConditionOneShot,
+  SearchConditionPublisher,
+  SearchConditionReadStatus,
+  SearchConditionReleaseDate,
+  SearchConditionSeries,
+  SearchConditionSeriesStatus,
+  SearchConditionSharingLabel,
+  SearchConditionTag,
+  SearchConditionTitleSort,
+  SearchOperatorAfter,
+  SearchOperatorBefore,
+  SearchOperatorBeginsWith,
+  SearchOperatorDoesNotBeginWith,
+  SearchOperatorIs,
+  SearchOperatorIsFalse,
+  SearchOperatorIsNot,
+  SearchOperatorIsNotNull,
+  SearchOperatorIsNull,
+  SearchOperatorIsTrue,
+  SeriesSearch,
+} from '@/types/komga-search'
+import i18n from '@/i18n'
+import {objIsEqual} from '@/functions/object'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
@@ -191,8 +228,10 @@ export default Vue.extend({
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.titleSort', order: 'asc'} as SortActive,
       filters: {} as FiltersActive,
+      filtersMode: {} as FiltersActiveMode,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
+      filterModeUnwatch: null as any,
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
       drawer: false,
@@ -266,10 +305,14 @@ export default Vue.extend({
     next()
   },
   computed: {
-    searchRegex(): string | undefined {
+    symbolCondition(): SearchConditionSeries | undefined {
       if (this.selectedSymbol === 'ALL') return undefined
-      if (this.selectedSymbol === '#') return '^[^a-z],title_sort'
-      return `^${this.selectedSymbol},title_sort`
+      if (this.selectedSymbol === '#') return new SearchConditionAllOfSeries(
+        this.alphabeticalNavigation
+          .filter(it => it !== 'ALL' && it !== '#')
+          .map(it => new SearchConditionTitleSort(new SearchOperatorDoesNotBeginWith(it))),
+      )
+      return new SearchConditionTitleSort(new SearchOperatorBeginsWith(this.selectedSymbol))
     },
     itemContext(): ItemContext[] {
       if (this.sortActive.key === 'booksMetadata.releaseDate') return [ItemContext.RELEASE_DATE]
@@ -291,24 +334,50 @@ export default Vue.extend({
       return {
         readStatus: {
           values: [
-            {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD},
-            {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
-            {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
+            {
+              name: this.$t('filter.unread').toString(),
+              value: new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.UNREAD)),
+              nValue: new SearchConditionReadStatus(new SearchOperatorIsNot(ReadStatus.UNREAD)),
+            },
+            {
+              name: this.$t('filter.in_progress').toString(),
+              value: new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.IN_PROGRESS)),
+              nValue: new SearchConditionReadStatus(new SearchOperatorIsNot(ReadStatus.IN_PROGRESS)),
+            },
+            {
+              name: this.$t('filter.read').toString(),
+              value: new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.READ)),
+              nValue: new SearchConditionReadStatus(new SearchOperatorIsNot(ReadStatus.READ)),
+            },
           ],
         },
         complete: {
-          values: [{name: this.$t('filter.complete').toString(), value: 'true', nValue: 'false'}],
+          values: [{
+            name: this.$t('filter.complete').toString(),
+            value: new SearchConditionComplete(new SearchOperatorIsTrue()),
+            nValue: new SearchConditionComplete(new SearchOperatorIsFalse()),
+          }],
         },
         oneshot: {
-          values: [{name: this.$t('filter.oneshot').toString(), value: 'true', nValue: 'false'}],
+          values: [{
+            name: this.$t('filter.oneshot').toString(),
+            value: new SearchConditionOneShot(new SearchOperatorIsTrue()),
+            nValue: new SearchConditionOneShot(new SearchOperatorIsFalse()),
+          }],
         },
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
       const r = {
-        status: {name: this.$t('filter.status').toString(), values: SeriesStatusKeyValue()},
-        genre: {name: this.$t('filter.genre').toString(), values: this.filterOptions.genre},
-        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag},
+        status: {
+          name: this.$t('filter.status').toString(), values: Object.values(SeriesStatus).map(x => ({
+            name: i18n.t(`enums.series_status.${x}`),
+            value: new SearchConditionSeriesStatus(new SearchOperatorIs(x)),
+            nValue: new SearchConditionSeriesStatus(new SearchOperatorIsNot(x)),
+          } as NameValue)),
+        },
+        genre: {name: this.$t('filter.genre').toString(), values: this.filterOptions.genre, anyAllSelector: true},
+        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag, anyAllSelector: true},
         publisher: {name: this.$t('filter.publisher').toString(), values: this.filterOptions.publisher},
         language: {name: this.$t('filter.language').toString(), values: this.filterOptions.language},
         ageRating: {
@@ -316,6 +385,7 @@ export default Vue.extend({
           values: this.filterOptions.ageRating.map((x: NameValue) => ({
               name: (x.value === 'None' ? this.$t('filter.age_rating_none').toString() : x.name),
               value: x.value,
+              nValue: x.nValue,
             } as NameValue),
           ),
         },
@@ -329,6 +399,7 @@ export default Vue.extend({
               .content
               .map(x => x.name)
           },
+          anyAllSelector: true,
         }
       })
       r['sharingLabel'] = {name: this.$t('filter.sharing_label').toString(), values: this.filterOptions.sharingLabel}
@@ -362,7 +433,7 @@ export default Vue.extend({
       this.selectedSymbol = symbol
       this.page = 1
       this.updateRoute()
-      this.loadPage(this.libraryId, 1, this.sortActive, this.searchRegex)
+      this.loadPage(this.libraryId, 1, this.sortActive, this.symbolCondition)
     },
     resetSortAndFilters() {
       this.drawer = false
@@ -391,13 +462,35 @@ export default Vue.extend({
         this.$komgaReferential.getSeriesReleaseDates(requestLibraryId),
         this.$komgaReferential.getSharingLabels(requestLibraryId),
       ])
-      this.$set(this.filterOptions, 'genre', toNameValue(genres))
-      this.$set(this.filterOptions, 'tag', toNameValue(tags))
-      this.$set(this.filterOptions, 'publisher', toNameValue(publishers))
-      this.$set(this.filterOptions, 'language', (languages))
-      this.$set(this.filterOptions, 'ageRating', toNameValue(ageRatings))
-      this.$set(this.filterOptions, 'releaseDate', toNameValue(releaseDates))
-      this.$set(this.filterOptions, 'sharingLabel', toNameValue(sharingLabels))
+      this.$set(this.filterOptions, 'genre', toNameValueCondition(genres, x => new SearchConditionGenre(new SearchOperatorIs(x)), x => new SearchConditionGenre(new SearchOperatorIsNot(x))))
+      this.$set(this.filterOptions, 'tag', toNameValueCondition(tags, x => new SearchConditionTag(new SearchOperatorIs(x)), x => new SearchConditionTag(new SearchOperatorIsNot(x))))
+      this.$set(this.filterOptions, 'publisher', toNameValueCondition(publishers, x => new SearchConditionPublisher(new SearchOperatorIs(x)), x => new SearchConditionPublisher(new SearchOperatorIsNot(x))))
+      this.$set(this.filterOptions, 'language', languages.map((x: NameValue) => {
+        return {
+          name: x.name,
+          value: new SearchConditionLanguage(new SearchOperatorIs(x.value)),
+          nValue: new SearchConditionLanguage(new SearchOperatorIsNot(x.value)),
+        } as NameValue
+      }))
+      this.$set(this.filterOptions, 'ageRating', toNameValueCondition(ageRatings, x => new SearchConditionAgeRating(isFinite(x) ? new SearchOperatorIs(x) : new SearchOperatorIsNull()), x => new SearchConditionAgeRating(isFinite(x) ? new SearchOperatorIsNot(x) : new SearchOperatorIsNotNull())))
+      this.$set(this.filterOptions, 'releaseDate', toNameValueCondition(
+        releaseDates,
+        x => {
+          const year = Number.parseInt(x)
+          return year ? new SearchConditionAllOfSeries([
+            new SearchConditionReleaseDate(new SearchOperatorAfter(`${year - 1}-12-31T12:00:00Z`)),
+            new SearchConditionReleaseDate(new SearchOperatorBefore(`${year + 1}-01-01T12:00:00Z`)),
+          ]) : new SearchConditionAllOfSeries([])
+        },
+        year =>
+          new SearchConditionAnyOfSeries([
+              new SearchConditionReleaseDate(new SearchOperatorAfter(`${year}-12-31T12:00:00Z`)),
+              new SearchConditionReleaseDate(new SearchOperatorBefore(`${year}-01-01T12:00:00Z`)),
+              new SearchConditionReleaseDate(new SearchOperatorIsNull()),
+            ],
+          ),
+      ))
+      this.$set(this.filterOptions, 'sharingLabel', toNameValueCondition(sharingLabels, x => new SearchConditionSharingLabel(new SearchOperatorIs(x)), x => new SearchConditionSharingLabel(new SearchOperatorIsNot(x))))
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
@@ -422,20 +515,36 @@ export default Vue.extend({
         activeFilters = this.$store.getters.getLibraryFilter(route.params.libraryId) || {} as FiltersActive
       }
       this.filters = this.validateFilters(activeFilters)
+
+      // get filter mode from query params or local storage
+      let activeFiltersMode: any
+      if(route.query.filterMode) {
+        activeFiltersMode = route.query.filterMode
+      } else {
+        activeFiltersMode = this.$store.getters.getLibraryFilterMode(route.params.libraryId) || {} as FiltersActiveMode
+      }
+      this.filtersMode = this.validateFiltersMode(activeFiltersMode)
+    },
+    validateFiltersMode(filtersMode: any): FiltersActiveMode {
+      const validFilterMode = {} as FiltersActiveMode
+      for (let key in filtersMode) {
+        if (filtersMode[key].allOf == 'true' || filtersMode[key].allOf == true) validFilterMode[key] = {allOf: true} as FilterMode
+      }
+      return validFilterMode
     },
     validateFilters(filters: FiltersActive): FiltersActive {
       const validFilter = {
-        status: filters.status?.filter(x => Object.keys(SeriesStatus).includes(x)) || [],
-        readStatus: filters.readStatus?.filter(x => Object.keys(ReadStatus).includes(x)) || [],
-        genre: filters.genre?.filter(x => this.filterOptions.genre.map(n => n.value).includes(x)) || [],
-        tag: filters.tag?.filter(x => this.filterOptions.tag.map(n => n.value).includes(x)) || [],
-        publisher: filters.publisher?.filter(x => this.filterOptions.publisher.map(n => n.value).includes(x)) || [],
-        language: filters.language?.filter(x => this.filterOptions.language.map(n => n.value).includes(x)) || [],
-        ageRating: filters.ageRating?.filter(x => this.filterOptions.ageRating.map(n => n.value).includes(x)) || [],
-        releaseDate: filters.releaseDate?.filter(x => this.filterOptions.releaseDate.map(n => n.value).includes(x)) || [],
-        complete: filters.complete?.filter(x => x === 'true' || x === 'false') || [],
-        oneshot: filters.oneshot?.filter(x => x === 'true' || x === 'false') || [],
-        sharingLabel: filters.sharingLabel?.filter(x => this.filterOptions.sharingLabel.map(n => n.value).includes(x)) || [],
+        status: this.$_.intersectionWith(filters.status, extractFilterOptionsValues(this.filterOptionsPanel.status.values), objIsEqual) || [],
+        readStatus: this.$_.intersectionWith(filters.readStatus, extractFilterOptionsValues(this.filterOptionsList.readStatus.values), objIsEqual) || [],
+        genre: this.$_.intersectionWith(filters.genre, extractFilterOptionsValues(this.filterOptions.genre), objIsEqual) || [],
+        tag: this.$_.intersectionWith(filters.tag, extractFilterOptionsValues(this.filterOptions.tag), objIsEqual) || [],
+        publisher: this.$_.intersectionWith(filters.publisher, extractFilterOptionsValues(this.filterOptions.publisher), objIsEqual) || [],
+        language: this.$_.intersectionWith(filters.language, extractFilterOptionsValues(this.filterOptions.language), objIsEqual) || [],
+        ageRating: this.$_.intersectionWith(filters.ageRating, extractFilterOptionsValues(this.filterOptions.ageRating), objIsEqual) || [],
+        releaseDate: this.$_.intersectionWith(filters.releaseDate, extractFilterOptionsValues(this.filterOptions.releaseDate), objIsEqual) || [],
+        complete: this.$_.intersectionWith(filters.complete, extractFilterOptionsValues(this.filterOptionsList.complete.values), objIsEqual) || [],
+        oneshot: this.$_.intersectionWith(filters.oneshot, extractFilterOptionsValues(this.filterOptionsList.oneshot.values), objIsEqual) || [],
+        sharingLabel: this.$_.intersectionWith(filters.sharingLabel, extractFilterOptionsValues(this.filterOptions.sharingLabel), objIsEqual) || [],
       } as any
       authorRoles.forEach((role: string) => {
         validFilter[role] = filters[role] || []
@@ -458,6 +567,10 @@ export default Vue.extend({
         this.$store.commit('setLibraryFilter', {id: this.libraryId, filter: val})
         this.updateRouteAndReload()
       })
+      this.filterModeUnwatch = this.$watch('filtersMode', (val) => {
+        this.$store.commit('setLibraryFilterMode', {id: this.libraryId, filterMode: val})
+        this.updateRouteAndReload()
+      })
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
         this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
@@ -465,12 +578,13 @@ export default Vue.extend({
 
       this.pageUnwatch = this.$watch('page', (val) => {
         this.updateRoute()
-        this.loadPage(this.libraryId, val, this.sortActive, this.searchRegex)
+        this.loadPage(this.libraryId, val, this.sortActive, this.symbolCondition)
       })
     },
     unsetWatches() {
       this.sortUnwatch()
       this.filterUnwatch()
+      this.filterModeUnwatch()
       this.pageUnwatch()
       this.pageSizeUnwatch()
     },
@@ -480,7 +594,7 @@ export default Vue.extend({
       this.page = 1
 
       this.updateRoute()
-      this.loadPage(this.libraryId, this.page, this.sortActive, this.searchRegex)
+      this.loadPage(this.libraryId, this.page, this.sortActive, this.symbolCondition)
 
       this.setWatches()
     },
@@ -500,7 +614,7 @@ export default Vue.extend({
     async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
 
-      await this.loadPage(libraryId, this.page, this.sortActive, this.searchRegex)
+      await this.loadPage(libraryId, this.page, this.sortActive, this.symbolCondition)
     },
     updateRoute() {
       const loc = {
@@ -514,13 +628,14 @@ export default Vue.extend({
         },
       } as Location
       mergeFilterParams(this.filters, loc.query)
+      loc.query['filterMode'] = this.validateFiltersMode(this.filtersMode)
       this.$router.replace(loc).catch((_: any) => {
       })
     },
     reloadPage: throttle(function (this: any) {
-      this.loadPage(this.libraryId, this.page, this.sortActive, this.searchRegex)
+      this.loadPage(this.libraryId, this.page, this.sortActive, this.symbolCondition)
     }, 1000),
-    async loadPage(libraryId: string, page: number, sort: SortActive, searchRegex?: string) {
+    async loadPage(libraryId: string, page: number, sort: SortActive, symbolCondition?: SearchConditionSeries) {
       this.selectedSeries = []
 
       const pageRequest = {
@@ -532,24 +647,43 @@ export default Vue.extend({
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
 
-      let authorsFilter = [] as AuthorDto[]
+      const conditions = [] as SearchConditionSeries[]
+      if (libraryId !== LIBRARIES_ALL) conditions.push(new SearchConditionLibraryId(new SearchOperatorIs(libraryId)))
+      if (this.filters.status && this.filters.status.length > 0) this.filtersMode?.status?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.status)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.status))
+      if (this.filters.readStatus && this.filters.readStatus.length > 0) conditions.push(new SearchConditionAnyOfSeries(this.filters.readStatus))
+      if (this.filters.genre && this.filters.genre.length > 0) this.filtersMode?.genre?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.genre)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.genre))
+      if (this.filters.tag && this.filters.tag.length > 0) this.filtersMode?.tag?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.tag)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.tag))
+      if (this.filters.language && this.filters.language.length > 0) this.filtersMode?.language?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.language)):conditions.push(new SearchConditionAnyOfSeries(this.filters.language))
+      if (this.filters.publisher && this.filters.publisher.length > 0) this.filtersMode?.publisher?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.publisher)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.publisher))
+      if (this.filters.ageRating && this.filters.ageRating.length > 0) this.filtersMode?.ageRating?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.ageRating)):conditions.push(new SearchConditionAnyOfSeries(this.filters.ageRating))
+      if (this.filters.releaseDate && this.filters.releaseDate.length > 0) this.filtersMode?.releaseDate?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.releaseDate)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.releaseDate))
+      if (this.filters.sharingLabel && this.filters.sharingLabel.length > 0) this.filtersMode?.sharingLabel?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.sharingLabel)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.sharingLabel))
+      if (this.filters.complete && this.filters.complete.length > 0) conditions.push(...this.filters.complete)
+      if (this.filters.oneshot && this.filters.oneshot.length > 0) conditions.push(...this.filters.oneshot)
       authorRoles.forEach((role: string) => {
-        if (role in this.filters) this.filters[role].forEach((name: string) => authorsFilter.push({
-          name: name,
-          role: role,
-        }))
+        if (role in this.filters) {
+          const authorConditions = this.filters[role].map((name: string) => new SearchConditionAuthor(new SearchOperatorIs({
+            name: name,
+            role: role,
+          })))
+          conditions.push(this.filtersMode[role]?.allOf ? new SearchConditionAllOfSeries(authorConditions) : new SearchConditionAnyOfSeries(authorConditions))
+        }
       })
 
-      const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
-      const complete = parseBooleanFilter(this.filters.complete)
-      const oneshot = parseBooleanFilter(this.filters.oneshot)
-      const seriesPage = await this.$komgaSeries.getSeries(requestLibraryId, pageRequest, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, searchRegex, complete, this.filters.sharingLabel, oneshot)
+      const groupConditions = this.$_.cloneDeep(conditions)
+      if (symbolCondition) conditions.push(symbolCondition)
+
+      const seriesPage = await this.$komgaSeries.getSeriesList({
+        condition: new SearchConditionAllOfSeries(conditions),
+      } as SeriesSearch, pageRequest)
 
       this.totalPages = seriesPage.totalPages
       this.totalElements = seriesPage.totalElements
       this.series = seriesPage.content
 
-      const seriesGroups = await this.$komgaSeries.getAlphabeticalGroups(requestLibraryId, undefined, this.filters.status, this.filters.readStatus, this.filters.genre, this.filters.tag, this.filters.language, this.filters.publisher, this.filters.ageRating, this.filters.releaseDate, authorsFilter, complete, this.filters.sharingLabel, oneshot)
+      const seriesGroups = await this.$komgaSeries.getSeriesListByAlphabeticalGroups({
+        condition: new SearchConditionAllOfSeries(groupConditions),
+      } as SeriesSearch)
       const nonAlpha = seriesGroups
         .filter((g) => !(/[a-zA-Z]/).test(g.group))
         .reduce((a, b) => a + b.count, 0)

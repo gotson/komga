@@ -82,6 +82,7 @@ import Vue, {PropType} from 'vue'
 import {SeriesDto} from '@/types/komga-series'
 import {debounce} from 'lodash'
 import {seriesThumbnailUrl} from '@/functions/urls'
+import {SearchConditionOneShot, SearchOperatorIsFalse, SeriesSearch} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'SeriesPickerDialog',
@@ -123,7 +124,10 @@ export default Vue.extend({
     searchItems: debounce(async function (this: any, query: string) {
       if (query) {
         this.showResults = false
-        this.results = (await this.$komgaSeries.getSeries(undefined, {unpaged: true}, query, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, this.includeOneshots ? undefined : false)).content
+        this.results = (await this.$komgaSeries.getSeriesList({
+          fullTextSearch: query,
+          condition: this.includeOneshots ? undefined : new SearchConditionOneShot(new SearchOperatorIsFalse()),
+        } as SeriesSearch, {unpaged: true})).content
         this.showResults = true
       } else {
         this.clear()

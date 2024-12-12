@@ -201,6 +201,8 @@
   "common": {
     "age": "Age",
     "all_libraries": "All Libraries",
+    "all_of": "All of",
+    "any_of": "Any of",
     "book": "Book",
     "books": "Books",
     "books_n": "No book | 1 book | {count} books",

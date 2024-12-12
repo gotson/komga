@@ -3,16 +3,25 @@ interface FiltersOptions {
     name?: string,
     values?: NameValue[],
     search?: (search: string) => Promise<string[]>,
+    anyAllSelector?: boolean,
   },
 }
 
 interface NameValue {
   name: string,
-  value: string,
+  value: any,
   // an optional negative value
-  nValue?: string,
+  nValue?: any,
 }
 
 interface FiltersActive {
-  [key: string]: string[],
+  [key: string]: any[],
+}
+
+interface FiltersActiveMode {
+  [key: string]: FilterMode,
+}
+
+interface FilterMode {
+  allOf: boolean,
 }

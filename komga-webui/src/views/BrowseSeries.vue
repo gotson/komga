@@ -127,20 +127,20 @@
             <v-row class="text-body-2">
               <v-col class="py-1 pe-0" cols="auto">
                 <v-chip label small link :color="statusChip.color" :text-color="statusChip.text"
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {status: [series.metadata.status]}}">
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {status: [new SearchConditionSeriesStatus(new SearchOperatorIs(series.metadata.status))]}}">
                   {{ $t(`enums.series_status.${series.metadata.status}`) }}
                 </v-chip>
               </v-col>
               <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata.ageRating">
                 <v-chip label small link
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [series.metadata.ageRating]}}"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [new SearchConditionAgeRating(new SearchOperatorIs(series.metadata.ageRating.toString()))]}}"
                 >
                   {{ series.metadata.ageRating }}+
                 </v-chip>
               </v-col>
               <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata.language">
                 <v-chip label small link
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [series.metadata.language]}}"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [new SearchConditionLanguage(new SearchOperatorIs(series.metadata.language))]}}"
                 >
                   {{ languageDisplay }}
                 </v-chip>
@@ -285,7 +285,7 @@
           <v-chip
             class="me-2"
             :title="series.metadata.publisher"
-            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [series.metadata.publisher]}}"
+            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [new SearchConditionPublisher(new SearchOperatorIs(series.metadata.publisher))]}}"
             label
             small
             outlined
@@ -315,7 +315,7 @@
                     :key="i"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [new SearchConditionGenre(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -347,7 +347,7 @@
                     :key="`series_${i}`"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [new SearchConditionTag(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -358,7 +358,7 @@
                     :key="`book_${i}`"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [new SearchConditionTag(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -521,6 +521,15 @@ import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesS
 import {ItemContext} from '@/types/items'
 import {Context, ContextOrigin} from '@/types/context'
 import {RawLocation} from 'vue-router/types/router'
+import {
+  SearchConditionAgeRating,
+  SearchConditionGenre,
+  SearchConditionLanguage,
+  SearchConditionPublisher,
+  SearchConditionSeriesStatus,
+  SearchConditionTag,
+  SearchOperatorIs,
+} from '@/types/komga-search'
 
 const tags = require('language-tags')
 
@@ -545,6 +554,13 @@ export default Vue.extend({
   },
   data: function () {
     return {
+      SearchConditionSeriesStatus,
+      SearchConditionPublisher,
+      SearchConditionGenre,
+      SearchConditionTag,
+      SearchConditionLanguage,
+      SearchConditionAgeRating,
+      SearchOperatorIs,
       series: {} as SeriesDto,
       context: {} as Context,
       books: [] as BookDto[],

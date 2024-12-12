@@ -180,6 +180,7 @@ import {throttle} from 'lodash'
 import {PageLoader} from '@/types/pageLoader'
 import {ItemContext} from '@/types/items'
 import {ReadListDto} from '@/types/komga-readlists'
+import {SearchConditionOneShot, SearchOperatorIsFalse, SeriesSearch} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'SearchView',
@@ -395,7 +396,10 @@ export default Vue.extend({
     }, 500),
     setupLoaders(search: string) {
       if (search) {
-        this.loaderSeries = new PageLoader<SeriesDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaSeries.getSeries(undefined, pageable, search, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, false))
+        this.loaderSeries = new PageLoader<SeriesDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaSeries.getSeriesList({
+          fullTextSearch: search,
+          condition: new SearchConditionOneShot(new SearchOperatorIsFalse()),
+        } as SeriesSearch, pageable))
         this.loaderBooks = new PageLoader<BookDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaBooks.getBooks(undefined, pageable, search))
         this.loaderCollections = new PageLoader<CollectionDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaCollections.getCollections(undefined, pageable, search))
         this.loaderReadLists = new PageLoader<ReadListDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaReadLists.getReadLists(undefined, pageable, search))

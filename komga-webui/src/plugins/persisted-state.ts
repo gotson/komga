@@ -29,7 +29,11 @@ export const persistedModule: Module<any, any> = {
       filter: {},
     },
     library: {
+      // DEPRECATED: this is the old filter, before criteria-dsl was introduced
       filter: {},
+      // this is the criteria-dsl filter, incompatible with the previous one
+      filterDsl: {},
+      filterMode: {},
       sort: {},
       route: {},
     },
@@ -63,7 +67,10 @@ export const persistedModule: Module<any, any> = {
       return state.readList.filter[id]
     },
     getLibraryFilter: (state) => (id: string) => {
-      return state.library.filter[id]
+      return state.library.filterDsl[id]
+    },
+    getLibraryFilterMode: (state) => (id: string) => {
+      return state.library.filterMode[id]
     },
     getLibrarySort: (state) => (id: string) => {
       return state.library.sort[id]
@@ -119,7 +126,10 @@ export const persistedModule: Module<any, any> = {
       state.readList.filter[id] = filter
     },
     setLibraryFilter(state, {id, filter}) {
-      state.library.filter[id] = filter
+      state.library.filterDsl[id] = filter
+    },
+    setLibraryFilterMode(state, {id, filterMode: filterMode}) {
+      state.library.filterMode[id] = filterMode
     },
     setLibrarySort(state, {id, sort}) {
       state.library.sort[id] = sort

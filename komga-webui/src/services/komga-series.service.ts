@@ -1,6 +1,7 @@
 import {AxiosInstance} from 'axios'
 import {AuthorDto, BookDto} from '@/types/komga-books'
 import {GroupCountDto, SeriesDto, SeriesMetadataUpdateDto, SeriesThumbnailDto} from '@/types/komga-series'
+import {SeriesSearch} from '@/types/komga-search'
 
 const qs = require('qs')
 
@@ -48,6 +49,21 @@ export default class KomgaSeriesService {
     }
   }
 
+  async getSeriesList(search: SeriesSearch, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+    try {
+      return (await this.http.post(`${API_SERIES}/list`, search, {
+        params: {...pageRequest},
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve series'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getAlphabeticalGroups(libraryId?: string, search?: string, status?: string[],
                               readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
                               publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[],
@@ -73,6 +89,18 @@ export default class KomgaSeriesService {
         params: params,
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve series alphabetical groups'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getSeriesListByAlphabeticalGroups(search: SeriesSearch): Promise<GroupCountDto[]>{
+    try {
+      return (await this.http.post(`${API_SERIES}/list/alphabetical-groups`, search)).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve series alphabetical groups'
       if (e.response.data.message) {

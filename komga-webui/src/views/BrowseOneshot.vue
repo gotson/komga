@@ -153,14 +153,14 @@
             <v-row class="text-body-2">
               <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata && series.metadata.ageRating">
                 <v-chip label small link
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [series.metadata.ageRating]}}"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [new SearchConditionAgeRating(new SearchOperatorIs(series.metadata.ageRating.toString()))]}}"
                 >
                   {{ series.metadata.ageRating }}+
                 </v-chip>
               </v-col>
               <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata.language">
                 <v-chip label small link
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [series.metadata.language]}}"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [new SearchConditionLanguage(new SearchOperatorIs(series.metadata.language))]}}"
                 >
                   {{ languageDisplay }}
                 </v-chip>
@@ -307,7 +307,7 @@
           <v-chip
             class="me-2"
             :title="series.metadata.publisher"
-            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [series.metadata.publisher]}}"
+            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [new SearchConditionPublisher(new SearchOperatorIs(series.metadata.publisher))]}}"
             label
             small
             outlined
@@ -337,7 +337,7 @@
                     :key="i"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [new SearchConditionGenre(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -402,7 +402,7 @@
                     :key="i"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: book.libraryId}, query: {tag: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: book.libraryId}, query: {tag: [new SearchConditionTag(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -480,7 +480,6 @@
 </template>
 
 <script lang="ts">
-import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import {groupAuthorsByRole} from '@/functions/authors'
@@ -526,6 +525,13 @@ import {ReadListDto} from '@/types/komga-readlists'
 import {Oneshot, SeriesDto} from '@/types/komga-series'
 import CollectionsExpansionPanels from '@/components/CollectionsExpansionPanels.vue'
 import OneshotActionsMenu from '@/components/menus/OneshotActionsMenu.vue'
+import {
+  SearchConditionAgeRating,
+  SearchConditionGenre, SearchConditionLanguage,
+  SearchConditionPublisher,
+  SearchConditionTag,
+  SearchOperatorIs,
+} from '@/types/komga-search'
 
 const tags = require('language-tags')
 
@@ -538,6 +544,12 @@ export default Vue.extend({
   },
   data: () => {
     return {
+      SearchConditionPublisher,
+      SearchConditionGenre,
+      SearchConditionTag,
+      SearchConditionLanguage,
+      SearchConditionAgeRating,
+      SearchOperatorIs,
       MediaStatus,
       ContextOrigin,
       book: {} as BookDto,
