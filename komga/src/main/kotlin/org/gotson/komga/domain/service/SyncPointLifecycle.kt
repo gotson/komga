@@ -25,27 +25,27 @@ class SyncPointLifecycle(
     val context = SearchContext(user)
 
     val syncPoint =
-      syncPointRepository.
-      create(
-        apiKeyId,
-        BookSearch(
-          SearchCondition.AllOfBook(
-            buildList {
-              libraryIds?.let {
-                add(
-                  SearchCondition.AnyOfBook(
-                    it.map { libraryId -> SearchCondition.LibraryId(SearchOperator.Is(libraryId)) },
-                  ),
-                )
-              }
-              add(SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)))
-              add(SearchCondition.MediaProfile(SearchOperator.Is(MediaProfile.EPUB)))
-              add(SearchCondition.Deleted(SearchOperator.IsFalse))
-            },
+      syncPointRepository
+        .create(
+          apiKeyId,
+          BookSearch(
+            SearchCondition.AllOfBook(
+              buildList {
+                libraryIds?.let {
+                  add(
+                    SearchCondition.AnyOfBook(
+                      it.map { libraryId -> SearchCondition.LibraryId(SearchOperator.Is(libraryId)) },
+                    ),
+                  )
+                }
+                add(SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)))
+                add(SearchCondition.MediaProfile(SearchOperator.Is(MediaProfile.EPUB)))
+                add(SearchCondition.Deleted(SearchOperator.IsFalse))
+              },
+            ),
           ),
-        ),
-        context,
-      )
+          context,
+        )
 
     syncPointRepository.addOnDeck(syncPoint.id, context, libraryIds)
 

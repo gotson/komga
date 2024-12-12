@@ -177,45 +177,45 @@ class SeriesController(
     val seriesSearch =
       SeriesSearch(
         condition =
-        SearchCondition.AllOfSeries(
-          buildList {
-            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
-            if (!collectionIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(collectionIds.map { SearchCondition.CollectionId(SearchOperator.Is(it)) }))
-            if (!metadataStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(metadataStatus.map { SearchCondition.SeriesStatus(SearchOperator.Is(it)) }))
-            if (!publishers.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(publishers.map { SearchCondition.Publisher(SearchOperator.Is(it)) }))
-            if (!languages.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(languages.map { SearchCondition.Language(SearchOperator.Is(it)) }))
-            if (!genres.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(genres.map { SearchCondition.Genre(SearchOperator.Is(it)) }))
-            if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
-            if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
-            if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
-            if (!ageRatings.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(ageRatings.map { it.toIntOrNull()?.let { ageRating -> SearchCondition.AgeRating(SearchOperator.Is(ageRating)) } ?: SearchCondition.AgeRating(SearchOperator.IsNullT()) }))
-            if (!releaseYears.isNullOrEmpty())
-              add(
-                SearchCondition.AnyOfSeries(
-                  releaseYears.mapNotNull { it.toIntOrNull() }.map { releaseYear ->
-                    SearchCondition.AllOfSeries(
-                      SearchCondition.ReleaseDate(SearchOperator.After(ZonedDateTime.of(releaseYear - 1, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC))),
-                      SearchCondition.ReleaseDate(SearchOperator.Before(ZonedDateTime.of(releaseYear + 1, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC))),
-                    )
-                  },
-                ),
-              )
+          SearchCondition.AllOfSeries(
+            buildList {
+              if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+              if (!collectionIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(collectionIds.map { SearchCondition.CollectionId(SearchOperator.Is(it)) }))
+              if (!metadataStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(metadataStatus.map { SearchCondition.SeriesStatus(SearchOperator.Is(it)) }))
+              if (!publishers.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(publishers.map { SearchCondition.Publisher(SearchOperator.Is(it)) }))
+              if (!languages.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(languages.map { SearchCondition.Language(SearchOperator.Is(it)) }))
+              if (!genres.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(genres.map { SearchCondition.Genre(SearchOperator.Is(it)) }))
+              if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
+              if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
+              if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
+              if (!ageRatings.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(ageRatings.map { it.toIntOrNull()?.let { ageRating -> SearchCondition.AgeRating(SearchOperator.Is(ageRating)) } ?: SearchCondition.AgeRating(SearchOperator.IsNullT()) }))
+              if (!releaseYears.isNullOrEmpty())
+                add(
+                  SearchCondition.AnyOfSeries(
+                    releaseYears.mapNotNull { it.toIntOrNull() }.map { releaseYear ->
+                      SearchCondition.AllOfSeries(
+                        SearchCondition.ReleaseDate(SearchOperator.After(ZonedDateTime.of(releaseYear - 1, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC))),
+                        SearchCondition.ReleaseDate(SearchOperator.Before(ZonedDateTime.of(releaseYear + 1, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC))),
+                      )
+                    },
+                  ),
+                )
 
-            if (!sharingLabels.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(sharingLabels.map { SearchCondition.SharingLabel(SearchOperator.Is(it)) }))
-            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-            complete?.let { add(SearchCondition.Complete(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-          },
-        ),
+              if (!sharingLabels.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(sharingLabels.map { SearchCondition.SharingLabel(SearchOperator.Is(it)) }))
+              oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              complete?.let { add(SearchCondition.Complete(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            },
+          ),
         fullTextSearch = searchTerm,
         regexSearch =
-        searchRegex?.let {
-          when (it.second.lowercase()) {
-            "title" -> Pair(it.first, SearchField.TITLE)
-            "title_sort" -> Pair(it.first, SearchField.TITLE_SORT)
-            else -> null
-          }
-        },
+          searchRegex?.let {
+            when (it.second.lowercase()) {
+              "title" -> Pair(it.first, SearchField.TITLE)
+              "title_sort" -> Pair(it.first, SearchField.TITLE_SORT)
+              else -> null
+            }
+          },
       )
 
     return seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageRequest)
@@ -288,45 +288,45 @@ class SeriesController(
     val seriesSearch =
       SeriesSearch(
         condition =
-        SearchCondition.AllOfSeries(
-          buildList {
-            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
-            if (!collectionIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(collectionIds.map { SearchCondition.CollectionId(SearchOperator.Is(it)) }))
-            if (!metadataStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(metadataStatus.map { SearchCondition.SeriesStatus(SearchOperator.Is(it)) }))
-            if (!publishers.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(publishers.map { SearchCondition.Publisher(SearchOperator.Is(it)) }))
-            if (!languages.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(languages.map { SearchCondition.Language(SearchOperator.Is(it)) }))
-            if (!genres.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(genres.map { SearchCondition.Genre(SearchOperator.Is(it)) }))
-            if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
-            if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
-            if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
-            if (!ageRatings.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(ageRatings.map { it.toIntOrNull()?.let { ageRating -> SearchCondition.AgeRating(SearchOperator.Is(ageRating)) } ?: SearchCondition.AgeRating(SearchOperator.IsNullT()) }))
-            if (!releaseYears.isNullOrEmpty())
-              add(
-                SearchCondition.AnyOfSeries(
-                  releaseYears.mapNotNull { it.toIntOrNull() }.map { releaseYear ->
-                    SearchCondition.AllOfSeries(
-                      SearchCondition.ReleaseDate(SearchOperator.After(ZonedDateTime.of(releaseYear - 1, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC))),
-                      SearchCondition.ReleaseDate(SearchOperator.Before(ZonedDateTime.of(releaseYear + 1, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC))),
-                    )
-                  },
-                ),
-              )
+          SearchCondition.AllOfSeries(
+            buildList {
+              if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+              if (!collectionIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(collectionIds.map { SearchCondition.CollectionId(SearchOperator.Is(it)) }))
+              if (!metadataStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(metadataStatus.map { SearchCondition.SeriesStatus(SearchOperator.Is(it)) }))
+              if (!publishers.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(publishers.map { SearchCondition.Publisher(SearchOperator.Is(it)) }))
+              if (!languages.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(languages.map { SearchCondition.Language(SearchOperator.Is(it)) }))
+              if (!genres.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(genres.map { SearchCondition.Genre(SearchOperator.Is(it)) }))
+              if (!tags.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(tags.map { SearchCondition.Tag(SearchOperator.Is(it)) }))
+              if (!readStatus.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(readStatus.map { SearchCondition.ReadStatus(SearchOperator.Is(it)) }))
+              if (!authors.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(authors.map { SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(it.name, it.role))) }))
+              if (!ageRatings.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(ageRatings.map { it.toIntOrNull()?.let { ageRating -> SearchCondition.AgeRating(SearchOperator.Is(ageRating)) } ?: SearchCondition.AgeRating(SearchOperator.IsNullT()) }))
+              if (!releaseYears.isNullOrEmpty())
+                add(
+                  SearchCondition.AnyOfSeries(
+                    releaseYears.mapNotNull { it.toIntOrNull() }.map { releaseYear ->
+                      SearchCondition.AllOfSeries(
+                        SearchCondition.ReleaseDate(SearchOperator.After(ZonedDateTime.of(releaseYear - 1, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC))),
+                        SearchCondition.ReleaseDate(SearchOperator.Before(ZonedDateTime.of(releaseYear + 1, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC))),
+                      )
+                    },
+                  ),
+                )
 
-            if (!sharingLabels.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(sharingLabels.map { SearchCondition.SharingLabel(SearchOperator.Is(it)) }))
-            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-            complete?.let { add(SearchCondition.Complete(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-          },
-        ),
+              if (!sharingLabels.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(sharingLabels.map { SearchCondition.SharingLabel(SearchOperator.Is(it)) }))
+              oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              complete?.let { add(SearchCondition.Complete(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            },
+          ),
         fullTextSearch = searchTerm,
         regexSearch =
-        searchRegex?.let {
-          when (it.second.lowercase()) {
-            "title" -> Pair(it.first, SearchField.TITLE)
-            "title_sort" -> Pair(it.first, SearchField.TITLE_SORT)
-            else -> null
-          }
-        },
+          searchRegex?.let {
+            when (it.second.lowercase()) {
+              "title" -> Pair(it.first, SearchField.TITLE)
+              "title_sort" -> Pair(it.first, SearchField.TITLE_SORT)
+              else -> null
+            }
+          },
       )
 
     return seriesDtoRepository.countByFirstCharacter(seriesSearch, SearchContext(principal.user))
@@ -672,41 +672,41 @@ class SeriesController(
             ageRating = if (isSet("ageRating")) ageRating else existing.ageRating,
             ageRatingLock = ageRatingLock ?: existing.ageRatingLock,
             genres =
-            if (isSet("genres")) {
-              if (genres != null) genres!! else emptySet()
-            } else {
-              existing.genres
-            },
+              if (isSet("genres")) {
+                if (genres != null) genres!! else emptySet()
+              } else {
+                existing.genres
+              },
             genresLock = genresLock ?: existing.genresLock,
             tags =
-            if (isSet("tags")) {
-              if (tags != null) tags!! else emptySet()
-            } else {
-              existing.tags
-            },
+              if (isSet("tags")) {
+                if (tags != null) tags!! else emptySet()
+              } else {
+                existing.tags
+              },
             tagsLock = tagsLock ?: existing.tagsLock,
             totalBookCount = if (isSet("totalBookCount")) totalBookCount else existing.totalBookCount,
             totalBookCountLock = totalBookCountLock ?: existing.totalBookCountLock,
             sharingLabels =
-            if (isSet("sharingLabels")) {
-              if (sharingLabels != null) sharingLabels!! else emptySet()
-            } else {
-              existing.sharingLabels
-            },
+              if (isSet("sharingLabels")) {
+                if (sharingLabels != null) sharingLabels!! else emptySet()
+              } else {
+                existing.sharingLabels
+              },
             sharingLabelsLock = sharingLabelsLock ?: existing.sharingLabelsLock,
             links =
-            if (isSet("links")) {
-              if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
-            } else {
-              existing.links
-            },
+              if (isSet("links")) {
+                if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
+              } else {
+                existing.links
+              },
             linksLock = linksLock ?: existing.linksLock,
             alternateTitles =
-            if (isSet("alternateTitles")) {
-              if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
-            } else {
-              existing.alternateTitles
-            },
+              if (isSet("alternateTitles")) {
+                if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
+              } else {
+                existing.alternateTitles
+              },
             alternateTitlesLock = alternateTitlesLock ?: existing.alternateTitlesLock,
           )
         }

@@ -12,7 +12,7 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 @SpringBootTest
-    class SeriesSearchTest(
+class SeriesSearchTest(
   @Autowired private val mapper: ObjectMapper,
 ) {
   private val writer = mapper.writerWithDefaultPrettyPrinter()
@@ -23,7 +23,7 @@ import java.time.ZonedDateTime
       SeriesSearch(
         SearchCondition.AllOfSeries(
           SearchCondition.AnyOfSeries(
-            emptyList()
+            emptyList(),
           ),
           SearchCondition.AnyOfSeries(
             SearchCondition.LibraryId(SearchOperator.Is("library1")),
