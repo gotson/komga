@@ -25,33 +25,11 @@ class KomgaProperties {
     }
   }
 
-  @Deprecated("Moved to library options since 1.5.0")
-  var librariesScanCron: String = ""
-
-  @Deprecated("Moved to library options since 1.5.0")
-  var librariesScanStartup: Boolean = false
-
-  @Deprecated("Moved to library options since 1.5.0")
-  var librariesScanDirectoryExclusions: List<String> = emptyList()
-
-  @Deprecated("Moved to server settings since 1.5.0")
-  var deleteEmptyReadLists: Boolean = true
-
-  @Deprecated("Moved to server settings since 1.5.0")
-  var deleteEmptyCollections: Boolean = true
-
   @Positive
   var pageHashing: Int = 3
 
   @Positive
   var epubDivinaLetterCountThreshold: Int = 15
-
-  @Deprecated("Moved to server settings since 1.5.0")
-  var rememberMe = RememberMe()
-
-  @Deprecated("Removed since 1.5.0", ReplaceWith("server.servlet.session.timeout"))
-  @DurationUnit(ChronoUnit.SECONDS)
-  var sessionTimeout: Duration = Duration.ofMinutes(30)
 
   var oauth2AccountCreation: Boolean = false
 
@@ -68,25 +46,6 @@ class KomgaProperties {
   var configDir: String? = null
 
   var kobo = Kobo()
-
-  @Positive
-  @Deprecated("Artemis has been replaced")
-  var taskConsumers: Int = 1
-
-  @Positive
-  @Deprecated("Artemis has been replaced")
-  var taskConsumersMax: Int = 1
-
-  @Deprecated("Moved to server settings since 1.5.0")
-  class RememberMe {
-    @Deprecated("Moved to server settings since 1.5.0")
-    @get:NotBlank
-    var key: String? = null
-
-    @Deprecated("Moved to server settings since 1.5.0")
-    @DurationUnit(ChronoUnit.SECONDS)
-    var validity: Duration = Duration.ofDays(14)
-  }
 
   class Cors {
     var allowedOrigins: List<String> = emptyList()
