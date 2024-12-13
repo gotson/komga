@@ -1,7 +1,8 @@
 FROM eclipse-temurin:17-jre as builder
 ARG JAR={{distributionArtifactFile}}
-COPY assembly/* /
-RUN java -Djarmode=layertools -jar ${JAR} extract
+WORKDIR /builder
+COPY assembly/${JAR} application.jar
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
 # amd64 builder: uses ubuntu:22.04, as libjxl is not available on more recent versions
 FROM ubuntu:22.04 as build-amd64
@@ -50,12 +51,12 @@ FROM build-${TARGETARCH} AS runner
 VOLUME /tmp
 VOLUME /config
 WORKDIR app
-COPY --from=builder dependencies/ ./
-COPY --from=builder spring-boot-loader/ ./
-COPY --from=builder snapshot-dependencies/ ./
-COPY --from=builder application/ ./
+COPY --from=builder /builder/extracted/dependencies/ ./
+COPY --from=builder /builder/extracted/spring-boot-loader/ ./
+COPY --from=builder /builder/extracted/snapshot-dependencies/ ./
+COPY --from=builder /builder/extracted/application/ ./
 ENV KOMGA_CONFIGDIR="/config"
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
-ENTRYPOINT ["java", "-Dspring.profiles.include=docker", "--enable-preview", "--enable-native-access=ALL-UNNAMED", "org.springframework.boot.loader.launch.JarLauncher", "--spring.config.additional-location=file:/config/"]
+ENTRYPOINT ["java", "-Dspring.profiles.include=docker", "--enable-preview", "--enable-native-access=ALL-UNNAMED", "-jar", "application.jar", "--spring.config.additional-location=file:/config/"]
 EXPOSE 25600
 LABEL org.opencontainers.image.source="https://github.com/gotson/komga"
