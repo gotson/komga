@@ -91,9 +91,9 @@ dependencies {
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:3.10.1")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-tiff:3.10.1")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-webp:3.10.1")
-  runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:0.6.2")
-  runtimeOnly("com.github.gotson.nightmonkeys:imageio-heif:0.6.2")
-  runtimeOnly("com.github.gotson.nightmonkeys:imageio-webp:0.6.2")
+  runtimeOnly("com.github.gotson.nightmonkeys:imageio-jxl:1.0.0")
+  runtimeOnly("com.github.gotson.nightmonkeys:imageio-heif:1.0.0")
+  runtimeOnly("com.github.gotson.nightmonkeys:imageio-webp:1.0.0")
   // support for jpeg2000
   runtimeOnly("com.github.jai-imageio:jai-imageio-jpeg2000:1.4.0")
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.4")
