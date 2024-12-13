@@ -12,7 +12,7 @@ plugins {
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
+  id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
   id("com.github.ben-manes.versions") version "0.51.0"
   id("org.jreleaser") version "1.10.0"
 }
@@ -44,7 +44,7 @@ allprojects {
   }
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version = "1.1.1"
+    version = "1.5.0"
   }
 }
 
