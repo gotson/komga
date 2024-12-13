@@ -9,7 +9,7 @@ plugins {
   kotlin("jvm")
   kotlin("plugin.spring")
   kotlin("kapt")
-  id("org.springframework.boot") version "3.2.2"
+  id("org.springframework.boot") version "3.4.0"
   id("com.gorylenko.gradle-git-properties") version "2.4.1"
   id("nu.studer.jooq") version "9.0"
   id("org.flywaydb.flyway") version "9.22.3"
@@ -42,7 +42,7 @@ dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
 
-  api(platform("org.springframework.boot:spring-boot-dependencies:3.2.2"))
+  api(platform("org.springframework.boot:spring-boot-dependencies:3.4.0"))
 
   api("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -56,7 +56,7 @@ dependencies {
   implementation("com.github.gotson:spring-session-caffeine:2.0.0")
   implementation("org.springframework.data:spring-data-commons")
 
-  kapt("org.springframework.boot:spring-boot-configuration-processor:3.2.2")
+  kapt("org.springframework.boot:spring-boot-configuration-processor:3.4.0")
 
   implementation("org.flywaydb:flyway-core")
 
@@ -131,9 +131,9 @@ dependencies {
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.37")
   kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.37")
-  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.2.2")
+  kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.4.0")
 
-  developmentOnly("org.springframework.boot:spring-boot-devtools:3.2.2")
+  developmentOnly("org.springframework.boot:spring-boot-devtools:3.4.0")
 }
 
 val webui = "$rootDir/komga-webui"
