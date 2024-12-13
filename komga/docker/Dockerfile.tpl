@@ -35,10 +35,10 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/aarch64-linux-gnu"
 # arm builder: uses temurin-17, as arm32 support was dropped in JDK 21
 FROM eclipse-temurin:17-jre as build-arm
 RUN apt -y update && \
-    apt -y install wget && \
+    apt -y install wget curl && \
     wget "https://github.com/pgaskin/kepubify/releases/latest/download/kepubify-linux-arm" -O /usr/bin/kepubify && \
     chmod +x /usr/bin/kepubify && \
-    apt -y remove wget && apt -y autoremove && rm -rf /var/lib/apt/lists/*
+    apt -y autoremove && rm -rf /var/lib/apt/lists/*
 
 FROM build-${TARGETARCH} AS runner
 VOLUME /tmp
