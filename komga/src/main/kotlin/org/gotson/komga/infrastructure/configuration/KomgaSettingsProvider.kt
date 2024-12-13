@@ -39,7 +39,7 @@ class KomgaSettingsProvider(
     rememberMeKey = getRandomRememberMeKey()
   }
 
-  private fun getRandomRememberMeKey() = RandomStringUtils.randomAlphanumeric(32)
+  private fun getRandomRememberMeKey() = RandomStringUtils.secure().nextAlphanumeric(32)
 
   var rememberMeDuration: Duration =
     (serverSettingsDao.getSettingByKey(Settings.REMEMBER_ME_DURATION.name, Int::class.java) ?: 365).days

@@ -50,6 +50,6 @@ class InitialUsersProdConfiguration {
   @Bean
   fun initialUsers(): List<KomgaUser> =
     listOf(
-      KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), roleAdmin = true),
+      KomgaUser("admin@example.org", RandomStringUtils.secure().nextAlphanumeric(12), roleAdmin = true),
     )
 }

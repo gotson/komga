@@ -76,7 +76,7 @@ management:
       roles: ADMIN
       show-details: when_authorized
     shutdown:
-      enabled: true
+      access: unrestricted
   info:
     java:
       enabled: true

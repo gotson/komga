@@ -18,7 +18,7 @@ import javax.sql.DataSource
 // taken from https://github.com/spring-projects/spring-boot/blob/v3.1.4/spring-boot-project/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/jooq/JooqAutoConfiguration.java
 // as advised in https://docs.spring.io/spring-boot/docs/3.1.4/reference/htmlsingle/#howto.data-access.configure-jooq-with-multiple-datasources
 @Configuration
-class JooqConfiguration {
+class KomgaJooqConfiguration {
   @Bean("dslContext")
   @Primary
   fun mainDslContext(

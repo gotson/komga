@@ -228,8 +228,8 @@ class KoboController(
      * Return dummy data to keep the device happy.
      */
     return AuthDto(
-      accessToken = RandomStringUtils.randomAlphanumeric(24),
-      refreshToken = RandomStringUtils.randomAlphanumeric(24),
+      accessToken = RandomStringUtils.secure().nextAlphanumeric(24),
+      refreshToken = RandomStringUtils.secure().nextAlphanumeric(24),
       trackingId = UUID.randomUUID().toString(),
       userKey = body.get("UserKey")?.asText() ?: "",
     )
@@ -688,7 +688,7 @@ class KoboController(
     if (!thumbnailBookRepository.existsById(thumbnailId) && koboProxy.isEnabled()) {
       ResponseEntity
         .status(HttpStatus.TEMPORARY_REDIRECT)
-        .location(UriComponentsBuilder.fromHttpUrl(koboProxy.imageHostUrl).buildAndExpand(thumbnailId, width, height).toUri())
+        .location(UriComponentsBuilder.fromUriString(koboProxy.imageHostUrl).buildAndExpand(thumbnailId, width, height).toUri())
         .build()
     } else {
       val poster = bookLifecycle.getThumbnailBytesByThumbnailId(thumbnailId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

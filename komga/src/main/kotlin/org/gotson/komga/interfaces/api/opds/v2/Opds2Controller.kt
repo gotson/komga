@@ -416,7 +416,7 @@ class Opds2Controller(
     @PathVariable(name = "id", required = false) libraryId: String?,
     @Parameter(hidden = true) page: Pageable,
   ): FeedDto {
-    val (library, authorizedLibraryIds) = checkLibraryAccess(libraryId, principal)
+    val (library, _) = checkLibraryAccess(libraryId, principal)
 
     val entries =
       seriesDtoRepository.findAll(

@@ -7,11 +7,12 @@ import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.kobo.KoboHeaders.X_KOBO_SYNCTOKEN
 import org.gotson.komga.infrastructure.web.getCurrentRequest
 import org.gotson.komga.language.contains
+import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder
+import org.springframework.boot.http.client.ClientHttpRequestFactorySettings
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
-import org.springframework.http.client.ReactorNettyClientRequestFactory
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestClient
@@ -32,11 +33,11 @@ class KoboProxy(
     RestClient.builder()
       .baseUrl("https://storeapi.kobo.com")
       .requestFactory(
-        ReactorNettyClientRequestFactory().apply {
-          setConnectTimeout(1.minutes.toJavaDuration())
-          setReadTimeout(1.minutes.toJavaDuration())
-          setExchangeTimeout(1.minutes.toJavaDuration())
-        },
+        ClientHttpRequestFactoryBuilder.reactor().build(
+          ClientHttpRequestFactorySettings.defaults()
+            .withReadTimeout(1.minutes.toJavaDuration())
+            .withConnectTimeout(1.minutes.toJavaDuration()),
+        ),
       )
       .build()
 
