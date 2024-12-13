@@ -13,10 +13,6 @@ plugins {
 
 group = "org.gotson"
 
-kotlin {
-  jvmToolchain(21)
-}
-
 tasks {
   withType<JavaCompile> {
     sourceCompatibility = "17"

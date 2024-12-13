@@ -19,10 +19,6 @@ plugins {
   jacoco
 }
 
-kotlin {
-  jvmToolchain(17)
-}
-
 val benchmarkSourceSet =
   sourceSets.create("benchmark") {
     java {
