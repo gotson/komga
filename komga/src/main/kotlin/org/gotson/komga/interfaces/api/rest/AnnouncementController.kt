@@ -29,7 +29,8 @@ class AnnouncementController(
   private val webClient = WebClient.create("$WEBSITE/blog/feed.json")
 
   private val cache =
-    Caffeine.newBuilder()
+    Caffeine
+      .newBuilder()
       .expireAfterAccess(1, TimeUnit.DAYS)
       .build<String, JsonFeedDto>()
 
@@ -37,14 +38,14 @@ class AnnouncementController(
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   fun getAnnouncements(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-  ): JsonFeedDto {
-    return cache.get("announcements") { fetchWebsiteAnnouncements() }
+  ): JsonFeedDto =
+    cache
+      .get("announcements") { fetchWebsiteAnnouncements() }
       ?.let { feed ->
         val read = userRepository.findAnnouncementIdsReadByUserId(principal.user.id)
         feed.copy(items = feed.items.map { item -> item.copy(komgaExtension = JsonFeedDto.KomgaExtensionDto(read.contains(item.id))) })
       }
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-  }
 
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
   @PutMapping
@@ -58,7 +59,8 @@ class AnnouncementController(
 
   fun fetchWebsiteAnnouncements(): JsonFeedDto? {
     val response =
-      webClient.get()
+      webClient
+        .get()
         .retrieve()
         .toEntity(JsonFeedDto::class.java)
         .block()

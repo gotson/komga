@@ -14,7 +14,8 @@ class ServerSettingsDao(
     key: String,
     clazz: Class<T>,
   ): T? =
-    dsl.select(s.VALUE)
+    dsl
+      .select(s.VALUE)
       .from(s)
       .where(s.KEY.eq(key))
       .fetchOneInto(clazz)
@@ -23,7 +24,8 @@ class ServerSettingsDao(
     key: String,
     value: String,
   ) {
-    dsl.insertInto(s)
+    dsl
+      .insertInto(s)
       .values(key, value)
       .onDuplicateKeyUpdate()
       .set(s.VALUE, value)

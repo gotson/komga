@@ -21,16 +21,13 @@ class LuceneConfiguration(
     }
 
   @Bean
-  fun searchAnalyzer() =
-    MultiLingualAnalyzer()
+  fun searchAnalyzer() = MultiLingualAnalyzer()
 
   @Bean
   @Profile("test")
-  fun memoryDirectory(): Directory =
-    ByteBuffersDirectory()
+  fun memoryDirectory(): Directory = ByteBuffersDirectory()
 
   @Bean
   @Profile("!test")
-  fun diskDirectory(): Directory =
-    FSDirectory.open(Paths.get(komgaProperties.lucene.dataDirectory), SingleInstanceLockFactory())
+  fun diskDirectory(): Directory = FSDirectory.open(Paths.get(komgaProperties.lucene.dataDirectory), SingleInstanceLockFactory())
 }

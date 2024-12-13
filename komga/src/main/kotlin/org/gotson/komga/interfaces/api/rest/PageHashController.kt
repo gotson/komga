@@ -48,8 +48,7 @@ class PageHashController(
   fun getKnownPageHashes(
     @RequestParam(name = "action", required = false) actions: List<PageHashKnown.Action>?,
     @Parameter(hidden = true) page: Pageable,
-  ): Page<PageHashKnownDto> =
-    pageHashRepository.findAllKnown(actions, page).map { it.toDto() }
+  ): Page<PageHashKnownDto> = pageHashRepository.findAllKnown(actions, page).map { it.toDto() }
 
   @GetMapping("/{pageHash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
@@ -63,8 +62,7 @@ class PageHashController(
   @PageableAsQueryParam
   fun getUnknownPageHashes(
     @Parameter(hidden = true) page: Pageable,
-  ): Page<PageHashUnknownDto> =
-    pageHashRepository.findAllUnknown(page).map { it.toDto() }
+  ): Page<PageHashUnknownDto> = pageHashRepository.findAllUnknown(page).map { it.toDto() }
 
   @GetMapping("{pageHash}")
   @PageableAsQueryParam
@@ -72,10 +70,11 @@ class PageHashController(
     @PathVariable pageHash: String,
     @Parameter(hidden = true) page: Pageable,
   ): Page<PageHashMatchDto> =
-    pageHashRepository.findMatchesByHash(
-      pageHash,
-      page,
-    ).map { it.toDto() }
+    pageHashRepository
+      .findMatchesByHash(
+        pageHash,
+        page,
+      ).map { it.toDto() }
 
   @GetMapping("unknown/{pageHash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
@@ -84,7 +83,8 @@ class PageHashController(
     @RequestParam("resize") resize: Int? = null,
   ): ResponseEntity<ByteArray> =
     pageHashLifecycle.getPage(pageHash, resize)?.let {
-      ResponseEntity.ok()
+      ResponseEntity
+        .ok()
         .contentType(getMediaTypeOrDefault(it.mediaType))
         .body(it.bytes)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -114,7 +114,8 @@ class PageHashController(
     @PathVariable pageHash: String,
   ) {
     val toRemove =
-      pageHashRepository.findMatchesByHash(pageHash, Pageable.unpaged())
+      pageHashRepository
+        .findMatchesByHash(pageHash, Pageable.unpaged())
         .groupBy(
           { it.bookId },
           {

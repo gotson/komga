@@ -45,8 +45,7 @@ fun Field<String>.inOrNoCondition(list: Collection<String>?): Condition =
     else -> this.`in`(list)
   }
 
-fun Field<String>.udfStripAccents() =
-  DSL.function(SqliteUdfDataSource.UDF_STRIP_ACCENTS, String::class.java, this)
+fun Field<String>.udfStripAccents() = DSL.function(SqliteUdfDataSource.UDF_STRIP_ACCENTS, String::class.java, this)
 
 fun DSLContext.insertTempStrings(
   batchSize: Int,
@@ -55,13 +54,14 @@ fun DSLContext.insertTempStrings(
   this.deleteFrom(Tables.TEMP_STRING_LIST).execute()
   if (collection.isNotEmpty()) {
     collection.chunked(batchSize).forEach { chunk ->
-      this.batch(
-        this.insertInto(Tables.TEMP_STRING_LIST, Tables.TEMP_STRING_LIST.STRING).values(null as String?),
-      ).also { step ->
-        chunk.forEach {
-          step.bind(it)
-        }
-      }.execute()
+      this
+        .batch(
+          this.insertInto(Tables.TEMP_STRING_LIST, Tables.TEMP_STRING_LIST.STRING).values(null as String?),
+        ).also { step ->
+          chunk.forEach {
+            step.bind(it)
+          }
+        }.execute()
     }
   }
 }
@@ -71,7 +71,8 @@ fun DSLContext.selectTempStrings() = this.select(Tables.TEMP_STRING_LIST.STRING)
 fun ContentRestrictions.toCondition(): Condition {
   val ageAllowed =
     if (ageRestriction?.restriction == AllowExclude.ALLOW_ONLY) {
-      Tables.SERIES_METADATA.AGE_RATING.isNotNull.and(Tables.SERIES_METADATA.AGE_RATING.lessOrEqual(ageRestriction.age))
+      Tables.SERIES_METADATA.AGE_RATING.isNotNull
+        .and(Tables.SERIES_METADATA.AGE_RATING.lessOrEqual(ageRestriction.age))
     } else {
       DSL.noCondition()
     }
@@ -79,7 +80,8 @@ fun ContentRestrictions.toCondition(): Condition {
   val labelAllowed =
     if (labelsAllow.isNotEmpty())
       Tables.SERIES_METADATA.SERIES_ID.`in`(
-        DSL.select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
+        DSL
+          .select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
           .from(Tables.SERIES_METADATA_SHARING)
           .where(Tables.SERIES_METADATA_SHARING.LABEL.`in`(labelsAllow)),
       )
@@ -88,21 +90,24 @@ fun ContentRestrictions.toCondition(): Condition {
 
   val ageDenied =
     if (ageRestriction?.restriction == AllowExclude.EXCLUDE)
-      Tables.SERIES_METADATA.AGE_RATING.isNull.or(Tables.SERIES_METADATA.AGE_RATING.lessThan(ageRestriction.age))
+      Tables.SERIES_METADATA.AGE_RATING.isNull
+        .or(Tables.SERIES_METADATA.AGE_RATING.lessThan(ageRestriction.age))
     else
       DSL.noCondition()
 
   val labelDenied =
     if (labelsExclude.isNotEmpty())
       Tables.SERIES_METADATA.SERIES_ID.notIn(
-        DSL.select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
+        DSL
+          .select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
           .from(Tables.SERIES_METADATA_SHARING)
           .where(Tables.SERIES_METADATA_SHARING.LABEL.`in`(labelsExclude)),
       )
     else
       DSL.noCondition()
 
-  return ageAllowed.or(labelAllowed)
+  return ageAllowed
+    .or(labelAllowed)
     .and(ageDenied.and(labelDenied))
 }
 

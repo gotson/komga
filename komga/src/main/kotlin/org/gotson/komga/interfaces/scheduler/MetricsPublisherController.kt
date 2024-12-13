@@ -46,11 +46,13 @@ class MetricsPublisherController(
   private val meterRegistry: MeterRegistry,
 ) {
   init {
-    Timer.builder(METER_TASKS_EXECUTION)
+    Timer
+      .builder(METER_TASKS_EXECUTION)
       .description("Task execution time")
       .register(meterRegistry)
 
-    Counter.builder(METER_TASKS_FAILURE)
+    Counter
+      .builder(METER_TASKS_FAILURE)
       .description("Count of failed tasks")
       .register(meterRegistry)
   }
@@ -61,7 +63,8 @@ class MetricsPublisherController(
 
   val multiGauges =
     entitiesMultiTag.associateWith { entity ->
-      MultiGauge.builder("komga.$entity")
+      MultiGauge
+        .builder("komga.$entity")
         .description("The number of $entity")
         .baseUnit("count")
         .register(meterRegistry)
@@ -70,7 +73,8 @@ class MetricsPublisherController(
   val noTagGauges =
     entitiesNoTags.associateWith { entity ->
       AtomicLong(0).also { value ->
-        Gauge.builder("komga.$entity", value) { value.get().toDouble() }
+        Gauge
+          .builder("komga.$entity", value) { value.get().toDouble() }
           .description("The number of $entity")
           .baseUnit("count")
           .register(meterRegistry)
@@ -78,7 +82,8 @@ class MetricsPublisherController(
     }
 
   val bookFileSizeGauge =
-    MultiGauge.builder("komga.$BOOKS_FILESIZE")
+    MultiGauge
+      .builder("komga.$BOOKS_FILESIZE")
       .description("The cumulated filesize of books")
       .baseUnit("bytes")
       .register(meterRegistry)

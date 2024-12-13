@@ -42,74 +42,84 @@ class SessionTest(
 
   @Test
   fun `given valid basic credentials when hitting an endpoint then session cookie is returned`() {
-    mockMvc.get("/api/v2/users/me") {
-      with(httpBasic(user.email, user.password))
-    }.andExpect {
-      header {
-        string(HttpHeaders.SET_COOKIE, containsString("$sessionCookieName="))
+    mockMvc
+      .get("/api/v2/users/me") {
+        with(httpBasic(user.email, user.password))
+      }.andExpect {
+        header {
+          string(HttpHeaders.SET_COOKIE, containsString("$sessionCookieName="))
+        }
+        cookie {
+          exists(sessionCookieName)
+          httpOnly(sessionCookieName, true)
+        }
       }
-      cookie {
-        exists(sessionCookieName)
-        httpOnly(sessionCookieName, true)
-      }
-    }
   }
 
   @Test
   fun `given valid basic credentials when providing the auth header then session is returned in headers`() {
-    mockMvc.get("/api/v2/users/me") {
-      with(httpBasic(user.email, user.password))
-      header(sessionHeaderName, "")
-    }.andExpect {
-      header {
-        exists(sessionHeaderName)
+    mockMvc
+      .get("/api/v2/users/me") {
+        with(httpBasic(user.email, user.password))
+        header(sessionHeaderName, "")
+      }.andExpect {
+        header {
+          exists(sessionHeaderName)
+        }
       }
-    }
   }
 
   @Test
   fun `given existing session when exchanging for cookies then session is returned in cookies`() {
     val sessionId =
-      mockMvc.get("/api/v2/users/me") {
-        with(httpBasic(user.email, user.password))
-        header(sessionHeaderName, "")
-      }.andReturn().response.getHeader(this.sessionHeaderName)
+      mockMvc
+        .get("/api/v2/users/me") {
+          with(httpBasic(user.email, user.password))
+          header(sessionHeaderName, "")
+        }.andReturn()
+        .response
+        .getHeader(this.sessionHeaderName)
 
     assertThat(sessionId).isNotNull
 
-    mockMvc.get("/api/v1/login/set-cookie") {
-      header(sessionHeaderName, sessionId!!)
-    }.andExpect {
-      header {
-        string(HttpHeaders.SET_COOKIE, containsString("$sessionCookieName="))
-        doesNotExist(sessionHeaderName)
+    mockMvc
+      .get("/api/v1/login/set-cookie") {
+        header(sessionHeaderName, sessionId!!)
+      }.andExpect {
+        header {
+          string(HttpHeaders.SET_COOKIE, containsString("$sessionCookieName="))
+          doesNotExist(sessionHeaderName)
+        }
+        cookie {
+          exists(sessionCookieName)
+          httpOnly(sessionCookieName, true)
+        }
       }
-      cookie {
-        exists(sessionCookieName)
-        httpOnly(sessionCookieName, true)
-      }
-    }
   }
 
   @Test
   fun `given existing session when logging out then session cookie is cleared`() {
     val sessionId =
-      mockMvc.get("/api/v2/users/me") {
-        with(httpBasic(user.email, user.password))
-        header(sessionHeaderName, "")
-      }.andReturn().response.getHeader(this.sessionHeaderName)
+      mockMvc
+        .get("/api/v2/users/me") {
+          with(httpBasic(user.email, user.password))
+          header(sessionHeaderName, "")
+        }.andReturn()
+        .response
+        .getHeader(this.sessionHeaderName)
 
     assertThat(sessionId).isNotNull
 
-    mockMvc.get("/api/logout") {
-      header(sessionHeaderName, sessionId!!)
-    }.andExpect {
-      header {
-        string(HttpHeaders.SET_COOKIE, containsString("$sessionCookieName=;"))
+    mockMvc
+      .get("/api/logout") {
+        header(sessionHeaderName, sessionId!!)
+      }.andExpect {
+        header {
+          string(HttpHeaders.SET_COOKIE, containsString("$sessionCookieName=;"))
+        }
+        cookie {
+          maxAge(sessionCookieName, 0)
+        }
       }
-      cookie {
-        maxAge(sessionCookieName, 0)
-      }
-    }
   }
 }

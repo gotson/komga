@@ -54,7 +54,8 @@ class PageHashDao(
     )
 
   override fun findKnown(pageHash: String): PageHashKnown? =
-    dsl.selectFrom(ph)
+    dsl
+      .selectFrom(ph)
       .where(ph.HASH.eq(pageHash))
       .fetchOneInto(ph)
       ?.toDomain()
@@ -64,9 +65,11 @@ class PageHashDao(
     pageable: Pageable,
   ): Page<PageHashKnown> {
     val query =
-      dsl.select(*ph.fields(), DSL.count(p.FILE_HASH).`as`("count"))
+      dsl
+        .select(*ph.fields(), DSL.count(p.FILE_HASH).`as`("count"))
         .from(ph)
-        .leftJoin(p).on(ph.HASH.eq(p.FILE_HASH))
+        .leftJoin(p)
+        .on(ph.HASH.eq(p.FILE_HASH))
         .apply { actions?.let { where(ph.ACTION.`in`(actions)) } }
         .groupBy(*ph.fields())
 
@@ -94,22 +97,22 @@ class PageHashDao(
   override fun findAllUnknown(pageable: Pageable): Page<PageHashUnknown> {
     val bookCount = DSL.count(p.BOOK_ID)
     val query =
-      dsl.select(
-        p.FILE_HASH,
-        p.FILE_SIZE,
-        bookCount.`as`("count"),
-        (bookCount * p.FILE_SIZE).`as`("totalSize"),
-      )
-        .from(p)
+      dsl
+        .select(
+          p.FILE_HASH,
+          p.FILE_SIZE,
+          bookCount.`as`("count"),
+          (bookCount * p.FILE_SIZE).`as`("totalSize"),
+        ).from(p)
         .where(p.FILE_HASH.ne(""))
         .and(
           DSL.notExists(
-            dsl.selectOne()
+            dsl
+              .selectOne()
               .from(ph)
               .where(ph.HASH.eq(p.FILE_HASH)),
           ),
-        )
-        .groupBy(p.FILE_HASH)
+        ).groupBy(p.FILE_HASH)
         .having(DSL.count(p.BOOK_ID).gt(1))
 
     val count = dsl.fetchCount(query)
@@ -139,9 +142,11 @@ class PageHashDao(
     pageable: Pageable,
   ): Page<PageHashMatch> {
     val query =
-      dsl.select(p.BOOK_ID, b.URL, p.NUMBER, p.FILE_NAME, p.FILE_SIZE, p.MEDIA_TYPE)
+      dsl
+        .select(p.BOOK_ID, b.URL, p.NUMBER, p.FILE_NAME, p.FILE_SIZE, p.MEDIA_TYPE)
         .from(p)
-        .leftJoin(b).on(p.BOOK_ID.eq(b.ID))
+        .leftJoin(b)
+        .on(p.BOOK_ID.eq(b.ID))
         .where(p.FILE_HASH.eq(pageHash))
 
     val count = dsl.fetchCount(query)
@@ -177,9 +182,11 @@ class PageHashDao(
     actions: List<PageHashKnown.Action>?,
     libraryId: String?,
   ): Map<String, Collection<BookPageNumbered>> =
-    dsl.select(p.BOOK_ID, p.FILE_NAME, p.NUMBER, p.FILE_HASH, p.MEDIA_TYPE, p.FILE_SIZE)
+    dsl
+      .select(p.BOOK_ID, p.FILE_NAME, p.NUMBER, p.FILE_HASH, p.MEDIA_TYPE, p.FILE_SIZE)
       .from(p)
-      .innerJoin(ph).on(p.FILE_HASH.eq(ph.HASH))
+      .innerJoin(ph)
+      .on(p.FILE_HASH.eq(ph.HASH))
       .apply { libraryId?.let<String, Unit> { innerJoin(b).on(b.ID.eq(p.BOOK_ID)) } }
       .where(ph.ACTION.`in`(actions))
       .apply { libraryId?.let<String, Unit> { and(b.LIBRARY_ID.eq(it)) } }
@@ -196,24 +203,28 @@ class PageHashDao(
       .fold(emptyList()) { acc, (_, new) -> acc + new }
 
   override fun getKnownThumbnail(pageHash: String): ByteArray? =
-    dsl.select(pht.THUMBNAIL)
+    dsl
+      .select(pht.THUMBNAIL)
       .from(pht)
       .where(pht.HASH.eq(pageHash))
-      .fetchOne()?.value1()
+      .fetchOne()
+      ?.value1()
 
   @Transactional
   override fun insert(
     pageHash: PageHashKnown,
     thumbnail: ByteArray?,
   ) {
-    dsl.insertInto(ph)
+    dsl
+      .insertInto(ph)
       .set(ph.HASH, pageHash.hash)
       .set(ph.SIZE, pageHash.size)
       .set(ph.ACTION, pageHash.action.name)
       .execute()
 
     if (thumbnail != null) {
-      dsl.insertInto(pht)
+      dsl
+        .insertInto(pht)
         .set(pht.HASH, pageHash.hash)
         .set(pht.THUMBNAIL, thumbnail)
         .execute()
@@ -221,7 +232,8 @@ class PageHashDao(
   }
 
   override fun update(pageHash: PageHashKnown) {
-    dsl.update(ph)
+    dsl
+      .update(ph)
       .set(ph.ACTION, pageHash.action.name)
       .set(ph.SIZE, pageHash.size)
       .set(ph.DELETE_COUNT, pageHash.deleteCount)

@@ -57,24 +57,29 @@ class LuceneHelper(
   fun getIndexVersion(): Int {
     val searcher = searcherManager.acquire()
     val topDocs = searcher.search(TermQuery(Term("type", "index_version")), 1)
-    return topDocs.scoreDocs.map { searcher.storedFields().document(it.doc)["index_version"] }.firstOrNull()?.toIntOrNull() ?: 1
+    return topDocs.scoreDocs
+      .map { searcher.storedFields().document(it.doc)["index_version"] }
+      .firstOrNull()
+      ?.toIntOrNull() ?: 1
   }
 
   fun searchEntitiesIds(
     searchTerm: String?,
     entity: LuceneEntity,
-  ): List<String>? {
-    return if (!searchTerm.isNullOrBlank()) {
+  ): List<String>? =
+    if (!searchTerm.isNullOrBlank()) {
       try {
         val fieldsQuery =
-          MultiFieldQueryParser(entity.defaultFields, searchAnalyzer).apply {
-            defaultOperator = QueryParser.Operator.AND
-          }.parse("$searchTerm *:*")
+          MultiFieldQueryParser(entity.defaultFields, searchAnalyzer)
+            .apply {
+              defaultOperator = QueryParser.Operator.AND
+            }.parse("$searchTerm *:*")
 
         val typeQuery = TermQuery(Term(LuceneEntity.TYPE, entity.type))
 
         val booleanQuery =
-          BooleanQuery.Builder()
+          BooleanQuery
+            .Builder()
             .add(fieldsQuery, BooleanClause.Occur.MUST)
             .add(typeQuery, BooleanClause.Occur.MUST)
             .build()
@@ -91,7 +96,6 @@ class LuceneHelper(
     } else {
       null
     }
-  }
 
   fun upgradeIndex() {
     IndexUpgrader(directory, IndexWriterConfig(indexAnalyzer), true).upgrade()

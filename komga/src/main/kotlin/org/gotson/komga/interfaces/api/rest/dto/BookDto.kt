@@ -31,8 +31,7 @@ data class BookDto(
   val oneshot: Boolean,
 )
 
-fun BookDto.restrictUrl(restrict: Boolean) =
-  if (restrict) copy(url = FilenameUtils.getName(url)) else this
+fun BookDto.restrictUrl(restrict: Boolean) = if (restrict) copy(url = FilenameUtils.getName(url)) else this
 
 data class MediaDto(
   val status: String,

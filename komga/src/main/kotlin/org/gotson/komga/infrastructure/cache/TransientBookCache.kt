@@ -12,7 +12,8 @@ private val logger = KotlinLogging.logger {}
 @Service
 class TransientBookCache : TransientBookRepository {
   private val cache =
-    Caffeine.newBuilder()
+    Caffeine
+      .newBuilder()
       .expireAfterAccess(1, TimeUnit.HOURS)
       .build<String, TransientBook>()
 

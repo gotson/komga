@@ -89,9 +89,16 @@ class BookImporter(
         fileSystemScanner.scanBookSidecars(sourceFile).associateWith {
           series.path.resolve(
             if (destinationName != null)
-              it.url.toURI().toPath().name.replace(sourceFile.nameWithoutExtension, destinationName, true)
+              it.url
+                .toURI()
+                .toPath()
+                .name
+                .replace(sourceFile.nameWithoutExtension, destinationName, true)
             else
-              it.url.toURI().toPath().name,
+              it.url
+                .toURI()
+                .toPath()
+                .name,
           )
         }
 
@@ -166,13 +173,17 @@ class BookImporter(
             logger.warn(e) { "Filesystem does not support hardlinks, copying instead" }
             sourceFile.copyTo(destFile)
             sidecars.forEach {
-              it.key.url.toURI().toPath().copyTo(it.value, true)
+              it.key.url
+                .toURI()
+                .toPath()
+                .copyTo(it.value, true)
             }
           }
       }
 
       val importedBook =
-        fileSystemScanner.scanFile(destFile)
+        fileSystemScanner
+          .scanFile(destFile)
           ?.copy(libraryId = series.libraryId)
           ?: throw IllegalStateException("Newly imported book could not be scanned: $destFile").withCode("ERR_1022")
 
@@ -200,16 +211,21 @@ class BookImporter(
         }
 
         // copy read progress
-        readProgressRepository.findAllByBookId(bookToUpgrade.id)
+        readProgressRepository
+          .findAllByBookId(bookToUpgrade.id)
           .map { it.copy(bookId = importedBook.id) }
           .forEach { readProgressRepository.save(it) }
 
         // replace upgraded book by imported book in read lists
-        readListRepository.findAllContainingBookId(bookToUpgrade.id, filterOnLibraryIds = null)
+        readListRepository
+          .findAllContainingBookId(bookToUpgrade.id, filterOnLibraryIds = null)
           .forEach { rl ->
             readListRepository.update(
               rl.copy(
-                bookIds = rl.bookIds.values.map { if (it == bookToUpgrade.id) importedBook.id else it }.toIndexedMap(),
+                bookIds =
+                  rl.bookIds.values
+                    .map { if (it == bookToUpgrade.id) importedBook.id else it }
+                    .toIndexedMap(),
               ),
             )
           }

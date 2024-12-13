@@ -127,7 +127,11 @@ class LibraryContentLifecycle(
           if (books.isNotEmpty()) {
             logger.info { "Soft deleting books not on disk anymore: $books" }
             bookLifecycle.softDeleteMany(books)
-            books.map { it.seriesId }.distinct().mapNotNull { seriesRepository.findByIdOrNull(it) }.toMutableList()
+            books
+              .map { it.seriesId }
+              .distinct()
+              .mapNotNull { seriesRepository.findByIdOrNull(it) }
+              .toMutableList()
           } else {
             mutableListOf()
           }
@@ -281,7 +285,9 @@ class LibraryContentLifecycle(
     val bookSizes = newBooks.map { it.fileSize }
 
     val deletedCandidates =
-      seriesRepository.findAll(SearchCondition.Deleted(SearchOperator.IsTrue), SearchContext.empty(), Pageable.unpaged()).content
+      seriesRepository
+        .findAll(SearchCondition.Deleted(SearchOperator.IsTrue), SearchContext.empty(), Pageable.unpaged())
+        .content
         .mapNotNull { deletedCandidate ->
           val deletedBooks = bookRepository.findAllBySeriesId(deletedCandidate.id)
           val deletedBooksSizes = deletedBooks.map { it.fileSize }
@@ -324,7 +330,8 @@ class LibraryContentLifecycle(
           }
 
           // replace deleted series by new series in collections
-          collectionRepository.findAllContainingSeriesId(match.first.id, filterOnLibraryIds = null)
+          collectionRepository
+            .findAllContainingSeriesId(match.first.id, filterOnLibraryIds = null)
             .forEach { col ->
               collectionRepository.update(
                 col.copy(
@@ -396,16 +403,21 @@ class LibraryContentLifecycle(
             }
 
             // copy read progress
-            readProgressRepository.findAllByBookId(match.id)
+            readProgressRepository
+              .findAllByBookId(match.id)
               .map { it.copy(bookId = bookToAdd.id) }
               .forEach { readProgressRepository.save(it) }
 
             // replace deleted book by new book in read lists
-            readListRepository.findAllContainingBookId(match.id, filterOnLibraryIds = null)
+            readListRepository
+              .findAllContainingBookId(match.id, filterOnLibraryIds = null)
               .forEach { rl ->
                 readListRepository.update(
                   rl.copy(
-                    bookIds = rl.bookIds.values.map { if (it == match.id) bookToAdd.id else it }.toIndexedMap(),
+                    bookIds =
+                      rl.bookIds.values
+                        .map { if (it == match.id) bookToAdd.id else it }
+                        .toIndexedMap(),
                   ),
                 )
               }
@@ -422,25 +434,27 @@ class LibraryContentLifecycle(
     logger.info { "Empty trash for library: $library" }
 
     val seriesToDelete =
-      seriesRepository.findAll(
-        SearchCondition.AllOfSeries(
-          SearchCondition.LibraryId(SearchOperator.Is(library.id)),
-          SearchCondition.Deleted(SearchOperator.IsTrue),
-        ),
-        SearchContext.empty(),
-        Pageable.unpaged(),
-      ).content
+      seriesRepository
+        .findAll(
+          SearchCondition.AllOfSeries(
+            SearchCondition.LibraryId(SearchOperator.Is(library.id)),
+            SearchCondition.Deleted(SearchOperator.IsTrue),
+          ),
+          SearchContext.empty(),
+          Pageable.unpaged(),
+        ).content
     seriesLifecycle.deleteMany(seriesToDelete)
 
     val booksToDelete =
-      bookRepository.findAll(
-        SearchCondition.AllOfBook(
-          SearchCondition.LibraryId(SearchOperator.Is(library.id)),
-          SearchCondition.Deleted(SearchOperator.IsTrue),
-        ),
-        SearchContext.empty(),
-        Pageable.unpaged(),
-      ).content
+      bookRepository
+        .findAll(
+          SearchCondition.AllOfBook(
+            SearchCondition.LibraryId(SearchOperator.Is(library.id)),
+            SearchCondition.Deleted(SearchOperator.IsTrue),
+          ),
+          SearchContext.empty(),
+          Pageable.unpaged(),
+        ).content
     bookLifecycle.deleteMany(booksToDelete)
     booksToDelete.map { it.seriesId }.distinct().forEach { seriesId ->
       seriesRepository.findByIdOrNull(seriesId)?.let { seriesLifecycle.sortBooks(it) }

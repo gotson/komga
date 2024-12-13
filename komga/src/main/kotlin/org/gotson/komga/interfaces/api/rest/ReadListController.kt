@@ -126,7 +126,8 @@ class ReadListController(
           sort,
         )
 
-    return readListRepository.findAll(principal.user.getAuthorizedLibraryIds(libraryIds), principal.user.getAuthorizedLibraryIds(null), searchTerm, pageRequest, principal.user.restrictions)
+    return readListRepository
+      .findAll(principal.user.getAuthorizedLibraryIds(libraryIds), principal.user.getAuthorizedLibraryIds(null), searchTerm, pageRequest, principal.user.restrictions)
       .map { it.toDto() }
   }
 
@@ -135,7 +136,8 @@ class ReadListController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ): ReadListDto =
-    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
+    readListRepository
+      .findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
       ?.toDto()
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -146,7 +148,8 @@ class ReadListController(
     @PathVariable id: String,
   ): ResponseEntity<ByteArray> {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
-      return ResponseEntity.ok()
+      return ResponseEntity
+        .ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
         .body(readListLifecycle.getThumbnailBytes(it))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -189,17 +192,18 @@ class ReadListController(
       if (!contentDetector.isImage(mediaType))
         throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
-      return readListLifecycle.addThumbnail(
-        ThumbnailReadList(
-          readListId = readList.id,
-          thumbnail = file.bytes,
-          type = ThumbnailReadList.Type.USER_UPLOADED,
-          selected = selected,
-          fileSize = file.bytes.size.toLong(),
-          mediaType = mediaType,
-          dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
-        ),
-      ).toDto()
+      return readListLifecycle
+        .addThumbnail(
+          ThumbnailReadList(
+            readListId = readList.id,
+            thumbnail = file.bytes,
+            type = ThumbnailReadList.Type.USER_UPLOADED,
+            selected = selected,
+            fileSize = file.bytes.size.toLong(),
+            mediaType = mediaType,
+            dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
+          ),
+        ).toDto()
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -241,14 +245,15 @@ class ReadListController(
     readList: ReadListCreationDto,
   ): ReadListDto =
     try {
-      readListLifecycle.addReadList(
-        ReadList(
-          name = readList.name,
-          summary = readList.summary,
-          ordered = readList.ordered,
-          bookIds = readList.bookIds.toIndexedMap(),
-        ),
-      ).toDto()
+      readListLifecycle
+        .addReadList(
+          ReadList(
+            name = readList.name,
+            summary = readList.summary,
+            ordered = readList.ordered,
+            bookIds = readList.bookIds.toIndexedMap(),
+          ),
+        ).toDto()
     } catch (e: DuplicateNameException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
     }
@@ -345,7 +350,8 @@ class ReadListController(
             },
           ),
         )
-      bookDtoRepository.findAll(bookSearch, SearchContext(principal.user), pageRequest)
+      bookDtoRepository
+        .findAll(bookSearch, SearchContext(principal.user), pageRequest)
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -356,14 +362,14 @@ class ReadListController(
     @PathVariable bookId: String,
   ): BookDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      bookDtoRepository.findPreviousInReadListOrNull(
-        it,
-        bookId,
-        principal.user.id,
-        principal.user.getAuthorizedLibraryIds(null),
-        principal.user.restrictions,
-      )
-        ?.restrictUrl(!principal.user.roleAdmin)
+      bookDtoRepository
+        .findPreviousInReadListOrNull(
+          it,
+          bookId,
+          principal.user.id,
+          principal.user.getAuthorizedLibraryIds(null),
+          principal.user.restrictions,
+        )?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{id}/books/{bookId}/next")
@@ -373,14 +379,14 @@ class ReadListController(
     @PathVariable bookId: String,
   ): BookDto =
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      bookDtoRepository.findNextInReadListOrNull(
-        it,
-        bookId,
-        principal.user.id,
-        principal.user.getAuthorizedLibraryIds(null),
-        principal.user.restrictions,
-      )
-        ?.restrictUrl(!principal.user.roleAdmin)
+      bookDtoRepository
+        .findNextInReadListOrNull(
+          it,
+          bookId,
+          principal.user.id,
+          principal.user.getAuthorizedLibraryIds(null),
+          principal.user.restrictions,
+        )?.restrictUrl(!principal.user.roleAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{id}/read-progress/tachiyomi")
@@ -401,7 +407,8 @@ class ReadListController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { readList ->
-      bookDtoRepository.findAll(BookSearch(SearchCondition.ReadListId(SearchOperator.Is(readList.id))), SearchContext(principal.user), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number"))))
+      bookDtoRepository
+        .findAll(BookSearch(SearchCondition.ReadListId(SearchOperator.Is(readList.id))), SearchContext(principal.user), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number"))))
         .filterIndexed { index, _ -> index < readProgress.lastBookRead }
         .forEach { book ->
           if (book.readProgress?.completed != true)
@@ -446,16 +453,17 @@ class ReadListController(
           }
         }
 
-      return ResponseEntity.ok()
+      return ResponseEntity
+        .ok()
         .headers(
           HttpHeaders().apply {
             contentDisposition =
-              ContentDisposition.builder("attachment")
+              ContentDisposition
+                .builder("attachment")
                 .filename(readList.name + ".zip", UTF_8)
                 .build()
           },
-        )
-        .contentType(MediaType.parseMediaType(ZIP.type))
+        ).contentType(MediaType.parseMediaType(ZIP.type))
         .body(streamingResponse)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }

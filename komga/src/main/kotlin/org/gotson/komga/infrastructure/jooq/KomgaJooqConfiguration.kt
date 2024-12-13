@@ -25,28 +25,25 @@ class KomgaJooqConfiguration {
     dataSource: DataSource,
     transactionProvider: ObjectProvider<TransactionProvider?>,
     executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>,
-  ): DSLContext =
-    createDslContext(dataSource, transactionProvider, executeListenerProviders)
+  ): DSLContext = createDslContext(dataSource, transactionProvider, executeListenerProviders)
 
   @Bean("tasksDslContext")
   fun tasksDslContext(
     @Qualifier("tasksDataSource") dataSource: DataSource,
     transactionProvider: ObjectProvider<TransactionProvider?>,
     executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>,
-  ): DSLContext =
-    createDslContext(dataSource, transactionProvider, executeListenerProviders)
+  ): DSLContext = createDslContext(dataSource, transactionProvider, executeListenerProviders)
 
   private fun createDslContext(
     dataSource: DataSource,
     transactionProvider: ObjectProvider<TransactionProvider?>,
     executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>,
-  ) =
-    DefaultDSLContext(
-      DefaultConfiguration().also { configuration ->
-        configuration.set(SQLDialect.SQLITE)
-        configuration.set(DataSourceConnectionProvider(TransactionAwareDataSourceProxy(dataSource)))
-        transactionProvider.ifAvailable { newTransactionProvider: TransactionProvider? -> configuration.set(newTransactionProvider) }
-        configuration.set(*executeListenerProviders.orderedStream().toList().toTypedArray())
-      },
-    )
+  ) = DefaultDSLContext(
+    DefaultConfiguration().also { configuration ->
+      configuration.set(SQLDialect.SQLITE)
+      configuration.set(DataSourceConnectionProvider(TransactionAwareDataSourceProxy(dataSource)))
+      transactionProvider.ifAvailable { newTransactionProvider: TransactionProvider? -> configuration.set(newTransactionProvider) }
+      configuration.set(*executeListenerProviders.orderedStream().toList().toTypedArray())
+    },
+  )
 }

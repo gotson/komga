@@ -91,7 +91,8 @@ class OpdsControllerTest(
         }
       }
 
-      mockMvc.get("/opds/v1.2/series")
+      mockMvc
+        .get("/opds/v1.2/series")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry/id") {
@@ -153,7 +154,8 @@ class OpdsControllerTest(
       mockMvc.get("/opds/v1.2/series/${series15.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/opds/v1.2/series/${series.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/opds/v1.2/series")
+      mockMvc
+        .get("/opds/v1.2/series")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry/id") { nodeCount(2) }
@@ -211,7 +213,8 @@ class OpdsControllerTest(
       mockMvc.get("/opds/v1.2/series/${series16.id}").andExpect { status { isForbidden() } }
       mockMvc.get("/opds/v1.2/series/${series18.id}").andExpect { status { isForbidden() } }
 
-      mockMvc.get("/opds/v1.2/series")
+      mockMvc
+        .get("/opds/v1.2/series")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry/id") { nodeCount(2) }
@@ -232,7 +235,8 @@ class OpdsControllerTest(
       }
       seriesLifecycle.createSeries(makeSeries("Beta", libraryId = library.id))
 
-      mockMvc.get("/opds/v1.2/series")
+      mockMvc
+        .get("/opds/v1.2/series")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry[1]/title") { string("TheAlpha") }
@@ -249,7 +253,8 @@ class OpdsControllerTest(
           seriesLifecycle.createSeries(it)
         }
 
-      mockMvc.get("/opds/v1.2/series")
+      mockMvc
+        .get("/opds/v1.2/series")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry[1]/title") { string("a") }
@@ -270,7 +275,8 @@ class OpdsControllerTest(
       }
       seriesLifecycle.createSeries(makeSeries("Beta", libraryId = library.id))
 
-      mockMvc.get("/opds/v1.2/series")
+      mockMvc
+        .get("/opds/v1.2/series")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry") { nodeCount(1) }
@@ -302,7 +308,8 @@ class OpdsControllerTest(
         }
       }
 
-      mockMvc.get("/opds/v1.2/series/${createdSeries.id}")
+      mockMvc
+        .get("/opds/v1.2/series/${createdSeries.id}")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry[1]/title") { string("1") }
@@ -335,7 +342,8 @@ class OpdsControllerTest(
       seriesLifecycle.addBooks(createdSeries, listOf(addedBook))
       seriesLifecycle.sortBooks(createdSeries)
 
-      mockMvc.get("/opds/v1.2/series/${createdSeries.id}")
+      mockMvc
+        .get("/opds/v1.2/series/${createdSeries.id}")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry") { nodeCount(2) }
@@ -367,7 +375,8 @@ class OpdsControllerTest(
           bookRepository.update(it.copy(deletedDate = LocalDateTime.now()))
       }
 
-      mockMvc.get("/opds/v1.2/series/${createdSeries.id}")
+      mockMvc
+        .get("/opds/v1.2/series/${createdSeries.id}")
         .andExpect {
           status { isOk() }
           xpath("/feed/entry") { nodeCount(2) }

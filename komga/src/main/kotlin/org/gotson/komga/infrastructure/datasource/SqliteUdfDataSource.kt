@@ -17,14 +17,12 @@ class SqliteUdfDataSource : SQLiteDataSource() {
     const val COLLATION_UNICODE_3 = "COLLATION_UNICODE_3"
   }
 
-  override fun getConnection(): Connection =
-    super.getConnection().also { addAllUdf(it as SQLiteConnection) }
+  override fun getConnection(): Connection = super.getConnection().also { addAllUdf(it as SQLiteConnection) }
 
   override fun getConnection(
     username: String?,
     password: String?,
-  ): SQLiteConnection =
-    super.getConnection(username, password).also { addAllUdf(it) }
+  ): SQLiteConnection = super.getConnection(username, password).also { addAllUdf(it) }
 
   private fun addAllUdf(connection: SQLiteConnection) {
     createUdfRegexp(connection)

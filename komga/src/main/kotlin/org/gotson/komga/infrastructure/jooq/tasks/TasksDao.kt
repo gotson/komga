@@ -32,18 +32,21 @@ class TasksDao(
   private val tasksAvailableCondition =
     t.OWNER.isNull
       .and(
-        t.GROUP_ID.notIn(
-          dsl.select(t.GROUP_ID).from(t).where(t.OWNER.isNotNull).and(t.GROUP_ID.isNotNull),
-        )
-          .or(t.GROUP_ID.isNull),
+        t.GROUP_ID
+          .notIn(
+            dsl
+              .select(t.GROUP_ID)
+              .from(t)
+              .where(t.OWNER.isNotNull)
+              .and(t.GROUP_ID.isNotNull),
+          ).or(t.GROUP_ID.isNull),
       )
 
-  override fun hasAvailable(): Boolean {
-    return dsl.fetchExists(
+  override fun hasAvailable(): Boolean =
+    dsl.fetchExists(
       t,
       tasksAvailableCondition,
     )
-  }
 
   @Transactional
   override fun takeFirst(owner: String): Task? {
@@ -62,7 +65,8 @@ class TasksDao(
           }
         } ?: return null
 
-    dsl.update(t)
+    dsl
+      .update(t)
       .set(t.OWNER, owner)
       .where(t.ID.eq(task.uniqueId))
       .execute()
@@ -76,7 +80,8 @@ class TasksDao(
       .mapNotNull { it.toDomain() }
 
   override fun findAllGroupedByOwner(): Map<String?, List<Task>> =
-    dsl.select(t.OWNER, t.CLASS, t.PAYLOAD)
+    dsl
+      .select(t.OWNER, t.CLASS, t.PAYLOAD)
       .from(t)
       .fetch()
       .mapNotNull {
@@ -84,7 +89,8 @@ class TasksDao(
       }.groupBy({ it.first }, { it.second })
 
   private fun selectBase() =
-    dsl.select(t.CLASS, t.PAYLOAD)
+    dsl
+      .select(t.CLASS, t.PAYLOAD)
       .from(t)
 
   private fun Record2<String, String>.toDomain(): Task? =
@@ -95,17 +101,15 @@ class TasksDao(
       null
     }
 
-  override fun count(): Int {
-    return dsl.fetchCount(t)
-  }
+  override fun count(): Int = dsl.fetchCount(t)
 
-  override fun countBySimpleType(): Map<String, Int> {
-    return dsl.select(t.SIMPLE_TYPE, DSL.count(t.SIMPLE_TYPE))
+  override fun countBySimpleType(): Map<String, Int> =
+    dsl
+      .select(t.SIMPLE_TYPE, DSL.count(t.SIMPLE_TYPE))
       .from(t)
       .groupBy(t.SIMPLE_TYPE)
       .fetch()
       .associate { it.value1() to it.value2() }
-  }
 
   override fun save(task: Task) {
     task.toQuery().execute()
@@ -119,7 +123,8 @@ class TasksDao(
   }
 
   override fun disown(): Int =
-    dsl.update(t)
+    dsl
+      .update(t)
       .set(t.OWNER, null as String?)
       .where(t.OWNER.isNotNull)
       .execute()
@@ -132,28 +137,26 @@ class TasksDao(
     dsl.deleteFrom(t).execute()
   }
 
-  override fun deleteAllWithoutOwner(): Int =
-    dsl.deleteFrom(t).where(t.OWNER.isNull).execute()
+  override fun deleteAllWithoutOwner(): Int = dsl.deleteFrom(t).where(t.OWNER.isNull).execute()
 
   private fun Task.toQuery(): Query =
-    dsl.insertInto(
-      t,
-      t.ID,
-      t.PRIORITY,
-      t.GROUP_ID,
-      t.CLASS,
-      t.SIMPLE_TYPE,
-      t.PAYLOAD,
-    )
-      .values(
+    dsl
+      .insertInto(
+        t,
+        t.ID,
+        t.PRIORITY,
+        t.GROUP_ID,
+        t.CLASS,
+        t.SIMPLE_TYPE,
+        t.PAYLOAD,
+      ).values(
         uniqueId,
         priority,
         groupId,
         javaClass.typeName,
         javaClass.simpleName,
         objectMapper.writeValueAsString(this),
-      )
-      .onDuplicateKeyUpdate()
+      ).onDuplicateKeyUpdate()
       .set(t.GROUP_ID, groupId)
       .set(t.PRIORITY, priority)
       .set(t.CLASS, javaClass.typeName)

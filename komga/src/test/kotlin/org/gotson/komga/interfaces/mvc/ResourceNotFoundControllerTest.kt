@@ -16,7 +16,8 @@ class ResourceNotFoundControllerTest(
   @Test
   @WithMockCustomUser
   fun `when getting an unknown API endpoint then 404 is returned`() {
-    mockMvc.get("/api/v1/doesnotexist")
+    mockMvc
+      .get("/api/v1/doesnotexist")
       .andExpect {
         status { isNotFound() }
       }
@@ -25,7 +26,8 @@ class ResourceNotFoundControllerTest(
   @Test
   @WithMockCustomUser
   fun `when getting an unknown OPDS endpoint then 404 is returned`() {
-    mockMvc.get("/opds/v2/doesnotexist")
+    mockMvc
+      .get("/opds/v2/doesnotexist")
       .andExpect {
         status { isNotFound() }
       }
@@ -34,7 +36,8 @@ class ResourceNotFoundControllerTest(
   @Test
   @WithMockCustomUser
   fun `when getting an unknown SSE endpoint then 404 is returned`() {
-    mockMvc.get("/sse/v1/doesnotexist")
+    mockMvc
+      .get("/sse/v1/doesnotexist")
       .andExpect {
         status { isNotFound() }
       }
@@ -43,7 +46,8 @@ class ResourceNotFoundControllerTest(
   @Test
   @WithMockCustomUser
   fun `when getting an unknown endpoint then it is forwarded to index`() {
-    mockMvc.get("/book/0DBTWY6S0KNX9")
+    mockMvc
+      .get("/book/0DBTWY6S0KNX9")
       .andExpect {
         status { isOk() }
       }

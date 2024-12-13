@@ -24,8 +24,10 @@ class BrowseBenchmark : AbstractRestBenchmark() {
 
     // find series with most books
     biggestSeriesId =
-      seriesController.getAllSeries(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("booksCount"))))
-        .content.first()
+      seriesController
+        .getAllSeries(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("booksCount"))))
+        .content
+        .first()
         .id
   }
 

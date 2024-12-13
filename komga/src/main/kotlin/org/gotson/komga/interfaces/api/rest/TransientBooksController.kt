@@ -42,7 +42,8 @@ class TransientBooksController(
     @RequestBody request: ScanRequestDto,
   ): List<TransientBookDto> =
     try {
-      transientBookLifecycle.scanAndPersist(request.path)
+      transientBookLifecycle
+        .scanAndPersist(request.path)
         .sortedBy { it.book.path }
         .map { it.toDto() }
     } catch (e: CodedException) {
@@ -69,7 +70,8 @@ class TransientBooksController(
       try {
         val pageContent = transientBookLifecycle.getBookPage(it, pageNumber)
 
-        ResponseEntity.ok()
+        ResponseEntity
+          .ok()
           .contentType(getMediaTypeOrDefault(pageContent.mediaType))
           .body(pageContent.bytes)
       } catch (ex: IndexOutOfBoundsException) {

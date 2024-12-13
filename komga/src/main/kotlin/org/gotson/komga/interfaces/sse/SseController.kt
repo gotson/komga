@@ -122,7 +122,8 @@ class SseController(
         .forEach { (emitter, _) ->
           try {
             emitter.send(
-              SseEmitter.event()
+              SseEmitter
+                .event()
                 .name(name)
                 .data(data, MediaType.APPLICATION_JSON),
             )

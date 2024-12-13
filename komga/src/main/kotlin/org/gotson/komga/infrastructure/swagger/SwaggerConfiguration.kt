@@ -24,15 +24,12 @@ class SwaggerConfiguration {
 
             Both APIs are secured using HTTP Basic Authentication.
             """.trimIndent(),
-          )
-          .license(License().name("MIT").url("https://github.com/gotson/komga/blob/master/LICENSE")),
-      )
-      .externalDocs(
+          ).license(License().name("MIT").url("https://github.com/gotson/komga/blob/master/LICENSE")),
+      ).externalDocs(
         ExternalDocumentation()
           .description("Komga documentation")
           .url("https://komga.org"),
-      )
-      .components(
+      ).components(
         Components()
           .addSecuritySchemes(
             "basicAuth",

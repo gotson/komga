@@ -62,11 +62,9 @@ data class KomgaUser(
 
   fun canAccessAllLibraries(): Boolean = sharedAllLibraries || roleAdmin
 
-  fun canAccessLibrary(libraryId: String): Boolean =
-    canAccessAllLibraries() || sharedLibrariesIds.any { it == libraryId }
+  fun canAccessLibrary(libraryId: String): Boolean = canAccessAllLibraries() || sharedLibrariesIds.any { it == libraryId }
 
-  fun canAccessLibrary(library: Library): Boolean =
-    canAccessAllLibraries() || sharedLibrariesIds.any { it == library.id }
+  fun canAccessLibrary(library: Library): Boolean = canAccessAllLibraries() || sharedLibrariesIds.any { it == library.id }
 
   fun isContentAllowed(
     ageRating: Int? = null,
@@ -109,6 +107,5 @@ data class KomgaUser(
     return !ageDenied && !labelDenied
   }
 
-  override fun toString(): String =
-    "KomgaUser(email='$email', roleAdmin=$roleAdmin, roleFileDownload=$roleFileDownload, rolePageStreaming=$rolePageStreaming, roleKoboSync=$roleKoboSync, sharedLibrariesIds=$sharedLibrariesIds, sharedAllLibraries=$sharedAllLibraries, restrictions=$restrictions, id='$id', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
+  override fun toString(): String = "KomgaUser(email='$email', roleAdmin=$roleAdmin, roleFileDownload=$roleFileDownload, rolePageStreaming=$rolePageStreaming, roleKoboSync=$roleKoboSync, sharedLibrariesIds=$sharedLibrariesIds, sharedAllLibraries=$sharedAllLibraries, restrictions=$restrictions, id='$id', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
 }

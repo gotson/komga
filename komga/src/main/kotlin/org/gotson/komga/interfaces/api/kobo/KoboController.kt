@@ -177,12 +177,12 @@ class KoboController(
   private val contentRestrictionChecker: ContentRestrictionChecker,
 ) {
   private val cachedKepub =
-    Caffeine.newBuilder()
+    Caffeine
+      .newBuilder()
       .expireAfterAccess(5, TimeUnit.MINUTES)
       .removalListener<String, Path> { _, value, _ ->
         if (value?.deleteIfExists() == true) logger.debug { "Deleted cached kepub: $value" }
-      }
-      .build<String, Path>()
+      }.build<String, Path>()
 
   @GetMapping("ping")
   fun ping() = "pong"
@@ -201,11 +201,26 @@ class KoboController(
 
     with(resources as ObjectNode) {
       put("image_host", ServletUriComponentsBuilder.fromCurrentContextPath().toUriString())
-      put("image_url_template", ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("kobo", authToken, "v1", "books", "{ImageId}", "thumbnail", "{Width}", "{Height}", "false", "image.jpg").build().toUriString())
-      put("image_url_quality_template", ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("kobo", authToken, "v1", "books", "{ImageId}", "thumbnail", "{Width}", "{Height}", "{Quality}", "{IsGreyscale}", "image.jpg").build().toUriString())
+      put(
+        "image_url_template",
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .pathSegment("kobo", authToken, "v1", "books", "{ImageId}", "thumbnail", "{Width}", "{Height}", "false", "image.jpg")
+          .build()
+          .toUriString(),
+      )
+      put(
+        "image_url_quality_template",
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .pathSegment("kobo", authToken, "v1", "books", "{ImageId}", "thumbnail", "{Width}", "{Height}", "{Quality}", "{IsGreyscale}", "image.jpg")
+          .build()
+          .toUriString(),
+      )
     }
 
-    return ResponseEntity.ok()
+    return ResponseEntity
+      .ok()
       .header("x-kobo-apitoken", "e30=")
       .body(ResourcesDto(resources))
   }
@@ -333,7 +348,9 @@ class KoboController(
         logger.debug { "Library sync: ${booksAdded.numberOfElements} books added, ${booksChanged.numberOfElements} books changed, ${booksRemoved.numberOfElements} books removed, ${changedReadingState.numberOfElements} books with changed reading state, $readListsAdded readlists added, $readListsChanged readlists changed, $readListsRemoved removed" }
 
         val metadata =
-          koboDtoRepository.findBookMetadataByIds((booksAdded.content + booksChanged.content).map { it.bookId }).associateBy { it.entitlementId }
+          koboDtoRepository
+            .findBookMetadataByIds((booksAdded.content + booksChanged.content).map { it.bookId })
+            .associateBy { it.entitlementId }
             .mapValues { it.value.withDownloadUrls(downloadUriBuilder) }
         val readProgress = readProgressRepository.findAllByBookIdsAndUserId((booksAdded.content + booksChanged.content + changedReadingState.content).map { it.bookId }, principal.user.id).associateBy { it.bookId }
         val readListsBooks = syncPointRepository.findBookIdsByReadListIds(toSyncPoint.id, (readListsAdded.content + readListsChanged.content).map { it.readListId }).groupBy { it.readListId }
@@ -426,7 +443,9 @@ class KoboController(
         logger.debug { "Library sync: ${books.numberOfElements} books, ${readLists.numberOfElements} readlists" }
 
         val metadata =
-          koboDtoRepository.findBookMetadataByIds(books.content.map { it.bookId }).associateBy { it.entitlementId }
+          koboDtoRepository
+            .findBookMetadataByIds(books.content.map { it.bookId })
+            .associateBy { it.entitlementId }
             .mapValues { it.value.withDownloadUrls(downloadUriBuilder) }
         val readProgress = readProgressRepository.findAllByBookIdsAndUserId(books.content.map { it.bookId }, principal.user.id).associateBy { it.bookId }
         val readListsBooks = syncPointRepository.findBookIdsByReadListIds(toSyncPoint.id, readLists.content.map { it.readListId }).groupBy { it.readListId }
@@ -485,8 +504,7 @@ class KoboController(
       .headers {
         if (shouldContinueSyncMerged) it.set(X_KOBO_SYNC, "continue")
         it.set(X_KOBO_SYNCTOKEN, komgaSyncTokenGenerator.toBase64(syncTokenUpdated))
-      }
-      .body(syncResultMerged)
+      }.body(syncResultMerged)
   }
 
   /**
@@ -560,7 +578,13 @@ class KoboController(
               href = koboUpdate.currentBookmark.location.source,
               // assume default, will be overwritten by the correct type when saved
               type = "application/xhtml+xml",
-              koboSpan = if (koboUpdate.currentBookmark.location.type.contentEquals("kobospan", true)) koboUpdate.currentBookmark.location.value else null,
+              koboSpan =
+                if (koboUpdate.currentBookmark.location.type
+                    .contentEquals("kobospan", true)
+                )
+                  koboUpdate.currentBookmark.location.value
+                else
+                  null,
               locations =
                 R2Locator.Location(
                   progression = koboUpdate.currentBookmark.contentSourceProgressPercent / 100,
@@ -645,16 +669,17 @@ class KoboController(
                   os.close()
                 }
               }
-            return ResponseEntity.ok()
+            return ResponseEntity
+              .ok()
               .headers(
                 HttpHeaders().apply {
                   contentDisposition =
-                    ContentDisposition.builder("attachment")
+                    ContentDisposition
+                      .builder("attachment")
                       .filename("${book.path.nameWithoutExtension}.kepub.epub", StandardCharsets.UTF_8)
                       .build()
                 },
-              )
-              .contentType(getMediaTypeOrDefault(EPUB.type))
+              ).contentType(getMediaTypeOrDefault(EPUB.type))
               .contentLength(contentLength())
               .body(stream)
           }
@@ -706,12 +731,11 @@ class KoboController(
   )
   fun catchAll(
     @RequestBody body: Any?,
-  ): ResponseEntity<JsonNode> {
-    return if (koboProxy.isEnabled())
+  ): ResponseEntity<JsonNode> =
+    if (koboProxy.isEnabled())
       koboProxy.proxyCurrentRequest(body)
     else
       ResponseEntity.ok().body(mapper.createObjectNode())
-  }
 
   private fun getDownloadUrlBuilder(token: String): UriBuilder =
     ServletUriComponentsBuilder
@@ -791,8 +815,8 @@ class KoboController(
   private fun getEmptyReadProgressForBook(
     bookId: String,
     createdDate: ZonedDateTime,
-  ): ReadingStateDto {
-    return ReadingStateDto(
+  ): ReadingStateDto =
+    ReadingStateDto(
       created = createdDate,
       lastModified = createdDate,
       priorityTimestamp = createdDate,
@@ -806,5 +830,4 @@ class KoboController(
           timesStartedReading = 0,
         ),
     )
-  }
 }

@@ -98,7 +98,10 @@ class ReadListDaoTest(
       readList.copy(
         name = "UpdatedReadList",
         summary = "summary",
-        bookIds = readList.bookIds.values.take(5).toIndexedMap(),
+        bookIds =
+          readList.bookIds.values
+            .take(5)
+            .toIndexedMap(),
       )
 
     val now = LocalDateTime.now()

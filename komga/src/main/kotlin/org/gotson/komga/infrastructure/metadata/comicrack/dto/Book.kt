@@ -20,7 +20,5 @@ class Book {
   @JsonProperty(value = "FileName")
   var fileName: String? = null
 
-  override fun toString(): String {
-    return "Book(series=$series, number=$number, volume=$volume, year=$year, fileName=$fileName)"
-  }
+  override fun toString(): String = "Book(series=$series, number=$number, volume=$volume, year=$year, fileName=$fileName)"
 }

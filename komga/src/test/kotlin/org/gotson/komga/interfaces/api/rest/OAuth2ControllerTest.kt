@@ -18,7 +18,8 @@ class OAuth2ControllerTest(
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getting oauth2 providers then returns OK`() {
-    mockMvc.get("/api/v1/oauth2/providers")
+    mockMvc
+      .get("/api/v1/oauth2/providers")
       .andExpect {
         status { isOk() }
       }

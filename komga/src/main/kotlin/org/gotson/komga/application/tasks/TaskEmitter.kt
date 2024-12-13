@@ -54,8 +54,7 @@ class TaskEmitter(
         ),
         SearchContext.empty(),
         UnpagedSorted(Sort.by(Sort.Order.asc("seriesId"), Sort.Order.asc("number"))),
-      )
-      .content
+      ).content
       .map { Task.AnalyzeBook(it.id, groupId = it.seriesId) }
       .let { submitTasks(it) }
   }

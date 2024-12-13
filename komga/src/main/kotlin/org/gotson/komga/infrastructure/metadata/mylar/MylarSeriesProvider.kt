@@ -23,7 +23,8 @@ private const val SERIES_JSON = "series.json"
 @Service
 class MylarSeriesProvider(
   private val mapper: ObjectMapper,
-) : SeriesMetadataProvider, SidecarSeriesConsumer {
+) : SeriesMetadataProvider,
+  SidecarSeriesConsumer {
   override fun getSeriesMetadata(series: Series): SeriesMetadataPatch? {
     if (series.oneshot) {
       logger.debug { "Disabled for oneshot series, skipping" }

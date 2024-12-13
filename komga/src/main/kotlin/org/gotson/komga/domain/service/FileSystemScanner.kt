@@ -121,12 +121,13 @@ class FileSystemScanner(
                 }
               }
 
-              sidecarSeriesConsumers.firstOrNull { consumer ->
-                consumer.getSidecarSeriesFilenames().any { file.name.equals(it, ignoreCase = true) }
-              }?.let {
-                val sidecar = Sidecar(file.toUri().toURL(), file.parent.toUri().toURL(), attrs.getUpdatedTime(), it.getSidecarSeriesType(), Sidecar.Source.SERIES)
-                pathToSeriesSidecars.merge(file.parent, mutableListOf(sidecar)) { prev, one -> prev.union(one).toMutableList() }
-              }
+              sidecarSeriesConsumers
+                .firstOrNull { consumer ->
+                  consumer.getSidecarSeriesFilenames().any { file.name.equals(it, ignoreCase = true) }
+                }?.let {
+                  val sidecar = Sidecar(file.toUri().toURL(), file.parent.toUri().toURL(), attrs.getUpdatedTime(), it.getSidecarSeriesType(), Sidecar.Source.SERIES)
+                  pathToSeriesSidecars.merge(file.parent, mutableListOf(sidecar)) { prev, one -> prev.union(one).toMutableList() }
+                }
 
               // book sidecars can't be exactly matched during a file visit
               // this prefilters files to reduce the candidates
@@ -217,7 +218,8 @@ class FileSystemScanner(
   fun scanBookSidecars(path: Path): List<Sidecar> {
     val bookBaseName = path.nameWithoutExtension
     val parent = path.parent
-    return parent.listDirectoryEntries()
+    return parent
+      .listDirectoryEntries()
       .filter { candidate -> sidecarBookPrefilter.any { it.matches(candidate.name) } }
       .mapNotNull { candidate ->
         sidecarBookConsumers.firstOrNull { it.isSidecarBookMatch(bookBaseName, candidate.name) }?.let {
@@ -238,8 +240,6 @@ class FileSystemScanner(
     )
 }
 
-fun BasicFileAttributes.getUpdatedTime(): LocalDateTime =
-  maxOf(creationTime(), lastModifiedTime()).toLocalDateTime()
+fun BasicFileAttributes.getUpdatedTime(): LocalDateTime = maxOf(creationTime(), lastModifiedTime()).toLocalDateTime()
 
-fun FileTime.toLocalDateTime(): LocalDateTime =
-  LocalDateTime.ofInstant(this.toInstant(), ZoneId.systemDefault())
+fun FileTime.toLocalDateTime(): LocalDateTime = LocalDateTime.ofInstant(this.toInstant(), ZoneId.systemDefault())

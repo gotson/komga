@@ -40,8 +40,7 @@ class ThumbnailLifecycle(
    *
    * @return true if more thumbnails need fixing
    */
-  fun fixThumbnailsMetadata(): Boolean =
-    fixThumbnailMetadataBook() || fixThumbnailMetadataSeries() || fixThumbnailMetadataCollection() || fixThumbnailMetadataReadList()
+  fun fixThumbnailsMetadata(): Boolean = fixThumbnailMetadataBook() || fixThumbnailMetadataSeries() || fixThumbnailMetadataCollection() || fixThumbnailMetadataReadList()
 
   private fun fixThumbnailMetadataBook(): Boolean =
     fixThumbnailMetadata(
@@ -162,7 +161,14 @@ class ThumbnailLifecycle(
       dimension = imageAnalyzer.getDimension(url.toURI().toPath().inputStream()) ?: Dimension(0, 0),
     )
 
-  private data class Result(val processed: Int, val hasMore: Boolean)
+  private data class Result(
+    val processed: Int,
+    val hasMore: Boolean,
+  )
 
-  private data class ThumbnailMetadata(val mediaType: String, val fileSize: Long, val dimension: Dimension)
+  private data class ThumbnailMetadata(
+    val mediaType: String,
+    val fileSize: Long,
+    val dimension: Dimension,
+  )
 }

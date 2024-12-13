@@ -30,7 +30,8 @@ class SettingsControllerTest(
     @Test
     @WithAnonymousUser
     fun `given anonymous user when retrieving settings then returns unauthorized`() {
-      mockMvc.get("/api/v1/settings")
+      mockMvc
+        .get("/api/v1/settings")
         .andExpect {
           status { isUnauthorized() }
         }
@@ -39,7 +40,8 @@ class SettingsControllerTest(
     @Test
     @WithMockCustomUser(roles = [ROLE_USER])
     fun `given restricted user when retrieving settings then returns forbidden`() {
-      mockMvc.get("/api/v1/settings")
+      mockMvc
+        .get("/api/v1/settings")
         .andExpect {
           status { isForbidden() }
         }
@@ -57,7 +59,8 @@ class SettingsControllerTest(
     komgaSettingsProvider.serverPort = 1234
     komgaSettingsProvider.serverContextPath = "/example"
 
-    mockMvc.get("/api/v1/settings")
+    mockMvc
+      .get("/api/v1/settings")
       .andExpect {
         status { isOk() }
         jsonPath("deleteEmptyCollections") { value(true) }
@@ -101,11 +104,11 @@ class SettingsControllerTest(
       }
       """.trimIndent()
 
-    mockMvc.patch("/api/v1/settings") {
-      contentType = MediaType.APPLICATION_JSON
-      content = jsonString
-    }
-      .andExpect {
+    mockMvc
+      .patch("/api/v1/settings") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
         status { isNoContent() }
       }
 
@@ -146,11 +149,11 @@ class SettingsControllerTest(
       }
       """.trimIndent()
 
-    mockMvc.patch("/api/v1/settings") {
-      contentType = MediaType.APPLICATION_JSON
-      content = jsonString
-    }
-      .andExpect {
+    mockMvc
+      .patch("/api/v1/settings") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
         status { isNoContent() }
       }
 
@@ -185,11 +188,11 @@ class SettingsControllerTest(
     ],
   )
   fun `given admin user when updating with invalid settings then returns bad request`(jsonString: String) {
-    mockMvc.patch("/api/v1/settings") {
-      contentType = MediaType.APPLICATION_JSON
-      content = jsonString
-    }
-      .andExpect {
+    mockMvc
+      .patch("/api/v1/settings") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
         status { isBadRequest() }
       }
   }

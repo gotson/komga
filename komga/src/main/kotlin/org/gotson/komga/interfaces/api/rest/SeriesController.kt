@@ -218,7 +218,8 @@ class SeriesController(
           },
       )
 
-    return seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageRequest)
+    return seriesDtoRepository
+      .findAll(seriesSearch, SearchContext(principal.user), pageRequest)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -247,7 +248,8 @@ class SeriesController(
           sort,
         )
 
-    return seriesDtoRepository.findAll(search, SearchContext(principal.user), pageRequest)
+    return seriesDtoRepository
+      .findAll(search, SearchContext(principal.user), pageRequest)
       .map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
@@ -361,19 +363,20 @@ class SeriesController(
           sort,
         )
 
-    return seriesDtoRepository.findAll(
-      SeriesSearch(
-        SearchCondition.AllOfSeries(
-          buildList {
-            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
-            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-          },
+    return seriesDtoRepository
+      .findAll(
+        SeriesSearch(
+          SearchCondition.AllOfSeries(
+            buildList {
+              if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+              deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            },
+          ),
         ),
-      ),
-      SearchContext(principal.user),
-      pageRequest,
-    ).map { it.restrictUrl(!principal.user.roleAdmin) }
+        SearchContext(principal.user),
+        pageRequest,
+      ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
   @Operation(description = "Return newly added series.")
@@ -399,19 +402,20 @@ class SeriesController(
           sort,
         )
 
-    return seriesDtoRepository.findAll(
-      SeriesSearch(
-        SearchCondition.AllOfSeries(
-          buildList {
-            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
-            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-          },
+    return seriesDtoRepository
+      .findAll(
+        SeriesSearch(
+          SearchCondition.AllOfSeries(
+            buildList {
+              if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+              deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            },
+          ),
         ),
-      ),
-      SearchContext(principal.user),
-      pageRequest,
-    ).map { it.restrictUrl(!principal.user.roleAdmin) }
+        SearchContext(principal.user),
+        pageRequest,
+      ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
   @Operation(description = "Return recently updated series, but not newly added ones.")
@@ -437,19 +441,20 @@ class SeriesController(
           sort,
         )
 
-    return seriesDtoRepository.findAllRecentlyUpdated(
-      SeriesSearch(
-        SearchCondition.AllOfSeries(
-          buildList {
-            if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
-            deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-            oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
-          },
+    return seriesDtoRepository
+      .findAllRecentlyUpdated(
+        SeriesSearch(
+          SearchCondition.AllOfSeries(
+            buildList {
+              if (!libraryIds.isNullOrEmpty()) add(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
+              deleted?.let { add(SearchCondition.Deleted(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+              oneshot?.let { add(SearchCondition.OneShot(if (it) SearchOperator.IsTrue else SearchOperator.IsFalse)) }
+            },
+          ),
         ),
-      ),
-      SearchContext(principal.user),
-      pageRequest,
-    ).map { it.restrictUrl(!principal.user.roleAdmin) }
+        SearchContext(principal.user),
+        pageRequest,
+      ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
   @GetMapping("v1/series/{seriesId}")
@@ -494,7 +499,8 @@ class SeriesController(
   ): Collection<ThumbnailSeriesDto> {
     principal.user.checkContentRestriction(seriesId)
 
-    return thumbnailsSeriesRepository.findAllBySeriesId(seriesId)
+    return thumbnailsSeriesRepository
+      .findAllBySeriesId(seriesId)
       .map { it.toDto() }
   }
 
@@ -512,17 +518,18 @@ class SeriesController(
     if (!contentDetector.isImage(mediaType))
       throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
-    return seriesLifecycle.addThumbnailForSeries(
-      ThumbnailSeries(
-        seriesId = series.id,
-        thumbnail = file.bytes,
-        type = ThumbnailSeries.Type.USER_UPLOADED,
-        fileSize = file.bytes.size.toLong(),
-        mediaType = mediaType,
-        dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
-      ),
-      if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
-    ).toDto()
+    return seriesLifecycle
+      .addThumbnailForSeries(
+        ThumbnailSeries(
+          seriesId = series.id,
+          thumbnail = file.bytes,
+          type = ThumbnailSeries.Type.USER_UPLOADED,
+          fileSize = file.bytes.size.toLong(),
+          mediaType = mediaType,
+          dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
+        ),
+        if (selected) MarkSelectedPreference.YES else MarkSelectedPreference.NO,
+      ).toDto()
   }
 
   @PutMapping("v1/series/{seriesId}/thumbnails/{thumbnailId}/selected")
@@ -601,11 +608,12 @@ class SeriesController(
           },
         ),
       )
-    return bookDtoRepository.findAll(
-      search,
-      SearchContext(principal.user),
-      pageRequest,
-    ).map { it.restrictUrl(!principal.user.roleAdmin) }
+    return bookDtoRepository
+      .findAll(
+        search,
+        SearchContext(principal.user),
+        pageRequest,
+      ).map { it.restrictUrl(!principal.user.roleAdmin) }
   }
 
   @GetMapping("v1/series/{seriesId}/collections")
@@ -615,7 +623,8 @@ class SeriesController(
   ): List<CollectionDto> {
     principal.user.checkContentRestriction(seriesId)
 
-    return collectionRepository.findAllContainingSeriesId(seriesId, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
+    return collectionRepository
+      .findAllContainingSeriesId(seriesId, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
       .map { it.toDto() }
   }
 
@@ -650,70 +659,69 @@ class SeriesController(
     @RequestBody
     newMetadata: SeriesMetadataUpdateDto,
     @AuthenticationPrincipal principal: KomgaPrincipal,
-  ) =
-    seriesMetadataRepository.findByIdOrNull(seriesId)?.let { existing ->
-      val updated =
-        with(newMetadata) {
-          existing.copy(
-            status = status ?: existing.status,
-            statusLock = statusLock ?: existing.statusLock,
-            title = title ?: existing.title,
-            titleLock = titleLock ?: existing.titleLock,
-            titleSort = titleSort ?: existing.titleSort,
-            titleSortLock = titleSortLock ?: existing.titleSortLock,
-            summary = summary ?: existing.summary,
-            summaryLock = summaryLock ?: existing.summaryLock,
-            language = language ?: existing.language,
-            languageLock = languageLock ?: existing.languageLock,
-            readingDirection = if (isSet("readingDirection")) readingDirection else existing.readingDirection,
-            readingDirectionLock = readingDirectionLock ?: existing.readingDirectionLock,
-            publisher = publisher ?: existing.publisher,
-            publisherLock = publisherLock ?: existing.publisherLock,
-            ageRating = if (isSet("ageRating")) ageRating else existing.ageRating,
-            ageRatingLock = ageRatingLock ?: existing.ageRatingLock,
-            genres =
-              if (isSet("genres")) {
-                if (genres != null) genres!! else emptySet()
-              } else {
-                existing.genres
-              },
-            genresLock = genresLock ?: existing.genresLock,
-            tags =
-              if (isSet("tags")) {
-                if (tags != null) tags!! else emptySet()
-              } else {
-                existing.tags
-              },
-            tagsLock = tagsLock ?: existing.tagsLock,
-            totalBookCount = if (isSet("totalBookCount")) totalBookCount else existing.totalBookCount,
-            totalBookCountLock = totalBookCountLock ?: existing.totalBookCountLock,
-            sharingLabels =
-              if (isSet("sharingLabels")) {
-                if (sharingLabels != null) sharingLabels!! else emptySet()
-              } else {
-                existing.sharingLabels
-              },
-            sharingLabelsLock = sharingLabelsLock ?: existing.sharingLabelsLock,
-            links =
-              if (isSet("links")) {
-                if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
-              } else {
-                existing.links
-              },
-            linksLock = linksLock ?: existing.linksLock,
-            alternateTitles =
-              if (isSet("alternateTitles")) {
-                if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
-              } else {
-                existing.alternateTitles
-              },
-            alternateTitlesLock = alternateTitlesLock ?: existing.alternateTitlesLock,
-          )
-        }
-      seriesMetadataRepository.update(updated)
+  ) = seriesMetadataRepository.findByIdOrNull(seriesId)?.let { existing ->
+    val updated =
+      with(newMetadata) {
+        existing.copy(
+          status = status ?: existing.status,
+          statusLock = statusLock ?: existing.statusLock,
+          title = title ?: existing.title,
+          titleLock = titleLock ?: existing.titleLock,
+          titleSort = titleSort ?: existing.titleSort,
+          titleSortLock = titleSortLock ?: existing.titleSortLock,
+          summary = summary ?: existing.summary,
+          summaryLock = summaryLock ?: existing.summaryLock,
+          language = language ?: existing.language,
+          languageLock = languageLock ?: existing.languageLock,
+          readingDirection = if (isSet("readingDirection")) readingDirection else existing.readingDirection,
+          readingDirectionLock = readingDirectionLock ?: existing.readingDirectionLock,
+          publisher = publisher ?: existing.publisher,
+          publisherLock = publisherLock ?: existing.publisherLock,
+          ageRating = if (isSet("ageRating")) ageRating else existing.ageRating,
+          ageRatingLock = ageRatingLock ?: existing.ageRatingLock,
+          genres =
+            if (isSet("genres")) {
+              if (genres != null) genres!! else emptySet()
+            } else {
+              existing.genres
+            },
+          genresLock = genresLock ?: existing.genresLock,
+          tags =
+            if (isSet("tags")) {
+              if (tags != null) tags!! else emptySet()
+            } else {
+              existing.tags
+            },
+          tagsLock = tagsLock ?: existing.tagsLock,
+          totalBookCount = if (isSet("totalBookCount")) totalBookCount else existing.totalBookCount,
+          totalBookCountLock = totalBookCountLock ?: existing.totalBookCountLock,
+          sharingLabels =
+            if (isSet("sharingLabels")) {
+              if (sharingLabels != null) sharingLabels!! else emptySet()
+            } else {
+              existing.sharingLabels
+            },
+          sharingLabelsLock = sharingLabelsLock ?: existing.sharingLabelsLock,
+          links =
+            if (isSet("links")) {
+              if (links != null) links!!.map { WebLink(it.label!!, URI(it.url!!)) } else emptyList()
+            } else {
+              existing.links
+            },
+          linksLock = linksLock ?: existing.linksLock,
+          alternateTitles =
+            if (isSet("alternateTitles")) {
+              if (alternateTitles != null) alternateTitles!!.map { AlternateTitle(it.label!!, it.title!!) } else emptyList()
+            } else {
+              existing.alternateTitles
+            },
+          alternateTitlesLock = alternateTitlesLock ?: existing.alternateTitlesLock,
+        )
+      }
+    seriesMetadataRepository.update(updated)
 
-      seriesRepository.findByIdOrNull(seriesId)?.let { eventPublisher.publishEvent(DomainEvent.SeriesUpdated(it)) }
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    seriesRepository.findByIdOrNull(seriesId)?.let { eventPublisher.publishEvent(DomainEvent.SeriesUpdated(it)) }
+  } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @Operation(description = "Mark all book for series as read")
   @PostMapping("v1/series/{seriesId}/read-progress")
@@ -758,11 +766,13 @@ class SeriesController(
   ) {
     principal.user.checkContentRestriction(seriesId)
 
-    bookDtoRepository.findAll(
-      BookSearch(SearchCondition.SeriesId(SearchOperator.Is(seriesId))),
-      SearchContext(principal.user),
-      UnpagedSorted(Sort.by(Sort.Order.asc("metadata.numberSort"))),
-    ).toList().filter { book -> book.metadata.numberSort <= readProgress.lastBookNumberSortRead }
+    bookDtoRepository
+      .findAll(
+        BookSearch(SearchCondition.SeriesId(SearchOperator.Is(seriesId))),
+        SearchContext(principal.user),
+        UnpagedSorted(Sort.by(Sort.Order.asc("metadata.numberSort"))),
+      ).toList()
+      .filter { book -> book.metadata.numberSort <= readProgress.lastBookNumberSortRead }
       .forEach { book ->
         if (book.readProgress?.completed != true)
           bookLifecycle.markReadProgressCompleted(book.id, principal.user)
@@ -802,16 +812,17 @@ class SeriesController(
         }
       }
 
-    return ResponseEntity.ok()
+    return ResponseEntity
+      .ok()
       .headers(
         HttpHeaders().apply {
           contentDisposition =
-            ContentDisposition.builder("attachment")
+            ContentDisposition
+              .builder("attachment")
               .filename(seriesMetadataRepository.findById(seriesId).title + ".zip", UTF_8)
               .build()
         },
-      )
-      .contentType(MediaType.parseMediaType(ZIP.type))
+      ).contentType(MediaType.parseMediaType(ZIP.type))
       .body(streamingResponse)
   }
 

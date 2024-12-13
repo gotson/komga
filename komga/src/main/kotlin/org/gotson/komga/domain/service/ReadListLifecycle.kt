@@ -147,8 +147,7 @@ class ReadListLifecycle(
     eventPublisher.publishEvent(DomainEvent.ThumbnailReadListDeleted(thumbnail))
   }
 
-  fun getThumbnailBytes(thumbnailId: String): ByteArray? =
-    thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.thumbnail
+  fun getThumbnailBytes(thumbnailId: String): ByteArray? = thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.thumbnail
 
   fun getThumbnailBytes(readList: ReadList): ByteArray {
     thumbnailReadListRepository.findSelectedByReadListIdOrNull(readList.id)?.let {

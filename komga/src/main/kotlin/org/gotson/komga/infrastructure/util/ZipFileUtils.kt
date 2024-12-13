@@ -17,7 +17,8 @@ fun getZipEntryBytes(
 ): ByteArray {
   // fast path. Only read central directory record and try to find entry in it
   val zipBuilder =
-    ZipFile.builder()
+    ZipFile
+      .builder()
       .setPath(path)
       .setUseUnicodeExtraFields(true)
       .setIgnoreLocalFileHeader(true)

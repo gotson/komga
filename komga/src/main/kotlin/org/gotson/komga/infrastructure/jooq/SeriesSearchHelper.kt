@@ -37,8 +37,8 @@ class SeriesSearchHelper(
     return toConditionInternal(SearchCondition.AnyOfSeries(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
   }
 
-  private fun toConditionInternal(searchCondition: SearchCondition.Series?): Pair<Condition, Set<RequiredJoin>> {
-    return when (searchCondition) {
+  private fun toConditionInternal(searchCondition: SearchCondition.Series?): Pair<Condition, Set<RequiredJoin>> =
+    when (searchCondition) {
       is SearchCondition.AllOfSeries ->
         searchCondition.conditions.fold(DSL.noCondition() to emptySet()) { acc: Pair<Condition, Set<RequiredJoin>>, cond: SearchCondition.Series ->
           val seriesCondition = toConditionInternal(cond)
@@ -98,13 +98,22 @@ class SeriesSearchHelper(
       is SearchCondition.Tag ->
         Tables.SERIES.ID.let { field ->
           val inner = { tag: String ->
-            DSL.select(Tables.SERIES_METADATA_TAG.SERIES_ID)
+            DSL
+              .select(Tables.SERIES_METADATA_TAG.SERIES_ID)
               .from(Tables.SERIES_METADATA_TAG)
-              .where(Tables.SERIES_METADATA_TAG.TAG.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).equalIgnoreCase(tag))
-              .union(
-                DSL.select(Tables.BOOK_METADATA_AGGREGATION_TAG.SERIES_ID)
+              .where(
+                Tables.SERIES_METADATA_TAG.TAG
+                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+                  .equalIgnoreCase(tag),
+              ).union(
+                DSL
+                  .select(Tables.BOOK_METADATA_AGGREGATION_TAG.SERIES_ID)
                   .from(Tables.BOOK_METADATA_AGGREGATION_TAG)
-                  .where(Tables.BOOK_METADATA_AGGREGATION_TAG.TAG.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).equalIgnoreCase(tag)),
+                  .where(
+                    Tables.BOOK_METADATA_AGGREGATION_TAG.TAG
+                      .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+                      .equalIgnoreCase(tag),
+                  ),
               )
           }
           when (searchCondition.operator) {
@@ -116,23 +125,25 @@ class SeriesSearchHelper(
       is SearchCondition.Author ->
         Tables.SERIES.ID.let { field ->
           val inner = { name: String?, role: String? ->
-            DSL.select(Tables.BOOK_METADATA_AGGREGATION_AUTHOR.SERIES_ID)
+            DSL
+              .select(Tables.BOOK_METADATA_AGGREGATION_AUTHOR.SERIES_ID)
               .from(Tables.BOOK_METADATA_AGGREGATION_AUTHOR)
               .where(DSL.noCondition())
               .apply {
                 if (name != null)
                   and(
-                    Tables.BOOK_METADATA_AGGREGATION_AUTHOR.NAME.collate(
-                      SqliteUdfDataSource.COLLATION_UNICODE_3,
-                    ).equalIgnoreCase(name),
+                    Tables.BOOK_METADATA_AGGREGATION_AUTHOR.NAME
+                      .collate(
+                        SqliteUdfDataSource.COLLATION_UNICODE_3,
+                      ).equalIgnoreCase(name),
                   )
-              }
-              .apply {
+              }.apply {
                 if (role != null)
                   and(
-                    Tables.BOOK_METADATA_AGGREGATION_AUTHOR.ROLE.collate(
-                      SqliteUdfDataSource.COLLATION_UNICODE_3,
-                    ).equalIgnoreCase(role),
+                    Tables.BOOK_METADATA_AGGREGATION_AUTHOR.ROLE
+                      .collate(
+                        SqliteUdfDataSource.COLLATION_UNICODE_3,
+                      ).equalIgnoreCase(role),
                   )
               }
           }
@@ -160,7 +171,8 @@ class SeriesSearchHelper(
       is SearchCondition.CollectionId ->
         Tables.SERIES.ID.let { field ->
           val inner = { collectionId: String ->
-            DSL.select(Tables.COLLECTION_SERIES.SERIES_ID)
+            DSL
+              .select(Tables.COLLECTION_SERIES.SERIES_ID)
               .from(Tables.COLLECTION_SERIES)
               .where(Tables.COLLECTION_SERIES.COLLECTION_ID.eq(collectionId))
           }
@@ -181,9 +193,14 @@ class SeriesSearchHelper(
       is SearchCondition.Genre ->
         Tables.SERIES.ID.let { field ->
           val inner = { genre: String ->
-            DSL.select(Tables.SERIES_METADATA_GENRE.SERIES_ID)
+            DSL
+              .select(Tables.SERIES_METADATA_GENRE.SERIES_ID)
               .from(Tables.SERIES_METADATA_GENRE)
-              .where(Tables.SERIES_METADATA_GENRE.GENRE.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).equalIgnoreCase(genre))
+              .where(
+                Tables.SERIES_METADATA_GENRE.GENRE
+                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+                  .equalIgnoreCase(genre),
+              )
           }
           when (searchCondition.operator) {
             is SearchOperator.Is -> field.`in`(inner(searchCondition.operator.value))
@@ -198,9 +215,14 @@ class SeriesSearchHelper(
       is SearchCondition.SharingLabel ->
         Tables.SERIES.ID.let { field ->
           val inner = { label: String ->
-            DSL.select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
+            DSL
+              .select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
               .from(Tables.SERIES_METADATA_SHARING)
-              .where(Tables.SERIES_METADATA_SHARING.LABEL.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).equalIgnoreCase(label))
+              .where(
+                Tables.SERIES_METADATA_SHARING.LABEL
+                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+                  .equalIgnoreCase(label),
+              )
           }
           when (searchCondition.operator) {
             is SearchOperator.Is -> field.`in`(inner(searchCondition.operator.value))
@@ -222,5 +244,4 @@ class SeriesSearchHelper(
 
       null -> DSL.noCondition() to emptySet()
     }
-  }
 }

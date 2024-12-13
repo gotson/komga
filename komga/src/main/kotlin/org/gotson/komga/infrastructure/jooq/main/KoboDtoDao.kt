@@ -29,30 +29,36 @@ class KoboDtoDao(
     bookIds: Collection<String>,
   ): Collection<KoboBookMetadataDto> {
     val records =
-      dsl.select(
-        d.BOOK_ID,
-        d.TITLE,
-        d.NUMBER,
-        d.NUMBER_SORT,
-        d.ISBN,
-        d.SUMMARY,
-        d.RELEASE_DATE,
-        d.CREATED_DATE,
-        sd.SERIES_ID,
-        sd.TITLE,
-        sd.PUBLISHER,
-        sd.LANGUAGE,
-        b.FILE_SIZE,
-        b.ONESHOT,
-        m.EPUB_IS_KEPUB,
-        m.EXTENSION_CLASS,
-        m.EXTENSION_VALUE_BLOB,
-        bt.ID,
-      ).from(b)
-        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-        .leftJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
-        .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-        .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)).and(bt.SELECTED.isTrue)
+      dsl
+        .select(
+          d.BOOK_ID,
+          d.TITLE,
+          d.NUMBER,
+          d.NUMBER_SORT,
+          d.ISBN,
+          d.SUMMARY,
+          d.RELEASE_DATE,
+          d.CREATED_DATE,
+          sd.SERIES_ID,
+          sd.TITLE,
+          sd.PUBLISHER,
+          sd.LANGUAGE,
+          b.FILE_SIZE,
+          b.ONESHOT,
+          m.EPUB_IS_KEPUB,
+          m.EXTENSION_CLASS,
+          m.EXTENSION_VALUE_BLOB,
+          bt.ID,
+        ).from(b)
+        .leftJoin(d)
+        .on(b.ID.eq(d.BOOK_ID))
+        .leftJoin(sd)
+        .on(b.SERIES_ID.eq(sd.SERIES_ID))
+        .leftJoin(m)
+        .on(b.ID.eq(m.BOOK_ID))
+        .leftJoin(bt)
+        .on(b.ID.eq(bt.BOOK_ID))
+        .and(bt.SELECTED.isTrue)
         .where(d.BOOK_ID.`in`(bookIds))
         .fetch()
 
@@ -65,7 +71,8 @@ class KoboDtoDao(
       val mediaExtension = mapper.deserializeMediaExtension(mr.extensionClass, mr.extensionValueBlob) as? MediaExtensionEpub
 
       val authors =
-        dsl.selectFrom(a)
+        dsl
+          .selectFrom(a)
           .where(a.BOOK_ID.`in`(bookIds))
           .filter { it.name != null }
           .groupBy({ it.bookId }, { it })

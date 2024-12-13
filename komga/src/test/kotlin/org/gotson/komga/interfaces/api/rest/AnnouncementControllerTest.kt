@@ -61,7 +61,8 @@ class AnnouncementControllerTest(
     every { announcementController.fetchWebsiteAnnouncements() } returns mockFeed
 
     repeat(2) {
-      mockMvc.get("/api/v1/announcements")
+      mockMvc
+        .get("/api/v1/announcements")
         .andExpect {
           status { isOk() }
           jsonPath("$.items.length()") { value(1) }

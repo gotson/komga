@@ -25,16 +25,16 @@ class BookMetadataAggregationDao(
   private val a = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val t = Tables.BOOK_METADATA_AGGREGATION_TAG
 
-  override fun findById(seriesId: String): BookMetadataAggregation =
-    findOne(listOf(seriesId)).first()
+  override fun findById(seriesId: String): BookMetadataAggregation = findOne(listOf(seriesId)).first()
 
-  override fun findByIdOrNull(seriesId: String): BookMetadataAggregation? =
-    findOne(listOf(seriesId)).firstOrNull()
+  override fun findByIdOrNull(seriesId: String): BookMetadataAggregation? = findOne(listOf(seriesId)).firstOrNull()
 
   private fun findOne(seriesIds: Collection<String>) =
-    dsl.select(*d.fields(), *a.fields())
+    dsl
+      .select(*d.fields(), *a.fields())
       .from(d)
-      .leftJoin(a).on(d.SERIES_ID.eq(a.SERIES_ID))
+      .leftJoin(a)
+      .on(d.SERIES_ID.eq(a.SERIES_ID))
       .where(d.SERIES_ID.`in`(seriesIds))
       .fetchGroups(
         { it.into(d) },
@@ -44,14 +44,16 @@ class BookMetadataAggregationDao(
       }
 
   private fun findTags(seriesId: String) =
-    dsl.select(t.TAG)
+    dsl
+      .select(t.TAG)
       .from(t)
       .where(t.SERIES_ID.eq(seriesId))
       .fetchSet(t.TAG)
 
   @Transactional
   override fun insert(metadata: BookMetadataAggregation) {
-    dsl.insertInto(d)
+    dsl
+      .insertInto(d)
       .set(d.SERIES_ID, metadata.seriesId)
       .set(d.RELEASE_DATE, metadata.releaseDate)
       .set(d.SUMMARY, metadata.summary)
@@ -64,7 +66,8 @@ class BookMetadataAggregationDao(
 
   @Transactional
   override fun update(metadata: BookMetadataAggregation) {
-    dsl.update(d)
+    dsl
+      .update(d)
       .set(d.SUMMARY, metadata.summary)
       .set(d.SUMMARY_NUMBER, metadata.summaryNumber)
       .set(d.RELEASE_DATE, metadata.releaseDate)
@@ -72,11 +75,13 @@ class BookMetadataAggregationDao(
       .where(d.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
-    dsl.deleteFrom(a)
+    dsl
+      .deleteFrom(a)
       .where(a.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
-    dsl.deleteFrom(t)
+    dsl
+      .deleteFrom(t)
       .where(t.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
@@ -87,14 +92,16 @@ class BookMetadataAggregationDao(
   private fun insertAuthors(metadata: BookMetadataAggregation) {
     if (metadata.authors.isNotEmpty()) {
       metadata.authors.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(a, a.SERIES_ID, a.NAME, a.ROLE)
-            .values(null as String?, null, null),
-        ).also { step ->
-          chunk.forEach {
-            step.bind(metadata.seriesId, it.name, it.role)
-          }
-        }.execute()
+        dsl
+          .batch(
+            dsl
+              .insertInto(a, a.SERIES_ID, a.NAME, a.ROLE)
+              .values(null as String?, null, null),
+          ).also { step ->
+            chunk.forEach {
+              step.bind(metadata.seriesId, it.name, it.role)
+            }
+          }.execute()
       }
     }
   }
@@ -102,14 +109,16 @@ class BookMetadataAggregationDao(
   private fun insertTags(metadata: BookMetadataAggregation) {
     if (metadata.tags.isNotEmpty()) {
       metadata.tags.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(t, t.SERIES_ID, t.TAG)
-            .values(null as String?, null),
-        ).also { step ->
-          chunk.forEach {
-            step.bind(metadata.seriesId, it)
-          }
-        }.execute()
+        dsl
+          .batch(
+            dsl
+              .insertInto(t, t.SERIES_ID, t.TAG)
+              .values(null as String?, null),
+          ).also { step ->
+            chunk.forEach {
+              step.bind(metadata.seriesId, it)
+            }
+          }.execute()
       }
     }
   }
@@ -135,17 +144,16 @@ class BookMetadataAggregationDao(
   private fun BookMetadataAggregationRecord.toDomain(
     authors: List<Author>,
     tags: Set<String>,
-  ) =
-    BookMetadataAggregation(
-      authors = authors,
-      tags = tags,
-      releaseDate = releaseDate,
-      summary = summary,
-      summaryNumber = summaryNumber,
-      seriesId = seriesId,
-      createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
-    )
+  ) = BookMetadataAggregation(
+    authors = authors,
+    tags = tags,
+    releaseDate = releaseDate,
+    summary = summary,
+    summaryNumber = summaryNumber,
+    seriesId = seriesId,
+    createdDate = createdDate.toCurrentTimeZone(),
+    lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
+  )
 
   private fun BookMetadataAggregationAuthorRecord.toDomain() =
     Author(

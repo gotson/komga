@@ -129,14 +129,13 @@ class OpdsController(
 
   private fun linkStart() = OpdsLinkFeedNavigation(OpdsLinkRel.START, uriBuilder(ROUTE_CATALOG).toUriString())
 
-  private fun uriBuilder(path: String) =
-    ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v1.2").path(path)
+  private fun uriBuilder(path: String) = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("opds", "v1.2").path(path)
 
   private fun <T> linkPage(
     uriBuilder: UriComponentsBuilder,
     page: Page<T>,
-  ): List<OpdsLink> {
-    return listOfNotNull(
+  ): List<OpdsLink> =
+    listOfNotNull(
       if (!page.isFirst)
         OpdsLinkFeedNavigation(
           OpdsLinkRel.PREVIOUS,
@@ -152,7 +151,6 @@ class OpdsController(
       else
         null,
     )
-  }
 
   @GetMapping(ROUTE_CATALOG)
   fun getCatalog(): OpdsFeed =
@@ -558,7 +556,8 @@ class OpdsController(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.numberSort")))
 
       val entries =
-        bookDtoRepository.findAll(bookSearch, SearchContext(principal.user), pageable)
+        bookDtoRepository
+          .findAll(bookSearch, SearchContext(principal.user), pageable)
           .map { it.toOpdsEntry(mediaRepository.findById(it.id)) }
 
       val uriBuilder = uriBuilder("series/$id")
@@ -599,7 +598,8 @@ class OpdsController(
       val pageable = PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.asc("metadata.titleSort")))
 
       val entries =
-        seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageable)
+        seriesDtoRepository
+          .findAll(seriesSearch, SearchContext(principal.user), pageable)
           .map { it.toOpdsEntry() }
 
       val uriBuilder = uriBuilder("libraries/$id")
@@ -643,7 +643,8 @@ class OpdsController(
         )
 
       val entries =
-        seriesDtoRepository.findAll(seriesSearch, SearchContext(principal.user), pageable)
+        seriesDtoRepository
+          .findAll(seriesSearch, SearchContext(principal.user), pageable)
           .map { it.toOpdsEntry() }
 
       val uriBuilder = uriBuilder("collections/$id")
@@ -740,8 +741,7 @@ class OpdsController(
     )
     @RequestParam(value = "convert", required = false)
     convertTo: String?,
-  ): ResponseEntity<ByteArray> =
-    commonBookController.getBookPageInternal(bookId, pageNumber + 1, convertTo, request, principal, null)
+  ): ResponseEntity<ByteArray> = commonBookController.getBookPageInternal(bookId, pageNumber + 1, convertTo, request, principal, null)
 
   private fun SeriesDto.toOpdsEntry(prepend: Int? = null): OpdsEntryNavigation {
     val pre = prepend?.let { decimalFormat.format(it) + " - " } ?: ""
@@ -833,6 +833,5 @@ class OpdsController(
       bookDto.toOpdsEntry(mediaRepository.findById(bookDto.id)) { "${it.seriesTitle} ${it.metadata.number}: " }
     }
 
-  private fun sanitize(fileName: String): String =
-    fileName.replace(";", "")
+  private fun sanitize(fileName: String): String = fileName.replace(";", "")
 }

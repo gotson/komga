@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServletRequestWrapper
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.web.filter.OncePerRequestFilter
 
-class KoboMissingPortFilter(private val koboPortSupplier: () -> Int?) : OncePerRequestFilter() {
+class KoboMissingPortFilter(
+  private val koboPortSupplier: () -> Int?,
+) : OncePerRequestFilter() {
   companion object {
     private val FORWARDED_HEADER_NAMES =
       setOf(
@@ -56,7 +58,10 @@ class KoboMissingPortFilter(private val koboPortSupplier: () -> Int?) : OncePerR
 
   private fun formatRequest(request: HttpServletRequest) = "HTTP ${request.method} \"${request.requestURI}\""
 
-  private class KoboMissingPortRequest(request: HttpServletRequest, val port: () -> Int?) : HttpServletRequestWrapper(request) {
+  private class KoboMissingPortRequest(
+    request: HttpServletRequest,
+    val port: () -> Int?,
+  ) : HttpServletRequestWrapper(request) {
     override fun getServerPort() = port() ?: request.serverPort
   }
 }

@@ -108,7 +108,8 @@ class SeriesCollectionControllerTest(
     fun `given user with access to all libraries when getting collections then get all collections`() {
       makeCollections()
 
-      mockMvc.get("/api/v1/collections")
+      mockMvc
+        .get("/api/v1/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(3) }
@@ -123,7 +124,8 @@ class SeriesCollectionControllerTest(
     fun `given user with access to a single library when getting collections then only get collections from this library`() {
       makeCollections()
 
-      mockMvc.get("/api/v1/collections")
+      mockMvc
+        .get("/api/v1/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -137,14 +139,16 @@ class SeriesCollectionControllerTest(
     fun `given user with access to all libraries when getting single collection then it is not filtered`() {
       makeCollections()
 
-      mockMvc.get("/api/v1/collections/${colLibBoth.id}")
+      mockMvc
+        .get("/api/v1/collections/${colLibBoth.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(10) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/collections/${colLibBoth.id}/series")
+      mockMvc
+        .get("/api/v1/collections/${colLibBoth.id}/series")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(10) }
@@ -156,7 +160,8 @@ class SeriesCollectionControllerTest(
     fun `given user with access to a single library when getting single collection with items from 2 libraries then it is filtered`() {
       makeCollections()
 
-      mockMvc.get("/api/v1/collections/${colLibBoth.id}")
+      mockMvc
+        .get("/api/v1/collections/${colLibBoth.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(5) }
@@ -169,7 +174,8 @@ class SeriesCollectionControllerTest(
     fun `given user with access to a single library when getting single collection from another library then return not found`() {
       makeCollections()
 
-      mockMvc.get("/api/v1/collections/${colLib2.id}")
+      mockMvc
+        .get("/api/v1/collections/${colLib2.id}")
         .andExpect {
           status { isNotFound() }
         }
@@ -224,7 +230,8 @@ class SeriesCollectionControllerTest(
           ),
         )
 
-      mockMvc.get("/api/v1/collections")
+      mockMvc
+        .get("/api/v1/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -232,26 +239,30 @@ class SeriesCollectionControllerTest(
           jsonPath("$.content[?(@.name == '${colFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colAllowed.id}")
+      mockMvc
+        .get("/api/v1/collections/${colAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(1) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/collections/${colFiltered.id}")
+      mockMvc
+        .get("/api/v1/collections/${colFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(1) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colDenied.id}")
+      mockMvc
+        .get("/api/v1/collections/${colDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/series/${series10.id}/collections")
+      mockMvc
+        .get("/api/v1/series/${series10.id}/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -328,7 +339,8 @@ class SeriesCollectionControllerTest(
           ),
         )
 
-      mockMvc.get("/api/v1/collections")
+      mockMvc
+        .get("/api/v1/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -336,26 +348,30 @@ class SeriesCollectionControllerTest(
           jsonPath("$.content[?(@.name == '${colFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colAllowed.id}")
+      mockMvc
+        .get("/api/v1/collections/${colAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(2) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/collections/${colFiltered.id}")
+      mockMvc
+        .get("/api/v1/collections/${colFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(2) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colDenied.id}")
+      mockMvc
+        .get("/api/v1/collections/${colDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/series/${series10.id}/collections")
+      mockMvc
+        .get("/api/v1/series/${series10.id}/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -432,7 +448,8 @@ class SeriesCollectionControllerTest(
           ),
         )
 
-      mockMvc.get("/api/v1/collections")
+      mockMvc
+        .get("/api/v1/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -440,26 +457,30 @@ class SeriesCollectionControllerTest(
           jsonPath("$.content[?(@.name == '${colFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colAllowed.id}")
+      mockMvc
+        .get("/api/v1/collections/${colAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(2) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/collections/${colFiltered.id}")
+      mockMvc
+        .get("/api/v1/collections/${colFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(2) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colDenied.id}")
+      mockMvc
+        .get("/api/v1/collections/${colDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/series/${seriesKids.id}/collections")
+      mockMvc
+        .get("/api/v1/series/${seriesKids.id}/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -536,7 +557,8 @@ class SeriesCollectionControllerTest(
           ),
         )
 
-      mockMvc.get("/api/v1/collections")
+      mockMvc
+        .get("/api/v1/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -544,26 +566,30 @@ class SeriesCollectionControllerTest(
           jsonPath("$.content[?(@.name == '${colFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colAllowed.id}")
+      mockMvc
+        .get("/api/v1/collections/${colAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(2) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/collections/${colFiltered.id}")
+      mockMvc
+        .get("/api/v1/collections/${colFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(2) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colDenied.id}")
+      mockMvc
+        .get("/api/v1/collections/${colDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/series/${series.id}/collections")
+      mockMvc
+        .get("/api/v1/series/${series.id}/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -640,7 +666,8 @@ class SeriesCollectionControllerTest(
           ),
         )
 
-      mockMvc.get("/api/v1/collections")
+      mockMvc
+        .get("/api/v1/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -648,26 +675,30 @@ class SeriesCollectionControllerTest(
           jsonPath("$.content[?(@.name == '${colFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colAllowed.id}")
+      mockMvc
+        .get("/api/v1/collections/${colAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(2) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/collections/${colFiltered.id}")
+      mockMvc
+        .get("/api/v1/collections/${colFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(2) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colDenied.id}")
+      mockMvc
+        .get("/api/v1/collections/${colDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/series/${seriesKids.id}/collections")
+      mockMvc
+        .get("/api/v1/series/${seriesKids.id}/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -725,7 +756,8 @@ class SeriesCollectionControllerTest(
           ),
         )
 
-      mockMvc.get("/api/v1/collections")
+      mockMvc
+        .get("/api/v1/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -733,26 +765,30 @@ class SeriesCollectionControllerTest(
           jsonPath("$.content[?(@.name == '${colFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colAllowed.id}")
+      mockMvc
+        .get("/api/v1/collections/${colAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(1) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/collections/${colFiltered.id}")
+      mockMvc
+        .get("/api/v1/collections/${colFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.seriesIds.length()") { value(1) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/collections/${colDenied.id}")
+      mockMvc
+        .get("/api/v1/collections/${colDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/series/${seriesTeen.id}/collections")
+      mockMvc
+        .get("/api/v1/series/${seriesTeen.id}/collections")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -773,12 +809,13 @@ class SeriesCollectionControllerTest(
         {"name":"collection","ordered":false,"seriesIds":["3"]}
         """.trimIndent()
 
-      mockMvc.post("/api/v1/collections") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isForbidden() }
-      }
+      mockMvc
+        .post("/api/v1/collections") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isForbidden() }
+        }
     }
 
     @Test
@@ -790,15 +827,16 @@ class SeriesCollectionControllerTest(
         {"name":"collection","ordered":false,"seriesIds":["${seriesLibrary1.first().id}"]}
         """.trimIndent()
 
-      mockMvc.post("/api/v1/collections") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isOk() }
-        jsonPath("$.seriesIds.length()") { value(1) }
-        jsonPath("$.name") { value("collection") }
-        jsonPath("$.ordered") { value(false) }
-      }
+      mockMvc
+        .post("/api/v1/collections") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isOk() }
+          jsonPath("$.seriesIds.length()") { value(1) }
+          jsonPath("$.name") { value("collection") }
+          jsonPath("$.ordered") { value(false) }
+        }
     }
 
     @Test
@@ -812,12 +850,13 @@ class SeriesCollectionControllerTest(
         {"name":"Lib1","ordered":false,"seriesIds":["${seriesLibrary1.first().id}"]}
         """.trimIndent()
 
-      mockMvc.post("/api/v1/collections") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .post("/api/v1/collections") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
 
     @Test
@@ -829,12 +868,13 @@ class SeriesCollectionControllerTest(
         {"name":"Lib1","ordered":false,"seriesIds":["${seriesLibrary1.first().id}","${seriesLibrary1.first().id}"]}
         """.trimIndent()
 
-      mockMvc.post("/api/v1/collections") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .post("/api/v1/collections") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
   }
 
@@ -849,12 +889,13 @@ class SeriesCollectionControllerTest(
         {"name":"collection","ordered":false,"seriesIds":["3"]}
         """.trimIndent()
 
-      mockMvc.patch("/api/v1/collections/5") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isForbidden() }
-      }
+      mockMvc
+        .patch("/api/v1/collections/5") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isForbidden() }
+        }
     }
 
     @Test
@@ -868,14 +909,16 @@ class SeriesCollectionControllerTest(
         {"name":"updated","ordered":true,"seriesIds":["${seriesLibrary1.first().id}"]}
         """.trimIndent()
 
-      mockMvc.patch("/api/v1/collections/${colLib1.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v1/collections/${colLib1.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
-      mockMvc.get("/api/v1/collections/${colLib1.id}")
+      mockMvc
+        .get("/api/v1/collections/${colLib1.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("updated") }
@@ -893,12 +936,13 @@ class SeriesCollectionControllerTest(
       // language=JSON
       val jsonString = """{"name":"Lib2"}"""
 
-      mockMvc.patch("/api/v1/collections/${colLib1.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .patch("/api/v1/collections/${colLib1.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
 
     @Test
@@ -909,12 +953,13 @@ class SeriesCollectionControllerTest(
       // language=JSON
       val jsonString = """{"seriesIds":["${seriesLibrary1.first().id}","${seriesLibrary1.first().id}"]}"""
 
-      mockMvc.patch("/api/v1/collections/${colLib1.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .patch("/api/v1/collections/${colLib1.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
 
     @Test
@@ -927,7 +972,8 @@ class SeriesCollectionControllerTest(
         content = """{"ordered":true}"""
       }
 
-      mockMvc.get("/api/v1/collections/${colLib1.id}")
+      mockMvc
+        .get("/api/v1/collections/${colLib1.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Lib1") }
@@ -940,7 +986,8 @@ class SeriesCollectionControllerTest(
         content = """{"name":"newName"}"""
       }
 
-      mockMvc.get("/api/v1/collections/${colLib2.id}")
+      mockMvc
+        .get("/api/v1/collections/${colLib2.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("newName") }
@@ -953,7 +1000,8 @@ class SeriesCollectionControllerTest(
         content = """{"seriesIds":["${seriesLibrary1.first().id}"]}"""
       }
 
-      mockMvc.get("/api/v1/collections/${colLibBoth.id}")
+      mockMvc
+        .get("/api/v1/collections/${colLibBoth.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Lib1+2") }
@@ -968,7 +1016,8 @@ class SeriesCollectionControllerTest(
     @Test
     @WithMockCustomUser
     fun `given non-admin user when deleting collection then return forbidden`() {
-      mockMvc.delete("/api/v1/collections/5")
+      mockMvc
+        .delete("/api/v1/collections/5")
         .andExpect {
           status { isForbidden() }
         }
@@ -979,12 +1028,14 @@ class SeriesCollectionControllerTest(
     fun `given admin user when deleting collection then return no content`() {
       makeCollections()
 
-      mockMvc.delete("/api/v1/collections/${colLib1.id}")
+      mockMvc
+        .delete("/api/v1/collections/${colLib1.id}")
         .andExpect {
           status { isNoContent() }
         }
 
-      mockMvc.get("/api/v1/collections/${colLib1.id}")
+      mockMvc
+        .get("/api/v1/collections/${colLib1.id}")
         .andExpect {
           status { isNotFound() }
         }

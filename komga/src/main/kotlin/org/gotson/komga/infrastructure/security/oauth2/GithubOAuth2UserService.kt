@@ -24,20 +24,23 @@ class GithubOAuth2UserService : DefaultOAuth2UserService() {
 
     var oAuth2User = super.loadUser(userRequest)
 
-    if (userRequest.clientRegistration.scopes.intersect(emailScopes).isNotEmpty() &&
+    if (userRequest.clientRegistration.scopes
+        .intersect(emailScopes)
+        .isNotEmpty() &&
       oAuth2User.getAttribute<String>("email") == null
     ) {
       try {
         val email =
-          RestTemplate().exchange(
-            RequestEntity<Any>(
-              HttpHeaders().apply { setBearerAuth(userRequest.accessToken.tokenValue) },
-              HttpMethod.GET,
-              UriComponentsBuilder.fromUriString("${userRequest.clientRegistration.providerDetails.userInfoEndpoint.uri}/emails").build().toUri(),
-            ),
-            parameterizedResponseType,
-          )
-            .body?.let { emails ->
+          RestTemplate()
+            .exchange(
+              RequestEntity<Any>(
+                HttpHeaders().apply { setBearerAuth(userRequest.accessToken.tokenValue) },
+                HttpMethod.GET,
+                UriComponentsBuilder.fromUriString("${userRequest.clientRegistration.providerDetails.userInfoEndpoint.uri}/emails").build().toUri(),
+              ),
+              parameterizedResponseType,
+            ).body
+            ?.let { emails ->
               emails
                 .filter { it["verified"] == true }
                 .filter { it["primary"] == true }

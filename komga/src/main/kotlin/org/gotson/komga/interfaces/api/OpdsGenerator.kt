@@ -31,15 +31,19 @@ class OpdsGenerator(
 ) : WebPubGenerator(thumbnailType, imageConverter, bookAnalyzer, mediaRepository) {
   override val pathSegments = listOf("opds", "v2")
 
-  fun toOpdsPublicationDto(bookDto: BookDto): WPPublicationDto =
-    toBasePublicationDto(bookDto).copy(images = buildThumbnailLinkDtos(bookDto.id))
+  fun toOpdsPublicationDto(bookDto: BookDto): WPPublicationDto = toBasePublicationDto(bookDto).copy(images = buildThumbnailLinkDtos(bookDto.id))
 
   override fun getDefaultMediaType(): MediaType = MEDIATYPE_OPDS_PUBLICATION_JSON
 
   override fun getBookSeriesLink(bookDto: BookDto): List<WPLinkDto> =
     listOf(
       WPLinkDto(
-        href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray()).path("series/${bookDto.seriesId}").toUriString(),
+        href =
+          ServletUriComponentsBuilder
+            .fromCurrentContextPath()
+            .pathSegment(*pathSegments.toTypedArray())
+            .path("series/${bookDto.seriesId}")
+            .toUriString(),
         type = MEDIATYPE_OPDS_JSON_VALUE,
       ),
     )
@@ -48,27 +52,41 @@ class OpdsGenerator(
     mapOf(
       "authenticate" to
         mapOf(
-          "href" to ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray()).path(ROUTE_AUTH).toUriString(),
+          "href" to
+            ServletUriComponentsBuilder
+              .fromCurrentContextPath()
+              .pathSegment(*pathSegments.toTypedArray())
+              .path(ROUTE_AUTH)
+              .toUriString(),
           "type" to MEDIATYPE_OPDS_AUTHENTICATION_JSON_VALUE,
         ),
     )
 
-  override fun getExtraLinks(bookId: String): List<WPLinkDto> {
-    return buildList {
+  override fun getExtraLinks(bookId: String): List<WPLinkDto> =
+    buildList {
       add(
         WPLinkDto(
           type = MEDIATYPE_PROGRESSION_JSON_VALUE,
           rel = REL_PROGRESSION_API,
-          href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray()).path("books/$bookId/progression").toUriString(),
+          href =
+            ServletUriComponentsBuilder
+              .fromCurrentContextPath()
+              .pathSegment(*pathSegments.toTypedArray())
+              .path("books/$bookId/progression")
+              .toUriString(),
           properties = getExtraLinkProperties(),
         ),
       )
     }
-  }
 
   fun generateOpdsAuthDocument() =
     AuthenticationDocumentDto(
-      id = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray()).path(ROUTE_AUTH).toUriString(),
+      id =
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .pathSegment(*pathSegments.toTypedArray())
+          .path(ROUTE_AUTH)
+          .toUriString(),
       title = "Komga",
       description = "Enter your email and password to authenticate.",
       links =

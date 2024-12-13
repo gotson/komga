@@ -11,7 +11,11 @@ import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.gotson.komga.language.toDate
 
-enum class LuceneEntity(val type: String, val id: String, val defaultFields: Array<String>) {
+enum class LuceneEntity(
+  val type: String,
+  val id: String,
+  val defaultFields: Array<String>,
+) {
   Book("book", "book_id", arrayOf("title", "isbn")),
   Series("series", "series_id", arrayOf("title")),
   Collection("collection", "collection_id", arrayOf("name")),

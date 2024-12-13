@@ -93,7 +93,8 @@ class KoboControllerTest(
 
     // first sync
     val mvcResult1 =
-      mockMvc.get("/kobo/$apiKey/v1/library/sync")
+      mockMvc
+        .get("/kobo/$apiKey/v1/library/sync")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(1) }
@@ -107,10 +108,10 @@ class KoboControllerTest(
 
     // second sync
     val mvcResult2 =
-      mockMvc.get("/kobo/$apiKey/v1/library/sync") {
-        header(KoboHeaders.X_KOBO_SYNCTOKEN, syncToken1Base64)
-      }
-        .andExpect {
+      mockMvc
+        .get("/kobo/$apiKey/v1/library/sync") {
+          header(KoboHeaders.X_KOBO_SYNCTOKEN, syncToken1Base64)
+        }.andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(1) }
           header { doesNotExist(KoboHeaders.X_KOBO_SYNC) }
@@ -126,7 +127,8 @@ class KoboControllerTest(
     komgaSettingsProvider.koboProxy = true
 
     try {
-      mockMvc.get("/kobo/$apiKey/v1/books/nonexistent/thumbnail/800/800/false/image.jpg")
+      mockMvc
+        .get("/kobo/$apiKey/v1/books/nonexistent/thumbnail/800/800/false/image.jpg")
         .andExpect {
           status { isTemporaryRedirect() }
           header { string(HttpHeaders.LOCATION, "https://cdn.kobo.com/book-images/nonexistent/800/800/false/image.jpg") }
@@ -155,11 +157,11 @@ class KoboControllerTest(
       koboPort?.let { komgaSettingsProvider.koboPort = it }
 
       try {
-        mockMvc.get("/kobo/$apiKey/v1/initialization") {
-          header(HttpHeaders.HOST, hostHeader)
-          extraHeaders?.forEach { (h, v) -> header(h, v) }
-        }
-          .andExpect {
+        mockMvc
+          .get("/kobo/$apiKey/v1/initialization") {
+            header(HttpHeaders.HOST, hostHeader)
+            extraHeaders?.forEach { (h, v) -> header(h, v) }
+          }.andExpect {
             jsonPath("Resources.image_host") { value(expected) }
           }.andReturn()
       } finally {

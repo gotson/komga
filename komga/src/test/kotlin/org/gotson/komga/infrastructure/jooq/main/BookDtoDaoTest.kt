@@ -451,11 +451,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "batman"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "batman"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(3)
@@ -479,11 +480,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "book"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("name")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "book"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("name")),
+          ).content
       val pages =
         (0..2).map {
           bookDtoDao.findAll(
@@ -544,11 +546,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "eric"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "eric"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -578,11 +581,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "9782413016878"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "9782413016878"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -609,11 +613,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "tag:tag1"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "tag:tag1"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -640,23 +645,26 @@ class BookDtoDaoTest(
 
       // when
       val foundGeneric =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "author:bob"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "author:bob"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
       val foundByRole =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "writer:bob"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "writer:bob"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
       val notFound =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "penciller:bob"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "penciller:bob"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(foundGeneric).hasSize(1)
@@ -681,11 +689,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "release_date:1999"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "release_date:1999"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -711,11 +720,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "release_date:[1990 TO 2010]"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "release_date:[1990 TO 2010]"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(2)
@@ -737,11 +747,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "status:error"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "status:error"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -767,11 +778,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "deleted:true"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "deleted:true"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -794,11 +806,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "s.w.o.r.d"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "s.w.o.r.d"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -823,11 +836,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "batman robin"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "batman robin"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(2)
@@ -851,11 +865,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "x-men"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "x-men"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(2)
@@ -867,11 +882,12 @@ class BookDtoDaoTest(
       assertThatCode {
         // when
         val found =
-          bookDtoDao.findAll(
-            BookSearch(fullTextSearch = "publisher:batman"),
-            SearchContext(user),
-            UnpagedSorted(Sort.by("relevance")),
-          ).content
+          bookDtoDao
+            .findAll(
+              BookSearch(fullTextSearch = "publisher:batman"),
+              SearchContext(user),
+              UnpagedSorted(Sort.by("relevance")),
+            ).content
 
         // then
         assertThat(found).hasSize(0)
@@ -893,11 +909,12 @@ class BookDtoDaoTest(
 
       // when
       val found =
-        bookDtoDao.findAll(
-          BookSearch(fullTextSearch = "不道德"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "不道德"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)

@@ -33,7 +33,8 @@ class HistoricalEventDtoDao(
     val orderBy = pageable.sort.toOrderBy(sorts)
 
     val items =
-      dsl.selectFrom(e)
+      dsl
+        .selectFrom(e)
         .orderBy(orderBy)
         .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
         .map { er ->

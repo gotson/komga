@@ -72,14 +72,12 @@ class ReferentialController(
   fun getAuthorsNames(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", defaultValue = "") search: String,
-  ): List<String> =
-    referentialRepository.findAllAuthorsNamesByName(search, principal.user.getAuthorizedLibraryIds(null))
+  ): List<String> = referentialRepository.findAllAuthorsNamesByName(search, principal.user.getAuthorizedLibraryIds(null))
 
   @GetMapping("v1/authors/roles")
   fun getAuthorsRoles(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-  ): List<String> =
-    referentialRepository.findAllAuthorsRoles(principal.user.getAuthorizedLibraryIds(null))
+  ): List<String> = referentialRepository.findAllAuthorsRoles(principal.user.getAuthorizedLibraryIds(null))
 
   @GetMapping("v1/genres")
   fun getGenres(

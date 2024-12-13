@@ -49,7 +49,8 @@ class SeriesMetadataLifecycle(
         else -> {
           logger.debug { "Provider: ${provider.javaClass.simpleName}" }
           val patches =
-            bookRepository.findAllBySeriesId(series.id)
+            bookRepository
+              .findAllBySeriesId(series.id)
               .mapNotNull { book ->
                 try {
                   provider.getSeriesMetadataFromBook(BookWithMedia(book, mediaRepository.findById(book.id)), library.importComicInfoSeriesAppendVolume)
@@ -107,7 +108,12 @@ class SeriesMetadataLifecycle(
         title = patches.mostFrequent { it.title },
         titleSort = patches.mostFrequent { it.titleSort },
         status = patches.mostFrequent { it.status },
-        genres = patches.mapNotNull { it.genres }.flatten().toSet().ifEmpty { null },
+        genres =
+          patches
+            .mapNotNull { it.genres }
+            .flatten()
+            .toSet()
+            .ifEmpty { null },
         language = patches.mostFrequent { it.language },
         summary = null,
         readingDirection = patches.mostFrequent { it.readingDirection },

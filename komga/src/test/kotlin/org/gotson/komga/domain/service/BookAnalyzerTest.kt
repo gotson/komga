@@ -177,8 +177,12 @@ class BookAnalyzerTest(
     assertThat(hashedMedia.pages.takeLast(komgaProperties.pageHashing).map { it.fileHash })
       .hasSize(komgaProperties.pageHashing)
       .containsOnly("hashed")
-    assertThat(hashedMedia.pages.drop(komgaProperties.pageHashing).dropLast(komgaProperties.pageHashing).map { it.fileHash })
-      .hasSize(30 - (komgaProperties.pageHashing * 2))
+    assertThat(
+      hashedMedia.pages
+        .drop(komgaProperties.pageHashing)
+        .dropLast(komgaProperties.pageHashing)
+        .map { it.fileHash },
+    ).hasSize(30 - (komgaProperties.pageHashing * 2))
       .containsOnly("")
   }
 

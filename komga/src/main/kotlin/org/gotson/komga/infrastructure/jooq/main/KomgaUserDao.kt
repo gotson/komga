@@ -35,7 +35,8 @@ class KomgaUserDao(
       .fetchAndMap()
 
   override fun findApiKeyByUserId(userId: String): Collection<ApiKey> =
-    dsl.selectFrom(uak)
+    dsl
+      .selectFrom(uak)
       .where(uak.USER_ID.eq(userId))
       .fetchInto(uak)
       .map {
@@ -53,13 +54,16 @@ class KomgaUserDao(
       .select(*u.fields())
       .select(ul.LIBRARY_ID)
       .from(u)
-      .leftJoin(ul).onKey()
+      .leftJoin(ul)
+      .onKey()
 
   private fun ResultQuery<Record>.fetchAndMap() =
-    this.fetchGroups({ it.into(u) }, { it.into(ul) })
+    this
+      .fetchGroups({ it.into(u) }, { it.into(ul) })
       .map { (ur, ulr) ->
         val usr =
-          dsl.selectFrom(us)
+          dsl
+            .selectFrom(us)
             .where(us.USER_ID.eq(ur.id))
             .toList()
         KomgaUser(
@@ -89,7 +93,8 @@ class KomgaUserDao(
 
   @Transactional
   override fun insert(user: KomgaUser) {
-    dsl.insertInto(u)
+    dsl
+      .insertInto(u)
       .set(u.ID, user.id)
       .set(u.EMAIL, user.email)
       .set(u.PASSWORD, user.password)
@@ -106,15 +111,15 @@ class KomgaUserDao(
           AllowExclude.EXCLUDE -> false
           null -> null
         },
-      )
-      .execute()
+      ).execute()
 
     insertSharedLibraries(user)
     insertSharingRestrictions(user)
   }
 
   override fun insert(apiKey: ApiKey) {
-    dsl.insertInto(uak)
+    dsl
+      .insertInto(uak)
       .set(uak.ID, apiKey.id)
       .set(uak.USER_ID, apiKey.userId)
       .set(uak.API_KEY, apiKey.key)
@@ -124,7 +129,8 @@ class KomgaUserDao(
 
   @Transactional
   override fun update(user: KomgaUser) {
-    dsl.update(u)
+    dsl
+      .update(u)
       .set(u.EMAIL, user.email)
       .set(u.PASSWORD, user.password)
       .set(u.ROLE_ADMIN, user.roleAdmin)
@@ -140,16 +146,17 @@ class KomgaUserDao(
           AllowExclude.EXCLUDE -> false
           null -> null
         },
-      )
-      .set(u.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      ).set(u.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(u.ID.eq(user.id))
       .execute()
 
-    dsl.deleteFrom(ul)
+    dsl
+      .deleteFrom(ul)
       .where(ul.USER_ID.eq(user.id))
       .execute()
 
-    dsl.deleteFrom(us)
+    dsl
+      .deleteFrom(us)
       .where(us.USER_ID.eq(user.id))
       .execute()
 
@@ -166,7 +173,8 @@ class KomgaUserDao(
 
   private fun insertSharedLibraries(user: KomgaUser) {
     user.sharedLibrariesIds.forEach {
-      dsl.insertInto(ul)
+      dsl
+        .insertInto(ul)
         .columns(ul.USER_ID, ul.LIBRARY_ID)
         .values(user.id, it)
         .execute()
@@ -175,14 +183,16 @@ class KomgaUserDao(
 
   private fun insertSharingRestrictions(user: KomgaUser) {
     user.restrictions.labelsAllow.forEach { label ->
-      dsl.insertInto(us)
+      dsl
+        .insertInto(us)
         .columns(us.USER_ID, us.ALLOW, us.LABEL)
         .values(user.id, true, label)
         .execute()
     }
 
     user.restrictions.labelsExclude.forEach { label ->
-      dsl.insertInto(us)
+      dsl
+        .insertInto(us)
         .columns(us.USER_ID, us.ALLOW, us.LABEL)
         .values(user.id, false, label)
         .execute()
@@ -211,7 +221,8 @@ class KomgaUserDao(
     apiKeyId: String,
     userId: String,
   ) {
-    dsl.deleteFrom(uak)
+    dsl
+      .deleteFrom(uak)
       .where(uak.ID.eq(apiKeyId))
       .and(uak.USER_ID.eq(userId))
       .execute()
@@ -222,28 +233,28 @@ class KomgaUserDao(
   }
 
   override fun findAnnouncementIdsReadByUserId(userId: String): Set<String> =
-    dsl.select(ar.ANNOUNCEMENT_ID)
+    dsl
+      .select(ar.ANNOUNCEMENT_ID)
       .from(ar)
       .where(ar.USER_ID.eq(userId))
       .fetchSet(ar.ANNOUNCEMENT_ID)
 
   override fun existsByEmailIgnoreCase(email: String): Boolean =
     dsl.fetchExists(
-      dsl.selectFrom(u)
+      dsl
+        .selectFrom(u)
         .where(u.EMAIL.equalIgnoreCase(email)),
     )
 
   override fun existsApiKeyByIdAndUserId(
     apiKeyId: String,
     userId: String,
-  ): Boolean =
-    dsl.fetchExists(uak, uak.ID.eq(apiKeyId).and(uak.USER_ID.eq(userId)))
+  ): Boolean = dsl.fetchExists(uak, uak.ID.eq(apiKeyId).and(uak.USER_ID.eq(userId)))
 
   override fun existsApiKeyByCommentAndUserId(
     comment: String,
     userId: String,
-  ): Boolean =
-    dsl.fetchExists(uak, uak.COMMENT.equalIgnoreCase(comment).and(uak.USER_ID.eq(userId)))
+  ): Boolean = dsl.fetchExists(uak, uak.COMMENT.equalIgnoreCase(comment).and(uak.USER_ID.eq(userId)))
 
   override fun findByEmailIgnoreCaseOrNull(email: String): KomgaUser? =
     selectBase()
@@ -254,13 +265,15 @@ class KomgaUserDao(
   override fun findByApiKeyOrNull(apiKey: String): Pair<KomgaUser, ApiKey>? {
     val user =
       selectBase()
-        .leftJoin(uak).on(u.ID.eq(uak.USER_ID))
+        .leftJoin(uak)
+        .on(u.ID.eq(uak.USER_ID))
         .where(uak.API_KEY.eq(apiKey))
         .fetchAndMap()
         .firstOrNull() ?: return null
 
     val key =
-      dsl.selectFrom(uak)
+      dsl
+        .selectFrom(uak)
         .where(uak.API_KEY.eq(apiKey))
         .fetchInto(uak)
         .map { it.toDomain() }

@@ -24,13 +24,15 @@ class ThumbnailSeriesDao(
   private val ts = Tables.THUMBNAIL_SERIES
 
   override fun findByIdOrNull(thumbnailId: String): ThumbnailSeries? =
-    dsl.selectFrom(ts)
+    dsl
+      .selectFrom(ts)
       .where(ts.ID.eq(thumbnailId))
       .fetchOneInto(ts)
       ?.toDomain()
 
   override fun findAllBySeriesId(seriesId: String): Collection<ThumbnailSeries> =
-    dsl.selectFrom(ts)
+    dsl
+      .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .fetchInto(ts)
       .map { it.toDomain() }
@@ -39,14 +41,16 @@ class ThumbnailSeriesDao(
     seriesId: String,
     type: ThumbnailSeries.Type,
   ): Collection<ThumbnailSeries> =
-    dsl.selectFrom(ts)
+    dsl
+      .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .and(ts.TYPE.eq(type.toString()))
       .fetchInto(ts)
       .map { it.toDomain() }
 
   override fun findSelectedBySeriesIdOrNull(seriesId: String): ThumbnailSeries? =
-    dsl.selectFrom(ts)
+    dsl
+      .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .and(ts.SELECTED.isTrue)
       .limit(1)
@@ -56,7 +60,8 @@ class ThumbnailSeriesDao(
 
   override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailSeries> {
     val query =
-      dsl.selectFrom(ts)
+      dsl
+        .selectFrom(ts)
         .where(ts.FILE_SIZE.eq(0))
         .or(ts.MEDIA_TYPE.eq(""))
         .or(ts.WIDTH.eq(0))
@@ -73,7 +78,8 @@ class ThumbnailSeriesDao(
   }
 
   override fun insert(thumbnail: ThumbnailSeries) {
-    dsl.insertInto(ts)
+    dsl
+      .insertInto(ts)
       .set(ts.ID, thumbnail.id)
       .set(ts.SERIES_ID, thumbnail.seriesId)
       .set(ts.URL, thumbnail.url?.toString())
@@ -88,7 +94,8 @@ class ThumbnailSeriesDao(
   }
 
   override fun update(thumbnail: ThumbnailSeries) {
-    dsl.update(ts)
+    dsl
+      .update(ts)
       .set(ts.SERIES_ID, thumbnail.seriesId)
       .set(ts.THUMBNAIL, thumbnail.thumbnail)
       .set(ts.URL, thumbnail.url?.toString())
@@ -105,7 +112,9 @@ class ThumbnailSeriesDao(
   override fun updateMetadata(thumbnails: Collection<ThumbnailSeries>) {
     dsl.batched { c ->
       thumbnails.forEach {
-        c.dsl().update(ts)
+        c
+          .dsl()
+          .update(ts)
           .set(ts.MEDIA_TYPE, it.mediaType)
           .set(ts.WIDTH, it.dimension.width)
           .set(ts.HEIGHT, it.dimension.height)
@@ -118,13 +127,15 @@ class ThumbnailSeriesDao(
 
   @Transactional
   override fun markSelected(thumbnail: ThumbnailSeries) {
-    dsl.update(ts)
+    dsl
+      .update(ts)
       .set(ts.SELECTED, false)
       .where(ts.SERIES_ID.eq(thumbnail.seriesId))
       .and(ts.ID.ne(thumbnail.id))
       .execute()
 
-    dsl.update(ts)
+    dsl
+      .update(ts)
       .set(ts.SELECTED, true)
       .where(ts.SERIES_ID.eq(thumbnail.seriesId))
       .and(ts.ID.eq(thumbnail.id))

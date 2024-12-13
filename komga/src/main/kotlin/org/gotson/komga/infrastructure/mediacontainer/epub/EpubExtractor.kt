@@ -59,7 +59,11 @@ class EpubExtractor(
         // EPUB 3 - try to get cover from manifest properties 'cover-image'
         manifest.values.firstOrNull { it.properties.contains("cover-image") }
           ?: // EPUB 2 - get cover from meta element with name="cover"
-          opfDoc.selectFirst("metadata > meta[name=cover]")?.attr("content")?.ifBlank { null }?.let { manifest[it] }
+          opfDoc
+            .selectFirst("metadata > meta[name=cover]")
+            ?.attr("content")
+            ?.ifBlank { null }
+            ?.let { manifest[it] }
 
       if (coverManifestItem != null) {
         val href = coverManifestItem.href
@@ -98,7 +102,11 @@ class EpubExtractor(
     }
 
   private fun getResources(epub: EpubPackage): List<MediaFile> {
-    val spine = epub.opfDoc.select("spine > itemref").map { it.attr("idref") }.mapNotNull { epub.manifest[it] }
+    val spine =
+      epub.opfDoc
+        .select("spine > itemref")
+        .map { it.attr("idref") }
+        .mapNotNull { epub.manifest[it] }
 
     val pages =
       spine.map { page ->
@@ -134,7 +142,8 @@ class EpubExtractor(
 
     try {
       val pagesWithImages =
-        epub.opfDoc.select("spine > itemref")
+        epub.opfDoc
+          .select("spine > itemref")
           .map { it.attr("idref") }
           .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
           .map { pagePath ->
@@ -144,11 +153,13 @@ class EpubExtractor(
             if (doc.body().text().length > letterCountThreshold) return emptyList()
 
             val img =
-              doc.getElementsByTag("img")
+              doc
+                .getElementsByTag("img")
                 .map { it.attr("src") } // get the src, which can be a relative path
 
             val svg =
-              doc.select("svg > image[xlink:href]")
+              doc
+                .select("svg > image[xlink:href]")
                 .map { it.attr("xlink:href") } // get the source, which can be a relative path
 
             (img + svg).map { (Path(pagePath).parent ?: Path("")).resolve(it).normalize().invariantSeparatorsPathString } // resolve it against the page folder
@@ -160,7 +171,10 @@ class EpubExtractor(
 
       val divinaPages =
         imagesPath.mapNotNull { imagePath ->
-          val mediaType = epub.manifest.values.firstOrNull { normalizeHref(epub.opfDir, it.href) == imagePath }?.mediaType ?: return@mapNotNull null
+          val mediaType =
+            epub.manifest.values
+              .firstOrNull { normalizeHref(epub.opfDir, it.href) == imagePath }
+              ?.mediaType ?: return@mapNotNull null
           val zipEntry = epub.zip.getEntry(imagePath)
           if (!contentDetector.isImage(mediaType)) return@mapNotNull null
 
@@ -200,11 +214,15 @@ class EpubExtractor(
 
   private fun computePageCount(epub: EpubPackage): Int {
     val spine =
-      epub.opfDoc.select("spine > itemref")
+      epub.opfDoc
+        .select("spine > itemref")
         .map { it.attr("idref") }
         .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
 
-    return epub.zip.entries.toList().filter { it.name in spine }.sumOf { ceil(it.compressedSize / 1024.0).toInt() }
+    return epub.zip.entries
+      .toList()
+      .filter { it.name in spine }
+      .sumOf { ceil(it.compressedSize / 1024.0).toInt() }
   }
 
   private fun isFixedLayout(epub: EpubPackage) =
@@ -229,7 +247,8 @@ class EpubExtractor(
         kepubConverter.isAvailable -> {
           try {
             val kepub =
-              kepubConverter.convertEpubToKepubWithoutChecks(path)
+              kepubConverter
+                .convertEpubToKepubWithoutChecks(path)
                 ?.also { it.toFile().deleteOnExit() }
                 // if the conversion failed, throw an exception that will be caught in the catch block
                 ?: throw IllegalStateException()

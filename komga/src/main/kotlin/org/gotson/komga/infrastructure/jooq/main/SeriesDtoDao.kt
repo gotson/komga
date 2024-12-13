@@ -95,8 +95,7 @@ class SeriesDtoDao(
       "booksCount" to s.BOOK_COUNT,
     )
 
-  override fun findAll(pageable: Pageable): Page<SeriesDto> =
-    findAll(SeriesSearch(), SearchContext.ofAnonymousUser(), pageable)
+  override fun findAll(pageable: Pageable): Page<SeriesDto> = findAll(SeriesSearch(), SearchContext.ofAnonymousUser(), pageable)
 
   override fun findAll(
     context: SearchContext,
@@ -142,11 +141,16 @@ class SeriesDtoDao(
     val searchCondition = s.ID.inOrNoCondition(seriesIds)
 
     val firstChar = lower(substring(d.TITLE_SORT, 1, 1))
-    return dsl.select(firstChar, count())
+    return dsl
+      .select(firstChar, count())
       .from(s)
-      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-      .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
-      .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(context.userId))
+      .leftJoin(d)
+      .on(s.ID.eq(d.SERIES_ID))
+      .leftJoin(bma)
+      .on(s.ID.eq(bma.SERIES_ID))
+      .leftJoin(rs)
+      .on(s.ID.eq(rs.SERIES_ID))
+      .and(readProgressConditionSeries(context.userId))
       .apply {
         joins.forEach { join ->
           when (join) {
@@ -159,8 +163,7 @@ class SeriesDtoDao(
             RequiredJoin.BookMetadataAggregation -> Unit
           }
         }
-      }
-      .where(conditionsRefined)
+      }.where(conditionsRefined)
       .and(searchCondition)
       .groupBy(firstChar)
       .map {
@@ -186,9 +189,13 @@ class SeriesDtoDao(
     dsl
       .let { if (joinOnCollection) it.selectDistinct(*groupFields) else it.select(*groupFields) }
       .from(s)
-      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-      .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
-      .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
+      .leftJoin(d)
+      .on(s.ID.eq(d.SERIES_ID))
+      .leftJoin(bma)
+      .on(s.ID.eq(bma.SERIES_ID))
+      .leftJoin(rs)
+      .on(s.ID.eq(rs.SERIES_ID))
+      .and(readProgressConditionSeries(userId))
       .apply {
         if (joinOnCollection)leftJoin(cs).on(s.ID.eq(cs.SERIES_ID))
         joins.forEach { join ->
@@ -215,11 +222,16 @@ class SeriesDtoDao(
     val searchCondition = s.ID.inOrNoCondition(seriesIds)
 
     val count =
-      dsl.select(countDistinct(s.ID))
+      dsl
+        .select(countDistinct(s.ID))
         .from(s)
-        .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
-        .leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
-        .leftJoin(rs).on(s.ID.eq(rs.SERIES_ID)).and(readProgressConditionSeries(userId))
+        .leftJoin(d)
+        .on(s.ID.eq(d.SERIES_ID))
+        .leftJoin(bma)
+        .on(s.ID.eq(bma.SERIES_ID))
+        .leftJoin(rs)
+        .on(s.ID.eq(rs.SERIES_ID))
+        .and(readProgressConditionSeries(userId))
         .apply {
           joins.forEach { join ->
             when (join) {
@@ -232,8 +244,7 @@ class SeriesDtoDao(
               RequiredJoin.Media -> Unit
             }
           }
-        }
-        .where(conditions)
+        }.where(conditions)
         .and(searchCondition)
         .fetchOne(countDistinct(s.ID)) ?: 0
 
@@ -280,38 +291,45 @@ class SeriesDtoDao(
     transactionTemplate.executeWithoutResult {
       dsl.insertTempStrings(batchSize, seriesIds)
       genres =
-        dsl.selectFrom(g)
+        dsl
+          .selectFrom(g)
           .where(g.SERIES_ID.`in`(dsl.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.genre })
 
       tags =
-        dsl.selectFrom(st)
+        dsl
+          .selectFrom(st)
           .where(st.SERIES_ID.`in`(dsl.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.tag })
 
       sharingLabels =
-        dsl.selectFrom(sl)
+        dsl
+          .selectFrom(sl)
           .where(sl.SERIES_ID.`in`(dsl.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.label })
 
       links =
-        dsl.selectFrom(slk)
+        dsl
+          .selectFrom(slk)
           .where(slk.SERIES_ID.`in`(dsl.selectTempStrings()))
           .groupBy({ it.seriesId }, { WebLinkDto(it.label, it.url) })
 
       alternateTitles =
-        dsl.selectFrom(sat)
+        dsl
+          .selectFrom(sat)
           .where(sat.SERIES_ID.`in`(dsl.selectTempStrings()))
           .groupBy({ it.seriesId }, { AlternateTitleDto(it.label, it.title) })
 
       aggregatedAuthors =
-        dsl.selectFrom(bmaa)
+        dsl
+          .selectFrom(bmaa)
           .where(bmaa.SERIES_ID.`in`(dsl.selectTempStrings()))
           .filter { it.name != null }
           .groupBy({ it.seriesId }, { AuthorDto(it.name, it.role) })
 
       aggregatedTags =
-        dsl.selectFrom(bmat)
+        dsl
+          .selectFrom(bmat)
           .where(bmat.SERIES_ID.`in`(dsl.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.tag })
     }
@@ -350,24 +368,23 @@ class SeriesDtoDao(
     booksInProgressCount: Int,
     metadata: SeriesMetadataDto,
     booksMetadata: BookMetadataAggregationDto,
-  ) =
-    SeriesDto(
-      id = id,
-      libraryId = libraryId,
-      name = name,
-      url = URL(url).toFilePath(),
-      created = createdDate,
-      lastModified = lastModifiedDate,
-      fileLastModified = fileLastModified,
-      booksCount = booksCount,
-      booksReadCount = booksReadCount,
-      booksUnreadCount = booksUnreadCount,
-      booksInProgressCount = booksInProgressCount,
-      metadata = metadata,
-      booksMetadata = booksMetadata,
-      deleted = deletedDate != null,
-      oneshot = oneshot,
-    )
+  ) = SeriesDto(
+    id = id,
+    libraryId = libraryId,
+    name = name,
+    url = URL(url).toFilePath(),
+    created = createdDate,
+    lastModified = lastModifiedDate,
+    fileLastModified = fileLastModified,
+    booksCount = booksCount,
+    booksReadCount = booksReadCount,
+    booksUnreadCount = booksUnreadCount,
+    booksInProgressCount = booksInProgressCount,
+    metadata = metadata,
+    booksMetadata = booksMetadata,
+    deleted = deletedDate != null,
+    oneshot = oneshot,
+  )
 
   private fun SeriesMetadataRecord.toDto(
     genres: Set<String>,
@@ -375,51 +392,49 @@ class SeriesDtoDao(
     sharingLabels: Set<String>,
     links: List<WebLinkDto>,
     alternateTitles: List<AlternateTitleDto>,
-  ) =
-    SeriesMetadataDto(
-      status = status,
-      statusLock = statusLock,
-      created = createdDate,
-      lastModified = lastModifiedDate,
-      title = title,
-      titleLock = titleLock,
-      titleSort = titleSort,
-      titleSortLock = titleSortLock,
-      summary = summary,
-      summaryLock = summaryLock,
-      readingDirection = readingDirection ?: "",
-      readingDirectionLock = readingDirectionLock,
-      publisher = publisher,
-      publisherLock = publisherLock,
-      ageRating = ageRating,
-      ageRatingLock = ageRatingLock,
-      language = language,
-      languageLock = languageLock,
-      genres = genres,
-      genresLock = genresLock,
-      tags = tags,
-      tagsLock = tagsLock,
-      totalBookCount = totalBookCount,
-      totalBookCountLock = totalBookCountLock,
-      sharingLabels = sharingLabels,
-      sharingLabelsLock = sharingLabelsLock,
-      links = links,
-      linksLock = linksLock,
-      alternateTitles = alternateTitles,
-      alternateTitlesLock = alternateTitlesLock,
-    )
+  ) = SeriesMetadataDto(
+    status = status,
+    statusLock = statusLock,
+    created = createdDate,
+    lastModified = lastModifiedDate,
+    title = title,
+    titleLock = titleLock,
+    titleSort = titleSort,
+    titleSortLock = titleSortLock,
+    summary = summary,
+    summaryLock = summaryLock,
+    readingDirection = readingDirection ?: "",
+    readingDirectionLock = readingDirectionLock,
+    publisher = publisher,
+    publisherLock = publisherLock,
+    ageRating = ageRating,
+    ageRatingLock = ageRatingLock,
+    language = language,
+    languageLock = languageLock,
+    genres = genres,
+    genresLock = genresLock,
+    tags = tags,
+    tagsLock = tagsLock,
+    totalBookCount = totalBookCount,
+    totalBookCountLock = totalBookCountLock,
+    sharingLabels = sharingLabels,
+    sharingLabelsLock = sharingLabelsLock,
+    links = links,
+    linksLock = linksLock,
+    alternateTitles = alternateTitles,
+    alternateTitlesLock = alternateTitlesLock,
+  )
 
   private fun BookMetadataAggregationRecord.toDto(
     authors: List<AuthorDto>,
     tags: Set<String>,
-  ) =
-    BookMetadataAggregationDto(
-      authors = authors,
-      tags = tags,
-      releaseDate = releaseDate,
-      summary = summary,
-      summaryNumber = summaryNumber,
-      created = createdDate,
-      lastModified = lastModifiedDate,
-    )
+  ) = BookMetadataAggregationDto(
+    authors = authors,
+    tags = tags,
+    releaseDate = releaseDate,
+    summary = summary,
+    summaryNumber = summaryNumber,
+    created = createdDate,
+    lastModified = lastModifiedDate,
+  )
 }

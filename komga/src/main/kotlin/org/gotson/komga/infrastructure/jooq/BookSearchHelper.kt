@@ -39,8 +39,8 @@ class BookSearchHelper(
     return toConditionInternal(SearchCondition.AnyOfBook(libraryIds.map { SearchCondition.LibraryId(SearchOperator.Is(it)) }))
   }
 
-  private fun toConditionInternal(searchCondition: SearchCondition.Book?): Pair<Condition, Set<RequiredJoin>> {
-    return when (searchCondition) {
+  private fun toConditionInternal(searchCondition: SearchCondition.Book?): Pair<Condition, Set<RequiredJoin>> =
+    when (searchCondition) {
       is SearchCondition.AllOfBook ->
         searchCondition.conditions.fold(DSL.noCondition() to emptySet()) { acc: Pair<Condition, Set<RequiredJoin>>, cond: SearchCondition.Book ->
           val bookCondition = toConditionInternal(cond)
@@ -60,7 +60,8 @@ class BookSearchHelper(
       is SearchCondition.ReadListId ->
         Tables.BOOK.ID.let { field ->
           val inner = { readListId: String ->
-            DSL.select(Tables.READLIST_BOOK.BOOK_ID)
+            DSL
+              .select(Tables.READLIST_BOOK.BOOK_ID)
               .from(Tables.READLIST_BOOK)
               .where(Tables.READLIST_BOOK.READLIST_ID.eq(readListId))
           }
@@ -138,9 +139,14 @@ class BookSearchHelper(
       is SearchCondition.Tag ->
         Tables.BOOK.ID.let { field ->
           val inner = { tag: String ->
-            DSL.select(Tables.BOOK_METADATA_TAG.BOOK_ID)
+            DSL
+              .select(Tables.BOOK_METADATA_TAG.BOOK_ID)
               .from(Tables.BOOK_METADATA_TAG)
-              .where(Tables.BOOK_METADATA_TAG.TAG.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).equalIgnoreCase(tag))
+              .where(
+                Tables.BOOK_METADATA_TAG.TAG
+                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+                  .equalIgnoreCase(tag),
+              )
           }
           when (searchCondition.operator) {
             is SearchOperator.Is -> field.`in`(inner(searchCondition.operator.value))
@@ -151,11 +157,25 @@ class BookSearchHelper(
       is SearchCondition.Author ->
         Tables.BOOK.ID.let { field ->
           val inner = { name: String?, role: String? ->
-            DSL.select(Tables.BOOK_METADATA_AUTHOR.BOOK_ID)
+            DSL
+              .select(Tables.BOOK_METADATA_AUTHOR.BOOK_ID)
               .from(Tables.BOOK_METADATA_AUTHOR)
               .where(DSL.noCondition())
-              .apply { if (name != null) and(Tables.BOOK_METADATA_AUTHOR.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).equalIgnoreCase(name)) }
-              .apply { if (role != null) and(Tables.BOOK_METADATA_AUTHOR.ROLE.collate(SqliteUdfDataSource.COLLATION_UNICODE_3).equalIgnoreCase(role)) }
+              .apply {
+                if (name != null)
+                  and(
+                    Tables.BOOK_METADATA_AUTHOR.NAME
+                      .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+                      .equalIgnoreCase(name),
+                  )
+              }.apply {
+                if (role != null)
+                  and(
+                    Tables.BOOK_METADATA_AUTHOR.ROLE
+                      .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+                      .equalIgnoreCase(role),
+                  )
+              }
           }
           when (searchCondition.operator) {
             is SearchOperator.Is -> {
@@ -178,5 +198,4 @@ class BookSearchHelper(
 
       null -> DSL.noCondition() to emptySet()
     }
-  }
 }

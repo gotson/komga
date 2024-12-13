@@ -38,11 +38,14 @@ class ImageConverter(
 
   private fun chooseWebpReader() {
     val providers =
-      IIORegistry.getDefaultInstance().getServiceProviders(
-        ImageReaderSpi::class.java,
-        { it is ImageReaderSpi && it.mimeTypes.contains("image/webp") },
-        false,
-      ).asSequence().toList()
+      IIORegistry
+        .getDefaultInstance()
+        .getServiceProviders(
+          ImageReaderSpi::class.java,
+          { it is ImageReaderSpi && it.mimeTypes.contains("image/webp") },
+          false,
+        ).asSequence()
+        .toList()
 
     if (providers.size > 1) {
       logger.debug { "WebP reader providers: ${providers.map { it.javaClass.canonicalName }}" }
@@ -60,8 +63,7 @@ class ImageConverter(
   fun canConvertMediaType(
     from: String,
     to: String,
-  ) =
-    supportedReadMediaTypes.contains(from) && supportedWriteMediaTypes.contains(to)
+  ) = supportedReadMediaTypes.contains(from) && supportedWriteMediaTypes.contains(to)
 
   fun convertImage(
     imageBytes: ByteArray,
@@ -128,14 +130,14 @@ class ImageConverter(
     // prevent upscaling
     val resizeTo = if (longestEdge != null) min(longestEdge, size) else size
 
-    return Thumbnails.of(imageBytes.inputStream())
+    return Thumbnails
+      .of(imageBytes.inputStream())
       .size(resizeTo, resizeTo)
       .imageType(BufferedImage.TYPE_INT_ARGB)
       .outputFormat(format.imageIOFormat)
   }
 
-  private fun containsAlphaChannel(image: BufferedImage): Boolean =
-    image.colorModel.hasAlpha()
+  private fun containsAlphaChannel(image: BufferedImage): Boolean = image.colorModel.hasAlpha()
 
   private fun containsTransparency(image: BufferedImage): Boolean {
     for (x in 0 until image.width) {

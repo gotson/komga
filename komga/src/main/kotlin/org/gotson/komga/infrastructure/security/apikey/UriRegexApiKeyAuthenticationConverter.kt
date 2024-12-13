@@ -20,11 +20,13 @@ class UriRegexApiKeyAuthenticationConverter(
   private val authenticationDetailsSource: AuthenticationDetailsSource<HttpServletRequest, *>,
 ) : AuthenticationConverter {
   override fun convert(request: HttpServletRequest): Authentication? =
-    request.requestURI?.let {
-      tokenRegex.find(it)?.groupValues?.lastOrNull()
-    }?.let {
-      val (maskedToken, hashedToken) = it.take(6) + "*".repeat(6) to tokenEncoder.encode(it)
-      ApiKeyAuthenticationToken.unauthenticated(maskedToken, hashedToken)
-        .apply { details = authenticationDetailsSource.buildDetails(request) }
-    }
+    request.requestURI
+      ?.let {
+        tokenRegex.find(it)?.groupValues?.lastOrNull()
+      }?.let {
+        val (maskedToken, hashedToken) = it.take(6) + "*".repeat(6) to tokenEncoder.encode(it)
+        ApiKeyAuthenticationToken
+          .unauthenticated(maskedToken, hashedToken)
+          .apply { details = authenticationDetailsSource.buildDetails(request) }
+      }
 }

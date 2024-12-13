@@ -66,7 +66,8 @@ class UserControllerTest(
 
   @AfterEach
   fun deleteUsers() {
-    userRepository.findAll()
+    userRepository
+      .findAll()
       .filterNot { it.email == admin.email }
       .forEach { userLifecycle.deleteUser(it) }
   }
@@ -78,12 +79,13 @@ class UserControllerTest(
     // language=JSON
     val jsonString = """{"email":"$email","password":"password"}"""
 
-    mockMvc.post("/api/v2/users") {
-      contentType = MediaType.APPLICATION_JSON
-      content = jsonString
-    }.andExpect {
-      status { isBadRequest() }
-    }
+    mockMvc
+      .post("/api/v2/users") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isBadRequest() }
+      }
   }
 
   @Nested
@@ -102,12 +104,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -132,12 +135,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -164,12 +168,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -195,12 +200,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -226,12 +232,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -255,12 +262,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -295,12 +303,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -326,12 +335,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -358,12 +368,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
 
     @Test
@@ -390,12 +401,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -430,12 +442,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.patch("/api/v2/users/${user.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v2/users/${user.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
@@ -464,15 +477,16 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.post("/api/v2/users/me/api-keys") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isOk() }
-        jsonPath("$.userId") { value(admin.id) }
-        jsonPath("$.key") { value(MatchesPattern(Regex("""[^*]+""").toPattern())) }
-        jsonPath("$.comment") { value("test api key") }
-      }
+      mockMvc
+        .post("/api/v2/users/me/api-keys") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isOk() }
+          jsonPath("$.userId") { value(admin.id) }
+          jsonPath("$.key") { value(MatchesPattern(Regex("""[^*]+""").toPattern())) }
+          jsonPath("$.comment") { value("test api key") }
+        }
 
       with(userRepository.findApiKeyByUserId(admin.id)) {
         assertThat(this).hasSize(1)
@@ -482,7 +496,8 @@ class UserControllerTest(
         }
       }
 
-      mockMvc.get("/api/v2/users/me/api-keys")
+      mockMvc
+        .get("/api/v2/users/me/api-keys")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(1) }
@@ -503,12 +518,13 @@ class UserControllerTest(
         }
         """.trimIndent()
 
-      mockMvc.post("/api/v2/users/me/api-keys") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .post("/api/v2/users/me/api-keys") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
 
     @Test
@@ -516,7 +532,8 @@ class UserControllerTest(
     fun `given user with api key when deleting API key then it is deleted`() {
       val apiKey = userLifecycle.createApiKey(admin, "test")!!
 
-      mockMvc.delete("/api/v2/users/me/api-keys/${apiKey.id}")
+      mockMvc
+        .delete("/api/v2/users/me/api-keys/${apiKey.id}")
         .andExpect {
           status { isNoContent() }
         }
@@ -529,7 +546,8 @@ class UserControllerTest(
     fun `given user with api key when deleting different API key ID then returns bad request`() {
       userLifecycle.createApiKey(admin, "test")!!
 
-      mockMvc.delete("/api/v2/users/me/api-keys/abc123")
+      mockMvc
+        .delete("/api/v2/users/me/api-keys/abc123")
         .andExpect {
           status { isNotFound() }
         }

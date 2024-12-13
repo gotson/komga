@@ -7,8 +7,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
 class DelimitedPairHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
-  override fun supportsParameter(parameter: MethodParameter): Boolean =
-    parameter.getParameterAnnotation(DelimitedPair::class.java) != null
+  override fun supportsParameter(parameter: MethodParameter): Boolean = parameter.getParameterAnnotation(DelimitedPair::class.java) != null
 
   override fun resolveArgument(
     parameter: MethodParameter,

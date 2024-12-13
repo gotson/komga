@@ -1,6 +1,8 @@
 package org.gotson.komga.domain.model
 
-enum class ThumbnailSize(val maxEdge: Int) {
+enum class ThumbnailSize(
+  val maxEdge: Int,
+) {
   DEFAULT(300),
   MEDIUM(600),
   LARGE(900),

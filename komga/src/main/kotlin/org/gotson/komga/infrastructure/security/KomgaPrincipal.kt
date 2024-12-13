@@ -16,7 +16,9 @@ class KomgaPrincipal(
   val oidcUser: OidcUser? = null,
   val apiKey: ApiKey? = null,
   private val name: String = user.email,
-) : UserDetails, OAuth2User, OidcUser {
+) : UserDetails,
+  OAuth2User,
+  OidcUser {
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
     user.roles
       .map { SimpleGrantedAuthority("ROLE_$it") }

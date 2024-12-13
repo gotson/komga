@@ -30,39 +30,39 @@ class BookMetadataDao(
 
   private val groupFields = arrayOf(*d.fields(), *a.fields())
 
-  override fun findById(bookId: String): BookMetadata =
-    find(dsl, listOf(bookId)).first()
+  override fun findById(bookId: String): BookMetadata = find(dsl, listOf(bookId)).first()
 
-  override fun findByIdOrNull(bookId: String): BookMetadata? =
-    find(dsl, listOf(bookId)).firstOrNull()
+  override fun findByIdOrNull(bookId: String): BookMetadata? = find(dsl, listOf(bookId)).firstOrNull()
 
-  override fun findAllByIds(bookIds: Collection<String>): Collection<BookMetadata> =
-    find(dsl, bookIds)
+  override fun findAllByIds(bookIds: Collection<String>): Collection<BookMetadata> = find(dsl, bookIds)
 
   private fun find(
     dsl: DSLContext,
     bookIds: Collection<String>,
-  ) =
-    dsl.select(*groupFields)
-      .from(d)
-      .leftJoin(a).on(d.BOOK_ID.eq(a.BOOK_ID))
-      .where(d.BOOK_ID.`in`(bookIds))
-      .groupBy(*groupFields)
-      .fetchGroups(
-        { it.into(d) },
-        { it.into(a) },
-      ).map { (dr, ar) ->
-        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.bookId), findLinks(dr.bookId))
-      }
+  ) = dsl
+    .select(*groupFields)
+    .from(d)
+    .leftJoin(a)
+    .on(d.BOOK_ID.eq(a.BOOK_ID))
+    .where(d.BOOK_ID.`in`(bookIds))
+    .groupBy(*groupFields)
+    .fetchGroups(
+      { it.into(d) },
+      { it.into(a) },
+    ).map { (dr, ar) ->
+      dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.bookId), findLinks(dr.bookId))
+    }
 
   private fun findTags(bookId: String) =
-    dsl.select(bt.TAG)
+    dsl
+      .select(bt.TAG)
       .from(bt)
       .where(bt.BOOK_ID.eq(bookId))
       .fetchSet(bt.TAG)
 
   private fun findLinks(bookId: String) =
-    dsl.select(bl.LABEL, bl.URL)
+    dsl
+      .select(bl.LABEL, bl.URL)
       .from(bl)
       .where(bl.BOOK_ID.eq(bookId))
       .fetchInto(bl)
@@ -77,48 +77,50 @@ class BookMetadataDao(
   override fun insert(metadatas: Collection<BookMetadata>) {
     if (metadatas.isNotEmpty()) {
       metadatas.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(
-            d,
-            d.BOOK_ID,
-            d.TITLE,
-            d.TITLE_LOCK,
-            d.SUMMARY,
-            d.SUMMARY_LOCK,
-            d.NUMBER,
-            d.NUMBER_LOCK,
-            d.NUMBER_SORT,
-            d.NUMBER_SORT_LOCK,
-            d.RELEASE_DATE,
-            d.RELEASE_DATE_LOCK,
-            d.AUTHORS_LOCK,
-            d.TAGS_LOCK,
-            d.ISBN,
-            d.ISBN_LOCK,
-            d.LINKS_LOCK,
-          ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
-        ).also { step ->
-          chunk.forEach {
-            step.bind(
-              it.bookId,
-              it.title,
-              it.titleLock,
-              it.summary,
-              it.summaryLock,
-              it.number,
-              it.numberLock,
-              it.numberSort,
-              it.numberSortLock,
-              it.releaseDate,
-              it.releaseDateLock,
-              it.authorsLock,
-              it.tagsLock,
-              it.isbn,
-              it.isbnLock,
-              it.linksLock,
-            )
-          }
-        }.execute()
+        dsl
+          .batch(
+            dsl
+              .insertInto(
+                d,
+                d.BOOK_ID,
+                d.TITLE,
+                d.TITLE_LOCK,
+                d.SUMMARY,
+                d.SUMMARY_LOCK,
+                d.NUMBER,
+                d.NUMBER_LOCK,
+                d.NUMBER_SORT,
+                d.NUMBER_SORT_LOCK,
+                d.RELEASE_DATE,
+                d.RELEASE_DATE_LOCK,
+                d.AUTHORS_LOCK,
+                d.TAGS_LOCK,
+                d.ISBN,
+                d.ISBN_LOCK,
+                d.LINKS_LOCK,
+              ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
+          ).also { step ->
+            chunk.forEach {
+              step.bind(
+                it.bookId,
+                it.title,
+                it.titleLock,
+                it.summary,
+                it.summaryLock,
+                it.number,
+                it.numberLock,
+                it.numberSort,
+                it.numberSortLock,
+                it.releaseDate,
+                it.releaseDateLock,
+                it.authorsLock,
+                it.tagsLock,
+                it.isbn,
+                it.isbnLock,
+                it.linksLock,
+              )
+            }
+          }.execute()
       }
 
       insertAuthors(metadatas)
@@ -138,7 +140,8 @@ class BookMetadataDao(
   }
 
   private fun updateMetadata(metadata: BookMetadata) {
-    dsl.update(d)
+    dsl
+      .update(d)
       .set(d.TITLE, metadata.title)
       .set(d.TITLE_LOCK, metadata.titleLock)
       .set(d.SUMMARY, metadata.summary)
@@ -158,13 +161,16 @@ class BookMetadataDao(
       .where(d.BOOK_ID.eq(metadata.bookId))
       .execute()
 
-    dsl.deleteFrom(a)
+    dsl
+      .deleteFrom(a)
       .where(a.BOOK_ID.eq(metadata.bookId))
       .execute()
-    dsl.deleteFrom(bt)
+    dsl
+      .deleteFrom(bt)
       .where(bt.BOOK_ID.eq(metadata.bookId))
       .execute()
-    dsl.deleteFrom(bl)
+    dsl
+      .deleteFrom(bl)
       .where(bl.BOOK_ID.eq(metadata.bookId))
       .execute()
 
@@ -176,16 +182,18 @@ class BookMetadataDao(
   private fun insertAuthors(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.authors.isNotEmpty() }) {
       metadatas.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(a, a.BOOK_ID, a.NAME, a.ROLE)
-            .values(null as String?, null, null),
-        ).also { step ->
-          chunk.forEach { metadata ->
-            metadata.authors.forEach {
-              step.bind(metadata.bookId, it.name, it.role)
+        dsl
+          .batch(
+            dsl
+              .insertInto(a, a.BOOK_ID, a.NAME, a.ROLE)
+              .values(null as String?, null, null),
+          ).also { step ->
+            chunk.forEach { metadata ->
+              metadata.authors.forEach {
+                step.bind(metadata.bookId, it.name, it.role)
+              }
             }
-          }
-        }.execute()
+          }.execute()
       }
     }
   }
@@ -193,16 +201,18 @@ class BookMetadataDao(
   private fun insertTags(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.tags.isNotEmpty() }) {
       metadatas.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(bt, bt.BOOK_ID, bt.TAG)
-            .values(null as String?, null),
-        ).also { step ->
-          chunk.forEach { metadata ->
-            metadata.tags.forEach {
-              step.bind(metadata.bookId, it)
+        dsl
+          .batch(
+            dsl
+              .insertInto(bt, bt.BOOK_ID, bt.TAG)
+              .values(null as String?, null),
+          ).also { step ->
+            chunk.forEach { metadata ->
+              metadata.tags.forEach {
+                step.bind(metadata.bookId, it)
+              }
             }
-          }
-        }.execute()
+          }.execute()
       }
     }
   }
@@ -210,16 +220,18 @@ class BookMetadataDao(
   private fun insertLinks(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.links.isNotEmpty() }) {
       metadatas.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(bl, bl.BOOK_ID, bl.LABEL, bl.URL)
-            .values(null as String?, null, null),
-        ).also { step ->
-          chunk.forEach { metadata ->
-            metadata.links.forEach {
-              step.bind(metadata.bookId, it.label, it.url.toString())
+        dsl
+          .batch(
+            dsl
+              .insertInto(bl, bl.BOOK_ID, bl.LABEL, bl.URL)
+              .values(null as String?, null, null),
+          ).also { step ->
+            chunk.forEach { metadata ->
+              metadata.links.forEach {
+                step.bind(metadata.bookId, it.label, it.url.toString())
+              }
             }
-          }
-        }.execute()
+          }.execute()
       }
     }
   }
@@ -248,30 +260,29 @@ class BookMetadataDao(
     authors: List<Author>,
     tags: Set<String>,
     links: List<WebLink>,
-  ) =
-    BookMetadata(
-      title = title,
-      summary = summary,
-      number = number,
-      numberSort = numberSort,
-      releaseDate = releaseDate,
-      authors = authors,
-      tags = tags,
-      isbn = isbn,
-      links = links,
-      bookId = bookId,
-      createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
-      titleLock = titleLock,
-      summaryLock = summaryLock,
-      numberLock = numberLock,
-      numberSortLock = numberSortLock,
-      releaseDateLock = releaseDateLock,
-      authorsLock = authorsLock,
-      tagsLock = tagsLock,
-      isbnLock = isbnLock,
-      linksLock = linksLock,
-    )
+  ) = BookMetadata(
+    title = title,
+    summary = summary,
+    number = number,
+    numberSort = numberSort,
+    releaseDate = releaseDate,
+    authors = authors,
+    tags = tags,
+    isbn = isbn,
+    links = links,
+    bookId = bookId,
+    createdDate = createdDate.toCurrentTimeZone(),
+    lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
+    titleLock = titleLock,
+    summaryLock = summaryLock,
+    numberLock = numberLock,
+    numberSortLock = numberSortLock,
+    releaseDateLock = releaseDateLock,
+    authorsLock = authorsLock,
+    tagsLock = tagsLock,
+    isbnLock = isbnLock,
+    linksLock = linksLock,
+  )
 
   private fun BookMetadataAuthorRecord.toDomain() =
     Author(

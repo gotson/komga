@@ -62,14 +62,12 @@ class Rar5Extractor(
             logger.warn(e) { "Could not analyze entry: ${entry.name}" }
             MediaContainerEntry(name = entry.name, comment = e.message)
           }
-        }
-        .sortedWith(compareBy(natSortComparator) { it.name })
+        }.sortedWith(compareBy(natSortComparator) { it.name })
         .toList()
     }
 
   override fun getEntryStream(
     path: Path,
     entryName: String,
-  ): ByteArray =
-    Archive.getInputStream(path, entryName).use { it?.readBytes() ?: ByteArray(0) }
+  ): ByteArray = Archive.getInputStream(path, entryName).use { it?.readBytes() ?: ByteArray(0) }
 }

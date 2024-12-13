@@ -31,11 +31,9 @@ class ContentDetector(
    * Detects the media type of the content of the stream.
    * The stream will not be closed.
    */
-  fun detectMediaType(stream: InputStream): String =
-    tika.detector.detect(stream, Metadata()).toString()
+  fun detectMediaType(stream: InputStream): String = tika.detector.detect(stream, Metadata()).toString()
 
-  fun isImage(mediaType: String): Boolean =
-    mediaType.startsWith("image/")
+  fun isImage(mediaType: String): Boolean = mediaType.startsWith("image/")
 
   fun mediaTypeToExtension(mediaType: String): String? =
     try {

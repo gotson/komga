@@ -47,8 +47,12 @@ class DashboardBenchmark : AbstractRestBenchmark() {
     }
 
     // retrieve most recent book release date
-    bookLatestReleaseDate = bookController.getAllBooks(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("metadata.releaseDate"))))
-      .content.firstOrNull()?.metadata?.releaseDate ?: LocalDate.now()
+    bookLatestReleaseDate = bookController
+      .getAllBooks(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("metadata.releaseDate"))))
+      .content
+      .firstOrNull()
+      ?.metadata
+      ?.releaseDate ?: LocalDate.now()
   }
 
   @Benchmark

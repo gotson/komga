@@ -260,7 +260,8 @@ class TasksDaoTest(
     // when
     val disownCount = tasksDao.disown()
     val disownedTasks =
-      tasksDao.findAll()
+      tasksDao
+        .findAll()
         .filter { task -> ownedTasks.map { it.uniqueId }.contains(task.uniqueId) }
 
     val groupedByOwner = tasksDao.findAllGroupedByOwner()

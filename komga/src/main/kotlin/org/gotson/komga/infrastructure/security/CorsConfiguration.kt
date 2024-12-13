@@ -44,7 +44,8 @@ class CorsConfiguration {
       metadata: AnnotatedTypeMetadata,
     ): ConditionOutcome {
       val defined =
-        Binder.get(context.environment)
+        Binder
+          .get(context.environment)
           .bind(ConfigurationPropertyName.of("komga.cors.allowed-origins"), Bindable.of(List::class.java))
           .orElse(Collections.emptyList<String>())
           .isNotEmpty()

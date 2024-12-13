@@ -20,7 +20,8 @@ class PeriodicScannerController(
 ) {
   @EventListener(classes = [ApplicationReadyEvent::class])
   fun scanOnStartup() {
-    libraryRepository.findAll()
+    libraryRepository
+      .findAll()
       .filter { it.scanOnStartup }
       .forEach {
         logger.info { "Scan on startup for library: ${it.name}" }
@@ -30,7 +31,8 @@ class PeriodicScannerController(
 
   @EventListener(classes = [ApplicationReadyEvent::class])
   fun scheduleScans() {
-    libraryRepository.findAll()
+    libraryRepository
+      .findAll()
       .forEach { libraryScanScheduler.scheduleScan(it) }
   }
 }

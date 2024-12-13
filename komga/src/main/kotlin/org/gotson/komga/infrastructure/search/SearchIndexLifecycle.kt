@@ -71,7 +71,8 @@ class SearchIndexLifecycle(
       (0 until pages).forEach { page ->
         logger.info { "Processing page ${page + 1} of $pages ($batchSize elements)" }
         val entityDocs =
-          provider(PageRequest.of(page, batchSize)).content
+          provider(PageRequest.of(page, batchSize))
+            .content
             .mapNotNull { toDoc(it) }
         luceneHelper.addDocuments(entityDocs)
       }

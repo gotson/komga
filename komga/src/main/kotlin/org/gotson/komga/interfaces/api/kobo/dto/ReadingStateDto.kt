@@ -34,8 +34,16 @@ fun ReadProgress.toDto() =
     currentBookmark =
       BookmarkDto(
         lastModified = this.lastModifiedDate.toUTCZoned(),
-        progressPercent = this.locator?.locations?.totalProgression?.times(100),
-        contentSourceProgressPercent = this.locator?.locations?.progression?.times(100),
+        progressPercent =
+          this.locator
+            ?.locations
+            ?.totalProgression
+            ?.times(100),
+        contentSourceProgressPercent =
+          this.locator
+            ?.locations
+            ?.progression
+            ?.times(100),
         location = this.locator?.let { LocationDto(source = it.href, value = it.koboSpan) },
       ),
     statistics =

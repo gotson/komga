@@ -82,7 +82,8 @@ class BookLifecycle(
       mediaRepository.findById(book.id).let { previous ->
         if (previous.status == Media.Status.OUTDATED && previous.pageCount != media.pageCount) {
           val adjustedProgress =
-            readProgressRepository.findAllByBookId(book.id)
+            readProgressRepository
+              .findAllByBookId(book.id)
               .map { it.copy(page = if (it.completed) media.pageCount else 1) }
           if (adjustedProgress.isNotEmpty()) {
             logger.info { "Number of pages differ, adjust read progress for book" }
@@ -145,7 +146,8 @@ class BookLifecycle(
 
       ThumbnailBook.Type.SIDECAR -> {
         // delete existing thumbnail with the same url
-        thumbnailBookRepository.findAllByBookIdAndType(thumbnail.bookId, setOf(ThumbnailBook.Type.SIDECAR))
+        thumbnailBookRepository
+          .findAllByBookIdAndType(thumbnail.bookId, setOf(ThumbnailBook.Type.SIDECAR))
           .filter { it.url == thumbnail.url }
           .forEach {
             thumbnailBookRepository.delete(it.id)
@@ -253,7 +255,8 @@ class BookLifecycle(
   private fun thumbnailsHouseKeeping(bookId: String) {
     logger.info { "House keeping thumbnails for book: $bookId" }
     val all =
-      thumbnailBookRepository.findAllByBookId(bookId)
+      thumbnailBookRepository
+        .findAllByBookId(bookId)
         .mapNotNull {
           if (!it.exists()) {
             logger.warn { "Thumbnail doesn't exist, removing entry" }
@@ -278,13 +281,12 @@ class BookLifecycle(
     }
   }
 
-  fun findBookThumbnailsToRegenerate(forBiggerResultOnly: Boolean): Collection<String> {
-    return if (forBiggerResultOnly) {
+  fun findBookThumbnailsToRegenerate(forBiggerResultOnly: Boolean): Collection<String> =
+    if (forBiggerResultOnly) {
       thumbnailBookRepository.findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(ThumbnailBook.Type.GENERATED, komgaSettingsProvider.thumbnailSize.maxEdge)
     } else {
       bookRepository.findAll(SearchCondition.Deleted(SearchOperator.IsFalse), SearchContext.empty(), Pageable.unpaged()).content.map { it.id }
     }
-  }
 
   @Throws(
     ImageConversionException::class,
@@ -439,7 +441,12 @@ class BookLifecycle(
     newProgression: R2Progression,
   ) {
     readProgressRepository.findByBookIdAndUserIdOrNull(book.id, user.id)?.let { savedProgress ->
-      check(newProgression.modified.toLocalDateTime().toCurrentTimeZone().isAfter(savedProgress.readDate)) { "Progression is older than existing" }
+      check(
+        newProgression.modified
+          .toLocalDateTime()
+          .toCurrentTimeZone()
+          .isAfter(savedProgress.readDate),
+      ) { "Progression is older than existing" }
     }
 
     val media = mediaRepository.findById(book.id)
@@ -465,7 +472,8 @@ class BookLifecycle(
         MediaProfile.EPUB -> {
           val href =
             newProgression.locator.href
-              .replaceAfter("#", "").removeSuffix("#")
+              .replaceAfter("#", "")
+              .removeSuffix("#")
               .let { UriUtils.decode(it, Charsets.UTF_8) }
           require(href in media.files.map { it.fileName }) { "Resource does not exist in book: $href" }
           requireNotNull(newProgression.locator.locations?.progression) { "location.progression is required" }
@@ -519,7 +527,8 @@ class BookLifecycle(
     if (!book.path.isWritable()) return logger.info { "Cannot delete book file, path is not writable: ${book.path}" }
 
     val thumbnails =
-      thumbnailBookRepository.findAllByBookIdAndType(book.id, setOf(ThumbnailBook.Type.SIDECAR))
+      thumbnailBookRepository
+        .findAllByBookIdAndType(book.id, setOf(ThumbnailBook.Type.SIDECAR))
         .mapNotNull { it.url?.toURI()?.toPath() }
         .filter { it.exists() && it.isWritable() }
 
@@ -531,7 +540,10 @@ class BookLifecycle(
       if (it.deleteIfExists()) logger.info { "Deleted file: $it" }
     }
 
-    if (book.path.parent.listDirectoryEntries().isEmpty())
+    if (book.path.parent
+        .listDirectoryEntries()
+        .isEmpty()
+    )
       if (book.path.parent.deleteIfExists()) {
         logger.info { "Deleted directory: ${book.path.parent}" }
         historicalEventRepository.insert(HistoricalEvent.SeriesFolderDeleted(book.seriesId, book.path.parent, "Folder was deleted because it was empty"))

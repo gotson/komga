@@ -26,7 +26,8 @@ private val logger = KotlinLogging.logger {}
 class LocalArtworkProvider(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
-) : SidecarSeriesConsumer, SidecarBookConsumer {
+) : SidecarSeriesConsumer,
+  SidecarBookConsumer {
   val supportedExtensions = listOf("png", "jpeg", "jpg", "tbn", "webp")
   val supportedSeriesFiles = listOf("cover", "default", "folder", "poster", "series")
 
@@ -38,7 +39,8 @@ class LocalArtworkProvider(
     val regex = "${Regex.escape(baseName)}(-\\d+)?".toRegex(RegexOption.IGNORE_CASE)
 
     return Files.list(bookPath.parent).use { dirStream ->
-      dirStream.asSequence()
+      dirStream
+        .asSequence()
         .filter { Files.isRegularFile(it) }
         .filter { regex.matches(it.nameWithoutExtension) }
         .filter { supportedExtensions.contains(it.extension.lowercase()) }
@@ -67,7 +69,8 @@ class LocalArtworkProvider(
     logger.info { "Looking for local thumbnails for series: $series" }
 
     return Files.list(series.path).use { dirStream ->
-      dirStream.asSequence()
+      dirStream
+        .asSequence()
         .filter { Files.isRegularFile(it) }
         .filter { supportedSeriesFiles.contains(it.nameWithoutExtension.lowercase()) }
         .filter { supportedExtensions.contains(it.extension.lowercase()) }
@@ -89,14 +92,12 @@ class LocalArtworkProvider(
 
   override fun getSidecarBookType(): Sidecar.Type = Sidecar.Type.ARTWORK
 
-  override fun getSidecarBookPrefilter(): List<Regex> =
-    supportedExtensions.map { ext -> ".*(-\\d+)?\\.$ext".toRegex(RegexOption.IGNORE_CASE) }
+  override fun getSidecarBookPrefilter(): List<Regex> = supportedExtensions.map { ext -> ".*(-\\d+)?\\.$ext".toRegex(RegexOption.IGNORE_CASE) }
 
   override fun isSidecarBookMatch(
     basename: String,
     sidecar: String,
-  ): Boolean =
-    "${Regex.escape(basename)}(-\\d+)?".toRegex(RegexOption.IGNORE_CASE).matches(FilenameUtils.getBaseName(sidecar))
+  ): Boolean = "${Regex.escape(basename)}(-\\d+)?".toRegex(RegexOption.IGNORE_CASE).matches(FilenameUtils.getBaseName(sidecar))
 
   override fun getSidecarSeriesType(): Sidecar.Type = Sidecar.Type.ARTWORK
 

@@ -47,14 +47,14 @@ class BookDao(
       "number" to b.NUMBER,
     )
 
-  override fun findByIdOrNull(bookId: String): Book? =
-    findByIdOrNull(dsl, bookId)
+  override fun findByIdOrNull(bookId: String): Book? = findByIdOrNull(dsl, bookId)
 
   override fun findNotDeletedByLibraryIdAndUrlOrNull(
     libraryId: String,
     url: URL,
   ): Book? =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.eq(url.toString())))
       .and(b.DELETED_DATE.isNull)
       .orderBy(b.LAST_MODIFIED_DATE.desc())
@@ -66,19 +66,22 @@ class BookDao(
     dsl: DSLContext,
     bookId: String,
   ): Book? =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.ID.eq(bookId))
       .fetchOneInto(b)
       ?.toDomain()
 
   override fun findAllBySeriesId(seriesId: String): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.SERIES_ID.eq(seriesId))
       .fetchInto(b)
       .map { it.toDomain() }
 
   override fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.SERIES_ID.`in`(seriesIds))
       .fetchInto(b)
       .map { it.toDomain() }
@@ -90,7 +93,8 @@ class BookDao(
   ): Collection<Book> {
     dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
-    return dsl.selectFrom(b)
+    return dsl
+      .selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(b.DELETED_DATE.isNull)
       .and(b.URL.notIn(dsl.selectTempStrings()))
@@ -99,13 +103,15 @@ class BookDao(
   }
 
   override fun findAllDeletedByFileSize(fileSize: Long): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.DELETED_DATE.isNotNull.and(b.FILE_SIZE.eq(fileSize)))
       .fetchInto(b)
       .map { it.toDomain() }
 
   override fun findAll(): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .fetchInto(b)
       .map { it.toDomain() }
 
@@ -124,7 +130,8 @@ class BookDao(
     pageable: Pageable,
   ): PageImpl<Book> {
     val count =
-      dsl.selectCount()
+      dsl
+        .selectCount()
         .from(b)
         .apply {
           joins.forEach { join ->
@@ -137,14 +144,14 @@ class BookDao(
               RequiredJoin.BookMetadataAggregation -> Unit
             }
           }
-        }
-        .where(conditions)
+        }.where(conditions)
         .fetchOne(0, Long::class.java) ?: 0
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
     val items =
-      dsl.select(*b.fields())
+      dsl
+        .select(*b.fields())
         .from(b)
         .apply {
           joins.forEach { join ->
@@ -157,8 +164,7 @@ class BookDao(
               RequiredJoin.BookMetadataAggregation -> Unit
             }
           }
-        }
-        .where(conditions)
+        }.where(conditions)
         .orderBy(orderBy)
         .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
         .fetchInto(b)
@@ -176,30 +182,36 @@ class BookDao(
   }
 
   override fun getLibraryIdOrNull(bookId: String): String? =
-    dsl.select(b.LIBRARY_ID)
+    dsl
+      .select(b.LIBRARY_ID)
       .from(b)
       .where(b.ID.eq(bookId))
       .fetchOne(b.LIBRARY_ID)
 
   override fun getSeriesIdOrNull(bookId: String): String? =
-    dsl.select(b.SERIES_ID)
+    dsl
+      .select(b.SERIES_ID)
       .from(b)
       .where(b.ID.eq(bookId))
       .fetchOne(b.SERIES_ID)
 
   override fun findFirstIdInSeriesOrNull(seriesId: String): String? =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(d)
+      .on(b.ID.eq(d.BOOK_ID))
       .where(b.SERIES_ID.eq(seriesId))
       .orderBy(d.NUMBER_SORT)
       .limit(1)
       .fetchOne(b.ID)
 
   override fun findLastIdInSeriesOrNull(seriesId: String): String? =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(d)
+      .on(b.ID.eq(d.BOOK_ID))
       .where(b.SERIES_ID.eq(seriesId))
       .orderBy(d.NUMBER_SORT.desc())
       .limit(1)
@@ -209,10 +221,14 @@ class BookDao(
     seriesId: String,
     userId: String,
   ): String? =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(userId).or(r.USER_ID.isNull))
+      .leftJoin(d)
+      .on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(r)
+      .on(b.ID.eq(r.BOOK_ID))
+      .and(r.USER_ID.eq(userId).or(r.USER_ID.isNull))
       .where(b.SERIES_ID.eq(seriesId))
       .and(r.COMPLETED.isNull.or(r.COMPLETED.isFalse))
       .orderBy(d.NUMBER_SORT)
@@ -220,27 +236,30 @@ class BookDao(
       .fetchOne(b.ID)
 
   override fun findAllIdsBySeriesId(seriesId: String): Collection<String> =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
       .where(b.SERIES_ID.eq(seriesId))
       .fetch(b.ID)
 
   override fun findAllIdsByLibraryId(libraryId: String): Collection<String> =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .fetch(b.ID)
 
-  override fun existsById(bookId: String): Boolean =
-    dsl.fetchExists(b, b.ID.eq(bookId))
+  override fun existsById(bookId: String): Boolean = dsl.fetchExists(b, b.ID.eq(bookId))
 
   override fun findAllByLibraryIdAndMediaTypes(
     libraryId: String,
     mediaTypes: Collection<String>,
   ): Collection<Book> =
-    dsl.select(*b.fields())
+    dsl
+      .select(*b.fields())
       .from(b)
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .leftJoin(m)
+      .on(b.ID.eq(m.BOOK_ID))
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(m.MEDIA_TYPE.`in`(mediaTypes))
       .fetchInto(b)
@@ -251,9 +270,11 @@ class BookDao(
     mediaType: String,
     extension: String,
   ): Collection<Book> =
-    dsl.select(*b.fields())
+    dsl
+      .select(*b.fields())
       .from(b)
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .leftJoin(m)
+      .on(b.ID.eq(m.BOOK_ID))
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(m.MEDIA_TYPE.eq(mediaType))
       .and(b.URL.notLike("%.$extension"))
@@ -261,7 +282,8 @@ class BookDao(
       .map { it.toDomain() }
 
   override fun findAllByLibraryIdAndWithEmptyHash(libraryId: String): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(b.FILE_HASH.eq(""))
       .fetchInto(b)
@@ -276,38 +298,40 @@ class BookDao(
   override fun insert(books: Collection<Book>) {
     if (books.isNotEmpty()) {
       books.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(
-            b,
-            b.ID,
-            b.NAME,
-            b.URL,
-            b.NUMBER,
-            b.FILE_LAST_MODIFIED,
-            b.FILE_SIZE,
-            b.FILE_HASH,
-            b.LIBRARY_ID,
-            b.SERIES_ID,
-            b.DELETED_DATE,
-            b.ONESHOT,
-          ).values(null as String?, null, null, null, null, null, null, null, null, null, null),
-        ).also { step ->
-          chunk.forEach {
-            step.bind(
-              it.id,
-              it.name,
-              it.url,
-              it.number,
-              it.fileLastModified,
-              it.fileSize,
-              it.fileHash,
-              it.libraryId,
-              it.seriesId,
-              it.deletedDate,
-              it.oneshot,
-            )
-          }
-        }.execute()
+        dsl
+          .batch(
+            dsl
+              .insertInto(
+                b,
+                b.ID,
+                b.NAME,
+                b.URL,
+                b.NUMBER,
+                b.FILE_LAST_MODIFIED,
+                b.FILE_SIZE,
+                b.FILE_HASH,
+                b.LIBRARY_ID,
+                b.SERIES_ID,
+                b.DELETED_DATE,
+                b.ONESHOT,
+              ).values(null as String?, null, null, null, null, null, null, null, null, null, null),
+          ).also { step ->
+            chunk.forEach {
+              step.bind(
+                it.id,
+                it.name,
+                it.url,
+                it.number,
+                it.fileLastModified,
+                it.fileSize,
+                it.fileHash,
+                it.libraryId,
+                it.seriesId,
+                it.deletedDate,
+                it.oneshot,
+              )
+            }
+          }.execute()
       }
     }
   }
@@ -323,7 +347,8 @@ class BookDao(
   }
 
   private fun updateBook(book: Book) {
-    dsl.update(b)
+    dsl
+      .update(b)
       .set(b.NAME, book.name)
       .set(b.URL, book.url.toString())
       .set(b.NUMBER, book.number)
@@ -357,13 +382,15 @@ class BookDao(
   override fun count(): Long = dsl.fetchCount(b).toLong()
 
   override fun countGroupedByLibraryId(): Map<String, Int> =
-    dsl.select(b.LIBRARY_ID, DSL.count(b.ID))
+    dsl
+      .select(b.LIBRARY_ID, DSL.count(b.ID))
       .from(b)
       .groupBy(b.LIBRARY_ID)
       .fetchMap(b.LIBRARY_ID, DSL.count(b.ID))
 
   override fun getFilesizeGroupedByLibraryId(): Map<String, BigDecimal> =
-    dsl.select(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
+    dsl
+      .select(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
       .from(b)
       .groupBy(b.LIBRARY_ID)
       .fetchMap(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))

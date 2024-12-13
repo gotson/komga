@@ -15,17 +15,25 @@ class NamingConventionTest {
   @ArchTest
   val servicesShouldNotHaveNamesContainingServiceOrManager: ArchRule =
     noClasses()
-      .that().resideInAnyPackage("..domain..service..", "..application..service..")
-      .should().haveSimpleNameContaining("service")
-      .orShould().haveSimpleNameContaining("Service")
-      .orShould().haveSimpleNameContaining("manager")
-      .orShould().haveSimpleNameContaining("Manager")
+      .that()
+      .resideInAnyPackage("..domain..service..", "..application..service..")
+      .should()
+      .haveSimpleNameContaining("service")
+      .orShould()
+      .haveSimpleNameContaining("Service")
+      .orShould()
+      .haveSimpleNameContaining("manager")
+      .orShould()
+      .haveSimpleNameContaining("Manager")
       .because("it doesn't bear any intent")
 
   @ArchTest
   val controllersShouldBeSuffixed: ArchRule =
     classes()
-      .that().areAnnotatedWith(RestController::class.java)
-      .or().areAnnotatedWith(Controller::class.java)
-      .should().haveSimpleNameEndingWith("Controller")
+      .that()
+      .areAnnotatedWith(RestController::class.java)
+      .or()
+      .areAnnotatedWith(Controller::class.java)
+      .should()
+      .haveSimpleNameEndingWith("Controller")
 }

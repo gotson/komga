@@ -47,8 +47,7 @@ class RarExtractor(
             logger.warn(e) { "Could not analyze entry: ${entry.fileName}" }
             MediaContainerEntry(name = entry.fileName, comment = e.message)
           }
-        }
-        .sortedWith(compareBy(natSortComparator) { it.name })
+        }.sortedWith(compareBy(natSortComparator) { it.name })
     }
 
   override fun getEntryStream(

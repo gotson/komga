@@ -33,7 +33,8 @@ class ComicInfoProvider(
   @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer,
   private val isbnValidator: ISBNValidator,
-) : BookMetadataProvider, SeriesMetadataFromBookProvider {
+) : BookMetadataProvider,
+  SeriesMetadataFromBookProvider {
   override val capabilities =
     setOf(
       BookMetadataPatchCapability.TITLE,
@@ -150,7 +151,11 @@ class ComicInfoProvider(
         language = if (comicInfo.languageISO != null && BCP47TagValidator.isValid(comicInfo.languageISO!!)) BCP47TagValidator.normalize(comicInfo.languageISO!!) else null,
         genres = if (!genres.isNullOrEmpty()) genres.toSet() else null,
         totalBookCount = comicInfo.count,
-        collections = comicInfo.seriesGroup?.split(',')?.mapNotNull { it.trim().ifBlank { null } }?.toSet() ?: emptySet(),
+        collections =
+          comicInfo.seriesGroup
+            ?.split(',')
+            ?.mapNotNull { it.trim().ifBlank { null } }
+            ?.toSet() ?: emptySet(),
       )
     }
     return null

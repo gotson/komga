@@ -54,14 +54,13 @@ class MediaDao(
       *p.fields(),
     )
 
-  override fun findById(bookId: String): Media =
-    find(dsl, bookId)!!
+  override fun findById(bookId: String): Media = find(dsl, bookId)!!
 
-  override fun findByIdOrNull(bookId: String): Media? =
-    find(dsl, bookId)
+  override fun findByIdOrNull(bookId: String): Media? = find(dsl, bookId)
 
   override fun findExtensionByIdOrNull(bookId: String): MediaExtension? =
-    dsl.select(m.EXTENSION_CLASS, m.EXTENSION_VALUE_BLOB)
+    dsl
+      .select(m.EXTENSION_CLASS, m.EXTENSION_VALUE_BLOB)
       .from(m)
       .where(m.BOOK_ID.eq(bookId))
       .fetchOne()
@@ -77,10 +76,13 @@ class MediaDao(
     val neededHash = pageHashing * 2
     val neededHashForBook = DSL.`when`(pagesCount.lt(neededHash), pagesCount).otherwise(neededHash)
 
-    return dsl.select(b.ID)
+    return dsl
+      .select(b.ID)
       .from(b)
-      .leftJoin(p).on(b.ID.eq(p.BOOK_ID))
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .leftJoin(p)
+      .on(b.ID.eq(p.BOOK_ID))
+      .leftJoin(m)
+      .on(b.ID.eq(m.BOOK_ID))
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(m.STATUS.eq(Media.Status.READY.name))
       .and(m.MEDIA_TYPE.`in`(mediaTypes))
@@ -91,7 +93,8 @@ class MediaDao(
   }
 
   override fun getPagesSizes(bookIds: Collection<String>): Collection<Pair<String, Int>> =
-    dsl.select(m.BOOK_ID, m.PAGE_COUNT)
+    dsl
+      .select(m.BOOK_ID, m.PAGE_COUNT)
       .from(m)
       .where(m.BOOK_ID.`in`(bookIds))
       .fetch()
@@ -101,9 +104,11 @@ class MediaDao(
     dsl: DSLContext,
     bookId: String,
   ): Media? =
-    dsl.select(*groupFields)
+    dsl
+      .select(*groupFields)
       .from(m)
-      .leftJoin(p).on(m.BOOK_ID.eq(p.BOOK_ID))
+      .leftJoin(p)
+      .on(m.BOOK_ID.eq(p.BOOK_ID))
       .where(m.BOOK_ID.eq(bookId))
       .groupBy(*groupFields)
       .orderBy(p.NUMBER.asc())
@@ -112,7 +117,8 @@ class MediaDao(
         { it.into(p) },
       ).map { (mr, pr) ->
         val files =
-          dsl.selectFrom(f)
+          dsl
+            .selectFrom(f)
             .where(f.BOOK_ID.eq(bookId))
             .fetchInto(f)
 
@@ -128,34 +134,36 @@ class MediaDao(
   override fun insert(medias: Collection<Media>) {
     if (medias.isNotEmpty()) {
       medias.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(
-            m,
-            m.BOOK_ID,
-            m.STATUS,
-            m.MEDIA_TYPE,
-            m.COMMENT,
-            m.PAGE_COUNT,
-            m.EPUB_DIVINA_COMPATIBLE,
-            m.EPUB_IS_KEPUB,
-            m.EXTENSION_CLASS,
-            m.EXTENSION_VALUE_BLOB,
-          ).values(null as String?, null, null, null, null, null, null, null, null),
-        ).also { step ->
-          chunk.forEach { media ->
-            step.bind(
-              media.bookId,
-              media.status,
-              media.mediaType,
-              media.comment,
-              media.pageCount,
-              media.epubDivinaCompatible,
-              media.epubIsKepub,
-              media.extension?.let { if (it is ProxyExtension) null else it::class.qualifiedName },
-              media.extension?.let { if (it is ProxyExtension) null else mapper.serializeJsonGz(it) },
-            )
-          }
-        }.execute()
+        dsl
+          .batch(
+            dsl
+              .insertInto(
+                m,
+                m.BOOK_ID,
+                m.STATUS,
+                m.MEDIA_TYPE,
+                m.COMMENT,
+                m.PAGE_COUNT,
+                m.EPUB_DIVINA_COMPATIBLE,
+                m.EPUB_IS_KEPUB,
+                m.EXTENSION_CLASS,
+                m.EXTENSION_VALUE_BLOB,
+              ).values(null as String?, null, null, null, null, null, null, null, null),
+          ).also { step ->
+            chunk.forEach { media ->
+              step.bind(
+                media.bookId,
+                media.status,
+                media.mediaType,
+                media.comment,
+                media.pageCount,
+                media.epubDivinaCompatible,
+                media.epubIsKepub,
+                media.extension?.let { if (it is ProxyExtension) null else it::class.qualifiedName },
+                media.extension?.let { if (it is ProxyExtension) null else mapper.serializeJsonGz(it) },
+              )
+            }
+          }.execute()
       }
 
       insertPages(medias)
@@ -166,34 +174,36 @@ class MediaDao(
   private fun insertPages(medias: Collection<Media>) {
     if (medias.any { it.pages.isNotEmpty() }) {
       medias.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(
-            p,
-            p.BOOK_ID,
-            p.FILE_NAME,
-            p.MEDIA_TYPE,
-            p.NUMBER,
-            p.WIDTH,
-            p.HEIGHT,
-            p.FILE_HASH,
-            p.FILE_SIZE,
-          ).values(null as String?, null, null, null, null, null, null, null),
-        ).also { step ->
-          chunk.forEach { media ->
-            media.pages.forEachIndexed { index, page ->
-              step.bind(
-                media.bookId,
-                page.fileName,
-                page.mediaType,
-                index,
-                page.dimension?.width,
-                page.dimension?.height,
-                page.fileHash,
-                page.fileSize,
-              )
+        dsl
+          .batch(
+            dsl
+              .insertInto(
+                p,
+                p.BOOK_ID,
+                p.FILE_NAME,
+                p.MEDIA_TYPE,
+                p.NUMBER,
+                p.WIDTH,
+                p.HEIGHT,
+                p.FILE_HASH,
+                p.FILE_SIZE,
+              ).values(null as String?, null, null, null, null, null, null, null),
+          ).also { step ->
+            chunk.forEach { media ->
+              media.pages.forEachIndexed { index, page ->
+                step.bind(
+                  media.bookId,
+                  page.fileName,
+                  page.mediaType,
+                  index,
+                  page.dimension?.width,
+                  page.dimension?.height,
+                  page.fileHash,
+                  page.fileSize,
+                )
+              }
             }
-          }
-        }.execute()
+          }.execute()
       }
     }
   }
@@ -201,35 +211,38 @@ class MediaDao(
   private fun insertFiles(medias: Collection<Media>) {
     if (medias.any { it.files.isNotEmpty() }) {
       medias.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(
-            f,
-            f.BOOK_ID,
-            f.FILE_NAME,
-            f.MEDIA_TYPE,
-            f.SUB_TYPE,
-            f.FILE_SIZE,
-          ).values(null as String?, null, null, null, null),
-        ).also { step ->
-          chunk.forEach { media ->
-            media.files.forEach {
-              step.bind(
-                media.bookId,
-                it.fileName,
-                it.mediaType,
-                it.subType,
-                it.fileSize,
-              )
+        dsl
+          .batch(
+            dsl
+              .insertInto(
+                f,
+                f.BOOK_ID,
+                f.FILE_NAME,
+                f.MEDIA_TYPE,
+                f.SUB_TYPE,
+                f.FILE_SIZE,
+              ).values(null as String?, null, null, null, null),
+          ).also { step ->
+            chunk.forEach { media ->
+              media.files.forEach {
+                step.bind(
+                  media.bookId,
+                  it.fileName,
+                  it.mediaType,
+                  it.subType,
+                  it.fileSize,
+                )
+              }
             }
-          }
-        }.execute()
+          }.execute()
       }
     }
   }
 
   @Transactional
   override fun update(media: Media) {
-    dsl.update(m)
+    dsl
+      .update(m)
       .set(m.STATUS, media.status.toString())
       .set(m.MEDIA_TYPE, media.mediaType)
       .set(m.COMMENT, media.comment)
@@ -241,16 +254,17 @@ class MediaDao(
           set(m.EXTENSION_CLASS, media.extension::class.qualifiedName)
           set(m.EXTENSION_VALUE_BLOB, mapper.serializeJsonGz(media.extension))
         }
-      }
-      .set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
+      }.set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(m.BOOK_ID.eq(media.bookId))
       .execute()
 
-    dsl.deleteFrom(p)
+    dsl
+      .deleteFrom(p)
       .where(p.BOOK_ID.eq(media.bookId))
       .execute()
 
-    dsl.deleteFrom(f)
+    dsl
+      .deleteFrom(f)
       .where(f.BOOK_ID.eq(media.bookId))
       .execute()
 
@@ -279,21 +293,20 @@ class MediaDao(
   private fun MediaRecord.toDomain(
     pages: List<BookPage>,
     files: List<MediaFile>,
-  ) =
-    Media(
-      status = Media.Status.valueOf(status),
-      mediaType = mediaType,
-      pages = pages,
-      pageCount = pageCount,
-      files = files,
-      extension = ProxyExtension.of(extensionClass),
-      comment = comment,
-      bookId = bookId,
-      epubDivinaCompatible = epubDivinaCompatible,
-      epubIsKepub = epubIsKepub,
-      createdDate = createdDate.toCurrentTimeZone(),
-      lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
-    )
+  ) = Media(
+    status = Media.Status.valueOf(status),
+    mediaType = mediaType,
+    pages = pages,
+    pageCount = pageCount,
+    files = files,
+    extension = ProxyExtension.of(extensionClass),
+    comment = comment,
+    bookId = bookId,
+    epubDivinaCompatible = epubDivinaCompatible,
+    epubIsKepub = epubIsKepub,
+    createdDate = createdDate.toCurrentTimeZone(),
+    lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
+  )
 
   private fun MediaPageRecord.toDomain() =
     BookPage(

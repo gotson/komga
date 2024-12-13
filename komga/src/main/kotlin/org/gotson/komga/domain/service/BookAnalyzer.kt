@@ -206,12 +206,20 @@ class BookAnalyzer(
   fun getPoster(book: BookWithMedia): TypedBytes? =
     when (book.media.profile) {
       MediaProfile.DIVINA ->
-        divinaExtractors[book.media.mediaType]?.getEntryStream(book.book.path, book.media.pages.first().fileName)?.let {
-          TypedBytes(
-            it,
-            book.media.pages.first().mediaType,
-          )
-        }
+        divinaExtractors[book.media.mediaType]
+          ?.getEntryStream(
+            book.book.path,
+            book.media.pages
+              .first()
+              .fileName,
+          )?.let {
+            TypedBytes(
+              it,
+              book.media.pages
+                .first()
+                .mediaType,
+            )
+          }
 
       MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, 1)
       MediaProfile.EPUB -> epubExtractor.getCover(book.book.path)

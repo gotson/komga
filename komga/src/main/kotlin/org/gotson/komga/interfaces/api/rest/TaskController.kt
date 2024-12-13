@@ -18,6 +18,5 @@ class TaskController(
   @DeleteMapping("api/v1/tasks")
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasRole('$ROLE_ADMIN')")
-  fun emptyTaskQueue(): Int =
-    tasksRepository.deleteAllWithoutOwner()
+  fun emptyTaskQueue(): Int = tasksRepository.deleteAllWithoutOwner()
 }

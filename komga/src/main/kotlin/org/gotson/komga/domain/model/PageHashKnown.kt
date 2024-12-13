@@ -10,7 +10,8 @@ class PageHashKnown(
   val matchCount: Int = 0,
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable, PageHash(hash, size) {
+) : PageHash(hash, size),
+  Auditable {
   enum class Action {
     DELETE_AUTO,
     DELETE_MANUAL,

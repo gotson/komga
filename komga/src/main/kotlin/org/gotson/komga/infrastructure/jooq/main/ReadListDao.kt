@@ -80,10 +80,13 @@ class ReadListDao(
       if (belongsToLibraryIds == null && filterOnLibraryIds == null && !restrictions.isRestricted)
         null
       else
-        dsl.selectDistinct(rl.ID)
+        dsl
+          .selectDistinct(rl.ID)
           .from(rl)
-          .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
-          .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
+          .leftJoin(rlb)
+          .on(rl.ID.eq(rlb.READLIST_ID))
+          .leftJoin(b)
+          .on(rlb.BOOK_ID.eq(b.ID))
           .apply { if (restrictions.isRestricted) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
           .where(conditions)
 
@@ -126,9 +129,11 @@ class ReadListDao(
     restrictions: ContentRestrictions,
   ): Collection<ReadList> {
     val queryIds =
-      dsl.select(rl.ID)
+      dsl
+        .select(rl.ID)
         .from(rl)
-        .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
+        .leftJoin(rlb)
+        .on(rl.ID.eq(rlb.READLIST_ID))
         .apply { if (restrictions.isRestricted) leftJoin(b).on(rlb.BOOK_ID.eq(b.ID)).leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
         .where(rlb.BOOK_ID.eq(containsBookId))
         .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
@@ -141,12 +146,15 @@ class ReadListDao(
   }
 
   override fun findAllEmpty(): Collection<ReadList> =
-    dsl.selectFrom(rl)
+    dsl
+      .selectFrom(rl)
       .where(
         rl.ID.`in`(
-          dsl.select(rl.ID)
+          dsl
+            .select(rl.ID)
             .from(rl)
-            .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
+            .leftJoin(rlb)
+            .on(rl.ID.eq(rlb.READLIST_ID))
             .where(rlb.READLIST_ID.isNull),
         ),
       ).fetchInto(rl)
@@ -159,10 +167,13 @@ class ReadListDao(
       .firstOrNull()
 
   private fun selectBase(joinOnSeriesMetadata: Boolean = false) =
-    dsl.selectDistinct(*rl.fields())
+    dsl
+      .selectDistinct(*rl.fields())
       .from(rl)
-      .leftJoin(rlb).on(rl.ID.eq(rlb.READLIST_ID))
-      .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
+      .leftJoin(rlb)
+      .on(rl.ID.eq(rlb.READLIST_ID))
+      .leftJoin(b)
+      .on(rlb.BOOK_ID.eq(b.ID))
       .apply { if (joinOnSeriesMetadata) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
 
   private fun ResultQuery<Record>.fetchAndMap(
@@ -172,9 +183,11 @@ class ReadListDao(
     fetchInto(rl)
       .map { rr ->
         val bookIds =
-          dsl.select(*rlb.fields())
+          dsl
+            .select(*rlb.fields())
             .from(rlb)
-            .leftJoin(b).on(rlb.BOOK_ID.eq(b.ID))
+            .leftJoin(b)
+            .on(rlb.BOOK_ID.eq(b.ID))
             .apply { if (restrictions.isRestricted) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
             .where(rlb.READLIST_ID.eq(rr.id))
             .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
@@ -182,13 +195,15 @@ class ReadListDao(
             .orderBy(rlb.NUMBER.asc())
             .fetchInto(rlb)
             .mapNotNull { it.number to it.bookId }
-            .toMap().toSortedMap()
+            .toMap()
+            .toSortedMap()
         rr.toDomain(bookIds)
       }
 
   @Transactional
   override fun insert(readList: ReadList) {
-    dsl.insertInto(rl)
+    dsl
+      .insertInto(rl)
       .set(rl.ID, readList.id)
       .set(rl.NAME, readList.name)
       .set(rl.SUMMARY, readList.summary)
@@ -201,7 +216,8 @@ class ReadListDao(
 
   private fun insertBooks(readList: ReadList) {
     readList.bookIds.map { (index, id) ->
-      dsl.insertInto(rlb)
+      dsl
+        .insertInto(rlb)
         .set(rlb.READLIST_ID, readList.id)
         .set(rlb.BOOK_ID, id)
         .set(rlb.NUMBER, index)
@@ -211,7 +227,8 @@ class ReadListDao(
 
   @Transactional
   override fun update(readList: ReadList) {
-    dsl.update(rl)
+    dsl
+      .update(rl)
       .set(rl.NAME, readList.name)
       .set(rl.SUMMARY, readList.summary)
       .set(rl.ORDERED, readList.ordered)
@@ -226,7 +243,8 @@ class ReadListDao(
   }
 
   override fun removeBookFromAll(bookId: String) {
-    dsl.deleteFrom(rlb)
+    dsl
+      .deleteFrom(rlb)
       .where(rlb.BOOK_ID.eq(bookId))
       .execute()
   }
@@ -235,7 +253,8 @@ class ReadListDao(
   override fun removeBooksFromAll(bookIds: Collection<String>) {
     dsl.insertTempStrings(batchSize, bookIds)
 
-    dsl.deleteFrom(rlb)
+    dsl
+      .deleteFrom(rlb)
       .where(rlb.BOOK_ID.`in`(dsl.selectTempStrings()))
       .execute()
   }
@@ -260,7 +279,8 @@ class ReadListDao(
 
   override fun existsByName(name: String): Boolean =
     dsl.fetchExists(
-      dsl.selectFrom(rl)
+      dsl
+        .selectFrom(rl)
         .where(rl.NAME.equalIgnoreCase(name)),
     )
 

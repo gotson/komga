@@ -12,6 +12,9 @@ class SlicesIsolationRulesTest {
   @ArchTest
   val interfacesShouldOnlyUseTheirOwnSlice: ArchRule =
     slices()
-      .matching("..interfaces.(*)..").namingSlices("Interface $1")
-      .`as`("Interfaces").should().notDependOnEachOther()
+      .matching("..interfaces.(*)..")
+      .namingSlices("Interface $1")
+      .`as`("Interfaces")
+      .should()
+      .notDependOnEachOther()
 }

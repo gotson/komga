@@ -38,18 +38,21 @@ class SeriesDao(
   private val bma = Tables.BOOK_METADATA_AGGREGATION
 
   override fun findAll(): Collection<Series> =
-    dsl.selectFrom(s)
+    dsl
+      .selectFrom(s)
       .fetchInto(s)
       .map { it.toDomain() }
 
   override fun findByIdOrNull(seriesId: String): Series? =
-    dsl.selectFrom(s)
+    dsl
+      .selectFrom(s)
       .where(s.ID.eq(seriesId))
       .fetchOneInto(s)
       ?.toDomain()
 
   override fun findAllByLibraryId(libraryId: String): List<Series> =
-    dsl.selectFrom(s)
+    dsl
+      .selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
       .fetchInto(s)
       .map { it.toDomain() }
@@ -61,7 +64,8 @@ class SeriesDao(
   ): List<Series> {
     dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
-    return dsl.selectFrom(s)
+    return dsl
+      .selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId))
       .and(s.DELETED_DATE.isNull)
       .and(s.URL.notIn(dsl.selectTempStrings()))
@@ -73,7 +77,8 @@ class SeriesDao(
     libraryId: String,
     url: URL,
   ): Series? =
-    dsl.selectFrom(s)
+    dsl
+      .selectFrom(s)
       .where(s.LIBRARY_ID.eq(libraryId).and(s.URL.eq(url.toString())))
       .and(s.DELETED_DATE.isNull)
       .orderBy(s.LAST_MODIFIED_DATE.desc())
@@ -82,21 +87,25 @@ class SeriesDao(
       ?.toDomain()
 
   override fun findAllByTitleContaining(title: String): Collection<Series> =
-    dsl.selectDistinct(*s.fields())
+    dsl
+      .selectDistinct(*s.fields())
       .from(s)
-      .leftJoin(d).on(s.ID.eq(d.SERIES_ID))
+      .leftJoin(d)
+      .on(s.ID.eq(d.SERIES_ID))
       .where(d.TITLE.containsIgnoreCase(title))
       .fetchInto(s)
       .map { it.toDomain() }
 
   override fun getLibraryId(seriesId: String): String? =
-    dsl.select(s.LIBRARY_ID)
+    dsl
+      .select(s.LIBRARY_ID)
       .from(s)
       .where(s.ID.eq(seriesId))
       .fetchOne(0, String::class.java)
 
   override fun findAllIdsByLibraryId(libraryId: String): Collection<String> =
-    dsl.select(s.ID)
+    dsl
+      .select(s.ID)
       .from(s)
       .where(s.LIBRARY_ID.eq(libraryId))
       .fetch(s.ID)
@@ -116,7 +125,8 @@ class SeriesDao(
     pageable: Pageable,
   ): Page<Series> {
     val query =
-      dsl.selectDistinct(*s.fields())
+      dsl
+        .selectDistinct(*s.fields())
         .from(s)
         .apply {
           joins.forEach { join ->
@@ -129,8 +139,7 @@ class SeriesDao(
               RequiredJoin.Media -> Unit
             }
           }
-        }
-        .where(conditions)
+        }.where(conditions)
 
     val count = dsl.fetchCount(query)
     val items =
@@ -150,7 +159,8 @@ class SeriesDao(
   }
 
   override fun insert(series: Series) {
-    dsl.insertInto(s)
+    dsl
+      .insertInto(s)
       .set(s.ID, series.id)
       .set(s.NAME, series.name)
       .set(s.URL, series.url.toString())
@@ -165,7 +175,8 @@ class SeriesDao(
     series: Series,
     updateModifiedTime: Boolean,
   ) {
-    dsl.update(s)
+    dsl
+      .update(s)
       .set(s.NAME, series.name)
       .set(s.URL, series.url.toString())
       .set(s.FILE_LAST_MODIFIED, series.fileLastModified)
@@ -196,7 +207,8 @@ class SeriesDao(
   override fun count(): Long = dsl.fetchCount(s).toLong()
 
   override fun countGroupedByLibraryId(): Map<String, Int> =
-    dsl.select(s.LIBRARY_ID, DSL.count(s.ID))
+    dsl
+      .select(s.LIBRARY_ID, DSL.count(s.ID))
       .from(s)
       .groupBy(s.LIBRARY_ID)
       .fetchMap(s.LIBRARY_ID, DSL.count(s.ID))

@@ -31,22 +31,27 @@ class ReadProgressDtoDao(
     userId: String,
   ): TachiyomiReadProgressV2Dto {
     val numberSortReadProgress =
-      dsl.select(
-        d.NUMBER_SORT,
-        r.COMPLETED,
-      )
-        .from(b)
-        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      dsl
+        .select(
+          d.NUMBER_SORT,
+          r.COMPLETED,
+        ).from(b)
+        .leftJoin(r)
+        .on(b.ID.eq(r.BOOK_ID))
+        .and(readProgressCondition(userId))
+        .leftJoin(d)
+        .on(b.ID.eq(d.BOOK_ID))
         .where(b.SERIES_ID.eq(seriesId))
         .orderBy(d.NUMBER_SORT)
         .fetch()
         .toList()
 
     val maxNumberSort =
-      dsl.select(DSL.max(d.NUMBER_SORT))
+      dsl
+        .select(DSL.max(d.NUMBER_SORT))
         .from(b)
-        .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+        .leftJoin(d)
+        .on(b.ID.eq(d.BOOK_ID))
         .where(b.SERIES_ID.eq(seriesId))
         .fetchOne(DSL.max(d.NUMBER_SORT)) ?: 0F
 
@@ -58,36 +63,40 @@ class ReadProgressDtoDao(
   private fun getSeriesBooksCount(
     seriesId: String,
     userId: String,
-  ) =
-    dsl
-      .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
-      .select(countRead.`as`(BOOKS_READ_COUNT))
-      .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))
-      .from(b)
-      .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-      .where(b.SERIES_ID.eq(seriesId))
-      .fetch()
-      .first()
-      .map {
-        BooksCount(
-          unreadCount = it.get(BOOKS_UNREAD_COUNT, Int::class.java),
-          readCount = it.get(BOOKS_READ_COUNT, Int::class.java),
-          inProgressCount = it.get(BOOKS_IN_PROGRESS_COUNT, Int::class.java),
-        )
-      }
+  ) = dsl
+    .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
+    .select(countRead.`as`(BOOKS_READ_COUNT))
+    .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))
+    .from(b)
+    .leftJoin(r)
+    .on(b.ID.eq(r.BOOK_ID))
+    .and(readProgressCondition(userId))
+    .where(b.SERIES_ID.eq(seriesId))
+    .fetch()
+    .first()
+    .map {
+      BooksCount(
+        unreadCount = it.get(BOOKS_UNREAD_COUNT, Int::class.java),
+        readCount = it.get(BOOKS_READ_COUNT, Int::class.java),
+        inProgressCount = it.get(BOOKS_IN_PROGRESS_COUNT, Int::class.java),
+      )
+    }
 
   override fun findProgressByReadList(
     readListId: String,
     userId: String,
   ): TachiyomiReadProgressDto {
     val indexedReadProgress =
-      dsl.select(
-        rowNumber().over().orderBy(rlb.NUMBER),
-        r.COMPLETED,
-      )
-        .from(b)
-        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-        .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
+      dsl
+        .select(
+          rowNumber().over().orderBy(rlb.NUMBER),
+          r.COMPLETED,
+        ).from(b)
+        .leftJoin(r)
+        .on(b.ID.eq(r.BOOK_ID))
+        .and(readProgressCondition(userId))
+        .leftJoin(rlb)
+        .on(b.ID.eq(rlb.BOOK_ID))
         .where(rlb.READLIST_ID.eq(readListId))
         .orderBy(rlb.NUMBER)
         .fetch()
@@ -99,8 +108,11 @@ class ReadProgressDtoDao(
         .select(countRead.`as`(BOOKS_READ_COUNT))
         .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))
         .from(b)
-        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(readProgressCondition(userId))
-        .leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
+        .leftJoin(r)
+        .on(b.ID.eq(r.BOOK_ID))
+        .and(readProgressCondition(userId))
+        .leftJoin(rlb)
+        .on(b.ID.eq(rlb.BOOK_ID))
         .where(rlb.READLIST_ID.eq(readListId))
         .fetch()
         .first()
@@ -144,7 +156,8 @@ class ReadProgressDtoDao(
   private fun readProgressCondition(userId: String): Condition = r.USER_ID.eq(userId).or(r.USER_ID.isNull)
 
   private fun <T> List<Record2<T, Boolean>>.lastRead(): T? =
-    this.takeWhile { it.component2() == true }
+    this
+      .takeWhile { it.component2() == true }
       .lastOrNull()
       ?.component1()
 

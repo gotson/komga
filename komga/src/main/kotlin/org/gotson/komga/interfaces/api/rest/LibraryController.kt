@@ -80,37 +80,38 @@ class LibraryController(
     library: LibraryCreationDto,
   ): LibraryDto =
     try {
-      libraryLifecycle.addLibrary(
-        Library(
-          name = library.name,
-          root = filePathToUrl(library.root),
-          importComicInfoBook = library.importComicInfoBook,
-          importComicInfoSeries = library.importComicInfoSeries,
-          importComicInfoCollection = library.importComicInfoCollection,
-          importComicInfoReadList = library.importComicInfoReadList,
-          importComicInfoSeriesAppendVolume = library.importComicInfoSeriesAppendVolume,
-          importEpubBook = library.importEpubBook,
-          importEpubSeries = library.importEpubSeries,
-          importMylarSeries = library.importMylarSeries,
-          importLocalArtwork = library.importLocalArtwork,
-          importBarcodeIsbn = library.importBarcodeIsbn,
-          scanForceModifiedTime = library.scanForceModifiedTime,
-          scanInterval = library.scanInterval.toDomain(),
-          scanOnStartup = library.scanOnStartup,
-          scanCbx = library.scanCbx,
-          scanPdf = library.scanPdf,
-          scanEpub = library.scanEpub,
-          scanDirectoryExclusions = library.scanDirectoryExclusions,
-          repairExtensions = library.repairExtensions,
-          convertToCbz = library.convertToCbz,
-          emptyTrashAfterScan = library.emptyTrashAfterScan,
-          seriesCover = library.seriesCover.toDomain(),
-          hashFiles = library.hashFiles,
-          hashPages = library.hashPages,
-          analyzeDimensions = library.analyzeDimensions,
-          oneshotsDirectory = library.oneshotsDirectory?.ifBlank { null },
-        ),
-      ).toDto(includeRoot = principal.user.roleAdmin)
+      libraryLifecycle
+        .addLibrary(
+          Library(
+            name = library.name,
+            root = filePathToUrl(library.root),
+            importComicInfoBook = library.importComicInfoBook,
+            importComicInfoSeries = library.importComicInfoSeries,
+            importComicInfoCollection = library.importComicInfoCollection,
+            importComicInfoReadList = library.importComicInfoReadList,
+            importComicInfoSeriesAppendVolume = library.importComicInfoSeriesAppendVolume,
+            importEpubBook = library.importEpubBook,
+            importEpubSeries = library.importEpubSeries,
+            importMylarSeries = library.importMylarSeries,
+            importLocalArtwork = library.importLocalArtwork,
+            importBarcodeIsbn = library.importBarcodeIsbn,
+            scanForceModifiedTime = library.scanForceModifiedTime,
+            scanInterval = library.scanInterval.toDomain(),
+            scanOnStartup = library.scanOnStartup,
+            scanCbx = library.scanCbx,
+            scanPdf = library.scanPdf,
+            scanEpub = library.scanEpub,
+            scanDirectoryExclusions = library.scanDirectoryExclusions,
+            repairExtensions = library.repairExtensions,
+            convertToCbz = library.convertToCbz,
+            emptyTrashAfterScan = library.emptyTrashAfterScan,
+            seriesCover = library.seriesCover.toDomain(),
+            hashFiles = library.hashFiles,
+            hashPages = library.hashPages,
+            analyzeDimensions = library.analyzeDimensions,
+            oneshotsDirectory = library.oneshotsDirectory?.ifBlank { null },
+          ),
+        ).toDto(includeRoot = principal.user.roleAdmin)
     } catch (e: Exception) {
       when (e) {
         is FileNotFoundException,
@@ -227,11 +228,12 @@ class LibraryController(
     @PathVariable libraryId: String,
   ) {
     val books =
-      bookRepository.findAll(
-        SearchCondition.LibraryId(SearchOperator.Is(libraryId)),
-        SearchContext.empty(),
-        Pageable.unpaged(),
-      ).content
+      bookRepository
+        .findAll(
+          SearchCondition.LibraryId(SearchOperator.Is(libraryId)),
+          SearchContext.empty(),
+          Pageable.unpaged(),
+        ).content
     taskEmitter.analyzeBook(books, HIGH_PRIORITY)
   }
 
@@ -242,11 +244,12 @@ class LibraryController(
     @PathVariable libraryId: String,
   ) {
     val books =
-      bookRepository.findAll(
-        SearchCondition.LibraryId(SearchOperator.Is(libraryId)),
-        SearchContext.empty(),
-        Pageable.unpaged(),
-      ).content
+      bookRepository
+        .findAll(
+          SearchCondition.LibraryId(SearchOperator.Is(libraryId)),
+          SearchContext.empty(),
+          Pageable.unpaged(),
+        ).content
     taskEmitter.refreshBookMetadata(books, priority = HIGH_PRIORITY)
     taskEmitter.refreshBookLocalArtwork(books, priority = HIGH_PRIORITY)
     taskEmitter.refreshSeriesLocalArtwork(seriesRepository.findAllIdsByLibraryId(libraryId), priority = HIGH_PRIORITY)

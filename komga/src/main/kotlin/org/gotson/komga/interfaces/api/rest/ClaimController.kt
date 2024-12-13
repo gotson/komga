@@ -37,16 +37,17 @@ class ClaimController(
     if (userDetailsLifecycle.countUsers() > 0)
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "This server has already been claimed")
 
-    return userDetailsLifecycle.createUser(
-      KomgaUser(
-        email = email,
-        password = password,
-        roleAdmin = true,
-        roleFileDownload = true,
-        rolePageStreaming = true,
-        roleKoboSync = true,
-      ),
-    ).toDto()
+    return userDetailsLifecycle
+      .createUser(
+        KomgaUser(
+          email = email,
+          password = password,
+          roleAdmin = true,
+          roleFileDownload = true,
+          rolePageStreaming = true,
+          roleKoboSync = true,
+        ),
+      ).toDto()
   }
 
   data class ClaimStatus(

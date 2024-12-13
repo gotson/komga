@@ -42,13 +42,11 @@ fun makeLibrary(
   path: String = "file:/${name.replace(" ", "_")}",
   id: String = TsidCreator.getTsid256().toString(),
   url: URL? = null,
-): Library {
-  return Library(
+): Library =
+  Library(
     name = name,
     root = url ?: URL(path),
     id = id,
   )
-}
 
-fun makeBookPage(name: String) =
-  BookPage(name, "image/png")
+fun makeBookPage(name: String) = BookPage(name, "image/png")

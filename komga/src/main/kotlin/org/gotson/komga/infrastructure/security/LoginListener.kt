@@ -65,7 +65,11 @@ class LoginListener(
         is RememberMeAuthenticationToken -> "RememberMe"
         else -> null
       }
-    val principal = event.authentication?.principal?.toString().orEmpty()
+    val principal =
+      event.authentication
+        ?.principal
+        ?.toString()
+        .orEmpty()
     val activity =
       AuthenticationActivity(
         userId = userRepository.findByEmailIgnoreCaseOrNull(principal)?.id,

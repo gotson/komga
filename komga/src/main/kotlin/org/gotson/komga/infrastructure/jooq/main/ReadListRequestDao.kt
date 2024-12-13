@@ -32,21 +32,26 @@ class ReadListRequestDao(
     val numberField = "number"
     val requestsTable = values(*requestsAsRows.toTypedArray()).`as`("request", indexField, seriesField, numberField)
     val matchedRequests =
-      dsl.select(
-        requestsTable.field(indexField, Int::class.java),
-        sd.SERIES_ID,
-        sd.TITLE,
-        bd.BOOK_ID,
-        bd.NUMBER,
-        bd.TITLE,
-        bma.RELEASE_DATE,
-      )
-        .from(requestsTable)
-        .innerJoin(sd).on(requestsTable.field(seriesField, String::class.java)?.eq(sd.TITLE.noCase()))
-        .leftJoin(bma).on(sd.SERIES_ID.eq(bma.SERIES_ID))
-        .innerJoin(b).on(sd.SERIES_ID.eq(b.SERIES_ID))
-        .innerJoin(bd).on(
-          b.ID.eq(bd.BOOK_ID)
+      dsl
+        .select(
+          requestsTable.field(indexField, Int::class.java),
+          sd.SERIES_ID,
+          sd.TITLE,
+          bd.BOOK_ID,
+          bd.NUMBER,
+          bd.TITLE,
+          bma.RELEASE_DATE,
+        ).from(requestsTable)
+        .innerJoin(sd)
+        .on(requestsTable.field(seriesField, String::class.java)?.eq(sd.TITLE.noCase()))
+        .leftJoin(bma)
+        .on(sd.SERIES_ID.eq(bma.SERIES_ID))
+        .innerJoin(b)
+        .on(sd.SERIES_ID.eq(b.SERIES_ID))
+        .innerJoin(bd)
+        .on(
+          b.ID
+            .eq(bd.BOOK_ID)
             .and(ltrim(bd.NUMBER, value("0")).eq(ltrim(requestsTable.field(numberField, String::class.java), value("0")).noCase())),
         ).fetchGroups(requestsTable.field(indexField, Int::class.java))
         .mapValues { (_, records) ->

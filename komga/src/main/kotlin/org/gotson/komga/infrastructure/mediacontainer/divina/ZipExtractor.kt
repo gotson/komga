@@ -29,7 +29,8 @@ class ZipExtractor(
     analyzeDimensions: Boolean,
   ): List<MediaContainerEntry> =
     ZipFile.builder().setPath(path).use { zip ->
-      zip.entries.toList()
+      zip.entries
+        .toList()
         .filter { !it.isDirectory }
         .map { entry ->
           try {
@@ -47,8 +48,7 @@ class ZipExtractor(
             logger.warn(e) { "Could not analyze entry: ${entry.name}" }
             MediaContainerEntry(name = entry.name, comment = e.message)
           }
-        }
-        .sortedWith(compareBy(natSortComparator) { it.name })
+        }.sortedWith(compareBy(natSortComparator) { it.name })
     }
 
   override fun getEntryStream(

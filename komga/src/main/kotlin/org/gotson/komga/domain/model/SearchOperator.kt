@@ -49,46 +49,82 @@ class SearchOperator {
   sealed interface Boolean
 
   @JsonTypeName("is")
-  data class Is<T>(val value: T) : Equality<T>, StringOp, Numeric<T>, NumericNullable<T>
+  data class Is<T>(
+    val value: T,
+  ) : Equality<T>,
+    StringOp,
+    Numeric<T>,
+    NumericNullable<T>
 
   @JsonTypeName("isNot")
-  data class IsNot<T>(val value: T) : Equality<T>, StringOp, Numeric<T>, NumericNullable<T>
+  data class IsNot<T>(
+    val value: T,
+  ) : Equality<T>,
+    StringOp,
+    Numeric<T>,
+    NumericNullable<T>
 
   @JsonTypeName("contains")
-  data class Contains(val value: String) : StringOp
+  data class Contains(
+    val value: String,
+  ) : StringOp
 
   @JsonTypeName("doesNotContain")
-  data class DoesNotContain(val value: String) : StringOp
+  data class DoesNotContain(
+    val value: String,
+  ) : StringOp
 
   @JsonTypeName("beginsWith")
-  data class BeginsWith(val value: String) : StringOp
+  data class BeginsWith(
+    val value: String,
+  ) : StringOp
 
   @JsonTypeName("doesNotBeginWith")
-  data class DoesNotBeginWith(val value: String) : StringOp
+  data class DoesNotBeginWith(
+    val value: String,
+  ) : StringOp
 
   @JsonTypeName("endsWith")
-  data class EndsWith(val value: String) : StringOp
+  data class EndsWith(
+    val value: String,
+  ) : StringOp
 
   @JsonTypeName("doesNotEndWith")
-  data class DoesNotEndWith(val value: String) : StringOp
+  data class DoesNotEndWith(
+    val value: String,
+  ) : StringOp
 
   @JsonTypeName("greaterThan")
-  data class GreaterThan<T>(val value: T) : Numeric<T>, NumericNullable<T>
+  data class GreaterThan<T>(
+    val value: T,
+  ) : Numeric<T>,
+    NumericNullable<T>
 
   @JsonTypeName("lessThan")
-  data class LessThan<T>(val value: T) : Numeric<T>, NumericNullable<T>
+  data class LessThan<T>(
+    val value: T,
+  ) : Numeric<T>,
+    NumericNullable<T>
 
   @JsonTypeName("before")
-  data class Before(val dateTime: ZonedDateTime) : Date
+  data class Before(
+    val dateTime: ZonedDateTime,
+  ) : Date
 
   @JsonTypeName("after")
-  data class After(val dateTime: ZonedDateTime) : Date
+  data class After(
+    val dateTime: ZonedDateTime,
+  ) : Date
 
   @JsonTypeName("isInTheLast")
-  data class IsInTheLast(val duration: Duration) : Date
+  data class IsInTheLast(
+    val duration: Duration,
+  ) : Date
 
   @JsonTypeName("isNotInTheLast")
-  data class IsNotInTheLast(val duration: Duration) : Date
+  data class IsNotInTheLast(
+    val duration: Duration,
+  ) : Date
 
   @JsonTypeName("isTrue")
   data object IsTrue : Boolean
@@ -110,9 +146,7 @@ class SearchOperator {
       return true
     }
 
-    override fun hashCode(): Int {
-      return javaClass.hashCode()
-    }
+    override fun hashCode(): Int = javaClass.hashCode()
   }
 
   @JsonTypeName("isNotNull")
@@ -123,8 +157,6 @@ class SearchOperator {
       return true
     }
 
-    override fun hashCode(): Int {
-      return javaClass.hashCode()
-    }
+    override fun hashCode(): Int = javaClass.hashCode()
   }
 }

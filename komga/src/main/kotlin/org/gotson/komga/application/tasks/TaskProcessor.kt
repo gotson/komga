@@ -48,8 +48,9 @@ class TaskProcessor(
         executor.execute { takeAndProcess() }
       } else {
         // fan out while threads are available
-        while (tasksRepository.hasAvailable() && executor.activeCount < executor.corePoolSize)
+        while (tasksRepository.hasAvailable() && executor.activeCount < executor.corePoolSize) {
           executor.execute { takeAndProcess() }
+        }
       }
     } else {
       logger.debug { "Not processing tasks" }

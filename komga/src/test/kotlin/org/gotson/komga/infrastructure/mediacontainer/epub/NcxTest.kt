@@ -30,14 +30,13 @@ class NcxTest {
     assertThat(ncxNav).isEqualTo(expectedNav)
   }
 
-  private fun paramSource(): Stream<Arguments> {
-    return Stream.of(
+  private fun paramSource(): Stream<Arguments> =
+    Stream.of(
       Arguments.of(Epub2Nav.TOC, null, ::getExpectedNcxToc),
       Arguments.of(Epub2Nav.TOC, "PREFIX", ::getExpectedNcxToc),
       Arguments.of(Epub2Nav.PAGELIST, null, ::getExpectedNcxPageList),
       Arguments.of(Epub2Nav.PAGELIST, "PREFIX", ::getExpectedNcxPageList),
     )
-  }
 
   private fun getExpectedNcxToc(prefix: String = "") =
     listOf(

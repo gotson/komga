@@ -36,16 +36,17 @@ class LibraryScanScheduler(
   fun scheduleScan(library: Library) {
     registry.remove(library.id)?.cancel(false)
     if (library.scanInterval != DISABLED) {
-      registrar.scheduleFixedRateTask(
-        FixedRateTask(
-          {
-            logger.info { "Periodic scan for library: ${library.name}" }
-            taskEmitter.scanLibrary(library.id)
-          },
-          library.scanInterval.toDuration(),
-          library.scanInterval.toDuration(),
-        ),
-      )?.let { registry[library.id] = it }
+      registrar
+        .scheduleFixedRateTask(
+          FixedRateTask(
+            {
+              logger.info { "Periodic scan for library: ${library.name}" }
+              taskEmitter.scanLibrary(library.id)
+            },
+            library.scanInterval.toDuration(),
+            library.scanInterval.toDuration(),
+          ),
+        )?.let { registry[library.id] = it }
     }
   }
 

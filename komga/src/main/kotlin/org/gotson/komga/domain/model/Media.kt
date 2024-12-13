@@ -27,7 +27,5 @@ data class Media(
     OUTDATED,
   }
 
-  override fun toString(): String {
-    return "Media(status=$status, mediaType=$mediaType, comment=$comment, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
-  }
+  override fun toString(): String = "Media(status=$status, mediaType=$mediaType, comment=$comment, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
 }

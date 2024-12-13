@@ -103,7 +103,8 @@ class BookPageEditor(
       zipStream.setMethod(ZipArchiveOutputStream.DEFLATED)
       zipStream.setLevel(Deflater.NO_COMPRESSION)
 
-      pagesToKeep.map { it.fileName }
+      pagesToKeep
+        .map { it.fileName }
         .union(media.files.map { it.fileName })
         .forEach { entry ->
           zipStream.putArchiveEntry(ZipArchiveEntry(entry))
@@ -114,7 +115,8 @@ class BookPageEditor(
 
     // perform checks on new file
     val createdBook =
-      fileSystemScanner.scanFile(tempFile)
+      fileSystemScanner
+        .scanFile(tempFile)
         ?.copy(
           id = book.id,
           seriesId = book.seriesId,
@@ -132,11 +134,13 @@ class BookPageEditor(
         createdMedia.mediaType != MediaType.ZIP.type
         -> throw BookConversionException("Created file is not a zip file, aborting page removal")
 
-        !createdMedia.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType }
+        !createdMedia.pages
+          .map { FilenameUtils.getName(it.fileName) to it.mediaType }
           .containsAll(pagesToKeep.map { FilenameUtils.getName(it.fileName) to it.mediaType })
         -> throw BookConversionException("Created file does not contain all pages to keep from existing file, aborting conversion")
 
-        !createdMedia.files.map { FilenameUtils.getName(it.fileName) }
+        !createdMedia.files
+          .map { FilenameUtils.getName(it.fileName) }
           .containsAll(media.files.map { FilenameUtils.getName(it.fileName) })
         -> throw BookConversionException("Created file does not contain all files from existing file, aborting page removal")
       }
@@ -148,7 +152,8 @@ class BookPageEditor(
 
     tempFile.moveTo(book.path, true)
     val newBook =
-      fileSystemScanner.scanFile(book.path)
+      fileSystemScanner
+        .scanFile(book.path)
         ?.copy(
           id = book.id,
           seriesId = book.seriesId,

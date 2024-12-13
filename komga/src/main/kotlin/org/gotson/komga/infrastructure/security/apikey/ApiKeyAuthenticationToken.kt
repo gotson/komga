@@ -6,7 +6,11 @@ import org.springframework.security.core.GrantedAuthority
 /**
  * A specialization of [UsernamePasswordAuthenticationToken] to store API keys.
  */
-class ApiKeyAuthenticationToken private constructor(principal: Any?, credentials: Any?, authorities: Collection<GrantedAuthority>?) : UsernamePasswordAuthenticationToken(principal, credentials, authorities) {
+class ApiKeyAuthenticationToken private constructor(
+  principal: Any?,
+  credentials: Any?,
+  authorities: Collection<GrantedAuthority>?,
+) : UsernamePasswordAuthenticationToken(principal, credentials, authorities) {
   private constructor(principal: Any?, credentials: Any?) : this(principal, credentials, null) {
     isAuthenticated = false
   }

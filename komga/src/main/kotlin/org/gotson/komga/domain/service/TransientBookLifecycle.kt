@@ -39,7 +39,12 @@ class TransientBookLifecycle(
       if (folderToScan.startsWith(library.path)) throw PathContainedInPath("Cannot scan folder that is part of an existing library", "ERR_1017")
     }
 
-    val books = fileSystemScanner.scanRootFolder(folderToScan).series.values.flatten().map { TransientBook(it, Media()) }
+    val books =
+      fileSystemScanner
+        .scanRootFolder(folderToScan)
+        .series.values
+        .flatten()
+        .map { TransientBook(it, Media()) }
 
     transientBookRepository.save(books)
 
@@ -66,8 +71,7 @@ class TransientBookLifecycle(
             if (it.supportsAppendVolume) add(it.getSeriesMetadataFromBook(bookWithMedia, true)?.title)
             add(it.getSeriesMetadataFromBook(bookWithMedia, false)?.title)
           }
-        }
-        .filterNotNull()
+        }.filterNotNull()
         .firstNotNullOfOrNull { seriesRepository.findAllByTitleContaining(it).firstOrNull() }
 
     return series?.id to number

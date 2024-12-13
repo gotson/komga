@@ -2,7 +2,10 @@ package org.gotson.komga.infrastructure.metadata.comicrack.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
 
-enum class AgeRating(val value: String, val ageRating: Int? = null) {
+enum class AgeRating(
+  val value: String,
+  val ageRating: Int? = null,
+) {
   UNKNOWN("Unknown"),
   ADULTS_ONLY_18("Adults Only 18+", 18),
   EARLY_CHILDHOOD("Early Childhood", 3),

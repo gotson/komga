@@ -8,7 +8,9 @@ sealed class RequiredJoin {
 
   data object Media : RequiredJoin()
 
-  data class ReadProgress(val userId: String) : RequiredJoin()
+  data class ReadProgress(
+    val userId: String,
+  ) : RequiredJoin()
 
   data object BookMetadataAggregation : RequiredJoin()
 

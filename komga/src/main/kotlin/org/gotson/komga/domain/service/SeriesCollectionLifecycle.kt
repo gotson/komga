@@ -133,8 +133,7 @@ class SeriesCollectionLifecycle(
     eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesCollectionDeleted(thumbnail))
   }
 
-  fun getThumbnailBytes(thumbnailId: String): ByteArray? =
-    thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.thumbnail
+  fun getThumbnailBytes(thumbnailId: String): ByteArray? = thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.thumbnail
 
   fun getThumbnailBytes(
     collection: SeriesCollection,

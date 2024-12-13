@@ -21,12 +21,14 @@ class ActuatorTest(
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getting actuator endpoints then returns unauthorized`() {
-    mockMvc.get("/actuator")
+    mockMvc
+      .get("/actuator")
       .andExpect {
         status { isUnauthorized() }
       }
 
-    mockMvc.get("/actuator/beans")
+    mockMvc
+      .get("/actuator/beans")
       .andExpect {
         status { isUnauthorized() }
       }
@@ -35,7 +37,8 @@ class ActuatorTest(
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getting actuator health endpoint then returns ok`() {
-    mockMvc.get("/actuator/health")
+    mockMvc
+      .get("/actuator/health")
       .andExpect {
         status { isOk() }
       }
@@ -44,12 +47,14 @@ class ActuatorTest(
   @Test
   @WithMockUser(roles = [ROLE_USER])
   fun `given regular user when getting actuator endpoints then returns forbidden`() {
-    mockMvc.get("/actuator")
+    mockMvc
+      .get("/actuator")
       .andExpect {
         status { isForbidden() }
       }
 
-    mockMvc.get("/actuator/beans")
+    mockMvc
+      .get("/actuator/beans")
       .andExpect {
         status { isForbidden() }
       }
@@ -58,12 +63,14 @@ class ActuatorTest(
   @Test
   @WithMockUser(roles = [ROLE_ADMIN])
   fun `given admin user when getting actuator endpoints then returns ok`() {
-    mockMvc.get("/actuator")
+    mockMvc
+      .get("/actuator")
       .andExpect {
         status { isOk() }
       }
 
-    mockMvc.get("/actuator/beans")
+    mockMvc
+      .get("/actuator/beans")
       .andExpect {
         status { isOk() }
       }

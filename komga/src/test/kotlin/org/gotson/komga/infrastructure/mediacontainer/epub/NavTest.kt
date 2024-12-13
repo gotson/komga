@@ -30,8 +30,8 @@ class NavTest {
     assertThat(nav).isEqualTo(expectedNav)
   }
 
-  private fun paramSource(): Stream<Arguments> {
-    return Stream.of(
+  private fun paramSource(): Stream<Arguments> =
+    Stream.of(
       Arguments.of(Epub3Nav.TOC, null, ::getExpectedNavToc),
       Arguments.of(Epub3Nav.TOC, "PREFIX", ::getExpectedNavToc),
       Arguments.of(Epub3Nav.LANDMARKS, null, ::getExpectedNavLandmarks),
@@ -39,7 +39,6 @@ class NavTest {
       Arguments.of(Epub3Nav.PAGELIST, null, ::getExpectedNavPageList),
       Arguments.of(Epub3Nav.PAGELIST, "PREFIX", ::getExpectedNavPageList),
     )
-  }
 
   private fun getExpectedNavToc(prefix: String = "") =
     listOf(

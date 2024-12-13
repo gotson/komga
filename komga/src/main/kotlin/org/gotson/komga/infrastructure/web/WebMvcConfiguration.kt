@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit
 class WebMvcConfiguration : WebMvcConfigurer {
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
     if (!registry.hasMappingForPattern("/webjars/**")) {
-      registry.addResourceHandler("/webjars/**")
+      registry
+        .addResourceHandler("/webjars/**")
         .addResourceLocations("classpath:/META-INF/resources/webjars/")
     }
 
@@ -35,8 +36,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "/android-chrome-192x192.png",
         "/android-chrome-512x512.png",
         "/manifest.json",
-      )
-      .addResourceLocations(
+      ).addResourceLocations(
         "classpath:public/index.html",
         "classpath:public/favicon.ico",
         "classpath:public/favicon-16x16.png",
@@ -47,8 +47,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "classpath:public/android-chrome-192x192.png",
         "classpath:public/android-chrome-512x512.png",
         "classpath:public/manifest.json",
-      )
-      .setCacheControl(CacheControl.noStore())
+      ).setCacheControl(CacheControl.noStore())
 
     registry
       .addResourceHandler(
@@ -56,14 +55,12 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "/fonts/**",
         "/img/**",
         "/js/**",
-      )
-      .addResourceLocations(
+      ).addResourceLocations(
         "classpath:public/css/",
         "classpath:public/fonts/",
         "classpath:public/img/",
         "classpath:public/js/",
-      )
-      .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
+      ).setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
   }
 
   override fun addInterceptors(registry: InterceptorRegistry) {

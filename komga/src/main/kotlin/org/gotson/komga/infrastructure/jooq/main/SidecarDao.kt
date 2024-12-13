@@ -22,21 +22,20 @@ class SidecarDao(
   private val sc = Tables.SIDECAR
   private val l = Tables.LIBRARY
 
-  override fun findAll(): Collection<SidecarStored> =
-    dsl.selectFrom(sc).fetch().map { it.toDomain() }
+  override fun findAll(): Collection<SidecarStored> = dsl.selectFrom(sc).fetch().map { it.toDomain() }
 
   override fun save(
     libraryId: String,
     sidecar: Sidecar,
   ) {
-    dsl.insertInto(sc)
+    dsl
+      .insertInto(sc)
       .values(
         sidecar.url.toString(),
         sidecar.parentUrl.toString(),
         sidecar.lastModifiedTime,
         libraryId,
-      )
-      .onDuplicateKeyUpdate()
+      ).onDuplicateKeyUpdate()
       .set(sc.LAST_MODIFIED_TIME, sidecar.lastModifiedTime)
       .set(sc.PARENT_URL, sidecar.parentUrl.toString())
       .set(sc.LIBRARY_ID, libraryId)
@@ -50,20 +49,23 @@ class SidecarDao(
   ) {
     dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
-    dsl.deleteFrom(sc)
+    dsl
+      .deleteFrom(sc)
       .where(sc.LIBRARY_ID.eq(libraryId))
       .and(sc.URL.`in`(dsl.selectTempStrings()))
       .execute()
   }
 
   override fun deleteByLibraryId(libraryId: String) {
-    dsl.deleteFrom(sc)
+    dsl
+      .deleteFrom(sc)
       .where(sc.LIBRARY_ID.eq(libraryId))
       .execute()
   }
 
   override fun countGroupedByLibraryId(): Map<String, Int> =
-    dsl.select(sc.LIBRARY_ID, DSL.count(sc.URL))
+    dsl
+      .select(sc.LIBRARY_ID, DSL.count(sc.URL))
       .from(sc)
       .groupBy(sc.LIBRARY_ID)
       .fetchMap(sc.LIBRARY_ID, DSL.count(sc.URL))

@@ -41,8 +41,10 @@ class BookCommonDao(
         .`as`(
           select(s.ID, rs.MOST_RECENT_READ_DATE)
             .from(s)
-            .innerJoin(rs).on(s.ID.eq(rs.SERIES_ID).and(rs.USER_ID.eq(userId)))
-            .innerJoin(sd).on(s.ID.eq(sd.SERIES_ID))
+            .innerJoin(rs)
+            .on(s.ID.eq(rs.SERIES_ID).and(rs.USER_ID.eq(userId)))
+            .innerJoin(sd)
+            .on(s.ID.eq(sd.SERIES_ID))
             .where(rs.IN_PROGRESS_COUNT.eq(0))
             .and(rs.READ_COUNT.ne(s.BOOK_COUNT))
             .and(restrictions.toCondition())
@@ -60,8 +62,11 @@ class BookCommonDao(
             cteBooksFieldSeriesId,
             cteBooksFieldNumberSort,
           ).from(b)
-            .innerJoin(d).on(b.ID.eq(d.BOOK_ID))
-            .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(userId))
+            .innerJoin(d)
+            .on(b.ID.eq(d.BOOK_ID))
+            .leftJoin(r)
+            .on(b.ID.eq(r.BOOK_ID))
+            .and(r.USER_ID.eq(userId))
             .where(r.COMPLETED.isNull)
             .and(
               b.SERIES_ID.`in`(select(cteSeries.field(s.ID)).from(cteSeries)),
@@ -77,28 +82,40 @@ class BookCommonDao(
         .with(cteBooks)
         .select(*selectFields)
         .from(cteSeries)
-        .innerJoin(b1).on(cteSeries.field(s.ID)!!.eq(b1.field(cteBooksFieldSeriesId)))
+        .innerJoin(b1)
+        .on(cteSeries.field(s.ID)!!.eq(b1.field(cteBooksFieldSeriesId)))
         // we join the cteBooks table on itself, using the grouping ID (seriesId) using a left outer join
         // it returns the row b1 for which no other row b2 exists with the same seriesId and a smaller numberSort
         // when b2 is null, it means the left outer join fond no such match, and therefore b1 has the smaller value of numberSort
-        .leftOuterJoin(b2).on(
-          b1.field(cteBooksFieldSeriesId)!!.eq(b2.field(cteBooksFieldSeriesId))
+        .leftOuterJoin(b2)
+        .on(
+          b1
+            .field(cteBooksFieldSeriesId)!!
+            .eq(b2.field(cteBooksFieldSeriesId))
             .and(
-              b1.field(cteBooksFieldNumberSort)!!.gt(b2.field(cteBooksFieldNumberSort))
+              b1
+                .field(cteBooksFieldNumberSort)!!
+                .gt(b2.field(cteBooksFieldNumberSort))
                 .or(
-                  b1.field(cteBooksFieldNumberSort)!!.eq(b2.field(cteBooksFieldNumberSort))
+                  b1
+                    .field(cteBooksFieldNumberSort)!!
+                    .eq(b2.field(cteBooksFieldNumberSort))
                     .and(b1.field(cteBooksFieldBookId)!!.gt(b2.field(cteBooksFieldBookId))),
                 ),
             ),
-        )
-        .innerJoin(b).on(b1.field(cteBooksFieldBookId)!!.eq(b.ID))
-        .innerJoin(m).on(b.ID.eq(m.BOOK_ID))
-        .innerJoin(d).on(b.ID.eq(d.BOOK_ID))
-        .innerJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
+        ).innerJoin(b)
+        .on(b1.field(cteBooksFieldBookId)!!.eq(b.ID))
+        .innerJoin(m)
+        .on(b.ID.eq(m.BOOK_ID))
+        .innerJoin(d)
+        .on(b.ID.eq(d.BOOK_ID))
+        .innerJoin(sd)
+        .on(b.SERIES_ID.eq(sd.SERIES_ID))
         // fetchAndMap expects some values for ReadProgress
         // On Deck books are by definition unread, thus don't have read progress
         // we join on the table to keep fetchAndMap, with a false condition to only get null values
-        .leftOuterJoin(r).on(falseCondition())
+        .leftOuterJoin(r)
+        .on(falseCondition())
         .where(b2.field(cteBooksFieldBookId)!!.isNull)
 
     val mostRecentReadDateQuery =

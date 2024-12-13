@@ -20,7 +20,8 @@ fun processNav(
 ): List<EpubTocEntry> {
   val doc = Jsoup.parse(document.content)
   val nav =
-    doc.select("nav")
+    doc
+      .select("nav")
       // Jsoup selectors cannot find an attribute with namespace
       .firstOrNull { it.attributes().any { attr -> attr.key.endsWith("type") && attr.value == navElement.value } }
   return nav?.select(":root > ol > li")?.toList()?.mapNotNull { navLiElementToTocEntry(it, document.path.parent) } ?: emptyList()

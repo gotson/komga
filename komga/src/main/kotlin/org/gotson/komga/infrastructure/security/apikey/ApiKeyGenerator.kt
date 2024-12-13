@@ -9,6 +9,5 @@ import java.util.UUID
  */
 @Component
 class ApiKeyGenerator {
-  fun generate() =
-    UUID.randomUUID().toString().replace("-", "")
+  fun generate() = UUID.randomUUID().toString().replace("-", "")
 }

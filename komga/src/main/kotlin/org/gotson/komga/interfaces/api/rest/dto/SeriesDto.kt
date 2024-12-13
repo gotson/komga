@@ -25,8 +25,7 @@ data class SeriesDto(
   val oneshot: Boolean,
 )
 
-fun SeriesDto.restrictUrl(restrict: Boolean) =
-  if (restrict) copy(url = "") else this
+fun SeriesDto.restrictUrl(restrict: Boolean) = if (restrict) copy(url = "") else this
 
 data class SeriesMetadataDto(
   val status: String,

@@ -25,7 +25,8 @@ import java.time.format.DateTimeFormatter
 @Service
 class EpubMetadataProvider(
   private val isbnValidator: ISBNValidator,
-) : BookMetadataProvider, SeriesMetadataFromBookProvider {
+) : BookMetadataProvider,
+  SeriesMetadataFromBookProvider {
   private val relators =
     mapOf(
       "aut" to "writer",
@@ -52,14 +53,21 @@ class EpubMetadataProvider(
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val title = opf.selectFirst("metadata > dc|title")?.text()?.ifBlank { null }
-      val description = opf.selectFirst("metadata > dc|description")?.text()?.let { Jsoup.clean(it, Safelist.none()) }?.ifBlank { null }
+      val description =
+        opf
+          .selectFirst("metadata > dc|description")
+          ?.text()
+          ?.let { Jsoup.clean(it, Safelist.none()) }
+          ?.ifBlank { null }
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
 
       val authorRoles =
-        opf.select("metadata > *|meta[property=role][scheme=marc:relators]")
+        opf
+          .select("metadata > *|meta[property=role][scheme=marc:relators]")
           .associate { it.attr("refines").removePrefix("#") to it.text() }
       val authors =
-        opf.select("metadata > dc|creator")
+        opf
+          .select("metadata > dc|creator")
           .mapNotNull { el ->
             val name = el.text().trim()
             if (name.isBlank()) {
@@ -73,14 +81,18 @@ class EpubMetadataProvider(
           }.ifEmpty { null }
 
       val isbn =
-        opf.select("metadata > dc|identifier")
+        opf
+          .select("metadata > dc|identifier")
           .map { it.text().lowercase().removePrefix("isbn:") }
           .firstNotNullOfOrNull { isbnValidator.validate(it) }
 
       val seriesIndex =
-        opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")?.attr("id")?.let { id ->
-          opf.selectFirst("metadata > *|meta[refines=#$id][property=group-position]")
-        }?.text()
+        opf
+          .selectFirst("metadata > *|meta[property=belongs-to-collection]")
+          ?.attr("id")
+          ?.let { id ->
+            opf.selectFirst("metadata > *|meta[refines=#$id][property=group-position]")
+          }?.text()
 
       return BookMetadataPatch(
         title = title,
@@ -109,7 +121,8 @@ class EpubMetadataProvider(
       val publisher = opf.selectFirst("metadata > dc|publisher")?.text()?.ifBlank { null }
       val language = opf.selectFirst("metadata > dc|language")?.text()?.ifBlank { null }
       val genres =
-        opf.select("metadata > dc|subject")
+        opf
+          .select("metadata > dc|subject")
           .mapNotNull { it.text().trim().ifBlank { null } }
           .toSet()
           .ifEmpty { null }

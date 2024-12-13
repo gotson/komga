@@ -13,8 +13,11 @@ class DomainDrivenDesignRulesTest {
   @ArchTest
   val domainModelShouldNotAccessOtherPackages: ArchRule =
     noClasses()
-      .that().resideInAPackage("..domain..model..")
-      .should().dependOnClassesThat().resideInAnyPackage(
+      .that()
+      .resideInAPackage("..domain..model..")
+      .should()
+      .dependOnClassesThat()
+      .resideInAnyPackage(
         "..infrastructure..",
         "..interfaces..",
         "..domain.persistence..",
@@ -24,6 +27,8 @@ class DomainDrivenDesignRulesTest {
   @ArchTest
   var classesNamedControllerShouldBeInAnInterfacesPackage: ArchRule =
     classes()
-      .that().haveSimpleNameContaining("Controller")
-      .should().resideInAPackage("..interfaces..")
+      .that()
+      .haveSimpleNameContaining("Controller")
+      .should()
+      .resideInAPackage("..interfaces..")
 }

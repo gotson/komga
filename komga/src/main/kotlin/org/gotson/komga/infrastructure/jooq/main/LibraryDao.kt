@@ -46,12 +46,15 @@ class LibraryDao(
       .fetchAndMap()
 
   private fun selectBase() =
-    dsl.select()
+    dsl
+      .select()
       .from(l)
-      .leftJoin(le).onKey()
+      .leftJoin(le)
+      .onKey()
 
   private fun ResultQuery<Record>.fetchAndMap(): Collection<Library> =
-    this.fetchGroups({ it.into(l) }, { it.into(le) })
+    this
+      .fetchGroups({ it.into(l) }, { it.into(le) })
       .map { (lr, ler) ->
         lr.toDomain(ler.mapNotNull { it.exclusion }.toSet())
       }
@@ -72,7 +75,8 @@ class LibraryDao(
 
   @Transactional
   override fun insert(library: Library) {
-    dsl.insertInto(l)
+    dsl
+      .insertInto(l)
       .set(l.ID, library.id)
       .set(l.NAME, library.name)
       .set(l.ROOT, library.root.toString())
@@ -108,7 +112,8 @@ class LibraryDao(
 
   @Transactional
   override fun update(library: Library) {
-    dsl.update(l)
+    dsl
+      .update(l)
       .set(l.NAME, library.name)
       .set(l.ROOT, library.root.toString())
       .set(l.IMPORT_COMICINFO_BOOK, library.importComicInfoBook)
@@ -147,21 +152,24 @@ class LibraryDao(
   override fun count(): Long = dsl.fetchCount(l).toLong()
 
   fun findDirectoryExclusions(libraryId: String): Set<String> =
-    dsl.select(le.EXCLUSION)
+    dsl
+      .select(le.EXCLUSION)
       .from(le)
       .where(le.LIBRARY_ID.eq(libraryId))
       .fetchSet(le.EXCLUSION)
 
   private fun insertDirectoryExclusions(library: Library) {
     if (library.scanDirectoryExclusions.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(le, le.LIBRARY_ID, le.EXCLUSION)
-          .values(null as String?, null),
-      ).also { step ->
-        library.scanDirectoryExclusions.forEach {
-          step.bind(library.id, it)
-        }
-      }.execute()
+      dsl
+        .batch(
+          dsl
+            .insertInto(le, le.LIBRARY_ID, le.EXCLUSION)
+            .values(null as String?, null),
+        ).also { step ->
+          library.scanDirectoryExclusions.forEach {
+            step.bind(library.id, it)
+          }
+        }.execute()
     }
   }
 

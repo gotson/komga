@@ -32,7 +32,8 @@ class ReadProgressDao(
   private val b = Tables.BOOK
 
   override fun findAll(): Collection<ReadProgress> =
-    dsl.selectFrom(r)
+    dsl
+      .selectFrom(r)
       .fetchInto(r)
       .map { it.toDomain() }
 
@@ -40,19 +41,22 @@ class ReadProgressDao(
     bookId: String,
     userId: String,
   ): ReadProgress? =
-    dsl.selectFrom(r)
+    dsl
+      .selectFrom(r)
       .where(r.BOOK_ID.eq(bookId).and(r.USER_ID.eq(userId)))
       .fetchOneInto(r)
       ?.toDomain()
 
   override fun findAllByUserId(userId: String): Collection<ReadProgress> =
-    dsl.selectFrom(r)
+    dsl
+      .selectFrom(r)
       .where(r.USER_ID.eq(userId))
       .fetchInto(r)
       .map { it.toDomain() }
 
   override fun findAllByBookId(bookId: String): Collection<ReadProgress> =
-    dsl.selectFrom(r)
+    dsl
+      .selectFrom(r)
       .where(r.BOOK_ID.eq(bookId))
       .fetchInto(r)
       .map { it.toDomain() }
@@ -61,7 +65,8 @@ class ReadProgressDao(
     bookIds: Collection<String>,
     userId: String,
   ): Collection<ReadProgress> =
-    dsl.selectFrom(r)
+    dsl
+      .selectFrom(r)
       .where(r.BOOK_ID.`in`(bookIds).and(r.USER_ID.eq(userId)))
       .fetchInto(r)
       .map { it.toDomain() }
@@ -87,18 +92,18 @@ class ReadProgressDao(
   }
 
   private fun ReadProgress.toQuery(): Query =
-    dsl.insertInto(
-      r,
-      r.BOOK_ID,
-      r.USER_ID,
-      r.PAGE,
-      r.COMPLETED,
-      r.READ_DATE,
-      r.DEVICE_ID,
-      r.DEVICE_NAME,
-      r.LOCATOR,
-    )
-      .values(
+    dsl
+      .insertInto(
+        r,
+        r.BOOK_ID,
+        r.USER_ID,
+        r.PAGE,
+        r.COMPLETED,
+        r.READ_DATE,
+        r.DEVICE_ID,
+        r.DEVICE_NAME,
+        r.LOCATOR,
+      ).values(
         bookId,
         userId,
         page,
@@ -107,8 +112,7 @@ class ReadProgressDao(
         deviceId,
         deviceName,
         locator?.let { mapper.serializeJsonGz(it) },
-      )
-      .onDuplicateKeyUpdate()
+      ).onDuplicateKeyUpdate()
       .set(r.PAGE, page)
       .set(r.COMPLETED, completed)
       .set(r.READ_DATE, readDate.toUTC())
@@ -160,7 +164,11 @@ class ReadProgressDao(
   ) {
     dsl.insertTempStrings(batchSize, bookIds)
 
-    dsl.deleteFrom(r).where(r.BOOK_ID.`in`(dsl.selectTempStrings())).and(r.USER_ID.eq(userId)).execute()
+    dsl
+      .deleteFrom(r)
+      .where(r.BOOK_ID.`in`(dsl.selectTempStrings()))
+      .and(r.USER_ID.eq(userId))
+      .execute()
     aggregateSeriesProgress(bookIds, userId)
   }
 
@@ -177,24 +185,29 @@ class ReadProgressDao(
     dsl.insertTempStrings(batchSize, bookIds)
 
     val seriesIdsQuery =
-      dsl.select(b.SERIES_ID)
+      dsl
+        .select(b.SERIES_ID)
         .from(b)
         .where(b.ID.`in`(dsl.selectTempStrings()))
 
-    dsl.deleteFrom(rs)
+    dsl
+      .deleteFrom(rs)
       .where(rs.SERIES_ID.`in`(seriesIdsQuery))
       .apply { userId?.let { and(rs.USER_ID.eq(it)) } }
       .execute()
 
-    dsl.insertInto(rs)
+    dsl
+      .insertInto(rs)
       .select(
-        dsl.select(b.SERIES_ID, r.USER_ID)
+        dsl
+          .select(b.SERIES_ID, r.USER_ID)
           .select(DSL.sum(DSL.`when`(r.COMPLETED.isTrue, 1).otherwise(0)))
           .select(DSL.sum(DSL.`when`(r.COMPLETED.isFalse, 1).otherwise(0)))
           .select(DSL.max(r.READ_DATE))
           .select(DSL.currentTimestamp())
           .from(b)
-          .innerJoin(r).on(b.ID.eq(r.BOOK_ID))
+          .innerJoin(r)
+          .on(b.ID.eq(r.BOOK_ID))
           .where(b.SERIES_ID.`in`(seriesIdsQuery))
           .apply { userId?.let { and(r.USER_ID.eq(it)) } }
           .groupBy(b.SERIES_ID, r.USER_ID),

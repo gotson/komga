@@ -34,10 +34,10 @@ class ApiKeyAuthenticationProvider(
     authentication: Authentication?,
     user: UserDetails?,
   ): Authentication =
-    ApiKeyAuthenticationToken.authenticated(principal, authentication?.credentials, user!!.authorities)
+    ApiKeyAuthenticationToken
+      .authenticated(principal, authentication?.credentials, user!!.authorities)
       .apply { details = authentication?.details }
       .also { logger.debug("Authenticated user") }
 
-  override fun supports(authentication: Class<*>): Boolean =
-    ApiKeyAuthenticationToken::class.java.isAssignableFrom(authentication)
+  override fun supports(authentication: Class<*>): Boolean = ApiKeyAuthenticationToken::class.java.isAssignableFrom(authentication)
 }

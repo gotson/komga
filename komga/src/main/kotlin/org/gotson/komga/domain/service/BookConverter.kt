@@ -60,7 +60,8 @@ class BookConverter(
 
   fun getConvertibleBooks(library: Library): Collection<Book> =
     if (library.convertToCbz) {
-      bookRepository.findAllByLibraryIdAndMediaTypes(library.id, convertibleTypes)
+      bookRepository
+        .findAllByLibraryIdAndMediaTypes(library.id, convertibleTypes)
         .also { logger.info { "Found ${it.size} books to convert" } }
     } else {
       logger.info { "CBZ conversion is not enabled, skipping" }
@@ -100,7 +101,8 @@ class BookConverter(
       zipStream.setLevel(Deflater.NO_COMPRESSION)
 
       media
-        .pages.map { it.fileName }
+        .pages
+        .map { it.fileName }
         .union(media.files.map { it.fileName })
         .forEach { entry ->
           zipStream.putArchiveEntry(ZipArchiveEntry(entry))
@@ -111,7 +113,8 @@ class BookConverter(
 
     // perform checks on new file
     val convertedBook =
-      fileSystemScanner.scanFile(destinationPath)
+      fileSystemScanner
+        .scanFile(destinationPath)
         ?.copy(
           id = book.id,
           seriesId = book.seriesId,
@@ -129,11 +132,13 @@ class BookConverter(
         convertedMedia.mediaType != MediaType.ZIP.type
         -> throw BookConversionException("Converted file is not a zip file, aborting conversion")
 
-        !convertedMedia.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType }
+        !convertedMedia.pages
+          .map { FilenameUtils.getName(it.fileName) to it.mediaType }
           .containsAll(media.pages.map { FilenameUtils.getName(it.fileName) to it.mediaType })
         -> throw BookConversionException("Converted file does not contain all pages from existing file, aborting conversion")
 
-        !convertedMedia.files.map { FilenameUtils.getName(it.fileName) }
+        !convertedMedia.files
+          .map { FilenameUtils.getName(it.fileName) }
           .containsAll(media.files.map { FilenameUtils.getName(it.fileName) })
         -> throw BookConversionException("Converted file does not contain all files from existing file, aborting conversion")
       }
@@ -201,7 +206,8 @@ class BookConverter(
     book.path.moveTo(destinationPath)
 
     val repairedBook =
-      fileSystemScanner.scanFile(destinationPath)
+      fileSystemScanner
+        .scanFile(destinationPath)
         ?.copy(
           id = book.id,
           seriesId = book.seriesId,

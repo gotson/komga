@@ -56,63 +56,72 @@ class SyncPointDao(
     val syncPointId = TsidCreator.getTsid256().toString()
     val createdAt = LocalDateTime.now(ZoneId.of("Z"))
 
-    dsl.insertInto(
-      sp,
-      sp.ID,
-      sp.USER_ID,
-      sp.API_KEY_ID,
-      sp.CREATED_DATE,
-    ).values(
-      syncPointId,
-      context.userId,
-      apiKeyId,
-      createdAt,
-    ).execute()
+    dsl
+      .insertInto(
+        sp,
+        sp.ID,
+        sp.USER_ID,
+        sp.API_KEY_ID,
+        sp.CREATED_DATE,
+      ).values(
+        syncPointId,
+        context.userId,
+        apiKeyId,
+        createdAt,
+      ).execute()
 
-    dsl.insertInto(
-      spb,
-      spb.SYNC_POINT_ID,
-      spb.BOOK_ID,
-      spb.BOOK_CREATED_DATE,
-      spb.BOOK_LAST_MODIFIED_DATE,
-      spb.BOOK_FILE_LAST_MODIFIED,
-      spb.BOOK_FILE_SIZE,
-      spb.BOOK_FILE_HASH,
-      spb.BOOK_METADATA_LAST_MODIFIED_DATE,
-      spb.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE,
-      spb.BOOK_THUMBNAIL_ID,
-    ).select(
-      dsl.select(
-        DSL.`val`(syncPointId),
-        b.ID,
-        b.CREATED_DATE,
-        b.LAST_MODIFIED_DATE,
-        b.FILE_LAST_MODIFIED,
-        b.FILE_SIZE,
-        b.FILE_HASH,
-        d.LAST_MODIFIED_DATE,
-        r.LAST_MODIFIED_DATE,
-        bt.ID,
-      ).from(b)
-        .apply {
-          joins.forEach {
-            when (it) {
-              // we don't have to handle those since we already join on those tables anyway, the 'when' is here for future proofing
-              RequiredJoin.BookMetadata -> Unit
-              RequiredJoin.SeriesMetadata -> Unit
-              RequiredJoin.Media -> Unit
-              is RequiredJoin.ReadProgress -> Unit
-              RequiredJoin.BookMetadataAggregation -> Unit
+    dsl
+      .insertInto(
+        spb,
+        spb.SYNC_POINT_ID,
+        spb.BOOK_ID,
+        spb.BOOK_CREATED_DATE,
+        spb.BOOK_LAST_MODIFIED_DATE,
+        spb.BOOK_FILE_LAST_MODIFIED,
+        spb.BOOK_FILE_SIZE,
+        spb.BOOK_FILE_HASH,
+        spb.BOOK_METADATA_LAST_MODIFIED_DATE,
+        spb.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE,
+        spb.BOOK_THUMBNAIL_ID,
+      ).select(
+        dsl
+          .select(
+            DSL.`val`(syncPointId),
+            b.ID,
+            b.CREATED_DATE,
+            b.LAST_MODIFIED_DATE,
+            b.FILE_LAST_MODIFIED,
+            b.FILE_SIZE,
+            b.FILE_HASH,
+            d.LAST_MODIFIED_DATE,
+            r.LAST_MODIFIED_DATE,
+            bt.ID,
+          ).from(b)
+          .apply {
+            joins.forEach {
+              when (it) {
+                // we don't have to handle those since we already join on those tables anyway, the 'when' is here for future proofing
+                RequiredJoin.BookMetadata -> Unit
+                RequiredJoin.SeriesMetadata -> Unit
+                RequiredJoin.Media -> Unit
+                is RequiredJoin.ReadProgress -> Unit
+                RequiredJoin.BookMetadataAggregation -> Unit
+              }
             }
-          }
-        }
-        .join(m).on(b.ID.eq(m.BOOK_ID))
-        .join(d).on(b.ID.eq(d.BOOK_ID))
-        .join(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
-        .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(context.userId))
-        .leftJoin(bt).on(b.ID.eq(bt.BOOK_ID)).and(bt.SELECTED.isTrue)
-        .where(condition),
-    ).execute()
+          }.join(m)
+          .on(b.ID.eq(m.BOOK_ID))
+          .join(d)
+          .on(b.ID.eq(d.BOOK_ID))
+          .join(sd)
+          .on(b.SERIES_ID.eq(sd.SERIES_ID))
+          .leftJoin(r)
+          .on(b.ID.eq(r.BOOK_ID))
+          .and(r.USER_ID.eq(context.userId))
+          .leftJoin(bt)
+          .on(b.ID.eq(bt.BOOK_ID))
+          .and(bt.SELECTED.isTrue)
+          .where(condition),
+      ).execute()
 
     return findByIdOrNull(syncPointId)!!
   }
@@ -131,7 +140,8 @@ class SyncPointDao(
     val (query, _, queryMostRecentDate) = bookCommonDao.getBooksOnDeckQuery(context.userId, context.restrictions, filterOnLibraryIds, onDeckFields)
 
     val count =
-      dsl.insertInto(sprlb)
+      dsl
+        .insertInto(sprlb)
         .select(query)
         .execute()
 
@@ -139,25 +149,27 @@ class SyncPointDao(
     if (count > 0) {
       val mostRecentDate = dsl.fetch(queryMostRecentDate).into(LocalDateTime::class.java).firstOrNull() ?: createdAt
 
-      dsl.insertInto(
-        sprl,
-        sprl.SYNC_POINT_ID,
-        sprl.READLIST_ID,
-        sprl.READLIST_NAME,
-        sprl.READLIST_CREATED_DATE,
-        sprl.READLIST_LAST_MODIFIED_DATE,
-      ).values(
-        syncPointId,
-        ON_DECK_ID,
-        "On Deck",
-        createdAt,
-        mostRecentDate,
-      ).execute()
+      dsl
+        .insertInto(
+          sprl,
+          sprl.SYNC_POINT_ID,
+          sprl.READLIST_ID,
+          sprl.READLIST_NAME,
+          sprl.READLIST_CREATED_DATE,
+          sprl.READLIST_LAST_MODIFIED_DATE,
+        ).values(
+          syncPointId,
+          ON_DECK_ID,
+          "On Deck",
+          createdAt,
+          mostRecentDate,
+        ).execute()
     }
   }
 
   override fun findByIdOrNull(syncPointId: String): SyncPoint? =
-    dsl.selectFrom(sp)
+    dsl
+      .selectFrom(sp)
       .where(sp.ID.eq(syncPointId))
       .fetchInto(sp)
       .map {
@@ -175,7 +187,8 @@ class SyncPointDao(
     pageable: Pageable,
   ): Page<SyncPoint.Book> {
     val query =
-      dsl.selectFrom(spb)
+      dsl
+        .selectFrom(spb)
         .where(spb.SYNC_POINT_ID.eq(syncPointId))
         .apply {
           if (onlyNotSynced) {
@@ -193,14 +206,14 @@ class SyncPointDao(
     pageable: Pageable,
   ): Page<SyncPoint.Book> {
     val query =
-      dsl.selectFrom(spb)
+      dsl
+        .selectFrom(spb)
         .where(spb.SYNC_POINT_ID.eq(toSyncPointId))
         .apply {
           if (onlyNotSynced) {
             and(spb.SYNCED.isFalse)
           }
-        }
-        .and(
+        }.and(
           spb.BOOK_ID.notIn(
             dsl.select(spb.BOOK_ID).from(spb).where(spb.SYNC_POINT_ID.eq(fromSyncPointId)),
           ),
@@ -216,14 +229,14 @@ class SyncPointDao(
     pageable: Pageable,
   ): Page<SyncPoint.Book> {
     val query =
-      dsl.selectFrom(spb)
+      dsl
+        .selectFrom(spb)
         .where(spb.SYNC_POINT_ID.eq(fromSyncPointId))
         .and(
           spb.BOOK_ID.notIn(
             dsl.select(spb.BOOK_ID).from(spb).where(spb.SYNC_POINT_ID.eq(toSyncPointId)),
           ),
-        )
-        .apply {
+        ).apply {
           if (onlyNotSynced)
             and(
               spb.BOOK_ID.notIn(
@@ -243,18 +256,20 @@ class SyncPointDao(
   ): Page<SyncPoint.Book> {
     val spbFrom = spb.`as`("spbFrom")
     val query =
-      dsl.select(*spb.fields())
+      dsl
+        .select(*spb.fields())
         .from(spb)
-        .join(spbFrom).on(spb.BOOK_ID.eq(spbFrom.BOOK_ID))
+        .join(spbFrom)
+        .on(spb.BOOK_ID.eq(spbFrom.BOOK_ID))
         .where(spb.SYNC_POINT_ID.eq(toSyncPointId))
         .and(spbFrom.SYNC_POINT_ID.eq(fromSyncPointId))
         .apply {
           if (onlyNotSynced) {
             and(spb.SYNCED.isFalse)
           }
-        }
-        .and(
-          spb.BOOK_FILE_LAST_MODIFIED.ne(spbFrom.BOOK_FILE_LAST_MODIFIED)
+        }.and(
+          spb.BOOK_FILE_LAST_MODIFIED
+            .ne(spbFrom.BOOK_FILE_LAST_MODIFIED)
             .or(spb.BOOK_FILE_SIZE.ne(spbFrom.BOOK_FILE_SIZE))
             .or(spb.BOOK_FILE_HASH.ne(spbFrom.BOOK_FILE_HASH).and(spbFrom.BOOK_FILE_HASH.isNotNull))
             .or(spb.BOOK_METADATA_LAST_MODIFIED_DATE.ne(spbFrom.BOOK_METADATA_LAST_MODIFIED_DATE))
@@ -272,26 +287,29 @@ class SyncPointDao(
   ): Page<SyncPoint.Book> {
     val spbFrom = spb.`as`("spbFrom")
     val query =
-      dsl.select(*spb.fields())
+      dsl
+        .select(*spb.fields())
         .from(spb)
-        .join(spbFrom).on(spb.BOOK_ID.eq(spbFrom.BOOK_ID))
+        .join(spbFrom)
+        .on(spb.BOOK_ID.eq(spbFrom.BOOK_ID))
         .where(spb.SYNC_POINT_ID.eq(toSyncPointId))
         .and(spbFrom.SYNC_POINT_ID.eq(fromSyncPointId))
         .apply {
           if (onlyNotSynced) {
             and(spb.SYNCED.isFalse)
           }
-        }
-        .and(
+        }.and(
           // unchanged book
-          spb.BOOK_FILE_LAST_MODIFIED.eq(spbFrom.BOOK_FILE_LAST_MODIFIED)
+          spb.BOOK_FILE_LAST_MODIFIED
+            .eq(spbFrom.BOOK_FILE_LAST_MODIFIED)
             .and(spb.BOOK_FILE_SIZE.eq(spbFrom.BOOK_FILE_SIZE))
             .and(spb.BOOK_FILE_HASH.eq(spbFrom.BOOK_FILE_HASH).or(spbFrom.BOOK_FILE_HASH.isNull))
             .and(spb.BOOK_METADATA_LAST_MODIFIED_DATE.eq(spbFrom.BOOK_METADATA_LAST_MODIFIED_DATE))
             .and(spb.BOOK_THUMBNAIL_ID.eq(spbFrom.BOOK_THUMBNAIL_ID))
             // with changed read progress
             .and(
-              spb.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE.ne(spbFrom.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE)
+              spb.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE
+                .ne(spbFrom.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE)
                 .or(spb.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE.isNull.and(spbFrom.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE.isNotNull))
                 .or(spb.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE.isNotNull.and(spbFrom.BOOK_READ_PROGRESS_LAST_MODIFIED_DATE.isNull)),
             ),
@@ -306,7 +324,8 @@ class SyncPointDao(
     pageable: Pageable,
   ): Page<SyncPoint.ReadList> {
     val query =
-      dsl.selectFrom(sprl)
+      dsl
+        .selectFrom(sprl)
         .where(sprl.SYNC_POINT_ID.eq(syncPointId))
         .apply {
           if (onlyNotSynced) {
@@ -326,9 +345,11 @@ class SyncPointDao(
     val to = sprl.`as`("to")
     val from = sprl.`as`("from")
     val query =
-      dsl.select(*to.fields())
+      dsl
+        .select(*to.fields())
         .from(to)
-        .leftOuterJoin(from).on(to.READLIST_ID.eq(from.READLIST_ID).and(from.SYNC_POINT_ID.eq(fromSyncPointId)))
+        .leftOuterJoin(from)
+        .on(to.READLIST_ID.eq(from.READLIST_ID).and(from.SYNC_POINT_ID.eq(fromSyncPointId)))
         .where(to.SYNC_POINT_ID.eq(toSyncPointId))
         .apply { if (onlyNotSynced) and(to.SYNCED.isFalse) }
         .and(from.READLIST_ID.isNull)
@@ -344,14 +365,17 @@ class SyncPointDao(
   ): Page<SyncPoint.ReadList> {
     val from = sprl.`as`("from")
     val query =
-      dsl.select(*sprl.fields())
+      dsl
+        .select(*sprl.fields())
         .from(sprl)
-        .join(from).on(sprl.READLIST_ID.eq(from.READLIST_ID))
+        .join(from)
+        .on(sprl.READLIST_ID.eq(from.READLIST_ID))
         .where(sprl.SYNC_POINT_ID.eq(toSyncPointId))
         .and(from.SYNC_POINT_ID.eq(fromSyncPointId))
         .apply { if (onlyNotSynced) and(sprl.SYNCED.isFalse) }
         .and(
-          sprl.READLIST_LAST_MODIFIED_DATE.ne(from.READLIST_LAST_MODIFIED_DATE)
+          sprl.READLIST_LAST_MODIFIED_DATE
+            .ne(from.READLIST_LAST_MODIFIED_DATE)
             .or(sprl.READLIST_NAME.ne(from.READLIST_NAME)),
         )
 
@@ -367,9 +391,11 @@ class SyncPointDao(
     val from = sprl.`as`("from")
     val to = sprl.`as`("to")
     val query =
-      dsl.select(*from.fields())
+      dsl
+        .select(*from.fields())
         .from(from)
-        .leftOuterJoin(to).on(from.READLIST_ID.eq(to.READLIST_ID).and(to.SYNC_POINT_ID.eq(toSyncPointId)))
+        .leftOuterJoin(to)
+        .on(from.READLIST_ID.eq(to.READLIST_ID).and(to.SYNC_POINT_ID.eq(toSyncPointId)))
         .where(from.SYNC_POINT_ID.eq(fromSyncPointId))
         .apply {
           if (onlyNotSynced)
@@ -378,8 +404,7 @@ class SyncPointDao(
                 dsl.select(sprls.READLIST_ID).from(sprls).where(sprls.SYNC_POINT_ID.eq(toSyncPointId)),
               ),
             )
-        }
-        .and(to.READLIST_ID.isNull)
+        }.and(to.READLIST_ID.isNull)
 
     return queryToPageReadList(query, pageable)
   }
@@ -388,7 +413,8 @@ class SyncPointDao(
     syncPointId: String,
     readListIds: Collection<String>,
   ): List<SyncPoint.ReadList.Book> =
-    dsl.select(*sprlb.fields())
+    dsl
+      .select(*sprlb.fields())
       .from(sprlb)
       .where(sprlb.SYNC_POINT_ID.eq(syncPointId))
       .and(sprlb.READLIST_ID.`in`(readListIds))
@@ -404,13 +430,15 @@ class SyncPointDao(
     // we store status in a separate table
     if (bookIds.isNotEmpty()) {
       if (forRemovedBooks)
-        dsl.batch(
-          dsl.insertInto(spbs, spbs.SYNC_POINT_ID, spbs.BOOK_ID).values(null as String?, null).onDuplicateKeyIgnore(),
-        ).also { step ->
-          bookIds.map { step.bind(syncPointId, it) }
-        }.execute()
+        dsl
+          .batch(
+            dsl.insertInto(spbs, spbs.SYNC_POINT_ID, spbs.BOOK_ID).values(null as String?, null).onDuplicateKeyIgnore(),
+          ).also { step ->
+            bookIds.map { step.bind(syncPointId, it) }
+          }.execute()
       else
-        dsl.update(spb)
+        dsl
+          .update(spb)
           .set(spb.SYNCED, true)
           .where(spb.SYNC_POINT_ID.eq(syncPointId))
           .and(spb.BOOK_ID.`in`(bookIds))
@@ -427,13 +455,15 @@ class SyncPointDao(
     // we store status in a separate table
     if (readListIds.isNotEmpty()) {
       if (forRemovedReadLists)
-        dsl.batch(
-          dsl.insertInto(sprls, sprls.SYNC_POINT_ID, sprls.READLIST_ID).values(null as String?, null).onDuplicateKeyIgnore(),
-        ).also { step ->
-          readListIds.map { step.bind(syncPointId, it) }
-        }.execute()
+        dsl
+          .batch(
+            dsl.insertInto(sprls, sprls.SYNC_POINT_ID, sprls.READLIST_ID).values(null as String?, null).onDuplicateKeyIgnore(),
+          ).also { step ->
+            readListIds.map { step.bind(syncPointId, it) }
+          }.execute()
       else
-        dsl.update(sprl)
+        dsl
+          .update(sprl)
           .set(sprl.SYNCED, true)
           .where(sprl.SYNC_POINT_ID.eq(syncPointId))
           .and(sprl.READLIST_ID.`in`(readListIds))

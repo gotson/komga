@@ -42,7 +42,8 @@ class SearchCondition {
   data class LibraryId(
     @JsonProperty("libraryId")
     val operator: SearchOperator.Equality<String>,
-  ) : Book, Series
+  ) : Book,
+    Series
 
   data class CollectionId(
     @JsonProperty("collectionId")
@@ -62,7 +63,8 @@ class SearchCondition {
   data class Deleted(
     @JsonProperty("deleted")
     val operator: SearchOperator.Boolean,
-  ) : Book, Series
+  ) : Book,
+    Series
 
   data class Complete(
     @JsonProperty("complete")
@@ -72,12 +74,14 @@ class SearchCondition {
   data class OneShot(
     @JsonProperty("oneShot")
     val operator: SearchOperator.Boolean,
-  ) : Book, Series
+  ) : Book,
+    Series
 
   data class Title(
     @JsonProperty("title")
     val operator: SearchOperator.StringOp,
-  ) : Book, Series
+  ) : Book,
+    Series
 
   data class TitleSort(
     @JsonProperty("titleSort")
@@ -87,7 +91,8 @@ class SearchCondition {
   data class ReleaseDate(
     @JsonProperty("releaseDate")
     val operator: SearchOperator.Date,
-  ) : Book, Series
+  ) : Book,
+    Series
 
   data class NumberSort(
     @JsonProperty("numberSort")
@@ -97,7 +102,8 @@ class SearchCondition {
   data class Tag(
     @JsonProperty("tag")
     val operator: SearchOperator.Equality<String>,
-  ) : Book, Series
+  ) : Book,
+    Series
 
   data class SharingLabel(
     @JsonProperty("sharingLabel")
@@ -127,7 +133,8 @@ class SearchCondition {
   data class ReadStatus(
     @JsonProperty("readStatus")
     val operator: SearchOperator.Equality<org.gotson.komga.domain.model.ReadStatus>,
-  ) : Book, Series
+  ) : Book,
+    Series
 
   data class MediaStatus(
     @JsonProperty("mediaStatus")
@@ -147,7 +154,8 @@ class SearchCondition {
   data class Author(
     @JsonProperty("author")
     val operator: SearchOperator.Equality<AuthorMatch>,
-  ) : Book, Series
+  ) : Book,
+    Series
 
   @JsonInclude(JsonInclude.Include.NON_NULL)
   data class AuthorMatch(

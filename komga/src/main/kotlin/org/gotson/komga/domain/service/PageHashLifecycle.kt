@@ -27,7 +27,8 @@ class PageHashLifecycle(
 
   fun getBookIdsWithMissingPageHash(library: Library): Collection<String> =
     if (library.hashPages) {
-      mediaRepository.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(library.id, hashableMediaTypes, komgaProperties.pageHashing)
+      mediaRepository
+        .findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(library.id, hashableMediaTypes, komgaProperties.pageHashing)
         .also { logger.info { "Found ${it.size} books with missing page hash" } }
     } else {
       logger.info { "Page hashing is not enabled, skipping" }
@@ -44,8 +45,7 @@ class PageHashLifecycle(
     return bookLifecycle.getBookPage(book, match.pageNumber, resizeTo = resizeTo)
   }
 
-  fun getBookPagesToDeleteAutomatically(library: Library): Map<String, Collection<BookPageNumbered>> =
-    pageHashRepository.findMatchesByKnownHashAction(listOf(PageHashKnown.Action.DELETE_AUTO), library.id)
+  fun getBookPagesToDeleteAutomatically(library: Library): Map<String, Collection<BookPageNumbered>> = pageHashRepository.findMatchesByKnownHashAction(listOf(PageHashKnown.Action.DELETE_AUTO), library.id)
 
   fun createOrUpdate(pageHash: PageHashKnown) {
     val existing = pageHashRepository.findKnown(pageHash.hash)

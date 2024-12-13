@@ -9,11 +9,10 @@ import java.time.temporal.ChronoUnit
 fun SearchOperator.Equality<String>.toCondition(
   field: Field<String>,
   ignoreCase: Boolean = false,
-) =
-  when (this) {
-    is SearchOperator.Is -> if (ignoreCase) field.equalIgnoreCase(this.value) else field.eq(this.value)
-    is SearchOperator.IsNot -> if (ignoreCase) field.notEqualIgnoreCase(this.value) else field.ne(this.value)
-  }
+) = when (this) {
+  is SearchOperator.Is -> if (ignoreCase) field.equalIgnoreCase(this.value) else field.eq(this.value)
+  is SearchOperator.IsNot -> if (ignoreCase) field.notEqualIgnoreCase(this.value) else field.ne(this.value)
+}
 
 fun <T> SearchOperator.Equality<T>.toCondition(field: Field<T>) =
   when (this) {
@@ -24,11 +23,10 @@ fun <T> SearchOperator.Equality<T>.toCondition(field: Field<T>) =
 fun <T> SearchOperator.Equality<T>.toCondition(
   field: Field<String>,
   converter: (T) -> String,
-) =
-  when (this) {
-    is SearchOperator.Is -> field.eq(converter(this.value))
-    is SearchOperator.IsNot -> field.ne(converter(this.value))
-  }
+) = when (this) {
+  is SearchOperator.Is -> field.eq(converter(this.value))
+  is SearchOperator.IsNot -> field.ne(converter(this.value))
+}
 
 fun SearchOperator.StringOp.toCondition(field: Field<String>) =
   when (this) {

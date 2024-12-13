@@ -102,10 +102,10 @@ class BookControllerPageTest(
     every { mockAnalyzer.getPageContentRaw(any(), 1) } returns TypedBytes(ByteArray(0), "application/pdf")
     every { bookLifecycle.getBookPage(any(), 1, any(), any()) } returns TypedBytes(ByteArray(0), "image/jpeg")
 
-    mockMvc.get("/api/v1/books/${book.id}/pages/1") {
-      if (acceptTypes.isNotEmpty()) accept(*acceptTypes.toTypedArray())
-    }
-      .andExpect {
+    mockMvc
+      .get("/api/v1/books/${book.id}/pages/1") {
+        if (acceptTypes.isNotEmpty()) accept(*acceptTypes.toTypedArray())
+      }.andExpect {
         status { if (success) isOk() else isBadRequest() }
         if (resultType != null)
           header { string(HttpHeaders.CONTENT_TYPE, resultType) }

@@ -52,7 +52,8 @@ class AuthenticationActivityDao(
     user: KomgaUser,
     apiKeyId: String?,
   ): AuthenticationActivity? =
-    dsl.selectFrom(aa)
+    dsl
+      .selectFrom(aa)
       .where(aa.USER_ID.eq(user.id))
       .or(aa.EMAIL.eq(user.email))
       .apply { apiKeyId?.let { and(aa.API_KEY_ID.eq(it)) } }
@@ -70,7 +71,8 @@ class AuthenticationActivityDao(
     val orderBy = pageable.sort.toOrderBy(sorts)
 
     val items =
-      dsl.selectFrom(aa)
+      dsl
+        .selectFrom(aa)
         .where(conditions)
         .orderBy(orderBy)
         .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
@@ -89,20 +91,23 @@ class AuthenticationActivityDao(
   }
 
   override fun insert(activity: AuthenticationActivity) {
-    dsl.insertInto(aa, aa.USER_ID, aa.EMAIL, aa.API_KEY_ID, aa.API_KEY_COMMENT, aa.IP, aa.USER_AGENT, aa.SUCCESS, aa.ERROR, aa.SOURCE)
+    dsl
+      .insertInto(aa, aa.USER_ID, aa.EMAIL, aa.API_KEY_ID, aa.API_KEY_COMMENT, aa.IP, aa.USER_AGENT, aa.SUCCESS, aa.ERROR, aa.SOURCE)
       .values(activity.userId, activity.email, activity.apiKeyId, activity.apiKeyComment, activity.ip, activity.userAgent, activity.success, activity.error, activity.source)
       .execute()
   }
 
   override fun deleteByUser(user: KomgaUser) {
-    dsl.deleteFrom(aa)
+    dsl
+      .deleteFrom(aa)
       .where(aa.USER_ID.eq(user.id))
       .or(aa.EMAIL.eq(user.email))
       .execute()
   }
 
   override fun deleteOlderThan(dateTime: LocalDateTime) {
-    dsl.deleteFrom(aa)
+    dsl
+      .deleteFrom(aa)
       .where(aa.DATE_TIME.lt(dateTime))
       .execute()
   }

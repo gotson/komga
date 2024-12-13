@@ -56,8 +56,7 @@ class KomgaSyncTokenGenerator(
     return KomgaSyncToken()
   }
 
-  fun toBase64(token: KomgaSyncToken): String =
-    KOMGA_TOKEN_PREFIX + base64Encoder.encodeToString(objectMapper.writeValueAsString(token).toByteArray())
+  fun toBase64(token: KomgaSyncToken): String = KOMGA_TOKEN_PREFIX + base64Encoder.encodeToString(objectMapper.writeValueAsString(token).toByteArray())
 
   fun fromRequestHeaders(request: HttpServletRequest): KomgaSyncToken? {
     val syncTokenB64 = request.getHeader(X_KOBO_SYNCTOKEN)

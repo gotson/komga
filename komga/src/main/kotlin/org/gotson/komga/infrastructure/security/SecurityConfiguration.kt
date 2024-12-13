@@ -76,53 +76,49 @@ class SecurityConfiguration(
           "/login/oauth2/code/**",
         )
         it.requestMatchers(EndpointRequest.toAnyEndpoint())
-      }
-      .authorizeHttpRequests {
+      }.authorizeHttpRequests {
         // allow unauthorized access to actuator health endpoint
         // this will only show limited details as `management.endpoint.health.show-details` is set to `when-authorized`
         it.requestMatchers(EndpointRequest.to(HealthEndpoint::class.java)).permitAll()
         // restrict all other actuator endpoints to ADMIN only
         it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
 
-        it.requestMatchers(
-          // to claim server before any account is created
-          "/api/v1/claim",
-          // used by webui
-          "/api/v1/oauth2/providers",
-          // epub resources - fonts are always requested anonymously, so we check for authorization within the controller method directly
-          "api/v1/books/{bookId}/resource/**",
-          // OPDS authentication document
-          "/opds/v2/auth",
-        ).permitAll()
+        it
+          .requestMatchers(
+            // to claim server before any account is created
+            "/api/v1/claim",
+            // used by webui
+            "/api/v1/oauth2/providers",
+            // epub resources - fonts are always requested anonymously, so we check for authorization within the controller method directly
+            "api/v1/books/{bookId}/resource/**",
+            // OPDS authentication document
+            "/opds/v2/auth",
+          ).permitAll()
 
         // all other endpoints are restricted to authenticated users
-        it.requestMatchers(
-          "/api/**",
-          "/opds/**",
-          "/sse/**",
-        ).hasRole(ROLE_USER)
-      }
-      .headers { headersConfigurer ->
+        it
+          .requestMatchers(
+            "/api/**",
+            "/opds/**",
+            "/sse/**",
+          ).hasRole(ROLE_USER)
+      }.headers { headersConfigurer ->
         headersConfigurer.cacheControl { it.disable() } // headers are set in WebMvcConfiguration
         headersConfigurer.frameOptions { it.sameOrigin() } // for epubreader iframes
-      }
-      .userDetailsService(komgaUserDetailsService)
+      }.userDetailsService(komgaUserDetailsService)
       .httpBasic {
         it.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
-      }
-      .logout {
+      }.logout {
         it.logoutUrl("/api/logout")
         it.deleteCookies(sessionCookieName)
         it.invalidateHttpSession(true)
-      }
-      .sessionManagement { session ->
+      }.sessionManagement { session ->
         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         session.sessionConcurrency {
           it.sessionRegistry(theSessionRegistry)
           it.maximumSessions(-1)
         }
-      }
-      .exceptionHandling {
+      }.exceptionHandling {
         it.defaultAuthenticationEntryPointFor(opdsAuthenticationEntryPoint, AntPathRequestMatcher("/opds/v2/**"))
       }
 
@@ -133,7 +129,8 @@ class SecurityConfiguration(
           it.oidcUserService(oidcUserService)
         }
         oauth2.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
-        oauth2.loginPage("/login")
+        oauth2
+          .loginPage("/login")
           .defaultSuccessUrl("/?server_redirect=Y", true)
           .failureHandler { request, response, exception ->
             val errorMessage =

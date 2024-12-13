@@ -16,8 +16,7 @@ class DataSourcesConfiguration(
 ) {
   @Bean("sqliteDataSource")
   @Primary
-  fun sqliteDataSource(): DataSource =
-    buildDataSource("SqliteMainPool", SqliteUdfDataSource::class.java, komgaProperties.database)
+  fun sqliteDataSource(): DataSource = buildDataSource("SqliteMainPool", SqliteUdfDataSource::class.java, komgaProperties.database)
 
   @Bean("tasksDataSource")
   fun tasksDataSource(): DataSource =
@@ -41,7 +40,8 @@ class DataSourcesConfiguration(
       }
 
     val dataSource =
-      DataSourceBuilder.create()
+      DataSourceBuilder
+        .create()
         .driverClassName("org.sqlite.JDBC")
         .url("jdbc:sqlite:${databaseProps.file}$extraPragmas")
         .type(dataSourceClass)

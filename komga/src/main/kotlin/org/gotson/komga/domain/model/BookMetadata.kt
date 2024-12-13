@@ -54,31 +54,29 @@ class BookMetadata(
     bookId: String = this.bookId,
     createdDate: LocalDateTime = this.createdDate,
     lastModifiedDate: LocalDateTime = this.lastModifiedDate,
-  ) =
-    BookMetadata(
-      title = title,
-      summary = summary,
-      number = number,
-      numberSort = numberSort,
-      releaseDate = releaseDate,
-      authors = authors,
-      tags = tags,
-      isbn = isbn,
-      links = links,
-      titleLock = titleLock,
-      summaryLock = summaryLock,
-      numberLock = numberLock,
-      numberSortLock = numberSortLock,
-      releaseDateLock = releaseDateLock,
-      authorsLock = authorsLock,
-      tagsLock = tagsLock,
-      isbnLock = isbnLock,
-      linksLock = linksLock,
-      bookId = bookId,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate,
-    )
+  ) = BookMetadata(
+    title = title,
+    summary = summary,
+    number = number,
+    numberSort = numberSort,
+    releaseDate = releaseDate,
+    authors = authors,
+    tags = tags,
+    isbn = isbn,
+    links = links,
+    titleLock = titleLock,
+    summaryLock = summaryLock,
+    numberLock = numberLock,
+    numberSortLock = numberSortLock,
+    releaseDateLock = releaseDateLock,
+    authorsLock = authorsLock,
+    tagsLock = tagsLock,
+    isbnLock = isbnLock,
+    linksLock = linksLock,
+    bookId = bookId,
+    createdDate = createdDate,
+    lastModifiedDate = lastModifiedDate,
+  )
 
-  override fun toString(): String =
-    "BookMetadata(numberSort=$numberSort, releaseDate=$releaseDate, authors=$authors, isbn='$isbn', links=$links, titleLock=$titleLock, summaryLock=$summaryLock, numberLock=$numberLock, numberSortLock=$numberSortLock, releaseDateLock=$releaseDateLock, authorsLock=$authorsLock, tagsLock=$tagsLock, isbnLock=$isbnLock, linksLock=$linksLock, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', summary='$summary', number='$number', tags=$tags)"
+  override fun toString(): String = "BookMetadata(numberSort=$numberSort, releaseDate=$releaseDate, authors=$authors, isbn='$isbn', links=$links, titleLock=$titleLock, summaryLock=$summaryLock, numberLock=$numberLock, numberSortLock=$numberSortLock, releaseDateLock=$releaseDateLock, authorsLock=$authorsLock, tagsLock=$tagsLock, isbnLock=$isbnLock, linksLock=$linksLock, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', summary='$summary', number='$number', tags=$tags)"
 }

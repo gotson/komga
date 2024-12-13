@@ -23,18 +23,20 @@ class ClaimControllerTest(
   fun `given unclaimed server when claiming with invalid email address then returns bad request`(email: String) {
     val password = "password"
 
-    mockMvc.post("/api/v1/claim") {
-      header("X-Komga-Email", email)
-      header("X-Komga-Password", password)
-    }.andExpect {
-      status { isBadRequest() }
-    }
+    mockMvc
+      .post("/api/v1/claim") {
+        header("X-Komga-Email", email)
+        header("X-Komga-Password", password)
+      }.andExpect {
+        status { isBadRequest() }
+      }
   }
 
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getting claim status then returns OK`() {
-    mockMvc.get("/api/v1/claim")
+    mockMvc
+      .get("/api/v1/claim")
       .andExpect {
         status { isOk() }
       }

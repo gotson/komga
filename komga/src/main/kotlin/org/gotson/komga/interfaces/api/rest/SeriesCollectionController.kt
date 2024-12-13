@@ -103,7 +103,8 @@ class SeriesCollectionController(
           sort,
         )
 
-    return collectionRepository.findAll(principal.user.getAuthorizedLibraryIds(libraryIds), principal.user.getAuthorizedLibraryIds(null), searchTerm, pageRequest, principal.user.restrictions)
+    return collectionRepository
+      .findAll(principal.user.getAuthorizedLibraryIds(libraryIds), principal.user.getAuthorizedLibraryIds(null), searchTerm, pageRequest, principal.user.restrictions)
       .map { it.toDto() }
   }
 
@@ -112,7 +113,8 @@ class SeriesCollectionController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ): CollectionDto =
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
+    collectionRepository
+      .findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
       ?.toDto()
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -123,7 +125,8 @@ class SeriesCollectionController(
     @PathVariable id: String,
   ): ResponseEntity<ByteArray> {
     collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
-      return ResponseEntity.ok()
+      return ResponseEntity
+        .ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
         .body(collectionLifecycle.getThumbnailBytes(it, principal.user.id))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -166,17 +169,18 @@ class SeriesCollectionController(
       if (!contentDetector.isImage(mediaType))
         throw ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 
-      return collectionLifecycle.addThumbnail(
-        ThumbnailSeriesCollection(
-          collectionId = collection.id,
-          thumbnail = file.bytes,
-          type = ThumbnailSeriesCollection.Type.USER_UPLOADED,
-          selected = selected,
-          fileSize = file.bytes.size.toLong(),
-          mediaType = mediaType,
-          dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
-        ),
-      ).toDto()
+      return collectionLifecycle
+        .addThumbnail(
+          ThumbnailSeriesCollection(
+            collectionId = collection.id,
+            thumbnail = file.bytes,
+            type = ThumbnailSeriesCollection.Type.USER_UPLOADED,
+            selected = selected,
+            fileSize = file.bytes.size.toLong(),
+            mediaType = mediaType,
+            dimension = imageAnalyzer.getDimension(file.inputStream.buffered()) ?: Dimension(0, 0),
+          ),
+        ).toDto()
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -218,13 +222,14 @@ class SeriesCollectionController(
     collection: CollectionCreationDto,
   ): CollectionDto =
     try {
-      collectionLifecycle.addCollection(
-        SeriesCollection(
-          name = collection.name,
-          ordered = collection.ordered,
-          seriesIds = collection.seriesIds,
-        ),
-      ).toDto()
+      collectionLifecycle
+        .addCollection(
+          SeriesCollection(
+            name = collection.name,
+            ordered = collection.ordered,
+            seriesIds = collection.seriesIds,
+          ),
+        ).toDto()
     } catch (e: DuplicateNameException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
     }
@@ -332,7 +337,8 @@ class SeriesCollectionController(
           ),
         )
 
-      seriesDtoRepository.findAll(search, SearchContext(principal.user), pageRequest)
+      seriesDtoRepository
+        .findAll(search, SearchContext(principal.user), pageRequest)
         .map { it.restrictUrl(!principal.user.roleAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }

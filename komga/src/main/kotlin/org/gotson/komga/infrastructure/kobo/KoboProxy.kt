@@ -30,16 +30,17 @@ class KoboProxy(
   private val komgaSettingsProvider: KomgaSettingsProvider,
 ) {
   private val koboApiClient =
-    RestClient.builder()
+    RestClient
+      .builder()
       .baseUrl("https://storeapi.kobo.com")
       .requestFactory(
         ClientHttpRequestFactoryBuilder.reactor().build(
-          ClientHttpRequestFactorySettings.defaults()
+          ClientHttpRequestFactorySettings
+            .defaults()
             .withReadTimeout(1.minutes.toJavaDuration())
             .withConnectTimeout(1.minutes.toJavaDuration()),
         ),
-      )
-      .build()
+      ).build()
 
   private val pathRegex = """\/kobo\/[-\w]*(.*)""".toRegex()
 
@@ -82,15 +83,17 @@ class KoboProxy(
         null
 
     val response =
-      koboApiClient.method(HttpMethod.valueOf(request.method))
+      koboApiClient
+        .method(HttpMethod.valueOf(request.method))
         .uri { uriBuilder ->
-          uriBuilder.path(path)
+          uriBuilder
+            .path(path)
             .queryParams(LinkedMultiValueMap(request.parameterMap.mapValues { it.value.toList() }))
             .build()
             .also { logger.debug { "Proxy URL: $it" } }
-        }
-        .headers { headersOut ->
-          request.headerNames.toList()
+        }.headers { headersOut ->
+          request.headerNames
+            .toList()
             .filterNot { headersOutExclude.contains(it, true) }
             .filter { headersOutInclude.contains(it, true) || isKoboHeader(it) }
             .forEach {
@@ -104,13 +107,11 @@ class KoboProxy(
             }
           }
           logger.debug { "Headers out: $headersOut" }
-        }
-        .apply { if (body != null) body(body) }
+        }.apply { if (body != null) body(body) }
         .retrieve()
         .onStatus(HttpStatusCode::isError) { _, response ->
           throw ResponseStatusException(response.statusCode, response.statusText)
-        }
-        .toEntity<JsonNode>()
+        }.toEntity<JsonNode>()
 
     logger.debug { "Kobo response: $response" }
 

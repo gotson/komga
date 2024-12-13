@@ -96,7 +96,8 @@ class SeriesDtoDaoTest(
   }
 
   private fun setupSeries() {
-    (1..4).map { makeSeries("$it", library.id) }
+    (1..4)
+      .map { makeSeries("$it", library.id) }
       .forEach { series ->
         val created = seriesLifecycle.createSeries(series)
         seriesLifecycle.addBooks(
@@ -135,11 +136,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ))),
-          SearchContext(user),
-          PageRequest.of(0, 20),
-        ).sortedBy { it.name }
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ))),
+            SearchContext(user),
+            PageRequest.of(0, 20),
+          ).sortedBy { it.name }
 
       // then
       assertThat(found).hasSize(1)
@@ -155,11 +157,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD))),
-          SearchContext(user),
-          PageRequest.of(0, 20),
-        ).sortedBy { it.name }
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD))),
+            SearchContext(user),
+            PageRequest.of(0, 20),
+          ).sortedBy { it.name }
 
       // then
       assertThat(found).hasSize(1)
@@ -175,11 +178,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS))),
-          SearchContext(user),
-          PageRequest.of(0, 20),
-        ).sortedBy { it.name }
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS))),
+            SearchContext(user),
+            PageRequest.of(0, 20),
+          ).sortedBy { it.name }
 
       // then
       assertThat(found).hasSize(2)
@@ -198,16 +202,17 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(
-            SearchCondition.AnyOfSeries(
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(
+              SearchCondition.AnyOfSeries(
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+              ),
             ),
-          ),
-          SearchContext(user),
-          PageRequest.of(0, 20),
-        ).sortedBy { it.name }
+            SearchContext(user),
+            PageRequest.of(0, 20),
+          ).sortedBy { it.name }
 
       // then
       assertThat(found).hasSize(2)
@@ -221,16 +226,17 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(
-            SearchCondition.AnyOfSeries(
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(
+              SearchCondition.AnyOfSeries(
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+              ),
             ),
-          ),
-          SearchContext(user),
-          PageRequest.of(0, 20),
-        ).sortedBy { it.name }
+            SearchContext(user),
+            PageRequest.of(0, 20),
+          ).sortedBy { it.name }
 
       // then
       assertThat(found).hasSize(3)
@@ -244,16 +250,17 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(
-            SearchCondition.AnyOfSeries(
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(
+              SearchCondition.AnyOfSeries(
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+              ),
             ),
-          ),
-          SearchContext(user),
-          PageRequest.of(0, 20),
-        ).sortedBy { it.name }
+            SearchContext(user),
+            PageRequest.of(0, 20),
+          ).sortedBy { it.name }
 
       // then
       assertThat(found).hasSize(3)
@@ -267,17 +274,18 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(
-            SearchCondition.AnyOfSeries(
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
-              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(
+              SearchCondition.AnyOfSeries(
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+                SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+              ),
             ),
-          ),
-          SearchContext(user),
-          PageRequest.of(0, 20),
-        ).sortedBy { it.name }
+            SearchContext(user),
+            PageRequest.of(0, 20),
+          ).sortedBy { it.name }
 
       // then
       assertThat(found).hasSize(4)
@@ -291,10 +299,11 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SearchContext(user),
-          PageRequest.of(0, 20),
-        ).sortedBy { it.name }
+        seriesDtoDao
+          .findAll(
+            SearchContext(user),
+            PageRequest.of(0, 20),
+          ).sortedBy { it.name }
 
       // then
       assertThat(found).hasSize(4)
@@ -316,11 +325,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "batman"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "batman"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(3)
@@ -342,11 +352,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "publisher:vertigo"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "publisher:vertigo"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -368,11 +379,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "status:hiatus"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "status:hiatus"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -394,11 +406,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "reading_direction:left_to_right"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "reading_direction:left_to_right"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -420,11 +433,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "age_rating:12"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "age_rating:12"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -446,11 +460,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "language:en-us"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "language:en-us"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -478,46 +493,52 @@ class SeriesDtoDaoTest(
 
       // when
       val foundByBookTag =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "book_tag:booktag"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "book_tag:booktag"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       val notFoundByBookTag =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "book_tag:seriestag"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "book_tag:seriestag"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       val foundBySeriesTag =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "series_tag:seriestag"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "series_tag:seriestag"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       val notFoundBySeriesTag =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "series_tag:booktag"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "series_tag:booktag"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       val foundByTagFromBook =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "tag:booktag"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "tag:booktag"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       val foundByTagFromSeries =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "tag:seriestag"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "tag:seriestag"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(foundByBookTag).hasSize(1)
@@ -552,11 +573,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "genre:action"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "genre:action"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -578,11 +600,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "total_book_count:5"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "total_book_count:5"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -612,11 +635,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "book_count:2"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "book_count:2"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -648,25 +672,28 @@ class SeriesDtoDaoTest(
 
       // when
       val foundGeneric =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "author:david"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "author:david"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       val foundByRole =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "penciller:david"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "penciller:david"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       val notFoundByRole =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "writer:david"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "writer:david"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(foundGeneric).hasSize(1)
@@ -696,11 +723,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "release_date:1999"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "release_date:1999"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -718,11 +746,12 @@ class SeriesDtoDaoTest(
 
       // when
       val found =
-        seriesDtoDao.findAll(
-          SeriesSearch(fullTextSearch = "deleted:true"),
-          SearchContext(user),
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(fullTextSearch = "deleted:true"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)

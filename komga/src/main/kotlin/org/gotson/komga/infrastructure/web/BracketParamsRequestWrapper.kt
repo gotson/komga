@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletRequestWrapper
 import org.gotson.komga.language.toEnumeration
 import java.util.Enumeration
 
-class BracketParamsRequestWrapper(request: HttpServletRequest) : HttpServletRequestWrapper(request) {
+class BracketParamsRequestWrapper(
+  request: HttpServletRequest,
+) : HttpServletRequestWrapper(request) {
   override fun getParameter(name: String): String? {
     val nameWithoutSuffix = name.removeSuffix("[]")
     val values = listOfNotNull(super.getParameter(nameWithoutSuffix), super.getParameter("$nameWithoutSuffix[]"))
@@ -27,12 +29,18 @@ class BracketParamsRequestWrapper(request: HttpServletRequest) : HttpServletRequ
   }
 
   override fun getParameterNames(): Enumeration<String> =
-    super.getParameterNames().toList().map { it.removeSuffix("[]") }.distinct().toEnumeration()
+    super
+      .getParameterNames()
+      .toList()
+      .map { it.removeSuffix("[]") }
+      .distinct()
+      .toEnumeration()
 
-  override fun getParameterMap(): MutableMap<String, Array<String>> {
-    return super.getParameterMap().asSequence()
+  override fun getParameterMap(): MutableMap<String, Array<String>> =
+    super
+      .getParameterMap()
+      .asSequence()
       .groupBy({ it.key.removeSuffix("[]") }, { it.value })
       .mapValues { it.value.reduce { acc, strings -> acc + strings } }
       .toMutableMap()
-  }
 }

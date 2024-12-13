@@ -20,7 +20,8 @@ fun processNcx(
   document: ResourceContent,
   navType: Epub2Nav,
 ): List<EpubTocEntry> =
-  Jsoup.parse(document.content)
+  Jsoup
+    .parse(document.content)
     .select("${navType.level1} > ${navType.level2}")
     .toList()
     .mapNotNull { ncxElementToTocEntry(navType, it, document.path.parent) }

@@ -8,8 +8,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
 class AuthorsHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
-  override fun supportsParameter(parameter: MethodParameter): Boolean =
-    parameter.getParameterAnnotation(Authors::class.java) != null
+  override fun supportsParameter(parameter: MethodParameter): Boolean = parameter.getParameterAnnotation(Authors::class.java) != null
 
   override fun resolveArgument(
     parameter: MethodParameter,

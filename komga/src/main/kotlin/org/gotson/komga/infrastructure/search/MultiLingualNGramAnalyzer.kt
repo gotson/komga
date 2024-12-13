@@ -9,7 +9,11 @@ import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter
 import org.apache.lucene.analysis.ngram.NGramTokenFilter
 import org.apache.lucene.analysis.standard.StandardTokenizer
 
-class MultiLingualNGramAnalyzer(private val minGram: Int, private val maxGram: Int, private val preserveOriginal: Boolean) : MultiLingualAnalyzer() {
+class MultiLingualNGramAnalyzer(
+  private val minGram: Int,
+  private val maxGram: Int,
+  private val preserveOriginal: Boolean,
+) : MultiLingualAnalyzer() {
   override fun createComponents(fieldName: String): TokenStreamComponents {
     val source: Tokenizer = StandardTokenizer()
     // run the widthfilter first before bigramming, it sometimes combines characters.

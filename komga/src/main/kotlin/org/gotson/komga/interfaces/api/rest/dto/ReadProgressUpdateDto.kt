@@ -26,7 +26,8 @@ class ReadProgressUpdateDtoValidator : ConstraintValidator<ReadProgressUpdateDto
     value: ReadProgressUpdateDto?,
     context: ConstraintValidatorContext?,
   ): Boolean =
-    value != null && (
-      value.page != null || (value.completed != null && value.completed)
-    )
+    value != null &&
+      (
+        value.page != null || (value.completed != null && value.completed)
+      )
 }

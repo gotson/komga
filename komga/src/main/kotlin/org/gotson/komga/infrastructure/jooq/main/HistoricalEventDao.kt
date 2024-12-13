@@ -16,7 +16,8 @@ class HistoricalEventDao(
 
   @Transactional
   override fun insert(event: HistoricalEvent) {
-    dsl.insertInto(e)
+    dsl
+      .insertInto(e)
       .set(e.ID, event.id)
       .set(e.TYPE, event.type)
       .set(e.BOOK_ID, event.bookId)
@@ -25,14 +26,16 @@ class HistoricalEventDao(
       .execute()
 
     if (event.properties.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(ep, ep.ID, ep.KEY, ep.VALUE)
-          .values(null as String?, null, null),
-      ).also { step ->
-        event.properties.forEach { (key, value) ->
-          step.bind(event.id, key, value)
-        }
-      }.execute()
+      dsl
+        .batch(
+          dsl
+            .insertInto(ep, ep.ID, ep.KEY, ep.VALUE)
+            .values(null as String?, null, null),
+        ).also { step ->
+          event.properties.forEach { (key, value) ->
+            step.bind(event.id, key, value)
+          }
+        }.execute()
     }
   }
 }

@@ -48,9 +48,11 @@ class LibraryLifecycleTest(
           libraryLifecycle.addLibrary(
             Library(
               "test",
-              Files.createTempFile(null, null)
+              Files
+                .createTempFile(null, null)
                 .also { it.toFile().deleteOnExit() }
-                .toUri().toURL(),
+                .toUri()
+                .toURL(),
             ),
           )
         }
@@ -154,8 +156,11 @@ class LibraryLifecycleTest(
         existing.copy(
           name = "test",
           root =
-            Files.createTempFile(null, null)
-              .also { it.toFile().deleteOnExit() }.toUri().toURL(),
+            Files
+              .createTempFile(null, null)
+              .also { it.toFile().deleteOnExit() }
+              .toUri()
+              .toURL(),
         )
       val thrown =
         catchThrowable {
