@@ -201,6 +201,8 @@
   "common": {
     "age": "Ikä",
     "all_libraries": "Kaikki kirjastot",
+    "all_of": "Kaikki",
+    "any_of": "Mikä tahansa",
     "book": "Kirja",
     "books": "Kirjat",
     "books_n": "Ei kirjaa | Yksi kirja | {count} kirjaa",
