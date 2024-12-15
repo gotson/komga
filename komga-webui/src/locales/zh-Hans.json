@@ -201,6 +201,8 @@
   "common": {
     "age": "年龄",
     "all_libraries": "所有库",
+    "all_of": "全部",
+    "any_of": "任何",
     "book": "书籍",
     "books": "书籍",
     "books_n": "无书籍 | 1 本书 | {count} 本书",
@@ -214,7 +216,7 @@
     "create": "创建",
     "delete": "删除",
     "dimension": "宽:{width}, 高:{height}",
-    "discard": "弃置",
+    "discard": "放弃更改",
     "disk_space": "磁盘空间",
     "dismiss": "解除",
     "download": "下载",
@@ -451,7 +453,7 @@
       "field_import_comicinfo_series_append_volume": "在系列标题中添加卷号",
       "field_import_epub_book": "书籍元数据",
       "field_import_epub_series": "系列元数据",
-      "field_import_local_artwork": "本地图片(插图)",
+      "field_import_local_artwork": "本地图片（海报，艺术图）",
       "field_import_mylar_series": "系列元数据",
       "field_name": "名称",
       "field_oneshotsdirectory": "单行本目录",
@@ -921,7 +923,7 @@
       "button_scan_libraries": "扫描所有库",
       "button_scan_libraries_deep": "扫描所有库（深度）",
       "button_shutdown": "关闭服务器",
-      "notification_tasks_cancelled": "无可取消任务 | 取消了一个任务 | 取消了 {count} 个任务",
+      "notification_tasks_cancelled": "没有要取消的任务 | 取消了一个任务 | 取消了 {count} 个任务",
       "section_title": "服务器管理"
     },
     "tab_title": "服务器"
@@ -970,16 +972,16 @@
     "release_date": "发布日期"
   },
   "theme": {
-    "dark": "暗",
-    "light": "亮",
+    "dark": "暗黑",
+    "light": "明亮",
     "system": "系统"
   },
   "thumbnail_card": {
     "tooltip_delete": "删除",
-    "tooltip_generated": "生成的插图",
+    "tooltip_generated": "生成的图片（海报，艺术图）",
     "tooltip_mark_as_selected": "标为已选",
     "tooltip_selected": "已选中",
-    "tooltip_sidecar": "本地插图",
+    "tooltip_sidecar": "本地图片（海报，艺术图）",
     "tooltip_to_be_deleted": "将被删除",
     "tooltip_to_be_uploaded": "将被上传",
     "tooltip_too_big": "文件太大！",
