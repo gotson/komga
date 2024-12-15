@@ -201,6 +201,8 @@
   "common": {
     "age": "Edad",
     "all_libraries": "Todas las bibliotecas",
+    "all_of": "Todo",
+    "any_of": "Cualquiera",
     "book": "Libro",
     "books": "Libros",
     "books_n": "Sin libros | 1 libro | {count} libros",
