@@ -201,6 +201,8 @@
   "common": {
     "age": "Dob",
     "all_libraries": "Sve biblioteke",
+    "all_of": "Sve od",
+    "any_of": "Bilo koje od",
     "book": "Knjiga",
     "books": "Knjige",
     "books_n": "Nema knjige | 1 knjiga | {count} knjige",
@@ -938,6 +940,7 @@
     "hint_kobo_port": "Postavi samo u slučaju problema sa sinkronizacijom omota i preuzimanja",
     "label_delete_empty_collections": "Izbriši prazne zbirke nakon pretraživanja",
     "label_delete_empty_readlists": "Izbriši prazne liste čitanja nakon pretraživanja",
+    "label_kepubify_path": "Staza do kepubify",
     "label_kobo_port": "Eksterni priključak Kobo sinkronizacije",
     "label_kobo_proxy": "Zahtjevi servera Kobo sinkronizacije za Kobo trgovinu",
     "label_rememberme_duration": "„Zapamti me” trajanje (u danima)",
