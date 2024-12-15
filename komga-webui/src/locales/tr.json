@@ -257,7 +257,7 @@
     "save_changes": "Değişiklikleri kaydet",
     "series": "Seri | Seriler",
     "sidecars": "Ek bilgi",
-    "tags": "Taglar",
+    "tags": "Etiketler",
     "unavailable": "Kullanılamıyor",
     "unlock_all": "Hepsini aç",
     "url": "URL",
@@ -411,7 +411,7 @@
       "field_release_date": "Yayınlanma Tarihi",
       "field_release_date_error": "YYYY-AA-GG formatında geçerli bir tarih olmalı",
       "field_summary": "Özet",
-      "field_tags": "Taglar",
+      "field_tags": "Etiketler",
       "field_title": "Başlık",
       "number_sort_decrement": "Hepsini 1 azalt",
       "number_sort_increment": "Hepsini 1 arttır",
@@ -419,8 +419,8 @@
       "tab_general": "Genel",
       "tab_links": "Linkler",
       "tab_poster": "Poster",
-      "tab_tags": "Taglar",
-      "tags_notice_multiple_edit": "Birden fazla kitap için tagları düzenliyorsunuz. Bu her kitaptaki var olan tagları sıfırlayacaktır."
+      "tab_tags": "Etiketler",
+      "tags_notice_multiple_edit": "Birden fazla kitap için etiketleri düzenliyorsunuz. Bu her kitaptaki var olan etiketleri sıfırlayacaktır."
     },
     "edit_collection": {
       "button_cancel": "İptal",
@@ -509,7 +509,7 @@
       "field_sort_title": "Başlığa Göre Sırala",
       "field_status": "Durum",
       "field_summary": "Özet",
-      "field_tags": "Taglar",
+      "field_tags": "Etiketler",
       "field_title": "Başlık",
       "field_total_book_count": "Toplam Kitap Sayısı",
       "field_total_book_count_error": "Toplam kitap sayısı 1 veya daha fazla olmalı",
@@ -517,9 +517,9 @@
       "tab_general": "Genel",
       "tab_poster": "Poster",
       "tab_sharing": "Paylaşım",
-      "tab_tags": "Taglar",
+      "tab_tags": "Etiketler",
       "tab_titles": "Alternatif Başlıklar",
-      "tags_notice_multiple_edit": "Birden fazla seri için tagları düzenliyorsunuz. Bu her serideki var olan tagları sıfırlayacaktır."
+      "tags_notice_multiple_edit": "Birden fazla seri için etiketleri düzenliyorsunuz. Bu her serideki var olan etiketleri sıfırlayacaktır."
     },
     "edit_user": {
       "button_cancel": "İptal",
@@ -536,7 +536,7 @@
       "edit_restrictions_for": "{name} için kısıtlamaları düzenle",
       "label_age_restriction": "Yaş kısıtlaması",
       "label_allow_only_labels": "Sadece şu etiketlere izin ver",
-      "label_exclude_labels": "Etiktleri hariç tut",
+      "label_exclude_labels": "Etiketleri hariç tut",
       "tab_content_restrictions": "İçerik Kısıtlamaları",
       "tab_shared_libraries": "Paylaşılan Kütüphaneler"
     },
@@ -807,7 +807,7 @@
     "release_date": "yayın tarihi",
     "sharing_label": "Paylaşım Etiketi",
     "status": "durum",
-    "tag": "tag",
+    "tag": "etiket",
     "unread": "Okunmamış"
   },
   "filter_drawer": {
@@ -964,10 +964,10 @@
     "date_updated": "Güncellenme tarihi",
     "file_name": "Dosya Adına",
     "file_size": "Boyuta göre",
-    "folder_name": "Klasör Adına",
-    "name": "Ada göre",
+    "folder_name": "Klasör adı",
+    "name": "Ad",
     "number": "Sayıya göre",
-    "release_date": "Yayın tarihine göre"
+    "release_date": "Yayın tarihi"
   },
   "theme": {
     "dark": "Koyu",
