@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "アカウント設定",
+    "api_key": {
+      "created_date": "作成日: {date}",
+      "force_kobo_sync": "Kobo syncを強制",
+      "generate_api_key": "APIキーを生成",
+      "no_keys": "まだAPIキーが作成されていません"
+    },
     "change_password": "パスワードの変更"
   },
   "announcements": {
@@ -27,6 +33,7 @@
     "tab_title": "お知らせ"
   },
   "authentication_activity": {
+    "api_key": "APIキー",
     "datetime": "日 / 時",
     "email": "メールアドレス",
     "error": "エラー",
@@ -203,6 +210,7 @@
     "choose_image": "画像を選択",
     "close": "閉じる",
     "collections": "コレクション",
+    "copied": "コピーしました!",
     "create": "作成",
     "delete": "削除",
     "dimension": "幅: {width}, 高さ: {height}",
@@ -220,6 +228,7 @@
     "go_to_library": "ライブラリへ移動",
     "go_to_readlist": "リストを開く",
     "go_to_series": "シリーズへ移動",
+    "i_understand": "了解しました",
     "library": "ライブラリー",
     "locale_name": "日本語",
     "locale_rtl": "false",
@@ -287,6 +296,14 @@
     "tab_title": "データインポート"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "生成",
+      "context": "APIキーは、Kobo Syncプロトコルによる認証に使用できます。",
+      "dialog_title": "新しいAPIキーを生成",
+      "field_comment": "コメント",
+      "field_comment_hint": "このAPIキーは何のためにありますか？",
+      "info_copy": "ここで必ずAPIキーをコピーしてください。もう二度と見ることはできなくなります！"
+    },
     "add_to_collection": {
       "button_create": "作成",
       "card_collection_subtitle": "0 シリーズ | 1 シリーズ | {count} シリーズ",
@@ -319,6 +336,12 @@
     "book_picker": {
       "filter": "冊数、タイトル又は発行日によるフィルタ",
       "title": "書籍を選択"
+    },
+    "delete_apikey": {
+      "button_confirm": "削除",
+      "confirm_delete": "APIキー\"{name}\"を削除することを了解しました",
+      "dialog_title": "APIキーを削除",
+      "warning_html": "このAPIキーを使用するアプリケーションまたはスクリプトは、Komga APIにアクセスできなくなります。この操作を元に戻すことはできません。"
     },
     "delete_book": {
       "button_confirm": "削除",
@@ -538,6 +561,10 @@
       },
       "title": "出力先のファイル名"
     },
+    "force_kobo_sync": {
+      "dialog_title": "Kobo syncを強制",
+      "warning_html": "これにより、このAPIキーのすべての同期履歴が削除されます。koboは次回の同期時にすべてを同期します。"
+    },
     "password_change": {
       "button_cancel": "キャンセル",
       "button_confirm": "パスワード変更",
@@ -607,6 +634,8 @@
     "empty_title": "重複ページなし",
     "filter": {
       "count": "カウント",
+      "date_added": "追加日",
+      "date_modified": "変更日",
       "delete_count": "削除数",
       "delete_size": "省スペース",
       "match_count": "マッチ数",
@@ -761,7 +790,8 @@
     "ERR_1030": "ComicRack CBLにはName要素がありません",
     "ERR_1031": "ComicRack CBL Bookにシリーズまたは番号がありません",
     "ERR_1032": "EPUBのメディアタイプが間違っています",
-    "ERR_1033": "いくつかの項目が欠落しています"
+    "ERR_1033": "いくつかの項目が欠落しています",
+    "ERR_1034": "そのコメントのAPIキーは既に存在します"
   },
   "filter": {
     "age_rating": "年齢レーティング",
@@ -905,8 +935,12 @@
       "btn_confirm": "はい(大きい場合のみ)",
       "title": "サムネイルを再生成"
     },
+    "hint_kobo_port": "カバーとダウンロードで同期の問題が発生した場合にのみ設定します",
     "label_delete_empty_collections": "スキャン後に空のコレクションを削除する",
     "label_delete_empty_readlists": "スキャン後に空の読書リストを削除する",
+    "label_kepubify_path": "kepubifyへのパス",
+    "label_kobo_port": "Kobo sync外部ポート",
+    "label_kobo_proxy": "Kobo StoreへのKobo Syncリクエストをプロキシ",
     "label_rememberme_duration": "「ログイン状態を保持」の時間 (日)",
     "label_server_context_path": "ベースURL",
     "label_server_port": "サーバーのポート",
@@ -958,10 +992,12 @@
   "user_roles": {
     "ADMIN": "管理者",
     "FILE_DOWNLOAD": "ファイルのダウンロード",
+    "KOBO_SYNC": "Kobo Sync",
     "PAGE_STREAMING": "ストリーム配信",
     "USER": "ユーザ"
   },
   "users": {
+    "api_keys": "APIキー",
     "authentication_activity": "認証アクティビティ",
     "users": "ユーザ"
   },
