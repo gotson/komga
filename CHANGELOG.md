@@ -1,3 +1,69 @@
+# [1.15.0](https://github.com/gotson/komga/compare/1.14.1...1.15.0) (2024-12-16)
+## 🚀 Features
+**api**
+- add new series list API using search condition criteria DSL ([3bfc798](https://github.com/gotson/komga/commits/3bfc798))
+
+**docker**
+- add curl and wget ([143770e](https://github.com/gotson/komga/commits/143770e))
+- add native jpeg-xl library for arm64 ([b682e35](https://github.com/gotson/komga/commits/b682e35))
+
+**webui**
+- better filtering for Series ([d93bc3d](https://github.com/gotson/komga/commits/d93bc3d)), closes [#1169](https://github.com/gotson/komga/issues/1169) [#1523](https://github.com/gotson/komga/issues/1523) [#1552](https://github.com/gotson/komga/issues/1552)
+
+**windows-app**
+- add native webp libraries ([17925e5](https://github.com/gotson/komga/commits/17925e5))
+
+## 🐛 Fixes
+
+- keep user uploaded thumbnail when importing a book with upgrade ([b7b74c8](https://github.com/gotson/komga/commits/b7b74c8))
+- restore user uploaded thumbnail when restoring deleted books and series ([812f822](https://github.com/gotson/komga/commits/812f822))
+
+## 🔄️ Changes
+
+- ktlint format ([d659446](https://github.com/gotson/komga/commits/d659446))
+- remove deprecated configuration properties ([7984be2](https://github.com/gotson/komga/commits/7984be2))
+- address deprecations ([225f58f](https://github.com/gotson/komga/commits/225f58f))
+- ktlint format ([d64fe03](https://github.com/gotson/komga/commits/d64fe03))
+
+## 🛠  Build
+**docker**
+- use ubuntu 24.10 and JDK 23 ([858365f](https://github.com/gotson/komga/commits/858365f))
+- use new spring boot jar tools to extract layers ([a7ae8c7](https://github.com/gotson/komga/commits/a7ae8c7))
+
+**macos-app**
+- minimum macos version is now 13 ([5a32f7b](https://github.com/gotson/komga/commits/5a32f7b))
+
+**webui**
+- update Browserslist db ([4ce9c15](https://github.com/gotson/komga/commits/4ce9c15))
+- update Browserslist db ([25a1cfa](https://github.com/gotson/komga/commits/25a1cfa))
+
+**unscoped**
+- move JDK configuration for desktop app to Conveyor configuration ([051cfb7](https://github.com/gotson/komga/commits/051cfb7))
+- bump gradle to 8.11.1 ([2e5d5d8](https://github.com/gotson/komga/commits/2e5d5d8))
+- refactor ([d839cd6](https://github.com/gotson/komga/commits/d839cd6))
+
+## 📝 Documentation
+
+- fix FAQ link in CONTRIBUTING.md ([6cc14e3](https://github.com/gotson/komga/commits/6cc14e3))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 15.1 to 16.0 ([7fa42f5](https://github.com/gotson/komga/commits/7fa42f5))
+- bump hydraulic-software/conveyor from 14.3 to 15.1 ([8923403](https://github.com/gotson/komga/commits/8923403))
+
+**komga**
+- bump nightcompress to 1.0.0 ([750710d](https://github.com/gotson/komga/commits/750710d))
+- bump nightmonkeys to 1.0.0 ([8ce7716](https://github.com/gotson/komga/commits/8ce7716))
+- bump spring boot to 3.4.0 ([c76d9bf](https://github.com/gotson/komga/commits/c76d9bf))
+
+**webui**
+- bump nanoid from 3.3.6 to 3.3.8 in /komga-webui ([570650a](https://github.com/gotson/komga/commits/570650a))
+
+**unscoped**
+- bump deps ([fceda30](https://github.com/gotson/komga/commits/fceda30))
+- bump ktlint to 1.5.0 ([307c652](https://github.com/gotson/komga/commits/307c652))
+- bump com.github.ben-manes.versions to 0.51.0 ([ee4d0a5](https://github.com/gotson/komga/commits/ee4d0a5))
+
 # [1.14.1](https://github.com/gotson/komga/compare/1.14.0...1.14.1) (2024-10-15)
 ## 🐛 Fixes
 **api**
