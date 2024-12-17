@@ -1,3 +1,33 @@
+# [1.15.1](https://github.com/gotson/komga/compare/1.15.0...1.15.1) (2024-12-17)
+## 🐛 Fixes
+
+- static web resources not available ([f22d880](https://github.com/gotson/komga/commits/f22d880))
+
+## 🔄️ Changes
+
+- fix path format ([4ff3881](https://github.com/gotson/komga/commits/4ff3881))
+
+## 🛠  Build
+**conveyor**
+- use JDK 22 to fix windows build issue ([3b4dca2](https://github.com/gotson/komga/commits/3b4dca2))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Portuguese) ([1470a02](https://github.com/gotson/komga/commits/1470a02))
+- translated using Weblate (Thai) ([d179eb2](https://github.com/gotson/komga/commits/d179eb2))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([5724409](https://github.com/gotson/komga/commits/5724409))
+- translated using Weblate (Finnish) ([83d0627](https://github.com/gotson/komga/commits/83d0627))
+- translated using Weblate (Spanish) ([af7b1d6](https://github.com/gotson/komga/commits/af7b1d6))
+- translated using Weblate (Croatian) ([43f86ad](https://github.com/gotson/komga/commits/43f86ad))
+- translated using Weblate (Portuguese) ([29826e1](https://github.com/gotson/komga/commits/29826e1))
+- translated using Weblate (Japanese) ([3871fcf](https://github.com/gotson/komga/commits/3871fcf))
+- translated using Weblate (German) ([3cdb5f0](https://github.com/gotson/komga/commits/3cdb5f0))
+- translated using Weblate (Portuguese (Brazil)) ([dd9482d](https://github.com/gotson/komga/commits/dd9482d))
+- translated using Weblate (Thai) ([3cdec06](https://github.com/gotson/komga/commits/3cdec06))
+- translated using Weblate (Turkish) ([d501d1a](https://github.com/gotson/komga/commits/d501d1a))
+
 # [1.15.0](https://github.com/gotson/komga/compare/1.14.1...1.15.0) (2024-12-16)
 ## 🚀 Features
 **api**
