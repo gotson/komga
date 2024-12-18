@@ -25,8 +25,9 @@ private const val WEBSITE = "https://komga.org"
 @RequestMapping("api/v1/announcements", produces = [MediaType.APPLICATION_JSON_VALUE])
 class AnnouncementController(
   private val userRepository: KomgaUserRepository,
+  webClientBuilder: WebClient.Builder,
 ) {
-  private val webClient = WebClient.create("$WEBSITE/blog/feed.json")
+  private val webClient = webClientBuilder.baseUrl("$WEBSITE/blog/feed.json").build()
 
   private val cache =
     Caffeine
