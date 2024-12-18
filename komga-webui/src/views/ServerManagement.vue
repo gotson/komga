@@ -5,6 +5,13 @@
     </v-row>
     <v-row>
       <v-col cols="auto">
+        <v-btn @click="downloadLogFile"
+        >{{ $t('server.server_management.download_log') }}
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="auto">
         <v-btn @click="scanAllLibraries(false)">{{ $t('server.server_management.button_scan_libraries') }}</v-btn>
       </v-col>
       <v-col cols="auto">
@@ -13,15 +20,21 @@
         >{{ $t('server.server_management.button_scan_libraries_deep') }}
         </v-btn>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="auto">
         <v-btn @click="confirmEmptyTrash = true">{{ $t('server.server_management.button_empty_trash') }}</v-btn>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="auto">
         <v-btn @click="cancelAllTasks"
                color="warning"
         >{{ $t('server.server_management.button_cancel_all_tasks') }}
         </v-btn>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="auto">
         <v-btn @click="modalStopServer = true"
                color="error"
@@ -55,6 +68,8 @@ import Vue from 'vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import {ERROR, ErrorEvent, NOTIFICATION, NotificationEvent} from '@/types/events'
 import {LibraryDto} from '@/types/komga-libraries'
+import jsFileDownloader from 'js-file-downloader'
+import urls from '@/functions/urls'
 
 export default Vue.extend({
   name: 'ServerManagement',
@@ -91,6 +106,14 @@ export default Vue.extend({
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }
+    },
+    downloadLogFile() {
+      new jsFileDownloader({
+        url: `${urls.originNoSlash}${this.$actuator.logfileUrl()}`,
+        filename: 'komga.log',
+        withCredentials: true,
+        forceDesktopMode: true,
+      })
     },
   },
 })

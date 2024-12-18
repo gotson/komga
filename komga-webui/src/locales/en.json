@@ -881,10 +881,6 @@
     "tasks_total_time": "Tasks total time",
     "title": "Metrics"
   },
-  "updates": {
-    "available": "Updates are available",
-    "latest_installed": "The latest version of Komga is already installed"
-  },
   "navigation": {
     "home": "Home",
     "libraries": "Libraries",
@@ -927,6 +923,7 @@
       "button_scan_libraries": "Scan all libraries",
       "button_scan_libraries_deep": "Scan all libraries (deep)",
       "button_shutdown": "Shut down",
+      "download_log": "Download log file",
       "notification_tasks_cancelled": "No tasks to cancel | One task cancelled | {count} tasks cancelled",
       "section_title": "Server Management"
     },
@@ -995,6 +992,10 @@
   "titles_more": {
     "less": "Less titles",
     "more": "More titles"
+  },
+  "updates": {
+    "available": "Updates are available",
+    "latest_installed": "The latest version of Komga is already installed"
   },
   "user_roles": {
     "ADMIN": "Administrator",

@@ -32,4 +32,8 @@ export default class ActuatorService {
       throw new Error(msg)
     }
   }
+
+  logfileUrl(): string {
+    return `${API_ACTUATOR}/logfile`
+  }
 }
