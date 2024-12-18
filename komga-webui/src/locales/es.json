@@ -926,7 +926,8 @@
       "notification_tasks_cancelled": "No hay tareas para cancelar | Una tarea cancelada | {count} tareas canceladas",
       "section_title": "Administración del servidor"
     },
-    "tab_title": "Servidor"
+    "tab_title": "Servidor",
+    "updates": "Actualizaciones"
   },
   "server_settings": {
     "config_precedence": "Tiene prioridad sobre el archivo de configuración",
@@ -990,6 +991,10 @@
   "titles_more": {
     "less": "Menos títulos",
     "more": "Más títulos"
+  },
+  "updates": {
+    "available": "Hay actualizaciones disponibles",
+    "latest_installed": "La última versión de Komga ya está instalada"
   },
   "user_roles": {
     "ADMIN": "Administrador",
