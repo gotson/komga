@@ -90,6 +90,7 @@ class SeriesDtoDao(
       "lastModifiedDate" to s.LAST_MODIFIED_DATE,
       "lastModified" to s.LAST_MODIFIED_DATE,
       "booksMetadata.releaseDate" to bma.RELEASE_DATE,
+      "readDate" to rs.MOST_RECENT_READ_DATE,
       "collection.number" to cs.NUMBER,
       "name" to s.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
       "booksCount" to s.BOOK_COUNT,
