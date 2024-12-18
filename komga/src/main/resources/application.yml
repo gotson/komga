@@ -24,6 +24,8 @@ komga:
     file: \${komga.config-dir}/tasks.sqlite
 
 spring:
+  codec:
+    max-in-memory-size: 10MB
   flyway:
     enabled: true
     locations: classpath:db/migration/{vendor}
