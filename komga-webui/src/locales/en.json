@@ -881,6 +881,10 @@
     "tasks_total_time": "Tasks total time",
     "title": "Metrics"
   },
+  "updates": {
+    "available": "Updates are available",
+    "latest_installed": "The latest version of Komga is already installed"
+  },
   "navigation": {
     "home": "Home",
     "libraries": "Libraries",
@@ -926,7 +930,8 @@
       "notification_tasks_cancelled": "No tasks to cancel | One task cancelled | {count} tasks cancelled",
       "section_title": "Server Management"
     },
-    "tab_title": "Server"
+    "tab_title": "Server",
+    "updates": "Updates"
   },
   "server_settings": {
     "config_precedence": "Takes precedence over the configuration file",

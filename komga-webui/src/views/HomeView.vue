@@ -196,16 +196,18 @@
       <v-spacer/>
 
       <template v-slot:append>
-        <div v-if="isAdmin && !$_.isEmpty(info)"
+        <div v-if="isAdmin && !$_.isEmpty($store.state.actuatorInfo)"
              class="pa-2 pb-6 text-caption"
         >
-          <a href="https://github.com/gotson/komga/blob/master/CHANGELOG.md"
-             target="_blank"
-             class="link-none"
+          <v-badge
+            dot
+            :value="$store.getters.isLatestVersion() == 0"
+            color="warning"
           >
-            v{{ info.build.version }}-{{ info.git.branch }}
-          </a>
-          <v-icon x-small color="grey">mdi-open-in-new</v-icon>
+            <router-link :to="{name: 'updates'}" class="link-none">
+              v{{ $store.state.actuatorInfo.build.version }}-{{ $store.state.actuatorInfo.git.branch }}
+            </router-link>
+          </v-badge>
         </div>
       </template>
     </v-navigation-drawer>
@@ -236,17 +238,19 @@ export default Vue.extend({
     return {
       LIBRARIES_ALL,
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
-      info: {} as ActuatorInfo,
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
     }
   },
   async created() {
     if (this.isAdmin) {
-      this.info = await this.$actuator.getInfo()
+      this.$actuator.getInfo()
+        .then(x => this.$store.commit('setActuatorInfo', x))
       this.$komgaBooks.getBooks(undefined, {size: 0} as PageRequest, undefined, [MediaStatus.ERROR, MediaStatus.UNSUPPORTED])
         .then(x => this.$store.commit('setBooksToCheck', x.totalElements))
       this.$komgaAnnouncements.getAnnouncements()
         .then(x => this.$store.commit('setAnnouncements', x))
+      this.$komgaReleases.getReleases()
+        .then(x => this.$store.commit('setReleases', x))
     }
   },
   computed: {
