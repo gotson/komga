@@ -82,6 +82,7 @@ class BookDtoDao(
       "media.status" to m.STATUS.noCase(),
       "media.comment" to m.COMMENT.noCase(),
       "media.mediaType" to m.MEDIA_TYPE.noCase(),
+      "media.pagesCount" to m.PAGE_COUNT,
       "metadata.title" to d.TITLE.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
       "metadata.numberSort" to d.NUMBER_SORT,
       "metadata.releaseDate" to d.RELEASE_DATE,
