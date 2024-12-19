@@ -94,6 +94,7 @@ class SeriesDtoDao(
       "collection.number" to cs.NUMBER,
       "name" to s.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
       "booksCount" to s.BOOK_COUNT,
+      "random" to DSL.rand(),
     )
 
   override fun findAll(pageable: Pageable): Page<SeriesDto> = findAll(SeriesSearch(), SearchContext.ofAnonymousUser(), pageable)
