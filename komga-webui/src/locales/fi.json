@@ -923,10 +923,12 @@
       "button_scan_libraries": "Skannaa kaikki kirjastot",
       "button_scan_libraries_deep": "Skannaa kaikki kirjastot (syvä)",
       "button_shutdown": "Sammuta",
+      "download_log": "Lataa lokitiedosto",
       "notification_tasks_cancelled": "Ei peruutettavia tehtäviä | Yksi tehtävä peruutettu | {count} tehtävää peruutettu",
       "section_title": "Palvelimen hallinta"
     },
-    "tab_title": "Palvelin"
+    "tab_title": "Palvelin",
+    "updates": "Päivitykset"
   },
   "server_settings": {
     "config_precedence": "Ensisijainen asetustiedostoon nähden",
@@ -963,12 +965,15 @@
   "sort": {
     "books_count": "Kirjojen määrä",
     "date_added": "Lisäyspäivämäärä",
+    "date_read": "Lukupäivä",
     "date_updated": "Päivityspäivämäärä",
     "file_name": "Tiedostonimi",
     "file_size": "Tiedoston koko",
     "folder_name": "Kansion nimi",
     "name": "Nimi",
     "number": "Numero",
+    "page_count": "Sivumäärä",
+    "random": "Satunnainen",
     "release_date": "Julkaisupäivämäärä"
   },
   "theme": {
@@ -990,6 +995,10 @@
   "titles_more": {
     "less": "Vähemmän nimiä",
     "more": "Enemmän nimiä"
+  },
+  "updates": {
+    "available": "Päivityksiä on saatavilla",
+    "latest_installed": "Uusin Komgan versio on jo asennettu"
   },
   "user_roles": {
     "ADMIN": "Järjestelmänvalvoja",
