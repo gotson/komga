@@ -923,10 +923,12 @@
       "button_scan_libraries": "扫描所有库",
       "button_scan_libraries_deep": "扫描所有库（深度）",
       "button_shutdown": "关闭服务器",
+      "download_log": "下载日志文件",
       "notification_tasks_cancelled": "没有要取消的任务 | 取消了一个任务 | 取消了 {count} 个任务",
       "section_title": "服务器管理"
     },
-    "tab_title": "服务器"
+    "tab_title": "服务器",
+    "updates": "更新"
   },
   "server_settings": {
     "config_precedence": "优先于配置文件",
@@ -963,12 +965,15 @@
   "sort": {
     "books_count": "书籍数量",
     "date_added": "添加时间",
+    "date_read": "阅读日期",
     "date_updated": "更新时间",
     "file_name": "文件名",
     "file_size": "文件大小",
     "folder_name": "文件夹名",
     "name": "名称",
     "number": "序号",
+    "page_count": "页数",
+    "random": "随机",
     "release_date": "发布日期"
   },
   "theme": {
@@ -990,6 +995,10 @@
   "titles_more": {
     "less": "更少标题",
     "more": "更多标题"
+  },
+  "updates": {
+    "available": "有可用更新",
+    "latest_installed": "Komga 最新版本已安装"
   },
   "user_roles": {
     "ADMIN": "管理员",
