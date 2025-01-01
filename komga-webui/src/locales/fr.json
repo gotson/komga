@@ -25,7 +25,7 @@
       "generate_api_key": "Créer une clé API",
       "no_keys": "Aucune clé API créée"
     },
-    "change_password": "Modifier le mot de passe"
+    "change_password": "modifier le mot de passe"
   },
   "announcements": {
     "mark_all_read": "Marquer tous comme lus",
@@ -201,6 +201,8 @@
   "common": {
     "age": "Âge",
     "all_libraries": "Toutes les bibliothèques",
+    "all_of": "Tout",
+    "any_of": "N'importe lequel de",
     "book": "Livre",
     "books": "Livres",
     "books_n": "Aucun livre | 1 livre | {count} livres",
@@ -882,7 +884,7 @@
   "navigation": {
     "home": "Accueil",
     "libraries": "Bibliothèques",
-    "logout": "Se déconnecter"
+    "logout": "Déconnexion"
   },
   "page_not_found": {
     "go_back_to_home_page": "Revenir à la page d'accueil",
@@ -921,10 +923,12 @@
       "button_scan_libraries": "Analyser toutes les bibliothèques",
       "button_scan_libraries_deep": "Analyser toutes les bibliothèques (profond)",
       "button_shutdown": "Éteindre",
+      "download_log": "Télécharger le fichier de log",
       "notification_tasks_cancelled": "Aucune tâche à annuler | Une tâche annulée | {count} tâches annulées",
       "section_title": "Gestion du serveur"
     },
-    "tab_title": "Serveur"
+    "tab_title": "Serveur",
+    "updates": "Mises à jour"
   },
   "server_settings": {
     "config_precedence": "Prioritaire par rapport au fichier de configuration",
@@ -961,12 +965,15 @@
   "sort": {
     "books_count": "Nombre de livres",
     "date_added": "Date d'ajout",
+    "date_read": "Date de lecture",
     "date_updated": "Date de mise à jour",
     "file_name": "Nom du ficher",
     "file_size": "Taille du fichier",
     "folder_name": "Nom du répertoire",
     "name": "Nom",
     "number": "Numéro",
+    "page_count": "Nombre de page",
+    "random": "Aléatoire",
     "release_date": "Date de publication"
   },
   "theme": {
@@ -988,6 +995,10 @@
   "titles_more": {
     "less": "Moins de titres",
     "more": "Plus de titres"
+  },
+  "updates": {
+    "available": "Mises à jour disponibles",
+    "latest_installed": "La dernière version de Komga est déjà installée"
   },
   "user_roles": {
     "ADMIN": "Administrateur",
