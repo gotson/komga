@@ -201,6 +201,8 @@
   "common": {
     "age": "Yaş",
     "all_libraries": "Tüm Kütüphaneler",
+    "all_of": "Hepsi",
+    "any_of": "Herhangi biri",
     "book": "Kitap",
     "books": "Kitaplar",
     "books_n": "Kitap Yok | 1 Kitap | {count} Kitap",
@@ -921,10 +923,12 @@
       "button_scan_libraries": "Bütün kütüphaneleri tara",
       "button_scan_libraries_deep": "Bütün kütüphaneleri tara (detaylı)",
       "button_shutdown": "Kapat",
+      "download_log": "Kayıt dosyasını indir",
       "notification_tasks_cancelled": "İptal edilecek görev yok | 1 görev iptal edildi | {count} görev iptal edildi",
       "section_title": "Sunucu Yönetimi"
     },
-    "tab_title": "Sunucu"
+    "tab_title": "Sunucu",
+    "updates": "Güncellemeler"
   },
   "server_settings": {
     "config_precedence": "Konfigürasyon dosyası üzerine önceliklidir",
@@ -961,12 +965,15 @@
   "sort": {
     "books_count": "Kitap sayısı",
     "date_added": "Eklenme tarihi",
+    "date_read": "Okunma Tarihi",
     "date_updated": "Güncellenme tarihi",
     "file_name": "Dosya Adına",
     "file_size": "Boyuta göre",
     "folder_name": "Klasör adı",
     "name": "Ad",
     "number": "Sayıya göre",
+    "page_count": "Sayfa sayısı",
+    "random": "Rastgele",
     "release_date": "Yayın tarihi"
   },
   "theme": {
@@ -988,6 +995,10 @@
   "titles_more": {
     "less": "Daha az başlık",
     "more": "Daha çok başlık"
+  },
+  "updates": {
+    "available": "Yeni güncellemeler mevcut",
+    "latest_installed": "Komga'nın güncel sürümü yüklü"
   },
   "user_roles": {
     "ADMIN": "Yönetici",
