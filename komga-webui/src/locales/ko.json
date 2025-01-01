@@ -19,6 +19,12 @@
   },
   "account_settings": {
     "account_settings": "계정 설정",
+    "api_key": {
+      "created_date": "생성된 날짜: {date}",
+      "force_kobo_sync": "강제 Kobo 동기화",
+      "generate_api_key": "API 키 생성하기",
+      "no_keys": "아직 생성된 API 키 없음"
+    },
     "change_password": "비밀번호 변경"
   },
   "announcements": {
@@ -27,6 +33,7 @@
     "tab_title": "공지사항"
   },
   "authentication_activity": {
+    "api_key": "API 키",
     "datetime": "날짜 시간",
     "email": "이메일",
     "error": "오류",
@@ -194,6 +201,8 @@
   "common": {
     "age": "연령",
     "all_libraries": "모든 서재",
+    "all_of": "모든",
+    "any_of": "아무거나",
     "book": "도서",
     "books": "도서",
     "books_n": "없음 | 1 권 | {count} 권",
@@ -203,6 +212,7 @@
     "choose_image": "이미지 선택",
     "close": "닫기",
     "collections": "모음집",
+    "copied": "복사됨!",
     "create": "만들기",
     "delete": "삭제",
     "dimension": "너비: {width}, 높이: {height}",
@@ -220,6 +230,7 @@
     "go_to_library": "서재로 이동",
     "go_to_readlist": "읽기 목록으로 이동",
     "go_to_series": "시리즈로 이동",
+    "i_understand": "이해합니다",
     "library": "서재",
     "locale_name": "한국어",
     "locale_rtl": "false",
@@ -287,6 +298,14 @@
     "tab_title": "데이터 가져오기"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "생성하기",
+      "context": "API 키는 Kobo Sync 프로토콜을 이용해 인증하는 데 사용할 수 있습니다.",
+      "dialog_title": "새로운 API 키 생성하기",
+      "field_comment": "주석",
+      "field_comment_hint": "API 키의 사용 목적이 무엇인가요?",
+      "info_copy": "지금 당장 API 키를 복사하세요. 사라지면 다시 볼 수 없습니다!"
+    },
     "add_to_collection": {
       "button_create": "만들기",
       "card_collection_subtitle": "시리즈 없음 | 1 시리즈 | {count} 시리즈",
@@ -319,6 +338,12 @@
     "book_picker": {
       "filter": "책 번호, 제목 또는 발매일로 필터링",
       "title": "책 선택"
+    },
+    "delete_apikey": {
+      "button_confirm": "삭제",
+      "confirm_delete": "이해합니다, \"{name}\" API 키를 삭제합니다",
+      "dialog_title": "API 키 삭제하기",
+      "warning_html": "이 API 키를 사용하는 모든 애플리케이션 또는 스크립트가 Komga API를 사용 할 수 없게 됩니다. 이 동작은 되돌릴 수 없습니다."
     },
     "delete_book": {
       "button_confirm": "삭제",
@@ -538,6 +563,10 @@
       },
       "title": "대상 파일"
     },
+    "force_kobo_sync": {
+      "dialog_title": "강제 Kobo 동기화",
+      "warning_html": "이 동작은 이 API 키의 모든 동기화 기록을 삭제합니다. 당신의 Kobo는 다음 동기화 때 모든 것을 동기화할 것입니다."
+    },
     "password_change": {
       "button_cancel": "취소",
       "button_confirm": "비밀번호 변경",
@@ -607,6 +636,8 @@
     "empty_title": "중복된 페이지를 찾을 수 없음",
     "filter": {
       "count": "횟수",
+      "date_added": "추가된 날짜",
+      "date_modified": "수정된 날짜",
       "delete_count": "삭제 횟수",
       "delete_size": "절약된 공간",
       "match_count": "일치 횟수",
@@ -761,7 +792,8 @@
     "ERR_1030": "ComicRack CBL에 이름 항목이 없음",
     "ERR_1031": "ComicRack CBL 책에 시리즈 또는 번호가 없음",
     "ERR_1032": "EPUB 파일의 미디어 타입이 잘못됨",
-    "ERR_1033": "일부 항목이 누락됨"
+    "ERR_1033": "일부 항목이 누락됨",
+    "ERR_1034": "같은 주석을 가진 API 키가 이미 존재합니다"
   },
   "filter": {
     "age_rating": "연령 등급",
@@ -891,10 +923,12 @@
       "button_scan_libraries": "모든 서재 스캔",
       "button_scan_libraries_deep": "모든 서재 스캔 (심층)",
       "button_shutdown": "시스템 종료",
+      "download_log": "로그 파일 다운로드하기",
       "notification_tasks_cancelled": "취소할 작업 없음 | 작업 취소됨 | {count} 개의 작업 취소됨",
       "section_title": "서버 관리"
     },
-    "tab_title": "서버"
+    "tab_title": "서버",
+    "updates": "업데이트"
   },
   "server_settings": {
     "config_precedence": "구성 파일보다 우선함",
@@ -905,8 +939,12 @@
       "btn_confirm": "예 (더 큰 경우에만)",
       "title": "썸네일 재생성"
     },
+    "hint_kobo_port": "표지와 다운로드 동기화 문제가 있을 시에만 설정하세요",
     "label_delete_empty_collections": "스캔 후 빈 모음집 삭제",
     "label_delete_empty_readlists": "스캔 후 빈 읽기 목록 삭제",
+    "label_kepubify_path": "kepubify 경로",
+    "label_kobo_port": "Kobo Sync 외부 포트",
+    "label_kobo_proxy": "Kobo Sync 요청을 Kobo Store로 프록시하기",
     "label_rememberme_duration": "로그인 상태 유지 시간 (일)",
     "label_server_context_path": "기본 URL",
     "label_server_port": "서버 포트",
@@ -927,12 +965,15 @@
   "sort": {
     "books_count": "도서의 수",
     "date_added": "추가된 날짜",
+    "date_read": "읽은 날짜",
     "date_updated": "갱신된 날짜",
     "file_name": "파일 이름",
     "file_size": "파일 크기",
     "folder_name": "폴더 이름",
     "name": "이름",
     "number": "번호",
+    "page_count": "페이지 수",
+    "random": "무작위",
     "release_date": "발매일"
   },
   "theme": {
@@ -955,13 +996,19 @@
     "less": "더 적은 제목",
     "more": "더 많은 제목"
   },
+  "updates": {
+    "available": "업데이트가 사용 가능합니다",
+    "latest_installed": "최신 버전의 Komga가 이미 설치되어 있습니다"
+  },
   "user_roles": {
     "ADMIN": "관리자",
     "FILE_DOWNLOAD": "파일 다운로드",
+    "KOBO_SYNC": "Kobo Sync",
     "PAGE_STREAMING": "페이지 스트리밍",
     "USER": "사용자"
   },
   "users": {
+    "api_keys": "API 키",
     "authentication_activity": "접근 내역",
     "users": "사용자"
   },
