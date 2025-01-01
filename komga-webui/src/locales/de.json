@@ -201,6 +201,8 @@
   "common": {
     "age": "Alter",
     "all_libraries": "Alle Bibliotheken",
+    "all_of": "Alle von",
+    "any_of": "Einige von",
     "book": "Buch",
     "books": "Bücher",
     "books_n": "Kein Buch | 1 Buch | {count} Bücher",
@@ -921,10 +923,12 @@
       "button_scan_libraries": "Scanne alle Bibliotheken",
       "button_scan_libraries_deep": "(Tiefen) Scan aller Bibliotheken",
       "button_shutdown": "Herunterfahren",
+      "download_log": "Lade das Logfile herunter",
       "notification_tasks_cancelled": "Keine Aufgaben abzubrechen | Eine Aufgabe abgebrochen | {count} Aufgaben abgebrochen",
       "section_title": "Serververwaltung"
     },
-    "tab_title": "Server"
+    "tab_title": "Server",
+    "updates": "Aktuallisierungen"
   },
   "server_settings": {
     "config_precedence": "Hat Vorrang vor der Konfigurationsdatei",
@@ -961,12 +965,15 @@
   "sort": {
     "books_count": "Anzahl der Bücher",
     "date_added": "Hinzufügedatum",
+    "date_read": "Lesedatum",
     "date_updated": "Aktualisierungsdatum",
     "file_name": "Dateiname",
     "file_size": "Dateigröße",
     "folder_name": "Ordnername",
     "name": "Nach Name sortiert",
     "number": "Nummer",
+    "page_count": "Anzahl Seiten",
+    "random": "Zufallsortierung",
     "release_date": "Veröffentlichungsdatum"
   },
   "theme": {
@@ -988,6 +995,10 @@
   "titles_more": {
     "less": "Weniger Titel",
     "more": "Weitere Titel"
+  },
+  "updates": {
+    "available": "Aktuallisierung ist verfügbar",
+    "latest_installed": "Die neueste Version von Komga ist schon installiert"
   },
   "user_roles": {
     "ADMIN": "Systemverwalter",
