@@ -201,6 +201,8 @@
   "common": {
     "age": "Stáří",
     "all_libraries": "Všechny knihovny",
+    "all_of": "Všechny",
+    "any_of": "Kterýkoli",
     "book": "Kniha",
     "books": "Knihy",
     "books_n": "Žádná knížka | 1 knížka | {count} knížek",
@@ -921,10 +923,12 @@
       "button_scan_libraries": "Prohledat všechny knihovny",
       "button_scan_libraries_deep": "Skenovat všechny knihovny (hloubkově)",
       "button_shutdown": "Vypnout",
+      "download_log": "Stáhnout log",
       "notification_tasks_cancelled": "Žádné úkoly ke zrušení | Jeden úkol zrušen | Počet zrušených úkolů: {count}",
       "section_title": "Správa serveru"
     },
-    "tab_title": "Server"
+    "tab_title": "Server",
+    "updates": "Aktulizace"
   },
   "server_settings": {
     "config_precedence": "Má přednost před konfiguračním souborem",
@@ -967,6 +971,8 @@
     "folder_name": "Název adresáře",
     "name": "Název",
     "number": "Číslo",
+    "page_count": "Počet stránek",
+    "random": "Náhodný",
     "release_date": "Datum vydání"
   },
   "theme": {
@@ -988,6 +994,10 @@
   "titles_more": {
     "less": "Méně titulů",
     "more": "Více titulů"
+  },
+  "updates": {
+    "available": "K dispozici jsou aktualizace",
+    "latest_installed": "Nejnovější verze aplikace Komga je již nainstalovaná"
   },
   "user_roles": {
     "ADMIN": "Administrátor",
