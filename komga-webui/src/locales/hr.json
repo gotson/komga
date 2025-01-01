@@ -923,10 +923,12 @@
       "button_scan_libraries": "Pretraži sve biblioteke",
       "button_scan_libraries_deep": "Pretraži sve biblioteke (duboko)",
       "button_shutdown": "Isključi",
+      "download_log": "Preuzmi datoteku zapisa",
       "notification_tasks_cancelled": "Nema zadataka za prekidanje | Jedan zadatak prekinut | {count} zadatka prekinuta",
       "section_title": "Upravljanje serverom"
     },
-    "tab_title": "Server"
+    "tab_title": "Server",
+    "updates": "Aktualiziranja"
   },
   "server_settings": {
     "config_precedence": "Ima prednost nad konfiguracijskom datotekom",
@@ -963,12 +965,15 @@
   "sort": {
     "books_count": "Broj knjiga",
     "date_added": "Datum dodavanja",
+    "date_read": "Datum čitanja",
     "date_updated": "Datum aktualiziranja",
     "file_name": "Ime datoteke",
     "file_size": "Veličina datoteke",
     "folder_name": "Ime mape",
     "name": "Ime",
     "number": "Broj",
+    "page_count": "Broj stranica",
+    "random": "Nasumce",
     "release_date": "Datum izdanja"
   },
   "theme": {
@@ -990,6 +995,10 @@
   "titles_more": {
     "less": "Manje naslova",
     "more": "Više naslova"
+  },
+  "updates": {
+    "available": "Postoje nove verzije",
+    "latest_installed": "Najnovija Komga verzija je već instalirana"
   },
   "user_roles": {
     "ADMIN": "Administrator",
