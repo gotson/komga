@@ -134,7 +134,7 @@ class BookDtoDao(
         } else {
           if (it.property == "readList.number") {
             val readListId = joins.filterIsInstance<RequiredJoin.ReadList>().firstOrNull()?.readListId ?: return@mapNotNull null
-            val f = rlb.`as`("RLB_$readListId").NUMBER
+            val f = rlbAlias(readListId).NUMBER
             if (it.isAscending) f.asc() else f.desc()
           } else {
             it.toSortField(sorts)

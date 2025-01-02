@@ -61,8 +61,7 @@ class BookSearchHelper(
         when (searchCondition.operator) {
           // for IS condition we have to do a join, so as to order the books by readList number
           is SearchOperator.Is ->
-            Tables.READLIST_BOOK
-              .`as`("RLB_${searchCondition.operator.value}")
+            rlbAlias(searchCondition.operator.value)
               .READLIST_ID
               .eq(searchCondition.operator.value) to setOf(RequiredJoin.ReadList(searchCondition.operator.value))
           is SearchOperator.IsNot -> {
