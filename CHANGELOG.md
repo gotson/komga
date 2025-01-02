@@ -1,3 +1,39 @@
+# [1.16.0](https://github.com/gotson/komga/compare/1.15.1...1.16.0) (2025-01-02)
+## 🚀 Features
+**api**
+- readlist books are not always sorted by number ([0dd4b27](https://github.com/gotson/komga/commits/0dd4b27)), closes [#1803](https://github.com/gotson/komga/issues/1803)
+- add new endpoint to retrieve Komga releases ([fa98da3](https://github.com/gotson/komga/commits/fa98da3))
+
+**webui**
+- download log file from server settings ([eed4f09](https://github.com/gotson/komga/commits/eed4f09)), closes [#1599](https://github.com/gotson/komga/issues/1599)
+- display updates with available indicator and changelog ([85cffc7](https://github.com/gotson/komga/commits/85cffc7)), closes [#1598](https://github.com/gotson/komga/issues/1598)
+
+**unscoped**
+- sort series by random ([d50646f](https://github.com/gotson/komga/commits/d50646f)), closes [#1558](https://github.com/gotson/komga/issues/1558)
+- sort books by page count ([09bc445](https://github.com/gotson/komga/commits/09bc445)), closes [#1570](https://github.com/gotson/komga/issues/1570)
+- sort series by read date ([0dc8e61](https://github.com/gotson/komga/commits/0dc8e61)), closes [#1700](https://github.com/gotson/komga/issues/1700)
+
+## 🔄️ Changes
+
+- remove duplicated code ([274ac6a](https://github.com/gotson/komga/commits/274ac6a))
+- use spring's webclient.builder ([9fde145](https://github.com/gotson/komga/commits/9fde145))
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([1552b9b](https://github.com/gotson/komga/commits/1552b9b))
+
+## 🌐 Translation
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([bd0a483](https://github.com/gotson/komga/commits/bd0a483))
+- translated using Weblate (Korean) ([b50072c](https://github.com/gotson/komga/commits/b50072c))
+- translated using Weblate (Finnish) ([bcdb7b2](https://github.com/gotson/komga/commits/bcdb7b2))
+- translated using Weblate (French) ([cb57488](https://github.com/gotson/komga/commits/cb57488))
+- translated using Weblate (Spanish) ([48b472d](https://github.com/gotson/komga/commits/48b472d))
+- translated using Weblate (Croatian) ([4911fba](https://github.com/gotson/komga/commits/4911fba))
+- translated using Weblate (Czech) ([9081c33](https://github.com/gotson/komga/commits/9081c33))
+- translated using Weblate (German) ([e47b18c](https://github.com/gotson/komga/commits/e47b18c))
+- translated using Weblate (Turkish) ([263e64b](https://github.com/gotson/komga/commits/263e64b))
+
 # [1.15.1](https://github.com/gotson/komga/compare/1.15.0...1.15.1) (2024-12-17)
 ## 🐛 Fixes
 

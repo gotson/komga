@@ -8402,6 +8402,39 @@
         "deprecated": true
       }
     },
+    "/api/v1/releases": {
+      "get": {
+        "tags": [
+          "release-controller"
+        ],
+        "operationId": "getAnnouncements_1",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReleaseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/readlists/{id}/thumbnails/{thumbnailId}": {
       "get": {
         "tags": [
@@ -16028,6 +16061,38 @@
             "type": "string"
           },
           "deviceName": {
+            "type": "string"
+          }
+        }
+      },
+      "ReleaseDto": {
+        "required": [
+          "description",
+          "latest",
+          "preRelease",
+          "releaseDate",
+          "url",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "url": {
+            "type": "string"
+          },
+          "latest": {
+            "type": "boolean"
+          },
+          "preRelease": {
+            "type": "boolean"
+          },
+          "description": {
             "type": "string"
           }
         }
