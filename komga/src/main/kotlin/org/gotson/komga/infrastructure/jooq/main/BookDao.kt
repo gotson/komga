@@ -147,6 +147,7 @@ class BookDao(
               }
               // shouldn't be required for books
               RequiredJoin.BookMetadataAggregation -> Unit
+              is RequiredJoin.Collection -> Unit
             }
           }
         }.where(conditions)
@@ -171,6 +172,7 @@ class BookDao(
               }
               // shouldn't be required for books
               RequiredJoin.BookMetadataAggregation -> Unit
+              is RequiredJoin.Collection -> Unit
             }
           }
         }.where(conditions)

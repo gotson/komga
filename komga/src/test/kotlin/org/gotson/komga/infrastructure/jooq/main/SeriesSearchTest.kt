@@ -188,6 +188,54 @@ class SeriesSearchTest(
   }
 
   @Test
+  fun `given some series in multiple collections when searching by collection then results are accurate`() {
+    val series1 = makeSeries("1", library1.id).also { seriesLifecycle.createSeries(it) }
+    val series2 = makeSeries("2", library1.id).also { seriesLifecycle.createSeries(it) }
+    val series3 = makeSeries("3", library1.id).also { seriesLifecycle.createSeries(it) }
+    val collection1 = SeriesCollection("col1", seriesIds = listOf(series1.id, series2.id, series3.id), ordered = true)
+    val collection2 = SeriesCollection("col2", seriesIds = listOf(series3.id, series2.id, series1.id), ordered = true)
+    collectionRepository.insert(collection1)
+    collectionRepository.insert(collection2)
+
+    // search by collection 1
+    run {
+      val search = SeriesSearch(SearchCondition.CollectionId(SearchOperator.Is(collection1.id)))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), UnpagedSorted(Sort.by("collection.number"))).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), UnpagedSorted(Sort.by("collection.number"))).content
+
+      // order not guaranteed for seriesDao
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactly("1", "2", "3")
+    }
+
+    // search by collection 2
+    run {
+      val search = SeriesSearch(SearchCondition.CollectionId(SearchOperator.Is(collection2.id)))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), UnpagedSorted(Sort.by("collection.number"))).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), UnpagedSorted(Sort.by("collection.number"))).content
+
+      // order not guaranteed for seriesDao
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("3", "2", "1")
+      assertThat(foundDto.map { it.name }).containsExactly("3", "2", "1")
+    }
+    // search by collection 1 or 2 - order is not guaranteed in that case
+    run {
+      val search =
+        SeriesSearch(
+          SearchCondition.AnyOfSeries(
+            SearchCondition.CollectionId(SearchOperator.Is(collection1.id)),
+            SearchCondition.CollectionId(SearchOperator.Is(collection2.id)),
+          ),
+        )
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), UnpagedSorted(Sort.by("collection.number"))).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), UnpagedSorted(Sort.by("collection.number"))).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+    }
+  }
+
+  @Test
   fun `given some series when searching by deleted then results are accurate`() {
     makeSeries("1", library1.id).copy(deletedDate = LocalDateTime.now()).let { series ->
       seriesLifecycle.createSeries(series)

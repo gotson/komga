@@ -149,3 +149,5 @@ fun ObjectMapper.deserializeMediaExtension(
 }
 
 fun rlbAlias(readListId: String) = Tables.READLIST_BOOK.`as`("RLB_$readListId")
+
+fun csAlias(collectionId: String) = Tables.COLLECTION_SERIES.`as`("CS_$collectionId")

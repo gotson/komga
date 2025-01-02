@@ -108,6 +108,7 @@ class SyncPointDao(
                 RequiredJoin.Media -> Unit
                 is RequiredJoin.ReadProgress -> Unit
                 RequiredJoin.BookMetadataAggregation -> Unit
+                is RequiredJoin.Collection -> Unit
               }
             }
           }.join(m)

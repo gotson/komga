@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
+import org.gotson.komga.infrastructure.jooq.csAlias
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.jooq.main.Tables
@@ -34,7 +35,6 @@ class SeriesDao(
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val rs = Tables.READ_PROGRESS_SERIES
-  private val cs = Tables.COLLECTION_SERIES
   private val bma = Tables.BOOK_METADATA_AGGREGATION
 
   override fun findAll(): Collection<Series> =
@@ -131,6 +131,10 @@ class SeriesDao(
         .apply {
           joins.forEach { join ->
             when (join) {
+              is RequiredJoin.Collection -> {
+                val csAlias = csAlias(join.collectionId)
+                leftJoin(csAlias).on(s.ID.eq(csAlias.SERIES_ID).and(csAlias.COLLECTION_ID.eq(join.collectionId)))
+              }
               RequiredJoin.BookMetadataAggregation -> leftJoin(bma).on(s.ID.eq(bma.SERIES_ID))
               RequiredJoin.SeriesMetadata -> innerJoin(d).on(s.ID.eq(d.SERIES_ID))
               is RequiredJoin.ReadProgress -> leftJoin(rs).on(rs.SERIES_ID.eq(s.ID)).and(rs.USER_ID.eq(join.userId))

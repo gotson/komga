@@ -175,6 +175,7 @@ class BookDtoDao(
                     // Series joins - not needed
                     RequiredJoin.BookMetadataAggregation -> Unit
                     RequiredJoin.SeriesMetadata -> Unit
+                    is RequiredJoin.Collection -> Unit
                   }
                 }
               }.where(conditions)
@@ -424,6 +425,7 @@ class BookDtoDao(
             // Series joins - not needed
             RequiredJoin.BookMetadataAggregation -> Unit
             RequiredJoin.SeriesMetadata -> Unit
+            is RequiredJoin.Collection -> Unit
           }
         }
       }
