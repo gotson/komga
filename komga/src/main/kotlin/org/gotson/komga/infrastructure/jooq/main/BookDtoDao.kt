@@ -9,6 +9,7 @@ import org.gotson.komga.infrastructure.jooq.BookSearchHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
 import org.gotson.komga.infrastructure.jooq.noCase
+import org.gotson.komga.infrastructure.jooq.rlbAlias
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toCondition
@@ -128,10 +129,17 @@ class BookDtoDao(
 
     val orderBy =
       pageable.sort.mapNotNull {
-        if (it.property == "relevance" && !bookIds.isNullOrEmpty())
+        if (it.property == "relevance" && !bookIds.isNullOrEmpty()) {
           b.ID.sortByValues(bookIds, it.isAscending)
-        else
-          it.toSortField(sorts)
+        } else {
+          if (it.property == "readList.number") {
+            val readListId = joins.filterIsInstance<RequiredJoin.ReadList>().firstOrNull()?.readListId ?: return@mapNotNull null
+            val f = rlb.`as`("RLB_$readListId").NUMBER
+            if (it.isAscending) f.asc() else f.desc()
+          } else {
+            it.toSortField(sorts)
+          }
+        }
       }
 
     val (count, dtos) =
@@ -156,6 +164,10 @@ class BookDtoDao(
               .apply {
                 joins.forEach { join ->
                   when (join) {
+                    is RequiredJoin.ReadList -> {
+                      val rlbAlias = rlbAlias(join.readListId)
+                      leftJoin(rlbAlias).on(rlbAlias.BOOK_ID.eq(b.ID).and(rlbAlias.READLIST_ID.eq(join.readListId)))
+                    }
                     // always joined
                     RequiredJoin.BookMetadata -> Unit
                     RequiredJoin.Media -> Unit
@@ -171,7 +183,7 @@ class BookDtoDao(
           )
 
         val dtos =
-          selectBase(userId, joins, pageable.sort.any { it.property == "readList.number" })
+          selectBase(userId, joins)
             .where(conditions)
             .and(searchCondition)
             .orderBy(orderBy)
@@ -334,11 +346,10 @@ class BookDtoDao(
           .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
           .fetchOne(rlb.NUMBER)
 
-      return selectBase(userId, joinOnReadList = true)
-        .where(rlb.READLIST_ID.eq(readList.id))
+      return selectBase(userId, setOf(RequiredJoin.ReadList(readList.id)))
         .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
         .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
-        .orderBy(rlb.NUMBER.let { if (next) it.asc() else it.desc() })
+        .orderBy(rlbAlias(readList.id).NUMBER.let { if (next) it.asc() else it.desc() })
         .seek(numberSort)
         .limit(1)
         .fetchAndMap()
@@ -377,7 +388,6 @@ class BookDtoDao(
   private fun selectBase(
     userId: String,
     joins: Set<RequiredJoin> = emptySet(),
-    joinOnReadList: Boolean = false,
   ): SelectOnConditionStep<Record> {
     val selectFields =
       listOf(
@@ -389,7 +399,7 @@ class BookDtoDao(
       )
 
     return dsl
-      .let { if (joinOnReadList) it.selectDistinct(selectFields) else it.select(selectFields) }
+      .select(selectFields)
       .from(b)
       .leftJoin(m)
       .on(b.ID.eq(m.BOOK_ID))
@@ -401,9 +411,12 @@ class BookDtoDao(
       .leftJoin(sd)
       .on(b.SERIES_ID.eq(sd.SERIES_ID))
       .apply {
-        if (joinOnReadList) leftJoin(rlb).on(b.ID.eq(rlb.BOOK_ID))
         joins.forEach { join ->
           when (join) {
+            is RequiredJoin.ReadList -> {
+              val rlbAlias = rlbAlias(join.readListId)
+              leftJoin(rlbAlias).on(rlbAlias.BOOK_ID.eq(b.ID).and(rlbAlias.READLIST_ID.eq(join.readListId)))
+            }
             // always joined
             RequiredJoin.BookMetadata -> Unit
             RequiredJoin.Media -> Unit

@@ -58,18 +58,23 @@ class BookSearchHelper(
       is SearchCondition.SeriesId -> searchCondition.operator.toCondition(Tables.BOOK.SERIES_ID) to emptySet()
 
       is SearchCondition.ReadListId ->
-        Tables.BOOK.ID.let { field ->
-          val inner = { readListId: String ->
-            DSL
-              .select(Tables.READLIST_BOOK.BOOK_ID)
-              .from(Tables.READLIST_BOOK)
-              .where(Tables.READLIST_BOOK.READLIST_ID.eq(readListId))
+        when (searchCondition.operator) {
+          // for IS condition we have to do a join, so as to order the books by readList number
+          is SearchOperator.Is ->
+            Tables.READLIST_BOOK
+              .`as`("RLB_${searchCondition.operator.value}")
+              .READLIST_ID
+              .eq(searchCondition.operator.value) to setOf(RequiredJoin.ReadList(searchCondition.operator.value))
+          is SearchOperator.IsNot -> {
+            val inner = { readListId: String ->
+              DSL
+                .select(Tables.READLIST_BOOK.BOOK_ID)
+                .from(Tables.READLIST_BOOK)
+                .where(Tables.READLIST_BOOK.READLIST_ID.eq(readListId))
+            }
+            Tables.BOOK.ID.notIn(inner(searchCondition.operator.value)) to emptySet()
           }
-          when (searchCondition.operator) {
-            is SearchOperator.Is -> field.`in`(inner(searchCondition.operator.value))
-            is SearchOperator.IsNot -> field.notIn(inner(searchCondition.operator.value))
-          }
-        } to emptySet()
+        }
 
       is SearchCondition.Title ->
         searchCondition.operator.toCondition(Tables.BOOK_METADATA.TITLE) to

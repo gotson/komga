@@ -137,6 +137,7 @@ class SeriesDao(
               // Book joins - not needed
               RequiredJoin.BookMetadata -> Unit
               RequiredJoin.Media -> Unit
+              is RequiredJoin.ReadList -> Unit
             }
           }
         }.where(conditions)

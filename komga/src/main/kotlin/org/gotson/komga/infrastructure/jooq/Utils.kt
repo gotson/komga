@@ -147,3 +147,5 @@ fun ObjectMapper.deserializeMediaExtension(
     null
   }
 }
+
+fun rlbAlias(readListId: String) = Tables.READLIST_BOOK.`as`("RLB_$readListId")

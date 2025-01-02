@@ -7,6 +7,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
+import org.gotson.komga.infrastructure.jooq.rlbAlias
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
@@ -140,6 +141,10 @@ class BookDao(
               RequiredJoin.SeriesMetadata -> innerJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
               RequiredJoin.Media -> innerJoin(m).on(b.ID.eq(m.BOOK_ID))
               is RequiredJoin.ReadProgress -> leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(join.userId))
+              is RequiredJoin.ReadList -> {
+                val rlbAlias = rlbAlias(join.readListId)
+                leftJoin(rlbAlias).on(rlbAlias.BOOK_ID.eq(b.ID).and(rlbAlias.READLIST_ID.eq(join.readListId)))
+              }
               // shouldn't be required for books
               RequiredJoin.BookMetadataAggregation -> Unit
             }
@@ -160,6 +165,10 @@ class BookDao(
               RequiredJoin.SeriesMetadata -> innerJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
               RequiredJoin.Media -> innerJoin(m).on(b.ID.eq(m.BOOK_ID))
               is RequiredJoin.ReadProgress -> leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(join.userId))
+              is RequiredJoin.ReadList -> {
+                val rlbAlias = rlbAlias(join.readListId)
+                leftJoin(rlbAlias).on(rlbAlias.BOOK_ID.eq(b.ID).and(rlbAlias.READLIST_ID.eq(join.readListId)))
+              }
               // shouldn't be required for books
               RequiredJoin.BookMetadataAggregation -> Unit
             }

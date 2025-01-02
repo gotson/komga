@@ -163,6 +163,7 @@ class SeriesDtoDao(
             RequiredJoin.Media -> Unit
             RequiredJoin.BookMetadata -> Unit
             RequiredJoin.BookMetadataAggregation -> Unit
+            is RequiredJoin.ReadList -> Unit
           }
         }
       }.where(conditionsRefined)
@@ -209,6 +210,7 @@ class SeriesDtoDao(
             RequiredJoin.BookMetadata -> Unit
             RequiredJoin.BookMetadataAggregation -> Unit
             RequiredJoin.Media -> Unit
+            is RequiredJoin.ReadList -> Unit
           }
         }
       }
@@ -244,6 +246,7 @@ class SeriesDtoDao(
               RequiredJoin.BookMetadata -> Unit
               RequiredJoin.BookMetadataAggregation -> Unit
               RequiredJoin.Media -> Unit
+              is RequiredJoin.ReadList -> Unit
             }
           }
         }.where(conditions)

@@ -12,6 +12,10 @@ sealed class RequiredJoin {
     val userId: String,
   ) : RequiredJoin()
 
+  data class ReadList(
+    val readListId: String,
+  ) : RequiredJoin()
+
   data object BookMetadataAggregation : RequiredJoin()
 
   data object SeriesMetadata : RequiredJoin()

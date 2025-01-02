@@ -190,6 +190,56 @@ class BookSearchTest(
   }
 
   @Test
+  fun `given some books in multiple read lists when searching by read list then results are accurate`() {
+    val book1 = makeBook("1", libraryId = library1.id, seriesId = series1.id)
+    val book2 = makeBook("2", libraryId = library2.id, seriesId = series2.id)
+    seriesLifecycle.addBooks(series1, listOf(book1))
+    seriesLifecycle.addBooks(series2, listOf(book2))
+    val readList1 = ReadList("rl1", bookIds = mapOf(1 to book1.id, 2 to book2.id).toSortedMap())
+    val readList2 = ReadList("rl2", bookIds = mapOf(1 to book2.id, 2 to book1.id).toSortedMap())
+    readListRepository.insert(readList1)
+    readListRepository.insert(readList2)
+
+    // search by readList 1
+    run {
+      val search = BookSearch(SearchCondition.ReadListId(SearchOperator.Is(readList1.id)))
+      val found = bookDao.findAll(search.condition, SearchContext(user1), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))).content
+
+      // order not guaranteed for bookDao
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2")
+      assertThat(foundDto.map { it.name }).containsExactly("1", "2")
+    }
+
+    // search by readList 2
+    run {
+      val search = BookSearch(SearchCondition.ReadListId(SearchOperator.Is(readList2.id)))
+      val found = bookDao.findAll(search.condition, SearchContext(user1), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))).content
+
+      // order not guaranteed for bookDao
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "1")
+      assertThat(foundDto.map { it.name }).containsExactly("2", "1")
+    }
+
+    // search by readList 1 or 2 - order is not guaranteed in that case
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.AnyOfBook(
+            SearchCondition.ReadListId(SearchOperator.Is(readList1.id)),
+            SearchCondition.ReadListId(SearchOperator.Is(readList2.id)),
+          ),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), UnpagedSorted(Sort.by(Sort.Order.asc("readList.number")))).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "1")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2", "1")
+    }
+  }
+
+  @Test
   fun `given some books when searching by deleted then results are accurate`() {
     val book1 = makeBook("1", libraryId = library1.id, seriesId = series1.id).copy(deletedDate = LocalDateTime.now())
     val book2 = makeBook("2", libraryId = library2.id, seriesId = series2.id)
