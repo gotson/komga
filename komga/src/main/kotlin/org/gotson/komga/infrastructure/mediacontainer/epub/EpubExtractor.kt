@@ -138,7 +138,10 @@ class EpubExtractor(
     pageCount: Int,
     analyzeDimensions: Boolean,
   ): List<BookPage> {
-    if (!isFixedLayout) return emptyList()
+    if (!isFixedLayout) {
+      logger.info { "Epub Divina detection failed: book is not fixed layout" }
+      return emptyList()
+    }
 
     try {
       val pagesWithImages =
@@ -165,9 +168,16 @@ class EpubExtractor(
             (img + svg).map { (Path(pagePath).parent ?: Path("")).resolve(it).normalize().invariantSeparatorsPathString } // resolve it against the page folder
           }
 
-      if (pagesWithImages.size != pageCount) return emptyList()
-      val imagesPath = pagesWithImages.flatten()
-      if (imagesPath.size != pageCount) return emptyList()
+      if (pagesWithImages.size != pageCount) {
+        logger.info { "Epub Divina detection failed: book has ${pagesWithImages.size} pages with images, but $pageCount total pages" }
+        return emptyList()
+      }
+      // Only keep unique image path for each page. KCC sometimes generates HTML pages with 5 times the same image.
+      val imagesPath = pagesWithImages.map { it.distinct() }.flatten()
+      if (imagesPath.size != pageCount) {
+        logger.info { "Epub Divina detection failed: book has ${imagesPath.size} detected images, but $pageCount total pages" }
+        return emptyList()
+      }
 
       val divinaPages =
         imagesPath.mapNotNull { imagePath ->
@@ -187,7 +197,10 @@ class EpubExtractor(
           BookPage(fileName = imagePath, mediaType = mediaType, dimension = dimension, fileSize = fileSize)
         }
 
-      if (divinaPages.size != pageCount) return emptyList()
+      if (divinaPages.size != pageCount) {
+        logger.info { "Epub Divina detection failed: book has ${divinaPages.size} detected divina pages, but $pageCount total pages" }
+        return emptyList()
+      }
       return divinaPages
     } catch (e: Exception) {
       logger.warn(e) { "Error while getting divina pages" }
