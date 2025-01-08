@@ -30,8 +30,8 @@ class ReadProgressDaoTest(
   private val library = makeLibrary()
   private val series = makeSeries("Series")
 
-  private val user1 = KomgaUser("user1@example.org", "", false)
-  private val user2 = KomgaUser("user2@example.org", "", false)
+  private val user1 = KomgaUser("user1@example.org", "")
+  private val user2 = KomgaUser("user2@example.org", "")
 
   private val book1 = makeBook("Book1")
   private val book2 = makeBook("Book2")

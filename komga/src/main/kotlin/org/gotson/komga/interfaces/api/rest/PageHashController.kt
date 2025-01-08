@@ -8,7 +8,6 @@ import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHashKnown
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.PageHashRepository
 import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
@@ -37,7 +36,7 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("api/v1/page-hashes", produces = [MediaType.APPLICATION_JSON_VALUE])
-@PreAuthorize("hasRole('$ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 class PageHashController(
   private val pageHashRepository: PageHashRepository,
   private val pageHashLifecycle: PageHashLifecycle,

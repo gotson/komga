@@ -3,7 +3,6 @@ package org.gotson.komga.interfaces.api.rest
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
 import io.mockk.verify
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.interfaces.api.rest.dto.JsonFeedDto
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -56,7 +55,7 @@ class AnnouncementControllerTest(
     )
 
   @Test
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   fun `when getting announcements multiple times then the server announcements are only fetched once`() {
     every { announcementController.fetchWebsiteAnnouncements() } returns mockFeed
 

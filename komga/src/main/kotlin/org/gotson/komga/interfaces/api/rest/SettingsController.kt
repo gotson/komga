@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import jakarta.validation.Valid
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.kobo.KepubConverter
 import org.gotson.komga.infrastructure.web.WebServerEffectiveSettings
@@ -24,7 +23,7 @@ import kotlin.time.Duration.Companion.days
 
 @RestController
 @RequestMapping(value = ["api/v1/settings"], produces = [MediaType.APPLICATION_JSON_VALUE])
-@PreAuthorize("hasRole('$ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 class SettingsController(
   private val komgaSettingsProvider: KomgaSettingsProvider,
   @Value("\${server.port:#{null}}") private val configServerPort: Int?,

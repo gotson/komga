@@ -16,7 +16,6 @@ import org.gotson.komga.domain.model.MediaType.EPUB
 import org.gotson.komga.domain.model.R2Device
 import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.R2Progression
-import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.SyncPoint
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -633,7 +632,7 @@ class KoboController(
     value = ["v1/books/{bookId}/file/epub"],
     produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
   )
-  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,

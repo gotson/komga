@@ -61,7 +61,7 @@ class SeriesDtoDaoTest(
   @Autowired private val searchIndexLifecycle: SearchIndexLifecycle,
 ) {
   private val library = makeLibrary()
-  private val user = KomgaUser("user@example.org", "", false)
+  private val user = KomgaUser("user@example.org", "")
 
   @MockkBean
   private lateinit var mockEventPublisher: ApplicationEventPublisher

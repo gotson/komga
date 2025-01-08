@@ -10,7 +10,6 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
@@ -156,7 +155,7 @@ class SeriesCollectionController(
   }
 
   @PostMapping(value = ["{id}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun addUserUploadedCollectionThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
@@ -185,7 +184,7 @@ class SeriesCollectionController(
   }
 
   @PutMapping("{id}/thumbnails/{thumbnailId}/selected")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun markSelectedCollectionThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -201,7 +200,7 @@ class SeriesCollectionController(
   }
 
   @DeleteMapping("{id}/thumbnails/{thumbnailId}")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteUserUploadedCollectionThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -216,7 +215,7 @@ class SeriesCollectionController(
   }
 
   @PostMapping
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun addOne(
     @Valid @RequestBody
     collection: CollectionCreationDto,
@@ -235,7 +234,7 @@ class SeriesCollectionController(
     }
 
   @PatchMapping("{id}")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable id: String,
@@ -258,7 +257,7 @@ class SeriesCollectionController(
   }
 
   @DeleteMapping("{id}")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteOne(
     @PathVariable id: String,
@@ -339,6 +338,6 @@ class SeriesCollectionController(
 
       seriesDtoRepository
         .findAll(search, SearchContext(principal.user), pageRequest)
-        .map { it.restrictUrl(!principal.user.roleAdmin) }
+        .map { it.restrictUrl(!principal.user.isAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 }

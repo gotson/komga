@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.scheduler
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Bean
@@ -39,8 +40,8 @@ class InitialUsersDevConfiguration {
   @Bean
   fun initialUsers(): List<KomgaUser> =
     listOf(
-      KomgaUser("admin@example.org", "admin", roleAdmin = true, roleKoboSync = true),
-      KomgaUser("user@example.org", "user", roleAdmin = false),
+      KomgaUser("admin@example.org", "admin", roles = UserRoles.entries.toSet()),
+      KomgaUser("user@example.org", "user"),
     )
 }
 
@@ -50,6 +51,6 @@ class InitialUsersProdConfiguration {
   @Bean
   fun initialUsers(): List<KomgaUser> =
     listOf(
-      KomgaUser("admin@example.org", RandomStringUtils.secure().nextAlphanumeric(12), roleAdmin = true),
+      KomgaUser("admin@example.org", RandomStringUtils.secure().nextAlphanumeric(12), roles = UserRoles.entries.toSet()),
     )
 }

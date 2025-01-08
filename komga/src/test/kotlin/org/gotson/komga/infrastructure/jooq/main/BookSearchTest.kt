@@ -69,8 +69,8 @@ class BookSearchTest(
   private val library2 = makeLibrary()
   private val series1 = makeSeries("Series 1").copy(libraryId = library1.id)
   private val series2 = makeSeries("Series 2").copy(libraryId = library2.id)
-  private val user1 = KomgaUser("user1@example.org", "p", false)
-  private val user2 = KomgaUser("user2@example.org", "p", false)
+  private val user1 = KomgaUser("user1@example.org", "p")
+  private val user2 = KomgaUser("user2@example.org", "p")
 
   @MockkBean
   private lateinit var mockEventPublisher: ApplicationEventPublisher

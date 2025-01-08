@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -916,7 +915,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when creating read list then return ok`() {
       // language=JSON
       val jsonString =
@@ -937,7 +936,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing read lists when creating read list with existing name then return bad request`() {
       makeReadLists()
 
@@ -957,7 +956,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given read list with duplicate bookIds when creating read list then return bad request`() {
       // language=JSON
       val jsonString =
@@ -996,7 +995,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when updating read list then return no content`() {
       makeReadLists()
 
@@ -1026,7 +1025,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing read lists when updating read list with existing name then return bad request`() {
       makeReadLists()
 
@@ -1043,7 +1042,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing read list when updating read list with duplicate bookIds then return bad request`() {
       makeReadLists()
 
@@ -1060,7 +1059,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when updating read list then only updated fields are modified`() {
       makeReadLists()
 
@@ -1121,7 +1120,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when deleting read list then return no content`() {
       makeReadLists()
 
@@ -1382,7 +1381,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given invalid cbl file when matching then return bad request`() {
       val content = "garbled"
 
@@ -1398,7 +1397,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given cbl file without books when matching then return bad request`() {
       val content =
         """
@@ -1422,7 +1421,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given cbl file without name when matching then return bad request`() {
       val content =
         """
@@ -1447,7 +1446,7 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given cbl file with book without series when matching then return bad request`() {
       val content =
         """

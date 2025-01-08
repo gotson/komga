@@ -54,7 +54,6 @@ class SyncPointLifecycleTest(
     KomgaUser(
       "user1@example.org",
       "",
-      false,
       sharedLibrariesIds = setOf(library1.id, library2.id),
       restrictions =
         ContentRestrictions(

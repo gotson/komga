@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.api.rest
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.interfaces.api.rest.dto.UserDto
 import org.gotson.komga.interfaces.api.rest.dto.toDto
@@ -42,10 +43,7 @@ class ClaimController(
         KomgaUser(
           email = email,
           password = password,
-          roleAdmin = true,
-          roleFileDownload = true,
-          rolePageStreaming = true,
-          roleKoboSync = true,
+          roles = UserRoles.entries.toSet(),
         ),
       ).toDto()
   }

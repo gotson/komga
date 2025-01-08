@@ -65,8 +65,8 @@ class SeriesSearchTest(
   private lateinit var seriesMetadataRepository: SeriesMetadataRepository
   private val library1 = makeLibrary()
   private val library2 = makeLibrary()
-  private val user1 = KomgaUser("user1@example.org", "p", false)
-  private val user2 = KomgaUser("user2@example.org", "p", false)
+  private val user1 = KomgaUser("user1@example.org", "p")
+  private val user2 = KomgaUser("user2@example.org", "p")
 
   @MockkBean
   private lateinit var mockEventPublisher: ApplicationEventPublisher

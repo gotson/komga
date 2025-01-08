@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import org.gotson.komga.application.tasks.TasksRepository
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -17,6 +16,6 @@ class TaskController(
 ) {
   @DeleteMapping("api/v1/tasks")
   @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun emptyTaskQueue(): Int = tasksRepository.deleteAllWithoutOwner()
 }

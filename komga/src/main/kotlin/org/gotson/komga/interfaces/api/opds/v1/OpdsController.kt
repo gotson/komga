@@ -10,7 +10,6 @@ import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaProfile
-import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SearchCondition
@@ -729,7 +728,7 @@ class OpdsController(
 
   @ApiResponse(content = [Content(mediaType = "image/*", schema = Schema(type = "string", format = "binary"))])
   @GetMapping("books/{bookId}/pages/{pageNumber}", produces = ["image/png", "image/gif", "image/jpeg"])
-  @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
+  @PreAuthorize("hasRole('PAGE_STREAMING')")
   fun getBookPageOpds(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: ServletWebRequest,

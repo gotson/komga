@@ -62,8 +62,8 @@ class BookImporterTest(
   @Autowired private val readListLifecycle: ReadListLifecycle,
 ) {
   private val library = makeLibrary("lib", "file:/library")
-  private val user1 = KomgaUser("user1@example.org", "", false)
-  private val user2 = KomgaUser("user2@example.org", "", false)
+  private val user1 = KomgaUser("user1@example.org", "")
+  private val user2 = KomgaUser("user2@example.org", "")
 
   @MockkBean
   private lateinit var mockTackReceiver: TaskEmitter

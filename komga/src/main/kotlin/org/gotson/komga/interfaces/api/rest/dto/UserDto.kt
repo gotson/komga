@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.KomgaUser
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
-import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
-import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 
 data class UserDto(
@@ -33,7 +30,7 @@ fun KomgaUser.toDto() =
   UserDto(
     id = id,
     email = email,
-    roles = roles,
+    roles = roles.map { it.name }.toSet() + "USER",
     sharedAllLibraries = sharedAllLibraries,
     sharedLibrariesIds = sharedLibrariesIds,
     labelsAllow = restrictions.labelsAllow,
@@ -52,10 +49,7 @@ data class UserCreationDto(
     KomgaUser(
       email,
       password,
-      roleAdmin = roles.contains(ROLE_ADMIN),
-      roleFileDownload = roles.contains(ROLE_FILE_DOWNLOAD),
-      rolePageStreaming = roles.contains(ROLE_PAGE_STREAMING),
-      roleKoboSync = roles.contains(ROLE_KOBO_SYNC),
+      roles = UserRoles.valuesOf(roles),
     )
 }
 

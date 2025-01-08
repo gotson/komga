@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.api.rest.dto.GithubReleaseDto
 import org.gotson.komga.interfaces.api.rest.dto.ReleaseDto
@@ -20,7 +19,7 @@ import java.util.concurrent.TimeUnit
 private const val GITHUB_API = "https://api.github.com/repos/gotson/komga/releases"
 
 @RestController
-@PreAuthorize("hasRole('$ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("api/v1/releases", produces = [MediaType.APPLICATION_JSON_VALUE])
 class ReleaseController(
   webClientBuilder: WebClient.Builder,
@@ -34,7 +33,7 @@ class ReleaseController(
       .build<String, List<GithubReleaseDto>>()
 
   @GetMapping
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun getAnnouncements(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): List<ReleaseDto> =

@@ -6,22 +6,13 @@ import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.language.lowerNotBlank
 import java.time.LocalDateTime
 
-const val ROLE_USER = "USER"
-const val ROLE_ADMIN = "ADMIN"
-const val ROLE_FILE_DOWNLOAD = "FILE_DOWNLOAD"
-const val ROLE_PAGE_STREAMING = "PAGE_STREAMING"
-const val ROLE_KOBO_SYNC = "KOBO_SYNC"
-
 data class KomgaUser(
   @Email(regexp = ".+@.+\\..+")
   @NotBlank
   val email: String,
   @NotBlank
   val password: String,
-  val roleAdmin: Boolean,
-  val roleFileDownload: Boolean = true,
-  val rolePageStreaming: Boolean = true,
-  val roleKoboSync: Boolean = false,
+  val roles: Set<UserRoles> = setOf(UserRoles.FILE_DOWNLOAD, UserRoles.PAGE_STREAMING),
   val sharedLibrariesIds: Set<String> = emptySet(),
   val sharedAllLibraries: Boolean = true,
   val restrictions: ContentRestrictions = ContentRestrictions(),
@@ -30,14 +21,8 @@ data class KomgaUser(
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
   @delegate:Transient
-  val roles: Set<String> by lazy {
-    buildSet {
-      add(ROLE_USER)
-      if (roleAdmin) add(ROLE_ADMIN)
-      if (roleFileDownload) add(ROLE_FILE_DOWNLOAD)
-      if (rolePageStreaming) add(ROLE_PAGE_STREAMING)
-      if (roleKoboSync) add(ROLE_KOBO_SYNC)
-    }
+  val isAdmin: Boolean by lazy {
+    roles.contains(UserRoles.ADMIN)
   }
 
   /**
@@ -60,7 +45,7 @@ data class KomgaUser(
       else -> null
     }
 
-  fun canAccessAllLibraries(): Boolean = sharedAllLibraries || roleAdmin
+  fun canAccessAllLibraries(): Boolean = sharedAllLibraries || isAdmin
 
   fun canAccessLibrary(libraryId: String): Boolean = canAccessAllLibraries() || sharedLibrariesIds.any { it == libraryId }
 
@@ -107,5 +92,5 @@ data class KomgaUser(
     return !ageDenied && !labelDenied
   }
 
-  override fun toString(): String = "KomgaUser(email='$email', roleAdmin=$roleAdmin, roleFileDownload=$roleFileDownload, rolePageStreaming=$rolePageStreaming, roleKoboSync=$roleKoboSync, sharedLibrariesIds=$sharedLibrariesIds, sharedAllLibraries=$sharedAllLibraries, restrictions=$restrictions, id='$id', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate)"
+  override fun toString(): String = "KomgaUser(createdDate=$createdDate, email='$email', roles=$roles, sharedLibrariesIds=$sharedLibrariesIds, sharedAllLibraries=$sharedAllLibraries, restrictions=$restrictions, id='$id', lastModifiedDate=$lastModifiedDate)"
 }

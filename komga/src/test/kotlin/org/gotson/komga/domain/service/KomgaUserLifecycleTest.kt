@@ -25,8 +25,8 @@ class KomgaUserLifecycleTest(
   @SpykBean
   private lateinit var apiKeyGenerator: ApiKeyGenerator
 
-  private val user1 = KomgaUser("user1@example.org", "", false)
-  private val user2 = KomgaUser("user2@example.org", "", false)
+  private val user1 = KomgaUser("user1@example.org", "")
+  private val user2 = KomgaUser("user2@example.org", "")
 
   @BeforeAll
   fun setup() {

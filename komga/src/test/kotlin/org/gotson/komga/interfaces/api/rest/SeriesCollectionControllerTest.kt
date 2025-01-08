@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.makeBook
@@ -819,7 +818,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when creating collection then return ok`() {
       // language=JSON
       val jsonString =
@@ -840,7 +839,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing collections when creating collection with existing name then return bad request`() {
       makeCollections()
 
@@ -860,7 +859,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given collection with duplicate seriesIds when creating collection then return bad request`() {
       // language=JSON
       val jsonString =
@@ -899,7 +898,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when updating collection then return no content`() {
       makeCollections()
 
@@ -929,7 +928,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing collections when updating collection with existing name then return bad request`() {
       makeCollections()
 
@@ -946,7 +945,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing collection when updating collection with duplicate seriesIds then return bad request`() {
       makeCollections()
 
@@ -963,7 +962,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when updating collection then only updated fields are modified`() {
       makeCollections()
 
@@ -1024,7 +1023,7 @@ class SeriesCollectionControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when deleting collection then return no content`() {
       makeCollections()
 

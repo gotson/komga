@@ -6,11 +6,8 @@ import jakarta.validation.Valid
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.DuplicateNameException
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
-import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
-import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -80,12 +77,12 @@ class UserController(
   }
 
   @GetMapping
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun getAll(): List<UserDto> = userRepository.findAll().map { it.toDto() }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun addOne(
     @Valid @RequestBody
     newUser: UserCreationDto,
@@ -98,7 +95,7 @@ class UserController(
 
   @DeleteMapping("{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
+  @PreAuthorize("hasRole('ADMIN') and #principal.user.id != #id")
   fun delete(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -110,7 +107,7 @@ class UserController(
 
   @PatchMapping("{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PreAuthorize("hasRole('$ROLE_ADMIN') and #principal.user.id != #id")
+  @PreAuthorize("hasRole('ADMIN') and #principal.user.id != #id")
   fun updateUser(
     @PathVariable id: String,
     @Valid @RequestBody
@@ -121,10 +118,7 @@ class UserController(
       val updatedUser =
         with(patch) {
           existing.copy(
-            roleAdmin = if (isSet("roles")) roles!!.contains(ROLE_ADMIN) else existing.roleAdmin,
-            roleFileDownload = if (isSet("roles")) roles!!.contains(ROLE_FILE_DOWNLOAD) else existing.roleFileDownload,
-            rolePageStreaming = if (isSet("roles")) roles!!.contains(ROLE_PAGE_STREAMING) else existing.rolePageStreaming,
-            roleKoboSync = if (isSet("roles")) roles!!.contains(ROLE_KOBO_SYNC) else existing.roleKoboSync,
+            roles = if (isSet("roles")) UserRoles.valuesOf(roles!!) else existing.roles,
             sharedAllLibraries = if (isSet("sharedLibraries")) sharedLibraries!!.all else existing.sharedAllLibraries,
             sharedLibrariesIds =
               if (isSet("sharedLibraries")) {
@@ -167,7 +161,7 @@ class UserController(
 
   @PatchMapping("{id}/password")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @PreAuthorize("hasRole('$ROLE_ADMIN') or #principal.user.id == #id")
+  @PreAuthorize("hasRole('ADMIN') or #principal.user.id == #id")
   fun updatePassword(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -187,7 +181,7 @@ class UserController(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<AuthenticationActivityDto> {
-    if (demo && !principal.user.roleAdmin) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    if (demo && !principal.user.isAdmin) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     val sort =
       if (page.sort.isSorted)
         page.sort
@@ -209,7 +203,7 @@ class UserController(
 
   @GetMapping("authentication-activity")
   @PageableAsQueryParam
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun getAuthenticationActivity(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
@@ -234,7 +228,7 @@ class UserController(
   }
 
   @GetMapping("{id}/authentication-activity/latest")
-  @PreAuthorize("hasRole('$ROLE_ADMIN') or #principal.user.id == #id")
+  @PreAuthorize("hasRole('ADMIN') or #principal.user.id == #id")
   fun getLatestAuthenticationActivityForUser(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -249,7 +243,7 @@ class UserController(
   fun getApiKeys(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): Collection<ApiKeyDto> {
-    if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    if (demo && !principal.user.isAdmin) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     return userRepository.findApiKeyByUserId(principal.user.id).map { it.toDto().redacted() }
   }
 
@@ -258,7 +252,7 @@ class UserController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Valid @RequestBody apiKeyRequest: ApiKeyRequestDto,
   ): ApiKeyDto {
-    if (demo) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+    if (demo && !principal.user.isAdmin) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     return try {
       userLifecycle.createApiKey(principal.user, apiKeyRequest.comment)?.toDto()
     } catch (e: DuplicateNameException) {

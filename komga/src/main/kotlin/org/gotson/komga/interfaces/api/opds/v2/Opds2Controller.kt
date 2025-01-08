@@ -8,7 +8,6 @@ import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
-import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SearchCondition
@@ -865,7 +864,7 @@ class Opds2Controller(
     value = ["books/{bookId}/pages/{pageNumber}"],
     produces = [MediaType.ALL_VALUE],
   )
-  @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
+  @PreAuthorize("hasRole('PAGE_STREAMING')")
   fun getBookPage(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: ServletWebRequest,

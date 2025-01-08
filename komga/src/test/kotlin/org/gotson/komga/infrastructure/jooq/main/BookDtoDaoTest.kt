@@ -63,7 +63,7 @@ class BookDtoDaoTest(
 ) {
   private val library = makeLibrary()
   private var series = makeSeries("Series")
-  private val user = KomgaUser("user@example.org", "", false)
+  private val user = KomgaUser("user@example.org", "")
 
   @MockkBean
   private lateinit var mockEventPublisher: ApplicationEventPublisher

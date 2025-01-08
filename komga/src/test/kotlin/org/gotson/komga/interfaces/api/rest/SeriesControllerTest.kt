@@ -8,7 +8,6 @@ import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
@@ -78,7 +77,7 @@ class SeriesControllerTest(
   @BeforeAll
   fun `setup library`() {
     libraryRepository.insert(library)
-    userRepository.insert(KomgaUser("user@example.org", "", false, id = "1"))
+    userRepository.insert(KomgaUser("user@example.org", "", id = "1"))
   }
 
   @AfterAll
@@ -724,7 +723,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when getting series then url is available`() {
       val createdSeries =
         makeSeries(name = "series", libraryId = library.id).let { series ->
@@ -784,7 +783,7 @@ class SeriesControllerTest(
         """{"language":"japanese"}""",
       ],
     )
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
       mockMvc
         .patch("/api/v1/series/1/metadata") {
@@ -796,7 +795,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given valid json when updating metadata then fields are updated`() {
       val createdSeries =
         makeSeries(name = "series", libraryId = library.id).let { series ->
@@ -872,7 +871,7 @@ class SeriesControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given json with null fields when updating metadata then fields with null are unset`() {
       val createdSeries =
         makeSeries(name = "series", libraryId = library.id).let { series ->

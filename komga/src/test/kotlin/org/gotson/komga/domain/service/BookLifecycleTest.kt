@@ -62,8 +62,8 @@ class BookLifecycleTest(
   private lateinit var mockAnalyzer: BookAnalyzer
 
   private val library = makeLibrary()
-  private val user1 = KomgaUser("user1@example.org", "", false)
-  private val user2 = KomgaUser("user2@example.org", "", false)
+  private val user1 = KomgaUser("user1@example.org", "")
+  private val user2 = KomgaUser("user2@example.org", "")
 
   @BeforeAll
   fun `setup library`() {

@@ -29,7 +29,7 @@ class SessionTest(
 
   @BeforeAll
   fun setup() {
-    user = KomgaUser("user@example.org", "user", false)
+    user = KomgaUser("user@example.org", "user")
     userLifecycle.createUser(user)
   }
 

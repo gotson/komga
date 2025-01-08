@@ -2,12 +2,11 @@ package org.gotson.komga.infrastructure.security
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.Filter
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
-import org.gotson.komga.domain.model.ROLE_USER
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.security.apikey.ApiKeyAuthenticationFilter
 import org.gotson.komga.infrastructure.security.apikey.ApiKeyAuthenticationProvider
+import org.gotson.komga.infrastructure.security.apikey.HeaderApiKeyAuthenticationConverter
 import org.gotson.komga.infrastructure.security.apikey.UriRegexApiKeyAuthenticationConverter
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.actuate.health.HealthEndpoint
@@ -81,7 +80,7 @@ class SecurityConfiguration(
         // this will only show limited details as `management.endpoint.health.show-details` is set to `when-authorized`
         it.requestMatchers(EndpointRequest.to(HealthEndpoint::class.java)).permitAll()
         // restrict all other actuator endpoints to ADMIN only
-        it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(ROLE_ADMIN)
+        it.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole(UserRoles.ADMIN.name)
 
         it
           .requestMatchers(
@@ -101,7 +100,7 @@ class SecurityConfiguration(
             "/api/**",
             "/opds/**",
             "/sse/**",
-          ).hasRole(ROLE_USER)
+          ).authenticated()
       }.headers { headersConfigurer ->
         headersConfigurer.cacheControl { it.disable() } // headers are set in WebMvcConfiguration
         headersConfigurer.frameOptions { it.sameOrigin() } // for epubreader iframes
@@ -174,7 +173,7 @@ class SecurityConfiguration(
 
       securityMatcher("/kobo/**")
       authorizeHttpRequests {
-        authorize(anyRequest, hasRole(ROLE_KOBO_SYNC))
+        authorize(anyRequest, hasRole(UserRoles.KOBO_SYNC.name))
       }
 
       headers {

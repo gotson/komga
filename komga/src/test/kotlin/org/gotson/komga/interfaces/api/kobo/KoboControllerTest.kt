@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaType
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -53,8 +54,7 @@ class KoboControllerTest(
     KomgaUser(
       "user@example.org",
       "",
-      false,
-      roleKoboSync = true,
+      roles = setOf(UserRoles.KOBO_SYNC),
     )
   private lateinit var apiKey: String
 

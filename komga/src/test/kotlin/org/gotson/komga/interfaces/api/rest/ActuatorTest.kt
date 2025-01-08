@@ -1,7 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_USER
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -45,7 +43,7 @@ class ActuatorTest(
   }
 
   @Test
-  @WithMockUser(roles = [ROLE_USER])
+  @WithMockUser
   fun `given regular user when getting actuator endpoints then returns forbidden`() {
     mockMvc
       .get("/actuator")
@@ -61,7 +59,7 @@ class ActuatorTest(
   }
 
   @Test
-  @WithMockUser(roles = [ROLE_ADMIN])
+  @WithMockUser(roles = ["ADMIN"])
   fun `given admin user when getting actuator endpoints then returns ok`() {
     mockMvc
       .get("/actuator")

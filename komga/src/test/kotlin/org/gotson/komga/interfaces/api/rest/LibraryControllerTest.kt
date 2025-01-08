@@ -1,7 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.hamcrest.Matchers
@@ -68,7 +66,7 @@ class LibraryControllerTest(
   }
 
   @Nested
-  inner class UserRole {
+  inner class UserRoles {
     @Test
     @WithMockCustomUser
     fun `given user with access to all libraries when getAll then return ok`() {
@@ -78,7 +76,7 @@ class LibraryControllerTest(
     }
 
     @Test
-    @WithMockUser(roles = [ROLE_USER])
+    @WithMockUser
     fun `given user with USER role when addOne then return forbidden`() {
       // language=JSON
       val jsonString = """{"name":"test", "root": "C:\\Temp"}"""
@@ -127,7 +125,7 @@ class LibraryControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when getting books then root is available`() {
       mockMvc
         .get(route)
@@ -170,7 +168,7 @@ class LibraryControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given library with exclusions when updating library then exclusions are updated`(
       @TempDir tmp: Path,
     ) {

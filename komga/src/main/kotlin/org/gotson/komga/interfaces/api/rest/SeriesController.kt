@@ -25,8 +25,6 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaType.ZIP
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
@@ -220,7 +218,7 @@ class SeriesController(
 
     return seriesDtoRepository
       .findAll(seriesSearch, SearchContext(principal.user), pageRequest)
-      .map { it.restrictUrl(!principal.user.roleAdmin) }
+      .map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
   @PageableAsQueryParam
@@ -250,7 +248,7 @@ class SeriesController(
 
     return seriesDtoRepository
       .findAll(search, SearchContext(principal.user), pageRequest)
-      .map { it.restrictUrl(!principal.user.roleAdmin) }
+      .map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
   @Deprecated("use /v1/series/list/alphabetical-groups instead")
@@ -376,7 +374,7 @@ class SeriesController(
         ),
         SearchContext(principal.user),
         pageRequest,
-      ).map { it.restrictUrl(!principal.user.roleAdmin) }
+      ).map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
   @Operation(description = "Return newly added series.")
@@ -415,7 +413,7 @@ class SeriesController(
         ),
         SearchContext(principal.user),
         pageRequest,
-      ).map { it.restrictUrl(!principal.user.roleAdmin) }
+      ).map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
   @Operation(description = "Return recently updated series, but not newly added ones.")
@@ -454,7 +452,7 @@ class SeriesController(
         ),
         SearchContext(principal.user),
         pageRequest,
-      ).map { it.restrictUrl(!principal.user.roleAdmin) }
+      ).map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
   @GetMapping("v1/series/{seriesId}")
@@ -464,7 +462,7 @@ class SeriesController(
   ): SeriesDto =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let {
       contentRestrictionChecker.checkContentRestriction(principal.user, it)
-      it.restrictUrl(!principal.user.roleAdmin)
+      it.restrictUrl(!principal.user.isAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
@@ -505,7 +503,7 @@ class SeriesController(
   }
 
   @PostMapping(value = ["v1/series/{seriesId}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun postUserUploadedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
     @RequestParam("file") file: MultipartFile,
@@ -533,7 +531,7 @@ class SeriesController(
   }
 
   @PutMapping("v1/series/{seriesId}/thumbnails/{thumbnailId}/selected")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun postMarkSelectedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
@@ -547,7 +545,7 @@ class SeriesController(
   }
 
   @DeleteMapping("v1/series/{seriesId}/thumbnails/{thumbnailId}")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteUserUploadedSeriesThumbnail(
     @PathVariable(name = "seriesId") seriesId: String,
@@ -613,7 +611,7 @@ class SeriesController(
         search,
         SearchContext(principal.user),
         pageRequest,
-      ).map { it.restrictUrl(!principal.user.roleAdmin) }
+      ).map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
   @GetMapping("v1/series/{seriesId}/collections")
@@ -629,7 +627,7 @@ class SeriesController(
   }
 
   @PostMapping("v1/series/{seriesId}/analyze")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun analyze(
     @PathVariable seriesId: String,
@@ -638,7 +636,7 @@ class SeriesController(
   }
 
   @PostMapping("v1/series/{seriesId}/metadata/refresh")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun refreshMetadata(
     @PathVariable seriesId: String,
@@ -650,7 +648,7 @@ class SeriesController(
   }
 
   @PatchMapping("v1/series/{seriesId}/metadata")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateMetadata(
     @PathVariable seriesId: String,
@@ -780,7 +778,7 @@ class SeriesController(
   }
 
   @GetMapping("v1/series/{seriesId}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
-  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun getSeriesFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable seriesId: String,
@@ -827,7 +825,7 @@ class SeriesController(
   }
 
   @DeleteMapping("v1/series/{seriesId}/file")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteSeries(
     @PathVariable seriesId: String,

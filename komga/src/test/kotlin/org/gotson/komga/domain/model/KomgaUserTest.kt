@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class KomgaUserTest {
-  val defaultUser = KomgaUser("user@example.org", "aPassword", false)
+  val defaultUser = KomgaUser("user@example.org", "aPassword")
 
   @Nested
   inner class ContentRestriction {

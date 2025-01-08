@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ApiKey
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.AnnouncementsReadRecord
@@ -23,6 +24,7 @@ class KomgaUserDao(
   private val dsl: DSLContext,
 ) : KomgaUserRepository {
   private val u = Tables.USER
+  private val ur = Tables.USER_ROLE
   private val ul = Tables.USER_LIBRARY_SHARING
   private val us = Tables.USER_SHARING
   private val ar = Tables.ANNOUNCEMENTS_READ
@@ -60,34 +62,37 @@ class KomgaUserDao(
   private fun ResultQuery<Record>.fetchAndMap() =
     this
       .fetchGroups({ it.into(u) }, { it.into(ul) })
-      .map { (ur, ulr) ->
+      .map { (userRecord, ulr) ->
         val usr =
           dsl
             .selectFrom(us)
-            .where(us.USER_ID.eq(ur.id))
+            .where(us.USER_ID.eq(userRecord.id))
             .toList()
+        val roles =
+          dsl
+            .select(ur.ROLE)
+            .from(ur)
+            .where(ur.USER_ID.eq(userRecord.id))
+            .fetch(ur.ROLE)
         KomgaUser(
-          email = ur.email,
-          password = ur.password,
-          roleAdmin = ur.roleAdmin,
-          roleFileDownload = ur.roleFileDownload,
-          rolePageStreaming = ur.rolePageStreaming,
-          roleKoboSync = ur.roleKoboSync,
+          email = userRecord.email,
+          password = userRecord.password,
+          roles = UserRoles.valuesOf(roles),
           sharedLibrariesIds = ulr.mapNotNull { it.libraryId }.toSet(),
-          sharedAllLibraries = ur.sharedAllLibraries,
+          sharedAllLibraries = userRecord.sharedAllLibraries,
           restrictions =
             ContentRestrictions(
               ageRestriction =
-                if (ur.ageRestriction != null && ur.ageRestrictionAllowOnly != null)
-                  AgeRestriction(ur.ageRestriction, if (ur.ageRestrictionAllowOnly) AllowExclude.ALLOW_ONLY else AllowExclude.EXCLUDE)
+                if (userRecord.ageRestriction != null && userRecord.ageRestrictionAllowOnly != null)
+                  AgeRestriction(userRecord.ageRestriction, if (userRecord.ageRestrictionAllowOnly) AllowExclude.ALLOW_ONLY else AllowExclude.EXCLUDE)
                 else
                   null,
               labelsAllow = usr.filter { it.allow }.map { it.label }.toSet(),
               labelsExclude = usr.filterNot { it.allow }.map { it.label }.toSet(),
             ),
-          id = ur.id,
-          createdDate = ur.createdDate.toCurrentTimeZone(),
-          lastModifiedDate = ur.lastModifiedDate.toCurrentTimeZone(),
+          id = userRecord.id,
+          createdDate = userRecord.createdDate.toCurrentTimeZone(),
+          lastModifiedDate = userRecord.lastModifiedDate.toCurrentTimeZone(),
         )
       }
 
@@ -98,10 +103,6 @@ class KomgaUserDao(
       .set(u.ID, user.id)
       .set(u.EMAIL, user.email)
       .set(u.PASSWORD, user.password)
-      .set(u.ROLE_ADMIN, user.roleAdmin)
-      .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
-      .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
-      .set(u.ROLE_KOBO_SYNC, user.roleKoboSync)
       .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
       .set(u.AGE_RESTRICTION, user.restrictions.ageRestriction?.age)
       .set(
@@ -113,6 +114,7 @@ class KomgaUserDao(
         },
       ).execute()
 
+    insertRoles(user)
     insertSharedLibraries(user)
     insertSharingRestrictions(user)
   }
@@ -133,10 +135,6 @@ class KomgaUserDao(
       .update(u)
       .set(u.EMAIL, user.email)
       .set(u.PASSWORD, user.password)
-      .set(u.ROLE_ADMIN, user.roleAdmin)
-      .set(u.ROLE_FILE_DOWNLOAD, user.roleFileDownload)
-      .set(u.ROLE_PAGE_STREAMING, user.rolePageStreaming)
-      .set(u.ROLE_KOBO_SYNC, user.roleKoboSync)
       .set(u.SHARED_ALL_LIBRARIES, user.sharedAllLibraries)
       .set(u.AGE_RESTRICTION, user.restrictions.ageRestriction?.age)
       .set(
@@ -151,6 +149,11 @@ class KomgaUserDao(
       .execute()
 
     dsl
+      .deleteFrom(ur)
+      .where(ur.USER_ID.eq(user.id))
+      .execute()
+
+    dsl
       .deleteFrom(ul)
       .where(ul.USER_ID.eq(user.id))
       .execute()
@@ -160,6 +163,7 @@ class KomgaUserDao(
       .where(us.USER_ID.eq(user.id))
       .execute()
 
+    insertRoles(user)
     insertSharedLibraries(user)
     insertSharingRestrictions(user)
   }
@@ -169,6 +173,16 @@ class KomgaUserDao(
     announcementIds: Set<String>,
   ) {
     dsl.batchStore(announcementIds.map { AnnouncementsReadRecord(user.id, it) }).execute()
+  }
+
+  private fun insertRoles(user: KomgaUser) {
+    user.roles.forEach {
+      dsl
+        .insertInto(ur)
+        .columns(ur.USER_ID, ur.ROLE)
+        .values(user.id, it.name)
+        .execute()
+    }
   }
 
   private fun insertSharedLibraries(user: KomgaUser) {
@@ -205,6 +219,7 @@ class KomgaUserDao(
     dsl.deleteFrom(ar).where(ar.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(us).where(us.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(ul).where(ul.USER_ID.equal(userId)).execute()
+    dsl.deleteFrom(ur).where(ur.USER_ID.equal(userId)).execute()
     dsl.deleteFrom(u).where(u.ID.equal(userId)).execute()
   }
 
@@ -214,6 +229,7 @@ class KomgaUserDao(
     dsl.deleteFrom(ar).execute()
     dsl.deleteFrom(us).execute()
     dsl.deleteFrom(ul).execute()
+    dsl.deleteFrom(ur).execute()
     dsl.deleteFrom(u).execute()
   }
 

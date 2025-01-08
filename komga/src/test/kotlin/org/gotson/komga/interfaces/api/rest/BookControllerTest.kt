@@ -8,7 +8,6 @@ import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -71,8 +70,8 @@ class BookControllerTest(
   @Autowired private val mockMvc: MockMvc,
 ) {
   private val library = makeLibrary(id = "1")
-  private val user = KomgaUser("user@example.org", "", false, id = "1")
-  private val user2 = KomgaUser("user2@example.org", "", false, id = "2")
+  private val user = KomgaUser("user@example.org", "", id = "1")
+  private val user2 = KomgaUser("user2@example.org", "", id = "2")
 
   @BeforeAll
   fun `setup library`() {
@@ -771,7 +770,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when getting books then full url is available`() {
       val createdSeries =
         makeSeries(name = "series", libraryId = library.id).let { series ->
@@ -958,7 +957,7 @@ class BookControllerTest(
         """{"isbn":"978-123-456-789-6"}""", // invalid check digit
       ],
     )
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given invalid json when updating metadata then raise validation error`(jsonString: String) {
       mockMvc
         .patch("/api/v1/books/1/metadata") {
@@ -970,7 +969,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given valid json when updating metadata then fields are updated`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -1050,7 +1049,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given json with blank fields when updating metadata then fields with blanks are unset`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
         seriesLifecycle.createSeries(series).also { created ->
@@ -1095,7 +1094,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given json with null fields when updating metadata then fields with null are unset`() {
       val testDate = LocalDate.of(2020, 1, 1)
 
@@ -1157,7 +1156,7 @@ class BookControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given json without fields when updating metadata then existing fields are untouched`() {
       val testDate = LocalDate.of(2020, 1, 1)
 

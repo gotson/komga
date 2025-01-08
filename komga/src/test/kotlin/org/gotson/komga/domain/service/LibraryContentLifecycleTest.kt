@@ -88,7 +88,7 @@ class LibraryContentLifecycleTest(
   @MockkBean
   private lateinit var mockTaskEmitter: TaskEmitter
 
-  private val user = KomgaUser("user@example.org", "", false, id = "1")
+  private val user = KomgaUser("user@example.org", "", id = "1")
 
   @BeforeAll
   fun setup() {

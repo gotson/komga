@@ -1,8 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.domain.model.ThumbnailSize
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.junit.jupiter.api.Nested
@@ -38,7 +36,7 @@ class SettingsControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_USER])
+    @WithMockCustomUser
     fun `given restricted user when retrieving settings then returns forbidden`() {
       mockMvc
         .get("/api/v1/settings")
@@ -49,7 +47,7 @@ class SettingsControllerTest(
   }
 
   @Test
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   fun `given admin user when retrieving settings then settings are returned`() {
     komgaSettingsProvider.deleteEmptyCollections = true
     komgaSettingsProvider.deleteEmptyReadLists = false
@@ -78,7 +76,7 @@ class SettingsControllerTest(
   }
 
   @Test
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   fun `given admin user when updating settings then settings are updated`() {
     komgaSettingsProvider.deleteEmptyCollections = true
     komgaSettingsProvider.deleteEmptyReadLists = true
@@ -123,7 +121,7 @@ class SettingsControllerTest(
   }
 
   @Test
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   fun `given admin user when deleting settings then deletable settings are deleted`() {
     komgaSettingsProvider.deleteEmptyCollections = true
     komgaSettingsProvider.deleteEmptyReadLists = true
@@ -168,7 +166,7 @@ class SettingsControllerTest(
   }
 
   @ParameterizedTest
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   @ValueSource(
     strings = [
       //language=JSON

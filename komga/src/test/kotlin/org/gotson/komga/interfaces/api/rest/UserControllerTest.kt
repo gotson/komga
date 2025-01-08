@@ -5,10 +5,7 @@ import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
-import org.gotson.komga.domain.model.ROLE_KOBO_SYNC
-import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -45,7 +42,7 @@ class UserControllerTest(
   @Autowired
   private lateinit var userLifecycle: KomgaUserLifecycle
 
-  private val admin = KomgaUser("admin@example.org", "", true, id = "admin")
+  private val admin = KomgaUser("admin@example.org", "", id = "admin")
 
   @BeforeAll
   fun setup() {
@@ -74,7 +71,7 @@ class UserControllerTest(
 
   @ParameterizedTest
   @ValueSource(strings = ["user", "user@domain"])
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   fun `when creating a user with invalid email then returns bad request`(email: String) {
     // language=JSON
     val jsonString = """{"email":"$email","password":"password"}"""
@@ -91,16 +88,16 @@ class UserControllerTest(
   @Nested
   inner class Update {
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user without roles when updating roles then roles are updated`() {
-      val user = KomgaUser("user@example.org", "", false, id = "user", roleFileDownload = false, rolePageStreaming = false)
+      val user = KomgaUser("user@example.org", "", id = "user")
       userLifecycle.createUser(user)
 
       // language=JSON
       val jsonString =
         """
         {
-          "roles": ["$ROLE_FILE_DOWNLOAD","$ROLE_PAGE_STREAMING","$ROLE_KOBO_SYNC"]
+          "roles": ["${UserRoles.FILE_DOWNLOAD.name}","${UserRoles.PAGE_STREAMING.name}","${UserRoles.KOBO_SYNC.name}"]
         }
         """.trimIndent()
 
@@ -114,17 +111,14 @@ class UserControllerTest(
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
-        assertThat(this!!.roleFileDownload).isTrue
-        assertThat(this.rolePageStreaming).isTrue
-        assertThat(this.roleKoboSync).isTrue
-        assertThat(this.roleAdmin).isFalse
+        assertThat(this!!.roles).containsExactlyInAnyOrder(UserRoles.KOBO_SYNC, UserRoles.PAGE_STREAMING, UserRoles.FILE_DOWNLOAD)
       }
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user with roles when updating roles then roles are updated`() {
-      val user = KomgaUser("user@example.org", "", true, id = "user", roleFileDownload = true, rolePageStreaming = true)
+      val user = KomgaUser("user@example.org", "", id = "user")
       userLifecycle.createUser(user)
 
       // language=JSON
@@ -145,16 +139,14 @@ class UserControllerTest(
 
       with(userRepository.findByIdOrNull(user.id)) {
         assertThat(this).isNotNull
-        assertThat(this!!.roleFileDownload).isFalse
-        assertThat(this.rolePageStreaming).isFalse
-        assertThat(this.roleAdmin).isFalse
+        assertThat(this!!.roles).isEmpty()
       }
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user with library restrictions when updating available libraries then they are updated`() {
-      val user = KomgaUser("user@example.org", "", false, id = "user", sharedAllLibraries = false, sharedLibrariesIds = setOf("1"))
+      val user = KomgaUser("user@example.org", "", sharedLibrariesIds = setOf("1"), sharedAllLibraries = false, id = "user")
       userLifecycle.createUser(user)
 
       // language=JSON
@@ -184,9 +176,9 @@ class UserControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user without library restrictions when restricting libraries then they restrictions are updated`() {
-      val user = KomgaUser("user@example.org", "", false, id = "user", sharedAllLibraries = true)
+      val user = KomgaUser("user@example.org", "", sharedAllLibraries = true, id = "user")
       userLifecycle.createUser(user)
 
       // language=JSON
@@ -216,9 +208,9 @@ class UserControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user with library restrictions when removing restrictions then the restrictions are updated`() {
-      val user = KomgaUser("user@example.org", "", false, id = "user", sharedAllLibraries = false, sharedLibrariesIds = setOf("2"))
+      val user = KomgaUser("user@example.org", "", sharedLibrariesIds = setOf("2"), sharedAllLibraries = false, id = "user")
       userLifecycle.createUser(user)
 
       // language=JSON
@@ -248,9 +240,9 @@ class UserControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user without labels restrictions when adding restrictions then restrictions are updated`() {
-      val user = KomgaUser("user@example.org", "", false, id = "user")
+      val user = KomgaUser("user@example.org", "", id = "user")
       userLifecycle.createUser(user)
 
       // language=JSON
@@ -278,19 +270,18 @@ class UserControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user with labels restrictions when removing restrictions then restrictions are updated`() {
       val user =
         KomgaUser(
           "user@example.org",
           "",
-          false,
-          id = "user",
           restrictions =
             ContentRestrictions(
               labelsAllow = setOf("kids", "cute"),
               labelsExclude = setOf("adult"),
             ),
+          id = "user",
         )
       userLifecycle.createUser(user)
 
@@ -319,9 +310,9 @@ class UserControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user without age restriction when adding restrictions then restrictions are updated`() {
-      val user = KomgaUser("user@example.org", "", false, id = "user")
+      val user = KomgaUser("user@example.org", "", id = "user")
       userLifecycle.createUser(user)
 
       // language=JSON
@@ -352,9 +343,9 @@ class UserControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user without age restriction when adding incorrect restrictions then bad request`() {
-      val user = KomgaUser("user@example.org", "", false, id = "user")
+      val user = KomgaUser("user@example.org", "", id = "user")
       userLifecycle.createUser(user)
 
       // language=JSON
@@ -378,18 +369,17 @@ class UserControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user with age restriction when removing restriction then restrictions are updated`() {
       val user =
         KomgaUser(
           "user@example.org",
           "",
-          false,
-          id = "user",
           restrictions =
             ContentRestrictions(
               ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
             ),
+          id = "user",
         )
       userLifecycle.createUser(user)
 
@@ -416,18 +406,17 @@ class UserControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(id = "admin", roles = [ROLE_ADMIN])
+    @WithMockCustomUser(id = "admin", roles = ["ADMIN"])
     fun `given user with age restriction when changing restriction then restrictions are updated`() {
       val user =
         KomgaUser(
           "user@example.org",
           "",
-          false,
-          id = "user",
           restrictions =
             ContentRestrictions(
               ageRestriction = AgeRestriction(12, AllowExclude.ALLOW_ONLY),
             ),
+          id = "user",
         )
       userLifecycle.createUser(user)
 

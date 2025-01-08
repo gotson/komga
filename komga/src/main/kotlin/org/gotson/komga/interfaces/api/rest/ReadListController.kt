@@ -18,8 +18,6 @@ import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaType.ZIP
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SearchCondition
@@ -179,7 +177,7 @@ class ReadListController(
   }
 
   @PostMapping(value = ["{id}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun addUserUploadedReadListThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
@@ -208,7 +206,7 @@ class ReadListController(
   }
 
   @PutMapping("{id}/thumbnails/{thumbnailId}/selected")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun markSelectedReadListThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -224,7 +222,7 @@ class ReadListController(
   }
 
   @DeleteMapping("{id}/thumbnails/{thumbnailId}")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteUserUploadedReadListThumbnail(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -239,7 +237,7 @@ class ReadListController(
   }
 
   @PostMapping
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun addOne(
     @Valid @RequestBody
     readList: ReadListCreationDto,
@@ -259,7 +257,7 @@ class ReadListController(
     }
 
   @PostMapping("match/comicrack")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun matchFromComicRackList(
     @RequestParam("file") file: MultipartFile,
   ): ReadListRequestMatchDto =
@@ -270,7 +268,7 @@ class ReadListController(
     }
 
   @PatchMapping("{id}")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateOne(
     @PathVariable id: String,
@@ -294,7 +292,7 @@ class ReadListController(
   }
 
   @DeleteMapping("{id}")
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteOne(
     @PathVariable id: String,
@@ -352,7 +350,7 @@ class ReadListController(
         )
       bookDtoRepository
         .findAll(bookSearch, SearchContext(principal.user), pageRequest)
-        .map { it.restrictUrl(!principal.user.roleAdmin) }
+        .map { it.restrictUrl(!principal.user.isAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{id}/books/{bookId}/previous")
@@ -369,7 +367,7 @@ class ReadListController(
           principal.user.id,
           principal.user.getAuthorizedLibraryIds(null),
           principal.user.restrictions,
-        )?.restrictUrl(!principal.user.roleAdmin)
+        )?.restrictUrl(!principal.user.isAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{id}/books/{bookId}/next")
@@ -386,7 +384,7 @@ class ReadListController(
           principal.user.id,
           principal.user.getAuthorizedLibraryIds(null),
           principal.user.restrictions,
-        )?.restrictUrl(!principal.user.roleAdmin)
+        )?.restrictUrl(!principal.user.isAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("{id}/read-progress/tachiyomi")
@@ -418,7 +416,7 @@ class ReadListController(
   }
 
   @GetMapping("{id}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
-  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun getReadListFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,

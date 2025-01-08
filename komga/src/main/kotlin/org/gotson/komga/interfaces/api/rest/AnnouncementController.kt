@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.api.rest.dto.JsonFeedDto
@@ -36,7 +35,7 @@ class AnnouncementController(
       .build<String, JsonFeedDto>()
 
   @GetMapping
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun getAnnouncements(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): JsonFeedDto =
@@ -48,7 +47,7 @@ class AnnouncementController(
       }
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAnnouncementsRead(

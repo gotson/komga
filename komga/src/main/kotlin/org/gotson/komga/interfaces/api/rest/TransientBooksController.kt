@@ -5,7 +5,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.TransientBook
 import org.gotson.komga.domain.persistence.TransientBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
@@ -31,7 +30,7 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v1/transient-books", produces = [MediaType.APPLICATION_JSON_VALUE])
-@PreAuthorize("hasRole('$ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 class TransientBooksController(
   private val transientBookLifecycle: TransientBookLifecycle,
   private val transientBookRepository: TransientBookRepository,

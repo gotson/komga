@@ -14,8 +14,6 @@ import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaUnsupportedException
 import org.gotson.komga.domain.model.R2Progression
-import org.gotson.komga.domain.model.ROLE_FILE_DOWNLOAD
-import org.gotson.komga.domain.model.ROLE_PAGE_STREAMING
 import org.gotson.komga.domain.model.toR2Progression
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.MediaRepository
@@ -199,7 +197,7 @@ class CommonBookController(
     ],
     produces = [MediaType.ALL_VALUE],
   )
-  @PreAuthorize("hasRole('$ROLE_PAGE_STREAMING')")
+  @PreAuthorize("hasRole('PAGE_STREAMING')")
   fun getBookPageRaw(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: ServletWebRequest,
@@ -319,7 +317,7 @@ class CommonBookController(
     ],
     produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
   )
-  @PreAuthorize("hasRole('$ROLE_FILE_DOWNLOAD')")
+  @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,

@@ -44,8 +44,8 @@ class OpdsControllerTest(
   @Autowired private val mockMvc: MockMvc,
 ) {
   private val library = makeLibrary(id = "1")
-  private val user = KomgaUser("user@example.org", "", false, id = "1")
-  private val user2 = KomgaUser("user2@example.org", "", false, id = "2")
+  private val user = KomgaUser("user@example.org", "", id = "1")
+  private val user2 = KomgaUser("user2@example.org", "", id = "2")
 
   @BeforeAll
   fun `setup library`() {

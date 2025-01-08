@@ -1,7 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_USER
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +37,7 @@ class FileSystemControllerTest(
   }
 
   @Test
-  @WithMockUser(roles = [ROLE_USER, ROLE_ADMIN])
+  @WithMockUser(roles = ["ADMIN"])
   fun `given relative path param when getDirectoryListing then return bad request`() {
     mockMvc
       .post(route) {
@@ -49,7 +47,7 @@ class FileSystemControllerTest(
   }
 
   @Test
-  @WithMockUser(roles = [ROLE_USER, ROLE_ADMIN])
+  @WithMockUser(roles = ["ADMIN"])
   fun `given non-existent path param when getDirectoryListing then return bad request`(
     @TempDir parent: Path,
   ) {
