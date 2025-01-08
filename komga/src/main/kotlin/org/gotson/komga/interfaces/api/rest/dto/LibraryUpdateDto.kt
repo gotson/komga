@@ -42,6 +42,7 @@ class LibraryUpdateDto {
   val seriesCover: SeriesCoverDto? = null
   val hashFiles: Boolean? = null
   val hashPages: Boolean? = null
+  val hashKoreader: Boolean? = null
   val analyzeDimensions: Boolean? = null
   var oneshotsDirectory: String?
     by Delegates.observable(null) { prop, _, _ ->

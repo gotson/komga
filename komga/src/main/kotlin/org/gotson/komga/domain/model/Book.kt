@@ -12,6 +12,7 @@ data class Book(
   val fileLastModified: LocalDateTime,
   val fileSize: Long = 0,
   val fileHash: String = "",
+  val fileHashKoreader: String = "",
   val number: Int = 0,
   val id: String = TsidCreator.getTsid256().toString(),
   val seriesId: String = "",

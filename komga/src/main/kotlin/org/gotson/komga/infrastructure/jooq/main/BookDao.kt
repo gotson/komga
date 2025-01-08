@@ -300,6 +300,21 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
+  override fun findAllByLibraryIdAndWithEmptyHashKoreader(libraryId: String): Collection<Book> =
+    dsl
+      .selectFrom(b)
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(b.FILE_HASH_KOREADER.eq(""))
+      .fetchInto(b)
+      .map { it.toDomain() }
+
+  override fun findAllByHashKoreader(hashKoreader: String): Collection<Book> =
+    dsl
+      .selectFrom(b)
+      .where(b.FILE_HASH_KOREADER.eq(hashKoreader))
+      .fetchInto(b)
+      .map { it.toDomain() }
+
   @Transactional
   override fun insert(book: Book) {
     insert(listOf(book))
@@ -321,11 +336,12 @@ class BookDao(
                 b.FILE_LAST_MODIFIED,
                 b.FILE_SIZE,
                 b.FILE_HASH,
+                b.FILE_HASH_KOREADER,
                 b.LIBRARY_ID,
                 b.SERIES_ID,
                 b.DELETED_DATE,
                 b.ONESHOT,
-              ).values(null as String?, null, null, null, null, null, null, null, null, null, null),
+              ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null),
           ).also { step ->
             chunk.forEach {
               step.bind(
@@ -336,6 +352,7 @@ class BookDao(
                 it.fileLastModified,
                 it.fileSize,
                 it.fileHash,
+                it.fileHashKoreader,
                 it.libraryId,
                 it.seriesId,
                 it.deletedDate,
@@ -366,6 +383,7 @@ class BookDao(
       .set(b.FILE_LAST_MODIFIED, book.fileLastModified)
       .set(b.FILE_SIZE, book.fileSize)
       .set(b.FILE_HASH, book.fileHash)
+      .set(b.FILE_HASH_KOREADER, book.fileHashKoreader)
       .set(b.LIBRARY_ID, book.libraryId)
       .set(b.SERIES_ID, book.seriesId)
       .set(b.DELETED_DATE, book.deletedDate)
@@ -413,6 +431,7 @@ class BookDao(
       fileLastModified = fileLastModified,
       fileSize = fileSize,
       fileHash = fileHash,
+      fileHashKoreader = fileHashKoreader,
       id = id,
       libraryId = libraryId,
       seriesId = seriesId,

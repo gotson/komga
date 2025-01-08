@@ -61,6 +61,7 @@ class TaskHandler(
               taskEmitter.findBooksWithMissingPageHash(library, LOWEST_PRIORITY)
               taskEmitter.findDuplicatePagesToDelete(library, LOWEST_PRIORITY)
               taskEmitter.hashBooksWithoutHash(library)
+              taskEmitter.hashBooksWithoutHashKoreader(library)
             } ?: logger.warn { "Cannot execute task $task: Library does not exist" }
 
           is Task.FindBooksToConvert ->
@@ -148,6 +149,11 @@ class TaskHandler(
           is Task.HashBook ->
             bookRepository.findByIdOrNull(task.bookId)?.let { book ->
               bookLifecycle.hashAndPersist(book)
+            } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
+
+          is Task.HashBookKoreader ->
+            bookRepository.findByIdOrNull(task.bookId)?.let { book ->
+              bookLifecycle.hashKoreaderAndPersist(book)
             } ?: logger.warn { "Cannot execute task $task: Book does not exist" }
 
           is Task.HashBookPages ->

@@ -443,6 +443,7 @@
       "dialot_title_edit": "Edit Library",
       "field_analysis_analyze_dimensions": "Analyze pages dimensions",
       "field_analysis_hash_files": "Compute hash for files",
+      "field_analysis_hash_koreader": "Compute hash for files for KOReader",
       "field_analysis_hash_pages": "Compute hash for pages",
       "field_convert_to_cbz": "Automatically convert to CBZ",
       "field_import_barcode_isbn": "ISBN barcode",
@@ -1004,6 +1005,7 @@
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "File download",
     "KOBO_SYNC": "Kobo Sync",
+    "KOREADER_SYNC": "KOReader Sync",
     "PAGE_STREAMING": "Page streaming",
     "USER": "User"
   },

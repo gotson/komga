@@ -112,6 +112,15 @@ sealed class Task(
     override fun toString(): String = "HashBookPages(bookId='$bookId', priority='$priority')"
   }
 
+  class HashBookKoreader(
+    val bookId: String,
+    priority: Int = DEFAULT_PRIORITY,
+  ) : Task(priority) {
+    override val uniqueId = "HASH_BOOK_KOREADER_$bookId"
+
+    override fun toString(): String = "HashBookKoreader(bookId='$bookId', priority='$priority')"
+  }
+
   class RefreshSeriesMetadata(
     val seriesId: String,
     priority: Int = DEFAULT_PRIORITY,

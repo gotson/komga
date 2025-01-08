@@ -37,6 +37,10 @@ interface BookRepository {
 
   fun findAllByLibraryIdAndWithEmptyHash(libraryId: String): Collection<Book>
 
+  fun findAllByLibraryIdAndWithEmptyHashKoreader(libraryId: String): Collection<Book>
+
+  fun findAllByHashKoreader(hashKoreader: String): Collection<Book>
+
   fun findAllByLibraryIdAndMediaTypes(
     libraryId: String,
     mediaTypes: Collection<String>,

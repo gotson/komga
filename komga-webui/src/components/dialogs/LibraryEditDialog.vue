@@ -216,6 +216,22 @@
                       </v-checkbox>
 
                       <v-checkbox
+                        v-model="form.hashKoreader"
+                        :label="$t('dialog.edit_library.field_analysis_hash_koreader')"
+                        hide-details
+                        class="mx-4"
+                      >
+                        <template v-slot:append>
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                              <v-icon v-on="on" color="warning">mdi-alert-circle-outline</v-icon>
+                            </template>
+                            {{ $t('dialog.edit_library.tooltip_use_resources') }}
+                          </v-tooltip>
+                        </template>
+                      </v-checkbox>
+
+                      <v-checkbox
                         v-model="form.analyzeDimensions"
                         :label="$t('dialog.edit_library.field_analysis_analyze_dimensions')"
                         hide-details
@@ -465,6 +481,7 @@ export default Vue.extend({
         seriesCover: SeriesCoverDto.FIRST as SeriesCoverDto,
         hashFiles: true,
         hashPages: false,
+        hashKoreader: false,
         analyzeDimensions: true,
         oneshotsDirectory: '',
       },
@@ -624,6 +641,7 @@ export default Vue.extend({
       this.form.seriesCover = library ? library.seriesCover : SeriesCoverDto.FIRST
       this.form.hashFiles = library ? library.hashFiles : true
       this.form.hashPages = library ? library.hashPages : false
+      this.form.hashKoreader = library ? library.hashKoreader : false
       this.form.analyzeDimensions = library ? library.analyzeDimensions : true
       this.form.oneshotsDirectory = library ? library.oneshotsDirectory : ''
       this.$v.$reset()
@@ -658,6 +676,7 @@ export default Vue.extend({
           seriesCover: this.form.seriesCover,
           hashFiles: this.form.hashFiles,
           hashPages: this.form.hashPages,
+          hashKoreader: this.form.hashKoreader,
           analyzeDimensions: this.form.analyzeDimensions,
           oneshotsDirectory: this.form.oneshotsDirectory,
         }

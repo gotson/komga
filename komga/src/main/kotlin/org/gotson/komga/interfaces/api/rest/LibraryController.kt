@@ -107,6 +107,7 @@ class LibraryController(
             seriesCover = library.seriesCover.toDomain(),
             hashFiles = library.hashFiles,
             hashPages = library.hashPages,
+            hashKoreader = library.hashKoreader,
             analyzeDimensions = library.analyzeDimensions,
             oneshotsDirectory = library.oneshotsDirectory?.ifBlank { null },
           ),
@@ -176,6 +177,7 @@ class LibraryController(
             seriesCover = seriesCover?.toDomain() ?: existing.seriesCover,
             hashFiles = hashFiles ?: existing.hashFiles,
             hashPages = hashPages ?: existing.hashPages,
+            hashKoreader = hashKoreader ?: existing.hashKoreader,
             analyzeDimensions = analyzeDimensions ?: existing.analyzeDimensions,
             oneshotsDirectory = if (isSet("oneshotsDirectory")) oneshotsDirectory?.ifBlank { null } else existing.oneshotsDirectory,
           )

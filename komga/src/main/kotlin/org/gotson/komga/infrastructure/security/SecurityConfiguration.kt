@@ -92,6 +92,8 @@ class SecurityConfiguration(
             "/api/v1/books/{bookId}/resource/**",
             // OPDS authentication document
             "/opds/v2/auth",
+            // KOReader user creation
+            "/koreader/users/create",
           ).permitAll()
 
         // all other endpoints are restricted to authenticated users
@@ -197,10 +199,52 @@ class SecurityConfiguration(
     return http.build()
   }
 
+  @Bean
+  fun kosyncFilterChain(
+    http: HttpSecurity,
+    encoder: PasswordEncoder,
+  ): SecurityFilterChain {
+    http {
+      cors {}
+
+      csrf { disable() }
+      formLogin { disable() }
+      httpBasic { disable() }
+      logout { disable() }
+
+      securityMatcher("/koreader/**")
+      authorizeHttpRequests {
+        authorize(anyRequest, hasRole(UserRoles.KOREADER_SYNC.name))
+      }
+
+      headers {
+        cacheControl { disable() }
+      }
+
+      sessionManagement {
+        sessionCreationPolicy = SessionCreationPolicy.IF_REQUIRED
+        sessionConcurrency {
+          sessionRegistry = theSessionRegistry
+          maximumSessions = -1
+        }
+      }
+
+      addFilterBefore<AnonymousAuthenticationFilter>(kosyncAuthenticationFilter())
+    }
+
+    return http.build()
+  }
+
   fun koboAuthenticationFilter(): Filter =
     ApiKeyAuthenticationFilter(
       apiKeyAuthenticationProvider(),
       UriRegexApiKeyAuthenticationConverter(Regex("""\/kobo\/([\w-]+)"""), tokenEncoder, userAgentWebAuthenticationDetailsSource),
+    )
+
+  fun kosyncAuthenticationFilter(): Filter =
+    ApiKeyAuthenticationFilter(
+      apiKeyAuthenticationProvider(),
+      HeaderApiKeyAuthenticationConverter("X-Auth-User", tokenEncoder, userAgentWebAuthenticationDetailsSource),
     )
 
   fun apiKeyAuthenticationProvider(): AuthenticationManager =

@@ -67,6 +67,14 @@ class TaskEmitter(
         .let { submitTasks(it) }
   }
 
+  fun hashBooksWithoutHashKoreader(library: Library) {
+    if (library.hashKoreader)
+      bookRepository
+        .findAllByLibraryIdAndWithEmptyHashKoreader(library.id)
+        .map { Task.HashBookKoreader(it.id, LOWEST_PRIORITY) }
+        .let { submitTasks(it) }
+  }
+
   fun findBooksWithMissingPageHash(
     library: Library,
     priority: Int = DEFAULT_PRIORITY,

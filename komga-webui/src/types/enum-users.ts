@@ -2,7 +2,8 @@ export enum UserRoles {
   ADMIN = 'ADMIN',
   FILE_DOWNLOAD = 'FILE_DOWNLOAD',
   PAGE_STREAMING = 'PAGE_STREAMING',
-  KOBO_SYNC = 'KOBO_SYNC'
+  KOBO_SYNC = 'KOBO_SYNC',
+  KOREADER_SYNC = 'KOREADER_SYNC'
 }
 
 export enum AllowExclude {

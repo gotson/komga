@@ -5,6 +5,7 @@ enum class UserRoles {
   FILE_DOWNLOAD,
   PAGE_STREAMING,
   KOBO_SYNC,
+  KOREADER_SYNC,
   ;
 
   companion object {
