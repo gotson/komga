@@ -1,3 +1,19 @@
+# [1.17.0](https://github.com/gotson/komga/compare/1.16.0...1.17.0) (2025-01-09)
+## 🚀 Features
+
+- add support for KOReader Sync ([623b2e3](https://github.com/gotson/komga/commits/623b2e3)), closes [#1760](https://github.com/gotson/komga/issues/1760)
+
+## 🐛 Fixes
+**api**
+- read progress modified time could be inaccurate in some cases ([6c3565c](https://github.com/gotson/komga/commits/6c3565c))
+
+**unscoped**
+- better detection for KCC converted Epub ([6dcebb4](https://github.com/gotson/komga/commits/6dcebb4))
+
+## 🔄️ Changes
+
+- move user roles to separate database table ([cbb0d61](https://github.com/gotson/komga/commits/cbb0d61))
+
 # [1.16.0](https://github.com/gotson/komga/compare/1.15.1...1.16.0) (2025-01-02)
 ## 🚀 Features
 **api**

@@ -405,6 +405,39 @@
         }
       }
     },
+    "/koreader/syncs/progress": {
+      "put": {
+        "tags": [
+          "koreader-sync-controller"
+        ],
+        "operationId": "updateProgress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentProgressDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/kobo/{authToken}/v1/library/{bookId}/state": {
       "get": {
         "tags": [
@@ -1191,6 +1224,36 @@
           },
           "204": {
             "description": "No Content"
+          }
+        }
+      }
+    },
+    "/koreader/users/create": {
+      "post": {
+        "tags": [
+          "koreader-sync-controller"
+        ],
+        "operationId": "registerUser",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.koreader.v1+json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -6215,6 +6278,76 @@
               "text/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/OpdsFeed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/koreader/users/auth": {
+      "get": {
+        "tags": [
+          "koreader-sync-controller"
+        ],
+        "operationId": "authorize",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.koreader.v1+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAuthenticationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/koreader/syncs/progress/{bookHash}": {
+      "get": {
+        "tags": [
+          "koreader-sync-controller"
+        ],
+        "operationId": "getProgress",
+        "parameters": [
+          {
+            "name": "bookHash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.koreader.v1+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentProgressDto"
                 }
               }
             }
@@ -11365,6 +11498,34 @@
           }
         }
       },
+      "DocumentProgressDto": {
+        "required": [
+          "device",
+          "device_id",
+          "document",
+          "percentage",
+          "progress"
+        ],
+        "type": "object",
+        "properties": {
+          "document": {
+            "type": "string"
+          },
+          "percentage": {
+            "type": "number",
+            "format": "float"
+          },
+          "progress": {
+            "type": "string"
+          },
+          "device": {
+            "type": "string"
+          },
+          "device_id": {
+            "type": "string"
+          }
+        }
+      },
       "BookmarkDto": {
         "required": [
           "LastModified"
@@ -11643,6 +11804,9 @@
             "type": "boolean"
           },
           "hashPages": {
+            "type": "boolean"
+          },
+          "hashKoreader": {
             "type": "boolean"
           },
           "analyzeDimensions": {
@@ -13907,6 +14071,7 @@
           "convertToCbz",
           "emptyTrashAfterScan",
           "hashFiles",
+          "hashKoreader",
           "hashPages",
           "importBarcodeIsbn",
           "importComicInfoBook",
@@ -14025,6 +14190,9 @@
           "hashPages": {
             "type": "boolean"
           },
+          "hashKoreader": {
+            "type": "boolean"
+          },
           "analyzeDimensions": {
             "type": "boolean"
           },
@@ -14039,6 +14207,7 @@
           "convertToCbz",
           "emptyTrashAfterScan",
           "hashFiles",
+          "hashKoreader",
           "hashPages",
           "id",
           "importBarcodeIsbn",
@@ -14160,6 +14329,9 @@
             "type": "boolean"
           },
           "hashPages": {
+            "type": "boolean"
+          },
+          "hashKoreader": {
             "type": "boolean"
           },
           "analyzeDimensions": {
@@ -14645,12 +14817,6 @@
               "type": "string"
             }
           },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WebLinkUpdateDto"
-            }
-          },
           "readingDirection": {
             "type": "string",
             "enum": [
@@ -14674,6 +14840,12 @@
           "totalBookCount": {
             "type": "integer",
             "format": "int32"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebLinkUpdateDto"
+            }
           },
           "sharingLabels": {
             "uniqueItems": true,
@@ -15481,6 +15653,17 @@
             "type": "string"
           },
           "type": {
+            "type": "string"
+          }
+        }
+      },
+      "UserAuthenticationDto": {
+        "required": [
+          "authorized"
+        ],
+        "type": "object",
+        "properties": {
+          "authorized": {
             "type": "string"
           }
         }
