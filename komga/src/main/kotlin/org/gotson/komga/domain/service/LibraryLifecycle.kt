@@ -2,6 +2,7 @@ package org.gotson.komga.domain.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.scheduler.LibraryScanScheduler
+import org.gotson.komga.application.tasks.LOWEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DomainEvent
@@ -65,6 +66,17 @@ class LibraryLifecycle(
 
     if (checkLibraryShouldRescan(current, toUpdate))
       taskEmitter.scanLibrary(toUpdate.id)
+
+    if (toUpdate.hashFiles && !current.hashFiles)
+      taskEmitter.hashBooksWithoutHash(toUpdate)
+    if (toUpdate.hashKoreader && !current.hashKoreader)
+      taskEmitter.hashBooksWithoutHashKoreader(toUpdate)
+    if (toUpdate.hashPages && !current.hashPages)
+      taskEmitter.findBooksWithMissingPageHash(toUpdate, LOWEST_PRIORITY)
+    if (toUpdate.repairExtensions && !current.repairExtensions)
+      taskEmitter.repairExtensions(toUpdate, LOWEST_PRIORITY)
+    if (toUpdate.convertToCbz && !current.convertToCbz)
+      taskEmitter.findBooksToConvert(toUpdate, LOWEST_PRIORITY)
 
     eventPublisher.publishEvent(DomainEvent.LibraryUpdated(toUpdate))
   }
