@@ -187,6 +187,7 @@ class Opds2Controller(
             SearchCondition.AllOfBook(
               buildList {
                 if (library != null) add(SearchCondition.LibraryId(SearchOperator.Is(library.id)))
+                add(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)))
                 add(SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)))
                 add(SearchCondition.Deleted(SearchOperator.IsFalse))
               },
