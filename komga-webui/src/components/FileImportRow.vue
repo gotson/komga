@@ -31,17 +31,19 @@
       <template v-else>
         <div style="height: 2em" class="missing"></div>
       </template>
-      <series-picker-dialog v-model="modalSeriesPicker" @update:series="pickedSeries" :include-oneshots="false"/>
+      <series-picker-dialog v-model="modalSeriesPicker" @update:series="pickedSeries" :include-oneshots="true"/>
     </td>
 
     <!--  Book number chooser  -->
     <td>
-      <v-text-field v-model.number="bookNumber"
+      <v-text-field v-if="!selectedSeries?.oneshot"
+                    v-model.number="bookNumber"
                     type="number"
                     step="0.1"
                     dense
                     :disabled="!selectedSeries"
       />
+      <span v-else>{{ $t('common.oneshot') }}</span>
     </td>
 
     <!--  Book details  -->
@@ -129,7 +131,7 @@ import TransientBookViewerDialog from '@/components/dialogs/TransientBookViewerD
 import {bookPageUrl, transientBookPageUrl} from '@/functions/urls'
 import {convertErrorCodes} from '@/functions/error-codes'
 import FileNameChooserDialog from '@/components/dialogs/FileNameChooserDialog.vue'
-import {ReadListRequestBookMatchSeriesDto} from '@/types/komga-readlists'
+import {SeriesSelected} from '@/types/series-slim'
 
 export default Vue.extend({
   name: 'FileImportRow',
@@ -167,6 +169,7 @@ export default Vue.extend({
         if (val) this.selectedSeries = {
           seriesId: val.id,
           title: val.metadata.title,
+          oneshot: val.oneshot,
         }
       },
       immediate: true,
@@ -189,7 +192,7 @@ export default Vue.extend({
     convertErrorCodes,
     innerSelect: false,
     bookAnalyzed: undefined as unknown as TransientBookDto,
-    selectedSeries: undefined as ReadListRequestBookMatchSeriesDto | undefined,
+    selectedSeries: undefined as SeriesSelected | undefined,
     seriesBooks: [] as BookDto[],
     bookToUpgrade: undefined as BookDto | undefined,
     bookToUpgradePages: [] as PageDto[],
@@ -253,12 +256,16 @@ export default Vue.extend({
         this.selectedSeries = {
           seriesId: seriesDto.id,
           title: seriesDto.metadata.title,
+          oneshot: seriesDto.oneshot,
         }
       }
     },
-    async getSeriesBooks(series: ReadListRequestBookMatchSeriesDto) {
+    async getSeriesBooks(series: SeriesSelected) {
       if (series) {
         this.seriesBooks = (await this.$komgaSeries.getBooks(series.seriesId, {unpaged: true})).content
+        if (series.oneshot) {
+          this.bookNumber = this.seriesBooks[0].metadata.numberSort
+        }
         this.checkForUpgrade(this.bookNumber)
       }
     },
@@ -271,6 +278,7 @@ export default Vue.extend({
       this.selectedSeries = {
         seriesId: series.id,
         title: series.metadata.title,
+        oneshot: series.oneshot,
       }
     },
   },

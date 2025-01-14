@@ -20,6 +20,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.language.toIndexedMap
@@ -62,6 +63,7 @@ class BookImporter(
   private val eventPublisher: ApplicationEventPublisher,
   private val taskEmitter: TaskEmitter,
   private val historicalEventRepository: HistoricalEventRepository,
+  private val seriesRepository: SeriesRepository,
 ) {
   fun importBook(
     sourceFile: Path,
@@ -72,14 +74,29 @@ class BookImporter(
   ): Book {
     try {
       if (sourceFile.notExists()) throw FileNotFoundException("File not found: $sourceFile").withCode("ERR_1018")
-      if (series.oneshot) throw IllegalArgumentException("Destination series is oneshot")
+      if (series.oneshot && upgradeBookId.isNullOrEmpty()) throw IllegalArgumentException("Destination series is oneshot but upgradeBookId is missing")
 
       libraryRepository.findAll().forEach { library ->
         if (sourceFile.startsWith(library.path)) throw PathContainedInPath("Cannot import file that is part of an existing library", "ERR_1019")
       }
 
+      val bookToUpgrade =
+        if (upgradeBookId != null) {
+          bookRepository.findByIdOrNull(upgradeBookId)?.also {
+            if (it.seriesId != series.id) throw IllegalArgumentException("Book to upgrade ($upgradeBookId) does not belong to series: $series").withCode("ERR_1020")
+          }
+        } else {
+          null
+        }
+
+      val destDir =
+        if (series.oneshot)
+          series.path.parent
+        else
+          series.path
+
       val destFile =
-        series.path.resolve(
+        destDir.resolve(
           if (destinationName != null)
             Paths.get("$destinationName.${sourceFile.extension}").name
           else
@@ -87,7 +104,7 @@ class BookImporter(
         )
       val sidecars =
         fileSystemScanner.scanBookSidecars(sourceFile).associateWith {
-          series.path.resolve(
+          destDir.resolve(
             if (destinationName != null)
               it.url
                 .toURI()
@@ -100,15 +117,6 @@ class BookImporter(
                 .toPath()
                 .name,
           )
-        }
-
-      val bookToUpgrade =
-        if (upgradeBookId != null) {
-          bookRepository.findByIdOrNull(upgradeBookId)?.also {
-            if (it.seriesId != series.id) throw IllegalArgumentException("Book to upgrade ($upgradeBookId) does not belong to series: $series").withCode("ERR_1020")
-          }
-        } else {
-          null
         }
 
       var deletedUpgradedFile = false
@@ -184,7 +192,7 @@ class BookImporter(
       val importedBook =
         fileSystemScanner
           .scanFile(destFile)
-          ?.copy(libraryId = series.libraryId)
+          ?.copy(libraryId = series.libraryId, oneshot = series.oneshot)
           ?: throw IllegalStateException("Newly imported book could not be scanned: $destFile").withCode("ERR_1022")
 
       seriesLifecycle.addBooks(series, listOf(importedBook))
@@ -238,6 +246,11 @@ class BookImporter(
 
         // delete upgraded book
         bookLifecycle.deleteOne(bookToUpgrade)
+
+        // update series if one-shot, so it's not marked as not found during the next scan
+        if (series.oneshot) {
+          seriesRepository.update(series.copy(url = importedBook.url, fileLastModified = importedBook.fileLastModified))
+        }
       }
 
       seriesLifecycle.sortBooks(series)
