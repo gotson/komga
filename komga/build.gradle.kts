@@ -34,6 +34,15 @@ val kaptBenchmark by configurations.getting {
   extendsFrom(configurations.kaptTest.get())
 }
 
+configurations {
+  configureEach {
+    resolutionStrategy {
+      // https://github.com/gotson/komga/issues/1823
+      force("org.xerial:sqlite-jdbc:3.46.1.3")
+    }
+  }
+}
+
 dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
