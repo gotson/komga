@@ -1,3 +1,44 @@
+# [1.18.0](https://github.com/gotson/komga/compare/1.17.0...1.18.0) (2025-01-15)
+## 🚀 Features
+
+- allow book import for one-shots ([51416c5](https://github.com/gotson/komga/commits/51416c5))
+
+## 🐛 Fixes
+**opds2**
+- keep reading feed incorrectly showing all books ([41cdf80](https://github.com/gotson/komga/commits/41cdf80))
+
+**unscoped**
+- only decompress rar5 with libarchive ([3089063](https://github.com/gotson/komga/commits/3089063)), closes [#1826](https://github.com/gotson/komga/issues/1826)
+- updating library options should trigger corresponding tasks ([b7b1b51](https://github.com/gotson/komga/commits/b7b1b51))
+
+## 🏎 Perf
+
+- use materialized CTE ([072dc27](https://github.com/gotson/komga/commits/072dc27)), closes [#1823](https://github.com/gotson/komga/issues/1823)
+- downgrade sqlite-jdbc from 3.47.1.0 to 3.46.1.3 ([b0d9b88](https://github.com/gotson/komga/commits/b0d9b88)), closes [#1823](https://github.com/gotson/komga/issues/1823)
+
+## 📝 Documentation
+
+- mention KOReader Sync in README ([7d7f302](https://github.com/gotson/komga/commits/7d7f302))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Tamil) ([9b0805e](https://github.com/gotson/komga/commits/9b0805e))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([8653eaa](https://github.com/gotson/komga/commits/8653eaa))
+- translated using Weblate (Korean) ([6853e31](https://github.com/gotson/komga/commits/6853e31))
+- translated using Weblate (Finnish) ([a14c08f](https://github.com/gotson/komga/commits/a14c08f))
+- translated using Weblate (French) ([b0413eb](https://github.com/gotson/komga/commits/b0413eb))
+- translated using Weblate (Croatian) ([46a7869](https://github.com/gotson/komga/commits/46a7869))
+- translated using Weblate (Portuguese) ([d775ea4](https://github.com/gotson/komga/commits/d775ea4))
+- translated using Weblate (Danish) ([a53c9a6](https://github.com/gotson/komga/commits/a53c9a6))
+- translated using Weblate (Tamil) ([f7a72ae](https://github.com/gotson/komga/commits/f7a72ae))
+
+## ⚙️ Dependencies
+**komga**
+- upgrade sqlite-jdbc to 3.48.0 ([79be279](https://github.com/gotson/komga/commits/79be279))
+- bump nightcompress to 1.1.0 ([bd68b14](https://github.com/gotson/komga/commits/bd68b14))
+
 # [1.17.0](https://github.com/gotson/komga/compare/1.16.0...1.17.0) (2025-01-09)
 ## 🚀 Features
 

@@ -14817,6 +14817,12 @@
               "type": "string"
             }
           },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebLinkUpdateDto"
+            }
+          },
           "readingDirection": {
             "type": "string",
             "enum": [
@@ -14840,12 +14846,6 @@
           "totalBookCount": {
             "type": "integer",
             "format": "int32"
-          },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WebLinkUpdateDto"
-            }
           },
           "sharingLabels": {
             "uniqueItems": true,
