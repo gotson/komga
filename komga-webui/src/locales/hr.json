@@ -443,6 +443,7 @@
       "dialot_title_edit": "Uredi biblioteku",
       "field_analysis_analyze_dimensions": "Analiziraj dimenzije stranica",
       "field_analysis_hash_files": "Izračunaj šifre za datoteke",
+      "field_analysis_hash_koreader": "Izračunaj šifre za datoteke za KOReader",
       "field_analysis_hash_pages": "Izračunaj šifre za stranice",
       "field_convert_to_cbz": "Automatski konvertiraj u CBZ",
       "field_import_barcode_isbn": "ISBN barkod",
@@ -1004,6 +1005,7 @@
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "Preuzimanje datoteke",
     "KOBO_SYNC": "Kobo sinkronizacija",
+    "KOREADER_SYNC": "KOReader sinkronizacija",
     "PAGE_STREAMING": "Internetski prijenos stranica",
     "USER": "Korisnik"
   },
