@@ -38,7 +38,7 @@ class BookCommonDao(
     // cteSeries will return On Deck series
     val cteSeries =
       name("cte_series")
-        .`as`(
+        .asMaterialized(
           select(s.ID, rs.MOST_RECENT_READ_DATE)
             .from(s)
             .innerJoin(rs)
@@ -56,7 +56,7 @@ class BookCommonDao(
     val cteBooksFieldNumberSort = d.NUMBER_SORT.`as`("cte_books_number_sort")
     val cteBooks =
       name("cte_books")
-        .`as`(
+        .asMaterialized(
           select(
             cteBooksFieldBookId,
             cteBooksFieldSeriesId,
