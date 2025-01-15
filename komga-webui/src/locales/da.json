@@ -116,9 +116,14 @@
       "height": "Pas højde",
       "original": "Original",
       "screen": "Skærm",
-      "width": "Pas bredde"
+      "width": "Pas bredde",
+      "width_shrink_only": "Tilpas bredde (kun nedskalering)"
     },
+    "set_current_page_as_book_poster": "Sæt side som plakat for bogen",
+    "set_current_page_as_readlist_poster": "Sæt side som plakat for læse liste",
+    "set_current_page_as_series_poster": "Sæt side som plakat for serie",
     "settings": {
+      "always_fullscreen": "Altid Fuldskærm",
       "animate_page_transitions": "Animér side skift",
       "background_color": "Baggrundsfarve",
       "background_colors": {
@@ -130,6 +135,7 @@
       "general": "Generalt",
       "gestures": "Håndbevægelser",
       "page_layout": "Side layout",
+      "paged": "Pagineret Læser muligheder",
       "reading_mode": "Læse metode",
       "scale_type": "Skalér type",
       "side_padding": "Side margen",
@@ -138,7 +144,11 @@
     },
     "shortcuts": {
       "close": "Luk",
+      "cycle_page_layout": "Gennemgå sidelayout",
+      "cycle_scale": "Gennemgå skalaer",
+      "cycle_side_padding": "Gennemgå afstand i siden",
       "first_page": "Første side",
+      "fullscreen": "Fuldskærm til/fra",
       "last_page": "Sidste side",
       "left_to_right": "Venstre til Højre",
       "menus": "Menuer",
@@ -153,24 +163,664 @@
       "show_hide_toolbars": "Vis/gem værktøjslinje",
       "vertical": "Lodret",
       "webtoon": "Webtoon"
-    }
+    },
+    "tooltip_incognito": "Læse fremskridt vil ikke blive gemt"
   },
   "browse_book": {
+    "comment": "KOMMENTAR",
+    "download_file": "Download fil",
+    "file": "FIL",
     "format": "FORMAT",
-    "isbn": "ISBN"
+    "isbn": "ISBN",
+    "links": "LINKS",
+    "navigation_within_readlist": "Navigation i læseliste: {name}",
+    "outdated_tooltip": "Filen for denne bog har ændret sig, denne bog skal analyseres igen",
+    "read_book": "Læs bog",
+    "read_incognito": "Læs hemmeligt",
+    "size": "STØRRELSE"
+  },
+  "browse_collection": {
+    "edit_collection": "Redigér samling",
+    "edit_elements": "Redigér elementer",
+    "manual_ordering": "manuel arrangering"
+  },
+  "browse_readlist": {
+    "edit_elements": "Redigér elementer",
+    "edit_readlist": "Redigér læseliste",
+    "manual_ordering": "manuel arrangering"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Dette er det tidligste år fra udgivelses datoerne for alle bøger i denne serie",
+    "series_no_summary": "Denne serie har ikke noget resumé, så vi valgte en for dig!",
+    "summary_from_book": "Resumé fra bog {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Administrer samling",
+    "title": "{name} samling"
   },
   "common": {
+    "age": "Alder",
     "all_libraries": "Alle biblioteker",
-    "locale_name": "Dansk"
+    "all_of": "Alle",
+    "any_of": "Nogen af",
+    "book": "Bog",
+    "books": "Bøger",
+    "books_n": "Ingen bog | 1 bog | {count} bøger",
+    "books_total": "{count} / {total} bøger",
+    "cancel": "Annuller",
+    "cbx": "Tegneserie arkiver",
+    "choose_image": "Vælg et billede",
+    "close": "Luk",
+    "collections": "Samlinger",
+    "copied": "Kopieret!",
+    "create": "Opret",
+    "delete": "Slet",
+    "dimension": "b: {width}, h: {height}",
+    "discard": "Kassér",
+    "disk_space": "Diskplads",
+    "dismiss": "Afvis",
+    "download": "Download",
+    "drag_drop": "træk og slip",
+    "email": "Email",
+    "epub": "Epub",
+    "filename": "Filnavn",
+    "filter_no_matches": "Det aktive filter matcher ikke noget",
+    "genre": "Genre",
+    "go_to_collection": "Gå til samling",
+    "go_to_library": "Gå til bibliotek",
+    "go_to_readlist": "Gå til læseliste",
+    "go_to_series": "Gå til serie",
+    "i_understand": "Jeg forstår",
+    "library": "Bibliotek",
+    "locale_name": "Dansk",
+    "locale_rtl": "false",
+    "lock_all": "Lås alle",
+    "n_selected": "{count} valgte",
+    "nothing_to_show": "Intet at vise",
+    "outdated": "Udløbet",
+    "page": "Side",
+    "page_number": "Sidetal",
+    "pages": "sider",
+    "pages_left": "Ingen sider tilbage | 1 side tilbage | {count} sider tilbage",
+    "pages_n": "Ingen sider | 1 side | {count} sider",
+    "password": "Adgangskode",
+    "pdf": "PDF",
+    "pending_tasks": "Ingen igangværende opgaver | 1 igangværende opgave | {count} igangværende opgaver",
+    "publisher": "Udgiver",
+    "read": "Læs",
+    "read_on": "Læst den {date}",
+    "readlist": "Læseliste",
+    "readlists": "Læselister",
+    "remember-me": "Husk mig",
+    "required": "Påkrævet",
+    "reset_filters": "Nulstil filter",
+    "roles": "Roller",
+    "save_changes": "Gem ændringer",
+    "series": "Serie | Serier",
+    "tags": "Bogmærker",
+    "unavailable": "Utilgængelig",
+    "unlock_all": "Lås alle op",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "Brug filterpanelet til at ændre det aktive filter",
+    "year": "år"
   },
   "dashboard": {
     "keep_reading": "Fortsæt med at læse",
     "on_deck": "Igangværende",
     "recently_added_books": "Nyligt tilføjede bøger",
     "recently_added_series": "Nyligt tilføjede serier",
+    "recently_read_books": "Læst Fornyligt",
+    "recently_released_books": "Fornyligt Udgivet Bøger",
     "recently_updated_series": "Nyligt opdaterede serier"
   },
+  "data_import": {
+    "book_number": "Bog nummer: {name}",
+    "book_series": "Serie: {name}",
+    "button_import": "Importér",
+    "button_match": "Match",
+    "comicrack_preambule_html": "Du kan importere eksisterende ComicRack Reading Lists i <code>.cbl</code> format.<br>Komga vil forsøge at matche den angivne serie og bognummer med serier og bøger i dine biblioteker.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} bøger er ikke matchede",
+      "create": "Opret alligevel",
+      "title": "Nogle bøger er ikke matchede"
+    },
+    "field_file_label": "ComicRack Reading List (.cbl)",
+    "field_files_label": "ComicRack Reading Lists (.cbl)",
+    "import_read_lists": "Importér læselister",
+    "imported_as": "Importeret som {name}",
+    "readlist_created": "Læseliste oprettet: {name}",
+    "requested_number": "Ønsket Nummer",
+    "requested_series": "Ønsket Serier",
+    "results_preambule": "Resultatet af overførelsen er vist nedenunder. Du kan også tjekke ikke matchede bøger for hver fil.",
+    "size_limit": "Størrelsen skal være mindre end {size} MB",
+    "tab_title": "Data Import"
+  },
+  "dialog": {
+    "add_api_key": {
+      "button_confirm": "Generer",
+      "context": "API nøgler kan blive brugt til godkendelse igennem Kobo Sync protocol.",
+      "dialog_title": "Generer ny API nøgle",
+      "field_comment": "Kommentér",
+      "field_comment_hint": "Hvad er denne API nøgle for?",
+      "info_copy": "Sørg for at kopierer din API nøgle nu. Du vil ikke kunne se den igen!"
+    },
+    "add_to_collection": {
+      "button_create": "Opret",
+      "card_collection_subtitle": "Ingen serier | 1 serie | {count} serier",
+      "dialog_title": "Tilføj til samling",
+      "field_search_create": "Søg eller opret samling",
+      "field_search_create_error": "En samling med dette navn eksistere allerede",
+      "label_no_matching_collection": "Ingen matchende samlinger"
+    },
+    "add_to_readlist": {
+      "button_create": "Opret",
+      "card_readlist_subtitle": "Ingen bøger | 1 bog | {count} bøger",
+      "dialog_title": "Tilføj til læseliste",
+      "field_search_create": "Søg eller opret læseliste",
+      "field_search_create_error": "En læseliste med dette navn eksistere allerede",
+      "label_no_matching_readlist": "Ingen matchende læselister"
+    },
+    "add_user": {
+      "button_cancel": "Annuller",
+      "button_confirm": "Tilføj",
+      "dialog_title": "Tilføj Bruger",
+      "field_email": "Email",
+      "field_email_error": "Det skal være en rigtig email addresse",
+      "field_password": "Angangkode"
+    },
+    "analyze_library": {
+      "body": "Analyser alle mediefiler i biblioteket. Analysen registrerer oplysninger om medierne. Afhængigt af din biblioteksstørrelse kan dette tage lang tid.",
+      "button_confirm": "Analysér",
+      "title": "Analysér bibliotek"
+    },
+    "book_picker": {
+      "filter": "Filter bognummer, titel eller udgivelsesdato",
+      "title": "Vælg Bog"
+    },
+    "delete_apikey": {
+      "button_confirm": "Slet",
+      "confirm_delete": "Jeg forstår, slet API nøgle \"{name}\"",
+      "dialog_title": "Slet API nøgle",
+      "warning_html": "Alle applikationer eller scripts der bruger denne API-nøgle vil ikke længere kunne få adgang til Komga API. Du kan ikke fortryde denne handling."
+    },
+    "delete_book": {
+      "button_confirm": "Slet",
+      "confirm_delete": "Ja, slet bog \"{name}\" og dens filer",
+      "confirm_delete_multiple": "Ja, slet {count} bøger og deres filer",
+      "dialog_title": "Slet bog",
+      "dialog_title_multiple": "Slet bøger",
+      "warning_html": "Bogen <b>{name}</b> fjernes fra denne server sammen med gemte mediefiler. Dette <b>kan ikke</b> er fortrydelse. Fortsæt?",
+      "warning_multiple_html": "{count} bøger fjernes fra denne server sammen med gemte mediefiler. Dette <b>kan ikke</b> er fortrydelse. Fortsæt?"
+    },
+    "delete_collection": {
+      "button_confirm": "Slet",
+      "confirm_delete": "Ja, slet denne samling \"{name}\"",
+      "confirm_delete_multiple": "Ja, slet {count} samlinger",
+      "dialog_title": "Slet Samling",
+      "dialog_title_multiple": "Slet Samlinger",
+      "warning_html": "Samlingen <b>{name}</b> fjernes fra denne server. Dine mediefiler vil ikke blive påvirket. Dette <b>kan ikke</b> fortrydes. Fortsæt?",
+      "warning_multiple_html": "{count} samlinger fjernes fra denne server. Dine mediefiler vil ikke blive påvirket. Dette <b>kan ikke</b> fortrydes. Fortsæt?"
+    },
+    "delete_library": {
+      "button_confirm": "Slet",
+      "confirm_delete": "Ja, Slet biblioteket \"{name}\"",
+      "title": "Slet biblioteket",
+      "warning_html": "Biblioteket <b>{name}</b> fjernes fra denne server. Dine mediefiler vil ikke blive påvirket. Dette <b>kan ikke</b> fortrydes. Fortsæt?"
+    },
+    "delete_readlist": {
+      "button_confirm": "Slet",
+      "confirm_delete": "Ja, slet læselisten \"{name}\"",
+      "confirm_delete_multiple": "Ja, slet {count} læselister",
+      "dialog_title": "Slet læseliste",
+      "dialog_title_multiple": "Slet læselister",
+      "warning_html": "Læselisten <b>{name}</b> fjernes fra denne server. Dine mediefiler vil ikke blive påvirket. Dette <b>kan ikke</b> fortrydes. Fortsæt?",
+      "warning_multiple_html": "{count} læselister fjernes fra denne server. Dine mediefiler vil ikke blive påvirket. Dette <b>kan</b> fortrydes. Fortsæt?"
+    },
+    "delete_series": {
+      "button_confirm": "Slet",
+      "confirm_delete": "Ja, slet serien \"{name}\" og dens filer",
+      "confirm_delete_multiple": "Ja, slet {count} serier og deres filer",
+      "dialog_title": "Slet Serie",
+      "warning_html": "Serien <b>{name}</b> fjernes fra denne server sammen med gemte mediefiler. Dette <b>kan ikke</b> fortrydes. Fortsæt?",
+      "warning_multiple_html": "{count} serier fjernes fra denne server sammen med gemte deres mediefiler. Dette <b>kan ikke</b> fortrydes. Fortsæt?"
+    },
+    "delete_user": {
+      "button_confirm": "Slet",
+      "confirm_delete": "Ja, slet brugeren \"{name}\"",
+      "dialog_title": "Slet Bruger",
+      "warning_html": "Brugeren <b>{name}</b> vil blive slettet fra denne server. Dette <b>kan ikke</b> fortrydes. Fortsæt?"
+    },
+    "edit_books": {
+      "add_author_role_error_duplicate": "Eksistere allerede",
+      "authors_notice_multiple_edit": "Du redigerer forfattere til flere bøger. Dette vil overskrive eksisterende forfattere af hver bog.",
+      "button_cancel": "Annuller",
+      "button_confirm": "Gem ændringer",
+      "copy_from": "Kopiér fra {field}",
+      "dialog_title_multiple": "Redigér {count} bog | Redigér {count} bøger",
+      "dialog_title_single": "Redigér {book}",
+      "field_alternate_title": "Alternativ titel",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Skal være et gyldigt ISBN 13",
+      "field_link_label": "Etikette",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Skal være http eller https",
+      "field_link_url_error_url": "Skal være en gyldig URL",
+      "field_number": "Nummer",
+      "field_number_sort": "Sortér nummer",
+      "field_number_sort_hint": "Du kan bruge decimal tal",
+      "field_release_date": "Udgivelsesdato",
+      "field_release_date_error": "Skal være i et gyldigt YYYY-MM-DD format",
+      "field_summary": "Resumé",
+      "field_tags": "Bogmærker",
+      "field_title": "Titel",
+      "number_sort_decrement": "Reducér alle med 1",
+      "number_sort_increment": "Forhøj alle med 1",
+      "tab_authors": "Forfattere",
+      "tab_general": "General",
+      "tab_links": "Links",
+      "tab_poster": "Plakat",
+      "tab_tags": "Bogmærker",
+      "tags_notice_multiple_edit": "Du redigerer bogmærker til flere bøger. Dette vil overskrive eksisterende bogmærker af hver bog."
+    },
+    "edit_collection": {
+      "button_cancel": "Annuller",
+      "button_confirm": "Gem ændringer",
+      "dialog_title": "Redigér samling",
+      "field_manual_ordering": "Manuel arrangering",
+      "label_ordering": "Som standard vil serien i en samling blive bestilt af navn. Du kan aktivere manuel arrangering for at definere din egen rækkefølge.",
+      "tab_general": "General",
+      "tab_poster": "Plakat"
+    },
+    "edit_library": {
+      "button_browse": "Gennemse",
+      "button_cancel": "Annuller",
+      "button_confirm_add": "Tilføj",
+      "button_confirm_edit": "Redigér",
+      "button_next": "Næste",
+      "dialog_title_add": "Tilføj bibliotek",
+      "dialot_title_edit": "Redigér bibliotek",
+      "field_analysis_analyze_dimensions": "Analyser siders dimensioner",
+      "field_analysis_hash_files": "Beregn hash for filer",
+      "field_analysis_hash_pages": "Beregn hash for sider",
+      "field_convert_to_cbz": "Automatisk konvertér til CBZ",
+      "field_import_barcode_isbn": "ISBN stregkode",
+      "field_import_comicinfo_book": "Bog metadata",
+      "field_import_comicinfo_collections": "Samlinger",
+      "field_import_comicinfo_readlists": "Læselister",
+      "field_import_comicinfo_series": "Serie metadata",
+      "field_import_comicinfo_series_append_volume": "Udformet volumen til serietitel",
+      "field_import_epub_book": "Bog metadata",
+      "field_import_epub_series": "Serie metadata",
+      "field_import_local_artwork": "Lokalt kunst",
+      "field_import_mylar_series": "Serie metadata",
+      "field_name": "Navn",
+      "field_oneshotsdirectory": "One-Shots mappe",
+      "field_repair_extensions": "Automatisk reparation af forkerte filudvidelser",
+      "field_root_folder": "Root mappe",
+      "field_scan_interval": "Scanningsinterval",
+      "field_scanner_empty_trash_after_scan": "Tøm papirkurven automatisk efter hver scanning",
+      "field_scanner_force_directory_modified_time": "Tving mappes ændret tid",
+      "field_scanner_scan_startup": "Scan på opstart",
+      "field_series_cover": "Serieomslag",
+      "file_browser_dialog_button_confirm": "Vælg",
+      "file_browser_dialog_title": "Bibliotekets rodmappe",
+      "label_analysis": "Analyse",
+      "label_file_management": "Filstyring",
+      "label_import_barcode_isbn": "Importér ISBN inden for stregkode",
+      "label_import_comicinfo": "Importér metadata til CBR/CBZ med en ComicInfo.xml-fil",
+      "label_import_epub": "Importér metadata fra EPUB-filer",
+      "label_import_local": "Import af lokale medieaktiver",
+      "label_import_mylar": "Importér metadata genereret af Mylar",
+      "label_scan_directory_exclusions": "Mappe ekskluderinger",
+      "label_scan_types": "Scan for disse filtyper",
+      "label_scanner": "Scanner",
+      "label_series_cover": "Serieomslag",
+      "tab_general": "General",
+      "tab_metadata": "Metadata",
+      "tab_options": "Valgmuligheder",
+      "tooltip_oneshotsdirectory": "Efterlad tom for at deaktivere",
+      "tooltip_scanner_force_modified_time": "Aktivér, hvis biblioteket er på en Google Drev",
+      "tooltip_use_resources": "Kan forbruge mange ressourcer på store biblioteker eller langsom hardware"
+    },
+    "edit_readlist": {
+      "button_cancel": "Annuller",
+      "button_confirm": "Gem ændringer",
+      "dialog_title": "Redigér læseliste",
+      "field_manual_ordering": "Manuel arrangering",
+      "field_name": "Navn",
+      "field_summary": "Resumé",
+      "label_ordering": "Som standard arrangeres bøger på en læseliste manuelt. Du kan deaktivere manuel arrangering for at sortere bøger efter udgivelsesdato.",
+      "tab_general": "Generalt",
+      "tab_poster": "Plakat"
+    },
+    "edit_series": {
+      "button_cancel": "Annuller",
+      "button_confirm": "Gem ændringer",
+      "dialog_title_multiple": "Redigér {count} serie | Redigér {count} serier",
+      "dialog_title_single": "Redigér {series}",
+      "field_age_rating": "Aldersbedømmelse",
+      "field_age_rating_error": "Aldersbedømmelse skal være 0 eller mere",
+      "field_genres": "Genre",
+      "field_labels": "Etiketter",
+      "field_language": "Sprog",
+      "field_language_hint": "IETF BCP 47 sprog mærke",
+      "field_publisher": "Udgiver",
+      "field_reading_direction": "Læseretning",
+      "field_sort_title": "Sorter efter titel",
+      "field_status": "Status",
+      "field_summary": "Resumé",
+      "field_tags": "Bogmærker",
+      "field_title": "Titel",
+      "field_total_book_count": "Samlet Antal Bøger",
+      "field_total_book_count_error": "Samlet antal bøger skal være 1 eller mere",
+      "mixed": "BLANDET",
+      "tab_general": "Generalt",
+      "tab_poster": "Plakat",
+      "tab_sharing": "Deling",
+      "tab_tags": "Bogmærker",
+      "tab_titles": "Alternerede titler",
+      "tags_notice_multiple_edit": "Du redigerer bogmærker til flere bøger. Dette vil overskrive eksisterende bogmærker i serien."
+    },
+    "edit_user": {
+      "button_cancel": "Annuller",
+      "button_confirm": "Gem ændringer",
+      "dialog_title": "Redigér bruger",
+      "label_roles_for": "Roller for {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Tillad kun under",
+        "exclude_over": "Udeluk over",
+        "none": "Ingen begrænsning"
+      },
+      "edit_restrictions_for": "Rediger restriktioner for {name}",
+      "label_age_restriction": "Aldersbegrænsning",
+      "label_allow_only_labels": "Tillad kun etiketter",
+      "label_exclude_labels": "Udeluk etiketter",
+      "tab_content_restrictions": "Indholdsbegrænsninger",
+      "tab_shared_libraries": "Delte Biblioteker"
+    },
+    "empty_trash": {
+      "body": "Som standard fjerner medieserveren ikke oplysninger til medier med det samme. Dette hjælper, hvis et drev midlertidigt afbrydes. Når du tømmer papirkurven til et bibliotek, slettes alle oplysninger om manglende medier.",
+      "button_confirm": "Tøm",
+      "title": "Tøm papirkurven til bibliotek"
+    },
+    "file_browser": {
+      "button_cancel": "Annuller",
+      "button_confirm_default": "Vælg",
+      "dialog_title_default": "Filbrowser",
+      "parent_directory": "Forældre"
+    },
+    "filename_chooser": {
+      "button_choose": "Vælg",
+      "field_destination_filename": "Destination filnavn",
+      "label_source_filename": "Kildenavn",
+      "table": {
+        "existing_file": "Eksisterende fil",
+        "order": "Rækkefølge"
+      },
+      "title": "Destination filnavn"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Gennemtving Kobo-synkronisering",
+      "warning_html": "Dette vil slette alle synkroniseringshistorik for denne API-nøgle. Din Kobo synkroniserer alt på den næste synkronisering."
+    },
+    "password_change": {
+      "button_cancel": "Annuller",
+      "button_confirm": "Skift adgangskode",
+      "dialog_title": "Skift adgangskode",
+      "field_new_password": "Ny adgangskode",
+      "field_new_password_error": "Ny adgangskode er påkrævet.",
+      "field_repeat_password": "Gentag ny adgangskode",
+      "field_repeat_password_error": "Adgangskoder skal være identisk."
+    },
+    "refresh_library_metadata": {
+      "body": "Opdaterer metadata for alle mediefiler i biblioteket. Afhængigt af din biblioteksstørrelse kan dette tage lang tid.",
+      "button_confirm": "Opdatér",
+      "title": "Opdatér metadata til bibliotek"
+    },
+    "series_picker": {
+      "label_search_series": "Søg serie",
+      "no_results": "Ingen serie fundet",
+      "title": "Vælg serie"
+    },
+    "server_stop": {
+      "button_confirm": "Stop",
+      "confirmation_message": "Er du sikker på, at du vil stoppe Komga?",
+      "dialog_title": "Luk serveren"
+    },
+    "shortcut_help": {
+      "label_description": "Beskrivelse",
+      "label_key": "Nøgle"
+    },
+    "transient_book_details": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Eksisterende",
+      "label_format": "Format",
+      "label_name": "Navn",
+      "label_pages": "Sider",
+      "label_size": "Størrelse",
+      "pages_table": {
+        "filename": "Filnavn",
+        "height": "Højde",
+        "index": "Indeks",
+        "media_type": "Medietype",
+        "size": "Størrelse",
+        "width": "Bredde"
+      },
+      "title": "Bog detaljer",
+      "title_comparison": "Bog sammenligning"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Eksisterende",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Inspicér Bog",
+      "title_comparison": "Bog sammenligning"
+    }
+  },
+  "duplicate_pages": {
+    "action_auto_delete_remaining": "Automatisk sletning af resterende ({count})",
+    "action_delete_auto": "Automatisk sletning",
+    "action_delete_manual": "Manuel sletning",
+    "action_delete_matches": "Slet matches",
+    "action_ignore": "Ignorer",
+    "action_ignore_remaining": "Ignorer resterende ({count})",
+    "action_manual_delete_remaining": "Manuel sletning af resterende ({count})",
+    "confirm_auto_delete_remaining": "Alle de resterende side hashes på denne side ({count}) vil blive markeret til automatisk sletning.",
+    "confirm_manual_delete_remaining": "Alle de resterende side hashes på denne side ({count}) vil blive markeret til manuel sletning.",
+    "delete_to_save": "Slette til at sparer {size}",
+    "deleted_count": "Slettet {count} gange",
+    "empty_title": "Ingen duplikerede sider fundet",
+    "filter": {
+      "count": "Antal",
+      "date_added": "Tilføjelsesdato",
+      "date_modified": "Dato ændret",
+      "delete_size": "Plads gemt",
+      "match_count": "Match antal",
+      "size": "Størrelse",
+      "total_size": "Samlet størrelse"
+    },
+    "info": "Sletning af duplikerede sider vil ændre dine filer. Backup dine filer og brug manuel sletning, før du bruger automatisk sletning.",
+    "known": "Kendte",
+    "matches_n": "Ingen matches | 1 match | {count} matches",
+    "new": "Ny",
+    "saved_size": "Sparet {size}",
+    "title": "Dublerede sider",
+    "unknown_size": "Ukendt størrelse"
+  },
+  "duplicates": {
+    "file_hash": "Fil hash",
+    "size": "Størrelse",
+    "title": "Dublerede filer",
+    "url": "URL"
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "Hardlink/Kopier filer",
+      "MOVE": "Flyt Filer"
+    },
+    "epubreader": {
+      "appearances": {
+        "day": "Dag",
+        "night": "Nat",
+        "sepia": "Sepia"
+      },
+      "column_count": {
+        "auto": "Auto",
+        "one": "En",
+        "two": "To"
+      },
+      "reading_direction": {
+        "auto": "Automatisk",
+        "ltr": "Venstre til højre",
+        "rtl": "Højre til venstre"
+      }
+    },
+    "historical_event_type": {
+      "BookConverted": "Bog konverteret",
+      "BookFileDeleted": "Bog fil slettet",
+      "BookImported": "Bog importeret",
+      "DuplicatePageDeleted": "Dupleret side slettet",
+      "SeriesFolderDeleted": "Serie mappe slettet"
+    },
+    "media_status": {
+      "ERROR": "Fejl",
+      "OUTDATED": "Udløbet",
+      "READY": "Klar",
+      "UNKNOWN": "Ukendt",
+      "UNSUPPORTED": "Ikke understøttet"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Automatisk sletning",
+      "DELETE_MANUAL": "Manuel sletning",
+      "IGNORE": "Ignorer"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "Venstre til højre",
+      "RIGHT_TO_LEFT": "Højre til venstre",
+      "VERTICAL": "Lodret",
+      "WEBTOON": "Webtoon"
+    },
+    "scan_interval": {
+      "DAILY": "Dagligt",
+      "DISABLED": "Fra",
+      "EVERY_12H": "Hver 12 time",
+      "EVERY_6H": "Hver 6 time",
+      "HOURLY": "Timevis",
+      "WEEKLY": "Ugentligt"
+    },
+    "series_cover": {
+      "FIRST": "Første",
+      "FIRST_UNREAD_OR_FIRST": "Første ulæste ellers første",
+      "FIRST_UNREAD_OR_LAST": "Første ulæste ellers sidste",
+      "LAST": "Sidste"
+    },
+    "series_status": {
+      "ABANDONED": "Forladt",
+      "ENDED": "Afsluttet",
+      "HIATUS": "Pause",
+      "ONGOING": "Igangværende"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Normal (300px)",
+      "LARGE": "Stor (900px)",
+      "MEDIUM": "Medium (600px)",
+      "XLARGE": "x-Large (1200px)"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "Nuværende kapitel",
+    "page_of": "Side {page} af {count}",
+    "settings": {
+      "column_count": "Kolonnetal",
+      "layout": "Layout",
+      "layout_paginated": "Pagineret",
+      "layout_scroll": "Rul ned",
+      "navigation_mode": "Navigationstilstand",
+      "navigation_options": {
+        "both": "Begge",
+        "buttons": "Knapper",
+        "click": "Klik / Tryk"
+      },
+      "page_margins": "Sidemargener",
+      "viewing_theme": "Visnings tema"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Gennemse kolonnetal",
+      "cycle_viewing_theme": "Gennemse visnings tema",
+      "font_size_decrease": "Formindsk skrift størrelse",
+      "font_size_increase": "Forøg skrift størrelse",
+      "menus": "Menuer",
+      "next": "Fremad",
+      "previous": "Tilbage",
+      "reader_navigation": "Læser Navigation",
+      "scroll": "Skift layout til rul ned",
+      "settings": "Indstillinger",
+      "show_hide_toc": "Vis/Gem indholdsfortegnelse"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "Fil kunne ikke blive tilgået under analyse",
+    "ERR_1001": "Medietype er ikke understøttet",
+    "ERR_1002": "Krypteret RAR arkiver er ikke understøttet",
+    "ERR_1003": "Solid RAR arkiver er ikke understøttet",
+    "ERR_1004": "Multi-Volume RAR arkiver er ikke understøttet",
+    "ERR_1005": "Ukendt fejl under analyse af bog",
+    "ERR_1006": "Bogen indeholder ikke nogle sider",
+    "ERR_1007": "Nogle poster kunne ikke analyseres",
+    "ERR_1008": "Ukendt fejl under hentning af bogens poster",
+    "ERR_1009": "En læseliste med det navn eksistere allerede",
+    "ERR_1015": "Fejl under deserialisering ComicRack CBL",
+    "ERR_1016": "Mappen er ikke tilgængelig eller ikke en mappe",
+    "ERR_1017": "Kan ikke scanne mappe, der er en del af et eksisterende bibliotek",
+    "ERR_1018": "Filen blev ikke fundet",
+    "ERR_1019": "Kan ikke importere fil, der er en del af et eksisterende bibliotek",
+    "ERR_1020": "Bogen til opgradering hører ikke til nogen serie",
+    "ERR_1021": "Destination-fil findes allerede",
+    "ERR_1022": "Ny importeret bog kunne ikke scannes",
+    "ERR_1023": "Bog allerede i ReadingList",
+    "ERR_1024": "OAuth2 login fejl: ingen e-mail attribut",
+    "ERR_1025": "OAuth2 login fejl: Ingen lokal bruger findes med denne e-mail",
+    "ERR_1026": "OpenID Connect login fejl: e-mail ikke verificeret",
+    "ERR_1027": "ÅbnID Opret login fejl: ingen e-mail_verified attribut",
+    "ERR_1028": "ÅbnID Opret login fejl: Ingen e-mail attribut",
+    "ERR_1029": "ComicRack CBL indeholder ikke nogen bog element",
+    "ERR_1030": "ComicRack CBL har ingen navn element",
+    "ERR_1031": "ComicRack CBL Bog mangler serie eller nummer",
+    "ERR_1032": "EPUB fil har forkert medietype",
+    "ERR_1033": "Nogle poster mangler",
+    "ERR_1034": "En API-nøgle med denne kommentar eksisterer allerede"
+  },
+  "filter": {
+    "age_rating": "aldersbedømmelse",
+    "age_rating_none": "Ingen",
+    "complete": "Færdig",
+    "genre": "genre",
+    "in_progress": "Igang",
+    "language": "sprog",
+    "library": "bibliotek",
+    "oneshot": "One-shot",
+    "publisher": "udgiver",
+    "read": "Læst",
+    "release_date": "udgivelsesdato",
+    "sharing_label": "Delingsetikette",
+    "status": "status",
+    "tag": "etikette",
+    "unread": "Ikke læst"
+  },
+  "filter_drawer": {
+    "filter": "filter",
+    "sort": "sortér"
+  },
   "history": {
+    "header": {
+      "book": "Bog",
+      "date": "Dato",
+      "details": "Detaljer",
+      "series": "Serie",
+      "type": "Type"
+    },
     "title": "Historik"
   },
   "home": {
@@ -180,10 +830,52 @@
   "library_navigation": {
     "browse": "Gennemse",
     "collections": "Samlinger",
-    "readlists": "Læselister"
+    "readlists": "Læselister",
+    "recommended": "Anbefalet"
+  },
+  "login": {
+    "create_user_account": "Opret en konto",
+    "login": "Log ind",
+    "unclaimed_html": "Denne Komga-server er endnu ikke aktiv, du skal oprette en brugerkonto for at kunne få adgang til den.<br><br>Vælg en <strong>email</strong> og <strong>password</strong> og klik på <strong> Opret brugerkonto</strong>."
+  },
+  "media_analysis": {
+    "comment": "Kommentér",
+    "media_analysis": "Medie analyse",
+    "media_type": "Medietype",
+    "name": "Navn",
+    "size": "Størrelse",
+    "status": "Status",
+    "url": "URL"
   },
   "media_management": {
     "title": "Mediehåndtering"
+  },
+  "menu": {
+    "add_to_collection": "Tilføj til samling",
+    "add_to_readlist": "Tilføj til læseliste",
+    "analyze": "Analysér",
+    "bulk_edit_metadata": "Mængde redigér metadata",
+    "delete": "Slet",
+    "deselect_all": "Fravælg alle",
+    "download_readlist": "Download læseliste",
+    "download_series": "Download serie",
+    "edit": "Redigér",
+    "edit_metadata": "Redigér metadata",
+    "empty_trash": "Tøm papirskurv",
+    "mark_read": "Markér som læst",
+    "mark_unread": "Markér som ikke læst",
+    "refresh_metadata": "Opdatér metadata",
+    "scan_library_files": "Scan biblioteksfiler",
+    "scan_library_files_deep": "Scan biblioteksfiler (dyb)",
+    "select_all": "Vælg alle"
+  },
+  "metrics": {
+    "library_books": "Bøger per bibliotek",
+    "library_disk_space": "Biblioteks diskplads",
+    "library_series": "Serier per bibliotek",
+    "library_sidecars": "Sidevogne per bibliotek",
+    "tasks_executed": "Opgaver lavet",
+    "tasks_total_time": "Opgaver total tid"
   },
   "navigation": {
     "home": "Hjem",
