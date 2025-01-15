@@ -1,6 +1,9 @@
 package org.gotson.komga.infrastructure.mediacontainer.divina
 
 import com.github.gotson.nightcompress.Archive
+import com.github.gotson.nightcompress.ReadSupportCompression
+import com.github.gotson.nightcompress.ReadSupportFilter
+import com.github.gotson.nightcompress.ReadSupportFormat
 import io.github.oshai.kotlinlogging.KotlinLogging
 import net.greypanther.natsort.CaseInsensitiveSimpleNaturalComparator
 import org.gotson.komga.domain.model.MediaContainerEntry
@@ -45,7 +48,7 @@ class Rar5Extractor(
     path: Path,
     analyzeDimensions: Boolean,
   ): List<MediaContainerEntry> =
-    Archive(path).use { rar ->
+    Archive(path, setOf(ReadSupportCompression.NONE), setOf(ReadSupportFilter.NONE), setOf(ReadSupportFormat.RAR5)).use { rar ->
       generateSequence { rar.nextEntry }
         .map { entry ->
           try {
@@ -69,5 +72,5 @@ class Rar5Extractor(
   override fun getEntryStream(
     path: Path,
     entryName: String,
-  ): ByteArray = Archive.getInputStream(path, entryName).use { it?.readBytes() ?: ByteArray(0) }
+  ): ByteArray = Archive.getInputStream(path, setOf(ReadSupportCompression.NONE), setOf(ReadSupportFilter.NONE), setOf(ReadSupportFormat.RAR5), entryName).use { it?.readBytes() ?: ByteArray(0) }
 }
