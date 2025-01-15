@@ -34,15 +34,6 @@ val kaptBenchmark by configurations.getting {
   extendsFrom(configurations.kaptTest.get())
 }
 
-configurations {
-  configureEach {
-    resolutionStrategy {
-      // https://github.com/gotson/komga/issues/1823
-      force("org.xerial:sqlite-jdbc:3.46.1.3")
-    }
-  }
-}
-
 dependencies {
   implementation(kotlin("stdlib"))
   implementation(kotlin("reflect"))
@@ -117,8 +108,8 @@ dependencies {
 
   implementation("com.github.ben-manes.caffeine:caffeine")
 
-  implementation("org.xerial:sqlite-jdbc:3.47.1.0")
-  jooqGenerator("org.xerial:sqlite-jdbc:3.47.1.0")
+  implementation("org.xerial:sqlite-jdbc:3.48.0.0")
+  jooqGenerator("org.xerial:sqlite-jdbc:3.48.0.0")
 
   if (version.toString().endsWith(".0.0")) {
     ksp("com.github.gotson.bestbefore:bestbefore-processor-kotlin:0.1.0")
