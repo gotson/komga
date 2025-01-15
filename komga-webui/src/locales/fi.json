@@ -443,6 +443,7 @@
       "dialot_title_edit": "Muokkaa kirjastoa",
       "field_analysis_analyze_dimensions": "Analysoi sivujen mitat",
       "field_analysis_hash_files": "Laske tiedostojen tarkisteet",
+      "field_analysis_hash_koreader": "Laske tiivisteet tiedostoille KOReaderia varten",
       "field_analysis_hash_pages": "Laske sivujen tarkisteet",
       "field_convert_to_cbz": "Muunna CBZ-muotoon automaattisesti",
       "field_import_barcode_isbn": "ISBN-viivakoodi",
@@ -1004,6 +1005,7 @@
     "ADMIN": "Järjestelmänvalvoja",
     "FILE_DOWNLOAD": "Tiedostojen lataus",
     "KOBO_SYNC": "Kobo synkronointi",
+    "KOREADER_SYNC": "KOReaderin synkronointi",
     "PAGE_STREAMING": "Sivujen suoratoisto",
     "USER": "Käyttäjä"
   },
