@@ -443,6 +443,7 @@
       "dialot_title_edit": "编辑库",
       "field_analysis_analyze_dimensions": "分析页面尺寸",
       "field_analysis_hash_files": "计算文件哈希",
+      "field_analysis_hash_koreader": "计算 KOReader 文件的哈希值",
       "field_analysis_hash_pages": "计算页面哈希",
       "field_convert_to_cbz": "自动转换为 CBZ 格式",
       "field_import_barcode_isbn": "ISBN 条形码",
@@ -1004,6 +1005,7 @@
     "ADMIN": "管理员",
     "FILE_DOWNLOAD": "允许下载",
     "KOBO_SYNC": "Kobo 同步",
+    "KOREADER_SYNC": "KOReader 同步",
     "PAGE_STREAMING": "允许浏览",
     "USER": "用户"
   },
