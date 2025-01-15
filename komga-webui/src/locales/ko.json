@@ -443,6 +443,7 @@
       "dialot_title_edit": "서재 편집",
       "field_analysis_analyze_dimensions": "페이지 크기 분석",
       "field_analysis_hash_files": "파일 해시 계산",
+      "field_analysis_hash_koreader": "KOReader를 위한 파일 해시 계산",
       "field_analysis_hash_pages": "페이지 해시 계산",
       "field_convert_to_cbz": "CBZ로 자동 변환",
       "field_import_barcode_isbn": "ISBN 바코드",
@@ -1004,6 +1005,7 @@
     "ADMIN": "관리자",
     "FILE_DOWNLOAD": "파일 다운로드",
     "KOBO_SYNC": "Kobo Sync",
+    "KOREADER_SYNC": "KOReader Sync",
     "PAGE_STREAMING": "페이지 스트리밍",
     "USER": "사용자"
   },
