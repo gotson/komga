@@ -897,7 +897,7 @@
   },
   "readlist_import": {
     "row": {
-      "duplicate_book": "Dupliquer le livre",
+      "duplicate_book": "Livre en doublon",
       "error_choose_book": "Sélectionner un livre"
     }
   },
