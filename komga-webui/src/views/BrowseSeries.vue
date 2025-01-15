@@ -485,6 +485,7 @@ import ItemBrowser from '@/components/ItemBrowser.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
+import {getCustomRoles} from '@/functions/author-roles'
 import {parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
 import {ReadStatus} from '@/types/enum-books'
@@ -928,10 +929,12 @@ export default Vue.extend({
       this.$store.dispatch('dialogUpdateSeries', this.series)
     },
     editSingleBook(book: BookDto) {
-      this.$store.dispatch('dialogUpdateBooks', book)
+      const customRoles = getCustomRoles(this.books)
+      this.$store.dispatch('dialogUpdateBooks', {books: book, roles: customRoles})
     },
     editMultipleBooks() {
-      this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+      const customRoles = getCustomRoles(this.books)
+      this.$store.dispatch('dialogUpdateBooks', {books: this.selectedBooks, roles: customRoles})
     },
     bulkEditMultipleBooks() {
       this.$store.dispatch('dialogUpdateBulkBooks', this.$_.sortBy(this.selectedBooks, ['metadata.numberSort']))

@@ -232,6 +232,7 @@ import {BookSseDto, ReadProgressSeriesSseDto, ReadProgressSseDto, SeriesSseDto} 
 import {LibraryDto} from '@/types/komga-libraries'
 import {PageLoader} from '@/types/pageLoader'
 import {ItemContext} from '@/types/items'
+import {getCustomRoles, getCustomRolesForSeries, isAllSelectedSameSeries} from '@/functions/author-roles'
 
 export default Vue.extend({
   name: 'DashboardView',
@@ -430,16 +431,19 @@ export default Vue.extend({
     async singleEditSeries(series: SeriesDto) {
       if (series.oneshot) {
         let book = (await this.$komgaSeries.getBooks(series.id)).content[0]
-        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
-      } else
+        this.$store.dispatch('dialogUpdateOneshots', {oneshots: {series: series, book: book}})
+      } else {
         this.$store.dispatch('dialogUpdateSeries', series)
+      }
     },
     async singleEditBook(book: BookDto) {
       if (book.oneshot) {
         const series = (await this.$komgaSeries.getOneSeries(book.seriesId))
-        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
-      } else
-        this.$store.dispatch('dialogUpdateBooks', book)
+        this.$store.dispatch('dialogUpdateOneshots', {oneshots: {series: series, book: book}})
+      } else {
+        const customRoles = getCustomRolesForSeries(this.getAllBooksFromLoader(), book.seriesId)
+        this.$store.dispatch('dialogUpdateBooks', {books: book, roles: customRoles})
+      }
     },
     async markSelectedSeriesRead() {
       await Promise.all(this.selectedSeries.map(s =>
@@ -465,7 +469,8 @@ export default Vue.extend({
       if (this.selectedSeries.every(s => s.oneshot)) {
         const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
         const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
-        this.$store.dispatch('dialogUpdateOneshots', oneshots)
+        const customRole = getCustomRoles(oneshots.map(o => o.book))
+        this.$store.dispatch('dialogUpdateOneshots', {oneshots, roles: customRole})
       } else
         this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
     },
@@ -473,9 +478,15 @@ export default Vue.extend({
       if (this.selectedBooks.every(b => b.oneshot)) {
         const series = await Promise.all(this.selectedBooks.map(b => this.$komgaSeries.getOneSeries(b.seriesId)))
         const oneshots = this.selectedBooks.map((b, index) => ({series: series[index], book: b} as Oneshot))
-        this.$store.dispatch('dialogUpdateOneshots', oneshots)
-      } else
-        this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+        const customRole = getCustomRoles(oneshots.map(o => o.book))
+        this.$store.dispatch('dialogUpdateOneshots', {oneshots, roles: customRole})
+      } else {
+        let customRoles = [] as string[]
+        if (isAllSelectedSameSeries(this.selectedBooks)) {
+          customRoles = getCustomRolesForSeries(this.getAllBooksFromLoader(), this.selectedBooks[0].seriesId)
+        }
+        this.$store.dispatch('dialogUpdateBooks', {books: this.selectedBooks, roles: customRoles})
+      }
     },
     deleteSeries() {
       this.$store.dispatch('dialogDeleteSeries', this.selectedSeries)
@@ -508,6 +519,15 @@ export default Vue.extend({
       } else {
         return undefined
       }
+    },
+    getAllBooksFromLoader(): BookDto[] {
+      return [
+        ...(this.loaderInProgressBooks?.items || []),
+        ...(this.loaderOnDeckBooks?.items || []),
+        ...(this.loaderRecentlyReleasedBooks?.items || []),
+        ...(this.loaderLatestBooks?.items || []),
+        ...(this.loaderRecentlyReadBooks?.items || []),
+      ]
     },
   },
 })
