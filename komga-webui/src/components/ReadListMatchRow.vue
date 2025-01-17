@@ -71,6 +71,7 @@ import {
   ReadListRequestBookMatchSeriesDto,
 } from '@/types/komga-readlists'
 import BookPickerDialog from '@/components/dialogs/BookPickerDialog.vue'
+import {BookSearch, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'ReadListMatchRow',
@@ -125,7 +126,9 @@ export default Vue.extend({
   methods: {
     openBookPicker() {
       if (!this.seriesBooksCached) {
-        this.$komgaSeries.getBooks(this.series?.seriesId, {unpaged: true})
+        this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(this.series?.seriesId)),
+        } as BookSearch, {unpaged: true, sort: 'metadata.numberSort'})
           .then(r => {
             this.seriesBooks = r.content
             this.seriesBooksCached = true

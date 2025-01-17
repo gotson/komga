@@ -17,8 +17,8 @@
 
       <!--   Action menu   -->
       <oneshot-actions-menu v-if="book"
-                             :book="book"
-                             :series="series"
+                            :book="book"
+                            :series="series"
       />
 
       <v-btn icon @click="editBook" v-if="isAdmin">
@@ -527,8 +527,9 @@ import CollectionsExpansionPanels from '@/components/CollectionsExpansionPanels.
 import OneshotActionsMenu from '@/components/menus/OneshotActionsMenu.vue'
 import {
   SearchConditionAgeRating,
-  SearchConditionGenre, SearchConditionLanguage,
-  SearchConditionPublisher,
+  SearchConditionGenre,
+  SearchConditionLanguage,
+  SearchConditionPublisher, SearchConditionSeriesId,
   SearchConditionTag,
   SearchOperatorIs,
 } from '@/types/komga-search'
@@ -744,7 +745,9 @@ export default Vue.extend({
       await this.loadBook(seriesId)
     },
     async loadBook(seriesId: string) {
-      this.book = (await this.$komgaSeries.getBooks(seriesId)).content[0]
+      this.book = (await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionSeriesId(new SearchOperatorIs(seriesId)),
+      } as BookSearch)).content[0]
 
       // parse query params to get context and contextId
       if (this.$route.query.contextId && this.$route.query.context

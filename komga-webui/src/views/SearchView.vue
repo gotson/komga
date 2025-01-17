@@ -180,7 +180,13 @@ import {throttle} from 'lodash'
 import {PageLoader} from '@/types/pageLoader'
 import {ItemContext} from '@/types/items'
 import {ReadListDto} from '@/types/komga-readlists'
-import {SearchConditionOneShot, SearchOperatorIsFalse, SeriesSearch} from '@/types/komga-search'
+import {
+  BookSearch,
+  SearchConditionOneShot,
+  SearchConditionSeriesId, SearchOperatorIs,
+  SearchOperatorIsFalse,
+  SeriesSearch,
+} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'SearchView',
@@ -307,7 +313,9 @@ export default Vue.extend({
     },
     async singleEditSeries(series: SeriesDto) {
       if (series.oneshot) {
-        let book = (await this.$komgaSeries.getBooks(series.id)).content[0]
+        const book = (await this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(series.id)),
+        } as BookSearch)).content[0]
         this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
       } else
         this.$store.dispatch('dialogUpdateSeries', series)
@@ -352,7 +360,9 @@ export default Vue.extend({
     },
     async editMultipleSeries() {
       if (this.selectedSeries.every(s => s.oneshot)) {
-        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(s.id)),
+        } as BookSearch)))
         const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
         this.$store.dispatch('dialogUpdateOneshots', oneshots)
       } else
@@ -400,7 +410,9 @@ export default Vue.extend({
           fullTextSearch: search,
           condition: new SearchConditionOneShot(new SearchOperatorIsFalse()),
         } as SeriesSearch, pageable))
-        this.loaderBooks = new PageLoader<BookDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaBooks.getBooks(undefined, pageable, search))
+        this.loaderBooks = new PageLoader<BookDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaBooks.getBooksList({
+          fullTextSearch: search,
+        } as BookSearch, pageable))
         this.loaderCollections = new PageLoader<CollectionDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaCollections.getCollections(undefined, pageable, search))
         this.loaderReadLists = new PageLoader<ReadListDto>({size: this.pageSize}, (pageable: PageRequest) => this.$komgaReadLists.getReadLists(undefined, pageable, search))
       } else {

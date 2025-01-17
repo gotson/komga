@@ -93,7 +93,9 @@ export default Vue.extend({
       this.$store.dispatch('dialogAddSeriesToCollection', [this.seriesId])
     },
     async addToReadList() {
-      if (!this.book && !this.localBookId) this.localBookId = (await this.$komgaSeries.getBooks(this.seriesId)).content[0].id
+      if (!this.book && !this.localBookId) this.localBookId = (await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionSeriesId(new SearchOperatorIs(this.seriesId)),
+      } as BookSearch)).content[0].id
       this.$store.dispatch('dialogAddBooksToReadList', [this.book?.id || this.localBookId])
     },
     async markRead() {

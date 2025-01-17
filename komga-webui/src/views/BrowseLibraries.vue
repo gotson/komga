@@ -177,7 +177,7 @@ import {
   SearchConditionPublisher,
   SearchConditionReadStatus,
   SearchConditionReleaseDate,
-  SearchConditionSeries,
+  SearchConditionSeries, SearchConditionSeriesId,
   SearchConditionSeriesStatus,
   SearchConditionSharingLabel,
   SearchConditionTag,
@@ -719,19 +719,25 @@ export default Vue.extend({
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
     },
     async addToReadList() {
-      const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+      const books = await Promise.all(this.selectedSeries.map(s => this.$komgaBooks.getBooksList({
+        condition: new SearchConditionSeriesId(new SearchOperatorIs(s.id)),
+      } as BookSearch)))
       this.$store.dispatch('dialogAddBooksToReadList', books.map(b => b.content[0].id))
     },
     async editSingleSeries(series: SeriesDto) {
       if (series.oneshot) {
-        const book = (await this.$komgaSeries.getBooks(series.id)).content[0]
+        const book = (await this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(series.id)),
+        } as BookSearch)).content[0]
         this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
       } else
         this.$store.dispatch('dialogUpdateSeries', series)
     },
     async editMultipleSeries() {
       if (this.selectedOneshots) {
-        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(s.id)),
+        } as BookSearch)))
         const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
         this.$store.dispatch('dialogUpdateOneshots', oneshots)
       } else

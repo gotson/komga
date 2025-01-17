@@ -132,6 +132,7 @@ import {bookPageUrl, transientBookPageUrl} from '@/functions/urls'
 import {convertErrorCodes} from '@/functions/error-codes'
 import FileNameChooserDialog from '@/components/dialogs/FileNameChooserDialog.vue'
 import {SeriesSelected} from '@/types/series-slim'
+import {BookSearch, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'FileImportRow',
@@ -262,7 +263,9 @@ export default Vue.extend({
     },
     async getSeriesBooks(series: SeriesSelected) {
       if (series) {
-        this.seriesBooks = (await this.$komgaSeries.getBooks(series.seriesId, {unpaged: true})).content
+        this.seriesBooks = (await this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(series.seriesId)),
+        } as BookSearch, {unpaged: true, sort: 'metadata.numberSort'})).content
         if (series.oneshot) {
           this.bookNumber = this.seriesBooks[0].metadata.numberSort
         }

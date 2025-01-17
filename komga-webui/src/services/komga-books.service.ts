@@ -8,9 +8,9 @@ import {
   PageDto,
   ReadProgressUpdateDto,
 } from '@/types/komga-books'
-import {formatISO} from 'date-fns'
 import {ReadListDto} from '@/types/komga-readlists'
 import {R2Progression} from '@/types/readium'
+import {BookSearch} from '@/types/komga-search'
 
 const qs = require('qs')
 
@@ -23,26 +23,10 @@ export default class KomgaBooksService {
     this.http = http
   }
 
-  async getBooks(libraryId?: string, pageRequest?: PageRequest, search?: string, mediaStatus?: string[], readStatus?: string[], releasedAfter?: Date): Promise<Page<BookDto>> {
+  async getBooksList(search: BookSearch, pageRequest?: PageRequest): Promise<Page<BookDto>> {
     try {
-      const params = {...pageRequest} as any
-      if (libraryId) {
-        params.library_id = libraryId
-      }
-      if (search) {
-        params.search = search
-      }
-      if (mediaStatus) {
-        params.media_status = mediaStatus
-      }
-      if (readStatus) {
-        params.read_status = readStatus
-      }
-      if (releasedAfter) {
-        params.released_after = formatISO(releasedAfter, {representation: 'date'})
-      }
-      return (await this.http.get(API_BOOKS, {
-        params: params,
+      return (await this.http.post(`${API_BOOKS}/list`, search, {
+        params: {...pageRequest},
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {

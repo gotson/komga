@@ -124,6 +124,7 @@ import {getReadProgress} from '@/functions/book-progress'
 import {ReadStatus} from '@/types/enum-books'
 import {ReadListDto} from '@/types/komga-readlists'
 import {
+  BookSearch,
   SearchConditionOneShot,
   SearchOperatorIsFalse,
   SeriesSearch,
@@ -211,7 +212,9 @@ export default Vue.extend({
           fullTextSearch: query,
           condition: new SearchConditionOneShot(new SearchOperatorIsFalse()),
         } as SeriesSearch, {size: this.pageSize})).content
-        this.books = (await this.$komgaBooks.getBooks(undefined, {size: this.pageSize}, query)).content
+        this.books = (await this.$komgaBooks.getBooksList({
+          fullTextSearch: query,
+        } as BookSearch, {size: this.pageSize})).content
         this.collections = (await this.$komgaCollections.getCollections(undefined, {size: this.pageSize}, query)).content
         this.readLists = (await this.$komgaReadLists.getReadLists(undefined, {size: this.pageSize}, query)).content
         this.showResults = true

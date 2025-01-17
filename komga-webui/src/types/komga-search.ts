@@ -3,18 +3,31 @@ export interface SeriesSearch {
   fullTextSearch?: string,
 }
 
+export interface BookSearch {
+  condition?: SearchConditionBook,
+  fullTextSearch?: string,
+}
+
 export interface SearchConditionSeries {
 }
 
 export interface SearchConditionBook {
 }
 
-export interface SearchConditionAnyOfBook extends SearchConditionBook {
-  anyOf: SearchConditionBook[],
+export class SearchConditionAnyOfBook implements SearchConditionBook {
+  anyOf: SearchConditionBook[]
+
+  constructor(conditions: SearchConditionBook[]) {
+    this.anyOf = conditions
+  }
 }
 
-export interface SearchConditionAllOfBook extends SearchConditionBook {
-  allOf: SearchConditionBook[],
+export class SearchConditionAllOfBook implements SearchConditionBook {
+  allOf: SearchConditionBook[]
+
+  constructor(conditions: SearchConditionBook[]) {
+    this.allOf = conditions
+  }
 }
 
 export class SearchConditionAnyOfSeries implements SearchConditionSeries {
@@ -41,6 +54,14 @@ export class SearchConditionLibraryId implements SearchConditionBook, SearchCond
   }
 }
 
+export class SearchConditionSeriesId implements SearchConditionBook {
+  seriesId: SearchOperatorEquality
+
+  constructor(op: SearchOperatorEquality) {
+    this.seriesId = op
+  }
+}
+
 export class SearchConditionSeriesStatus implements SearchConditionSeries {
   seriesStatus: SearchOperatorEquality
 
@@ -54,6 +75,14 @@ export class SearchConditionReadStatus implements SearchConditionBook, SearchCon
 
   constructor(op: SearchOperatorEquality) {
     this.readStatus = op
+  }
+}
+
+export class SearchConditionMediaStatus implements SearchConditionBook {
+  mediaStatus: SearchOperatorEquality
+
+  constructor(op: SearchOperatorEquality) {
+    this.mediaStatus = op
   }
 }
 

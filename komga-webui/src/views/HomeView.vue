@@ -230,6 +230,7 @@ import {LIBRARIES_ALL} from '@/types/library'
 import ToasterNotification from '@/components/ToasterNotification.vue'
 import {MediaStatus} from '@/types/enum-books'
 import {LibraryDto} from '@/types/komga-libraries'
+import {BookSearch, SearchConditionAnyOfBook, SearchConditionMediaStatus, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'HomeView',
@@ -245,7 +246,12 @@ export default Vue.extend({
     if (this.isAdmin) {
       this.$actuator.getInfo()
         .then(x => this.$store.commit('setActuatorInfo', x))
-      this.$komgaBooks.getBooks(undefined, {size: 0} as PageRequest, undefined, [MediaStatus.ERROR, MediaStatus.UNSUPPORTED])
+      this.$komgaBooks.getBooksList({
+        condition: new SearchConditionAnyOfBook([
+          new SearchConditionMediaStatus(new SearchOperatorIs(MediaStatus.ERROR)),
+          new SearchConditionMediaStatus(new SearchOperatorIs(MediaStatus.UNSUPPORTED)),
+        ]),
+      } as BookSearch, {size: 0} as PageRequest)
         .then(x => this.$store.commit('setBooksToCheck', x.totalElements))
       this.$komgaAnnouncements.getAnnouncements()
         .then(x => this.$store.commit('setAnnouncements', x))

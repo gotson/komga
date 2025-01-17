@@ -40,6 +40,7 @@ import Vue from 'vue'
 import {MediaStatus} from '@/types/enum-books'
 import {BookDto} from '@/types/komga-books'
 import {convertErrorCodes} from '@/functions/error-codes'
+import {BookSearch, SearchConditionAnyOfBook, SearchConditionMediaStatus, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'MediaAnalysis',
@@ -97,7 +98,12 @@ export default Vue.extend({
         pageRequest.sort!!.push(`${sortBy[i]},${sortDesc[i] ? 'desc' : 'asc'}`)
       }
 
-      const booksPage = await this.$komgaBooks.getBooks(undefined, pageRequest, undefined, [MediaStatus.ERROR, MediaStatus.UNSUPPORTED])
+      const booksPage = await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionAnyOfBook([
+          new SearchConditionMediaStatus(new SearchOperatorIs(MediaStatus.ERROR)),
+          new SearchConditionMediaStatus(new SearchOperatorIs(MediaStatus.UNSUPPORTED)),
+        ]),
+      } as BookSearch, pageRequest)
       this.totalBooks = booksPage.totalElements
       this.$store.commit('setBooksToCheck', booksPage.totalElements)
       this.books = booksPage.content

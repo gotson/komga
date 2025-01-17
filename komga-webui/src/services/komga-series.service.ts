@@ -87,26 +87,6 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getBooks(seriesId: string, pageRequest?: PageRequest, readStatus?: string[], tag?: string[], authors?: AuthorDto[]): Promise<Page<BookDto>> {
-    try {
-      const params = {...pageRequest} as any
-      if (readStatus) params.read_status = readStatus
-      if (tag) params.tag = tag
-      if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
-
-      return (await this.http.get(`${API_SERIES}/${seriesId}/books`, {
-        params: params,
-        paramsSerializer: params => qs.stringify(params, {indices: false}),
-      })).data
-    } catch (e) {
-      let msg = 'An error occurred while trying to retrieve books'
-      if (e.response.data.message) {
-        msg += `: ${e.response.data.message}`
-      }
-      throw new Error(msg)
-    }
-  }
-
   async getCollections(seriesId: string): Promise<CollectionDto[]> {
     try {
       return (await this.http.get(`${API_SERIES}/${seriesId}/collections`)).data
