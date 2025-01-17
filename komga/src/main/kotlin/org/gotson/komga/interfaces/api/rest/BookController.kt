@@ -115,6 +115,7 @@ class BookController(
   private val contentRestrictionChecker: ContentRestrictionChecker,
   private val commonBookController: CommonBookController,
 ) {
+  @Deprecated("use /v1/books/list instead")
   @PageableAsQueryParam
   @GetMapping("api/v1/books")
   fun getAllBooks(
@@ -163,6 +164,36 @@ class BookController(
 
     return bookDtoRepository
       .findAll(bookSearch, SearchContext(principal.user), pageRequest)
+      .map { it.restrictUrl(!principal.user.isAdmin) }
+  }
+
+  @PageableAsQueryParam
+  @PostMapping("api/v1/books/list")
+  fun getBooksList(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestBody search: BookSearch,
+    @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
+    @Parameter(hidden = true) page: Pageable,
+  ): Page<BookDto> {
+    val sort =
+      when {
+        page.sort.isSorted -> page.sort
+        !search.fullTextSearch.isNullOrBlank() -> Sort.by("relevance")
+        else -> Sort.unsorted()
+      }
+
+    val pageRequest =
+      if (unpaged)
+        UnpagedSorted(sort)
+      else
+        PageRequest.of(
+          page.pageNumber,
+          page.pageSize,
+          sort,
+        )
+
+    return bookDtoRepository
+      .findAll(search, SearchContext(principal.user), pageRequest)
       .map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
