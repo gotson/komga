@@ -86,6 +86,14 @@ export class SearchConditionMediaStatus implements SearchConditionBook {
   }
 }
 
+export class SearchConditionMediaProfile implements SearchConditionBook {
+  mediaProfile: SearchOperatorEquality
+
+  constructor(op: SearchOperatorEquality) {
+    this.mediaProfile = op
+  }
+}
+
 export class SearchConditionGenre implements SearchConditionSeries {
   genre: SearchOperatorEquality
 

@@ -688,6 +688,11 @@
       "DuplicatePageDeleted": "Duplicate page deleted",
       "SeriesFolderDeleted": "Series folder deleted"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Error",
       "OUTDATED": "Outdated",
@@ -804,6 +809,7 @@
     "in_progress": "In Progress",
     "language": "language",
     "library": "library",
+    "media_profile": "Media profile",
     "oneshot": "One-shot",
     "publisher": "publisher",
     "read": "Read",

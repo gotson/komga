@@ -488,7 +488,7 @@ import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
-import {ReadStatus} from '@/types/enum-books'
+import {MediaProfile, ReadStatus} from '@/types/enum-books'
 import {
   BOOK_ADDED,
   BOOK_CHANGED,
@@ -535,6 +535,7 @@ import {
   SearchConditionBook,
   SearchConditionGenre,
   SearchConditionLanguage,
+  SearchConditionMediaProfile,
   SearchConditionPublisher,
   SearchConditionReadStatus,
   SearchConditionSeriesId,
@@ -544,6 +545,7 @@ import {
   SearchOperatorIsNot,
 } from '@/types/komga-search'
 import {objIsEqual} from '@/functions/object'
+import i18n from '@/i18n'
 
 const tags = require('language-tags')
 
@@ -596,6 +598,7 @@ export default Vue.extend({
       drawer: false,
       filterOptions: {
         tag: [] as NameValue[],
+        mediaProfile: [] as NameValue[],
       },
     }
   },
@@ -642,6 +645,13 @@ export default Vue.extend({
     filterOptionsPanel(): FiltersOptions {
       const r = {
         tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag, anyAllSelector: true},
+        mediaProfile: {
+          name: this.$t('filter.media_profile').toString(), values: Object.values(MediaProfile).map(x => ({
+            name: i18n.t(`enums.media_profile.${x}`),
+            value: new SearchConditionMediaProfile(new SearchOperatorIs(x)),
+            nValue: new SearchConditionMediaProfile(new SearchOperatorIsNot(x)),
+          } as NameValue)),
+        },
       } as FiltersOptions
       authorRoles.forEach((role: string) => {
         r[role] = {
@@ -807,10 +817,11 @@ export default Vue.extend({
 
       // get filter from query params and validate with available filter values
       let activeFilters = {} as FiltersActive
-      if (route.query.readStatus || route.query.tag || authorRoles.some(role => role in route.query)) {
+      if (route.query.readStatus || route.query.tag || route.query.mediaProfile || authorRoles.some(role => role in route.query)) {
         activeFilters = {
           readStatus: route.query.readStatus || [],
           tag: route.query.tag || [],
+          mediaProfile: route.query.mediaProfile || [],
         }
         authorRoles.forEach((role: string) => {
           activeFilters[role] = route.query[role] || []
@@ -829,6 +840,7 @@ export default Vue.extend({
       const validFilter = {
         readStatus: this.$_.intersectionWith(filters.readStatus, extractFilterOptionsValues(this.filterOptionsList.readStatus.values), objIsEqual) || [],
         tag: this.$_.intersectionWith(filters.tag, extractFilterOptionsValues(this.filterOptions.tag), objIsEqual) || [],
+        mediaProfile: this.$_.intersectionWith(filters.mediaProfile, extractFilterOptionsValues(this.filterOptionsPanel.mediaProfile.values), objIsEqual) || [],
       } as any
       authorRoles.forEach((role: string) => {
         validFilter[role] = filters[role] || []
@@ -977,6 +989,7 @@ export default Vue.extend({
       conditions.push(new SearchConditionSeriesId(new SearchOperatorIs(seriesId)))
       if (this.filters.readStatus && this.filters.readStatus.length > 0) conditions.push(new SearchConditionAnyOfBook(this.filters.readStatus))
       if (this.filters.tag && this.filters.tag.length > 0) this.filtersMode?.tag?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.tag)) : conditions.push(new SearchConditionAnyOfBook(this.filters.tag))
+      if (this.filters.mediaProfile && this.filters.mediaProfile.length > 0) this.filtersMode?.mediaProfile?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.mediaProfile)) : conditions.push(new SearchConditionAnyOfBook(this.filters.mediaProfile))
       authorRoles.forEach((role: string) => {
         if (role in this.filters) {
           const authorConditions = this.filters[role].map((name: string) => new SearchConditionAuthor(new SearchOperatorIs({
