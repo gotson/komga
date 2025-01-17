@@ -331,7 +331,7 @@
                     :key="i"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: [t]}}"
+                    :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: [new SearchConditionTag(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -436,6 +436,7 @@ import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
 import {ReadListDto} from '@/types/komga-readlists'
+import {SearchConditionSeriesId, SearchConditionTag, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -443,6 +444,8 @@ export default Vue.extend({
   data: () => {
     return {
       MediaStatus,
+      SearchConditionTag,
+      SearchOperatorIs,
       book: {} as BookDto,
       context: {} as Context,
       contextName: '',
@@ -611,7 +614,9 @@ export default Vue.extend({
         this.$komgaReadLists.getBooks(this.context.id, {unpaged: true} as PageRequest)
           .then(v => this.siblings = v.content)
       } else {
-        this.$komgaSeries.getBooks(this.book.seriesId, {unpaged: true} as PageRequest)
+        this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(this.book.seriesId)),
+        } as BookSearch, {unpaged: true, sort: 'metadata.numberSort'})
           .then(v => this.siblings = v.content)
       }
 
