@@ -804,6 +804,7 @@
   "filter": {
     "age_rating": "age rating",
     "age_rating_none": "None",
+    "any": "Any",
     "complete": "Complete",
     "genre": "genre",
     "in_progress": "In Progress",

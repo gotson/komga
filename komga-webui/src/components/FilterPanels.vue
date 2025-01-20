@@ -34,7 +34,8 @@
         </search-box-base>
 
         <div style="position: absolute; right: 0; z-index: 1">
-          <v-btn-toggle v-if="f.anyAllSelector || groupAllOfActive(key)" mandatory class="semi-transparent" :value="filtersActiveMode[key]?.allOf">
+          <v-btn-toggle v-if="f.anyAllSelector || groupAllOfActive(key)" mandatory class="semi-transparent"
+                        :value="filtersActiveMode[key]?.allOf">
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-btn small icon :value="false" v-on="on" @click.stop="clickFilterMode(key, false)">
@@ -56,10 +57,11 @@
         </div>
 
         <v-list
-          v-if="f.search"
+          v-if="f.search || f.values"
           dense
         >
-          <v-list-item v-for="(v, i) in filtersActive[key]"
+          <!--    Dynamic content from search      -->
+          <v-list-item v-for="(v, i) in searchFiltersActive(key)"
                        :key="i"
                        @click.stop="click(key, v)"
           >
@@ -68,29 +70,26 @@
             </v-list-item-icon>
             <v-list-item-title>{{ v }}</v-list-item-title>
           </v-list-item>
-        </v-list>
 
-        <div v-if="f.values">
-          <v-list dense>
-            <v-list-item v-for="v in f.values"
-                         :key="JSON.stringify(v.value)"
-                         @click.stop="click(key, v.value, v.nValue)"
-            >
-              <v-list-item-icon>
-                <v-icon v-if="key in filtersActive && includes(filtersActive[key], v.nValue)" color="secondary">
-                  mdi-minus-box
-                </v-icon>
-                <v-icon v-else-if="key in filtersActive && includes(filtersActive[key], v.value)" color="secondary">
-                  mdi-checkbox-marked
-                </v-icon>
-                <v-icon v-else>
-                  mdi-checkbox-blank-outline
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>{{ v.name }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </div>
+          <!--    Static content from filters options      -->
+          <v-list-item v-for="v in f.values"
+                       :key="JSON.stringify(v.value)"
+                       @click.stop="click(key, v.value, v.nValue)"
+          >
+            <v-list-item-icon>
+              <v-icon v-if="key in filtersActive && includes(filtersActive[key], v.nValue)" color="secondary">
+                mdi-minus-box
+              </v-icon>
+              <v-icon v-else-if="key in filtersActive && includes(filtersActive[key], v.value)" color="secondary">
+                mdi-checkbox-marked
+              </v-icon>
+              <v-icon v-else>
+                mdi-checkbox-blank-outline
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{ v.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -99,6 +98,7 @@
 <script lang="ts">
 import Vue, {PropType} from 'vue'
 import SearchBoxBase from '@/components/SearchBoxBase.vue'
+import {FiltersActive, FiltersActiveMode, FiltersOptions} from '@/types/filter'
 
 export default Vue.extend({
   name: 'FilterPanels',
@@ -118,13 +118,19 @@ export default Vue.extend({
     },
   },
   methods: {
+    // filtersActive, filtered to not show options that are in filtersOptions
+    searchFiltersActive(key: string): FiltersActive[] {
+      if (!(key in this.filtersActive)) return []
+      const listedOptions = this.filtersOptions[key]?.values?.flatMap(x => [x.value, x.nValue])
+      return this.filtersActive[key].filter((x: string) => !this.$_.includes(listedOptions, x))
+    },
     includes(array: any[], value: any): boolean {
       return this.$_.isObject(value) ? this.$_.some(array, value) : this.$_.includes(array, value)
     },
     clear(key: string) {
       let r = this.$_.cloneDeep(this.filtersActive)
       r[key] = []
-      if(!this.filtersOptions[key].anyAllSelector) this.clickFilterMode(key, false)
+      if (!this.filtersOptions[key].anyAllSelector) this.clickFilterMode(key, false)
 
       this.$emit('update:filtersActive', r)
     },
@@ -154,12 +160,12 @@ export default Vue.extend({
       } else
         r[key].push(value)
 
-      if(!this.filtersOptions[key].anyAllSelector && r[key].length == 0) this.clickFilterMode(key, false)
+      if (!this.filtersOptions[key].anyAllSelector && r[key].length == 0) this.clickFilterMode(key, false)
 
       this.$emit('update:filtersActive', r)
     },
     clickFilterMode(key: string, value: boolean) {
-      if(!this.filtersActiveMode) return
+      if (!this.filtersActiveMode) return
       let r = this.$_.cloneDeep(this.filtersActiveMode)
       r[key] = {allOf: value}
 
@@ -173,9 +179,11 @@ export default Vue.extend({
 .no-padding .v-expansion-panel-content__wrap {
   padding: 0;
 }
+
 .semi-transparent {
   opacity: 0.5;
 }
+
 .semi-transparent:hover {
   opacity: 1;
 }

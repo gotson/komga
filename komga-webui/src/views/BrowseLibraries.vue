@@ -165,6 +165,7 @@ import AlphabeticalNavigation from '@/components/AlphabeticalNavigation.vue'
 import {LibraryDto} from '@/types/komga-libraries'
 import {ItemContext} from '@/types/items'
 import {
+  BookSearch,
   SearchConditionAgeRating,
   SearchConditionAllOfSeries,
   SearchConditionAnyOfSeries,
@@ -177,7 +178,8 @@ import {
   SearchConditionPublisher,
   SearchConditionReadStatus,
   SearchConditionReleaseDate,
-  SearchConditionSeries, SearchConditionSeriesId,
+  SearchConditionSeries,
+  SearchConditionSeriesId,
   SearchConditionSeriesStatus,
   SearchConditionSharingLabel,
   SearchConditionTag,
@@ -196,6 +198,15 @@ import {
 } from '@/types/komga-search'
 import i18n from '@/i18n'
 import {objIsEqual} from '@/functions/object'
+import {
+  FILTER_ANY,
+  FILTER_NONE,
+  FilterMode,
+  FiltersActive,
+  FiltersActiveMode,
+  FiltersOptions,
+  NameValue,
+} from '@/types/filter'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
@@ -401,6 +412,11 @@ export default Vue.extend({
               .content
               .map(x => x.name)
           },
+          values: [{
+            name: this.$t('filter.any').toString(),
+            value: FILTER_ANY,
+            nValue: FILTER_NONE,
+          }],
           anyAllSelector: true,
         }
       })
@@ -520,7 +536,7 @@ export default Vue.extend({
 
       // get filter mode from query params or local storage
       let activeFiltersMode: any
-      if(route.query.filterMode) {
+      if (route.query.filterMode) {
         activeFiltersMode = route.query.filterMode
       } else {
         activeFiltersMode = this.$store.getters.getLibraryFilterMode(route.params.libraryId) || {} as FiltersActiveMode
@@ -655,19 +671,30 @@ export default Vue.extend({
       if (this.filters.readStatus && this.filters.readStatus.length > 0) conditions.push(new SearchConditionAnyOfSeries(this.filters.readStatus))
       if (this.filters.genre && this.filters.genre.length > 0) this.filtersMode?.genre?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.genre)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.genre))
       if (this.filters.tag && this.filters.tag.length > 0) this.filtersMode?.tag?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.tag)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.tag))
-      if (this.filters.language && this.filters.language.length > 0) this.filtersMode?.language?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.language)):conditions.push(new SearchConditionAnyOfSeries(this.filters.language))
+      if (this.filters.language && this.filters.language.length > 0) this.filtersMode?.language?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.language)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.language))
       if (this.filters.publisher && this.filters.publisher.length > 0) this.filtersMode?.publisher?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.publisher)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.publisher))
-      if (this.filters.ageRating && this.filters.ageRating.length > 0) this.filtersMode?.ageRating?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.ageRating)):conditions.push(new SearchConditionAnyOfSeries(this.filters.ageRating))
+      if (this.filters.ageRating && this.filters.ageRating.length > 0) this.filtersMode?.ageRating?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.ageRating)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.ageRating))
       if (this.filters.releaseDate && this.filters.releaseDate.length > 0) this.filtersMode?.releaseDate?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.releaseDate)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.releaseDate))
       if (this.filters.sharingLabel && this.filters.sharingLabel.length > 0) this.filtersMode?.sharingLabel?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.sharingLabel)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.sharingLabel))
       if (this.filters.complete && this.filters.complete.length > 0) conditions.push(...this.filters.complete)
       if (this.filters.oneshot && this.filters.oneshot.length > 0) conditions.push(...this.filters.oneshot)
       authorRoles.forEach((role: string) => {
         if (role in this.filters) {
-          const authorConditions = this.filters[role].map((name: string) => new SearchConditionAuthor(new SearchOperatorIs({
-            name: name,
-            role: role,
-          })))
+          const authorConditions = this.filters[role].map((name: string) => {
+            if (name === FILTER_ANY)
+              return new SearchConditionAuthor(new SearchOperatorIs({
+                role: role,
+              }))
+            else if (name === FILTER_NONE)
+              return new SearchConditionAuthor(new SearchOperatorIsNot({
+                role: role,
+              }))
+            else
+              return new SearchConditionAuthor(new SearchOperatorIs({
+                name: name,
+                role: role,
+              }))
+          })
           conditions.push(this.filtersMode[role]?.allOf ? new SearchConditionAllOfSeries(authorConditions) : new SearchConditionAnyOfSeries(authorConditions))
         }
       })

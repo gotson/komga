@@ -27,6 +27,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import {FiltersActive, FiltersOptions} from '@/types/filter'
 
 export default Vue.extend({
   name: 'FilterList',

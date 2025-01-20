@@ -504,7 +504,7 @@ import {
 } from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
-import {AuthorDto, BookDto} from '@/types/komga-books'
+import {BookDto} from '@/types/komga-books'
 import {SeriesStatus} from '@/types/enum-series'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import FilterList from '@/components/FilterList.vue'
@@ -546,6 +546,15 @@ import {
 } from '@/types/komga-search'
 import {objIsEqual} from '@/functions/object'
 import i18n from '@/i18n'
+import {
+  FILTER_ANY,
+  FILTER_NONE,
+  FilterMode,
+  FiltersActive,
+  FiltersActiveMode,
+  FiltersOptions,
+  NameValue,
+} from '@/types/filter'
 
 const tags = require('language-tags')
 
@@ -661,6 +670,11 @@ export default Vue.extend({
               .content
               .map(x => x.name)
           },
+          values: [{
+            name: this.$t('filter.any').toString(),
+            value: FILTER_ANY,
+            nValue: FILTER_NONE,
+          }],
           anyAllSelector: true,
         }
       })
@@ -977,14 +991,6 @@ export default Vue.extend({
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
 
-      let authorsFilter = [] as AuthorDto[]
-      authorRoles.forEach((role: string) => {
-        if (role in this.filters) this.filters[role].forEach((name: string) => authorsFilter.push({
-          name: name,
-          role: role,
-        }))
-      })
-
       const conditions = [] as SearchConditionBook[]
       conditions.push(new SearchConditionSeriesId(new SearchOperatorIs(seriesId)))
       if (this.filters.readStatus && this.filters.readStatus.length > 0) conditions.push(new SearchConditionAnyOfBook(this.filters.readStatus))
@@ -992,10 +998,21 @@ export default Vue.extend({
       if (this.filters.mediaProfile && this.filters.mediaProfile.length > 0) this.filtersMode?.mediaProfile?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.mediaProfile)) : conditions.push(new SearchConditionAnyOfBook(this.filters.mediaProfile))
       authorRoles.forEach((role: string) => {
         if (role in this.filters) {
-          const authorConditions = this.filters[role].map((name: string) => new SearchConditionAuthor(new SearchOperatorIs({
-            name: name,
-            role: role,
-          })))
+          const authorConditions = this.filters[role].map((name: string) => {
+            if (name === FILTER_ANY)
+              return new SearchConditionAuthor(new SearchOperatorIs({
+                role: role,
+              }))
+            else if (name === FILTER_NONE)
+              return new SearchConditionAuthor(new SearchOperatorIsNot({
+                role: role,
+              }))
+            else
+              return new SearchConditionAuthor(new SearchOperatorIs({
+                name: name,
+                role: role,
+              }))
+          })
           conditions.push(this.filtersMode[role]?.allOf ? new SearchConditionAllOfBook(authorConditions) : new SearchConditionAnyOfBook(authorConditions))
         }
       })

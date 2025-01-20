@@ -1,4 +1,4 @@
-interface FiltersOptions {
+export interface FiltersOptions {
   [key: string]: {
     name?: string,
     values?: NameValue[],
@@ -7,21 +7,24 @@ interface FiltersOptions {
   },
 }
 
-interface NameValue {
+export interface NameValue {
   name: string,
   value: any,
   // an optional negative value
   nValue?: any,
 }
 
-interface FiltersActive {
+export interface FiltersActive {
   [key: string]: any[],
 }
 
-interface FiltersActiveMode {
+export interface FiltersActiveMode {
   [key: string]: FilterMode,
 }
 
-interface FilterMode {
+export interface FilterMode {
   allOf: boolean,
 }
+
+export const FILTER_ANY = 'KOMGA____ANY____'
+export const FILTER_NONE = 'KOMGA____NONE____'

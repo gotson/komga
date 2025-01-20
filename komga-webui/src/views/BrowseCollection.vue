@@ -165,7 +165,8 @@ import {LibraryDto} from '@/types/komga-libraries'
 import {parseBooleanFilter} from '@/functions/query-params'
 import {ContextOrigin} from '@/types/context'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
+import {BookSearch, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
+import {FiltersActive, FiltersOptions, NameValue} from '@/types/filter'
 
 export default Vue.extend({
   name: 'BrowseCollection',
