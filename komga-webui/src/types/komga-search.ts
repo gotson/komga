@@ -174,6 +174,14 @@ export class SearchConditionAuthor implements SearchConditionBook, SearchConditi
   }
 }
 
+export class SearchConditionPoster implements SearchConditionBook {
+  poster: SearchOperatorBoolean
+
+  constructor(op: SearchOperatorEquality) {
+    this.poster = op
+  }
+}
+
 export class SearchConditionTitleSort implements SearchConditionSeries {
   titleSort: SearchOperatorString
 
@@ -185,6 +193,17 @@ export class SearchConditionTitleSort implements SearchConditionSeries {
 export interface AuthorMatch {
   name?: string,
   role?: string
+}
+
+export interface PosterMatch {
+  type?: PosterMatchType,
+  selected?: boolean
+}
+
+export enum PosterMatchType {
+  GENERATED = 'GENERATED',
+  SIDECAR = 'SIDECAR',
+  USER_UPLOADED = 'USER_UPLOADED',
 }
 
 export interface SearchOperatorEquality {

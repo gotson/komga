@@ -121,6 +121,12 @@ const router = new Router({
               component: () => import(/* webpackChunkName: "media-analysis" */ './views/MediaAnalysis.vue'),
             },
             {
+              path: '/media-management/missing-posters',
+              name: 'missing-posters',
+              beforeEnter: adminGuard,
+              component: () => import(/* webpackChunkName: "missing-posters" */ './views/MissingPosters.vue'),
+            },
+            {
               path: '/media-management/duplicate-files',
               name: 'duplicate-files',
               beforeEnter: adminGuard,

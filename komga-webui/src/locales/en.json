@@ -889,6 +889,9 @@
     "tasks_total_time": "Tasks total time",
     "title": "Metrics"
   },
+  "missing_posters": {
+    "title": "Missing Posters"
+  },
   "navigation": {
     "home": "Home",
     "libraries": "Libraries",
