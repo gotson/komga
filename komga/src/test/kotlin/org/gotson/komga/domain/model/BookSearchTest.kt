@@ -63,6 +63,10 @@ class BookSearchTest(
           SearchCondition.Author(SearchOperator.IsNot(AuthorMatch())),
           SearchCondition.OneShot(SearchOperator.IsFalse),
           SearchCondition.OneShot(SearchOperator.IsTrue),
+          SearchCondition.Poster(SearchOperator.Is(SearchCondition.PosterMatch(type = SearchCondition.PosterMatch.Type.GENERATED, selected = false))),
+          SearchCondition.Poster(SearchOperator.Is(SearchCondition.PosterMatch(selected = true))),
+          SearchCondition.Poster(SearchOperator.IsNot(SearchCondition.PosterMatch(type = SearchCondition.PosterMatch.Type.SIDECAR))),
+          SearchCondition.Poster(SearchOperator.IsNot(SearchCondition.PosterMatch())),
         ),
       )
 

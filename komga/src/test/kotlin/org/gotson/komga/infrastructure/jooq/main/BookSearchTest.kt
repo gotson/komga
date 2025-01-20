@@ -8,7 +8,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaType
@@ -19,6 +21,7 @@ import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchCondition.AuthorMatch
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchOperator
+import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -968,6 +971,122 @@ class BookSearchTest(
 
       assertThat(found.map { it.name }).containsExactlyInAnyOrder("2")
       assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2")
+    }
+  }
+
+  @Test
+  fun `given some books when searching by poster then results are accurate`() {
+    // book with GENERATED selected
+    makeBook("1", libraryId = library1.id, seriesId = series1.id).let { book ->
+      seriesLifecycle.addBooks(series1, listOf(book))
+      bookLifecycle.addThumbnailForBook(ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.GENERATED, mediaType = "image/jpeg", fileSize = 0L, dimension = Dimension(0, 0)), MarkSelectedPreference.YES)
+    }
+    // book with GENERATED not selected, SIDECAR selected
+    makeBook("2", libraryId = library2.id, seriesId = series2.id).let { book ->
+      seriesLifecycle.addBooks(series2, listOf(book))
+      bookLifecycle.addThumbnailForBook(ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.GENERATED, mediaType = "image/jpeg", fileSize = 0L, dimension = Dimension(0, 0)), MarkSelectedPreference.YES)
+      bookLifecycle.addThumbnailForBook(ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.SIDECAR, mediaType = "image/jpeg", fileSize = 0L, dimension = Dimension(0, 0)), MarkSelectedPreference.YES)
+    }
+    // book with GENERATED not selected, USER_UPLOADED selected
+    makeBook("3", libraryId = library2.id, seriesId = series2.id).let { book ->
+      seriesLifecycle.addBooks(series2, listOf(book))
+      bookLifecycle.addThumbnailForBook(ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.GENERATED, mediaType = "image/jpeg", fileSize = 0L, dimension = Dimension(0, 0)), MarkSelectedPreference.YES)
+      bookLifecycle.addThumbnailForBook(ThumbnailBook(bookId = book.id, type = ThumbnailBook.Type.USER_UPLOADED, mediaType = "image/jpeg", fileSize = 0L, dimension = Dimension(0, 0)), MarkSelectedPreference.YES)
+    }
+    // book without poster
+    makeBook("4", libraryId = library2.id, seriesId = series2.id).let { book ->
+      seriesLifecycle.addBooks(series2, listOf(book))
+    }
+
+    // books with a poster of type GENERATED
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.Poster(SearchOperator.Is(SearchCondition.PosterMatch(SearchCondition.PosterMatch.Type.GENERATED))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+    }
+
+    // books with a poster of type GENERATED, selected
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.Poster(SearchOperator.Is(SearchCondition.PosterMatch(SearchCondition.PosterMatch.Type.GENERATED, true))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1")
+    }
+
+    // books with any poster not selected
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.Poster(SearchOperator.Is(SearchCondition.PosterMatch(selected = false))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2", "3")
+    }
+
+    // books without a poster of type SIDECAR
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.Poster(SearchOperator.IsNot(SearchCondition.PosterMatch(SearchCondition.PosterMatch.Type.SIDECAR))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "3", "4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "3", "4")
+    }
+
+    // books without a poster of type GENERATED
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.Poster(SearchOperator.IsNot(SearchCondition.PosterMatch(SearchCondition.PosterMatch.Type.GENERATED))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("4")
+    }
+
+    // books without selected poster
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.Poster(SearchOperator.IsNot(SearchCondition.PosterMatch(selected = true))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("4")
+    }
+
+    // empty PosterMatch does not apply any condition
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.Poster(SearchOperator.Is(SearchCondition.PosterMatch())),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3", "4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3", "4")
     }
   }
 }

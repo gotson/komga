@@ -64,6 +64,7 @@ class BookSearchHelper(
             rlbAlias(searchCondition.operator.value)
               .READLIST_ID
               .eq(searchCondition.operator.value) to setOf(RequiredJoin.ReadList(searchCondition.operator.value))
+
           is SearchOperator.IsNot -> {
             val inner = { readListId: String ->
               DSL
@@ -195,6 +196,38 @@ class BookSearchHelper(
               else
                 field.notIn(inner(searchCondition.operator.value.name, searchCondition.operator.value.role))
             }
+          } to emptySet()
+        }
+
+      is SearchCondition.Poster ->
+        Tables.BOOK.ID.let { field ->
+          val inner = { type: SearchCondition.PosterMatch.Type?, selected: Boolean? ->
+            DSL
+              .select(Tables.THUMBNAIL_BOOK.BOOK_ID)
+              .from(Tables.THUMBNAIL_BOOK)
+              .where(DSL.noCondition())
+              .apply {
+                if (type != null)
+                  and(Tables.THUMBNAIL_BOOK.TYPE.equalIgnoreCase(type.name))
+                if (selected != null && selected)
+                  and(Tables.THUMBNAIL_BOOK.SELECTED.isTrue)
+                if (selected != null && !selected)
+                  and(Tables.THUMBNAIL_BOOK.SELECTED.isFalse)
+              }
+          }
+          when (searchCondition.operator) {
+            is SearchOperator.Is -> {
+              if (searchCondition.operator.value.type == null && searchCondition.operator.value.selected == null)
+                DSL.noCondition()
+              else
+                field.`in`(inner(searchCondition.operator.value.type, searchCondition.operator.value.selected))
+            }
+
+            is SearchOperator.IsNot ->
+              if (searchCondition.operator.value.type == null && searchCondition.operator.value.selected == null)
+                DSL.noCondition()
+              else
+                field.notIn(inner(searchCondition.operator.value.type, searchCondition.operator.value.selected))
           } to emptySet()
         }
 

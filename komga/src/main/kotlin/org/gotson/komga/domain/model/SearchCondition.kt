@@ -162,4 +162,21 @@ class SearchCondition {
     val name: String? = null,
     val role: String? = null,
   )
+
+  data class Poster(
+    @JsonProperty("poster")
+    val operator: SearchOperator.Equality<PosterMatch>,
+  ) : Book
+
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  data class PosterMatch(
+    val type: Type? = null,
+    val selected: Boolean? = null,
+  ) {
+    enum class Type {
+      GENERATED,
+      SIDECAR,
+      USER_UPLOADED,
+    }
+  }
 }
