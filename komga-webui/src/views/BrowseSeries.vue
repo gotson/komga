@@ -434,7 +434,18 @@
 
       <v-row>
         <v-col>
-          <collections-expansion-panels :collections="collections"/>
+          <collections-expansion-panels :collections="collections">
+            <template v-slot:prepend="props">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon class="me-2" v-on="on" @click="removeFromCollection(props.collection.id)">
+                    <v-icon>mdi-playlist-remove</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ $t('browse_series.remove_from_collection') }}</span>
+              </v-tooltip>
+            </template>
+          </collections-expansion-panels>
         </v-col>
       </v-row>
 
@@ -1060,6 +1071,14 @@ export default Vue.extend({
     },
     deleteBooks() {
       this.$store.dispatch('dialogDeleteBook', this.selectedBooks)
+    },
+    removeFromCollection(collectionId: string) {
+      const col = this.collections.find(x => x.id == collectionId)
+      const modified = Object.assign({}, {seriesIds: col?.seriesIds.filter(x => x != this.seriesId)})
+      if (modified!.seriesIds!.length == 0)
+        this.$komgaCollections.deleteCollection(col!.id)
+      else
+        this.$komgaCollections.patchCollection(col!.id, modified)
     },
   },
 })

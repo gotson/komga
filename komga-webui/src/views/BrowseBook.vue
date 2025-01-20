@@ -344,7 +344,18 @@
 
       <v-row>
         <v-col>
-          <read-lists-expansion-panels :read-lists="readLists"/>
+          <read-lists-expansion-panels :read-lists="readLists">
+            <template v-slot:prepend="props">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon class="me-2" v-on="on" @click="removeFromReadList(props.readlist.id)">
+                    <v-icon>mdi-book-remove</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ $t('browse_book.remove_from_readlist') }}</span>
+              </v-tooltip>
+            </template>
+          </read-lists-expansion-panels>
         </v-col>
       </v-row>
 
@@ -654,6 +665,14 @@ export default Vue.extend({
     },
     editBook() {
       this.$store.dispatch('dialogUpdateBooks', this.book)
+    },
+    removeFromReadList(readListId: string) {
+      const rl = this.readLists.find(x => x.id == readListId)
+      const modified = Object.assign({}, {bookIds: rl?.bookIds.filter(x => x != this.bookId)})
+      if (modified!.bookIds!.length == 0)
+        this.$komgaReadLists.deleteReadList(rl!.id)
+      else
+        this.$komgaReadLists.patchReadList(rl!.id, modified)
     },
   },
 })

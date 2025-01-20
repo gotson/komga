@@ -177,6 +177,8 @@
     "outdated_tooltip": "The file for this book has changed, this book must be re-analyzed",
     "read_book": "Read book",
     "read_incognito": "Read incognito",
+    "remove_from_collection": "Remove book from collection",
+    "remove_from_readlist": "Remove book from read list",
     "size": "SIZE"
   },
   "browse_collection": {
@@ -191,6 +193,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "This is the earliest year from the release dates from all books in the series",
+    "remove_from_collection": "Remove series from collection",
     "series_no_summary": "This series has no summary, so we picked one for you!",
     "summary_from_book": "Summary from book {number}:"
   },

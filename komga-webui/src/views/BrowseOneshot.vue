@@ -416,10 +416,32 @@
 
       <v-row>
         <v-col cols="12" class="pb-1">
-          <collections-expansion-panels :collections="collections"/>
+          <collections-expansion-panels :collections="collections">
+            <template v-slot:prepend="props">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon class="me-2" v-on="on" @click="removeFromCollection(props.collection.id)">
+                    <v-icon>mdi-playlist-remove</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ $t('browse_book.remove_from_collection') }}</span>
+              </v-tooltip>
+            </template>
+          </collections-expansion-panels>
         </v-col>
         <v-col cols="12" class="pt-1">
-          <read-lists-expansion-panels :read-lists="readLists"/>
+          <read-lists-expansion-panels :read-lists="readLists">
+            <template v-slot:prepend="props">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon class="me-2" v-on="on" @click="removeFromReadList(props.readlist.id)">
+                    <v-icon>mdi-book-remove</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ $t('browse_book.remove_from_readlist') }}</span>
+              </v-tooltip>
+            </template>
+          </read-lists-expansion-panels>
         </v-col>
       </v-row>
 
@@ -526,6 +548,7 @@ import {Oneshot, SeriesDto} from '@/types/komga-series'
 import CollectionsExpansionPanels from '@/components/CollectionsExpansionPanels.vue'
 import OneshotActionsMenu from '@/components/menus/OneshotActionsMenu.vue'
 import {
+  BookSearch,
   SearchConditionAgeRating,
   SearchConditionGenre,
   SearchConditionLanguage,
@@ -800,6 +823,22 @@ export default Vue.extend({
     },
     editBook() {
       this.$store.dispatch('dialogUpdateOneshots', {series: this.series, book: this.book} as Oneshot)
+    },
+    removeFromReadList(readListId: string) {
+      const rl = this.readLists.find(x => x.id == readListId)
+      const modified = Object.assign({}, {bookIds: rl?.bookIds.filter(x => x != this.book.id)})
+      if (modified!.bookIds!.length == 0)
+        this.$komgaReadLists.deleteReadList(rl!.id)
+      else
+        this.$komgaReadLists.patchReadList(rl!.id, modified)
+    },
+    removeFromCollection(collectionId: string) {
+      const col = this.collections.find(x => x.id == collectionId)
+      const modified = Object.assign({}, {seriesIds: col?.seriesIds.filter(x => x != this.seriesId)})
+      if (modified!.seriesIds!.length == 0)
+        this.$komgaCollections.deleteCollection(col!.id)
+      else
+        this.$komgaCollections.patchCollection(col!.id, modified)
     },
   },
 })
