@@ -30,6 +30,12 @@
     <template v-if="result">
       <v-divider/>
 
+      <v-chip-group v-model="filter" color="primary" mandatory multiple>
+        <v-chip filter value="ok">OK</v-chip>
+        <v-chip filter value="error">Error</v-chip>
+        <v-chip filter value="duplicate">Duplicate</v-chip>
+      </v-chip-group>
+
       <v-simple-table>
         <thead class="font-weight-medium">
         <tr>
@@ -51,6 +57,8 @@
                              :series.sync="series[i]"
                              :book.sync="form.books[i]"
                              :duplicate="isDuplicateBook(form.books[i])"
+                             :error="isErrorBook(series[i], form.books[i])"
+                             :hidden="shouldHideRow(i)"
         >
           <td>{{ i + 1 }}</td>
         </read-list-match-row>
@@ -112,7 +120,8 @@ import {
   ReadListCreationDto,
   ReadListDto,
   ReadListRequestBookMatchBookDto,
-  ReadListRequestMatchDto, ReadListRequestBookMatchSeriesDto,
+  ReadListRequestBookMatchSeriesDto,
+  ReadListRequestMatchDto,
 } from '@/types/komga-readlists'
 import ReadListMatchRow from '@/components/ReadListMatchRow.vue'
 import {ERROR, NOTIFICATION, NotificationEvent} from '@/types/events'
@@ -134,6 +143,7 @@ export default Vue.extend({
   data: () => ({
     file: undefined,
     result: undefined as unknown as ReadListRequestMatchDto | undefined,
+    filter: ['ok', 'error', 'duplicate'],
     validMatch: true,
     validCreate: true,
     series: [] as (ReadListRequestBookMatchSeriesDto | undefined)[],
@@ -182,12 +192,26 @@ export default Vue.extend({
     this.readLists = (await this.$komgaReadLists.getReadLists(undefined, {unpaged: true} as PageRequest)).content
   },
   methods: {
-    isDuplicateBook(book: ReadListRequestBookMatchBookDto): boolean {
+    isDuplicateBook(book?: ReadListRequestBookMatchBookDto): boolean {
       return this.form.books.filter((b) => b?.bookId === book?.bookId).length > 1
+    },
+    isErrorBook(series?: ReadListRequestBookMatchSeriesDto, book?: ReadListRequestBookMatchBookDto): string {
+      if (!series) return this.$t('book_import.row.error_choose_series').toString()
+      if (!book) return this.$t('readlist_import.row.error_choose_book').toString()
+      return ''
+    },
+    shouldHideRow(i: number): boolean {
+      const error = this.isErrorBook(this.series[i], this.form.books[i])
+      const duplicate = this.isDuplicateBook(this.form.books[i])
+      if (error && !this.filter.includes('error')) return true
+      if (!error && duplicate && !this.filter.includes('duplicate')) return true
+      if (!error && !duplicate && !this.filter.includes('ok')) return true
+      return false
     },
     async matchFile() {
       this.matching = true
       this.result = undefined
+      this.filter = ['ok', 'error', 'duplicate']
       this.form.summary = ''
       this.form.ordered = true
       this.form.books = []

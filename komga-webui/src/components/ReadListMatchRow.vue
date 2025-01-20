@@ -15,7 +15,8 @@
               year: 'numeric',
               timeZone: 'UTC'
             }).format(new Date(series.releaseDate))
-            }}</div>
+          }}
+        </div>
       </template>
       <template v-else>
         <div style="height: 2em" class="missing"></div>
@@ -96,6 +97,10 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    error: {
+      type: String,
+      default: '',
+    },
   },
   watch: {
     series: {
@@ -116,11 +121,6 @@ export default Vue.extend({
   computed: {
     existingFileNames(): string[] {
       return this.seriesBooks.map(x => x.name)
-    },
-    error(): string {
-      if (!this.series) return this.$t('book_import.row.error_choose_series').toString()
-      if (!this.book) return this.$t('readlist_import.row.error_choose_book').toString()
-      return ''
     },
   },
   methods: {
