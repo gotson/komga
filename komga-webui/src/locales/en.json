@@ -168,6 +168,8 @@
   },
   "browse_book": {
     "comment": "COMMENT",
+    "date_created": "CREATED",
+    "date_modified": "LAST MODIFIED",
     "download_file": "Download file",
     "file": "FILE",
     "format": "FORMAT",

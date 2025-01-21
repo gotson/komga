@@ -410,6 +410,28 @@
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.url }}</v-col>
       </v-row>
 
+      <v-row class="align-center text-caption">
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.date_created') }}</v-col>
+        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{
+            new Intl.DateTimeFormat($i18n.locale, {
+              dateStyle: 'long',
+              timeStyle: 'short'
+            }).format(new Date(book.created))
+          }}
+        </v-col>
+      </v-row>
+
+      <v-row class="align-center text-caption">
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.date_modified') }}</v-col>
+        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{
+            new Intl.DateTimeFormat($i18n.locale, {
+              dateStyle: 'long',
+              timeStyle: 'short'
+            }).format(new Date(book.lastModified))
+          }}
+        </v-col>
+      </v-row>
+
     </v-container>
 
   </div>
