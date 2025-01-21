@@ -31,9 +31,9 @@
       <v-divider/>
 
       <v-chip-group v-model="filter" color="primary" mandatory multiple>
-        <v-chip filter value="ok">OK</v-chip>
-        <v-chip filter value="error">Error</v-chip>
-        <v-chip filter value="duplicate">Duplicate</v-chip>
+        <v-chip filter value="ok">{{ $t('common.ok') }}</v-chip>
+        <v-chip filter value="error">{{ $t('common.error') }}</v-chip>
+        <v-chip filter value="duplicate">{{ $t('common.duplicate') }}</v-chip>
       </v-chip-group>
 
       <v-simple-table>
