@@ -445,7 +445,10 @@ export default Vue.extend({
     },
     async loadReadList(readListId: string) {
       this.$komgaReadLists.getOneReadList(readListId)
-        .then(v => this.readList = v)
+        .then(v => {
+          this.readList = v
+          document.title = `Komga - ${v.name}`
+        })
 
       await this.loadPage(readListId, this.page)
     },

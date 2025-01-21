@@ -447,7 +447,7 @@ import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
 import {ReadListDto} from '@/types/komga-readlists'
-import {SearchConditionSeriesId, SearchConditionTag, SearchOperatorIs} from '@/types/komga-search'
+import {BookSearch, SearchConditionSeriesId, SearchConditionTag, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -627,7 +627,7 @@ export default Vue.extend({
       } else {
         this.$komgaBooks.getBooksList({
           condition: new SearchConditionSeriesId(new SearchOperatorIs(this.book.seriesId)),
-        } as BookSearch, {unpaged: true, sort: 'metadata.numberSort'})
+        } as BookSearch, {unpaged: true, sort: ['metadata.numberSort']})
           .then(v => this.siblings = v.content)
       }
 

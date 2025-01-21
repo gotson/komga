@@ -203,6 +203,7 @@ export default Vue.extend({
     },
     async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
+      if (this.library != undefined) document.title = `Komga - ${this.library.name}`
       await this.loadPage(libraryId, this.page)
 
       if (this.totalElements === 0) {

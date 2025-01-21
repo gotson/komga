@@ -417,6 +417,7 @@ export default Vue.extend({
     loadAll(libraryId: string, reload: boolean = false) {
       this.loading = true
       this.library = this.getLibraryLazy(libraryId)
+      if (this.library != undefined) document.title = `Komga - ${this.library.name}`
       this.selectedSeries = []
       this.selectedBooks = []
 

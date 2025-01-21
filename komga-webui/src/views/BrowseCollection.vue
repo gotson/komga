@@ -475,7 +475,10 @@ export default Vue.extend({
     }, 1000),
     async loadCollection(collectionId: string) {
       this.$komgaCollections.getOneCollection(collectionId)
-        .then(v => this.collection = v)
+        .then(v => {
+          this.collection = v
+          document.title = `Komga - ${v.name}`
+        })
 
       await this.loadPage(collectionId, this.page)
     },
