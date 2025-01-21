@@ -76,24 +76,7 @@
             </v-btn>
           </v-list-item-action>
           <v-list-item-action v-if="isAdmin" class="ma-0">
-            <v-menu offset-y>
-              <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click.prevent="">
-                  <v-icon>mdi-dots-vertical</v-icon>
-                </v-btn>
-              </template>
-              <v-list dense>
-                <v-list-item @click="scanAllLibraries(false)">
-                  <v-list-item-title>{{ $t('server.server_management.button_scan_libraries') }}</v-list-item-title>
-                </v-list-item>
-                <v-list-item @click="scanAllLibraries(true)" class="list-warning">
-                  <v-list-item-title>{{ $t('server.server_management.button_scan_libraries_deep') }}</v-list-item-title>
-                </v-list-item>
-                <v-list-item @click="confirmEmptyTrash = true">
-                  <v-list-item-title>{{ $t('server.server_management.button_empty_trash') }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
+            <libraries-actions-menu/>
           </v-list-item-action>
         </v-list-item>
 
@@ -333,14 +316,6 @@
       </template>
     </v-navigation-drawer>
 
-    <confirmation-dialog
-      v-model="confirmEmptyTrash"
-      :title="$t('dialog.empty_trash.title')"
-      :body="$t('dialog.empty_trash.body')"
-      :button-confirm="$t('dialog.empty_trash.button_confirm')"
-      @confirm="emptyTrash"
-    />
-
     <v-main class="fill-height">
       <reusable-dialogs/>
       <toaster-notification/>
@@ -360,11 +335,17 @@ import ToasterNotification from '@/components/ToasterNotification.vue'
 import {MediaStatus} from '@/types/enum-books'
 import {LibraryDto} from '@/types/komga-libraries'
 import {BookSearch, SearchConditionAnyOfBook, SearchConditionMediaStatus, SearchOperatorIs} from '@/types/komga-search'
-import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import LibrariesActionsMenu from '@/components/menus/LibrariesActionsMenu.vue'
 
 export default Vue.extend({
   name: 'HomeView',
-  components: {ConfirmationDialog, ToasterNotification, LibraryActionsMenu, SearchBox, ReusableDialogs},
+  components: {
+    LibrariesActionsMenu,
+    ToasterNotification,
+    LibraryActionsMenu,
+    SearchBox,
+    ReusableDialogs,
+  },
   data: function () {
     return {
       LIBRARIES_ALL,
@@ -375,7 +356,6 @@ export default Vue.extend({
       expandMediaManagement: false,
       expandImport: false,
       expandAccount: false,
-      confirmEmptyTrash: false,
     }
   },
   async created() {
@@ -471,16 +451,6 @@ export default Vue.extend({
     },
     addLibrary() {
       this.$store.dispatch('dialogAddLibrary')
-    },
-    emptyTrash() {
-      this.libraries.forEach(library => {
-        this.$komgaLibraries.emptyTrash(library)
-      })
-    },
-    scanAllLibraries(scanDeep: boolean) {
-      this.libraries.forEach(library => {
-        this.$komgaLibraries.scanLibrary(library, scanDeep)
-      })
     },
   },
 })

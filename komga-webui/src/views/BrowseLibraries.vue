@@ -4,6 +4,7 @@
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
+      <libraries-actions-menu v-else/>
 
       <v-toolbar-title>
         <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
@@ -207,10 +208,12 @@ import {
   FiltersOptions,
   NameValue,
 } from '@/types/filter'
+import LibrariesActionsMenu from '@/components/menus/LibrariesActionsMenu.vue'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
   components: {
+    LibrariesActionsMenu,
     AlphabeticalNavigation,
     LibraryActionsMenu,
     EmptyState,

@@ -4,6 +4,7 @@
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
+      <libraries-actions-menu v-else/>
 
       <v-toolbar-title>
         <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
@@ -71,10 +72,12 @@ import {LIBRARIES_ALL, LIBRARY_ROUTE} from '@/types/library'
 import {LibrarySseDto} from '@/types/komga-sse'
 import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {LibraryDto} from '@/types/komga-libraries'
+import LibrariesActionsMenu from '@/components/menus/LibrariesActionsMenu.vue'
 
 export default Vue.extend({
   name: 'BrowseCollections',
   components: {
+    LibrariesActionsMenu,
     LibraryActionsMenu,
     ToolbarSticky,
     LibraryNavigation,
