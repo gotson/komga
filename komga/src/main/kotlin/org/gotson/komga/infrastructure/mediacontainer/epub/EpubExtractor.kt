@@ -64,7 +64,8 @@ class EpubExtractor(
             ?.attr("content")
             ?.ifBlank { null }
             ?.let { manifest[it] }
-
+          ?: // try id="cover-image"
+          manifest.values.firstOrNull { it.id == "cover-image" }
       if (coverManifestItem != null) {
         val href = coverManifestItem.href
         val mediaType = coverManifestItem.mediaType
