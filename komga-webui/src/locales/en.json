@@ -644,6 +644,7 @@
     "delete_to_save": "Delete to save {size}",
     "deleted_count": "Deleted {count} times",
     "empty_title": "No duplicate pages found",
+    "empty_title_known": "No known duplicates",
     "filter": {
       "count": "Count",
       "date_added": "Date added",
