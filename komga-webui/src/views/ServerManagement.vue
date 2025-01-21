@@ -12,22 +12,6 @@
     </v-row>
     <v-row>
       <v-col cols="auto">
-        <v-btn @click="scanAllLibraries(false)">{{ $t('server.server_management.button_scan_libraries') }}</v-btn>
-      </v-col>
-      <v-col cols="auto">
-        <v-btn @click="scanAllLibraries(true)"
-               color="warning"
-        >{{ $t('server.server_management.button_scan_libraries_deep') }}
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="auto">
-        <v-btn @click="confirmEmptyTrash = true">{{ $t('server.server_management.button_empty_trash') }}</v-btn>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="auto">
         <v-btn @click="cancelAllTasks"
                color="warning"
         >{{ $t('server.server_management.button_cancel_all_tasks') }}
@@ -42,14 +26,6 @@
         </v-btn>
       </v-col>
     </v-row>
-
-    <confirmation-dialog
-      v-model="confirmEmptyTrash"
-      :title="$t('dialog.empty_trash.title')"
-      :body="$t('dialog.empty_trash.body')"
-      :button-confirm="$t('dialog.empty_trash.button_confirm')"
-      @confirm="emptyTrash"
-    />
 
     <confirmation-dialog
       v-model="modalStopServer"
@@ -76,7 +52,6 @@ export default Vue.extend({
   components: {ConfirmationDialog},
   data: () => ({
     modalStopServer: false,
-    confirmEmptyTrash: false,
   }),
   computed: {
     libraries(): LibraryDto[] {
@@ -84,16 +59,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    emptyTrash() {
-      this.libraries.forEach(library => {
-        this.$komgaLibraries.emptyTrash(library)
-      })
-    },
-    scanAllLibraries(scanDeep: boolean) {
-      this.libraries.forEach(library => {
-        this.$komgaLibraries.scanLibrary(library, scanDeep)
-      })
-    },
     async cancelAllTasks() {
       const count = await this.$komgaTasks.deleteAllTasks()
       this.$eventHub.$emit(NOTIFICATION, {
