@@ -52,7 +52,7 @@
         </v-tooltip>
       </v-btn>
 
-      <v-btn icon @click="addToReadList" v-if="isAdmin && (kind === 'books' || (kind === 'series' && oneshots))">
+      <v-btn icon @click="addToReadList" v-if="isAdmin && (kind === 'books' || kind === 'series')">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-book-plus-multiple</v-icon>

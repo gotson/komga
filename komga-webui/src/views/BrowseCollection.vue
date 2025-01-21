@@ -165,7 +165,7 @@ import {LibraryDto} from '@/types/komga-libraries'
 import {parseBooleanFilter} from '@/functions/query-params'
 import {ContextOrigin} from '@/types/context'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
-import {BookSearch, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
+import {BookSearch, SearchConditionAnyOfBook, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
 import {FiltersActive, FiltersOptions, NameValue} from '@/types/filter'
 
 export default Vue.extend({
@@ -533,10 +533,11 @@ export default Vue.extend({
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
     },
     async addToReadList() {
-      const books = await Promise.all(this.selectedSeries.map(s => this.$komgaBooks.getBooksList({
-        condition: new SearchConditionSeriesId(new SearchOperatorIs(s.id)),
-      } as BookSearch)))
-      this.$store.dispatch('dialogAddBooksToReadList', books.map(b => b.content[0].id))
+      const conditions = this.selectedSeries.map(s => new SearchConditionSeriesId(new SearchOperatorIs(s.id)))
+      const books = await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionAnyOfBook(conditions),
+      } as BookSearch, {unpaged: true})
+      this.$store.dispatch('dialogAddBooksToReadList', books.content.map(b => b.id))
     },
     async startEditElements() {
       this.filters = {}

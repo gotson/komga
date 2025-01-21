@@ -167,7 +167,7 @@ import {ItemContext} from '@/types/items'
 import {
   BookSearch,
   SearchConditionAgeRating,
-  SearchConditionAllOfSeries,
+  SearchConditionAllOfSeries, SearchConditionAnyOfBook,
   SearchConditionAnyOfSeries,
   SearchConditionAuthor,
   SearchConditionComplete,
@@ -747,10 +747,11 @@ export default Vue.extend({
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
     },
     async addToReadList() {
-      const books = await Promise.all(this.selectedSeries.map(s => this.$komgaBooks.getBooksList({
-        condition: new SearchConditionSeriesId(new SearchOperatorIs(s.id)),
-      } as BookSearch)))
-      this.$store.dispatch('dialogAddBooksToReadList', books.map(b => b.content[0].id))
+      const conditions = this.selectedSeries.map(s => new SearchConditionSeriesId(new SearchOperatorIs(s.id)))
+      const books = await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionAnyOfBook(conditions),
+      } as BookSearch, {unpaged: true})
+      this.$store.dispatch('dialogAddBooksToReadList', books.content.map(b => b.id))
     },
     async editSingleSeries(series: SeriesDto) {
       if (series.oneshot) {

@@ -13,6 +13,7 @@
       @mark-read="markSelectedSeriesRead"
       @mark-unread="markSelectedSeriesUnread"
       @add-to-collection="addToCollection"
+      @add-to-readlist="addSeriesBooksToReadList"
       @edit="editMultipleSeries"
       @delete="deleteSeries"
     />
@@ -181,7 +182,7 @@ import {PageLoader} from '@/types/pageLoader'
 import {ItemContext} from '@/types/items'
 import {ReadListDto} from '@/types/komga-readlists'
 import {
-  BookSearch,
+  BookSearch, SearchConditionAnyOfBook, SearchConditionAnyOfSeries,
   SearchConditionOneShot,
   SearchConditionSeriesId, SearchOperatorIs,
   SearchOperatorIsFalse,
@@ -354,6 +355,13 @@ export default Vue.extend({
     },
     addToReadList() {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks.map(b => b.id))
+    },
+    async addSeriesBooksToReadList() {
+      const conditions = this.selectedSeries.map(s => new SearchConditionSeriesId(new SearchOperatorIs(s.id)))
+      const books = await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionAnyOfBook(conditions),
+      } as BookSearch, {unpaged: true})
+      this.$store.dispatch('dialogAddBooksToReadList', books.content.map(b => b.id))
     },
     addOneshotsToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedBooks.map(b => b.seriesId))
