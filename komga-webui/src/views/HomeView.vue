@@ -7,8 +7,8 @@
         dot
         offset-x="15"
         offset-y="20"
-        :value="drawerVisible ? 0 : booksToCheck + $store.getters.getUnreadAnnouncementsCount()"
-        :color="booksToCheck ? 'accent' : 'warning'"
+        :value="drawerVisible ? 0 : $store.state.booksToCheck + $store.getters.getUnreadAnnouncementsCount()"
+        :color="$store.state.booksToCheck ? 'accent' : 'info'"
         class="ms-n3"
       >
         <v-app-bar-nav-icon @click.stop="toggleDrawer"/>
@@ -52,7 +52,7 @@
 
       <v-divider/>
 
-      <v-list>
+      <v-list nav shaped>
         <v-list-item :to="{name: 'dashboard'}">
           <v-list-item-icon>
             <v-icon>mdi-home</v-icon>
@@ -62,6 +62,7 @@
           </v-list-item-content>
         </v-list-item>
 
+        <!--   LIBRARIES     -->
         <v-list-item :to="{name:'libraries', params: {libraryId: LIBRARIES_ALL}}">
           <v-list-item-icon>
             <v-icon>mdi-book-multiple</v-icon>
@@ -69,7 +70,7 @@
           <v-list-item-content>
             <v-list-item-title>{{ $t('navigation.libraries') }}</v-list-item-title>
           </v-list-item-content>
-          <v-list-item-action v-if="isAdmin">
+          <v-list-item-action v-if="isAdmin" class="ma-0">
             <v-btn icon @click.stop.capture.prevent="addLibrary">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
@@ -78,7 +79,6 @@
 
         <v-list-item v-for="(l, index) in libraries"
                      :key="index"
-                     dense
                      :to="{name:'libraries', params: {libraryId: l.id}}"
         >
           <v-list-item-icon>
@@ -91,35 +91,85 @@
             >{{ $t('common.unavailable') }}
             </v-list-item-subtitle>
           </v-list-item-content>
-          <v-list-item-action v-if="isAdmin">
+          <v-list-item-action v-if="isAdmin" class="ma-0">
             <library-actions-menu :library="l"/>
           </v-list-item-action>
         </v-list-item>
 
-        <v-list-item :to="{name: 'import'}" v-if="isAdmin">
-          <v-list-item-icon>
-            <v-icon>mdi-import</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
+        <!--   IMPORT     -->
+        <v-list-group v-if="isAdmin"
+                      prepend-icon="mdi-import"
+                      no-action
+                      v-model="expandImport"
+        >
+          <template v-slot:activator>
             <v-list-item-title>{{ $t('book_import.title') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          </template>
 
-        <v-list-item :to="{name: 'media-management'}" v-if="isAdmin">
-          <v-list-item-action>
-            <v-icon>mdi-book-cog</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
+          <v-list-item :to="{name: 'import-books'}">
+            <v-list-item-title>{{ $t('common.books') }}</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'import-readlist'}">
+            <v-list-item-title>{{ $t('common.readlist') }}</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <!--   MEDIA MANAGEMENT     -->
+        <v-list-group v-if="isAdmin"
+                      no-action
+                      v-model="expandMediaManagement"
+        >
+          <template v-slot:prependIcon>
             <v-badge
               dot
               inline
-              :value="booksToCheck"
+              :value="$store.state.booksToCheck"
               color="accent"
             >
-              <v-list-item-title>{{ $t('media_management.title') }}</v-list-item-title>
+              <v-icon>mdi-book-cog</v-icon>
             </v-badge>
-          </v-list-item-content>
-        </v-list-item>
+          </template>
+          <template v-slot:activator>
+            <v-list-item-title>{{ $t('media_management.title') }}</v-list-item-title>
+          </template>
+
+          <v-list-item :to="{name: 'media-analysis'}">
+            <v-badge
+              dot
+              inline
+              :value="$store.state.booksToCheck"
+              color="accent"
+            >
+              <v-list-item-title>{{ $t('media_analysis.media_analysis') }}</v-list-item-title>
+            </v-badge>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'missing-posters'}">
+            <v-list-item-title>{{ $t('missing_posters.title') }}</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'duplicate-files'}">
+            <v-list-item-title>{{ $t('duplicates.title') }}</v-list-item-title>
+          </v-list-item>
+
+          <v-list-group no-action
+                        sub-group
+                        v-model="expandDuplicatePages"
+          >
+            <template v-slot:activator>
+              <v-list-item-title>{{ $t('duplicate_pages.title') }}</v-list-item-title>
+            </template>
+
+            <v-list-item :to="{name: 'settings-duplicate-pages-known'}">
+              <v-list-item-title>{{ $t('duplicate_pages.known') }}</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item :to="{name: 'settings-duplicate-pages-unknown'}">
+              <v-list-item-title>{{ $t('duplicate_pages.new') }}</v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
 
         <v-list-item :to="{name: 'history'}" v-if="isAdmin">
           <v-list-item-icon>
@@ -130,21 +180,59 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item :to="{name: 'settings'}" v-if="isAdmin">
-          <v-list-item-action>
-            <v-icon>mdi-cog</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
+        <!--   SETTINGS     -->
+        <v-list-group v-if="isAdmin"
+                      no-action
+                      v-model="expandSettings"
+        >
+          <template v-slot:prependIcon>
             <v-badge
               dot
               inline
               :value="$store.getters.getUnreadAnnouncementsCount()"
+              color="info"
+            >
+              <v-icon>mdi-cog</v-icon>
+            </v-badge>
+          </template>
+          <template v-slot:activator>
+            <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
+          </template>
+
+          <v-list-item :to="{name: 'settings-users'}">
+            <v-list-item-title>{{ $t('users.users') }}</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'settings-server'}">
+            <v-list-item-title>{{ $t('server.tab_title') }}</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'metrics'}">
+            <v-list-item-title>{{ $t('metrics.title') }}</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'announcements'}">
+            <v-badge
+              dot
+              inline
+              :value="$store.getters.getUnreadAnnouncementsCount()"
+              color="info"
+            >
+              <v-list-item-title>{{ $t('announcements.tab_title') }}</v-list-item-title>
+            </v-badge>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'updates'}">
+            <v-badge
+              dot
+              inline
+              :value="$store.getters.isLatestVersion() == 0"
               color="warning"
             >
-              <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
+              <v-list-item-title>{{ $t('server.updates') }}</v-list-item-title>
             </v-badge>
-          </v-list-item-content>
-        </v-list-item>
+          </v-list-item>
+        </v-list-group>
 
         <v-list-item :to="{name: 'account'}">
           <v-list-item-action>
@@ -240,6 +328,10 @@ export default Vue.extend({
       LIBRARIES_ALL,
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
+      expandSettings: false,
+      expandDuplicatePages: false,
+      expandMediaManagement: false,
+      expandImport: false,
     }
   },
   async created() {
@@ -258,11 +350,14 @@ export default Vue.extend({
       this.$komgaReleases.getReleases()
         .then(x => this.$store.commit('setReleases', x))
     }
+    this.checkRoute(this.$route)
+  },
+  watch: {
+    $route(to, from) {
+      this.checkRoute(to)
+    },
   },
   computed: {
-    booksToCheck(): number {
-      return this.$store.state.booksToCheck
-    },
     taskCount(): number {
       return this.$store.state.komgaSse.taskCount
     },
@@ -316,6 +411,12 @@ export default Vue.extend({
     },
   },
   methods: {
+    checkRoute(to) {
+      this.expandSettings = to.path.includes('/settings/')
+      this.expandMediaManagement = to.path.includes('/media-management/')
+      this.expandImport = to.path.includes('/import/')
+      this.expandDuplicatePages = to.path.includes('/duplicate-pages/')
+    },
     toggleDrawer() {
       this.drawerVisible = !this.drawerVisible
     },

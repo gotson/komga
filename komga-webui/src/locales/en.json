@@ -659,7 +659,7 @@
     "matches_n": "No matches | 1 match | {count} matches",
     "new": "New",
     "saved_size": "Saved {size}",
-    "title": "Duplicate pages",
+    "title": "Duplicate Pages",
     "unknown_size": "Unknown size"
   },
   "duplicates": {
@@ -860,7 +860,7 @@
   },
   "media_analysis": {
     "comment": "Comment",
-    "media_analysis": "Media analysis",
+    "media_analysis": "Media Analysis",
     "media_type": "Media Type",
     "name": "Name",
     "size": "Size",
