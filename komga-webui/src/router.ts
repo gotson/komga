@@ -135,11 +135,20 @@ const router = new Router({
           name: 'history',
           component: () => import(/* webpackChunkName: "history" */ './views/HistoryView.vue'),
         },
-
         {
-          path: '/account',
-          name: 'account',
-          component: () => import(/* webpackChunkName: "account" */ './views/AccountSettings.vue'),
+          path: '/account/me',
+          name: 'account-me',
+          component: () => import(/* webpackChunkName: "account-me" */ './views/AccountView.vue'),
+        },
+        {
+          path: '/account/api-keys',
+          name: 'account-api-keys',
+          component: () => import(/* webpackChunkName: "account-api-keys" */ './views/ApiKeys.vue'),
+        },
+        {
+          path: '/account/authentication-activity',
+          name: 'account-activity',
+          component: () => import(/* webpackChunkName: "account-activity" */ './views/SelfAuthenticationActivity.vue'),
         },
         {
           path: '/libraries/:libraryId?',

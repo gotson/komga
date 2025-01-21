@@ -234,14 +234,27 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-item :to="{name: 'account'}">
-          <v-list-item-action>
-            <v-icon>mdi-account</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('account_settings.account_settings') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <!--   ACCOUNT     -->
+        <v-list-group prepend-icon="mdi-account"
+                      no-action
+                      v-model="expandAccount"
+        >
+          <template v-slot:activator>
+            <v-list-item-title>{{ $t('account_settings.my_account') }}</v-list-item-title>
+          </template>
+
+          <v-list-item :to="{name: 'account-me'}">
+            <v-list-item-title>{{ $t('account_settings.details') }}</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'account-api-keys'}">
+            <v-list-item-title>{{ $t('users.api_keys') }}</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item :to="{name: 'account-activity'}">
+            <v-list-item-title>{{ $t('users.authentication_activity') }}</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
 
         <v-list-item @click="logout">
           <v-list-item-icon>
@@ -332,6 +345,7 @@ export default Vue.extend({
       expandDuplicatePages: false,
       expandMediaManagement: false,
       expandImport: false,
+      expandAccount: false,
     }
   },
   async created() {
@@ -416,6 +430,7 @@ export default Vue.extend({
       this.expandMediaManagement = to.path.includes('/media-management/')
       this.expandImport = to.path.includes('/import/')
       this.expandDuplicatePages = to.path.includes('/duplicate-pages/')
+      this.expandAccount = to.path.includes('/account/')
     },
     toggleDrawer() {
       this.drawerVisible = !this.drawerVisible

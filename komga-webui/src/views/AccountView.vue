@@ -1,9 +1,5 @@
 <template>
   <v-container fluid class="pa-6">
-    <v-row>
-      <v-col class="text-h5">{{ $t('account_settings.account_settings') }}</v-col>
-    </v-row>
-
     <v-row align="center">
       <v-col cols="12" md="8" lg="6" xl="4">
         <span class="text-capitalize">{{ $t('common.email') }}</span>
@@ -34,26 +30,6 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col class="text-h5">{{ $t('users.api_keys') }}</v-col>
-    </v-row>
-
-    <v-row>
-      <v-col cols="12" md="10" lg="8" xl="4">
-        <api-key-table/>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col class="text-h5">{{ $t('users.authentication_activity') }}</v-col>
-    </v-row>
-
-    <v-row>
-      <v-col>
-        <authentication-activity-table for-me/>
-      </v-col>
-    </v-row>
-
     <password-change-dialog v-model="modalPasswordChange"
                             :user="me"
     />
@@ -64,13 +40,11 @@
 <script lang="ts">
 import PasswordChangeDialog from '@/components/dialogs/PasswordChangeDialog.vue'
 import Vue from 'vue'
-import AuthenticationActivityTable from '@/components/AuthenticationActivityTable.vue'
 import {UserDto} from '@/types/komga-users'
-import ApiKeyTable from '@/components/ApiKeyTable.vue'
 
 export default Vue.extend({
   name: 'AccountSettings',
-  components: {ApiKeyTable, AuthenticationActivityTable, PasswordChangeDialog},
+  components: {PasswordChangeDialog},
   data: () => {
     return {
       modalPasswordChange: false,

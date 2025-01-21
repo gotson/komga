@@ -25,7 +25,9 @@
       "generate_api_key": "Generate API key",
       "no_keys": "No API Keys created yet"
     },
-    "change_password": "change password"
+    "change_password": "change password",
+    "details": "Details",
+    "my_account": "My Account"
   },
   "announcements": {
     "mark_all_read": "Mark all as read",
