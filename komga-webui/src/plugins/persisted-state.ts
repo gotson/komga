@@ -22,6 +22,7 @@ export const persistedModule: Module<any, any> = {
     },
     epubreader: {},
     browsingPageSize: undefined as unknown as number,
+    thumbnailsPageSize: undefined as unknown as number,
     collection: {
       filter: {},
     },
@@ -118,6 +119,9 @@ export const persistedModule: Module<any, any> = {
     },
     setBrowsingPageSize(state, val) {
       state.browsingPageSize = val
+    },
+    setThumbnailsPageSize(state, val) {
+      state.thumbnailsPageSize = val
     },
     setCollectionFilter(state, {id, filter}) {
       state.collection.filter[id] = filter
