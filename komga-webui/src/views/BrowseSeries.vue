@@ -171,7 +171,12 @@
 
             <template v-if="$vuetify.breakpoint.smAndUp">
               <!-- Alternate titles  -->
-              <read-more class="mb-4" i18n-less="titles_more.less" i18n-more="titles_more.more">
+              <read-more v-model="readMoreTitles"
+                         class="mb-4"
+                         i18n-less="titles_more.less"
+                         i18n-more="titles_more.more"
+                         v-if="series.metadata.alternateTitles.length > 0"
+              >
                 <v-row v-for="(a, i) in series.metadata.alternateTitles"
                        :key="i"
                        class="align-center text-caption"
@@ -201,7 +206,7 @@
 
               <v-row v-if="series.metadata.summary">
                 <v-col>
-                  <read-more>{{ series.metadata.summary }}</read-more>
+                  <read-more v-model="readMore">{{ series.metadata.summary }}</read-more>
                 </v-col>
               </v-row>
 
@@ -215,7 +220,7 @@
                     </template>
                     {{ $t('browse_series.series_no_summary') }}
                   </v-tooltip>
-                  <read-more>{{ series.booksMetadata.summary }}</read-more>
+                  <read-more v-model="readMore">{{ series.booksMetadata.summary }}</read-more>
                 </v-col>
               </v-row>
             </template>
@@ -225,7 +230,12 @@
 
       <template v-if="$vuetify.breakpoint.xsOnly">
         <!-- Alternate titles  -->
-        <read-more class="mb-4" i18n-less="titles_more.less" i18n-more="titles_more.more">
+        <read-more v-model="readMoreTitles"
+                   class="mb-4"
+                   i18n-less="titles_more.less"
+                   i18n-more="titles_more.more"
+                   v-if="series.metadata.alternateTitles.length > 0"
+        >
           <v-row v-for="(a, i) in series.metadata.alternateTitles"
                  :key="i"
                  class="align-center text-caption"
@@ -259,7 +269,7 @@
         <!--   Series summary     -->
         <v-row v-if="series.metadata.summary">
           <v-col>
-            <read-more>{{ series.metadata.summary }}</read-more>
+            <read-more v-model="readMore">{{ series.metadata.summary }}</read-more>
           </v-col>
         </v-row>
 
@@ -274,7 +284,7 @@
               </template>
               {{ $t('browse_series.series_no_summary') }}
             </v-tooltip>
-            <read-more>{{ series.booksMetadata.summary }}</read-more>
+            <read-more v-model="readMore">{{ series.booksMetadata.summary }}</read-more>
           </v-col>
         </v-row>
       </template>
@@ -621,6 +631,8 @@ export default Vue.extend({
         tag: [] as NameValue[],
         mediaProfile: [] as NameValue[],
       },
+      readMore: false,
+      readMoreTitles: false,
     }
   },
   computed: {
@@ -810,6 +822,8 @@ export default Vue.extend({
 
       // reset
       await this.resetParams(to, to.params.seriesId)
+      this.readMore = false
+      this.readMoreTitles = false
       this.page = 1
       this.totalPages = 1
       this.totalElements = null

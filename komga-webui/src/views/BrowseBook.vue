@@ -226,7 +226,7 @@
 
               <v-row v-if="book.metadata.summary">
                 <v-col>
-                  <read-more>{{ book.metadata.summary }}</read-more>
+                  <read-more v-model="readMore">{{ book.metadata.summary }}</read-more>
                 </v-col>
               </v-row>
             </template>
@@ -272,7 +272,7 @@
 
         <v-row v-if="book.metadata.summary">
           <v-col>
-            <read-more>{{ book.metadata.summary }}</read-more>
+            <read-more v-model="readMore">{{ book.metadata.summary }}</read-more>
           </v-col>
         </v-row>
       </template>
@@ -487,6 +487,7 @@ export default Vue.extend({
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
       readLists: [] as ReadListDto[],
+      readMore: false,
     }
   },
   async created() {
@@ -518,6 +519,7 @@ export default Vue.extend({
   },
   async beforeRouteUpdate(to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
+      this.readMore = false
       this.loadBook(to.params.bookId)
     }
 
