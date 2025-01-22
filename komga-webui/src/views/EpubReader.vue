@@ -509,7 +509,7 @@ export default Vue.extend({
     },
     bookTitle(): string {
       if (!!this.book && !!this.series)
-        return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)
+        return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title, this.book.oneshot ? undefined : this.book.metadata.number)
       return this.book?.metadata?.title
     },
     appearance: {
@@ -715,7 +715,7 @@ export default Vue.extend({
           document.title = `Komga - ${this.contextName} - ${this.book.metadata.title}`
         }
       } else {
-        document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
+        document.title = `Komga - ${this.bookTitle}`
       }
 
       // parse query params to get incognito mode

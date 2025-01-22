@@ -504,7 +504,7 @@ export default Vue.extend({
       return this.pages.length
     },
     bookTitle(): string {
-      return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)
+      return getBookTitleCompact(this.book.metadata.title, this.series.metadata.title, this.book.oneshot ? undefined : this.book.metadata.number)
     },
     readingDirectionText(): string {
       return this.$t(`enums.reading_direction.${this.readingDirection}`).toString()
@@ -673,7 +673,7 @@ export default Vue.extend({
         this.contextName = (await (this.$komgaReadLists.getOneReadList(this.context.id))).name
         document.title = `Komga - ${this.contextName} - ${this.book.metadata.title}`
       } else {
-        document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.series.metadata.title)}`
+        document.title = `Komga - ${this.bookTitle}`
       }
 
       // parse query params to get incognito mode
