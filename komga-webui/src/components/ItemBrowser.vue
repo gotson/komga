@@ -35,7 +35,8 @@
                   :preselect="shouldPreselect"
                   :onEdit="(draggable || deletable) ? undefined : editFunction"
                   :onSelected="(draggable || deletable) ? undefined : selectable ? (item, event) => handleSelectClick(toggle, item, event): undefined"
-                  :action-menu="actionMenu"
+                  :action-menu="(draggable || deletable) ? false : actionMenu"
+                  :disable-fab="draggable || deletable"
                 ></item-card>
 
                 <v-slide-y-reverse-transition>
