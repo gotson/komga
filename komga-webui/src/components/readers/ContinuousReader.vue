@@ -10,7 +10,7 @@
            :height="calcHeight(page)"
            :width="calcWidth(page)"
            :id="`page${page.number}`"
-           style="margin: 0 auto;"
+           :style="`margin: ${i === 0 ? 0 : pageMargin}px auto;`"
            v-intersect="onIntersect"
       />
     </div>
@@ -69,6 +69,10 @@ export default Vue.extend({
       required: true,
     },
     sidePadding: {
+      type: Number,
+      required: true,
+    },
+    pageMargin: {
       type: Number,
       required: true,
     },

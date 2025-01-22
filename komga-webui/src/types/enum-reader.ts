@@ -20,3 +20,4 @@ export enum PagedReaderLayout {
 }
 
 export const PaddingPercentage: number[] = [0, 5, 10, 15, 20, 25, 30, 35, 40]
+export const MarginValues: number[] = [0, 5, 10, 15]

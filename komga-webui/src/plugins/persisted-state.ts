@@ -13,6 +13,7 @@ export const persistedModule: Module<any, any> = {
       continuous: {
         scale: '',
         padding: '',
+        margin: '',
       },
       readingDirection: '',
       swipe: false,
@@ -98,6 +99,9 @@ export const persistedModule: Module<any, any> = {
     },
     setWebreaderContinuousPadding(state, val) {
       state.webreader.continuous.padding = val
+    },
+    setWebreaderContinuousMargin(state, val) {
+      state.webreader.continuous.margin = val
     },
     setWebreaderReadingDirection(state, val) {
       state.webreader.readingDirection = val

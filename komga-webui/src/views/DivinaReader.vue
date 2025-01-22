@@ -129,6 +129,7 @@
         :animations="animations"
         :scale="continuousScale"
         :sidePadding="sidePadding"
+        :page-margin="pageMargin"
         @menu="toggleToolbars()"
         @jump-previous="jumpToPrevious()"
         @jump-next="jumpToNext()"
@@ -219,6 +220,13 @@
                   :items="paddingPercentages"
                   v-model="sidePadding"
                   :label="$t('bookreader.settings.side_padding')"
+                />
+              </v-list-item>
+              <v-list-item>
+                <settings-select
+                  :items="marginValues"
+                  v-model="pageMargin"
+                  :label="$t('bookreader.settings.page_margin')"
                 />
               </v-list-item>
             </template>
@@ -323,7 +331,7 @@ import Vue from 'vue'
 import {Location} from 'vue-router'
 import PagedReader from '@/components/readers/PagedReader.vue'
 import ContinuousReader from '@/components/readers/ContinuousReader.vue'
-import {ContinuousScaleType, PaddingPercentage, PagedReaderLayout, ScaleType} from '@/types/enum-reader'
+import {ContinuousScaleType, MarginValues, PaddingPercentage, PagedReaderLayout, ScaleType} from '@/types/enum-reader'
 import {
   shortcutsLTR,
   shortcutsRTL,
@@ -387,6 +395,7 @@ export default Vue.extend({
         scale: ScaleType.SCREEN,
         continuousScale: ContinuousScaleType.WIDTH,
         sidePadding: 0,
+        pageMargin: 0,
         readingDirection: ReadingDirection.LEFT_TO_RIGHT,
         backgroundColor: 'black',
       },
@@ -414,6 +423,10 @@ export default Vue.extend({
       })),
       paddingPercentages: Object.values(PaddingPercentage).map(x => ({
         text: x === 0 ? this.$i18n.t('bookreader.settings.side_padding_none').toString() : `${x}%`,
+        value: x,
+      })),
+      marginValues: Object.values(MarginValues).map(x => ({
+        text: x === 0 ? this.$i18n.t('bookreader.settings.side_padding_none').toString() : `${x}px`,
         value: x,
       })),
       backgroundColors: [
@@ -582,6 +595,17 @@ export default Vue.extend({
         if (PaddingPercentage.includes(padding)) {
           this.settings.sidePadding = padding
           this.$store.commit('setWebreaderContinuousPadding', padding)
+        }
+      },
+    },
+    pageMargin: {
+      get: function (): number {
+        return this.settings.pageMargin
+      },
+      set: function (margin: number): void {
+        if (MarginValues.includes(margin)) {
+          this.settings.pageMargin = margin
+          this.$store.commit('setWebreaderContinuousMargin', margin)
         }
       },
     },
@@ -820,6 +844,14 @@ export default Vue.extend({
         this.sidePadding = PaddingPercentage[i]
         const text = this.sidePadding === 0 ? this.$t('bookreader.settings.side_padding_none').toString() : `${this.sidePadding}%`
         this.sendNotification(`${this.$t('bookreader.cycling_side_padding')}: ${text}`)
+      }
+    },
+    cyclePageMargin() {
+      if (this.continuousReader) {
+        const i = (MarginValues.indexOf(this.settings.pageMargin) + 1) % (MarginValues.length)
+        this.pageMargin = MarginValues[i]
+        const text = this.pageMargin === 0 ? this.$t('bookreader.settings.side_padding_none').toString() : `${this.pageMargin}px`
+        this.sendNotification(`${this.$t('bookreader.cycling_page_margin')}: ${text}`)
       }
     },
     cyclePageLayout() {
