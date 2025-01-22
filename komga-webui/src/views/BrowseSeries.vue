@@ -377,6 +377,7 @@
           <v-chip
             v-for="(link, i) in series.metadata.links"
             :href="link.url"
+            rel="noreferrer"
             target="_blank"
             class="me-2"
             label
