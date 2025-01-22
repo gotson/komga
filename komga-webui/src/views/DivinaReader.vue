@@ -920,5 +920,6 @@ export default Vue.extend({
 
 .html-reader {
   scrollbar-width: none;
+  overscroll-behavior: none;
 }
 </style>
