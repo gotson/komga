@@ -38,6 +38,7 @@ import {ReadStatus} from '@/types/enum-books'
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
 import {SeriesDto} from '@/types/komga-series'
+import {BookSearch, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'OneShotActionsMenu',
