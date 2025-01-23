@@ -13,7 +13,9 @@ private val possibleNcxItemIds = listOf("toc", "ncx", "ncxtoc")
 fun EpubPackage.getNcxResource(): ResourceContent? =
   (manifest.values.firstOrNull { it.mediaType == "application/x-dtbncx+xml" } ?: manifest.values.firstOrNull { possibleNcxItemIds.contains(it.id) })?.let { ncx ->
     val href = normalizeHref(opfDir, ncx.href)
-    ResourceContent(Path(href), zip.getEntryBytes(href).decodeToString())
+    zip.getEntryBytes(href)?.decodeToString()?.let { ncxContent ->
+      ResourceContent(Path(href), ncxContent)
+    }
   }
 
 fun processNcx(

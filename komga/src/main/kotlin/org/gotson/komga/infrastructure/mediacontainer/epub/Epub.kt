@@ -20,7 +20,7 @@ data class EpubPackage(
 inline fun <R> Path.epub(block: (EpubPackage) -> R): R =
   ZipFile.builder().setPath(this).use { zip ->
     val opfFile = zip.getPackagePath()
-    val opfDoc = zip.getEntryInputStream(opfFile).use { Jsoup.parse(it, null, "", Parser.xmlParser()) }
+    val opfDoc = zip.getEntryInputStream(opfFile)?.use { Jsoup.parse(it, null, "", Parser.xmlParser()) } ?: throw MediaUnsupportedException("Could not open OPF resource")
     val opfDir = Paths.get(opfFile).parent
     block(EpubPackage(zip, opfDoc, opfDir, opfDoc.getManifest()))
   }
@@ -30,9 +30,9 @@ inline fun <R> Path.epub(block: (EpubPackage) -> R): R =
  */
 fun ZipFile.getPackagePath(): String =
   getEntryInputStream("META-INF/container.xml")
-    .use { Jsoup.parse(it, null, "") }
-    .getElementsByTag("rootfile")
-    .first()
+    ?.use { Jsoup.parse(it, null, "") }
+    ?.getElementsByTag("rootfile")
+    ?.first()
     ?.attr("full-path") ?: throw MediaUnsupportedException("META-INF/container.xml does not contain rootfile tag")
 
 /**
@@ -41,7 +41,7 @@ fun ZipFile.getPackagePath(): String =
 fun getPackageFileContent(path: Path): String? =
   ZipFile.builder().setPath(path).use { zip ->
     try {
-      zip.getEntryInputStream(zip.getPackagePath()).reader().use { it.readText() }
+      zip.getEntryInputStream(zip.getPackagePath())?.reader()?.use { it.readText() }
     } catch (e: Exception) {
       null
     }

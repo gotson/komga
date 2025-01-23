@@ -70,10 +70,12 @@ class EpubExtractor(
         val href = coverManifestItem.href
         val mediaType = coverManifestItem.mediaType
         val coverPath = normalizeHref(opfDir, href)
-        TypedBytes(
-          zip.getEntryBytes(coverPath),
-          mediaType,
-        )
+        zip.getEntryBytes(coverPath)?.let { coverBytes ->
+          TypedBytes(
+            coverBytes,
+            mediaType,
+          )
+        }
       } else {
         null
       }
@@ -151,7 +153,7 @@ class EpubExtractor(
           .map { it.attr("idref") }
           .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
           .map { pagePath ->
-            val doc = epub.zip.getEntryInputStream(pagePath).use { Jsoup.parse(it, null, "") }
+            val doc = epub.zip.getEntryInputStream(pagePath)?.use { Jsoup.parse(it, null, "") } ?: return@map emptyList()
 
             // if a page has text over the threshold then the book is not divina compatible
             if (doc.body().text().length > letterCountThreshold) return emptyList()
@@ -217,8 +219,8 @@ class EpubExtractor(
       val readingOrder = resources.filter { it.subType == MediaFile.SubType.EPUB_PAGE }
 
       readingOrder.forEach { mediaFile ->
-        val doc = epub.zip.getEntryInputStream(mediaFile.fileName).use { Jsoup.parse(it, null, "") }
-        if (!doc.getElementsByClass("koboSpan").isNullOrEmpty()) return true
+        val doc = epub.zip.getEntryInputStream(mediaFile.fileName)?.use { Jsoup.parse(it, null, "") }
+        if (!doc?.getElementsByClass("koboSpan").isNullOrEmpty()) return true
       }
     } catch (e: Exception) {
       logger.warn(e) { "Error while checking if EPUB is KEPUB" }
@@ -257,7 +259,7 @@ class EpubExtractor(
     val koboPositions =
       when {
         isFixedLayout -> emptyMap()
-        isKepub -> computePositionsFromKoboSpan(readingOrder) { filename -> epub.zip.getEntryInputStream(filename).use { it.readBytes().decodeToString() } }
+        isKepub -> computePositionsFromKoboSpan(readingOrder) { filename -> epub.zip.getEntryInputStream(filename).use { it?.readBytes()?.decodeToString() } }
         kepubConverter.isAvailable -> {
           try {
             val kepub =
@@ -327,12 +329,12 @@ class EpubExtractor(
    */
   private fun computePositionsFromKoboSpan(
     readingOrder: List<MediaFile>,
-    resourceSupplier: (String) -> String,
-  ): Map<String, List<Pair<String, Float>>> =
+    resourceSupplier: (String) -> String?,
+  ): Map<String, List<Pair<String, Float>>?> =
     readingOrder.associate { file ->
-      val doc = Jsoup.parse(resourceSupplier(file.fileName), Parser.htmlParser().setTrackPosition(true))
+      val doc = resourceSupplier(file.fileName)?.let { resource -> Jsoup.parse(resource, Parser.htmlParser().setTrackPosition(true)) }
       file.fileName to
-        doc.select("span.koboSpan").mapNotNull { koboSpan ->
+        doc?.select("span.koboSpan")?.mapNotNull { koboSpan ->
           val id = koboSpan.id()
           if (!id.isNullOrBlank()) {
             // progression is built from the position in the file of each koboSpan, divided by the file size

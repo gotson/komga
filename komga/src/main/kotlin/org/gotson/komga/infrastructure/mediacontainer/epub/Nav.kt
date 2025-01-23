@@ -11,7 +11,9 @@ import kotlin.io.path.Path
 fun EpubPackage.getNavResource(): ResourceContent? =
   manifest.values.firstOrNull { it.properties.contains("nav") }?.let { nav ->
     val href = normalizeHref(opfDir, nav.href)
-    ResourceContent(Path(href), zip.getEntryBytes(href).decodeToString())
+    zip.getEntryBytes(href)?.decodeToString()?.let { navContent ->
+      ResourceContent(Path(href), navContent)
+    }
   }
 
 fun processNav(
