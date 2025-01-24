@@ -213,6 +213,14 @@
 
             <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.display') }}</v-subheader>
 
+            <v-list-item v-if="fontFamilies.length > 1">
+              <settings-select
+                :items="fontFamilies"
+                v-model="fontFamily"
+                :label="$t('epubreader.settings.font_family')"
+              />
+            </v-list-item>
+
             <v-list-item>
               <v-list-item-title>{{ $t('epubreader.settings.viewing_theme') }}</v-list-item-title>
               <v-btn
@@ -299,7 +307,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import D2Reader, {Locator} from '@d-i-t-a/reader'
-import {bookManifestUrl, bookPositionsUrl} from '@/functions/urls'
+import urls, {bookManifestUrl, bookPositionsUrl} from '@/functions/urls'
 import {BookDto} from '@/types/komga-books'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {SeriesDto} from '@/types/komga-series'
@@ -382,6 +390,12 @@ export default Vue.extend({
         {text: this.$t('enums.epubreader.column_count.one').toString(), value: '1'},
         {text: this.$t('enums.epubreader.column_count.two').toString(), value: '2'},
       ],
+      fontFamilyDefault: [{
+        text: this.$t('epubreader.publisher_font'),
+        value: 'Original',
+      }],
+      fontFamiliesAdditional: [] as string[],
+      fontFamilies: [] as any[],
       settings: {
         // R2D2BC
         appearance: 'readium-default-on',
@@ -393,6 +407,7 @@ export default Vue.extend({
         fixedLayoutMargin: 0,
         fixedLayoutShadow: false,
         direction: 'auto',
+        fontFamily: 'Original',
         // Epub Reader
         alwaysFullscreen: false,
         navigationClick: true,
@@ -439,9 +454,12 @@ export default Vue.extend({
       screenfull.exit()
     }
   },
-  mounted() {
+  async mounted() {
     Object.assign(this.settings, this.$store.state.persistedState.epubreader)
     this.settings.alwaysFullscreen = this.$store.state.persistedState.webreader.alwaysFullscreen
+
+    this.fontFamiliesAdditional = await this.$komgaFonts.getFamilies()
+    this.fontFamilies = [...this.fontFamilyDefault, ...this.fontFamiliesAdditional]
 
     this.setup(this.bookId)
   },
@@ -611,6 +629,16 @@ export default Vue.extend({
         this.$store.commit('setEpubreaderSettings', this.settings)
       },
     },
+    fontFamily: {
+      get: function (): string {
+        return this.settings.fontFamily ?? 'Original'
+      },
+      set: function (value: string): void {
+        this.settings.fontFamily = value
+        this.d2Reader.applyUserSettings({fontFamily: value})
+        this.$store.commit('setEpubreaderSettings', this.settings)
+      },
+    },
   },
   methods: {
     previousBook() {
@@ -721,6 +749,12 @@ export default Vue.extend({
       // parse query params to get incognito mode
       this.incognito = !!(this.$route.query.incognito && this.$route.query.incognito.toString().toLowerCase() === 'true')
 
+      const fontFamiliesInjectables = this.fontFamiliesAdditional.map(x => ({
+        type: 'style',
+        url: new URL(`${urls.origin}api/v1/fonts/resource/${x}/css`, import.meta.url).toString(),
+        fontFamily: x,
+      }))
+
       this.d2Reader = await D2Reader.load({
         url: new URL(bookManifestUrl(this.bookId)),
         userSettings: this.settings,
@@ -747,6 +781,7 @@ export default Vue.extend({
           {type: 'style', url: new URL('../styles/r2d2bc/popup.css.resource', import.meta.url).toString()},
           {type: 'style', url: new URL('../styles/r2d2bc/popover.css.resource', import.meta.url).toString()},
           {type: 'style', url: new URL('../styles/r2d2bc/style.css.resource', import.meta.url).toString()},
+          ...fontFamiliesInjectables,
         ],
         requestConfig: {
           credentials: 'include',

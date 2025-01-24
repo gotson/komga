@@ -90,6 +90,8 @@ class SecurityConfiguration(
             "/api/v1/oauth2/providers",
             // epub resources - fonts are always requested anonymously, so we check for authorization within the controller method directly
             "/api/v1/books/{bookId}/resource/**",
+            // dynamic fonts
+            "/api/v1/fonts/resource/**",
             // OPDS authentication document
             "/opds/v2/auth",
             // KOReader user creation

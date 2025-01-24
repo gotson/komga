@@ -47,6 +47,8 @@ class KomgaProperties {
 
   var kobo = Kobo()
 
+  val fonts = Fonts()
+
   class Cors {
     var allowedOrigins: List<String> = emptyList()
   }
@@ -70,6 +72,11 @@ class KomgaProperties {
     var busyTimeout: Duration? = null
 
     var pragmas: Map<String, String> = emptyMap()
+  }
+
+  class Fonts {
+    @get:NotBlank
+    var dataDirectory: String = ""
   }
 
   class Lucene {

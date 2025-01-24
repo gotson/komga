@@ -19,6 +19,8 @@ komga:
     file: \${komga.config-dir}/database.sqlite
   lucene:
     data-directory: \${komga.config-dir}/lucene
+  fonts:
+    data-directory: \${komga.config-dir}/fonts
   config-dir: \${user.home}/.komga
   tasks-db:
     file: \${komga.config-dir}/tasks.sqlite

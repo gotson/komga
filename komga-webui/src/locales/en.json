@@ -756,8 +756,10 @@
   "epubreader": {
     "current_chapter": "Current chapter",
     "page_of": "Page {page} of {count}",
+    "publisher_font": "Publisher",
     "settings": {
       "column_count": "Column count",
+      "font_family": "Font",
       "layout": "Layout",
       "layout_paginated": "Paginated",
       "layout_scroll": "Scroll",
