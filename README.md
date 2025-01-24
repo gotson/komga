@@ -49,7 +49,7 @@ Check the [development guidelines](./DEVELOPING.md).
 
 ## Sponsors
 
-[![Jetbrains_logo](./.github/readme-images/sponsors-jetbrains.png)](https://www.jetbrains.com/?from=Komga)
+[![Jetbrains_logo](./.github/readme-images/jetbrains.svg)](https://www.jetbrains.com/?from=Komga)
 
 ## Credits
 
