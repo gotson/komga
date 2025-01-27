@@ -25,7 +25,9 @@
       "generate_api_key": "Luo API-avain",
       "no_keys": "API-avaimia ei ole vielä luotu"
     },
-    "change_password": "Vaihda salasana"
+    "change_password": "Vaihda salasana",
+    "details": "Yksityiskohdat",
+    "my_account": "Tilini"
   },
   "announcements": {
     "mark_all_read": "Merkitse kaikki luetuiksi",
@@ -93,6 +95,7 @@
     "beginning_of_book": "Olet kirjan alussa.",
     "changing_reading_direction": "Vaihda lukusuunta",
     "cycling_page_layout": "Vaihda sivun asettelua",
+    "cycling_page_margin": "Vaihda sivun marginaalia",
     "cycling_scale": "Vaihda skaalaa",
     "cycling_side_padding": "Vaihda sivuntäyttöä",
     "download_current_page": "Lataa nykyinen sivu",
@@ -135,6 +138,7 @@
       "general": "Yleiset",
       "gestures": "Eleet",
       "page_layout": "Sivun asettelu",
+      "page_margin": "Sivun marginaali",
       "paged": "Sivutetun lukijan asetukset",
       "reading_mode": "Lukutila",
       "scale_type": "Skaalauksen tyyppi",
@@ -145,6 +149,7 @@
     "shortcuts": {
       "close": "Sulje",
       "cycle_page_layout": "Vaihda sivun asettelua",
+      "cycle_page_margin": "Vaihda sivun marginaalia",
       "cycle_scale": "Vaihda skaalaa",
       "cycle_side_padding": "Vaihda sivuntäyttöä",
       "first_page": "Ensimmäinen sivu",
@@ -168,6 +173,8 @@
   },
   "browse_book": {
     "comment": "KOMMENTTI",
+    "date_created": "LUOTU",
+    "date_modified": "MUOKATTU VIIMEKSI",
     "download_file": "Lataa tiedosto",
     "file": "TIEDOSTO",
     "format": "MUOTO",
@@ -177,6 +184,8 @@
     "outdated_tooltip": "Tämä kirja täytyy uudelleenanalysoida, sillä sen tiedosto on muuttunut",
     "read_book": "Lue kirja",
     "read_incognito": "Lue incognito-tilassa",
+    "remove_from_collection": "Poista kirja kokoelmasta",
+    "remove_from_readlist": "Poista kirja luettujen listalta",
     "size": "KOKO"
   },
   "browse_collection": {
@@ -191,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Tämä on aikaisin vuosi kaikista sarjassa olevien kirjojen julkaisuvuosista",
+    "remove_from_collection": "Poista sarja kokoelmasta",
     "series_no_summary": "Tällä sarjalla ei ole yhteenvetoa, joten valitsimme sinulle sellaisen!",
     "summary_from_book": "Kirjan {number} yhteenveto:"
   },
@@ -221,8 +231,10 @@
     "dismiss": "Hylkää",
     "download": "Lataa",
     "drag_drop": "vedä ja pudota",
+    "duplicate": "Kaksoiskappale",
     "email": "Sähköposti",
     "epub": "Epub",
+    "error": "Virhe",
     "filename": "Tiedostonimi",
     "filter_no_matches": "Aktiiviselle suodattimelle ei löytynyt tuloksia",
     "genre": "Tyylilaji",
@@ -237,6 +249,7 @@
     "lock_all": "Lukitse kaikki",
     "n_selected": "{count} valittu",
     "nothing_to_show": "Ei näytettävää",
+    "ok": "OK",
     "oneshot": "Kertajulkaisu",
     "outdated": "Vanhentunut",
     "page": "Sivu",
@@ -283,6 +296,7 @@
     "comicrack_preambule_html": "Voit tuoda valmiita ComicRack -lukulistoja <code>.cbl</code> -formaatissa.<br>Komga yrittää sovittaa annetun sarjan ja kirjan numeron kirjastossasi oleviin sarjoihin ja kirjoihin.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} kirjoista ei ole sovitettu",
+      "body2": "{duplicates} / {total} kirjaa on kaksoiskappaleita",
       "create": "Luo silti",
       "title": "Joitakin kirjoja ei ole sovitettu"
     },
@@ -635,6 +649,7 @@
     "delete_to_save": "Poista säästääksesi {size}",
     "deleted_count": "Poistettu {count} kertaa",
     "empty_title": "Sivujen kaksoiskappaleita ei löytynyt",
+    "empty_title_known": "Ei havaittuja kaksoiskappaleita",
     "filter": {
       "count": "Määrä",
       "date_added": "Lisäyspäivämäärä",
@@ -688,6 +703,11 @@
       "DuplicatePageDeleted": "Sivun kaksoiskappale poistettu",
       "SeriesFolderDeleted": "Sarjan kansio poistettu"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Virhe",
       "OUTDATED": "Vanhentunut",
@@ -736,8 +756,10 @@
   "epubreader": {
     "current_chapter": "Nykyinen luku",
     "page_of": "Sivu {page}/{count}",
+    "publisher_font": "Julkaisija",
     "settings": {
       "column_count": "Sarakkeiden määrä",
+      "font_family": "Fontti",
       "layout": "Asettelu",
       "layout_paginated": "Sivutettu",
       "layout_scroll": "Rullaa",
@@ -799,11 +821,13 @@
   "filter": {
     "age_rating": "ikäluokitus",
     "age_rating_none": "Ei mitään",
+    "any": "Mikä tahansa",
     "complete": "Valmis",
     "genre": "tyylilaji",
     "in_progress": "Meneillään",
     "language": "kieli",
     "library": "kirjasto",
+    "media_profile": "Mediaprofiili",
     "oneshot": "Kertajulkaisu",
     "publisher": "julkaisija",
     "read": "Luettu",
@@ -881,6 +905,9 @@
     "tasks_executed": "Tehtäviä suoritettu",
     "tasks_total_time": "Tehtävien kokonaisaika",
     "title": "Metriikat"
+  },
+  "missing_posters": {
+    "title": "Puuttuvia julisteita"
   },
   "navigation": {
     "home": "Koti",
