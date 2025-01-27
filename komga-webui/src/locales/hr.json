@@ -25,7 +25,9 @@
       "generate_api_key": "Generiraj API ključ",
       "no_keys": "Još nije stvoren nijedan API ključ"
     },
-    "change_password": "promijeni lozinku"
+    "change_password": "promijeni lozinku",
+    "details": "Detalji",
+    "my_account": "Moj račun"
   },
   "announcements": {
     "mark_all_read": "Označi sve kao pročitano",
@@ -93,6 +95,7 @@
     "beginning_of_book": "Nalaziš se na početku knjige.",
     "changing_reading_direction": "Mijenjanje smjera čitanja u",
     "cycling_page_layout": "Mijenjanje rasporeda stranica",
+    "cycling_page_margin": "Mijenjanje margina stranica",
     "cycling_scale": "Mijenjanje skaliranja",
     "cycling_side_padding": "Mijenjanje rubova",
     "download_current_page": "Preuzmi trenutačnu stranicu",
@@ -135,6 +138,7 @@
       "general": "Općenito",
       "gestures": "Geste",
       "page_layout": "Raspored stranica",
+      "page_margin": "Margine stranica",
       "paged": "Postavke prikaza stranica",
       "reading_mode": "Modus čitanja",
       "scale_type": "Vrsta skaliranja",
@@ -145,6 +149,7 @@
     "shortcuts": {
       "close": "Zatvori",
       "cycle_page_layout": "Mijenjaj raspored stranica",
+      "cycle_page_margin": "Mijenjaj margine stranica",
       "cycle_scale": "Mijenjaj skaliranje",
       "cycle_side_padding": "Mijenjaj rubove",
       "first_page": "Prva stranica",
@@ -168,6 +173,8 @@
   },
   "browse_book": {
     "comment": "KOMENTAR",
+    "date_created": "STVORENO",
+    "date_modified": "ZADNJA PROMJENA",
     "download_file": "Preuzmi datoteku",
     "file": "DATOTEKA",
     "format": "FORMAT",
@@ -177,6 +184,8 @@
     "outdated_tooltip": "Datoteka za ovu knjigu je promijenjena. Ova se knjiga mora ponovno analizirati",
     "read_book": "Čitaj knjigu",
     "read_incognito": "Čitaj inkognito",
+    "remove_from_collection": "Ukloni knjigu iz zbirke",
+    "remove_from_readlist": "Ukloni knjigu iz liste čitanja",
     "size": "VELIČINA"
   },
   "browse_collection": {
@@ -191,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Ovo je najranija godina izdanja svih knjiga u seriji",
+    "remove_from_collection": "Ukloni serije iz zbirke",
     "series_no_summary": "Ova serija nema sažetak, pa smo odabrali jedan za tebe!",
     "summary_from_book": "Sažetak knjige {number}:"
   },
@@ -221,8 +231,10 @@
     "dismiss": "Ukloni",
     "download": "Preuzmi",
     "drag_drop": "povuci i ispusti",
+    "duplicate": "Dupliciraj",
     "email": "E-mail adresa",
     "epub": "Epub",
+    "error": "Greška",
     "filename": "Ime datoteke",
     "filter_no_matches": "Aktivni filtar nema podudaranja",
     "genre": "Žanr",
@@ -237,6 +249,7 @@
     "lock_all": "Zaključaj sve",
     "n_selected": "Odabrano: {count}",
     "nothing_to_show": "Nema ničega za pokazati",
+    "ok": "U redu",
     "oneshot": "Izdanje bez nastavka",
     "outdated": "Neaktualno",
     "page": "Stranica",
@@ -283,6 +296,7 @@
     "comicrack_preambule_html": "Postojeće ComicRack liste čitanja možeš uvesti u <code>.cbl</code> formatu.<br>Komga će pokušati uskladiti danu seriju i broj knjige sa serijama i knjigama u tvojim bibliotekema.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} knjiga se ne podudaraju",
+      "body2": "{duplicates} / {total} knjiga je duplicirano",
       "create": "Svejedno stvori",
       "title": "Neke se knjige ne podudaraju"
     },
@@ -635,6 +649,7 @@
     "delete_to_save": "Izbriši i uštedi {size}",
     "deleted_count": "Izbrisano {count} puta",
     "empty_title": "Duple stranice nisu pronađene",
+    "empty_title_known": "Nema poznatih duplikata",
     "filter": {
       "count": "Broj",
       "date_added": "Datum dodavanja",
@@ -688,6 +703,11 @@
       "DuplicatePageDeleted": "Dupla stranica izbrisana",
       "SeriesFolderDeleted": "Mapa serije izbrisana"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Greška",
       "OUTDATED": "Neaktualno",
@@ -736,8 +756,10 @@
   "epubreader": {
     "current_chapter": "Aktualno poglavlje",
     "page_of": "Stranica {page} od {count}",
+    "publisher_font": "Izdavač",
     "settings": {
       "column_count": "Broj stupaca",
+      "font_family": "Font",
       "layout": "Raspored",
       "layout_paginated": "Paginirano",
       "layout_scroll": "Listanje klizačem",
@@ -799,11 +821,13 @@
   "filter": {
     "age_rating": "dobna kategorija",
     "age_rating_none": "Bez",
+    "any": "Bilo koji",
     "complete": "Dovršeno",
     "genre": "žanr",
     "in_progress": "U tijeku",
     "language": "jezik",
     "library": "biblioteka",
+    "media_profile": "Profil medija",
     "oneshot": "Izdanje bez nastavka",
     "publisher": "izdavač",
     "read": "Čitaj",
@@ -881,6 +905,9 @@
     "tasks_executed": "Broj izvršenih zadataka",
     "tasks_total_time": "Ukupno utrošeno vrijeme za zadatke",
     "title": "Statistika"
+  },
+  "missing_posters": {
+    "title": "Posteri koji nedostaju"
   },
   "navigation": {
     "home": "Početna stranica",
