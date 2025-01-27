@@ -25,7 +25,9 @@
       "generate_api_key": "生成 API 密钥",
       "no_keys": "尚未创建 API 密钥"
     },
-    "change_password": "更改密码"
+    "change_password": "更改密码",
+    "details": "详情",
+    "my_account": "我的账户"
   },
   "announcements": {
     "mark_all_read": "全部标为已读",
@@ -93,6 +95,7 @@
     "beginning_of_book": "你可以开始阅读这本书.",
     "changing_reading_direction": "将阅读方向更改为",
     "cycling_page_layout": "切换页模式",
+    "cycling_page_margin": "切换页边距",
     "cycling_scale": "切换缩放",
     "cycling_side_padding": "切换边距",
     "download_current_page": "下载当前页面",
@@ -135,6 +138,7 @@
       "general": "常规",
       "gestures": "手势",
       "page_layout": "页面布局",
+      "page_margin": "页边距",
       "paged": "分页阅读器选项",
       "reading_mode": "阅读模式",
       "scale_type": "缩放模式",
@@ -145,6 +149,7 @@
     "shortcuts": {
       "close": "关闭",
       "cycle_page_layout": "切换页模式",
+      "cycle_page_margin": "切换页边距",
       "cycle_scale": "切换缩放",
       "cycle_side_padding": "切换边距",
       "first_page": "第一页",
@@ -168,6 +173,8 @@
   },
   "browse_book": {
     "comment": "注释",
+    "date_created": "已创建",
+    "date_modified": "最后修改时间",
     "download_file": "下载文件",
     "file": "文件来源",
     "format": "文件格式",
@@ -177,6 +184,8 @@
     "outdated_tooltip": "此书的文件已更改，必须重新分析这本书",
     "read_book": "阅读书籍",
     "read_incognito": "隐私(无痕)阅读",
+    "remove_from_collection": "从收藏中移除书籍",
+    "remove_from_readlist": "从阅读列表中移除书籍",
     "size": "文件大小"
   },
   "browse_collection": {
@@ -191,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "这是该系列所有书发行日期最早的一年",
+    "remove_from_collection": "从收藏集中移除系列",
     "series_no_summary": "这个系列没有概要，所以我们为您挑选了一个！",
     "summary_from_book": "书籍 {number} 的概要："
   },
@@ -221,8 +231,10 @@
     "dismiss": "解除",
     "download": "下载",
     "drag_drop": "拖放",
+    "duplicate": "重复",
     "email": "邮箱",
     "epub": "Epub",
+    "error": "错误",
     "filename": "文件名",
     "filter_no_matches": "筛选器没有匹配的结果",
     "genre": "风格",
@@ -237,6 +249,7 @@
     "lock_all": "锁定全部",
     "n_selected": "已选择 {count}",
     "nothing_to_show": "无任何项目",
+    "ok": "确定",
     "oneshot": "单行本",
     "outdated": "过时的",
     "page": "页面",
@@ -283,6 +296,7 @@
     "comicrack_preambule_html": "您可以导入现有的 ComicRack 阅读列表，其为 <code>.cbl</code>格式。<br>Komga 会试着将您提供的系列和书号与你库中的相匹配。",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} 本书匹配失败",
+      "body2": "{duplicates} / {total} 本书籍重复",
       "create": "仍然创建",
       "title": "有些书不匹配"
     },
@@ -635,6 +649,7 @@
     "delete_to_save": "删除以节省 {size}",
     "deleted_count": "删除了 {count} 次",
     "empty_title": "未找到重复页面",
+    "empty_title_known": "没有已知重复",
     "filter": {
       "count": "数目",
       "date_added": "添加日期",
@@ -688,6 +703,11 @@
       "DuplicatePageDeleted": "重复页面已删除",
       "SeriesFolderDeleted": "系列文件夹已删除"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "错误",
       "OUTDATED": "过期",
@@ -736,8 +756,10 @@
   "epubreader": {
     "current_chapter": "当前章节",
     "page_of": "页 {page} 共 {count}页",
+    "publisher_font": "出版商",
     "settings": {
       "column_count": "列数",
+      "font_family": "字体",
       "layout": "布局",
       "layout_paginated": "分页",
       "layout_scroll": "滚屏",
@@ -799,11 +821,13 @@
   "filter": {
     "age_rating": "年龄限制",
     "age_rating_none": "无",
+    "any": "任何",
     "complete": "完结",
     "genre": "风格",
     "in_progress": "继续阅读",
     "language": "语言",
     "library": "库",
+    "media_profile": "媒体简介",
     "oneshot": "单行本",
     "publisher": "出版商",
     "read": "已读",
@@ -881,6 +905,9 @@
     "tasks_executed": "已执行的任务",
     "tasks_total_time": "任务总时间",
     "title": "性能指标"
+  },
+  "missing_posters": {
+    "title": "缺少海报"
   },
   "navigation": {
     "home": "主页",
