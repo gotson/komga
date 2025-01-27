@@ -687,6 +687,11 @@
       "DuplicatePageDeleted": "Página duplicada apagada",
       "SeriesFolderDeleted": "Pasta de série apagada"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Erro",
       "OUTDATED": "Desatualizado",
@@ -803,6 +808,7 @@
     "in_progress": "Em progresso",
     "language": "idioma",
     "library": "biblioteca",
+    "media_profile": "Perfil de media",
     "oneshot": "Isolado",
     "publisher": "editora",
     "read": "Lidos",
@@ -1004,6 +1010,7 @@
     "ADMIN": "Administrador",
     "FILE_DOWNLOAD": "Descarregar ficheiro",
     "KOBO_SYNC": "Sincronização Kobo",
+    "KOREADER_SYNC": "Sincronização KOReader",
     "PAGE_STREAMING": "Páginas em direto",
     "USER": "Utilizador"
   },
