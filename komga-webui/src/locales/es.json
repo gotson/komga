@@ -25,7 +25,9 @@
       "generate_api_key": "Generar clave API",
       "no_keys": "Aún no se han creado claves API"
     },
-    "change_password": "cambiar contraseña"
+    "change_password": "cambiar contraseña",
+    "details": "Detalles",
+    "my_account": "Mi cuenta"
   },
   "announcements": {
     "mark_all_read": "Marcar todo como leído",
@@ -93,6 +95,7 @@
     "beginning_of_book": "Está al principio del libro.",
     "changing_reading_direction": "Cambiando dirección de lectura a",
     "cycling_page_layout": "Cambiando disposición de página",
+    "cycling_page_margin": "Cambiando margen de página",
     "cycling_scale": "Cambiando escalado de página",
     "cycling_side_padding": "Cambiando el relleno lateral",
     "download_current_page": "Descargar página actual",
@@ -135,6 +138,7 @@
       "general": "General",
       "gestures": "Gestos",
       "page_layout": "Disposición de página",
+      "page_margin": "Margen de página",
       "paged": "Opciones de paginado del lector",
       "reading_mode": "Modo de lectura",
       "scale_type": "Tipo de escalado",
@@ -145,6 +149,7 @@
     "shortcuts": {
       "close": "Cerrar",
       "cycle_page_layout": "Cambiar disposición de página",
+      "cycle_page_margin": "Cambiar margen de página",
       "cycle_scale": "Cambiar escalado de página",
       "cycle_side_padding": "Cambiar el relleno lateral",
       "first_page": "Primera página",
@@ -168,6 +173,8 @@
   },
   "browse_book": {
     "comment": "COMENTARIO",
+    "date_created": "CREADO",
+    "date_modified": "ÚLTIMA MODIFICACIÓN",
     "download_file": "Descargar archivo",
     "file": "ARCHIVO",
     "format": "FORMATO",
@@ -177,6 +184,8 @@
     "outdated_tooltip": "El archivo de este libro ha cambiado, este libro debe volver a analizarse",
     "read_book": "Leer libro",
     "read_incognito": "Leer privadamente",
+    "remove_from_collection": "Remover libro de la colección",
+    "remove_from_readlist": "Remover libro de la lista de lectura",
     "size": "TAMAÑO"
   },
   "browse_collection": {
@@ -191,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Este es el año más antiguo de las fechas de publicación de todos los libros de la serie",
+    "remove_from_collection": "Remover serie de la colección",
     "series_no_summary": "Esta serie no tiene resumen, ¡así que escogimos uno por usted!",
     "summary_from_book": "Resumen del libro {number}:"
   },
@@ -201,8 +211,8 @@
   "common": {
     "age": "Edad",
     "all_libraries": "Todas las bibliotecas",
-    "all_of": "Todo",
-    "any_of": "Cualquiera",
+    "all_of": "Todo de",
+    "any_of": "Cualquiera de",
     "book": "Libro",
     "books": "Libros",
     "books_n": "Sin libros | 1 libro | {count} libros",
@@ -221,8 +231,10 @@
     "dismiss": "Descartar",
     "download": "Descargar",
     "drag_drop": "arrastrar y soltar",
+    "duplicate": "Duplicado",
     "email": "Correo electrónico",
     "epub": "Epub",
+    "error": "Error",
     "filename": "Nombre de archivo",
     "filter_no_matches": "El filtro activo no tiene coincidencias",
     "genre": "Género",
@@ -237,6 +249,7 @@
     "lock_all": "Bloquear todas",
     "n_selected": "{count} seleccionado(s)",
     "nothing_to_show": "Nada que mostrar",
+    "ok": "OK",
     "oneshot": "One-shot",
     "outdated": "Desactualizado",
     "page": "Página",
@@ -283,6 +296,7 @@
     "comicrack_preambule_html": "Puede importar Listas de lectura de ComicRack en formato <code>.cbl</code>.<br>Komga intentará hacer coincidir la serie y número de libro proporcionados con las series y libros en sus bibliotecas.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} libros no emparejados",
+      "body2": "{duplicates} / {total} libros están duplicados",
       "create": "Crear de todos modos",
       "title": "Algunos libros no están emparejados"
     },
@@ -403,7 +417,7 @@
       "field_alternate_title": "Título alternativo",
       "field_isbn": "ISBN",
       "field_isbn_error": "Debe ser un código ISBN 13 válido",
-      "field_link_label": "Etiqueta",
+      "field_link_label": "Rótulo",
       "field_link_url": "URL",
       "field_link_url_error_protocol": "Debe ser http o https",
       "field_link_url_error_url": "Debe ser una URL válida",
@@ -443,6 +457,7 @@
       "dialot_title_edit": "Editar biblioteca",
       "field_analysis_analyze_dimensions": "Analizar la dimensión de las páginas",
       "field_analysis_hash_files": "Calcular hash de los archivos",
+      "field_analysis_hash_koreader": "Calcular hash de archivos para KOReader",
       "field_analysis_hash_pages": "Calcular hash de las páginas",
       "field_convert_to_cbz": "Automáticamente convertir a CBZ",
       "field_import_barcode_isbn": "Código de barras ISBN",
@@ -474,7 +489,7 @@
       "label_import_local": "Importar recursos multimedia locales",
       "label_import_mylar": "Importar metadatos generados por Mylar",
       "label_scan_directory_exclusions": "Exclusiones de directorios",
-      "label_scan_types": "Escanear por estos tipos de archivos",
+      "label_scan_types": "Escanear por estos tipos de archivo",
       "label_scanner": "Escáner",
       "label_series_cover": "Portada de serie",
       "tab_general": "General",
@@ -503,7 +518,7 @@
       "field_age_rating": "Clasificación de edad",
       "field_age_rating_error": "La clasificación de edad debe ser 0 o más",
       "field_genres": "Géneros",
-      "field_labels": "Etiquetas",
+      "field_labels": "Rótulos",
       "field_language": "Idioma",
       "field_language_hint": "Etiqueta de idioma IETF BCP 47",
       "field_publisher": "Editorial",
@@ -537,8 +552,8 @@
       },
       "edit_restrictions_for": "Editar restricciones para {name}",
       "label_age_restriction": "Restricción de edad",
-      "label_allow_only_labels": "Permitir solo las etiquetas",
-      "label_exclude_labels": "Excluir las etiquetas",
+      "label_allow_only_labels": "Permitir solo los rótulos",
+      "label_exclude_labels": "Excluir los rótulos",
       "tab_content_restrictions": "Restricciones de contenido",
       "tab_shared_libraries": "Bibliotecas compartidas"
     },
@@ -634,6 +649,7 @@
     "delete_to_save": "Borrar para recuperar {size}",
     "deleted_count": "Borrado {count} veces",
     "empty_title": "No se encontraron páginas duplicadas",
+    "empty_title_known": "Sin duplicados",
     "filter": {
       "count": "Cantidad",
       "date_added": "Fecha en que se añadió",
@@ -687,6 +703,11 @@
       "DuplicatePageDeleted": "Página duplicada eliminada",
       "SeriesFolderDeleted": "Carpeta de serie eliminada"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Error",
       "OUTDATED": "Desactualizado",
@@ -735,8 +756,10 @@
   "epubreader": {
     "current_chapter": "Capítulo actual",
     "page_of": "Página {page} de {count}",
+    "publisher_font": "Editorial",
     "settings": {
       "column_count": "Número de columnas",
+      "font_family": "Fuente",
       "layout": "Diseño",
       "layout_paginated": "Paginado",
       "layout_scroll": "Desplazarse",
@@ -798,16 +821,18 @@
   "filter": {
     "age_rating": "clasificación de edad",
     "age_rating_none": "Ninguna",
+    "any": "Cualquiera",
     "complete": "Completado",
     "genre": "género",
     "in_progress": "En progreso",
     "language": "idioma",
     "library": "biblioteca",
+    "media_profile": "Perfil multimedia",
     "oneshot": "One-shot",
     "publisher": "editorial",
     "read": "Leído",
     "release_date": "fecha de publicación",
-    "sharing_label": "Etiqueta de compartido",
+    "sharing_label": "Rótulo de compartido",
     "status": "estado",
     "tag": "etiqueta",
     "unread": "Sin leer"
@@ -881,6 +906,9 @@
     "tasks_total_time": "Tiempo total de tareas",
     "title": "Métricas"
   },
+  "missing_posters": {
+    "title": "Falta póster"
+  },
   "navigation": {
     "home": "Inicio",
     "libraries": "Bibliotecas",
@@ -923,6 +951,7 @@
       "button_scan_libraries": "Escanear todas las bibliotecas",
       "button_scan_libraries_deep": "Escanear todas las bibliotecas (en profundidad)",
       "button_shutdown": "Apagar",
+      "download_log": "Descargar archivo de registros",
       "notification_tasks_cancelled": "No hay tareas para cancelar | Una tarea cancelada | {count} tareas canceladas",
       "section_title": "Administración del servidor"
     },
@@ -964,12 +993,15 @@
   "sort": {
     "books_count": "Cantidad de libros",
     "date_added": "Fecha de adición",
+    "date_read": "Fecha de lectura",
     "date_updated": "Fecha de actualización",
     "file_name": "Nombre de archivo",
     "file_size": "Tamaño de archivo",
     "folder_name": "Nombre de carpeta",
     "name": "Nombre",
     "number": "Número",
+    "page_count": "Número de páginas",
+    "random": "Aleatorio",
     "release_date": "Fecha de publicación"
   },
   "theme": {
@@ -999,7 +1031,8 @@
   "user_roles": {
     "ADMIN": "Administrador",
     "FILE_DOWNLOAD": "Descarga de archivos",
-    "KOBO_SYNC": "Kobo Sync",
+    "KOBO_SYNC": "Sincronizar con Kobo",
+    "KOREADER_SYNC": "Sincronizar con KOReader",
     "PAGE_STREAMING": "Streaming de páginas",
     "USER": "Usuario"
   },
