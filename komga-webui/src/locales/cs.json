@@ -101,9 +101,9 @@
     "move_next": "Znovu použít \"Další\" pro přechod na další knížku.",
     "move_next_exit": "Znovu použít \"Další\" pro opuštění čtečky.",
     "move_previous": "Znovu použít \"Předchozí\" pro přechod na předchozí knížku.",
-    "notification_poster_set_book": "Současná stránka byla nastavena jako přebal knihy.",
-    "notification_poster_set_readlist": "Současná stránka byla nastavena jako přebal listu.",
-    "notification_poster_set_series": "Současná stránka byla nastavena jako přebal série.",
+    "notification_poster_set_book": "Současná stránka byla nastavena jako plakát knihy.",
+    "notification_poster_set_readlist": "Současná stránka byla nastavena jako plakát seznamu četby.",
+    "notification_poster_set_series": "Současná stránka byla nastavena jako plakát série.",
     "paged_reader_layout": {
       "double": "Dvojstránka",
       "double_no_cover": "Dvoustránka (žádný přebal)",
@@ -119,9 +119,9 @@
       "width": "Přizpůsobit šířce",
       "width_shrink_only": "Přizpůsobit šířce (pouze zmenšení)"
     },
-    "set_current_page_as_book_poster": "Nastavit stránku jako přebal knihy",
-    "set_current_page_as_readlist_poster": "Natavit stránku jako přebal listu",
-    "set_current_page_as_series_poster": "Nastavit stránku jako přebal série",
+    "set_current_page_as_book_poster": "Nastavit stránku jako plakát knihy",
+    "set_current_page_as_readlist_poster": "Nastavit stránku jako plakát seznamu četby",
+    "set_current_page_as_series_poster": "Nastavit stránku jako plakát série",
     "settings": {
       "always_fullscreen": "Vždy na celou obrazovku",
       "animate_page_transitions": "Animovat přechody stránek",
@@ -177,6 +177,8 @@
     "outdated_tooltip": "Soubor této knížky se změnil, tuto knížku je potřeba znova analyzovat",
     "read_book": "Číst knihu",
     "read_incognito": "Číst anonymně",
+    "remove_from_collection": "Odebrat knihu ze sbírky",
+    "remove_from_readlist": "Odebrat knihu ze seznamu četby",
     "size": "VELIKOST"
   },
   "browse_collection": {
@@ -185,12 +187,13 @@
     "manual_ordering": "manuální řazení"
   },
   "browse_readlist": {
-    "edit_elements": "Upravit element",
-    "edit_readlist": "Upravit list přečtených knih",
+    "edit_elements": "Upravit elementy",
+    "edit_readlist": "Upravit seznam četby",
     "manual_ordering": "ruční řazení"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Toto je nejstarší rok od data vydání všech knih v sérii",
+    "remove_from_collection": "Odebrat sérii ze sbírky",
     "series_no_summary": "Tato série nemá souhrn, proto jsme pro tebe jeden vybrali!",
     "summary_from_book": "Souhrn z knížky {number}:"
   },
@@ -283,6 +286,7 @@
     "comicrack_preambule_html": "Stávající seznamy četby ComicRack můžete importovat ve formátu <code>.cbl</code>.<br>Komga se pokusí porovnat poskytnutou sérii a číslo knihy se sériemi a knihami ve vašich knihovnách.",
     "dialog_confirmation": {
       "body": "{unmatched} z {total} knih je neporovnáno",
+      "body2": "{duplicates} / {total} knih jsou duplicitní",
       "create": "Přesto vytvořit",
       "title": "Některé knihy se neshodují"
     },
@@ -420,7 +424,7 @@
       "tab_authors": "Autoři",
       "tab_general": "Obecné",
       "tab_links": "Odkazy",
-      "tab_poster": "Obal",
+      "tab_poster": "Plakát",
       "tab_tags": "Štítky",
       "tags_notice_multiple_edit": "Upravujete tagy pro více knih. Tím přepíšete stávající tagy každé knihy."
     },
@@ -431,7 +435,7 @@
       "field_manual_ordering": "Ruční řazení",
       "label_ordering": "Ve výchozím nastavení budou série v kolekci seřazeny podle názvu. Pro definování vlastního řazení můžete povolit ruční řazení.",
       "tab_general": "Obecné",
-      "tab_poster": "Obal"
+      "tab_poster": "Plakát"
     },
     "edit_library": {
       "button_browse": "Procházet",
@@ -443,6 +447,7 @@
       "dialot_title_edit": "Upravit knihovnu",
       "field_analysis_analyze_dimensions": "Analyzujte rozměry stránek",
       "field_analysis_hash_files": "Vypočítej hash pro soubory",
+      "field_analysis_hash_koreader": "Spočítat hash souborů pro KOReader",
       "field_analysis_hash_pages": "Vypočítej hash pro stránky",
       "field_convert_to_cbz": "Automaticky převést na CBZ",
       "field_import_barcode_isbn": "Čárový kód ISBN",
@@ -687,6 +692,11 @@
       "DuplicatePageDeleted": "Duplicitní stránka byla smazána",
       "SeriesFolderDeleted": "Složka série byla smazána"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Chyba",
       "OUTDATED": "Zastaralé",
@@ -798,11 +808,13 @@
   "filter": {
     "age_rating": "Věkové hodnocení",
     "age_rating_none": "Bez omezení",
+    "any": "Jakýkoliv",
     "complete": "Celý",
     "genre": "žánr",
     "in_progress": "Probíhá",
     "language": "jazyk",
     "library": "knihovna",
+    "media_profile": "Profil média",
     "oneshot": "Jednorázovka",
     "publisher": "vydavatel",
     "read": "Přečteno",
@@ -880,6 +892,9 @@
     "tasks_executed": "Úkoly splněny",
     "tasks_total_time": "Celkový čas úkolů",
     "title": "Metriky"
+  },
+  "missing_posters": {
+    "title": "Chybějící plakáty"
   },
   "navigation": {
     "home": "Úvod",
@@ -965,6 +980,7 @@
   "sort": {
     "books_count": "Počet knih",
     "date_added": "Datum přidáno",
+    "date_read": "Datum přečtení",
     "date_updated": "Datum aktualizováno",
     "file_name": "Název souboru",
     "file_size": "Velikost souboru",
@@ -1003,6 +1019,7 @@
     "ADMIN": "Administrátor",
     "FILE_DOWNLOAD": "Stažení souboru",
     "KOBO_SYNC": "Kobo Sync",
+    "KOREADER_SYNC": "Synchronizace KOReader",
     "PAGE_STREAMING": "Streamování stránek",
     "USER": "Uživatel"
   },
