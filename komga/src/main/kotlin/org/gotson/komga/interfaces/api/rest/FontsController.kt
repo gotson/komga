@@ -23,7 +23,6 @@ import kotlin.io.path.isReadable
 import kotlin.io.path.isRegularFile
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.name
-import kotlin.io.path.toPath
 
 private val logger = KotlinLogging.logger {}
 
@@ -42,11 +41,9 @@ class FontsController(
         resolver
           .getResources("/embeddedFonts/**/*.*")
           .filterNot { it.filename == null }
-          .filter { supportedExtensions.contains(it.uri.toPath().extension, true) }
+          .filter { supportedExtensions.contains(Path(it.uri.toString()).extension, true) }
           .groupBy {
-            it.uri
-              .toPath()
-              .parent.name
+            Path(it.uri.toString()).parent.name
           }
       } catch (e: Exception) {
         logger.error(e) { "Could not load embedded fonts" }
@@ -92,7 +89,7 @@ class FontsController(
     @PathVariable fontFile: String,
   ): ResponseEntity<Resource> {
     fonts[fontFamily]?.let { resources ->
-      val resource = resources.firstOrNull { it.uri.toPath().name == fontFile } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      val resource = resources.firstOrNull { it.filename == fontFile } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
       return ResponseEntity
         .ok()
         .headers {
@@ -111,7 +108,7 @@ class FontsController(
     @PathVariable fontFamily: String,
   ): ResponseEntity<Resource> {
     fonts[fontFamily]?.let { files ->
-      val groups = files.groupBy { getFontCharacteristics(it.uri.toPath().name) }
+      val groups = files.groupBy { getFontCharacteristics(Path(it.uri.toString()).name) }
 
       val css =
         groups
@@ -137,7 +134,7 @@ class FontsController(
   ): String {
     val srcBlock =
       fonts.joinToString(separator = ",", postfix = ";") { resource ->
-        val path = resource.uri.toPath()
+        val path = Path(resource.uri.toString())
         """url('${path.name}') format('${path.extension}')"""
       }
     // language=CSS
