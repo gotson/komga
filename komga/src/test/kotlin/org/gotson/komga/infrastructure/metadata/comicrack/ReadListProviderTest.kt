@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class ReadListProviderTest {
-
   private val mockMapper = mockk<XmlMapper>()
   private val readListProvider = ReadListProvider(mockMapper)
 
@@ -21,20 +20,22 @@ class ReadListProviderTest {
     @Test
     fun `given CBL list with books when getting ReadListRequest then it is valid`() {
       // given
-      val cbl = ReadingList().apply {
-        name = "my read list"
-        books = listOf(
-          Book().apply {
-            series = "series 1"
-            number = " 4 "
-            volume = 2005
-          },
-          Book().apply {
-            series = "series 2"
-            number = "1"
-          },
-        )
-      }
+      val cbl =
+        ReadingList().apply {
+          name = "my read list"
+          books =
+            listOf(
+              Book().apply {
+                series = "series 1"
+                number = " 4 "
+                volume = 2005
+              },
+              Book().apply {
+                series = "series 2"
+                number = "1"
+              },
+            )
+        }
 
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 
@@ -61,24 +62,26 @@ class ReadListProviderTest {
     @Test
     fun `given CBL list with invalid books when getting ReadListRequest then exception is thrown`() {
       // given
-      val cbl = ReadingList().apply {
-        name = "my read list"
-        books = listOf(
-          Book().apply {
-            series = " "
-            number = "4"
-            volume = 2005
-          },
-          Book().apply {
-            series = null
-            number = "1"
-          },
-          Book().apply {
-            series = "Series"
-            number = null
-          },
-        )
-      }
+      val cbl =
+        ReadingList().apply {
+          name = "my read list"
+          books =
+            listOf(
+              Book().apply {
+                series = " "
+                number = "4"
+                volume = 2005
+              },
+              Book().apply {
+                series = null
+                number = "1"
+              },
+              Book().apply {
+                series = "Series"
+                number = null
+              },
+            )
+        }
 
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 
@@ -93,10 +96,11 @@ class ReadListProviderTest {
     @Test
     fun `given CBL list without books when getting ReadListRequest then exception is thrown`() {
       // given
-      val cbl = ReadingList().apply {
-        name = "my read list"
-        books = emptyList()
-      }
+      val cbl =
+        ReadingList().apply {
+          name = "my read list"
+          books = emptyList()
+        }
 
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 
@@ -111,20 +115,22 @@ class ReadListProviderTest {
     @Test
     fun `given CBL list without name when getting ReadListRequest then exception is thrown`() {
       // given
-      val cbl = ReadingList().apply {
-        name = null
-        books = listOf(
-          Book().apply {
-            series = "series 1"
-            number = "4"
-            volume = 2005
-          },
-          Book().apply {
-            series = "series 2"
-            number = "1"
-          },
-        )
-      }
+      val cbl =
+        ReadingList().apply {
+          name = null
+          books =
+            listOf(
+              Book().apply {
+                series = "series 1"
+                number = "4"
+                volume = 2005
+              },
+              Book().apply {
+                series = "series 2"
+                number = "1"
+              },
+            )
+        }
 
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 
@@ -139,20 +145,22 @@ class ReadListProviderTest {
     @Test
     fun `given CBL list with blank name when getting ReadListRequest then exception is thrown`() {
       // given
-      val cbl = ReadingList().apply {
-        name = "  "
-        books = listOf(
-          Book().apply {
-            series = "series 1"
-            number = "4"
-            volume = 2005
-          },
-          Book().apply {
-            series = "series 2"
-            number = "1"
-          },
-        )
-      }
+      val cbl =
+        ReadingList().apply {
+          name = "  "
+          books =
+            listOf(
+              Book().apply {
+                series = "series 1"
+                number = "4"
+                volume = 2005
+              },
+              Book().apply {
+                series = "series 2"
+                number = "1"
+              },
+            )
+        }
 
       every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
 

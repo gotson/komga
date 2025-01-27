@@ -10,8 +10,11 @@ import org.gotson.komga.Application
 @AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class])
 class SlicesIsolationRulesTest {
   @ArchTest
-  val interfaces_should_only_use_their_own_slice: ArchRule =
+  val interfacesShouldOnlyUseTheirOwnSlice: ArchRule =
     slices()
-      .matching("..interfaces.(*)..").namingSlices("Interface $1")
-      .`as`("Interfaces").should().notDependOnEachOther()
+      .matching("..interfaces.(*)..")
+      .namingSlices("Interface $1")
+      .`as`("Interfaces")
+      .should()
+      .notDependOnEachOther()
 }

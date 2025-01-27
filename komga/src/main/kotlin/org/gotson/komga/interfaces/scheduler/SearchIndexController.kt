@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.scheduler
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.infrastructure.search.LuceneEntity
@@ -18,7 +18,6 @@ class SearchIndexController(
   private val luceneHelper: LuceneHelper,
   private val taskEmitter: TaskEmitter,
 ) {
-
   @EventListener(ApplicationReadyEvent::class)
   fun createIndexIfNoneExist() {
     if (!luceneHelper.indexExists()) {

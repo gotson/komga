@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class MultilingualAnalyzerTest {
-
   private val analyzer = MultiLingualAnalyzer()
 
   @Test

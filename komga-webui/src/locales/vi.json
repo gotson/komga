@@ -281,11 +281,7 @@
       "dialog_title": "Thêm Người Sử Dụng",
       "field_email": "Email",
       "field_email_error": "Phải là địa chỉ email hợp lệ",
-      "field_password": "Mật khẩu",
-      "field_role_administrator": "Người quản lý",
-      "field_role_file_download": "Tập tin tải về",
-      "field_role_page_streaming": "Truyền phát Trang",
-      "label_roles": "Vai trò"
+      "field_password": "Mật khẩu"
     },
     "analyze_library": {
       "body": "Phân tích tất cả dữ liệu trong thư viện. Việc phân tích sẽ thu được thông tin của dữ liệu. Phụ thuộc vào kích thước thư viện mà việc này có thể sẽ mất nhiều thời gian.",

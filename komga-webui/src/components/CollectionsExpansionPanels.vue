@@ -10,6 +10,7 @@
           @scroll-changed="(percent) => scrollChanged(collectionsLoaders[index], percent)"
         >
           <template v-slot:prepend>
+            <slot name="prepend" v-bind:collection="c"/>
             <router-link class="text-overline"
                          :to="{name: 'browse-collection', params: {collectionId: c.id}}"
             >{{ $t('collections_expansion_panel.manage_collection') }}

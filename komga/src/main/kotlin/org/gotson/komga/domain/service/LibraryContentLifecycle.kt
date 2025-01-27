@@ -1,18 +1,20 @@
 package org.gotson.komga.domain.service
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
-import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.Series
-import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.model.ThumbnailBook
+import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -24,11 +26,13 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.language.notEquals
 import org.gotson.komga.language.toIndexedMap
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
 import java.nio.file.Paths
@@ -60,28 +64,32 @@ class LibraryContentLifecycle(
   private val collectionRepository: SeriesCollectionRepository,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val eventPublisher: ApplicationEventPublisher,
+  private val thumbnailSeriesRepository: ThumbnailSeriesRepository,
 ) {
-
-  fun scanRootFolder(library: Library, scanDeep: Boolean = false) {
+  fun scanRootFolder(
+    library: Library,
+    scanDeep: Boolean = false,
+  ) {
     logger.info { "Scan root folder for library: $library" }
     measureTime {
-      val scanResult = try {
-        fileSystemScanner.scanRootFolder(
-          Paths.get(library.root.toURI()),
-          library.scanForceModifiedTime,
-          library.oneshotsDirectory,
-          library.scanCbx,
-          library.scanPdf,
-          library.scanEpub,
-          library.scanDirectoryExclusions,
-        )
-      } catch (e: DirectoryNotFoundException) {
-        library.copy(unavailableDate = LocalDateTime.now()).let {
-          libraryRepository.update(it)
-          eventPublisher.publishEvent(DomainEvent.LibraryUpdated(it))
+      val scanResult =
+        try {
+          fileSystemScanner.scanRootFolder(
+            Paths.get(library.root.toURI()),
+            library.scanForceModifiedTime,
+            library.oneshotsDirectory,
+            library.scanCbx,
+            library.scanPdf,
+            library.scanEpub,
+            library.scanDirectoryExclusions,
+          )
+        } catch (e: DirectoryNotFoundException) {
+          library.copy(unavailableDate = LocalDateTime.now()).let {
+            libraryRepository.update(it)
+            eventPublisher.publishEvent(DomainEvent.LibraryUpdated(it))
+          }
+          throw e
         }
-        throw e
-      }
 
       if (library.unavailableDate != null) {
         library.copy(unavailableDate = null).let {
@@ -113,14 +121,21 @@ class LibraryContentLifecycle(
       }
 
       // delete books that don't exist anymore. We need to do this now, so trash bin can work
-      val seriesToSortAndRefresh = scannedSeries.values.flatten().map { it.url }.let { urls ->
-        val books = bookRepository.findAllNotDeletedByLibraryIdAndUrlNotIn(library.id, urls)
-        if (books.isNotEmpty()) {
-          logger.info { "Soft deleting books not on disk anymore: $books" }
-          bookLifecycle.softDeleteMany(books)
-          books.map { it.seriesId }.distinct().mapNotNull { seriesRepository.findByIdOrNull(it) }.toMutableList()
-        } else mutableListOf()
-      }
+      val seriesToSortAndRefresh =
+        scannedSeries.values.flatten().map { it.url }.let { urls ->
+          val books = bookRepository.findAllNotDeletedByLibraryIdAndUrlNotIn(library.id, urls)
+          if (books.isNotEmpty()) {
+            logger.info { "Soft deleting books not on disk anymore: $books" }
+            bookLifecycle.softDeleteMany(books)
+            books
+              .map { it.seriesId }
+              .distinct()
+              .mapNotNull { seriesRepository.findByIdOrNull(it) }
+              .toMutableList()
+          } else {
+            mutableListOf()
+          }
+        }
       // we store the url of all the series that had deleted books
       // this can be used to detect changed series even if their file modified date did not change, for example because of NFS/SMB cache
       val seriesUrlWithDeletedBooks = seriesToSortAndRefresh.map { it.url }
@@ -155,24 +170,29 @@ class LibraryContentLifecycle(
               existingBooks.find { it.url == newBook.url && it.deletedDate == null }?.let { existingBook ->
                 logger.debug { "Matched existing book: $existingBook" }
                 if (newBook.fileLastModified.notEquals(existingBook.fileLastModified)) {
-                  val hash = if (existingBook.fileSize == newBook.fileSize && existingBook.fileHash.isNotBlank()) {
-                    hasher.computeHash(newBook.path)
-                  } else null
+                  val hash =
+                    if (existingBook.fileSize == newBook.fileSize && existingBook.fileHash.isNotBlank()) {
+                      hasher.computeHash(newBook.path)
+                    } else {
+                      null
+                    }
                   if (hash == existingBook.fileHash) {
                     logger.info { "Book changed on disk, but still has the same hash, no need to reset media status: $existingBook" }
-                    val updatedBook = existingBook.copy(
-                      fileLastModified = newBook.fileLastModified,
-                      fileSize = newBook.fileSize,
-                      fileHash = hash,
-                    )
+                    val updatedBook =
+                      existingBook.copy(
+                        fileLastModified = newBook.fileLastModified,
+                        fileSize = newBook.fileSize,
+                        fileHash = hash,
+                      )
                     bookRepository.update(updatedBook)
                   } else {
                     logger.info { "Book changed on disk, update and reset media status: $existingBook" }
-                    val updatedBook = existingBook.copy(
-                      fileLastModified = newBook.fileLastModified,
-                      fileSize = newBook.fileSize,
-                      fileHash = hash ?: "",
-                    )
+                    val updatedBook =
+                      existingBook.copy(
+                        fileLastModified = newBook.fileLastModified,
+                        fileSize = newBook.fileSize,
+                        fileHash = hash ?: "",
+                      )
                     transactionTemplate.executeWithoutResult {
                       mediaRepository.findById(existingBook.id).let {
                         mediaRepository.update(it.copy(status = Media.Status.OUTDATED))
@@ -237,8 +257,10 @@ class LibraryContentLifecycle(
           }
       }
 
-      if (library.emptyTrashAfterScan) emptyTrash(library)
-      else cleanupEmptySets()
+      if (library.emptyTrashAfterScan)
+        emptyTrash(library)
+      else
+        cleanupEmptySets()
     }.also { logger.info { "Library updated in $it" } }
 
     eventPublisher.publishEvent(DomainEvent.LibraryScanned(library))
@@ -255,27 +277,36 @@ class LibraryContentLifecycle(
    * - Metadata. The metadata title will only be copied if locked. If not locked, the folder name is used.
    * - all books, via #tryRestoreBooks
    */
-  private fun tryRestoreSeries(newSeries: Series, newBooks: List<Book>) {
+  private fun tryRestoreSeries(
+    newSeries: Series,
+    newBooks: List<Book>,
+  ) {
     logger.info { "Try to restore series: $newSeries" }
     val bookSizes = newBooks.map { it.fileSize }
 
-    val deletedCandidates = seriesRepository.findAll(SeriesSearch(deleted = true))
-      .mapNotNull { deletedCandidate ->
-        val deletedBooks = bookRepository.findAllBySeriesId(deletedCandidate.id)
-        val deletedBooksSizes = deletedBooks.map { it.fileSize }
-        if (newBooks.size == deletedBooks.size && bookSizes.containsAll(deletedBooksSizes) && deletedBooksSizes.containsAll(bookSizes) && deletedBooks.all { it.fileHash.isNotBlank() }) {
-          deletedCandidate to deletedBooks
-        } else null
-      }
+    val deletedCandidates =
+      seriesRepository
+        .findAll(SearchCondition.Deleted(SearchOperator.IsTrue), SearchContext.empty(), Pageable.unpaged())
+        .content
+        .mapNotNull { deletedCandidate ->
+          val deletedBooks = bookRepository.findAllBySeriesId(deletedCandidate.id)
+          val deletedBooksSizes = deletedBooks.map { it.fileSize }
+          if (newBooks.size == deletedBooks.size && bookSizes.containsAll(deletedBooksSizes) && deletedBooksSizes.containsAll(bookSizes) && deletedBooks.all { it.fileHash.isNotBlank() }) {
+            deletedCandidate to deletedBooks
+          } else {
+            null
+          }
+        }
     logger.debug { "Deleted series candidates: $deletedCandidates" }
 
     if (deletedCandidates.isNotEmpty()) {
       val newBooksWithHash = newBooks.map { book -> bookRepository.findByIdOrNull(book.id)!!.copy(fileHash = hasher.computeHash(book.path)) }
       bookRepository.update(newBooksWithHash)
 
-      val match = deletedCandidates.find { (_, books) ->
-        books.map { it.fileHash }.containsAll(newBooksWithHash.map { it.fileHash }) && newBooksWithHash.map { it.fileHash }.containsAll(books.map { it.fileHash })
-      }
+      val match =
+        deletedCandidates.find { (_, books) ->
+          books.map { it.fileHash }.containsAll(newBooksWithHash.map { it.fileHash }) && newBooksWithHash.map { it.fileHash }.containsAll(books.map { it.fileHash })
+        }
 
       if (match != null) {
         // restore series
@@ -293,8 +324,14 @@ class LibraryContentLifecycle(
             )
           }
 
+          // copy user uploaded thumbnails
+          thumbnailSeriesRepository.findAllBySeriesIdIdAndType(match.first.id, ThumbnailSeries.Type.USER_UPLOADED).forEach { deleted ->
+            thumbnailSeriesRepository.update(deleted.copy(seriesId = newSeries.id))
+          }
+
           // replace deleted series by new series in collections
-          collectionRepository.findAllContainingSeriesId(match.first.id, filterOnLibraryIds = null)
+          collectionRepository
+            .findAllContainingSeriesId(match.first.id, filterOnLibraryIds = null)
             .forEach { col ->
               collectionRepository.update(
                 col.copy(
@@ -332,8 +369,10 @@ class LibraryContentLifecycle(
       if (deletedCandidates.isNotEmpty()) {
         // if the book has no hash, compute the hash and store it
         val bookWithHash =
-          if (bookToAdd.fileHash.isNotBlank()) bookToAdd
-          else bookRepository.findByIdOrNull(bookToAdd.id)!!.copy(fileHash = hasher.computeHash(bookToAdd.path)).also { bookRepository.update(it) }
+          if (bookToAdd.fileHash.isNotBlank())
+            bookToAdd
+          else
+            bookRepository.findByIdOrNull(bookToAdd.id)!!.copy(fileHash = hasher.computeHash(bookToAdd.path)).also { bookRepository.update(it) }
 
         val match = deletedCandidates.find { it.fileHash == bookWithHash.fileHash }
 
@@ -346,8 +385,8 @@ class LibraryContentLifecycle(
               mediaRepository.update(deleted.copy(bookId = bookToAdd.id))
             }
 
-            // copy generated thumbnails
-            thumbnailBookRepository.findAllByBookIdAndType(match.id, ThumbnailBook.Type.GENERATED).forEach { deleted ->
+            // copy generated and user uploaded thumbnails
+            thumbnailBookRepository.findAllByBookIdAndType(match.id, setOf(ThumbnailBook.Type.GENERATED, ThumbnailBook.Type.USER_UPLOADED)).forEach { deleted ->
               thumbnailBookRepository.update(deleted.copy(bookId = bookToAdd.id))
             }
 
@@ -364,16 +403,21 @@ class LibraryContentLifecycle(
             }
 
             // copy read progress
-            readProgressRepository.findAllByBookId(match.id)
+            readProgressRepository
+              .findAllByBookId(match.id)
               .map { it.copy(bookId = bookToAdd.id) }
               .forEach { readProgressRepository.save(it) }
 
             // replace deleted book by new book in read lists
-            readListRepository.findAllContainingBookId(match.id, filterOnLibraryIds = null)
+            readListRepository
+              .findAllContainingBookId(match.id, filterOnLibraryIds = null)
               .forEach { rl ->
                 readListRepository.update(
                   rl.copy(
-                    bookIds = rl.bookIds.values.map { if (it == match.id) bookToAdd.id else it }.toIndexedMap(),
+                    bookIds =
+                      rl.bookIds.values
+                        .map { if (it == match.id) bookToAdd.id else it }
+                        .toIndexedMap(),
                   ),
                 )
               }
@@ -389,10 +433,28 @@ class LibraryContentLifecycle(
   fun emptyTrash(library: Library) {
     logger.info { "Empty trash for library: $library" }
 
-    val seriesToDelete = seriesRepository.findAll(SeriesSearch(libraryIds = listOf(library.id), deleted = true))
+    val seriesToDelete =
+      seriesRepository
+        .findAll(
+          SearchCondition.AllOfSeries(
+            SearchCondition.LibraryId(SearchOperator.Is(library.id)),
+            SearchCondition.Deleted(SearchOperator.IsTrue),
+          ),
+          SearchContext.empty(),
+          Pageable.unpaged(),
+        ).content
     seriesLifecycle.deleteMany(seriesToDelete)
 
-    val booksToDelete = bookRepository.findAll(BookSearch(libraryIds = listOf(library.id), deleted = true))
+    val booksToDelete =
+      bookRepository
+        .findAll(
+          SearchCondition.AllOfBook(
+            SearchCondition.LibraryId(SearchOperator.Is(library.id)),
+            SearchCondition.Deleted(SearchOperator.IsTrue),
+          ),
+          SearchContext.empty(),
+          Pageable.unpaged(),
+        ).content
     bookLifecycle.deleteMany(booksToDelete)
     booksToDelete.map { it.seriesId }.distinct().forEach { seriesId ->
       seriesRepository.findByIdOrNull(seriesId)?.let { seriesLifecycle.sortBooks(it) }

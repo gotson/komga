@@ -16,8 +16,10 @@ annotation class BCP47(
 )
 
 class BCP47Validator : ConstraintValidator<BCP47, String> {
-
-  override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
+  override fun isValid(
+    value: String?,
+    context: ConstraintValidatorContext?,
+  ): Boolean {
     if (value == null) return false
     return BCP47TagValidator.isValid(value)
   }

@@ -1,6 +1,7 @@
 import {AxiosInstance} from 'axios'
 import {AuthorDto, BookDto} from '@/types/komga-books'
 import {GroupCountDto, SeriesDto, SeriesMetadataUpdateDto, SeriesThumbnailDto} from '@/types/komga-series'
+import {SeriesSearch} from '@/types/komga-search'
 
 const qs = require('qs')
 
@@ -13,30 +14,10 @@ export default class KomgaSeriesService {
     this.http = http
   }
 
-  async getSeries(libraryId?: string, pageRequest?: PageRequest, search?: string, status?: string[],
-                  readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
-                  publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[],
-                  searchRegex?: string, complete?: boolean, sharingLabel?: string[], oneshot?: boolean): Promise<Page<SeriesDto>> {
+  async getSeriesList(search: SeriesSearch, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
-      const params = {...pageRequest} as any
-      if (libraryId) params.library_id = libraryId
-      if (search) params.search = search
-      if (searchRegex) params.search_regex = searchRegex
-      if (status) params.status = status
-      if (readStatus) params.read_status = readStatus
-      if (genre) params.genre = genre
-      if (tag) params.tag = tag
-      if (language) params.language = language
-      if (publisher) params.publisher = publisher
-      if (ageRating) params.age_rating = ageRating
-      if (releaseDate) params.release_year = releaseDate
-      if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
-      if (complete !== undefined) params.complete = complete
-      if (sharingLabel) params.sharing_label = sharingLabel
-      if (oneshot !== undefined) params.oneshot = oneshot
-
-      return (await this.http.get(API_SERIES, {
-        params: params,
+      return (await this.http.post(`${API_SERIES}/list`, search, {
+        params: {...pageRequest},
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
@@ -48,31 +29,9 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getAlphabeticalGroups(libraryId?: string, search?: string, status?: string[],
-                              readStatus?: string[], genre?: string[], tag?: string[], language?: string[],
-                              publisher?: string[], ageRating?: string[], releaseDate?: string[], authors?: AuthorDto[],
-                              complete?: boolean, sharingLabel?: string[], oneshot?: boolean): Promise<GroupCountDto[]> {
+  async getSeriesListByAlphabeticalGroups(search: SeriesSearch): Promise<GroupCountDto[]>{
     try {
-      const params = {} as any
-      if (libraryId) params.library_id = libraryId
-      if (search) params.search = search
-      if (status) params.status = status
-      if (readStatus) params.read_status = readStatus
-      if (genre) params.genre = genre
-      if (tag) params.tag = tag
-      if (language) params.language = language
-      if (publisher) params.publisher = publisher
-      if (ageRating) params.age_rating = ageRating
-      if (releaseDate) params.release_year = releaseDate
-      if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
-      if (complete !== undefined) params.complete = complete
-      if (sharingLabel) params.sharing_label = sharingLabel
-      if (oneshot !== undefined) params.oneshot = oneshot
-
-      return (await this.http.get(`${API_SERIES}/alphabetical-groups`, {
-        params: params,
-        paramsSerializer: params => qs.stringify(params, {indices: false}),
-      })).data
+      return (await this.http.post(`${API_SERIES}/list/alphabetical-groups`, search)).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve series alphabetical groups'
       if (e.response.data.message) {
@@ -121,26 +80,6 @@ export default class KomgaSeriesService {
       return (await this.http.get(`${API_SERIES}/${seriesId}`)).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve series'
-      if (e.response.data.message) {
-        msg += `: ${e.response.data.message}`
-      }
-      throw new Error(msg)
-    }
-  }
-
-  async getBooks(seriesId: string, pageRequest?: PageRequest, readStatus?: string[], tag?: string[], authors?: AuthorDto[]): Promise<Page<BookDto>> {
-    try {
-      const params = {...pageRequest} as any
-      if (readStatus) params.read_status = readStatus
-      if (tag) params.tag = tag
-      if (authors) params.author = authors.map(a => `${a.name},${a.role}`)
-
-      return (await this.http.get(`${API_SERIES}/${seriesId}/books`, {
-        params: params,
-        paramsSerializer: params => qs.stringify(params, {indices: false}),
-      })).data
-    } catch (e) {
-      let msg = 'An error occurred while trying to retrieve books'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

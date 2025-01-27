@@ -1,7 +1,7 @@
 application.version: BENCHMARK
 
 benchmark:
-  result-folder: ${reportsDir}/benchmark
+  result-folder: ${project.reportsDir}/benchmark
   measurement-iterations: 5
   warmup-iterations: 1
   mode: averagetime
@@ -16,6 +16,8 @@ komga:
     file: \${komga.config-dir}/\${komga.workspace}.sqlite
   lucene:
     data-directory: \${komga.config-dir}/lucene/\${komga.workspace}
+  tasks-db:
+    file: \${komga.config-dir}/\${komga.workspace}-tasks.sqlite
 spring:
   flyway:
     enabled: true

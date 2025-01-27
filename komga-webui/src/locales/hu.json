@@ -4,7 +4,8 @@
       "pageText": "{0}-{1} / {2}"
     },
     "dataIterator": {
-      "loadingText": "Elemek betöltése..."
+      "loadingText": "Elemek betöltése...",
+      "noResultsText": "Nebyli nalezeny žádné podobné výsledky"
     },
     "dataTable": {
       "itemsPerPageText": "Sorok oldalanként:",
@@ -19,6 +20,10 @@
   "account_settings": {
     "account_settings": "Fiókbeállítások",
     "change_password": "jelszó módosítása"
+  },
+  "announcements": {
+    "mark_all_read": "Označit vše jako přečtené",
+    "mark_read": "Označit jako přečtené"
   },
   "authentication_activity": {
     "datetime": "Dátum / idő",
@@ -184,14 +189,17 @@
     "books_n": "Nincs könyv | 1 könyv | {count} könyv",
     "books_total": "{count} / {total} könyv",
     "cancel": "Mégse",
+    "choose_image": "Kép kiválasztása",
     "close": "Bezárás",
     "collections": "Gyűjtemények",
     "create": "Létrehozás",
     "delete": "Törlés",
+    "dimension": "sz: {width}, m: {height}",
     "disk_space": "Lemezterület",
     "dismiss": "Elvet",
     "download": "Letöltés",
     "email": "E-mail-cím",
+    "epub": "Epub",
     "filename": "Fájlnév",
     "filter_no_matches": "A jelenleg aktív szűrő szerint üres",
     "genre": "Műfaj",
@@ -271,11 +279,7 @@
       "dialog_title": "Felhasználó hozzáadása",
       "field_email": "E-mail-cím",
       "field_email_error": "Érvényes e-mail címnek kell lennie",
-      "field_password": "Jelszó",
-      "field_role_administrator": "Adminisztrátor",
-      "field_role_file_download": "Fájl letöltés",
-      "field_role_page_streaming": "Oldalmegosztás",
-      "label_roles": "Szerepek"
+      "field_password": "Jelszó"
     },
     "analyze_library": {
       "button_confirm": "Elemez",

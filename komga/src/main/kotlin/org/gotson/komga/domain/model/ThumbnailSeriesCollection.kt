@@ -10,10 +10,8 @@ data class ThumbnailSeriesCollection(
   val mediaType: String,
   val fileSize: Long,
   val dimension: Dimension,
-
   val id: String = TsidCreator.getTsid256().toString(),
   val collectionId: String = "",
-
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {

@@ -8,7 +8,13 @@ interface DivinaExtractor {
   fun mediaTypes(): List<String>
 
   @Throws(MediaUnsupportedException::class)
-  fun getEntries(path: Path, analyzeDimensions: Boolean): List<MediaContainerEntry>
+  fun getEntries(
+    path: Path,
+    analyzeDimensions: Boolean,
+  ): List<MediaContainerEntry>
 
-  fun getEntryStream(path: Path, entryName: String): ByteArray
+  fun getEntryStream(
+    path: Path,
+    entryName: String,
+  ): ByteArray
 }

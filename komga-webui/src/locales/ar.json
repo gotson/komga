@@ -21,6 +21,11 @@
     "account_settings": "إعدادات الحساب",
     "change_password": "تغيير كلمة السر"
   },
+  "announcements": {
+    "mark_all_read": "اشر عليها بانها قرأت",
+    "mark_read": "ضع إشارة مقروء",
+    "tab_title": "إعلانات"
+  },
   "authentication_activity": {
     "datetime": "التاريخ والوقت",
     "email": "البريد الإلكتروني",
@@ -174,7 +179,8 @@
   },
   "browse_readlist": {
     "edit_elements": "تحرير العناصر",
-    "edit_readlist": "تحرير قائمة القراءة"
+    "edit_readlist": "تحرير قائمة القراءة",
+    "manual_ordering": "ترتيب يدوي"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "هذه هي السنة الأولى من تواريخ الإصدار لجميع الكتب في السلسلة",
@@ -188,23 +194,28 @@
   "common": {
     "age": "العمر",
     "all_libraries": "كل المكتبات",
+    "book": "كتاب",
     "books": "كتب",
     "books_n": "لا يوجد كتاب | 1 كتاب | {count} كتب",
     "books_total": "كتب {count} / {total}",
     "cancel": "إلغاء",
+    "cbx": "أرشيفات الكتاب الكومكس",
     "choose_image": "اختر صورة",
     "close": "إغلاق",
     "collections": "المجموعات",
     "create": "صنع",
     "delete": "حذف",
+    "discard": "تجاهل",
     "disk_space": "مساحة القرص",
     "dismiss": "رفض",
     "download": "تحميل",
     "drag_drop": "أمسك واسحب",
     "email": "البريد الإلكتروني",
+    "epub": "Epub",
     "filename": "اسم الملف",
     "filter_no_matches": "الفلتر النشط ليس له تطابق",
     "genre": "نوع",
+    "go_to_collection": "الذهاب إلى المجموعة",
     "go_to_library": "اذهب إلى المكتبة",
     "go_to_readlist": "انتقل إلى قائمة القراءة",
     "go_to_series": "الانتقال إلى السلسلة",
@@ -214,16 +225,22 @@
     "lock_all": "قفل الكل",
     "n_selected": "{count} مختار",
     "nothing_to_show": "لا شيء للعرض",
+    "oneshot": "طلقة واحدة",
     "outdated": "متقادمة",
     "page": "صفحة",
     "page_number": "رقم الصفحة",
     "pages": "صفحات",
+    "pages_left": "لم يتبق أي صفحات | 1 صفحة متبقية | {count} من الصفحات المتبقية",
     "pages_n": "لا توجد صفحات | 1 صفحة | {count} صفحة",
     "password": "كلمة السر",
+    "pdf": "PDF",
     "pending_tasks": "لا توجد مهام معلقة | مهمة واحدة معلقة | {count} مهام معلقة",
     "publisher": "الناشر",
     "read": "اقرأ",
+    "read_on": "قرأ في {date}",
+    "readlist": "قائمة القراءة",
     "readlists": "قوائم القراءة",
+    "remember-me": "تذكرني",
     "required": "مطلوب",
     "reset_filters": "إعادة تعيين فلتر",
     "roles": "أدوار",
@@ -250,10 +267,20 @@
     "book_number": "رقم الكتاب: {name}",
     "book_series": "سلسلة: {name}",
     "button_import": "إستيراد",
+    "button_match": "تطابق",
     "comicrack_preambule_html": "يمكنك استيراد قوائم قراءة ComicRack الحالية بتنسيق <code>cbl</code>.<br>سيحاول Komga مطابقة السلسلة ورقم الكتاب المقدمين مع السلسلة والكتب في مكتباتك.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} الكتب غير متطابقة",
+      "create": "الخلق على أي حال",
+      "title": "بعض الكتب لا تتطابق"
+    },
+    "field_file_label": "ComicRack Reading List (.cbl)",
     "field_files_label": "قوائم القراءة ComicRack (.cbl)",
     "import_read_lists": "استيراد قوائم القراءة",
     "imported_as": "مستورد كـ {name}",
+    "readlist_created": "تم إنشاء قائمة القراءة: {name}",
+    "requested_number": "العدد المطلوب",
+    "requested_series": "السلسلة المطلوبة",
     "results_preambule": "تظهر نتيجة الاستيراد أدناه. يمكنك أيضًا التحقق من الكتب غير المتطابقة لكل ملف مقدم.",
     "size_limit": "يجب أن يكون الحجم أقل من {size} ميغابايت",
     "tab_title": "استيراد البيانات"
@@ -281,16 +308,16 @@
       "dialog_title": "إضافة مستخدم",
       "field_email": "البريد الإلكتروني",
       "field_email_error": "يجب أن يكون عنوان بريد إلكتروني صالح",
-      "field_password": "كلمة السر",
-      "field_role_administrator": "مدير",
-      "field_role_file_download": "تحميل الملف",
-      "field_role_page_streaming": "تدفق الصفحة",
-      "label_roles": "أدوار"
+      "field_password": "كلمة السر"
     },
     "analyze_library": {
       "body": "يحلل جميع ملفات الوسائط في المكتبة. التحليل يلتقط معلومات حول وسائل الإعلام. اعتمادًا على حجم مكتبتك ، قد يستغرق هذا وقتًا طويلاً.",
       "button_confirm": "حلل",
       "title": "تحليل المكتبة"
+    },
+    "book_picker": {
+      "filter": "مصنف حسب رقم الكتاب أو العنوان أو تاريخ الإصدار",
+      "title": "حدد كتاب"
     },
     "delete_book": {
       "button_confirm": "حذف",
@@ -344,8 +371,10 @@
       "authors_notice_multiple_edit": "أنت تقوم بتحرير مؤلفين لكتب متعددة. سيؤدي هذا إلى تجاوز المؤلفين الحاليين لكل كتاب.",
       "button_cancel": "إلغاء",
       "button_confirm": "حفظ التغييرات",
+      "copy_from": "نسخ من {field}",
       "dialog_title_multiple": "تحرير {count} كتاب | تحرير {count} كتاب",
       "dialog_title_single": "تحرير {book}",
+      "field_alternate_title": "اللقب البديل",
       "field_isbn": "ردمك",
       "field_isbn_error": "يجب أن يكون رقم ردمك 13 صالحًا",
       "field_link_label": "ملصق",
@@ -627,7 +656,7 @@
     "ERR_1007": "تعذر تحليل بعض الإدخالات",
     "ERR_1008": "خطأ غير معروف أثناء الحصول على إدخالات الكتاب",
     "ERR_1009": "توجد قائمة قراءة بهذا الاسم",
-    "ERR_1015": "خطأ أثناء إلغاء تسلسل قائمة القراءة ComicRack",
+    "ERR_1015": "خطأ أثناء إلغاء تسلسل قائمة القراءة ComicRack CBL",
     "ERR_1016": "الدليل لا يمكن الوصول إليه أو أنه ليس دليلاً",
     "ERR_1017": "لا يمكن مسح المجلد الذي هو جزء من مكتبة موجودة",
     "ERR_1018": "لم يتمّ العثور على الملف",

@@ -11,7 +11,7 @@ import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
-import org.gotson.komga.infrastructure.mediacontainer.epub.getPackageFile
+import org.gotson.komga.infrastructure.mediacontainer.epub.getPackageFileContent
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.gotson.komga.language.stripAccents
@@ -25,19 +25,20 @@ import java.time.format.DateTimeFormatter
 @Service
 class EpubMetadataProvider(
   private val isbnValidator: ISBNValidator,
-) : BookMetadataProvider, SeriesMetadataFromBookProvider {
+) : BookMetadataProvider,
+  SeriesMetadataFromBookProvider {
+  private val relators =
+    mapOf(
+      "aut" to "writer",
+      "clr" to "colorist",
+      "cov" to "cover",
+      "edt" to "editor",
+      "art" to "penciller",
+      "ill" to "penciller",
+      "trl" to "translator",
+    )
 
-  private val relators = mapOf(
-    "aut" to "writer",
-    "clr" to "colorist",
-    "cov" to "cover",
-    "edt" to "editor",
-    "art" to "penciller",
-    "ill" to "penciller",
-    "trl" to "translator",
-  )
-
-  override fun getCapabilities(): Set<BookMetadataPatchCapability> =
+  override val capabilities =
     setOf(
       BookMetadataPatchCapability.TITLE,
       BookMetadataPatchCapability.SUMMARY,
@@ -48,30 +49,50 @@ class EpubMetadataProvider(
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     if (book.media.mediaType != MediaType.EPUB.type) return null
-    getPackageFile(book.book.path)?.let { packageFile ->
+    getPackageFileContent(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val title = opf.selectFirst("metadata > dc|title")?.text()?.ifBlank { null }
-      val description = opf.selectFirst("metadata > dc|description")?.text()?.let { Jsoup.clean(it, Safelist.none()) }?.ifBlank { null }
+      val description =
+        opf
+          .selectFirst("metadata > dc|description")
+          ?.text()
+          ?.let { Jsoup.clean(it, Safelist.none()) }
+          ?.ifBlank { null }
       val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
 
-      val authorRoles = opf.select("metadata > *|meta[property=role][scheme=marc:relators]")
-        .associate { it.attr("refines").removePrefix("#") to it.text() }
-      val authors = opf.select("metadata > dc|creator")
-        .mapNotNull { el ->
-          val name = el.text().trim()
-          if (name.isBlank()) null
-          else {
-            val opfRole = el.attr("opf:role").ifBlank { null }
-            val id = el.attr("id").ifBlank { null }
-            val refineRole = authorRoles[id]?.ifBlank { null }
-            Author(name, relators[opfRole ?: refineRole] ?: "writer")
-          }
-        }.ifEmpty { null }
+      val authorRoles =
+        opf
+          .select("metadata > *|meta[property=role][scheme=marc:relators]")
+          .associate { it.attr("refines").removePrefix("#") to it.text() }
+      val authors =
+        opf
+          .select("metadata > dc|creator")
+          .mapNotNull { el ->
+            val name = el.text().trim()
+            if (name.isBlank()) {
+              null
+            } else {
+              val opfRole = el.attr("opf:role").ifBlank { null }
+              val id = el.attr("id").ifBlank { null }
+              val refineRole = authorRoles[id]?.ifBlank { null }
+              Author(name, relators[opfRole ?: refineRole] ?: "writer")
+            }
+          }.ifEmpty { null }
 
-      val isbn = opf.select("metadata > dc|identifier")
-        .map { it.text().lowercase().removePrefix("isbn:") }
-        .firstNotNullOfOrNull { isbnValidator.validate(it) }
+      val isbn =
+        opf
+          .select("metadata > dc|identifier")
+          .map { it.text().lowercase().removePrefix("isbn:") }
+          .firstNotNullOfOrNull { isbnValidator.validate(it) }
+
+      val seriesIndex =
+        opf
+          .selectFirst("metadata > *|meta[property=belongs-to-collection]")
+          ?.attr("id")
+          ?.let { id ->
+            opf.selectFirst("metadata > *|meta[refines=#$id][property=group-position]")
+          }?.text()
 
       return BookMetadataPatch(
         title = title,
@@ -79,31 +100,41 @@ class EpubMetadataProvider(
         releaseDate = date,
         authors = authors,
         isbn = isbn,
+        number = seriesIndex?.ifBlank { null },
+        numberSort = seriesIndex?.toFloatOrNull(),
       )
     }
     return null
   }
 
-  override fun getSeriesMetadataFromBook(book: BookWithMedia, library: Library): SeriesMetadataPatch? {
+  override val supportsAppendVolume = false
+
+  override fun getSeriesMetadataFromBook(
+    book: BookWithMedia,
+    appendVolumeToTitle: Boolean,
+  ): SeriesMetadataPatch? {
     if (book.media.mediaType != MediaType.EPUB.type) return null
-    getPackageFile(book.book.path)?.let { packageFile ->
+    getPackageFileContent(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val series = opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")?.text()?.ifBlank { null }
       val publisher = opf.selectFirst("metadata > dc|publisher")?.text()?.ifBlank { null }
       val language = opf.selectFirst("metadata > dc|language")?.text()?.ifBlank { null }
-      val genres = opf.select("metadata > dc|subject")
-        .mapNotNull { it?.text()?.trim()?.ifBlank { null } }
-        .toSet()
-        .ifEmpty { null }
+      val genres =
+        opf
+          .select("metadata > dc|subject")
+          .mapNotNull { it.text().trim().ifBlank { null } }
+          .toSet()
+          .ifEmpty { null }
 
-      val direction = opf.getElementsByTag("spine").first()?.attr("page-progression-direction")?.let {
-        when (it) {
-          "rtl" -> SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
-          "ltr" -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
-          else -> null
+      val direction =
+        opf.getElementsByTag("spine").first()?.attr("page-progression-direction")?.let {
+          when (it) {
+            "rtl" -> SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
+            "ltr" -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT
+            else -> null
+          }
         }
-      }
 
       return SeriesMetadataPatch(
         title = series,
@@ -122,7 +153,10 @@ class EpubMetadataProvider(
     return null
   }
 
-  override fun shouldLibraryHandlePatch(library: Library, target: MetadataPatchTarget): Boolean =
+  override fun shouldLibraryHandlePatch(
+    library: Library,
+    target: MetadataPatchTarget,
+  ): Boolean =
     when (target) {
       MetadataPatchTarget.BOOK -> library.importEpubBook
       MetadataPatchTarget.SERIES -> library.importEpubSeries

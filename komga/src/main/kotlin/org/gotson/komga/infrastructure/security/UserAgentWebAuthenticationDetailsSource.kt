@@ -6,6 +6,5 @@ import org.springframework.stereotype.Component
 
 @Component
 class UserAgentWebAuthenticationDetailsSource : WebAuthenticationDetailsSource() {
-  override fun buildDetails(context: HttpServletRequest): UserAgentWebAuthenticationDetails =
-    UserAgentWebAuthenticationDetails(context)
+  override fun buildDetails(context: HttpServletRequest): UserAgentWebAuthenticationDetails = UserAgentWebAuthenticationDetails(context)
 }

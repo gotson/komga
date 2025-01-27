@@ -2,9 +2,9 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.persistence.LibraryRepository
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.LibraryRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.jooq.ResultQuery
@@ -18,7 +18,6 @@ import java.time.ZoneId
 class LibraryDao(
   private val dsl: DSLContext,
 ) : LibraryRepository {
-
   private val l = Tables.LIBRARY
   private val ul = Tables.USER_LIBRARY_SHARING
   private val le = Tables.LIBRARY_EXCLUSIONS
@@ -36,6 +35,7 @@ class LibraryDao(
   private fun findOne(libraryId: String) =
     selectBase()
       .where(l.ID.eq(libraryId))
+
   override fun findAll(): Collection<Library> =
     selectBase()
       .fetchAndMap()
@@ -46,12 +46,15 @@ class LibraryDao(
       .fetchAndMap()
 
   private fun selectBase() =
-    dsl.select()
+    dsl
+      .select()
       .from(l)
-      .leftJoin(le).onKey()
+      .leftJoin(le)
+      .onKey()
 
   private fun ResultQuery<Record>.fetchAndMap(): Collection<Library> =
-    this.fetchGroups({ it.into(l) }, { it.into(le) })
+    this
+      .fetchGroups({ it.into(l) }, { it.into(le) })
       .map { (lr, ler) ->
         lr.toDomain(ler.mapNotNull { it.exclusion }.toSet())
       }
@@ -72,7 +75,8 @@ class LibraryDao(
 
   @Transactional
   override fun insert(library: Library) {
-    dsl.insertInto(l)
+    dsl
+      .insertInto(l)
       .set(l.ID, library.id)
       .set(l.NAME, library.name)
       .set(l.ROOT, library.root.toString())
@@ -98,6 +102,7 @@ class LibraryDao(
       .set(l.SERIES_COVER, library.seriesCover.toString())
       .set(l.HASH_FILES, library.hashFiles)
       .set(l.HASH_PAGES, library.hashPages)
+      .set(l.HASH_KOREADER, library.hashKoreader)
       .set(l.ANALYZE_DIMENSIONS, library.analyzeDimensions)
       .set(l.ONESHOTS_DIRECTORY, library.oneshotsDirectory)
       .set(l.UNAVAILABLE_DATE, library.unavailableDate)
@@ -108,7 +113,8 @@ class LibraryDao(
 
   @Transactional
   override fun update(library: Library) {
-    dsl.update(l)
+    dsl
+      .update(l)
       .set(l.NAME, library.name)
       .set(l.ROOT, library.root.toString())
       .set(l.IMPORT_COMICINFO_BOOK, library.importComicInfoBook)
@@ -133,6 +139,7 @@ class LibraryDao(
       .set(l.SERIES_COVER, library.seriesCover.toString())
       .set(l.HASH_FILES, library.hashFiles)
       .set(l.HASH_PAGES, library.hashPages)
+      .set(l.HASH_KOREADER, library.hashKoreader)
       .set(l.ANALYZE_DIMENSIONS, library.analyzeDimensions)
       .set(l.ONESHOTS_DIRECTORY, library.oneshotsDirectory)
       .set(l.UNAVAILABLE_DATE, library.unavailableDate)
@@ -145,22 +152,26 @@ class LibraryDao(
   }
 
   override fun count(): Long = dsl.fetchCount(l).toLong()
+
   fun findDirectoryExclusions(libraryId: String): Set<String> =
-    dsl.select(le.EXCLUSION)
+    dsl
+      .select(le.EXCLUSION)
       .from(le)
       .where(le.LIBRARY_ID.eq(libraryId))
       .fetchSet(le.EXCLUSION)
 
   private fun insertDirectoryExclusions(library: Library) {
     if (library.scanDirectoryExclusions.isNotEmpty()) {
-      dsl.batch(
-        dsl.insertInto(le, le.LIBRARY_ID, le.EXCLUSION)
-          .values(null as String?, null),
-      ).also { step ->
-        library.scanDirectoryExclusions.forEach {
-          step.bind(library.id, it)
-        }
-      }.execute()
+      dsl
+        .batch(
+          dsl
+            .insertInto(le, le.LIBRARY_ID, le.EXCLUSION)
+            .values(null as String?, null),
+        ).also { step ->
+          library.scanDirectoryExclusions.forEach {
+            step.bind(library.id, it)
+          }
+        }.execute()
     }
   }
 
@@ -191,9 +202,9 @@ class LibraryDao(
       seriesCover = Library.SeriesCover.valueOf(seriesCover),
       hashFiles = hashFiles,
       hashPages = hashPages,
+      hashKoreader = hashKoreader,
       analyzeDimensions = analyzeDimensions,
       oneshotsDirectory = oneshotsDirectory,
-
       unavailableDate = unavailableDate,
       id = id,
       createdDate = createdDate.toCurrentTimeZone(),

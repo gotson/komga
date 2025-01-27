@@ -226,7 +226,7 @@
 
               <v-row v-if="book.metadata.summary">
                 <v-col>
-                  <read-more>{{ book.metadata.summary }}</read-more>
+                  <read-more v-model="readMore">{{ book.metadata.summary }}</read-more>
                 </v-col>
               </v-row>
             </template>
@@ -272,7 +272,7 @@
 
         <v-row v-if="book.metadata.summary">
           <v-col>
-            <read-more>{{ book.metadata.summary }}</read-more>
+            <read-more v-model="readMore">{{ book.metadata.summary }}</read-more>
           </v-col>
         </v-row>
       </template>
@@ -331,7 +331,7 @@
                     :key="i"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: [t]}}"
+                    :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {tag: [new SearchConditionTag(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -344,7 +344,18 @@
 
       <v-row>
         <v-col>
-          <read-lists-expansion-panels :read-lists="readLists"/>
+          <read-lists-expansion-panels :read-lists="readLists">
+            <template v-slot:prepend="props">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon class="me-2" v-on="on" @click="removeFromReadList(props.readlist.id)">
+                    <v-icon>mdi-book-remove</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ $t('browse_book.remove_from_readlist') }}</span>
+              </v-tooltip>
+            </template>
+          </read-lists-expansion-panels>
         </v-col>
       </v-row>
 
@@ -354,6 +365,7 @@
           <v-chip
             v-for="(link, i) in book.metadata.links"
             :href="link.url"
+            rel="noreferrer"
             target="_blank"
             class="me-2"
             label
@@ -399,6 +411,28 @@
         <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{ book.url }}</v-col>
       </v-row>
 
+      <v-row class="align-center text-caption">
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.date_created') }}</v-col>
+        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{
+            new Intl.DateTimeFormat($i18n.locale, {
+              dateStyle: 'long',
+              timeStyle: 'short'
+            }).format(new Date(book.created))
+          }}
+        </v-col>
+      </v-row>
+
+      <v-row class="align-center text-caption">
+        <v-col class="py-1 text-uppercase" cols="4" sm="3" md="2" xl="1">{{ $t('browse_book.date_modified') }}</v-col>
+        <v-col class="py-1" cols="8" sm="9" md="10" xl="11">{{
+            new Intl.DateTimeFormat($i18n.locale, {
+              dateStyle: 'long',
+              timeStyle: 'short'
+            }).format(new Date(book.lastModified))
+          }}
+        </v-col>
+      </v-row>
+
     </v-container>
 
   </div>
@@ -409,7 +443,7 @@ import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import {groupAuthorsByRole} from '@/functions/authors'
-import {getBookFormatFromMediaType, getBookReadRouteFromMediaProfile} from '@/functions/book-format'
+import {getBookFormatFromMedia, getBookReadRouteFromMedia} from '@/functions/book-format'
 import {getPagesLeft, getReadProgress, getReadProgressPercentage} from '@/functions/book-progress'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {bookFileUrl, bookThumbnailUrl} from '@/functions/urls'
@@ -436,6 +470,7 @@ import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
 import {ReadListDto} from '@/types/komga-readlists'
+import {BookSearch, SearchConditionSeriesId, SearchConditionTag, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -443,6 +478,8 @@ export default Vue.extend({
   data: () => {
     return {
       MediaStatus,
+      SearchConditionTag,
+      SearchOperatorIs,
       book: {} as BookDto,
       context: {} as Context,
       contextName: '',
@@ -450,6 +487,7 @@ export default Vue.extend({
       siblingPrevious: {} as BookDto,
       siblingNext: {} as BookDto,
       readLists: [] as ReadListDto[],
+      readMore: false,
     }
   },
   async created() {
@@ -481,6 +519,7 @@ export default Vue.extend({
   },
   async beforeRouteUpdate(to, from, next) {
     if (to.params.bookId !== from.params.bookId) {
+      this.readMore = false
       this.loadBook(to.params.bookId)
     }
 
@@ -488,7 +527,7 @@ export default Vue.extend({
   },
   computed: {
     readRouteName(): string {
-      return getBookReadRouteFromMediaProfile(this.book.media.mediaProfile)
+      return getBookReadRouteFromMedia(this.book.media)
     },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
@@ -509,7 +548,7 @@ export default Vue.extend({
       return bookFileUrl(this.bookId)
     },
     format(): BookFormat {
-      return getBookFormatFromMediaType(this.book.media.mediaType)
+      return getBookFormatFromMedia(this.book.media)
     },
     authorsByRole(): any {
       return groupAuthorsByRole(this.book.metadata.authors)
@@ -611,7 +650,9 @@ export default Vue.extend({
         this.$komgaReadLists.getBooks(this.context.id, {unpaged: true} as PageRequest)
           .then(v => this.siblings = v.content)
       } else {
-        this.$komgaSeries.getBooks(this.book.seriesId, {unpaged: true} as PageRequest)
+        this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(this.book.seriesId)),
+        } as BookSearch, {unpaged: true, sort: ['metadata.numberSort']})
           .then(v => this.siblings = v.content)
       }
 
@@ -619,7 +660,7 @@ export default Vue.extend({
         .then(v => this.readLists = v)
 
       if (this.$_.has(this.book, 'metadata.title')) {
-        document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.book.seriesTitle)}`
+        document.title = `Komga - ${getBookTitleCompact(this.book.metadata.title, this.book.seriesTitle, this.book.oneshot ? undefined : this.book.metadata.number)}`
       }
 
       if (this?.context.origin === ContextOrigin.READLIST) {
@@ -649,6 +690,14 @@ export default Vue.extend({
     },
     editBook() {
       this.$store.dispatch('dialogUpdateBooks', this.book)
+    },
+    removeFromReadList(readListId: string) {
+      const rl = this.readLists.find(x => x.id == readListId)
+      const modified = Object.assign({}, {bookIds: rl?.bookIds.filter(x => x != this.bookId)})
+      if (modified!.bookIds!.length == 0)
+        this.$komgaReadLists.deleteReadList(rl!.id)
+      else
+        this.$komgaReadLists.patchReadList(rl!.id, modified)
     },
   },
 })

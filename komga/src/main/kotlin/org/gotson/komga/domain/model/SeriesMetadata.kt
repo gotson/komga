@@ -18,7 +18,6 @@ class SeriesMetadata(
   sharingLabels: Set<String> = emptySet(),
   val links: List<WebLink> = emptyList(),
   val alternateTitles: List<AlternateTitle> = emptyList(),
-
   val statusLock: Boolean = false,
   val titleLock: Boolean = false,
   val titleSortLock: Boolean = false,
@@ -33,9 +32,7 @@ class SeriesMetadata(
   val sharingLabelsLock: Boolean = false,
   val linksLock: Boolean = false,
   val alternateTitlesLock: Boolean = false,
-
   val seriesId: String = "",
-
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
@@ -80,43 +77,45 @@ class SeriesMetadata(
     seriesId: String = this.seriesId,
     createdDate: LocalDateTime = this.createdDate,
     lastModifiedDate: LocalDateTime = this.lastModifiedDate,
-  ) =
-    SeriesMetadata(
-      status = status,
-      title = title,
-      titleSort = titleSort,
-      summary = summary,
-      readingDirection = readingDirection,
-      publisher = publisher,
-      ageRating = ageRating,
-      language = language,
-      genres = genres,
-      tags = tags,
-      totalBookCount = totalBookCount,
-      sharingLabels = sharingLabels,
-      links = links,
-      alternateTitles = alternateTitles,
-      statusLock = statusLock,
-      titleLock = titleLock,
-      titleSortLock = titleSortLock,
-      summaryLock = summaryLock,
-      readingDirectionLock = readingDirectionLock,
-      publisherLock = publisherLock,
-      ageRatingLock = ageRatingLock,
-      languageLock = languageLock,
-      genresLock = genresLock,
-      tagsLock = tagsLock,
-      totalBookCountLock = totalBookCountLock,
-      sharingLabelsLock = sharingLabelsLock,
-      linksLock = linksLock,
-      alternateTitlesLock = alternateTitlesLock,
-      seriesId = seriesId,
-      createdDate = createdDate,
-      lastModifiedDate = lastModifiedDate,
-    )
+  ) = SeriesMetadata(
+    status = status,
+    title = title,
+    titleSort = titleSort,
+    summary = summary,
+    readingDirection = readingDirection,
+    publisher = publisher,
+    ageRating = ageRating,
+    language = language,
+    genres = genres,
+    tags = tags,
+    totalBookCount = totalBookCount,
+    sharingLabels = sharingLabels,
+    links = links,
+    alternateTitles = alternateTitles,
+    statusLock = statusLock,
+    titleLock = titleLock,
+    titleSortLock = titleSortLock,
+    summaryLock = summaryLock,
+    readingDirectionLock = readingDirectionLock,
+    publisherLock = publisherLock,
+    ageRatingLock = ageRatingLock,
+    languageLock = languageLock,
+    genresLock = genresLock,
+    tagsLock = tagsLock,
+    totalBookCountLock = totalBookCountLock,
+    sharingLabelsLock = sharingLabelsLock,
+    linksLock = linksLock,
+    alternateTitlesLock = alternateTitlesLock,
+    seriesId = seriesId,
+    createdDate = createdDate,
+    lastModifiedDate = lastModifiedDate,
+  )
 
   enum class Status {
-    ENDED, ONGOING, ABANDONED, HIATUS
+    ENDED,
+    ONGOING,
+    ABANDONED,
+    HIATUS,
   }
 
   enum class ReadingDirection {
@@ -126,6 +125,5 @@ class SeriesMetadata(
     WEBTOON,
   }
 
-  override fun toString(): String =
-    "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, totalBookCount=$totalBookCount, links=$links, alternateTitles=$alternateTitles, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, sharingLabelsLock=$sharingLabelsLock, linksLock=$linksLock, alternateTitlesLock=$alternateTitlesLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher', language='$language', tags=$tags, genres=$genres, sharingLabels=$sharingLabels)"
+  override fun toString(): String = "SeriesMetadata(status=$status, readingDirection=$readingDirection, ageRating=$ageRating, totalBookCount=$totalBookCount, links=$links, alternateTitles=$alternateTitles, statusLock=$statusLock, titleLock=$titleLock, titleSortLock=$titleSortLock, summaryLock=$summaryLock, readingDirectionLock=$readingDirectionLock, publisherLock=$publisherLock, ageRatingLock=$ageRatingLock, languageLock=$languageLock, genresLock=$genresLock, tagsLock=$tagsLock, totalBookCountLock=$totalBookCountLock, sharingLabelsLock=$sharingLabelsLock, linksLock=$linksLock, alternateTitlesLock=$alternateTitlesLock, seriesId='$seriesId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', titleSort='$titleSort', summary='$summary', publisher='$publisher', language='$language', tags=$tags, genres=$genres, sharingLabels=$sharingLabels)"
 }

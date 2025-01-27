@@ -17,7 +17,7 @@
 
           <template v-if="directoryListing.hasOwnProperty('parent')">
             <v-list-item
-              @click.prevent="select(directoryListing.parent)"
+              @click.prevent="selectParent(directoryListing.parent)"
             >
               <v-list-item-icon>
                 <v-icon>mdi-arrow-left</v-icon>
@@ -32,7 +32,7 @@
 
           <div v-for="(d, index) in directoryListing.directories" :key="index">
             <v-list-item
-              @click.prevent="select(d.path)"
+              @click.prevent="select(d)"
             >
               <v-list-item-icon>
                 <v-icon>{{ d.type === 'directory' ? 'mdi-folder' : 'mdi-file' }}</v-icon>
@@ -46,6 +46,24 @@
             </v-list-item>
 
             <v-divider v-if="index !== directoryListing.directories.length-1"/>
+          </div>
+
+          <div v-for="(d, index) in directoryListing.files" :key="index">
+            <v-list-item
+              @click.prevent="select(d)"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ d.type === 'directory' ? 'mdi-folder' : 'mdi-file' }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ d.name }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider v-if="index !== directoryListing.files.length-1"/>
           </div>
         </v-list>
       </v-card-text>
@@ -91,6 +109,10 @@ export default Vue.extend({
       type: String,
       required: false,
     },
+    showFiles: {
+      type: Boolean,
+      default: false,
+    },
     dialogTitle: {
       type: String,
       default: function (): string {
@@ -119,17 +141,22 @@ export default Vue.extend({
     dialogConfirm() {
       this.$emit('input', false)
       this.$emit('update:path', this.selectedPath)
+      this.$emit('confirm')
     },
     async getDirs(path?: string) {
       try {
-        this.directoryListing = await this.$komgaFileSystem.getDirectoryListing(path)
+        this.directoryListing = await this.$komgaFileSystem.getDirectoryListing(path, this.showFiles)
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }
     },
-    select(path: string) {
+    selectParent(path: string) {
       this.selectedPath = path
       this.getDirs(path)
+    },
+    select(path: PathDto) {
+      this.selectedPath = path.path
+      if(path.type == 'directory') this.getDirs(path.path)
     },
   },
 })

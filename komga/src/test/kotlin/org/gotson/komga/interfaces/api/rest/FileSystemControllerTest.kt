@@ -1,7 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_USER
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,34 +23,40 @@ class FileSystemControllerTest(
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getDirectoryListing then return unauthorized`() {
-    mockMvc.post(route)
+    mockMvc
+      .post(route)
       .andExpect { status { isUnauthorized() } }
   }
 
   @Test
   @WithMockUser
   fun `given regular user when getDirectoryListing then return forbidden`() {
-    mockMvc.post(route)
+    mockMvc
+      .post(route)
       .andExpect { status { isForbidden() } }
   }
 
   @Test
-  @WithMockUser(roles = [ROLE_USER, ROLE_ADMIN])
+  @WithMockUser(roles = ["ADMIN"])
   fun `given relative path param when getDirectoryListing then return bad request`() {
-    mockMvc.post(route) {
-      contentType = MediaType.APPLICATION_JSON
-      content = "."
-    }.andExpect { status { isBadRequest() } }
+    mockMvc
+      .post(route) {
+        contentType = MediaType.APPLICATION_JSON
+        content = "."
+      }.andExpect { status { isBadRequest() } }
   }
 
   @Test
-  @WithMockUser(roles = [ROLE_USER, ROLE_ADMIN])
-  fun `given non-existent path param when getDirectoryListing then return bad request`(@TempDir parent: Path) {
+  @WithMockUser(roles = ["ADMIN"])
+  fun `given non-existent path param when getDirectoryListing then return bad request`(
+    @TempDir parent: Path,
+  ) {
     Files.delete(parent)
 
-    mockMvc.post(route) {
-      contentType = MediaType.APPLICATION_JSON
-      content = parent.toString()
-    }.andExpect { status { isBadRequest() } }
+    mockMvc
+      .post(route) {
+        contentType = MediaType.APPLICATION_JSON
+        content = parent.toString()
+      }.andExpect { status { isBadRequest() } }
   }
 }

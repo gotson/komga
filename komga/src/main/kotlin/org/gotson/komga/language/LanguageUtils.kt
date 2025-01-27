@@ -5,22 +5,20 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalUnit
 import java.util.Date
 import java.util.Enumeration
 import java.util.SortedMap
 
-fun <T> List<T>.toIndexedMap(): SortedMap<Int, T> =
-  mapIndexed { i, e -> i to e }.toMap().toSortedMap()
+fun <T> List<T>.toIndexedMap(): SortedMap<Int, T> = mapIndexed { i, e -> i to e }.toMap().toSortedMap()
 
 fun <T> List<T>.toEnumeration(): Enumeration<T> {
   return object : Enumeration<T> {
     var count = 0
 
-    override fun hasMoreElements(): Boolean {
-      return this.count < size
-    }
+    override fun hasMoreElements(): Boolean = this.count < size
 
     override fun nextElement(): T {
       if (this.count < size) {
@@ -31,26 +29,49 @@ fun <T> List<T>.toEnumeration(): Enumeration<T> {
   }
 }
 
-fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? {
-  return this
+fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? =
+  this
     .mapNotNull(transform)
     .groupingBy { it }
     .eachCount()
-    .maxByOrNull { it.value }?.key
-}
+    .maxByOrNull { it.value }
+    ?.key
 
-fun Iterable<String>.lowerNotBlank() =
-  this.map { it.lowercase().trim() }.filter { it.isNotBlank() }
+fun Iterable<String>.lowerNotBlank() = this.map { it.lowercase().trim() }.filter { it.isNotBlank() }
 
-fun <T> Iterable<T>.toSetOrNull() =
-  this.toSet().ifEmpty { null }
+fun <T> Iterable<T>.toSetOrNull() = this.toSet().ifEmpty { null }
 
-fun LocalDateTime.notEquals(other: LocalDateTime, precision: TemporalUnit = ChronoUnit.MILLIS) =
-  this.truncatedTo(precision) != other.truncatedTo(precision)
+fun LocalDateTime.notEquals(
+  other: LocalDateTime,
+  precision: TemporalUnit = ChronoUnit.MILLIS,
+) = this.truncatedTo(precision) != other.truncatedTo(precision)
 
 fun String.stripAccents(): String = StringUtils.stripAccents(this)
 
 fun LocalDate.toDate(): Date = Date.from(this.atStartOfDay(ZoneId.of("Z")).toInstant())
 
-fun LocalDateTime.toUTC(): LocalDateTime =
-  atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
+/**
+ * Converts a LocalDateTime (current timezone) to a LocalDateTime (UTC)
+ * Warning: this is not idempotent
+ */
+fun LocalDateTime.toUTC(): LocalDateTime = atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
+
+/**
+ * Converts a LocalDateTime (current timezone) to a ZonedDateTime
+ */
+fun LocalDateTime.toUTCZoned(): ZonedDateTime = atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC)
+
+/**
+ * Converts a LocalDateTime (UTC) to a ZonedDateTime
+ */
+fun LocalDateTime.toZonedDateTime(): ZonedDateTime = this.atZone(ZoneId.of("Z")).withZoneSameInstant(ZoneId.systemDefault())
+
+/**
+ * Converts a LocalDateTime (UTC) to a LocalDateTime (current timezone)
+ */
+fun LocalDateTime.toCurrentTimeZone(): LocalDateTime = this.atZone(ZoneId.of("Z")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+
+fun Iterable<String>.contains(
+  s: String,
+  ignoreCase: Boolean = false,
+): Boolean = any { it.equals(s, ignoreCase) }

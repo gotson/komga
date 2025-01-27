@@ -16,6 +16,9 @@
         <v-list-item @click="addToCollection" v-if="isAdmin">
           <v-list-item-title>{{ $t('menu.add_to_collection') }}</v-list-item-title>
         </v-list-item>
+        <v-list-item @click="addToReadList" v-if="isAdmin">
+          <v-list-item-title>{{ $t('menu.add_to_readlist') }}</v-list-item-title>
+        </v-list-item>
         <v-list-item @click="markRead" v-if="!isRead">
           <v-list-item-title>{{ $t('menu.mark_read') }}</v-list-item-title>
         </v-list-item>
@@ -32,6 +35,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {SeriesDto} from '@/types/komga-series'
+import {BookSearch, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'SeriesActionsMenu',
@@ -75,6 +79,12 @@ export default Vue.extend({
     },
     addToCollection() {
       this.$store.dispatch('dialogAddSeriesToCollection', [this.series.id])
+    },
+    async addToReadList() {
+      const books = await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionSeriesId(new SearchOperatorIs(this.series.id)),
+      } as BookSearch, {unpaged: true, sort: ['metadata.numberSort']})
+      this.$store.dispatch('dialogAddBooksToReadList', books.content.map(b => b.id))
     },
     async markRead() {
       await this.$komgaSeries.markAsRead(this.series.id)

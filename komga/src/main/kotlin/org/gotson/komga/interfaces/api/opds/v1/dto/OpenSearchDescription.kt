@@ -9,17 +9,13 @@ class OpenSearchDescription(
   @JacksonXmlProperty(localName = "ShortName", namespace = OPENSEARCH)
   @Size(min = 1, max = 16)
   val shortName: String,
-
   @JacksonXmlProperty(localName = "Description", namespace = OPENSEARCH)
   @Size(min = 1, max = 1024)
   val description: String,
-
   @JacksonXmlProperty(localName = "InputEncoding", namespace = OPENSEARCH)
   val inputEncoding: String = "UTF-8",
-
   @JacksonXmlProperty(localName = "OutputEncoding", namespace = OPENSEARCH)
   val outputEncoding: String = "UTF-8",
-
   @JacksonXmlProperty(localName = "Url", namespace = OPENSEARCH)
   val url: OpenSearchUrl,
 ) {

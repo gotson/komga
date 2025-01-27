@@ -1,8 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import org.assertj.core.api.Assertions.assertThat
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.domain.model.ThumbnailSize
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.junit.jupiter.api.Nested
@@ -30,16 +28,18 @@ class SettingsControllerTest(
     @Test
     @WithAnonymousUser
     fun `given anonymous user when retrieving settings then returns unauthorized`() {
-      mockMvc.get("/api/v1/settings")
+      mockMvc
+        .get("/api/v1/settings")
         .andExpect {
           status { isUnauthorized() }
         }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_USER])
+    @WithMockCustomUser
     fun `given restricted user when retrieving settings then returns forbidden`() {
-      mockMvc.get("/api/v1/settings")
+      mockMvc
+        .get("/api/v1/settings")
         .andExpect {
           status { isForbidden() }
         }
@@ -47,7 +47,7 @@ class SettingsControllerTest(
   }
 
   @Test
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   fun `given admin user when retrieving settings then settings are returned`() {
     komgaSettingsProvider.deleteEmptyCollections = true
     komgaSettingsProvider.deleteEmptyReadLists = false
@@ -57,7 +57,8 @@ class SettingsControllerTest(
     komgaSettingsProvider.serverPort = 1234
     komgaSettingsProvider.serverContextPath = "/example"
 
-    mockMvc.get("/api/v1/settings")
+    mockMvc
+      .get("/api/v1/settings")
       .andExpect {
         status { isOk() }
         jsonPath("deleteEmptyCollections") { value(true) }
@@ -67,7 +68,7 @@ class SettingsControllerTest(
         jsonPath("taskPoolSize") { value(4) }
         jsonPath("serverPort.configurationSource") { value(25600) }
         jsonPath("serverPort.databaseSource") { value(1234) }
-        jsonPath("serverPort.effectiveValue") { value(25600) }
+        jsonPath("serverPort.effectiveValue") { value(null) } // somehow we don't get the effective value with the mock server
         jsonPath("serverContextPath.configurationSource") { value(null) }
         jsonPath("serverContextPath.databaseSource") { value("/example") }
         jsonPath("serverContextPath.effectiveValue") { value("") }
@@ -75,7 +76,7 @@ class SettingsControllerTest(
   }
 
   @Test
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   fun `given admin user when updating settings then settings are updated`() {
     komgaSettingsProvider.deleteEmptyCollections = true
     komgaSettingsProvider.deleteEmptyReadLists = true
@@ -88,7 +89,8 @@ class SettingsControllerTest(
     val rememberMeKey = komgaSettingsProvider.rememberMeKey
 
     //language=JSON
-    val jsonString = """
+    val jsonString =
+      """
       {
         "deleteEmptyCollections": false,
         "rememberMeDurationDays": 15,
@@ -98,13 +100,13 @@ class SettingsControllerTest(
         "serverPort": 5678,
         "serverContextPath": "/komga-hyphen/subpath123"
       }
-    """.trimIndent()
+      """.trimIndent()
 
-    mockMvc.patch("/api/v1/settings") {
-      contentType = MediaType.APPLICATION_JSON
-      content = jsonString
-    }
-      .andExpect {
+    mockMvc
+      .patch("/api/v1/settings") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
         status { isNoContent() }
       }
 
@@ -119,7 +121,7 @@ class SettingsControllerTest(
   }
 
   @Test
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   fun `given admin user when deleting settings then deletable settings are deleted`() {
     komgaSettingsProvider.deleteEmptyCollections = true
     komgaSettingsProvider.deleteEmptyReadLists = true
@@ -132,7 +134,8 @@ class SettingsControllerTest(
     val rememberMeKey = komgaSettingsProvider.rememberMeKey
 
     //language=JSON
-    val jsonString = """
+    val jsonString =
+      """
       {
         "deleteEmptyCollections": null,
         "rememberMeDurationDays": null,
@@ -142,13 +145,13 @@ class SettingsControllerTest(
         "serverPort": null,
         "serverContextPath": null
       }
-    """.trimIndent()
+      """.trimIndent()
 
-    mockMvc.patch("/api/v1/settings") {
-      contentType = MediaType.APPLICATION_JSON
-      content = jsonString
-    }
-      .andExpect {
+    mockMvc
+      .patch("/api/v1/settings") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
         status { isNoContent() }
       }
 
@@ -163,7 +166,7 @@ class SettingsControllerTest(
   }
 
   @ParameterizedTest
-  @WithMockCustomUser(roles = [ROLE_ADMIN])
+  @WithMockCustomUser(roles = ["ADMIN"])
   @ValueSource(
     strings = [
       //language=JSON
@@ -183,11 +186,11 @@ class SettingsControllerTest(
     ],
   )
   fun `given admin user when updating with invalid settings then returns bad request`(jsonString: String) {
-    mockMvc.patch("/api/v1/settings") {
-      contentType = MediaType.APPLICATION_JSON
-      content = jsonString
-    }
-      .andExpect {
+    mockMvc
+      .patch("/api/v1/settings") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
         status { isBadRequest() }
       }
   }

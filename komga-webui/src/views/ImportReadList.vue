@@ -30,6 +30,12 @@
     <template v-if="result">
       <v-divider/>
 
+      <v-chip-group v-model="filter" color="primary" mandatory multiple>
+        <v-chip filter value="ok">{{ $t('common.ok') }}</v-chip>
+        <v-chip filter value="error">{{ $t('common.error') }}</v-chip>
+        <v-chip filter value="duplicate">{{ $t('common.duplicate') }}</v-chip>
+      </v-chip-group>
+
       <v-simple-table>
         <thead class="font-weight-medium">
         <tr>
@@ -51,6 +57,8 @@
                              :series.sync="series[i]"
                              :book.sync="form.books[i]"
                              :duplicate="isDuplicateBook(form.books[i])"
+                             :error="isErrorBook(series[i], form.books[i])"
+                             :hidden="shouldHideRow(i)"
         >
           <td>{{ i + 1 }}</td>
         </read-list-match-row>
@@ -97,7 +105,7 @@
       </form>
       <confirmation-dialog :title="$t('data_import.dialog_confirmation.title')"
                            :button-confirm="$t('data_import.dialog_confirmation.create')"
-                           :body="missingDialogText"
+                           :body-html="missingDialogText"
                            v-model="modalConfirmation"
                            @confirm="create(true)"
       />
@@ -112,17 +120,13 @@ import {
   ReadListCreationDto,
   ReadListDto,
   ReadListRequestBookMatchBookDto,
-  ReadListRequestMatchDto, ReadListRequestBookMatchSeriesDto,
+  ReadListRequestBookMatchSeriesDto,
+  ReadListRequestMatchDto,
 } from '@/types/komga-readlists'
 import ReadListMatchRow from '@/components/ReadListMatchRow.vue'
 import {ERROR, NOTIFICATION, NotificationEvent} from '@/types/events'
 import {helpers, required} from 'vuelidate/lib/validators'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
-
-function duplicateBooks(this: any, value: any[]) {
-  const ids = value.filter(Boolean).map(b => b.bookId)
-  return ids.length === [...new Set(ids)].length
-}
 
 function validName(this: any, value: string) {
   return !helpers.req(value) || !this.readLists.some((e: ReadListDto) => e.name.toLowerCase() === value.toLowerCase())
@@ -134,6 +138,7 @@ export default Vue.extend({
   data: () => ({
     file: undefined,
     result: undefined as unknown as ReadListRequestMatchDto | undefined,
+    filter: ['ok', 'error', 'duplicate'],
     validMatch: true,
     validCreate: true,
     series: [] as (ReadListRequestBookMatchSeriesDto | undefined)[],
@@ -153,15 +158,37 @@ export default Vue.extend({
       name: {required, validName},
       ordered: {},
       summary: {},
-      books: {duplicateBooks},
+      books: {},
     },
   },
   computed: {
+    totalCount(): number {
+      return this.result!!.requests.length
+    },
+    matchedCount(): number {
+      return this.form.books.filter(Boolean).length
+    },
+    unmatchedCount(): number {
+      return this.totalCount - this.matchedCount
+    },
+    duplicatesCount(): number {
+      return this.form.books.filter(this.isDuplicateBook).length
+    },
     missingDialogText(): string {
-      const total = this.result!!.requests.length
-      const matched = this.form.books.filter(Boolean).length
-      const unmatched = total - matched
-      return this.$t('data_import.dialog_confirmation.body', {unmatched: unmatched, total: total}).toString()
+      let s = ''
+      if (this.unmatchedCount > 0)
+        s += this.$t('data_import.dialog_confirmation.body', {
+          unmatched: this.unmatchedCount,
+          total: this.totalCount,
+        }).toString()
+      if (this.duplicatesCount > 0) {
+        if (s !== '') s += '<br/><br/>'
+        s += this.$t('data_import.dialog_confirmation.body2', {
+          duplicates: this.duplicatesCount,
+          total: this.totalCount,
+        }).toString()
+      }
+      return s
     },
     importRules(): any {
       return [
@@ -182,12 +209,27 @@ export default Vue.extend({
     this.readLists = (await this.$komgaReadLists.getReadLists(undefined, {unpaged: true} as PageRequest)).content
   },
   methods: {
-    isDuplicateBook(book: ReadListRequestBookMatchBookDto): boolean {
+    isDuplicateBook(book?: ReadListRequestBookMatchBookDto): boolean {
+      if (book == undefined) return false
       return this.form.books.filter((b) => b?.bookId === book?.bookId).length > 1
+    },
+    isErrorBook(series?: ReadListRequestBookMatchSeriesDto, book?: ReadListRequestBookMatchBookDto): string {
+      if (!series) return this.$t('book_import.row.error_choose_series').toString()
+      if (!book) return this.$t('readlist_import.row.error_choose_book').toString()
+      return ''
+    },
+    shouldHideRow(i: number): boolean {
+      const error = this.isErrorBook(this.series[i], this.form.books[i])
+      const duplicate = this.isDuplicateBook(this.form.books[i])
+      if (error && !this.filter.includes('error')) return true
+      if (!error && duplicate && !this.filter.includes('duplicate')) return true
+      if (!error && !duplicate && !this.filter.includes('ok')) return true
+      return false
     },
     async matchFile() {
       this.matching = true
       this.result = undefined
+      this.filter = ['ok', 'error', 'duplicate']
       this.form.summary = ''
       this.form.ordered = true
       this.form.books = []
@@ -210,14 +252,14 @@ export default Vue.extend({
       if (this.$v.$invalid) return undefined
       return {
         name: this.form.name,
-        bookIds: this.form.books.map(b => b?.bookId).filter(Boolean) as string[],
+        bookIds: [...new Set(this.form.books.map(b => b?.bookId).filter(Boolean))] as string[],
         ordered: this.form.ordered,
         summary: this.form.summary,
       }
     },
     async create(bypassMissing: boolean) {
       if (!this.creationFinished) {
-        if (!bypassMissing && this.form.books.filter(Boolean).length !== this.result?.requests.length) {
+        if (!bypassMissing && (this.duplicatesCount > 0 || this.unmatchedCount > 0)) {
           this.modalConfirmation = true
           return
         }

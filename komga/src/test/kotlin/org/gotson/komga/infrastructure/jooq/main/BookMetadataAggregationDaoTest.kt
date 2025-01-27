@@ -24,7 +24,6 @@ class BookMetadataAggregationDaoTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val library = makeLibrary()
 
   @BeforeAll
@@ -50,14 +49,15 @@ class BookMetadataAggregationDaoTest(
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
     val now = LocalDateTime.now()
-    val metadata = BookMetadataAggregation(
-      authors = listOf(Author("author", "role")),
-      tags = setOf("tag1", "tag2"),
-      releaseDate = LocalDate.now(),
-      summary = "Summary",
-      summaryNumber = "1",
-      seriesId = series.id,
-    )
+    val metadata =
+      BookMetadataAggregation(
+        authors = listOf(Author("author", "role")),
+        tags = setOf("tag1", "tag2"),
+        releaseDate = LocalDate.now(),
+        summary = "Summary",
+        summaryNumber = "1",
+        seriesId = series.id,
+      )
 
     bookMetadataAggregationDao.insert(metadata)
     val created = bookMetadataAggregationDao.findById(metadata.seriesId)
@@ -81,9 +81,10 @@ class BookMetadataAggregationDaoTest(
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
     val now = LocalDateTime.now()
-    val metadata = BookMetadataAggregation(
-      seriesId = series.id,
-    )
+    val metadata =
+      BookMetadataAggregation(
+        seriesId = series.id,
+      )
 
     bookMetadataAggregationDao.insert(metadata)
     val created = bookMetadataAggregationDao.findById(metadata.seriesId)
@@ -102,13 +103,14 @@ class BookMetadataAggregationDaoTest(
   fun `given existing bookMetadataAggregation when finding by id then metadata is returned`() {
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
-    val metadata = BookMetadataAggregation(
-      authors = listOf(Author("author", "role")),
-      tags = setOf("tag1", "tag2"),
-      releaseDate = LocalDate.now(),
-      summary = "Summary",
-      seriesId = series.id,
-    )
+    val metadata =
+      BookMetadataAggregation(
+        authors = listOf(Author("author", "role")),
+        tags = setOf("tag1", "tag2"),
+        releaseDate = LocalDate.now(),
+        summary = "Summary",
+        seriesId = series.id,
+      )
 
     bookMetadataAggregationDao.insert(metadata)
 
@@ -136,28 +138,30 @@ class BookMetadataAggregationDaoTest(
   fun `given a bookMetadataAggregation when updating then it is persisted`() {
     val series = makeSeries("Series", libraryId = library.id).also { seriesRepository.insert(it) }
 
-    val metadata = BookMetadataAggregation(
-      authors = listOf(Author("author", "role")),
-      tags = setOf("tag1", "tag2"),
-      releaseDate = LocalDate.now(),
-      summary = "Summary",
-      summaryNumber = "1",
-      seriesId = series.id,
-    )
+    val metadata =
+      BookMetadataAggregation(
+        authors = listOf(Author("author", "role")),
+        tags = setOf("tag1", "tag2"),
+        releaseDate = LocalDate.now(),
+        summary = "Summary",
+        summaryNumber = "1",
+        seriesId = series.id,
+      )
     bookMetadataAggregationDao.insert(metadata)
     val created = bookMetadataAggregationDao.findById(metadata.seriesId)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = with(created) {
-      copy(
-        releaseDate = LocalDate.now().plusYears(1),
-        summary = "SummaryUpdated",
-        summaryNumber = "2",
-        authors = listOf(Author("authorUpdated", "roleUpdated"), Author("author2", "role2")),
-        tags = setOf("tag1", "tag2updated"),
-      )
-    }
+    val updated =
+      with(created) {
+        copy(
+          releaseDate = LocalDate.now().plusYears(1),
+          summary = "SummaryUpdated",
+          summaryNumber = "2",
+          authors = listOf(Author("authorUpdated", "roleUpdated"), Author("author2", "role2")),
+          tags = setOf("tag1", "tag2updated"),
+        )
+      }
 
     bookMetadataAggregationDao.update(updated)
     val modified = bookMetadataAggregationDao.findById(updated.seriesId)

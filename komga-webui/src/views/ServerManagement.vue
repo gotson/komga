@@ -5,23 +5,20 @@
     </v-row>
     <v-row>
       <v-col cols="auto">
-        <v-btn @click="scanAllLibraries(false)">{{ $t('server.server_management.button_scan_libraries') }}</v-btn>
-      </v-col>
-      <v-col cols="auto">
-        <v-btn @click="scanAllLibraries(true)"
-               color="warning"
-        >{{ $t('server.server_management.button_scan_libraries_deep') }}
+        <v-btn @click="downloadLogFile"
+        >{{ $t('server.server_management.download_log') }}
         </v-btn>
       </v-col>
-      <v-col cols="auto">
-        <v-btn @click="confirmEmptyTrash = true">{{ $t('server.server_management.button_empty_trash') }}</v-btn>
-      </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="auto">
         <v-btn @click="cancelAllTasks"
                color="warning"
         >{{ $t('server.server_management.button_cancel_all_tasks') }}
         </v-btn>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="auto">
         <v-btn @click="modalStopServer = true"
                color="error"
@@ -29,14 +26,6 @@
         </v-btn>
       </v-col>
     </v-row>
-
-    <confirmation-dialog
-      v-model="confirmEmptyTrash"
-      :title="$t('dialog.empty_trash.title')"
-      :body="$t('dialog.empty_trash.body')"
-      :button-confirm="$t('dialog.empty_trash.button_confirm')"
-      @confirm="emptyTrash"
-    />
 
     <confirmation-dialog
       v-model="modalStopServer"
@@ -55,13 +44,14 @@ import Vue from 'vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import {ERROR, ErrorEvent, NOTIFICATION, NotificationEvent} from '@/types/events'
 import {LibraryDto} from '@/types/komga-libraries'
+import jsFileDownloader from 'js-file-downloader'
+import urls from '@/functions/urls'
 
 export default Vue.extend({
   name: 'ServerManagement',
   components: {ConfirmationDialog},
   data: () => ({
     modalStopServer: false,
-    confirmEmptyTrash: false,
   }),
   computed: {
     libraries(): LibraryDto[] {
@@ -69,16 +59,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    emptyTrash() {
-      this.libraries.forEach(library => {
-        this.$komgaLibraries.emptyTrash(library)
-      })
-    },
-    scanAllLibraries(scanDeep: boolean) {
-      this.libraries.forEach(library => {
-        this.$komgaLibraries.scanLibrary(library, scanDeep)
-      })
-    },
     async cancelAllTasks() {
       const count = await this.$komgaTasks.deleteAllTasks()
       this.$eventHub.$emit(NOTIFICATION, {
@@ -91,6 +71,14 @@ export default Vue.extend({
       } catch (e) {
         this.$eventHub.$emit(ERROR, {message: e.message} as ErrorEvent)
       }
+    },
+    downloadLogFile() {
+      new jsFileDownloader({
+        url: `${urls.originNoSlash}${this.$actuator.logfileUrl()}`,
+        filename: 'komga.log',
+        withCredentials: true,
+        forceDesktopMode: true,
+      })
     },
   },
 })

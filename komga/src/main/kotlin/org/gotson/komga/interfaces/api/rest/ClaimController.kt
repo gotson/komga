@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.api.rest
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.interfaces.api.rest.dto.UserDto
 import org.gotson.komga.interfaces.api.rest.dto.toDto
@@ -22,7 +23,6 @@ import org.springframework.web.server.ResponseStatusException
 class ClaimController(
   private val userDetailsLifecycle: KomgaUserLifecycle,
 ) {
-
   @GetMapping
   fun getClaimStatus() = ClaimStatus(userDetailsLifecycle.countUsers() > 0)
 
@@ -38,13 +38,14 @@ class ClaimController(
     if (userDetailsLifecycle.countUsers() > 0)
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "This server has already been claimed")
 
-    return userDetailsLifecycle.createUser(
-      KomgaUser(
-        email = email,
-        password = password,
-        roleAdmin = true,
-      ),
-    ).toDto()
+    return userDetailsLifecycle
+      .createUser(
+        KomgaUser(
+          email = email,
+          password = password,
+          roles = UserRoles.entries.toSet(),
+        ),
+      ).toDto()
   }
 
   data class ClaimStatus(

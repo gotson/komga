@@ -7,8 +7,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
 class DelimitedPairHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
-  override fun supportsParameter(parameter: MethodParameter): Boolean =
-    parameter.getParameterAnnotation(DelimitedPair::class.java) != null
+  override fun supportsParameter(parameter: MethodParameter): Boolean = parameter.getParameterAnnotation(DelimitedPair::class.java) != null
 
   override fun resolveArgument(
     parameter: MethodParameter,
@@ -25,7 +24,12 @@ class DelimitedPairHandlerMethodArgumentResolver : HandlerMethodArgumentResolver
     return parseParameterIntoPairs(param.first())
   }
 
-  private fun parseParameterIntoPairs(source: String, delimiter: String = ","): Pair<String, String>? =
-    if (!source.contains(delimiter)) null
-    else Pair(source.substringBeforeLast(delimiter), source.substringAfterLast(delimiter))
+  private fun parseParameterIntoPairs(
+    source: String,
+    delimiter: String = ",",
+  ): Pair<String, String>? =
+    if (!source.contains(delimiter))
+      null
+    else
+      Pair(source.substringBeforeLast(delimiter), source.substringAfterLast(delimiter))
 }

@@ -1,8 +1,11 @@
 blank_issues_enabled: false
 contact_links:
+  - name: 💡️Feature idea
+    url: https://github.com/gotson/komga/discussions/new?category=ideas
+    about: Suggest a feature to improve Komga
   - name: 🖥️ Komga website
     url: https://komga.org/docs/faq
     about: Guides, troubleshooting, and answers to common questions
-  - name: ⚠️ Tachiyomi extension
-    url: https://github.com/tachiyomiorg/tachiyomi-extensions/issues/new/choose
-    about: Issues and requests about the Tachiyomi extension should be opened in the tachiyomi-extensions repository instead
+  - name: ⚠️ Mihon extension
+    url: https://github.com/keiyoushi/extensions-source
+    about: Issues and requests about the Mihon extension should be opened in the keiyoushi/extensions repository instead

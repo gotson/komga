@@ -1,8 +1,9 @@
 package org.gotson.komga.interfaces.scheduler
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Bean
@@ -19,7 +20,6 @@ class InitialUserController(
   private val userLifecycle: KomgaUserLifecycle,
   private val initialUsers: List<KomgaUser>,
 ) {
-
   @EventListener(ApplicationReadyEvent::class)
   fun createInitialUserOnStartupIfNoneExist() {
     if (userLifecycle.countUsers() == 0L) {
@@ -38,17 +38,19 @@ class InitialUserController(
 @Profile("dev")
 class InitialUsersDevConfiguration {
   @Bean
-  fun initialUsers(): List<KomgaUser> = listOf(
-    KomgaUser("admin@example.org", "admin", roleAdmin = true),
-    KomgaUser("user@example.org", "user", roleAdmin = false),
-  )
+  fun initialUsers(): List<KomgaUser> =
+    listOf(
+      KomgaUser("admin@example.org", "admin", roles = UserRoles.entries.toSet()),
+      KomgaUser("user@example.org", "user"),
+    )
 }
 
 @Configuration
 @Profile("!dev")
 class InitialUsersProdConfiguration {
   @Bean
-  fun initialUsers(): List<KomgaUser> = listOf(
-    KomgaUser("admin@example.org", RandomStringUtils.randomAlphanumeric(12), roleAdmin = true),
-  )
+  fun initialUsers(): List<KomgaUser> =
+    listOf(
+      KomgaUser("admin@example.org", RandomStringUtils.secure().nextAlphanumeric(12), roles = UserRoles.entries.toSet()),
+    )
 }

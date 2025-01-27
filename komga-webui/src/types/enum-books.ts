@@ -24,3 +24,9 @@ export enum CopyMode {
   COPY = 'COPY',
   HARDLINK = 'HARDLINK',
 }
+
+export enum MediaProfile {
+  DIVINA = 'DIVINA',
+  PDF = 'PDF',
+  EPUB = 'EPUB',
+}

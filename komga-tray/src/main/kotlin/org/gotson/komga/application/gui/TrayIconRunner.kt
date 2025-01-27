@@ -4,6 +4,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.window.Tray
 import androidx.compose.ui.window.application
+import org.gotson.komga.RB
+import org.gotson.komga.infrastructure.web.WebServerEffectiveSettings
 import org.gotson.komga.openExplorer
 import org.gotson.komga.openUrl
 import org.springframework.beans.factory.annotation.Value
@@ -19,16 +21,14 @@ import java.io.File
 @Profile("!test")
 @Component
 class TrayIconRunner(
-  @Value("#{servletContext.contextPath}") servletContextPath: String,
   @Value("#{komgaProperties.configDir}") komgaConfigDir: String,
   @Value("\${logging.file.name}") logFileName: String,
-  @Value("\${server.port}") serverPort: Int,
+  serverSettings: WebServerEffectiveSettings,
   env: Environment,
 ) : ApplicationRunner {
-
-  val komgaUrl = "http://localhost:$serverPort$servletContextPath"
-  val komgaConfigDir = File(komgaConfigDir)
-  val logFile = File(logFileName)
+  val komgaUrl by lazy { "http://localhost:${serverSettings.effectiveServerPort}${serverSettings.effectiveServletContextPath}" }
+  val komgaConfigDir by lazy { File(komgaConfigDir) }
+  val logFile by lazy { File(logFileName) }
   val iconFileName = if (env.activeProfiles.contains("mac")) "komga-gray-minimal.svg" else "komga-color.svg"
 
   @Async
@@ -41,10 +41,10 @@ class TrayIconRunner(
       Tray(
         icon = loadSvgPainter(ClassPathResource("icons/$iconFileName").inputStream, LocalDensity.current),
         menu = {
-          Item("Open Komga", onClick = { openUrl(komgaUrl) })
-          Item("Show log file", onClick = { openExplorer(logFile) })
-          Item("Open configuration directory", onClick = { openExplorer(komgaConfigDir) })
-          Item("Quit Komga", onClick = ::exitApplication)
+          Item(RB.getString("menu.open_komga"), onClick = { openUrl(komgaUrl) })
+          Item(RB.getString("menu.show_log"), onClick = { openExplorer(logFile) })
+          Item(RB.getString("menu.show_conf_dir"), onClick = { openExplorer(komgaConfigDir) })
+          Item(RB.getString("menu.quit"), onClick = ::exitApplication)
         },
       )
     }

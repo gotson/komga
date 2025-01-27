@@ -12,7 +12,6 @@ class AutowiringTest(
   @Autowired private val dataSources: List<DataSource>,
   @Autowired private val dslContexts: List<DSLContext>,
 ) {
-
   @Test
   fun `Application loads properly with test properties`() = Unit
 

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ReadingList {
-
   @JsonProperty(value = "Name")
   var name: String? = null
 
@@ -18,7 +17,5 @@ class ReadingList {
   @JsonSetter(nulls = Nulls.AS_EMPTY)
   var books: List<Book> = emptyList()
 
-  override fun toString(): String {
-    return "ReadingList(name=$name, books=$books)"
-  }
+  override fun toString(): String = "ReadingList(name=$name, books=$books)"
 }

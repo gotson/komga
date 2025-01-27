@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.patch
 @ActiveProfiles("demo", "test")
 class UserControllerDemoTest(
   @Autowired private val mockMvc: MockMvc,
-
 ) {
   @Test
   @WithMockCustomUser
@@ -23,18 +22,20 @@ class UserControllerDemoTest(
     // language=JSON
     val jsonString = """{"password":"new"}"""
 
-    mockMvc.patch("/api/v2/users/me/password") {
-      contentType = MediaType.APPLICATION_JSON
-      content = jsonString
-    }.andExpect {
-      status { isForbidden() }
-    }
+    mockMvc
+      .patch("/api/v2/users/me/password") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isForbidden() }
+      }
   }
 
   @Test
   @WithMockCustomUser
   fun `given demo profile is active when a user tries to retrieve own authentication activity then returns forbidden`() {
-    mockMvc.get("/api/v2/users/me/authentication-activity")
+    mockMvc
+      .get("/api/v2/users/me/authentication-activity")
       .andExpect {
         status { isForbidden() }
       }

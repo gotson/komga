@@ -29,7 +29,6 @@ import kotlin.io.path.toPath
 class BookAnalyzerTest(
   @Autowired private val komgaProperties: KomgaProperties,
 ) {
-
   @SpykBean
   private lateinit var bookAnalyzer: BookAnalyzer
 
@@ -134,6 +133,18 @@ class BookAnalyzerTest(
   }
 
   @Test
+  fun `given broken epub archive when analyzing then media status is ERROR`() {
+    val file = ClassPathResource("archives/zip-as-epub.epub")
+    val book = Book("book", file.url, LocalDateTime.now())
+
+    val media = bookAnalyzer.analyze(book, false)
+
+    assertThat(media.mediaType).isEqualTo("application/zip")
+    assertThat(media.status).isEqualTo(Media.Status.ERROR)
+    assertThat(media.pages).hasSize(0)
+  }
+
+  @Test
   fun `given book with a single page when hashing then all pages are hashed`() {
     val book = makeBook("book1")
     val pages = listOf(BookPage("1.jpeg", "image/jpeg"))
@@ -166,8 +177,12 @@ class BookAnalyzerTest(
     assertThat(hashedMedia.pages.takeLast(komgaProperties.pageHashing).map { it.fileHash })
       .hasSize(komgaProperties.pageHashing)
       .containsOnly("hashed")
-    assertThat(hashedMedia.pages.drop(komgaProperties.pageHashing).dropLast(komgaProperties.pageHashing).map { it.fileHash })
-      .hasSize(30 - (komgaProperties.pageHashing * 2))
+    assertThat(
+      hashedMedia.pages
+        .drop(komgaProperties.pageHashing)
+        .dropLast(komgaProperties.pageHashing)
+        .map { it.fileHash },
+    ).hasSize(30 - (komgaProperties.pageHashing * 2))
       .containsOnly("")
   }
 
@@ -195,9 +210,10 @@ class BookAnalyzerTest(
 
     val mediaType = "image/${directory.fileName.extension}"
 
-    val hashes = files.map {
-      bookAnalyzer.hashPage(BookPage(it.name, mediaType = mediaType), it.inputStream().readBytes())
-    }
+    val hashes =
+      files.map {
+        bookAnalyzer.hashPage(BookPage(it.name, mediaType = mediaType), it.inputStream().readBytes())
+      }
 
     assertThat(hashes.first()).isEqualTo(hashes.last())
   }

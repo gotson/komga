@@ -4,6 +4,7 @@ on:
   pull_request:
     paths-ignore:
       - 'komga-webui/src/locales/*'
+      - 'komga-tray/src/main/resources/org/gotson/komga/*'
   push:
     branches-ignore:
       - 'dependabot/**'
@@ -15,39 +16,36 @@ jobs:
     name: Test server
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
-        with:
-          java-version: 21
-          java-package: 'jdk'
-          distribution: 'temurin'
-      - uses: actions/setup-java@v3
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           java-package: 'jdk'
           distribution: 'temurin'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Build
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build :komga-tray:jar
+        run: ./gradlew build :komga-tray:jar
 
       - name: Upload Unit Test Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: komga/build/test-results/
 
       - name: Upload Unit Test Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-reports
           path: komga/build/reports/tests/
 
       - name: Conveyor - compute JDK module list
-        if: github.event_name == 'push'
-        uses: hydraulic-software/conveyor/actions/build@v12.1
+        if: github.event_name == 'push' && github.repository_owner == 'gotson'
+        uses: hydraulic-software/conveyor/actions/build@v16.0
         with:
           command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
@@ -55,12 +53,12 @@ jobs:
 
       - name: Compare JDK required modules
         id: conveyor_compare
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.repository_owner == 'gotson'
         run: diff --unified  ./komga-tray/conveyor/required-jdk-modules.txt ./output/required-jdk-modules.txt
 
       - name: Upload JDK required modules
         if: steps.conveyor_compare.outcome == 'failure'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: conveyor-required-jdk-modules
           path: ./output/required-jdk-modules.txt

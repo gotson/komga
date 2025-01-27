@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class HttpExchangeConfiguration {
-
   private val httpExchangeRepository = InMemoryHttpExchangeRepository()
 
   @Bean

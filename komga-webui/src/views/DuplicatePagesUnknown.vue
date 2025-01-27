@@ -163,7 +163,7 @@ export default Vue.extend({
       hiddenElements: [] as PageHashUnknownDto[],
       totalElements: 0,
       page: 1,
-      totalPages: 1,
+      totalPages: 0,
       sortActive: {key: 'totalSize', order: 'desc'} as SortActive,
       dialogImage: false,
       dialogMatches: false,

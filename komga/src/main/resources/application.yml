@@ -11,17 +11,23 @@ logging:
     name: \${komga.config-dir}/logs/komga.log
   level:
     org.apache.activemq.audit: WARN
+    org.apache.fontbox.cff.Type1CharString: ERROR
+    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: ERROR
 
 komga:
   database:
     file: \${komga.config-dir}/database.sqlite
   lucene:
     data-directory: \${komga.config-dir}/lucene
+  fonts:
+    data-directory: \${komga.config-dir}/fonts
   config-dir: \${user.home}/.komga
   tasks-db:
     file: \${komga.config-dir}/tasks.sqlite
 
 spring:
+  codec:
+    max-in-memory-size: 10MB
   flyway:
     enabled: true
     locations: classpath:db/migration/{vendor}
@@ -34,7 +40,6 @@ spring:
   thymeleaf:
     prefix: classpath:/public/
   mvc:
-    throw-exception-if-no-handler-found: true
     async:
       request-timeout: 1h
   # Deprecated - to remove along with ArtemisCleanup.kt
@@ -76,7 +81,7 @@ management:
       roles: ADMIN
       show-details: when_authorized
     shutdown:
-      enabled: true
+      access: unrestricted
   info:
     java:
       enabled: true
@@ -91,8 +96,10 @@ springdoc:
   group-configs:
     - group: REST API
       paths-to-match: /api/**
-    - group: OPDS
-      paths-to-match: /opds/**
+    - group: OPDS v1
+      paths-to-match: /opds/v1.2/**
+    - group: OPDS v2
+      paths-to-match: /opds/v2/**
   swagger-ui:
     groups-order: desc
     operations-sorter: alpha

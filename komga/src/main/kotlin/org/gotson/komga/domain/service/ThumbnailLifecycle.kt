@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.service
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.ThumbnailReadList
@@ -40,8 +40,7 @@ class ThumbnailLifecycle(
    *
    * @return true if more thumbnails need fixing
    */
-  fun fixThumbnailsMetadata(): Boolean =
-    fixThumbnailMetadataBook() || fixThumbnailMetadataSeries() || fixThumbnailMetadataCollection() || fixThumbnailMetadataReadList()
+  fun fixThumbnailsMetadata(): Boolean = fixThumbnailMetadataBook() || fixThumbnailMetadataSeries() || fixThumbnailMetadataCollection() || fixThumbnailMetadataReadList()
 
   private fun fixThumbnailMetadataBook(): Boolean =
     fixThumbnailMetadata(
@@ -122,24 +121,28 @@ class ThumbnailLifecycle(
     copier: (T, ThumbnailMetadata) -> T,
     updater: (Collection<T>) -> Unit,
   ): Boolean {
-    val (result, duration) = measureTimedValue {
-      val thumbs = fetcher(Pageable.ofSize(1000))
-      logger.info { "Fetched ${thumbs.numberOfElements} ${clazz.simpleName} to fix, total: ${thumbs.totalElements}" }
+    val (result, duration) =
+      measureTimedValue {
+        val thumbs = fetcher(Pageable.ofSize(1000))
+        logger.info { "Fetched ${thumbs.numberOfElements} ${clazz.simpleName} to fix, total: ${thumbs.totalElements}" }
 
-      val fixedThumbs = thumbs.mapNotNull {
-        try {
-          val meta = supplier(it)
-          if (meta == null) null
-          else copier(it, meta)
-        } catch (e: Exception) {
-          logger.error(e) { "Could not fix thumbnail: $it" }
-          null
-        }
+        val fixedThumbs =
+          thumbs.mapNotNull {
+            try {
+              val meta = supplier(it)
+              if (meta == null)
+                null
+              else
+                copier(it, meta)
+            } catch (e: Exception) {
+              logger.error(e) { "Could not fix thumbnail: $it" }
+              null
+            }
+          }
+
+        updater(fixedThumbs)
+        Result(fixedThumbs.size, (thumbs.numberOfElements < thumbs.totalElements))
       }
-
-      updater(fixedThumbs)
-      Result(fixedThumbs.size, (thumbs.numberOfElements < thumbs.totalElements))
-    }
     logger.info { "Fixed ${result.processed} ${clazz.simpleName} in $duration" }
     return result.hasMore
   }
@@ -158,6 +161,14 @@ class ThumbnailLifecycle(
       dimension = imageAnalyzer.getDimension(url.toURI().toPath().inputStream()) ?: Dimension(0, 0),
     )
 
-  private data class Result(val processed: Int, val hasMore: Boolean)
-  private data class ThumbnailMetadata(val mediaType: String, val fileSize: Long, val dimension: Dimension)
+  private data class Result(
+    val processed: Int,
+    val hasMore: Boolean,
+  )
+
+  private data class ThumbnailMetadata(
+    val mediaType: String,
+    val fileSize: Long,
+    val dimension: Dimension,
+  )
 }

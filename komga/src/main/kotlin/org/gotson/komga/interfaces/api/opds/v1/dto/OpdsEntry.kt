@@ -9,13 +9,10 @@ import java.time.ZonedDateTime
 abstract class OpdsEntry(
   @get:JacksonXmlProperty(namespace = ATOM)
   val title: String,
-
   @get:JacksonXmlProperty(namespace = ATOM)
   val updated: ZonedDateTime,
-
   @get:JacksonXmlProperty(namespace = ATOM)
   val id: String,
-
   content: String,
 ) {
   @get:JacksonXmlProperty(namespace = ATOM)
@@ -27,7 +24,6 @@ class OpdsEntryNavigation(
   updated: ZonedDateTime,
   id: String,
   content: String,
-
   @JacksonXmlProperty(namespace = ATOM)
   val link: OpdsLink,
 ) : OpdsEntry(title, updated, id, content)
@@ -37,11 +33,9 @@ class OpdsEntryAcquisition(
   updated: ZonedDateTime,
   id: String,
   content: String,
-
   @JacksonXmlElementWrapper(useWrapping = false)
   @JacksonXmlProperty(localName = "author", namespace = ATOM)
   val authors: List<OpdsAuthor> = emptyList(),
-
   @JacksonXmlElementWrapper(useWrapping = false)
   @JacksonXmlProperty(localName = "link", namespace = ATOM)
   val links: List<OpdsLink>,

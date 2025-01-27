@@ -27,6 +27,7 @@
       @mark-read="markSelectedSeriesRead"
       @mark-unread="markSelectedSeriesUnread"
       @add-to-collection="addToCollection"
+      @add-to-readlist="addSeriesBooksToReadList"
       @edit="editMultipleSeries"
       @delete="deleteSeries"
     />
@@ -232,6 +233,14 @@ import {BookSseDto, ReadProgressSeriesSseDto, ReadProgressSseDto, SeriesSseDto} 
 import {LibraryDto} from '@/types/komga-libraries'
 import {PageLoader} from '@/types/pageLoader'
 import {ItemContext} from '@/types/items'
+import {
+  BookSearch,
+  SearchConditionAllOfBook, SearchConditionAnyOfBook,
+  SearchConditionBook,
+  SearchConditionLibraryId,
+  SearchConditionReadStatus, SearchConditionReleaseDate, SearchConditionSeriesId, SearchOperatorAfter,
+  SearchOperatorIs,
+} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'DashboardView',
@@ -365,9 +374,14 @@ export default Vue.extend({
       this.loadAll(this.libraryId, true)
     }, 5000),
     setupLoaders(libraryId: string) {
+      const baseBookConditions = [] as SearchConditionBook[]
+      if (libraryId !== LIBRARIES_ALL) baseBookConditions.push(new SearchConditionLibraryId(new SearchOperatorIs(libraryId)))
+
       this.loaderInProgressBooks = new PageLoader<BookDto>(
         {sort: ['readProgress.readDate,desc']},
-        (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, [ReadStatus.IN_PROGRESS]),
+        (pageable: PageRequest) => this.$komgaBooks.getBooksList({
+          condition: new SearchConditionAllOfBook([...baseBookConditions, new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.IN_PROGRESS))]),
+        } as BookSearch, pageable),
       )
       this.loaderOnDeckBooks = new PageLoader<BookDto>(
         {},
@@ -375,15 +389,21 @@ export default Vue.extend({
       )
       this.loaderLatestBooks = new PageLoader<BookDto>(
         {sort: ['createdDate,desc']},
-        (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable),
+        (pageable: PageRequest) => this.$komgaBooks.getBooksList({
+          condition: new SearchConditionAllOfBook(baseBookConditions),
+        } as BookSearch, pageable),
       )
       this.loaderRecentlyReleasedBooks = new PageLoader<BookDto>(
         {sort: ['metadata.releaseDate,desc']},
-        (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, undefined, subMonths(new Date(), 1)),
+        (pageable: PageRequest) => this.$komgaBooks.getBooksList({
+          condition: new SearchConditionAllOfBook([...baseBookConditions, new SearchConditionReleaseDate(new SearchOperatorAfter(subMonths(new Date(), 1)))]),
+        } as BookSearch, pageable),
       )
       this.loaderRecentlyReadBooks = new PageLoader<BookDto>(
         {sort: ['readProgress.readDate,desc']},
-        (pageable: PageRequest) => this.$komgaBooks.getBooks(this.getRequestLibraryId(libraryId), pageable, undefined, undefined, [ReadStatus.READ]),
+        (pageable: PageRequest) => this.$komgaBooks.getBooksList({
+          condition: new SearchConditionAllOfBook([...baseBookConditions, new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.READ))]),
+        } as BookSearch, pageable),
       )
 
       this.loaderNewSeries = new PageLoader<SeriesDto>(
@@ -398,6 +418,7 @@ export default Vue.extend({
     loadAll(libraryId: string, reload: boolean = false) {
       this.loading = true
       this.library = this.getLibraryLazy(libraryId)
+      if (this.library != undefined) document.title = `Komga - ${this.library.name}`
       this.selectedSeries = []
       this.selectedBooks = []
 
@@ -429,7 +450,9 @@ export default Vue.extend({
     },
     async singleEditSeries(series: SeriesDto) {
       if (series.oneshot) {
-        let book = (await this.$komgaSeries.getBooks(series.id)).content[0]
+        let book = (await this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(series.id)),
+        } as BookSearch)).content[0]
         this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
       } else
         this.$store.dispatch('dialogUpdateSeries', series)
@@ -463,7 +486,9 @@ export default Vue.extend({
     },
     async editMultipleSeries() {
       if (this.selectedSeries.every(s => s.oneshot)) {
-        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(s.id)),
+        } as BookSearch)))
         const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
         this.$store.dispatch('dialogUpdateOneshots', oneshots)
       } else
@@ -489,6 +514,13 @@ export default Vue.extend({
     addToReadList() {
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks.map(b => b.id))
       this.selectedBooks = []
+    },
+    async addSeriesBooksToReadList() {
+      const conditions = this.selectedSeries.map(s => new SearchConditionSeriesId(new SearchOperatorIs(s.id)))
+      const books = await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionAnyOfBook(conditions),
+      } as BookSearch, {unpaged: true})
+      this.$store.dispatch('dialogAddBooksToReadList', books.content.map(b => b.id))
     },
     async markSelectedBooksRead() {
       await Promise.all(this.selectedBooks.map(b =>

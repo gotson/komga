@@ -13,11 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest
 class SeriesTest(
   @Autowired private val mapper: ObjectMapper,
 ) {
-
   @Test
   fun `given valid json file when deserializing then properties are available`() {
     // language=JSON
-    val json = """
+    val json =
+      """
       {
         "version": "1.0.1",
         "metadata": {
@@ -39,7 +39,7 @@ class SeriesTest(
           "status": "Continuing"
         }
       }
-    """.trimIndent()
+      """.trimIndent()
     val seriesJson = mapper.readValue<Series>(json)
 
     assertThat(seriesJson.metadata).isNotNull
@@ -65,7 +65,8 @@ class SeriesTest(
   @Test
   fun `given another valid json file when deserializing then properties are available`() {
     // language=JSON
-    val json = """
+    val json =
+      """
       {
         "version": "1.0.1",
         "metadata": {
@@ -81,13 +82,13 @@ class SeriesTest(
           "booktype": "Print",
           "age_rating": null,
           "collects": null,
-          "ComicImage": "https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg",
+          "comic_image": "https://comicvine1.cbsistatic.com/uploads/scale_large/6/67663/6974029-01a.jpg",
           "total_issues": 20,
           "publication_run": "June 2019 - Present",
           "status": "Ended"
         }
       }
-    """.trimIndent()
+      """.trimIndent()
     val seriesJson = mapper.readValue<Series>(json)
 
     assertThat(seriesJson.metadata).isNotNull
@@ -113,7 +114,8 @@ class SeriesTest(
   @Test
   fun `given yet another valid json file when deserializing then properties are available`() {
     // language=JSON
-    val json = """
+    val json =
+      """
       {
         "version": "1.0.1",
         "metadata": {
@@ -135,7 +137,7 @@ class SeriesTest(
           "status": "Ended"
         }
       }
-    """.trimIndent()
+      """.trimIndent()
     val seriesJson = mapper.readValue<Series>(json)
 
     assertThat(seriesJson.metadata).isNotNull
@@ -161,7 +163,8 @@ class SeriesTest(
   @Test
   fun `given invalid json file missing year when deserializing then it fails`() {
     // language=JSON
-    val json = """
+    val json =
+      """
       {
         "version": "1.0.1",
         "metadata": {
@@ -182,7 +185,7 @@ class SeriesTest(
           "status": "Ended"
         }
       }
-    """.trimIndent()
+      """.trimIndent()
     val thrown = catchThrowable { mapper.readValue<Series>(json) }
 
     assertThat(thrown).isInstanceOf(MismatchedInputException::class.java)
@@ -191,7 +194,8 @@ class SeriesTest(
   @Test
   fun `given invalid json file missing publisher when deserializing then it fails`() {
     // language=JSON
-    val json = """
+    val json =
+      """
       {
         "version": "1.0.1",
         "metadata": {
@@ -212,7 +216,7 @@ class SeriesTest(
           "status": "Ended"
         }
       }
-    """.trimIndent()
+      """.trimIndent()
     val thrown = catchThrowable { mapper.readValue<Series>(json) }
 
     assertThat(thrown).isInstanceOf(MismatchedInputException::class.java)
@@ -221,7 +225,8 @@ class SeriesTest(
   @Test
   fun `given invalid json file missing status when deserializing then it fails`() {
     // language=JSON
-    val json = """
+    val json =
+      """
       {
         "version": "1.0.1",
         "metadata": {
@@ -243,7 +248,7 @@ class SeriesTest(
         }
       }
 
-    """.trimIndent()
+      """.trimIndent()
     val thrown = catchThrowable { mapper.readValue<Series>(json) }
 
     assertThat(thrown).isInstanceOf(MismatchedInputException::class.java)

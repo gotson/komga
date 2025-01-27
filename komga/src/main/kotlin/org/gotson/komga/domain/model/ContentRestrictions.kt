@@ -8,7 +8,9 @@ class ContentRestrictions(
   labelsExclude: Set<String> = emptySet(),
 ) {
   val labelsAllow =
-    labelsAllow.lowerNotBlank().toSet()
+    labelsAllow
+      .lowerNotBlank()
+      .toSet()
       .minus(labelsExclude.lowerNotBlank().toSet())
 
   val labelsExclude = labelsExclude.lowerNotBlank().toSet()

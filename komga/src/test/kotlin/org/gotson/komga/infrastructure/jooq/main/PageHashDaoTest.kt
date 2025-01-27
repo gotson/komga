@@ -31,10 +31,11 @@ class PageHashDaoTest(
 ) {
   private val library = makeLibrary()
   private val series = makeSeries("Series", libraryId = library.id)
-  private val books = listOf(
-    makeBook("Book", libraryId = library.id, seriesId = series.id),
-    makeBook("Book2", libraryId = library.id, seriesId = series.id),
-  )
+  private val books =
+    listOf(
+      makeBook("Book", libraryId = library.id, seriesId = series.id),
+      makeBook("Book2", libraryId = library.id, seriesId = series.id),
+    )
 
   @BeforeAll
   fun setup() {
@@ -62,11 +63,12 @@ class PageHashDaoTest(
     @Test
     fun `given a known page hash when inserting then it is persisted`() {
       val now = LocalDateTime.now()
-      val pageHash = PageHashKnown(
-        hash = "hashed",
-        size = 10,
-        action = PageHashKnown.Action.IGNORE,
-      )
+      val pageHash =
+        PageHashKnown(
+          hash = "hashed",
+          size = 10,
+          action = PageHashKnown.Action.IGNORE,
+        )
 
       pageHashDao.insert(pageHash, null)
       val known = pageHashDao.findKnown(pageHash.hash)!!
@@ -102,20 +104,22 @@ class PageHashDaoTest(
         null,
       )
 
-      val media = Media(
-        status = Media.Status.READY,
-        mediaType = "application/zip",
-        pages = (1..10).map {
-          BookPage(
-            fileName = "$it.jpg",
-            mediaType = "image/jpeg",
-            fileHash = "hash-$it",
-            fileSize = it.toLong(),
-          )
-        },
-        comment = "comment",
-        bookId = books.first().id,
-      )
+      val media =
+        Media(
+          status = Media.Status.READY,
+          mediaType = "application/zip",
+          pages =
+            (1..10).map {
+              BookPage(
+                fileName = "$it.jpg",
+                mediaType = "image/jpeg",
+                fileHash = "hash-$it",
+                fileSize = it.toLong(),
+              )
+            },
+          comment = "comment",
+          bookId = books.first().id,
+        )
       mediaDao.insert(media)
       mediaDao.insert(media.copy(bookId = books.last().id))
 

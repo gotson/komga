@@ -24,26 +24,33 @@ class ThumbnailBookDao(
   private val tb = Tables.THUMBNAIL_BOOK
 
   override fun findAllByBookId(bookId: String): Collection<ThumbnailBook> =
-    dsl.selectFrom(tb)
+    dsl
+      .selectFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
       .fetchInto(tb)
       .map { it.toDomain() }
 
-  override fun findAllByBookIdAndType(bookId: String, type: ThumbnailBook.Type): Collection<ThumbnailBook> =
-    dsl.selectFrom(tb)
+  override fun findAllByBookIdAndType(
+    bookId: String,
+    type: Set<ThumbnailBook.Type>,
+  ): Collection<ThumbnailBook> =
+    dsl
+      .selectFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
-      .and(tb.TYPE.eq(type.toString()))
+      .and(tb.TYPE.`in`(type.map { it.name }))
       .fetchInto(tb)
       .map { it.toDomain() }
 
   override fun findByIdOrNull(thumbnailId: String): ThumbnailBook? =
-    dsl.selectFrom(tb)
+    dsl
+      .selectFrom(tb)
       .where(tb.ID.eq(thumbnailId))
       .fetchOneInto(tb)
       ?.toDomain()
 
   override fun findSelectedByBookIdOrNull(bookId: String): ThumbnailBook? =
-    dsl.selectFrom(tb)
+    dsl
+      .selectFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
       .and(tb.SELECTED.isTrue)
       .limit(1)
@@ -52,31 +59,41 @@ class ThumbnailBookDao(
       .firstOrNull()
 
   override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailBook> {
-    val query = dsl.selectFrom(tb)
-      .where(tb.FILE_SIZE.eq(0))
-      .or(tb.MEDIA_TYPE.eq(""))
-      .or(tb.WIDTH.eq(0))
-      .or(tb.HEIGHT.eq(0))
+    val query =
+      dsl
+        .selectFrom(tb)
+        .where(tb.FILE_SIZE.eq(0))
+        .or(tb.MEDIA_TYPE.eq(""))
+        .or(tb.WIDTH.eq(0))
+        .or(tb.HEIGHT.eq(0))
 
     val count = dsl.fetchCount(query)
-    val items = query
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(tb)
-      .map { it.toDomain() }
+    val items =
+      query
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(tb)
+        .map { it.toDomain() }
 
     return PageImpl(items, pageable, count.toLong())
   }
 
-  override fun findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(type: ThumbnailBook.Type, size: Int): Collection<String> =
-    dsl.select(tb.BOOK_ID)
+  override fun findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(
+    type: ThumbnailBook.Type,
+    size: Int,
+  ): Collection<String> =
+    dsl
+      .select(tb.BOOK_ID)
       .from(tb)
       .where(tb.TYPE.eq(type.toString()))
       .and(tb.WIDTH.lt(size))
       .and(tb.HEIGHT.lt(size))
       .fetch(tb.BOOK_ID)
 
+  override fun existsById(thumbnailId: String): Boolean = dsl.fetchExists(tb, tb.ID.eq(thumbnailId))
+
   override fun insert(thumbnail: ThumbnailBook) {
-    dsl.insertInto(tb)
+    dsl
+      .insertInto(tb)
       .set(tb.ID, thumbnail.id)
       .set(tb.BOOK_ID, thumbnail.bookId)
       .set(tb.THUMBNAIL, thumbnail.thumbnail)
@@ -91,7 +108,8 @@ class ThumbnailBookDao(
   }
 
   override fun update(thumbnail: ThumbnailBook) {
-    dsl.update(tb)
+    dsl
+      .update(tb)
       .set(tb.BOOK_ID, thumbnail.bookId)
       .set(tb.THUMBNAIL, thumbnail.thumbnail)
       .set(tb.URL, thumbnail.url?.toString())
@@ -108,7 +126,9 @@ class ThumbnailBookDao(
   override fun updateMetadata(thumbnails: Collection<ThumbnailBook>) {
     dsl.batched { c ->
       thumbnails.forEach {
-        c.dsl().update(tb)
+        c
+          .dsl()
+          .update(tb)
           .set(tb.MEDIA_TYPE, it.mediaType)
           .set(tb.WIDTH, it.dimension.width)
           .set(tb.HEIGHT, it.dimension.height)
@@ -121,13 +141,15 @@ class ThumbnailBookDao(
 
   @Transactional
   override fun markSelected(thumbnail: ThumbnailBook) {
-    dsl.update(tb)
+    dsl
+      .update(tb)
       .set(tb.SELECTED, false)
       .where(tb.BOOK_ID.eq(thumbnail.bookId))
       .and(tb.ID.ne(thumbnail.id))
       .execute()
 
-    dsl.update(tb)
+    dsl
+      .update(tb)
       .set(tb.SELECTED, true)
       .where(tb.BOOK_ID.eq(thumbnail.bookId))
       .and(tb.ID.eq(thumbnail.id))
@@ -149,8 +171,12 @@ class ThumbnailBookDao(
     dsl.deleteFrom(tb).where(tb.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
   }
 
-  override fun deleteByBookIdAndType(bookId: String, type: ThumbnailBook.Type) {
-    dsl.deleteFrom(tb)
+  override fun deleteByBookIdAndType(
+    bookId: String,
+    type: ThumbnailBook.Type,
+  ) {
+    dsl
+      .deleteFrom(tb)
       .where(tb.BOOK_ID.eq(bookId))
       .and(tb.TYPE.eq(type.toString()))
       .execute()

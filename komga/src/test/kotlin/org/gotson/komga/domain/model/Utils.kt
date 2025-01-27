@@ -23,7 +23,11 @@ fun makeBook(
   )
 }
 
-fun makeSeries(name: String, libraryId: String = "", url: URL? = null): Series {
+fun makeSeries(
+  name: String,
+  libraryId: String = "",
+  url: URL? = null,
+): Series {
   Thread.sleep(5)
   return Series(
     name = name,
@@ -33,13 +37,16 @@ fun makeSeries(name: String, libraryId: String = "", url: URL? = null): Series {
   )
 }
 
-fun makeLibrary(name: String = "default", path: String = "file:/${name.replace(" ", "_")}", id: String = TsidCreator.getTsid256().toString(), url: URL? = null): Library {
-  return Library(
+fun makeLibrary(
+  name: String = "default",
+  path: String = "file:/${name.replace(" ", "_")}",
+  id: String = TsidCreator.getTsid256().toString(),
+  url: URL? = null,
+): Library =
+  Library(
     name = name,
     root = url ?: URL(path),
     id = id,
   )
-}
 
-fun makeBookPage(name: String) =
-  BookPage(name, "image/png")
+fun makeBookPage(name: String) = BookPage(name, "image/png")

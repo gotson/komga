@@ -22,7 +22,6 @@ class SeriesCollectionDaoTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val library = makeLibrary()
   private val library2 = makeLibrary("library2")
 
@@ -49,10 +48,11 @@ class SeriesCollectionDaoTest(
     val series = (1..10).map { makeSeries("Series $it", library.id) }
     series.forEach { seriesRepository.insert(it) }
 
-    val collection = SeriesCollection(
-      name = "MyCollection",
-      seriesIds = series.map { it.id },
-    )
+    val collection =
+      SeriesCollection(
+        name = "MyCollection",
+        seriesIds = series.map { it.id },
+      )
 
     // when
     val now = LocalDateTime.now()
@@ -75,19 +75,21 @@ class SeriesCollectionDaoTest(
     val series = (1..10).map { makeSeries("Series $it", library.id) }
     series.forEach { seriesRepository.insert(it) }
 
-    val collection = SeriesCollection(
-      name = "MyCollection",
-      seriesIds = series.map { it.id },
-    )
+    val collection =
+      SeriesCollection(
+        name = "MyCollection",
+        seriesIds = series.map { it.id },
+      )
 
     collectionDao.insert(collection)
 
     // when
-    val updatedCollection = collection.copy(
-      name = "UpdatedCollection",
-      ordered = true,
-      seriesIds = collection.seriesIds.take(5),
-    )
+    val updatedCollection =
+      collection.copy(
+        name = "UpdatedCollection",
+        ordered = true,
+        seriesIds = collection.seriesIds.take(5),
+      )
 
     val now = LocalDateTime.now()
     collectionDao.update(updatedCollection)
@@ -109,16 +111,18 @@ class SeriesCollectionDaoTest(
     val series = (1..10).map { makeSeries("Series $it", library.id) }
     series.forEach { seriesRepository.insert(it) }
 
-    val collection1 = SeriesCollection(
-      name = "MyCollection",
-      seriesIds = series.map { it.id },
-    )
+    val collection1 =
+      SeriesCollection(
+        name = "MyCollection",
+        seriesIds = series.map { it.id },
+      )
     collectionDao.insert(collection1)
 
-    val collection2 = SeriesCollection(
-      name = "MyCollection2",
-      seriesIds = series.map { it.id }.take(5),
-    )
+    val collection2 =
+      SeriesCollection(
+        name = "MyCollection2",
+        seriesIds = series.map { it.id }.take(5),
+      )
     collectionDao.insert(collection2)
 
     // when

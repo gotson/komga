@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.metadata.mylar
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.Series
@@ -23,8 +23,8 @@ private const val SERIES_JSON = "series.json"
 @Service
 class MylarSeriesProvider(
   private val mapper: ObjectMapper,
-) : SeriesMetadataProvider, SidecarSeriesConsumer {
-
+) : SeriesMetadataProvider,
+  SidecarSeriesConsumer {
   override fun getSeriesMetadata(series: Series): SeriesMetadataPatch? {
     if (series.oneshot) {
       logger.debug { "Disabled for oneshot series, skipping" }
@@ -39,16 +39,20 @@ class MylarSeriesProvider(
       }
       val metadata = mapper.readValue(seriesJsonPath.toFile(), MylarSeries::class.java).metadata
 
-      val title = if (metadata.volume == null || metadata.volume == 1) metadata.name
-      else "${metadata.name} (${metadata.year})"
+      val title =
+        if (metadata.volume == null || metadata.volume == 1)
+          metadata.name
+        else
+          "${metadata.name} (${metadata.year})"
 
       return SeriesMetadataPatch(
         title = title,
         titleSort = title.stripAccents(),
-        status = when (metadata.status) {
-          Status.Ended -> SeriesMetadata.Status.ENDED
-          Status.Continuing -> SeriesMetadata.Status.ONGOING
-        },
+        status =
+          when (metadata.status) {
+            Status.Ended -> SeriesMetadata.Status.ENDED
+            Status.Continuing -> SeriesMetadata.Status.ONGOING
+          },
         summary = metadata.descriptionFormatted ?: metadata.descriptionText,
         readingDirection = null,
         publisher = metadata.publisher,
@@ -64,7 +68,10 @@ class MylarSeriesProvider(
     }
   }
 
-  override fun shouldLibraryHandlePatch(library: Library, target: MetadataPatchTarget): Boolean =
+  override fun shouldLibraryHandlePatch(
+    library: Library,
+    target: MetadataPatchTarget,
+  ): Boolean =
     when (target) {
       MetadataPatchTarget.SERIES -> library.importMylarSeries
       else -> false

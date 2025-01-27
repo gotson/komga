@@ -27,21 +27,23 @@
 
     <!--  Series picker  -->
     <td @click="modalSeriesPicker = true" style="cursor: pointer">
-      <template v-if="selectedSeries">{{ selectedSeries.metadata.title }}</template>
+      <template v-if="selectedSeries">{{ selectedSeries.title }}</template>
       <template v-else>
         <div style="height: 2em" class="missing"></div>
       </template>
-      <series-picker-dialog v-model="modalSeriesPicker" :series.sync="selectedSeries" :include-oneshots="false"/>
+      <series-picker-dialog v-model="modalSeriesPicker" @update:series="pickedSeries" :include-oneshots="true"/>
     </td>
 
     <!--  Book number chooser  -->
     <td>
-      <v-text-field v-model.number="bookNumber"
+      <v-text-field v-if="!selectedSeries?.oneshot"
+                    v-model.number="bookNumber"
                     type="number"
                     step="0.1"
                     dense
                     :disabled="!selectedSeries"
       />
+      <span v-else>{{ $t('common.oneshot') }}</span>
     </td>
 
     <!--  Book details  -->
@@ -129,6 +131,8 @@ import TransientBookViewerDialog from '@/components/dialogs/TransientBookViewerD
 import {bookPageUrl, transientBookPageUrl} from '@/functions/urls'
 import {convertErrorCodes} from '@/functions/error-codes'
 import FileNameChooserDialog from '@/components/dialogs/FileNameChooserDialog.vue'
+import {SeriesSelected} from '@/types/series-slim'
+import {BookSearch, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'FileImportRow',
@@ -163,7 +167,11 @@ export default Vue.extend({
     },
     series: {
       handler(val) {
-        if (val) this.selectedSeries = this.$_.cloneDeep(val)
+        if (val) this.selectedSeries = {
+          seriesId: val.id,
+          title: val.metadata.title,
+          oneshot: val.oneshot,
+        }
       },
       immediate: true,
     },
@@ -185,7 +193,7 @@ export default Vue.extend({
     convertErrorCodes,
     innerSelect: false,
     bookAnalyzed: undefined as unknown as TransientBookDto,
-    selectedSeries: undefined as SeriesDto | undefined,
+    selectedSeries: undefined as SeriesSelected | undefined,
     seriesBooks: [] as BookDto[],
     bookToUpgrade: undefined as BookDto | undefined,
     bookToUpgradePages: [] as PageDto[],
@@ -230,7 +238,7 @@ export default Vue.extend({
     importPayload(): BookImportDto | undefined {
       if (this.error || !this.selectedSeries) return undefined
       return {
-        seriesId: this.selectedSeries?.id,
+        seriesId: this.selectedSeries?.seriesId,
         sourceFile: this.book.url,
         upgradeBookId: this.bookToUpgrade?.id,
         destinationName: this.destinationName,
@@ -240,10 +248,27 @@ export default Vue.extend({
   methods: {
     async analyze(book: TransientBookDto) {
       this.bookAnalyzed = await this.$komgaTransientBooks.analyze(book.id)
+      this.getSeries(this.bookAnalyzed.seriesId)
+      this.bookNumber = this.bookAnalyzed.number
     },
-    async getSeriesBooks(series: SeriesDto) {
+    async getSeries(seriesId?: string) {
+      if (seriesId) {
+        const seriesDto = await this.$komgaSeries.getOneSeries(seriesId)
+        this.selectedSeries = {
+          seriesId: seriesDto.id,
+          title: seriesDto.metadata.title,
+          oneshot: seriesDto.oneshot,
+        }
+      }
+    },
+    async getSeriesBooks(series: SeriesSelected) {
       if (series) {
-        this.seriesBooks = (await this.$komgaSeries.getBooks(series.id, {unpaged: true})).content
+        this.seriesBooks = (await this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(series.seriesId)),
+        } as BookSearch, {unpaged: true, sort: 'metadata.numberSort'})).content
+        if (series.oneshot) {
+          this.bookNumber = this.seriesBooks[0].metadata.numberSort
+        }
         this.checkForUpgrade(this.bookNumber)
       }
     },
@@ -251,6 +276,13 @@ export default Vue.extend({
       this.bookToUpgrade = this.seriesBooks.find(b => b.metadata.numberSort === number)
       if (this.bookToUpgrade) this.bookToUpgradePages = await this.$komgaBooks.getBookPages(this.bookToUpgrade.id)
       else this.bookToUpgradePages = []
+    },
+    pickedSeries(series: SeriesDto) {
+      this.selectedSeries = {
+        seriesId: series.id,
+        title: series.metadata.title,
+        oneshot: series.oneshot,
+      }
     },
   },
 })

@@ -1,7 +1,7 @@
 package org.gotson.komga.infrastructure.hash
 
 import com.appmattus.crypto.Algorithm
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.InputStream
 import java.nio.file.Path
@@ -14,7 +14,6 @@ private const val SEED = 0
 
 @Component
 class Hasher {
-
   fun computeHash(path: Path): String {
     logger.debug { "Hashing: $path" }
 
@@ -38,7 +37,8 @@ class Hasher {
   }
 
   @OptIn(ExperimentalUnsignedTypes::class)
-  private fun ByteArray.toHexString(): String = asUByteArray().joinToString("") {
-    it.toString(16).padStart(2, '0')
-  }
+  fun ByteArray.toHexString(): String =
+    asUByteArray().joinToString("") {
+      it.toString(16).padStart(2, '0')
+    }
 }

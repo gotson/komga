@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.scheduler
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.MeterRegistry
@@ -7,7 +8,6 @@ import io.micrometer.core.instrument.MultiGauge
 import io.micrometer.core.instrument.MultiGauge.Row
 import io.micrometer.core.instrument.Tags
 import io.micrometer.core.instrument.Timer
-import mu.KotlinLogging
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -45,13 +45,14 @@ class MetricsPublisherController(
   private val sidecarRepository: SidecarRepository,
   private val meterRegistry: MeterRegistry,
 ) {
-
   init {
-    Timer.builder(METER_TASKS_EXECUTION)
+    Timer
+      .builder(METER_TASKS_EXECUTION)
       .description("Task execution time")
       .register(meterRegistry)
 
-    Counter.builder(METER_TASKS_FAILURE)
+    Counter
+      .builder(METER_TASKS_FAILURE)
       .description("Count of failed tasks")
       .register(meterRegistry)
   }
@@ -60,26 +61,32 @@ class MetricsPublisherController(
   private final val entitiesNoTags = listOf(LIBRARIES, COLLECTIONS, READLISTS)
   private final val allEntities = entitiesMultiTag + entitiesNoTags
 
-  val multiGauges = entitiesMultiTag.associateWith { entity ->
-    MultiGauge.builder("komga.$entity")
-      .description("The number of $entity")
-      .baseUnit("count")
-      .register(meterRegistry)
-  }
-
-  val noTagGauges = entitiesNoTags.associateWith { entity ->
-    AtomicLong(0).also { value ->
-      Gauge.builder("komga.$entity", value) { value.get().toDouble() }
+  val multiGauges =
+    entitiesMultiTag.associateWith { entity ->
+      MultiGauge
+        .builder("komga.$entity")
         .description("The number of $entity")
         .baseUnit("count")
         .register(meterRegistry)
     }
-  }
 
-  val bookFileSizeGauge = MultiGauge.builder("komga.$BOOKS_FILESIZE")
-    .description("The cumulated filesize of books")
-    .baseUnit("bytes")
-    .register(meterRegistry)
+  val noTagGauges =
+    entitiesNoTags.associateWith { entity ->
+      AtomicLong(0).also { value ->
+        Gauge
+          .builder("komga.$entity", value) { value.get().toDouble() }
+          .description("The number of $entity")
+          .baseUnit("count")
+          .register(meterRegistry)
+      }
+    }
+
+  val bookFileSizeGauge =
+    MultiGauge
+      .builder("komga.$BOOKS_FILESIZE")
+      .description("The cumulated filesize of books")
+      .baseUnit("bytes")
+      .register(meterRegistry)
 
   @EventListener
   private fun pushMetricsOnEvent(event: DomainEvent) {
@@ -111,10 +118,10 @@ class MetricsPublisherController(
       COLLECTIONS -> noTagGauges[COLLECTIONS]?.set(collectionRepository.count())
       READLISTS -> noTagGauges[READLISTS]?.set(readListRepository.count())
 
-      SERIES -> multiGauges[SERIES]?.register(seriesRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) })
-      BOOKS -> multiGauges[BOOKS]?.register(bookRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) })
-      BOOKS_FILESIZE -> bookFileSizeGauge.register(bookRepository.getFilesizeGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) })
-      SIDECARS -> multiGauges[SIDECARS]?.register(sidecarRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) })
+      SERIES -> multiGauges[SERIES]?.register(seriesRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) }, true)
+      BOOKS -> multiGauges[BOOKS]?.register(bookRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) }, true)
+      BOOKS_FILESIZE -> bookFileSizeGauge.register(bookRepository.getFilesizeGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) }, true)
+      SIDECARS -> multiGauges[SIDECARS]?.register(sidecarRepository.countGroupedByLibraryId().map { Row.of(Tags.of("library", it.key), it.value) }, true)
     }
   }
 }

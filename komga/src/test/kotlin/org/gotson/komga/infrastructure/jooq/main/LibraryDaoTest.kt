@@ -14,7 +14,6 @@ import java.time.LocalDateTime
 class LibraryDaoTest(
   @Autowired private val libraryDao: LibraryDao,
 ) {
-
   @AfterEach
   fun deleteLibraries() {
     libraryDao.deleteAll()
@@ -24,10 +23,11 @@ class LibraryDaoTest(
   @Test
   fun `given a library when inserting then it is persisted`() {
     val now = LocalDateTime.now()
-    val library = Library(
-      name = "Library",
-      root = URL("file://library"),
-    )
+    val library =
+      Library(
+        name = "Library",
+        root = URL("file://library"),
+      )
 
     libraryDao.insert(library)
     val created = libraryDao.findById(library.id)
@@ -40,44 +40,46 @@ class LibraryDaoTest(
 
   @Test
   fun `given existing library when updating then it is persisted`() {
-    val library = Library(
-      name = "Library",
-      root = URL("file://library"),
-    )
+    val library =
+      Library(
+        name = "Library",
+        root = URL("file://library"),
+      )
     libraryDao.insert(library)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = with(libraryDao.findById(library.id)) {
-      copy(
-        name = "LibraryUpdated",
-        root = URL("file://library2"),
-        importEpubSeries = false,
-        importEpubBook = false,
-        importComicInfoCollection = false,
-        importComicInfoSeries = false,
-        importComicInfoBook = false,
-        importComicInfoReadList = false,
-        importComicInfoSeriesAppendVolume = false,
-        importMylarSeries = false,
-        importBarcodeIsbn = false,
-        importLocalArtwork = false,
-        repairExtensions = true,
-        convertToCbz = true,
-        emptyTrashAfterScan = true,
-        seriesCover = Library.SeriesCover.LAST,
-        hashFiles = false,
-        hashPages = true,
-        analyzeDimensions = false,
-        scanForceModifiedTime = true,
-        scanCbx = false,
-        scanEpub = false,
-        scanPdf = false,
-        scanInterval = Library.ScanInterval.DAILY,
-        scanOnStartup = true,
-        scanDirectoryExclusions = setOf("a", "b"),
-      )
-    }
+    val updated =
+      with(libraryDao.findById(library.id)) {
+        copy(
+          name = "LibraryUpdated",
+          root = URL("file://library2"),
+          importEpubSeries = false,
+          importEpubBook = false,
+          importComicInfoCollection = false,
+          importComicInfoSeries = false,
+          importComicInfoBook = false,
+          importComicInfoReadList = false,
+          importComicInfoSeriesAppendVolume = false,
+          importMylarSeries = false,
+          importBarcodeIsbn = false,
+          importLocalArtwork = false,
+          repairExtensions = true,
+          convertToCbz = true,
+          emptyTrashAfterScan = true,
+          seriesCover = Library.SeriesCover.LAST,
+          hashFiles = false,
+          hashPages = true,
+          analyzeDimensions = false,
+          scanForceModifiedTime = true,
+          scanCbx = false,
+          scanEpub = false,
+          scanPdf = false,
+          scanInterval = Library.ScanInterval.DAILY,
+          scanOnStartup = true,
+          scanDirectoryExclusions = setOf("a", "b"),
+        )
+      }
 
     libraryDao.update(updated)
     val modified = libraryDao.findById(updated.id)
@@ -118,10 +120,11 @@ class LibraryDaoTest(
 
   @Test
   fun `given a library when deleting then it is deleted`() {
-    val library = Library(
-      name = "Library",
-      root = URL("file://library"),
-    )
+    val library =
+      Library(
+        name = "Library",
+        root = URL("file://library"),
+      )
 
     libraryDao.insert(library)
     assertThat(libraryDao.count()).isEqualTo(1)
@@ -133,14 +136,16 @@ class LibraryDaoTest(
 
   @Test
   fun `given libraries when deleting all then all are deleted`() {
-    val library = Library(
-      name = "Library",
-      root = URL("file://library"),
-    )
-    val library2 = Library(
-      name = "Library2",
-      root = URL("file://library2"),
-    )
+    val library =
+      Library(
+        name = "Library",
+        root = URL("file://library"),
+      )
+    val library2 =
+      Library(
+        name = "Library2",
+        root = URL("file://library2"),
+      )
 
     libraryDao.insert(library)
     libraryDao.insert(library2)
@@ -153,14 +158,16 @@ class LibraryDaoTest(
 
   @Test
   fun `given libraries when finding all then all are returned`() {
-    val library = Library(
-      name = "Library",
-      root = URL("file://library"),
-    )
-    val library2 = Library(
-      name = "Library2",
-      root = URL("file://library2"),
-    )
+    val library =
+      Library(
+        name = "Library",
+        root = URL("file://library"),
+      )
+    val library2 =
+      Library(
+        name = "Library2",
+        root = URL("file://library2"),
+      )
 
     libraryDao.insert(library)
     libraryDao.insert(library2)
@@ -173,14 +180,16 @@ class LibraryDaoTest(
 
   @Test
   fun `given libraries when finding all by id then all are returned`() {
-    val library = Library(
-      name = "Library",
-      root = URL("file://library"),
-    )
-    val library2 = Library(
-      name = "Library2",
-      root = URL("file://library2"),
-    )
+    val library =
+      Library(
+        name = "Library",
+        root = URL("file://library"),
+      )
+    val library2 =
+      Library(
+        name = "Library2",
+        root = URL("file://library2"),
+      )
 
     libraryDao.insert(library)
     libraryDao.insert(library2)
@@ -193,10 +202,11 @@ class LibraryDaoTest(
 
   @Test
   fun `given existing library when finding by id then library is returned`() {
-    val library = Library(
-      name = "Library",
-      root = URL("file://library"),
-    )
+    val library =
+      Library(
+        name = "Library",
+        root = URL("file://library"),
+      )
 
     libraryDao.insert(library)
 

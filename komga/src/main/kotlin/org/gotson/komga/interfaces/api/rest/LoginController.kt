@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RestController
 class LoginController(
   private val cookieSerializer: CookieSerializer,
 ) {
-
   @GetMapping("api/v1/login/set-cookie")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun headerToCookie(request: HttpServletRequest, response: HttpServletResponse, session: HttpSession) {
+  fun headerToCookie(
+    request: HttpServletRequest,
+    response: HttpServletResponse,
+    session: HttpSession,
+  ) {
     cookieSerializer.writeCookieValue(CookieSerializer.CookieValue(request, response, session.id))
   }
 }

@@ -26,9 +26,10 @@ class OpfTest {
     assertThat(opfLandmarks).isEqualTo(expectedToc)
   }
 
-  private fun getExpectedOpfLandmarks(prefix: String = "") = listOf(
-    EpubTocEntry("Table Of Contents", "${prefix}Text/Mart_9780553897852_epub_toc_r1.htm"),
-    EpubTocEntry("Text", "${prefix}Text/Mart_9780553897852_epub_prl_r1.htm"),
-    EpubTocEntry("Cover", "${prefix}Text/Mart_9780553897852_epub_cvi_r1.htm"),
-  )
+  private fun getExpectedOpfLandmarks(prefix: String = "") =
+    listOf(
+      EpubTocEntry("Table Of Contents", "${prefix}Text/Mart_9780553897852_epub_toc_r1.htm"),
+      EpubTocEntry("Text", "${prefix}Text/Mart_9780553897852_epub_prl_r1.htm"),
+      EpubTocEntry("Cover", "${prefix}Text/Mart_9780553897852_epub_cvi_r1.htm"),
+    )
 }

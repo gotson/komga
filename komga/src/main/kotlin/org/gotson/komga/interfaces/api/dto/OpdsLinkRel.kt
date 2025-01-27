@@ -12,5 +12,6 @@ class OpdsLinkRel {
     const val SORT_NEW = "http://opds-spec.org/sort/new"
     const val SORT_POPULAR = "http://opds-spec.org/sort/popular"
     const val ACQUISITION = "http://opds-spec.org/acquisition"
+    const val AUTH = "http://opds-spec.org/auth/document"
   }
 }

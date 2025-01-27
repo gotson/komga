@@ -13,14 +13,15 @@ import java.util.concurrent.TimeUnit
 class WebMvcConfiguration : WebMvcConfigurer {
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
     if (!registry.hasMappingForPattern("/webjars/**")) {
-      registry.addResourceHandler("/webjars/**")
+      registry
+        .addResourceHandler("/webjars/**")
         .addResourceLocations("classpath:/META-INF/resources/webjars/")
     }
 
     if (!registry.hasMappingForPattern("/swagger-ui.html**")) {
       registry
         .addResourceHandler("/swagger-ui.html**")
-        .addResourceLocations("classpath:/META-INF/resources/swagger-ui.html")
+        .addResourceLocations("classpath:/META-INF/resources/")
     }
 
     registry
@@ -35,35 +36,16 @@ class WebMvcConfiguration : WebMvcConfigurer {
         "/android-chrome-192x192.png",
         "/android-chrome-512x512.png",
         "/manifest.json",
-      )
-      .addResourceLocations(
-        "classpath:public/index.html",
-        "classpath:public/favicon.ico",
-        "classpath:public/favicon-16x16.png",
-        "classpath:public/favicon-32x32.png",
-        "classpath:public/mstile-144x144.png",
-        "classpath:public/apple-touch-icon.png",
-        "classpath:public/apple-touch-icon-180x180.png",
-        "classpath:public/android-chrome-192x192.png",
-        "classpath:public/android-chrome-512x512.png",
-        "classpath:public/manifest.json",
-      )
+      ).addResourceLocations("classpath:public/")
       .setCacheControl(CacheControl.noStore())
 
-    registry
-      .addResourceHandler(
-        "/css/**",
-        "/fonts/**",
-        "/img/**",
-        "/js/**",
-      )
-      .addResourceLocations(
-        "classpath:public/css/",
-        "classpath:public/fonts/",
-        "classpath:public/img/",
-        "classpath:public/js/",
-      )
-      .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
+    listOf("css", "fonts", "img", "js")
+      .forEach {
+        registry
+          .addResourceHandler("/$it/**")
+          .addResourceLocations("classpath:public/$it/")
+          .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic())
+      }
   }
 
   override fun addInterceptors(registry: InterceptorRegistry) {

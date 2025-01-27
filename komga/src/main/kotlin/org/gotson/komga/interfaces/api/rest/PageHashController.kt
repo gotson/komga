@@ -8,7 +8,6 @@ import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHashKnown
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.PageHashRepository
 import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
@@ -37,20 +36,18 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("api/v1/page-hashes", produces = [MediaType.APPLICATION_JSON_VALUE])
-@PreAuthorize("hasRole('$ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 class PageHashController(
   private val pageHashRepository: PageHashRepository,
   private val pageHashLifecycle: PageHashLifecycle,
   private val taskEmitter: TaskEmitter,
 ) {
-
   @GetMapping
   @PageableAsQueryParam
   fun getKnownPageHashes(
     @RequestParam(name = "action", required = false) actions: List<PageHashKnown.Action>?,
     @Parameter(hidden = true) page: Pageable,
-  ): Page<PageHashKnownDto> =
-    pageHashRepository.findAllKnown(actions, page).map { it.toDto() }
+  ): Page<PageHashKnownDto> = pageHashRepository.findAllKnown(actions, page).map { it.toDto() }
 
   @GetMapping("/{pageHash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
@@ -64,8 +61,7 @@ class PageHashController(
   @PageableAsQueryParam
   fun getUnknownPageHashes(
     @Parameter(hidden = true) page: Pageable,
-  ): Page<PageHashUnknownDto> =
-    pageHashRepository.findAllUnknown(page).map { it.toDto() }
+  ): Page<PageHashUnknownDto> = pageHashRepository.findAllUnknown(page).map { it.toDto() }
 
   @GetMapping("{pageHash}")
   @PageableAsQueryParam
@@ -73,10 +69,11 @@ class PageHashController(
     @PathVariable pageHash: String,
     @Parameter(hidden = true) page: Pageable,
   ): Page<PageHashMatchDto> =
-    pageHashRepository.findMatchesByHash(
-      pageHash,
-      page,
-    ).map { it.toDto() }
+    pageHashRepository
+      .findMatchesByHash(
+        pageHash,
+        page,
+      ).map { it.toDto() }
 
   @GetMapping("unknown/{pageHash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
@@ -85,9 +82,10 @@ class PageHashController(
     @RequestParam("resize") resize: Int? = null,
   ): ResponseEntity<ByteArray> =
     pageHashLifecycle.getPage(pageHash, resize)?.let {
-      ResponseEntity.ok()
+      ResponseEntity
+        .ok()
         .contentType(getMediaTypeOrDefault(it.mediaType))
-        .body(it.content)
+        .body(it.bytes)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @PutMapping
@@ -114,19 +112,21 @@ class PageHashController(
   fun performDelete(
     @PathVariable pageHash: String,
   ) {
-    val toRemove = pageHashRepository.findMatchesByHash(pageHash, Pageable.unpaged())
-      .groupBy(
-        { it.bookId },
-        {
-          BookPageNumbered(
-            fileName = it.fileName,
-            mediaType = it.mediaType,
-            fileHash = pageHash,
-            fileSize = it.fileSize,
-            pageNumber = it.pageNumber,
-          )
-        },
-      )
+    val toRemove =
+      pageHashRepository
+        .findMatchesByHash(pageHash, Pageable.unpaged())
+        .groupBy(
+          { it.bookId },
+          {
+            BookPageNumbered(
+              fileName = it.fileName,
+              mediaType = it.mediaType,
+              fileHash = pageHash,
+              fileSize = it.fileSize,
+              pageNumber = it.pageNumber,
+            )
+          },
+        )
 
     taskEmitter.removeDuplicatePages(toRemove)
   }
@@ -137,18 +137,19 @@ class PageHashController(
     @PathVariable pageHash: String,
     @RequestBody matchDto: PageHashMatchDto,
   ) {
-    val toRemove = Pair(
-      matchDto.bookId,
-      listOf(
-        BookPageNumbered(
-          fileName = matchDto.fileName,
-          mediaType = matchDto.mediaType,
-          fileHash = pageHash,
-          fileSize = matchDto.fileSize,
-          pageNumber = matchDto.pageNumber,
+    val toRemove =
+      Pair(
+        matchDto.bookId,
+        listOf(
+          BookPageNumbered(
+            fileName = matchDto.fileName,
+            mediaType = matchDto.mediaType,
+            fileHash = pageHash,
+            fileSize = matchDto.fileSize,
+            pageNumber = matchDto.pageNumber,
+          ),
         ),
-      ),
-    )
+      )
 
     taskEmitter.removeDuplicatePages(toRemove.first, toRemove.second)
   }

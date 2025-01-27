@@ -7,6 +7,7 @@ import kotlin.properties.Delegates
 
 class SettingsUpdateDto {
   private val isSet = mutableMapOf<String, Boolean>()
+
   fun isSet(prop: String) = isSet.getOrDefault(prop, false)
 
   var deleteEmptyCollections: Boolean? = null
@@ -32,6 +33,20 @@ class SettingsUpdateDto {
 
   @get:Pattern(regexp = "^\\/[\\w-\\/]*[a-zA-Z0-9]\$")
   var serverContextPath: String?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var koboProxy: Boolean? = null
+
+  @get:Positive
+  @get:Max(65535)
+  var koboPort: Int?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var kepubifyPath: String?
     by Delegates.observable(null) { prop, _, _ ->
       isSet[prop.name] = true
     }

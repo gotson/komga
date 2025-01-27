@@ -4,6 +4,7 @@
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
+      <libraries-actions-menu v-else/>
 
       <v-toolbar-title>
         <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
@@ -72,10 +73,12 @@ import {LibrarySseDto} from '@/types/komga-sse'
 import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {LibraryDto} from '@/types/komga-libraries'
 import {ReadListDto} from '@/types/komga-readlists'
+import LibrariesActionsMenu from '@/components/menus/LibrariesActionsMenu.vue'
 
 export default Vue.extend({
   name: 'BrowseReadLists',
   components: {
+    LibrariesActionsMenu,
     LibraryActionsMenu,
     ToolbarSticky,
     LibraryNavigation,
@@ -204,6 +207,7 @@ export default Vue.extend({
     },
     async loadLibrary(libraryId: string) {
       this.library = this.getLibraryLazy(libraryId)
+      if (this.library != undefined) document.title = `Komga - ${this.library.name}`
       await this.loadPage(libraryId, this.page)
 
       if (this.totalElements === 0) {

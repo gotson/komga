@@ -2,7 +2,9 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Pageable
 import java.net.URL
 import java.time.LocalDateTime
 
@@ -24,7 +27,6 @@ class BookDaoTest(
   @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val library = makeLibrary()
   private val series = makeSeries("Series")
 
@@ -49,16 +51,17 @@ class BookDaoTest(
   @Test
   fun `given a book when inserting then it is persisted`() {
     val now = LocalDateTime.now()
-    val book = Book(
-      name = "Book",
-      url = URL("file://book"),
-      fileLastModified = now,
-      fileSize = 3,
-      fileHash = "abc",
-      seriesId = series.id,
-      libraryId = library.id,
-      deletedDate = LocalDateTime.now(),
-    )
+    val book =
+      Book(
+        name = "Book",
+        url = URL("file://book"),
+        fileLastModified = now,
+        fileSize = 3,
+        fileHash = "abc",
+        seriesId = series.id,
+        libraryId = library.id,
+        deletedDate = LocalDateTime.now(),
+      )
 
     bookDao.insert(book)
     val created = bookDao.findByIdOrNull(book.id)!!
@@ -76,28 +79,30 @@ class BookDaoTest(
 
   @Test
   fun `given existing book when updating then it is persisted`() {
-    val book = Book(
-      name = "Book",
-      url = URL("file://book"),
-      fileLastModified = LocalDateTime.now(),
-      fileSize = 3,
-      seriesId = series.id,
-      libraryId = library.id,
-    )
+    val book =
+      Book(
+        name = "Book",
+        url = URL("file://book"),
+        fileLastModified = LocalDateTime.now(),
+        fileSize = 3,
+        seriesId = series.id,
+        libraryId = library.id,
+      )
     bookDao.insert(book)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = with(bookDao.findByIdOrNull(book.id)!!) {
-      copy(
-        name = "Updated",
-        url = URL("file://updated"),
-        fileLastModified = modificationDate,
-        fileSize = 5,
-        fileHash = "def",
-        deletedDate = LocalDateTime.now(),
-      )
-    }
+    val updated =
+      with(bookDao.findByIdOrNull(book.id)!!) {
+        copy(
+          name = "Updated",
+          url = URL("file://updated"),
+          fileLastModified = modificationDate,
+          fileSize = 5,
+          fileHash = "def",
+          deletedDate = LocalDateTime.now(),
+        )
+      }
 
     bookDao.update(updated)
     val modified = bookDao.findByIdOrNull(updated.id)!!
@@ -117,14 +122,15 @@ class BookDaoTest(
 
   @Test
   fun `given existing book when finding by id then book is returned`() {
-    val book = Book(
-      name = "Book",
-      url = URL("file://book"),
-      fileLastModified = LocalDateTime.now(),
-      fileSize = 3,
-      seriesId = series.id,
-      libraryId = library.id,
-    )
+    val book =
+      Book(
+        name = "Book",
+        url = URL("file://book"),
+        fileLastModified = LocalDateTime.now(),
+        fileSize = 3,
+        seriesId = series.id,
+        libraryId = library.id,
+      )
     bookDao.insert(book)
 
     val found = bookDao.findByIdOrNull(book.id)
@@ -155,11 +161,12 @@ class BookDaoTest(
     bookDao.insert(makeBook("1", libraryId = library.id, seriesId = series.id))
     bookDao.insert(makeBook("2", libraryId = library.id, seriesId = series.id))
 
-    val search = BookSearch(
-      libraryIds = listOf(library.id),
-      seriesIds = listOf(series.id),
-    )
-    val found = bookDao.findAll(search)
+    val search =
+      SearchCondition.AllOfBook(
+        SearchCondition.LibraryId(SearchOperator.Is(library.id)),
+        SearchCondition.SeriesId(SearchOperator.Is(series.id)),
+      )
+    val found = bookDao.findAll(search, SearchContext.empty(), Pageable.unpaged()).content
 
     assertThat(found).hasSize(2)
   }

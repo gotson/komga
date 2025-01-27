@@ -35,3 +35,6 @@
 | ERR_1029     | ComicRack CBL does not contain any Book element         |
 | ERR_1030     | ComicRack CBL has no Name element                       |
 | ERR_1031     | ComicRack CBL Book is missing series or number          |
+| ERR_1032     | EPUB file has wrong media type                          |
+| ERR_1033     | Some entries are missing                                |
+| ERR_1034     | An API key with that comment already exists             |

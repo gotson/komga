@@ -1,13 +1,11 @@
 package org.gotson.komga.infrastructure.search
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.lucene.document.Document
 import org.apache.lucene.index.Term
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.SeriesCollection
-import org.gotson.komga.domain.model.SeriesSearchWithReadProgress
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
@@ -33,7 +31,6 @@ class SearchIndexLifecycle(
   private val seriesDtoRepository: SeriesDtoRepository,
   private val luceneHelper: LuceneHelper,
 ) {
-
   fun upgradeIndex() {
     luceneHelper.upgradeIndex()
     luceneHelper.setIndexVersion(INDEX_VERSION)
@@ -46,8 +43,8 @@ class SearchIndexLifecycle(
 
     targetEntities.forEach {
       when (it) {
-        LuceneEntity.Book -> rebuildIndex(it, { p: Pageable -> bookDtoRepository.findAll(BookSearchWithReadProgress(), "unused", p) }, { e: BookDto -> e.bookToDocument() })
-        LuceneEntity.Series -> rebuildIndex(it, { p: Pageable -> seriesDtoRepository.findAll(SeriesSearchWithReadProgress(), "unused", p) }, { e: SeriesDto -> e.toDocument() })
+        LuceneEntity.Book -> rebuildIndex(it, { p: Pageable -> bookDtoRepository.findAll(p) }, { e: BookDto -> e.bookToDocument() })
+        LuceneEntity.Series -> rebuildIndex(it, { p: Pageable -> seriesDtoRepository.findAll(p) }, { e: SeriesDto -> e.toDocument() })
         LuceneEntity.Collection -> rebuildIndex(it, { p: Pageable -> collectionRepository.findAll(pageable = p) }, { e: SeriesCollection -> e.toDocument() })
         LuceneEntity.ReadList -> rebuildIndex(it, { p: Pageable -> readListRepository.findAll(pageable = p) }, { e: ReadList -> e.toDocument() })
       }
@@ -56,7 +53,11 @@ class SearchIndexLifecycle(
     luceneHelper.setIndexVersion(INDEX_VERSION)
   }
 
-  private fun <T> rebuildIndex(entity: LuceneEntity, provider: (Pageable) -> Page<out T>, toDoc: (T) -> Document?) {
+  private fun <T> rebuildIndex(
+    entity: LuceneEntity,
+    provider: (Pageable) -> Page<out T>,
+    toDoc: (T) -> Document?,
+  ) {
     logger.info { "Rebuilding index for ${entity.name}" }
 
     val count = provider(Pageable.ofSize(1)).totalElements
@@ -69,8 +70,10 @@ class SearchIndexLifecycle(
 
       (0 until pages).forEach { page ->
         logger.info { "Processing page ${page + 1} of $pages ($batchSize elements)" }
-        val entityDocs = provider(PageRequest.of(page, batchSize)).content
-          .mapNotNull { toDoc(it) }
+        val entityDocs =
+          provider(PageRequest.of(page, batchSize))
+            .content
+            .mapNotNull { toDoc(it) }
         luceneHelper.addDocuments(entityDocs)
       }
     }.also { duration ->
@@ -104,17 +107,26 @@ class SearchIndexLifecycle(
   private fun BookDto.bookToDocument(): Document =
     if (this.oneshot) {
       seriesDtoRepository.findByIdOrNull(seriesId, "unused")!!.oneshotDocument(toDocument())
-    } else this.toDocument()
+    } else {
+      this.toDocument()
+    }
 
   private fun addEntity(doc: Document) {
     luceneHelper.addDocument(doc)
   }
 
-  private fun updateEntity(entity: LuceneEntity, entityId: String, newDoc: Document) {
+  private fun updateEntity(
+    entity: LuceneEntity,
+    entityId: String,
+    newDoc: Document,
+  ) {
     luceneHelper.updateDocument(Term(entity.id, entityId), newDoc)
   }
 
-  private fun deleteEntity(entity: LuceneEntity, entityId: String) {
+  private fun deleteEntity(
+    entity: LuceneEntity,
+    entityId: String,
+  ) {
     luceneHelper.deleteDocuments(Term(entity.id, entityId))
   }
 }

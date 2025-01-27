@@ -48,7 +48,7 @@
 
               <!-- FAB reading (center) -->
               <v-btn
-                v-if="bookReady && !selected && !preselect && canReadPages"
+                v-if="showFab"
                 fab
                 x-large
                 color="accent"
@@ -230,6 +230,11 @@ export default Vue.extend({
       type: Boolean,
       default: true,
     },
+    // force disable fab
+    disableFab: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => {
     return {
@@ -271,7 +276,7 @@ export default Vue.extend({
       return this.$store.getters.mePageStreaming && this.computedItem.type() === ItemTypes.BOOK
     },
     overlay(): boolean {
-      return this.onEdit !== undefined || this.onSelected !== undefined || this.bookReady || this.canReadPages || this.actionMenu
+      return this.onEdit !== undefined || this.onSelected !== undefined || this.showFab || this.actionMenu
     },
     computedItem(): Item<BookDto | SeriesDto | CollectionDto | ReadListDto> {
       let item = this.item
@@ -316,6 +321,9 @@ export default Vue.extend({
         return (this.item as BookDto).media.status === 'READY'
       }
       return false
+    },
+    showFab(): boolean {
+      return !this.disableFab && this.bookReady && !this.selected && !this.preselect && this.canReadPages
     },
     to(): RawLocation {
       return this.computedItem.to()

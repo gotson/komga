@@ -10,13 +10,14 @@ import org.springframework.web.util.pattern.PathPatternParser
 
 @Configuration
 class EtagFilterConfiguration {
-
-  private val excludePatterns = listOf(
-    PathPatternParser.defaultInstance.parse("/api/v1/books/*/file/**"),
-    PathPatternParser.defaultInstance.parse("/opds/v1.2/books/*/file/**"),
-    PathPatternParser.defaultInstance.parse("/api/v1/readlists/*/file/**"),
-    PathPatternParser.defaultInstance.parse("/api/v1/series/*/file/**"),
-  )
+  private val excludePatterns =
+    listOf(
+      PathPatternParser.defaultInstance.parse("/api/v1/books/*/file/**"),
+      PathPatternParser.defaultInstance.parse("/opds/v1.2/books/*/file/**"),
+      PathPatternParser.defaultInstance.parse("/api/v1/readlists/*/file/**"),
+      PathPatternParser.defaultInstance.parse("/api/v1/series/*/file/**"),
+      PathPatternParser.defaultInstance.parse("/kobo/*/v1/books/*/file/**"),
+    )
 
   @Bean
   fun shallowEtagHeaderFilter(): FilterRegistrationBean<out ShallowEtagHeaderFilter> =
@@ -31,6 +32,7 @@ class EtagFilterConfiguration {
       it.addUrlPatterns(
         "/api/*",
         "/opds/*",
+        "/kobo/*",
       )
       it.setName("etagFilter")
     }

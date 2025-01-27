@@ -1,12 +1,11 @@
 package org.gotson.komga.interfaces.api.rest
 
 import com.jakewharton.byteunits.BinaryByteUnit
-import mu.KotlinLogging
-import org.gotson.komga.domain.model.BookWithMedia
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.CodedException
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
-import org.gotson.komga.domain.model.ROLE_ADMIN
+import org.gotson.komga.domain.model.TransientBook
 import org.gotson.komga.domain.persistence.TransientBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.TransientBookLifecycle
@@ -31,19 +30,19 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v1/transient-books", produces = [MediaType.APPLICATION_JSON_VALUE])
-@PreAuthorize("hasRole('$ROLE_ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 class TransientBooksController(
   private val transientBookLifecycle: TransientBookLifecycle,
   private val transientBookRepository: TransientBookRepository,
   private val bookAnalyzer: BookAnalyzer,
 ) {
-
   @PostMapping
   fun scanForTransientBooks(
     @RequestBody request: ScanRequestDto,
   ): List<TransientBookDto> =
     try {
-      transientBookLifecycle.scanAndPersist(request.path)
+      transientBookLifecycle
+        .scanAndPersist(request.path)
         .sortedBy { it.book.path }
         .map { it.toDto() }
     } catch (e: CodedException) {
@@ -53,9 +52,10 @@ class TransientBooksController(
   @PostMapping("{id}/analyze")
   fun analyze(
     @PathVariable id: String,
-  ): TransientBookDto = transientBookRepository.findByIdOrNull(id)?.let {
-    transientBookLifecycle.analyzeAndPersist(it).toDto()
-  } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  ): TransientBookDto =
+    transientBookRepository.findByIdOrNull(id)?.let {
+      transientBookLifecycle.analyzeAndPersist(it).toDto()
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping(
     value = ["{id}/pages/{pageNumber}"],
@@ -69,9 +69,10 @@ class TransientBooksController(
       try {
         val pageContent = transientBookLifecycle.getBookPage(it, pageNumber)
 
-        ResponseEntity.ok()
+        ResponseEntity
+          .ok()
           .contentType(getMediaTypeOrDefault(pageContent.mediaType))
-          .body(pageContent.content)
+          .body(pageContent.bytes)
       } catch (ex: IndexOutOfBoundsException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
       } catch (ex: MediaNotReadyException) {
@@ -82,7 +83,7 @@ class TransientBooksController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  private fun BookWithMedia.toDto(): TransientBookDto {
+  private fun TransientBook.toDto(): TransientBookDto {
     val pages = if (media.profile == MediaProfile.PDF) bookAnalyzer.getPdfPagesDynamic(media) else media.pages
     return TransientBookDto(
       id = book.id,
@@ -92,18 +93,21 @@ class TransientBooksController(
       sizeBytes = book.fileSize,
       status = media.status.toString(),
       mediaType = media.mediaType ?: "",
-      pages = pages.mapIndexed { index, bookPage ->
-        PageDto(
-          number = index + 1,
-          fileName = bookPage.fileName,
-          mediaType = bookPage.mediaType,
-          width = bookPage.dimension?.width,
-          height = bookPage.dimension?.height,
-          sizeBytes = bookPage.fileSize,
-        )
-      },
+      pages =
+        pages.mapIndexed { index, bookPage ->
+          PageDto(
+            number = index + 1,
+            fileName = bookPage.fileName,
+            mediaType = bookPage.mediaType,
+            width = bookPage.dimension?.width,
+            height = bookPage.dimension?.height,
+            sizeBytes = bookPage.fileSize,
+          )
+        },
       files = media.files.map { it.fileName },
       comment = media.comment ?: "",
+      number = metadata.number,
+      seriesId = metadata.seriesId,
     )
   }
 }
@@ -124,4 +128,6 @@ data class TransientBookDto(
   val pages: List<PageDto>,
   val files: List<String>,
   val comment: String,
+  val number: Float?,
+  val seriesId: String?,
 )

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 
 class ZipExtractorTest {
-
   private val contentDetector = ContentDetector(TikaConfig())
   private val imageAnalyzer = ImageAnalyzer()
   private val zipExtractor = ZipExtractor(contentDetector, imageAnalyzer)

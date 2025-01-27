@@ -1,7 +1,6 @@
 package org.gotson.komga.infrastructure.configuration
 
 import org.apache.commons.lang3.RandomStringUtils
-import org.gotson.komga.application.tasks.TaskPoolSizeChangedEvent
 import org.gotson.komga.domain.model.ThumbnailSize
 import org.gotson.komga.infrastructure.jooq.main.ServerSettingsDao
 import org.springframework.context.ApplicationEventPublisher
@@ -40,7 +39,7 @@ class KomgaSettingsProvider(
     rememberMeKey = getRandomRememberMeKey()
   }
 
-  private fun getRandomRememberMeKey() = RandomStringUtils.randomAlphanumeric(32)
+  private fun getRandomRememberMeKey() = RandomStringUtils.secure().nextAlphanumeric(32)
 
   var rememberMeDuration: Duration =
     (serverSettingsDao.getSettingByKey(Settings.REMEMBER_ME_DURATION.name, Int::class.java) ?: 365).days
@@ -63,7 +62,7 @@ class KomgaSettingsProvider(
     set(value) {
       serverSettingsDao.saveSetting(Settings.TASK_POOL_SIZE.name, value)
       field = value
-      eventPublisher.publishEvent(TaskPoolSizeChangedEvent())
+      eventPublisher.publishEvent(SettingChangedEvent.TaskPoolSize)
     }
 
   var serverPort: Int? =
@@ -85,6 +84,34 @@ class KomgaSettingsProvider(
         serverSettingsDao.deleteSetting(Settings.SERVER_CONTEXT_PATH.name)
       field = value
     }
+
+  var koboProxy: Boolean =
+    serverSettingsDao.getSettingByKey(Settings.KOBO_PROXY.name, Boolean::class.java) ?: false
+    set(value) {
+      serverSettingsDao.saveSetting(Settings.KOBO_PROXY.name, value)
+      field = value
+    }
+
+  var koboPort: Int? =
+    serverSettingsDao.getSettingByKey(Settings.KOBO_PORT.name, Int::class.java)
+    set(value) {
+      if (value != null)
+        serverSettingsDao.saveSetting(Settings.KOBO_PORT.name, value)
+      else
+        serverSettingsDao.deleteSetting(Settings.KOBO_PORT.name)
+      field = value
+    }
+
+  var kepubifyPath: String? =
+    serverSettingsDao.getSettingByKey(Settings.KEPUBIFY_PATH.name, String::class.java)?.ifBlank { null }
+    set(value) {
+      if (value != null)
+        serverSettingsDao.saveSetting(Settings.KEPUBIFY_PATH.name, value)
+      else
+        serverSettingsDao.deleteSetting(Settings.KEPUBIFY_PATH.name)
+      field = value
+      eventPublisher.publishEvent(SettingChangedEvent.KepubifyPath)
+    }
 }
 
 private enum class Settings {
@@ -96,4 +123,7 @@ private enum class Settings {
   TASK_POOL_SIZE,
   SERVER_PORT,
   SERVER_CONTEXT_PATH,
+  KOBO_PROXY,
+  KOBO_PORT,
+  KEPUBIFY_PATH,
 }

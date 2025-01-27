@@ -59,6 +59,7 @@ data class ReadListRequestBookMatchSeriesDto(
   @JsonFormat(pattern = "yyyy-MM-dd")
   val releaseDate: LocalDate?,
 )
+
 data class ReadListRequestBookMatchBookDto(
   val bookId: String,
   val number: String,

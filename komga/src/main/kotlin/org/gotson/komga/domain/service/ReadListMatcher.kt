@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.service
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.ReadListMatch
 import org.gotson.komga.domain.model.ReadListRequest
 import org.gotson.komga.domain.model.ReadListRequestMatch
@@ -19,8 +19,10 @@ class ReadListMatcher(
     logger.info { "Trying to match $request" }
 
     val readListMatch =
-      if (readListRepository.existsByName(request.name)) ReadListMatch(request.name, "ERR_1009")
-      else ReadListMatch(request.name)
+      if (readListRepository.existsByName(request.name))
+        ReadListMatch(request.name, "ERR_1009")
+      else
+        ReadListMatch(request.name)
 
     val matches = readListRequestRepository.matchBookRequests(request.books)
 

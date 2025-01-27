@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.apprunner
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.springframework.boot.ApplicationArguments
@@ -18,6 +18,7 @@ class PasswordResetRunner(
 ) : ApplicationRunner {
   private val resetFor = "reset"
   private val resetTo = "newpassword"
+
   override fun run(args: ApplicationArguments) {
     val newPassword = args.getOptionValues(resetTo)?.firstOrNull()
     val resetFor = args.getOptionValues(resetFor)?.toSet() ?: emptySet()

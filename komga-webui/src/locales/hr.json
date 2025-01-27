@@ -1,0 +1,1055 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0} – {1} od {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Učitavanje predmeta …",
+      "noResultsText": "Nije pronađen nijedan podudarajući zapis"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Broj redaka po stranici:",
+      "sortBy": "Razvrstaj prema"
+    },
+    "fileInput": {
+      "counter": "{0} datoteka",
+      "counterSize": "{0} datoteka ({1} ukupno)"
+    },
+    "noDataText": "Nema dostupnih podataka"
+  },
+  "account_settings": {
+    "account_settings": "Postavke računa",
+    "api_key": {
+      "created_date": "Datum kreiranja: {date}",
+      "force_kobo_sync": "Koristi Kobo sinkronizaciju",
+      "generate_api_key": "Generiraj API ključ",
+      "no_keys": "Još nije stvoren nijedan API ključ"
+    },
+    "change_password": "promijeni lozinku",
+    "details": "Detalji",
+    "my_account": "Moj račun"
+  },
+  "announcements": {
+    "mark_all_read": "Označi sve kao pročitano",
+    "mark_read": "Označi kao pročitano",
+    "tab_title": "Najave"
+  },
+  "authentication_activity": {
+    "api_key": "API ključ",
+    "datetime": "Datum / Vrijeme",
+    "email": "E-mail adresa",
+    "error": "Greška",
+    "ip": "IP",
+    "source": "Izvor",
+    "success": "Uspjeh",
+    "user_agent": "Korisnički agent"
+  },
+  "author_roles": {
+    "colorist": "koloristi",
+    "cover": "omot",
+    "editor": "urednici",
+    "inker": "bojitelj",
+    "letterer": "tipografi",
+    "penciller": "crtači",
+    "translator": "prevoditelji",
+    "writer": "pisaći"
+  },
+  "book_card": {
+    "error": "Greška",
+    "no_release_date": "Bez datuma izdanja",
+    "unknown": "Mora se analizirati",
+    "unread": "Nepročitano",
+    "unsupported": "Nepodržano"
+  },
+  "book_import": {
+    "button_browse": "Pregledaj",
+    "button_import": "Uvezi",
+    "button_scan": "Pretraži",
+    "button_select_series": "Odaberi seriju",
+    "field_import_path": "Uvezi iz mape",
+    "info_part1": "Ovaj ekran omogućuje uvoz datoteka koje se ne nalaze u tvojim postojećim bibliotekama. Datoteke možeš uvesti samo u postojeću seriju. U tom slučaju će Komga premjestiti ili kopirati datoteke u mapu odabrane serije.",
+    "info_part2": "Ako odabereš broj za knjigu, a knjiga s tim brojem već postoji, tada ćeš moći usporediti te dvije knjige. Ako odlučiš uvesti knjigu, Komga će nadograditi postojeću knjigu s novomknjigom i zamijeniti staru datoteku s novom datotekom.",
+    "no_files_found": "Nije pronađena nijedna datoteka",
+    "notification": {
+      "go_to_book": "Idi na knjigu",
+      "import_failure": "Neuspio uvoz knjige: {file}",
+      "import_successful": "Knjiga uspješno uvezena: {book}",
+      "source_file": "Izvorna datoteka: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Knjiga se mora najprije analizirati",
+      "error_choose_series": "Odabri seriju",
+      "error_only_import_no_errors": "Uvesti se mogu samo knjige bez grešaka",
+      "warning_upgrade": "Postojeća knjiga će se nadograditi"
+    },
+    "table": {
+      "destination_name": "Ime odredišta",
+      "file_name": "Ime datoteke",
+      "number": "Broj",
+      "series": "Serije"
+    },
+    "title": "Uvezi",
+    "try_another_directory": "Pokušaj pretražiti jednu drugu mapu"
+  },
+  "bookreader": {
+    "beginning_of_book": "Nalaziš se na početku knjige.",
+    "changing_reading_direction": "Mijenjanje smjera čitanja u",
+    "cycling_page_layout": "Mijenjanje rasporeda stranica",
+    "cycling_page_margin": "Mijenjanje margina stranica",
+    "cycling_scale": "Mijenjanje skaliranja",
+    "cycling_side_padding": "Mijenjanje rubova",
+    "download_current_page": "Preuzmi trenutačnu stranicu",
+    "end_of_book": "Došao/la si do kraja knjige.",
+    "from_series_metadata": "od metapodataka serije",
+    "move_next": "Ponovo pritisni „Dalje” za prelaženje na sljedeću knjigu.",
+    "move_next_exit": "Ponovo pritisni „Dalje” za zatvaranje čitača.",
+    "move_previous": "Ponovo pritisni „Prethodno” za prelaženje na prethodnu knjigu.",
+    "notification_poster_set_book": "Trenutačna stranica je postavljena kao plakat knjige.",
+    "notification_poster_set_readlist": "Trenutačna stranica je postavljena kao plakat liste čitanja.",
+    "notification_poster_set_series": "Trenutačna stranica je postavljena kao plakat serije.",
+    "paged_reader_layout": {
+      "double": "Dvije stranice",
+      "double_no_cover": "Dvije stranice (bez omota)",
+      "single": "Jedna stranica"
+    },
+    "reader_settings": "Postavke čitača",
+    "scale_type": {
+      "continuous_original": "Original",
+      "continuous_width": "Prilagodi širinu",
+      "height": "Prilagodi visinu",
+      "original": "Original",
+      "screen": "Ekran",
+      "width": "Prilagodi širinu",
+      "width_shrink_only": "Prilagodi širinu (samo smanjivanje)"
+    },
+    "set_current_page_as_book_poster": "Postavi stranicu kao poster za knjigu",
+    "set_current_page_as_readlist_poster": "Postavi stranicu kao poster za listu čitanja",
+    "set_current_page_as_series_poster": "Postavi stranicu kao poster za seriju",
+    "settings": {
+      "always_fullscreen": "Uvijek u cjeloekranskom prikazu",
+      "animate_page_transitions": "Animiraj prijelaze stranica",
+      "background_color": "Boja pozadine",
+      "background_colors": {
+        "black": "Crna",
+        "gray": "Siva",
+        "white": "Bijela"
+      },
+      "display": "Prikaz",
+      "general": "Općenito",
+      "gestures": "Geste",
+      "page_layout": "Raspored stranica",
+      "page_margin": "Margine stranica",
+      "paged": "Postavke prikaza stranica",
+      "reading_mode": "Modus čitanja",
+      "scale_type": "Vrsta skaliranja",
+      "side_padding": "Rubovi",
+      "side_padding_none": "Bez",
+      "webtoon": "Opcije webtoon čitača"
+    },
+    "shortcuts": {
+      "close": "Zatvori",
+      "cycle_page_layout": "Mijenjaj raspored stranica",
+      "cycle_page_margin": "Mijenjaj margine stranica",
+      "cycle_scale": "Mijenjaj skaliranje",
+      "cycle_side_padding": "Mijenjaj rubove",
+      "first_page": "Prva stranica",
+      "fullscreen": "Uključi/Isključi cjeloekranski prikaz",
+      "last_page": "Zadnja stranica",
+      "left_to_right": "Slijeva nadesno",
+      "menus": "Izbornici",
+      "next_page": "Sljedeća stranica",
+      "previous_page": "Prethodna stranica",
+      "reader_navigation": "Navigacija čitača",
+      "right_to_left": "Zdesna nalijevo",
+      "settings": "Postavke",
+      "show_hide_help": "Prikaži/Sakrij pomoć",
+      "show_hide_settings": "Prikaži/Sakrij izbornik postavki",
+      "show_hide_thumbnails": "Prikaži/Sakrij pretraživač minijatura",
+      "show_hide_toolbars": "Prikaži/Sakrij trake alata",
+      "vertical": "Okomito",
+      "webtoon": "Webtoon"
+    },
+    "tooltip_incognito": "Napredak čitanja se neće spremiti"
+  },
+  "browse_book": {
+    "comment": "KOMENTAR",
+    "date_created": "STVORENO",
+    "date_modified": "ZADNJA PROMJENA",
+    "download_file": "Preuzmi datoteku",
+    "file": "DATOTEKA",
+    "format": "FORMAT",
+    "isbn": "ISBN",
+    "links": "POVEZNICE",
+    "navigation_within_readlist": "Navigacija unutar liste čitanja: {name}",
+    "outdated_tooltip": "Datoteka za ovu knjigu je promijenjena. Ova se knjiga mora ponovno analizirati",
+    "read_book": "Čitaj knjigu",
+    "read_incognito": "Čitaj inkognito",
+    "remove_from_collection": "Ukloni knjigu iz zbirke",
+    "remove_from_readlist": "Ukloni knjigu iz liste čitanja",
+    "size": "VELIČINA"
+  },
+  "browse_collection": {
+    "edit_collection": "Uredi zbirku",
+    "edit_elements": "Uredi elemente",
+    "manual_ordering": "ručno razvrstavanje"
+  },
+  "browse_readlist": {
+    "edit_elements": "Uredi elemente",
+    "edit_readlist": "Uredi listu čitanja",
+    "manual_ordering": "ručno razvrstavanje"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Ovo je najranija godina izdanja svih knjiga u seriji",
+    "remove_from_collection": "Ukloni serije iz zbirke",
+    "series_no_summary": "Ova serija nema sažetak, pa smo odabrali jedan za tebe!",
+    "summary_from_book": "Sažetak knjige {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Upravljaj zbirkom",
+    "title": "{name} zbirka"
+  },
+  "common": {
+    "age": "Dob",
+    "all_libraries": "Sve biblioteke",
+    "all_of": "Sve od",
+    "any_of": "Bilo koje od",
+    "book": "Knjiga",
+    "books": "Knjige",
+    "books_n": "Nema knjige | 1 knjiga | {count} knjige",
+    "books_total": "{count} / {total} knjiga",
+    "cancel": "Odustani",
+    "cbx": "Arhive stripova",
+    "choose_image": "Odaberi sliku",
+    "close": "Zatvori",
+    "collections": "Zbirke",
+    "copied": "Kopirano!",
+    "create": "Stvori",
+    "delete": "Izbriši",
+    "dimension": "š: {width}, v: {height}",
+    "discard": "Odbaci",
+    "disk_space": "Količina memorije diska",
+    "dismiss": "Ukloni",
+    "download": "Preuzmi",
+    "drag_drop": "povuci i ispusti",
+    "duplicate": "Dupliciraj",
+    "email": "E-mail adresa",
+    "epub": "Epub",
+    "error": "Greška",
+    "filename": "Ime datoteke",
+    "filter_no_matches": "Aktivni filtar nema podudaranja",
+    "genre": "Žanr",
+    "go_to_collection": "Idi na zbirku",
+    "go_to_library": "Idi na biblioteku",
+    "go_to_readlist": "Idi na listu čitanja",
+    "go_to_series": "Idi na seriju",
+    "i_understand": "Razumijem",
+    "library": "Biblioteka",
+    "locale_name": "Hrvatski",
+    "locale_rtl": "false",
+    "lock_all": "Zaključaj sve",
+    "n_selected": "Odabrano: {count}",
+    "nothing_to_show": "Nema ničega za pokazati",
+    "ok": "U redu",
+    "oneshot": "Izdanje bez nastavka",
+    "outdated": "Neaktualno",
+    "page": "Stranica",
+    "page_number": "Broj stranice",
+    "pages": "stranice",
+    "pages_left": "Nema preostalih stranica | 1 stranica preostala | {count} stranica preostalo",
+    "pages_n": "Nema stranica | 1 stranica | {count} stranica",
+    "password": "Lozinka",
+    "pdf": "PDF",
+    "pending_tasks": "Nema zadataka na čekanju | 1 zadatak na čekanju | {count} zadataka na čekanju",
+    "publisher": "Izdavač",
+    "read": "Čitaj",
+    "read_on": "Čitaj {date}",
+    "readlist": "Lista čitanja",
+    "readlists": "Liste čitanja",
+    "remember-me": "Zapamti me",
+    "required": "Obavezno",
+    "reset_filters": "Resetiraj filtre",
+    "roles": "Uloge",
+    "save_changes": "Spremi promjene",
+    "series": "Serija | Serije",
+    "sidecars": "Povezane datoteke",
+    "tags": "Oznake",
+    "unavailable": "Nedostupno",
+    "unlock_all": "Otključaj sve",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "Koristi ploču filtra za mijenjanje aktivnog filtra",
+    "year": "godina"
+  },
+  "dashboard": {
+    "keep_reading": "Nastavi čitati",
+    "on_deck": "Prva nepročitana knjiga",
+    "recently_added_books": "Nedavno dodane knjige",
+    "recently_added_series": "Nedavno dodane serije",
+    "recently_read_books": "Nedavno čitane knjige",
+    "recently_released_books": "Nedavno izdane knjige",
+    "recently_updated_series": "Nedavno aktualizirane serije"
+  },
+  "data_import": {
+    "book_number": "Broj knjige: {name}",
+    "book_series": "Serija: {name}",
+    "button_import": "Uvezi",
+    "button_match": "Usporedi",
+    "comicrack_preambule_html": "Postojeće ComicRack liste čitanja možeš uvesti u <code>.cbl</code> formatu.<br>Komga će pokušati uskladiti danu seriju i broj knjige sa serijama i knjigama u tvojim bibliotekema.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} knjiga se ne podudaraju",
+      "body2": "{duplicates} / {total} knjiga je duplicirano",
+      "create": "Svejedno stvori",
+      "title": "Neke se knjige ne podudaraju"
+    },
+    "field_file_label": "ComicRack lista čitanja (.cbl)",
+    "field_files_label": "ComicRack liste čitanja (.cbl)",
+    "import_read_lists": "Uvezi liste čitanja",
+    "imported_as": "Uvezeno kao {name}",
+    "readlist_created": "Stvorena lista čitanja: {name}",
+    "requested_number": "Zatraženi broj",
+    "requested_series": "Zatražene serije",
+    "results_preambule": "Ispod se nalazi rezultat uvoza. Pored toga možeš provjeriti nepodudarajuće knjige za svaku datu datoteku.",
+    "size_limit": "Veličina bi trebala biti manja od {size} MB",
+    "tab_title": "Uvoz podataka"
+  },
+  "dialog": {
+    "add_api_key": {
+      "button_confirm": "Generiraj",
+      "context": "API ključevi se mogu koristiti za autentifikaciju putem protokola Kobo sinkronizacije.",
+      "dialog_title": "Generiraj novi API ključ",
+      "field_comment": "Komentar",
+      "field_comment_hint": "Čemu služi ovaj API ključ?",
+      "info_copy": "Obavezno sada kopiraj svoj API ključ. Nećeš ga više moći vidjeti!"
+    },
+    "add_to_collection": {
+      "button_create": "Stvori",
+      "card_collection_subtitle": "Nema serije | 1 serija | {count} serije",
+      "dialog_title": "Dodaj u zbirku",
+      "field_search_create": "Traži ili stvori zbirku",
+      "field_search_create_error": "Zbirka s ovim imenom već postoji",
+      "label_no_matching_collection": "Nema podudarajuće zbirke"
+    },
+    "add_to_readlist": {
+      "button_create": "Stvori",
+      "card_readlist_subtitle": "Nema knjige | 1 knjiga | {count} knjige",
+      "dialog_title": "Dodaj u listu čitanja",
+      "field_search_create": "Traži ili stvori listu čitanja",
+      "field_search_create_error": "Lista čitanja s ovim imenom već postoji",
+      "label_no_matching_readlist": "Nema podudarajuće liste čitanja"
+    },
+    "add_user": {
+      "button_cancel": "Odustani",
+      "button_confirm": "Dodaj",
+      "dialog_title": "Dodaj Korisnika",
+      "field_email": "E-mail adresa",
+      "field_email_error": "Mora biti važeća e-mail adresa",
+      "field_password": "Lozinka"
+    },
+    "analyze_library": {
+      "body": "Analizira sve medijske datoteke u knjižnici. Analiza bilježi informacije o medijima. Ovisno o veličini knjižnice, to može potrajati dugo.",
+      "button_confirm": "Analiziraj",
+      "title": "Analiziraj biblioteku"
+    },
+    "book_picker": {
+      "filter": "Filtriraj prema broju knjige, naslovu ili datumu izdanja",
+      "title": "Odaberi knjigu"
+    },
+    "delete_apikey": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Razumijem, izbriši API ključ „{name}”",
+      "dialog_title": "Izbriši API ključ",
+      "warning_html": "Sve aplikacije ili skripta koje koriste ovaj API ključ više neće moći pristupiti Komga API-ju. Ovo je nepovratna radnja."
+    },
+    "delete_book": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Da, izbriši knjigu „{name}” i njene datoteke",
+      "confirm_delete_multiple": "Da, izbriši {count} knjige i njene datoteke",
+      "dialog_title": "Izbriši knjigu",
+      "dialog_title_multiple": "Izbriši knjige",
+      "warning_html": "Knjiga <b>{name}</b> će se ukloniti s ovog servera zajedno sa spremljenim medijskim datotekama. Ovo je <b>nepovratna radnja</b>. Nastaviti?",
+      "warning_multiple_html": "{count} knjige će se ukloniti s ovog servera zajedno sa spremljenim medijskim datotekama. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
+    },
+    "delete_collection": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Da, izbriši zbirku „{name}”",
+      "confirm_delete_multiple": "Da, izbriši {count} zbirke",
+      "dialog_title": "Izbriši zbirku",
+      "dialog_title_multiple": "Izbriši zbirke",
+      "warning_html": "Zbirka <b>{name}</b> će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?",
+      "warning_multiple_html": "{count} zbirke će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
+    },
+    "delete_library": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Da, izbriši biblioteku „{name}”",
+      "title": "Izbriši biblioteku",
+      "warning_html": "Biblioteka <b>{name}</b> će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
+    },
+    "delete_readlist": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Da, izbriši listu čitanja „{name}”",
+      "confirm_delete_multiple": "Da, izbriši {count} liste čitanja",
+      "dialog_title": "Izbriši listu čitanja",
+      "dialog_title_multiple": "Izbriši liste čitanja",
+      "warning_html": "Lista čitanja <b>{name}</b> će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?",
+      "warning_multiple_html": "{count} lista čitanja će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
+    },
+    "delete_series": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Da, izbriši seriju „{name}” i sve njene datoteke",
+      "confirm_delete_multiple": "Da, izbriši {count} serija i njihove datoteke",
+      "dialog_title": "Izbriši serije",
+      "warning_html": "Serija <b>{name}</b> će se ukloniti s ovog servera zajedno sa spremljenim medijskim datotekama. Ovo je <b>nepovratna radnja</b>. Nastaviti?",
+      "warning_multiple_html": "{count} serije će se ukloniti s ovog servera zajedno sa spremljenim medijskim datotekama. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
+    },
+    "delete_user": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Da, izbriši korisnika „{name}”",
+      "dialog_title": "Izbriši korisnika",
+      "warning_html": "Korisnik <b>{name}</b> će se ukloniti s ovog servera. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
+    },
+    "edit_books": {
+      "add_author_role_error_duplicate": "Već postoji",
+      "authors_notice_multiple_edit": "Uređuješ oznake za više knjiga. Ovo će prepisati postojeće autore svake knjige.",
+      "button_cancel": "Odustani",
+      "button_confirm": "Spremi promjene",
+      "copy_from": "Kopiraj iz {field}",
+      "dialog_title_multiple": "Uredi {count} knjigu | Uredi {count} knjige",
+      "dialog_title_single": "Uredi {book}",
+      "field_alternate_title": "Alternativni naslov",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Mora biti važeći ISBN 13",
+      "field_link_label": "Etiketa",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Mora biti http ili https",
+      "field_link_url_error_url": "Mora biti valjani URL",
+      "field_number": "Broj",
+      "field_number_sort": "Redni broj",
+      "field_number_sort_hint": "Možeš koristiti decimalne brojeve",
+      "field_release_date": "Datum izdanja",
+      "field_release_date_error": "Mora biti važeći datum u formatu YYYY-MM-DD",
+      "field_summary": "Sažetak",
+      "field_tags": "Oznake",
+      "field_title": "Naslov",
+      "number_sort_decrement": "Smanji sve za 1",
+      "number_sort_increment": "Povećaj sve za 1",
+      "tab_authors": "Autori",
+      "tab_general": "Općenito",
+      "tab_links": "Poveznice",
+      "tab_poster": "Poster",
+      "tab_tags": "Oznake",
+      "tags_notice_multiple_edit": "Uređuješ oznake za više knjiga. Ovo će prepisati postojeće oznake svoh tih knjiga."
+    },
+    "edit_collection": {
+      "button_cancel": "Odustani",
+      "button_confirm": "Spremi promjene",
+      "dialog_title": "Uredi zbirku",
+      "field_manual_ordering": "Ručno razvrstavanje",
+      "label_ordering": "Serije se u zbirci standardno razvrstavaju po imenu. Možeš aktivirati ručno razvrstavanje i definirati vlastiti redoslijed.",
+      "tab_general": "Općenito",
+      "tab_poster": "Poster"
+    },
+    "edit_library": {
+      "button_browse": "Pregledaj",
+      "button_cancel": "Odustani",
+      "button_confirm_add": "Dodaj",
+      "button_confirm_edit": "Uredi",
+      "button_next": "Dalje",
+      "dialog_title_add": "Dodaj biblioteku",
+      "dialot_title_edit": "Uredi biblioteku",
+      "field_analysis_analyze_dimensions": "Analiziraj dimenzije stranica",
+      "field_analysis_hash_files": "Izračunaj šifre za datoteke",
+      "field_analysis_hash_koreader": "Izračunaj šifre za datoteke za KOReader",
+      "field_analysis_hash_pages": "Izračunaj šifre za stranice",
+      "field_convert_to_cbz": "Automatski konvertiraj u CBZ",
+      "field_import_barcode_isbn": "ISBN barkod",
+      "field_import_comicinfo_book": "Metapodaci knjige",
+      "field_import_comicinfo_collections": "Zbirke",
+      "field_import_comicinfo_readlists": "Liste čitanja",
+      "field_import_comicinfo_series": "Metapodaci serije",
+      "field_import_comicinfo_series_append_volume": "Dodaj svezak naslovu serije",
+      "field_import_epub_book": "Metapodaci knjige",
+      "field_import_epub_series": "Metapodaci serije",
+      "field_import_local_artwork": "Lokalne ilustracije",
+      "field_import_mylar_series": "Metapodaci serije",
+      "field_name": "Ime",
+      "field_oneshotsdirectory": "Mapa za izdanja bez nastavka",
+      "field_repair_extensions": "Automatski ispravi netočne ekstenzije datoteka",
+      "field_root_folder": "Osnovna mapa",
+      "field_scan_interval": "Interval pretraživanja",
+      "field_scanner_empty_trash_after_scan": "Automatski isprazni smeće nakon svakog pretraživanja",
+      "field_scanner_force_directory_modified_time": "Pretraži mape na osnovi vremena promjene",
+      "field_scanner_scan_startup": "Pretraži tijekom pokretanja",
+      "field_series_cover": "Omot serije",
+      "file_browser_dialog_button_confirm": "Odaberi",
+      "file_browser_dialog_title": "Osnovna mapa biblioteke",
+      "label_analysis": "Analiza",
+      "label_file_management": "Upravljanje datotekama",
+      "label_import_barcode_isbn": "Uvezi ISBN iz barkoda",
+      "label_import_comicinfo": "Uvezi metapodatke za CBR/CBZ koje sadrže ComicInfo.xml datoteku",
+      "label_import_epub": "Uvezi metapodatke iz EPUB datoteka",
+      "label_import_local": "Uvezi lokalne medije",
+      "label_import_mylar": "Uvezi metapodatke generirane pomoću Mylar-a",
+      "label_scan_directory_exclusions": "Isključivanja mapa",
+      "label_scan_types": "Traži ove vrste datoteka",
+      "label_scanner": "Tražilica",
+      "label_series_cover": "Omot serije",
+      "tab_general": "Općenito",
+      "tab_metadata": "Metapodaci",
+      "tab_options": "Opcije",
+      "tooltip_oneshotsdirectory": "Ostavi prazno za deaktiviranje",
+      "tooltip_scanner_force_modified_time": "Aktiviraj ako je biblioteka na Google Driveu",
+      "tooltip_use_resources": "Može trošiti puno resursa pri velikim bibliotekama ili sporom hardveru"
+    },
+    "edit_readlist": {
+      "button_cancel": "Odustani",
+      "button_confirm": "Spremi promjene",
+      "dialog_title": "Uredi listu čitanja",
+      "field_manual_ordering": "Ručno razvrstavanje",
+      "field_name": "Ime",
+      "field_summary": "Sažetak",
+      "label_ordering": "Knjige u listi čitanja se standardno razvrstavaju ručno. Ručno razvrstavanje možeš deaktivirati za razvrstavanje po datumu izdanja.",
+      "tab_general": "Općenito",
+      "tab_poster": "Poster"
+    },
+    "edit_series": {
+      "button_cancel": "Odustani",
+      "button_confirm": "Spremi promjene",
+      "dialog_title_multiple": "Uredi {count} seriju | Uredi {count} serije",
+      "dialog_title_single": "Uredi {series}",
+      "field_age_rating": "Dobna kategorija",
+      "field_age_rating_error": "Dobna kategorija mora biti 0 ili više",
+      "field_genres": "Žanrovi",
+      "field_labels": "Etikete",
+      "field_language": "Jezik",
+      "field_language_hint": "IETF BCP 47 oznaka jezika",
+      "field_publisher": "Izdavač",
+      "field_reading_direction": "Smjer čitanja",
+      "field_sort_title": "Razvrstaj po naslovu",
+      "field_status": "Stanje",
+      "field_summary": "Sažetak",
+      "field_tags": "Oznake",
+      "field_title": "Naslov",
+      "field_total_book_count": "Ukupni broj knjiga",
+      "field_total_book_count_error": "Ukupni broj knjiga mora biti 1 ili više",
+      "mixed": "MJEŠOVITO",
+      "tab_general": "Općenito",
+      "tab_poster": "Poster",
+      "tab_sharing": "Dijeli se",
+      "tab_tags": "Oznake",
+      "tab_titles": "Alternativni naslovi",
+      "tags_notice_multiple_edit": "Uređuješ oznake za više serija. Ovo će prepisati postojeće oznake svih tih serija."
+    },
+    "edit_user": {
+      "button_cancel": "Odustani",
+      "button_confirm": "Spremi promjene",
+      "dialog_title": "Uredi korisnika",
+      "label_roles_for": "Uloge za {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Dozvoli samo mlađima od",
+        "exclude_over": "Isključi starije od",
+        "none": "Bez ograničenja"
+      },
+      "edit_restrictions_for": "Uredi ograničenja za {name}",
+      "label_age_restriction": "Dobno ograničenje",
+      "label_allow_only_labels": "Dozvoli samo etikete",
+      "label_exclude_labels": "Isključi etikete",
+      "tab_content_restrictions": "Sadržajna ograničenja",
+      "tab_shared_libraries": "Dijeljene biblioteke"
+    },
+    "empty_trash": {
+      "body": "Server medija standardno ne uklanja informacije za medije odmah. To pomaže ako je pogon privremeno isključen. Kada isprazniš smeće za biblioteku, brišu se sve informacije o medijima koji nedostaju.",
+      "button_confirm": "Isprazni",
+      "title": "Isprazni smeće za biblioteku"
+    },
+    "file_browser": {
+      "button_cancel": "Odustani",
+      "button_confirm_default": "Odaberi",
+      "dialog_title_default": "Preglednik datoteka",
+      "parent_directory": "Nadređena"
+    },
+    "filename_chooser": {
+      "button_choose": "Odaberi",
+      "field_destination_filename": "Odredišno ime datoteke",
+      "label_source_filename": "Izvorno ime datoteke",
+      "table": {
+        "existing_file": "Postojeća datoteka",
+        "order": "Redoslijed"
+      },
+      "title": "Odredišno ime datoteke"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Koristi Kobo sinkronizaciju",
+      "warning_html": "Ovo će izbrisati svu povijest sinkronizacije za ovaj API ključ. Tvoj Kobo će sinkronizirati sve pri sljedećoj sinkronizaciji."
+    },
+    "password_change": {
+      "button_cancel": "Odustani",
+      "button_confirm": "Promijeni lozinku",
+      "dialog_title": "Promijeni lozinku",
+      "field_new_password": "Nova lozinka",
+      "field_new_password_error": "Potrebna je nova lozinka.",
+      "field_repeat_password": "Ponovi novu lozinku",
+      "field_repeat_password_error": "Lozinke moraju biti jednake."
+    },
+    "refresh_library_metadata": {
+      "body": "Aktualizira metapodatke za sve medijske datoteke u biblioteci. Ovisno o veličini tvoje biblioteke, to može potrajati dugo.",
+      "button_confirm": "Aktualiziraj",
+      "title": "Aktualiziraj metapodatke za biblioteku"
+    },
+    "series_picker": {
+      "label_search_series": "Traži serije",
+      "no_results": "Nije pronađena nijedna serija",
+      "title": "Odaberi seriju"
+    },
+    "server_stop": {
+      "button_confirm": "Prekini",
+      "confirmation_message": "Stvarno želiš prekinuti Komga?",
+      "dialog_title": "Isključi server"
+    },
+    "shortcut_help": {
+      "label_description": "Opis",
+      "label_key": "Ključ"
+    },
+    "transient_book_details": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Postoji",
+      "label_format": "Format",
+      "label_name": "Ime",
+      "label_pages": "Stranice",
+      "label_size": "Veličina",
+      "pages_table": {
+        "filename": "Ime datoteke",
+        "height": "Visina",
+        "index": "Sadržaj",
+        "media_type": "Vrsta medija",
+        "size": "Veličina",
+        "width": "Širina"
+      },
+      "title": "Detalji knjige",
+      "title_comparison": "Usporedba knjige"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Kandidat",
+      "label_existing": "Postoji",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Provjeri knjigu",
+      "title_comparison": "Usporedba knjige"
+    }
+  },
+  "duplicate_pages": {
+    "action_auto_delete_remaining": "Automatski izbriši preostale ({count})",
+    "action_delete_auto": "Automatsko brisanje",
+    "action_delete_manual": "Ručno brisanje",
+    "action_delete_matches": "Izbriši podudaranja",
+    "action_ignore": "Zanemari",
+    "action_ignore_remaining": "Zanemari preostale ({count})",
+    "action_manual_delete_remaining": "Ručno izbriši preostale ({count})",
+    "confirm_auto_delete_remaining": "Sve preostale šifre stranice na ovoj stranici ({count}) će se označiti za automatsko brisanje.",
+    "confirm_manual_delete_remaining": "Sve preostale šifre stranice na ovoj stranici ({count}) će se označiti za ručno brisanje.",
+    "delete_to_save": "Izbriši i uštedi {size}",
+    "deleted_count": "Izbrisano {count} puta",
+    "empty_title": "Duple stranice nisu pronađene",
+    "empty_title_known": "Nema poznatih duplikata",
+    "filter": {
+      "count": "Broj",
+      "date_added": "Datum dodavanja",
+      "date_modified": "Datum promjene",
+      "delete_count": "Broj brisanja",
+      "delete_size": "Ušteđena memorija",
+      "match_count": "Broj podudaranja",
+      "size": "Veličina",
+      "total_size": "Ukupna veličina"
+    },
+    "info": "Brisanje duplih stranica će promijeniti tvoje datoteke. Izradi sigurnosnu kopiju datoteka i koristi ručno brisanje prije korištenja automatskog brisanja.",
+    "known": "Poznate",
+    "matches_n": "Nema podudaranja | 1 podudaranje | {count} podudaranja",
+    "new": "Nove",
+    "saved_size": "Spremljeno {size}",
+    "title": "Duple stranice",
+    "unknown_size": "Nepoznata veličina"
+  },
+  "duplicates": {
+    "file_hash": "Šifra datoteke",
+    "size": "Veličina",
+    "title": "Duple datoteke",
+    "url": "URL"
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "Fiksna veza/Kopiraj datoteke",
+      "MOVE": "Premjesti datoteke"
+    },
+    "epubreader": {
+      "appearances": {
+        "day": "Dan",
+        "night": "Noć",
+        "sepia": "Tamnosmeđa"
+      },
+      "column_count": {
+        "auto": "Automatski",
+        "one": "Jedan",
+        "two": "Dva"
+      },
+      "reading_direction": {
+        "auto": "Automatski",
+        "ltr": "Slijeva nadesno",
+        "rtl": "Zdesna nalijevo"
+      }
+    },
+    "historical_event_type": {
+      "BookConverted": "Knjiga konvertirana",
+      "BookFileDeleted": "Datoteka knjige izbrisana",
+      "BookImported": "Knjiga uvezena",
+      "DuplicatePageDeleted": "Dupla stranica izbrisana",
+      "SeriesFolderDeleted": "Mapa serije izbrisana"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
+    "media_status": {
+      "ERROR": "Greška",
+      "OUTDATED": "Neaktualno",
+      "READY": "Spremno",
+      "UNKNOWN": "Nepoznato",
+      "UNSUPPORTED": "Nepodržano"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Automatsko brisanje",
+      "DELETE_MANUAL": "Ručno brisanje",
+      "IGNORE": "Zanemari"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "Slijeva nadesno",
+      "RIGHT_TO_LEFT": "Zdesna nalijevo",
+      "VERTICAL": "Okomito",
+      "WEBTOON": "Webtoon"
+    },
+    "scan_interval": {
+      "DAILY": "Dnevno",
+      "DISABLED": "Deaktivirano",
+      "EVERY_12H": "Svakih 12 sati",
+      "EVERY_6H": "Svakih 6 sati",
+      "HOURLY": "Svaki sat",
+      "WEEKLY": "Tjedno"
+    },
+    "series_cover": {
+      "FIRST": "Prva",
+      "FIRST_UNREAD_OR_FIRST": "Prva nepročitana inače prva",
+      "FIRST_UNREAD_OR_LAST": "Prva nepročitana inače zadnja",
+      "LAST": "Zadnja"
+    },
+    "series_status": {
+      "ABANDONED": "Napuštena",
+      "ENDED": "Završena",
+      "HIATUS": "Prekinuta",
+      "ONGOING": "U tijeku"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Standardna (300 px)",
+      "LARGE": "Velika (900 px)",
+      "MEDIUM": "Srednja (600 px)",
+      "XLARGE": "Posebno velika (1200 px)"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "Aktualno poglavlje",
+    "page_of": "Stranica {page} od {count}",
+    "publisher_font": "Izdavač",
+    "settings": {
+      "column_count": "Broj stupaca",
+      "font_family": "Font",
+      "layout": "Raspored",
+      "layout_paginated": "Paginirano",
+      "layout_scroll": "Listanje klizačem",
+      "navigation_mode": "Modus navigacije",
+      "navigation_options": {
+        "both": "Oboje",
+        "buttons": "Gumbovi",
+        "click": "Pritisni / Dodirni"
+      },
+      "page_margins": "Margine stranica",
+      "viewing_theme": "Tema prikaza"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Mijenjaj broj stupaca",
+      "cycle_viewing_theme": "Mijenjaj temu prikaza",
+      "font_size_decrease": "Smanji veličinu fonta",
+      "font_size_increase": "Povećaj veličinu fonta",
+      "menus": "Izbornici",
+      "next": "Dalje",
+      "previous": "Natrag",
+      "reader_navigation": "Navigacija čitača",
+      "scroll": "Promijeni raspored za listanje klizačem",
+      "settings": "Postavke",
+      "show_hide_toc": "Prikaži/Sakrij sadržaj"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "Tijekom analize se datoteci nije moglo pristupiti",
+    "ERR_1001": "Vrsta medija nije podržana",
+    "ERR_1002": "Šifrirane RAR arhive nisu podržane",
+    "ERR_1003": "Kompaktne RAR arhive nisu podržane",
+    "ERR_1004": "RAR arhive s više svezaka nisu podržane",
+    "ERR_1005": "Nepoznata greška tijekom analiziranja knjige",
+    "ERR_1006": "Knjiga ne sadrži nijednu stranicu",
+    "ERR_1007": "Neki unosi se nisu mogli analizirati",
+    "ERR_1008": "Nepoznata greška tijekom preuzimanja unosa knjige",
+    "ERR_1009": "Lista čitanja s tim imenom već postoji",
+    "ERR_1015": "Greška tijekom deserijaliziranja ComicRack CBL-a",
+    "ERR_1016": "Mapa nije dostupna ili nije mapa",
+    "ERR_1017": "Nije moguće pretražiti mapu koja je dio postojeće biblioteke",
+    "ERR_1018": "Datoteka nije pronađena",
+    "ERR_1019": "Nije moguće uvesti datoteku koja je dio postojeće biblioteke",
+    "ERR_1020": "Knjiga za nadogradnju ne pripada navedenoj seriji",
+    "ERR_1021": "Odredišna datoteka već postoji",
+    "ERR_1022": "Nije bilo moguće pretražiti novu uvezenu knjigu",
+    "ERR_1023": "Knjiga već postoji u listi čitanja",
+    "ERR_1024": "Greška u OAuth2 prijavi: nema e-mail adrese",
+    "ERR_1025": "Greška u OAuth2 prijavi: ne postoji lokalni korisnik s tom e-mail adresom",
+    "ERR_1026": "Greška u OpenID Connect prijavi: e-mail adresa nije potvrđena",
+    "ERR_1027": "Greška u OpenID Connect prijavi: nedostaje atribut „email_verified”",
+    "ERR_1028": "Greška u OpenID Connect prijavi: nedostaje atribut „email”",
+    "ERR_1029": "ComicRack CBL ne sadrži nijedan element „Knjiga”",
+    "ERR_1030": "ComicRack CBL ne sadrži nijedan element „Ime”",
+    "ERR_1031": "ComicRack CBL knjizi nedostaje serija ili broj",
+    "ERR_1032": "EPUB datoteka sadrži neispravnu vrstu medija",
+    "ERR_1033": "Neki unosi nedostaju",
+    "ERR_1034": "API ključ s tim komentarom već postoji"
+  },
+  "filter": {
+    "age_rating": "dobna kategorija",
+    "age_rating_none": "Bez",
+    "any": "Bilo koji",
+    "complete": "Dovršeno",
+    "genre": "žanr",
+    "in_progress": "U tijeku",
+    "language": "jezik",
+    "library": "biblioteka",
+    "media_profile": "Profil medija",
+    "oneshot": "Izdanje bez nastavka",
+    "publisher": "izdavač",
+    "read": "Čitaj",
+    "release_date": "datum izdanja",
+    "sharing_label": "Etiketa dijeljenja",
+    "status": "stanje",
+    "tag": "oznaka",
+    "unread": "Nepročitano"
+  },
+  "filter_drawer": {
+    "filter": "filtar",
+    "sort": "redoslijed"
+  },
+  "history": {
+    "header": {
+      "book": "Knjiga",
+      "date": "Datum",
+      "details": "Detalji",
+      "series": "Serije",
+      "type": "Vrsta"
+    },
+    "title": "Povijest"
+  },
+  "home": {
+    "theme": "Tema",
+    "translation": "Prijevod"
+  },
+  "library_navigation": {
+    "browse": "Pregledaj",
+    "collections": "Zbirke",
+    "readlists": "Liste čitanja",
+    "recommended": "Preporučeno"
+  },
+  "login": {
+    "create_user_account": "Stvori korisnički račun",
+    "login": "Prijavi se",
+    "unclaimed_html": "Ovaj Komga server još nije aktivan. Za pristup serveru moraš stvoriti korisnički račun.<br><br>Odaberi <strong>e-mail adresu</strong> i <strong>lozinku</strong> i pritisni na <strong>Stvori korisnički račun</strong>."
+  },
+  "media_analysis": {
+    "comment": "Komentar",
+    "media_analysis": "Analiza medija",
+    "media_type": "Vrsta medija",
+    "name": "Ime",
+    "size": "Veličina",
+    "status": "Stanje",
+    "url": "URL"
+  },
+  "media_management": {
+    "title": "Upravljanje medijima"
+  },
+  "menu": {
+    "add_to_collection": "Dodaj u zbirku",
+    "add_to_readlist": "Dodaj u listu čitanja",
+    "analyze": "Analiziraj",
+    "bulk_edit_metadata": "Grupno uređivanje metapodataka",
+    "delete": "Izbriši",
+    "deselect_all": "Odznači sve",
+    "download_readlist": "Preuzmi listu čitanja",
+    "download_series": "Preuzmi seriju",
+    "edit": "Uredi",
+    "edit_metadata": "Uredi metapodatke",
+    "empty_trash": "Isprazni smeće",
+    "mark_read": "Označi kao pročitano",
+    "mark_unread": "Označi kao nepročitano",
+    "refresh_metadata": "Aktualiziraj metapodatke",
+    "scan_library_files": "Pretraži datoteke biblioteke",
+    "scan_library_files_deep": "Pretraži datoteke biblioteke (duboko)",
+    "select_all": "Odaberi sve"
+  },
+  "metrics": {
+    "library_books": "Broj knjiga po biblioteci",
+    "library_disk_space": "Količina memorije diska biblioteke",
+    "library_series": "Broj serija po biblioteci",
+    "library_sidecars": "Povezane datoteke po bilioteci",
+    "tasks_executed": "Broj izvršenih zadataka",
+    "tasks_total_time": "Ukupno utrošeno vrijeme za zadatke",
+    "title": "Statistika"
+  },
+  "missing_posters": {
+    "title": "Posteri koji nedostaju"
+  },
+  "navigation": {
+    "home": "Početna stranica",
+    "libraries": "Biblioteke",
+    "logout": "Odjavi se"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Vrati se na početnu stranicu",
+    "page_does_not_exist": "Stranica koju tražiš ne postoji.",
+    "page_not_found": "Stranica nije pronađena"
+  },
+  "read_more": {
+    "less": "Prikaži manje",
+    "more": "Prikaži više"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Dupla knjiga",
+      "error_choose_book": "Odaberi jednu knjigu"
+    }
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Upravljaj listom čitanja",
+    "title": "{name} lista čitanja"
+  },
+  "search": {
+    "no_results": "Pretraga nije vratila nijedan rezultat",
+    "search": "Traži",
+    "search_for_something_else": "Pokušaj tražiti nešto drugo",
+    "search_results_for": "Rezultati pretrage za „{name}”"
+  },
+  "searchbox": {
+    "in_library": "u biblioteci {library}",
+    "no_results": "Nema rezultata",
+    "search_all": "Pretraži sve …"
+  },
+  "server": {
+    "server_management": {
+      "button_cancel_all_tasks": "Prekini sve zadatke",
+      "button_empty_trash": "Isprazni smeće za sve biblioteke",
+      "button_scan_libraries": "Pretraži sve biblioteke",
+      "button_scan_libraries_deep": "Pretraži sve biblioteke (duboko)",
+      "button_shutdown": "Isključi",
+      "download_log": "Preuzmi datoteku zapisa",
+      "notification_tasks_cancelled": "Nema zadataka za prekidanje | Jedan zadatak prekinut | {count} zadatka prekinuta",
+      "section_title": "Upravljanje serverom"
+    },
+    "tab_title": "Server",
+    "updates": "Aktualiziranja"
+  },
+  "server_settings": {
+    "config_precedence": "Ima prednost nad konfiguracijskom datotekom",
+    "dialog_regenerate_thumbnails": {
+      "body": "Veličina minijatura je promijenjena. Želiš li nanovo generirati minijature knjiga?",
+      "btn_alternate": "Da, sve knjige",
+      "btn_cancel": "Ne",
+      "btn_confirm": "Da, ali samo ako su veće",
+      "title": "Nanovo generiraj minijature"
+    },
+    "hint_kobo_port": "Postavi samo u slučaju problema sa sinkronizacijom omota i preuzimanja",
+    "label_delete_empty_collections": "Izbriši prazne zbirke nakon pretraživanja",
+    "label_delete_empty_readlists": "Izbriši prazne liste čitanja nakon pretraživanja",
+    "label_kepubify_path": "Staza do kepubify",
+    "label_kobo_port": "Eksterni priključak Kobo sinkronizacije",
+    "label_kobo_proxy": "Zahtjevi servera Kobo sinkronizacije za Kobo trgovinu",
+    "label_rememberme_duration": "„Zapamti me” trajanje (u danima)",
+    "label_server_context_path": "Osnovni URL",
+    "label_server_port": "Priključak servera",
+    "label_task_pool_size": "Izvršne jedinice zadatka",
+    "label_thumbnail_size": "Veličina minijatura",
+    "requires_restart": "Zahtijeva ponovno pokretanje da stupi na snagu",
+    "server_settings": "Postavke servera"
+  },
+  "settings_user": {
+    "change_password": "Promijeni lozinku",
+    "edit_restrictions": "Uredi ograničenja",
+    "edit_user": "Uredi korisnika",
+    "latest_activity": "Zadnja aktivnost: {date}",
+    "no_recent_activity": "Nema nedavnih aktivnosti",
+    "role_administrator": "Administrator",
+    "role_user": "Korisnik"
+  },
+  "sort": {
+    "books_count": "Broj knjiga",
+    "date_added": "Datum dodavanja",
+    "date_read": "Datum čitanja",
+    "date_updated": "Datum aktualiziranja",
+    "file_name": "Ime datoteke",
+    "file_size": "Veličina datoteke",
+    "folder_name": "Ime mape",
+    "name": "Ime",
+    "number": "Broj",
+    "page_count": "Broj stranica",
+    "random": "Nasumce",
+    "release_date": "Datum izdanja"
+  },
+  "theme": {
+    "dark": "Tamna",
+    "light": "Svijetla",
+    "system": "Sustav"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Izbriši",
+    "tooltip_generated": "Generirane ilustracije",
+    "tooltip_mark_as_selected": "Označi kao odabrano",
+    "tooltip_selected": "Odabrano",
+    "tooltip_sidecar": "Lokalne ilustracije",
+    "tooltip_to_be_deleted": "Za brisanje",
+    "tooltip_to_be_uploaded": "Za prenošenje",
+    "tooltip_too_big": "Datoteka je prevelika!",
+    "tooltip_user_uploaded": "Preneseno od korisnika"
+  },
+  "titles_more": {
+    "less": "Manje naslova",
+    "more": "Više naslova"
+  },
+  "updates": {
+    "available": "Postoje nove verzije",
+    "latest_installed": "Najnovija Komga verzija je već instalirana"
+  },
+  "user_roles": {
+    "ADMIN": "Administrator",
+    "FILE_DOWNLOAD": "Preuzimanje datoteke",
+    "KOBO_SYNC": "Kobo sinkronizacija",
+    "KOREADER_SYNC": "KOReader sinkronizacija",
+    "PAGE_STREAMING": "Internetski prijenos stranica",
+    "USER": "Korisnik"
+  },
+  "users": {
+    "api_keys": "API ključevi",
+    "authentication_activity": "Aktivnost autentifikacije",
+    "users": "Korisnici"
+  },
+  "validation": {
+    "context_path": "Mora početi s '/', ne smije završiti s '/-_' i smije sadržati samo '/-_a-z0-9'",
+    "one_or_more": "Mora biti 1 ili više",
+    "tcp_port": "Mora biti između 1 i 65535",
+    "zero_or_more": "Mora biti 0 ili više"
+  },
+  "welcome": {
+    "add_library": "Dodaj biblioteku",
+    "no_libraries_yet": "Još nije dodana nijedna biblioteka!",
+    "welcome_message": "Dobro došao, dobro došla u Komga"
+  }
+}

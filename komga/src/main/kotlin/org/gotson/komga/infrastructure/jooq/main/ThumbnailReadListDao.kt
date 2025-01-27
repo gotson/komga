@@ -19,19 +19,22 @@ class ThumbnailReadListDao(
   private val tr = Tables.THUMBNAIL_READLIST
 
   override fun findAllByReadListId(readListId: String): Collection<ThumbnailReadList> =
-    dsl.selectFrom(tr)
+    dsl
+      .selectFrom(tr)
       .where(tr.READLIST_ID.eq(readListId))
       .fetchInto(tr)
       .map { it.toDomain() }
 
   override fun findByIdOrNull(thumbnailId: String): ThumbnailReadList? =
-    dsl.selectFrom(tr)
+    dsl
+      .selectFrom(tr)
       .where(tr.ID.eq(thumbnailId))
       .fetchOneInto(tr)
       ?.toDomain()
 
   override fun findSelectedByReadListIdOrNull(readListId: String): ThumbnailReadList? =
-    dsl.selectFrom(tr)
+    dsl
+      .selectFrom(tr)
       .where(tr.READLIST_ID.eq(readListId))
       .and(tr.SELECTED.isTrue)
       .limit(1)
@@ -40,23 +43,27 @@ class ThumbnailReadListDao(
       .firstOrNull()
 
   override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailReadList> {
-    val query = dsl.selectFrom(tr)
-      .where(tr.FILE_SIZE.eq(0))
-      .or(tr.MEDIA_TYPE.eq(""))
-      .or(tr.WIDTH.eq(0))
-      .or(tr.HEIGHT.eq(0))
+    val query =
+      dsl
+        .selectFrom(tr)
+        .where(tr.FILE_SIZE.eq(0))
+        .or(tr.MEDIA_TYPE.eq(""))
+        .or(tr.WIDTH.eq(0))
+        .or(tr.HEIGHT.eq(0))
 
     val count = query.count()
-    val items = query
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(tr)
-      .map { it.toDomain() }
+    val items =
+      query
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(tr)
+        .map { it.toDomain() }
 
     return PageImpl(items, pageable, count.toLong())
   }
 
   override fun insert(thumbnail: ThumbnailReadList) {
-    dsl.insertInto(tr)
+    dsl
+      .insertInto(tr)
       .set(tr.ID, thumbnail.id)
       .set(tr.READLIST_ID, thumbnail.readListId)
       .set(tr.THUMBNAIL, thumbnail.thumbnail)
@@ -70,7 +77,8 @@ class ThumbnailReadListDao(
   }
 
   override fun update(thumbnail: ThumbnailReadList) {
-    dsl.update(tr)
+    dsl
+      .update(tr)
       .set(tr.READLIST_ID, thumbnail.readListId)
       .set(tr.THUMBNAIL, thumbnail.thumbnail)
       .set(tr.SELECTED, thumbnail.selected)
@@ -86,7 +94,9 @@ class ThumbnailReadListDao(
   override fun updateMetadata(thumbnails: Collection<ThumbnailReadList>) {
     dsl.batched { c ->
       thumbnails.forEach {
-        c.dsl().update(tr)
+        c
+          .dsl()
+          .update(tr)
           .set(tr.MEDIA_TYPE, it.mediaType)
           .set(tr.WIDTH, it.dimension.width)
           .set(tr.HEIGHT, it.dimension.height)
@@ -99,13 +109,15 @@ class ThumbnailReadListDao(
 
   @Transactional
   override fun markSelected(thumbnail: ThumbnailReadList) {
-    dsl.update(tr)
+    dsl
+      .update(tr)
       .set(tr.SELECTED, false)
       .where(tr.READLIST_ID.eq(thumbnail.readListId))
       .and(tr.ID.ne(thumbnail.id))
       .execute()
 
-    dsl.update(tr)
+    dsl
+      .update(tr)
       .set(tr.SELECTED, true)
       .where(tr.READLIST_ID.eq(thumbnail.readListId))
       .and(tr.ID.eq(thumbnail.id))

@@ -1,6 +1,6 @@
 package org.gotson.komga.infrastructure.util
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.nio.file.Files
 import kotlin.io.path.Path
 

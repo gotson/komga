@@ -5,6 +5,8 @@ import java.time.LocalDateTime
 data class AuthenticationActivity(
   val userId: String? = null,
   val email: String? = null,
+  val apiKeyId: String? = null,
+  val apiKeyComment: String? = null,
   val ip: String? = null,
   val userAgent: String? = null,
   val success: Boolean,

@@ -3,3 +3,10 @@ logging:
     name: ${user.home}/Library/Logs/Komga/komga.log
 komga:
   config-dir: ${user.home}/Library/Application Support/Komga
+  kobo.kepubify-path: kepubify
+spring:
+  config:
+    import:
+      - "optional:file:${komga.config-dir}/application.yml"
+      - "optional:file:${komga.config-dir}/application.yaml"
+      - "optional:file:${komga.config-dir}/application.properties"

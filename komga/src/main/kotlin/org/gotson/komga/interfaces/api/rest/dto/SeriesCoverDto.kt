@@ -9,16 +9,18 @@ enum class SeriesCoverDto {
   LAST,
 }
 
-fun Library.SeriesCover.toDto() = when (this) {
-  Library.SeriesCover.FIRST -> SeriesCoverDto.FIRST
-  Library.SeriesCover.FIRST_UNREAD_OR_FIRST -> SeriesCoverDto.FIRST_UNREAD_OR_FIRST
-  Library.SeriesCover.FIRST_UNREAD_OR_LAST -> SeriesCoverDto.FIRST_UNREAD_OR_LAST
-  Library.SeriesCover.LAST -> SeriesCoverDto.LAST
-}
+fun Library.SeriesCover.toDto() =
+  when (this) {
+    Library.SeriesCover.FIRST -> SeriesCoverDto.FIRST
+    Library.SeriesCover.FIRST_UNREAD_OR_FIRST -> SeriesCoverDto.FIRST_UNREAD_OR_FIRST
+    Library.SeriesCover.FIRST_UNREAD_OR_LAST -> SeriesCoverDto.FIRST_UNREAD_OR_LAST
+    Library.SeriesCover.LAST -> SeriesCoverDto.LAST
+  }
 
-fun SeriesCoverDto.toDomain() = when (this) {
-  SeriesCoverDto.FIRST -> Library.SeriesCover.FIRST
-  SeriesCoverDto.FIRST_UNREAD_OR_FIRST -> Library.SeriesCover.FIRST_UNREAD_OR_FIRST
-  SeriesCoverDto.FIRST_UNREAD_OR_LAST -> Library.SeriesCover.FIRST_UNREAD_OR_LAST
-  SeriesCoverDto.LAST -> Library.SeriesCover.LAST
-}
+fun SeriesCoverDto.toDomain() =
+  when (this) {
+    SeriesCoverDto.FIRST -> Library.SeriesCover.FIRST
+    SeriesCoverDto.FIRST_UNREAD_OR_FIRST -> Library.SeriesCover.FIRST_UNREAD_OR_FIRST
+    SeriesCoverDto.FIRST_UNREAD_OR_LAST -> Library.SeriesCover.FIRST_UNREAD_OR_LAST
+    SeriesCoverDto.LAST -> Library.SeriesCover.LAST
+  }

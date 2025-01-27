@@ -9,10 +9,11 @@ export default class KomgaFilesystemService {
     this.http = http
   }
 
-  async getDirectoryListing (path: String = ''): Promise<DirectoryListingDto> {
+  async getDirectoryListing (path: String = '', showFiles: Boolean = false): Promise<DirectoryListingDto> {
     try {
       return (await this.http.post(API_FILESYSTEM, {
-        path: path,
+        path: path || '',
+        showFiles: showFiles,
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve directory listing'

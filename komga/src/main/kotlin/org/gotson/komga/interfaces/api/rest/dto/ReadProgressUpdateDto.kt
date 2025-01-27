@@ -22,8 +22,12 @@ annotation class ReadProgressUpdateDtoConstraint(
 )
 
 class ReadProgressUpdateDtoValidator : ConstraintValidator<ReadProgressUpdateDtoConstraint, ReadProgressUpdateDto> {
-  override fun isValid(value: ReadProgressUpdateDto?, context: ConstraintValidatorContext?): Boolean =
-    value != null && (
-      value.page != null || (value.completed != null && value.completed)
+  override fun isValid(
+    value: ReadProgressUpdateDto?,
+    context: ConstraintValidatorContext?,
+  ): Boolean =
+    value != null &&
+      (
+        value.page != null || (value.completed != null && value.completed)
       )
 }

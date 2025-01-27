@@ -122,7 +122,7 @@
 
                 <!--  Sort Number  -->
                 <v-col cols="2">
-                  <v-text-field v-model="form[book.id].numberSort"
+                  <v-text-field v-model.number="form[book.id].numberSort"
                                 type="number"
                                 step="0.1"
                                 dense

@@ -9,6 +9,7 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.MediaType
+import org.gotson.komga.domain.model.ProxyExtension
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -64,26 +65,24 @@ class MediaDaoTest(
   @Test
   fun `given a media when inserting then it is persisted`() {
     val now = LocalDateTime.now()
-    val media = Media(
-      status = Media.Status.READY,
-      mediaType = "application/zip",
-      pages = listOf(
-        BookPage(
-          fileName = "1.jpg",
-          mediaType = "image/jpeg",
-          dimension = Dimension(10, 10),
-          fileHash = "hashed",
-          fileSize = 10,
-        ),
-      ),
-      files = listOf(MediaFile("ComicInfo.xml", "application/xml", MediaFile.SubType.EPUB_ASSET, 3)),
-      extension = MediaExtensionEpub(
-        toc = listOf(EpubTocEntry("title", "href", listOf(EpubTocEntry("subtitle", "subhref")))),
-        landmarks = listOf(EpubTocEntry("title2", "href2", listOf(EpubTocEntry("subtitle2", "subhref2")))),
-      ),
-      comment = "comment",
-      bookId = book.id,
-    )
+    val media =
+      Media(
+        status = Media.Status.READY,
+        mediaType = "application/zip",
+        pages =
+          listOf(
+            BookPage(
+              fileName = "1.jpg",
+              mediaType = "image/jpeg",
+              dimension = Dimension(10, 10),
+              fileHash = "hashed",
+              fileSize = 10,
+            ),
+          ),
+        files = listOf(MediaFile("ComicInfo.xml", "application/xml", MediaFile.SubType.EPUB_ASSET, 3)),
+        comment = "comment",
+        bookId = book.id,
+      )
 
     mediaDao.insert(media)
     val created = mediaDao.findById(media.bookId)
@@ -109,9 +108,6 @@ class MediaDaoTest(
       assertThat(subType).isEqualTo(media.files.first().subType)
       assertThat(fileSize).isEqualTo(media.files.first().fileSize)
     }
-    assertThat(created.extension).isNotNull
-    assertThat(created.extension).isInstanceOf(MediaExtensionEpub::class.java)
-    assertThat(created.extension).isEqualTo(media.extension)
   }
 
   @Test
@@ -127,50 +123,49 @@ class MediaDaoTest(
     assertThat(created.comment).isNull()
     assertThat(created.pages).isEmpty()
     assertThat(created.files).isEmpty()
+    assertThat(created.extension).isNull()
   }
 
   @Test
   fun `given existing media when updating then it is persisted`() {
-    val media = Media(
-      status = Media.Status.READY,
-      mediaType = "application/zip",
-      pages = listOf(
-        BookPage(
-          fileName = "1.jpg",
-          mediaType = "image/jpeg",
-        ),
-      ),
-      files = listOf(MediaFile("ComicInfo.xml", "application/xml", MediaFile.SubType.EPUB_ASSET, 5)),
-      extension = MediaExtensionEpub(
-        landmarks = listOf(EpubTocEntry("title2", "href2", listOf(EpubTocEntry("subtitle2", "subhref2")))),
-      ),
-      comment = "comment",
-      bookId = book.id,
-    )
+    val media =
+      Media(
+        status = Media.Status.READY,
+        mediaType = "application/zip",
+        pages =
+          listOf(
+            BookPage(
+              fileName = "1.jpg",
+              mediaType = "image/jpeg",
+            ),
+          ),
+        files = listOf(MediaFile("ComicInfo.xml", "application/xml", MediaFile.SubType.EPUB_ASSET, 5)),
+        comment = "comment",
+        bookId = book.id,
+      )
     mediaDao.insert(media)
 
     val modificationDate = LocalDateTime.now()
 
-    val updated = with(mediaDao.findById(media.bookId)) {
-      copy(
-        status = Media.Status.ERROR,
-        mediaType = "application/rar",
-        pages = listOf(
-          BookPage(
-            fileName = "2.png",
-            mediaType = "image/png",
-            dimension = Dimension(10, 10),
-            fileHash = "hashed",
-            fileSize = 10,
-          ),
-        ),
-        files = listOf(MediaFile("id.txt")),
-        extension = MediaExtensionEpub(
-          toc = listOf(EpubTocEntry("title", "href", listOf(EpubTocEntry("subtitle", "subhref")))),
-        ),
-        comment = "comment2",
-      )
-    }
+    val updated =
+      with(mediaDao.findById(media.bookId)) {
+        copy(
+          status = Media.Status.ERROR,
+          mediaType = "application/rar",
+          pages =
+            listOf(
+              BookPage(
+                fileName = "2.png",
+                mediaType = "image/png",
+                dimension = Dimension(10, 10),
+                fileHash = "hashed",
+                fileSize = 10,
+              ),
+            ),
+          files = listOf(MediaFile("id.txt")),
+          comment = "comment2",
+        )
+      }
 
     mediaDao.update(updated)
     val modified = mediaDao.findById(updated.bookId)
@@ -192,24 +187,25 @@ class MediaDaoTest(
     assertThat(modified.files.first().mediaType).isEqualTo(updated.files.first().mediaType)
     assertThat(modified.files.first().subType).isEqualTo(updated.files.first().subType)
     assertThat(modified.files.first().fileSize).isEqualTo(updated.files.first().fileSize)
-    assertThat(modified.extension).isEqualTo(updated.extension)
   }
 
   @Test
   fun `given existing media when finding by id then media is returned`() {
-    val media = Media(
-      status = Media.Status.READY,
-      mediaType = "application/zip",
-      pages = listOf(
-        BookPage(
-          fileName = "1.jpg",
-          mediaType = "image/jpeg",
-        ),
-      ),
-      files = listOf(MediaFile("ComicInfo.xml")),
-      comment = "comment",
-      bookId = book.id,
-    )
+    val media =
+      Media(
+        status = Media.Status.READY,
+        mediaType = "application/zip",
+        pages =
+          listOf(
+            BookPage(
+              fileName = "1.jpg",
+              mediaType = "image/jpeg",
+            ),
+          ),
+        files = listOf(MediaFile("ComicInfo.xml")),
+        comment = "comment",
+        bookId = book.id,
+      )
     mediaDao.insert(media)
 
     val found = catchThrowable { mediaDao.findById(media.bookId) }
@@ -225,21 +221,122 @@ class MediaDaoTest(
   }
 
   @Nested
-  inner class MissingPageHash {
+  inner class MediaExtension {
+    @Test
+    fun `given a media with extension when inserting then it is persisted`() {
+      val media =
+        Media(
+          status = Media.Status.READY,
+          mediaType = "application/epub+zip",
+          extension =
+            MediaExtensionEpub(
+              toc = listOf(EpubTocEntry("title", "href", listOf(EpubTocEntry("subtitle", "subhref")))),
+              landmarks = listOf(EpubTocEntry("title2", "href2", listOf(EpubTocEntry("subtitle2", "subhref2")))),
+            ),
+          bookId = book.id,
+        )
+
+      mediaDao.insert(media)
+      val created = mediaDao.findById(media.bookId)
+
+      assertThat(created.extension).isNotNull
+      assertThat(created.extension).isInstanceOf(ProxyExtension::class.java)
+      assertThat((created.extension as ProxyExtension).extensionClassName).isEqualTo(MediaExtensionEpub::class.qualifiedName)
+
+      val extension = mediaDao.findExtensionByIdOrNull(media.bookId)
+      assertThat(extension).isNotNull
+      assertThat(extension).isInstanceOf(MediaExtensionEpub::class.java)
+      assertThat(extension).isEqualTo(media.extension)
+    }
 
     @Test
+    fun `given existing media with extension when updating then it is persisted`() {
+      val media =
+        Media(
+          status = Media.Status.READY,
+          mediaType = "application/epub+zip",
+          extension =
+            MediaExtensionEpub(
+              landmarks = listOf(EpubTocEntry("title2", "href2", listOf(EpubTocEntry("subtitle2", "subhref2")))),
+            ),
+          bookId = book.id,
+        )
+      mediaDao.insert(media)
+
+      val updated =
+        with(mediaDao.findById(media.bookId)) {
+          copy(
+            extension =
+              MediaExtensionEpub(
+                toc = listOf(EpubTocEntry("title", "href", listOf(EpubTocEntry("subtitle", "subhref")))),
+              ),
+          )
+        }
+
+      mediaDao.update(updated)
+      val modified = mediaDao.findById(updated.bookId)
+
+      assertThat(modified.bookId).isEqualTo(updated.bookId)
+      assertThat(modified.createdDate).isEqualTo(updated.createdDate)
+      assertThat(modified.lastModifiedDate).isNotEqualTo(updated.lastModifiedDate)
+      assertThat(modified.extension).isNotNull
+      assertThat(modified.extension).isInstanceOf(ProxyExtension::class.java)
+      assertThat((modified.extension as ProxyExtension).extensionClassName).isEqualTo(MediaExtensionEpub::class.qualifiedName)
+
+      assertThat(mediaDao.findExtensionByIdOrNull(media.bookId)).isEqualTo(updated.extension)
+    }
+
+    @Test
+    fun `given existing media with proxy extension when updating then it is kept as-is`() {
+      val media =
+        Media(
+          status = Media.Status.READY,
+          mediaType = "application/epub+zip",
+          extension =
+            MediaExtensionEpub(
+              landmarks = listOf(EpubTocEntry("title2", "href2", listOf(EpubTocEntry("subtitle2", "subhref2")))),
+            ),
+          bookId = book.id,
+        )
+      mediaDao.insert(media)
+
+      val updated = mediaDao.findById(media.bookId).copy(comment = "updated")
+
+      mediaDao.update(updated)
+      val modified = mediaDao.findById(updated.bookId)
+
+      assertThat(modified.bookId).isEqualTo(updated.bookId)
+      assertThat(modified.createdDate).isEqualTo(updated.createdDate)
+      assertThat(modified.lastModifiedDate).isNotEqualTo(updated.lastModifiedDate)
+      assertThat(modified.comment).isEqualTo(updated.comment)
+      assertThat(modified.extension).isNotNull
+      assertThat(modified.extension).isInstanceOf(ProxyExtension::class.java)
+      assertThat((modified.extension as ProxyExtension).extensionClassName).isEqualTo(MediaExtensionEpub::class.qualifiedName)
+
+      val extension = mediaDao.findExtensionByIdOrNull(media.bookId)
+      assertThat(extension).isNotNull
+      assertThat(extension).isInstanceOf(MediaExtensionEpub::class.java)
+      assertThat(extension).isEqualTo(media.extension)
+    }
+  }
+
+  @Nested
+  inner class MissingPageHash {
+    @Test
     fun `given media with single page not hashed when finding for missing page hash then it is returned`() {
-      val media = Media(
-        status = Media.Status.READY,
-        pages = listOf(
-          BookPage(
-            fileName = "1.jpg",
-            mediaType = "image/jpeg",
-          ),
-        ),
-        mediaType = MediaType.ZIP.type,
-        bookId = book.id,
-      )
+      val media =
+        Media(
+          status = Media.Status.READY,
+          pages =
+            listOf(
+              BookPage(
+                fileName = "1.jpg",
+                mediaType = "image/jpeg",
+              ),
+            ),
+          mediaType = MediaType.ZIP.type,
+          bookId = book.id,
+        )
       mediaDao.insert(media)
 
       val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
@@ -249,17 +346,19 @@ class MediaDaoTest(
 
     @Test
     fun `given non-convertible media not hashed when finding for missing page hash then it is returned`() {
-      val media = Media(
-        status = Media.Status.READY,
-        pages = listOf(
-          BookPage(
-            fileName = "1.jpg",
-            mediaType = "image/jpeg",
-          ),
-        ),
-        mediaType = MediaType.RAR_4.type,
-        bookId = book.id,
-      )
+      val media =
+        Media(
+          status = Media.Status.READY,
+          pages =
+            listOf(
+              BookPage(
+                fileName = "1.jpg",
+                mediaType = "image/jpeg",
+              ),
+            ),
+          mediaType = MediaType.RAR_4.type,
+          bookId = book.id,
+        )
       mediaDao.insert(media)
 
       val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
@@ -269,17 +368,19 @@ class MediaDaoTest(
 
     @Test
     fun `given media with no pages hashed when finding for missing page hash then it is not returned`() {
-      val media = Media(
-        status = Media.Status.READY,
-        pages = (1..12).map {
-          BookPage(
-            fileName = "$it.jpg",
-            mediaType = "image/jpeg",
-          )
-        },
-        mediaType = MediaType.ZIP.type,
-        bookId = book.id,
-      )
+      val media =
+        Media(
+          status = Media.Status.READY,
+          pages =
+            (1..12).map {
+              BookPage(
+                fileName = "$it.jpg",
+                mediaType = "image/jpeg",
+              )
+            },
+          mediaType = MediaType.ZIP.type,
+          bookId = book.id,
+        )
       mediaDao.insert(media)
 
       val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
@@ -289,18 +390,20 @@ class MediaDaoTest(
 
     @Test
     fun `given media with single page hashed when finding for missing page hash then it is not returned`() {
-      val media = Media(
-        status = Media.Status.READY,
-        pages = listOf(
-          BookPage(
-            fileName = "1.jpg",
-            mediaType = "image/jpeg",
-            fileHash = "hashed",
-          ),
-        ),
-        mediaType = MediaType.ZIP.type,
-        bookId = book.id,
-      )
+      val media =
+        Media(
+          status = Media.Status.READY,
+          pages =
+            listOf(
+              BookPage(
+                fileName = "1.jpg",
+                mediaType = "image/jpeg",
+                fileHash = "hashed",
+              ),
+            ),
+          mediaType = MediaType.ZIP.type,
+          bookId = book.id,
+        )
       mediaDao.insert(media)
 
       val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
@@ -310,18 +413,20 @@ class MediaDaoTest(
 
     @Test
     fun `given media with required pages hashed when finding for missing page hash then it is not returned`() {
-      val media = Media(
-        status = Media.Status.READY,
-        pages = (1..12).map {
-          BookPage(
-            fileName = "$it.jpg",
-            mediaType = "image/jpeg",
-            fileHash = if (it <= 3 || it >= 9) "hashed" else "",
-          )
-        },
-        mediaType = MediaType.ZIP.type,
-        bookId = book.id,
-      )
+      val media =
+        Media(
+          status = Media.Status.READY,
+          pages =
+            (1..12).map {
+              BookPage(
+                fileName = "$it.jpg",
+                mediaType = "image/jpeg",
+                fileHash = if (it <= 3 || it >= 9) "hashed" else "",
+              )
+            },
+          mediaType = MediaType.ZIP.type,
+          bookId = book.id,
+        )
       mediaDao.insert(media)
 
       val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)
@@ -331,18 +436,20 @@ class MediaDaoTest(
 
     @Test
     fun `given media with more pages hashed than required when finding for missing page hash then it is not returned`() {
-      val media = Media(
-        status = Media.Status.READY,
-        pages = (1..12).map {
-          BookPage(
-            fileName = "$it.jpg",
-            mediaType = "image/jpeg",
-            fileHash = "hashed",
-          )
-        },
-        mediaType = MediaType.ZIP.type,
-        bookId = book.id,
-      )
+      val media =
+        Media(
+          status = Media.Status.READY,
+          pages =
+            (1..12).map {
+              BookPage(
+                fileName = "$it.jpg",
+                mediaType = "image/jpeg",
+                fileHash = "hashed",
+              )
+            },
+          mediaType = MediaType.ZIP.type,
+          bookId = book.id,
+        )
       mediaDao.insert(media)
 
       val found = mediaDao.findAllBookIdsByLibraryIdAndMediaTypeAndWithMissingPageHash(book.libraryId, listOf(MediaType.ZIP.type), komgaProperties.pageHashing)

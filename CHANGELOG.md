@@ -1,3 +1,948 @@
+# [1.19.0](https://github.com/gotson/komga/compare/1.18.0...1.19.0) (2025-01-27)
+## 🚀 Features
+**api**
+- add new book search condition for posters ([70bcb8f](https://github.com/gotson/komga/commits/70bcb8f)), closes [#1829](https://github.com/gotson/komga/issues/1829)
+- add new book list API using search condition criteria DSL ([1da0afe](https://github.com/gotson/komga/commits/1da0afe))
+
+**webui**
+- support additional fonts ([201c066](https://github.com/gotson/komga/commits/201c066)), closes [#1836](https://github.com/gotson/komga/issues/1836)
+- add page margin option in webtoon reader ([214f687](https://github.com/gotson/komga/commits/214f687)), closes [#1512](https://github.com/gotson/komga/issues/1512)
+- choose number of thumbnails to display in webreader ([9156ff7](https://github.com/gotson/komga/commits/9156ff7)), closes [#1540](https://github.com/gotson/komga/issues/1540)
+- display book number in webreader tab title and toolbar ([38fa3cc](https://github.com/gotson/komga/commits/38fa3cc)), closes [#1543](https://github.com/gotson/komga/issues/1543)
+- disable bounce in divina reader ([dd31f5b](https://github.com/gotson/komga/commits/dd31f5b)), closes [#1600](https://github.com/gotson/komga/issues/1600)
+- add filters to media analysis table ([68e05b8](https://github.com/gotson/komga/commits/68e05b8)), closes [#1802](https://github.com/gotson/komga/issues/1802)
+- add rel="noreferrer" for metadata links ([dbd225d](https://github.com/gotson/komga/commits/dbd225d)), closes [#1615](https://github.com/gotson/komga/issues/1615)
+- reorder reading lists and collection by index input ([d868ba4](https://github.com/gotson/komga/commits/d868ba4)), closes [#1584](https://github.com/gotson/komga/issues/1584)
+- add all books from series to read list from action menu ([a490449](https://github.com/gotson/komga/commits/a490449)), closes [#1535](https://github.com/gotson/komga/issues/1535)
+- show all libraries action menu next to All Libraries when browsing ([7ef59b0](https://github.com/gotson/komga/commits/7ef59b0))
+- move all libraries action to 3-dots menu in sidebar ([8706048](https://github.com/gotson/komga/commits/8706048))
+- split account settings into different views ([169c47e](https://github.com/gotson/komga/commits/169c47e))
+- show empty state if no known duplicate pages are found ([84253cb](https://github.com/gotson/komga/commits/84253cb))
+- remove tab navigation and use sidebar instead ([1e6ff7a](https://github.com/gotson/komga/commits/1e6ff7a))
+- add all books from series to read list from multi-select bar ([3582114](https://github.com/gotson/komga/commits/3582114)), closes [#1535](https://github.com/gotson/komga/issues/1535)
+- display creation and last modified date on book page ([da35e01](https://github.com/gotson/komga/commits/da35e01)), closes [#1547](https://github.com/gotson/komga/issues/1547)
+- add context in document title ([8880642](https://github.com/gotson/komga/commits/8880642)), closes [#1710](https://github.com/gotson/komga/issues/1710)
+- remove from collection/readlist directly from the book/series page ([901ea3c](https://github.com/gotson/komga/commits/901ea3c)), closes [#1518](https://github.com/gotson/komga/issues/1518)
+- allow readlist import if duplicates are present ([378f99b](https://github.com/gotson/komga/commits/378f99b)), closes [#1671](https://github.com/gotson/komga/issues/1671)
+- add filters in Import read list view ([7ae4d7b](https://github.com/gotson/komga/commits/7ae4d7b)), closes [#1702](https://github.com/gotson/komga/issues/1702)
+- add media management view for books with missing poster ([7d092c2](https://github.com/gotson/komga/commits/7d092c2)), closes [#1829](https://github.com/gotson/komga/issues/1829)
+- filter series and books by any/none author role ([ffc397f](https://github.com/gotson/komga/commits/ffc397f)), closes [#1829](https://github.com/gotson/komga/issues/1829)
+- filter books by media profile ([d07eb39](https://github.com/gotson/komga/commits/d07eb39)), closes [#1829](https://github.com/gotson/komga/issues/1829)
+- better filtering for Books ([2d9a59a](https://github.com/gotson/komga/commits/2d9a59a))
+
+**unscoped**
+- try to guess epub cover if not standard ([681337a](https://github.com/gotson/komga/commits/681337a)), closes [#1835](https://github.com/gotson/komga/issues/1835)
+
+## 🐛 Fixes
+**webui**
+- better handling of the read-more expansion panel during page change ([b83d741](https://github.com/gotson/komga/commits/b83d741))
+- disable item card menu and fab when dragging/editing is active ([6d71f4b](https://github.com/gotson/komga/commits/6d71f4b))
+- prevent flickering on unknown duplicate pages view load ([c36e10d](https://github.com/gotson/komga/commits/c36e10d))
+
+**unscoped**
+- better handling of broken epub ([42047cd](https://github.com/gotson/komga/commits/42047cd)), closes [#1844](https://github.com/gotson/komga/issues/1844)
+
+## 🔄️ Changes
+**webui**
+- extract missing translation strings ([f5f36b3](https://github.com/gotson/komga/commits/f5f36b3))
+- use new book list API ([2ac296d](https://github.com/gotson/komga/commits/2ac296d))
+- remove unused functions ([7370b43](https://github.com/gotson/komga/commits/7370b43))
+
+## 🛠  Build
+**webui**
+- fix hot reload ([fd3b1aa](https://github.com/gotson/komga/commits/fd3b1aa))
+
+## 📝 Documentation
+
+- update JetBrains logo ([79709e3](https://github.com/gotson/komga/commits/79709e3))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Polish) ([80253f2](https://github.com/gotson/komga/commits/80253f2))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([3ada19c](https://github.com/gotson/komga/commits/3ada19c))
+- translated using Weblate (Finnish) ([beb7452](https://github.com/gotson/komga/commits/beb7452))
+- translated using Weblate (French) ([13ecc44](https://github.com/gotson/komga/commits/13ecc44))
+- translated using Weblate (Spanish) ([9ad57a4](https://github.com/gotson/komga/commits/9ad57a4))
+- translated using Weblate (Polish) ([5421a96](https://github.com/gotson/komga/commits/5421a96))
+- translated using Weblate (Croatian) ([9c6c16a](https://github.com/gotson/komga/commits/9c6c16a))
+- translated using Weblate (Portuguese) ([92f06a1](https://github.com/gotson/komga/commits/92f06a1))
+- translated using Weblate (Czech) ([8affb7a](https://github.com/gotson/komga/commits/8affb7a))
+
+# [1.18.0](https://github.com/gotson/komga/compare/1.17.0...1.18.0) (2025-01-15)
+## 🚀 Features
+
+- allow book import for one-shots ([51416c5](https://github.com/gotson/komga/commits/51416c5))
+
+## 🐛 Fixes
+**opds2**
+- keep reading feed incorrectly showing all books ([41cdf80](https://github.com/gotson/komga/commits/41cdf80))
+
+**unscoped**
+- only decompress rar5 with libarchive ([3089063](https://github.com/gotson/komga/commits/3089063)), closes [#1826](https://github.com/gotson/komga/issues/1826)
+- updating library options should trigger corresponding tasks ([b7b1b51](https://github.com/gotson/komga/commits/b7b1b51))
+
+## 🏎 Perf
+
+- use materialized CTE ([072dc27](https://github.com/gotson/komga/commits/072dc27)), closes [#1823](https://github.com/gotson/komga/issues/1823)
+- downgrade sqlite-jdbc from 3.47.1.0 to 3.46.1.3 ([b0d9b88](https://github.com/gotson/komga/commits/b0d9b88)), closes [#1823](https://github.com/gotson/komga/issues/1823)
+
+## 📝 Documentation
+
+- mention KOReader Sync in README ([7d7f302](https://github.com/gotson/komga/commits/7d7f302))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Tamil) ([9b0805e](https://github.com/gotson/komga/commits/9b0805e))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([8653eaa](https://github.com/gotson/komga/commits/8653eaa))
+- translated using Weblate (Korean) ([6853e31](https://github.com/gotson/komga/commits/6853e31))
+- translated using Weblate (Finnish) ([a14c08f](https://github.com/gotson/komga/commits/a14c08f))
+- translated using Weblate (French) ([b0413eb](https://github.com/gotson/komga/commits/b0413eb))
+- translated using Weblate (Croatian) ([46a7869](https://github.com/gotson/komga/commits/46a7869))
+- translated using Weblate (Portuguese) ([d775ea4](https://github.com/gotson/komga/commits/d775ea4))
+- translated using Weblate (Danish) ([a53c9a6](https://github.com/gotson/komga/commits/a53c9a6))
+- translated using Weblate (Tamil) ([f7a72ae](https://github.com/gotson/komga/commits/f7a72ae))
+
+## ⚙️ Dependencies
+**komga**
+- upgrade sqlite-jdbc to 3.48.0 ([79be279](https://github.com/gotson/komga/commits/79be279))
+- bump nightcompress to 1.1.0 ([bd68b14](https://github.com/gotson/komga/commits/bd68b14))
+
+# [1.17.0](https://github.com/gotson/komga/compare/1.16.0...1.17.0) (2025-01-09)
+## 🚀 Features
+
+- add support for KOReader Sync ([623b2e3](https://github.com/gotson/komga/commits/623b2e3)), closes [#1760](https://github.com/gotson/komga/issues/1760)
+
+## 🐛 Fixes
+**api**
+- read progress modified time could be inaccurate in some cases ([6c3565c](https://github.com/gotson/komga/commits/6c3565c))
+
+**unscoped**
+- better detection for KCC converted Epub ([6dcebb4](https://github.com/gotson/komga/commits/6dcebb4))
+
+## 🔄️ Changes
+
+- move user roles to separate database table ([cbb0d61](https://github.com/gotson/komga/commits/cbb0d61))
+
+# [1.16.0](https://github.com/gotson/komga/compare/1.15.1...1.16.0) (2025-01-02)
+## 🚀 Features
+**api**
+- readlist books are not always sorted by number ([0dd4b27](https://github.com/gotson/komga/commits/0dd4b27)), closes [#1803](https://github.com/gotson/komga/issues/1803)
+- add new endpoint to retrieve Komga releases ([fa98da3](https://github.com/gotson/komga/commits/fa98da3))
+
+**webui**
+- download log file from server settings ([eed4f09](https://github.com/gotson/komga/commits/eed4f09)), closes [#1599](https://github.com/gotson/komga/issues/1599)
+- display updates with available indicator and changelog ([85cffc7](https://github.com/gotson/komga/commits/85cffc7)), closes [#1598](https://github.com/gotson/komga/issues/1598)
+
+**unscoped**
+- sort series by random ([d50646f](https://github.com/gotson/komga/commits/d50646f)), closes [#1558](https://github.com/gotson/komga/issues/1558)
+- sort books by page count ([09bc445](https://github.com/gotson/komga/commits/09bc445)), closes [#1570](https://github.com/gotson/komga/issues/1570)
+- sort series by read date ([0dc8e61](https://github.com/gotson/komga/commits/0dc8e61)), closes [#1700](https://github.com/gotson/komga/issues/1700)
+
+## 🔄️ Changes
+
+- remove duplicated code ([274ac6a](https://github.com/gotson/komga/commits/274ac6a))
+- use spring's webclient.builder ([9fde145](https://github.com/gotson/komga/commits/9fde145))
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([1552b9b](https://github.com/gotson/komga/commits/1552b9b))
+
+## 🌐 Translation
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([bd0a483](https://github.com/gotson/komga/commits/bd0a483))
+- translated using Weblate (Korean) ([b50072c](https://github.com/gotson/komga/commits/b50072c))
+- translated using Weblate (Finnish) ([bcdb7b2](https://github.com/gotson/komga/commits/bcdb7b2))
+- translated using Weblate (French) ([cb57488](https://github.com/gotson/komga/commits/cb57488))
+- translated using Weblate (Spanish) ([48b472d](https://github.com/gotson/komga/commits/48b472d))
+- translated using Weblate (Croatian) ([4911fba](https://github.com/gotson/komga/commits/4911fba))
+- translated using Weblate (Czech) ([9081c33](https://github.com/gotson/komga/commits/9081c33))
+- translated using Weblate (German) ([e47b18c](https://github.com/gotson/komga/commits/e47b18c))
+- translated using Weblate (Turkish) ([263e64b](https://github.com/gotson/komga/commits/263e64b))
+
+# [1.15.1](https://github.com/gotson/komga/compare/1.15.0...1.15.1) (2024-12-17)
+## 🐛 Fixes
+
+- static web resources not available ([f22d880](https://github.com/gotson/komga/commits/f22d880))
+
+## 🔄️ Changes
+
+- fix path format ([4ff3881](https://github.com/gotson/komga/commits/4ff3881))
+
+## 🛠  Build
+**conveyor**
+- use JDK 22 to fix windows build issue ([3b4dca2](https://github.com/gotson/komga/commits/3b4dca2))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Portuguese) ([1470a02](https://github.com/gotson/komga/commits/1470a02))
+- translated using Weblate (Thai) ([d179eb2](https://github.com/gotson/komga/commits/d179eb2))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([5724409](https://github.com/gotson/komga/commits/5724409))
+- translated using Weblate (Finnish) ([83d0627](https://github.com/gotson/komga/commits/83d0627))
+- translated using Weblate (Spanish) ([af7b1d6](https://github.com/gotson/komga/commits/af7b1d6))
+- translated using Weblate (Croatian) ([43f86ad](https://github.com/gotson/komga/commits/43f86ad))
+- translated using Weblate (Portuguese) ([29826e1](https://github.com/gotson/komga/commits/29826e1))
+- translated using Weblate (Japanese) ([3871fcf](https://github.com/gotson/komga/commits/3871fcf))
+- translated using Weblate (German) ([3cdb5f0](https://github.com/gotson/komga/commits/3cdb5f0))
+- translated using Weblate (Portuguese (Brazil)) ([dd9482d](https://github.com/gotson/komga/commits/dd9482d))
+- translated using Weblate (Thai) ([3cdec06](https://github.com/gotson/komga/commits/3cdec06))
+- translated using Weblate (Turkish) ([d501d1a](https://github.com/gotson/komga/commits/d501d1a))
+
+# [1.15.0](https://github.com/gotson/komga/compare/1.14.1...1.15.0) (2024-12-16)
+## 🚀 Features
+**api**
+- add new series list API using search condition criteria DSL ([3bfc798](https://github.com/gotson/komga/commits/3bfc798))
+
+**docker**
+- add curl and wget ([143770e](https://github.com/gotson/komga/commits/143770e))
+- add native jpeg-xl library for arm64 ([b682e35](https://github.com/gotson/komga/commits/b682e35))
+
+**webui**
+- better filtering for Series ([d93bc3d](https://github.com/gotson/komga/commits/d93bc3d)), closes [#1169](https://github.com/gotson/komga/issues/1169) [#1523](https://github.com/gotson/komga/issues/1523) [#1552](https://github.com/gotson/komga/issues/1552)
+
+**windows-app**
+- add native webp libraries ([17925e5](https://github.com/gotson/komga/commits/17925e5))
+
+## 🐛 Fixes
+
+- keep user uploaded thumbnail when importing a book with upgrade ([b7b74c8](https://github.com/gotson/komga/commits/b7b74c8))
+- restore user uploaded thumbnail when restoring deleted books and series ([812f822](https://github.com/gotson/komga/commits/812f822))
+
+## 🔄️ Changes
+
+- ktlint format ([d659446](https://github.com/gotson/komga/commits/d659446))
+- remove deprecated configuration properties ([7984be2](https://github.com/gotson/komga/commits/7984be2))
+- address deprecations ([225f58f](https://github.com/gotson/komga/commits/225f58f))
+- ktlint format ([d64fe03](https://github.com/gotson/komga/commits/d64fe03))
+
+## 🛠  Build
+**docker**
+- use ubuntu 24.10 and JDK 23 ([858365f](https://github.com/gotson/komga/commits/858365f))
+- use new spring boot jar tools to extract layers ([a7ae8c7](https://github.com/gotson/komga/commits/a7ae8c7))
+
+**macos-app**
+- minimum macos version is now 13 ([5a32f7b](https://github.com/gotson/komga/commits/5a32f7b))
+
+**webui**
+- update Browserslist db ([4ce9c15](https://github.com/gotson/komga/commits/4ce9c15))
+- update Browserslist db ([25a1cfa](https://github.com/gotson/komga/commits/25a1cfa))
+
+**unscoped**
+- move JDK configuration for desktop app to Conveyor configuration ([051cfb7](https://github.com/gotson/komga/commits/051cfb7))
+- bump gradle to 8.11.1 ([2e5d5d8](https://github.com/gotson/komga/commits/2e5d5d8))
+- refactor ([d839cd6](https://github.com/gotson/komga/commits/d839cd6))
+
+## 📝 Documentation
+
+- fix FAQ link in CONTRIBUTING.md ([6cc14e3](https://github.com/gotson/komga/commits/6cc14e3))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 15.1 to 16.0 ([7fa42f5](https://github.com/gotson/komga/commits/7fa42f5))
+- bump hydraulic-software/conveyor from 14.3 to 15.1 ([8923403](https://github.com/gotson/komga/commits/8923403))
+
+**komga**
+- bump nightcompress to 1.0.0 ([750710d](https://github.com/gotson/komga/commits/750710d))
+- bump nightmonkeys to 1.0.0 ([8ce7716](https://github.com/gotson/komga/commits/8ce7716))
+- bump spring boot to 3.4.0 ([c76d9bf](https://github.com/gotson/komga/commits/c76d9bf))
+
+**webui**
+- bump nanoid from 3.3.6 to 3.3.8 in /komga-webui ([570650a](https://github.com/gotson/komga/commits/570650a))
+
+**unscoped**
+- bump deps ([fceda30](https://github.com/gotson/komga/commits/fceda30))
+- bump ktlint to 1.5.0 ([307c652](https://github.com/gotson/komga/commits/307c652))
+- bump com.github.ben-manes.versions to 0.51.0 ([ee4d0a5](https://github.com/gotson/komga/commits/ee4d0a5))
+
+# [1.14.1](https://github.com/gotson/komga/compare/1.14.0...1.14.1) (2024-10-15)
+## 🐛 Fixes
+**api**
+- file system listing does not respect showFiles=false ([836cfa4](https://github.com/gotson/komga/commits/836cfa4)), closes [#1721](https://github.com/gotson/komga/issues/1721)
+
+**kobo**
+- better display of fixed layout books ([406274d](https://github.com/gotson/komga/commits/406274d)), closes [#1732](https://github.com/gotson/komga/issues/1732)
+
+**komga-tray**
+- load optional application configuration files inside config directory ([2b41fef](https://github.com/gotson/komga/commits/2b41fef))
+
+**webui**
+- book import filename chooser dialog would not reopen in some scenarios ([f910ef4](https://github.com/gotson/komga/commits/f910ef4))
+- bulk edit metadata numberSort increment does not work as expected after editing ([e1b9296](https://github.com/gotson/komga/commits/e1b9296)), closes [#1727](https://github.com/gotson/komga/issues/1727)
+- epub reader crash when reading one-shot from collection context ([e7ef2bc](https://github.com/gotson/komga/commits/e7ef2bc)), closes [#1718](https://github.com/gotson/komga/issues/1718)
+- file system browser parent button does not work ([fa006c0](https://github.com/gotson/komga/commits/fa006c0)), closes [#1721](https://github.com/gotson/komga/issues/1721)
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([b382cd6](https://github.com/gotson/komga/commits/b382cd6))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Czech) ([a05ad44](https://github.com/gotson/komga/commits/a05ad44))
+
+**webui**
+- translated using Weblate (Finnish) ([c185395](https://github.com/gotson/komga/commits/c185395))
+- translated using Weblate (French) ([246c539](https://github.com/gotson/komga/commits/246c539))
+- translated using Weblate (Czech) ([a23d893](https://github.com/gotson/komga/commits/a23d893))
+- translated using Weblate (Turkish) ([833f4b3](https://github.com/gotson/komga/commits/833f4b3))
+
+## ⚙️ Dependencies
+**webui**
+- bump cookie and express in /komga-webui ([64094ff](https://github.com/gotson/komga/commits/64094ff))
+
+# [1.14.0](https://github.com/gotson/komga/compare/1.13.0...1.14.0) (2024-09-27)
+## 🚀 Features
+**docker**
+- bundle kepubify ([1d1e3fd](https://github.com/gotson/komga/commits/1d1e3fd))
+
+**kobo**
+- update changed covers on Kobo ([870afff](https://github.com/gotson/komga/commits/870afff))
+- handle read progression conversion between kepub and epub ([df11920](https://github.com/gotson/komga/commits/df11920))
+- convert books to kepub on the fly using kepubify ([dd39f28](https://github.com/gotson/komga/commits/dd39f28))
+- provide KEPUB format download url if book is kepub ([9e8a525](https://github.com/gotson/komga/commits/9e8a525))
+
+**komga-tray**
+- bundle kepubify for windows and macos apps ([489d4b1](https://github.com/gotson/komga/commits/489d4b1))
+
+**webui**
+- support kepubify path in Server Settings ([d838c85](https://github.com/gotson/komga/commits/d838c85))
+- display KEPUB as book format for kepub files ([12e2436](https://github.com/gotson/komga/commits/12e2436))
+
+**unscoped**
+- detect if epub is a kepub ([0fd783c](https://github.com/gotson/komga/commits/0fd783c))
+
+## 🐛 Fixes
+
+- don't crash if ForwardedHeaderFilter is not defined ([2b18dfa](https://github.com/gotson/komga/commits/2b18dfa))
+
+## 🔄️ Changes
+
+- simplify epub zip functions ([d0143bf](https://github.com/gotson/komga/commits/d0143bf))
+- move TaskPoolSize event to infrastructure package ([734bf8f](https://github.com/gotson/komga/commits/734bf8f))
+
+## 📝 Documentation
+**openapi**
+- split OPDS v1 and v2 ([ca57ab3](https://github.com/gotson/komga/commits/ca57ab3))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Danish) ([a253bce](https://github.com/gotson/komga/commits/a253bce))
+- translated using Weblate (Portuguese) ([5494254](https://github.com/gotson/komga/commits/5494254))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([b549038](https://github.com/gotson/komga/commits/b549038))
+- translated using Weblate (Spanish) ([f7d1fe4](https://github.com/gotson/komga/commits/f7d1fe4))
+- translated using Weblate (Danish) ([5c5aabb](https://github.com/gotson/komga/commits/5c5aabb))
+- translated using Weblate (Chinese (Simplified Han script)) ([51cd7e0](https://github.com/gotson/komga/commits/51cd7e0))
+- translated using Weblate (Finnish) ([cc55e2f](https://github.com/gotson/komga/commits/cc55e2f))
+- translated using Weblate (French) ([14bbdc4](https://github.com/gotson/komga/commits/14bbdc4))
+- translated using Weblate (Spanish) ([fdf0582](https://github.com/gotson/komga/commits/fdf0582))
+- translated using Weblate (Croatian) ([9c49f65](https://github.com/gotson/komga/commits/9c49f65))
+- translated using Weblate (Portuguese) ([7e29dc6](https://github.com/gotson/komga/commits/7e29dc6))
+- translated using Weblate (German) ([ebeea18](https://github.com/gotson/komga/commits/ebeea18))
+- translated using Weblate (Turkish) ([e1c2395](https://github.com/gotson/komga/commits/e1c2395))
+
+## ⚙️ Dependencies
+**komga**
+- bump sqlite-jdbc from 3.45.0.0 to 3.46.1.3 ([b9cb0fe](https://github.com/gotson/komga/commits/b9cb0fe))
+
+**webui**
+- bump serve-static and express in /komga-webui ([b64c117](https://github.com/gotson/komga/commits/b64c117))
+
+# [1.13.0](https://github.com/gotson/komga/compare/1.12.1...1.13.0) (2024-09-11)
+## 🚀 Features
+**kobo**
+- sync On Deck as a Kobo collection ([f07be06](https://github.com/gotson/komga/commits/f07be06))
+
+**metadata**
+- support multiple values in Web field from ComicInfo.xml ([d12f3b3](https://github.com/gotson/komga/commits/d12f3b3)), closes [#1639](https://github.com/gotson/komga/issues/1639)
+
+**webui**
+- add sort criteria for known page hash ([be4911d](https://github.com/gotson/komga/commits/be4911d)), closes [#1609](https://github.com/gotson/komga/issues/1609)
+
+## 🐛 Fixes
+
+- admin user created by claiming does not have kobo sync role ([bf8bbdd](https://github.com/gotson/komga/commits/bf8bbdd)), closes [#1686](https://github.com/gotson/komga/issues/1686)
+
+## 🏎 Perf
+**api**
+- make on deck much faster ([e72ff78](https://github.com/gotson/komga/commits/e72ff78))
+
+## 🛠  Build
+**benchmark**
+- mark some books as read for on deck ([0047a91](https://github.com/gotson/komga/commits/0047a91))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Croatian) ([b8f2cea](https://github.com/gotson/komga/commits/b8f2cea))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([bc913ad](https://github.com/gotson/komga/commits/bc913ad))
+- translated using Weblate (Korean) ([41c93fd](https://github.com/gotson/komga/commits/41c93fd))
+- translated using Weblate (Finnish) ([026c696](https://github.com/gotson/komga/commits/026c696))
+- translated using Weblate (French) ([c725d73](https://github.com/gotson/komga/commits/c725d73))
+- translated using Weblate (Spanish) ([ffc7bc3](https://github.com/gotson/komga/commits/ffc7bc3))
+- translated using Weblate (Croatian) ([15eb9a4](https://github.com/gotson/komga/commits/15eb9a4))
+- translated using Weblate (Russian) ([8249e0f](https://github.com/gotson/komga/commits/8249e0f))
+
+# [1.12.1](https://github.com/gotson/komga/compare/1.12.0...1.12.1) (2024-09-04)
+## 🐛 Fixes
+**kobo**
+- better handling of missing port from Kobo Sync requests ([4cd838a](https://github.com/gotson/komga/commits/4cd838a))
+- use the total progression sent by Kobo ([be37127](https://github.com/gotson/komga/commits/be37127))
+- correctly propagate metadata update during kobo sync ([20e7c29](https://github.com/gotson/komga/commits/20e7c29))
+- properly store total progression on state update ([fcde9c9](https://github.com/gotson/komga/commits/fcde9c9))
+- properly mark book as read when finished on Kobo ([c3fc37a](https://github.com/gotson/komga/commits/c3fc37a))
+
+**webui**
+- only show API key copy button if clipboard is available ([4351086](https://github.com/gotson/komga/commits/4351086)), closes [#1675](https://github.com/gotson/komga/issues/1675)
+
+## 🔄️ Changes
+
+- adjust loglevel for LoginListener ([2c260b1](https://github.com/gotson/komga/commits/2c260b1))
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([63e1c0c](https://github.com/gotson/komga/commits/63e1c0c))
+
+## 📝 Documentation
+
+- add kobo sync in readme ([02e8d30](https://github.com/gotson/komga/commits/02e8d30))
+
+# [1.12.0](https://github.com/gotson/komga/compare/1.11.3...1.12.0) (2024-08-29)
+## 🚀 Features
+**kobo**
+- initial Kobo Sync support ([210c7b1](https://github.com/gotson/komga/commits/210c7b1))
+- add API key support ([a4747e8](https://github.com/gotson/komga/commits/a4747e8))
+
+**metadata**
+- use group-position for epub series index ([4354581](https://github.com/gotson/komga/commits/4354581))
+
+**webui**
+- api key support ([c1e1da6](https://github.com/gotson/komga/commits/c1e1da6))
+
+## 🐛 Fixes
+**api**
+- incorrect query param name ([85a9934](https://github.com/gotson/komga/commits/85a9934)), closes [#1670](https://github.com/gotson/komga/issues/1670)
+- properly handle simple read progress for divina compatible epub ([0d19aa1](https://github.com/gotson/komga/commits/0d19aa1))
+
+## 🛠  Build
+
+- ignore conveyor steps on forks ([cefd527](https://github.com/gotson/komga/commits/cefd527))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Hungarian) ([95df315](https://github.com/gotson/komga/commits/95df315))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/checkout from 3 to 4 ([14887f5](https://github.com/gotson/komga/commits/14887f5))
+
+**webui**
+- bump webpack from 5.88.2 to 5.94.0 in /komga-webui ([f3bce23](https://github.com/gotson/komga/commits/f3bce23))
+
+# [1.11.3](https://github.com/gotson/komga/compare/1.11.2...1.11.3) (2024-08-26)
+## 🐛 Fixes
+**api**
+- some metrics are not updated ([da35140](https://github.com/gotson/komga/commits/da35140)), closes [#1643](https://github.com/gotson/komga/issues/1643)
+- known page hash cannot be sorted by file size ([bf71f8e](https://github.com/gotson/komga/commits/bf71f8e)), closes [#1610](https://github.com/gotson/komga/issues/1610)
+
+**docker**
+- broken Dockerfile ([796a4ed](https://github.com/gotson/komga/commits/796a4ed))
+
+**komga-tray**
+- libheif.dll had no avif support ([f743aae](https://github.com/gotson/komga/commits/f743aae)), closes [#1624](https://github.com/gotson/komga/issues/1624)
+
+**webui**
+- footer text displayed over book content ([6794e24](https://github.com/gotson/komga/commits/6794e24)), closes [#1489](https://github.com/gotson/komga/issues/1489)
+- auto-scroll upward does not work when dragging elements ([835bff4](https://github.com/gotson/komga/commits/835bff4)), closes [#1652](https://github.com/gotson/komga/issues/1652)
+
+## 🏎 Perf
+
+- faster zip entry extraction ([eeb5898](https://github.com/gotson/komga/commits/eeb5898))
+
+## 🔄️ Changes
+
+- better logging for sqlite pools ([6a51f34](https://github.com/gotson/komga/commits/6a51f34))
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([eec2474](https://github.com/gotson/komga/commits/eec2474))
+
+**unscoped**
+- add browserlist update action ([b93459a](https://github.com/gotson/komga/commits/b93459a))
+
+## ⚙️ Dependencies
+**ci**
+- bump gradle/actions from 3 to 4 ([6482b34](https://github.com/gotson/komga/commits/6482b34))
+
+**webui**
+- bump axios from 1.6.0 to 1.7.4 in /komga-webui ([f177fab](https://github.com/gotson/komga/commits/f177fab))
+
+# [1.11.2](https://github.com/gotson/komga/compare/1.11.1...1.11.2) (2024-07-25)
+## 🐛 Fixes
+**docker**
+- native libraries would not load on aarch64 ([16e8b97](https://github.com/gotson/komga/commits/16e8b97))
+
+**unscoped**
+- do not share IndexWriterConfig instances across IndexWriters ([90db07c](https://github.com/gotson/komga/commits/90db07c)), closes [#1603](https://github.com/gotson/komga/issues/1603)
+
+## 🔄️ Changes
+
+- replace task executor type with interface ([19b846b](https://github.com/gotson/komga/commits/19b846b))
+
+## 🛠  Build
+**benchmark**
+- fix properties following gradle change ([1236594](https://github.com/gotson/komga/commits/1236594))
+
+## 🌐 Translation
+**komga-tray**
+- added translation using Weblate (Chinese (Simplified)) ([c66db8e](https://github.com/gotson/komga/commits/c66db8e))
+- translated using Weblate (Swedish) ([5e7c42c](https://github.com/gotson/komga/commits/5e7c42c))
+- added translation using Weblate (Croatian) ([d9a8cc6](https://github.com/gotson/komga/commits/d9a8cc6))
+- translated using Weblate (Czech) ([57bbe5e](https://github.com/gotson/komga/commits/57bbe5e))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([5d4fc14](https://github.com/gotson/komga/commits/5d4fc14))
+- translated using Weblate (Korean) ([8182d50](https://github.com/gotson/komga/commits/8182d50))
+- translated using Weblate (Hungarian) ([a844587](https://github.com/gotson/komga/commits/a844587))
+- translated using Weblate (Croatian) ([0ddb3d8](https://github.com/gotson/komga/commits/0ddb3d8))
+- translated using Weblate (Czech) ([c4a428f](https://github.com/gotson/komga/commits/c4a428f))
+- translated using Weblate (Russian) ([a9eadae](https://github.com/gotson/komga/commits/a9eadae))
+- translated using Weblate (German) ([7ea825d](https://github.com/gotson/komga/commits/7ea825d))
+- translated using Weblate (Thai) ([3da499e](https://github.com/gotson/komga/commits/3da499e))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 14.2 to 14.3 ([4d8b7d4](https://github.com/gotson/komga/commits/4d8b7d4))
+- bump hydraulic-software/conveyor from 14.1 to 14.2 ([d7ee49c](https://github.com/gotson/komga/commits/d7ee49c))
+
+**webui**
+- bump braces from 3.0.2 to 3.0.3 in /komga-webui ([fbc7ce1](https://github.com/gotson/komga/commits/fbc7ce1))
+
+# [1.11.1](https://github.com/gotson/komga/compare/1.11.0...1.11.1) (2024-04-24)
+## 🐛 Fixes
+**api**
+- first unread cover should include in progress books ([77c15f9](https://github.com/gotson/komga/commits/77c15f9))
+
+**unscoped**
+- sync progress not compatible between Cantook and web reader ([0211096](https://github.com/gotson/komga/commits/0211096)), closes [#1477](https://github.com/gotson/komga/issues/1477)
+
+# [1.11.0](https://github.com/gotson/komga/compare/1.10.4...1.11.0) (2024-04-18)
+## 🚀 Features
+**opds**
+- discoverable Progression API, used by Aldiko/Cantook ([443d8a7](https://github.com/gotson/komga/commits/443d8a7))
+- add authenticate property for Aldiko/Cantook ([aaf958d](https://github.com/gotson/komga/commits/aaf958d))
+- support authentication for OPDS ([3250c12](https://github.com/gotson/komga/commits/3250c12))
+
+## 🐛 Fixes
+**api**
+- broken links in webpub manifests ([14bee17](https://github.com/gotson/komga/commits/14bee17))
+- library access is not properly applied in some cases for admins ([77bad31](https://github.com/gotson/komga/commits/77bad31)), closes [#1470](https://github.com/gotson/komga/issues/1470)
+- library restrictions are not properly apply in some cases ([aa0a9b4](https://github.com/gotson/komga/commits/aa0a9b4)), closes [#1474](https://github.com/gotson/komga/issues/1474)
+- disable content negotiation for images in webpub manifest ([5a94ee1](https://github.com/gotson/komga/commits/5a94ee1))
+
+**komga-tray**
+- open komga menu does not use custom port ([edc1223](https://github.com/gotson/komga/commits/edc1223)), closes [#1468](https://github.com/gotson/komga/issues/1468)
+
+## 🔄️ Changes
+
+- reorganize code shared between REST and OPDS ([ec3eb44](https://github.com/gotson/komga/commits/ec3eb44))
+
+## 🛠  Build
+
+- fix failing test ([39e8d1d](https://github.com/gotson/komga/commits/39e8d1d))
+- adjust usage of setup-gradle to new syntax ([edc0762](https://github.com/gotson/komga/commits/edc0762))
+- migrate to gradle/actions/wrapper-validation@v3 ([bcafbd8](https://github.com/gotson/komga/commits/bcafbd8))
+
+## 🌐 Translation
+**webui**
+- translated using Weblate (Norwegian Bokmål) ([9ac00bc](https://github.com/gotson/komga/commits/9ac00bc))
+- translated using Weblate (Chinese (Simplified)) ([e81c342](https://github.com/gotson/komga/commits/e81c342))
+- translated using Weblate (Dutch) ([8797a77](https://github.com/gotson/komga/commits/8797a77))
+- translated using Weblate (Arabic) ([3e623dd](https://github.com/gotson/komga/commits/3e623dd))
+- translated using Weblate (Portuguese) ([1d6add1](https://github.com/gotson/komga/commits/1d6add1))
+- translated using Weblate (German) ([44064cd](https://github.com/gotson/komga/commits/44064cd))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 14.0 to 14.1 ([38261f1](https://github.com/gotson/komga/commits/38261f1))
+- bump hydraulic-software/conveyor from 13.1 to 14.0 ([38c5699](https://github.com/gotson/komga/commits/38c5699))
+
+**webui**
+- bump express from 4.18.2 to 4.19.2 in /komga-webui ([dea7acd](https://github.com/gotson/komga/commits/dea7acd))
+- bump webpack-dev-middleware in /komga-webui ([b5b6d13](https://github.com/gotson/komga/commits/b5b6d13))
+- bump follow-redirects from 1.15.4 to 1.15.6 in /komga-webui ([3e4f705](https://github.com/gotson/komga/commits/3e4f705))
+
+# [1.10.4](https://github.com/gotson/komga/compare/1.10.3...1.10.4) (2024-03-12)
+## 🐛 Fixes
+**api**
+- cap search results to avoid SQLITE_TOOBIG ([d34d4a5](https://github.com/gotson/komga/commits/d34d4a5)), closes [#1428](https://github.com/gotson/komga/issues/1428)
+- book fileLastModified was in local time instead of UTC ([1648533](https://github.com/gotson/komga/commits/1648533)), closes [#1430](https://github.com/gotson/komga/issues/1430)
+
+**unscoped**
+- better compatibility for malformed epub files ([e09cbc4](https://github.com/gotson/komga/commits/e09cbc4)), closes [#1441](https://github.com/gotson/komga/issues/1441)
+- some epub resources would not be detected properly ([f8e40ce](https://github.com/gotson/komga/commits/f8e40ce)), closes [#1441](https://github.com/gotson/komga/issues/1441) [#1442](https://github.com/gotson/komga/issues/1442)
+
+## 🛠  Build
+
+- migrate to gradle/actions/setup-gradle@v3 ([5466087](https://github.com/gotson/komga/commits/5466087))
+
+## 🌐 Translation
+**komga-tray**
+- deleted translation using Weblate (Chinese (Simplified)) ([ed374a1](https://github.com/gotson/komga/commits/ed374a1))
+- translated using Weblate (Chinese (Simplified)) ([4b7bfa0](https://github.com/gotson/komga/commits/4b7bfa0))
+- translated using Weblate (Korean) ([05f02f5](https://github.com/gotson/komga/commits/05f02f5))
+- translated using Weblate (Italian) ([e38dce2](https://github.com/gotson/komga/commits/e38dce2))
+- added translation using Weblate (Portuguese) ([0288231](https://github.com/gotson/komga/commits/0288231))
+- translated using Weblate (Turkish) ([0f189c1](https://github.com/gotson/komga/commits/0f189c1))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([38cdf70](https://github.com/gotson/komga/commits/38cdf70))
+- translated using Weblate (Korean) ([ac3eb4e](https://github.com/gotson/komga/commits/ac3eb4e))
+- translated using Weblate (Finnish) ([d98de06](https://github.com/gotson/komga/commits/d98de06))
+- translated using Weblate (Italian) ([e9f1017](https://github.com/gotson/komga/commits/e9f1017))
+- added translation using Weblate (Portuguese) ([5b70520](https://github.com/gotson/komga/commits/5b70520))
+- translated using Weblate (Portuguese (Brazil)) ([6e915d6](https://github.com/gotson/komga/commits/6e915d6))
+- translated using Weblate (Turkish) ([4e5cc0d](https://github.com/gotson/komga/commits/4e5cc0d))
+
+## ⚙️ Dependencies
+**ci**
+- bump gradle/wrapper-validation-action from 1 to 2 ([5a21c5c](https://github.com/gotson/komga/commits/5a21c5c))
+- bump hydraulic-software/conveyor from 13.0 to 13.1 ([c9ab1f7](https://github.com/gotson/komga/commits/c9ab1f7))
+- bump peter-evans/dockerhub-description from 3.4.2 to 4.0.0 ([898bc19](https://github.com/gotson/komga/commits/898bc19))
+
+**webui**
+- bump sanitize-html from 2.11.0 to 2.12.1 in /komga-webui ([b0b457a](https://github.com/gotson/komga/commits/b0b457a))
+
+# [1.10.3](https://github.com/gotson/komga/compare/1.10.2...1.10.3) (2024-01-23)
+## 🐛 Fixes
+**komga**
+- add field alias for Mylar series.json ([bc5a73a](https://github.com/gotson/komga/commits/bc5a73a))
+
+## 🔄️ Changes
+**komga**
+- remove deprecated property ([2ec3265](https://github.com/gotson/komga/commits/2ec3265))
+
+## 🛠  Build
+**release**
+- stop publishing Conveyor old-site ([9d1b82a](https://github.com/gotson/komga/commits/9d1b82a))
+
+# [1.10.2](https://github.com/gotson/komga/compare/1.10.1...1.10.2) (2024-01-22)
+## 🐛 Fixes
+**komga**
+- ignore missing epub resources ([22c2131](https://github.com/gotson/komga/commits/22c2131)), closes [#1386](https://github.com/gotson/komga/issues/1386)
+- add safeguards for malformed epub ([270a50c](https://github.com/gotson/komga/commits/270a50c)), closes [#1386](https://github.com/gotson/komga/issues/1386)
+
+## 🔄️ Changes
+**komga**
+- remove unnecessary null checks ([98f20cb](https://github.com/gotson/komga/commits/98f20cb))
+- replace deprecated TaskExecutorBuilder with ThreadPoolTaskExecutorBuilder ([864dba6](https://github.com/gotson/komga/commits/864dba6))
+- use lazy logging statement ([479aff2](https://github.com/gotson/komga/commits/479aff2))
+
+**unscoped**
+- ktlint format ([d9bba60](https://github.com/gotson/komga/commits/d9bba60))
+
+## 🛠  Build
+**docker**
+- use new Spring Boot jar launcher ([fbb2b6b](https://github.com/gotson/komga/commits/fbb2b6b))
+
+**release**
+- set conveyor consistency-checks to warn only ([966a5d3](https://github.com/gotson/komga/commits/966a5d3))
+- more knobs to handle broken releases ([e730b74](https://github.com/gotson/komga/commits/e730b74))
+
+**tests**
+- ignore komga-tray translations ([814b94d](https://github.com/gotson/komga/commits/814b94d))
+
+**unscoped**
+- bump Gradle from 8.4 to 8.5 ([c5b9baa](https://github.com/gotson/komga/commits/c5b9baa))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Japanese) ([9265c5a](https://github.com/gotson/komga/commits/9265c5a))
+- translated using Weblate (German) ([d420648](https://github.com/gotson/komga/commits/d420648))
+- added translation using Weblate (Galician) ([1c88058](https://github.com/gotson/komga/commits/1c88058))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([6b50968](https://github.com/gotson/komga/commits/6b50968))
+- translated using Weblate (Spanish) ([6c7dedd](https://github.com/gotson/komga/commits/6c7dedd))
+- translated using Weblate (Japanese) ([7e89f54](https://github.com/gotson/komga/commits/7e89f54))
+- translated using Weblate (Bulgarian) ([99d94da](https://github.com/gotson/komga/commits/99d94da))
+- translated using Weblate (Portuguese (Brazil)) ([ec988b4](https://github.com/gotson/komga/commits/ec988b4))
+- translated using Weblate (Galician) ([e2f0dc2](https://github.com/gotson/komga/commits/e2f0dc2))
+
+## ⚙️ Dependencies
+**komga**
+- bump Spring Boot to 3.2.2 ([3b25396](https://github.com/gotson/komga/commits/3b25396))
+- bump nu.studer.jooq to 9.0 ([f9aafae](https://github.com/gotson/komga/commits/f9aafae))
+- bump ksp to 1.9.21-1.0.16 ([fb2e05d](https://github.com/gotson/komga/commits/fb2e05d))
+- bump mockk to 1.13.9 ([24e095a](https://github.com/gotson/komga/commits/24e095a))
+- remove hawtio ([4128e96](https://github.com/gotson/komga/commits/4128e96))
+- bump archunit-junit5 to 1.2.1 ([76586eb](https://github.com/gotson/komga/commits/76586eb))
+- bump tsid-creator to 5.2.6 ([c49a80e](https://github.com/gotson/komga/commits/c49a80e))
+- bump twelvemonkeys.imageio to 3.10.1 ([c54261b](https://github.com/gotson/komga/commits/c54261b))
+- bump jsoup to 1.17.2 ([6de7a14](https://github.com/gotson/komga/commits/6de7a14))
+- bump commons-compress to 1.25.0 ([c1259f3](https://github.com/gotson/komga/commits/c1259f3))
+- bump icu4j to 74.2 ([a404ce6](https://github.com/gotson/komga/commits/a404ce6))
+- bump commons-io to 2.15.1 ([71a6a48](https://github.com/gotson/komga/commits/71a6a48))
+- bump commons-lang3 to 3.14.0 ([2af8293](https://github.com/gotson/komga/commits/2af8293))
+- bump commons-validator to 1.8.0 ([78971a5](https://github.com/gotson/komga/commits/78971a5))
+- bump sqlite-jdbc to 3.45.0.0 ([056101f](https://github.com/gotson/komga/commits/056101f))
+- bump lucene to 9.9.1 ([7f3cc9c](https://github.com/gotson/komga/commits/7f3cc9c))
+- bump org.apache.pdfbox:pdfbox from 2.0.28 to 3.0.1 ([38fcde9](https://github.com/gotson/komga/commits/38fcde9)), closes [#1334](https://github.com/gotson/komga/issues/1334)
+
+**komga-tray**
+- bump org.jetbrains.compose to 1.5.11 ([c7a695d](https://github.com/gotson/komga/commits/c7a695d))
+- bump conveyor.gradle.plugin to 1.8 ([b141f21](https://github.com/gotson/komga/commits/b141f21))
+
+**unscoped**
+- bump Kotlin to 1.9.21 ([b87bec8](https://github.com/gotson/komga/commits/b87bec8))
+- bump ktlint to 1.1.1 ([e01b324](https://github.com/gotson/komga/commits/e01b324))
+- bump org.jlleitschuh.gradle.ktlint to 12.1.0 ([80ed686](https://github.com/gotson/komga/commits/80ed686))
+- bump jreleaser to 1.10.0 ([446bb5a](https://github.com/gotson/komga/commits/446bb5a))
+- bump com.github.ben-manes.versions from 0.48.0 to 0.50.0 ([1daa4b8](https://github.com/gotson/komga/commits/1daa4b8))
+- bump io.github.microutils:kotlin-logging-jvm:3.0.5 to io.github.oshai:kotlin-logging-jvm:6.0.3 ([295bfaf](https://github.com/gotson/komga/commits/295bfaf))
+
+# [1.10.1](https://github.com/gotson/komga/compare/1.10.0...1.10.1) (2024-01-12)
+## 🚀 Features
+**windows**
+- add libarchive for RAR5 support ([3e11e90](https://github.com/gotson/komga/commits/3e11e90))
+
+## 🐛 Fixes
+**komga**
+- detect older epub as fixed-layout ([e08cea8](https://github.com/gotson/komga/commits/e08cea8)), closes [#1385](https://github.com/gotson/komga/issues/1385)
+
+## 🛠  Build
+**release**
+- fix missing upload to B2 ([5d85585](https://github.com/gotson/komga/commits/5d85585)), closes [#1388](https://github.com/gotson/komga/issues/1388)
+
+**windows**
+- replace native libraries with vcpkg-built ones ([834306f](https://github.com/gotson/komga/commits/834306f))
+
+## ⚙️ Dependencies
+**webui**
+- bump follow-redirects from 1.15.2 to 1.15.4 in /komga-webui ([056b4e7](https://github.com/gotson/komga/commits/056b4e7))
+
+# [1.10.0](https://github.com/gotson/komga/compare/1.9.2...1.10.0) (2024-01-08)
+## 🚀 Features
+**docker**
+- add libarchive for RAR5 support ([6f8467a](https://github.com/gotson/komga/commits/6f8467a))
+
+**komga**
+- support for RAR5 via libarchive ([4c1301f](https://github.com/gotson/komga/commits/4c1301f))
+
+**komga-tray**
+- add libarchive for RAR5 support on macOS ([536d478](https://github.com/gotson/komga/commits/536d478))
+
+## 🐛 Fixes
+**api**
+- mark progression fragment handling ([eb24470](https://github.com/gotson/komga/commits/eb24470))
+- mark progression timezone handling ([ec97da6](https://github.com/gotson/komga/commits/ec97da6)), closes [#1363](https://github.com/gotson/komga/issues/1363)
+
+**webui**
+- webreader crash when reading one-shot from collection context ([bdf9ec9](https://github.com/gotson/komga/commits/bdf9ec9)), closes [#1374](https://github.com/gotson/komga/issues/1374)
+
+## 🔄️ Changes
+
+- ktlint ([8c4a5e3](https://github.com/gotson/komga/commits/8c4a5e3))
+
+## 🛠  Build
+**release**
+- upload to B2 with conveyor ([cccbc39](https://github.com/gotson/komga/commits/cccbc39))
+- limit conveyor cache size ([cabed41](https://github.com/gotson/komga/commits/cabed41))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Chinese (Simplified)) ([58ca293](https://github.com/gotson/komga/commits/58ca293))
+- translated using Weblate (Finnish) ([d955db2](https://github.com/gotson/komga/commits/d955db2))
+- translated using Weblate (French) ([e623c46](https://github.com/gotson/komga/commits/e623c46))
+- translated using Weblate (Spanish) ([5758f6d](https://github.com/gotson/komga/commits/5758f6d))
+- translated using Weblate (Dutch) ([8fa8989](https://github.com/gotson/komga/commits/8fa8989))
+- added translation using Weblate (Catalan) ([e28c8eb](https://github.com/gotson/komga/commits/e28c8eb))
+- translated using Weblate (Russian) ([609368f](https://github.com/gotson/komga/commits/609368f))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([19000da](https://github.com/gotson/komga/commits/19000da))
+- translated using Weblate (French) ([ea4bead](https://github.com/gotson/komga/commits/ea4bead))
+- translated using Weblate (Dutch) ([86b2ec9](https://github.com/gotson/komga/commits/86b2ec9))
+- translated using Weblate (Catalan) ([2150ddc](https://github.com/gotson/komga/commits/2150ddc))
+- translated using Weblate (Russian) ([3bbe7b9](https://github.com/gotson/komga/commits/3bbe7b9))
+
+## ⚙️ Dependencies
+**ci**
+- bump conveyor to 13.0 ([7dd05a5](https://github.com/gotson/komga/commits/7dd05a5))
+- bump actions/upload-artifact from 3 to 4 ([6d7dfdd](https://github.com/gotson/komga/commits/6d7dfdd))
+
+# [1.9.2](https://github.com/gotson/komga/compare/1.9.1...1.9.2) (2023-12-18)
+## 🛠  Build
+**release**
+- re-enable npm cache ([d65ee39](https://github.com/gotson/komga/commits/d65ee39))
+
+**webui**
+- build would pull incorrect version of dependency ([de0e854](https://github.com/gotson/komga/commits/de0e854)), closes [#1353](https://github.com/gotson/komga/issues/1353)
+
+# [1.9.1](https://github.com/gotson/komga/compare/1.9.0...1.9.1) (2023-12-18)
+## 🐛 Fixes
+**api**
+- incorrect progression date check ([3daa194](https://github.com/gotson/komga/commits/3daa194))
+
+**epubreader**
+- ignore progression without locator ([d168c0a](https://github.com/gotson/komga/commits/d168c0a)), closes [#1352](https://github.com/gotson/komga/issues/1352)
+
+## 🔄️ Changes
+
+- remove announcement workaround for links ([c4d6868](https://github.com/gotson/komga/commits/c4d6868))
+
+## 🛠  Build
+**release**
+- disable npm cache ([4f79fbf](https://github.com/gotson/komga/commits/4f79fbf)), closes [#1353](https://github.com/gotson/komga/issues/1353)
+
+## 🌐 Translation
+**komga-tray**
+- use UTF-8 for properties ([4c922c4](https://github.com/gotson/komga/commits/4c922c4))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([b4c05a2](https://github.com/gotson/komga/commits/b4c05a2))
+- translated using Weblate (Finnish) ([341b42b](https://github.com/gotson/komga/commits/341b42b))
+- translated using Weblate (Spanish) ([754d016](https://github.com/gotson/komga/commits/754d016))
+- translated using Weblate (Italian) ([744b6f5](https://github.com/gotson/komga/commits/744b6f5))
+- translated using Weblate (German) ([5f96700](https://github.com/gotson/komga/commits/5f96700))
+
+# [1.9.0](https://github.com/gotson/komga/compare/1.8.4...1.9.0) (2023-12-15)
+## 🚀 Features
+**api**
+- increase PDF image resolution ([e856d4f](https://github.com/gotson/komga/commits/e856d4f))
+- make pre-paginated epub containing only images compatible with divina profile ([c2a4d17](https://github.com/gotson/komga/commits/c2a4d17))
+- add basic metadata for transient books ([1050f52](https://github.com/gotson/komga/commits/1050f52))
+- add Readium Progression API ([20799ad](https://github.com/gotson/komga/commits/20799ad))
+- add layout attribute on epub manifest ([5096364](https://github.com/gotson/komga/commits/5096364))
+- add positions endpoint to get pre-computed positions of epub books ([eb8a644](https://github.com/gotson/komga/commits/eb8a644))
+
+**epubreader**
+- handle reading direction ([77b8a32](https://github.com/gotson/komga/commits/77b8a32))
+- remove margin and dropshadow for pre-paginated publications ([10e2597](https://github.com/gotson/komga/commits/10e2597))
+- mark read progress ([1172911](https://github.com/gotson/komga/commits/1172911))
+- adjust display of current progress ([b234586](https://github.com/gotson/komga/commits/b234586))
+- add navigation modes with click/tap, buttons, or both ([2f0f94d](https://github.com/gotson/komga/commits/2f0f94d))
+- display percentage of total progression ([3a14990](https://github.com/gotson/komga/commits/3a14990))
+
+**komga**
+- relax epub validity controls ([fad93ad](https://github.com/gotson/komga/commits/fad93ad))
+
+**komga-tray**
+- display dialog with error detail on application startup failure ([0fdcb2a](https://github.com/gotson/komga/commits/0fdcb2a)), closes [#1336](https://github.com/gotson/komga/issues/1336)
+
+**opds-v1**
+- add OPDS-PSE links for divina-compatible EPUBs ([0c96054](https://github.com/gotson/komga/commits/0c96054))
+- use static xml namespace prefix for opds-pse ([834b51d](https://github.com/gotson/komga/commits/834b51d))
+
+**webui**
+- use divina reader for compatible epub ([809a794](https://github.com/gotson/komga/commits/809a794)), closes [#1324](https://github.com/gotson/komga/issues/1324)
+- autofill series and number from metadata during book import ([5b75345](https://github.com/gotson/komga/commits/5b75345)), closes [#998](https://github.com/gotson/komga/issues/998)
+
+## 🐛 Fixes
+**api**
+- properly set layout property in webpub manifest ([e11ce46](https://github.com/gotson/komga/commits/e11ce46))
+- cannot get last page of PDF ([721c5d1](https://github.com/gotson/komga/commits/721c5d1)), closes [#1341](https://github.com/gotson/komga/issues/1341)
+
+**epubreader**
+- properly handle clicks in iframes ([4db0542](https://github.com/gotson/komga/commits/4db0542))
+
+**komga**
+- empty generated thumbnails would be saved in DB ([15920b7](https://github.com/gotson/komga/commits/15920b7)), closes [#1338](https://github.com/gotson/komga/issues/1338)
+- use an in-process lock for Lucene ([1a30bf9](https://github.com/gotson/komga/commits/1a30bf9))
+
+**webui**
+- pre-render page could overlap current page in some specific conditions ([7a8d50c](https://github.com/gotson/komga/commits/7a8d50c)), closes [#1339](https://github.com/gotson/komga/issues/1339)
+
+## 🏎 Perf
+**komga**
+- convert BookMetadataProvider to property ([3843f77](https://github.com/gotson/komga/commits/3843f77))
+
+## 🔄️ Changes
+**komga**
+- move date utils to language package ([fbc1034](https://github.com/gotson/komga/commits/fbc1034))
+
+**komga-tray**
+- catch any exception on startup ([b312847](https://github.com/gotson/komga/commits/b312847))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Chinese (Simplified)) ([142326c](https://github.com/gotson/komga/commits/142326c))
+- translated using Weblate (Finnish) ([d19e1a5](https://github.com/gotson/komga/commits/d19e1a5))
+- translated using Weblate (Spanish) ([ad6a8c9](https://github.com/gotson/komga/commits/ad6a8c9))
+
+**webui**
+- fix language file name ([ac59fca](https://github.com/gotson/komga/commits/ac59fca)), closes [#1345](https://github.com/gotson/komga/issues/1345)
+- translated using Weblate (Chinese (Simplified)) ([0274308](https://github.com/gotson/komga/commits/0274308))
+- translated using Weblate (Spanish) ([37abfbf](https://github.com/gotson/komga/commits/37abfbf))
+- translated using Weblate (Catalan) ([32e9a0c](https://github.com/gotson/komga/commits/32e9a0c))
+- translated using Weblate (German) ([d2a91ac](https://github.com/gotson/komga/commits/d2a91ac))
+
+# [1.8.4](https://github.com/gotson/komga/compare/1.8.3...1.8.4) (2023-12-06)
+## 🐛 Fixes
+**webui**
+- force pre-render of images in the webreader ([7ab5eb3](https://github.com/gotson/komga/commits/7ab5eb3)), closes [#1323](https://github.com/gotson/komga/issues/1323)
+- update browserlist ([0a0eaca](https://github.com/gotson/komga/commits/0a0eaca)), closes [#1253](https://github.com/gotson/komga/issues/1253)
+
+## 🔄️ Changes
+**webui**
+- rename BookReader to DivinaReader ([c628807](https://github.com/gotson/komga/commits/c628807))
+
+## 🛠  Build
+**conveyor**
+- disable update escape hatch for MS Store ([6e4a3ec](https://github.com/gotson/komga/commits/6e4a3ec))
+
+## 🌐 Translation
+**komga-tray**
+- add empty translation files for all languages ([8de029d](https://github.com/gotson/komga/commits/8de029d))
+- internationalization for desktop app tray menu ([1ad0cd2](https://github.com/gotson/komga/commits/1ad0cd2))
+
+**webui**
+- translated using Weblate (Chinese (Simplified)) ([2260da1](https://github.com/gotson/komga/commits/2260da1))
+- translated using Weblate (Finnish) ([f04e03c](https://github.com/gotson/komga/commits/f04e03c))
+- translated using Weblate (French) ([f7480ce](https://github.com/gotson/komga/commits/f7480ce))
+- translated using Weblate (Spanish) ([af14751](https://github.com/gotson/komga/commits/af14751))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/setup-java from 3 to 4 ([c97a322](https://github.com/gotson/komga/commits/c97a322))
+
+# [1.8.3](https://github.com/gotson/komga/compare/1.8.2...1.8.3) (2023-11-30)
+## 🐛 Fixes
+**api**
+- epub resources could not be retrieved if komga is running with a servlet context path ([0d94ae2](https://github.com/gotson/komga/commits/0d94ae2))
+
+**komga**
+- better handling of collection/readlist creation/update when using multiple threads ([a4384a6](https://github.com/gotson/komga/commits/a4384a6)), closes [#1317](https://github.com/gotson/komga/issues/1317)
+- don't repair extension for broken EPUB files ([f41af61](https://github.com/gotson/komga/commits/f41af61))
+- mark broken EPUB files as ERROR instead of falling back to CBZ ([acf080b](https://github.com/gotson/komga/commits/acf080b))
+- use NightMonkeys WebP reader if present ([7b1a9e4](https://github.com/gotson/komga/commits/7b1a9e4)), closes [#1294](https://github.com/gotson/komga/issues/1294)
+- better error handling during metadata refresh ([8832a0d](https://github.com/gotson/komga/commits/8832a0d)), closes [#1311](https://github.com/gotson/komga/issues/1311)
+
+**opds**
+- cannot retrieve full size poster for epub books ([5a71cf7](https://github.com/gotson/komga/commits/5a71cf7)), closes [#1312](https://github.com/gotson/komga/issues/1312)
+- index out of bounds error ([d6246ed](https://github.com/gotson/komga/commits/d6246ed)), closes [#1309](https://github.com/gotson/komga/issues/1309)
+
+## 🔄️ Changes
+**komga**
+- rename class ([74210f8](https://github.com/gotson/komga/commits/74210f8))
+
+## 🛠  Build
+**docker**
+- add native webp library for docker amd64 and arm64 ([8cf8f47](https://github.com/gotson/komga/commits/8cf8f47)), closes [#1294](https://github.com/gotson/komga/issues/1294)
+
+**komga-tray**
+- add native heif library for Windows ([a3439dd](https://github.com/gotson/komga/commits/a3439dd))
+- add native webp library for macOS application ([86f0fcd](https://github.com/gotson/komga/commits/86f0fcd))
+
+**release**
+- use BackBlaze B2 for binaries storage instead of Github ([f704685](https://github.com/gotson/komga/commits/f704685))
+
 # [1.8.2](https://github.com/gotson/komga/compare/1.8.1...1.8.2) (2023-11-28)
 ## 🐛 Fixes
 **epubreader**

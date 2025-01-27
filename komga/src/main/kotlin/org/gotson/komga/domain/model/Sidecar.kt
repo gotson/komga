@@ -10,13 +10,14 @@ data class Sidecar(
   val type: Type,
   val source: Source,
 ) {
-
   enum class Type {
-    ARTWORK, METADATA
+    ARTWORK,
+    METADATA,
   }
 
   enum class Source {
-    SERIES, BOOK
+    SERIES,
+    BOOK,
   }
 }
 

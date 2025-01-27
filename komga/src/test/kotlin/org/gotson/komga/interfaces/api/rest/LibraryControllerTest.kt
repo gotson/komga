@@ -1,7 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import org.gotson.komga.domain.model.ROLE_ADMIN
-import org.gotson.komga.domain.model.ROLE_USER
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.hamcrest.Matchers
@@ -29,7 +27,6 @@ class LibraryControllerTest(
   @Autowired private val mockMvc: MockMvc,
   @Autowired private val libraryRepository: LibraryRepository,
 ) {
-
   private val route = "/api/v1/libraries"
 
   private val library = makeLibrary(path = "file:/library1", id = "1")
@@ -49,7 +46,8 @@ class LibraryControllerTest(
     @Test
     @WithAnonymousUser
     fun `given anonymous user when getAll then return unauthorized`() {
-      mockMvc.get(route)
+      mockMvc
+        .get(route)
         .andExpect { status { isUnauthorized() } }
     }
 
@@ -59,32 +57,35 @@ class LibraryControllerTest(
       // language=JSON
       val jsonString = """{"name":"test", "root": "C:\\Temp"}"""
 
-      mockMvc.post(route) {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect { status { isUnauthorized() } }
+      mockMvc
+        .post(route) {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect { status { isUnauthorized() } }
     }
   }
 
   @Nested
-  inner class UserRole {
+  inner class UserRoles {
     @Test
     @WithMockCustomUser
     fun `given user with access to all libraries when getAll then return ok`() {
-      mockMvc.get(route)
+      mockMvc
+        .get(route)
         .andExpect { status { isOk() } }
     }
 
     @Test
-    @WithMockUser(roles = [ROLE_USER])
+    @WithMockUser
     fun `given user with USER role when addOne then return forbidden`() {
       // language=JSON
       val jsonString = """{"name":"test", "root": "C:\\Temp"}"""
 
-      mockMvc.post(route) {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect { status { isForbidden() } }
+      mockMvc
+        .post(route) {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect { status { isForbidden() } }
     }
   }
 
@@ -93,7 +94,8 @@ class LibraryControllerTest(
     @Test
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = ["1"])
     fun `given user with access to a single library when getAll then only gets this library`() {
-      mockMvc.get(route)
+      mockMvc
+        .get(route)
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(1) }
@@ -107,13 +109,15 @@ class LibraryControllerTest(
     @Test
     @WithMockCustomUser
     fun `given regular user when getting libraries then root is hidden`() {
-      mockMvc.get(route)
+      mockMvc
+        .get(route)
         .andExpect {
           status { isOk() }
           jsonPath("$[0].root") { value("") }
         }
 
-      mockMvc.get("$route/${library.id}")
+      mockMvc
+        .get("$route/${library.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.root") { value("") }
@@ -121,15 +125,17 @@ class LibraryControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when getting books then root is available`() {
-      mockMvc.get(route)
+      mockMvc
+        .get(route)
         .andExpect {
           status { isOk() }
           jsonPath("$[0].root") { value(Matchers.containsString("library1")) }
         }
 
-      mockMvc.get("$route/${library.id}")
+      mockMvc
+        .get("$route/${library.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.root") { value(Matchers.containsString("library1")) }
@@ -144,14 +150,16 @@ class LibraryControllerTest(
     fun `given library with exclusions when getting libraries then exclusions are present`() {
       libraryRepository.update(library.copy(scanDirectoryExclusions = setOf("test", "value")))
 
-      mockMvc.get(route)
+      mockMvc
+        .get(route)
         .andExpect {
           status { isOk() }
           jsonPath("$[0].scanDirectoryExclusions.length()") { value(2) }
           jsonPath("$[0].scanDirectoryExclusions") { hasItems("test", "value") }
         }
 
-      mockMvc.get("$route/${library.id}")
+      mockMvc
+        .get("$route/${library.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.scanDirectoryExclusions.length()") { value(2) }
@@ -160,26 +168,30 @@ class LibraryControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
-    fun `given library with exclusions when updating library then exclusions are updated`(@TempDir tmp: Path) {
+    @WithMockCustomUser(roles = ["ADMIN"])
+    fun `given library with exclusions when updating library then exclusions are updated`(
+      @TempDir tmp: Path,
+    ) {
       libraryRepository.update(library.copy(root = tmp.toUri().toURL(), scanDirectoryExclusions = setOf("test", "value")))
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {
           "scanDirectoryExclusions": ["updated"]
         }
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.patch("$route/${library.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }
-        .andExpect {
+      mockMvc
+        .patch("$route/${library.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
           status { isNoContent() }
         }
 
-      mockMvc.get("$route/${library.id}")
+      mockMvc
+        .get("$route/${library.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.scanDirectoryExclusions.length()") { value(1) }

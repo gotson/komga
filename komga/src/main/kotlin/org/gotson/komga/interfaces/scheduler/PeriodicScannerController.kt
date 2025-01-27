@@ -1,6 +1,6 @@
 package org.gotson.komga.interfaces.scheduler
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.scheduler.LibraryScanScheduler
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -18,10 +18,10 @@ class PeriodicScannerController(
   private val libraryRepository: LibraryRepository,
   private val libraryScanScheduler: LibraryScanScheduler,
 ) {
-
   @EventListener(classes = [ApplicationReadyEvent::class])
   fun scanOnStartup() {
-    libraryRepository.findAll()
+    libraryRepository
+      .findAll()
       .filter { it.scanOnStartup }
       .forEach {
         logger.info { "Scan on startup for library: ${it.name}" }
@@ -31,7 +31,8 @@ class PeriodicScannerController(
 
   @EventListener(classes = [ApplicationReadyEvent::class])
   fun scheduleScans() {
-    libraryRepository.findAll()
+    libraryRepository
+      .findAll()
       .forEach { libraryScanScheduler.scheduleScan(it) }
   }
 }

@@ -1,6 +1,7 @@
 interface DirectoryListingDto {
   parent?: string,
-  directories: PathDto[]
+  directories: PathDto[],
+  files: PathDto[],
 }
 
 interface PathDto {

@@ -4,8 +4,8 @@ import com.ninjasquad.springmockk.MockkBean
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.every
 import org.gotson.komga.domain.model.BookPage
-import org.gotson.komga.domain.model.BookPageContent
 import org.gotson.komga.domain.model.Media
+import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -75,7 +75,12 @@ class BookControllerPageTest(
   @ParameterizedTest
   @MethodSource("arguments")
   @WithMockCustomUser
-  fun `given pdf book when getting page with Accept header then returns page in correct format`(bookType: String, acceptTypes: List<MediaType>, success: Boolean, resultType: String?) {
+  fun `given pdf book when getting page with Accept header then returns page in correct format`(
+    bookType: String,
+    acceptTypes: List<MediaType>,
+    success: Boolean,
+    resultType: String?,
+  ) {
     makeSeries(name = "series", libraryId = library.id).let { series ->
       seriesLifecycle.createSeries(series).let { created ->
         val books = listOf(makeBook("1", libraryId = library.id))
@@ -94,13 +99,13 @@ class BookControllerPageTest(
       )
     }
 
-    every { mockAnalyzer.getPageContentRaw(any(), 1) } returns BookPageContent(ByteArray(0), "application/pdf")
-    every { bookLifecycle.getBookPage(any(), 1, any(), any()) } returns BookPageContent(ByteArray(0), "image/jpeg")
+    every { mockAnalyzer.getPageContentRaw(any(), 1) } returns TypedBytes(ByteArray(0), "application/pdf")
+    every { bookLifecycle.getBookPage(any(), 1, any(), any()) } returns TypedBytes(ByteArray(0), "image/jpeg")
 
-    mockMvc.get("/api/v1/books/${book.id}/pages/1") {
-      if (acceptTypes.isNotEmpty()) accept(*acceptTypes.toTypedArray())
-    }
-      .andExpect {
+    mockMvc
+      .get("/api/v1/books/${book.id}/pages/1") {
+        if (acceptTypes.isNotEmpty()) accept(*acceptTypes.toTypedArray())
+      }.andExpect {
         status { if (success) isOk() else isBadRequest() }
         if (resultType != null)
           header { string(HttpHeaders.CONTENT_TYPE, resultType) }

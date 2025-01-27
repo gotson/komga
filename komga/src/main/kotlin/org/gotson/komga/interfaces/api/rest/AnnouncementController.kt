@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import com.github.benmanes.caffeine.cache.Caffeine
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.api.rest.dto.JsonFeedDto
@@ -19,34 +18,36 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.TimeUnit
 
-private const val website = "https://komga.org"
+private const val WEBSITE = "https://komga.org"
 
 @RestController
 @RequestMapping("api/v1/announcements", produces = [MediaType.APPLICATION_JSON_VALUE])
 class AnnouncementController(
   private val userRepository: KomgaUserRepository,
+  webClientBuilder: WebClient.Builder,
 ) {
+  private val webClient = webClientBuilder.baseUrl("$WEBSITE/blog/feed.json").build()
 
-  private val webClient = WebClient.create("$website/blog/feed.json")
-
-  private val cache = Caffeine.newBuilder()
-    .expireAfterAccess(1, TimeUnit.DAYS)
-    .build<String, JsonFeedDto>()
+  private val cache =
+    Caffeine
+      .newBuilder()
+      .expireAfterAccess(1, TimeUnit.DAYS)
+      .build<String, JsonFeedDto>()
 
   @GetMapping
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   fun getAnnouncements(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-  ): JsonFeedDto {
-    return cache.get("announcements") { fetchWebsiteAnnouncements()?.let { replaceLinks(it) } }
+  ): JsonFeedDto =
+    cache
+      .get("announcements") { fetchWebsiteAnnouncements() }
       ?.let { feed ->
         val read = userRepository.findAnnouncementIdsReadByUserId(principal.user.id)
         feed.copy(items = feed.items.map { item -> item.copy(komgaExtension = JsonFeedDto.KomgaExtensionDto(read.contains(item.id))) })
       }
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-  }
 
-  @PreAuthorize("hasRole('$ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markAnnouncementsRead(
@@ -57,20 +58,12 @@ class AnnouncementController(
   }
 
   fun fetchWebsiteAnnouncements(): JsonFeedDto? {
-    val response = webClient.get()
-      .retrieve()
-      .toEntity(JsonFeedDto::class.java)
-      .block()
+    val response =
+      webClient
+        .get()
+        .retrieve()
+        .toEntity(JsonFeedDto::class.java)
+        .block()
     return response?.body
   }
-
-  // while waiting for https://github.com/facebook/docusaurus/issues/9136
-  fun replaceLinks(feed: JsonFeedDto): JsonFeedDto = feed.copy(
-    items = feed.items.map {
-      it.copy(
-        contentHtml =
-        it.contentHtml?.replace("""<a href="/""", """<a href="$website/"""),
-      )
-    },
-  )
 }

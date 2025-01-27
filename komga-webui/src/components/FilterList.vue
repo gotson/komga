@@ -5,14 +5,14 @@
     >
       <v-subheader v-if="f.name">{{ f.name }}</v-subheader>
       <v-list-item v-for="v in f.values"
-                   :key="v.value"
+                   :key="JSON.stringify(v.value)"
                    @click.stop="click(key, v.value, v.nValue)"
       >
         <v-list-item-icon>
-          <v-icon v-if="key in filtersActive && filtersActive[key].includes(v.nValue)" color="secondary">
+          <v-icon v-if="key in filtersActive && includes(filtersActive[key], v.nValue)" color="secondary">
             mdi-minus-box
           </v-icon>
-          <v-icon v-else-if="key in filtersActive && filtersActive[key].includes(v.value)" color="secondary">
+          <v-icon v-else-if="key in filtersActive && includes(filtersActive[key], v.value)" color="secondary">
             mdi-checkbox-marked
           </v-icon>
           <v-icon v-else>
@@ -27,6 +27,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import {FiltersActive, FiltersOptions} from '@/types/filter'
 
 export default Vue.extend({
   name: 'FilterList',
@@ -41,16 +42,24 @@ export default Vue.extend({
     },
   },
   methods: {
-    click(key: string, value: string, nValue?: string) {
+    includes(array: any[], value: any): boolean {
+      return this.$_.isObject(value) ? this.$_.some(array, value) : this.$_.includes(array, value)
+    },
+    click(key: string, value: any, nValue?: any) {
       let r = this.$_.cloneDeep(this.filtersActive)
       if (!(key in r)) r[key] = []
-      if (nValue && r[key].includes(nValue))
-        this.$_.pull(r[key], (nValue))
-      else if (r[key].includes(value)) {
-        this.$_.pull(r[key], (value))
+
+      const pull = this.$_.isObject(value) ? this.$_.remove : this.$_.pull
+      const includes = this.$_.isObject(value) ? this.$_.some : this.$_.includes
+
+      if (nValue && includes(r[key], nValue))
+        pull(r[key], nValue)
+      else if (includes(r[key], value)) {
+        pull(r[key], value)
         if (nValue)
           r[key].push(nValue)
-      } else r[key].push(value)
+      } else
+        r[key].push(value)
 
       this.$emit('update:filtersActive', r)
     },

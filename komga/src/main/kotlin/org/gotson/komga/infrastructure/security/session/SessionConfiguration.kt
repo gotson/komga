@@ -16,7 +16,6 @@ import org.springframework.session.web.http.HttpSessionIdResolver
 @EnableCaffeineHttpSession
 @Configuration
 class SessionConfiguration {
-
   @Bean
   fun sessionCookieName() = "SESSION"
 
@@ -30,16 +29,20 @@ class SessionConfiguration {
     }
 
   @Bean
-  fun httpSessionIdResolver(sessionHeaderName: String, cookieSerializer: CookieSerializer): HttpSessionIdResolver =
-    SmartHttpSessionIdResolver(sessionHeaderName, cookieSerializer)
+  fun httpSessionIdResolver(
+    sessionHeaderName: String,
+    cookieSerializer: CookieSerializer,
+  ): HttpSessionIdResolver = SmartHttpSessionIdResolver(sessionHeaderName, cookieSerializer)
 
   @Bean
   fun customizeSessionRepository(serverProperties: ServerProperties) =
     SessionRepositoryCustomizer<CaffeineIndexedSessionRepository> {
-      it.setDefaultMaxInactiveInterval(serverProperties.servlet.session.timeout.seconds.toInt())
+      it.setDefaultMaxInactiveInterval(
+        serverProperties.servlet.session.timeout.seconds
+          .toInt(),
+      )
     }
 
   @Bean
-  fun sessionRegistry(sessionRepository: FindByIndexNameSessionRepository<*>): SessionRegistry =
-    SpringSessionBackedSessionRegistry(sessionRepository)
+  fun sessionRegistry(sessionRepository: FindByIndexNameSessionRepository<*>): SessionRegistry = SpringSessionBackedSessionRegistry(sessionRepository)
 }

@@ -161,7 +161,7 @@ export default Vue.extend({
   watch: {
     users(val) {
       val.forEach((u: UserDto) => {
-        this.$komgaUsers.getLatestAuthenticationActivityForUser(u)
+        this.$komgaUsers.getLatestAuthenticationActivityForUser(u.id)
           .then(value => this.$set(this.usersLastActivity, `${u.id}`, value.dateTime))
           .catch(e => {
           })

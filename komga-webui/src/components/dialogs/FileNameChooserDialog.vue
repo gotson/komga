@@ -108,6 +108,9 @@ export default Vue.extend({
       },
       immediate: true,
     },
+    modal(val) {
+      !val && this.dialogClose()
+    },
   },
   methods: {
     clear() {

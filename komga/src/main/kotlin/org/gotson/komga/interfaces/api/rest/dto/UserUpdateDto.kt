@@ -7,6 +7,7 @@ import kotlin.properties.Delegates
 
 class UserUpdateDto {
   private val isSet = mutableMapOf<String, Boolean>()
+
   fun isSet(prop: String) = isSet.getOrDefault(prop, false)
 
   @get:Valid

@@ -24,26 +24,33 @@ class ThumbnailSeriesDao(
   private val ts = Tables.THUMBNAIL_SERIES
 
   override fun findByIdOrNull(thumbnailId: String): ThumbnailSeries? =
-    dsl.selectFrom(ts)
+    dsl
+      .selectFrom(ts)
       .where(ts.ID.eq(thumbnailId))
       .fetchOneInto(ts)
       ?.toDomain()
 
   override fun findAllBySeriesId(seriesId: String): Collection<ThumbnailSeries> =
-    dsl.selectFrom(ts)
+    dsl
+      .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .fetchInto(ts)
       .map { it.toDomain() }
 
-  override fun findAllBySeriesIdIdAndType(seriesId: String, type: ThumbnailSeries.Type): Collection<ThumbnailSeries> =
-    dsl.selectFrom(ts)
+  override fun findAllBySeriesIdIdAndType(
+    seriesId: String,
+    type: ThumbnailSeries.Type,
+  ): Collection<ThumbnailSeries> =
+    dsl
+      .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .and(ts.TYPE.eq(type.toString()))
       .fetchInto(ts)
       .map { it.toDomain() }
 
   override fun findSelectedBySeriesIdOrNull(seriesId: String): ThumbnailSeries? =
-    dsl.selectFrom(ts)
+    dsl
+      .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .and(ts.SELECTED.isTrue)
       .limit(1)
@@ -52,23 +59,27 @@ class ThumbnailSeriesDao(
       .firstOrNull()
 
   override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailSeries> {
-    val query = dsl.selectFrom(ts)
-      .where(ts.FILE_SIZE.eq(0))
-      .or(ts.MEDIA_TYPE.eq(""))
-      .or(ts.WIDTH.eq(0))
-      .or(ts.HEIGHT.eq(0))
+    val query =
+      dsl
+        .selectFrom(ts)
+        .where(ts.FILE_SIZE.eq(0))
+        .or(ts.MEDIA_TYPE.eq(""))
+        .or(ts.WIDTH.eq(0))
+        .or(ts.HEIGHT.eq(0))
 
     val count = query.count()
-    val items = query
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(ts)
-      .map { it.toDomain() }
+    val items =
+      query
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(ts)
+        .map { it.toDomain() }
 
     return PageImpl(items, pageable, count.toLong())
   }
 
   override fun insert(thumbnail: ThumbnailSeries) {
-    dsl.insertInto(ts)
+    dsl
+      .insertInto(ts)
       .set(ts.ID, thumbnail.id)
       .set(ts.SERIES_ID, thumbnail.seriesId)
       .set(ts.URL, thumbnail.url?.toString())
@@ -82,10 +93,28 @@ class ThumbnailSeriesDao(
       .execute()
   }
 
+  override fun update(thumbnail: ThumbnailSeries) {
+    dsl
+      .update(ts)
+      .set(ts.SERIES_ID, thumbnail.seriesId)
+      .set(ts.THUMBNAIL, thumbnail.thumbnail)
+      .set(ts.URL, thumbnail.url?.toString())
+      .set(ts.SELECTED, thumbnail.selected)
+      .set(ts.TYPE, thumbnail.type.toString())
+      .set(ts.MEDIA_TYPE, thumbnail.mediaType)
+      .set(ts.WIDTH, thumbnail.dimension.width)
+      .set(ts.HEIGHT, thumbnail.dimension.height)
+      .set(ts.FILE_SIZE, thumbnail.fileSize)
+      .where(ts.ID.eq(thumbnail.id))
+      .execute()
+  }
+
   override fun updateMetadata(thumbnails: Collection<ThumbnailSeries>) {
     dsl.batched { c ->
       thumbnails.forEach {
-        c.dsl().update(ts)
+        c
+          .dsl()
+          .update(ts)
           .set(ts.MEDIA_TYPE, it.mediaType)
           .set(ts.WIDTH, it.dimension.width)
           .set(ts.HEIGHT, it.dimension.height)
@@ -98,13 +127,15 @@ class ThumbnailSeriesDao(
 
   @Transactional
   override fun markSelected(thumbnail: ThumbnailSeries) {
-    dsl.update(ts)
+    dsl
+      .update(ts)
       .set(ts.SELECTED, false)
       .where(ts.SERIES_ID.eq(thumbnail.seriesId))
       .and(ts.ID.ne(thumbnail.id))
       .execute()
 
-    dsl.update(ts)
+    dsl
+      .update(ts)
       .set(ts.SELECTED, true)
       .where(ts.SERIES_ID.eq(thumbnail.seriesId))
       .and(ts.ID.eq(thumbnail.id))

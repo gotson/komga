@@ -5,7 +5,7 @@
         <v-icon>mdi-view-grid-plus</v-icon>
       </v-btn>
     </template>
-    <v-list>
+    <v-list :dark="dark">
       <v-list-item-group v-model="selection">
 
         <v-list-item v-for="(item, index) in items"
@@ -37,6 +37,10 @@ export default Vue.extend({
     value: {
       type: Number,
       required: true,
+    },
+    dark: {
+      type: Boolean,
+      default: false,
     },
   },
   watch: {

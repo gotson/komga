@@ -68,6 +68,7 @@
         <filter-panels
           :filters-options="filterOptionsPanel"
           :filters-active.sync="filters"
+          :filters-active-mode.sync="filtersMode"
         />
       </template>
 
@@ -127,20 +128,20 @@
             <v-row class="text-body-2">
               <v-col class="py-1 pe-0" cols="auto">
                 <v-chip label small link :color="statusChip.color" :text-color="statusChip.text"
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {status: [series.metadata.status]}}">
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {status: [new SearchConditionSeriesStatus(new SearchOperatorIs(series.metadata.status))]}}">
                   {{ $t(`enums.series_status.${series.metadata.status}`) }}
                 </v-chip>
               </v-col>
               <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata.ageRating">
                 <v-chip label small link
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [series.metadata.ageRating]}}"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {ageRating: [new SearchConditionAgeRating(new SearchOperatorIs(series.metadata.ageRating.toString()))]}}"
                 >
                   {{ series.metadata.ageRating }}+
                 </v-chip>
               </v-col>
               <v-col class="py-1 pe-0" cols="auto" v-if="series.metadata.language">
                 <v-chip label small link
-                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [series.metadata.language]}}"
+                        :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {language: [new SearchConditionLanguage(new SearchOperatorIs(series.metadata.language))]}}"
                 >
                   {{ languageDisplay }}
                 </v-chip>
@@ -170,7 +171,12 @@
 
             <template v-if="$vuetify.breakpoint.smAndUp">
               <!-- Alternate titles  -->
-              <read-more class="mb-4" i18n-less="titles_more.less" i18n-more="titles_more.more">
+              <read-more v-model="readMoreTitles"
+                         class="mb-4"
+                         i18n-less="titles_more.less"
+                         i18n-more="titles_more.more"
+                         v-if="series.metadata.alternateTitles.length > 0"
+              >
                 <v-row v-for="(a, i) in series.metadata.alternateTitles"
                        :key="i"
                        class="align-center text-caption"
@@ -200,7 +206,7 @@
 
               <v-row v-if="series.metadata.summary">
                 <v-col>
-                  <read-more>{{ series.metadata.summary }}</read-more>
+                  <read-more v-model="readMore">{{ series.metadata.summary }}</read-more>
                 </v-col>
               </v-row>
 
@@ -214,7 +220,7 @@
                     </template>
                     {{ $t('browse_series.series_no_summary') }}
                   </v-tooltip>
-                  <read-more>{{ series.booksMetadata.summary }}</read-more>
+                  <read-more v-model="readMore">{{ series.booksMetadata.summary }}</read-more>
                 </v-col>
               </v-row>
             </template>
@@ -224,7 +230,12 @@
 
       <template v-if="$vuetify.breakpoint.xsOnly">
         <!-- Alternate titles  -->
-        <read-more class="mb-4" i18n-less="titles_more.less" i18n-more="titles_more.more">
+        <read-more v-model="readMoreTitles"
+                   class="mb-4"
+                   i18n-less="titles_more.less"
+                   i18n-more="titles_more.more"
+                   v-if="series.metadata.alternateTitles.length > 0"
+        >
           <v-row v-for="(a, i) in series.metadata.alternateTitles"
                  :key="i"
                  class="align-center text-caption"
@@ -258,7 +269,7 @@
         <!--   Series summary     -->
         <v-row v-if="series.metadata.summary">
           <v-col>
-            <read-more>{{ series.metadata.summary }}</read-more>
+            <read-more v-model="readMore">{{ series.metadata.summary }}</read-more>
           </v-col>
         </v-row>
 
@@ -273,7 +284,7 @@
               </template>
               {{ $t('browse_series.series_no_summary') }}
             </v-tooltip>
-            <read-more>{{ series.booksMetadata.summary }}</read-more>
+            <read-more v-model="readMore">{{ series.booksMetadata.summary }}</read-more>
           </v-col>
         </v-row>
       </template>
@@ -285,7 +296,7 @@
           <v-chip
             class="me-2"
             :title="series.metadata.publisher"
-            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [series.metadata.publisher]}}"
+            :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {publisher: [new SearchConditionPublisher(new SearchOperatorIs(series.metadata.publisher))]}}"
             label
             small
             outlined
@@ -315,7 +326,7 @@
                     :key="i"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {genre: [new SearchConditionGenre(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -347,7 +358,7 @@
                     :key="`series_${i}`"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [new SearchConditionTag(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -358,7 +369,7 @@
                     :key="`book_${i}`"
                     class="me-2"
                     :title="t"
-                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [t]}}"
+                    :to="{name:'browse-libraries', params: {libraryId: series.libraryId }, query: {tag: [new SearchConditionTag(new SearchOperatorIs(t))]}}"
                     label
                     small
                     outlined
@@ -376,6 +387,7 @@
           <v-chip
             v-for="(link, i) in series.metadata.links"
             :href="link.url"
+            rel="noreferrer"
             target="_blank"
             class="me-2"
             label
@@ -433,7 +445,18 @@
 
       <v-row>
         <v-col>
-          <collections-expansion-panels :collections="collections"/>
+          <collections-expansion-panels :collections="collections">
+            <template v-slot:prepend="props">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn icon class="me-2" v-on="on" @click="removeFromCollection(props.collection.id)">
+                    <v-icon>mdi-playlist-remove</v-icon>
+                  </v-btn>
+                </template>
+                <span>{{ $t('browse_series.remove_from_collection') }}</span>
+              </v-tooltip>
+            </template>
+          </collections-expansion-panels>
         </v-col>
       </v-row>
 
@@ -487,7 +510,7 @@ import SeriesActionsMenu from '@/components/menus/SeriesActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {parseQuerySort} from '@/functions/query-params'
 import {seriesFileUrl, seriesThumbnailUrl} from '@/functions/urls'
-import {ReadStatus} from '@/types/enum-books'
+import {MediaProfile, ReadStatus} from '@/types/enum-books'
 import {
   BOOK_ADDED,
   BOOK_CHANGED,
@@ -503,12 +526,17 @@ import {
 } from '@/types/events'
 import Vue from 'vue'
 import {Location} from 'vue-router'
-import {AuthorDto, BookDto} from '@/types/komga-books'
+import {BookDto} from '@/types/komga-books'
 import {SeriesStatus} from '@/types/enum-series'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import FilterList from '@/components/FilterList.vue'
 import SortList from '@/components/SortList.vue'
-import {mergeFilterParams, sortOrFilterActive, toNameValue} from '@/functions/filter'
+import {
+  extractFilterOptionsValues,
+  mergeFilterParams,
+  sortOrFilterActive,
+  toNameValueCondition,
+} from '@/functions/filter'
 import FilterPanels from '@/components/FilterPanels.vue'
 import {SeriesDto} from '@/types/komga-series'
 import {groupAuthorsByRole} from '@/functions/authors'
@@ -521,6 +549,34 @@ import {BookSseDto, CollectionSseDto, LibrarySseDto, ReadProgressSseDto, SeriesS
 import {ItemContext} from '@/types/items'
 import {Context, ContextOrigin} from '@/types/context'
 import {RawLocation} from 'vue-router/types/router'
+import {
+  SearchConditionAgeRating,
+  SearchConditionAllOfBook,
+  SearchConditionAnyOfBook,
+  SearchConditionAuthor,
+  SearchConditionBook,
+  SearchConditionGenre,
+  SearchConditionLanguage,
+  SearchConditionMediaProfile,
+  SearchConditionPublisher,
+  SearchConditionReadStatus,
+  SearchConditionSeriesId,
+  SearchConditionSeriesStatus,
+  SearchConditionTag,
+  SearchOperatorIs,
+  SearchOperatorIsNot,
+} from '@/types/komga-search'
+import {objIsEqual} from '@/functions/object'
+import i18n from '@/i18n'
+import {
+  FILTER_ANY,
+  FILTER_NONE,
+  FilterMode,
+  FiltersActive,
+  FiltersActiveMode,
+  FiltersOptions,
+  NameValue,
+} from '@/types/filter'
 
 const tags = require('language-tags')
 
@@ -545,6 +601,13 @@ export default Vue.extend({
   },
   data: function () {
     return {
+      SearchConditionSeriesStatus,
+      SearchConditionPublisher,
+      SearchConditionGenre,
+      SearchConditionTag,
+      SearchConditionLanguage,
+      SearchConditionAgeRating,
+      SearchOperatorIs,
       series: {} as SeriesDto,
       context: {} as Context,
       books: [] as BookDto[],
@@ -556,15 +619,20 @@ export default Vue.extend({
       sortActive: {} as SortActive,
       sortDefault: {key: 'metadata.numberSort', order: 'asc'} as SortActive,
       filters: {} as FiltersActive,
+      filtersMode: {} as FiltersActiveMode,
       sortUnwatch: null as any,
       filterUnwatch: null as any,
+      filterModeUnwatch: null as any,
       pageUnwatch: null as any,
       pageSizeUnwatch: null as any,
       collections: [] as CollectionDto[],
       drawer: false,
       filterOptions: {
         tag: [] as NameValue[],
+        mediaProfile: [] as NameValue[],
       },
+      readMore: false,
+      readMoreTitles: false,
     }
   },
   computed: {
@@ -581,22 +649,42 @@ export default Vue.extend({
         {name: this.$t('sort.release_date').toString(), key: 'metadata.releaseDate'},
         {name: this.$t('sort.file_size').toString(), key: 'fileSize'},
         {name: this.$t('sort.file_name').toString(), key: 'name'},
+        {name: this.$t('sort.page_count').toString(), key: 'media.pagesCount'},
       ] as SortOption[]
     },
     filterOptionsList(): FiltersOptions {
       return {
         readStatus: {
           values: [
-            {name: this.$t('filter.unread').toString(), value: ReadStatus.UNREAD},
-            {name: this.$t('filter.in_progress').toString(), value: ReadStatus.IN_PROGRESS},
-            {name: this.$t('filter.read').toString(), value: ReadStatus.READ},
+            {
+              name: this.$t('filter.unread').toString(),
+              value: new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.UNREAD)),
+              nValue: new SearchConditionReadStatus(new SearchOperatorIsNot(ReadStatus.UNREAD)),
+            },
+            {
+              name: this.$t('filter.in_progress').toString(),
+              value: new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.IN_PROGRESS)),
+              nValue: new SearchConditionReadStatus(new SearchOperatorIsNot(ReadStatus.IN_PROGRESS)),
+            },
+            {
+              name: this.$t('filter.read').toString(),
+              value: new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.READ)),
+              nValue: new SearchConditionReadStatus(new SearchOperatorIsNot(ReadStatus.READ)),
+            },
           ],
         },
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
       const r = {
-        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag},
+        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag, anyAllSelector: true},
+        mediaProfile: {
+          name: this.$t('filter.media_profile').toString(), values: Object.values(MediaProfile).map(x => ({
+            name: i18n.t(`enums.media_profile.${x}`),
+            value: new SearchConditionMediaProfile(new SearchOperatorIs(x)),
+            nValue: new SearchConditionMediaProfile(new SearchOperatorIsNot(x)),
+          } as NameValue)),
+        },
       } as FiltersOptions
       authorRoles.forEach((role: string) => {
         r[role] = {
@@ -606,6 +694,12 @@ export default Vue.extend({
               .content
               .map(x => x.name)
           },
+          values: [{
+            name: this.$t('filter.any').toString(),
+            value: FILTER_ANY,
+            nValue: FILTER_NONE,
+          }],
+          anyAllSelector: true,
         }
       })
       return r
@@ -728,6 +822,8 @@ export default Vue.extend({
 
       // reset
       await this.resetParams(to, to.params.seriesId)
+      this.readMore = false
+      this.readMoreTitles = false
       this.page = 1
       this.totalPages = 1
       this.totalElements = null
@@ -757,19 +853,51 @@ export default Vue.extend({
       this.sortActive = this.parseQuerySortOrDefault(route.query.sort)
 
       // load dynamic filters
-      this.$set(this.filterOptions, 'tag', toNameValue(await this.$komgaReferential.getBookTags(seriesId)))
+      this.$set(this.filterOptions, 'tag', toNameValueCondition(await this.$komgaReferential.getBookTags(seriesId), x => new SearchConditionTag(new SearchOperatorIs(x)), x => new SearchConditionTag(new SearchOperatorIsNot(x))))
 
-      // filter query params with available filter values
-      this.$set(this.filters, 'readStatus', (route.query.readStatus || []).filter((x: string) => Object.keys(ReadStatus).includes(x)))
-      this.$set(this.filters, 'tag', (route.query.tag || []).filter((x: string) => this.filterOptions.tag.map(x => x.value).includes(x)))
+      // get filter from query params and validate with available filter values
+      let activeFilters = {} as FiltersActive
+      if (route.query.readStatus || route.query.tag || route.query.mediaProfile || authorRoles.some(role => role in route.query)) {
+        activeFilters = {
+          readStatus: route.query.readStatus || [],
+          tag: route.query.tag || [],
+          mediaProfile: route.query.mediaProfile || [],
+        }
+        authorRoles.forEach((role: string) => {
+          activeFilters[role] = route.query[role] || []
+        })
+      }
+      this.filters = this.validateFilters(activeFilters)
+
+      // get filter mode from query params
+      let activeFiltersMode = {} as FiltersActiveMode
+      if (route.query.filterMode) {
+        activeFiltersMode = route.query.filterMode
+      }
+      this.filtersMode = this.validateFiltersMode(activeFiltersMode)
+    },
+    validateFilters(filters: FiltersActive): FiltersActive {
+      const validFilter = {
+        readStatus: this.$_.intersectionWith(filters.readStatus, extractFilterOptionsValues(this.filterOptionsList.readStatus.values), objIsEqual) || [],
+        tag: this.$_.intersectionWith(filters.tag, extractFilterOptionsValues(this.filterOptions.tag), objIsEqual) || [],
+        mediaProfile: this.$_.intersectionWith(filters.mediaProfile, extractFilterOptionsValues(this.filterOptionsPanel.mediaProfile.values), objIsEqual) || [],
+      } as any
       authorRoles.forEach((role: string) => {
-        //@ts-ignore
-        this.$set(this.filters, role, route.query[role] || [])
+        validFilter[role] = filters[role] || []
       })
+      return validFilter
+    },
+    validateFiltersMode(filtersMode: any): FiltersActiveMode {
+      const validFilterMode = {} as FiltersActiveMode
+      for (let key in filtersMode) {
+        if (filtersMode[key].allOf == 'true' || filtersMode[key].allOf == true) validFilterMode[key] = {allOf: true} as FilterMode
+      }
+      return validFilterMode
     },
     setWatches() {
       this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
       this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)
+      this.filterModeUnwatch = this.$watch('filtersMode', this.updateRouteAndReload)
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
         this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
@@ -783,6 +911,7 @@ export default Vue.extend({
     unsetWatches() {
       this.sortUnwatch()
       this.filterUnwatch()
+      this.filterModeUnwatch()
       this.pageUnwatch()
       this.pageSizeUnwatch()
     },
@@ -872,6 +1001,7 @@ export default Vue.extend({
         },
       } as Location
       mergeFilterParams(this.filters, loc.query)
+      loc.query['filterMode'] = this.validateFiltersMode(this.filtersMode)
       this.$router.replace(loc).catch((_: any) => {
       })
     },
@@ -887,15 +1017,35 @@ export default Vue.extend({
         pageRequest.sort = [`${sort.key},${sort.order}`]
       }
 
-      let authorsFilter = [] as AuthorDto[]
+      const conditions = [] as SearchConditionBook[]
+      conditions.push(new SearchConditionSeriesId(new SearchOperatorIs(seriesId)))
+      if (this.filters.readStatus && this.filters.readStatus.length > 0) conditions.push(new SearchConditionAnyOfBook(this.filters.readStatus))
+      if (this.filters.tag && this.filters.tag.length > 0) this.filtersMode?.tag?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.tag)) : conditions.push(new SearchConditionAnyOfBook(this.filters.tag))
+      if (this.filters.mediaProfile && this.filters.mediaProfile.length > 0) this.filtersMode?.mediaProfile?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.mediaProfile)) : conditions.push(new SearchConditionAnyOfBook(this.filters.mediaProfile))
       authorRoles.forEach((role: string) => {
-        if (role in this.filters) this.filters[role].forEach((name: string) => authorsFilter.push({
-          name: name,
-          role: role,
-        }))
+        if (role in this.filters) {
+          const authorConditions = this.filters[role].map((name: string) => {
+            if (name === FILTER_ANY)
+              return new SearchConditionAuthor(new SearchOperatorIs({
+                role: role,
+              }))
+            else if (name === FILTER_NONE)
+              return new SearchConditionAuthor(new SearchOperatorIsNot({
+                role: role,
+              }))
+            else
+              return new SearchConditionAuthor(new SearchOperatorIs({
+                name: name,
+                role: role,
+              }))
+          })
+          conditions.push(this.filtersMode[role]?.allOf ? new SearchConditionAllOfBook(authorConditions) : new SearchConditionAnyOfBook(authorConditions))
+        }
       })
 
-      const booksPage = await this.$komgaSeries.getBooks(seriesId, pageRequest, this.filters.readStatus, this.filters.tag, authorsFilter)
+      const booksPage = await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionAllOfBook(conditions),
+      }, pageRequest)
 
       this.totalPages = booksPage.totalPages
       this.totalElements = booksPage.totalElements
@@ -936,6 +1086,14 @@ export default Vue.extend({
     },
     deleteBooks() {
       this.$store.dispatch('dialogDeleteBook', this.selectedBooks)
+    },
+    removeFromCollection(collectionId: string) {
+      const col = this.collections.find(x => x.id == collectionId)
+      const modified = Object.assign({}, {seriesIds: col?.seriesIds.filter(x => x != this.seriesId)})
+      if (modified!.seriesIds!.length == 0)
+        this.$komgaCollections.deleteCollection(col!.id)
+      else
+        this.$komgaCollections.patchCollection(col!.id, modified)
     },
   },
 })

@@ -9,9 +9,9 @@
     "lint": "vue-cli-service lint --mode production"
   },
   "dependencies": {
-    "@d-i-t-a/reader": "https://github.com/gotson/R2D2BC.git#fork",
+    "@d-i-t-a/reader": "github:gotson/R2D2BC#fork",
     "@saekitominaga/isbn-verify": "^2.0.1",
-    "axios": "^1.6.0",
+    "axios": "^1.7.4",
     "chart.js": "^2.9.4",
     "core-js": "^3.8.3",
     "date-fns": "^2.30.0",
@@ -19,6 +19,7 @@
     "js-file-downloader": "^1.1.25",
     "language-tags": "^1.0.9",
     "lodash": "^4.17.21",
+    "marked": "^15.0.4",
     "qs": "^6.11.2",
     "screenfull": "^5.2.0",
     "vue": "^2.6.14",

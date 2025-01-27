@@ -10,6 +10,7 @@ import kotlin.properties.Delegates
 
 class SeriesMetadataUpdateDto {
   private val isSet = mutableMapOf<String, Boolean>()
+
   fun isSet(prop: String) = isSet.getOrDefault(prop, false)
 
   val status: SeriesMetadata.Status? = null

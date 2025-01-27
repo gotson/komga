@@ -25,8 +25,7 @@ data class SeriesDto(
   val oneshot: Boolean,
 )
 
-fun SeriesDto.restrictUrl(restrict: Boolean) =
-  if (restrict) copy(url = "") else this
+fun SeriesDto.restrictUrl(restrict: Boolean) = if (restrict) copy(url = "") else this
 
 data class SeriesMetadataDto(
   val status: String,
@@ -57,7 +56,6 @@ data class SeriesMetadataDto(
   val linksLock: Boolean,
   val alternateTitles: List<AlternateTitleDto>,
   val alternateTitlesLock: Boolean,
-
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -71,7 +69,6 @@ data class BookMetadataAggregationDto(
   val releaseDate: LocalDate?,
   val summary: String,
   val summaryNumber: String,
-
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")

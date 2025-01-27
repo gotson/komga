@@ -6,7 +6,6 @@ import jakarta.xml.bind.annotation.XmlSchemaType
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ComicInfo {
-
   @JsonProperty(value = "Title")
   var title: String? = null
 

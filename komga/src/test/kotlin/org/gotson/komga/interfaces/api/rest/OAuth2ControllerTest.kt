@@ -15,11 +15,11 @@ import org.springframework.test.web.servlet.get
 class OAuth2ControllerTest(
   @Autowired private val mockMvc: MockMvc,
 ) {
-
   @Test
   @WithAnonymousUser
   fun `given anonymous user when getting oauth2 providers then returns OK`() {
-    mockMvc.get("/api/v1/oauth2/providers")
+    mockMvc
+      .get("/api/v1/oauth2/providers")
       .andExpect {
         status { isOk() }
       }

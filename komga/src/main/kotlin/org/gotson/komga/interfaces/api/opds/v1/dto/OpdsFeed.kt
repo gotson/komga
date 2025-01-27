@@ -10,20 +10,15 @@ import java.time.ZonedDateTime
 abstract class OpdsFeed(
   @JacksonXmlProperty(namespace = ATOM)
   val id: String,
-
   @JacksonXmlProperty(namespace = ATOM)
   val title: String,
-
   @JacksonXmlProperty(namespace = ATOM)
   val updated: ZonedDateTime,
-
   @JacksonXmlProperty(namespace = ATOM)
   val author: OpdsAuthor,
-
   @JacksonXmlElementWrapper(useWrapping = false)
   @JacksonXmlProperty(localName = "link", namespace = ATOM)
   val links: List<OpdsLink>,
-
   @JacksonXmlElementWrapper(useWrapping = false)
   @JacksonXmlProperty(localName = "entry", namespace = ATOM)
   val entries: List<OpdsEntry>,

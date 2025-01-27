@@ -13,26 +13,24 @@ import org.gotson.komga.Application
 
 @AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.DoNotIncludeTests::class])
 class CodingRulesTest {
+  @ArchTest
+  private val noAccessToStandardStreams = NO_CLASSES_SHOULD_ACCESS_STANDARD_STREAMS
 
   @ArchTest
-  private val no_access_to_standard_streams = NO_CLASSES_SHOULD_ACCESS_STANDARD_STREAMS
+  private val noGenericExceptions = NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS
 
   @ArchTest
-  private val no_generic_exceptions = NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS
+  private val noJodatime = NO_CLASSES_SHOULD_USE_JODATIME
 
   @ArchTest
-  private val no_jodatime = NO_CLASSES_SHOULD_USE_JODATIME
+  private val noJavaUtilLogging = NO_CLASSES_SHOULD_USE_JAVA_UTIL_LOGGING
 
   @ArchTest
-  private val no_java_util_logging = NO_CLASSES_SHOULD_USE_JAVA_UTIL_LOGGING
-
-  @ArchTest
-  private val no_field_injection = NO_CLASSES_SHOULD_USE_FIELD_INJECTION
+  private val noFieldInjection = NO_CLASSES_SHOULD_USE_FIELD_INJECTION
 }
 
 @AnalyzeClasses(packagesOf = [Application::class], importOptions = [ImportOption.OnlyIncludeTests::class])
 class TestCodingRulesTest {
-
   @ArchTest
-  private val no_junit_assertions = noClasses().should().dependOnClassesThat().haveFullyQualifiedName("org.junit.jupiter.api.Assertions")
+  private val noJunitAssertions = noClasses().should().dependOnClassesThat().haveFullyQualifiedName("org.junit.jupiter.api.Assertions")
 }

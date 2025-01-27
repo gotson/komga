@@ -31,14 +31,15 @@ data class BookDto(
   val oneshot: Boolean,
 )
 
-fun BookDto.restrictUrl(restrict: Boolean) =
-  if (restrict) copy(url = FilenameUtils.getName(url)) else this
+fun BookDto.restrictUrl(restrict: Boolean) = if (restrict) copy(url = FilenameUtils.getName(url)) else this
 
 data class MediaDto(
   val status: String,
   val mediaType: String,
   val pagesCount: Int,
   val comment: String,
+  val epubDivinaCompatible: Boolean,
+  val epubIsKepub: Boolean,
 ) {
   val mediaProfile: String by lazy { MediaType.fromMediaType(mediaType)?.profile?.name ?: "" }
 }
@@ -63,7 +64,6 @@ data class BookMetadataDto(
   val isbnLock: Boolean,
   val links: List<WebLinkDto>,
   val linksLock: Boolean,
-
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -79,4 +79,6 @@ data class ReadProgressDto(
   val created: LocalDateTime,
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   val lastModified: LocalDateTime,
+  val deviceId: String,
+  val deviceName: String,
 )

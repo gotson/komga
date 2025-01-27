@@ -1,2 +1,9 @@
 komga:
   config-dir: ${LOCALAPPDATA}/Komga
+  kobo.kepubify-path: kepubify.exe
+spring:
+  config:
+    import:
+      - "optional:file:${komga.config-dir}/application.yml"
+      - "optional:file:${komga.config-dir}/application.yaml"
+      - "optional:file:${komga.config-dir}/application.properties"

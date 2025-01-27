@@ -1,7 +1,8 @@
 package org.gotson.komga.domain.service
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.scheduler.LibraryScanScheduler
+import org.gotson.komga.application.tasks.LOWEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.DirectoryNotFoundException
 import org.gotson.komga.domain.model.DomainEvent
@@ -30,7 +31,6 @@ class LibraryLifecycle(
   private val transactionTemplate: TransactionTemplate,
   private val libraryScanScheduler: LibraryScanScheduler,
 ) {
-
   @Throws(
     FileNotFoundException::class,
     DirectoryNotFoundException::class,
@@ -67,10 +67,24 @@ class LibraryLifecycle(
     if (checkLibraryShouldRescan(current, toUpdate))
       taskEmitter.scanLibrary(toUpdate.id)
 
+    if (toUpdate.hashFiles && !current.hashFiles)
+      taskEmitter.hashBooksWithoutHash(toUpdate)
+    if (toUpdate.hashKoreader && !current.hashKoreader)
+      taskEmitter.hashBooksWithoutHashKoreader(toUpdate)
+    if (toUpdate.hashPages && !current.hashPages)
+      taskEmitter.findBooksWithMissingPageHash(toUpdate, LOWEST_PRIORITY)
+    if (toUpdate.repairExtensions && !current.repairExtensions)
+      taskEmitter.repairExtensions(toUpdate, LOWEST_PRIORITY)
+    if (toUpdate.convertToCbz && !current.convertToCbz)
+      taskEmitter.findBooksToConvert(toUpdate, LOWEST_PRIORITY)
+
     eventPublisher.publishEvent(DomainEvent.LibraryUpdated(toUpdate))
   }
 
-  private fun checkLibraryShouldRescan(existing: Library, updated: Library): Boolean {
+  private fun checkLibraryShouldRescan(
+    existing: Library,
+    updated: Library,
+  ): Boolean {
     if (existing.root != updated.root) return true
     if (existing.oneshotsDirectory != updated.oneshotsDirectory) return true
     if (existing.scanCbx != updated.scanCbx) return true
@@ -81,7 +95,10 @@ class LibraryLifecycle(
     return false
   }
 
-  private fun checkLibraryValidity(library: Library, existing: Collection<Library>) {
+  private fun checkLibraryValidity(
+    library: Library,
+    existing: Collection<Library>,
+  ) {
     if (!Files.exists(library.path))
       throw FileNotFoundException("Library root folder does not exist: ${library.root}")
 

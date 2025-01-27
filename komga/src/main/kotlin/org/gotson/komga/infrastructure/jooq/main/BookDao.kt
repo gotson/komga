@@ -1,14 +1,18 @@
 package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.BookSearch
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.BookRepository
+import org.gotson.komga.infrastructure.jooq.BookSearchHelper
+import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
+import org.gotson.komga.infrastructure.jooq.rlbAlias
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
-import org.gotson.komga.infrastructure.jooq.toCurrentTimeZone
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookRecord
+import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
@@ -33,19 +37,25 @@ class BookDao(
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
+  private val sd = Tables.SERIES_METADATA
   private val r = Tables.READ_PROGRESS
+  private val rlb = Tables.READLIST_BOOK
 
-  private val sorts = mapOf(
-    "createdDate" to b.CREATED_DATE,
-    "seriesId" to b.SERIES_ID,
-    "number" to b.NUMBER,
-  )
+  private val sorts =
+    mapOf(
+      "createdDate" to b.CREATED_DATE,
+      "seriesId" to b.SERIES_ID,
+      "number" to b.NUMBER,
+    )
 
-  override fun findByIdOrNull(bookId: String): Book? =
-    findByIdOrNull(dsl, bookId)
+  override fun findByIdOrNull(bookId: String): Book? = findByIdOrNull(dsl, bookId)
 
-  override fun findNotDeletedByLibraryIdAndUrlOrNull(libraryId: String, url: URL): Book? =
-    dsl.selectFrom(b)
+  override fun findNotDeletedByLibraryIdAndUrlOrNull(
+    libraryId: String,
+    url: URL,
+  ): Book? =
+    dsl
+      .selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId).and(b.URL.eq(url.toString())))
       .and(b.DELETED_DATE.isNull)
       .orderBy(b.LAST_MODIFIED_DATE.desc())
@@ -53,29 +63,39 @@ class BookDao(
       .firstOrNull()
       ?.toDomain()
 
-  private fun findByIdOrNull(dsl: DSLContext, bookId: String): Book? =
-    dsl.selectFrom(b)
+  private fun findByIdOrNull(
+    dsl: DSLContext,
+    bookId: String,
+  ): Book? =
+    dsl
+      .selectFrom(b)
       .where(b.ID.eq(bookId))
       .fetchOneInto(b)
       ?.toDomain()
 
   override fun findAllBySeriesId(seriesId: String): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.SERIES_ID.eq(seriesId))
       .fetchInto(b)
       .map { it.toDomain() }
 
   override fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.SERIES_ID.`in`(seriesIds))
       .fetchInto(b)
       .map { it.toDomain() }
 
   @Transactional
-  override fun findAllNotDeletedByLibraryIdAndUrlNotIn(libraryId: String, urls: Collection<URL>): Collection<Book> {
+  override fun findAllNotDeletedByLibraryIdAndUrlNotIn(
+    libraryId: String,
+    urls: Collection<URL>,
+  ): Collection<Book> {
     dsl.insertTempStrings(batchSize, urls.map { it.toString() })
 
-    return dsl.selectFrom(b)
+    return dsl
+      .selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(b.DELETED_DATE.isNull)
       .and(b.URL.notIn(dsl.selectTempStrings()))
@@ -84,142 +104,188 @@ class BookDao(
   }
 
   override fun findAllDeletedByFileSize(fileSize: Long): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.DELETED_DATE.isNotNull.and(b.FILE_SIZE.eq(fileSize)))
       .fetchInto(b)
       .map { it.toDomain() }
 
   override fun findAll(): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .fetchInto(b)
       .map { it.toDomain() }
 
-  override fun findAll(bookSearch: BookSearch): Collection<Book> =
-    dsl.select(*b.fields())
-      .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-      .where(bookSearch.toCondition())
-      .fetchInto(b)
-      .map { it.toDomain() }
+  override fun findAll(
+    searchCondition: SearchCondition.Book?,
+    searchContext: SearchContext,
+    pageable: Pageable,
+  ): Page<Book> {
+    val bookCondition = BookSearchHelper(searchContext).toCondition(searchCondition)
+    return findAll(bookCondition.first, bookCondition.second, pageable)
+  }
 
-  override fun findAll(bookSearch: BookSearch, pageable: Pageable): Page<Book> {
-    val conditions = bookSearch.toCondition()
-
-    val count = dsl.selectCount()
-      .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-      .where(conditions)
-      .fetchOne(0, Long::class.java) ?: 0
+  private fun findAll(
+    conditions: Condition,
+    joins: Set<RequiredJoin>,
+    pageable: Pageable,
+  ): PageImpl<Book> {
+    val count =
+      dsl
+        .selectCount()
+        .from(b)
+        .apply {
+          joins.forEach { join ->
+            when (join) {
+              RequiredJoin.BookMetadata -> innerJoin(d).on(b.ID.eq(d.BOOK_ID))
+              RequiredJoin.SeriesMetadata -> innerJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
+              RequiredJoin.Media -> innerJoin(m).on(b.ID.eq(m.BOOK_ID))
+              is RequiredJoin.ReadProgress -> leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(join.userId))
+              is RequiredJoin.ReadList -> {
+                val rlbAlias = rlbAlias(join.readListId)
+                leftJoin(rlbAlias).on(rlbAlias.BOOK_ID.eq(b.ID).and(rlbAlias.READLIST_ID.eq(join.readListId)))
+              }
+              // shouldn't be required for books
+              RequiredJoin.BookMetadataAggregation -> Unit
+              is RequiredJoin.Collection -> Unit
+            }
+          }
+        }.where(conditions)
+        .fetchOne(0, Long::class.java) ?: 0
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
-    val items = dsl.select(*b.fields())
-      .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-      .where(conditions)
-      .orderBy(orderBy)
-      .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-      .fetchInto(b)
-      .map { it.toDomain() }
+    val items =
+      dsl
+        .select(*b.fields())
+        .from(b)
+        .apply {
+          joins.forEach { join ->
+            when (join) {
+              RequiredJoin.BookMetadata -> innerJoin(d).on(b.ID.eq(d.BOOK_ID))
+              RequiredJoin.SeriesMetadata -> innerJoin(sd).on(b.SERIES_ID.eq(sd.SERIES_ID))
+              RequiredJoin.Media -> innerJoin(m).on(b.ID.eq(m.BOOK_ID))
+              is RequiredJoin.ReadProgress -> leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(join.userId))
+              is RequiredJoin.ReadList -> {
+                val rlbAlias = rlbAlias(join.readListId)
+                leftJoin(rlbAlias).on(rlbAlias.BOOK_ID.eq(b.ID).and(rlbAlias.READLIST_ID.eq(join.readListId)))
+              }
+              // shouldn't be required for books
+              RequiredJoin.BookMetadataAggregation -> Unit
+              is RequiredJoin.Collection -> Unit
+            }
+          }
+        }.where(conditions)
+        .orderBy(orderBy)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(b)
+        .map { it.toDomain() }
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
       items,
-      if (pageable.isPaged) PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
+      if (pageable.isPaged)
+        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
+      else
+        PageRequest.of(0, maxOf(count.toInt(), 20), pageSort),
       count,
     )
   }
 
   override fun getLibraryIdOrNull(bookId: String): String? =
-    dsl.select(b.LIBRARY_ID)
+    dsl
+      .select(b.LIBRARY_ID)
       .from(b)
       .where(b.ID.eq(bookId))
       .fetchOne(b.LIBRARY_ID)
 
   override fun getSeriesIdOrNull(bookId: String): String? =
-    dsl.select(b.SERIES_ID)
+    dsl
+      .select(b.SERIES_ID)
       .from(b)
       .where(b.ID.eq(bookId))
       .fetchOne(b.SERIES_ID)
 
   override fun findFirstIdInSeriesOrNull(seriesId: String): String? =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(d)
+      .on(b.ID.eq(d.BOOK_ID))
       .where(b.SERIES_ID.eq(seriesId))
       .orderBy(d.NUMBER_SORT)
       .limit(1)
       .fetchOne(b.ID)
 
   override fun findLastIdInSeriesOrNull(seriesId: String): String? =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(d)
+      .on(b.ID.eq(d.BOOK_ID))
       .where(b.SERIES_ID.eq(seriesId))
       .orderBy(d.NUMBER_SORT.desc())
       .limit(1)
       .fetchOne(b.ID)
 
-  override fun findFirstUnreadIdInSeriesOrNull(seriesId: String, userId: String): String? =
-    dsl.select(b.ID)
+  override fun findFirstUnreadIdInSeriesOrNull(
+    seriesId: String,
+    userId: String,
+  ): String? =
+    dsl
+      .select(b.ID)
       .from(b)
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .leftJoin(r).on(b.ID.eq(r.BOOK_ID)).and(r.USER_ID.eq(userId).or(r.USER_ID.isNull))
+      .leftJoin(d)
+      .on(b.ID.eq(d.BOOK_ID))
+      .leftJoin(r)
+      .on(b.ID.eq(r.BOOK_ID))
+      .and(r.USER_ID.eq(userId).or(r.USER_ID.isNull))
       .where(b.SERIES_ID.eq(seriesId))
-      .and(r.COMPLETED.isNull)
+      .and(r.COMPLETED.isNull.or(r.COMPLETED.isFalse))
       .orderBy(d.NUMBER_SORT)
       .limit(1)
       .fetchOne(b.ID)
 
   override fun findAllIdsBySeriesId(seriesId: String): Collection<String> =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
       .where(b.SERIES_ID.eq(seriesId))
       .fetch(b.ID)
 
-  override fun findAllIdsBySeriesIds(seriesIds: Collection<String>): Collection<String> =
-    dsl.select(b.ID)
-      .from(b)
-      .where(b.SERIES_ID.`in`(seriesIds))
-      .fetch(0, String::class.java)
-
   override fun findAllIdsByLibraryId(libraryId: String): Collection<String> =
-    dsl.select(b.ID)
+    dsl
+      .select(b.ID)
       .from(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .fetch(b.ID)
 
-  override fun findAllIds(bookSearch: BookSearch, sort: Sort): Collection<String> {
-    val conditions = bookSearch.toCondition()
+  override fun existsById(bookId: String): Boolean = dsl.fetchExists(b, b.ID.eq(bookId))
 
-    val orderBy = sort.toOrderBy(sorts)
-
-    return dsl.select(b.ID)
+  override fun findAllByLibraryIdAndMediaTypes(
+    libraryId: String,
+    mediaTypes: Collection<String>,
+  ): Collection<Book> =
+    dsl
+      .select(*b.fields())
       .from(b)
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
-      .leftJoin(d).on(b.ID.eq(d.BOOK_ID))
-      .where(conditions)
-      .orderBy(orderBy)
-      .fetch(b.ID)
-  }
-
-  override fun findAllByLibraryIdAndMediaTypes(libraryId: String, mediaTypes: Collection<String>): Collection<Book> =
-    dsl.select(*b.fields())
-      .from(b)
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .leftJoin(m)
+      .on(b.ID.eq(m.BOOK_ID))
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(m.MEDIA_TYPE.`in`(mediaTypes))
       .fetchInto(b)
       .map { it.toDomain() }
 
-  override fun findAllByLibraryIdAndMismatchedExtension(libraryId: String, mediaType: String, extension: String): Collection<Book> =
-    dsl.select(*b.fields())
+  override fun findAllByLibraryIdAndMismatchedExtension(
+    libraryId: String,
+    mediaType: String,
+    extension: String,
+  ): Collection<Book> =
+    dsl
+      .select(*b.fields())
       .from(b)
-      .leftJoin(m).on(b.ID.eq(m.BOOK_ID))
+      .leftJoin(m)
+      .on(b.ID.eq(m.BOOK_ID))
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(m.MEDIA_TYPE.eq(mediaType))
       .and(b.URL.notLike("%.$extension"))
@@ -227,9 +293,25 @@ class BookDao(
       .map { it.toDomain() }
 
   override fun findAllByLibraryIdAndWithEmptyHash(libraryId: String): Collection<Book> =
-    dsl.selectFrom(b)
+    dsl
+      .selectFrom(b)
       .where(b.LIBRARY_ID.eq(libraryId))
       .and(b.FILE_HASH.eq(""))
+      .fetchInto(b)
+      .map { it.toDomain() }
+
+  override fun findAllByLibraryIdAndWithEmptyHashKoreader(libraryId: String): Collection<Book> =
+    dsl
+      .selectFrom(b)
+      .where(b.LIBRARY_ID.eq(libraryId))
+      .and(b.FILE_HASH_KOREADER.eq(""))
+      .fetchInto(b)
+      .map { it.toDomain() }
+
+  override fun findAllByHashKoreader(hashKoreader: String): Collection<Book> =
+    dsl
+      .selectFrom(b)
+      .where(b.FILE_HASH_KOREADER.eq(hashKoreader))
       .fetchInto(b)
       .map { it.toDomain() }
 
@@ -242,38 +324,42 @@ class BookDao(
   override fun insert(books: Collection<Book>) {
     if (books.isNotEmpty()) {
       books.chunked(batchSize).forEach { chunk ->
-        dsl.batch(
-          dsl.insertInto(
-            b,
-            b.ID,
-            b.NAME,
-            b.URL,
-            b.NUMBER,
-            b.FILE_LAST_MODIFIED,
-            b.FILE_SIZE,
-            b.FILE_HASH,
-            b.LIBRARY_ID,
-            b.SERIES_ID,
-            b.DELETED_DATE,
-            b.ONESHOT,
-          ).values(null as String?, null, null, null, null, null, null, null, null, null, null),
-        ).also { step ->
-          chunk.forEach {
-            step.bind(
-              it.id,
-              it.name,
-              it.url,
-              it.number,
-              it.fileLastModified,
-              it.fileSize,
-              it.fileHash,
-              it.libraryId,
-              it.seriesId,
-              it.deletedDate,
-              it.oneshot,
-            )
-          }
-        }.execute()
+        dsl
+          .batch(
+            dsl
+              .insertInto(
+                b,
+                b.ID,
+                b.NAME,
+                b.URL,
+                b.NUMBER,
+                b.FILE_LAST_MODIFIED,
+                b.FILE_SIZE,
+                b.FILE_HASH,
+                b.FILE_HASH_KOREADER,
+                b.LIBRARY_ID,
+                b.SERIES_ID,
+                b.DELETED_DATE,
+                b.ONESHOT,
+              ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null),
+          ).also { step ->
+            chunk.forEach {
+              step.bind(
+                it.id,
+                it.name,
+                it.url,
+                it.number,
+                it.fileLastModified,
+                it.fileSize,
+                it.fileHash,
+                it.fileHashKoreader,
+                it.libraryId,
+                it.seriesId,
+                it.deletedDate,
+                it.oneshot,
+              )
+            }
+          }.execute()
       }
     }
   }
@@ -289,13 +375,15 @@ class BookDao(
   }
 
   private fun updateBook(book: Book) {
-    dsl.update(b)
+    dsl
+      .update(b)
       .set(b.NAME, book.name)
       .set(b.URL, book.url.toString())
       .set(b.NUMBER, book.number)
       .set(b.FILE_LAST_MODIFIED, book.fileLastModified)
       .set(b.FILE_SIZE, book.fileSize)
       .set(b.FILE_HASH, book.fileHash)
+      .set(b.FILE_HASH_KOREADER, book.fileHashKoreader)
       .set(b.LIBRARY_ID, book.libraryId)
       .set(b.SERIES_ID, book.seriesId)
       .set(b.DELETED_DATE, book.deletedDate)
@@ -323,30 +411,18 @@ class BookDao(
   override fun count(): Long = dsl.fetchCount(b).toLong()
 
   override fun countGroupedByLibraryId(): Map<String, Int> =
-    dsl.select(b.LIBRARY_ID, DSL.count(b.ID))
+    dsl
+      .select(b.LIBRARY_ID, DSL.count(b.ID))
       .from(b)
       .groupBy(b.LIBRARY_ID)
       .fetchMap(b.LIBRARY_ID, DSL.count(b.ID))
 
   override fun getFilesizeGroupedByLibraryId(): Map<String, BigDecimal> =
-    dsl.select(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
+    dsl
+      .select(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
       .from(b)
       .groupBy(b.LIBRARY_ID)
       .fetchMap(b.LIBRARY_ID, DSL.sum(b.FILE_SIZE))
-
-  private fun BookSearch.toCondition(): Condition {
-    var c: Condition = DSL.trueCondition()
-
-    if (!libraryIds.isNullOrEmpty()) c = c.and(b.LIBRARY_ID.`in`(libraryIds))
-    if (!seriesIds.isNullOrEmpty()) c = c.and(b.SERIES_ID.`in`(seriesIds))
-    searchTerm?.let { c = c.and(d.TITLE.containsIgnoreCase(it)) }
-    if (!mediaStatus.isNullOrEmpty()) c = c.and(m.STATUS.`in`(mediaStatus))
-    if (deleted == true) c = c.and(b.DELETED_DATE.isNotNull)
-    if (deleted == false) c = c.and(b.DELETED_DATE.isNull)
-    if (releasedAfter != null) c = c.and(d.RELEASE_DATE.gt(releasedAfter))
-
-    return c
-  }
 
   private fun BookRecord.toDomain() =
     Book(
@@ -355,6 +431,7 @@ class BookDao(
       fileLastModified = fileLastModified,
       fileSize = fileSize,
       fileHash = fileHash,
+      fileHashKoreader = fileHashKoreader,
       id = id,
       libraryId = libraryId,
       seriesId = seriesId,

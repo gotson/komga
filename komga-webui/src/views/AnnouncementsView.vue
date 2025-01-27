@@ -9,7 +9,7 @@
               inline
               left
               :value="item._komga.read ? 0 : 1"
-              color="warning"
+              color="info"
             >
               <a :href="item.url" target="_blank" class="text-h3 font-weight-medium link-underline">{{ item.title }}</a>
               <v-icon

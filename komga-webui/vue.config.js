@@ -13,6 +13,13 @@ module.exports = {
     },
   },
 
+  devServer: {
+    allowedHosts: 'all',
+    client: {
+      webSocketURL: 'ws://0.0.0.0:8081/ws',
+    },
+  },
+
   // custom rule for readium and r2d2bc css that needs to be made available, but untouched
   configureWebpack: {
     module: {

@@ -40,10 +40,25 @@ export interface UserUpdateDto {
 export interface AuthenticationActivityDto {
   userId?: string,
   email?: string,
+  apiKeyId?: string,
+  apiKeyComment?: string,
   ip?: string,
   userAgent?: string,
   success: Boolean,
   error?: string,
   dateTime: Date,
   source?: string,
+}
+
+export interface ApiKeyDto {
+  id: string,
+  userId: string,
+  key: string,
+  comment: string,
+  createdDate: Date,
+  lastModifiedDate: Date
+}
+
+export interface ApiKeyRequestDto {
+  comment: string,
 }

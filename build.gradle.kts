@@ -7,14 +7,14 @@ import kotlin.io.path.exists
 
 plugins {
   run {
-    val kotlinVersion = "1.8.22"
+    val kotlinVersion = "1.9.21"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
   }
-  id("org.jlleitschuh.gradle.ktlint") version "11.4.2"
-  id("com.github.ben-manes.versions") version "0.48.0"
-  id("org.jreleaser") version "1.9.0"
+  id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
+  id("com.github.ben-manes.versions") version "0.51.0"
+  id("org.jreleaser") version "1.10.0"
 }
 
 fun isNonStable(version: String): Boolean {
@@ -44,12 +44,12 @@ allprojects {
   }
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version = "0.48.2"
+    version = "1.5.0"
   }
 }
 
 tasks.wrapper {
-  gradleVersion = "8.4"
+  gradleVersion = "8.11.1"
   distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -77,10 +77,10 @@ jreleaser {
         links = true
         content = (if (Path("./release_notes/release_notes.md").exists()) "{{#f_file_read}}{{basedir}}/release_notes/release_notes.md{{/f_file_read}}" else "") +
           """
-            ## Changelog
+          ## Changelog
 
-            {{changelogChanges}}
-            {{changelogContributors}}
+          {{changelogChanges}}
+          {{changelogContributors}}
           """.trimIndent()
         format = "- {{#commitIsConventional}}{{#conventionalCommitIsBreakingChange}}🚨 {{/conventionalCommitIsBreakingChange}}{{#conventionalCommitScope}}**{{conventionalCommitScope}}**: {{/conventionalCommitScope}}{{conventionalCommitDescription}}{{#conventionalCommitBreakingChangeContent}}: *{{conventionalCommitBreakingChangeContent}}*{{/conventionalCommitBreakingChangeContent}} ({{commitShortHash}}){{/commitIsConventional}}{{^commitIsConventional}}{{commitTitle}} ({{commitShortHash}}){{/commitIsConventional}}{{#commitHasIssues}}, closes{{#commitIssues}} {{issue}}{{/commitIssues}}{{/commitHasIssues}}"
         hide {
@@ -126,10 +126,11 @@ jreleaser {
           enabled = true
           title = "# [{{projectVersion}}]({{repoUrl}}/compare/{{previousTagName}}...{{tagName}}) ({{#f_now}}YYYY-MM-dd{{/f_now}})"
           target = rootDir.resolve("CHANGELOG.md")
-          content = """
+          content =
+            """
             {{changelogTitle}}
             {{changelogChanges}}
-          """.trimIndent()
+            """.trimIndent()
         }
       }
 
@@ -142,16 +143,6 @@ jreleaser {
           description = "Issue has been released"
           color = "#ededed"
         }
-      }
-    }
-  }
-
-  files {
-    active = Active.RELEASE
-    // workaround as glob doesn't seem to work https://github.com/jreleaser/jreleaser/issues/1466
-    file("./output/release").listFiles()?.forEach {
-      artifact {
-        path = it
       }
     }
   }
@@ -173,11 +164,12 @@ jreleaser {
       templateDirectory = rootDir.resolve("komga/docker")
       repository.active = Active.NEVER
       buildArgs = listOf("--cache-from", "gotson/komga:latest")
-      imageNames = listOf(
-        "komga:latest",
-        "komga:{{projectVersion}}",
-        "komga:{{projectVersionMajor}}.x",
-      )
+      imageNames =
+        listOf(
+          "komga:latest",
+          "komga:{{projectVersion}}",
+          "komga:{{projectVersionMajor}}.x",
+        )
       registries {
         create("docker.io") { externalLogin = true }
         create("ghcr.io") { externalLogin = true }
@@ -185,11 +177,12 @@ jreleaser {
       buildx {
         enabled = true
         createBuilder = false
-        platforms = listOf(
-          "linux/amd64",
-          "linux/arm/v7",
-          "linux/arm64/v8",
-        )
+        platforms =
+          listOf(
+            "linux/amd64",
+            "linux/arm/v7",
+            "linux/arm64/v8",
+          )
       }
     }
   }

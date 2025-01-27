@@ -14,15 +14,14 @@ data class ThumbnailSeries(
   val mediaType: String,
   val fileSize: Long,
   val dimension: Dimension,
-
   val id: String = TsidCreator.getTsid256().toString(),
   val seriesId: String = "",
-
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
   enum class Type {
-    SIDECAR, USER_UPLOADED
+    SIDECAR,
+    USER_UPLOADED,
   }
 
   fun exists(): Boolean {
@@ -39,7 +38,8 @@ data class ThumbnailSeries(
     if (thumbnail != null) {
       if (other.thumbnail == null) return false
       if (!thumbnail.contentEquals(other.thumbnail)) return false
-    } else if (other.thumbnail != null) return false
+    } else if (other.thumbnail != null)
+      return false
     if (url != other.url) return false
     if (selected != other.selected) return false
     if (type != other.type) return false

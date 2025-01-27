@@ -8,8 +8,9 @@ import {
   PageDto,
   ReadProgressUpdateDto,
 } from '@/types/komga-books'
-import {formatISO} from 'date-fns'
 import {ReadListDto} from '@/types/komga-readlists'
+import {R2Progression} from '@/types/readium'
+import {BookSearch} from '@/types/komga-search'
 
 const qs = require('qs')
 
@@ -22,26 +23,10 @@ export default class KomgaBooksService {
     this.http = http
   }
 
-  async getBooks(libraryId?: string, pageRequest?: PageRequest, search?: string, mediaStatus?: string[], readStatus?: string[], releasedAfter?: Date): Promise<Page<BookDto>> {
+  async getBooksList(search: BookSearch, pageRequest?: PageRequest): Promise<Page<BookDto>> {
     try {
-      const params = {...pageRequest} as any
-      if (libraryId) {
-        params.library_id = libraryId
-      }
-      if (search) {
-        params.search = search
-      }
-      if (mediaStatus) {
-        params.media_status = mediaStatus
-      }
-      if (readStatus) {
-        params.read_status = readStatus
-      }
-      if (releasedAfter) {
-        params.released_after = formatISO(releasedAfter, {representation: 'date'})
-      }
-      return (await this.http.get(API_BOOKS, {
-        params: params,
+      return (await this.http.post(`${API_BOOKS}/list`, search, {
+        params: {...pageRequest},
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
@@ -199,6 +184,30 @@ export default class KomgaBooksService {
       await this.http.patch(`${API_BOOKS}/${bookId}/read-progress`, readProgress)
     } catch (e) {
       let msg = 'An error occurred while trying to update read progress'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getProgression(bookId: string): Promise<R2Progression | undefined> {
+    try {
+      return (await this.http.get(`${API_BOOKS}/${bookId}/progression`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to get progression'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async updateProgression(bookId: string, progression: R2Progression) {
+    try {
+      await this.http.put(`${API_BOOKS}/${bookId}/progression`, progression)
+    } catch (e) {
+      let msg = 'An error occurred while trying to update progression'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }

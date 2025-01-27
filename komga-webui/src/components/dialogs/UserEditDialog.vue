@@ -15,23 +15,11 @@
 
           <v-row>
             <v-col>
-              <v-checkbox
-                v-model="roles"
-                :label="$t('dialog.add_user.field_role_administrator')"
-                :value="UserRoles.ADMIN"
-                hide-details
-              />
-              <v-checkbox
-                v-model="roles"
-                :label="$t('dialog.add_user.field_role_page_streaming')"
-                :value="UserRoles.PAGE_STREAMING"
-                hide-details
-              />
-              <v-checkbox
-                v-model="roles"
-                :label="$t('dialog.add_user.field_role_file_download')"
-                :value="UserRoles.FILE_DOWNLOAD"
-                hide-details
+              <v-checkbox v-for="role in userRoles" :key="role.value"
+                          v-model="roles"
+                          :label="role.text"
+                          :value="role.value"
+                          hide-details
               />
             </v-col>
           </v-row>
@@ -62,7 +50,6 @@ export default Vue.extend({
   name: 'UserEditDialog',
   data: () => {
     return {
-      UserRoles,
       modal: false,
       roles: [] as string[],
     }
@@ -86,6 +73,12 @@ export default Vue.extend({
     },
   },
   computed: {
+    userRoles(): any[] {
+      return Object.keys(UserRoles).map(x => ({
+        text: this.$t(`user_roles.${x}`),
+        value: x,
+      }))
+    },
     libraries(): LibraryDto[] {
       return this.$store.state.komgaLibraries.libraries
     },

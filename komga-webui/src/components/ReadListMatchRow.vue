@@ -15,7 +15,8 @@
               year: 'numeric',
               timeZone: 'UTC'
             }).format(new Date(series.releaseDate))
-            }}</div>
+          }}
+        </div>
       </template>
       <template v-else>
         <div style="height: 2em" class="missing"></div>
@@ -71,6 +72,7 @@ import {
   ReadListRequestBookMatchSeriesDto,
 } from '@/types/komga-readlists'
 import BookPickerDialog from '@/components/dialogs/BookPickerDialog.vue'
+import {BookSearch, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'ReadListMatchRow',
@@ -95,6 +97,10 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    error: {
+      type: String,
+      default: '',
+    },
   },
   watch: {
     series: {
@@ -116,16 +122,13 @@ export default Vue.extend({
     existingFileNames(): string[] {
       return this.seriesBooks.map(x => x.name)
     },
-    error(): string {
-      if (!this.series) return this.$t('book_import.row.error_choose_series').toString()
-      if (!this.book) return this.$t('readlist_import.row.error_choose_book').toString()
-      return ''
-    },
   },
   methods: {
     openBookPicker() {
       if (!this.seriesBooksCached) {
-        this.$komgaSeries.getBooks(this.series?.seriesId, {unpaged: true})
+        this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(this.series?.seriesId)),
+        } as BookSearch, {unpaged: true, sort: 'metadata.numberSort'})
           .then(r => {
             this.seriesBooks = r.content
             this.seriesBooksCached = true

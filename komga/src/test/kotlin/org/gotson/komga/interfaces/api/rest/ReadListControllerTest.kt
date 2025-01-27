@@ -1,7 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
 import org.gotson.komga.domain.model.Book
-import org.gotson.komga.domain.model.ROLE_ADMIN
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -49,7 +48,6 @@ class ReadListControllerTest(
   @Autowired private val seriesMetadataRepository: SeriesMetadataRepository,
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
 ) {
-
   private val library1 = makeLibrary("Library1", id = "1")
   private val library2 = makeLibrary("Library2", id = "2")
   private val seriesLib1 = makeSeries("Series1", library1.id)
@@ -88,26 +86,29 @@ class ReadListControllerTest(
   }
 
   private fun makeReadLists() {
-    rlLib1 = readListLifecycle.addReadList(
-      ReadList(
-        name = "Lib1",
-        bookIds = booksLibrary1.map { it.id }.toIndexedMap(),
-      ),
-    )
+    rlLib1 =
+      readListLifecycle.addReadList(
+        ReadList(
+          name = "Lib1",
+          bookIds = booksLibrary1.map { it.id }.toIndexedMap(),
+        ),
+      )
 
-    rlLib2 = readListLifecycle.addReadList(
-      ReadList(
-        name = "Lib2",
-        bookIds = booksLibrary2.map { it.id }.toIndexedMap(),
-      ),
-    )
+    rlLib2 =
+      readListLifecycle.addReadList(
+        ReadList(
+          name = "Lib2",
+          bookIds = booksLibrary2.map { it.id }.toIndexedMap(),
+        ),
+      )
 
-    rlLibBoth = readListLifecycle.addReadList(
-      ReadList(
-        name = "Lib1+2",
-        bookIds = (booksLibrary1 + booksLibrary2).map { it.id }.toIndexedMap(),
-      ),
-    )
+    rlLibBoth =
+      readListLifecycle.addReadList(
+        ReadList(
+          name = "Lib1+2",
+          bookIds = (booksLibrary1 + booksLibrary2).map { it.id }.toIndexedMap(),
+        ),
+      )
   }
 
   @Nested
@@ -117,7 +118,8 @@ class ReadListControllerTest(
     fun `given user with access to all libraries when getting read lists then get all read lists`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists")
+      mockMvc
+        .get("/api/v1/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(3) }
@@ -132,7 +134,8 @@ class ReadListControllerTest(
     fun `given user with access to a single library when getting read lists then only get read lists from this library`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists")
+      mockMvc
+        .get("/api/v1/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -146,7 +149,8 @@ class ReadListControllerTest(
     fun `given user with access to all libraries when getting single read list then it is not filtered`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(10) }
@@ -159,7 +163,8 @@ class ReadListControllerTest(
     fun `given user with access to a single library when getting single read list with items from 2 libraries then it is filtered`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(5) }
@@ -172,7 +177,8 @@ class ReadListControllerTest(
     fun `given user with access to a single library when getting single read list from another library then return not found`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists/${rlLib2.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlLib2.id}")
         .andExpect {
           status { isNotFound() }
         }
@@ -203,28 +209,32 @@ class ReadListControllerTest(
         }
       }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(book10.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(book10.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          bookIds = listOf(book10.id, book.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            bookIds = listOf(book10.id, book.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(book.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(book.id).toIndexedMap(),
+          ),
+        )
 
-      mockMvc.get("/api/v1/readlists")
+      mockMvc
+        .get("/api/v1/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -232,26 +242,30 @@ class ReadListControllerTest(
           jsonPath("$.content[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlAllowed.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(1) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(1) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlDenied.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/books/${book10.id}/readlists")
+      mockMvc
+        .get("/api/v1/books/${book10.id}/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -259,19 +273,22 @@ class ReadListControllerTest(
           jsonPath("$[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}/books")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(1) }
           jsonPath("$.content[0].id") { value(book10.id) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/previous")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/next")
         .andExpect {
           status { isNotFound() }
         }
@@ -326,29 +343,33 @@ class ReadListControllerTest(
       bookMetadataRepository.findById(book16.id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2002, 1, 1))) }
       bookMetadataRepository.findById(book18.id).let { bookMetadataRepository.update(it.copy(releaseDate = LocalDate.of(2003, 1, 1))) }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(book10.id, book.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(book10.id, book.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          ordered = false,
-          bookIds = listOf(book10.id, book.id, book16.id, book18.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            ordered = false,
+            bookIds = listOf(book10.id, book.id, book16.id, book18.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(book16.id, book18.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(book16.id, book18.id).toIndexedMap(),
+          ),
+        )
 
-      mockMvc.get("/api/v1/readlists")
+      mockMvc
+        .get("/api/v1/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -356,26 +377,30 @@ class ReadListControllerTest(
           jsonPath("$.content[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlAllowed.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(2) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(2) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlDenied.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/books/${book10.id}/readlists")
+      mockMvc
+        .get("/api/v1/books/${book10.id}/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -383,31 +408,36 @@ class ReadListControllerTest(
           jsonPath("$[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}/books")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(2) }
           jsonPath("$.content.[*].['id']") { contains(listOf(book10, book).map { it.id }) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/previous")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}/books/${book10.id}/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(book.id) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book.id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}/books/${book.id}/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(book10.id) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}/books/${book.id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}/books/${book.id}/next")
         .andExpect {
           status { isNotFound() }
         }
@@ -457,28 +487,32 @@ class ReadListControllerTest(
         }
       }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(bookAdult.id, book.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(bookAdult.id, book.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          bookIds = listOf(bookKids.id, book.id, bookAdult.id, bookCute.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            bookIds = listOf(bookKids.id, book.id, bookAdult.id, bookCute.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(bookKids.id, bookCute.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(bookKids.id, bookCute.id).toIndexedMap(),
+          ),
+        )
 
-      mockMvc.get("/api/v1/readlists")
+      mockMvc
+        .get("/api/v1/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -486,26 +520,30 @@ class ReadListControllerTest(
           jsonPath("$.content[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlAllowed.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(2) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(2) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlDenied.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/books/${bookAdult.id}/readlists")
+      mockMvc
+        .get("/api/v1/books/${bookAdult.id}/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -558,28 +596,32 @@ class ReadListControllerTest(
         }
       }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(bookKids.id, bookCute.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(bookKids.id, bookCute.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          bookIds = listOf(bookKids.id, book.id, bookAdult.id, bookCute.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            bookIds = listOf(bookKids.id, book.id, bookAdult.id, bookCute.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(bookAdult.id, book.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(bookAdult.id, book.id).toIndexedMap(),
+          ),
+        )
 
-      mockMvc.get("/api/v1/readlists")
+      mockMvc
+        .get("/api/v1/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -587,26 +629,30 @@ class ReadListControllerTest(
           jsonPath("$.content[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlAllowed.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(2) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(2) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlDenied.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/books/${bookKids.id}/readlists")
+      mockMvc
+        .get("/api/v1/books/${bookKids.id}/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -640,28 +686,32 @@ class ReadListControllerTest(
         }
       }
 
-      val rlAllowed = readListLifecycle.addReadList(
-        ReadList(
-          name = "Allowed",
-          bookIds = listOf(bookTeen.id).toIndexedMap(),
-        ),
-      )
+      val rlAllowed =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Allowed",
+            bookIds = listOf(bookTeen.id).toIndexedMap(),
+          ),
+        )
 
-      val rlFiltered = readListLifecycle.addReadList(
-        ReadList(
-          name = "Filtered",
-          bookIds = listOf(bookTeen16.id, bookTeen.id).toIndexedMap(),
-        ),
-      )
+      val rlFiltered =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Filtered",
+            bookIds = listOf(bookTeen16.id, bookTeen.id).toIndexedMap(),
+          ),
+        )
 
-      val rlDenied = readListLifecycle.addReadList(
-        ReadList(
-          name = "Denied",
-          bookIds = listOf(bookTeen16.id).toIndexedMap(),
-        ),
-      )
+      val rlDenied =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "Denied",
+            bookIds = listOf(bookTeen16.id).toIndexedMap(),
+          ),
+        )
 
-      mockMvc.get("/api/v1/readlists")
+      mockMvc
+        .get("/api/v1/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.totalElements") { value(2) }
@@ -669,26 +719,30 @@ class ReadListControllerTest(
           jsonPath("$.content[?(@.name == '${rlFiltered.name}')].filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlAllowed.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllowed.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(1) }
           jsonPath("$.filtered") { value(false) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlFiltered.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlFiltered.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.bookIds.length()") { value(1) }
           jsonPath("$.filtered") { value(true) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlDenied.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlDenied.id}")
         .andExpect {
           status { isNotFound() }
         }
 
-      mockMvc.get("/api/v1/books/${bookTeen.id}/readlists")
+      mockMvc
+        .get("/api/v1/books/${bookTeen.id}/readlists")
         .andExpect {
           status { isOk() }
           jsonPath("$.length()") { value(2) }
@@ -705,7 +759,8 @@ class ReadListControllerTest(
     fun `given user with access to all libraries when getting books from single read list then it is not filtered`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(10) }
@@ -717,7 +772,8 @@ class ReadListControllerTest(
     fun `given user with access to a single library when getting books from single read list with items from 2 libraries then it is filtered`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.length()") { value(5) }
@@ -729,7 +785,8 @@ class ReadListControllerTest(
     fun `given user with access to a single library when getting books from single read list from another library then return not found`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists/${rlLib2.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlLib2.id}/books")
         .andExpect {
           status { isNotFound() }
         }
@@ -747,31 +804,37 @@ class ReadListControllerTest(
       val second = booksLibrary1[1].id // Book_2
       val last = booksLibrary2.last().id // Book_10
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$first/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$first/previous")
         .andExpect { status { isNotFound() } }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$first/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$first/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_2") }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$second/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$second/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_1") }
         }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$second/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$second/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_3") }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$last/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$last/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_9") }
         }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$last/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$last/next")
         .andExpect { status { isNotFound() } }
     }
 
@@ -784,31 +847,37 @@ class ReadListControllerTest(
       val second = booksLibrary1[1].id // Book_2
       val last = booksLibrary1.last().id // Book_5
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$first/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$first/previous")
         .andExpect { status { isNotFound() } }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$first/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$first/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_2") }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$second/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$second/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_1") }
         }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$second/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$second/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_3") }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$last/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$last/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Book_4") }
         }
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}/books/$last/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}/books/$last/next")
         .andExpect { status { isNotFound() } }
     }
 
@@ -817,7 +886,8 @@ class ReadListControllerTest(
     fun `given user with access to a single library when getting books from single read list from another library then return not found`() {
       makeReadLists()
 
-      mockMvc.get("/api/v1/readlists/${rlLib2.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlLib2.id}/books")
         .andExpect {
           status { isNotFound() }
         }
@@ -830,69 +900,77 @@ class ReadListControllerTest(
     @WithMockCustomUser
     fun `given non-admin user when creating read list then return forbidden`() {
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"readlist","bookIds":["3"]}
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.post("/api/v1/readlists") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isForbidden() }
-      }
+      mockMvc
+        .post("/api/v1/readlists") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isForbidden() }
+        }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when creating read list then return ok`() {
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"readlist","summary":"summary","bookIds":["${booksLibrary1.first().id}"]}
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.post("/api/v1/readlists") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isOk() }
-        jsonPath("$.bookIds.length()") { value(1) }
-        jsonPath("$.name") { value("readlist") }
-        jsonPath("$.summary") { value("summary") }
-      }
+      mockMvc
+        .post("/api/v1/readlists") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isOk() }
+          jsonPath("$.bookIds.length()") { value(1) }
+          jsonPath("$.name") { value("readlist") }
+          jsonPath("$.summary") { value("summary") }
+        }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing read lists when creating read list with existing name then return bad request`() {
       makeReadLists()
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"Lib1","bookIds":["${booksLibrary1.first().id}"]}
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.post("/api/v1/readlists") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .post("/api/v1/readlists") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given read list with duplicate bookIds when creating read list then return bad request`() {
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"Lib1","bookIds":["${booksLibrary1.first().id}","${booksLibrary1.first().id}"]}
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.post("/api/v1/readlists") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .post("/api/v1/readlists") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
   }
 
@@ -902,36 +980,41 @@ class ReadListControllerTest(
     @WithMockCustomUser
     fun `given non-admin user when updating read list then return forbidden`() {
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"readlist","bookIds":["3"]}
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.patch("/api/v1/readlists/5") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isForbidden() }
-      }
+      mockMvc
+        .patch("/api/v1/readlists/5") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isForbidden() }
+        }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when updating read list then return no content`() {
       makeReadLists()
 
       // language=JSON
-      val jsonString = """
+      val jsonString =
+        """
         {"name":"updated","summary":"updatedSummary","bookIds":["${booksLibrary1.first().id}"]}
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v1/readlists/${rlLib1.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
-      mockMvc.get("/api/v1/readlists/${rlLib1.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlLib1.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("updated") }
@@ -942,39 +1025,41 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing read lists when updating read list with existing name then return bad request`() {
       makeReadLists()
 
       // language=JSON
       val jsonString = """{"name":"Lib2"}"""
 
-      mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .patch("/api/v1/readlists/${rlLib1.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given existing read list when updating read list with duplicate bookIds then return bad request`() {
       makeReadLists()
 
       // language=JSON
       val jsonString = """{"bookIds":["${booksLibrary1.first().id}","${booksLibrary1.first().id}"]}"""
 
-      mockMvc.patch("/api/v1/readlists/${rlLib1.id}") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isBadRequest() }
-      }
+      mockMvc
+        .patch("/api/v1/readlists/${rlLib1.id}") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when updating read list then only updated fields are modified`() {
       makeReadLists()
 
@@ -983,7 +1068,8 @@ class ReadListControllerTest(
         content = """{"name":"newName"}"""
       }
 
-      mockMvc.get("/api/v1/readlists/${rlLib2.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlLib2.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("newName") }
@@ -996,7 +1082,8 @@ class ReadListControllerTest(
         content = """{"summary":"newSummary"}"""
       }
 
-      mockMvc.get("/api/v1/readlists/${rlLib1.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlLib1.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Lib1") }
@@ -1009,7 +1096,8 @@ class ReadListControllerTest(
         content = """{"bookIds":["${booksLibrary1.first().id}"]}"""
       }
 
-      mockMvc.get("/api/v1/readlists/${rlLibBoth.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlLibBoth.id}")
         .andExpect {
           status { isOk() }
           jsonPath("$.name") { value("Lib1+2") }
@@ -1024,23 +1112,26 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser
     fun `given non-admin user when deleting read list then return forbidden`() {
-      mockMvc.delete("/api/v1/readlists/5")
+      mockMvc
+        .delete("/api/v1/readlists/5")
         .andExpect {
           status { isForbidden() }
         }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when deleting read list then return no content`() {
       makeReadLists()
 
-      mockMvc.delete("/api/v1/readlists/${rlLib1.id}")
+      mockMvc
+        .delete("/api/v1/readlists/${rlLib1.id}")
         .andExpect {
           status { isNoContent() }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlLib1.id}")
+      mockMvc
+        .get("/api/v1/readlists/${rlLib1.id}")
         .andExpect {
           status { isNotFound() }
         }
@@ -1053,8 +1144,10 @@ class ReadListControllerTest(
     @WithMockCustomUser
     fun `given readlist with Unicode name when getting readlist file then attachment name is correct`() {
       val name = "アキラ"
-      val tempFile = Files.createTempFile(name, ".cbz")
-        .also { it.toFile().deleteOnExit() }
+      val tempFile =
+        Files
+          .createTempFile(name, ".cbz")
+          .also { it.toFile().deleteOnExit() }
       val book = makeBook(name, libraryId = library1.id, url = tempFile.toUri().toURL())
       makeSeries(name = "series", libraryId = library1.id).let { series ->
         seriesLifecycle.createSeries(series).let { created ->
@@ -1063,14 +1156,16 @@ class ReadListControllerTest(
         }
       }
 
-      val readlist = readListLifecycle.addReadList(
-        ReadList(
-          name = name,
-          bookIds = listOf(book.id).toIndexedMap(),
-        ),
-      )
+      val readlist =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = name,
+            bookIds = listOf(book.id).toIndexedMap(),
+          ),
+        )
 
-      mockMvc.get("/api/v1/readlists/${readlist.id}/file")
+      mockMvc
+        .get("/api/v1/readlists/${readlist.id}/file")
         .andExpect {
           status { isOk() }
           header { string("Content-Disposition", Matchers.containsString(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))) }
@@ -1103,47 +1198,53 @@ class ReadListControllerTest(
 
     @BeforeEach
     fun makeReadLists() {
-      rlAllDiffDates = readListLifecycle.addReadList(
-        ReadList(
-          name = "All different dates",
-          ordered = false,
-          bookIds = listOf(2, 1).map { books[it].id }.toIndexedMap(),
-        ),
-      )
+      rlAllDiffDates =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "All different dates",
+            ordered = false,
+            bookIds = listOf(2, 1).map { books[it].id }.toIndexedMap(),
+          ),
+        )
 
-      rlAllNullDates = readListLifecycle.addReadList(
-        ReadList(
-          name = "All null dates",
-          ordered = false,
-          bookIds = books.drop(3).map { it.id }.toIndexedMap(),
-        ),
-      )
+      rlAllNullDates =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "All null dates",
+            ordered = false,
+            bookIds = books.drop(3).map { it.id }.toIndexedMap(),
+          ),
+        )
 
-      rlAllBooks = readListLifecycle.addReadList(
-        ReadList(
-          name = "All books",
-          ordered = false,
-          bookIds = books.map { it.id }.toIndexedMap(),
-        ),
-      )
+      rlAllBooks =
+        readListLifecycle.addReadList(
+          ReadList(
+            name = "All books",
+            ordered = false,
+            bookIds = books.map { it.id }.toIndexedMap(),
+          ),
+        )
     }
 
     @Test
     @WithMockCustomUser
     fun `given unordered read lists when getting books then books are sorted by release date`() {
-      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllDiffDates.id}/books")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.[*].['id']") { contains(listOf(1, 2).map { books[it].id }) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllNullDates.id}/books")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.[*].['id']") { contains(listOf(3, 4).map { books[it].id }) }
         }
 
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books")
         .andExpect {
           status { isOk() }
           jsonPath("$.content.[*].['id']") { contains(listOf(3, 4, 0, 1, 2).map { books[it].id }) }
@@ -1155,95 +1256,113 @@ class ReadListControllerTest(
     fun `given unordered read lists when getting book siblings then it is returned according to release date sort or not found`() {
       // rlAllDiffDates: 1, 2
       // first book: id=1
-      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[1].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[1].id}/previous")
         .andExpect { status { isNotFound() } }
-      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[1].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[1].id}/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[2].id) }
         }
 
       // second book: id=2
-      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[2].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[2].id}/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[1].id) }
         }
-      mockMvc.get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[2].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllDiffDates.id}/books/${books[2].id}/next")
         .andExpect { status { isNotFound() } }
 
       // rlAllNullDates: 3, 4
       // first book: id=3
-      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[3].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[3].id}/previous")
         .andExpect { status { isNotFound() } }
-      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[3].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[3].id}/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[4].id) }
         }
 
       // second book: id=4
-      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[4].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[4].id}/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[3].id) }
         }
-      mockMvc.get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[4].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllNullDates.id}/books/${books[4].id}/next")
         .andExpect { status { isNotFound() } }
 
       // rlAllBooks: 3, 4, 0, 1, 2
       // first book: id=3
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[3].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[3].id}/previous")
         .andExpect { status { isNotFound() } }
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[3].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[3].id}/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[4].id) }
         }
 
       // second book: id=4
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[4].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[4].id}/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[3].id) }
         }
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[4].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[4].id}/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[0].id) }
         }
 
       // third book: id=0
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[0].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[0].id}/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[4].id) }
         }
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[0].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[0].id}/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[1].id) }
         }
 
       // fourth book: id=1
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[1].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[1].id}/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[0].id) }
         }
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[1].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[1].id}/next")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[2].id) }
         }
 
       // last book: id=2
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[2].id}/previous")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[2].id}/previous")
         .andExpect {
           status { isOk() }
           jsonPath("$.id") { value(books[1].id) }
         }
-      mockMvc.get("/api/v1/readlists/${rlAllBooks.id}/books/${books[2].id}/next")
+      mockMvc
+        .get("/api/v1/readlists/${rlAllBooks.id}/books/${books[2].id}/next")
         .andExpect { status { isNotFound() } }
     }
   }
@@ -1253,23 +1372,23 @@ class ReadListControllerTest(
     @Test
     @WithMockCustomUser
     fun `given non-admin user when matching cbl file then return forbidden`() {
-      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
-        file("file", byteArrayOf())
-      }
-        .andExpect {
+      mockMvc
+        .multipart("/api/v1/readlists/match/comicrack") {
+          file("file", byteArrayOf())
+        }.andExpect {
           status { isForbidden() }
         }
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given invalid cbl file when matching then return bad request`() {
       val content = "garbled"
 
-      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
-        file("file", content.toByteArray())
-      }
-        .andExpect {
+      mockMvc
+        .multipart("/api/v1/readlists/match/comicrack") {
+          file("file", content.toByteArray())
+        }.andExpect {
           status {
             isBadRequest()
             reason("ERR_1015")
@@ -1278,21 +1397,22 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given cbl file without books when matching then return bad request`() {
-      val content = """
+      val content =
+        """
         <?xml version="1.0"?>
         <ReadingList>
           <Name>RL</Name>
           <Books>
           </Books>
         </ReadingList>
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
-        file("file", content.toByteArray())
-      }
-        .andExpect {
+      mockMvc
+        .multipart("/api/v1/readlists/match/comicrack") {
+          file("file", content.toByteArray())
+        }.andExpect {
           status {
             isBadRequest()
             reason("ERR_1029")
@@ -1301,9 +1421,10 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given cbl file without name when matching then return bad request`() {
-      val content = """
+      val content =
+        """
         <?xml version="1.0"?>
         <ReadingList>
           <Name></Name>
@@ -1311,12 +1432,12 @@ class ReadListControllerTest(
             <Book Series="Civil War" Number="1" Volume="2006" Year="2006"/>
           </Books>
         </ReadingList>
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
-        file("file", content.toByteArray())
-      }
-        .andExpect {
+      mockMvc
+        .multipart("/api/v1/readlists/match/comicrack") {
+          file("file", content.toByteArray())
+        }.andExpect {
           status {
             isBadRequest()
             reason("ERR_1030")
@@ -1325,9 +1446,10 @@ class ReadListControllerTest(
     }
 
     @Test
-    @WithMockCustomUser(roles = [ROLE_ADMIN])
+    @WithMockCustomUser(roles = ["ADMIN"])
     fun `given cbl file with book without series when matching then return bad request`() {
-      val content = """
+      val content =
+        """
         <?xml version="1.0"?>
         <ReadingList>
           <Name>RL</Name>
@@ -1335,12 +1457,12 @@ class ReadListControllerTest(
             <Book Number="1" Volume="2006" Year="2006"/>
           </Books>
         </ReadingList>
-      """.trimIndent()
+        """.trimIndent()
 
-      mockMvc.multipart("/api/v1/readlists/match/comicrack") {
-        file("file", content.toByteArray())
-      }
-        .andExpect {
+      mockMvc
+        .multipart("/api/v1/readlists/match/comicrack") {
+          file("file", content.toByteArray())
+        }.andExpect {
           status {
             isBadRequest()
             reason("ERR_1031")

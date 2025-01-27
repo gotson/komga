@@ -50,7 +50,14 @@
 
     </v-row>
 
-    <v-row>
+    <empty-state
+      v-if="totalPages === 0"
+      :title="$t('duplicate_pages.empty_title_known')"
+      icon="mdi-check"
+      icon-color="success"
+    />
+
+    <v-row v-else>
       <v-slide-x-transition
         v-for="(element, i) in elements"
         :key="i"
@@ -117,17 +124,18 @@ import {pageHashKnownThumbnailUrl} from '@/functions/urls'
 import PageHashKnownCard from '@/components/PageHashKnownCard.vue'
 import {PageHashAction} from '@/types/enum-pagehashes'
 import PageHashMatchesTable from '@/components/PageHashMatchesTable.vue'
+import EmptyState from '@/components/EmptyState.vue'
 
 export default Vue.extend({
   name: 'DuplicatePagesKnown',
-  components: {PageHashKnownCard, PageHashMatchesTable},
+  components: {EmptyState, PageHashKnownCard, PageHashMatchesTable},
   data: function () {
     return {
       pageHashKnownThumbnailUrl,
       elements: [] as PageHashKnownDto[],
       totalElements: 0,
       page: 1,
-      totalPages: 1,
+      totalPages: 0,
       sortActive: {key: 'deleteSize', order: 'desc'} as SortActive,
       filterActive: [PageHashAction.DELETE_AUTO, PageHashAction.DELETE_MANUAL],
       dialogImage: false,
@@ -163,6 +171,8 @@ export default Vue.extend({
         {name: this.$t('duplicate_pages.filter.size').toString(), key: 'fileSize'},
         {name: this.$t('duplicate_pages.filter.delete_count').toString(), key: 'deleteCount'},
         {name: this.$t('duplicate_pages.filter.match_count').toString(), key: 'matchCount'},
+        {name: this.$t('duplicate_pages.filter.date_added').toString(), key: 'createdDate'},
+        {name: this.$t('duplicate_pages.filter.date_modified').toString(), key: 'lastModifiedDate'},
       ]
     },
     paginationVisible(): number {

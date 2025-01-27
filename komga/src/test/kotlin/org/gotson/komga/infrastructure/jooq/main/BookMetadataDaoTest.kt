@@ -59,26 +59,27 @@ class BookMetadataDaoTest(
   @Test
   fun `given a metadata when inserting then it is persisted`() {
     val now = LocalDateTime.now()
-    val metadata = BookMetadata(
-      title = "Book",
-      summary = "Summary",
-      number = "1",
-      numberSort = 1F,
-      releaseDate = LocalDate.now(),
-      authors = listOf(Author("author", "role")),
-      tags = setOf("tag", "another"),
-      isbn = "987654321",
-      links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange-30-a-gathering-of-fear/4000-18731/"))),
-      bookId = book.id,
-      titleLock = true,
-      summaryLock = true,
-      numberLock = true,
-      numberSortLock = true,
-      releaseDateLock = true,
-      authorsLock = true,
-      tagsLock = true,
-      isbnLock = true,
-    )
+    val metadata =
+      BookMetadata(
+        title = "Book",
+        summary = "Summary",
+        number = "1",
+        numberSort = 1F,
+        releaseDate = LocalDate.now(),
+        authors = listOf(Author("author", "role")),
+        tags = setOf("tag", "another"),
+        isbn = "987654321",
+        links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange-30-a-gathering-of-fear/4000-18731/"))),
+        bookId = book.id,
+        titleLock = true,
+        summaryLock = true,
+        numberLock = true,
+        numberSortLock = true,
+        releaseDateLock = true,
+        authorsLock = true,
+        tagsLock = true,
+        isbnLock = true,
+      )
 
     bookMetadataDao.insert(metadata)
     val created = bookMetadataDao.findById(metadata.bookId)
@@ -117,12 +118,13 @@ class BookMetadataDaoTest(
 
   @Test
   fun `given a minimum metadata when inserting then it is persisted`() {
-    val metadata = BookMetadata(
-      title = "Book",
-      number = "1",
-      numberSort = 1F,
-      bookId = book.id,
-    )
+    val metadata =
+      BookMetadata(
+        title = "Book",
+        number = "1",
+        numberSort = 1F,
+        bookId = book.id,
+      )
 
     bookMetadataDao.insert(metadata)
     val created = bookMetadataDao.findById(metadata.bookId)
@@ -152,42 +154,44 @@ class BookMetadataDaoTest(
 
   @Test
   fun `given existing metadata when updating then it is persisted`() {
-    val metadata = BookMetadata(
-      title = "Book",
-      summary = "Summary",
-      number = "1",
-      numberSort = 1F,
-      releaseDate = LocalDate.now(),
-      authors = listOf(Author("author", "role")),
-      tags = setOf("tag"),
-      links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange-30-a-gathering-of-fear/4000-18731/"))),
-      bookId = book.id,
-    )
+    val metadata =
+      BookMetadata(
+        title = "Book",
+        summary = "Summary",
+        number = "1",
+        numberSort = 1F,
+        releaseDate = LocalDate.now(),
+        authors = listOf(Author("author", "role")),
+        tags = setOf("tag"),
+        links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange-30-a-gathering-of-fear/4000-18731/"))),
+        bookId = book.id,
+      )
     bookMetadataDao.insert(metadata)
 
     val modificationDate = LocalDateTime.now()
-    val updated = with(bookMetadataDao.findById(metadata.bookId)) {
-      copy(
-        title = "BookUpdated",
-        summary = "SummaryUpdated",
-        number = "2",
-        numberSort = 2F,
-        releaseDate = LocalDate.now(),
-        authors = listOf(Author("author2", "role2")),
-        tags = setOf("another"),
-        isbn = "987654321",
-        links = listOf(WebLink("Bedetheque", URI("https://www.bedetheque.com/BD-AD-Grand-Riviere-Tome-1-Terre-d-election-12596.html"))),
-        titleLock = true,
-        summaryLock = true,
-        numberLock = true,
-        numberSortLock = true,
-        releaseDateLock = true,
-        authorsLock = true,
-        tagsLock = true,
-        isbnLock = true,
-        linksLock = true,
-      )
-    }
+    val updated =
+      with(bookMetadataDao.findById(metadata.bookId)) {
+        copy(
+          title = "BookUpdated",
+          summary = "SummaryUpdated",
+          number = "2",
+          numberSort = 2F,
+          releaseDate = LocalDate.now(),
+          authors = listOf(Author("author2", "role2")),
+          tags = setOf("another"),
+          isbn = "987654321",
+          links = listOf(WebLink("Bedetheque", URI("https://www.bedetheque.com/BD-AD-Grand-Riviere-Tome-1-Terre-d-election-12596.html"))),
+          titleLock = true,
+          summaryLock = true,
+          numberLock = true,
+          numberSortLock = true,
+          releaseDateLock = true,
+          authorsLock = true,
+          tagsLock = true,
+          isbnLock = true,
+          linksLock = true,
+        )
+      }
 
     bookMetadataDao.update(updated)
     val modified = bookMetadataDao.findById(updated.bookId)
@@ -223,15 +227,16 @@ class BookMetadataDaoTest(
 
   @Test
   fun `given existing metadata when finding by id then metadata is returned`() {
-    val metadata = BookMetadata(
-      title = "Book",
-      summary = "Summary",
-      number = "1",
-      numberSort = 1F,
-      releaseDate = LocalDate.now(),
-      authors = listOf(Author("author", "role")),
-      bookId = book.id,
-    )
+    val metadata =
+      BookMetadata(
+        title = "Book",
+        summary = "Summary",
+        number = "1",
+        numberSort = 1F,
+        releaseDate = LocalDate.now(),
+        authors = listOf(Author("author", "role")),
+        bookId = book.id,
+      )
     bookMetadataDao.insert(metadata)
 
     val found = catchThrowable { bookMetadataDao.findById(metadata.bookId) }

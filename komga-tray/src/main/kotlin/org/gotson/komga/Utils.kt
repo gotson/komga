@@ -1,6 +1,6 @@
 package org.gotson.komga
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.awt.Desktop
 import java.io.File
 import java.net.URI

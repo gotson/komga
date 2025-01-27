@@ -8,9 +8,13 @@
                  :class="flexClass"
                  handle=".handle"
                  v-bind="dragOptions"
+                 :forceFallback="true"
+                 :scroll-sensitivity="200"
+                 @start="transitions = false"
+                 @end="transitions = true"
       >
         <transition-group type="transition"
-                          :name="!draggable ? 'flip-list' : null"
+                          :name="transitions ? 'flip-list' : null"
                           :class="flexClass"
         >
           <v-item
@@ -33,8 +37,23 @@
                   :preselect="shouldPreselect"
                   :onEdit="(draggable || deletable) ? undefined : editFunction"
                   :onSelected="(draggable || deletable) ? undefined : selectable ? (item, event) => handleSelectClick(toggle, item, event): undefined"
-                  :action-menu="actionMenu"
+                  :action-menu="(draggable || deletable) ? false : actionMenu"
+                  :disable-fab="draggable || deletable"
                 ></item-card>
+
+                <v-slide-y-reverse-transition>
+                  <v-text-field v-if="draggable"
+                                v-model="localItemsIndex[JSON.stringify(item)]"
+                                type="number"
+                                min="0"
+                                :max="localItems.length - 1"
+                                solo
+                                style="position: absolute; top: 0; left: 0;"
+                                ref=""
+                                @blur="updateIndex(item)"
+                                @keydown.enter="updateIndex(item)"
+                  />
+                </v-slide-y-reverse-transition>
 
                 <v-slide-y-reverse-transition>
                   <v-icon v-if="draggable"
@@ -129,10 +148,12 @@ export default Vue.extend({
   data: () => {
     return {
       selectedItems: [] as any[],
-      localItems: [],
+      localItems: [] as any[],
+      localItemsIndex: {} as Record<string, any>,
       lastClickedNoShift: undefined as any,
       lastClickedShift: undefined as any,
       width: 150,
+      transitions: true,
     }
   },
   watch: {
@@ -151,6 +172,10 @@ export default Vue.extend({
     items: {
       handler() {
         this.localItems = this.items as []
+        this.localItemsIndex = {}
+        for (const [i, value] of this.localItems.entries()) {
+          this.$set(this.localItemsIndex, JSON.stringify(value), i)
+        }
       },
       immediate: true,
     },
@@ -223,6 +248,12 @@ export default Vue.extend({
     deleteItem(item: any) {
       const index = this.localItems.findIndex((e: any) => e.id === item.id)
       this.localItems.splice(index, 1)
+    },
+    updateIndex(item: any) {
+      const oldIndex = this.localItems.indexOf(item)
+      const newIndex = Math.min(Math.max(this.localItemsIndex[JSON.stringify(item)], 0), this.localItems.length - 1)
+      if (oldIndex != newIndex)
+        this.localItems.splice(oldIndex, 1, this.localItems.splice(newIndex, 1, this.localItems[oldIndex])[0])
     },
   },
 })

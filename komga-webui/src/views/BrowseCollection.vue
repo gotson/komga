@@ -165,6 +165,8 @@ import {LibraryDto} from '@/types/komga-libraries'
 import {parseBooleanFilter} from '@/functions/query-params'
 import {ContextOrigin} from '@/types/context'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
+import {BookSearch, SearchConditionAnyOfBook, SearchConditionSeriesId, SearchOperatorIs} from '@/types/komga-search'
+import {FiltersActive, FiltersOptions, NameValue} from '@/types/filter'
 
 export default Vue.extend({
   name: 'BrowseCollection',
@@ -473,7 +475,10 @@ export default Vue.extend({
     }, 1000),
     async loadCollection(collectionId: string) {
       this.$komgaCollections.getOneCollection(collectionId)
-        .then(v => this.collection = v)
+        .then(v => {
+          this.collection = v
+          document.title = `Komga - ${v.name}`
+        })
 
       await this.loadPage(collectionId, this.page)
     },
@@ -492,14 +497,18 @@ export default Vue.extend({
     },
     async editSingleSeries(series: SeriesDto) {
       if (series.oneshot) {
-        const book = (await this.$komgaSeries.getBooks(series.id)).content[0]
+        const book = (await this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(series.id)),
+        } as BookSearch)).content[0]
         this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
       } else
         this.$store.dispatch('dialogUpdateSeries', series)
     },
     async editMultipleSeries() {
       if (this.selectedSeries.every(s => s.oneshot)) {
-        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
+        const books = await Promise.all(this.selectedSeries.map(s => this.$komgaBooks.getBooksList({
+          condition: new SearchConditionSeriesId(new SearchOperatorIs(s.id)),
+        } as BookSearch)))
         const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
         this.$store.dispatch('dialogUpdateOneshots', oneshots)
       } else
@@ -524,8 +533,11 @@ export default Vue.extend({
       this.$store.dispatch('dialogAddSeriesToCollection', this.selectedSeries.map(s => s.id))
     },
     async addToReadList() {
-      const books = await Promise.all(this.selectedSeries.map(s => this.$komgaSeries.getBooks(s.id)))
-      this.$store.dispatch('dialogAddBooksToReadList', books.map(b => b.content[0].id))
+      const conditions = this.selectedSeries.map(s => new SearchConditionSeriesId(new SearchOperatorIs(s.id)))
+      const books = await this.$komgaBooks.getBooksList({
+        condition: new SearchConditionAnyOfBook(conditions),
+      } as BookSearch, {unpaged: true})
+      this.$store.dispatch('dialogAddBooksToReadList', books.content.map(b => b.id))
     },
     async startEditElements() {
       this.filters = {}

@@ -14,14 +14,20 @@ class SmartHttpSessionIdResolver(
   private val cookie = CookieHttpSessionIdResolver().apply { setCookieSerializer(cookieSerializer) }
   private val header = HeaderHttpSessionIdResolver(sessionHeaderName)
 
-  override fun resolveSessionIds(request: HttpServletRequest): List<String> =
-    request.getResolver().resolveSessionIds(request)
+  override fun resolveSessionIds(request: HttpServletRequest): List<String> = request.getResolver().resolveSessionIds(request)
 
-  override fun setSessionId(request: HttpServletRequest, response: HttpServletResponse, sessionId: String) {
+  override fun setSessionId(
+    request: HttpServletRequest,
+    response: HttpServletResponse,
+    sessionId: String,
+  ) {
     request.getResolver().setSessionId(request, response, sessionId)
   }
 
-  override fun expireSession(request: HttpServletRequest, response: HttpServletResponse) {
+  override fun expireSession(
+    request: HttpServletRequest,
+    response: HttpServletResponse,
+  ) {
     request.getResolver().expireSession(request, response)
   }
 

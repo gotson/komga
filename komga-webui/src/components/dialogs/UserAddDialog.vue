@@ -50,24 +50,12 @@
 
             <v-row>
               <v-col>
-                <span>{{ $t('dialog.add_user.label_roles') }}</span>
-                <v-checkbox
-                  v-model="form.roles"
-                  :label="$t('dialog.add_user.field_role_administrator')"
-                  :value="UserRoles.ADMIN"
-                  hide-details
-                />
-                <v-checkbox
-                  v-model="form.roles"
-                  :label="$t('dialog.add_user.field_role_page_streaming')"
-                  :value="UserRoles.PAGE_STREAMING"
-                  hide-details
-                />
-                <v-checkbox
-                  v-model="form.roles"
-                  :label="$t('dialog.add_user.field_role_file_download')"
-                  :value="UserRoles.FILE_DOWNLOAD"
-                  hide-details
+                <span>{{ $t('common.roles') }}</span>
+                <v-checkbox v-for="role in userRoles" :key="role.value"
+                            v-model="form.roles"
+                            :label="role.text"
+                            :value="role.value"
+                            hide-details
                 />
               </v-col>
             </v-row>
@@ -95,7 +83,6 @@ export default Vue.extend({
   name: 'UserAddDialog',
   data: function () {
     return {
-      UserRoles,
       modalAddUser: true,
       showPassword: false,
       dialogTitle: this.$i18n.t('dialog.add_user.dialog_title').toString(),
@@ -116,6 +103,14 @@ export default Vue.extend({
     form: {
       email: {required, email},
       password: {required},
+    },
+  },
+  computed: {
+    userRoles(): any[] {
+      return Object.keys(UserRoles).map(x => ({
+        text: this.$t(`user_roles.${x}`),
+        value: x,
+      }))
     },
   },
   methods: {

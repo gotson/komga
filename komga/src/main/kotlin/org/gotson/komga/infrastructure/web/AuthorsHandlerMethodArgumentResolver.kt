@@ -8,8 +8,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
 class AuthorsHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
-  override fun supportsParameter(parameter: MethodParameter): Boolean =
-    parameter.getParameterAnnotation(Authors::class.java) != null
+  override fun supportsParameter(parameter: MethodParameter): Boolean = parameter.getParameterAnnotation(Authors::class.java) != null
 
   override fun resolveArgument(
     parameter: MethodParameter,
@@ -25,7 +24,10 @@ class AuthorsHandlerMethodArgumentResolver : HandlerMethodArgumentResolver {
     return parseParameterIntoAuthors(param.toList())
   }
 
-  private fun parseParameterIntoAuthors(source: List<String>, delimiter: String = ","): List<Author> =
+  private fun parseParameterIntoAuthors(
+    source: List<String>,
+    delimiter: String = ",",
+  ): List<Author> =
     source
       .filter { it.contains(delimiter) }
       .map { Author(name = it.substringBeforeLast(delimiter), role = it.substringAfterLast(delimiter)) }

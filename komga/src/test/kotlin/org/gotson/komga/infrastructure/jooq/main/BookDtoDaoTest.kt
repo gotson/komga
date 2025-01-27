@@ -7,11 +7,14 @@ import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatCode
 import org.gotson.komga.domain.model.Author
-import org.gotson.komga.domain.model.BookSearchWithReadProgress
+import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ReadStatus
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -58,10 +61,9 @@ class BookDtoDaoTest(
   @Autowired private val userLifecycle: KomgaUserLifecycle,
   @Autowired private val searchIndexLifecycle: SearchIndexLifecycle,
 ) {
-
   private val library = makeLibrary()
   private var series = makeSeries("Series")
-  private val user = KomgaUser("user@example.org", "", false)
+  private val user = KomgaUser("user@example.org", "")
 
   @MockkBean
   private lateinit var mockEventPublisher: ApplicationEventPublisher
@@ -132,11 +134,17 @@ class BookDtoDaoTest(
       }
 
       // when
-      val page = bookDtoDao.findAll(
-        BookSearchWithReadProgress(tags = setOf("tag1", "tag2")),
-        user.id,
-        Pageable.unpaged(),
-      )
+      val page =
+        bookDtoDao.findAll(
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.Tag(SearchOperator.Is("tag1")),
+              SearchCondition.Tag(SearchOperator.Is("tag2")),
+            ),
+          ),
+          SearchContext(user),
+          Pageable.unpaged(),
+        )
 
       // then
       assertThat(page.totalElements).isEqualTo(2)
@@ -165,11 +173,17 @@ class BookDtoDaoTest(
       }
 
       // when
-      val page = bookDtoDao.findAll(
-        BookSearchWithReadProgress(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))),
-        user.id,
-        Pageable.unpaged(),
-      )
+      val page =
+        bookDtoDao.findAll(
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch("Mark", "writer"))),
+              SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch("Jim", "inker"))),
+            ),
+          ),
+          SearchContext(user),
+          Pageable.unpaged(),
+        )
 
       // then
       assertThat(page.totalElements).isEqualTo(2)
@@ -186,11 +200,12 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ)),
-        user.id,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAll(
+          BookSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ))),
+          SearchContext(user),
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(1)
@@ -204,11 +219,12 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD)),
-        user.id,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAll(
+          BookSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD))),
+          SearchContext(user),
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(1)
@@ -222,11 +238,12 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(readStatus = listOf(ReadStatus.IN_PROGRESS)),
-        user.id,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAll(
+          BookSearch(SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS))),
+          SearchContext(user),
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(1)
@@ -240,11 +257,17 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.UNREAD)),
-        user.id,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAll(
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+            ),
+          ),
+          SearchContext(user),
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(2)
@@ -257,11 +280,17 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(readStatus = listOf(ReadStatus.READ, ReadStatus.IN_PROGRESS)),
-        user.id,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAll(
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+            ),
+          ),
+          SearchContext(user),
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(2)
@@ -274,11 +303,17 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD, ReadStatus.IN_PROGRESS)),
-        user.id,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAll(
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+            ),
+          ),
+          SearchContext(user),
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(2)
@@ -291,11 +326,18 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(readStatus = listOf(ReadStatus.UNREAD, ReadStatus.IN_PROGRESS, ReadStatus.READ)),
-        user.id,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAll(
+          BookSearch(
+            SearchCondition.AnyOfBook(
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.IN_PROGRESS)),
+              SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.UNREAD)),
+            ),
+          ),
+          SearchContext(user),
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(3)
@@ -308,11 +350,12 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(),
-        user.id,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAll(
+          BookSearch(),
+          SearchContext(user),
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(3)
@@ -328,11 +371,12 @@ class BookDtoDaoTest(
       setupBooks()
 
       // when
-      val found = bookDtoDao.findAllOnDeck(
-        user.id,
-        null,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAllOnDeck(
+          user.id,
+          null,
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).isEmpty()
@@ -349,11 +393,12 @@ class BookDtoDaoTest(
       )
 
       // when
-      val found = bookDtoDao.findAllOnDeck(
-        user.id,
-        null,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAllOnDeck(
+          user.id,
+          null,
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(0)
@@ -365,19 +410,20 @@ class BookDtoDaoTest(
       seriesLifecycle.addBooks(
         series,
         (1..3).map {
-          makeBook("$it", seriesId = series.id, libraryId = library.id)
+          makeBook("$it", seriesId = series.id, libraryId = library.id).copy(number = it)
         },
       )
 
       val books = bookRepository.findAll().sortedBy { it.name }
-      books.elementAt(0).let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
+      books.first().let { readProgressRepository.save(ReadProgress(it.id, user.id, 5, true)) }
 
       // when
-      val found = bookDtoDao.findAllOnDeck(
-        user.id,
-        null,
-        PageRequest.of(0, 20),
-      )
+      val found =
+        bookDtoDao.findAllOnDeck(
+          user.id,
+          null,
+          PageRequest.of(0, 20),
+        )
 
       // then
       assertThat(found).hasSize(1)
@@ -404,11 +450,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "batman"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "batman"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(3)
@@ -431,28 +479,33 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "book"),
-        user.id,
-        UnpagedSorted(Sort.by("name")),
-      ).content
-      val pages = (0..2).map {
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "book"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("name")),
+          ).content
+      val pages =
+        (0..2).map {
+          bookDtoDao.findAll(
+            BookSearch(fullTextSearch = "book"),
+            SearchContext(user),
+            PageRequest.of(it, 1, Sort.by("name")),
+          )
+        }
+      val page0 =
         bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "book"),
-          user.id,
-          PageRequest.of(it, 1, Sort.by("name")),
+          BookSearch(fullTextSearch = "book"),
+          SearchContext(user),
+          PageRequest.of(0, 2, Sort.by("name")),
         )
-      }
-      val page0 = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "book"),
-        user.id,
-        PageRequest.of(0, 2, Sort.by("name")),
-      )
-      val page1 = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "book"),
-        user.id,
-        PageRequest.of(1, 2, Sort.by("name")),
-      )
+      val page1 =
+        bookDtoDao.findAll(
+          BookSearch(fullTextSearch = "book"),
+          SearchContext(user),
+          PageRequest.of(1, 2, Sort.by("name")),
+        )
 
       // then
       assertThat(found).hasSize(3)
@@ -492,11 +545,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "eric"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "eric"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -525,11 +580,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "9782413016878"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "9782413016878"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -555,11 +612,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "tag:tag1"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "tag:tag1"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -585,21 +644,27 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val foundGeneric = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "author:bob"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
-      val foundByRole = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "writer:bob"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
-      val notFound = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "penciller:bob"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val foundGeneric =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "author:bob"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
+      val foundByRole =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "writer:bob"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
+      val notFound =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "penciller:bob"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(foundGeneric).hasSize(1)
@@ -623,11 +688,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "release_date:1999"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "release_date:1999"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -652,11 +719,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "release_date:[1990 TO 2010]"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "release_date:[1990 TO 2010]"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(2)
@@ -677,11 +746,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "status:error"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "status:error"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -691,8 +762,9 @@ class BookDtoDaoTest(
     @Test
     fun `given books when searching by deleted then results are matched`() {
       // given
-      val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
-        .copy(deletedDate = LocalDateTime.now())
+      val book1 =
+        makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
+          .copy(deletedDate = LocalDateTime.now())
       seriesLifecycle.addBooks(
         series,
         listOf(
@@ -705,11 +777,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "deleted:true"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "deleted:true"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -731,11 +805,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "s.w.o.r.d."),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "s.w.o.r.d"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
@@ -759,11 +835,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "batman robin"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "batman robin"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(2)
@@ -786,11 +864,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "x-men"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "x-men"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(2)
@@ -801,11 +881,13 @@ class BookDtoDaoTest(
     fun `when searching by unknown field then empty result are returned and no exception is thrown`() {
       assertThatCode {
         // when
-        val found = bookDtoDao.findAll(
-          BookSearchWithReadProgress(searchTerm = "publisher:batman"),
-          user.id,
-          UnpagedSorted(Sort.by("relevance")),
-        ).content
+        val found =
+          bookDtoDao
+            .findAll(
+              BookSearch(fullTextSearch = "publisher:batman"),
+              SearchContext(user),
+              UnpagedSorted(Sort.by("relevance")),
+            ).content
 
         // then
         assertThat(found).hasSize(0)
@@ -826,11 +908,13 @@ class BookDtoDaoTest(
       Thread.sleep(100) // index rebuild is done asynchronously, and need a slight delay to be updated // index rebuild is done asynchronously, and need a slight delay to be updated
 
       // when
-      val found = bookDtoDao.findAll(
-        BookSearchWithReadProgress(searchTerm = "不道德"),
-        user.id,
-        UnpagedSorted(Sort.by("relevance")),
-      ).content
+      val found =
+        bookDtoDao
+          .findAll(
+            BookSearch(fullTextSearch = "不道德"),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("relevance")),
+          ).content
 
       // then
       assertThat(found).hasSize(1)
