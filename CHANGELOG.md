@@ -1,3 +1,75 @@
+# [1.19.0](https://github.com/gotson/komga/compare/1.18.0...1.19.0) (2025-01-27)
+## 🚀 Features
+**api**
+- add new book search condition for posters ([70bcb8f](https://github.com/gotson/komga/commits/70bcb8f)), closes [#1829](https://github.com/gotson/komga/issues/1829)
+- add new book list API using search condition criteria DSL ([1da0afe](https://github.com/gotson/komga/commits/1da0afe))
+
+**webui**
+- support additional fonts ([201c066](https://github.com/gotson/komga/commits/201c066)), closes [#1836](https://github.com/gotson/komga/issues/1836)
+- add page margin option in webtoon reader ([214f687](https://github.com/gotson/komga/commits/214f687)), closes [#1512](https://github.com/gotson/komga/issues/1512)
+- choose number of thumbnails to display in webreader ([9156ff7](https://github.com/gotson/komga/commits/9156ff7)), closes [#1540](https://github.com/gotson/komga/issues/1540)
+- display book number in webreader tab title and toolbar ([38fa3cc](https://github.com/gotson/komga/commits/38fa3cc)), closes [#1543](https://github.com/gotson/komga/issues/1543)
+- disable bounce in divina reader ([dd31f5b](https://github.com/gotson/komga/commits/dd31f5b)), closes [#1600](https://github.com/gotson/komga/issues/1600)
+- add filters to media analysis table ([68e05b8](https://github.com/gotson/komga/commits/68e05b8)), closes [#1802](https://github.com/gotson/komga/issues/1802)
+- add rel="noreferrer" for metadata links ([dbd225d](https://github.com/gotson/komga/commits/dbd225d)), closes [#1615](https://github.com/gotson/komga/issues/1615)
+- reorder reading lists and collection by index input ([d868ba4](https://github.com/gotson/komga/commits/d868ba4)), closes [#1584](https://github.com/gotson/komga/issues/1584)
+- add all books from series to read list from action menu ([a490449](https://github.com/gotson/komga/commits/a490449)), closes [#1535](https://github.com/gotson/komga/issues/1535)
+- show all libraries action menu next to All Libraries when browsing ([7ef59b0](https://github.com/gotson/komga/commits/7ef59b0))
+- move all libraries action to 3-dots menu in sidebar ([8706048](https://github.com/gotson/komga/commits/8706048))
+- split account settings into different views ([169c47e](https://github.com/gotson/komga/commits/169c47e))
+- show empty state if no known duplicate pages are found ([84253cb](https://github.com/gotson/komga/commits/84253cb))
+- remove tab navigation and use sidebar instead ([1e6ff7a](https://github.com/gotson/komga/commits/1e6ff7a))
+- add all books from series to read list from multi-select bar ([3582114](https://github.com/gotson/komga/commits/3582114)), closes [#1535](https://github.com/gotson/komga/issues/1535)
+- display creation and last modified date on book page ([da35e01](https://github.com/gotson/komga/commits/da35e01)), closes [#1547](https://github.com/gotson/komga/issues/1547)
+- add context in document title ([8880642](https://github.com/gotson/komga/commits/8880642)), closes [#1710](https://github.com/gotson/komga/issues/1710)
+- remove from collection/readlist directly from the book/series page ([901ea3c](https://github.com/gotson/komga/commits/901ea3c)), closes [#1518](https://github.com/gotson/komga/issues/1518)
+- allow readlist import if duplicates are present ([378f99b](https://github.com/gotson/komga/commits/378f99b)), closes [#1671](https://github.com/gotson/komga/issues/1671)
+- add filters in Import read list view ([7ae4d7b](https://github.com/gotson/komga/commits/7ae4d7b)), closes [#1702](https://github.com/gotson/komga/issues/1702)
+- add media management view for books with missing poster ([7d092c2](https://github.com/gotson/komga/commits/7d092c2)), closes [#1829](https://github.com/gotson/komga/issues/1829)
+- filter series and books by any/none author role ([ffc397f](https://github.com/gotson/komga/commits/ffc397f)), closes [#1829](https://github.com/gotson/komga/issues/1829)
+- filter books by media profile ([d07eb39](https://github.com/gotson/komga/commits/d07eb39)), closes [#1829](https://github.com/gotson/komga/issues/1829)
+- better filtering for Books ([2d9a59a](https://github.com/gotson/komga/commits/2d9a59a))
+
+**unscoped**
+- try to guess epub cover if not standard ([681337a](https://github.com/gotson/komga/commits/681337a)), closes [#1835](https://github.com/gotson/komga/issues/1835)
+
+## 🐛 Fixes
+**webui**
+- better handling of the read-more expansion panel during page change ([b83d741](https://github.com/gotson/komga/commits/b83d741))
+- disable item card menu and fab when dragging/editing is active ([6d71f4b](https://github.com/gotson/komga/commits/6d71f4b))
+- prevent flickering on unknown duplicate pages view load ([c36e10d](https://github.com/gotson/komga/commits/c36e10d))
+
+**unscoped**
+- better handling of broken epub ([42047cd](https://github.com/gotson/komga/commits/42047cd)), closes [#1844](https://github.com/gotson/komga/issues/1844)
+
+## 🔄️ Changes
+**webui**
+- extract missing translation strings ([f5f36b3](https://github.com/gotson/komga/commits/f5f36b3))
+- use new book list API ([2ac296d](https://github.com/gotson/komga/commits/2ac296d))
+- remove unused functions ([7370b43](https://github.com/gotson/komga/commits/7370b43))
+
+## 🛠  Build
+**webui**
+- fix hot reload ([fd3b1aa](https://github.com/gotson/komga/commits/fd3b1aa))
+
+## 📝 Documentation
+
+- update JetBrains logo ([79709e3](https://github.com/gotson/komga/commits/79709e3))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Polish) ([80253f2](https://github.com/gotson/komga/commits/80253f2))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([3ada19c](https://github.com/gotson/komga/commits/3ada19c))
+- translated using Weblate (Finnish) ([beb7452](https://github.com/gotson/komga/commits/beb7452))
+- translated using Weblate (French) ([13ecc44](https://github.com/gotson/komga/commits/13ecc44))
+- translated using Weblate (Spanish) ([9ad57a4](https://github.com/gotson/komga/commits/9ad57a4))
+- translated using Weblate (Polish) ([5421a96](https://github.com/gotson/komga/commits/5421a96))
+- translated using Weblate (Croatian) ([9c6c16a](https://github.com/gotson/komga/commits/9c6c16a))
+- translated using Weblate (Portuguese) ([92f06a1](https://github.com/gotson/komga/commits/92f06a1))
+- translated using Weblate (Czech) ([8affb7a](https://github.com/gotson/komga/commits/8affb7a))
+
 # [1.18.0](https://github.com/gotson/komga/compare/1.17.0...1.18.0) (2025-01-15)
 ## 🚀 Features
 
