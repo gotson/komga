@@ -687,6 +687,9 @@
       "DuplicatePageDeleted": "Page en doublon supprimée",
       "SeriesFolderDeleted": "Dossier des séries supprimé"
     },
+    "media_profile": {
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Erreur",
       "OUTDATED": "Dépassé",
