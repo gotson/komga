@@ -121,8 +121,8 @@ export default Vue.extend({
     // filtersActive, filtered to not show options that are in filtersOptions
     searchFiltersActive(key: string): FiltersActive[] {
       if (!(key in this.filtersActive)) return []
-      const listedOptions = this.filtersOptions[key]?.values?.flatMap(x => [x.value, x.nValue])
-      return this.filtersActive[key].filter((x: string) => !this.$_.includes(listedOptions, x))
+      const listedOptions = this.filtersOptions[key]?.values?.flatMap(x => [x.value, x.nValue]).map(x => JSON.stringify(x))
+      return this.filtersActive[key].filter((x: string) => !this.$_.includes(listedOptions, JSON.stringify(x)))
     },
     includes(array: any[], value: any): boolean {
       return this.$_.isObject(value) ? this.$_.some(array, value) : this.$_.includes(array, value)
