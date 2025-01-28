@@ -80,12 +80,16 @@ class BookDao(
       .fetchInto(b)
       .map { it.toDomain() }
 
-  override fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book> =
-    dsl
+  @Transactional
+  override fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book> {
+    dsl.insertTempStrings(batchSize, seriesIds)
+
+    return dsl
       .selectFrom(b)
-      .where(b.SERIES_ID.`in`(seriesIds))
+      .where(b.SERIES_ID.`in`(dsl.selectTempStrings()))
       .fetchInto(b)
       .map { it.toDomain() }
+  }
 
   @Transactional
   override fun findAllNotDeletedByLibraryIdAndUrlNotIn(
