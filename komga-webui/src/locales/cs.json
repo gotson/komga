@@ -862,9 +862,6 @@
     "status": "Status",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Správa médií"
-  },
   "menu": {
     "add_to_collection": "Přidat do sbírky",
     "add_to_readlist": "Přidat do seznamu četby",

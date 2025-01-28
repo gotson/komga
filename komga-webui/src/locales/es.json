@@ -875,9 +875,6 @@
     "status": "Estado",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Admón. de medios"
-  },
   "menu": {
     "add_to_collection": "Añadir a colección",
     "add_to_readlist": "Añadir a lista de lectura",

@@ -851,9 +851,6 @@
     "status": "상태",
     "url": "URL"
   },
-  "media_management": {
-    "title": "미디어 관리"
-  },
   "menu": {
     "add_to_collection": "모음집에 추가",
     "add_to_readlist": "읽기 목록에 추가",

@@ -875,9 +875,6 @@
     "status": "状态",
     "url": "地址"
   },
-  "media_management": {
-    "title": "媒体管理"
-  },
   "menu": {
     "add_to_collection": "添加到收藏",
     "add_to_readlist": "添加到阅读列表",

@@ -848,9 +848,6 @@
     "status": "状態",
     "url": "URL"
   },
-  "media_management": {
-    "title": "メディア管理"
-  },
   "menu": {
     "add_to_collection": "コレクションに追加",
     "add_to_readlist": "読書リストに追加",

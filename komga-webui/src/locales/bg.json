@@ -788,9 +788,6 @@
     "status": "Статус",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Управление на медиите"
-  },
   "menu": {
     "add_to_collection": "Добави към колекция",
     "add_to_readlist": "Добави към списък за четене",

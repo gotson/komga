@@ -744,9 +744,6 @@
     "status": "Status",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Mediehantering"
-  },
   "menu": {
     "add_to_collection": "Lägg till i samling",
     "add_to_readlist": "Lägg till i läslista",

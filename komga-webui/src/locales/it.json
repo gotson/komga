@@ -812,9 +812,6 @@
     "status": "Stato",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Gestione Media"
-  },
   "menu": {
     "add_to_collection": "Aggiungi alla raccolta",
     "add_to_readlist": "Aggiungi all'elenco di lettura",

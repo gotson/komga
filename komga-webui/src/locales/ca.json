@@ -815,9 +815,6 @@
     "status": "Estat",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Gestiona els fitxers"
-  },
   "menu": {
     "add_to_collection": "Afegeix a la col·lecció",
     "add_to_readlist": "Afegeix a la llista de lectura",

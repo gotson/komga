@@ -853,9 +853,6 @@
     "status": "Statut",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Gestion des médias"
-  },
   "menu": {
     "add_to_collection": "Ajouter à la collection",
     "add_to_readlist": "Ajouter à la liste de lecture",

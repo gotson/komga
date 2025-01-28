@@ -847,9 +847,6 @@
     "status": "Status",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Mediehåndtering"
-  },
   "menu": {
     "add_to_collection": "Tilføj til samling",
     "add_to_readlist": "Tilføj til læseliste",

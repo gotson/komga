@@ -871,9 +871,6 @@
     "status": "Status",
     "url": "Adres URL"
   },
-  "media_management": {
-    "title": "Zarządzanie zasobami"
-  },
   "menu": {
     "add_to_collection": "Dodaj do kolekcji",
     "add_to_readlist": "Dodaj do listy",

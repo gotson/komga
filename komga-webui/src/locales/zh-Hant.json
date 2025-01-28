@@ -818,9 +818,6 @@
     "status": "狀態",
     "url": "URL"
   },
-  "media_management": {
-    "title": "媒體管理"
-  },
   "menu": {
     "add_to_collection": "添加到收藏",
     "add_to_readlist": "添加到閱讀列表",

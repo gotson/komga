@@ -850,9 +850,6 @@
     "status": "Status",
     "url": "URL"
   },
-  "media_management": {
-    "title": "Medien Verwaltung"
-  },
   "menu": {
     "add_to_collection": "Zu Sammlung hinzufügen",
     "add_to_readlist": "Füge zur Leseliste hinzu",
