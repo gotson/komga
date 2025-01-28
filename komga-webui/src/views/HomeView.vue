@@ -52,7 +52,7 @@
 
       <v-divider/>
 
-      <v-list nav shaped>
+      <v-list nav shaped dense>
         <v-list-item :to="{name: 'dashboard'}">
           <v-list-item-icon>
             <v-icon>mdi-home</v-icon>
@@ -134,7 +134,7 @@
             </v-badge>
           </template>
           <template v-slot:activator>
-            <v-list-item-title>{{ $t('media_management.title') }}</v-list-item-title>
+            <v-list-item-title>{{ $t('common.media') }}</v-list-item-title>
           </template>
 
           <v-list-item :to="{name: 'media-analysis'}">
@@ -199,7 +199,7 @@
             </v-badge>
           </template>
           <template v-slot:activator>
-            <v-list-item-title>{{ $t('server_settings.server_settings') }}</v-list-item-title>
+            <v-list-item-title>{{ $t('server.tab_title') }}</v-list-item-title>
           </template>
 
           <v-list-item :to="{name: 'settings-users'}">
@@ -207,7 +207,7 @@
           </v-list-item>
 
           <v-list-item :to="{name: 'settings-server'}">
-            <v-list-item-title>{{ $t('server.tab_title') }}</v-list-item-title>
+            <v-list-item-title>{{ $t('common.settings') }}</v-list-item-title>
           </v-list-item>
 
           <v-list-item :to="{name: 'metrics'}">
@@ -271,27 +271,30 @@
 
       <v-divider/>
 
-      <v-list>
+      <v-list dense class="mt-2">
         <v-list-item>
           <v-list-item-icon>
             <v-icon>{{ themeIcon }}</v-icon>
           </v-list-item-icon>
           <v-select
+            class="py-2"
+            dense
             v-model="theme"
             :items="themes"
             :label="$t('home.theme')"
           ></v-select>
         </v-list-item>
-      </v-list>
 
-      <v-list>
         <v-list-item>
           <v-list-item-icon>
             <v-icon>mdi-translate</v-icon>
           </v-list-item-icon>
-          <v-select v-model="locale"
-                    :items="locales"
-                    :label="$t('home.translation')"
+          <v-select
+            dense
+            class="py-2"
+            v-model="locale"
+            :items="locales"
+            :label="$t('home.translation')"
           >
           </v-select>
         </v-list-item>

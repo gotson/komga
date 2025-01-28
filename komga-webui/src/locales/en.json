@@ -247,6 +247,7 @@
     "locale_name": "English",
     "locale_rtl": "false",
     "lock_all": "Lock all",
+    "media": "Media",
     "n_selected": "{count} selected",
     "nothing_to_show": "Nothing to show",
     "ok": "OK",
@@ -271,6 +272,7 @@
     "roles": "Roles",
     "save_changes": "Save changes",
     "series": "Series | Series",
+    "settings": "Settings",
     "sidecars": "Sidecars",
     "tags": "Tags",
     "unavailable": "Unavailable",
@@ -874,9 +876,6 @@
     "size": "Size",
     "status": "Status",
     "url": "URL"
-  },
-  "media_management": {
-    "title": "Media Management"
   },
   "menu": {
     "add_to_collection": "Add to collection",
