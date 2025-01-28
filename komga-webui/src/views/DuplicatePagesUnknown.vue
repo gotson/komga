@@ -11,7 +11,7 @@
       icon-color="success"
     />
 
-    <template v-else>
+    <template v-if="totalPages > 0">
       <v-row align="center">
         <v-col cols="auto">
           <v-pagination
@@ -163,7 +163,7 @@ export default Vue.extend({
       hiddenElements: [] as PageHashUnknownDto[],
       totalElements: 0,
       page: 1,
-      totalPages: 0,
+      totalPages: undefined,
       sortActive: {key: 'totalSize', order: 'desc'} as SortActive,
       dialogImage: false,
       dialogMatches: false,

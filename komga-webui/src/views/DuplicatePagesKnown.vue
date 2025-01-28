@@ -57,7 +57,7 @@
       icon-color="success"
     />
 
-    <v-row v-else>
+    <v-row v-if="totalPages > 0">
       <v-slide-x-transition
         v-for="(element, i) in elements"
         :key="i"
@@ -135,7 +135,7 @@ export default Vue.extend({
       elements: [] as PageHashKnownDto[],
       totalElements: 0,
       page: 1,
-      totalPages: 0,
+      totalPages: undefined,
       sortActive: {key: 'deleteSize', order: 'desc'} as SortActive,
       filterActive: [PageHashAction.DELETE_AUTO, PageHashAction.DELETE_MANUAL],
       dialogImage: false,
