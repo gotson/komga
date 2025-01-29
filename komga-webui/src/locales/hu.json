@@ -19,13 +19,23 @@
   },
   "account_settings": {
     "account_settings": "Fiókbeállítások",
-    "change_password": "jelszó módosítása"
+    "api_key": {
+      "created_date": "Létrehozás ideje: {date}",
+      "force_kobo_sync": "Kobo sync erőltetése",
+      "generate_api_key": "API kulcs generálása",
+      "no_keys": "Még nincs generált API kulcs"
+    },
+    "change_password": "jelszó módosítása",
+    "details": "Részletek",
+    "my_account": "Saját fiók"
   },
   "announcements": {
     "mark_all_read": "Označit vše jako přečtené",
-    "mark_read": "Označit jako přečtené"
+    "mark_read": "Označit jako přečtené",
+    "tab_title": "Bejelentések"
   },
   "authentication_activity": {
+    "api_key": "API kulcs",
     "datetime": "Dátum / idő",
     "email": "E-mail",
     "error": "Hiba",
@@ -46,6 +56,7 @@
   },
   "book_card": {
     "error": "Hiba",
+    "no_release_date": "Nincs megjelenési idő",
     "unknown": "Elemzésre vár",
     "unread": "Olvasatlan",
     "unsupported": "Nem támogatott"
@@ -84,6 +95,7 @@
     "beginning_of_book": "A könyv elején jársz.",
     "changing_reading_direction": "Olvasási irány megváltoztatása",
     "cycling_page_layout": "Oldal elrendezés változtatása",
+    "cycling_page_margin": "Oldal arány változtatása",
     "cycling_scale": "Méretezés megváltoztatása",
     "cycling_side_padding": "Oldal szélének megváltoztatása",
     "download_current_page": "Jelenlegi oldal letöltése",
@@ -92,6 +104,9 @@
     "move_next": "Kattints egyet vagy nyomd meg a \"Következő\" gombot, hogy a következő könyvre átlépj.",
     "move_next_exit": "Kattints egyet vagy nyomd meg a \"Következő\" gombot, hogy elhagyd az olvasót.",
     "move_previous": "Kattints egyet vagy nyomd meg a \"Előző\" gombot, hogy az előző könyvre átlépj.",
+    "notification_poster_set_book": "Ez az oldal be lett állítva a könyv borítójának.",
+    "notification_poster_set_readlist": "Ez az oldal be lett állítva az olvasási lista borítójának.",
+    "notification_poster_set_series": "Ez az oldal be lett állítva a könyvsorozat borítójának.",
     "paged_reader_layout": {
       "double": "Kettő oldal",
       "double_no_cover": "Kettő oldal (borító nélkül)",
@@ -107,8 +122,11 @@
       "width": "Szélességhez igazítás",
       "width_shrink_only": "Szélességhez igazítás (csak kicsinyítés)"
     },
+    "set_current_page_as_book_poster": "Oldal beállítása a könyv borítójának",
+    "set_current_page_as_readlist_poster": "Oldal beállítása a olvasási lista borítójának",
+    "set_current_page_as_series_poster": "Oldal beállítása a könyvsorozat borítójának",
     "settings": {
-      "always_fullscreen": "Mindig teljes képernyős",
+      "always_fullscreen": "Mindig jelenjen meg teljes képernyőn",
       "animate_page_transitions": "Oldal váltás animálása",
       "background_color": "Háttérszín",
       "background_colors": {
@@ -120,6 +138,7 @@
       "general": "Általános",
       "gestures": "Gesztusok",
       "page_layout": "Oldal elrendezése",
+      "page_margin": "Oldal arány",
       "paged": "Oldalas olvasó beállítások",
       "reading_mode": "Olvasási irány",
       "scale_type": "Méretezés",
@@ -130,6 +149,7 @@
     "shortcuts": {
       "close": "Bezárás",
       "cycle_page_layout": "Oldal elrendezés változtatás",
+      "cycle_page_margin": "Oldal arány megváltoztatása",
       "cycle_scale": "Méretezés megváltoztatás",
       "cycle_side_padding": "Oldalszél megváltoztatás",
       "first_page": "Első oldal",
@@ -153,6 +173,8 @@
   },
   "browse_book": {
     "comment": "MEGJEGYZÉS",
+    "date_created": "LÉTREHOZVA",
+    "date_modified": "UTOLJÁRA MÓDOSÍTVA",
     "download_file": "Fájl letöltése",
     "file": "FÁJL",
     "format": "FORMÁTUM",
@@ -162,6 +184,8 @@
     "outdated_tooltip": "A fájlja ennek a könyvnek megváltozott, ezt a könyvet újra kell elemezni",
     "read_book": "Könyv olvasása",
     "read_incognito": "Olvasás inkognitóban",
+    "remove_from_collection": "Könyv eltávolítása a gyűjteményből",
+    "remove_from_readlist": "Könyv eltávolítása az olvasási listából",
     "size": "MÉRET"
   },
   "browse_collection": {
@@ -171,10 +195,12 @@
   },
   "browse_readlist": {
     "edit_elements": "Elemek szerkesztése",
-    "edit_readlist": "Olvasólista szerkesztése"
+    "edit_readlist": "Olvasólista szerkesztése",
+    "manual_ordering": "manuális rendezés"
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Ez a legkorábbi év a könyvsorozatban található megjelenítési dátumok szerint",
+    "remove_from_collection": "Könyvsorozat eltávolítása a gyűjteményből",
     "series_no_summary": "Ennek a könyvsorozatnak nincs összefoglalója, ezért választottunk egyet neked!",
     "summary_from_book": "Összefoglaló a {number}. könyvből:"
   },
@@ -185,48 +211,68 @@
   "common": {
     "age": "Kor",
     "all_libraries": "Minden könyvtár",
+    "all_of": "Minden",
+    "any_of": "Bármely",
+    "book": "Könyv",
     "books": "Könyvek",
     "books_n": "Nincs könyv | 1 könyv | {count} könyv",
     "books_total": "{count} / {total} könyv",
     "cancel": "Mégse",
+    "cbx": "Képregény archívumok",
     "choose_image": "Kép kiválasztása",
     "close": "Bezárás",
     "collections": "Gyűjtemények",
+    "copied": "Másolva!",
     "create": "Létrehozás",
     "delete": "Törlés",
     "dimension": "sz: {width}, m: {height}",
+    "discard": "Eldob",
     "disk_space": "Lemezterület",
     "dismiss": "Elvet",
     "download": "Letöltés",
+    "drag_drop": "odahúzás",
+    "duplicate": "Duplikált",
     "email": "E-mail-cím",
     "epub": "Epub",
+    "error": "Hiba",
     "filename": "Fájlnév",
     "filter_no_matches": "A jelenleg aktív szűrő szerint üres",
     "genre": "Műfaj",
+    "go_to_collection": "Menj a gyűjteményhez",
     "go_to_library": "Menj a könyvtárba",
     "go_to_readlist": "Olvasólistához lépés",
     "go_to_series": "Könyvsorozathoz lépés",
+    "i_understand": "Megértettem",
     "library": "Könyvtár",
     "locale_name": "magyar",
     "locale_rtl": "false",
     "lock_all": "Összes lezárása",
+    "media": "Média",
     "n_selected": "{count} kiválasztva",
     "nothing_to_show": "Nincs mit mutatni",
+    "ok": "Oké",
+    "oneshot": "Különkiadás",
     "outdated": "Elavult",
     "page": "Oldal",
     "page_number": "Oldalszám",
     "pages": "oldalak",
+    "pages_left": "Nincs több oldal | 1 oldal maradt | {count} oldal maradt",
     "pages_n": "Nincs oldal | 1 oldal | {count} oldal",
     "password": "Jelszó",
+    "pdf": "PDF",
     "pending_tasks": "Nincs függőben lévő feladat | 1 függőben lévő feladat | {count} függőben lévő feladat",
     "publisher": "Kiadó",
     "read": "Olvasás",
+    "read_on": "Olvasva {date}",
+    "readlist": "Olvasási lista",
     "readlists": "Olvasólisták",
+    "remember-me": "Emlékezz rám",
     "required": "Kötelező",
     "reset_filters": "Szűrő visszaállítása",
     "roles": "Szerepek",
     "save_changes": "Módosítások mentése",
-    "series": "Könyvsorozatok",
+    "series": "Könyvsorozat | Könyvsorozatok",
+    "settings": "Beállítások",
     "sidecars": "Oldalkocsik",
     "tags": "Címkék",
     "unavailable": "Nem elérhető",
@@ -248,15 +294,34 @@
     "book_number": "Könyvszám: {name}",
     "book_series": "Könyvsorozat: {name}",
     "button_import": "Importálás",
+    "button_match": "Megegyeztetés",
     "comicrack_preambule_html": "Meglévő ComicRack olvasólistát a <code>.cbl</code> formátumban importálhatsz.<br>Komga megpróbálja hozzákapcsolni a megkapott könyvsorozatokat és könyvszámokat a te könyvtáradban található könyvsorozatokhoz és könyvekhez.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} könyv nem egyezik meg",
+      "body2": "{duplicates} / {total} könyv duplikált",
+      "create": "Létrehozás mindenképpen",
+      "title": "Vannak nem egyező könyvek"
+    },
+    "field_file_label": "ComicRack olvasólista (.cbl)",
     "field_files_label": "ComicRack olvasólisták (.cbl)",
     "import_read_lists": "Olvasólisták importálása",
     "imported_as": "Importálva mint {name}",
+    "readlist_created": "Olvasólista létrehozva: {name}",
+    "requested_number": "Igényelt példány",
+    "requested_series": "Igényelt sorozat",
     "results_preambule": "Az importálás eredménye lent található. Megtekintheted a megadott fájlokhoz nem illeszkedő könyveket is.",
     "size_limit": "A méretnek kisebbnek kéne lennie mint {size} MB",
     "tab_title": "Adatimportálás"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Előállítás",
+      "context": "Az API kulcsok használhatók a Kobo Sync protokollal történő belépéshez.",
+      "dialog_title": "Új API kulcs előállítása",
+      "field_comment": "Megjegyzés",
+      "field_comment_hint": "Mire jó ez az API kulcs?",
+      "info_copy": "Ellenőrizd, hogy kimásoltad e az API kulcsot! Többször már nem lesz rá lehetőség!"
+    },
     "add_to_collection": {
       "button_create": "Létrehozás",
       "card_collection_subtitle": "Nincs sorozat | 1 sorozat | {count} sorozat",
@@ -282,13 +347,28 @@
       "field_password": "Jelszó"
     },
     "analyze_library": {
+      "body": "A teljes médiakönyvtár elemzése. Az elemzés kinyeri a médiatartalmak információit. Könyvtár méret függően ez sokáig is eltarthat.",
       "button_confirm": "Elemez",
       "title": "Könyvtár elemzése"
     },
+    "book_picker": {
+      "filter": "Szűrés könyv száma, címe vagy publikálási ideje alapján",
+      "title": "Könyv kiválasztása"
+    },
+    "delete_apikey": {
+      "button_confirm": "Törlés",
+      "confirm_delete": "Megértettem, \"{name}\" API kulcs törlése",
+      "dialog_title": "API kulcs törlése",
+      "warning_html": "Semelyik alkalmazás vagy script, ami ezt az API kulcsot használta, nem fogja tudni a Komga API-t használni. Ez a művelet ne visszavonható."
+    },
     "delete_book": {
       "button_confirm": "Törlés",
+      "confirm_delete": "Igen, törölje a \"{name}\" című könyvet és annak fájljait",
+      "confirm_delete_multiple": "Igen, törölje a {count} db könyvet, és azok fájljait",
       "dialog_title": "Könyv törlése",
-      "dialog_title_multiple": "Könyvek törlése"
+      "dialog_title_multiple": "Könyvek törlése",
+      "warning_html": "A <b>{name}</b> című könyv és a hozzátartozó tartalmak el lesznek távolítva. Ezt a műveletet <b>nem</b> lehet visszavonni. Folytatja?",
+      "warning_multiple_html": "{count} db könyv és a hozzájuk tartozó tartalmak el lesznek távolítva. Ezt a műveletet <b>nem</b> lehet visszavonni. Folytatja?"
     },
     "delete_collection": {
       "button_confirm": "Törlés",
@@ -315,7 +395,12 @@
       "warning_multiple_html": "{count} olvasólista törölve lesz a szerverről. A médiafájljaid nem lesznek befolyásolva. Ez <b>nem</b> fordítható vissza. Folytatod?"
     },
     "delete_series": {
-      "button_confirm": "Törlés"
+      "button_confirm": "Törlés",
+      "confirm_delete": "Igen törölje a \"{name}\" című sorozatot és annak fájljait",
+      "confirm_delete_multiple": "Igen, töröljön {count} db sorozatot és azok fájljait",
+      "dialog_title": "Sorozat törlése",
+      "warning_html": "A <b>{name}</b> című sorozat és a hozzá tartozó fájlok eltávolításra kerülnek. Ezt a műveletet <b>nem</b> lehet visszavonni. Folytatja?",
+      "warning_multiple_html": "{count} db sorozat és a hozzá tartozó fájlok eltávolításra kerülnek. Ezt a műveletet <b>nem</b> lehet visszavonni. Folytatja?"
     },
     "delete_user": {
       "button_confirm": "Törlés",
@@ -324,13 +409,20 @@
       "warning_html": "A felhasználó <b>{name}</b> törölve lesz erről a szerverről. Ez <b>nem</b> fordítható vissza. Folytatod?"
     },
     "edit_books": {
+      "add_author_role_error_duplicate": "Már létezik",
       "authors_notice_multiple_edit": "Több könyv szerzőjét szerkeszted. Ez felülírja az összes könyv meglévő szerzőjét.",
       "button_cancel": "Mégse",
       "button_confirm": "Módosítások mentése",
+      "copy_from": "Másolás innen: {field}",
       "dialog_title_multiple": "{count} könyv szerkesztése | {count} könyv szerkesztése",
       "dialog_title_single": "{book} szerkesztése",
+      "field_alternate_title": "Alternatív cím",
       "field_isbn": "ISBN",
       "field_isbn_error": "Érvényes ISBN 13 kell, hogy legyen",
+      "field_link_label": "Címke",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "http vagy https használata kötelező",
+      "field_link_url_error_url": "Hiteles URL kell legyen",
       "field_number": "Szám",
       "field_number_sort": "Rendezési szám",
       "field_number_sort_hint": "Törtszámokat is használhatsz",
@@ -339,8 +431,12 @@
       "field_summary": "Összefoglaló",
       "field_tags": "Címkék",
       "field_title": "Cím",
+      "number_sort_decrement": "Mindegyik csökkentése 1-el",
+      "number_sort_increment": "Mindegyik Növelése 1-el",
       "tab_authors": "Szerzők",
       "tab_general": "Általános",
+      "tab_links": "Hivatkozások",
+      "tab_poster": "Poszter",
       "tab_tags": "Címkék",
       "tags_notice_multiple_edit": "Több könyv címkéit szerkeszted. Ez felülírja az összes könyv meglévő címkéjét."
     },
@@ -349,7 +445,9 @@
       "button_confirm": "Módosítások mentése",
       "dialog_title": "Gyűjtemény szerkesztése",
       "field_manual_ordering": "Kézi rendezés",
-      "label_ordering": "Alapvetően a gyűjteményben lévő sorozatok név szerint lesznek rendezve. Bekapcsolhatod a kézi rendezést, hogy a saját sorrendet létrehozz."
+      "label_ordering": "Alapvetően a gyűjteményben lévő sorozatok név szerint lesznek rendezve. Bekapcsolhatod a kézi rendezést, hogy a saját sorrendet létrehozz.",
+      "tab_general": "Általános",
+      "tab_poster": "Poszter"
     },
     "edit_library": {
       "button_browse": "Tallózás",
@@ -359,30 +457,40 @@
       "button_next": "Következő",
       "dialog_title_add": "Könyvtár hozzáadása",
       "dialot_title_edit": "Könyvtár szerkesztése",
+      "field_analysis_analyze_dimensions": "Az oldalak méreteinek elemzése",
+      "field_analysis_hash_files": "A fájlokhoz tartozó ellenőrző összegek kiszámítása",
+      "field_analysis_hash_koreader": "Ellenőrző összegek kiszámítása KOReader-hez",
+      "field_analysis_hash_pages": "Az oldalakhoz tartozó ellenőrző összegek kiszámítása",
       "field_convert_to_cbz": "Automatikus konvertálás CBZ-re",
       "field_import_barcode_isbn": "ISBN vonalkód",
       "field_import_comicinfo_book": "Könyv metaadat",
       "field_import_comicinfo_collections": "Gyűjtemények",
       "field_import_comicinfo_readlists": "Olvasólisták",
       "field_import_comicinfo_series": "Sorozat metaadat",
+      "field_import_comicinfo_series_append_volume": "A szám hozzáfűzése a sorozat címéhez",
       "field_import_epub_book": "Könyv metaadat",
       "field_import_epub_series": "Sorozat metaadat",
       "field_import_local_artwork": "Helyi műalkotás",
       "field_import_mylar_series": "Sorozat metaadat",
       "field_name": "Név",
+      "field_oneshotsdirectory": "Különkiadás könyvtár",
       "field_repair_extensions": "Automatikus helytelen fájlkiterjesztés javítás",
       "field_root_folder": "Gyökérkönyvtár",
+      "field_scan_interval": "Beolvasási tartomány",
       "field_scanner_empty_trash_after_scan": "Minden vizsgálat után automatikusan űrítse a szemetest",
       "field_scanner_force_directory_modified_time": "Kényszerített könyvtár-módosítási idő",
+      "field_scanner_scan_startup": "Beolvasás induláskor",
       "field_series_cover": "Sorozat borító",
       "file_browser_dialog_button_confirm": "Kiválaszt",
       "file_browser_dialog_title": "A könyvtár gyökérkönyvtára",
+      "label_analysis": "Elemzés",
       "label_file_management": "Fájlkezelés",
       "label_import_barcode_isbn": "ISBN importálása vonalkódon belül",
       "label_import_comicinfo": "ComicInfo.xml fájlt tartalmazó CBR/CBZ metaadatok importálása",
       "label_import_epub": "Metaadatok importálása EPUB fájlokból",
       "label_import_local": "Helyi médiafájlok importálása",
       "label_import_mylar": "Mylar által generált metaadatok importálása",
+      "label_scan_directory_exclusions": "Kihagyott könyvtárak",
       "label_scanner": "Beolvasó",
       "label_series_cover": "Sorozat borító",
       "tab_general": "Általános",
