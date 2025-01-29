@@ -25,7 +25,9 @@
       "generate_api_key": "APIキーを生成",
       "no_keys": "まだAPIキーが作成されていません"
     },
-    "change_password": "パスワードの変更"
+    "change_password": "パスワードの変更",
+    "details": "詳細",
+    "my_account": "マイアカウント"
   },
   "announcements": {
     "mark_all_read": "すべて既読にする",
@@ -135,6 +137,7 @@
       "general": "全般",
       "gestures": "ジェスチャー",
       "page_layout": "ページレイアウト",
+      "page_margin": "ページ余白",
       "paged": "リーダーのページ設定",
       "reading_mode": "ビューアモード",
       "scale_type": "大きさ",
@@ -168,6 +171,8 @@
   },
   "browse_book": {
     "comment": "コメント",
+    "date_created": "作成済み",
+    "date_modified": "最終更新",
     "download_file": "ファイルをダウンロード",
     "file": "ファイル名",
     "format": "フォーマット",
@@ -177,6 +182,8 @@
     "outdated_tooltip": "この本のファイルが変更されました。この本を再分析する必要があります",
     "read_book": "書籍を読む",
     "read_incognito": "シークレットモードで読む",
+    "remove_from_collection": "コレクションから本を削除",
+    "remove_from_readlist": "読書リストから本を削除",
     "size": "サイズ"
   },
   "browse_collection": {
@@ -191,6 +198,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "シリーズ内の書籍の発行日のうち、これが最初の年です",
+    "remove_from_collection": "コレクションからシリーズを削除",
     "series_no_summary": "このシリーズはサマリがないので、ピックアップしました！",
     "summary_from_book": "{number} 巻のサマリ:"
   },
@@ -219,8 +227,10 @@
     "dismiss": "却下",
     "download": "ダウンロード",
     "drag_drop": "ドラッグ&ドロップ",
+    "duplicate": "重複",
     "email": "メールアドレス",
     "epub": "Epub",
+    "error": "エラー",
     "filename": "ファイル名",
     "filter_no_matches": "フィルタに一致するものはありません",
     "genre": "ジャンル",
@@ -235,6 +245,7 @@
     "lock_all": "すべてをロックする",
     "n_selected": "{count} 冊を選択中",
     "nothing_to_show": "表示するものはありません",
+    "ok": "OK",
     "oneshot": "ワンショット",
     "outdated": "古い",
     "page": "ページ",
@@ -281,6 +292,7 @@
     "comicrack_preambule_html": "既存のComicRackの読書リストを<code>.cbl</code>形式でインポートすることができます。<br>Komgaは指定されたシリーズと書籍番号を、あなたのライブラリにあるシリーズと本に一致させようとします。",
     "dialog_confirmation": {
       "body": "{total} 冊のうち {unmatched} 冊が一致しませんでした",
+      "body2": "{total} 冊のうち {duplicates} 冊が重複しています",
       "create": "生成を試みる",
       "title": "数冊の書籍が一致しませんでした"
     },
@@ -632,6 +644,7 @@
     "delete_to_save": "{size}を削除して保存する",
     "deleted_count": "削除{count}回",
     "empty_title": "重複ページなし",
+    "empty_title_known": "重複はありません",
     "filter": {
       "count": "カウント",
       "date_added": "追加日",
@@ -685,6 +698,11 @@
       "DuplicatePageDeleted": "重複ページが削除されました",
       "SeriesFolderDeleted": "シリーズのフォルダが削除されました"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "エラー",
       "OUTDATED": "Outdated",
@@ -735,6 +753,7 @@
     "page_of": "{page} / {count} ページ",
     "settings": {
       "column_count": "列数",
+      "font_family": "フォント",
       "layout": "レイアウト",
       "layout_paginated": "ページごと",
       "layout_scroll": "スクロール",
@@ -921,7 +940,8 @@
       "notification_tasks_cancelled": "キャンセルするタスクがありません | 1個のタスクがキャンセルされました | {count}個のタスクがキャンセルされました",
       "section_title": "サーバ管理"
     },
-    "tab_title": "サーバ"
+    "tab_title": "サーバ",
+    "updates": "アップデート"
   },
   "server_settings": {
     "config_precedence": "設定ファイルよりも優先されます",
@@ -964,6 +984,8 @@
     "folder_name": "フォルダ名",
     "name": "書名",
     "number": "巻数",
+    "page_count": "ページ数",
+    "random": "ランダム",
     "release_date": "発行日"
   },
   "theme": {

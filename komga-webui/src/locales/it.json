@@ -19,7 +19,15 @@
   },
   "account_settings": {
     "account_settings": "Impostazioni Profilo",
-    "change_password": "cambia password"
+    "api_key": {
+      "created_date": "Data di creazione: {date}",
+      "force_kobo_sync": "Forza sync Kobo",
+      "generate_api_key": "Genera chiave API",
+      "no_keys": "Nessuna Chiave API creata ancora"
+    },
+    "change_password": "cambia password",
+    "details": "Dettagli",
+    "my_account": "Il mio account"
   },
   "announcements": {
     "mark_all_read": "Segna tutti come letti",
@@ -27,6 +35,7 @@
     "tab_title": "Annunci"
   },
   "authentication_activity": {
+    "api_key": "Chiave API",
     "datetime": "Data / Ora",
     "email": "E-mail",
     "error": "Errore",
@@ -86,6 +95,7 @@
     "beginning_of_book": "Sei all'inizio del fumetto.",
     "changing_reading_direction": "Cambia la direzione di lettura in",
     "cycling_page_layout": "Cambia Layout Pagina",
+    "cycling_page_margin": "Modificando Margine di Pagina",
     "cycling_scale": "Cambia scala",
     "cycling_side_padding": "Cambia Distanziamento Laterale",
     "download_current_page": "Scarica pagina corrente",
@@ -128,6 +138,7 @@
       "general": "Generale",
       "gestures": "Gesti",
       "page_layout": "Formato pagina",
+      "page_margin": "Margine di pagina",
       "paged": "Opzioni Impaginazione",
       "reading_mode": "Modalità di lettura",
       "scale_type": "Scala",
@@ -161,6 +172,8 @@
   },
   "browse_book": {
     "comment": "COMMENTO",
+    "date_created": "CREATO",
+    "date_modified": "ULTIMO MODIFICATO",
     "download_file": "Scarica file",
     "file": "FILE",
     "format": "FORMATO",
@@ -170,6 +183,8 @@
     "outdated_tooltip": "Il file di questo libro è cambiato, questo fumetto deve essere rianalizzato",
     "read_book": "Leggi fumetto",
     "read_incognito": "Leggi in incognito",
+    "remove_from_collection": "Rimuovi libro dalla collezione",
+    "remove_from_readlist": "Rimuovi libro dalla lista di lettura",
     "size": "DIMENSIONE"
   },
   "browse_collection": {
@@ -184,6 +199,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Questo è l'anno di uscita del primo fumetto della serie",
+    "remove_from_collection": "Rimuovi serie dalla collezione",
     "series_no_summary": "Questa serie non ha riassunto, quindi ne ho scelto uno per te!",
     "summary_from_book": "Riassunto dal fumetto {number}:"
   },
@@ -194,6 +210,8 @@
   "common": {
     "age": "Età",
     "all_libraries": "Tutte le librerie",
+    "all_of": "Tutto di",
+    "any_of": "Qualsiasi tra",
     "book": "Libro",
     "books": "Fumetti",
     "books_n": "Nessun fumetto | 1 fumetto | {count} fumetti",
@@ -203,6 +221,7 @@
     "choose_image": "Scegli un'immagine",
     "close": "Chiudi",
     "collections": "Collezioni",
+    "copied": "Copiato!",
     "create": "Crea",
     "delete": "Elimina",
     "dimension": "l: {width}, a: {height}",
@@ -211,8 +230,10 @@
     "dismiss": "Chiudi",
     "download": "Scarica",
     "drag_drop": "trascina e rilascia",
+    "duplicate": "Duplica",
     "email": "E-mail",
     "epub": "Epub",
+    "error": "Errore",
     "filename": "Nome file",
     "filter_no_matches": "Il filtro attivo non ha corrispondenze",
     "genre": "Genere",
@@ -220,12 +241,14 @@
     "go_to_library": "Vai alla libreria",
     "go_to_readlist": "Vai all'elenco di lettura",
     "go_to_series": "Vai alle serie",
+    "i_understand": "Capisco",
     "library": "Libreria",
     "locale_name": "Italiano",
     "locale_rtl": "false",
     "lock_all": "Blocca tutti",
     "n_selected": "{count} selezionati",
     "nothing_to_show": "Niente da mostrare",
+    "ok": "OK",
     "oneshot": "One-shot",
     "outdated": "Scaduto",
     "page": "Pagina",
@@ -272,6 +295,7 @@
     "comicrack_preambule_html": "Puoi importare liste di lettura ComicRack esistenti in formato <code>.cbl</code>.<br>Komga cercherà di far corrispondere la serie e il numero di fumetti forniti con le serie e i fumetti nelle tue librerie.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} libri senza corrispondenza",
+      "body2": "{duplicates} / {total} libri sono duplicati",
       "create": "Crea comunque",
       "title": "Alcuni libri non corrispondono"
     },
@@ -287,6 +311,14 @@
     "tab_title": "Importa Dati"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Genera",
+      "context": "Le Chiavi API possono essere utilizzate per l'autenticazione tramite il protocollo Kobo Sync.",
+      "dialog_title": "Genera nuova Chiave API",
+      "field_comment": "Commento",
+      "field_comment_hint": "A cosa serve questa chiave API?",
+      "info_copy": "Assicurati di copiare la tua chiave API ora. Non potrai più vederla!"
+    },
     "add_to_collection": {
       "button_create": "Crea",
       "card_collection_subtitle": "Nessuna serie | 1 serie | {count} serie",
@@ -319,6 +351,12 @@
     "book_picker": {
       "filter": "Filtra per numero del libro, titolo o data di uscita",
       "title": "Seleziona libro"
+    },
+    "delete_apikey": {
+      "button_confirm": "Cancella",
+      "confirm_delete": "Capisco, cancellare la chiave API \"{name}\"",
+      "dialog_title": "Cancella chiave API",
+      "warning_html": "Tutte le applicazioni o gli script che utilizzano questa chiave API non saranno più in grado di accedere alla API Komga. Non è possibile annullare questa azione."
     },
     "delete_book": {
       "button_confirm": "Cancella",
@@ -418,6 +456,7 @@
       "dialot_title_edit": "Modifica Libreria",
       "field_analysis_analyze_dimensions": "Analizza le dimensioni delle pagine",
       "field_analysis_hash_files": "Calcola hash per i file",
+      "field_analysis_hash_koreader": "Calcola l'hash dei file per KOReader",
       "field_analysis_hash_pages": "Calcola gli hash per le pagine",
       "field_convert_to_cbz": "Converti automaticamente in CBZ",
       "field_import_barcode_isbn": "Codice a barre ISBN",
@@ -537,6 +576,9 @@
         "order": "Ordine"
       },
       "title": "Nome del file di destinazione"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Forza sync Kobo"
     },
     "password_change": {
       "button_cancel": "Annulla",
