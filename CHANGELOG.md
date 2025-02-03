@@ -1,3 +1,31 @@
+# [1.19.1](https://github.com/gotson/komga/compare/1.19.0...1.19.1) (2025-02-03)
+## 🐛 Fixes
+**api**
+- cannot delete library with huge number of series ([c4a4278](https://github.com/gotson/komga/commits/c4a4278)), closes [#1848](https://github.com/gotson/komga/issues/1848)
+
+**docker**
+- embedded fonts would not load properly ([e5e534a](https://github.com/gotson/komga/commits/e5e534a))
+
+**webui**
+- flickering on duplicate pages views ([723d390](https://github.com/gotson/komga/commits/723d390))
+- filter panels would display invalid data ([523151a](https://github.com/gotson/komga/commits/523151a))
+- adjust navigation drawer for better readability ([a44135d](https://github.com/gotson/komga/commits/a44135d))
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([09a45b8](https://github.com/gotson/komga/commits/09a45b8))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Hungarian) ([0d711fa](https://github.com/gotson/komga/commits/0d711fa))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([ab5e506](https://github.com/gotson/komga/commits/ab5e506))
+- translated using Weblate (Finnish) ([cac687e](https://github.com/gotson/komga/commits/cac687e))
+- translated using Weblate (French) ([d1b5fea](https://github.com/gotson/komga/commits/d1b5fea))
+- translated using Weblate (Spanish) ([df7b879](https://github.com/gotson/komga/commits/df7b879))
+- translated using Weblate (Hungarian) ([1c37f25](https://github.com/gotson/komga/commits/1c37f25))
+
 # [1.19.0](https://github.com/gotson/komga/compare/1.18.0...1.19.0) (2025-01-27)
 ## 🚀 Features
 **api**
