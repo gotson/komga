@@ -135,7 +135,13 @@ class FontsController(
     val srcBlock =
       fonts.joinToString(separator = ",", postfix = ";") { resource ->
         val path = Path(resource.uri.toString())
-        """url('${path.name}') format('${path.extension}')"""
+        val format =
+          when (val extension = path.extension.lowercase()) {
+            "ttf" -> "truetype"
+            "otf" -> "opentype"
+            else -> extension
+          }
+        """url('${path.name}') format('$format')"""
       }
     // language=CSS
     return """
