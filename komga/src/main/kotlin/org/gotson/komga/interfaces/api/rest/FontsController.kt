@@ -90,6 +90,7 @@ class FontsController(
   ): ResponseEntity<Resource> {
     fonts[fontFamily]?.let { resources ->
       val resource = resources.firstOrNull { it.filename == fontFile } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      val mediaType = "font/${Path(resource.uri.toString()).extension.lowercase()}"
       return ResponseEntity
         .ok()
         .headers {
@@ -98,7 +99,7 @@ class FontsController(
               .attachment()
               .filename(fontFile)
               .build()
-        }.contentType(MediaType.APPLICATION_OCTET_STREAM)
+        }.contentType(MediaType.parseMediaType(mediaType))
         .body(resource)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
