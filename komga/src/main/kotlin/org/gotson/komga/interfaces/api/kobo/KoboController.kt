@@ -70,6 +70,7 @@ import org.gotson.komga.interfaces.api.kobo.dto.toDto
 import org.gotson.komga.interfaces.api.kobo.dto.toWrappedTagDto
 import org.gotson.komga.interfaces.api.kobo.persistence.KoboDtoRepository
 import org.gotson.komga.language.toUTCZoned
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.io.FileSystemResource
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -158,7 +159,7 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping(value = ["/kobo/{authToken}/"], produces = ["application/json; charset=utf-8"])
 class KoboController(
-  private val koboProxy: KoboProxy,
+  @Qualifier("koboStoreApiProxy") private val koboProxy: KoboProxy,
   private val kepubConverter: KepubConverter,
   private val syncPointLifecycle: SyncPointLifecycle,
   private val syncPointRepository: SyncPointRepository,
