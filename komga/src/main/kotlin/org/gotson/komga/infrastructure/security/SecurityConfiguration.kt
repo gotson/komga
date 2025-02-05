@@ -159,6 +159,8 @@ class SecurityConfiguration(
         )
       }
 
+    http.addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter::class.java)
+
     return http.build()
   }
 
@@ -247,6 +249,12 @@ class SecurityConfiguration(
     ApiKeyAuthenticationFilter(
       apiKeyAuthenticationProvider(),
       HeaderApiKeyAuthenticationConverter("X-Auth-User", tokenEncoder, userAgentWebAuthenticationDetailsSource),
+    )
+
+  fun restAuthenticationFilter(): Filter =
+    ApiKeyAuthenticationFilter(
+      apiKeyAuthenticationProvider(),
+      HeaderApiKeyAuthenticationConverter("X-API-Key", tokenEncoder, userAgentWebAuthenticationDetailsSource),
     )
 
   fun apiKeyAuthenticationProvider(): AuthenticationManager =
