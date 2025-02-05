@@ -275,6 +275,7 @@
     "settings": "Settings",
     "sidecars": "Sidecars",
     "tags": "Tags",
+    "ui": "User Interface",
     "unavailable": "Unavailable",
     "unlock_all": "Unlock all",
     "url": "URL",
@@ -1022,6 +1023,11 @@
   "titles_more": {
     "less": "Less titles",
     "more": "More titles"
+  },
+  "ui_settings": {
+    "label_oauth2_auto_login": "Automatic OAuth2 login",
+    "label_oauth2_hide_login": "Hide login fields if OAuth2 is enabled",
+    "tooltip_oauth2_auto_login": "Requires a single OAuth2 provider, and 'hide login fields' enabled"
   },
   "updates": {
     "available": "Updates are available",

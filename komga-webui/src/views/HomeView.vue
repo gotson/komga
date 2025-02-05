@@ -210,6 +210,10 @@
             <v-list-item-title>{{ $t('common.settings') }}</v-list-item-title>
           </v-list-item>
 
+          <v-list-item :to="{name: 'settings-ui'}">
+            <v-list-item-title>{{ $t('common.ui') }}</v-list-item-title>
+          </v-list-item>
+
           <v-list-item :to="{name: 'metrics'}">
             <v-list-item-title>{{ $t('metrics.title') }}</v-list-item-title>
           </v-list-item>
@@ -450,7 +454,7 @@ export default Vue.extend({
     },
     logout() {
       this.$store.dispatch('logout')
-      this.$router.push({name: 'login'})
+      this.$router.push({name: 'login', query: {'logout': true}})
     },
     addLibrary() {
       this.$store.dispatch('dialogAddLibrary')

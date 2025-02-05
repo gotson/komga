@@ -83,6 +83,12 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "settings-server" */ './views/SettingsServer.vue'),
         },
         {
+          path: '/settings/ui',
+          name: 'settings-ui',
+          beforeEnter: adminGuard,
+          component: () => import(/* webpackChunkName: "settings-ui" */ './views/UISettings.vue'),
+        },
+        {
           path: '/settings/metrics',
           name: 'metrics',
           beforeEnter: adminGuard,

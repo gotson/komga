@@ -1,7 +1,7 @@
 <template>
   <div class="ma-3">
     <v-container style="max-width: 550px">
-      <v-row align="center" justify="center">
+      <v-row align="center" justify="center" class="ma-3">
         <v-img src="../assets/logo.svg"
                :max-width="logoWidth"
         />
@@ -22,66 +22,68 @@
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col>
-            <v-text-field v-model="form.login"
-                          :label="$t('common.email')"
-                          :error-messages="getErrors('login')"
-                          autocomplete="username"
-                          autofocus
-                          @blur="$v.form.login.$touch()"
-            />
-          </v-col>
-        </v-row>
+        <div v-if="!hideLogin">
+          <v-row>
+            <v-col>
+              <v-text-field v-model="form.login"
+                            :label="$t('common.email')"
+                            :error-messages="getErrors('login')"
+                            :autocomplete="hideLogin ? '' : 'username'"
+                            autofocus
+                            @blur="$v.form.login.$touch()"
+              />
+            </v-col>
+          </v-row>
 
-        <v-row>
-          <v-col>
-            <v-text-field v-model="form.password"
-                          :label="$t('common.password')"
-                          :error-messages="getErrors('password')"
-                          type="password"
-                          autocomplete="current-password"
-                          @input="$v.form.password.$touch()"
-                          @blur="$v.form.password.$touch()"
-            />
-          </v-col>
-        </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="form.password"
+                            :label="$t('common.password')"
+                            :error-messages="getErrors('password')"
+                            type="password"
+                            :autocomplete="hideLogin ? '' : 'current-password'"
+                            @input="$v.form.password.$touch()"
+                            @blur="$v.form.password.$touch()"
+              />
+            </v-col>
+          </v-row>
 
-        <v-row>
-          <v-col>
-            <v-checkbox v-model="rememberMe"
-                        :label="$t('common.remember-me')"
-                        hide-details
-                        class="mt-0"
-            />
-          </v-col>
-        </v-row>
+          <v-row>
+            <v-col>
+              <v-checkbox v-model="rememberMe"
+                          :label="$t('common.remember-me')"
+                          hide-details
+                          class="mt-0"
+              />
+            </v-col>
+          </v-row>
 
-        <v-row>
-          <v-col cols="auto">
-            <v-btn color="primary"
-                   type="submit"
-                   :disabled="unclaimed"
-            >{{ $t('login.login') }}
-            </v-btn>
-          </v-col>
-          <v-col cols="auto">
-            <v-btn v-if="unclaimed"
-                   color="primary"
-                   @click="claim"
-            >{{ $t('login.create_user_account') }}
-            </v-btn>
-          </v-col>
-        </v-row>
+          <v-row>
+            <v-col cols="auto">
+              <v-btn color="primary"
+                     type="submit"
+                     :disabled="unclaimed"
+              >{{ $t('login.login') }}
+              </v-btn>
+            </v-col>
+            <v-col cols="auto">
+              <v-btn v-if="unclaimed"
+                     color="primary"
+                     @click="claim"
+              >{{ $t('login.create_user_account') }}
+              </v-btn>
+            </v-col>
+          </v-row>
 
-        <v-divider class="my-4 mt-2"/>
+          <v-divider class="my-4 mt-2"/>
 
-        <v-row>
+        </div>
+
+        <v-row justify="center">
           <v-col
             v-for="provider in oauth2Providers"
             :key="provider.registrationId"
             cols="auto"
-            class="py-1"
           >
             <v-btn
               :disabled="unclaimed"
@@ -141,6 +143,7 @@ import {OAuth2ClientDto} from '@/types/komga-oauth2'
 import urls from '@/functions/urls'
 import {socialButtons} from '@/types/social'
 import {convertErrorCodes} from '@/functions/error-codes'
+import {CLIENT_SETTING} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'LoginView',
@@ -157,6 +160,7 @@ export default Vue.extend({
       unclaimed: false,
       oauth2Providers: [] as OAuth2ClientDto[],
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
+      clientSettings: [] as ClientSettingDto[],
     }
   },
   validations: {
@@ -166,6 +170,18 @@ export default Vue.extend({
     },
   },
   computed: {
+    hideLogin(): boolean {
+      return !this.unclaimed
+        && this.oauth2Providers.length > 0
+        && (this.clientSettings.find(x => x.key == CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN)?.value === 'true')
+    },
+    autoOauth2Login(): boolean {
+      return !this.unclaimed
+        && this.oauth2Providers.length == 1
+        && (this.clientSettings.find(x => x.key == CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN)?.value === 'true')
+        && !this.$route.query.error
+        && !this.$route.query.logout
+    },
     logoWidth(): number {
       let l = 100
       switch (this.$vuetify.breakpoint.name) {
@@ -232,11 +248,12 @@ export default Vue.extend({
       },
     },
   },
-  mounted() {
+  async mounted() {
     this.getClaimStatus()
-    this.$komgaOauth2.getProviders()
-      .then((providers) => this.oauth2Providers = providers)
+    this.clientSettings = await this.$komgaSettings.getClientSettings()
+    this.oauth2Providers = await this.$komgaOauth2.getProviders()
     if (this.$route.query.error) this.showSnack(convertErrorCodes(this.$route.query.error.toString()))
+    if (this.hideLogin && this.autoOauth2Login) this.oauth2Login(this.oauth2Providers[0])
   },
   methods: {
     oauth2Login(provider: OAuth2ClientDto) {
@@ -283,6 +300,7 @@ export default Vue.extend({
             })
 
           await this.$store.dispatch('getLibraries')
+          await this.$store.dispatch('getClientSettings')
 
           if (this.$route.query.redirect) {
             await this.$router.push({path: this.$route.query.redirect.toString()})

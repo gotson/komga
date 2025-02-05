@@ -1,12 +1,41 @@
 import {AxiosInstance} from 'axios'
 import _Vue from 'vue'
 import KomgaSettingsService from '@/services/komga-settings.service'
+import {Module} from 'vuex'
+import {LibraryDto} from '@/types/komga-libraries'
+import {ClientSettingDto} from '@/types/komga-clientsettings'
+
+let service = KomgaSettingsService
+
+const vuexModule: Module<any, any> = {
+  state: {
+    clientSettings: [] as ClientSettingDto[],
+  },
+  getters: {
+    getClientSettingByKey: (state) => (key: string) => {
+      return state.clientSettings.find((it: ClientSettingDto) => it.key === key)
+    },
+  },
+  mutations: {
+    setClientSettings(state, settings) {
+      state.clientSettings = settings
+    },
+  },
+  actions: {
+    async getClientSettings({commit}) {
+      commit('setClientSettings', await service.getClientSettings())
+    },
+  },
+}
 
 export default {
   install(
     Vue: typeof _Vue,
-    {http}: { http: AxiosInstance }) {
+    {store, http}: { store: any, http: AxiosInstance }) {
+    service = new KomgaSettingsService(http)
     Vue.prototype.$komgaSettings = new KomgaSettingsService(http)
+
+    store.registerModule('komgaSettings', vuexModule)
   },
 }
 

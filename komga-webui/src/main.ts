@@ -80,7 +80,7 @@ Vue.use(komgaMetrics, {http: Vue.prototype.$http})
 Vue.use(komgaHistory, {http: Vue.prototype.$http})
 Vue.use(komgaAnnouncements, {http: Vue.prototype.$http})
 Vue.use(komgaReleases, {http: Vue.prototype.$http})
-Vue.use(komgaSettings, {http: Vue.prototype.$http})
+Vue.use(komgaSettings, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaFonts, {http: Vue.prototype.$http})
 
 Vue.config.productionTip = false
