@@ -216,6 +216,13 @@ class KoboController(
           .build()
           .toUriString(),
       )
+      put(
+        "reading_services_host",
+        ServletUriComponentsBuilder.fromCurrentContextPath()
+          .pathSegment("kobo-readingservices", authToken)
+          .build()
+          .toString()
+      )
     }
 
     return ResponseEntity
