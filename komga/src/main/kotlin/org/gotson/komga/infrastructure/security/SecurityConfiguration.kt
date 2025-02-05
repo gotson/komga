@@ -88,6 +88,8 @@ class SecurityConfiguration(
             "/api/v1/claim",
             // used by webui
             "/api/v1/oauth2/providers",
+            // used by webui, we check for authorization within the controller method directly and filter results from there
+            "/api/v1/client-settings/list",
             // epub resources - fonts are always requested anonymously, so we check for authorization within the controller method directly
             "/api/v1/books/{bookId}/resource/**",
             // dynamic fonts

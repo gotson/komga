@@ -10,6 +10,7 @@ import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.ReadProgressRepository
 import org.gotson.komga.domain.persistence.SyncPointRepository
+import org.gotson.komga.infrastructure.jooq.main.ClientSettingsDtoDao
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.security.TokenEncoder
 import org.gotson.komga.infrastructure.security.apikey.ApiKeyGenerator
@@ -33,6 +34,7 @@ class KomgaUserLifecycle(
   private val transactionTemplate: TransactionTemplate,
   private val eventPublisher: ApplicationEventPublisher,
   private val apiKeyGenerator: ApiKeyGenerator,
+  private val clientSettingsDtoDao: ClientSettingsDtoDao,
 ) {
   fun updatePassword(
     user: KomgaUser,
@@ -84,6 +86,7 @@ class KomgaUserLifecycle(
     logger.info { "Deleting user: $user" }
 
     transactionTemplate.executeWithoutResult {
+      clientSettingsDtoDao.deleteByUserId(user.id)
       readProgressRepository.deleteByUserId(user.id)
       authenticationActivityRepository.deleteByUser(user)
       syncPointRepository.deleteByUserId(user.id)

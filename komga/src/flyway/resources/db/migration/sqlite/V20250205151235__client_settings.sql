@@ -1,0 +1,15 @@
+CREATE TABLE CLIENT_SETTINGS_GLOBAL
+(
+    KEY                varchar NOT NULL PRIMARY KEY,
+    VALUE              varchar NOT NULL,
+    ALLOW_UNAUTHORIZED boolean NOT NULL default 0
+);
+
+CREATE TABLE CLIENT_SETTINGS_USER
+(
+    USER_ID varchar NOT NULL,
+    KEY     varchar NOT NULL,
+    VALUE   varchar NOT NULL,
+    FOREIGN KEY (USER_ID) REFERENCES USER (ID),
+    PRIMARY KEY (KEY, USER_ID)
+);
