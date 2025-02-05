@@ -1027,6 +1027,7 @@
   "ui_settings": {
     "label_oauth2_auto_login": "Automatic OAuth2 login",
     "label_oauth2_hide_login": "Hide login fields if OAuth2 is enabled",
+    "label_poster_stretch": "Stretch poster to fit card",
     "tooltip_oauth2_auto_login": "Requires a single OAuth2 provider, and 'hide login fields' enabled"
   },
   "updates": {

@@ -12,7 +12,8 @@
           :src="thumbnailUrl"
           :lazy-src="thumbnailError ? coverBase64 : undefined"
           aspect-ratio="0.7071"
-          contain
+          :contain="!isStretch"
+          :position="isStretch ? 'top' : undefined"
           @error="thumbnailError = true"
           @load="thumbnailError = false"
         >
@@ -272,6 +273,9 @@ export default Vue.extend({
     this.$eventHub.$off(THUMBNAILCOLLECTION_DELETED, this.thumbnailCollectionChanged)
   },
   computed: {
+    isStretch(): boolean {
+      return this.$store.getters.getClientSettingPosterStretch
+    },
     canReadPages(): boolean {
       return this.$store.getters.mePageStreaming && this.computedItem.type() === ItemTypes.BOOK
     },

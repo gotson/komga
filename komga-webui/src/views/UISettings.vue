@@ -26,6 +26,13 @@
           </template>
 
         </v-checkbox>
+
+        <v-checkbox
+          v-model="form.posterStretch"
+          @change="$v.form.posterStretch.$touch()"
+          :label="$t('ui_settings.label_poster_stretch')"
+          hide-details
+        />
       </v-col>
     </v-row>
     <v-row>
@@ -48,12 +55,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {helpers} from 'vuelidate/lib/validators'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 import {CLIENT_SETTING, ClientSettingDto} from '@/types/komga-clientsettings'
-
-const contextPath = helpers.regex('contextPath', /^\/[-a-zA-Z0-9_\/]*[a-zA-Z0-9]$/)
 
 export default Vue.extend({
   name: 'UISettings',
@@ -62,6 +66,7 @@ export default Vue.extend({
     form: {
       oauth2HideLogin: false,
       oauth2AutoLogin: false,
+      posterStretch: false,
     },
     existingSettings: [] as ClientSettingDto[],
   }),
@@ -69,6 +74,7 @@ export default Vue.extend({
     form: {
       oauth2HideLogin: {},
       oauth2AutoLogin: {},
+      posterStretch: {},
     },
   },
   mounted() {
@@ -87,6 +93,7 @@ export default Vue.extend({
       await this.$store.dispatch('getClientSettings')
       this.form.oauth2HideLogin = this.$store.getters.getClientSettingByKey(CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN)?.value === 'true'
       this.form.oauth2AutoLogin = this.$store.getters.getClientSettingByKey(CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN)?.value === 'true'
+      this.form.posterStretch = this.$store.getters.getClientSettingByKey(CLIENT_SETTING.WEBUI_POSTER_STRETCH)?.value === 'true'
       this.$v.form.$reset()
     },
     async saveSettings() {
@@ -102,6 +109,13 @@ export default Vue.extend({
           key: CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN,
           value: this.form.oauth2AutoLogin ? 'true' : 'false',
           allowUnauthorized: true,
+        })
+
+      if (this.$v.form?.posterStretch?.$dirty)
+        await this.$komgaSettings.updateClientSettingGlobal({
+          key: CLIENT_SETTING.WEBUI_POSTER_STRETCH,
+          value: this.form.posterStretch ? 'true' : 'false',
+          allowUnauthorized: false,
         })
 
       await this.refreshSettings()
