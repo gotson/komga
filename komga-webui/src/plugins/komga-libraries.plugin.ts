@@ -11,35 +11,47 @@ const vuexModule: Module<any, any> = {
     libraries: [] as LibraryDto[],
   },
   getters: {
-    getLibraryById: (state) => (id: number) => {
-      return state.libraries.find((l: any) => l.id === id)
+    getLibraries(state, getters) {
+      const settings = getters.getClientSettingsLibraries
+      return state.libraries
+        .map((it: LibraryDto) => Object.assign({}, it, settings[it.id]))
+        .sort((a: LibraryDto, b: LibraryDto) => a.name.toLowerCase() > b.name.toLowerCase())
+    },
+    getLibraryById: (state, getters) => (id: number) => {
+      return getters.getLibraries.find((l: any) => l.id === id)
+    },
+    getLibrariesPinned(state, getters) {
+      return getters.getLibraries.filter((it: LibraryDto) => !it.unpinned)
+    },
+    getLibrariesUnpinned(state, getters) {
+      return getters.getLibraries.filter((it: LibraryDto) => it.unpinned)
     },
   },
   mutations: {
-    setLibraries (state, libraries) {
+    setLibraries(state, libraries) {
       state.libraries = libraries
     },
   },
   actions: {
-    async getLibraries ({ commit }) {
+    async getLibraries({commit}) {
       commit('setLibraries', await service.getLibraries())
     },
-    async postLibrary ({ dispatch }, library) {
+    async postLibrary({dispatch}, library) {
       await service.postLibrary(library)
     },
-    async updateLibrary ({ dispatch }, { libraryId, library }) {
+    async updateLibrary({dispatch}, {libraryId, library}) {
       await service.updateLibrary(libraryId, library)
     },
-    async deleteLibrary ({ dispatch }, library) {
+    async deleteLibrary({dispatch}, library) {
       await service.deleteLibrary(library)
     },
   },
 }
 
 export default {
-  install (
+  install(
     Vue: typeof _Vue,
-    { store, http }: { store: any, http: AxiosInstance }) {
+    {store, http}: { store: any, http: AxiosInstance }) {
     service = new KomgaLibrariesService(http)
     Vue.prototype.$komgaLibraries = service
 

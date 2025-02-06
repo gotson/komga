@@ -100,7 +100,6 @@
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 import {ERROR, ErrorEvent} from '@/types/events'
-import {LibraryDto} from '@/types/komga-libraries'
 import ThumbnailCard from '@/components/ThumbnailCard.vue'
 import DropZone from '@/components/DropZone.vue'
 
@@ -152,9 +151,6 @@ export default Vue.extend({
     },
   },
   computed: {
-    libraries(): LibraryDto[] {
-      return this.$store.state.komgaLibraries.libraries
-    },
     getErrorsName(): string {
       if (this.form.name === '') return this.$t('common.required').toString()
       if (this.form.name?.toLowerCase() !== this.collection.name?.toLowerCase() && this.collections.some(e => e.name.toLowerCase() === this.form.name.toLowerCase())) {

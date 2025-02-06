@@ -1,5 +1,4 @@
 import {AxiosInstance} from 'axios'
-import {AuthorDto, BookDto} from '@/types/komga-books'
 import {GroupCountDto, SeriesDto, SeriesMetadataUpdateDto, SeriesThumbnailDto} from '@/types/komga-series'
 import {SeriesSearch} from '@/types/komga-search'
 
@@ -41,13 +40,14 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getNewSeries(libraryId?: string, oneshot?: boolean, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getNewSeries(libraryIds?: string[], oneshot?: boolean, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
       const params = {...pageRequest} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (oneshot !== undefined) params.oneshot = oneshot
       return (await this.http.get(`${API_SERIES}/new`, {
         params: params,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve new series'
@@ -58,13 +58,14 @@ export default class KomgaSeriesService {
     }
   }
 
-  async getUpdatedSeries(libraryId?: string, oneshot?: boolean, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
+  async getUpdatedSeries(libraryIds?: string[], oneshot?: boolean, pageRequest?: PageRequest): Promise<Page<SeriesDto>> {
     try {
       const params = {...pageRequest} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (oneshot !== undefined) params.oneshot = oneshot
       return (await this.http.get(`${API_SERIES}/updated`, {
         params: params,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve updated series'

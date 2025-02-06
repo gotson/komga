@@ -31,6 +31,10 @@ export interface LibraryDto {
   analyzeDimensions: boolean,
   oneshotsDirectory: string,
   unavailable: boolean,
+
+  // custom fields
+  unpinned: boolean,
+  order: number,
 }
 
 export interface LibraryCreationDto {

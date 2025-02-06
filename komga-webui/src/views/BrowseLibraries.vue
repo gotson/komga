@@ -7,7 +7,7 @@
       <libraries-actions-menu v-else/>
 
       <v-toolbar-title>
-        <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
+        <span>{{ toolbarTitle }}</span>
         <v-chip label class="mx-4" v-if="totalElements">
           <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
@@ -168,7 +168,8 @@ import {ItemContext} from '@/types/items'
 import {
   BookSearch,
   SearchConditionAgeRating,
-  SearchConditionAllOfSeries, SearchConditionAnyOfBook,
+  SearchConditionAllOfSeries,
+  SearchConditionAnyOfBook,
   SearchConditionAnyOfSeries,
   SearchConditionAuthor,
   SearchConditionComplete,
@@ -229,7 +230,6 @@ export default Vue.extend({
   },
   data: function () {
     return {
-      library: undefined as LibraryDto | undefined,
       series: [] as SeriesDto[],
       seriesGroups: [] as GroupCountDto[],
       alphabeticalNavigation: ['ALL', '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
@@ -264,6 +264,14 @@ export default Vue.extend({
     libraryId: {
       type: String,
       default: LIBRARIES_ALL,
+    },
+  },
+  watch: {
+    '$store.getters.getLibrariesPinned': {
+      handler(val) {
+        if (this.libraryId === LIBRARIES_ALL)
+          this.loadLibrary(this.libraryId)
+      },
     },
   },
   created() {
@@ -319,6 +327,14 @@ export default Vue.extend({
     next()
   },
   computed: {
+    library(): LibraryDto | undefined {
+      return this.getLibraryLazy(this.libraryId)
+    },
+    toolbarTitle(): string {
+      if (this.library) return this.library.name
+      else if (this.$store.getters.getLibrariesPinned.length > 0) return this.$t('common.pinned_libraries').toString()
+      else return this.$t('common.all_libraries').toString()
+    },
     symbolCondition(): SearchConditionSeries | undefined {
       if (this.selectedSymbol === 'ALL') return undefined
       if (this.selectedSymbol === '#') return new SearchConditionAllOfSeries(
@@ -633,7 +649,6 @@ export default Vue.extend({
       if (this.series.some(b => b.id === event.seriesId)) this.reloadPage()
     },
     async loadLibrary(libraryId: string) {
-      this.library = this.getLibraryLazy(libraryId)
       if (this.library != undefined) document.title = `Komga - ${this.library.name}`
 
       await this.loadPage(libraryId, this.page, this.sortActive, this.symbolCondition)
@@ -671,6 +686,11 @@ export default Vue.extend({
 
       const conditions = [] as SearchConditionSeries[]
       if (libraryId !== LIBRARIES_ALL) conditions.push(new SearchConditionLibraryId(new SearchOperatorIs(libraryId)))
+      else {
+        conditions.push(new SearchConditionAnyOfSeries(
+          this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => new SearchConditionLibraryId(new SearchOperatorIs(it.id))),
+        ))
+      }
       if (this.filters.status && this.filters.status.length > 0) this.filtersMode?.status?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.status)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.status))
       if (this.filters.readStatus && this.filters.readStatus.length > 0) conditions.push(new SearchConditionAnyOfSeries(this.filters.readStatus))
       if (this.filters.genre && this.filters.genre.length > 0) this.filtersMode?.genre?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.genre)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.genre))

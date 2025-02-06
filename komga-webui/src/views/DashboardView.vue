@@ -235,10 +235,15 @@ import {PageLoader} from '@/types/pageLoader'
 import {ItemContext} from '@/types/items'
 import {
   BookSearch,
-  SearchConditionAllOfBook, SearchConditionAnyOfBook,
+  SearchConditionAllOfBook,
+  SearchConditionAnyOfBook,
+  SearchConditionAnyOfSeries,
   SearchConditionBook,
   SearchConditionLibraryId,
-  SearchConditionReadStatus, SearchConditionReleaseDate, SearchConditionSeriesId, SearchOperatorAfter,
+  SearchConditionReadStatus,
+  SearchConditionReleaseDate,
+  SearchConditionSeriesId,
+  SearchOperatorAfter,
   SearchOperatorIs,
 } from '@/types/komga-search'
 
@@ -257,7 +262,6 @@ export default Vue.extend({
     return {
       ItemContext,
       loading: false,
-      library: undefined as LibraryDto | undefined,
       loaderNewSeries: undefined as unknown as PageLoader<SeriesDto>,
       loaderUpdatedSeries: undefined as unknown as PageLoader<SeriesDto>,
       loaderLatestBooks: undefined as unknown as PageLoader<BookDto>,
@@ -299,7 +303,7 @@ export default Vue.extend({
       route: LIBRARY_ROUTE.RECOMMENDED,
     })
     this.setupLoaders(this.libraryId)
-    this.loadAll(this.libraryId)
+    this.loadAll()
   },
   props: {
     libraryId: {
@@ -310,7 +314,11 @@ export default Vue.extend({
   watch: {
     libraryId(val) {
       this.setupLoaders(val)
-      this.loadAll(val)
+      this.loadAll()
+    },
+    libraryIds() {
+      this.setupLoaders(this.libraryId)
+      this.loadAll()
     },
     '$store.state.komgaLibraries.libraries': {
       handler(val) {
@@ -318,8 +326,19 @@ export default Vue.extend({
         else this.reload()
       },
     },
+    '$store.getters.getLibrariesPinned': {
+      handler(val) {
+        if (val.length === 0) this.$router.push({name: 'no-pins'})
+      },
+    },
   },
   computed: {
+    library(): LibraryDto | undefined {
+      return this.getLibraryLazy(this.libraryId)
+    },
+    libraryIds(): string[] {
+      return this.libraryId !== LIBRARIES_ALL ? [this.libraryId] : this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => it.id)
+    },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
@@ -346,8 +365,8 @@ export default Vue.extend({
     async scrollChanged(loader: PageLoader<any>, percent: number) {
       if (percent > 0.95) await loader.loadNext()
     },
-    getRequestLibraryId(libraryId: string): string | undefined {
-      return libraryId !== LIBRARIES_ALL ? libraryId : undefined
+    getRequestLibraryId(libraryId: string): string[] {
+      return libraryId !== LIBRARIES_ALL ? [libraryId] : this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => it.id)
     },
     seriesChanged(event: SeriesSseDto) {
       if (this.libraryId === LIBRARIES_ALL || event.libraryId === this.libraryId) {
@@ -371,11 +390,15 @@ export default Vue.extend({
       else if (this.loaderNewSeries?.items.some(s => s.id === event.seriesId)) this.reload()
     },
     reload: throttle(function (this: any) {
-      this.loadAll(this.libraryId, true)
+      this.loadAll(true)
     }, 5000),
     setupLoaders(libraryId: string) {
+      const requestLibraries = this.getRequestLibraryId(libraryId)
       const baseBookConditions = [] as SearchConditionBook[]
-      if (libraryId !== LIBRARIES_ALL) baseBookConditions.push(new SearchConditionLibraryId(new SearchOperatorIs(libraryId)))
+      if (requestLibraries)
+        baseBookConditions.push(new SearchConditionAnyOfSeries(
+          requestLibraries.map((it: string) => new SearchConditionLibraryId(new SearchOperatorIs(it))),
+        ))
 
       this.loaderInProgressBooks = new PageLoader<BookDto>(
         {sort: ['readProgress.readDate,desc']},
@@ -385,7 +408,7 @@ export default Vue.extend({
       )
       this.loaderOnDeckBooks = new PageLoader<BookDto>(
         {},
-        (pageable: PageRequest) => this.$komgaBooks.getBooksOnDeck(this.getRequestLibraryId(libraryId), pageable),
+        (pageable: PageRequest) => this.$komgaBooks.getBooksOnDeck(requestLibraries, pageable),
       )
       this.loaderLatestBooks = new PageLoader<BookDto>(
         {sort: ['createdDate,desc']},
@@ -408,16 +431,15 @@ export default Vue.extend({
 
       this.loaderNewSeries = new PageLoader<SeriesDto>(
         {},
-        (pageable: PageRequest) => this.$komgaSeries.getNewSeries(this.getRequestLibraryId(libraryId), false, pageable),
+        (pageable: PageRequest) => this.$komgaSeries.getNewSeries(requestLibraries, false, pageable),
       )
       this.loaderUpdatedSeries = new PageLoader<SeriesDto>(
         {},
-        (pageable: PageRequest) => this.$komgaSeries.getUpdatedSeries(this.getRequestLibraryId(libraryId), false, pageable),
+        (pageable: PageRequest) => this.$komgaSeries.getUpdatedSeries(requestLibraries, false, pageable),
       )
     },
-    loadAll(libraryId: string, reload: boolean = false) {
+    loadAll(reload: boolean = false) {
       this.loading = true
-      this.library = this.getLibraryLazy(libraryId)
       if (this.library != undefined) document.title = `Komga - ${this.library.name}`
       this.selectedSeries = []
       this.selectedBooks = []

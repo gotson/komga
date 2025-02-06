@@ -7,7 +7,7 @@
       <libraries-actions-menu v-else/>
 
       <v-toolbar-title>
-        <span>{{ library ? library.name : $t('common.all_libraries') }}</span>
+        <span>{{ toolbarTitle }}</span>
         <v-chip label class="mx-4" v-if="totalElements">
           <span style="font-size: 1.1rem">{{ totalElements }}</span>
         </v-chip>
@@ -88,7 +88,6 @@ export default Vue.extend({
   },
   data: () => {
     return {
-      library: undefined as LibraryDto | undefined,
       readLists: [] as ReadListDto[],
       selectedReadLists: [] as ReadListDto[],
       page: 1,
@@ -103,6 +102,14 @@ export default Vue.extend({
     libraryId: {
       type: String,
       default: LIBRARIES_ALL,
+    },
+  },
+  watch: {
+    '$store.getters.getLibrariesPinned': {
+      handler(val) {
+        if (this.libraryId === LIBRARIES_ALL)
+          this.loadLibrary(this.libraryId)
+      },
     },
   },
   created() {
@@ -143,6 +150,14 @@ export default Vue.extend({
     next()
   },
   computed: {
+    library(): LibraryDto | undefined {
+      return this.getLibraryLazy(this.libraryId)
+    },
+    toolbarTitle(): string {
+      if (this.library) return this.library.name
+      else if (this.$store.getters.getLibrariesPinned.length > 0) return this.$t('common.pinned_libraries').toString()
+      else return this.$t('common.all_libraries').toString()
+    },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
     },
@@ -206,7 +221,6 @@ export default Vue.extend({
       }
     },
     async loadLibrary(libraryId: string) {
-      this.library = this.getLibraryLazy(libraryId)
       if (this.library != undefined) document.title = `Komga - ${this.library.name}`
       await this.loadPage(libraryId, this.page)
 
@@ -222,7 +236,7 @@ export default Vue.extend({
         size: this.pageSize,
       } as PageRequest
 
-      const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : undefined
+      const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : this.$store.getters.getLibrariesPinned.map(it => it.id)
       const elementsPage = await this.$komgaReadLists.getReadLists(lib, pageRequest)
 
       this.totalPages = elementsPage.totalPages

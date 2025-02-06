@@ -43,7 +43,6 @@
 import {UserRoles} from '@/types/enum-users'
 import Vue from 'vue'
 import {ERROR} from '@/types/events'
-import {LibraryDto} from '@/types/komga-libraries'
 import {UserDto, UserUpdateDto} from '@/types/komga-users'
 
 export default Vue.extend({
@@ -78,9 +77,6 @@ export default Vue.extend({
         text: this.$t(`user_roles.${x}`),
         value: x,
       }))
-    },
-    libraries(): LibraryDto[] {
-      return this.$store.state.komgaLibraries.libraries
     },
   },
   methods: {

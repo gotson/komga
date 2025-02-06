@@ -108,7 +108,7 @@ export default Vue.extend({
   },
   computed: {
     filterLibrariesOptions(): object[] {
-      return this.$store.state.komgaLibraries.libraries.map(x => ({
+      return this.$store.getters.getLibraries.map(x => ({
         text: x.name,
         value: x.id,
       }))

@@ -43,7 +43,6 @@
 import Vue from 'vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import {ERROR, ErrorEvent, NOTIFICATION, NotificationEvent} from '@/types/events'
-import {LibraryDto} from '@/types/komga-libraries'
 import jsFileDownloader from 'js-file-downloader'
 import urls from '@/functions/urls'
 
@@ -53,11 +52,6 @@ export default Vue.extend({
   data: () => ({
     modalStopServer: false,
   }),
-  computed: {
-    libraries(): LibraryDto[] {
-      return this.$store.state.komgaLibraries.libraries
-    },
-  },
   methods: {
     async cancelAllTasks() {
       const count = await this.$komgaTasks.deleteAllTasks()

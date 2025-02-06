@@ -2,7 +2,13 @@ import {AxiosInstance} from 'axios'
 import _Vue from 'vue'
 import KomgaSettingsService from '@/services/komga-settings.service'
 import {Module} from 'vuex'
-import {ClientSettingDto} from '@/types/komga-clientsettings'
+import {
+  CLIENT_SETTING,
+  ClientSettingDto,
+  ClientSettingLibrary,
+  ClientSettingLibraryUpdate,
+  ClientSettingUserUpdateDto,
+} from '@/types/komga-clientsettings'
 
 let service: KomgaSettingsService
 
@@ -14,6 +20,14 @@ const vuexModule: Module<any, any> = {
   getters: {
     getClientSettings(state): Record<string, ClientSettingDto> {
       return {...state.clientSettingsGlobal, ...state.clientSettingsUser}
+    },
+    getClientSettingsLibraries(state): Record<string, ClientSettingLibrary> {
+      let settings: Record<string, ClientSettingLibrary> = {}
+      try {
+        settings = JSON.parse(state.clientSettingsUser[CLIENT_SETTING.WEBUI_LIBRARIES]?.value)
+      } catch (e) {
+      }
+      return settings
     },
   },
   mutations: {
@@ -30,6 +44,16 @@ const vuexModule: Module<any, any> = {
     },
     async getClientSettingsUser({commit}) {
       commit('setClientSettingsUser', await service.getClientSettingsUser())
+    },
+    async updateLibrarySetting({dispatch, getters}, update: ClientSettingLibraryUpdate) {
+      const all = getters.getClientSettingsLibraries
+      all[update.libraryId] = Object.assign({}, all[update.libraryId], update.patch)
+      const newSettings = {} as Record<string, ClientSettingUserUpdateDto>
+      newSettings[CLIENT_SETTING.WEBUI_LIBRARIES] = {
+        value: JSON.stringify(all),
+      }
+      await service.updateClientSettingUser(newSettings)
+      dispatch('getClientSettingsUser')
     },
   },
 }

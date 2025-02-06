@@ -53,14 +53,15 @@ export default class KomgaBooksService {
     }
   }
 
-  async getBooksOnDeck(libraryId?: string, pageRequest?: PageRequest): Promise<Page<BookDto>> {
+  async getBooksOnDeck(libraryIds?: string[], pageRequest?: PageRequest): Promise<Page<BookDto>> {
     try {
       const params = {...pageRequest} as any
-      if (libraryId) {
-        params.library_id = libraryId
+      if (libraryIds) {
+        params.library_id = libraryIds
       }
       return (await this.http.get(`${API_BOOKS}/ondeck`, {
         params: params,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve books on deck'

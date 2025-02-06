@@ -59,6 +59,7 @@ Vue.use(Chartkick.use(Chart))
 
 Vue.use(httpPlugin)
 Vue.use(logger)
+Vue.use(komgaSettings, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaFileSystem, {http: Vue.prototype.$http})
 Vue.use(komgaSeries, {http: Vue.prototype.$http})
 Vue.use(komgaCollections, {http: Vue.prototype.$http})
@@ -80,7 +81,6 @@ Vue.use(komgaMetrics, {http: Vue.prototype.$http})
 Vue.use(komgaHistory, {http: Vue.prototype.$http})
 Vue.use(komgaAnnouncements, {http: Vue.prototype.$http})
 Vue.use(komgaReleases, {http: Vue.prototype.$http})
-Vue.use(komgaSettings, {store: store, http: Vue.prototype.$http})
 Vue.use(komgaFonts, {http: Vue.prototype.$http})
 
 Vue.config.productionTip = false

@@ -17,4 +17,15 @@ export enum CLIENT_SETTING {
   WEBUI_OAUTH2_AUTO_LOGIN = 'webui.oauth2.auto_login',
   WEBUI_POSTER_STRETCH = 'webui.poster.stretch',
   WEBUI_POSTER_BLUR_UNREAD = 'webui.poster.blur_unread',
+  WEBUI_LIBRARIES = 'webui.libraries',
+}
+
+export interface ClientSettingLibrary {
+  unpinned?: boolean,
+  order?: number,
+}
+
+export interface ClientSettingLibraryUpdate {
+  libraryId: string,
+  patch: ClientSettingLibrary,
 }

@@ -248,6 +248,7 @@
     "locale_rtl": "false",
     "lock_all": "Lock all",
     "media": "Media",
+    "more": "More",
     "n_selected": "{count} selected",
     "nothing_to_show": "Nothing to show",
     "ok": "OK",
@@ -261,6 +262,7 @@
     "password": "Password",
     "pdf": "PDF",
     "pending_tasks": "No pending tasks | 1 pending task | {count} pending tasks",
+    "pinned_libraries": "Pinned Libraries",
     "publisher": "Publisher",
     "read": "Read",
     "read_on": "Read on {date}",
@@ -892,10 +894,12 @@
     "empty_trash": "Empty trash",
     "mark_read": "Mark as read",
     "mark_unread": "Mark as unread",
+    "pin": "Pin",
     "refresh_metadata": "Refresh metadata",
     "scan_library_files": "Scan library files",
     "scan_library_files_deep": "Scan library files (deep)",
-    "select_all": "Select all"
+    "select_all": "Select all",
+    "unpin": "Unpin"
   },
   "metrics": {
     "library_books": "Books per library",
@@ -913,6 +917,10 @@
     "home": "Home",
     "libraries": "Libraries",
     "logout": "Log Out"
+  },
+  "no_libraries_pinned": {
+    "title": "No pinned libraries",
+    "subtitle": "You can pin a library from the 3-dots menu"
   },
   "page_not_found": {
     "go_back_to_home_page": "Go back to home page",

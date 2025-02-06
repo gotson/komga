@@ -80,6 +80,7 @@
 import Vue from 'vue'
 import {COLLECTION_ADDED, COLLECTION_DELETED, READLIST_ADDED, READLIST_DELETED} from '@/types/events'
 import {LIBRARIES_ALL} from '@/types/library'
+import {LibraryDto} from '@/types/komga-libraries'
 
 export default Vue.extend({
   name: 'LibraryNavigation',
@@ -106,6 +107,14 @@ export default Vue.extend({
         this.loadCollectionCounts(val)
       },
       immediate: true,
+    },
+    '$store.getters.getLibrariesPinned': {
+      handler(val) {
+        if (this.libraryId === LIBRARIES_ALL) {
+          this.loadCollectionCounts(this.libraryId)
+          this.loadReadListCounts(this.libraryId)
+        }
+      },
     },
   },
   created() {
@@ -142,12 +151,12 @@ export default Vue.extend({
       if(this.collectionsCount === 1) this.loadCollectionCounts(this.libraryId)
     },
     async loadCollectionCounts(libraryId: string) {
-      const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : undefined
+      const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => it.id)
       this.$komgaCollections.getCollections(lib, {size: 0})
       .then(v => this.collectionsCount = v.totalElements)
     },
     async loadReadListCounts(libraryId: string) {
-      const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : undefined
+      const lib = libraryId !== LIBRARIES_ALL ? [libraryId] : this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => it.id)
       await this.$komgaReadLists.getReadLists(lib, {size: 0})
         .then(v => this.readListsCount = v.totalElements)
     },
