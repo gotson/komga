@@ -37,13 +37,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
-import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
 import {CLIENT_SETTING, ClientSettingUserUpdateDto} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'UIUserSettings',
-  components: {FileBrowserDialog, ConfirmationDialog},
   data: () => ({
     form: {
       posterStretch: false,
