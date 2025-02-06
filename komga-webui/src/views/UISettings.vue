@@ -8,6 +8,7 @@
           :label="$t('ui_settings.label_oauth2_hide_login')"
           hide-details
         />
+
         <v-checkbox
           v-model="form.oauth2AutoLogin"
           @change="$v.form.oauth2AutoLogin.$touch()"
@@ -24,15 +25,7 @@
               {{ $t('ui_settings.tooltip_oauth2_auto_login') }}
             </v-tooltip>
           </template>
-
         </v-checkbox>
-
-        <v-checkbox
-          v-model="form.posterStretch"
-          @change="$v.form.posterStretch.$touch()"
-          :label="$t('ui_settings.label_poster_stretch')"
-          hide-details
-        />
       </v-col>
     </v-row>
     <v-row>
@@ -57,7 +50,7 @@
 import Vue from 'vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
-import {CLIENT_SETTING, ClientSettingDto, ClientSettingGlobalUpdateDto} from '@/types/komga-clientsettings'
+import {CLIENT_SETTING, ClientSettingGlobalUpdateDto} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'UISettings',
@@ -66,15 +59,12 @@ export default Vue.extend({
     form: {
       oauth2HideLogin: false,
       oauth2AutoLogin: false,
-      posterStretch: false,
     },
-    existingSettings: [] as ClientSettingDto[],
   }),
   validations: {
     form: {
       oauth2HideLogin: {},
       oauth2AutoLogin: {},
-      posterStretch: {},
     },
   },
   mounted() {
@@ -90,10 +80,9 @@ export default Vue.extend({
   },
   methods: {
     async refreshSettings() {
-      await this.$store.dispatch('getClientSettings')
+      await this.$store.dispatch('getClientSettingsGlobal')
       this.form.oauth2HideLogin = this.$store.state.komgaSettings.clientSettingsGlobal[CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN]?.value === 'true'
       this.form.oauth2AutoLogin = this.$store.state.komgaSettings.clientSettingsGlobal[CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN]?.value === 'true'
-      this.form.posterStretch = this.$store.state.komgaSettings.clientSettingsGlobal[CLIENT_SETTING.WEBUI_POSTER_STRETCH]?.value === 'true'
       this.$v.form.$reset()
     },
     async saveSettings() {
@@ -108,12 +97,6 @@ export default Vue.extend({
         newSettings[CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN] = {
           value: this.form.oauth2AutoLogin ? 'true' : 'false',
           allowUnauthorized: true,
-        }
-
-      if (this.$v.form?.posterStretch?.$dirty)
-        newSettings[CLIENT_SETTING.WEBUI_POSTER_STRETCH] = {
-          value: this.form.posterStretch ? 'true' : 'false',
-          allowUnauthorized: false,
         }
 
       await this.$komgaSettings.updateClientSettingGlobal(newSettings)

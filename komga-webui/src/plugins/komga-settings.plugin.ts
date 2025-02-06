@@ -25,8 +25,10 @@ const vuexModule: Module<any, any> = {
     },
   },
   actions: {
-    async getClientSettings({commit}) {
+    async getClientSettingsGlobal({commit}) {
       commit('setClientSettingsGlobal', await service.getClientSettingsGlobal())
+    },
+    async getClientSettingsUser({commit}) {
       commit('setClientSettingsUser', await service.getClientSettingsUser())
     },
   },

@@ -42,7 +42,8 @@ export default Vue.extend({
 
       await this.$store.dispatch('getMe')
       await this.$store.dispatch('getLibraries')
-      await this.$store.dispatch('getClientSettings')
+      await this.$store.dispatch('getClientSettingsGlobal')
+      await this.$store.dispatch('getClientSettingsUser')
       this.$router.back()
     } catch (e) {
       this.$router.push({name: 'login', query: {redirect: this.$route.query.redirect}})

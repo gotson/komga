@@ -300,7 +300,8 @@ export default Vue.extend({
             })
 
           await this.$store.dispatch('getLibraries')
-          await this.$store.dispatch('getClientSettings')
+          await this.$store.dispatch('getClientSettingsGlobal')
+          await this.$store.dispatch('getClientSettingsUser')
 
           if (this.$route.query.redirect) {
             await this.$router.push({path: this.$route.query.redirect.toString()})

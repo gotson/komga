@@ -14,6 +14,7 @@
           aspect-ratio="0.7071"
           :contain="!isStretch"
           :position="isStretch ? 'top' : undefined"
+          :class="shouldBlurPoster ? 'blur' : undefined"
           @error="thumbnailError = true"
           @load="thumbnailError = false"
         >
@@ -277,6 +278,12 @@ export default Vue.extend({
     isStretch(): boolean {
       return this.$store.getters.getClientSettings[CLIENT_SETTING.WEBUI_POSTER_STRETCH]?.value === 'true'
     },
+    isBlurUnread(): boolean {
+      return this.$store.getters.getClientSettings[CLIENT_SETTING.WEBUI_POSTER_BLUR_UNREAD]?.value === 'true'
+    },
+    shouldBlurPoster(): boolean | undefined {
+      return (this.isUnread || this.allUnread) && this.isBlurUnread
+    },
     canReadPages(): boolean {
       return this.$store.getters.mePageStreaming && this.computedItem.type() === ItemTypes.BOOK
     },
@@ -315,6 +322,10 @@ export default Vue.extend({
     },
     unreadCount(): number | undefined {
       if (this.computedItem.type() === ItemTypes.SERIES) return (this.item as SeriesDto).booksUnreadCount + (this.item as SeriesDto).booksInProgressCount
+      return undefined
+    },
+    allUnread(): boolean | undefined {
+      if (this.computedItem.type() === ItemTypes.SERIES) return (this.item as SeriesDto).booksCount == (this.item as SeriesDto).booksUnreadCount
       return undefined
     },
     readProgressPercentage(): number {
@@ -385,6 +396,10 @@ export default Vue.extend({
 </script>
 
 <style>
+.blur > .v-image__image {
+  filter: blur(5px);
+}
+
 .no-link {
   cursor: default;
 }

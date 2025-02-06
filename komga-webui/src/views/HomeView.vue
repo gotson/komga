@@ -258,6 +258,10 @@
             <v-list-item-title>{{ $t('users.api_keys') }}</v-list-item-title>
           </v-list-item>
 
+          <v-list-item :to="{name: 'account-settings-ui'}">
+            <v-list-item-title>{{ $t('common.ui') }}</v-list-item-title>
+          </v-list-item>
+
           <v-list-item :to="{name: 'account-activity'}">
             <v-list-item-title>{{ $t('users.authentication_activity') }}</v-list-item-title>
           </v-list-item>
