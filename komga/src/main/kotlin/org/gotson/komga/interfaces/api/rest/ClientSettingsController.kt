@@ -9,8 +9,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -21,48 +22,52 @@ import org.springframework.web.bind.annotation.RestController
 class ClientSettingsController(
   private val clientSettingsDtoDao: ClientSettingsDtoDao,
 ) {
-
-  @GetMapping("list")
-  fun getSettings(
+  @GetMapping("global/list")
+  fun getGlobalSettings(
     @AuthenticationPrincipal principal: KomgaPrincipal?,
-  ): Collection<ClientSettingDto> {
-    if (principal == null) {
-      // return only global settings that allow unauthorized access
-      return clientSettingsDtoDao
-        .findAllGlobal()
-        .filter { it.allowUnauthorized == true }
-        .map { it.copy(allowUnauthorized = null) }
-    }
+  ): Map<String, ClientSettingDto> = clientSettingsDtoDao.findAllGlobal(principal == null)
 
-    // merge global and user settings
-    val global = clientSettingsDtoDao.findAllGlobal().associateBy { it.key }
-    val user = clientSettingsDtoDao.findAllUser(principal.user.id).associateBy { it.key }
+  @GetMapping("user/list")
+  fun getUserSettings(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): Map<String, ClientSettingDto> = clientSettingsDtoDao.findAllUser(principal.user.id)
 
-    val settings = (global + user).values
-      .let {
-        // if the user is not admin, we sanitize the allowUnauthorized values
-        if (!principal.user.isAdmin) it.map { s -> s.copy(allowUnauthorized = null) }
-        else it
-      }
-
-    return settings
-  }
-
-  @PutMapping("global")
+  @PatchMapping("global")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('ADMIN')")
   fun saveGlobalSetting(
-    @RequestBody newSetting: ClientSettingGlobalUpdateDto,
+    @RequestBody newSettings: Map<String, ClientSettingGlobalUpdateDto>,
   ) {
-    clientSettingsDtoDao.saveGlobal(newSetting.key, newSetting.value, newSetting.allowUnauthorized)
+    newSettings.forEach { (key, setting) ->
+      clientSettingsDtoDao.saveGlobal(key, setting.value, setting.allowUnauthorized)
+    }
   }
 
-  @PutMapping("user")
+  @PatchMapping("user")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun saveUserSetting(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestBody newSetting: ClientSettingUserUpdateDto,
+    @RequestBody newSettings: Map<String, ClientSettingUserUpdateDto>,
   ) {
-    clientSettingsDtoDao.saveForUser(principal.user.id, newSetting.key, newSetting.value)
+    newSettings.forEach { (key, setting) ->
+      clientSettingsDtoDao.saveForUser(principal.user.id, key, setting.value)
+    }
+  }
+
+  @DeleteMapping("global")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun deleteGlobalSetting(
+    @RequestBody keysToDelete: Set<String>,
+  ) {
+    clientSettingsDtoDao.deleteGlobalByKeys(keysToDelete)
+  }
+
+  @DeleteMapping("user")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  fun deleteGlobalSetting(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestBody keysToDelete: Set<String>,
+  ) {
+    clientSettingsDtoDao.deleteByUserIdAndKeys(principal.user.id, keysToDelete)
   }
 }

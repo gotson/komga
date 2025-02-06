@@ -15,7 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.put
+import org.springframework.test.web.servlet.patch
 
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
@@ -38,11 +38,12 @@ class ClientSettingsControllerTest(
       clientSettingsDtoDao.saveGlobal("restricted", "value", false)
 
       mockMvc
-        .get("/api/v1/client-settings/list")
+        .get("/api/v1/client-settings/global/list")
         .andExpect {
           status { isOk() }
-          jsonPath("$.length()") { value(1) }
-          jsonPath("$[0].allowUnauthorized") { doesNotExist() }
+          jsonPath("$.size()") { value(1) }
+          jsonPath("$.forall.value") { value("value") }
+          jsonPath("$.forall.allowUnauthorized") { value(true) }
         }
     }
 
@@ -53,18 +54,20 @@ class ClientSettingsControllerTest(
       val jsonString =
         """
         {
-          "key": "setting",
-          "value": "value",
-          "allowUnauthorized": false
+          "setting": {
+            "value": "value",
+            "allowUnauthorized": false
+          }
         }
         """.trimIndent()
 
-      mockMvc.put("/api/v1/client-settings/global") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isUnauthorized() }
-      }
+      mockMvc
+        .patch("/api/v1/client-settings/global") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isUnauthorized() }
+        }
     }
   }
 
@@ -84,16 +87,19 @@ class ClientSettingsControllerTest(
 
     @Test
     @WithMockCustomUser
-    fun `given authenticated user when retrieving settings then returns all settings`() {
+    fun `given authenticated user when retrieving global settings then returns all settings`() {
       clientSettingsDtoDao.saveGlobal("forall", "value", true)
       clientSettingsDtoDao.saveGlobal("restricted", "value", false)
 
       mockMvc
-        .get("/api/v1/client-settings/list")
+        .get("/api/v1/client-settings/global/list")
         .andExpect {
           status { isOk() }
-          jsonPath("$.length()") { value(2) }
-          jsonPath("$[0].allowUnauthorized") { doesNotExist() }
+          jsonPath("$.size()") { value(2) }
+          jsonPath("$.forall.value") { value("value") }
+          jsonPath("$.forall.allowUnauthorized") { value(true) }
+          jsonPath("$.restricted.value") { value("value") }
+          jsonPath("$.restricted.allowUnauthorized") { value(false) }
         }
     }
 
@@ -104,18 +110,20 @@ class ClientSettingsControllerTest(
       val jsonString =
         """
         {
-          "key": "setting",
-          "value": "value",
-          "allowUnauthorized": false
+          "setting": {
+            "value": "value",
+            "allowUnauthorized": false
+          }
         }
         """.trimIndent()
 
-      mockMvc.put("/api/v1/client-settings/global") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isForbidden() }
-      }
+      mockMvc
+        .patch("/api/v1/client-settings/global") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isForbidden() }
+        }
     }
 
     @Test
@@ -125,43 +133,26 @@ class ClientSettingsControllerTest(
       val jsonString =
         """
         {
-          "key": "setting",
-          "value": "value"
+          "setting": {
+            "value": "value"
+          }
         }
         """.trimIndent()
 
-      mockMvc.put("/api/v1/client-settings/user") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
-
       mockMvc
-        .get("/api/v1/client-settings/list")
-        .andExpect {
-          status { isOk() }
-          jsonPath("$.length()") { value(1) }
-          jsonPath("$[0].key") { value("setting") }
-          jsonPath("$[0].value") { value("value") }
-          jsonPath("$[0].userId") { value("user1") }
+        .patch("/api/v1/client-settings/user") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
         }
-    }
-
-    @Test
-    @WithMockCustomUser(id = "user1")
-    fun `given non-admin user when retrieving settings then user settings take precedence over global settings`() {
-      clientSettingsDtoDao.saveGlobal("setting", "global", false)
-      clientSettingsDtoDao.saveForUser(user1.id, "setting", "local")
 
       mockMvc
-        .get("/api/v1/client-settings/list")
+        .get("/api/v1/client-settings/user/list")
         .andExpect {
           status { isOk() }
-          jsonPath("$.length()") { value(1) }
-          jsonPath("$[0].key") { value("setting") }
-          jsonPath("$[0].value") { value("local") }
-          jsonPath("$[0].userId") { value("user1") }
+          jsonPath("$.size()") { value(1) }
+          jsonPath("$.setting.value") { value("value") }
         }
     }
   }
@@ -175,11 +166,14 @@ class ClientSettingsControllerTest(
       clientSettingsDtoDao.saveGlobal("restricted", "value", false)
 
       mockMvc
-        .get("/api/v1/client-settings/list")
+        .get("/api/v1/client-settings/global/list")
         .andExpect {
           status { isOk() }
-          jsonPath("$.length()") { value(2) }
-          jsonPath("$[0].allowUnauthorized") { value(true) }
+          jsonPath("$.size()") { value(2) }
+          jsonPath("$.forall.value") { value("value") }
+          jsonPath("$.forall.allowUnauthorized") { value(true) }
+          jsonPath("$.restricted.value") { value("value") }
+          jsonPath("$.restricted.allowUnauthorized") { value(false) }
         }
     }
 
@@ -190,27 +184,28 @@ class ClientSettingsControllerTest(
       val jsonString =
         """
         {
-          "key": "setting",
-          "value": "value",
-          "allowUnauthorized": false
+          "setting": {
+            "value": "value",
+            "allowUnauthorized": false
+          }
         }
         """.trimIndent()
 
-      mockMvc.put("/api/v1/client-settings/global") {
-        contentType = MediaType.APPLICATION_JSON
-        content = jsonString
-      }.andExpect {
-        status { isNoContent() }
-      }
+      mockMvc
+        .patch("/api/v1/client-settings/global") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isNoContent() }
+        }
 
       mockMvc
-        .get("/api/v1/client-settings/list")
+        .get("/api/v1/client-settings/global/list")
         .andExpect {
           status { isOk() }
-          jsonPath("$.length()") { value(1) }
-          jsonPath("$[0].key") { value("setting") }
-          jsonPath("$[0].value") { value("value") }
-          jsonPath("$[0].allowUnauthorized") { value(false) }
+          jsonPath("$.size()") { value(1) }
+          jsonPath("$.setting.value") { value("value") }
+          jsonPath("$.setting.allowUnauthorized") { value(false) }
         }
     }
   }

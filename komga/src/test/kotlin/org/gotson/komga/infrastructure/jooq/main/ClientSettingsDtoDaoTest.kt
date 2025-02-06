@@ -7,6 +7,7 @@ import org.gotson.komga.interfaces.api.rest.dto.ClientSettingDto
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -35,51 +36,87 @@ class ClientSettingsDtoDaoTest(
     userRepository.deleteAll()
   }
 
-  @Test
-  fun `when saving global setting then it is persisted`() {
-    clientSettingsDtoDao.saveGlobal("setting1", "value1", true)
-    clientSettingsDtoDao.saveGlobal("setting2", "value2", false)
+  @Nested
+  inner class Global {
+    @Test
+    fun `when saving global setting then it is persisted`() {
+      clientSettingsDtoDao.saveGlobal("setting1", "value1", true)
+      clientSettingsDtoDao.saveGlobal("setting2", "value2", false)
 
-    val fetch = clientSettingsDtoDao.findAllGlobal()
+      val fetch = clientSettingsDtoDao.findAllGlobal()
 
-    assertThat(fetch).containsExactlyInAnyOrder(
-      ClientSettingDto("setting1", "value1", true, null),
-      ClientSettingDto("setting2", "value2", false, null),
-    )
+      assertThat(fetch).containsAllEntriesOf(
+        mapOf(
+          "setting1" to ClientSettingDto("value1", true),
+          "setting2" to ClientSettingDto("value2", false),
+        ),
+      )
+    }
+
+    @Test
+    fun `given existing global setting when saving global setting then it is updated`() {
+      clientSettingsDtoDao.saveGlobal("setting1", "value1", true)
+      clientSettingsDtoDao.saveGlobal("setting1", "updated", true)
+      val fetch = clientSettingsDtoDao.findAllGlobal()
+
+      assertThat(fetch).containsAllEntriesOf(
+        mapOf(
+          "setting1" to ClientSettingDto("updated", true),
+        ),
+      )
+    }
+
+    @Test
+    fun `given existing global setting when deleting global setting then it is deleted`() {
+      clientSettingsDtoDao.saveGlobal("setting1", "value1", true)
+
+      clientSettingsDtoDao.deleteGlobalByKeys(listOf("setting1"))
+
+      val fetch = clientSettingsDtoDao.findAllGlobal()
+
+      assertThat(fetch).isEmpty()
+    }
   }
 
-  @Test
-  fun `given existing global setting when saving global setting then it is updated`() {
-    clientSettingsDtoDao.saveGlobal("setting1", "value1", true)
-    clientSettingsDtoDao.saveGlobal("setting1", "updated", true)
-    val fetch = clientSettingsDtoDao.findAllGlobal()
+  @Nested
+  inner class User {
+    @Test
+    fun `when saving user setting then it is persisted`() {
+      clientSettingsDtoDao.saveForUser(user1.id, "setting1", "value1")
+      clientSettingsDtoDao.saveForUser(user2.id, "setting2", "value2")
 
-    assertThat(fetch).containsExactlyInAnyOrder(
-      ClientSettingDto("setting1", "updated", true, null),
-    )
-  }
+      val fetch = clientSettingsDtoDao.findAllUser(user1.id)
 
-  @Test
-  fun `when saving user setting then it is persisted`() {
-    clientSettingsDtoDao.saveForUser(user1.id, "setting1", "value1")
-    clientSettingsDtoDao.saveForUser(user2.id, "setting2", "value2")
+      assertThat(fetch).containsAllEntriesOf(
+        mapOf(
+          "setting1" to ClientSettingDto("value1", null),
+        ),
+      )
+    }
 
-    val fetch = clientSettingsDtoDao.findAllUser(user1.id)
+    @Test
+    fun `given existing user setting when saving user setting then it is updated`() {
+      clientSettingsDtoDao.saveForUser(user1.id, "setting1", "value1")
+      clientSettingsDtoDao.saveForUser(user1.id, "setting1", "updated")
 
-    assertThat(fetch).containsExactlyInAnyOrder(
-      ClientSettingDto("setting1", "value1", null, user1.id),
-    )
-  }
+      val fetch = clientSettingsDtoDao.findAllUser(user1.id)
 
-  @Test
-  fun `given existing user setting when saving user setting then it is updated`() {
-    clientSettingsDtoDao.saveForUser(user1.id, "setting1", "value1")
-    clientSettingsDtoDao.saveForUser(user1.id, "setting1", "updated")
+      assertThat(fetch).containsAllEntriesOf(
+        mapOf(
+          "setting1" to ClientSettingDto("updated", null),
+        ),
+      )
+    }
 
-    val fetch = clientSettingsDtoDao.findAllUser(user1.id)
+    @Test
+    fun `given existing user setting when deleting user setting then it is deleted`() {
+      clientSettingsDtoDao.saveForUser(user1.id, "setting1", "value1")
 
-    assertThat(fetch).containsExactlyInAnyOrder(
-      ClientSettingDto("setting1", "updated", null, user1.id),
-    )
+      clientSettingsDtoDao.deleteByUserIdAndKeys(user1.id, listOf("setting1"))
+
+      val fetch = clientSettingsDtoDao.findAllUser(user1.id)
+
+      assertThat(fetch).isEmpty()
+    }
   }
 }
