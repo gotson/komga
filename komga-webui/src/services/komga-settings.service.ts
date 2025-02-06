@@ -36,11 +36,11 @@ export default class KomgaSettingsService {
     }
   }
 
-  async getClientSettings(): Promise<ClientSettingDto[]> {
+  async getClientSettingsGlobal(): Promise<Record<string, ClientSettingDto>> {
     try {
-      return (await this.http.get(`${API_CLIENT_SETTINGS}/list`)).data
+      return (await this.http.get(`${API_CLIENT_SETTINGS}/global/list`)).data
     } catch (e) {
-      let msg = 'An error occurred while trying to retrieve client settings'
+      let msg = 'An error occurred while trying to retrieve global client settings'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
@@ -48,9 +48,21 @@ export default class KomgaSettingsService {
     }
   }
 
-  async updateClientSettingGlobal(setting: ClientSettingGlobalUpdateDto) {
+  async getClientSettingsUser(): Promise<Record<string, ClientSettingDto>> {
     try {
-      await this.http.put(`${API_CLIENT_SETTINGS}/global`, setting)
+      return (await this.http.get(`${API_CLIENT_SETTINGS}/user/list`)).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve user client settings'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async updateClientSettingGlobal(settings: Record<string, ClientSettingGlobalUpdateDto>) {
+    try {
+      await this.http.patch(`${API_CLIENT_SETTINGS}/global`, settings)
     } catch (e) {
       let msg = 'An error occurred while trying to update global client setting'
       if (e.response.data.message) {
@@ -60,9 +72,9 @@ export default class KomgaSettingsService {
     }
   }
 
-  async updateClientSettingUser(setting: ClientSettingUserUpdateDto) {
+  async updateClientSettingUser(settings: Record<string, ClientSettingUserUpdateDto>) {
     try {
-      await this.http.put(`${API_CLIENT_SETTINGS}/user`, setting)
+      await this.http.patch(`${API_CLIENT_SETTINGS}/user`, settings)
     } catch (e) {
       let msg = 'An error occurred while trying to update user client setting'
       if (e.response.data.message) {

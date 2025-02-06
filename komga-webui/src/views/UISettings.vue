@@ -57,7 +57,7 @@
 import Vue from 'vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import FileBrowserDialog from '@/components/dialogs/FileBrowserDialog.vue'
-import {CLIENT_SETTING, ClientSettingDto} from '@/types/komga-clientsettings'
+import {CLIENT_SETTING, ClientSettingDto, ClientSettingGlobalUpdateDto} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'UISettings',
@@ -91,32 +91,32 @@ export default Vue.extend({
   methods: {
     async refreshSettings() {
       await this.$store.dispatch('getClientSettings')
-      this.form.oauth2HideLogin = this.$store.getters.getClientSettingByKey(CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN)?.value === 'true'
-      this.form.oauth2AutoLogin = this.$store.getters.getClientSettingByKey(CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN)?.value === 'true'
-      this.form.posterStretch = this.$store.getters.getClientSettingByKey(CLIENT_SETTING.WEBUI_POSTER_STRETCH)?.value === 'true'
+      this.form.oauth2HideLogin = this.$store.state.komgaSettings.clientSettingsGlobal[CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN]?.value === 'true'
+      this.form.oauth2AutoLogin = this.$store.state.komgaSettings.clientSettingsGlobal[CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN]?.value === 'true'
+      this.form.posterStretch = this.$store.state.komgaSettings.clientSettingsGlobal[CLIENT_SETTING.WEBUI_POSTER_STRETCH]?.value === 'true'
       this.$v.form.$reset()
     },
     async saveSettings() {
+      let newSettings = {} as Record<string, ClientSettingGlobalUpdateDto>
       if (this.$v.form?.oauth2HideLogin?.$dirty)
-        await this.$komgaSettings.updateClientSettingGlobal({
-          key: CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN,
+        newSettings[CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN] = {
           value: this.form.oauth2HideLogin ? 'true' : 'false',
           allowUnauthorized: true,
-        })
+        }
 
       if (this.$v.form?.oauth2AutoLogin?.$dirty)
-        await this.$komgaSettings.updateClientSettingGlobal({
-          key: CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN,
+        newSettings[CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN] = {
           value: this.form.oauth2AutoLogin ? 'true' : 'false',
           allowUnauthorized: true,
-        })
+        }
 
       if (this.$v.form?.posterStretch?.$dirty)
-        await this.$komgaSettings.updateClientSettingGlobal({
-          key: CLIENT_SETTING.WEBUI_POSTER_STRETCH,
+        newSettings[CLIENT_SETTING.WEBUI_POSTER_STRETCH] = {
           value: this.form.posterStretch ? 'true' : 'false',
           allowUnauthorized: false,
-        })
+        }
+
+      await this.$komgaSettings.updateClientSettingGlobal(newSettings)
 
       await this.refreshSettings()
     },

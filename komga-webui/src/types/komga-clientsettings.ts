@@ -1,18 +1,14 @@
 export interface ClientSettingDto {
-  key: string,
   value: string,
   allowUnauthorized?: boolean,
-  userId?: string,
 }
 
 export interface ClientSettingGlobalUpdateDto {
-  key: string,
   value: string,
   allowUnauthorized: boolean,
 }
 
 export interface ClientSettingUserUpdateDto {
-  key: string,
   value: string,
 }
 

@@ -176,6 +176,7 @@ import {
 import {coverBase64} from '@/types/image'
 import {ReadListDto} from '@/types/komga-readlists'
 import OneShotActionsMenu from '@/components/menus/OneshotActionsMenu.vue'
+import {CLIENT_SETTING} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'ItemCard',
@@ -274,7 +275,7 @@ export default Vue.extend({
   },
   computed: {
     isStretch(): boolean {
-      return this.$store.getters.getClientSettingPosterStretch
+      return this.$store.getters.getClientSettings[CLIENT_SETTING.WEBUI_POSTER_STRETCH]?.value === 'true'
     },
     canReadPages(): boolean {
       return this.$store.getters.mePageStreaming && this.computedItem.type() === ItemTypes.BOOK

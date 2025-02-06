@@ -160,7 +160,7 @@ export default Vue.extend({
       unclaimed: false,
       oauth2Providers: [] as OAuth2ClientDto[],
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
-      clientSettings: [] as ClientSettingDto[],
+      clientSettings: {} as Record<string, ClientSettingDto>,
     }
   },
   validations: {
@@ -173,12 +173,12 @@ export default Vue.extend({
     hideLogin(): boolean {
       return !this.unclaimed
         && this.oauth2Providers.length > 0
-        && (this.clientSettings.find(x => x.key == CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN)?.value === 'true')
+        && (this.clientSettings[CLIENT_SETTING.WEBUI_OAUTH2_HIDE_LOGIN]?.value === 'true')
     },
     autoOauth2Login(): boolean {
       return !this.unclaimed
         && this.oauth2Providers.length == 1
-        && (this.clientSettings.find(x => x.key == CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN)?.value === 'true')
+        && (this.clientSettings[CLIENT_SETTING.WEBUI_OAUTH2_AUTO_LOGIN]?.value === 'true')
         && !this.$route.query.error
         && !this.$route.query.logout
     },
@@ -250,7 +250,7 @@ export default Vue.extend({
   },
   async mounted() {
     this.getClaimStatus()
-    this.clientSettings = await this.$komgaSettings.getClientSettings()
+    this.clientSettings = await this.$komgaSettings.getClientSettingsGlobal()
     this.oauth2Providers = await this.$komgaOauth2.getProviders()
     if (this.$route.query.error) this.showSnack(convertErrorCodes(this.$route.query.error.toString()))
     if (this.hideLogin && this.autoOauth2Login) this.oauth2Login(this.oauth2Providers[0])

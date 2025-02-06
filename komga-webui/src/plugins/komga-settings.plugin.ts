@@ -2,31 +2,32 @@ import {AxiosInstance} from 'axios'
 import _Vue from 'vue'
 import KomgaSettingsService from '@/services/komga-settings.service'
 import {Module} from 'vuex'
-import {LibraryDto} from '@/types/komga-libraries'
-import {CLIENT_SETTING, ClientSettingDto} from '@/types/komga-clientsettings'
+import {ClientSettingDto} from '@/types/komga-clientsettings'
 
-let service = KomgaSettingsService
+let service: KomgaSettingsService
 
 const vuexModule: Module<any, any> = {
   state: {
-    clientSettings: [] as ClientSettingDto[],
+    clientSettingsGlobal: {} as Record<string, ClientSettingDto>,
+    clientSettingsUser: {} as Record<string, ClientSettingDto>,
   },
   getters: {
-    getClientSettingByKey: (state) => (key: string) => {
-      return state.clientSettings.find((it: ClientSettingDto) => it.key === key)
-    },
-    getClientSettingPosterStretch(state): boolean {
-      return state.clientSettings.find((it: ClientSettingDto) => it.key === CLIENT_SETTING.WEBUI_POSTER_STRETCH)?.value === 'true'
+    getClientSettings(state): Record<string, ClientSettingDto> {
+      return {...state.clientSettingsGlobal, ...state.clientSettingsUser}
     },
   },
   mutations: {
-    setClientSettings(state, settings) {
-      state.clientSettings = settings
+    setClientSettingsGlobal(state, settings) {
+      state.clientSettingsGlobal = settings
+    },
+    setClientSettingsUser(state, settings) {
+      state.clientSettingsUser = settings
     },
   },
   actions: {
     async getClientSettings({commit}) {
-      commit('setClientSettings', await service.getClientSettings())
+      commit('setClientSettingsGlobal', await service.getClientSettingsGlobal())
+      commit('setClientSettingsUser', await service.getClientSettingsUser())
     },
   },
 }
