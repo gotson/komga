@@ -1,5 +1,9 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.ExampleObject
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
@@ -20,21 +24,31 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import io.swagger.v3.oas.annotations.parameters.RequestBody as OASRequestBody
 
 private const val KEY_REGEX = """[a-z]+(?:\.[a-z]+)*"""
 
 @RestController
 @RequestMapping(value = ["api/v1/client-settings"], produces = [MediaType.APPLICATION_JSON_VALUE])
+@Tag(
+  name = "Client Settings",
+  description = """
+  Store and retrieve global and per-user settings.
+  Those settings are not used by Komga itself, but can be stored for convenience by client applications.
+  """,
+)
 @Validated
 class ClientSettingsController(
   private val clientSettingsDtoDao: ClientSettingsDtoDao,
 ) {
   @GetMapping("global/list")
+  @Operation(summary = "Retrieve global client settings", description = "For unauthenticated users, only settings with 'allowUnauthorized=true' will be returned.")
   fun getGlobalSettings(
     @AuthenticationPrincipal principal: KomgaPrincipal?,
   ): Map<String, ClientSettingDto> = clientSettingsDtoDao.findAllGlobal(principal == null)
 
   @GetMapping("user/list")
+  @Operation(summary = "Retrieve client settings for the current user")
   fun getUserSettings(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): Map<String, ClientSettingDto> = clientSettingsDtoDao.findAllUser(principal.user.id)
@@ -42,6 +56,30 @@ class ClientSettingsController(
   @PatchMapping("global")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('ADMIN')")
+  @Operation(summary = "Save global settings", description = "Setting key should be a valid lowercase namespace string like 'application.domain.key'")
+  @OASRequestBody(
+    content = [
+      Content(
+        examples = [
+          //language=JSON
+          ExampleObject(
+            value =
+              """{
+              "application.key1": {
+                "value": "a string value",
+                "allowUnauthorized": true
+              },
+              "application.key2": {
+                "value": "{\"json\":\"object\"}",
+                "allowUnauthorized": false
+              }
+            }
+            """,
+          ),
+        ],
+      ),
+    ],
+  )
   fun saveGlobalSetting(
     @RequestBody newSettings: Map<
       @Pattern(regexp = KEY_REGEX)
@@ -57,6 +95,28 @@ class ClientSettingsController(
 
   @PatchMapping("user")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Operation(summary = "Save user settings for the current user", description = "Setting key should be a valid lowercase namespace string like 'application.domain.key'")
+  @OASRequestBody(
+    content = [
+      Content(
+        examples = [
+          //language=JSON
+          ExampleObject(
+            value =
+              """{
+              "application.key1": {
+                "value": "a string value"
+              },
+              "application.key2": {
+                "value": "{\"json\":\"object\"}"
+              }
+            }
+            """,
+          ),
+        ],
+      ),
+    ],
+  )
   fun saveUserSetting(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestBody newSettings: Map<
@@ -73,6 +133,17 @@ class ClientSettingsController(
 
   @DeleteMapping("global")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Operation(summary = "Delete global settings", description = "Setting key should be a valid lowercase namespace string like 'application.domain.key'")
+  @OASRequestBody(
+    content = [
+      Content(
+        examples = [
+          //language=JSON
+          ExampleObject(value = """["application.key1", "application.key2"]"""),
+        ],
+      ),
+    ],
+  )
   fun deleteGlobalSetting(
     @RequestBody keysToDelete: Set<
       @Pattern(regexp = KEY_REGEX)
@@ -84,6 +155,17 @@ class ClientSettingsController(
 
   @DeleteMapping("user")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Operation(summary = "Delete user settings for the current user", description = "Setting key should be a valid lowercase namespace string like 'application.domain.key'")
+  @OASRequestBody(
+    content = [
+      Content(
+        examples = [
+          //language=JSON
+          ExampleObject(value = """["application.key1", "application.key2"]"""),
+        ],
+      ),
+    ],
+  )
   fun deleteGlobalSetting(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestBody keysToDelete: Set<
