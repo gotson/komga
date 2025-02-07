@@ -8,12 +8,15 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.patch
 
@@ -155,6 +158,100 @@ class ClientSettingsControllerTest(
           jsonPath("$.setting.value") { value("value") }
         }
     }
+
+    @ParameterizedTest
+    @ValueSource(
+      strings = [
+        "UPPERCASE",
+        "   ",
+        "",
+        "symbols!",
+        "two..dots",
+        ".start.with.dot",
+        "end.with.dot.",
+      ],
+    )
+    @WithMockCustomUser(id = "user1")
+    fun `given non-admin user when updating user settings with invalid key then validation error is thrown`(key: String) {
+      //language=JSON
+      val jsonString =
+        """
+        {
+          "$key": {
+            "value": "value"
+          }
+        }
+        """.trimIndent()
+
+      mockMvc
+        .patch("/api/v1/client-settings/user") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+      strings = [
+        "UPPERCASE",
+        "   ",
+        "",
+        "symbols!",
+        "two..dots",
+        ".start.with.dot",
+        "end.with.dot.",
+      ],
+    )
+    @WithMockCustomUser(roles = ["ADMIN"])
+    fun `given non-admin user when deleting user settings with invalid key then validation error is thrown`(key: String) {
+      //language=JSON
+      val jsonString =
+        """
+        ["$key"]
+        """.trimIndent()
+
+      mockMvc
+        .delete("/api/v1/client-settings/user") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+      strings = [
+        //language=JSON
+        "null",
+        //language=JSON
+        """{"value": null }""",
+        //language=JSON
+        """{ "value": "   " }""",
+        //language=JSON
+        """{ "value": "" }""",
+      ],
+    )
+    @WithMockCustomUser(id = "user1")
+    fun `given non-admin user when updating user settings with invalid value then validation error is thrown`(value: String) {
+      //language=JSON
+      val jsonString =
+        """
+        {
+          "key": $value
+        }
+        """.trimIndent()
+
+      mockMvc
+        .patch("/api/v1/client-settings/user") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
+    }
   }
 
   @Nested
@@ -206,6 +303,115 @@ class ClientSettingsControllerTest(
           jsonPath("$.size()") { value(1) }
           jsonPath("$.setting.value") { value("value") }
           jsonPath("$.setting.allowUnauthorized") { value(false) }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+      strings = [
+        "UPPERCASE",
+        "   ",
+        "",
+        "symbols!",
+        "two..dots",
+        ".start.with.dot",
+        "end.with.dot.",
+      ],
+    )
+    @WithMockCustomUser(roles = ["ADMIN"])
+    fun `given admin user when updating global settings with invalid key then validation error is thrown`(key: String) {
+      //language=JSON
+      val jsonString =
+        """
+        {
+          "$key": {
+            "value": "value",
+            "allowUnauthorized": false
+          }
+        }
+        """.trimIndent()
+
+      mockMvc
+        .patch("/api/v1/client-settings/global") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+      strings = [
+        "UPPERCASE",
+        "   ",
+        "",
+        "symbols!",
+        "two..dots",
+        ".start.with.dot",
+        "end.with.dot.",
+      ],
+    )
+    @WithMockCustomUser(roles = ["ADMIN"])
+    fun `given admin user when deleting global settings with invalid key then validation error is thrown`(key: String) {
+      //language=JSON
+      val jsonString =
+        """
+        ["$key"]
+        """.trimIndent()
+
+      mockMvc
+        .delete("/api/v1/client-settings/global") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+      strings = [
+        //language=JSON
+        "null",
+        //language=JSON
+        """{
+          "value": "1",
+          "allowUnauthorized": null
+        }""",
+        //language=JSON
+        """{
+          "value": " ",
+          "allowUnauthorized": true
+        }""",
+        //language=JSON
+        """{
+          "value": "  ",
+          "allowUnauthorized": false
+        }""",
+        //language=JSON
+        """{
+          "value": null,
+          "allowUnauthorized": false
+        }""",
+      ],
+    )
+    @WithMockCustomUser(roles = ["ADMIN"])
+    fun `given admin user when updating global settings with invalid value then validation error is thrown`(value: String) {
+      //language=JSON
+      val jsonString =
+        """
+        {
+          "setting": $value
+        }
+        """.trimIndent()
+
+      mockMvc
+        .patch("/api/v1/client-settings/global") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
         }
     }
   }

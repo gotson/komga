@@ -145,6 +145,7 @@ tasks {
       freeCompilerArgs =
         listOf(
           "-Xjsr305=strict",
+          "-Xemit-jvm-type-annotations",
           "-opt-in=kotlin.time.ExperimentalTime",
         )
     }
