@@ -355,7 +355,7 @@ export default Vue.extend({
     },
     async resetParams(route: any, readListId: string) {
       // load dynamic filters
-      this.$set(this.filterOptions, 'library', this.$store.getters.getLibraries.map((x: LibraryDto) => ({
+      this.$set(this.filterOptions, 'library', this.$store.state.komgaLibraries.libraries.map((x: LibraryDto) => ({
         name: x.name,
         value: x.id,
       })))

@@ -55,6 +55,17 @@ const vuexModule: Module<any, any> = {
       await service.updateClientSettingUser(newSettings)
       dispatch('getClientSettingsUser')
     },
+    async updateLibrariesSettings({dispatch, getters}, updates: ClientSettingLibraryUpdate[]) {
+      const all = getters.getClientSettingsLibraries
+      updates.forEach(u => all[u.libraryId] = Object.assign({}, all[u.libraryId], u.patch))
+
+      const newSettings = {} as Record<string, ClientSettingUserUpdateDto>
+      newSettings[CLIENT_SETTING.WEBUI_LIBRARIES] = {
+        value: JSON.stringify(all),
+      }
+      await service.updateClientSettingUser(newSettings)
+      dispatch('getClientSettingsUser')
+    },
   },
 }
 

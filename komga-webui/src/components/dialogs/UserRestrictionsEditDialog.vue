@@ -188,7 +188,7 @@ export default Vue.extend({
   },
   computed: {
     libraries(): LibraryDto[] {
-      return this.$store.getters.getLibraries
+      return this.$store.state.komgaLibraries.libraries
     },
     ageRestrictionsAvailable(): any[] {
       return [
