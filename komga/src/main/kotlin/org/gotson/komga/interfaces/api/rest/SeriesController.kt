@@ -131,6 +131,7 @@ class SeriesController(
     ),
   )
   @GetMapping("v1/series")
+  @Operation(summary = "Use POST /api/v1/series/list instead")
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String? = null,
@@ -262,6 +263,7 @@ class SeriesController(
     ),
   )
   @GetMapping("v1/series/alphabetical-groups")
+  @Operation(summary = "Use POST /api/v1/series/list/alphabetical-groups instead")
   fun getAlphabeticalGroups(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
@@ -565,6 +567,7 @@ class SeriesController(
   @PageableAsQueryParam
   @AuthorsAsQueryParam
   @GetMapping("v1/series/{seriesId}/books")
+  @Operation(summary = "Use POST /api/v1/books/list instead")
   fun getAllBooksBySeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") seriesId: String,

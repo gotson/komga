@@ -118,6 +118,7 @@ class BookController(
   @Deprecated("use /v1/books/list instead")
   @PageableAsQueryParam
   @GetMapping("api/v1/books")
+  @Operation(summary = "Use POST /api/v1/books/list instead")
   fun getAllBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String? = null,

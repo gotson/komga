@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
@@ -128,7 +129,8 @@ class LibraryController(
   @PutMapping("/{libraryId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  @Deprecated("Use PATCH /v1/library instead", ReplaceWith("patchOne"))
+  @Deprecated("Use PATCH /v1/libraries/{libraryId} instead", ReplaceWith("patchOne"))
+  @Operation(summary = "Use PATCH /api/v1/libraries/{libraryId} instead")
   fun updateOne(
     @PathVariable libraryId: String,
     @Valid @RequestBody
