@@ -4,7 +4,6 @@
       <!--   Action menu   -->
       <library-actions-menu v-if="library"
                             :library="library"/>
-      <libraries-actions-menu v-else/>
 
       <v-toolbar-title>
         <span>{{ toolbarTitle }}</span>
