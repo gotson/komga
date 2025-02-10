@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -31,6 +32,40 @@ class ClientSettingsControllerTest(
   fun cleanup() {
     clientSettingsDtoDao.deleteAll()
   }
+
+  fun validKeys() =
+    listOf(
+      "single",
+      "one.two",
+      "one.with-dash",
+      "one.with_underscore",
+      "one.two.three-four_five",
+      "start2",
+      "start2.0value",
+      "start2.value2",
+      "start_2.value2",
+      "start-2.value2",
+    )
+
+  fun invalidKeys() =
+    listOf(
+      "UPPERCASE",
+      "   ",
+      "",
+      "symbols!",
+      "two..dots",
+      ".start.with.dot",
+      "end.with.dot.",
+      "setting.-secondstartwithdash",
+      "setting.-secondstartwithunderscore",
+      "setting.secondendwithdash-",
+      "setting.secondendwithunderscore_",
+      "-first",
+      "_first",
+      "first-",
+      "first_",
+      ".",
+    )
 
   @Nested
   inner class AnonymousUser {
@@ -129,14 +164,15 @@ class ClientSettingsControllerTest(
         }
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("validKeys")
     @WithMockCustomUser(id = "user1")
-    fun `given non-admin user when updating user settings then settings are updated`() {
+    fun `given non-admin user when updating user settings then settings are updated`(key: String) {
       //language=JSON
       val jsonString =
         """
         {
-          "setting": {
+          "$key": {
             "value": "value"
           }
         }
@@ -155,22 +191,12 @@ class ClientSettingsControllerTest(
         .andExpect {
           status { isOk() }
           jsonPath("$.size()") { value(1) }
-          jsonPath("$.setting.value") { value("value") }
+          jsonPath("$.['$key'].value") { value("value") }
         }
     }
 
     @ParameterizedTest
-    @ValueSource(
-      strings = [
-        "UPPERCASE",
-        "   ",
-        "",
-        "symbols!",
-        "two..dots",
-        ".start.with.dot",
-        "end.with.dot.",
-      ],
-    )
+    @MethodSource("invalidKeys")
     @WithMockCustomUser(id = "user1")
     fun `given non-admin user when updating user settings with invalid key then validation error is thrown`(key: String) {
       //language=JSON
@@ -193,17 +219,7 @@ class ClientSettingsControllerTest(
     }
 
     @ParameterizedTest
-    @ValueSource(
-      strings = [
-        "UPPERCASE",
-        "   ",
-        "",
-        "symbols!",
-        "two..dots",
-        ".start.with.dot",
-        "end.with.dot.",
-      ],
-    )
+    @MethodSource("invalidKeys")
     @WithMockCustomUser(roles = ["ADMIN"])
     fun `given non-admin user when deleting user settings with invalid key then validation error is thrown`(key: String) {
       //language=JSON
@@ -252,6 +268,10 @@ class ClientSettingsControllerTest(
           status { isBadRequest() }
         }
     }
+
+    private fun validKeys() = this@ClientSettingsControllerTest.validKeys()
+
+    private fun invalidKeys() = this@ClientSettingsControllerTest.invalidKeys()
   }
 
   @Nested
@@ -274,14 +294,15 @@ class ClientSettingsControllerTest(
         }
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("validKeys")
     @WithMockCustomUser(roles = ["ADMIN"])
-    fun `given admin user when updating global settings then settings are updated`() {
+    fun `given admin user when updating global settings then settings are updated`(key: String) {
       //language=JSON
       val jsonString =
         """
         {
-          "setting": {
+          "$key": {
             "value": "value",
             "allowUnauthorized": false
           }
@@ -301,23 +322,13 @@ class ClientSettingsControllerTest(
         .andExpect {
           status { isOk() }
           jsonPath("$.size()") { value(1) }
-          jsonPath("$.setting.value") { value("value") }
-          jsonPath("$.setting.allowUnauthorized") { value(false) }
+          jsonPath("$.['$key'].value") { value("value") }
+          jsonPath("$.['$key'].allowUnauthorized") { value(false) }
         }
     }
 
     @ParameterizedTest
-    @ValueSource(
-      strings = [
-        "UPPERCASE",
-        "   ",
-        "",
-        "symbols!",
-        "two..dots",
-        ".start.with.dot",
-        "end.with.dot.",
-      ],
-    )
+    @MethodSource("invalidKeys")
     @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when updating global settings with invalid key then validation error is thrown`(key: String) {
       //language=JSON
@@ -341,17 +352,7 @@ class ClientSettingsControllerTest(
     }
 
     @ParameterizedTest
-    @ValueSource(
-      strings = [
-        "UPPERCASE",
-        "   ",
-        "",
-        "symbols!",
-        "two..dots",
-        ".start.with.dot",
-        "end.with.dot.",
-      ],
-    )
+    @MethodSource("invalidKeys")
     @WithMockCustomUser(roles = ["ADMIN"])
     fun `given admin user when deleting global settings with invalid key then validation error is thrown`(key: String) {
       //language=JSON
@@ -414,5 +415,9 @@ class ClientSettingsControllerTest(
           status { isBadRequest() }
         }
     }
+
+    private fun validKeys() = this@ClientSettingsControllerTest.validKeys()
+
+    private fun invalidKeys() = this@ClientSettingsControllerTest.invalidKeys()
   }
 }
