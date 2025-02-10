@@ -54,150 +54,57 @@
       >
       </empty-state>
 
-      <horizontal-scroller
-        v-if="loaderInProgressBooks && loaderInProgressBooks.items.length !== 0"
-        class="mb-4"
-        :tick="loaderInProgressBooks.tick"
-        @scroll-changed="(percent) => scrollChanged(loaderInProgressBooks, percent)"
-      >
-        <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.keep_reading') }}</div>
-        </template>
-        <template v-slot:content>
-          <item-browser :items="loaderInProgressBooks.items"
-                        :item-context="[ItemContext.SHOW_SERIES]"
-                        nowrap
-                        :edit-function="isAdmin ? singleEditBook : undefined"
-                        :selected.sync="selectedBooks"
-                        :selectable="selectedSeries.length === 0"
-                        :fixed-item-width="fixedCardWidth"
-          />
-        </template>
-      </horizontal-scroller>
+      <template v-for="(section, i) in sections">
+        <horizontal-scroller
+          v-bind:key="i"
+          v-if="section.loader && section.loader.items.length !== 0"
+          class="mb-4"
+          :tick="section.loader.tick"
+          @scroll-changed="(percent) => scrollChanged(section.loader, percent)"
+        >
+          <template v-slot:prepend>
+            <div class="title">{{ $t(`dashboard.${section.value.toLowerCase()}`) }}</div>
+          </template>
+          <template v-slot:content>
+            <item-browser v-if="section.type ===SectionType.BOOK"
+                          :items="section.loader.items"
+                          :item-context="section.itemContext"
+                          nowrap
+                          :edit-function="isAdmin ? singleEditBook : undefined"
+                          :selected.sync="selectedBooks"
+                          :selectable="selectedSeries.length === 0"
+                          :fixed-item-width="fixedCardWidth"
+            />
+            <item-browser v-if="section.type === SectionType.SERIES"
+                          :items="section.loader.items"
+                          :item-context="section.itemContext"
+                          nowrap
+                          :edit-function="isAdmin ? singleEditSeries : undefined"
+                          :selected.sync="selectedSeries"
+                          :selectable="selectedBooks.length === 0"
+                          :fixed-item-width="fixedCardWidth"
+            />
+          </template>
+        </horizontal-scroller>
+      </template>
 
-      <horizontal-scroller
-        v-if="loaderOnDeckBooks && loaderOnDeckBooks.items.length !== 0"
-        class="mb-4"
-        :tick="loaderOnDeckBooks.tick"
-        @scroll-changed="(percent) => scrollChanged(loaderOnDeckBooks, percent)"
-      >
-        <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.on_deck') }}</div>
-        </template>
-        <template v-slot:content>
-          <item-browser :items="loaderOnDeckBooks.items"
-                        :item-context="[ItemContext.SHOW_SERIES]"
-                        nowrap
-                        :edit-function="isAdmin ? singleEditBook : undefined"
-                        :selected.sync="selectedBooks"
-                        :selectable="selectedSeries.length === 0"
-                        :fixed-item-width="fixedCardWidth"
-          />
-        </template>
-      </horizontal-scroller>
+      <v-fab-transition>
+        <v-btn
+          fab
+          bottom
+          right
+          fixed
+          @click="modalEditRecommended = true"
+        >
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+      </v-fab-transition>
 
-      <horizontal-scroller
-        v-if="loaderRecentlyReleasedBooks && loaderRecentlyReleasedBooks.items.length !== 0"
-        class="mb-4"
-        :tick="loaderRecentlyReleasedBooks.tick"
-        @scroll-changed="(percent) => scrollChanged(loaderRecentlyReleasedBooks, percent)"
-      >
-        <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_released_books') }}</div>
-        </template>
-        <template v-slot:content>
-          <item-browser :items="loaderRecentlyReleasedBooks.items"
-                        :item-context="[ItemContext.RELEASE_DATE, ItemContext.SHOW_SERIES]"
-                        nowrap
-                        :edit-function="isAdmin ? singleEditBook : undefined"
-                        :selected.sync="selectedBooks"
-                        :selectable="selectedSeries.length === 0"
-                        :fixed-item-width="fixedCardWidth"
-          />
-        </template>
-      </horizontal-scroller>
-
-      <horizontal-scroller
-        v-if="loaderLatestBooks && loaderLatestBooks.items.length !== 0"
-        class="mb-4"
-        :tick="loaderLatestBooks.tick"
-        @scroll-changed="(percent) => scrollChanged(loaderLatestBooks, percent)"
-      >
-        <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_added_books') }}</div>
-        </template>
-        <template v-slot:content>
-          <item-browser :items="loaderLatestBooks.items"
-                        :item-context="[ItemContext.SHOW_SERIES]"
-                        nowrap
-                        :edit-function="isAdmin ? singleEditBook : undefined"
-                        :selected.sync="selectedBooks"
-                        :selectable="selectedSeries.length === 0"
-                        :fixed-item-width="fixedCardWidth"
-          />
-        </template>
-      </horizontal-scroller>
-
-      <horizontal-scroller
-        v-if="loaderNewSeries && loaderNewSeries.items.length !== 0"
-        class="mb-4"
-        :tick="loaderNewSeries.tick"
-        @scroll-changed="(percent) => scrollChanged(loaderNewSeries, percent)"
-      >
-        <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_added_series') }}</div>
-        </template>
-        <template v-slot:content>
-          <item-browser :items="loaderNewSeries.items"
-                        nowrap
-                        :edit-function="isAdmin ? singleEditSeries : undefined"
-                        :selected.sync="selectedSeries"
-                        :selectable="selectedBooks.length === 0"
-                        :fixed-item-width="fixedCardWidth"
-          />
-        </template>
-      </horizontal-scroller>
-
-      <horizontal-scroller
-        v-if="loaderUpdatedSeries && loaderUpdatedSeries.items.length !== 0"
-        class="mb-4"
-        :tick="loaderUpdatedSeries.tick"
-        @scroll-changed="(percent) => scrollChanged(loaderUpdatedSeries, percent)"
-      >
-        <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_updated_series') }}</div>
-        </template>
-        <template v-slot:content>
-          <item-browser :items="loaderUpdatedSeries.items"
-                        nowrap
-                        :edit-function="isAdmin ? singleEditSeries : undefined"
-                        :selected.sync="selectedSeries"
-                        :selectable="selectedBooks.length === 0"
-                        :fixed-item-width="fixedCardWidth"
-          />
-        </template>
-      </horizontal-scroller>
-
-      <horizontal-scroller
-        v-if="loaderRecentlyReadBooks && loaderRecentlyReadBooks.items.length !== 0"
-        class="mb-4"
-        :tick="loaderRecentlyReadBooks.tick"
-        @scroll-changed="(percent) => scrollChanged(loaderRecentlyReadBooks, percent)"
-      >
-        <template v-slot:prepend>
-          <div class="title">{{ $t('dashboard.recently_read_books') }}</div>
-        </template>
-        <template v-slot:content>
-          <item-browser :items="loaderRecentlyReadBooks.items"
-                        :item-context="[ItemContext.SHOW_SERIES, ItemContext.READ_DATE]"
-                        nowrap
-                        :edit-function="isAdmin ? singleEditBook : undefined"
-                        :selected.sync="selectedBooks"
-                        :selectable="selectedSeries.length === 0"
-                        :fixed-item-width="fixedCardWidth"
-          />
-        </template>
-      </horizontal-scroller>
+      <edit-recommended-dialog
+        v-model="modalEditRecommended"
+        :view-config.sync="viewConfig"
+        @reset-defaults="resetDefaultView"
+      />
     </v-container>
   </div>
 </template>
@@ -246,10 +153,32 @@ import {
   SearchOperatorAfter,
   SearchOperatorIs,
 } from '@/types/komga-search'
+import {
+  CLIENT_SETTING,
+  ClientSettingsRecommendedView,
+  ClientSettingsRecommendedViewSection,
+  ClientSettingUserUpdateDto,
+  RECOMMENDED_DEFAULT,
+  RecommendedViewSection,
+} from '@/types/komga-clientsettings'
+import EditRecommendedDialog from '@/components/dialogs/EditRecommendedDialog.vue'
+
+interface SectionConfig {
+  loader: PageLoader<any> | undefined,
+  type: SectionType,
+  value: RecommendedViewSection,
+  itemContext?: ItemContext[] | undefined,
+}
+
+enum SectionType {
+  SERIES,
+  BOOK,
+}
 
 export default Vue.extend({
   name: 'DashboardView',
   components: {
+    EditRecommendedDialog,
     HorizontalScroller,
     EmptyState,
     ToolbarSticky,
@@ -261,14 +190,16 @@ export default Vue.extend({
   data: () => {
     return {
       ItemContext,
+      SectionType,
       loading: false,
-      loaderNewSeries: undefined as unknown as PageLoader<SeriesDto>,
-      loaderUpdatedSeries: undefined as unknown as PageLoader<SeriesDto>,
-      loaderLatestBooks: undefined as unknown as PageLoader<BookDto>,
-      loaderInProgressBooks: undefined as unknown as PageLoader<BookDto>,
-      loaderOnDeckBooks: undefined as unknown as PageLoader<BookDto>,
-      loaderRecentlyReleasedBooks: undefined as unknown as PageLoader<BookDto>,
-      loaderRecentlyReadBooks: undefined as unknown as PageLoader<BookDto>,
+      modalEditRecommended: false,
+      loaderRecentlyAddedSeries: undefined as PageLoader<SeriesDto> | undefined,
+      loaderRecentlyUpdatedSeries: undefined as PageLoader<SeriesDto> | undefined,
+      loaderRecentlyAddedBooks: undefined as PageLoader<BookDto> | undefined,
+      loaderKeepReadingBooks: undefined as PageLoader<BookDto> | undefined,
+      loaderOnDeckBooks: undefined as PageLoader<BookDto> | undefined,
+      loaderRecentlyReleasedBooks: undefined as PageLoader<BookDto> | undefined,
+      loaderRecentlyReadBooks: undefined as PageLoader<BookDto> | undefined,
       selectedSeries: [] as SeriesDto[],
       selectedBooks: [] as BookDto[],
     }
@@ -312,10 +243,6 @@ export default Vue.extend({
     },
   },
   watch: {
-    libraryId(val) {
-      this.setupLoaders(val)
-      this.loadAll()
-    },
     libraryIds() {
       this.setupLoaders(this.libraryId)
       this.loadAll()
@@ -333,6 +260,36 @@ export default Vue.extend({
     },
   },
   computed: {
+    settingsKey(): string {
+      return `${CLIENT_SETTING.WEBUI_RECOMMENDED}.${this.libraryId}`.toLowerCase()
+    },
+    viewConfig: {
+      get: function (): ClientSettingsRecommendedView {
+        try {
+          return JSON.parse(this.$store.getters.getClientSettings[this.settingsKey].value) as ClientSettingsRecommendedView
+        } catch (_) {
+        }
+        return RECOMMENDED_DEFAULT
+      },
+      set: async function (view: ClientSettingsRecommendedView) {
+        let newSettings = {} as Record<string, ClientSettingUserUpdateDto>
+        newSettings[this.settingsKey] = {
+          value: JSON.stringify(view),
+        }
+        await this.$komgaSettings.updateClientSettingUser(newSettings)
+        await this.$store.dispatch('getClientSettingsUser')
+        this.setupLoaders(this.libraryId)
+        this.loadAll(true)
+      },
+    },
+    sections(): SectionConfig[] {
+      const sections = [] as SectionConfig[]
+      this.viewConfig.sections.forEach((it: ClientSettingsRecommendedViewSection) => {
+        const config = this.getSectionConfig(it.section)
+        if (config != undefined) sections.push(config)
+      })
+      return sections
+    },
     library(): LibraryDto | undefined {
       return this.getLibraryLazy(this.libraryId)
     },
@@ -346,13 +303,13 @@ export default Vue.extend({
       return this.$vuetify.breakpoint.xs ? 120 : 150
     },
     allEmpty(): boolean {
-      return this.loaderNewSeries?.items.length === 0 &&
-        this.loaderUpdatedSeries?.items.length === 0 &&
-        this.loaderLatestBooks?.items.length === 0 &&
-        this.loaderInProgressBooks?.items.length === 0 &&
-        this.loaderOnDeckBooks?.items.length === 0 &&
-        this.loaderRecentlyReleasedBooks?.items.length === 0 &&
-        this.loaderRecentlyReadBooks?.items.length === 0
+      return (this.loaderRecentlyAddedSeries == undefined || this.loaderRecentlyAddedSeries?.items.length === 0) &&
+        (this.loaderRecentlyUpdatedSeries == undefined || this.loaderRecentlyUpdatedSeries?.items.length === 0) &&
+        (this.loaderRecentlyAddedBooks == undefined || this.loaderRecentlyAddedBooks?.items.length === 0) &&
+        (this.loaderKeepReadingBooks == undefined || this.loaderKeepReadingBooks?.items.length === 0) &&
+        (this.loaderOnDeckBooks == undefined || this.loaderOnDeckBooks?.items.length === 0) &&
+        (this.loaderRecentlyReleasedBooks == undefined || this.loaderRecentlyReleasedBooks?.items.length === 0) &&
+        (this.loaderRecentlyReadBooks == undefined || this.loaderRecentlyReadBooks?.items.length === 0)
     },
     individualLibrary(): boolean {
       return this.libraryId !== LIBRARIES_ALL
@@ -362,6 +319,68 @@ export default Vue.extend({
     },
   },
   methods: {
+    async resetDefaultView() {
+      await this.$komgaSettings.deleteClientSettingUser([this.settingsKey])
+      await this.$store.dispatch('getClientSettingsUser')
+      this.setupLoaders(this.libraryId)
+      this.loadAll(true)
+    },
+    hasSection(section: RecommendedViewSection): boolean {
+      return this.viewConfig.sections.some(it => it.section === section)
+    },
+    getSectionConfig(section: RecommendedViewSection): SectionConfig | undefined {
+      switch (section) {
+        case RecommendedViewSection.KEEP_READING:
+          return {
+            loader: this.loaderKeepReadingBooks,
+            type: SectionType.BOOK,
+            value: section,
+            itemContext: [ItemContext.SHOW_SERIES],
+          }
+        case RecommendedViewSection.ON_DECK:
+          return {
+            loader: this.loaderOnDeckBooks,
+            type: SectionType.BOOK,
+            value: section,
+            itemContext: [ItemContext.SHOW_SERIES],
+          }
+        case RecommendedViewSection.RECENTLY_RELEASED_BOOKS:
+          return {
+            loader: this.loaderRecentlyReleasedBooks,
+            type: SectionType.BOOK,
+            value: section,
+            itemContext: [ItemContext.RELEASE_DATE, ItemContext.SHOW_SERIES],
+          }
+        case RecommendedViewSection.RECENTLY_ADDED_BOOKS:
+          return {
+            loader: this.loaderRecentlyAddedBooks,
+            type: SectionType.BOOK,
+            value: section,
+            itemContext: [ItemContext.SHOW_SERIES],
+          }
+        case RecommendedViewSection.RECENTLY_ADDED_SERIES:
+          return {
+            loader: this.loaderRecentlyAddedSeries,
+            type: SectionType.SERIES,
+            value: section,
+          }
+        case RecommendedViewSection.RECENTLY_UPDATED_SERIES:
+          return {
+            loader: this.loaderRecentlyUpdatedSeries,
+            type: SectionType.SERIES,
+            value: section,
+          }
+        case RecommendedViewSection.RECENTLY_READ_BOOKS:
+          return {
+            loader: this.loaderRecentlyReadBooks,
+            type: SectionType.BOOK,
+            value: section,
+            itemContext: [ItemContext.SHOW_SERIES],
+          }
+        default:
+          return undefined
+      }
+    },
     async scrollChanged(loader: PageLoader<any>, percent: number) {
       if (percent > 0.95) await loader.loadNext()
     },
@@ -379,15 +398,15 @@ export default Vue.extend({
       }
     },
     readProgressChanged(event: ReadProgressSseDto) {
-      if (this.loaderInProgressBooks?.items.some(b => b.id === event.bookId)) this.reload()
-      else if (this.loaderLatestBooks?.items.some(b => b.id === event.bookId)) this.reload()
+      if (this.loaderKeepReadingBooks?.items.some(b => b.id === event.bookId)) this.reload()
+      else if (this.loaderRecentlyAddedBooks?.items.some(b => b.id === event.bookId)) this.reload()
       else if (this.loaderOnDeckBooks?.items.some(b => b.id === event.bookId)) this.reload()
       else if (this.loaderRecentlyReleasedBooks?.items.some(b => b.id === event.bookId)) this.reload()
       else if (this.loaderRecentlyReadBooks?.items.some(b => b.id === event.bookId)) this.reload()
     },
     readProgressSeriesChanged(event: ReadProgressSeriesSseDto) {
-      if (this.loaderUpdatedSeries?.items.some(s => s.id === event.seriesId)) this.reload()
-      else if (this.loaderNewSeries?.items.some(s => s.id === event.seriesId)) this.reload()
+      if (this.loaderRecentlyUpdatedSeries?.items.some(s => s.id === event.seriesId)) this.reload()
+      else if (this.loaderRecentlyAddedSeries?.items.some(s => s.id === event.seriesId)) this.reload()
     },
     reload: throttle(function (this: any) {
       this.loadAll(true)
@@ -400,43 +419,43 @@ export default Vue.extend({
           requestLibraries.map((it: string) => new SearchConditionLibraryId(new SearchOperatorIs(it))),
         ))
 
-      this.loaderInProgressBooks = new PageLoader<BookDto>(
+      this.loaderKeepReadingBooks = this.hasSection(RecommendedViewSection.KEEP_READING) ? new PageLoader<BookDto>(
         {sort: ['readProgress.readDate,desc']},
         (pageable: PageRequest) => this.$komgaBooks.getBooksList({
           condition: new SearchConditionAllOfBook([...baseBookConditions, new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.IN_PROGRESS))]),
         } as BookSearch, pageable),
-      )
-      this.loaderOnDeckBooks = new PageLoader<BookDto>(
+      ) : undefined
+      this.loaderOnDeckBooks = this.hasSection(RecommendedViewSection.ON_DECK) ? new PageLoader<BookDto>(
         {},
         (pageable: PageRequest) => this.$komgaBooks.getBooksOnDeck(requestLibraries, pageable),
-      )
-      this.loaderLatestBooks = new PageLoader<BookDto>(
+      ) : undefined
+      this.loaderRecentlyAddedBooks = this.hasSection(RecommendedViewSection.RECENTLY_ADDED_BOOKS) ? new PageLoader<BookDto>(
         {sort: ['createdDate,desc']},
         (pageable: PageRequest) => this.$komgaBooks.getBooksList({
           condition: new SearchConditionAllOfBook(baseBookConditions),
         } as BookSearch, pageable),
-      )
-      this.loaderRecentlyReleasedBooks = new PageLoader<BookDto>(
+      ) : undefined
+      this.loaderRecentlyReleasedBooks = this.hasSection(RecommendedViewSection.RECENTLY_RELEASED_BOOKS) ? new PageLoader<BookDto>(
         {sort: ['metadata.releaseDate,desc']},
         (pageable: PageRequest) => this.$komgaBooks.getBooksList({
           condition: new SearchConditionAllOfBook([...baseBookConditions, new SearchConditionReleaseDate(new SearchOperatorAfter(subMonths(new Date(), 1)))]),
         } as BookSearch, pageable),
-      )
-      this.loaderRecentlyReadBooks = new PageLoader<BookDto>(
+      ) : undefined
+      this.loaderRecentlyReadBooks = this.hasSection(RecommendedViewSection.RECENTLY_READ_BOOKS) ? new PageLoader<BookDto>(
         {sort: ['readProgress.readDate,desc']},
         (pageable: PageRequest) => this.$komgaBooks.getBooksList({
           condition: new SearchConditionAllOfBook([...baseBookConditions, new SearchConditionReadStatus(new SearchOperatorIs(ReadStatus.READ))]),
         } as BookSearch, pageable),
-      )
+      ) : undefined
 
-      this.loaderNewSeries = new PageLoader<SeriesDto>(
+      this.loaderRecentlyAddedSeries = this.hasSection(RecommendedViewSection.RECENTLY_ADDED_SERIES) ? new PageLoader<SeriesDto>(
         {},
         (pageable: PageRequest) => this.$komgaSeries.getNewSeries(requestLibraries, false, pageable),
-      )
-      this.loaderUpdatedSeries = new PageLoader<SeriesDto>(
+      ) : undefined
+      this.loaderRecentlyUpdatedSeries = this.hasSection(RecommendedViewSection.RECENTLY_UPDATED_SERIES) ? new PageLoader<SeriesDto>(
         {},
         (pageable: PageRequest) => this.$komgaSeries.getUpdatedSeries(requestLibraries, false, pageable),
-      )
+      ) : undefined
     },
     loadAll(reload: boolean = false) {
       this.loading = true
@@ -446,25 +465,25 @@ export default Vue.extend({
 
       if (reload) {
         Promise.all([
-          this.loaderInProgressBooks.reload(),
-          this.loaderOnDeckBooks.reload(),
-          this.loaderRecentlyReleasedBooks.reload(),
-          this.loaderLatestBooks.reload(),
-          this.loaderNewSeries.reload(),
-          this.loaderUpdatedSeries.reload(),
-          this.loaderRecentlyReadBooks.reload(),
+          this.loaderKeepReadingBooks?.reload(),
+          this.loaderOnDeckBooks?.reload(),
+          this.loaderRecentlyReleasedBooks?.reload(),
+          this.loaderRecentlyAddedBooks?.reload(),
+          this.loaderRecentlyAddedSeries?.reload(),
+          this.loaderRecentlyUpdatedSeries?.reload(),
+          this.loaderRecentlyReadBooks?.reload(),
         ]).then(() => {
           this.loading = false
         })
       } else {
         Promise.all([
-          this.loaderInProgressBooks.loadNext(),
-          this.loaderOnDeckBooks.loadNext(),
-          this.loaderRecentlyReleasedBooks.loadNext(),
-          this.loaderLatestBooks.loadNext(),
-          this.loaderNewSeries.loadNext(),
-          this.loaderUpdatedSeries.loadNext(),
-          this.loaderRecentlyReadBooks.loadNext(),
+          this.loaderKeepReadingBooks?.loadNext(),
+          this.loaderOnDeckBooks?.loadNext(),
+          this.loaderRecentlyReleasedBooks?.loadNext(),
+          this.loaderRecentlyAddedBooks?.loadNext(),
+          this.loaderRecentlyAddedSeries?.loadNext(),
+          this.loaderRecentlyUpdatedSeries?.loadNext(),
+          this.loaderRecentlyReadBooks?.loadNext(),
         ]).then(() => {
           this.loading = false
         })

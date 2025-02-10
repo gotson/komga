@@ -19,6 +19,7 @@ export enum CLIENT_SETTING {
   WEBUI_POSTER_BLUR_UNREAD = 'webui.poster.blur_unread',
   WEBUI_LIBRARIES = 'webui.libraries',
   WEBUI_SERIES_GROUPS = 'webui.series_groups',
+  WEBUI_RECOMMENDED = 'webui.recommended',
 }
 
 export interface ClientSettingLibrary {
@@ -112,3 +113,33 @@ export const SERIES_GROUP_JAPANESE = {
     'わ': ['わ', 'ワ'],
   },
 } as ClientSettingsSeriesGroup
+
+export interface ClientSettingsRecommendedView {
+  sections: ClientSettingsRecommendedViewSection[],
+}
+
+export interface ClientSettingsRecommendedViewSection {
+  section: RecommendedViewSection,
+}
+
+export enum RecommendedViewSection {
+  KEEP_READING = 'KEEP_READING',
+  ON_DECK = 'ON_DECK',
+  RECENTLY_RELEASED_BOOKS = 'RECENTLY_RELEASED_BOOKS',
+  RECENTLY_ADDED_BOOKS = 'RECENTLY_ADDED_BOOKS',
+  RECENTLY_ADDED_SERIES = 'RECENTLY_ADDED_SERIES',
+  RECENTLY_UPDATED_SERIES = 'RECENTLY_UPDATED_SERIES',
+  RECENTLY_READ_BOOKS = 'RECENTLY_READ_BOOKS',
+}
+
+export const RECOMMENDED_DEFAULT = {
+  sections: [
+    {section: RecommendedViewSection.KEEP_READING},
+    {section: RecommendedViewSection.ON_DECK},
+    {section: RecommendedViewSection.RECENTLY_RELEASED_BOOKS},
+    {section: RecommendedViewSection.RECENTLY_ADDED_BOOKS},
+    {section: RecommendedViewSection.RECENTLY_ADDED_SERIES},
+    {section: RecommendedViewSection.RECENTLY_UPDATED_SERIES},
+    {section: RecommendedViewSection.RECENTLY_READ_BOOKS},
+  ],
+} as ClientSettingsRecommendedView

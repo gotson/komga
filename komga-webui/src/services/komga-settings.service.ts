@@ -83,4 +83,16 @@ export default class KomgaSettingsService {
       throw new Error(msg)
     }
   }
+
+  async deleteClientSettingUser(settings: string[]) {
+    try {
+      await this.http.delete(`${API_CLIENT_SETTINGS}/user`, {data: settings})
+    } catch (e) {
+      let msg = 'An error occurred while trying to delete user client setting'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
 }

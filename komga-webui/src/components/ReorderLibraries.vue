@@ -73,7 +73,6 @@ export default Vue.extend({
     dragOptions(): any {
       return {
         animation: 200,
-        // group: 'item-cards',
         ghostClass: 'ghost',
       }
     },
