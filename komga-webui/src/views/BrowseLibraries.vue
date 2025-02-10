@@ -74,7 +74,7 @@
     <v-container fluid>
       <alphabetical-navigation
         class="text-center"
-        :symbols="alphabeticalNavigation"
+        :symbols="seriesGroupingKeys"
         :selected="selectedSymbol"
         :group-count="seriesGroups"
         @clicked="filterByStarting"
@@ -209,6 +209,7 @@ import {
   NameValue,
 } from '@/types/filter'
 import LibrariesActionsMenu from '@/components/menus/LibrariesActionsMenu.vue'
+import {CLIENT_SETTING, ClientSettingsSeriesGroup, SERIES_GROUP_ALPHA} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
@@ -231,7 +232,6 @@ export default Vue.extend({
     return {
       series: [] as SeriesDto[],
       seriesGroups: [] as GroupCountDto[],
-      alphabeticalNavigation: ['ALL', '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
       selectedSymbol: 'ALL',
       selectedSeries: [] as SeriesDto[],
       page: 1,
@@ -326,6 +326,21 @@ export default Vue.extend({
     next()
   },
   computed: {
+    seriesGrouping(): Record<string, string[]> {
+      let s: Record<string, string[]>
+      try {
+        s = (JSON.parse(this.$store.getters.getClientSettings[CLIENT_SETTING.WEBUI_SERIES_GROUPS].value) as ClientSettingsSeriesGroup).groups
+      } catch (_) {
+        s = SERIES_GROUP_ALPHA.groups
+      }
+      return s
+    },
+    seriesGroupingKeys(): string[] {
+      return ['ALL', '#', ...this.$_.keys(this.seriesGrouping)]
+    },
+    seriesGroupingValues(): string[] {
+      return this.$_(this.seriesGrouping).values().flatten().map(this.$_.lowerCase).toArray() as unknown as string[]
+    },
     library(): LibraryDto | undefined {
       return this.getLibraryLazy(this.libraryId)
     },
@@ -337,11 +352,13 @@ export default Vue.extend({
     symbolCondition(): SearchConditionSeries | undefined {
       if (this.selectedSymbol === 'ALL') return undefined
       if (this.selectedSymbol === '#') return new SearchConditionAllOfSeries(
-        this.alphabeticalNavigation
-          .filter(it => it !== 'ALL' && it !== '#')
+        this.seriesGroupingValues
           .map(it => new SearchConditionTitleSort(new SearchOperatorDoesNotBeginWith(it))),
       )
-      return new SearchConditionTitleSort(new SearchOperatorBeginsWith(this.selectedSymbol))
+      return new SearchConditionAnyOfSeries(
+        this.seriesGrouping[this.selectedSymbol]
+          .map(it => new SearchConditionTitleSort(new SearchOperatorBeginsWith(it))),
+      )
     },
     itemContext(): ItemContext[] {
       if (this.sortActive.key === 'booksMetadata.releaseDate') return [ItemContext.RELEASE_DATE]
@@ -737,11 +754,11 @@ export default Vue.extend({
         condition: new SearchConditionAllOfSeries(groupConditions),
       } as SeriesSearch)
       const nonAlpha = seriesGroups
-        .filter((g) => !(/[a-zA-Z]/).test(g.group))
+        .filter((g) => !this.seriesGroupingValues.includes(g.group))
         .reduce((a, b) => a + b.count, 0)
       const all = seriesGroups.reduce((a, b) => a + b.count, 0)
       this.seriesGroups = [
-        ...seriesGroups.filter((g) => (/[a-zA-Z]/).test(g.group)),
+        ...seriesGroups.filter((g) => this.seriesGroupingValues.includes(g.group)),
         {group: '#', count: nonAlpha} as GroupCountDto,
         {group: 'ALL', count: all} as GroupCountDto,
       ]

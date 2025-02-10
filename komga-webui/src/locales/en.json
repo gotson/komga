@@ -1034,10 +1034,17 @@
     "more": "More titles"
   },
   "ui_settings": {
+    "general": "General",
     "label_oauth2_auto_login": "Automatic OAuth2 login",
     "label_oauth2_hide_login": "Hide login fields if OAuth2 is enabled",
     "label_poster_blur_unread": "Blur poster for unread books and series",
     "label_poster_stretch": "Stretch poster to fit card",
+    "label_series_groups": "Series grouping",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Alphabetical",
+      "japanese": "Gojūon (Japanese)"
+    },
     "tooltip_oauth2_auto_login": "Requires a single OAuth2 provider, and 'hide login fields' enabled"
   },
   "updates": {
