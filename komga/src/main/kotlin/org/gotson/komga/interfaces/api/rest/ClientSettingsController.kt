@@ -86,7 +86,7 @@ class ClientSettingsController(
       String,
       @NotNull @Valid
       ClientSettingGlobalUpdateDto,
-      >,
+    >,
   ) {
     newSettings.forEach { (key, setting) ->
       clientSettingsDtoDao.saveGlobal(key, setting.value, setting.allowUnauthorized)
@@ -124,7 +124,7 @@ class ClientSettingsController(
       String,
       @NotNull @Valid
       ClientSettingUserUpdateDto,
-      >,
+    >,
   ) {
     newSettings.forEach { (key, setting) ->
       clientSettingsDtoDao.saveForUser(principal.user.id, key, setting.value)
@@ -148,7 +148,7 @@ class ClientSettingsController(
     @RequestBody keysToDelete: Set<
       @Pattern(regexp = KEY_REGEX)
       String,
-      >,
+    >,
   ) {
     clientSettingsDtoDao.deleteGlobalByKeys(keysToDelete)
   }
@@ -171,7 +171,7 @@ class ClientSettingsController(
     @RequestBody keysToDelete: Set<
       @Pattern(regexp = KEY_REGEX)
       String,
-      >,
+    >,
   ) {
     clientSettingsDtoDao.deleteByUserIdAndKeys(principal.user.id, keysToDelete)
   }
