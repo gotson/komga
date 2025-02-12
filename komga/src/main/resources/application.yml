@@ -93,14 +93,9 @@ management:
         enabled: true
         step: 24h
 springdoc:
-  group-configs:
-    - group: REST API
-      paths-to-match: /api/**
-    - group: OPDS v1
-      paths-to-match: /opds/v1.2/**
-    - group: OPDS v2
-      paths-to-match: /opds/v2/**
   swagger-ui:
     groups-order: desc
     operations-sorter: alpha
     disable-swagger-default-url: true
+    tags-sorter: alpha
+  paths-to-match: "/api/**"
