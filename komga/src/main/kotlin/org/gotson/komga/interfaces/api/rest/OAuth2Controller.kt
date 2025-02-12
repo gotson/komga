@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.api.rest
 
 import org.springframework.http.MediaType
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -15,7 +16,7 @@ class OAuth2Controller(
       OAuth2ClientDto(it.clientName, it.registrationId)
     } ?: emptyList()
 
-  @RequestMapping("providers")
+  @GetMapping("providers")
   fun getProviders() = registrationIds
 }
 
