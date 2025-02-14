@@ -152,6 +152,7 @@ const router = new Router({
         {
           path: '/history',
           name: 'history',
+          beforeEnter: adminGuard,
           component: () => import(/* webpackChunkName: "history" */ './views/HistoryView.vue'),
         },
         {
