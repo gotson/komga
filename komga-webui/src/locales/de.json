@@ -25,7 +25,9 @@
       "generate_api_key": "Erzeuge API Schlüssel",
       "no_keys": "Bisher keine API Schlüssel vorhanden"
     },
-    "change_password": "Passwort ändern"
+    "change_password": "Passwort ändern",
+    "details": "Details",
+    "my_account": "Mein Account"
   },
   "announcements": {
     "mark_all_read": "Alle als gelesen markieren",
@@ -93,6 +95,7 @@
     "beginning_of_book": "Sie sind am Anfang des Buches.",
     "changing_reading_direction": "Leserichtung ändern zu",
     "cycling_page_layout": "Seitendarstellung ändern",
+    "cycling_page_margin": "Seitenabstände ändern",
     "cycling_scale": "Skalierung ändern",
     "cycling_side_padding": "Seitenrand ändern",
     "download_current_page": "Aktuelle Seite herunterladen",
@@ -135,6 +138,7 @@
       "general": "Allgemein",
       "gestures": "Gesten",
       "page_layout": "Seiteneinstellungen",
+      "page_margin": "Seitenabstand",
       "paged": "Einstellungen zur Seitenausrichtung",
       "reading_mode": "Lesemodus",
       "scale_type": "Skalierung",
@@ -168,6 +172,8 @@
   },
   "browse_book": {
     "comment": "Kommentar",
+    "date_created": "Erstellt",
+    "date_modified": "Zuletzt geändert",
     "download_file": "Datei herunterladen",
     "file": "DATEI",
     "format": "FORMAT",
@@ -177,6 +183,7 @@
     "outdated_tooltip": "Die Buchdatei hat sich geändert, das Buch muss analysiert werden",
     "read_book": "Lese Buch",
     "read_incognito": "Inkognito lesen",
+    "remove_from_collection": "Buch aus Sammlung entfernen",
     "size": "GRÖẞE"
   },
   "browse_collection": {
