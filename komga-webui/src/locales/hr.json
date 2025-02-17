@@ -104,9 +104,9 @@
     "move_next": "Ponovo pritisni „Dalje” za prelaženje na sljedeću knjigu.",
     "move_next_exit": "Ponovo pritisni „Dalje” za zatvaranje čitača.",
     "move_previous": "Ponovo pritisni „Prethodno” za prelaženje na prethodnu knjigu.",
-    "notification_poster_set_book": "Trenutačna stranica je postavljena kao plakat knjige.",
-    "notification_poster_set_readlist": "Trenutačna stranica je postavljena kao plakat liste čitanja.",
-    "notification_poster_set_series": "Trenutačna stranica je postavljena kao plakat serije.",
+    "notification_poster_set_book": "Trenutačna stranica je sada postavljena kao poster knjige.",
+    "notification_poster_set_readlist": "Trenutačna stranica je sada postavljena kao poster liste čitanja.",
+    "notification_poster_set_series": "Trenutačna stranica je sada postavljena kao poster serije.",
     "paged_reader_layout": {
       "double": "Dvije stranice",
       "double_no_cover": "Dvije stranice (bez omota)",
@@ -247,6 +247,8 @@
     "locale_name": "Hrvatski",
     "locale_rtl": "false",
     "lock_all": "Zaključaj sve",
+    "media": "Mediji",
+    "more": "Više",
     "n_selected": "Odabrano: {count}",
     "nothing_to_show": "Nema ničega za pokazati",
     "ok": "U redu",
@@ -260,19 +262,23 @@
     "password": "Lozinka",
     "pdf": "PDF",
     "pending_tasks": "Nema zadataka na čekanju | 1 zadatak na čekanju | {count} zadataka na čekanju",
+    "pinned_libraries": "Prikvačene biblioteke",
     "publisher": "Izdavač",
     "read": "Čitaj",
     "read_on": "Čitaj {date}",
     "readlist": "Lista čitanja",
     "readlists": "Liste čitanja",
     "remember-me": "Zapamti me",
+    "reorder": "Promijeni redoslijed",
     "required": "Obavezno",
     "reset_filters": "Resetiraj filtre",
     "roles": "Uloge",
     "save_changes": "Spremi promjene",
     "series": "Serija | Serije",
+    "settings": "Postavke",
     "sidecars": "Povezane datoteke",
     "tags": "Oznake",
+    "ui": "Korisničko sučelje",
     "unavailable": "Nedostupno",
     "unlock_all": "Otključaj sve",
     "url": "URL",
@@ -889,10 +895,12 @@
     "empty_trash": "Isprazni smeće",
     "mark_read": "Označi kao pročitano",
     "mark_unread": "Označi kao nepročitano",
+    "pin": "Prikvači",
     "refresh_metadata": "Aktualiziraj metapodatke",
     "scan_library_files": "Pretraži datoteke biblioteke",
     "scan_library_files_deep": "Pretraži datoteke biblioteke (duboko)",
-    "select_all": "Odaberi sve"
+    "select_all": "Odaberi sve",
+    "unpin": "Otkvači"
   },
   "metrics": {
     "library_books": "Broj knjiga po biblioteci",
@@ -910,6 +918,10 @@
     "home": "Početna stranica",
     "libraries": "Biblioteke",
     "logout": "Odjavi se"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Biblioteku možeš prikvačiti u izborniku s 3 točke",
+    "title": "Nema prikvačenih biblioteka"
   },
   "page_not_found": {
     "go_back_to_home_page": "Vrati se na početnu stranicu",
@@ -1020,6 +1032,13 @@
   "titles_more": {
     "less": "Manje naslova",
     "more": "Više naslova"
+  },
+  "ui_settings": {
+    "label_oauth2_auto_login": "Automatska OAuth2 prijava",
+    "label_oauth2_hide_login": "Sakrij polja prijave ako je Oauth2 aktivirano",
+    "label_poster_blur_unread": "Zamuti poster za nepročitane knjige i serije",
+    "label_poster_stretch": "Rastegni poster na veličinu kartice",
+    "tooltip_oauth2_auto_login": "Zahtijeva jednog pružatelja OAuth2 autentifikacije i aktiviranu opciju „sakrij polja prijave”"
   },
   "updates": {
     "available": "Postoje nove verzije",
