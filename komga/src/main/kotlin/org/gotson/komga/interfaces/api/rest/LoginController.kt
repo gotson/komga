@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-@Tag(name = OpenApiConfiguration.TagNames.LOGIN)
+@Tag(name = OpenApiConfiguration.TagNames.USER_SESSION)
 class LoginController(
   private val cookieSerializer: CookieSerializer,
 ) {

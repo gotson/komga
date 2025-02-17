@@ -3,9 +3,16 @@ package org.gotson.komga.infrastructure.swagger
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.Operation
+import io.swagger.v3.oas.models.PathItem
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
+import io.swagger.v3.oas.models.responses.ApiResponse
+import io.swagger.v3.oas.models.responses.ApiResponses
 import io.swagger.v3.oas.models.security.SecurityScheme
+import io.swagger.v3.oas.models.servers.Server
+import io.swagger.v3.oas.models.servers.ServerVariable
+import io.swagger.v3.oas.models.servers.ServerVariables
 import io.swagger.v3.oas.models.tags.Tag
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.ANNOUNCEMENTS
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.API_KEYS
@@ -27,7 +34,6 @@ import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.DUP
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.FILE_SYSTEM
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.HISTORY
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.LIBRARIES
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.LOGIN
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.MIHON
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.OAUTH2
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.READLISTS
@@ -41,6 +47,7 @@ import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.SER
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.SYNCPOINTS
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.TASKS
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.USERS
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames.USER_SESSION
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -60,13 +67,13 @@ class OpenApiConfiguration(
             """
             Komga RESTful API.
 
-            # Authentication
+            ## Authentication
 
             Most endpoints require authentication. Authentication is done using either:
             - Basic Authentication
             - Passing an API Key in the `X-API-Key` header
 
-            # Sessions
+            ## Sessions
 
             Upon successful authentication, a session is created, and can be reused.
 
@@ -75,15 +82,15 @@ class OpenApiConfiguration(
 
             If you need to set the session cookie later on, you can call `/api/v1/login/set-cookie` with `X-Auth-Token`. The response will contain the `Set-Cookie` header.
 
-            # Remember Me
+            ## Remember Me
 
             During authentication, if a request parameter `remember-me` is passed and set to `true`, the server will also return a `remember-me` cookie. This cookie will be used to login automatically even if the session has expired.
 
-            # Logout
+            ## Logout
 
             You can explicitly logout an existing session by calling `/api/logout`. This would return a `204`.
 
-            # Deprecation
+            ## Deprecation
 
             API endpoints marked as deprecated will be removed in the next major version.
             """.trimIndent(),
@@ -108,6 +115,38 @@ class OpenApiConfiguration(
           ),
       ).tags(tags)
       .extensions(mapOf("x-tagGroups" to tagGroups))
+      .servers(
+        listOf(
+          Server()
+            .url("http://localhost:{port}")
+            .description("Local development server")
+            .variables(
+              ServerVariables()
+                .addServerVariable(
+                  "port",
+                  ServerVariable()
+                    .addEnumItem("8080")
+                    .addEnumItem("25600"),
+                ),
+            ),
+          Server()
+            .url("https://demo.komga.org")
+            .description("Demo server"),
+        ),
+      ).path(
+        "/api/logout",
+        PathItem()
+          .summary("Logout current session")
+          .get(logoutOperation.operationId("getLogout"))
+          .post(logoutOperation.operationId("postLogout")),
+      )
+
+  private val logoutOperation =
+    Operation()
+      .tags(listOf(USER_SESSION))
+      .summary("Logout")
+      .description("Invalidates the current session and clean up any remember-me authentication.")
+      .responses(ApiResponses().addApiResponse("204", ApiResponse().description("No Content")))
 
   data class TagGroup(
     val name: String,
@@ -169,7 +208,7 @@ class OpenApiConfiguration(
           CURRENT_USER,
           USERS,
           API_KEYS,
-          LOGIN,
+          USER_SESSION,
           OAUTH2,
           SYNCPOINTS,
         ),
@@ -229,7 +268,7 @@ class OpenApiConfiguration(
     const val CURRENT_USER = "Current user"
     const val USERS = "Users"
     const val API_KEYS = "API Keys"
-    const val LOGIN = "User login"
+    const val USER_SESSION = "User session"
     const val OAUTH2 = "OAuth2"
     const val SYNCPOINTS = "Sync points"
 
@@ -270,7 +309,7 @@ class OpenApiConfiguration(
       Tag().name(CURRENT_USER).description("Manage current user."),
       Tag().name(USERS).description("Manage users."),
       Tag().name(API_KEYS).description("Manage API Keys"),
-      Tag().name(LOGIN),
+      Tag().name(USER_SESSION),
       Tag().name(OAUTH2).description("List registered OAuth2 providers"),
       Tag().name(SYNCPOINTS).description("Sync points are automatically created during a Kobo sync."),
       Tag().name(CLAIM).description("Claim a freshly installed Komga server."),
