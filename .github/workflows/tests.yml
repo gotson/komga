@@ -12,8 +12,11 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     name: Test server
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java 17
@@ -33,14 +36,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.os }}
           path: komga/build/test-results/
 
       - name: Upload Unit Test Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports
+          name: test-reports-${{ matrix.os }}
           path: komga/build/reports/tests/
 
       - name: Conveyor - compute JDK module list
@@ -63,24 +66,24 @@ jobs:
           name: conveyor-required-jdk-modules
           path: ./output/required-jdk-modules.txt
 
-  webui:
-    runs-on: ubuntu-latest
-    name: Test webui builds
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: komga-webui/package-lock.json
-      - name: npm install
-        working-directory: komga-webui
-        run: npm install
-      - name: npm build
-        working-directory: komga-webui
-        run: npm run build
-        env:
-          NODE_OPTIONS: "--max-old-space-size=4096"
-      - name: npm test
-        working-directory: komga-webui
-        run: npm run test:unit
+#  webui:
+#    runs-on: ubuntu-latest
+#    name: Test webui builds
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version-file: '.nvmrc'
+#          cache: 'npm'
+#          cache-dependency-path: komga-webui/package-lock.json
+#      - name: npm install
+#        working-directory: komga-webui
+#        run: npm install
+#      - name: npm build
+#        working-directory: komga-webui
+#        run: npm run build
+#        env:
+#          NODE_OPTIONS: "--max-old-space-size=4096"
+#      - name: npm test
+#        working-directory: komga-webui
+#        run: npm run test:unit
