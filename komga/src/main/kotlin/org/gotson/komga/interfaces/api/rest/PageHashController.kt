@@ -1,15 +1,18 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.persistence.PageHashRepository
 import org.gotson.komga.domain.service.PageHashLifecycle
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.interfaces.api.rest.dto.PageHashCreationDto
@@ -37,11 +40,13 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("api/v1/page-hashes", produces = [MediaType.APPLICATION_JSON_VALUE])
 @PreAuthorize("hasRole('ADMIN')")
+@Tag(name = OpenApiConfiguration.TagNames.DUPLICATE_PAGES)
 class PageHashController(
   private val pageHashRepository: PageHashRepository,
   private val pageHashLifecycle: PageHashLifecycle,
   private val taskEmitter: TaskEmitter,
 ) {
+  @Operation(summary = "List known duplicates")
   @GetMapping
   @PageableAsQueryParam
   fun getKnownPageHashes(
@@ -49,6 +54,7 @@ class PageHashController(
     @Parameter(hidden = true) page: Pageable,
   ): Page<PageHashKnownDto> = pageHashRepository.findAllKnown(actions, page).map { it.toDto() }
 
+  @Operation(summary = "Get known duplicate image thumbnail")
   @GetMapping("/{pageHash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   fun getKnownPageHashThumbnail(
@@ -57,12 +63,14 @@ class PageHashController(
     pageHashRepository.getKnownThumbnail(pageHash)
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "List unknown duplicates")
   @GetMapping("/unknown")
   @PageableAsQueryParam
   fun getUnknownPageHashes(
     @Parameter(hidden = true) page: Pageable,
   ): Page<PageHashUnknownDto> = pageHashRepository.findAllUnknown(page).map { it.toDto() }
 
+  @Operation(summary = "List duplicate matches")
   @GetMapping("{pageHash}")
   @PageableAsQueryParam
   fun getPageHashMatches(
@@ -75,6 +83,7 @@ class PageHashController(
         page,
       ).map { it.toDto() }
 
+  @Operation(summary = "Get unknown duplicate image thumbnail")
   @GetMapping("unknown/{pageHash}/thumbnail", produces = [MediaType.IMAGE_JPEG_VALUE])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   fun getUnknownPageHashThumbnail(
@@ -88,6 +97,7 @@ class PageHashController(
         .body(it.bytes)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Mark duplicate page as known")
   @PutMapping
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun createOrUpdateKnownPageHash(
@@ -107,6 +117,7 @@ class PageHashController(
     }
   }
 
+  @Operation(summary = "Delete all duplicate pages by hash")
   @PostMapping("{pageHash}/delete-all")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun performDelete(
@@ -131,6 +142,7 @@ class PageHashController(
     taskEmitter.removeDuplicatePages(toRemove)
   }
 
+  @Operation(summary = "Delete specific duplicate page")
   @PostMapping("{pageHash}/delete-match")
   @ResponseStatus(HttpStatus.ACCEPTED)
   fun deleteSingleMatch(

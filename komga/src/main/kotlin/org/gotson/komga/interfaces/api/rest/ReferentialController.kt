@@ -1,8 +1,11 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.interfaces.api.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.api.rest.dto.toDto
@@ -18,10 +21,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("api", produces = [MediaType.APPLICATION_JSON_VALUE])
+@Tag(name = OpenApiConfiguration.TagNames.REFERENTIAL)
 class ReferentialController(
   private val referentialRepository: ReferentialRepository,
 ) {
   @GetMapping("v1/authors")
+  @Deprecated("Use GET /v2/authors instead", ReplaceWith("getAuthors"))
+  @Operation(summary = "List authors", description = "Use GET /api/v2/authors instead. Deprecated since 1.20.0.", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
   fun getAuthorsV1(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", defaultValue = "") search: String,
@@ -39,6 +45,7 @@ class ReferentialController(
 
   @PageableWithoutSortAsQueryParam
   @GetMapping("v2/authors")
+  @Operation(summary = "List authors", description = "Can be filtered by various criteria")
   fun getAuthors(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) search: String?,
@@ -69,17 +76,20 @@ class ReferentialController(
   }
 
   @GetMapping("v1/authors/names")
+  @Operation(summary = "List authors' names")
   fun getAuthorsNames(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", defaultValue = "") search: String,
   ): List<String> = referentialRepository.findAllAuthorsNamesByName(search, principal.user.getAuthorizedLibraryIds(null))
 
   @GetMapping("v1/authors/roles")
+  @Operation(summary = "List authors' roles")
   fun getAuthorsRoles(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): List<String> = referentialRepository.findAllAuthorsRoles(principal.user.getAuthorizedLibraryIds(null))
 
   @GetMapping("v1/genres")
+  @Operation(summary = "List genres", description = "Can be filtered by various criteria")
   fun getGenres(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -92,6 +102,7 @@ class ReferentialController(
     }
 
   @GetMapping("v1/sharing-labels")
+  @Operation(summary = "List sharing labels", description = "Can be filtered by various criteria")
   fun getSharingLabels(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -104,6 +115,7 @@ class ReferentialController(
     }
 
   @GetMapping("v1/tags")
+  @Operation(summary = "List tags", description = "Can be filtered by various criteria")
   fun getTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -116,6 +128,7 @@ class ReferentialController(
     }
 
   @GetMapping("v1/tags/book")
+  @Operation(summary = "List book tags", description = "Can be filtered by various criteria")
   fun getBookTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
@@ -128,6 +141,7 @@ class ReferentialController(
     }
 
   @GetMapping("v1/tags/series")
+  @Operation(summary = "List series tags", description = "Can be filtered by various criteria")
   fun getSeriesTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -140,6 +154,7 @@ class ReferentialController(
     }
 
   @GetMapping("v1/languages")
+  @Operation(summary = "List languages", description = "Can be filtered by various criteria")
   fun getLanguages(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -152,6 +167,7 @@ class ReferentialController(
     }
 
   @GetMapping("v1/publishers")
+  @Operation(summary = "List publishers", description = "Can be filtered by various criteria")
   fun getPublishers(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -164,6 +180,7 @@ class ReferentialController(
     }
 
   @GetMapping("v1/age-ratings")
+  @Operation(summary = "List age ratings", description = "Can be filtered by various criteria")
   fun getAgeRatings(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -176,6 +193,7 @@ class ReferentialController(
     }.map { it?.toString() ?: "None" }.toSet()
 
   @GetMapping("v1/series/release-dates")
+  @Operation(summary = "List series release dates", description = "Can be filtered by various criteria")
   fun getSeriesReleaseDates(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,

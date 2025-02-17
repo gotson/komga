@@ -24,6 +24,7 @@ import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_PROGRESSION_JSON_VALUE
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
@@ -190,6 +191,7 @@ class CommonBookController(
     }
   } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get raw book page", description = "Returns the book page in raw format, without content negotiation.", tags = [OpenApiConfiguration.TagNames.BOOK_PAGES])
   @GetMapping(
     value = [
       "api/v1/books/{bookId}/pages/{pageNumber}/raw",
@@ -252,6 +254,7 @@ class CommonBookController(
       throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
     }
 
+  @Operation(summary = "Get Eoub resource", description = "Return a resource from within an Epub book.", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @GetMapping(
     value = [
       "api/v1/books/{bookId}/resource/{*resource}",
@@ -306,7 +309,7 @@ class CommonBookController(
       .body(bytes)
   }
 
-  @Operation(description = "Download the book file.")
+  @Operation(summary = "Download book file", description = "Download the book file.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping(
     value = [
       "api/v1/books/{bookId}/file",
@@ -360,6 +363,7 @@ class CommonBookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get book progression", description = "The Progression API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @GetMapping(
     value = [
       "api/v1/books/{bookId}/progression",
@@ -379,6 +383,7 @@ class CommonBookController(
       } ?: ResponseEntity.noContent().build()
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Mark book progression", description = "The Progression API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @PutMapping(
     value = [
       "api/v1/books/{bookId}/progression",

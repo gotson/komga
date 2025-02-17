@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -34,6 +35,7 @@ import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.Authors
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
@@ -98,6 +100,7 @@ class ReadListController(
   private val bookLifecycle: BookLifecycle,
   private val eventPublisher: ApplicationEventPublisher,
 ) {
+  @Operation(summary = "List readlists", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @PageableWithoutSortAsQueryParam
   @GetMapping
   fun getAll(
@@ -129,6 +132,7 @@ class ReadListController(
       .map { it.toDto() }
   }
 
+  @Operation(summary = "Get readlist details", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @GetMapping("{id}")
   fun getOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -139,6 +143,7 @@ class ReadListController(
       ?.toDto()
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get readlist's poster image", tags = [OpenApiConfiguration.TagNames.READLIST_POSTER])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(value = ["{id}/thumbnail"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getReadListThumbnail(
@@ -153,6 +158,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Get readlist poster image", tags = [OpenApiConfiguration.TagNames.READLIST_POSTER])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(value = ["{id}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getReadListThumbnailById(
@@ -166,6 +172,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "List readlist's posters", tags = [OpenApiConfiguration.TagNames.READLIST_POSTER])
   @GetMapping(value = ["{id}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
   fun getReadListThumbnails(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -176,6 +183,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Add readlist poster", tags = [OpenApiConfiguration.TagNames.READLIST_POSTER])
   @PostMapping(value = ["{id}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('ADMIN')")
   fun addUserUploadedReadListThumbnail(
@@ -205,6 +213,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Mark readlist poster as selected", tags = [OpenApiConfiguration.TagNames.READLIST_POSTER])
   @PutMapping("{id}/thumbnails/{thumbnailId}/selected")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -221,6 +230,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Delete readlist poster", tags = [OpenApiConfiguration.TagNames.READLIST_POSTER])
   @DeleteMapping("{id}/thumbnails/{thumbnailId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -236,6 +246,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Create readlist", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   fun addOne(
@@ -256,6 +267,7 @@ class ReadListController(
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.message)
     }
 
+  @Operation(summary = "Match ComicRack list", tags = [OpenApiConfiguration.TagNames.COMICRACK])
   @PostMapping("match/comicrack")
   @PreAuthorize("hasRole('ADMIN')")
   fun matchFromComicRackList(
@@ -267,6 +279,7 @@ class ReadListController(
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, e.code)
     }
 
+  @Operation(summary = "Update readlist", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @PatchMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -291,6 +304,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Delete readlist", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @DeleteMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -302,6 +316,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "List readlist's books", tags = [OpenApiConfiguration.TagNames.READLIST_BOOKS])
   @PageableWithoutSortAsQueryParam
   @AuthorsAsQueryParam
   @GetMapping("{id}/books")
@@ -353,6 +368,7 @@ class ReadListController(
         .map { it.restrictUrl(!principal.user.isAdmin) }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get previous book in readlist", tags = [OpenApiConfiguration.TagNames.READLIST_BOOKS])
   @GetMapping("{id}/books/{bookId}/previous")
   fun getBookSiblingPrevious(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -370,6 +386,7 @@ class ReadListController(
         )?.restrictUrl(!principal.user.isAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get next book in readlist", tags = [OpenApiConfiguration.TagNames.READLIST_BOOKS])
   @GetMapping("{id}/books/{bookId}/next")
   fun getBookSiblingNext(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -387,6 +404,7 @@ class ReadListController(
         )?.restrictUrl(!principal.user.isAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get readlist read progress (Mihon)", description = "Mihon specific, due to how read progress is handled in Mihon.", tags = [OpenApiConfiguration.TagNames.MIHON])
   @GetMapping("{id}/read-progress/tachiyomi")
   fun getReadProgress(
     @PathVariable id: String,
@@ -396,6 +414,7 @@ class ReadListController(
       readProgressDtoRepository.findProgressByReadList(readList.id, principal.user.id)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Update readlist read progress (Mihon)", description = "Mihon specific, due to how read progress is handled in Mihon.", tags = [OpenApiConfiguration.TagNames.MIHON])
   @PutMapping("{id}/read-progress/tachiyomi")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markReadProgressTachiyomi(
@@ -415,6 +434,7 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Download readlist", description = "Download the whole readlist as a ZIP file.", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @GetMapping("{id}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
   @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun getReadListFile(

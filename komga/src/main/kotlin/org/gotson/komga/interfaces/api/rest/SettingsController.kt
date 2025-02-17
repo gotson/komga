@@ -1,8 +1,12 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.kobo.KepubConverter
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.web.WebServerEffectiveSettings
 import org.gotson.komga.interfaces.api.rest.dto.SettingMultiSource
 import org.gotson.komga.interfaces.api.rest.dto.SettingsDto
@@ -24,6 +28,7 @@ import kotlin.time.Duration.Companion.days
 @RestController
 @RequestMapping(value = ["api/v1/settings"], produces = [MediaType.APPLICATION_JSON_VALUE])
 @PreAuthorize("hasRole('ADMIN')")
+@Tag(name = OpenApiConfiguration.TagNames.SERVER_SETTINGS)
 class SettingsController(
   private val komgaSettingsProvider: KomgaSettingsProvider,
   @Value("\${server.port:#{null}}") private val configServerPort: Int?,
@@ -32,6 +37,7 @@ class SettingsController(
   private val kepubConverter: KepubConverter,
 ) {
   @GetMapping
+  @Operation(summary = "Retrieve server settings")
   fun getSettings(): SettingsDto =
     SettingsDto(
       komgaSettingsProvider.deleteEmptyCollections,
@@ -48,8 +54,10 @@ class SettingsController(
 
   @PatchMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Operation(summary = "Update server settings", description = "You can omit fields you don't want to update")
   fun updateSettings(
     @Valid @RequestBody
+    @Parameter(description = "Fields to update. You can omit fields you don't want to update.")
     newSettings: SettingsUpdateDto,
   ) {
     newSettings.deleteEmptyCollections?.let { komgaSettingsProvider.deleteEmptyCollections = it }

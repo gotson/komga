@@ -1,6 +1,9 @@
 package org.gotson.komga.interfaces.api.rest
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -18,10 +21,15 @@ import kotlin.streams.asSequence
 @RestController
 @RequestMapping("api/v1/filesystem", produces = [MediaType.APPLICATION_JSON_VALUE])
 @PreAuthorize("hasRole('ADMIN')")
+@Tag(name = OpenApiConfiguration.TagNames.FILE_SYSTEM)
 class FileSystemController {
   private val fs = FileSystems.getDefault()
 
   @PostMapping
+  @Operation(
+    summary = "Directory listing",
+    description = "List folders and files from the host server's file system. If no request body is passed then the root directories are returned.",
+  )
   fun getDirectoryListing(
     @RequestBody(required = false) request: DirectoryRequestDto = DirectoryRequestDto(),
   ): DirectoryListingDto =

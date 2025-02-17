@@ -1,7 +1,10 @@
 package org.gotson.komga.interfaces.api.rest
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.language.contains
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.FileSystemResource
@@ -28,6 +31,7 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping(value = ["api/v1/fonts"], produces = [MediaType.APPLICATION_JSON_VALUE])
+@Tag(name = OpenApiConfiguration.TagNames.BOOK_FONTS)
 class FontsController(
   komgaProperties: KomgaProperties,
 ) {
@@ -81,9 +85,11 @@ class FontsController(
   }
 
   @GetMapping("families")
+  @Operation(summary = "List font families", description = "List all available font families.")
   fun listFonts(): Set<String> = fonts.keys
 
   @GetMapping("resource/{fontFamily}/{fontFile}")
+  @Operation(summary = "Download font file")
   fun getFontFile(
     @PathVariable fontFamily: String,
     @PathVariable fontFile: String,
@@ -105,6 +111,7 @@ class FontsController(
   }
 
   @GetMapping("resource/{fontFamily}/css", produces = ["text/css"])
+  @Operation(summary = "Download CSS file", description = "Download a CSS file with the @font-face block for the font family. This is used by the Epub Reader to change fonts.")
   fun getFontFamilyAsCss(
     @PathVariable fontFamily: String,
   ): ResponseEntity<Resource> {

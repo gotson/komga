@@ -1,6 +1,9 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.interfaces.api.persistence.HistoricalEventDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.HistoricalEventDto
@@ -17,11 +20,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("api/v1/history", produces = [MediaType.APPLICATION_JSON_VALUE])
 @PreAuthorize("hasRole('ADMIN')")
+@Tag(name = OpenApiConfiguration.TagNames.HISTORY)
 class HistoricalEventController(
   private val historicalEventDtoRepository: HistoricalEventDtoRepository,
 ) {
   @GetMapping
   @PageableAsQueryParam
+  @Operation(summary = "List historical events")
   fun getAll(
     @Parameter(hidden = true) page: Pageable,
   ): Page<HistoricalEventDto> {

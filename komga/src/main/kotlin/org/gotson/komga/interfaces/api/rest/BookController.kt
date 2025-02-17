@@ -37,6 +37,7 @@ import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
 import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
@@ -118,7 +119,7 @@ class BookController(
   @Deprecated("use /v1/books/list instead")
   @PageableAsQueryParam
   @GetMapping("api/v1/books")
-  @Operation(summary = "Use POST /api/v1/books/list instead")
+  @Operation(summary = "List books", description = "Use POST /api/v1/books/list instead. Deprecated since 1.19.0.", tags = [OpenApiConfiguration.TagNames.BOOKS, OpenApiConfiguration.TagNames.DEPRECATED])
   fun getAllBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String? = null,
@@ -170,6 +171,7 @@ class BookController(
 
   @PageableAsQueryParam
   @PostMapping("api/v1/books/list")
+  @Operation(summary = "List books", tags = [OpenApiConfiguration.TagNames.BOOKS])
   fun getBooksList(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestBody search: BookSearch,
@@ -198,7 +200,7 @@ class BookController(
       .map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
-  @Operation(description = "Return newly added or updated books.")
+  @Operation(summary = "List latest books", description = "Return newly added or updated books.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PageableWithoutSortAsQueryParam
   @GetMapping("api/v1/books/latest")
   fun getLatestBooks(
@@ -225,7 +227,7 @@ class BookController(
       ).map { it.restrictUrl(!principal.user.isAdmin) }
   }
 
-  @Operation(description = "Return first unread book of series with at least one book read and no books in progress.")
+  @Operation(summary = "List books on deck", description = "Return first unread book of series with at least one book read and no books in progress.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PageableWithoutSortAsQueryParam
   @GetMapping("api/v1/books/ondeck")
   fun getBooksOnDeck(
@@ -241,6 +243,7 @@ class BookController(
         principal.user.restrictions,
       ).map { it.restrictUrl(!principal.user.isAdmin) }
 
+  @Operation(summary = "List duplicate books", description = "Return books that have the same file hash.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PageableAsQueryParam
   @GetMapping("api/v1/books/duplicates")
   @PreAuthorize("hasRole('ADMIN')")
@@ -268,6 +271,7 @@ class BookController(
     return bookDtoRepository.findAllDuplicates(principal.user.id, pageRequest)
   }
 
+  @Operation(summary = "Get book details", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping("api/v1/books/{bookId}")
   fun getOneBook(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -279,6 +283,7 @@ class BookController(
       it.restrictUrl(!principal.user.isAdmin)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get previous book in series", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping("api/v1/books/{bookId}/previous")
   fun getBookSiblingPrevious(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -292,6 +297,7 @@ class BookController(
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Get next book in series", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping("api/v1/books/{bookId}/next")
   fun getBookSiblingNext(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -305,6 +311,7 @@ class BookController(
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "List book's readlists", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping("api/v1/books/{bookId}/readlists")
   fun getAllReadListsByBook(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -317,6 +324,7 @@ class BookController(
       .map { it.toDto() }
   }
 
+  @Operation(summary = "Get book's poster image", tags = [OpenApiConfiguration.TagNames.BOOK_POSTER])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
     value = ["api/v1/books/{bookId}/thumbnail"],
@@ -331,6 +339,7 @@ class BookController(
     return bookLifecycle.getThumbnailBytes(bookId)?.bytes ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Get book poster image", tags = [OpenApiConfiguration.TagNames.BOOK_POSTER])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(value = ["api/v1/books/{bookId}/thumbnails/{thumbnailId}"], produces = [MediaType.IMAGE_JPEG_VALUE])
   fun getBookThumbnailById(
@@ -344,6 +353,7 @@ class BookController(
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "List book posters", tags = [OpenApiConfiguration.TagNames.BOOK_POSTER])
   @GetMapping(value = ["api/v1/books/{bookId}/thumbnails"], produces = [MediaType.APPLICATION_JSON_VALUE])
   fun getBookThumbnails(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -356,6 +366,7 @@ class BookController(
       .map { it.toDto() }
   }
 
+  @Operation(summary = "Add book poster", tags = [OpenApiConfiguration.TagNames.BOOK_POSTER])
   @PostMapping(value = ["api/v1/books/{bookId}/thumbnails"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('ADMIN')")
   fun addUserUploadedBookThumbnail(
@@ -385,6 +396,7 @@ class BookController(
       ).toDto()
   }
 
+  @Operation(summary = "Mark book poster as selected", tags = [OpenApiConfiguration.TagNames.BOOK_POSTER])
   @PutMapping("api/v1/books/{bookId}/thumbnails/{thumbnailId}/selected")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -399,6 +411,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Delete book poster", description = "Only uploaded posters can be deleted.", tags = [OpenApiConfiguration.TagNames.BOOK_POSTER])
   @DeleteMapping("api/v1/books/{bookId}/thumbnails/{thumbnailId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -416,6 +429,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "List book pages", tags = [OpenApiConfiguration.TagNames.BOOK_PAGES])
   @GetMapping("api/v1/books/{bookId}/pages")
   fun getBookPages(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -450,6 +464,7 @@ class BookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get book page image", tags = [OpenApiConfiguration.TagNames.BOOK_PAGES])
   @ApiResponse(content = [Content(mediaType = "image/*", schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
     value = ["api/v1/books/{bookId}/pages/{pageNumber}"],
@@ -477,6 +492,7 @@ class BookController(
     contentNegotiation: Boolean,
   ): ResponseEntity<ByteArray> = commonBookController.getBookPageInternal(bookId, if (zeroBasedIndex) pageNumber + 1 else pageNumber, convertTo, request, principal, if (contentNegotiation) acceptHeaders else null)
 
+  @Operation(summary = "Get book page thumbnail", description = "The image is resized to 300px on the largest dimension.", tags = [OpenApiConfiguration.TagNames.BOOK_PAGES])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])
   @GetMapping(
     value = ["api/v1/books/{bookId}/pages/{pageNumber}/thumbnail"],
@@ -519,6 +535,7 @@ class BookController(
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get book's WebPub manifest", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @GetMapping(
     value = ["api/v1/books/{bookId}/manifest"],
     produces = [MEDIATYPE_WEBPUB_JSON_VALUE, MEDIATYPE_DIVINA_JSON_VALUE],
@@ -534,6 +551,7 @@ class BookController(
       .body(manifest)
   }
 
+  @Operation(summary = "List book's positions", description = "The Positions API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @GetMapping(
     value = ["api/v1/books/{bookId}/positions"],
     produces = [MEDIATYPE_POSITION_LIST_JSON_VALUE],
@@ -566,6 +584,7 @@ class BookController(
         .body(R2Positions(extension.positions.size, extension.positions))
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Get book's WebPub manifest (Epub)", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @GetMapping(
     value = ["api/v1/books/{bookId}/manifest/epub"],
     produces = [MEDIATYPE_WEBPUB_JSON_VALUE],
@@ -575,6 +594,7 @@ class BookController(
     @PathVariable bookId: String,
   ): WPPublicationDto = commonBookController.getWebPubManifestEpubInternal(principal, bookId, webPubGenerator)
 
+  @Operation(summary = "Get book's WebPub manifest (PDF)", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @GetMapping(
     value = ["api/v1/books/{bookId}/manifest/pdf"],
     produces = [MEDIATYPE_WEBPUB_JSON_VALUE],
@@ -584,6 +604,7 @@ class BookController(
     @PathVariable bookId: String,
   ): WPPublicationDto = commonBookController.getWebPubManifestPdfInternal(principal, bookId, webPubGenerator)
 
+  @Operation(summary = "Get book's WebPub manifest (DiViNa)", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @GetMapping(
     value = ["api/v1/books/{bookId}/manifest/divina"],
     produces = [MEDIATYPE_DIVINA_JSON_VALUE],
@@ -593,6 +614,7 @@ class BookController(
     @PathVariable bookId: String,
   ): WPPublicationDto = commonBookController.getWebPubManifestDivinaInternal(principal, bookId, webPubGenerator)
 
+  @Operation(summary = "Analyze book", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PostMapping("api/v1/books/{bookId}/analyze")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -604,6 +626,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Refresh book metadata", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PostMapping("api/v1/books/{bookId}/metadata/refresh")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -616,6 +639,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Update book metadata", description = "Set a field to null to unset the metadata. You can omit fields you don't want to update.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PatchMapping("api/v1/books/{bookId}/metadata")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -635,6 +659,7 @@ class BookController(
     }
   } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
+  @Operation(summary = "Update book metadata in bulk", description = "Set a field to null to unset the metadata. You can omit fields you don't want to update.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PatchMapping("api/v1/books/metadata")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -658,7 +683,7 @@ class BookController(
     updatedBooks.map { it.seriesId }.distinct().forEach { taskEmitter.aggregateSeriesMetadata(it) }
   }
 
-  @Operation(description = "Mark book as read and/or change page progress")
+  @Operation(summary = "Mark book's read progress", description = "Mark book as read and/or change page progress.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PatchMapping("api/v1/books/{bookId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun markReadProgress(
@@ -683,7 +708,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @Operation(description = "Mark book as unread")
+  @Operation(summary = "Mark book as unread", description = "Mark book as unread", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @DeleteMapping("api/v1/books/{bookId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteReadProgress(
@@ -697,6 +722,7 @@ class BookController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
+  @Operation(summary = "Import books", tags = [OpenApiConfiguration.TagNames.BOOK_IMPORT])
   @PostMapping("api/v1/books/import")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -719,10 +745,11 @@ class BookController(
     }
   }
 
+  @Operation(summary = "Delete book file", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @DeleteMapping("api/v1/books/{bookId}/file")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun deleteBook(
+  fun deleteBookFile(
     @PathVariable bookId: String,
   ) {
     taskEmitter.deleteBook(
@@ -731,6 +758,7 @@ class BookController(
     )
   }
 
+  @Operation(summary = "Regenerate books posters", tags = [OpenApiConfiguration.TagNames.BOOK_POSTER])
   @PutMapping("api/v1/books/thumbnails")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)

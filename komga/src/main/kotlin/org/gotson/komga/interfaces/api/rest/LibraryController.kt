@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.api.rest
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
@@ -18,6 +19,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.web.filePathToUrl
 import org.gotson.komga.interfaces.api.rest.dto.LibraryCreationDto
 import org.gotson.komga.interfaces.api.rest.dto.LibraryDto
@@ -45,6 +47,7 @@ import java.io.FileNotFoundException
 
 @RestController
 @RequestMapping("api/v1/libraries", produces = [MediaType.APPLICATION_JSON_VALUE])
+@Tag(name = OpenApiConfiguration.TagNames.LIBRARIES)
 class LibraryController(
   private val taskEmitter: TaskEmitter,
   private val libraryLifecycle: LibraryLifecycle,
@@ -53,6 +56,10 @@ class LibraryController(
   private val seriesRepository: SeriesRepository,
 ) {
   @GetMapping
+  @Operation(
+    summary = "List all libraries",
+    description = "The libraries are filtered based on the current user's permissions",
+  )
   fun getAll(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): List<LibraryDto> =
@@ -63,6 +70,7 @@ class LibraryController(
     }.sortedBy { it.name.lowercase() }.map { it.toDto(includeRoot = principal.user.isAdmin) }
 
   @GetMapping("{libraryId}")
+  @Operation(summary = "Get details for a single library")
   fun getOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable libraryId: String,
@@ -74,6 +82,7 @@ class LibraryController(
 
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
+  @Operation(summary = "Create a library")
   fun addOne(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Valid @RequestBody
@@ -130,7 +139,7 @@ class LibraryController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @Deprecated("Use PATCH /v1/libraries/{libraryId} instead", ReplaceWith("patchOne"))
-  @Operation(summary = "Use PATCH /api/v1/libraries/{libraryId} instead")
+  @Operation(summary = "Update a library", description = "Use PATCH /api/v1/libraries/{libraryId} instead. Deprecated since 1.3.0.", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
   fun updateOne(
     @PathVariable libraryId: String,
     @Valid @RequestBody
@@ -142,6 +151,7 @@ class LibraryController(
   @PatchMapping("/{libraryId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Operation(summary = "Update a library", description = "You can omit fields you don't want to update")
   fun patchOne(
     @PathVariable libraryId: String,
     @Parameter(description = "Fields to update. You can omit fields you don't want to update.")
@@ -204,6 +214,7 @@ class LibraryController(
   @DeleteMapping("/{libraryId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Operation(summary = "Delete a library")
   fun deleteOne(
     @PathVariable libraryId: String,
   ) {
@@ -215,6 +226,7 @@ class LibraryController(
   @PostMapping("{libraryId}/scan")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
+  @Operation(summary = "Scan a library")
   fun scan(
     @PathVariable libraryId: String,
     @RequestParam(required = false) deep: Boolean = false,
@@ -227,6 +239,7 @@ class LibraryController(
   @PostMapping("{libraryId}/analyze")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
+  @Operation(summary = "Analyze a library")
   fun analyze(
     @PathVariable libraryId: String,
   ) {
@@ -243,6 +256,7 @@ class LibraryController(
   @PostMapping("{libraryId}/metadata/refresh")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
+  @Operation(summary = "Refresh metadata for a library")
   fun refreshMetadata(
     @PathVariable libraryId: String,
   ) {
@@ -261,6 +275,7 @@ class LibraryController(
   @PostMapping("{libraryId}/empty-trash")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
+  @Operation(summary = "Empty trash for a library")
   fun emptyTrash(
     @PathVariable libraryId: String,
   ) {

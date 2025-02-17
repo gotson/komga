@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
 import org.gotson.komga.domain.model.AgeRestriction
@@ -14,6 +15,7 @@ import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames
 import org.gotson.komga.interfaces.api.rest.dto.ApiKeyDto
 import org.gotson.komga.interfaces.api.rest.dto.ApiKeyRequestDto
 import org.gotson.komga.interfaces.api.rest.dto.AuthenticationActivityDto
@@ -59,12 +61,14 @@ class UserController(
   private val demo = env.activeProfiles.contains("demo")
 
   @GetMapping("me")
+  @Operation(summary = "Retrieve current user", tags = [TagNames.CURRENT_USER])
   fun getMe(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): UserDto = principal.toDto()
 
   @PatchMapping("me/password")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Operation(summary = "Update current user's password", tags = [TagNames.CURRENT_USER])
   fun updateMyPassword(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Valid @RequestBody
@@ -78,11 +82,13 @@ class UserController(
 
   @GetMapping
   @PreAuthorize("hasRole('ADMIN')")
+  @Operation(summary = "List users", tags = [TagNames.USERS])
   fun getAll(): List<UserDto> = userRepository.findAll().map { it.toDto() }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @PreAuthorize("hasRole('ADMIN')")
+  @Operation(summary = "Create user", tags = [TagNames.USERS])
   fun addOne(
     @Valid @RequestBody
     newUser: UserCreationDto,
@@ -96,6 +102,7 @@ class UserController(
   @DeleteMapping("{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('ADMIN') and #principal.user.id != #id")
+  @Operation(summary = "Delete user", tags = [TagNames.USERS])
   fun delete(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -108,6 +115,7 @@ class UserController(
   @PatchMapping("{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('ADMIN') and #principal.user.id != #id")
+  @Operation(summary = "Update user", tags = [TagNames.USERS])
   fun updateUser(
     @PathVariable id: String,
     @Valid @RequestBody
@@ -162,6 +170,7 @@ class UserController(
   @PatchMapping("{id}/password")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @PreAuthorize("hasRole('ADMIN') or #principal.user.id == #id")
+  @Operation(summary = "Update user's password", tags = [TagNames.USERS])
   fun updatePassword(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -176,6 +185,7 @@ class UserController(
 
   @GetMapping("me/authentication-activity")
   @PageableAsQueryParam
+  @Operation(summary = "Retrieve authentication activity for the current user", tags = [TagNames.CURRENT_USER])
   fun getMyAuthenticationActivity(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
@@ -204,6 +214,7 @@ class UserController(
   @GetMapping("authentication-activity")
   @PageableAsQueryParam
   @PreAuthorize("hasRole('ADMIN')")
+  @Operation(summary = "Retrieve authentication activity", tags = [TagNames.USERS])
   fun getAuthenticationActivity(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
@@ -229,6 +240,7 @@ class UserController(
 
   @GetMapping("{id}/authentication-activity/latest")
   @PreAuthorize("hasRole('ADMIN') or #principal.user.id == #id")
+  @Operation(summary = "Retrieve latest authentication activity for a user", tags = [TagNames.USERS])
   fun getLatestAuthenticationActivityForUser(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -240,6 +252,7 @@ class UserController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @GetMapping("me/api-keys")
+  @Operation(summary = "Retrieve API keys", tags = [TagNames.API_KEYS])
   fun getApiKeys(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): Collection<ApiKeyDto> {
@@ -248,6 +261,7 @@ class UserController(
   }
 
   @PostMapping("me/api-keys")
+  @Operation(summary = "Create API key", tags = [TagNames.API_KEYS])
   fun createApiKey(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Valid @RequestBody apiKeyRequest: ApiKeyRequestDto,
@@ -263,6 +277,7 @@ class UserController(
 
   @DeleteMapping("me/api-keys/{keyId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @Operation(summary = "Delete API key", tags = [TagNames.API_KEYS])
   fun deleteApiKey(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable keyId: String,

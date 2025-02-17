@@ -1,10 +1,13 @@
 package org.gotson.komga.interfaces.api.rest
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.service.KomgaUserLifecycle
+import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.interfaces.api.rest.dto.UserDto
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.http.HttpStatus
@@ -19,14 +22,17 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("api/v1/claim", produces = [MediaType.APPLICATION_JSON_VALUE])
+@Tag(name = OpenApiConfiguration.TagNames.CLAIM)
 @Validated
 class ClaimController(
   private val userDetailsLifecycle: KomgaUserLifecycle,
 ) {
   @GetMapping
+  @Operation(summary = "Retrieve claim status", description = "Check whether this server has already been claimed.")
   fun getClaimStatus() = ClaimStatus(userDetailsLifecycle.countUsers() > 0)
 
   @PostMapping
+  @Operation(summary = "Claim server", description = "Creates an admin user with the provided credentials.")
   fun claimAdmin(
     @Email(regexp = ".+@.+\\..+")
     @RequestHeader("X-Komga-Email")

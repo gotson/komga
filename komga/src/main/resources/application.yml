@@ -94,8 +94,6 @@ management:
         step: 24h
 springdoc:
   swagger-ui:
-    groups-order: desc
-    operations-sorter: alpha
     disable-swagger-default-url: true
-    tags-sorter: alpha
   paths-to-match: "/api/**"
+  writer-with-order-by-keys: true
