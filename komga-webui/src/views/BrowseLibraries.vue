@@ -208,13 +208,11 @@ import {
   FiltersOptions,
   NameValue,
 } from '@/types/filter'
-import LibrariesActionsMenu from '@/components/menus/LibrariesActionsMenu.vue'
 import {CLIENT_SETTING, ClientSettingsSeriesGroup, SERIES_GROUP_ALPHA} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'BrowseLibraries',
   components: {
-    LibrariesActionsMenu,
     AlphabeticalNavigation,
     LibraryActionsMenu,
     EmptyState,
