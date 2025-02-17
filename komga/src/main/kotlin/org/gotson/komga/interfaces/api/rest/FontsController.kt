@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.api.rest
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.language.contains
@@ -45,9 +46,9 @@ class FontsController(
         resolver
           .getResources("/embeddedFonts/**/*.*")
           .filterNot { it.filename == null }
-          .filter { supportedExtensions.contains(Path(it.uri.toString()).extension, true) }
+          .filter { supportedExtensions.contains(FilenameUtils.getExtension(it.uri.toString()), true) }
           .groupBy {
-            Path(it.uri.toString()).parent.name
+            FilenameUtils.getName(FilenameUtils.getPathNoEndSeparator(it.uri.toString()))
           }
       } catch (e: Exception) {
         logger.error(e) { "Could not load embedded fonts" }
@@ -96,7 +97,7 @@ class FontsController(
   ): ResponseEntity<Resource> {
     fonts[fontFamily]?.let { resources ->
       val resource = resources.firstOrNull { it.filename == fontFile } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-      val mediaType = "font/${Path(resource.uri.toString()).extension.lowercase()}"
+      val mediaType = "font/${FilenameUtils.getExtension(resource.uri.toString()).lowercase()}"
       return ResponseEntity
         .ok()
         .headers {
@@ -116,7 +117,7 @@ class FontsController(
     @PathVariable fontFamily: String,
   ): ResponseEntity<Resource> {
     fonts[fontFamily]?.let { files ->
-      val groups = files.groupBy { getFontCharacteristics(Path(it.uri.toString()).name) }
+      val groups = files.groupBy { getFontCharacteristics(FilenameUtils.getName(it.uri.toString())) }
 
       val css =
         groups
@@ -142,14 +143,14 @@ class FontsController(
   ): String {
     val srcBlock =
       fonts.joinToString(separator = ",", postfix = ";") { resource ->
-        val path = Path(resource.uri.toString())
+        val filename = FilenameUtils.getName(resource.uri.toString())
         val format =
-          when (val extension = path.extension.lowercase()) {
+          when (val extension = FilenameUtils.getExtension(resource.uri.toString()).lowercase()) {
             "ttf" -> "truetype"
             "otf" -> "opentype"
             else -> extension
           }
-        """url('${path.name}') format('$format')"""
+        """url('$filename') format('$format')"""
       }
     // language=CSS
     return """
