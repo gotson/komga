@@ -163,6 +163,12 @@ class OpenApiConfiguration(
   private val tagGroups =
     listOf(
       TagGroup(
+        "Deprecation",
+        listOf(
+          DEPRECATED,
+        ),
+      ),
+      TagGroup(
         "Libraries",
         listOf(
           LIBRARIES,
@@ -240,62 +246,57 @@ class OpenApiConfiguration(
           COMICRACK,
         ),
       ),
-      TagGroup(
-        "Deprecation",
-        listOf(
-          DEPRECATED,
-        ),
-      ),
     )
 
   object TagNames {
+    const val DEPRECATED = "Deprecated"
+
     const val LIBRARIES = "Libraries"
-
     const val SERIES = "Series"
-    const val SERIES_POSTER = "Series Poster"
 
+    const val SERIES_POSTER = "Series Poster"
     const val BOOKS = "Books"
     const val BOOK_POSTER = "Book Poster"
     const val BOOK_PAGES = "Book Pages"
     const val BOOK_WEBPUB = "WebPub Manifest"
     const val BOOK_IMPORT = "Import"
     const val BOOK_FONTS = "Fonts"
-    const val DUPLICATE_PAGES = "Duplicate Pages"
 
+    const val DUPLICATE_PAGES = "Duplicate Pages"
     const val COLLECTIONS = "Collections"
     const val COLLECTION_SERIES = "Collection Series"
-    const val COLLECTION_POSTER = "Collection Poster"
 
+    const val COLLECTION_POSTER = "Collection Poster"
     const val READLISTS = "Readlists"
     const val READLIST_BOOKS = "Readlist Books"
+
     const val READLIST_POSTER = "Readlist Poster"
 
     const val REFERENTIAL = "Referential metadata"
-
     const val CURRENT_USER = "Current user"
     const val USERS = "Users"
     const val API_KEYS = "API Keys"
     const val USER_SESSION = "User session"
     const val OAUTH2 = "OAuth2"
-    const val SYNCPOINTS = "Sync points"
 
+    const val SYNCPOINTS = "Sync points"
     const val CLAIM = "Claim server"
     const val TASKS = "Tasks"
     const val HISTORY = "History"
     const val FILE_SYSTEM = "File system"
     const val SERVER_SETTINGS = "Server settings"
     const val RELEASES = "Releases"
-    const val ANNOUNCEMENTS = "Announcements"
 
+    const val ANNOUNCEMENTS = "Announcements"
     const val MIHON = "Mihon"
     const val COMICRACK = "ComicRack"
-    const val CLIENT_SETTINGS = "Client settings"
 
-    const val DEPRECATED = "Deprecated"
+    const val CLIENT_SETTINGS = "Client settings"
   }
 
   private val tags =
     listOf(
+      Tag().name(DEPRECATED),
       Tag().name(LIBRARIES).description("Manage libraries."),
       Tag().name(SERIES).description("Manage series."),
       Tag().name(SERIES_POSTER).description("Manage posters for series."),
@@ -329,6 +330,5 @@ class OpenApiConfiguration(
       Tag().name(MIHON),
       Tag().name(COMICRACK),
       Tag().name(CLIENT_SETTINGS).description("Store and retrieve global and per-user settings. Those settings are not used by Komga itself, but can be stored for convenience by client applications."),
-      Tag().name(DEPRECATED),
     )
 }
