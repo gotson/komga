@@ -248,6 +248,7 @@
     "locale_rtl": "false",
     "lock_all": "Lukitse kaikki",
     "media": "Media",
+    "more": "Lisää",
     "n_selected": "{count} valittu",
     "nothing_to_show": "Ei näytettävää",
     "ok": "OK",
@@ -261,12 +262,14 @@
     "password": "Salasana",
     "pdf": "PDF",
     "pending_tasks": "Ei odottavia tehtäviä | 1 odottava tehtävä | {count} odottavaa tehtävää",
+    "pinned_libraries": "Kiinnitetyt kirjastot",
     "publisher": "Julkaisija",
     "read": "Lue",
     "read_on": "Luettu {date}",
     "readlist": "Lukulista",
     "readlists": "Lukulistat",
     "remember-me": "Muista minut",
+    "reorder": "Järjestä uudelleen",
     "required": "Pakollinen",
     "reset_filters": "Nollaa suodattimet",
     "roles": "Roolit",
@@ -275,6 +278,7 @@
     "settings": "Asetukset",
     "sidecars": "Sivuvaunut",
     "tags": "Tunnisteet",
+    "ui": "Käyttöliittymä",
     "unavailable": "Ei käytettävissä",
     "unlock_all": "Avaa kaikki",
     "url": "URL",
@@ -891,10 +895,12 @@
     "empty_trash": "Tyhjennä roskakori",
     "mark_read": "Merkitse luetuksi",
     "mark_unread": "Merkitse lukemattomaksi",
+    "pin": "Kiinnitys",
     "refresh_metadata": "Päivitä metatiedot",
     "scan_library_files": "Skannaa kirjastotiedostot",
     "scan_library_files_deep": "Skannaa kirjastotiedostot (syvä)",
-    "select_all": "Valitse kaikki"
+    "select_all": "Valitse kaikki",
+    "unpin": "Poista kiinnitys"
   },
   "metrics": {
     "library_books": "Kirjaa kirjastoa kohden",
@@ -912,6 +918,10 @@
     "home": "Koti",
     "libraries": "Kirjastot",
     "logout": "Kirjaudu ulos"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Voit kiinnittää kirjaston kolmen palluran valikosta",
+    "title": "Ei kiinnitettyjä kirjastoja"
   },
   "page_not_found": {
     "go_back_to_home_page": "Palaa takaisin etusivulle",
@@ -1022,6 +1032,13 @@
   "titles_more": {
     "less": "Vähemmän nimiä",
     "more": "Enemmän nimiä"
+  },
+  "ui_settings": {
+    "label_oauth2_auto_login": "Automaattinen OAuth2-kirjautuminen",
+    "label_oauth2_hide_login": "Piilota kirjautumisvalikot jos OAuth2 on päällä",
+    "label_poster_blur_unread": "Sumenna lukemattomien kirjojen ja sarjojen juliste",
+    "label_poster_stretch": "Venytä juliste kortin kokoon",
+    "tooltip_oauth2_auto_login": "Vaatii yhden OAuth2 tarjoajan ja 'piilota kirjautumisvalikot' pitää olla päällä"
   },
   "updates": {
     "available": "Päivityksiä on saatavilla",
