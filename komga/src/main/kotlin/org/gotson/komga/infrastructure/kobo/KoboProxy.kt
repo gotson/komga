@@ -7,6 +7,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.kobo.KoboHeaders.X_KOBO_SYNCTOKEN
 import org.gotson.komga.infrastructure.web.getCurrentRequest
 import org.gotson.komga.language.contains
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder
 import org.springframework.boot.http.client.ClientHttpRequestFactorySettings
 import org.springframework.http.HttpHeaders
@@ -28,11 +29,12 @@ class KoboProxy(
   private val objectMapper: ObjectMapper,
   private val komgaSyncTokenGenerator: KomgaSyncTokenGenerator,
   private val komgaSettingsProvider: KomgaSettingsProvider,
+  @Qualifier("koboStoreApiProxy") private val baseUrl: String
 ) {
   private val koboApiClient =
     RestClient
       .builder()
-      .baseUrl("https://storeapi.kobo.com")
+      .baseUrl(baseUrl)
       .requestFactory(
         ClientHttpRequestFactoryBuilder.reactor().build(
           ClientHttpRequestFactorySettings
