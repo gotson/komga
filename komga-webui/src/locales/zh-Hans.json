@@ -248,6 +248,7 @@
     "locale_rtl": "false",
     "lock_all": "锁定全部",
     "media": "媒体",
+    "more": "更多",
     "n_selected": "已选择 {count}",
     "nothing_to_show": "无任何项目",
     "ok": "确定",
@@ -261,12 +262,14 @@
     "password": "密码",
     "pdf": "PDF",
     "pending_tasks": "无挂起任务 | 1个挂起任务 | {count} 个挂起任务",
+    "pinned_libraries": "固定库",
     "publisher": "出版商",
     "read": "阅读",
     "read_on": "阅读于 {date}",
     "readlist": "阅读列表",
     "readlists": "阅读列表",
     "remember-me": "记住账号",
+    "reorder": "重新排序",
     "required": "必填",
     "reset_filters": "重置筛选器",
     "roles": "角色",
@@ -275,6 +278,7 @@
     "settings": "设置",
     "sidecars": "边车",
     "tags": "标签",
+    "ui": "用户界面",
     "unavailable": "不可用",
     "unlock_all": "解锁全部",
     "url": "URL",
@@ -891,10 +895,12 @@
     "empty_trash": "清理垃圾",
     "mark_read": "标记为已读",
     "mark_unread": "标记为未读",
+    "pin": "固定",
     "refresh_metadata": "刷新元数据",
     "scan_library_files": "扫描库文件",
     "scan_library_files_deep": "扫描库文件（深度）",
-    "select_all": "选择所有"
+    "select_all": "选择所有",
+    "unpin": "取消固定"
   },
   "metrics": {
     "library_books": "每个库的书籍数",
@@ -912,6 +918,10 @@
     "home": "主页",
     "libraries": "库",
     "logout": "退出登录"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "您可以通过3点菜单中固定库",
+    "title": "没有固定的库"
   },
   "page_not_found": {
     "go_back_to_home_page": "返回主页",
@@ -1022,6 +1032,13 @@
   "titles_more": {
     "less": "更少标题",
     "more": "更多标题"
+  },
+  "ui_settings": {
+    "label_oauth2_auto_login": "自动 OAuth2 登录",
+    "label_oauth2_hide_login": "如果启用了 OAuth2，则隐藏登录字段",
+    "label_poster_blur_unread": "未读书籍和系列的模糊海报",
+    "label_poster_stretch": "拉伸海报以适合卡片",
+    "tooltip_oauth2_auto_login": "需要单个 OAuth2 提供商，并启用“隐藏登录字段”"
   },
   "updates": {
     "available": "有可用更新",
