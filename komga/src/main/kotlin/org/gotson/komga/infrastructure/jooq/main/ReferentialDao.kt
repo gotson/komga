@@ -109,13 +109,13 @@ class ReferentialDao(
     pageable: Pageable,
   ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, null)
 
-  override fun findAllAuthorsByNameAndLibrary(
+  override fun findAllAuthorsByNameAndLibraries(
     search: String?,
     role: String?,
-    libraryId: String,
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
     pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.LIBRARY, libraryId))
+  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.LIBRARY, libraryIds))
 
   override fun findAllAuthorsByNameAndCollection(
     search: String?,
@@ -123,7 +123,7 @@ class ReferentialDao(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
     pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.COLLECTION, collectionId))
+  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.COLLECTION, setOf(collectionId)))
 
   override fun findAllAuthorsByNameAndSeries(
     search: String?,
@@ -131,7 +131,7 @@ class ReferentialDao(
     seriesId: String,
     filterOnLibraryIds: Collection<String>?,
     pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.SERIES, seriesId))
+  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.SERIES, setOf(seriesId)))
 
   override fun findAllAuthorsByNameAndReadList(
     search: String?,
@@ -139,7 +139,7 @@ class ReferentialDao(
     readListId: String,
     filterOnLibraryIds: Collection<String>?,
     pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.READLIST, readListId))
+  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.READLIST, setOf(readListId)))
 
   private enum class FilterByType {
     LIBRARY,
@@ -150,7 +150,7 @@ class ReferentialDao(
 
   private data class FilterBy(
     val type: FilterByType,
-    val id: String,
+    val ids: Set<String>,
   )
 
   private fun findAuthorsByName(
@@ -179,10 +179,10 @@ class ReferentialDao(
         .apply {
           filterBy?.let {
             when (it.type) {
-              FilterByType.LIBRARY -> and(s.LIBRARY_ID.eq(it.id))
-              FilterByType.COLLECTION -> and(cs.COLLECTION_ID.eq(it.id))
-              FilterByType.SERIES -> and(bmaa.SERIES_ID.eq(it.id))
-              FilterByType.READLIST -> and(rb.READLIST_ID.eq(it.id))
+              FilterByType.LIBRARY -> and(s.LIBRARY_ID.`in`(it.ids))
+              FilterByType.COLLECTION -> and(cs.COLLECTION_ID.`in`(it.ids))
+              FilterByType.SERIES -> and(bmaa.SERIES_ID.`in`(it.ids))
+              FilterByType.READLIST -> and(rb.READLIST_ID.`in`(it.ids))
             }
           }
         }
@@ -247,8 +247,8 @@ class ReferentialDao(
       }.orderBy(g.GENRE.collate(SqliteUdfDataSource.COLLATION_UNICODE_3))
       .fetchSet(g.GENRE)
 
-  override fun findAllGenresByLibrary(
-    libraryId: String,
+  override fun findAllGenresByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String> =
     dsl
@@ -256,7 +256,7 @@ class ReferentialDao(
       .from(g)
       .leftJoin(s)
       .on(g.SERIES_ID.eq(s.ID))
-      .where(s.LIBRARY_ID.eq(libraryId))
+      .where(s.LIBRARY_ID.`in`(libraryIds))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(g.GENRE.collate(SqliteUdfDataSource.COLLATION_UNICODE_3))
       .fetchSet(g.GENRE)
@@ -289,8 +289,8 @@ class ReferentialDao(
       .sortedBy { it.stripAccents().lowercase() }
       .toSet()
 
-  override fun findAllSeriesAndBookTagsByLibrary(
-    libraryId: String,
+  override fun findAllSeriesAndBookTagsByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String> =
     dsl
@@ -298,14 +298,14 @@ class ReferentialDao(
       .from(bt)
       .leftJoin(b)
       .on(bt.BOOK_ID.eq(b.ID))
-      .where(b.LIBRARY_ID.eq(libraryId))
+      .where(b.LIBRARY_ID.`in`(libraryIds))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .union(
         select(st.TAG.`as`("tag"))
           .from(st)
           .leftJoin(s)
           .on(st.SERIES_ID.eq(s.ID))
-          .where(s.LIBRARY_ID.eq(libraryId))
+          .where(s.LIBRARY_ID.`in`(libraryIds))
           .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } },
       ).fetchSet(0, String::class.java)
       .sortedBy { it.stripAccents().lowercase() }
@@ -419,8 +419,8 @@ class ReferentialDao(
             .on(bt.BOOK_ID.eq(b.ID))
             .where(b.LIBRARY_ID.`in`(it))
         }
-      }.orderBy(st.TAG.collate(SqliteUdfDataSource.COLLATION_UNICODE_3))
-      .fetchSet(st.TAG)
+      }.orderBy(bt.TAG.collate(SqliteUdfDataSource.COLLATION_UNICODE_3))
+      .fetchSet(bt.TAG)
 
   override fun findAllLanguages(filterOnLibraryIds: Collection<String>?): Set<String> =
     dsl
@@ -432,8 +432,8 @@ class ReferentialDao(
       .orderBy(sd.LANGUAGE)
       .fetchSet(sd.LANGUAGE)
 
-  override fun findAllLanguagesByLibrary(
-    libraryId: String,
+  override fun findAllLanguagesByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String> =
     dsl
@@ -442,7 +442,7 @@ class ReferentialDao(
       .leftJoin(s)
       .on(sd.SERIES_ID.eq(s.ID))
       .where(sd.LANGUAGE.ne(""))
-      .and(s.LIBRARY_ID.eq(libraryId))
+      .and(s.LIBRARY_ID.`in`(libraryIds))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(sd.LANGUAGE)
       .fetchSet(sd.LANGUAGE)
@@ -505,8 +505,8 @@ class ReferentialDao(
     )
   }
 
-  override fun findAllPublishersByLibrary(
-    libraryId: String,
+  override fun findAllPublishersByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String> =
     dsl
@@ -515,7 +515,7 @@ class ReferentialDao(
       .leftJoin(s)
       .on(sd.SERIES_ID.eq(s.ID))
       .where(sd.PUBLISHER.ne(""))
-      .and(s.LIBRARY_ID.eq(libraryId))
+      .and(s.LIBRARY_ID.`in`(libraryIds))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(sd.PUBLISHER.collate(SqliteUdfDataSource.COLLATION_UNICODE_3))
       .fetchSet(sd.PUBLISHER)
@@ -549,8 +549,8 @@ class ReferentialDao(
       }.orderBy(sd.AGE_RATING)
       .fetchSet(sd.AGE_RATING)
 
-  override fun findAllAgeRatingsByLibrary(
-    libraryId: String,
+  override fun findAllAgeRatingsByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<Int?> =
     dsl
@@ -558,7 +558,7 @@ class ReferentialDao(
       .from(sd)
       .leftJoin(s)
       .on(sd.SERIES_ID.eq(s.ID))
-      .where(s.LIBRARY_ID.eq(libraryId))
+      .where(s.LIBRARY_ID.`in`(libraryIds))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(sd.AGE_RATING)
       .fetchSet(sd.AGE_RATING)
@@ -588,8 +588,8 @@ class ReferentialDao(
       .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
 
-  override fun findAllSeriesReleaseDatesByLibrary(
-    libraryId: String,
+  override fun findAllSeriesReleaseDatesByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<LocalDate> =
     dsl
@@ -597,7 +597,7 @@ class ReferentialDao(
       .from(bma)
       .leftJoin(s)
       .on(bma.SERIES_ID.eq(s.ID))
-      .where(s.LIBRARY_ID.eq(libraryId))
+      .where(s.LIBRARY_ID.`in`(libraryIds))
       .and(bma.RELEASE_DATE.isNotNull)
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(bma.RELEASE_DATE.desc())
@@ -632,8 +632,8 @@ class ReferentialDao(
       }.orderBy(sl.LABEL.collate(SqliteUdfDataSource.COLLATION_UNICODE_3))
       .fetchSet(sl.LABEL)
 
-  override fun findAllSharingLabelsByLibrary(
-    libraryId: String,
+  override fun findAllSharingLabelsByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String> =
     dsl
@@ -641,7 +641,7 @@ class ReferentialDao(
       .from(sl)
       .leftJoin(s)
       .on(sl.SERIES_ID.eq(s.ID))
-      .where(s.LIBRARY_ID.eq(libraryId))
+      .where(s.LIBRARY_ID.`in`(libraryIds))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(sl.LABEL.collate(SqliteUdfDataSource.COLLATION_UNICODE_3))
       .fetchSet(sl.LABEL)

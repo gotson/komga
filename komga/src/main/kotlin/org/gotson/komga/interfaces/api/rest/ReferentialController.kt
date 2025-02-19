@@ -50,7 +50,7 @@ class ReferentialController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) search: String?,
     @RequestParam(name = "role", required = false) role: String?,
-    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
     @RequestParam(name = "readlist_id", required = false) readListId: String?,
@@ -67,7 +67,7 @@ class ReferentialController(
         )
 
     return when {
-      libraryId != null -> referentialRepository.findAllAuthorsByNameAndLibrary(search, role, libraryId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      libraryIds.isNotEmpty() -> referentialRepository.findAllAuthorsByNameAndLibraries(search, role, libraryIds, principal.user.getAuthorizedLibraryIds(null), pageRequest)
       collectionId != null -> referentialRepository.findAllAuthorsByNameAndCollection(search, role, collectionId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
       seriesId != null -> referentialRepository.findAllAuthorsByNameAndSeries(search, role, seriesId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
       readListId != null -> referentialRepository.findAllAuthorsByNameAndReadList(search, role, readListId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
@@ -92,11 +92,11 @@ class ReferentialController(
   @Operation(summary = "List genres", description = "Can be filtered by various criteria")
   fun getGenres(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllGenresByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      libraryIds.isNotEmpty() -> referentialRepository.findAllGenresByLibraries(libraryIds, principal.user.getAuthorizedLibraryIds(null))
       collectionId != null -> referentialRepository.findAllGenresByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllGenres(principal.user.getAuthorizedLibraryIds(null))
     }
@@ -105,11 +105,11 @@ class ReferentialController(
   @Operation(summary = "List sharing labels", description = "Can be filtered by various criteria")
   fun getSharingLabels(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllSharingLabelsByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      libraryIds.isNotEmpty() -> referentialRepository.findAllSharingLabelsByLibraries(libraryIds, principal.user.getAuthorizedLibraryIds(null))
       collectionId != null -> referentialRepository.findAllSharingLabelsByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllSharingLabels(principal.user.getAuthorizedLibraryIds(null))
     }
@@ -118,11 +118,11 @@ class ReferentialController(
   @Operation(summary = "List tags", description = "Can be filtered by various criteria")
   fun getTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllSeriesAndBookTagsByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      libraryIds.isNotEmpty() -> referentialRepository.findAllSeriesAndBookTagsByLibraries(libraryIds, principal.user.getAuthorizedLibraryIds(null))
       collectionId != null -> referentialRepository.findAllSeriesAndBookTagsByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllSeriesAndBookTags(principal.user.getAuthorizedLibraryIds(null))
     }
@@ -133,10 +133,12 @@ class ReferentialController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
     @RequestParam(name = "readlist_id", required = false) readListId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
   ): Set<String> =
     when {
       seriesId != null -> referentialRepository.findAllBookTagsBySeries(seriesId, principal.user.getAuthorizedLibraryIds(null))
       readListId != null -> referentialRepository.findAllBookTagsByReadList(readListId, principal.user.getAuthorizedLibraryIds(null))
+      libraryIds.isNotEmpty() -> referentialRepository.findAllBookTags(principal.user.getAuthorizedLibraryIds(libraryIds))
       else -> referentialRepository.findAllBookTags(principal.user.getAuthorizedLibraryIds(null))
     }
 
@@ -157,11 +159,11 @@ class ReferentialController(
   @Operation(summary = "List languages", description = "Can be filtered by various criteria")
   fun getLanguages(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllLanguagesByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      libraryIds.isNotEmpty() -> referentialRepository.findAllLanguagesByLibraries(libraryIds, principal.user.getAuthorizedLibraryIds(null))
       collectionId != null -> referentialRepository.findAllLanguagesByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllLanguages(principal.user.getAuthorizedLibraryIds(null))
     }
@@ -170,11 +172,11 @@ class ReferentialController(
   @Operation(summary = "List publishers", description = "Can be filtered by various criteria")
   fun getPublishers(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllPublishersByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      libraryIds.isNotEmpty() -> referentialRepository.findAllPublishersByLibraries(libraryIds, principal.user.getAuthorizedLibraryIds(null))
       collectionId != null -> referentialRepository.findAllPublishersByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllPublishers(principal.user.getAuthorizedLibraryIds(null))
     }
@@ -183,11 +185,11 @@ class ReferentialController(
   @Operation(summary = "List age ratings", description = "Can be filtered by various criteria")
   fun getAgeRatings(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllAgeRatingsByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      libraryIds.isNotEmpty() -> referentialRepository.findAllAgeRatingsByLibraries(libraryIds, principal.user.getAuthorizedLibraryIds(null))
       collectionId != null -> referentialRepository.findAllAgeRatingsByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllAgeRatings(principal.user.getAuthorizedLibraryIds(null))
     }.map { it?.toString() ?: "None" }.toSet()
@@ -196,11 +198,11 @@ class ReferentialController(
   @Operation(summary = "List series release dates", description = "Can be filtered by various criteria")
   fun getSeriesReleaseDates(
     @AuthenticationPrincipal principal: KomgaPrincipal,
-    @RequestParam(name = "library_id", required = false) libraryId: String?,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionId: String?,
   ): Set<String> =
     when {
-      libraryId != null -> referentialRepository.findAllSeriesReleaseDatesByLibrary(libraryId, principal.user.getAuthorizedLibraryIds(null))
+      libraryIds.isNotEmpty() -> referentialRepository.findAllSeriesReleaseDatesByLibraries(libraryIds, principal.user.getAuthorizedLibraryIds(null))
       collectionId != null -> referentialRepository.findAllSeriesReleaseDatesByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
       else -> referentialRepository.findAllSeriesReleaseDates(principal.user.getAuthorizedLibraryIds(null))
     }.map { it.year.toString() }.toSet()

@@ -43,10 +43,10 @@ interface ReferentialRepository {
     pageable: Pageable,
   ): Page<Author>
 
-  fun findAllAuthorsByNameAndLibrary(
+  fun findAllAuthorsByNameAndLibraries(
     search: String?,
     role: String?,
-    libraryId: String,
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
     pageable: Pageable,
   ): Page<Author>
@@ -77,8 +77,8 @@ interface ReferentialRepository {
 
   fun findAllGenres(filterOnLibraryIds: Collection<String>?): Set<String>
 
-  fun findAllGenresByLibrary(
-    libraryId: String,
+  fun findAllGenresByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String>
 
@@ -89,8 +89,8 @@ interface ReferentialRepository {
 
   fun findAllSeriesAndBookTags(filterOnLibraryIds: Collection<String>?): Set<String>
 
-  fun findAllSeriesAndBookTagsByLibrary(
-    libraryId: String,
+  fun findAllSeriesAndBookTagsByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String>
 
@@ -125,8 +125,8 @@ interface ReferentialRepository {
 
   fun findAllLanguages(filterOnLibraryIds: Collection<String>?): Set<String>
 
-  fun findAllLanguagesByLibrary(
-    libraryId: String,
+  fun findAllLanguagesByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String>
 
@@ -142,8 +142,8 @@ interface ReferentialRepository {
     pageable: Pageable,
   ): Page<String>
 
-  fun findAllPublishersByLibrary(
-    libraryId: String,
+  fun findAllPublishersByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String>
 
@@ -154,8 +154,8 @@ interface ReferentialRepository {
 
   fun findAllAgeRatings(filterOnLibraryIds: Collection<String>?): Set<Int?>
 
-  fun findAllAgeRatingsByLibrary(
-    libraryId: String,
+  fun findAllAgeRatingsByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<Int?>
 
@@ -166,8 +166,8 @@ interface ReferentialRepository {
 
   fun findAllSeriesReleaseDates(filterOnLibraryIds: Collection<String>?): Set<LocalDate>
 
-  fun findAllSeriesReleaseDatesByLibrary(
-    libraryId: String,
+  fun findAllSeriesReleaseDatesByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<LocalDate>
 
@@ -178,8 +178,8 @@ interface ReferentialRepository {
 
   fun findAllSharingLabels(filterOnLibraryIds: Collection<String>?): Set<String>
 
-  fun findAllSharingLabelsByLibrary(
-    libraryId: String,
+  fun findAllSharingLabelsByLibraries(
+    libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
   ): Set<String>
 
