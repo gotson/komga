@@ -72,6 +72,7 @@ class BookDtoDao(
   private val sorts =
     mapOf(
       "name" to b.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "series" to sd.TITLE_SORT.noCase(),
       "created" to b.CREATED_DATE,
       "createdDate" to b.CREATED_DATE,
       "lastModified" to b.LAST_MODIFIED_DATE,
