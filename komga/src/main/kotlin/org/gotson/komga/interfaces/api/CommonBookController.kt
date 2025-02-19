@@ -254,7 +254,7 @@ class CommonBookController(
       throw ResponseStatusException(HttpStatus.NOT_FOUND, "File not found, it may have moved")
     }
 
-  @Operation(summary = "Get Eoub resource", description = "Return a resource from within an Epub book.", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
+  @Operation(summary = "Get Epub resource", description = "Return a resource from within an Epub book.", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
   @GetMapping(
     value = [
       "api/v1/books/{bookId}/resource/{*resource}",
