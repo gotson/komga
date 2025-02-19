@@ -1,3 +1,87 @@
+# [1.20.0](https://github.com/gotson/komga/compare/1.19.1...1.20.0) (2025-02-19)
+## 🚀 Features
+**api**
+- books can be sorted by series title ([9bab9f6](https://github.com/gotson/komga/commits/9bab9f6))
+- referential APIs accept multiple library_id for filtering ([4de763a](https://github.com/gotson/komga/commits/4de763a))
+- add client settings API ([3b1504c](https://github.com/gotson/komga/commits/3b1504c))
+- add support for API keys in REST API via X-API-Key header ([64b192c](https://github.com/gotson/komga/commits/64b192c))
+
+**webui**
+- new view to browse all books ([406ae4b](https://github.com/gotson/komga/commits/406ae4b)), closes [#1153](https://github.com/gotson/komga/issues/1153)
+- sort books within a series by last modified date or read date ([1f852db](https://github.com/gotson/komga/commits/1f852db))
+- only shows filter values for pinned libraries ([ef01550](https://github.com/gotson/komga/commits/ef01550))
+- add ability to configure recommended view per library ([e980e33](https://github.com/gotson/komga/commits/e980e33)), closes [#1539](https://github.com/gotson/komga/issues/1539)
+- add UI setting to group series using japanese characters ([6c71e07](https://github.com/gotson/komga/commits/6c71e07)), closes [#1715](https://github.com/gotson/komga/issues/1715)
+- add ability to reorder libraries ([a2a689f](https://github.com/gotson/komga/commits/a2a689f))
+- add ability to pin/unpin libraries ([c8e4a46](https://github.com/gotson/komga/commits/c8e4a46)), closes [#1560](https://github.com/gotson/komga/issues/1560)
+- add user setting to blur unread posters ([4892945](https://github.com/gotson/komga/commits/4892945)), closes [#1549](https://github.com/gotson/komga/issues/1549)
+- add UI setting to stretch poster to fit card ([c82c8b0](https://github.com/gotson/komga/commits/c82c8b0)), closes [#1825](https://github.com/gotson/komga/issues/1825)
+- add UI settings section with OAuth2 options ([961832e](https://github.com/gotson/komga/commits/961832e))
+
+## 🐛 Fixes
+**api**
+- embedded fonts would not load on windows ([0546deb](https://github.com/gotson/komga/commits/0546deb)), closes [#1877](https://github.com/gotson/komga/issues/1877)
+- add missing permissions for history api ([d4d3f64](https://github.com/gotson/komga/commits/d4d3f64))
+- oauth2 providers endpoint should only expose get ([c1fb307](https://github.com/gotson/komga/commits/c1fb307))
+- use proper media type for fonts ([6fa976f](https://github.com/gotson/komga/commits/6fa976f)), closes [#1849](https://github.com/gotson/komga/issues/1849)
+- incorrect format keyword in generated fonts css ([0f05a06](https://github.com/gotson/komga/commits/0f05a06)), closes [#1849](https://github.com/gotson/komga/issues/1849)
+
+**webui**
+- add missing admin guard for history view ([b5928eb](https://github.com/gotson/komga/commits/b5928eb))
+
+## 🔄️ Changes
+**api**
+- rework client-settings API validation ([7f55fe1](https://github.com/gotson/komga/commits/7f55fe1))
+- add validation on client-settings api ([c423d7c](https://github.com/gotson/komga/commits/c423d7c))
+- rework client-settings API ([0b37257](https://github.com/gotson/komga/commits/0b37257))
+
+**webui**
+- dashboard edit button hides the bottom bar on mobile ([e1acc58](https://github.com/gotson/komga/commits/e1acc58))
+- remove unused component references ([25dc282](https://github.com/gotson/komga/commits/25dc282))
+- remove 3-dots menu for all libraries in main view ([f90b415](https://github.com/gotson/komga/commits/f90b415))
+- remove unused imports ([8c64639](https://github.com/gotson/komga/commits/8c64639))
+- use reworked client-settings API ([05f73f0](https://github.com/gotson/komga/commits/05f73f0))
+
+**unscoped**
+- ktlint format ([9511c11](https://github.com/gotson/komga/commits/9511c11))
+
+## 🛠  Build
+
+- adjust svu options for v3 ([6875e6e](https://github.com/gotson/komga/commits/6875e6e))
+- cleanup openapi reference generation ([77c1069](https://github.com/gotson/komga/commits/77c1069))
+- enable repository dispatch on release ([a70a3b2](https://github.com/gotson/komga/commits/a70a3b2))
+
+## 📝 Documentation
+**api**
+- move deprecated endpoints to the top ([8b66308](https://github.com/gotson/komga/commits/8b66308))
+- update openapi description ([9dcdb1d](https://github.com/gotson/komga/commits/9dcdb1d))
+- add servers and logout endpoint ([3273048](https://github.com/gotson/komga/commits/3273048))
+- add Open API documentation for Client Settings API ([7fbf9c7](https://github.com/gotson/komga/commits/7fbf9c7))
+- add replacement for deprecated APIs ([fab59bc](https://github.com/gotson/komga/commits/fab59bc))
+
+**unscoped**
+- cleanup openApi documentation ([ad8ee86](https://github.com/gotson/komga/commits/ad8ee86))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Hungarian) ([b4d97d4](https://github.com/gotson/komga/commits/b4d97d4))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([a88d8a0](https://github.com/gotson/komga/commits/a88d8a0))
+- translated using Weblate (Finnish) ([0c7baf9](https://github.com/gotson/komga/commits/0c7baf9))
+- translated using Weblate (Spanish) ([c1dcb78](https://github.com/gotson/komga/commits/c1dcb78))
+- translated using Weblate (Italian) ([b82fb17](https://github.com/gotson/komga/commits/b82fb17))
+- translated using Weblate (Hungarian) ([85fa17f](https://github.com/gotson/komga/commits/85fa17f))
+- translated using Weblate (Croatian) ([e9a5120](https://github.com/gotson/komga/commits/e9a5120))
+- translated using Weblate (Portuguese) ([cf3fcab](https://github.com/gotson/komga/commits/cf3fcab))
+- translated using Weblate (Czech) ([8d9840c](https://github.com/gotson/komga/commits/8d9840c))
+- translated using Weblate (Japanese) ([8a2bce2](https://github.com/gotson/komga/commits/8a2bce2))
+- translated using Weblate (German) ([17be53d](https://github.com/gotson/komga/commits/17be53d))
+
+## ⚙️ Dependencies
+**webui**
+- bump serialize-javascript in /komga-webui ([4d72ec0](https://github.com/gotson/komga/commits/4d72ec0))
+
 # [1.19.1](https://github.com/gotson/komga/compare/1.19.0...1.19.1) (2025-02-03)
 ## 🐛 Fixes
 **api**
