@@ -133,6 +133,12 @@ export class BookItem extends Item<BookDto> {
           } else {
             text = i18n.t('book_card.unread')
           }
+        } else if (context.includes(ItemContext.DATE_UPDATED)) {
+          text = new Intl.DateTimeFormat(i18n.locale, {dateStyle: 'medium'} as Intl.DateTimeFormatOptions).format(this.item.lastModified)
+          title = new Intl.DateTimeFormat(i18n.locale, {
+            dateStyle: 'long',
+            timeStyle: 'medium',
+          } as Intl.DateTimeFormatOptions).format(this.item.lastModified)
         } else if (context.includes(ItemContext.FILE_SIZE))
           text = getFileSize(this.item.sizeBytes)
         else

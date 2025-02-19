@@ -639,6 +639,8 @@ export default Vue.extend({
     itemContext(): ItemContext[] {
       if (this.sortActive.key === 'metadata.releaseDate') return [ItemContext.RELEASE_DATE]
       if (this.sortActive.key === 'createdDate') return [ItemContext.DATE_ADDED]
+      if (this.sortActive.key === 'lastModifiedDate') return [ItemContext.DATE_UPDATED]
+      if (this.sortActive.key === 'readProgress.readDate') return [ItemContext.READ_DATE]
       if (this.sortActive.key === 'fileSize') return [ItemContext.FILE_SIZE]
       return []
     },
@@ -646,7 +648,9 @@ export default Vue.extend({
       return [
         {name: this.$t('sort.number').toString(), key: 'metadata.numberSort'},
         {name: this.$t('sort.date_added').toString(), key: 'createdDate'},
+        {name: this.$t('sort.date_updated').toString(), key: 'lastModifiedDate'},
         {name: this.$t('sort.release_date').toString(), key: 'metadata.releaseDate'},
+        {name: this.$t('sort.date_read').toString(), key: 'readProgress.readDate'},
         {name: this.$t('sort.file_size').toString(), key: 'fileSize'},
         {name: this.$t('sort.file_name').toString(), key: 'name'},
         {name: this.$t('sort.page_count').toString(), key: 'media.pagesCount'},
