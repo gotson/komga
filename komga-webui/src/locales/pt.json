@@ -25,7 +25,9 @@
       "generate_api_key": "Gerar chave de API",
       "no_keys": "Nenhuma chave de API criada"
     },
-    "change_password": "alterar senha"
+    "change_password": "alterar senha",
+    "details": "Detalhes",
+    "my_account": "Minha conta"
   },
   "announcements": {
     "mark_all_read": "Marcar todos como lidos",
@@ -93,6 +95,7 @@
     "beginning_of_book": "Está no início do livro.",
     "changing_reading_direction": "Mudar direção de leitura para",
     "cycling_page_layout": "Alterar a disposição da página",
+    "cycling_page_margin": "Ciclar margens de páginas",
     "cycling_scale": "Alterar escala",
     "cycling_side_padding": "Alterar preenchimento lateral",
     "download_current_page": "Descarregar a página atual",
@@ -135,6 +138,7 @@
       "general": "Geral",
       "gestures": "Gestos",
       "page_layout": "Disposição de página",
+      "page_margin": "Margens da página",
       "paged": "Opções de paginação do leitor",
       "reading_mode": "Modo de leitura",
       "scale_type": "Tipo de escala",
@@ -145,6 +149,7 @@
     "shortcuts": {
       "close": "Fechar",
       "cycle_page_layout": "Alterar disposição de página",
+      "cycle_page_margin": "Alternar margem de página",
       "cycle_scale": "Alterar escala",
       "cycle_side_padding": "Alterar preenchimento lateral",
       "first_page": "Primeira página",
@@ -168,6 +173,8 @@
   },
   "browse_book": {
     "comment": "COMENTÁRIO",
+    "date_created": "CRIADO",
+    "date_modified": "ÚLTIMA ALTERAÇÃO",
     "download_file": "Descarregar ficheiro",
     "file": "FICHEIRO",
     "format": "FORMATO",
@@ -177,6 +184,8 @@
     "outdated_tooltip": "O ficheiro deste livro foi alterado: este livro deve ser reanalisado",
     "read_book": "Ler livro",
     "read_incognito": "Ler incógnito",
+    "remove_from_collection": "Remover livro da coleção",
+    "remove_from_readlist": "Remover livro da lista de leitura",
     "size": "TAMANHO"
   },
   "browse_collection": {
@@ -191,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Este é o ano mais antigo entre as datas de edição de todos os livros na série",
+    "remove_from_collection": "Remover série da coleção",
     "series_no_summary": "Esta série não contém um resumo, pelo que foi criado um para si!",
     "summary_from_book": "Resumo do livro {number}:"
   },
@@ -221,8 +231,10 @@
     "dismiss": "Ignorar",
     "download": "Descarregar",
     "drag_drop": "arrastar e soltar",
+    "duplicate": "Duplicar",
     "email": "Email",
     "epub": "Epub",
+    "error": "Erro",
     "filename": "Nome do ficheiro",
     "filter_no_matches": "O filtro ativo não obteve correspondências",
     "genre": "Género",
@@ -235,8 +247,11 @@
     "locale_name": "Português (Portugal)",
     "locale_rtl": "false",
     "lock_all": "Bloquear todos",
+    "media": "Media",
+    "more": "Mais",
     "n_selected": "{count} selecionados",
     "nothing_to_show": "Nada a exibir",
+    "ok": "Ok",
     "oneshot": "Livro isolado",
     "outdated": "Desatualizado",
     "page": "Página",
@@ -247,19 +262,23 @@
     "password": "Senha",
     "pdf": "PDF",
     "pending_tasks": "Nenhuma tarefa pendente | 1 tarefa pendente | {count} tarefas pendentes",
+    "pinned_libraries": "Bibliotecas afixadas",
     "publisher": "Editora",
     "read": "Ler",
     "read_on": "Lido em {date}",
     "readlist": "Lista de leitura",
     "readlists": "Listas de leitura",
     "remember-me": "Memorizar-me",
+    "reorder": "Reordenar",
     "required": "Obrigatório",
     "reset_filters": "Redefinir filtros",
     "roles": "Funções",
     "save_changes": "Guardar alterações",
     "series": "Séries | Séries",
+    "settings": "Configurações",
     "sidecars": "Carrinho",
     "tags": "Etiquetas",
+    "ui": "Interface de utilizador",
     "unavailable": "Indisponível",
     "unlock_all": "Desbloquear tudo",
     "url": "URL",
@@ -283,6 +302,7 @@
     "comicrack_preambule_html": "Pode importar listas de leitura da ComicRack existentes no formato <code>.cbl</code>.<br>Komga tentará corresponder a série fornecida e o número do livro com as séries e livros nas suas bibliotecas.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} livro(s) não tiveram correspondências",
+      "body2": "{duplicates} / {total} livros são duplicados",
       "create": "Criar mesmo assim",
       "title": "Alguns livros não obtiveram correspondências"
     },
@@ -443,6 +463,7 @@
       "dialot_title_edit": "Editar biblioteca",
       "field_analysis_analyze_dimensions": "Analisar as dimensões das páginas",
       "field_analysis_hash_files": "Calcular Hash para ficheiros",
+      "field_analysis_hash_koreader": "Calcular Hash para ficheiros KOReader",
       "field_analysis_hash_pages": "Calcular Hash para páginas",
       "field_convert_to_cbz": "Converter automaticamente para CBZ",
       "field_import_barcode_isbn": "Código de barras ISBN",
@@ -494,6 +515,11 @@
       "label_ordering": "Por predefinição, livros numa lista de leitura são ordenados manualmente. Pode desativar a ordenação manual para ordenar os livros por data de edição.",
       "tab_general": "Geral",
       "tab_poster": "Póster"
+    },
+    "edit_recommended": {
+      "button_confirm": "Guardar alterações",
+      "button_reset": "Repor para o padrão",
+      "dialog_title": "Editar visualização recomendada"
     },
     "edit_series": {
       "button_cancel": "Cancelar",
@@ -634,6 +660,7 @@
     "delete_to_save": "Eliminar para poupar {size}",
     "deleted_count": "Apagado(s) {count} vez(es)",
     "empty_title": "Nenhuma página duplicada encontrada",
+    "empty_title_known": "Sem duplicados identificados",
     "filter": {
       "count": "Quantidade",
       "date_added": "Data de adição",
@@ -740,8 +767,10 @@
   "epubreader": {
     "current_chapter": "Capítulo atual",
     "page_of": "Página {page} de {count}",
+    "publisher_font": "Editora",
     "settings": {
       "column_count": "Contador de colunas",
+      "font_family": "Fonte",
       "layout": "Disposição",
       "layout_paginated": "Paginado",
       "layout_scroll": "Rolado",
@@ -803,6 +832,7 @@
   "filter": {
     "age_rating": "classificação etária",
     "age_rating_none": "Nenhuma",
+    "any": "Qualquer",
     "complete": "Concluído",
     "genre": "género",
     "in_progress": "Em progresso",
@@ -870,10 +900,12 @@
     "empty_trash": "Esvaziar o lixo",
     "mark_read": "Marcar como lido",
     "mark_unread": "Marcar como não lido",
+    "pin": "Afixar",
     "refresh_metadata": "Atualizar metadados",
     "scan_library_files": "Varredura de ficheiros na biblioteca",
     "scan_library_files_deep": "Varrer ficheiros na biblioteca (profundidade)",
-    "select_all": "Selecionar todas"
+    "select_all": "Selecionar todas",
+    "unpin": "Desafixar"
   },
   "metrics": {
     "library_books": "Livros por biblioteca",
@@ -884,10 +916,17 @@
     "tasks_total_time": "Tempo total de tarefas",
     "title": "Métricas"
   },
+  "missing_posters": {
+    "title": "Pósteres em falta"
+  },
   "navigation": {
     "home": "Entrada",
     "libraries": "Bibliotecas",
     "logout": "Sair"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Pode afixar uma biblioteca no menu de 3 pontos",
+    "title": "Sem bibliotecas afixadas"
   },
   "page_not_found": {
     "go_back_to_home_page": "Voltar à página inicial",
@@ -998,6 +1037,20 @@
   "titles_more": {
     "less": "Menos títulos",
     "more": "Mais títulos"
+  },
+  "ui_settings": {
+    "general": "Geral",
+    "label_oauth2_auto_login": "Autenticação OAuth2 automática",
+    "label_oauth2_hide_login": "Ocultar campos de autenticação se OAuth2 estiver ativado",
+    "label_poster_blur_unread": "Desfocar póster para livros e séries não lidos",
+    "label_poster_stretch": "Esticar póster para ajustar ao cartão",
+    "label_series_groups": "Agrupar séries",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Alfabeticamente",
+      "japanese": "Gojūon (japonês)"
+    },
+    "tooltip_oauth2_auto_login": "Requer um fornecedor OAuth2 único e ativar a opção 'Ocultar campos de autenticação'"
   },
   "updates": {
     "available": "Estão disponíveis atualizações",
