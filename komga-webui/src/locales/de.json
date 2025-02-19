@@ -25,7 +25,9 @@
       "generate_api_key": "Erzeuge API Schlüssel",
       "no_keys": "Bisher keine API Schlüssel vorhanden"
     },
-    "change_password": "Passwort ändern"
+    "change_password": "Passwort ändern",
+    "details": "Details",
+    "my_account": "Mein Account"
   },
   "announcements": {
     "mark_all_read": "Alle als gelesen markieren",
@@ -93,6 +95,7 @@
     "beginning_of_book": "Sie sind am Anfang des Buches.",
     "changing_reading_direction": "Leserichtung ändern zu",
     "cycling_page_layout": "Seitendarstellung ändern",
+    "cycling_page_margin": "Seitenabstände ändern",
     "cycling_scale": "Skalierung ändern",
     "cycling_side_padding": "Seitenrand ändern",
     "download_current_page": "Aktuelle Seite herunterladen",
@@ -135,6 +138,7 @@
       "general": "Allgemein",
       "gestures": "Gesten",
       "page_layout": "Seiteneinstellungen",
+      "page_margin": "Seitenabstand",
       "paged": "Einstellungen zur Seitenausrichtung",
       "reading_mode": "Lesemodus",
       "scale_type": "Skalierung",
@@ -145,6 +149,7 @@
     "shortcuts": {
       "close": "Schließen",
       "cycle_page_layout": "Wechsle Seitendarstellung",
+      "cycle_page_margin": "Seitenrandauswahl ändern",
       "cycle_scale": "Ändern der Skalierung",
       "cycle_side_padding": "Seitenrand ändern",
       "first_page": "Erste Seite",
@@ -168,6 +173,8 @@
   },
   "browse_book": {
     "comment": "Kommentar",
+    "date_created": "Erstellt",
+    "date_modified": "Zuletzt geändert",
     "download_file": "Datei herunterladen",
     "file": "DATEI",
     "format": "FORMAT",
@@ -177,6 +184,8 @@
     "outdated_tooltip": "Die Buchdatei hat sich geändert, das Buch muss analysiert werden",
     "read_book": "Lese Buch",
     "read_incognito": "Inkognito lesen",
+    "remove_from_collection": "Buch aus Sammlung entfernen",
+    "remove_from_readlist": "Entferne Buch aus der Leseliste",
     "size": "GRÖẞE"
   },
   "browse_collection": {
@@ -191,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Dies ist das früheste Erscheinungsjahr von allen Büchern in der Serie",
+    "remove_from_collection": "Entferne Serie aus der Sammlung",
     "series_no_summary": "Diese Serie hat keine Kurzbeschreibung, es wurde eine aus der Serie per Zufall ausgewählt!",
     "summary_from_book": "Inhaltsangabe des Buches {number}:"
   },
@@ -221,8 +231,10 @@
     "dismiss": "Verwerfen",
     "download": "Herunterladen",
     "drag_drop": "Drag and Drop",
+    "duplicate": "Duplikat",
     "email": "E-Mail",
     "epub": "EPUB",
+    "error": "Fehler",
     "filename": "Dateiname",
     "filter_no_matches": "Die Suchkriterien haben kein Ergebnis geliefert",
     "genre": "Genre",
@@ -235,8 +247,11 @@
     "locale_name": "Deutsch",
     "locale_rtl": "false",
     "lock_all": "Alle sperren",
+    "media": "Media",
+    "more": "Mehr",
     "n_selected": "{count} markiert",
     "nothing_to_show": "Nichts anzuzeigen",
+    "ok": "OK",
     "oneshot": "One-Shot",
     "outdated": "Nicht mehr aktuell",
     "page": "Seite",
@@ -247,19 +262,23 @@
     "password": "Passwort",
     "pdf": "PDF",
     "pending_tasks": "Keine ausstehenden Aufgaben | 1 ausstehende Aufgabe | {count} ausstehende Aufgaben",
+    "pinned_libraries": "Fixierte Bibliotheken",
     "publisher": "Verlag",
     "read": "Lesen",
     "read_on": "Am {date} gelesen",
     "readlist": "Leseliste",
     "readlists": "Leseliste",
     "remember-me": "Erinnere Dich an mich",
+    "reorder": "Neu sortieren",
     "required": "Notwendig",
     "reset_filters": "Filter Zurücksetzen",
     "roles": "Rollen",
     "save_changes": "Änderungen speichern",
     "series": "Serie | Serien",
+    "settings": "Einstellungen",
     "sidecars": "Extras",
     "tags": "Stichwörter",
+    "ui": "Benutzeroberfläche",
     "unavailable": "Nicht verfügbar",
     "unlock_all": "Alle entsperren",
     "url": "URL",
@@ -283,6 +302,7 @@
     "comicrack_preambule_html": "Es ist möglich ComicRack Leselisten im Format <code>.cbl</code> zu übernehmen.<br>Komga versucht die übernommenen Serien und Buchnummern mit den Serien und Büchern in der Bibliothek abzugleichen.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} Bücher haben keine Übereinstimmung",
+      "body2": "{duplicates} / {total} Bücher sind doppelt",
       "create": "Trotzdem erstellen",
       "title": "Einige Bücher stimmen nicht überein"
     },
@@ -443,6 +463,7 @@
       "dialot_title_edit": "Bibliothek bearbeiten",
       "field_analysis_analyze_dimensions": "Analysiere Seitenformat",
       "field_analysis_hash_files": "Erzeuge einen Hash für Dateien",
+      "field_analysis_hash_koreader": "Compute Hash für KO Reader Dateien",
       "field_analysis_hash_pages": "Erzeuge einen Hash für Seiten",
       "field_convert_to_cbz": "Automatisch in CBZ konvertieren",
       "field_import_barcode_isbn": "ISBN Strichcode",
@@ -494,6 +515,10 @@
       "label_ordering": "Standardmäßig werden die Bücher in einer Leseliste manuell sortiert. Sie können die manuelle Sortierung deaktivieren, um die Bücher nach Erscheinungsdatum zu sortieren.",
       "tab_general": "Allgemein",
       "tab_poster": "Poster"
+    },
+    "edit_recommended": {
+      "button_confirm": "Änderungen speichern",
+      "button_reset": "Zurücksetzen auf Standardwerte"
     },
     "edit_series": {
       "button_cancel": "Abbrechen",
