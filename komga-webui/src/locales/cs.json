@@ -25,7 +25,9 @@
       "generate_api_key": "Generovat API klíč",
       "no_keys": "Žádné API klíče nejsou vytvořeny"
     },
-    "change_password": "změnit heslo"
+    "change_password": "změnit heslo",
+    "details": "Podrobnosti",
+    "my_account": "Můj účet"
   },
   "announcements": {
     "mark_all_read": "Označit všechny jako přečtené",
@@ -44,7 +46,7 @@
   },
   "author_roles": {
     "colorist": "koloristé",
-    "cover": "přebal",
+    "cover": "obálka",
     "editor": "editoři",
     "inker": "inkousty",
     "letterer": "písmena",
@@ -66,19 +68,19 @@
     "button_select_series": "Vybrat série",
     "field_import_path": "Importovat ze složky",
     "info_part1": "Na této stránce lze importovat soubory které jsou uloženy mimo existující knihovny. Lze importovat pouze do existujících sérií, Komga tyto soubory přesune nebo zkopíruje do složky dané série.",
-    "info_part2": "Pokud knížka s vybraným číslem již existuje, budete moct knížky porovnat. Pokud se rozhodnete knížku importovat, Komga nahradí existující knížku novou knížkou.",
+    "info_part2": "Pokud kniha s vybraným číslem již existuje, budete moci knihy porovnat. Pokud se rozhodnete knihu importovat, Komga nahradí existující knihu novou.",
     "no_files_found": "Žádné soubory nenalezeny",
     "notification": {
-      "go_to_book": "Ke knížce",
-      "import_failure": "Import knížky se nezdařil: {file}",
-      "import_successful": "Knížka úspěšně importována: {book}",
+      "go_to_book": "Ke knize",
+      "import_failure": "Import knihy se nezdařil: {file}",
+      "import_successful": "Kniha úspěšně importována: {book}",
       "source_file": "Zdrojový soubor: {file}"
     },
     "row": {
-      "error_analyze_first": "Knížka musí být nejdříve analyzována",
+      "error_analyze_first": "Kniha musí být nejprve analyzována",
       "error_choose_series": "Vybrat sérii",
-      "error_only_import_no_errors": "Lze importovat pouze knížky bez chyb",
-      "warning_upgrade": "Existující knížka bude aktualizovány"
+      "error_only_import_no_errors": "Lze importovat pouze knihy bez chyb",
+      "warning_upgrade": "Existující kniha bude aktualizována"
     },
     "table": {
       "destination_name": "Jméno umístění",
@@ -90,23 +92,24 @@
     "try_another_directory": "Zkusit prohladat jiný adresář"
   },
   "bookreader": {
-    "beginning_of_book": "Jsi na začátku knížky.",
+    "beginning_of_book": "Jsi na začátku knihy.",
     "changing_reading_direction": "Změnit směr čtení na",
     "cycling_page_layout": "Změnit vzhled stránky",
+    "cycling_page_margin": "Rotující okraj stránky",
     "cycling_scale": "Změnit velikost",
     "cycling_side_padding": "Změnit odsazení strany",
     "download_current_page": "Stáhnout aktuální stránku",
-    "end_of_book": "Dostali jste se na konec knížky.",
+    "end_of_book": "Dostali jste se na konec knihy.",
     "from_series_metadata": "z metadat série",
-    "move_next": "Znovu použít \"Další\" pro přechod na další knížku.",
+    "move_next": "Použijte \"Další\" pro přechod na další knihu.",
     "move_next_exit": "Znovu použít \"Další\" pro opuštění čtečky.",
-    "move_previous": "Znovu použít \"Předchozí\" pro přechod na předchozí knížku.",
+    "move_previous": "Použijte \"Předchozí\" pro přechod na předchozí knihu.",
     "notification_poster_set_book": "Současná stránka byla nastavena jako plakát knihy.",
     "notification_poster_set_readlist": "Současná stránka byla nastavena jako plakát seznamu četby.",
     "notification_poster_set_series": "Současná stránka byla nastavena jako plakát série.",
     "paged_reader_layout": {
       "double": "Dvojstránka",
-      "double_no_cover": "Dvoustránka (žádný přebal)",
+      "double_no_cover": "Dvoustránka (bez obálky)",
       "single": "Jedna stránka"
     },
     "reader_settings": "Nastavení prohlížení",
@@ -135,16 +138,18 @@
       "general": "Obecné",
       "gestures": "Gesta",
       "page_layout": "Rozložení stránky",
+      "page_margin": "Okraj stránky",
       "paged": "Nastavení zobrazení stránek",
       "reading_mode": "Režim čtení",
       "scale_type": "Typ úpravy velikosti",
       "side_padding": "Boční odsazení",
       "side_padding_none": "Žádný",
-      "webtoon": "Nastavení Webtoon Reader"
+      "webtoon": "Nastavení čtečky Webtoon"
     },
     "shortcuts": {
       "close": "Zavřít",
       "cycle_page_layout": "Změnit rozložení stránky",
+      "cycle_page_margin": "Rotovat okraj stránky",
       "cycle_scale": "Změnit měřítko",
       "cycle_side_padding": "Procházet bočním odsazením",
       "first_page": "První stránka",
@@ -157,24 +162,26 @@
       "reader_navigation": "Ovládání módu čtení",
       "right_to_left": "Zprava doleva",
       "settings": "Nastavení",
-      "show_hide_help": "Ukázat/schovat nápovědu",
-      "show_hide_settings": "Ukázat/schovat nastavení",
-      "show_hide_thumbnails": "Ukázat/schovat prohlížeč náhledů",
+      "show_hide_help": "Zobrazit/skrýt nápovědu",
+      "show_hide_settings": "Zobrazit/skrýt nastavení",
+      "show_hide_thumbnails": "Zobrazit/skrýt prohlížeč náhledů",
       "show_hide_toolbars": "Zobrazit/skrýt panel nástrojů",
       "vertical": "Svisle",
-      "webtoon": "Webový komiks"
+      "webtoon": "Webtoon"
     },
     "tooltip_incognito": "Postup čtení nebude uložen"
   },
   "browse_book": {
     "comment": "KOMENTOVAT",
+    "date_created": "VYTVOŘENO",
+    "date_modified": "POSLEDNÍ ZMĚNA",
     "download_file": "Stáhnout soubor",
     "file": "SOUBOR",
     "format": "FORMÁT",
     "isbn": "ISBN",
     "links": "ODKAZY",
     "navigation_within_readlist": "Navigace v seznamu četby: {name}",
-    "outdated_tooltip": "Soubor této knížky se změnil, tuto knížku je potřeba znova analyzovat",
+    "outdated_tooltip": "Soubor této knihy se změnil, tuto knihu je potřeba znova analyzovat",
     "read_book": "Číst knihu",
     "read_incognito": "Číst anonymně",
     "remove_from_collection": "Odebrat knihu ze sbírky",
@@ -195,7 +202,7 @@
     "earliest_year_from_release_dates": "Toto je nejstarší rok od data vydání všech knih v sérii",
     "remove_from_collection": "Odebrat sérii ze sbírky",
     "series_no_summary": "Tato série nemá souhrn, proto jsme pro tebe jeden vybrali!",
-    "summary_from_book": "Souhrn z knížky {number}:"
+    "summary_from_book": "Souhrn z knihy {number}:"
   },
   "collections_expansion_panel": {
     "manage_collection": "Spravovat kolekci",
@@ -208,8 +215,8 @@
     "any_of": "Kterýkoli",
     "book": "Kniha",
     "books": "Knihy",
-    "books_n": "Žádná knížka | 1 knížka | {count} knížek",
-    "books_total": "{count} / {total} knížek",
+    "books_n": "Žádná kniha | 1 kniha | {count} knih",
+    "books_total": "{count} / {total} knih",
     "cancel": "Zrušit",
     "cbx": "Komiksové Archivy",
     "choose_image": "Vybrat obrázek",
@@ -224,8 +231,10 @@
     "dismiss": "Odejít",
     "download": "Stáhnout",
     "drag_drop": "přetáhnout",
+    "duplicate": "Duplikovat",
     "email": "Email",
     "epub": "Epub",
+    "error": "Chyba",
     "filename": "Jméno souboru",
     "filter_no_matches": "Zadaný filtr nemá žádné výsledky",
     "genre": "Žánr",
@@ -238,8 +247,11 @@
     "locale_name": "Čeština",
     "locale_rtl": "false",
     "lock_all": "Uzamknout vše",
+    "media": "Média",
+    "more": "Více",
     "n_selected": "{count} vybráno",
-    "nothing_to_show": "Není co ukázat",
+    "nothing_to_show": "Nic k zobrazení",
+    "ok": "OK",
     "oneshot": "Jednorázovka",
     "outdated": "Zastaralé",
     "page": "Strana",
@@ -250,19 +262,23 @@
     "password": "Heslo",
     "pdf": "PDF",
     "pending_tasks": "Žádné čekající úlohy | 1 čekající úloha | {count} čekajících úloh",
+    "pinned_libraries": "Připnuté knihovny",
     "publisher": "Vydavatel",
     "read": "Číst",
     "read_on": "Přečíst dne {date}",
     "readlist": "Seznam četby",
     "readlists": "Seznamy četby",
     "remember-me": "Zapamatovat",
+    "reorder": "Změnit pořadí",
     "required": "Vyžadováno",
     "reset_filters": "Zresetovat Filtr",
     "roles": "Role",
     "save_changes": "Uložit změny",
     "series": "Série",
+    "settings": "Nastavení",
     "sidecars": "Doprovodné",
     "tags": "Štítky",
+    "ui": "Uživatelské rozhraní",
     "unavailable": "Není k dispozici",
     "unlock_all": "Odemknout vše",
     "url": "URL",
@@ -272,14 +288,14 @@
   "dashboard": {
     "keep_reading": "Pokračovat ve čtení",
     "on_deck": "Na řadě",
-    "recently_added_books": "Nedávno přidané knížky",
+    "recently_added_books": "Nedávno přidané knihy",
     "recently_added_series": "Nedávno přidané série",
-    "recently_read_books": "Nedávno přečtené knížky",
-    "recently_released_books": "Nedávno vydané knížky",
+    "recently_read_books": "Nedávno přečtené knihy",
+    "recently_released_books": "Nedávno vydané knihy",
     "recently_updated_series": "Nedávno aktualizovaná série"
   },
   "data_import": {
-    "book_number": "Číslo knížky: {name}",
+    "book_number": "Číslo knihy: {name}",
     "book_series": "Série: {name}",
     "button_import": "Importovat",
     "button_match": "Porovnat",
@@ -320,7 +336,7 @@
     },
     "add_to_readlist": {
       "button_create": "Vytvořit",
-      "card_readlist_subtitle": "Žádná knížka | 1 knížka | {count} knížek",
+      "card_readlist_subtitle": "Žádná kniha | 1 kniha | {count} knih",
       "dialog_title": "Přidat do seznamu četby",
       "field_search_create": "Vyhledat nebo vytvořit seznam čeby",
       "field_search_create_error": "Seznam četby s tímto názvem již existuje",
@@ -446,9 +462,9 @@
       "dialog_title_add": "Přidat knihovnu",
       "dialot_title_edit": "Upravit knihovnu",
       "field_analysis_analyze_dimensions": "Analyzujte rozměry stránek",
-      "field_analysis_hash_files": "Vypočítej hash pro soubory",
+      "field_analysis_hash_files": "Vypočítat hash pro soubory",
       "field_analysis_hash_koreader": "Spočítat hash souborů pro KOReader",
-      "field_analysis_hash_pages": "Vypočítej hash pro stránky",
+      "field_analysis_hash_pages": "Vypočítat hash pro stránky",
       "field_convert_to_cbz": "Automaticky převést na CBZ",
       "field_import_barcode_isbn": "Čárový kód ISBN",
       "field_import_comicinfo_book": "Metadata knihy",
@@ -458,14 +474,14 @@
       "field_import_comicinfo_series_append_volume": "Přidat svazek k názvu série",
       "field_import_epub_book": "Metadata knihy",
       "field_import_epub_series": "Metadata série",
-      "field_import_local_artwork": "Místní umělecká díla",
+      "field_import_local_artwork": "Místní ilustrace",
       "field_import_mylar_series": "Metadata série",
       "field_name": "Název",
       "field_oneshotsdirectory": "Adresář samostatných dílů",
       "field_repair_extensions": "Automaticky opravit nesprávné přípony souborů",
       "field_root_folder": "Kořenový adresář",
       "field_scan_interval": "Interval skenování",
-      "field_scanner_empty_trash_after_scan": "Po každém skenování automaticky vyprázdněte koš",
+      "field_scanner_empty_trash_after_scan": "Po každém skenování automaticky vyprázdnit koš",
       "field_scanner_force_directory_modified_time": "Vynutit čas změny adresáře",
       "field_scanner_scan_startup": "Skenovat při startu",
       "field_series_cover": "Obálka série",
@@ -474,8 +490,8 @@
       "label_analysis": "Analýza",
       "label_file_management": "Správa souborů",
       "label_import_barcode_isbn": "Import ISBN v čárovém kódu",
-      "label_import_comicinfo": "Importujte metadata pro CBR/CBZ obsahující soubor ComicInfo.xml",
-      "label_import_epub": "Importuj metadata ze souborů EPUB",
+      "label_import_comicinfo": "Importovat metadata pro CBR/CBZ obsahující soubor ComicInfo.xml",
+      "label_import_epub": "Importovat metadata ze souborů EPUB",
       "label_import_local": "Importovat lokální mediální soubory",
       "label_import_mylar": "Import metadat generovaných pomocí Mylar",
       "label_scan_directory_exclusions": "Výjimky adresářů",
@@ -639,6 +655,7 @@
     "delete_to_save": "Smazáním ušetříte {size}",
     "deleted_count": "Smazáno {count} krát",
     "empty_title": "Žádné duplicitní stránky nebyly nalezeny",
+    "empty_title_known": "Žádné duplicity",
     "filter": {
       "count": "Počet",
       "date_added": "Datum přidání",
@@ -650,9 +667,9 @@
       "total_size": "Celková velikost"
     },
     "info": "Smazáním duplicitních stránek se změní vaše soubory. Před použitím automatického mazání si zálohujte soubory.",
-    "known": "Známý",
+    "known": "Známé",
     "matches_n": "Žádné shody | 1 shoda | {count} shod",
-    "new": "Nový",
+    "new": "Nové",
     "saved_size": "Uloženo {size}",
     "title": "Duplicitní stránky",
     "unknown_size": "Neznámá velikost"
@@ -701,7 +718,7 @@
       "ERROR": "Chyba",
       "OUTDATED": "Zastaralé",
       "READY": "Připraven",
-      "UNKNOWN": "Neznámý",
+      "UNKNOWN": "Neznámé",
       "UNSUPPORTED": "Nepodporováno"
     },
     "page_hash_action": {
@@ -713,7 +730,7 @@
       "LEFT_TO_RIGHT": "Zleva do prava",
       "RIGHT_TO_LEFT": "Zprava doleva",
       "VERTICAL": "Vertikální",
-      "WEBTOON": "Webtoon platforma"
+      "WEBTOON": "Webtoon"
     },
     "scan_interval": {
       "DAILY": "Denně",
@@ -733,7 +750,7 @@
       "ABANDONED": "Opuštěný",
       "ENDED": "Skončilo",
       "HIATUS": "Mezera",
-      "ONGOING": "Probíhající"
+      "ONGOING": "Rozečtené"
     },
     "thumbnail_size": {
       "DEFAULT": "Výchozí (300px)",
@@ -745,8 +762,10 @@
   "epubreader": {
     "current_chapter": "Současná kapitola",
     "page_of": "Strana {page} z {count}",
+    "publisher_font": "Vydavatel",
     "settings": {
       "column_count": "Počet sloupců",
+      "font_family": "Písmo",
       "layout": "Rozložení",
       "layout_paginated": "Stránkovaný",
       "layout_scroll": "Posuvný",
@@ -876,10 +895,12 @@
     "empty_trash": "Vyprázdnit koš",
     "mark_read": "Označit jako přečtené",
     "mark_unread": "Označit jako nepřečtené",
+    "pin": "Připnout",
     "refresh_metadata": "Obnovit metadata",
     "scan_library_files": "Skenovat soubory knihovny",
     "scan_library_files_deep": "Skenovat soubory knihovny (hloubkově)",
-    "select_all": "Vybrat vše"
+    "select_all": "Vybrat vše",
+    "unpin": "Odepnout"
   },
   "metrics": {
     "library_books": "Počet knih na knihovnu",
@@ -897,6 +918,10 @@
     "home": "Úvod",
     "libraries": "Knihovny",
     "logout": "Odhlásit se"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Můžete připnout knihovnu pomocí třítečkového menu",
+    "title": "Žádné připnuté knihovny"
   },
   "page_not_found": {
     "go_back_to_home_page": "Přejít zpět na domovskou stránku",
@@ -951,10 +976,10 @@
       "btn_confirm": "Ano, ale jen pokud je větší",
       "title": "Přegenerovat náhledy"
     },
-    "hint_kobo_port": "Nastavte pouze v případě problémů se synchronizací obálek a stahováním",
+    "hint_kobo_port": "Nastavte pouze v případě problémů se synchronizací obálek a se stahováním",
     "label_delete_empty_collections": "Odstranit prázdné sbírky po skenování",
     "label_delete_empty_readlists": "Odstranit prázdné seznamy četby po skenování",
-    "label_kepubify_path": "Cesta k kepubify",
+    "label_kepubify_path": "Cesta ke kepubify",
     "label_kobo_port": "Kobo Sync externí port",
     "label_kobo_proxy": "Přesměrovat požadavky Kobo Sync do Kobo Store",
     "label_rememberme_duration": "Doba trvání \"Zapamatovat si\" (ve dnech)",
@@ -995,10 +1020,10 @@
   },
   "thumbnail_card": {
     "tooltip_delete": "Odstranit",
-    "tooltip_generated": "Vygenerované umělecké dílo",
+    "tooltip_generated": "Vygenerované ilustrace",
     "tooltip_mark_as_selected": "Označit jako vybrané",
     "tooltip_selected": "Vybrané",
-    "tooltip_sidecar": "Místní umělecké dílo",
+    "tooltip_sidecar": "Místní ilustrace",
     "tooltip_to_be_deleted": "K odstranění",
     "tooltip_to_be_uploaded": "K nahrání",
     "tooltip_too_big": "Soubor je příliš velký!",
@@ -1007,6 +1032,13 @@
   "titles_more": {
     "less": "Méně titulů",
     "more": "Více titulů"
+  },
+  "ui_settings": {
+    "label_oauth2_auto_login": "Automatické OAuth2 přihlášení",
+    "label_oauth2_hide_login": "Skrýt přihlašovací údaje pokud je OAuth2 aktivní",
+    "label_poster_blur_unread": "Rozmazat plakát u nepřečtených knih a sérií",
+    "label_poster_stretch": "Přizpůsobit plakát kartě",
+    "tooltip_oauth2_auto_login": "Vyžaduje základního poskytovatele OAuth2 a skryté přihlašovací údaje"
   },
   "updates": {
     "available": "K dispozici jsou aktualizace",
