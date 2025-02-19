@@ -37,6 +37,9 @@ export const persistedModule: Module<any, any> = {
       filterDsl: {},
       filterMode: {},
       sort: {},
+      filterDslBooks: {},
+      filterModeBooks: {},
+      sortBooks: {},
       route: {},
     },
     importPath: '',
@@ -71,11 +74,20 @@ export const persistedModule: Module<any, any> = {
     getLibraryFilter: (state) => (id: string) => {
       return state.library.filterDsl[id]
     },
+    getLibraryFilterBooks: (state) => (id: string) => {
+      return state.library.filterDslBooks[id]
+    },
     getLibraryFilterMode: (state) => (id: string) => {
       return state.library.filterMode[id]
     },
+    getLibraryFilterModeBooks: (state) => (id: string) => {
+      return state.library.filterModeBooks[id]
+    },
     getLibrarySort: (state) => (id: string) => {
       return state.library.sort[id]
+    },
+    getLibrarySortBooks: (state) => (id: string) => {
+      return state.library.sortBooks[id]
     },
     getLibraryRoute: (state) => (id: string) => {
       return state.library.route[id]
@@ -136,11 +148,20 @@ export const persistedModule: Module<any, any> = {
     setLibraryFilter(state, {id, filter}) {
       state.library.filterDsl[id] = filter
     },
+    setLibraryFilterBooks(state, {id, filter}) {
+      state.library.filterDslBooks[id] = filter
+    },
     setLibraryFilterMode(state, {id, filterMode: filterMode}) {
       state.library.filterMode[id] = filterMode
     },
+    setLibraryFilterModeBooks(state, {id, filterMode: filterMode}) {
+      state.library.filterModeBooks[id] = filterMode
+    },
     setLibrarySort(state, {id, sort}) {
       state.library.sort[id] = sort
+    },
+    setLibrarySortBooks(state, {id, sort}) {
+      state.library.sortBooks[id] = sort
     },
     setLibraryRoute(state, {id, route}) {
       state.library.route[id] = route

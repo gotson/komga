@@ -37,6 +37,8 @@ const getLibraryRoute = (libraryId: string) => {
       return 'browse-readlists'
     case LIBRARY_ROUTE.BROWSE:
       return 'browse-libraries'
+    case LIBRARY_ROUTE.BOOKS:
+      return 'browse-books'
     case LIBRARY_ROUTE.RECOMMENDED:
     default:
       return libraryId === LIBRARIES_ALL ? 'browse-libraries' : 'recommended-libraries'
@@ -191,6 +193,13 @@ const router = new Router({
           props: (route) => ({libraryId: route.params.libraryId}),
         },
         {
+          path: '/libraries/:libraryId/books',
+          name: 'browse-books',
+          beforeEnter: noLibraryGuard,
+          component: () => import(/* webpackChunkName: "browse-books" */ './views/BrowseBooks.vue'),
+          props: (route) => ({libraryId: route.params.libraryId}),
+        },
+        {
           path: '/libraries/:libraryId/series',
           name: 'browse-libraries',
           beforeEnter: noLibraryGuard,
@@ -301,7 +310,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   // avoid document.title flickering when changing route
-  if (!['read-book', 'read-epub', 'browse-book', 'browse-oneshot', 'browse-series', 'browse-libraries',
+  if (!['read-book', 'read-epub', 'browse-book', 'browse-oneshot', 'browse-series', 'browse-libraries', 'browse-books',
     'recommended-libraries', 'browse-collection', 'browse-collections', 'browse-readlist', 'browse-readlists'].includes(<string>to.name)
   ) {
     document.title = 'Komga'

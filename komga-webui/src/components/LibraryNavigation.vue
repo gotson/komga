@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-bottom-navigation
-      v-if="show && bottomNavigation"
+      v-if="bottomNavigation"
       grow color="primary"
       :app="$vuetify.breakpoint.smAndUp"
       :fixed="bottomNavigation"
@@ -9,20 +9,25 @@
       <v-btn v-if="showRecommended"
              :to="{name: 'recommended-libraries', params: {libraryId: libraryId}}"
       >
-        <span>{{ $t('library_navigation.recommended') }}</span>
+        <span class="caption">{{ $t('library_navigation.recommended') }}</span>
         <v-icon>mdi-star</v-icon>
       </v-btn>
 
       <v-btn :to="{name: 'browse-libraries', params: {libraryId: libraryId}}">
-        <span>{{ $t('library_navigation.browse') }}</span>
+        <span class="caption">{{ $t('library_navigation.browse_series') }}</span>
         <v-icon>mdi-bookshelf</v-icon>
+      </v-btn>
+
+      <v-btn :to="{name: 'browse-books', params: {libraryId: libraryId}}">
+        <span class="caption">{{ $t('library_navigation.browse_books') }}</span>
+        <v-icon>mdi-book-multiple</v-icon>
       </v-btn>
 
       <v-btn
         v-if="collectionsCount > 0"
         :to="{name: 'browse-collections', params: {libraryId: libraryId}}"
       >
-        <span>{{ $t('library_navigation.collections') }}</span>
+        <span class="caption">{{ $t('library_navigation.collections') }}</span>
         <v-icon>mdi-layers-triple</v-icon>
       </v-btn>
 
@@ -30,14 +35,14 @@
         v-if="readListsCount > 0"
         :to="{name: 'browse-readlists', params: {libraryId: libraryId}}"
       >
-        <span>{{ $t('library_navigation.readlists') }}</span>
-        <v-icon>mdi-book-multiple</v-icon>
+        <span class="caption">{{ $t('library_navigation.readlists') }}</span>
+        <v-icon>mdi-bookmark-multiple</v-icon>
       </v-btn>
 
     </v-bottom-navigation>
 
     <template
-      v-if="show && !bottomNavigation"
+      v-if="!bottomNavigation"
     >
       <v-btn v-if="showRecommended"
              :to="{name: 'recommended-libraries', params: {libraryId: libraryId}}"
@@ -51,7 +56,14 @@
              text
              class="mx-1"
       >
-        {{ $t('library_navigation.browse') }}
+        {{ $t('library_navigation.browse_series') }}
+      </v-btn>
+
+      <v-btn :to="{name: 'browse-books', params: {libraryId: libraryId}}"
+             text
+             class="mx-1"
+      >
+        {{ $t('library_navigation.browse_books') }}
       </v-btn>
 
       <v-btn
@@ -132,9 +144,6 @@ export default Vue.extend({
   computed: {
     showRecommended(): boolean {
       return this.libraryId !== LIBRARIES_ALL
-    },
-    show(): boolean {
-      return this.collectionsCount > 0 || this.readListsCount > 0 || this.showRecommended
     },
   },
   methods: {

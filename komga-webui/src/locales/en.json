@@ -868,6 +868,8 @@
   },
   "library_navigation": {
     "browse": "Browse",
+    "browse_books": "Books",
+    "browse_series": "Series",
     "collections": "Collections",
     "readlists": "Read Lists",
     "recommended": "Recommended"
@@ -1016,7 +1018,8 @@
     "number": "Number",
     "page_count": "Page count",
     "random": "Random",
-    "release_date": "Release date"
+    "release_date": "Release date",
+    "series": "Series"
   },
   "theme": {
     "dark": "Dark",

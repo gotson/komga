@@ -123,11 +123,12 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getBookTags(seriesId?: string, readListId?: string): Promise<string[]> {
+  async getBookTags(seriesId?: string, readListId?: string, libraryIds?: string[]): Promise<string[]> {
     try {
       const params = {} as any
       if (seriesId) params.series_id = seriesId
       if (readListId) params.readlist_id = readListId
+      if (libraryIds) params.library_id = libraryIds
 
       return (await this.http.get('/api/v1/tags/book', {
         params: params,
