@@ -1,5 +1,6 @@
 import {AxiosInstance} from 'axios'
 import {AuthorDto} from '@/types/komga-books'
+import {NameValue} from '@/types/filter'
 
 const qs = require('qs')
 const tags = require('language-tags')
@@ -11,12 +12,12 @@ export default class KomgaReferentialService {
     this.http = http
   }
 
-  async getAuthors(search?: string, role?: string, libraryId?: string, collectionId?: string, seriesId?: string, readListId?: string): Promise<Page<AuthorDto>> {
+  async getAuthors(search?: string, role?: string, libraryIds?: string[], collectionId?: string, seriesId?: string, readListId?: string): Promise<Page<AuthorDto>> {
     try {
       const params = {} as any
       if (search) params.search = search
       if (role) params.role = role
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (collectionId) params.collection_id = collectionId
       if (seriesId) params.series_id = seriesId
       if (readListId) params.readlist_id = readListId
@@ -53,10 +54,10 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getGenres(libraryId?: string, collectionId?: string): Promise<string[]> {
+  async getGenres(libraryIds?: string[], collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/genres', {
@@ -84,10 +85,10 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getSharingLabels(libraryId?: string, collectionId?: string): Promise<string[]> {
+  async getSharingLabels(libraryIds?: string[], collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/sharing-labels', {
@@ -103,10 +104,10 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getSeriesAndBookTags(libraryId?: string, collectionId?: string): Promise<string[]> {
+  async getSeriesAndBookTags(libraryIds?: string[], collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/tags', {
@@ -141,10 +142,10 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getPublishers(libraryId?: string, collectionId?: string): Promise<string[]> {
+  async getPublishers(libraryIds?: string[], collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/publishers', {
@@ -160,10 +161,10 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getAgeRatings(libraryId?: string, collectionId?: string): Promise<string[]> {
+  async getAgeRatings(libraryIds?: string[], collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/age-ratings', {
@@ -179,10 +180,10 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getSeriesReleaseDates(libraryId?: string, collectionId?: string): Promise<string[]> {
+  async getSeriesReleaseDates(libraryIds?: string[], collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (collectionId) params.collection_id = collectionId
 
       return (await this.http.get('/api/v1/series/release-dates', {
@@ -198,10 +199,10 @@ export default class KomgaReferentialService {
     }
   }
 
-  async getLanguages(libraryId?: string, collectionId?: string): Promise<NameValue[]> {
+  async getLanguages(libraryIds?: string[], collectionId?: string): Promise<NameValue[]> {
     try {
       const params = {} as any
-      if (libraryId) params.library_id = libraryId
+      if (libraryIds) params.library_id = libraryIds
       if (collectionId) params.collection_id = collectionId
 
       const data = (await this.http.get('/api/v1/languages', {

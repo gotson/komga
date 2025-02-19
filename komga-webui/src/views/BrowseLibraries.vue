@@ -342,6 +342,9 @@ export default Vue.extend({
     library(): LibraryDto | undefined {
       return this.getLibraryLazy(this.libraryId)
     },
+    requestLibraryIds(): string[] {
+      return this.libraryId !== LIBRARIES_ALL ? [this.libraryId] : this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => it.id)
+    },
     toolbarTitle(): string {
       if (this.library) return this.library.name
       else if (this.$store.getters.getLibrariesPinned.length > 0) return this.$t('common.pinned_libraries').toString()
@@ -441,7 +444,7 @@ export default Vue.extend({
         r[role] = {
           name: this.$t(`author_roles.${role}`).toString(),
           search: async search => {
-            return (await this.$komgaReferential.getAuthors(search, role, this.libraryId !== LIBRARIES_ALL ? this.libraryId : undefined))
+            return (await this.$komgaReferential.getAuthors(search, role, this.requestLibraryIds))
               .content
               .map(x => x.name)
           },
@@ -501,17 +504,17 @@ export default Vue.extend({
         this.$store.getters.getLibrarySort(route.params.libraryId) ||
         this.$_.clone(this.sortDefault)
 
-      const requestLibraryId = libraryId !== LIBRARIES_ALL ? libraryId : undefined
+      const requestLibraryIds = libraryId !== LIBRARIES_ALL ? [libraryId] : this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => it.id)
 
       // load dynamic filters
       const [genres, tags, publishers, languages, ageRatings, releaseDates, sharingLabels] = await Promise.all([
-        this.$komgaReferential.getGenres(requestLibraryId),
-        this.$komgaReferential.getSeriesAndBookTags(requestLibraryId),
-        this.$komgaReferential.getPublishers(requestLibraryId),
-        this.$komgaReferential.getLanguages(requestLibraryId),
-        this.$komgaReferential.getAgeRatings(requestLibraryId),
-        this.$komgaReferential.getSeriesReleaseDates(requestLibraryId),
-        this.$komgaReferential.getSharingLabels(requestLibraryId),
+        this.$komgaReferential.getGenres(requestLibraryIds),
+        this.$komgaReferential.getSeriesAndBookTags(requestLibraryIds),
+        this.$komgaReferential.getPublishers(requestLibraryIds),
+        this.$komgaReferential.getLanguages(requestLibraryIds),
+        this.$komgaReferential.getAgeRatings(requestLibraryIds),
+        this.$komgaReferential.getSeriesReleaseDates(requestLibraryIds),
+        this.$komgaReferential.getSharingLabels(requestLibraryIds),
       ])
       this.$set(this.filterOptions, 'genre', toNameValueCondition(genres, x => new SearchConditionGenre(new SearchOperatorIs(x)), x => new SearchConditionGenre(new SearchOperatorIsNot(x))))
       this.$set(this.filterOptions, 'tag', toNameValueCondition(tags, x => new SearchConditionTag(new SearchOperatorIs(x)), x => new SearchConditionTag(new SearchOperatorIsNot(x))))
