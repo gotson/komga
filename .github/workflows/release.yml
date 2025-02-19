@@ -53,14 +53,14 @@ jobs:
         run: brew install caarlos0/tap/svu
       - name: Compute next version for release
         run: |
-          echo "VERSION_NEXT=`svu --pattern="[0-9]*" --strip-prefix ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
-          echo "VERSION_NEXT_SUFFIX=`svu --pattern="[0-9]*" --strip-prefix ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
+          echo "VERSION_NEXT=`svu --tag.pattern="[0-9]*" --tag.prefix '' ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
+          echo "VERSION_NEXT_SUFFIX=`svu --tag.pattern="[0-9]*" --tag.prefix '' ${{ inputs.bump }}`" | tee -a $GITHUB_ENV
       - name: Set Versions
         id: versions
         run: |
-          echo "version_current=`svu --pattern="[0-9]*" --strip-prefix current`" >> $GITHUB_OUTPUT
+          echo "version_current=`svu --tag.pattern="[0-9]*" --tag.prefix '' current`" >> $GITHUB_OUTPUT
           echo "version_next=${{ env.VERSION_NEXT_SUFFIX }}" >> $GITHUB_OUTPUT
-          [[ `svu --pattern="[0-9]*" --strip-prefix current` != ${{ env.VERSION_NEXT }} ]] && echo "should_release=true" >> $GITHUB_OUTPUT || echo
+          [[ `svu --tag.pattern="[0-9]*" --tag.prefix '' current` != ${{ env.VERSION_NEXT }} ]] && echo "should_release=true" >> $GITHUB_OUTPUT || echo
 
   release:
     name: Release
