@@ -70,7 +70,7 @@ class OpenApiConfiguration(
             ## Reference
 
             Check the API reference:
-            - on the [Komga website](https://komga.org/docs/category/api-reference)
+            - on the [Komga website](https://komga.org/docs/openapi/komga-api)
             - on any running Komga instance at `/swagger-ui.html`
             - on [GitHub](https://raw.githubusercontent.com/gotson/komga/refs/heads/master/komga/docs/openapi.json)
 
