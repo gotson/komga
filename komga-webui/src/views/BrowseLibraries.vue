@@ -172,6 +172,7 @@ import {
   SearchConditionAnyOfSeries,
   SearchConditionAuthor,
   SearchConditionComplete,
+  SearchConditionDeleted,
   SearchConditionGenre,
   SearchConditionLanguage,
   SearchConditionLibraryId,
@@ -414,6 +415,15 @@ export default Vue.extend({
             nValue: new SearchConditionOneShot(new SearchOperatorIsFalse()),
           }],
         },
+        deleted: {
+          values: [
+            {
+              name: this.$t('common.unavailable').toString(),
+              value: new SearchConditionDeleted(new SearchOperatorIsTrue()),
+              nValue: new SearchConditionDeleted(new SearchOperatorIsFalse()),
+            },
+          ],
+        },
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
@@ -435,7 +445,7 @@ export default Vue.extend({
             },
             ...this.filterOptions.genre,
           ],
-          anyAllSelector: true
+          anyAllSelector: true,
         },
         tag: {
           name: this.$t('filter.tag').toString(),
@@ -610,7 +620,7 @@ export default Vue.extend({
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete || route.query.oneshot || route.query.sharingLabel) {
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete || route.query.oneshot || route.query.sharingLabel || route.query.deleted) {
         activeFilters = {
           status: route.query.status || [],
           readStatus: route.query.readStatus || [],
@@ -623,6 +633,7 @@ export default Vue.extend({
           complete: route.query.complete || [],
           oneshot: route.query.oneshot || [],
           sharingLabel: route.query.sharingLabel || [],
+          deleted: route.query.deleted || [],
         }
         authorRoles.forEach((role: string) => {
           activeFilters[role] = route.query[role] || []
@@ -661,6 +672,7 @@ export default Vue.extend({
         complete: this.$_.intersectionWith(filters.complete, extractFilterOptionsValues(this.filterOptionsList.complete.values), objIsEqual) || [],
         oneshot: this.$_.intersectionWith(filters.oneshot, extractFilterOptionsValues(this.filterOptionsList.oneshot.values), objIsEqual) || [],
         sharingLabel: this.$_.intersectionWith(filters.sharingLabel, extractFilterOptionsValues(this.filterOptions.sharingLabel), objIsEqual) || [],
+        deleted: this.$_.intersectionWith(filters.deleted, extractFilterOptionsValues(this.filterOptionsList.deleted.values), objIsEqual) || [],
       } as any
       authorRoles.forEach((role: string) => {
         validFilter[role] = filters[role] || []
@@ -781,6 +793,7 @@ export default Vue.extend({
       if (this.filters.sharingLabel && this.filters.sharingLabel.length > 0) this.filtersMode?.sharingLabel?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.sharingLabel)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.sharingLabel))
       if (this.filters.complete && this.filters.complete.length > 0) conditions.push(...this.filters.complete)
       if (this.filters.oneshot && this.filters.oneshot.length > 0) conditions.push(...this.filters.oneshot)
+      if (this.filters.deleted && this.filters.deleted.length > 0) conditions.push(...this.filters.deleted)
       authorRoles.forEach((role: string) => {
         if (role in this.filters) {
           const authorConditions = this.filters[role].map((name: string) => {

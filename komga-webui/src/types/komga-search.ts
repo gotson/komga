@@ -190,6 +190,14 @@ export class SearchConditionTitleSort implements SearchConditionSeries {
   }
 }
 
+export class SearchConditionDeleted implements SearchConditionBook, SearchConditionSeries {
+  deleted: SearchOperatorBoolean
+
+  constructor(op: SearchOperatorBoolean) {
+    this.deleted = op
+  }
+}
+
 export interface AuthorMatch {
   name?: string,
   role?: string

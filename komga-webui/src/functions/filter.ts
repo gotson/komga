@@ -1,4 +1,5 @@
 import {SearchConditionSeries} from '@/types/komga-search'
+import {FiltersActive, NameValue} from '@/types/filter'
 
 export function sortOrFilterActive(sortActive: SortActive, sortDefault: SortActive, filters: FiltersActive): boolean {
   const sortCustom = sortActive.key !== sortDefault.key || sortActive.order !== sortDefault.order

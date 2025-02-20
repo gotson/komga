@@ -158,6 +158,7 @@ import {
   SearchConditionAllOfBook,
   SearchConditionAnyOfBook,
   SearchConditionAuthor,
+  SearchConditionDeleted,
   SearchConditionLibraryId,
   SearchConditionMediaProfile,
   SearchConditionOneShot,
@@ -348,6 +349,15 @@ export default Vue.extend({
             nValue: new SearchConditionOneShot(new SearchOperatorIsFalse()),
           }],
         },
+        deleted: {
+          values: [
+            {
+              name: this.$t('common.unavailable').toString(),
+              value: new SearchConditionDeleted(new SearchOperatorIsTrue()),
+              nValue: new SearchConditionDeleted(new SearchOperatorIsFalse()),
+            },
+          ],
+        },
       } as FiltersOptions
     },
     filterOptionsPanel(): FiltersOptions {
@@ -436,11 +446,12 @@ export default Vue.extend({
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
-      if (route.query.readStatus || route.query.tag || authorRoles.some(role => role in route.query) || route.query.oneshot) {
+      if (route.query.readStatus || route.query.tag || authorRoles.some(role => role in route.query) || route.query.oneshot || route.query.deleted) {
         activeFilters = {
           readStatus: route.query.readStatus || [],
           tag: route.query.tag || [],
           oneshot: route.query.oneshot || [],
+          deleted: route.query.deleted || [],
         }
         authorRoles.forEach((role: string) => {
           activeFilters[role] = route.query[role] || []
@@ -471,6 +482,7 @@ export default Vue.extend({
         readStatus: this.$_.intersectionWith(filters.readStatus, extractFilterOptionsValues(this.filterOptionsList.readStatus.values), objIsEqual) || [],
         tag: this.$_.intersectionWith(filters.tag, extractFilterOptionsValues(this.filterOptions.tag), objIsEqual) || [],
         oneshot: this.$_.intersectionWith(filters.oneshot, extractFilterOptionsValues(this.filterOptionsList.oneshot.values), objIsEqual) || [],
+        deleted: this.$_.intersectionWith(filters.deleted, extractFilterOptionsValues(this.filterOptionsList.deleted.values), objIsEqual) || [],
       } as any
       authorRoles.forEach((role: string) => {
         validFilter[role] = filters[role] || []
@@ -581,6 +593,7 @@ export default Vue.extend({
       if (this.filters.tag && this.filters.tag.length > 0) this.filtersMode?.tag?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.tag)) : conditions.push(new SearchConditionAnyOfBook(this.filters.tag))
       if (this.filters.oneshot && this.filters.oneshot.length > 0) conditions.push(...this.filters.oneshot)
       if (this.filters.mediaProfile && this.filters.mediaProfile.length > 0) this.filtersMode?.mediaProfile?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.mediaProfile)) : conditions.push(new SearchConditionAnyOfBook(this.filters.mediaProfile))
+      if (this.filters.deleted && this.filters.deleted.length > 0) conditions.push(...this.filters.deleted)
       authorRoles.forEach((role: string) => {
         if (role in this.filters) {
           const authorConditions = this.filters[role].map((name: string) => {
