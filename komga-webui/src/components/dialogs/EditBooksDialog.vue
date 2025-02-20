@@ -436,8 +436,9 @@ import {debounce} from 'lodash'
 import {ERROR, ErrorEvent} from '@/types/events'
 import DropZone from '@/components/DropZone.vue'
 import ThumbnailCard from '@/components/ThumbnailCard.vue'
+import {NameValue} from '@/types/filter'
 
-const validDate = (value: string) => !helpers.req(value) || isMatch(value, 'yyyy-MM-dd')
+const validDate = (value: string) => !helpers.req(value) || isMatch(value, 'yyyy-MM-dd') && value.length == 10
 const validIsbn = (value: string) => !helpers.req(value) || new IsbnVerify(value).isIsbn13({check_digit: true})
 
 export default Vue.extend({

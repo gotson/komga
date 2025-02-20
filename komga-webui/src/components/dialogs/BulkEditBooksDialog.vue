@@ -283,7 +283,7 @@ export default Vue.extend({
       return value || value === 0 ? true : this.$t('common.required').toString()
     },
     validateReleaseDate(date: string): string | boolean {
-      return date && !isMatch(date, 'yyyy-MM-dd') ? this.$t('dialog.edit_books.field_release_date_error').toString() : true
+      return date && (!isMatch(date, 'yyyy-MM-dd') || date.length !== 10) ? this.$t('dialog.edit_books.field_release_date_error').toString() : true
     },
     bookDisplayName(book: BookDto): string {
       const parts = book.url.split('/')
