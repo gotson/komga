@@ -1,0 +1,18 @@
+name: Dispatch events
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - '**/openapi.json'
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: gotson/komga-website
+          event-type: openapi
