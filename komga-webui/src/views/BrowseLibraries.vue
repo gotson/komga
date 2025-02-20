@@ -532,14 +532,14 @@ export default Vue.extend({
         x => {
           const year = Number.parseInt(x)
           return year ? new SearchConditionAllOfSeries([
-            new SearchConditionReleaseDate(new SearchOperatorAfter(`${year - 1}-12-31T12:00:00Z`)),
-            new SearchConditionReleaseDate(new SearchOperatorBefore(`${year + 1}-01-01T12:00:00Z`)),
+            new SearchConditionReleaseDate(new SearchOperatorAfter(`${(year - 1).toString().padStart(4, '0')}-12-31T12:00:00Z`)),
+            new SearchConditionReleaseDate(new SearchOperatorBefore(`${(year + 1).toString().padStart(4, '0')}-01-01T12:00:00Z`)),
           ]) : new SearchConditionAllOfSeries([])
         },
         year =>
           new SearchConditionAnyOfSeries([
-              new SearchConditionReleaseDate(new SearchOperatorAfter(`${year}-12-31T12:00:00Z`)),
-              new SearchConditionReleaseDate(new SearchOperatorBefore(`${year}-01-01T12:00:00Z`)),
+            new SearchConditionReleaseDate(new SearchOperatorAfter(`${(year).toString().padStart(4, '0')}-12-31T12:00:00Z`)),
+            new SearchConditionReleaseDate(new SearchOperatorBefore(`${(year).toString().padStart(4, '0')}-01-01T12:00:00Z`)),
               new SearchConditionReleaseDate(new SearchOperatorIsNull()),
             ],
           ),
