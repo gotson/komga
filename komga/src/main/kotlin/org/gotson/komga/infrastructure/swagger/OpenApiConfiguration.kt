@@ -133,7 +133,8 @@ class OpenApiConfiguration(
                   "port",
                   ServerVariable()
                     .addEnumItem("8080")
-                    .addEnumItem("25600"),
+                    .addEnumItem("25600")
+                    ._default("25600"),
                 ),
             ),
           Server()

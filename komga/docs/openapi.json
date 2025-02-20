@@ -22,7 +22,8 @@
           "enum": [
             "8080",
             "25600"
-          ]
+          ],
+          "default": "25600"
         }
       }
     },
@@ -10300,6 +10301,9 @@
                   "negative": {
                     "type": "boolean"
                   },
+                  "positive": {
+                    "type": "boolean"
+                  },
                   "seconds": {
                     "type": "integer",
                     "format": "int64"
@@ -10393,6 +10397,9 @@
                     "format": "int32"
                   },
                   "negative": {
+                    "type": "boolean"
+                  },
+                  "positive": {
                     "type": "boolean"
                   },
                   "seconds": {
