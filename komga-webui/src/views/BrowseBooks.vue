@@ -124,7 +124,7 @@ import LibraryNavigation from '@/components/LibraryNavigation.vue'
 import LibraryActionsMenu from '@/components/menus/LibraryActionsMenu.vue'
 import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import {parseQuerySort} from '@/functions/query-params'
-import {MediaProfile, ReadStatus} from '@/types/enum-books'
+import {MediaProfile, MediaStatus, ReadStatus} from '@/types/enum-books'
 import {
   BOOK_ADDED,
   BOOK_CHANGED,
@@ -161,6 +161,7 @@ import {
   SearchConditionDeleted,
   SearchConditionLibraryId,
   SearchConditionMediaProfile,
+  SearchConditionMediaStatus,
   SearchConditionOneShot,
   SearchConditionReadStatus,
   SearchConditionSeries,
@@ -381,6 +382,13 @@ export default Vue.extend({
             nValue: new SearchConditionMediaProfile(new SearchOperatorIsNot(x)),
           } as NameValue)),
         },
+        mediaStatus: {
+          name: this.$t('filter.media_status').toString(), values: Object.values(MediaStatus).map(x => ({
+            name: i18n.t(`enums.media_status.${x}`),
+            value: new SearchConditionMediaStatus(new SearchOperatorIs(x)),
+            nValue: new SearchConditionMediaStatus(new SearchOperatorIsNot(x)),
+          } as NameValue)),
+        },
       } as FiltersOptions
       authorRoles.forEach((role: string) => {
         r[role] = {
@@ -446,12 +454,14 @@ export default Vue.extend({
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
-      if (route.query.readStatus || route.query.tag || authorRoles.some(role => role in route.query) || route.query.oneshot || route.query.deleted) {
+      if (route.query.readStatus || route.query.tag || authorRoles.some(role => role in route.query) || route.query.oneshot || route.query.deleted || route.query.mediaProfile || route.query.mediaStatus) {
         activeFilters = {
           readStatus: route.query.readStatus || [],
           tag: route.query.tag || [],
           oneshot: route.query.oneshot || [],
           deleted: route.query.deleted || [],
+          mediaProfile: route.query.mediaProfile || [],
+          mediaStatus: route.query.mediaStatus || [],
         }
         authorRoles.forEach((role: string) => {
           activeFilters[role] = route.query[role] || []
@@ -483,6 +493,8 @@ export default Vue.extend({
         tag: this.$_.intersectionWith(filters.tag, extractFilterOptionsValues(this.filterOptions.tag), objIsEqual) || [],
         oneshot: this.$_.intersectionWith(filters.oneshot, extractFilterOptionsValues(this.filterOptionsList.oneshot.values), objIsEqual) || [],
         deleted: this.$_.intersectionWith(filters.deleted, extractFilterOptionsValues(this.filterOptionsList.deleted.values), objIsEqual) || [],
+        mediaProfile: this.$_.intersectionWith(filters.mediaProfile, extractFilterOptionsValues(this.filterOptionsPanel.mediaProfile.values), objIsEqual) || [],
+        mediaStatus: this.$_.intersectionWith(filters.mediaStatus, extractFilterOptionsValues(this.filterOptionsPanel.mediaStatus.values), objIsEqual) || [],
       } as any
       authorRoles.forEach((role: string) => {
         validFilter[role] = filters[role] || []
@@ -594,6 +606,8 @@ export default Vue.extend({
       if (this.filters.oneshot && this.filters.oneshot.length > 0) conditions.push(...this.filters.oneshot)
       if (this.filters.mediaProfile && this.filters.mediaProfile.length > 0) this.filtersMode?.mediaProfile?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.mediaProfile)) : conditions.push(new SearchConditionAnyOfBook(this.filters.mediaProfile))
       if (this.filters.deleted && this.filters.deleted.length > 0) conditions.push(...this.filters.deleted)
+      if (this.filters.mediaProfile && this.filters.mediaProfile.length > 0) conditions.push(new SearchConditionAnyOfBook(this.filters.mediaProfile))
+      if (this.filters.mediaStatus && this.filters.mediaStatus.length > 0) conditions.push(new SearchConditionAnyOfBook(this.filters.mediaStatus))
       authorRoles.forEach((role: string) => {
         if (role in this.filters) {
           const authorConditions = this.filters[role].map((name: string) => {
