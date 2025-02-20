@@ -1,6 +1,7 @@
 <template>
   <v-dialog v-model="modal"
             max-width="450"
+            :fullscreen="$vuetify.breakpoint.xsOnly"
   >
     <v-card>
       <v-card-title>{{ $t('dialog.edit_recommended.dialog_title') }}</v-card-title>
@@ -8,7 +9,7 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
 
-      <v-card-text>
+      <v-card-text :class="$vuetify.breakpoint.xsOnly ? 'px-0' : undefined">
         <v-list>
           <draggable
             v-model="localItems"
@@ -32,7 +33,7 @@
 
       <v-card-actions>
         <v-spacer/>
-        <v-btn text @click="dialogClose">{{ $t('common.cancel') }}</v-btn>
+        <v-btn v-if="$vuetify.breakpoint.smAndUp" text @click="dialogClose">{{ $t('common.cancel') }}</v-btn>
         <v-btn color="error" @click="resetToDefault">{{
             $t('dialog.edit_recommended.button_reset')
           }}
