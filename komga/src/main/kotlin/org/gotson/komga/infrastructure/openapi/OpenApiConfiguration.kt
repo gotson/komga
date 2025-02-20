@@ -49,59 +49,68 @@ import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.SYN
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.TASKS
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.USERS
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.USER_SESSION
+import org.springdoc.core.customizers.OperationCustomizer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.access.prepost.PreAuthorize
 
 @Configuration
 class OpenApiConfiguration(
   @Value("\${application.version}") private val appVersion: String,
 ) {
   @Bean
-  fun openApi(): OpenAPI =
-    OpenAPI()
+  fun openApi(): OpenAPI {
+    val logoutOperation =
+      Operation()
+        .tags(listOf(USER_SESSION))
+        .summary("Logout")
+        .description("Invalidates the current session and clean up any remember-me authentication.")
+        .responses(ApiResponses().addApiResponse("204", ApiResponse().description("No Content")))
+
+    return OpenAPI()
       .info(
         Info()
           .title("Komga API")
           .version(appVersion)
           .description(
             """
-            Komga REST API.
+              Komga REST API.
 
-            ## Reference
+              ## Reference
 
-            Check the API reference:
-            - on the [Komga website](https://komga.org/docs/openapi/komga-api)
-            - on any running Komga instance at `/swagger-ui.html`
-            - on [GitHub](https://raw.githubusercontent.com/gotson/komga/refs/heads/master/komga/docs/openapi.json)
+              Check the API reference:
+              - on the [Komga website](https://komga.org/docs/openapi/komga-api)
+              - on any running Komga instance at `/swagger-ui.html`
+              - on [GitHub](https://raw.githubusercontent.com/gotson/komga/refs/heads/master/komga/docs/openapi.json)
 
-            ## Authentication
+              ## Authentication
 
-            Most endpoints require authentication. Authentication is done using either:
-            - Basic Authentication
-            - Passing an API Key in the `X-API-Key` header
+              Most endpoints require authentication. Authentication is done using either:
+              - Basic Authentication
+              - Passing an API Key in the `X-API-Key` header
 
-            ## Sessions
+              ## Sessions
 
-            Upon successful authentication, a session is created, and can be reused.
+              Upon successful authentication, a session is created, and can be reused.
 
-            - By default, a `SESSION` cookie is set via `Set-Cookie` response header. This works well for browsers and clients that can handle cookies.
-            - If you specify a header `X-Auth-Token` during authentication, the session ID will be returned via this same header. You can then pass that header again for subsequent requests to reuse the session.
+              - By default, a `SESSION` cookie is set via `Set-Cookie` response header. This works well for browsers and clients that can handle cookies.
+              - If you specify a header `X-Auth-Token` during authentication, the session ID will be returned via this same header. You can then pass that header again for subsequent requests to reuse the session.
 
-            If you need to set the session cookie later on, you can call `/api/v1/login/set-cookie` with `X-Auth-Token`. The response will contain the `Set-Cookie` header.
+              If you need to set the session cookie later on, you can call `/api/v1/login/set-cookie` with `X-Auth-Token`. The response will contain the `Set-Cookie` header.
 
-            ## Remember Me
+              ## Remember Me
 
-            During authentication, if a request parameter `remember-me` is passed and set to `true`, the server will also return a `remember-me` cookie. This cookie will be used to login automatically even if the session has expired.
+              During authentication, if a request parameter `remember-me` is passed and set to `true`, the server will also return a `remember-me` cookie. This cookie will be used to login automatically even if the session has expired.
 
-            ## Logout
+              ## Logout
 
-            You can explicitly logout an existing session by calling `/api/logout`. This would return a `204`.
+              You can explicitly logout an existing session by calling `/api/logout`. This would return a `204`.
 
-            ## Deprecation
+              ## Deprecation
 
-            API endpoints marked as deprecated will be removed in the next major version.
-            """.trimIndent(),
+              API endpoints marked as deprecated will be removed in the next major version.
+              """.trimIndent(),
           ).license(License().name("MIT").url("https://github.com/gotson/komga/blob/master/LICENSE")),
       ).externalDocs(
         ExternalDocumentation()
@@ -154,13 +163,26 @@ class OpenApiConfiguration(
           .get(logoutOperation.operationId("getLogout"))
           .post(logoutOperation.operationId("postLogout")),
       )
+  }
 
-  private val logoutOperation =
-    Operation()
-      .tags(listOf(USER_SESSION))
-      .summary("Logout")
-      .description("Invalidates the current session and clean up any remember-me authentication.")
-      .responses(ApiResponses().addApiResponse("204", ApiResponse().description("No Content")))
+  @Bean
+  fun roleDescriptionCustomizer(): OperationCustomizer {
+    val hasRoleRegex = Regex("""hasRole\('(?<role>\w+)'\)""")
+
+    return OperationCustomizer { operation, handlerMethod ->
+      val preAuthorize =
+        handlerMethod.getMethodAnnotation(PreAuthorize::class.java)
+          ?: handlerMethod.beanType.getAnnotation(PreAuthorize::class.java)
+      if (preAuthorize != null) {
+        val roles = hasRoleRegex.findAll(preAuthorize.value).mapNotNull { it.groups["role"]?.value }.toList()
+        if (roles.isNotEmpty()) {
+          val description = if (operation.description == null) "" else (operation.description + "\n\n")
+          operation.description = description + "Required role: **${roles.joinToString()}**"
+        }
+      }
+      operation
+    }
+  }
 
   data class TagGroup(
     val name: String,

@@ -259,6 +259,7 @@
     },
     "/api/v1/announcements": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getAnnouncements",
         "responses": {
           "200": {
@@ -288,6 +289,7 @@
         ]
       },
       "put": {
+        "description": "Required role: **ADMIN**",
         "operationId": "markAnnouncementsRead",
         "requestBody": {
           "content": {
@@ -621,7 +623,7 @@
     },
     "/api/v1/books/duplicates": {
       "get": {
-        "description": "Return books that have the same file hash.",
+        "description": "Return books that have the same file hash.\n\nRequired role: **ADMIN**",
         "operationId": "getDuplicateBooks",
         "parameters": [
           {
@@ -690,6 +692,7 @@
     },
     "/api/v1/books/import": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "importBooks",
         "requestBody": {
           "content": {
@@ -860,7 +863,7 @@
     },
     "/api/v1/books/metadata": {
       "patch": {
-        "description": "Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
+        "description": "Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.\n\nRequired role: **ADMIN**",
         "operationId": "updateBatchMetadata",
         "requestBody": {
           "content": {
@@ -960,6 +963,7 @@
     },
     "/api/v1/books/thumbnails": {
       "put": {
+        "description": "Required role: **ADMIN**",
         "operationId": "regenerateThumbnails",
         "parameters": [
           {
@@ -1035,6 +1039,7 @@
     },
     "/api/v1/books/{bookId}/analyze": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "analyze_3",
         "parameters": [
           {
@@ -1069,6 +1074,7 @@
     },
     "/api/v1/books/{bookId}/file": {
       "delete": {
+        "description": "Required role: **ADMIN**",
         "operationId": "deleteBookFile",
         "parameters": [
           {
@@ -1101,7 +1107,7 @@
         ]
       },
       "get": {
-        "description": "Download the book file.",
+        "description": "Download the book file.\n\nRequired role: **FILE_DOWNLOAD**",
         "operationId": "getBookFile",
         "parameters": [
           {
@@ -1148,7 +1154,7 @@
     },
     "/api/v1/books/{bookId}/file/*": {
       "get": {
-        "description": "Download the book file.",
+        "description": "Download the book file.\n\nRequired role: **FILE_DOWNLOAD**",
         "operationId": "getBookFile_1",
         "parameters": [
           {
@@ -1384,7 +1390,7 @@
     },
     "/api/v1/books/{bookId}/metadata": {
       "patch": {
-        "description": "Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.",
+        "description": "Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.\n\nRequired role: **ADMIN**",
         "operationId": "updateMetadata_1",
         "parameters": [
           {
@@ -1429,6 +1435,7 @@
     },
     "/api/v1/books/{bookId}/metadata/refresh": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "refreshMetadata_2",
         "parameters": [
           {
@@ -1548,6 +1555,7 @@
     },
     "/api/v1/books/{bookId}/pages/{pageNumber}": {
       "get": {
+        "description": "Required role: **PAGE_STREAMING**",
         "operationId": "getBookPage",
         "parameters": [
           {
@@ -1643,7 +1651,7 @@
     },
     "/api/v1/books/{bookId}/pages/{pageNumber}/raw": {
       "get": {
-        "description": "Returns the book page in raw format, without content negotiation.",
+        "description": "Returns the book page in raw format, without content negotiation.\n\nRequired role: **PAGE_STREAMING**",
         "operationId": "getBookPageRaw",
         "parameters": [
           {
@@ -2207,6 +2215,7 @@
         ]
       },
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "addUserUploadedBookThumbnail",
         "parameters": [
           {
@@ -2274,7 +2283,7 @@
     },
     "/api/v1/books/{bookId}/thumbnails/{thumbnailId}": {
       "delete": {
-        "description": "Only uploaded posters can be deleted.",
+        "description": "Only uploaded posters can be deleted.\n\nRequired role: **ADMIN**",
         "operationId": "deleteUserUploadedBookThumbnail",
         "parameters": [
           {
@@ -2371,6 +2380,7 @@
     },
     "/api/v1/books/{bookId}/thumbnails/{thumbnailId}/selected": {
       "put": {
+        "description": "Required role: **ADMIN**",
         "operationId": "markSelectedBookThumbnail",
         "parameters": [
           {
@@ -2495,7 +2505,7 @@
     },
     "/api/v1/client-settings/global": {
       "delete": {
-        "description": "Setting key should be a valid lowercase namespace string like \u0027application.domain.key\u0027",
+        "description": "Setting key should be a valid lowercase namespace string like \u0027application.domain.key\u0027\n\nRequired role: **ADMIN**",
         "operationId": "deleteGlobalSetting_1",
         "requestBody": {
           "content": {
@@ -2536,7 +2546,7 @@
         ]
       },
       "patch": {
-        "description": "Setting key should be a valid lowercase namespace string like \u0027application.domain.key\u0027",
+        "description": "Setting key should be a valid lowercase namespace string like \u0027application.domain.key\u0027\n\nRequired role: **ADMIN**",
         "operationId": "saveGlobalSetting",
         "requestBody": {
           "content": {
@@ -2815,6 +2825,7 @@
         ]
       },
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "addOne_3",
         "requestBody": {
           "content": {
@@ -2856,6 +2867,7 @@
     },
     "/api/v1/collections/{id}": {
       "delete": {
+        "description": "Required role: **ADMIN**",
         "operationId": "deleteOne_2",
         "parameters": [
           {
@@ -2927,6 +2939,7 @@
         ]
       },
       "patch": {
+        "description": "Required role: **ADMIN**",
         "operationId": "updateOne_2",
         "parameters": [
           {
@@ -3263,6 +3276,7 @@
         ]
       },
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "addUserUploadedCollectionThumbnail",
         "parameters": [
           {
@@ -3330,6 +3344,7 @@
     },
     "/api/v1/collections/{id}/thumbnails/{thumbnailId}": {
       "delete": {
+        "description": "Required role: **ADMIN**",
         "operationId": "deleteUserUploadedCollectionThumbnail",
         "parameters": [
           {
@@ -3426,6 +3441,7 @@
     },
     "/api/v1/collections/{id}/thumbnails/{thumbnailId}/selected": {
       "put": {
+        "description": "Required role: **ADMIN**",
         "operationId": "markSelectedCollectionThumbnail",
         "parameters": [
           {
@@ -3468,7 +3484,7 @@
     },
     "/api/v1/filesystem": {
       "post": {
-        "description": "List folders and files from the host server\u0027s file system. If no request body is passed then the root directories are returned.",
+        "description": "List folders and files from the host server\u0027s file system. If no request body is passed then the root directories are returned.\n\nRequired role: **ADMIN**",
         "operationId": "getDirectoryListing",
         "requestBody": {
           "content": {
@@ -3704,6 +3720,7 @@
     },
     "/api/v1/history": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getAll_4",
         "parameters": [
           {
@@ -3855,6 +3872,7 @@
         ]
       },
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "addOne_2",
         "requestBody": {
           "content": {
@@ -3896,6 +3914,7 @@
     },
     "/api/v1/libraries/{libraryId}": {
       "delete": {
+        "description": "Required role: **ADMIN**",
         "operationId": "deleteOne",
         "parameters": [
           {
@@ -3967,7 +3986,7 @@
         ]
       },
       "patch": {
-        "description": "You can omit fields you don\u0027t want to update",
+        "description": "You can omit fields you don\u0027t want to update\n\nRequired role: **ADMIN**",
         "operationId": "patchOne",
         "parameters": [
           {
@@ -4011,7 +4030,7 @@
       },
       "put": {
         "deprecated": true,
-        "description": "Use PATCH /api/v1/libraries/{libraryId} instead. Deprecated since 1.3.0.",
+        "description": "Use PATCH /api/v1/libraries/{libraryId} instead. Deprecated since 1.3.0.\n\nRequired role: **ADMIN**",
         "operationId": "updateOne",
         "parameters": [
           {
@@ -4057,6 +4076,7 @@
     },
     "/api/v1/libraries/{libraryId}/analyze": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "analyze_2",
         "parameters": [
           {
@@ -4091,6 +4111,7 @@
     },
     "/api/v1/libraries/{libraryId}/empty-trash": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "emptyTrash",
         "parameters": [
           {
@@ -4125,6 +4146,7 @@
     },
     "/api/v1/libraries/{libraryId}/metadata/refresh": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "refreshMetadata_1",
         "parameters": [
           {
@@ -4159,6 +4181,7 @@
     },
     "/api/v1/libraries/{libraryId}/scan": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "scan",
         "parameters": [
           {
@@ -4261,6 +4284,7 @@
     },
     "/api/v1/page-hashes": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getKnownPageHashes",
         "parameters": [
           {
@@ -4335,6 +4359,7 @@
         ]
       },
       "put": {
+        "description": "Required role: **ADMIN**",
         "operationId": "createOrUpdateKnownPageHash",
         "requestBody": {
           "content": {
@@ -4369,6 +4394,7 @@
     },
     "/api/v1/page-hashes/unknown": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getUnknownPageHashes",
         "parameters": [
           {
@@ -4429,6 +4455,7 @@
     },
     "/api/v1/page-hashes/unknown/{pageHash}/thumbnail": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getUnknownPageHashThumbnail",
         "parameters": [
           {
@@ -4486,6 +4513,7 @@
     },
     "/api/v1/page-hashes/{pageHash}": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getPageHashMatches",
         "parameters": [
           {
@@ -4554,6 +4582,7 @@
     },
     "/api/v1/page-hashes/{pageHash}/delete-all": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "performDelete",
         "parameters": [
           {
@@ -4588,6 +4617,7 @@
     },
     "/api/v1/page-hashes/{pageHash}/delete-match": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "deleteSingleMatch",
         "parameters": [
           {
@@ -4632,6 +4662,7 @@
     },
     "/api/v1/page-hashes/{pageHash}/thumbnail": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getKnownPageHashThumbnail",
         "parameters": [
           {
@@ -4812,6 +4843,7 @@
         ]
       },
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "addOne_1",
         "requestBody": {
           "content": {
@@ -4853,6 +4885,7 @@
     },
     "/api/v1/readlists/match/comicrack": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "matchFromComicRackList",
         "requestBody": {
           "content": {
@@ -4902,6 +4935,7 @@
     },
     "/api/v1/readlists/{id}": {
       "delete": {
+        "description": "Required role: **ADMIN**",
         "operationId": "deleteOne_1",
         "parameters": [
           {
@@ -4973,6 +5007,7 @@
         ]
       },
       "patch": {
+        "description": "Required role: **ADMIN**",
         "operationId": "updateOne_1",
         "parameters": [
           {
@@ -5255,7 +5290,7 @@
     },
     "/api/v1/readlists/{id}/file": {
       "get": {
-        "description": "Download the whole readlist as a ZIP file.",
+        "description": "Download the whole readlist as a ZIP file.\n\nRequired role: **FILE_DOWNLOAD**",
         "operationId": "getReadListFile",
         "parameters": [
           {
@@ -5477,6 +5512,7 @@
         ]
       },
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "addUserUploadedReadListThumbnail",
         "parameters": [
           {
@@ -5544,6 +5580,7 @@
     },
     "/api/v1/readlists/{id}/thumbnails/{thumbnailId}": {
       "delete": {
+        "description": "Required role: **ADMIN**",
         "operationId": "deleteUserUploadedReadListThumbnail",
         "parameters": [
           {
@@ -5640,6 +5677,7 @@
     },
     "/api/v1/readlists/{id}/thumbnails/{thumbnailId}/selected": {
       "put": {
+        "description": "Required role: **ADMIN**",
         "operationId": "markSelectedReadListThumbnail",
         "parameters": [
           {
@@ -5682,6 +5720,7 @@
     },
     "/api/v1/releases": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getReleases",
         "responses": {
           "200": {
@@ -6669,6 +6708,7 @@
     },
     "/api/v1/series/{seriesId}/analyze": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "analyze_1",
         "parameters": [
           {
@@ -6890,7 +6930,7 @@
     },
     "/api/v1/series/{seriesId}/file": {
       "delete": {
-        "description": "Delete all of the series\u0027 books files on disk.",
+        "description": "Delete all of the series\u0027 books files on disk.\n\nRequired role: **ADMIN**",
         "operationId": "deleteSeries",
         "parameters": [
           {
@@ -6923,7 +6963,7 @@
         ]
       },
       "get": {
-        "description": "Download the whole series as a ZIP file.",
+        "description": "Download the whole series as a ZIP file.\n\nRequired role: **FILE_DOWNLOAD**",
         "operationId": "getSeriesFile",
         "parameters": [
           {
@@ -6970,6 +7010,7 @@
     },
     "/api/v1/series/{seriesId}/metadata": {
       "patch": {
+        "description": "Required role: **ADMIN**",
         "operationId": "updateMetadata",
         "parameters": [
           {
@@ -7014,6 +7055,7 @@
     },
     "/api/v1/series/{seriesId}/metadata/refresh": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "refreshMetadata",
         "parameters": [
           {
@@ -7206,6 +7248,7 @@
         ]
       },
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "postUserUploadedSeriesThumbnail",
         "parameters": [
           {
@@ -7273,6 +7316,7 @@
     },
     "/api/v1/series/{seriesId}/thumbnails/{thumbnailId}": {
       "delete": {
+        "description": "Required role: **ADMIN**",
         "operationId": "deleteUserUploadedSeriesThumbnail",
         "parameters": [
           {
@@ -7369,6 +7413,7 @@
     },
     "/api/v1/series/{seriesId}/thumbnails/{thumbnailId}/selected": {
       "put": {
+        "description": "Required role: **ADMIN**",
         "operationId": "postMarkSelectedSeriesThumbnail",
         "parameters": [
           {
@@ -7411,6 +7456,7 @@
     },
     "/api/v1/settings": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getSettings",
         "responses": {
           "200": {
@@ -7440,7 +7486,7 @@
         ]
       },
       "patch": {
-        "description": "You can omit fields you don\u0027t want to update",
+        "description": "You can omit fields you don\u0027t want to update\n\nRequired role: **ADMIN**",
         "operationId": "updateSettings",
         "requestBody": {
           "content": {
@@ -7749,7 +7795,7 @@
     },
     "/api/v1/tasks": {
       "delete": {
-        "description": "Cancel all tasks queued",
+        "description": "Cancel all tasks queued\n\nRequired role: **ADMIN**",
         "operationId": "emptyTaskQueue",
         "responses": {
           "200": {
@@ -7782,7 +7828,7 @@
     },
     "/api/v1/transient-books": {
       "post": {
-        "description": "Scan provided folder for transient books.",
+        "description": "Scan provided folder for transient books.\n\nRequired role: **ADMIN**",
         "operationId": "scanForTransientBooks",
         "requestBody": {
           "content": {
@@ -7827,6 +7873,7 @@
     },
     "/api/v1/transient-books/{id}/analyze": {
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "analyze",
         "parameters": [
           {
@@ -7868,6 +7915,7 @@
     },
     "/api/v1/transient-books/{id}/pages/{pageNumber}": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getSourcePage",
         "parameters": [
           {
@@ -8120,6 +8168,7 @@
     },
     "/api/v2/users": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getAll",
         "responses": {
           "200": {
@@ -8152,6 +8201,7 @@
         ]
       },
       "post": {
+        "description": "Required role: **ADMIN**",
         "operationId": "addOne",
         "requestBody": {
           "content": {
@@ -8193,6 +8243,7 @@
     },
     "/api/v2/users/authentication-activity": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getAuthenticationActivity",
         "parameters": [
           {
@@ -8505,6 +8556,7 @@
     },
     "/api/v2/users/{id}": {
       "delete": {
+        "description": "Required role: **ADMIN**",
         "operationId": "delete",
         "parameters": [
           {
@@ -8537,6 +8589,7 @@
         ]
       },
       "patch": {
+        "description": "Required role: **ADMIN**",
         "operationId": "updateUser",
         "parameters": [
           {
@@ -8581,6 +8634,7 @@
     },
     "/api/v2/users/{id}/authentication-activity/latest": {
       "get": {
+        "description": "Required role: **ADMIN**",
         "operationId": "getLatestAuthenticationActivityForUser",
         "parameters": [
           {
@@ -8630,6 +8684,7 @@
     },
     "/api/v2/users/{id}/password": {
       "patch": {
+        "description": "Required role: **ADMIN**",
         "operationId": "updatePassword",
         "parameters": [
           {
