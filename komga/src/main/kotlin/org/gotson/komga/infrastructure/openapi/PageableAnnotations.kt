@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.swagger
+package org.gotson.komga.infrastructure.openapi
 
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.Parameters

@@ -36,10 +36,10 @@ import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.PageableAsQueryParam
+import org.gotson.komga.infrastructure.openapi.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
-import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
-import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.interfaces.api.CommonBookController
 import org.gotson.komga.interfaces.api.ContentRestrictionChecker

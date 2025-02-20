@@ -3,7 +3,7 @@ package org.gotson.komga.interfaces.api.rest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.springframework.http.MediaType
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
 import org.springframework.web.bind.annotation.GetMapping

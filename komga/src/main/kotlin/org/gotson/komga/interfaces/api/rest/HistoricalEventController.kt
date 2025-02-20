@@ -3,8 +3,8 @@ package org.gotson.komga.interfaces.api.rest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
-import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.PageableAsQueryParam
 import org.gotson.komga.interfaces.api.persistence.HistoricalEventDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.HistoricalEventDto
 import org.springframework.data.domain.Page

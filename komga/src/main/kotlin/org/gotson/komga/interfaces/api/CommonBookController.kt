@@ -24,8 +24,8 @@ import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_PROGRESSION_JSON_VALUE
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository

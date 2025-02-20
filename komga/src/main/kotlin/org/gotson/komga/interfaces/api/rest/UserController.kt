@@ -14,8 +14,8 @@ import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration.TagNames
 import org.gotson.komga.interfaces.api.rest.dto.ApiKeyDto
 import org.gotson.komga.interfaces.api.rest.dto.ApiKeyRequestDto
 import org.gotson.komga.interfaces.api.rest.dto.AuthenticationActivityDto

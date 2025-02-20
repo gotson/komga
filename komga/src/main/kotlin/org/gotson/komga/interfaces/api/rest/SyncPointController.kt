@@ -3,8 +3,8 @@ package org.gotson.komga.interfaces.api.rest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.gotson.komga.domain.persistence.SyncPointRepository
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal

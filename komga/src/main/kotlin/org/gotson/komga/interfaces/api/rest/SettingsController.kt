@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.kobo.KepubConverter
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.web.WebServerEffectiveSettings
 import org.gotson.komga.interfaces.api.rest.dto.SettingMultiSource
 import org.gotson.komga.interfaces.api.rest.dto.SettingsDto

@@ -9,8 +9,8 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.gotson.komga.infrastructure.jooq.main.ClientSettingsDtoDao
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.interfaces.api.rest.dto.ClientSettingDto
 import org.gotson.komga.interfaces.api.rest.dto.ClientSettingGlobalUpdateDto
 import org.gotson.komga.interfaces.api.rest.dto.ClientSettingUserUpdateDto

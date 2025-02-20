@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.language.contains
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.FileSystemResource

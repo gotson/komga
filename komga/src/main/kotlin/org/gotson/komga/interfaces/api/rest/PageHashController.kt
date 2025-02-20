@@ -12,8 +12,8 @@ import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.persistence.PageHashRepository
 import org.gotson.komga.domain.service.PageHashLifecycle
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
-import org.gotson.komga.infrastructure.swagger.PageableAsQueryParam
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.PageableAsQueryParam
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.interfaces.api.rest.dto.PageHashCreationDto
 import org.gotson.komga.interfaces.api.rest.dto.PageHashKnownDto

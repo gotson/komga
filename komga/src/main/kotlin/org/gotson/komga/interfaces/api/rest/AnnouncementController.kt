@@ -4,8 +4,8 @@ import com.github.benmanes.caffeine.cache.Caffeine
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.gotson.komga.domain.persistence.KomgaUserRepository
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.interfaces.api.rest.dto.JsonFeedDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

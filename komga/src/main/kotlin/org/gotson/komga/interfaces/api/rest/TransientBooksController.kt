@@ -11,7 +11,7 @@ import org.gotson.komga.domain.model.TransientBook
 import org.gotson.komga.domain.persistence.TransientBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.TransientBookLifecycle
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.toFilePath
 import org.gotson.komga.interfaces.api.rest.dto.PageDto

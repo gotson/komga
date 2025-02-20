@@ -33,10 +33,10 @@ import org.gotson.komga.domain.service.ReadListLifecycle
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
+import org.gotson.komga.infrastructure.openapi.AuthorsAsQueryParam
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.AuthorsAsQueryParam
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
-import org.gotson.komga.infrastructure.swagger.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.web.Authors
 import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.gotson.komga.interfaces.api.persistence.ReadProgressDtoRepository

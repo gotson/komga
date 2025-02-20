@@ -18,8 +18,8 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.service.LibraryLifecycle
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.gotson.komga.infrastructure.web.filePathToUrl
 import org.gotson.komga.interfaces.api.rest.dto.LibraryCreationDto
 import org.gotson.komga.interfaces.api.rest.dto.LibraryDto
