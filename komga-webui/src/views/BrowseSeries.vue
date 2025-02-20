@@ -565,6 +565,8 @@ import {
   SearchConditionTag,
   SearchOperatorIs,
   SearchOperatorIsNot,
+  SearchOperatorIsNotNull,
+  SearchOperatorIsNull,
 } from '@/types/komga-search'
 import {objIsEqual} from '@/functions/object'
 import i18n from '@/i18n'
@@ -681,7 +683,18 @@ export default Vue.extend({
     },
     filterOptionsPanel(): FiltersOptions {
       const r = {
-        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag, anyAllSelector: true},
+        tag: {
+          name: this.$t('filter.tag').toString(),
+          values: [
+            {
+              name: this.$t('filter.any').toString(),
+              value: new SearchConditionTag(new SearchOperatorIsNotNull()),
+              nValue: new SearchConditionTag(new SearchOperatorIsNull()),
+            },
+            ...this.filterOptions.tag,
+          ],
+          anyAllSelector: true,
+        },
         mediaProfile: {
           name: this.$t('filter.media_profile').toString(), values: Object.values(MediaProfile).map(x => ({
             name: i18n.t(`enums.media_profile.${x}`),

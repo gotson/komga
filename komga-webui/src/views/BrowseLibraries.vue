@@ -425,10 +425,52 @@ export default Vue.extend({
             nValue: new SearchConditionSeriesStatus(new SearchOperatorIsNot(x)),
           } as NameValue)),
         },
-        genre: {name: this.$t('filter.genre').toString(), values: this.filterOptions.genre, anyAllSelector: true},
-        tag: {name: this.$t('filter.tag').toString(), values: this.filterOptions.tag, anyAllSelector: true},
-        publisher: {name: this.$t('filter.publisher').toString(), values: this.filterOptions.publisher},
-        language: {name: this.$t('filter.language').toString(), values: this.filterOptions.language},
+        genre: {
+          name: this.$t('filter.genre').toString(),
+          values: [
+            {
+              name: this.$t('filter.any').toString(),
+              value: new SearchConditionGenre(new SearchOperatorIsNotNull()),
+              nValue: new SearchConditionGenre(new SearchOperatorIsNull()),
+            },
+            ...this.filterOptions.genre,
+          ],
+          anyAllSelector: true
+        },
+        tag: {
+          name: this.$t('filter.tag').toString(),
+          values: [
+            {
+              name: this.$t('filter.any').toString(),
+              value: new SearchConditionTag(new SearchOperatorIsNotNull()),
+              nValue: new SearchConditionTag(new SearchOperatorIsNull()),
+            },
+            ...this.filterOptions.tag,
+          ],
+          anyAllSelector: true,
+        },
+        publisher: {
+          name: this.$t('filter.publisher').toString(),
+          values: [
+            {
+              name: this.$t('filter.any').toString(),
+              value: new SearchConditionPublisher(new SearchOperatorIsNot('')),
+              nValue: new SearchConditionPublisher(new SearchOperatorIs('')),
+            },
+            ...this.filterOptions.publisher,
+          ],
+        },
+        language: {
+          name: this.$t('filter.language').toString(),
+          values: [
+            {
+              name: this.$t('filter.any').toString(),
+              value: new SearchConditionLanguage(new SearchOperatorIsNot('')),
+              nValue: new SearchConditionLanguage(new SearchOperatorIs('')),
+            },
+            ...this.filterOptions.language,
+          ],
+        },
         ageRating: {
           name: this.$t('filter.age_rating').toString(),
           values: this.filterOptions.ageRating.map((x: NameValue) => ({
@@ -438,7 +480,17 @@ export default Vue.extend({
             } as NameValue),
           ),
         },
-        releaseDate: {name: this.$t('filter.release_date').toString(), values: this.filterOptions.releaseDate},
+        releaseDate: {
+          name: this.$t('filter.release_date').toString(),
+          values: [
+            {
+              name: this.$t('filter.any').toString(),
+              value: new SearchConditionReleaseDate(new SearchOperatorIsNotNull()),
+              nValue: new SearchConditionReleaseDate(new SearchOperatorIsNull()),
+            },
+            ...this.filterOptions.releaseDate,
+          ],
+        },
       } as FiltersOptions
       authorRoles.forEach((role: string) => {
         r[role] = {
@@ -456,7 +508,17 @@ export default Vue.extend({
           anyAllSelector: true,
         }
       })
-      r['sharingLabel'] = {name: this.$t('filter.sharing_label').toString(), values: this.filterOptions.sharingLabel}
+      r['sharingLabel'] = {
+        name: this.$t('filter.sharing_label').toString(),
+        values: [
+          {
+            name: this.$t('filter.any').toString(),
+            value: new SearchConditionSharingLabel(new SearchOperatorIsNotNull()),
+            nValue: new SearchConditionSharingLabel(new SearchOperatorIsNull()),
+          },
+          ...this.filterOptions.sharingLabel,
+        ],
+      }
       return r
     },
     isAdmin(): boolean {
