@@ -602,6 +602,24 @@ class BookSearchTest(
       assertThat(found.map { it.name }).containsExactlyInAnyOrder("3", "4")
       assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("3", "4")
     }
+
+    run {
+      val search = BookSearch(SearchCondition.Tag(SearchOperator.IsNullT()))
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("4")
+    }
+
+    run {
+      val search = BookSearch(SearchCondition.Tag(SearchOperator.IsNotNullT()))
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+    }
   }
 
   @Test

@@ -18,6 +18,13 @@ class SearchOperator {
     include = JsonTypeInfo.As.PROPERTY,
     property = "operator",
   )
+  sealed interface EqualityNullable<T>
+
+  @JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "operator",
+  )
   sealed interface StringOp
 
   @JsonTypeInfo(
@@ -52,6 +59,7 @@ class SearchOperator {
   data class Is<T>(
     val value: T,
   ) : Equality<T>,
+    EqualityNullable<T>,
     StringOp,
     Numeric<T>,
     NumericNullable<T>
@@ -60,6 +68,7 @@ class SearchOperator {
   data class IsNot<T>(
     val value: T,
   ) : Equality<T>,
+    EqualityNullable<T>,
     StringOp,
     Numeric<T>,
     NumericNullable<T>
@@ -139,7 +148,9 @@ class SearchOperator {
   data object IsNotNull : Date
 
   @JsonTypeName("isNull")
-  class IsNullT<T> : NumericNullable<T> {
+  class IsNullT<T> :
+    NumericNullable<T>,
+    EqualityNullable<T> {
     override fun equals(other: Any?): kotlin.Boolean {
       if (this === other) return true
       if (javaClass != other?.javaClass) return false
@@ -150,7 +161,9 @@ class SearchOperator {
   }
 
   @JsonTypeName("isNotNull")
-  class IsNotNullT<T> : NumericNullable<T> {
+  class IsNotNullT<T> :
+    NumericNullable<T>,
+    EqualityNullable<T> {
     override fun equals(other: Any?): kotlin.Boolean {
       if (this === other) return true
       if (javaClass != other?.javaClass) return false

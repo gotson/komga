@@ -507,6 +507,24 @@ class SeriesSearchTest(
       assertThat(found.map { it.name }).containsExactlyInAnyOrder("3", "4")
       assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("3", "4")
     }
+
+    run {
+      val search = SeriesSearch(SearchCondition.Tag(SearchOperator.IsNullT()))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("4")
+    }
+
+    run {
+      val search = SeriesSearch(SearchCondition.Tag(SearchOperator.IsNotNullT()))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+    }
   }
 
   @Test
@@ -595,6 +613,24 @@ class SeriesSearchTest(
 
       assertThat(found.map { it.name }).containsExactlyInAnyOrder("3", "4")
       assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("3", "4")
+    }
+
+    run {
+      val search = SeriesSearch(SearchCondition.SharingLabel(SearchOperator.IsNullT()))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("4")
+    }
+
+    run {
+      val search = SeriesSearch(SearchCondition.SharingLabel(SearchOperator.IsNotNullT()))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
     }
   }
 
@@ -750,6 +786,24 @@ class SeriesSearchTest(
 
       assertThat(found.map { it.name }).containsExactlyInAnyOrder("3", "4")
       assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("3", "4")
+    }
+
+    run {
+      val search = SeriesSearch(SearchCondition.Genre(SearchOperator.IsNullT()))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("4")
+    }
+
+    run {
+      val search = SeriesSearch(SearchCondition.Genre(SearchOperator.IsNotNullT()))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
     }
   }
 

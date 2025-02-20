@@ -97,7 +97,7 @@ class SeriesSearchHelper(
 
       is SearchCondition.Tag ->
         Tables.SERIES.ID.let { field ->
-          val inner = { tag: String ->
+          val innerEquals = { tag: String ->
             DSL
               .select(Tables.SERIES_METADATA_TAG.SERIES_ID)
               .from(Tables.SERIES_METADATA_TAG)
@@ -116,9 +116,24 @@ class SeriesSearchHelper(
                   ),
               )
           }
+          val innerAny = {
+            DSL
+              .select(Tables.SERIES_METADATA_TAG.SERIES_ID)
+              .from(Tables.SERIES_METADATA_TAG)
+              .where(Tables.SERIES_METADATA_TAG.TAG.isNotNull)
+              .union(
+                DSL
+                  .select(Tables.BOOK_METADATA_AGGREGATION_TAG.SERIES_ID)
+                  .from(Tables.BOOK_METADATA_AGGREGATION_TAG)
+                  .where(Tables.BOOK_METADATA_AGGREGATION_TAG.TAG.isNotNull),
+              )
+          }
+
           when (searchCondition.operator) {
-            is SearchOperator.Is -> field.`in`(inner(searchCondition.operator.value))
-            is SearchOperator.IsNot -> field.notIn(inner(searchCondition.operator.value))
+            is SearchOperator.Is -> field.`in`(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNot -> field.notIn(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNullT<*> -> field.notIn(innerAny())
+            is SearchOperator.IsNotNullT<*> -> field.`in`(innerAny())
           }
         } to emptySet()
 
@@ -175,6 +190,7 @@ class SeriesSearchHelper(
             csAlias(searchCondition.operator.value)
               .COLLECTION_ID
               .eq(searchCondition.operator.value) to setOf(RequiredJoin.Collection(searchCondition.operator.value))
+
           is SearchOperator.IsNot -> {
             val inner = { collectionId: String ->
               DSL
@@ -196,7 +212,7 @@ class SeriesSearchHelper(
 
       is SearchCondition.Genre ->
         Tables.SERIES.ID.let { field ->
-          val inner = { genre: String ->
+          val innerEquals = { genre: String ->
             DSL
               .select(Tables.SERIES_METADATA_GENRE.SERIES_ID)
               .from(Tables.SERIES_METADATA_GENRE)
@@ -206,9 +222,18 @@ class SeriesSearchHelper(
                   .equalIgnoreCase(genre),
               )
           }
+          val innerAny = {
+            DSL
+              .select(Tables.SERIES_METADATA_GENRE.SERIES_ID)
+              .from(Tables.SERIES_METADATA_GENRE)
+              .where(Tables.SERIES_METADATA_GENRE.GENRE.isNotNull)
+          }
+
           when (searchCondition.operator) {
-            is SearchOperator.Is -> field.`in`(inner(searchCondition.operator.value))
-            is SearchOperator.IsNot -> field.notIn(inner(searchCondition.operator.value))
+            is SearchOperator.Is -> field.`in`(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNot -> field.notIn(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNullT<*> -> field.notIn(innerAny())
+            is SearchOperator.IsNotNullT<*> -> field.`in`(innerAny())
           }
         } to emptySet()
 
@@ -218,7 +243,7 @@ class SeriesSearchHelper(
 
       is SearchCondition.SharingLabel ->
         Tables.SERIES.ID.let { field ->
-          val inner = { label: String ->
+          val innerEquals = { label: String ->
             DSL
               .select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
               .from(Tables.SERIES_METADATA_SHARING)
@@ -228,9 +253,18 @@ class SeriesSearchHelper(
                   .equalIgnoreCase(label),
               )
           }
+          val innerAny = {
+            DSL
+              .select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
+              .from(Tables.SERIES_METADATA_SHARING)
+              .where(Tables.SERIES_METADATA_SHARING.LABEL.isNotNull)
+          }
+
           when (searchCondition.operator) {
-            is SearchOperator.Is -> field.`in`(inner(searchCondition.operator.value))
-            is SearchOperator.IsNot -> field.notIn(inner(searchCondition.operator.value))
+            is SearchOperator.Is -> field.`in`(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNot -> field.notIn(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNullT<*> -> field.notIn(innerAny())
+            is SearchOperator.IsNotNullT<*> -> field.`in`(innerAny())
           }
         } to emptySet()
 

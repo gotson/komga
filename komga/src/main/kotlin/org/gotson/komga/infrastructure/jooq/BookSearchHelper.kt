@@ -143,7 +143,7 @@ class BookSearchHelper(
 
       is SearchCondition.Tag ->
         Tables.BOOK.ID.let { field ->
-          val inner = { tag: String ->
+          val innerEquals = { tag: String ->
             DSL
               .select(Tables.BOOK_METADATA_TAG.BOOK_ID)
               .from(Tables.BOOK_METADATA_TAG)
@@ -153,9 +153,18 @@ class BookSearchHelper(
                   .equalIgnoreCase(tag),
               )
           }
+          val innerAny = {
+            DSL
+              .select(Tables.BOOK_METADATA_TAG.BOOK_ID)
+              .from(Tables.BOOK_METADATA_TAG)
+              .where(Tables.BOOK_METADATA_TAG.TAG.isNotNull)
+          }
+
           when (searchCondition.operator) {
-            is SearchOperator.Is -> field.`in`(inner(searchCondition.operator.value))
-            is SearchOperator.IsNot -> field.notIn(inner(searchCondition.operator.value))
+            is SearchOperator.Is -> field.`in`(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNot -> field.notIn(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNullT<*> -> field.notIn(innerAny())
+            is SearchOperator.IsNotNullT<*> -> field.`in`(innerAny())
           }
         } to emptySet()
 

@@ -101,13 +101,13 @@ class SearchCondition {
 
   data class Tag(
     @JsonProperty("tag")
-    val operator: SearchOperator.Equality<String>,
+    val operator: SearchOperator.EqualityNullable<String>,
   ) : Book,
     Series
 
   data class SharingLabel(
     @JsonProperty("sharingLabel")
-    val operator: SearchOperator.Equality<String>,
+    val operator: SearchOperator.EqualityNullable<String>,
   ) : Series
 
   data class Publisher(
@@ -122,7 +122,7 @@ class SearchCondition {
 
   data class Genre(
     @JsonProperty("genre")
-    val operator: SearchOperator.Equality<String>,
+    val operator: SearchOperator.EqualityNullable<String>,
   ) : Series
 
   data class AgeRating(

@@ -50,6 +50,8 @@ class BookSearchTest(
           SearchCondition.NumberSort(SearchOperator.IsNot(5F)),
           SearchCondition.Tag(SearchOperator.Is("fiction")),
           SearchCondition.Tag(SearchOperator.IsNot("fantasy")),
+          SearchCondition.Tag(SearchOperator.IsNullT()),
+          SearchCondition.Tag(SearchOperator.IsNotNullT()),
           SearchCondition.ReadStatus(SearchOperator.IsNot(ReadStatus.READ)),
           SearchCondition.ReadStatus(SearchOperator.Is(ReadStatus.READ)),
           SearchCondition.MediaStatus(SearchOperator.Is(Media.Status.READY)),
