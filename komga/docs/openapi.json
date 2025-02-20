@@ -15,21 +15,29 @@
   },
   "servers": [
     {
+      "url": "https://demo.komga.org",
+      "description": "Demo server"
+    },
+    {
       "url": "http://localhost:{port}",
       "description": "Local development server",
       "variables": {
         "port": {
+          "default": "25600",
           "enum": [
             "8080",
             "25600"
-          ],
-          "default": "25600"
+          ]
         }
       }
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
     },
     {
-      "url": "https://demo.komga.org",
-      "description": "Demo server"
+      "apiKey": []
     }
   ],
   "tags": [
@@ -2100,6 +2108,7 @@
             "description": "Bad Request"
           }
         },
+        "security": [],
         "summary": "Get Epub resource",
         "tags": [
           "WebPub Manifest"
@@ -2428,6 +2437,7 @@
             "description": "Bad Request"
           }
         },
+        "security": [],
         "summary": "Retrieve claim status",
         "tags": [
           "Claim server"
@@ -2476,6 +2486,7 @@
             "description": "Bad Request"
           }
         },
+        "security": [],
         "summary": "Claim server",
         "tags": [
           "Claim server"
@@ -2600,6 +2611,7 @@
             "description": "Bad Request"
           }
         },
+        "security": [],
         "summary": "Retrieve global client settings",
         "tags": [
           "Client settings"
@@ -3574,6 +3586,7 @@
             "description": "Bad Request"
           }
         },
+        "security": [],
         "summary": "Download CSS file",
         "tags": [
           "Fonts"
@@ -3624,6 +3637,7 @@
             "description": "Bad Request"
           }
         },
+        "security": [],
         "summary": "Download font file",
         "tags": [
           "Fonts"
@@ -4238,6 +4252,7 @@
             "description": "Bad Request"
           }
         },
+        "security": [],
         "summary": "List registered OAuth2 providers",
         "tags": [
           "OAuth2"

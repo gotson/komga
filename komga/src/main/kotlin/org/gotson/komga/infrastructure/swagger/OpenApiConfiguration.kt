@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
 import io.swagger.v3.oas.models.responses.ApiResponse
 import io.swagger.v3.oas.models.responses.ApiResponses
+import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
 import io.swagger.v3.oas.models.servers.Server
 import io.swagger.v3.oas.models.servers.ServerVariable
@@ -109,21 +110,29 @@ class OpenApiConfiguration(
       ).components(
         Components()
           .addSecuritySchemes(
-            "basicAuth",
+            SecuritySchemes.BASIC_AUTH,
             SecurityScheme()
               .type(SecurityScheme.Type.HTTP)
               .scheme("basic"),
           ).addSecuritySchemes(
-            "apiKey",
+            SecuritySchemes.API_KEY,
             SecurityScheme()
               .type(SecurityScheme.Type.APIKEY)
               .`in`(SecurityScheme.In.HEADER)
               .name("X-API-Key"),
           ),
+      ).security(
+        listOf(
+          SecurityRequirement().addList(SecuritySchemes.BASIC_AUTH),
+          SecurityRequirement().addList(SecuritySchemes.API_KEY),
+        ),
       ).tags(tags)
       .extensions(mapOf("x-tagGroups" to tagGroups))
       .servers(
         listOf(
+          Server()
+            .url("https://demo.komga.org")
+            .description("Demo server"),
           Server()
             .url("http://localhost:{port}")
             .description("Local development server")
@@ -137,9 +146,6 @@ class OpenApiConfiguration(
                     ._default("25600"),
                 ),
             ),
-          Server()
-            .url("https://demo.komga.org")
-            .description("Demo server"),
         ),
       ).path(
         "/api/logout",
@@ -248,6 +254,11 @@ class OpenApiConfiguration(
         ),
       ),
     )
+
+  object SecuritySchemes {
+    const val BASIC_AUTH = "basicAuth"
+    const val API_KEY = "apiKey"
+  }
 
   object TagNames {
     const val DEPRECATED = "Deprecated"

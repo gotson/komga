@@ -1,6 +1,7 @@
 package org.gotson.komga.interfaces.api.rest
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.gotson.komga.infrastructure.swagger.OpenApiConfiguration
 import org.springframework.http.MediaType
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("api/v1/oauth2", produces = [MediaType.APPLICATION_JSON_VALUE])
 @Tag(name = OpenApiConfiguration.TagNames.OAUTH2)
+@SecurityRequirements
 class OAuth2Controller(
   clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) {

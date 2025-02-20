@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.api
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import jakarta.servlet.http.HttpServletRequest
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.io.IOUtils
@@ -255,6 +256,7 @@ class CommonBookController(
     }
 
   @Operation(summary = "Get Epub resource", description = "Return a resource from within an Epub book.", tags = [OpenApiConfiguration.TagNames.BOOK_WEBPUB])
+  @SecurityRequirements
   @GetMapping(
     value = [
       "api/v1/books/{bookId}/resource/{*resource}",

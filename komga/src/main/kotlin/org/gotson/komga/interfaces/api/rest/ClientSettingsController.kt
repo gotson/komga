@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.api.rest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.ExampleObject
+import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
@@ -38,6 +39,7 @@ class ClientSettingsController(
 ) {
   @GetMapping("global/list")
   @Operation(summary = "Retrieve global client settings", description = "For unauthenticated users, only settings with 'allowUnauthorized=true' will be returned.")
+  @SecurityRequirements
   fun getGlobalSettings(
     @AuthenticationPrincipal principal: KomgaPrincipal?,
   ): Map<String, ClientSettingDto> = clientSettingsDtoDao.findAllGlobal(principal == null)

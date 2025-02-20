@@ -2,6 +2,7 @@ package org.gotson.komga.interfaces.api.rest
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.apache.commons.io.FilenameUtils
 import org.gotson.komga.infrastructure.configuration.KomgaProperties
@@ -91,6 +92,7 @@ class FontsController(
 
   @GetMapping("resource/{fontFamily}/{fontFile}")
   @Operation(summary = "Download font file")
+  @SecurityRequirements
   fun getFontFile(
     @PathVariable fontFamily: String,
     @PathVariable fontFile: String,
@@ -113,6 +115,7 @@ class FontsController(
 
   @GetMapping("resource/{fontFamily}/css", produces = ["text/css"])
   @Operation(summary = "Download CSS file", description = "Download a CSS file with the @font-face block for the font family. This is used by the Epub Reader to change fonts.")
+  @SecurityRequirements
   fun getFontFamilyAsCss(
     @PathVariable fontFamily: String,
   ): ResponseEntity<Resource> {
