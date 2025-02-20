@@ -15,7 +15,7 @@ const vuexModule: Module<any, any> = {
       const settings = getters.getClientSettingsLibraries
       return state.libraries
         .map((it: LibraryDto) => Object.assign({}, it, settings[it.id]))
-        .sort((a: LibraryDto, b: LibraryDto) => a.order > b.order)
+        .sort((a: LibraryDto, b: LibraryDto) => a.order - b.order)
     },
     getLibraryById: (state, getters) => (id: number) => {
       return getters.getLibraries.find((l: any) => l.id === id)
