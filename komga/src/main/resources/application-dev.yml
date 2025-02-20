@@ -5,6 +5,7 @@ komga:
     file: "file:tasks?mode=memory"
   cors.allowed-origins:
     - http://localhost:8081
+    - https://komga.org
   oauth2-account-creation: false
   config-dir: ${rootDir}/config-dir
 logging:
