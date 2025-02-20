@@ -130,6 +130,7 @@ class ClientSettingsController(
 
   @DeleteMapping("global")
   @ResponseStatus(HttpStatus.NO_CONTENT)
+  @PreAuthorize("hasRole('ADMIN')")
   @Operation(summary = "Delete global settings", description = "Setting key should be a valid lowercase namespace string like 'application.domain.key'")
   @OASRequestBody(
     content = [
