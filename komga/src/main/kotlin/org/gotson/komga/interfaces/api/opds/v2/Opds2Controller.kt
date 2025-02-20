@@ -20,7 +20,6 @@ import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
 import org.gotson.komga.interfaces.api.CommonBookController
 import org.gotson.komga.interfaces.api.ContentRestrictionChecker
 import org.gotson.komga.interfaces.api.OpdsGenerator
@@ -292,7 +291,6 @@ class Opds2Controller(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(value = ["libraries/keep-reading", "libraries/{id}/keep-reading"])
   fun getKeepReading(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -335,7 +333,6 @@ class Opds2Controller(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(value = ["libraries/on-deck", "libraries/{id}/on-deck"])
   fun getOnDeck(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -373,7 +370,6 @@ class Opds2Controller(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(value = ["libraries/books/latest", "libraries/{id}/books/latest"])
   fun getLatestBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -415,7 +411,6 @@ class Opds2Controller(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(value = ["libraries/series/latest", "libraries/{id}/series/latest"])
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -460,7 +455,6 @@ class Opds2Controller(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(value = ["libraries/browse", "libraries/{id}/browse"])
   fun getLibrariesBrowse(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -521,7 +515,6 @@ class Opds2Controller(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(value = ["libraries/collections", "libraries/{id}/collections"])
   fun getLibrariesCollections(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -563,7 +556,6 @@ class Opds2Controller(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping("collections/{id}")
   fun getOneCollection(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -607,7 +599,6 @@ class Opds2Controller(
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @PageAsQueryParam
   @GetMapping(value = ["libraries/readlists", "libraries/{id}/readlists"])
   fun getLibrariesReadLists(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -649,7 +640,6 @@ class Opds2Controller(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping("readlists/{id}")
   fun getOneReadList(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -712,7 +702,6 @@ class Opds2Controller(
     return Pair(library, libraryIds)
   }
 
-  @PageAsQueryParam
   @GetMapping("series/{id}")
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,

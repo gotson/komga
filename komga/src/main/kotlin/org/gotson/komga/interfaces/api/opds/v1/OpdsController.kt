@@ -27,7 +27,6 @@ import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
-import org.gotson.komga.infrastructure.swagger.PageAsQueryParam
 import org.gotson.komga.interfaces.api.CommonBookController
 import org.gotson.komga.interfaces.api.ContentRestrictionChecker
 import org.gotson.komga.interfaces.api.dto.MEDIATYPE_OPDS_JSON_VALUE
@@ -241,7 +240,6 @@ class OpdsController(
       url = OpenSearchDescription.OpenSearchUrl(uriBuilder(ROUTE_SERIES_ALL).toUriString() + "?search={searchTerms}"),
     )
 
-  @PageAsQueryParam
   @GetMapping(ROUTE_ON_DECK)
   fun getOnDeck(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -272,7 +270,6 @@ class OpdsController(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(ROUTE_KEEP_READING)
   fun getKeepReading(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -313,7 +310,6 @@ class OpdsController(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(ROUTE_SERIES_ALL)
   fun getAllSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -361,7 +357,6 @@ class OpdsController(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(ROUTE_SERIES_LATEST)
   fun getLatestSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -390,7 +385,6 @@ class OpdsController(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(ROUTE_BOOKS_LATEST)
   fun getLatestBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -448,7 +442,6 @@ class OpdsController(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(ROUTE_COLLECTIONS_ALL)
   fun getCollections(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -474,7 +467,6 @@ class OpdsController(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(ROUTE_READLISTS_ALL)
   fun getReadLists(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -500,7 +492,6 @@ class OpdsController(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping(ROUTE_PUBLISHERS_ALL)
   fun getPublishers(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -534,7 +525,6 @@ class OpdsController(
     )
   }
 
-  @PageAsQueryParam
   @GetMapping("series/{id}")
   fun getOneSeries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -576,7 +566,6 @@ class OpdsController(
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @PageAsQueryParam
   @GetMapping("libraries/{id}")
   fun getOneLibrary(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -618,7 +607,6 @@ class OpdsController(
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @PageAsQueryParam
   @GetMapping("collections/{id}")
   fun getOneCollection(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -663,7 +651,6 @@ class OpdsController(
       )
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  @PageAsQueryParam
   @GetMapping("readlists/{id}")
   fun getOneReadList(
     @AuthenticationPrincipal principal: KomgaPrincipal,
