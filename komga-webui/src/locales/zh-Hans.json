@@ -516,6 +516,9 @@
       "tab_general": "常规",
       "tab_poster": "海报"
     },
+    "edit_recommended": {
+      "button_confirm": "保存更改"
+    },
     "edit_series": {
       "button_cancel": "取消",
       "button_confirm": "保存修改",
