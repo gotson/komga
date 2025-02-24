@@ -17,7 +17,7 @@ import org.springframework.session.web.http.HttpSessionIdResolver
 @Configuration
 class SessionConfiguration {
   @Bean
-  fun sessionCookieName() = "SESSION"
+  fun sessionCookieName() = "KOMGA-SESSION"
 
   @Bean
   fun sessionHeaderName() = "X-Auth-Token"

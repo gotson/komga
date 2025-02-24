@@ -157,6 +157,7 @@ class SecurityConfiguration(
           TokenBasedRememberMeServices(komgaSettingsProvider.rememberMeKey, komgaUserDetailsService).apply {
             setTokenValiditySeconds(komgaSettingsProvider.rememberMeDuration.inWholeSeconds.toInt())
             setAuthenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
+            setCookieName("komga-remember-me")
           },
         )
       }

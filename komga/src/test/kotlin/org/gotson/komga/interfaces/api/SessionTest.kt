@@ -27,6 +27,8 @@ class SessionTest(
 ) {
   private lateinit var user: KomgaUser
 
+  private val rememberMeCookieName = "komga-remember-me"
+
   @BeforeAll
   fun setup() {
     user = KomgaUser("user@example.org", "user")
@@ -52,6 +54,23 @@ class SessionTest(
         cookie {
           exists(sessionCookieName)
           httpOnly(sessionCookieName, true)
+        }
+      }
+  }
+
+  @Test
+  fun `given remember-me parameter when hitting an endpoint then remember-me cookie is returned`() {
+    mockMvc
+      .get("/api/v2/users/me") {
+        with(httpBasic(user.email, user.password))
+        param("remember-me", "true")
+      }.andExpect {
+        header {
+          string(HttpHeaders.SET_COOKIE, containsString("$rememberMeCookieName="))
+        }
+        cookie {
+          exists(rememberMeCookieName)
+          httpOnly(rememberMeCookieName, true)
         }
       }
   }
