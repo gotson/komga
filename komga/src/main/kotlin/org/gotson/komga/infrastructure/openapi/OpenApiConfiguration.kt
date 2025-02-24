@@ -53,12 +53,16 @@ import org.springdoc.core.customizers.OperationCustomizer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.env.Environment
 import org.springframework.security.access.prepost.PreAuthorize
 
 @Configuration
 class OpenApiConfiguration(
   @Value("\${application.version}") private val appVersion: String,
+  env: Environment,
 ) {
+  private val generateOpenApi = env.activeProfiles.contains("generate-openapi")
+
   @Bean
   fun openApi(): OpenAPI {
     val logoutOperation =
@@ -137,26 +141,29 @@ class OpenApiConfiguration(
         ),
       ).tags(tags)
       .extensions(mapOf("x-tagGroups" to tagGroups))
-      .servers(
-        listOf(
-          Server()
-            .url("https://demo.komga.org")
-            .description("Demo server"),
-          Server()
-            .url("http://localhost:{port}")
-            .description("Local development server")
-            .variables(
-              ServerVariables()
-                .addServerVariable(
-                  "port",
-                  ServerVariable()
-                    .addEnumItem("8080")
-                    .addEnumItem("25600")
-                    ._default("25600"),
+      .apply {
+        if (generateOpenApi)
+          servers(
+            listOf(
+              Server()
+                .url("https://demo.komga.org")
+                .description("Demo server"),
+              Server()
+                .url("http://localhost:{port}")
+                .description("Local development server")
+                .variables(
+                  ServerVariables()
+                    .addServerVariable(
+                      "port",
+                      ServerVariable()
+                        .addEnumItem("8080")
+                        .addEnumItem("25600")
+                        ._default("25600"),
+                    ),
                 ),
             ),
-        ),
-      ).path(
+          )
+      }.path(
         "/api/logout",
         PathItem()
           .summary("Logout current session")

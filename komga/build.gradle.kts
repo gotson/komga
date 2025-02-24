@@ -375,7 +375,7 @@ tasks.compileKotlin {
 openApi {
   outputDir = file("$projectDir/docs")
   customBootRun {
-    args.add("--spring.profiles.active=claim")
+    args.add("--spring.profiles.active=claim,generate-openapi")
     args.add("--server.port=8080")
   }
 }
