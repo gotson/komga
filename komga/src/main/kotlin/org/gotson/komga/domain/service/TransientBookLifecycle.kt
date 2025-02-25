@@ -5,6 +5,9 @@ import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaNotReadyException
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.PathContainedInPath
+import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.TransientBook
 import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.domain.model.toBookWithMedia
@@ -15,6 +18,7 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.nio.file.Paths
 
@@ -64,7 +68,7 @@ class TransientBookLifecycle(
   fun getMetadata(transientBook: TransientBook): Pair<String?, Float?> {
     val bookWithMedia = transientBook.toBookWithMedia()
     val number = bookMetadataProviders.firstNotNullOfOrNull { it.getBookMetadataFromBook(bookWithMedia)?.numberSort }
-    val series =
+    val seriesNamesFromMetadata =
       seriesMetadataProviders
         .flatMap {
           buildList {
@@ -72,7 +76,16 @@ class TransientBookLifecycle(
             add(it.getSeriesMetadataFromBook(bookWithMedia, false)?.title)
           }
         }.filterNotNull()
-        .firstNotNullOfOrNull { seriesRepository.findAllByTitleContaining(it).firstOrNull() }
+
+    val exactSearch = SearchCondition.AnyOfSeries(seriesNamesFromMetadata.map { SearchCondition.Title(SearchOperator.Is(it)) })
+    val exactMatches = seriesRepository.findAll(exactSearch, SearchContext.ofAnonymousUser(), Pageable.unpaged())
+    val series =
+      if (!exactMatches.isEmpty) {
+        exactMatches.content.first()
+      } else {
+        val containsSearch = SearchCondition.AnyOfSeries(seriesNamesFromMetadata.map { SearchCondition.Title(SearchOperator.Contains(it)) })
+        seriesRepository.findAll(containsSearch, SearchContext.ofAnonymousUser(), Pageable.unpaged()).content.firstOrNull()
+      }
 
     return series?.id to number
   }
