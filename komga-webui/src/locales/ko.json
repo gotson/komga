@@ -25,7 +25,9 @@
       "generate_api_key": "API 키 생성하기",
       "no_keys": "아직 생성된 API 키 없음"
     },
-    "change_password": "비밀번호 변경"
+    "change_password": "비밀번호 변경",
+    "details": "정보",
+    "my_account": "내 계정"
   },
   "announcements": {
     "mark_all_read": "모두 읽음으로 표시",
@@ -93,6 +95,7 @@
     "beginning_of_book": "책의 첫 페이지입니다.",
     "changing_reading_direction": "읽는 방향 변경",
     "cycling_page_layout": "페이지 보기 전환",
+    "cycling_page_margin": "페이지 여백 전환",
     "cycling_scale": "비율 전환",
     "cycling_side_padding": "여백 전환",
     "download_current_page": "현재 페이지 다운로드",
@@ -135,6 +138,7 @@
       "general": "일반",
       "gestures": "제스처",
       "page_layout": "페이지 배치",
+      "page_margin": "페이지 여백",
       "paged": "페이지 읽기 설정",
       "reading_mode": "읽기 방식",
       "scale_type": "스케일 종류",
@@ -145,6 +149,7 @@
     "shortcuts": {
       "close": "닫기",
       "cycle_page_layout": "페이지 배치 전환",
+      "cycle_page_margin": "페이지 여백 전환",
       "cycle_scale": "비율 전환",
       "cycle_side_padding": "여백 전환",
       "first_page": "첫 페이지",
@@ -168,6 +173,8 @@
   },
   "browse_book": {
     "comment": "논평",
+    "date_created": "생성됨",
+    "date_modified": "마지막으로 수정됨",
     "download_file": "파일 다운로드",
     "file": "파일",
     "format": "형식",
@@ -177,6 +184,8 @@
     "outdated_tooltip": "이 책의 파일이 변경되었으므로 이 책을 다시 분석해야 합니다",
     "read_book": "책 읽기",
     "read_incognito": "시크릿 모드에서 읽기",
+    "remove_from_collection": "모음집에서 책 제거",
+    "remove_from_readlist": "읽기 목록에서 책 제거",
     "size": "용량"
   },
   "browse_collection": {
@@ -191,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "올해는 시리즈의 모든 책들의 발매일로부터 가장 이른 해이다",
+    "remove_from_collection": "모음집에서 시리즈 제거",
     "series_no_summary": "이 시리즈는 요약이 없어서 저희가 골라드렸습니다!",
     "summary_from_book": "요약본 {number}:"
   },
@@ -221,8 +231,10 @@
     "dismiss": "닫기",
     "download": "다운로드",
     "drag_drop": "드래그 앤 드롭",
+    "duplicate": "중복",
     "email": "이메일",
     "epub": "Epub",
+    "error": "오류",
     "filename": "파일 이름",
     "filter_no_matches": "선택된 필터에 일치하는 항목이 없습니다",
     "genre": "장르",
@@ -235,8 +247,11 @@
     "locale_name": "한국어",
     "locale_rtl": "false",
     "lock_all": "모두 잠금",
+    "media": "미디어",
+    "more": "더",
     "n_selected": "{count} 선택됨",
     "nothing_to_show": "내용 없음",
+    "ok": "확인",
     "oneshot": "단행본",
     "outdated": "구식의",
     "page": "페이지",
@@ -247,19 +262,23 @@
     "password": "비밀번호",
     "pdf": "PDF",
     "pending_tasks": "보류 중인 작업 없음 | 1개의 보류중인 작업 | {count}개의 보류중인 작업",
+    "pinned_libraries": "고정된 라이브러리",
     "publisher": "출판사",
     "read": "읽기",
     "read_on": "{date} 읽음",
     "readlist": "읽기 목록",
     "readlists": "읽기 목록",
     "remember-me": "로그인 상태 유지",
+    "reorder": "재정렬",
     "required": "필요",
     "reset_filters": "필터 재설정",
     "roles": "역할",
     "save_changes": "변경 사항 저장",
     "series": "시리즈 | 시리즈",
+    "settings": "설정",
     "sidecars": "사이드카",
     "tags": "태그",
+    "ui": "유저 인터페이스",
     "unavailable": "사용할 수 없음",
     "unlock_all": "전체 잠금 해제",
     "url": "URL",
@@ -283,6 +302,7 @@
     "comicrack_preambule_html": "기존 ComicRack 읽기 목록을 <code>.cbl</code> 형식으로 가져올 수 있습니다.<br>Komga는 제공된 시리즈 및 책 번호를 귀하의 서재에 있는 시리즈 및 책과 일치시킵니다.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} 권 불일치",
+      "body2": "{duplicates} / {total} 권이 중복됨",
       "create": "무시하고 만들기",
       "title": "일부 도서는 일치되지 않음"
     },
@@ -496,6 +516,11 @@
       "tab_general": "일반",
       "tab_poster": "표지"
     },
+    "edit_recommended": {
+      "button_confirm": "변경사항 저장",
+      "button_reset": "기본으로 되돌리기",
+      "dialog_title": "추천 보기 수정"
+    },
     "edit_series": {
       "button_cancel": "취소",
       "button_confirm": "변경 사항 저장",
@@ -635,6 +660,7 @@
     "delete_to_save": "삭제하여 {size} 절약",
     "deleted_count": "{count}회 삭제됨",
     "empty_title": "중복된 페이지를 찾을 수 없음",
+    "empty_title_known": "알려진 중복 없음",
     "filter": {
       "count": "횟수",
       "date_added": "추가된 날짜",
@@ -688,6 +714,11 @@
       "DuplicatePageDeleted": "중복 페이지 삭제됨",
       "SeriesFolderDeleted": "시리즈 폴더 삭제됨"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "오류",
       "OUTDATED": "오래됨",
@@ -736,8 +767,10 @@
   "epubreader": {
     "current_chapter": "현재 챕터",
     "page_of": "{page} / {count} 페이지",
+    "publisher_font": "출판사",
     "settings": {
       "column_count": "열 개수",
+      "font_family": "글꼴",
       "layout": "레이아웃",
       "layout_paginated": "페이지 매김",
       "layout_scroll": "스크롤",
@@ -799,11 +832,14 @@
   "filter": {
     "age_rating": "연령 등급",
     "age_rating_none": "없음",
+    "any": "아무거나",
     "complete": "완결",
     "genre": "장르",
     "in_progress": "읽는 중",
     "language": "언어",
     "library": "서재",
+    "media_profile": "미디어 프로필",
+    "media_status": "미디어 상태",
     "oneshot": "단행본",
     "publisher": "출판사",
     "read": "읽음",
@@ -833,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "찾아보기",
+    "browse_books": "책",
+    "browse_series": "시리즈",
     "collections": "모음집",
     "readlists": "읽기 목록",
     "recommended": "추천"
@@ -865,10 +903,12 @@
     "empty_trash": "휴지통 비우기",
     "mark_read": "읽음으로 표시",
     "mark_unread": "읽지 않음으로 표시",
+    "pin": "고정",
     "refresh_metadata": "메타데이터 새로고침",
     "scan_library_files": "서재 파일 스캔",
     "scan_library_files_deep": "서재 파일 스캔 (심층)",
-    "select_all": "전체 선택"
+    "select_all": "전체 선택",
+    "unpin": "고정 해제"
   },
   "metrics": {
     "library_books": "서재당 도서",
@@ -879,10 +919,17 @@
     "tasks_total_time": "총 작업 시간",
     "title": "통계"
   },
+  "missing_posters": {
+    "title": "포스터 없음"
+  },
   "navigation": {
     "home": "홈",
     "libraries": "서재",
     "logout": "로그아웃"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "점 3개 메뉴에서 라이브러리를 고정 할 수 있습니다",
+    "title": "고정된 라이브러리 없음"
   },
   "page_not_found": {
     "go_back_to_home_page": "홈페이지로 돌아가기",
@@ -972,7 +1019,8 @@
     "number": "번호",
     "page_count": "페이지 수",
     "random": "무작위",
-    "release_date": "발매일"
+    "release_date": "발매일",
+    "series": "시리즈"
   },
   "theme": {
     "dark": "어두움",
@@ -993,6 +1041,20 @@
   "titles_more": {
     "less": "더 적은 제목",
     "more": "더 많은 제목"
+  },
+  "ui_settings": {
+    "general": "일반",
+    "label_oauth2_auto_login": "자동 OAuth2 로그인",
+    "label_oauth2_hide_login": "OAuth2가 활성화 되어있을 때 로그인 숨기기",
+    "label_poster_blur_unread": "읽지 않은 책과 시리즈의 포스터를 흐리게 하기",
+    "label_poster_stretch": "카드에 맞게 포스터를 늘리기",
+    "label_series_groups": "시리즈 묶기",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "알파벳순",
+      "japanese": "50음도순 (일본어)"
+    },
+    "tooltip_oauth2_auto_login": "하나의 OAuth2 프로바이더와 '로그인 숨기기'가 켜져 있어야 함"
   },
   "updates": {
     "available": "업데이트가 사용 가능합니다",
