@@ -516,6 +516,11 @@
       "tab_general": "Općenito",
       "tab_poster": "Poster"
     },
+    "edit_recommended": {
+      "button_confirm": "Spremi promjene",
+      "button_reset": "Resetiraj na standardne vrijednosti",
+      "dialog_title": "Uredi prikaz preporučenih"
+    },
     "edit_series": {
       "button_cancel": "Odustani",
       "button_confirm": "Spremi promjene",
@@ -834,6 +839,7 @@
     "language": "jezik",
     "library": "biblioteka",
     "media_profile": "Profil medija",
+    "media_status": "Stanje medija",
     "oneshot": "Izdanje bez nastavka",
     "publisher": "izdavač",
     "read": "Čitaj",
@@ -863,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "Pregledaj",
+    "browse_books": "Knjige",
+    "browse_series": "Serije",
     "collections": "Zbirke",
     "readlists": "Liste čitanja",
     "recommended": "Preporučeno"
@@ -1011,7 +1019,8 @@
     "number": "Broj",
     "page_count": "Broj stranica",
     "random": "Nasumce",
-    "release_date": "Datum izdanja"
+    "release_date": "Datum izdanja",
+    "series": "Serije"
   },
   "theme": {
     "dark": "Tamna",
@@ -1034,10 +1043,17 @@
     "more": "Više naslova"
   },
   "ui_settings": {
+    "general": "Općenito",
     "label_oauth2_auto_login": "Automatska OAuth2 prijava",
     "label_oauth2_hide_login": "Sakrij polja prijave ako je Oauth2 aktivirano",
     "label_poster_blur_unread": "Zamuti poster za nepročitane knjige i serije",
     "label_poster_stretch": "Rastegni poster na veličinu kartice",
+    "label_series_groups": "Grupiranje serija",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Abecedni red",
+      "japanese": "Gojūon (japanski)"
+    },
     "tooltip_oauth2_auto_login": "Zahtijeva jednog pružatelja OAuth2 autentifikacije i aktiviranu opciju „sakrij polja prijave”"
   },
   "updates": {

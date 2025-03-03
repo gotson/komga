@@ -516,6 +516,11 @@
       "tab_general": "Obecné",
       "tab_poster": "Plakát"
     },
+    "edit_recommended": {
+      "button_confirm": "Uložit změny",
+      "button_reset": "Výchozí nastavení",
+      "dialog_title": "Upravit doporučené"
+    },
     "edit_series": {
       "button_cancel": "Zrušit",
       "button_confirm": "Uložit změny",
@@ -834,6 +839,7 @@
     "language": "jazyk",
     "library": "knihovna",
     "media_profile": "Profil média",
+    "media_status": "Stav médií",
     "oneshot": "Jednorázovka",
     "publisher": "vydavatel",
     "read": "Přečteno",
@@ -863,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "Procházet",
+    "browse_books": "Knihy",
+    "browse_series": "Série",
     "collections": "Sbírky",
     "readlists": "Seznamy četby",
     "recommended": "Doporučeno"
@@ -1011,7 +1019,8 @@
     "number": "Číslo",
     "page_count": "Počet stránek",
     "random": "Náhodný",
-    "release_date": "Datum vydání"
+    "release_date": "Datum vydání",
+    "series": "Série"
   },
   "theme": {
     "dark": "Tmavý",
@@ -1034,10 +1043,17 @@
     "more": "Více titulů"
   },
   "ui_settings": {
+    "general": "Obecné",
     "label_oauth2_auto_login": "Automatické OAuth2 přihlášení",
     "label_oauth2_hide_login": "Skrýt přihlašovací údaje pokud je OAuth2 aktivní",
     "label_poster_blur_unread": "Rozmazat plakát u nepřečtených knih a sérií",
     "label_poster_stretch": "Přizpůsobit plakát kartě",
+    "label_series_groups": "Seskupení sérií",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Abecedně",
+      "japanese": "Gojūon (japonština)"
+    },
     "tooltip_oauth2_auto_login": "Vyžaduje základního poskytovatele OAuth2 a skryté přihlašovací údaje"
   },
   "updates": {
