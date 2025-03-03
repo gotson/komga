@@ -516,6 +516,11 @@
       "tab_general": "Yleiset",
       "tab_poster": "Juliste"
     },
+    "edit_recommended": {
+      "button_confirm": "Tallenna muutokset",
+      "button_reset": "Palauta oletukset",
+      "dialog_title": "Muokkaa ehdotettujen näkymää"
+    },
     "edit_series": {
       "button_cancel": "Peruuta",
       "button_confirm": "Tallenna muutokset",
@@ -834,6 +839,7 @@
     "language": "kieli",
     "library": "kirjasto",
     "media_profile": "Mediaprofiili",
+    "media_status": "Median tila",
     "oneshot": "Kertajulkaisu",
     "publisher": "julkaisija",
     "read": "Luettu",
@@ -863,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "Selaa",
+    "browse_books": "Kirjat",
+    "browse_series": "Sarjat",
     "collections": "Kokoelmat",
     "readlists": "Lukulistat",
     "recommended": "Suositeltu"
@@ -1011,7 +1019,8 @@
     "number": "Numero",
     "page_count": "Sivumäärä",
     "random": "Satunnainen",
-    "release_date": "Julkaisupäivämäärä"
+    "release_date": "Julkaisupäivämäärä",
+    "series": "Sarjat"
   },
   "theme": {
     "dark": "Tumma",
@@ -1034,10 +1043,17 @@
     "more": "Enemmän nimiä"
   },
   "ui_settings": {
+    "general": "Yleiset",
     "label_oauth2_auto_login": "Automaattinen OAuth2-kirjautuminen",
     "label_oauth2_hide_login": "Piilota kirjautumisvalikot jos OAuth2 on päällä",
     "label_poster_blur_unread": "Sumenna lukemattomien kirjojen ja sarjojen juliste",
     "label_poster_stretch": "Venytä juliste kortin kokoon",
+    "label_series_groups": "Sarjojen ryhmitys",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Aakkosjärjestys",
+      "japanese": "Gojūon (japani)"
+    },
     "tooltip_oauth2_auto_login": "Vaatii yhden OAuth2 tarjoajan ja 'piilota kirjautumisvalikot' pitää olla päällä"
   },
   "updates": {
