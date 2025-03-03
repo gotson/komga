@@ -247,7 +247,7 @@
     "locale_name": "Italiano",
     "locale_rtl": "false",
     "lock_all": "Blocca tutti",
-    "media": "Supporto",
+    "media": "Supporti",
     "more": "Di più",
     "n_selected": "{count} selezionati",
     "nothing_to_show": "Niente da mostrare",
@@ -632,7 +632,7 @@
         "filename": "Nome del file",
         "height": "Altezza",
         "index": "Indice",
-        "media_type": "Tipo media",
+        "media_type": "Tipo supporti",
         "size": "Dimensione",
         "width": "Larghezza"
       },
@@ -662,21 +662,21 @@
     "empty_title": "Nessuna pagina duplicata trovata",
     "empty_title_known": "Nessun duplicato conosciuto",
     "filter": {
-      "count": "Numero",
+      "count": "Conteggio",
       "date_added": "Data aggiunta",
       "date_modified": "Data di modifica",
-      "delete_count": "Numero eliminazioni",
+      "delete_count": "Conteggio eliminazioni",
       "delete_size": "Spazio risparmiato",
       "match_count": "Conteggio corrispondenze",
-      "size": "Dimensione",
+      "size": "Dimensioni",
       "total_size": "Dimensione totale"
     },
     "info": "L'eliminazione di pagine duplicate modificherà i file. Esegui il backup dei file e utilizza la cancellazione manuale prima di utilizzare la cancellazione automatica.",
-    "known": "Conosciuto",
+    "known": "Conosciute",
     "matches_n": "Nessuna corrispondenza | 1 corrispondenza | {count} corrispondenze",
-    "new": "Nuovo",
+    "new": "Nuove",
     "saved_size": "Risparmiati {size}",
-    "title": "Pagine Duplicate",
+    "title": "Pagine duplicate",
     "unknown_size": "Dimensione sconosciuta"
   },
   "duplicates": {
@@ -697,7 +697,7 @@
         "sepia": "Seppia"
       },
       "column_count": {
-        "auto": "Automatico",
+        "auto": "Auto",
         "one": "Uno",
         "two": "Due"
       },
@@ -839,6 +839,7 @@
     "language": "lingua",
     "library": "libreria",
     "media_profile": "Profilo supporto",
+    "media_status": "Stato supporti",
     "oneshot": "One-shot",
     "publisher": "editore",
     "read": "Letti",
@@ -868,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "Esplora",
+    "browse_books": "Libri",
+    "browse_series": "Serie",
     "collections": "Raccolte",
     "readlists": "Liste Lettura",
     "recommended": "Raccomandati"
@@ -880,7 +883,7 @@
   "media_analysis": {
     "comment": "Commento",
     "media_analysis": "Analisi dei supporti",
-    "media_type": "Tipo Media",
+    "media_type": "Tipo Supporto",
     "name": "Nome",
     "size": "Dimensione",
     "status": "Stato",
@@ -1016,7 +1019,8 @@
     "number": "Numero",
     "page_count": "Conteggio pagina",
     "random": "Casuale",
-    "release_date": "Data di uscita"
+    "release_date": "Data di uscita",
+    "series": "Serie"
   },
   "theme": {
     "dark": "Scuro",
