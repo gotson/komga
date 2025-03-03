@@ -516,6 +516,11 @@
       "tab_general": "常规",
       "tab_poster": "海报"
     },
+    "edit_recommended": {
+      "button_confirm": "保存更改",
+      "button_reset": "重置为默认值",
+      "dialog_title": "编辑推荐视图"
+    },
     "edit_series": {
       "button_cancel": "取消",
       "button_confirm": "保存修改",
@@ -834,6 +839,7 @@
     "language": "语言",
     "library": "库",
     "media_profile": "媒体简介",
+    "media_status": "介质状态",
     "oneshot": "单行本",
     "publisher": "出版商",
     "read": "已读",
@@ -863,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "浏览",
+    "browse_books": "书籍",
+    "browse_series": "系列",
     "collections": "收藏",
     "readlists": "阅读列表",
     "recommended": "推荐"
@@ -1011,7 +1019,8 @@
     "number": "序号",
     "page_count": "页数",
     "random": "随机",
-    "release_date": "发布日期"
+    "release_date": "发布日期",
+    "series": "系列"
   },
   "theme": {
     "dark": "暗黑",
@@ -1034,10 +1043,17 @@
     "more": "更多标题"
   },
   "ui_settings": {
+    "general": "常规",
     "label_oauth2_auto_login": "自动 OAuth2 登录",
     "label_oauth2_hide_login": "如果启用了 OAuth2，则隐藏登录字段",
     "label_poster_blur_unread": "未读书籍和系列的模糊海报",
     "label_poster_stretch": "拉伸海报以适合卡片",
+    "label_series_groups": "系列分组",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "按字母顺序",
+      "japanese": "Gojūon（日语）"
+    },
     "tooltip_oauth2_auto_login": "需要单个 OAuth2 提供商，并启用“隐藏登录字段”"
   },
   "updates": {
