@@ -199,7 +199,7 @@
     "manual_ordering": "kézi rendezés"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "Ez a legkorábbi év a sorozatban található megjelenítési dátumok szerint",
+    "earliest_year_from_release_dates": "Ez a legkorábbi év a sorozat összes könyvének megjelenési dátumai közül",
     "remove_from_collection": "Sorozat eltávolítása a gyűjteményből",
     "series_no_summary": "Ennek a sorozatnak nincs összefoglalója, ezért választottunk egyet neked!",
     "summary_from_book": "Összefoglaló a {number}. könyvből:"
@@ -226,9 +226,9 @@
     "create": "Létrehozás",
     "delete": "Törlés",
     "dimension": "sz: {width}, m: {height}",
-    "discard": "Eldob",
+    "discard": "Elvet",
     "disk_space": "Lemezterület",
-    "dismiss": "Elvet",
+    "dismiss": "Bezár",
     "download": "Letöltés",
     "drag_drop": "húzd ide",
     "duplicate": "Duplikált",
@@ -248,7 +248,7 @@
     "locale_rtl": "false",
     "lock_all": "Összes lezárása",
     "media": "Média",
-    "more": "Több",
+    "more": "Továbbiak",
     "n_selected": "{count} kiválasztva",
     "nothing_to_show": "Nincs mit megjeleníteni",
     "ok": "Oké",
@@ -286,7 +286,7 @@
     "year": "év"
   },
   "dashboard": {
-    "keep_reading": "Olvass tovább",
+    "keep_reading": "Olvasd tovább",
     "on_deck": "Soron következő",
     "recently_added_books": "Nemrég hozzáadott könyvek",
     "recently_added_series": "Nemrég hozzáadott sorozatok",
@@ -515,6 +515,11 @@
       "label_ordering": "Alapértelmezés szerint az olvasólistán szereplő könyvek sorrendje kézzel van megadva. Kikapcsolhatod a kézi rendezést, hogy a könyvek a megjelenési dátum szerint legyenek rendezve.",
       "tab_general": "Általános",
       "tab_poster": "Borítókép"
+    },
+    "edit_recommended": {
+      "button_confirm": "Módosítások mentése",
+      "button_reset": "Alaphelyzetbe állítás",
+      "dialog_title": "Ajánlott nézet szerkesztése"
     },
     "edit_series": {
       "button_cancel": "Mégse",
@@ -834,6 +839,7 @@
     "language": "nyelv",
     "library": "könyvtár",
     "media_profile": "Média profil",
+    "media_status": "Média státusza",
     "oneshot": "Önálló",
     "publisher": "kiadó",
     "read": "Olvasott",
@@ -863,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "Böngészés",
+    "browse_books": "Könyvek",
+    "browse_series": "Sorozat",
     "collections": "Gyűjtemények",
     "readlists": "Olvasólisták",
     "recommended": "Ajánlott"
@@ -929,8 +937,8 @@
     "page_not_found": "Az oldal nem található"
   },
   "read_more": {
-    "less": "Olvass kevesebbet",
-    "more": "Olvass tovább"
+    "less": "Elrejt",
+    "more": "Teljes"
   },
   "readlist_import": {
     "row": {
@@ -1011,7 +1019,8 @@
     "number": "Szám",
     "page_count": "Oldalak száma",
     "random": "Véletlenszerű",
-    "release_date": "Megjelenés dátuma"
+    "release_date": "Megjelenés dátuma",
+    "series": "Sorozat"
   },
   "theme": {
     "dark": "Sötét",
@@ -1034,10 +1043,17 @@
     "more": "További címek"
   },
   "ui_settings": {
+    "general": "Általános",
     "label_oauth2_auto_login": "Automatikus OAuth2 bejelentkezés",
     "label_oauth2_hide_login": "Bejelentkezési mezők elrejtése, ha az OAuth2 engedélyezve van",
     "label_poster_blur_unread": "Olvasatlan könyvek és sorozatok borítóképének elmosása",
     "label_poster_stretch": "Borítókép kinyújtása, hogy illeszkedjen a kártyára",
+    "label_series_groups": "Sorozat csoportosítás",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Betűrend szerint",
+      "japanese": "Gojūon (japán)"
+    },
     "tooltip_oauth2_auto_login": "Egyetlen OAuth2 szolgáltatót és a \"bejelentkezési mezők elrejtése\" bekapcsolását igényli"
   },
   "updates": {
