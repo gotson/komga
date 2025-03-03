@@ -262,6 +262,7 @@
     "readlist": "読書リスト",
     "readlists": "読書リスト",
     "remember-me": "ログイン状態を保持",
+    "reorder": "並び替え",
     "required": "必須",
     "reset_filters": "フィルタのリセット",
     "roles": "役割",
@@ -506,6 +507,9 @@
       "label_ordering": "デフォルトでは、既読リストの書籍は手動で並べ替えられます。手動順序を無効にすると、発売日順に並べ替えることができます。",
       "tab_general": "一般",
       "tab_poster": "ポスター"
+    },
+    "edit_recommended": {
+      "button_confirm": "変更を保存"
     },
     "edit_series": {
       "button_cancel": "キャンセル",
