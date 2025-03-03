@@ -516,6 +516,11 @@
       "tab_general": "General",
       "tab_poster": "Póster"
     },
+    "edit_recommended": {
+      "button_confirm": "Guardar cambios",
+      "button_reset": "Reiniciar al valor por defecto",
+      "dialog_title": "Editar visualización de recomendados"
+    },
     "edit_series": {
       "button_cancel": "Cancelar",
       "button_confirm": "Guardar cambios",
@@ -834,6 +839,7 @@
     "language": "idioma",
     "library": "biblioteca",
     "media_profile": "Perfil multimedia",
+    "media_status": "Estado multimedia",
     "oneshot": "One-shot",
     "publisher": "editorial",
     "read": "Leído",
@@ -863,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "Explorar",
+    "browse_books": "Libros",
+    "browse_series": "Series",
     "collections": "Colecciones",
     "readlists": "Listas de lectura",
     "recommended": "Recomendado"
@@ -1011,7 +1019,8 @@
     "number": "Número",
     "page_count": "Número de páginas",
     "random": "Aleatorio",
-    "release_date": "Fecha de publicación"
+    "release_date": "Fecha de publicación",
+    "series": "Serie"
   },
   "theme": {
     "dark": "Oscuro",
@@ -1034,10 +1043,17 @@
     "more": "Más títulos"
   },
   "ui_settings": {
+    "general": "General",
     "label_oauth2_auto_login": "Inicio de sesión OAuth2 automático",
     "label_oauth2_hide_login": "Ocultar los campos de inicio de sesión si OAuth2 está habilitado",
     "label_poster_blur_unread": "Difuminar póster para los libros y series no leídos",
     "label_poster_stretch": "Estirar póster para ajustarlo a la tarjeta",
+    "label_series_groups": "Agrupación de series",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Alfabéticamente",
+      "japanese": "Gojūon (Japonés)"
+    },
     "tooltip_oauth2_auto_login": "Requiere un proveedor OAuth2 y habilitar «ocultar campos de inicio de sesión»"
   },
   "updates": {
