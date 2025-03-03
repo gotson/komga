@@ -839,6 +839,7 @@
     "language": "idioma",
     "library": "biblioteca",
     "media_profile": "Perfil de media",
+    "media_status": "Estado dos media",
     "oneshot": "Isolado",
     "publisher": "editora",
     "read": "Lidos",
@@ -868,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "Navegar",
+    "browse_books": "Livros",
+    "browse_series": "Série",
     "collections": "Coleções",
     "readlists": "Listas de leitura",
     "recommended": "Recomendado"
@@ -1016,7 +1019,8 @@
     "number": "Número",
     "page_count": "Contagem de páginas",
     "random": "Aleatório",
-    "release_date": "Data de edição"
+    "release_date": "Data de edição",
+    "series": "Série"
   },
   "theme": {
     "dark": "Escuro",
