@@ -95,6 +95,7 @@
     "beginning_of_book": "Vous êtes au début du livre.",
     "changing_reading_direction": "Modifier le sens de lecture vers",
     "cycling_page_layout": "Changer la disposition des pages",
+    "cycling_page_margin": "Cycler la marge de la page",
     "cycling_scale": "Changer la mise à l'échelle",
     "cycling_side_padding": "Changer la bordure latérale",
     "download_current_page": "Télécharger la page courante",
@@ -137,6 +138,7 @@
       "general": "Général",
       "gestures": "Gestes tactiles",
       "page_layout": "Disposition des pages",
+      "page_margin": "Marge de page",
       "paged": "Options de la liseuse paginée",
       "reading_mode": "Mode de lecture",
       "scale_type": "Type de mise à l'échelle",
@@ -147,6 +149,7 @@
     "shortcuts": {
       "close": "Fermer",
       "cycle_page_layout": "Changer la disposition des pages",
+      "cycle_page_margin": "Cycler la marge de page",
       "cycle_scale": "Changer la mise à l'échelle",
       "cycle_side_padding": "Changer la bordure latérale",
       "first_page": "Première page",
@@ -170,15 +173,19 @@
   },
   "browse_book": {
     "comment": "COMMENTAIRE",
+    "date_created": "CRÉÉ",
+    "date_modified": "DERNIÈRE MODIFICATION",
     "download_file": "Télécharger le fichier",
     "file": "FICHIER",
     "format": "FORMAT",
     "isbn": "ISBN",
     "links": "LIENS",
-    "navigation_within_readlist": "Navigation dans la liste de lecture : {name}",
+    "navigation_within_readlist": "Navigation dans la liste de lecture : {name}",
     "outdated_tooltip": "Le fichier de ce livre a été modifié, ce livre doit être analysé à nouveau",
     "read_book": "Lire le livre",
     "read_incognito": "Lire incognito",
+    "remove_from_collection": "Supprimer le livre de la collection",
+    "remove_from_readlist": "Supprimer le livre de la liste de lecture",
     "size": "TAILLE"
   },
   "browse_collection": {
@@ -193,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Il s'agit de l'année la plus ancienne parmi les dates de sortie de tous les livres de la série",
+    "remove_from_collection": "Supprimer la série de la collection",
     "series_no_summary": "Cette série n'a pas de résumé, nous en avons choisi un pour vous !",
     "summary_from_book": "Résume du livre {number} :"
   },
@@ -218,13 +226,15 @@
     "create": "Créer",
     "delete": "Supprimer",
     "dimension": "l : {width}, h : {height}",
-    "discard": "Renoncer",
+    "discard": "Abandonner",
     "disk_space": "Espace disque",
     "dismiss": "Masquer",
     "download": "Télécharger",
     "drag_drop": "glissez-déposez",
+    "duplicate": "Doublon",
     "email": "E-mail",
     "epub": "Epub",
+    "error": "Erreur",
     "filename": "Nom du fichier",
     "filter_no_matches": "Aucun résultats avec les filtres actuels",
     "genre": "Genre",
@@ -237,8 +247,11 @@
     "locale_name": "Français",
     "locale_rtl": "false",
     "lock_all": "Tout verrouiller",
+    "media": "Média",
+    "more": "Plus",
     "n_selected": "{count} sélectionné",
     "nothing_to_show": "Rien à afficher",
+    "ok": "OK",
     "oneshot": "One-shot",
     "outdated": "Obsolète",
     "page": "Page",
@@ -249,19 +262,23 @@
     "password": "Mot de passe",
     "pdf": "PDF",
     "pending_tasks": "Aucune tâche en cours | 1 tâche en cours | {count} tâches en cours",
+    "pinned_libraries": "Bibliothèques épinglées",
     "publisher": "Éditeur",
     "read": "Lire",
     "read_on": "Lu le {date}",
     "readlist": "Liste de lecture",
     "readlists": "Listes de lecture",
     "remember-me": "Se souvenir de moi",
+    "reorder": "Réordonner",
     "required": "Requis",
     "reset_filters": "Réinitialiser les filtres",
     "roles": "Rôles",
     "save_changes": "Enregistrer les modifications",
     "series": "Série | Séries",
+    "settings": "Paramètres",
     "sidecars": "Sidecars",
     "tags": "Étiquettes",
+    "ui": "Interface utilisateur",
     "unavailable": "Indisponible",
     "unlock_all": "Tout déverrouiller",
     "url": "URL",
@@ -285,6 +302,7 @@
     "comicrack_preambule_html": "Vous pouvez importer des listes de lecture ComicRack au format <code>.cbl</code>.<br>Komga tentera de faire correspondre les séries fournies et le numéro des livres avec les séries et livres de votre bibliothèque.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} livres ne correspondent pas",
+      "body2": "{duplicates} / {total} livres sont en doublon",
       "create": "Créer quand-même",
       "title": "Certains livres ne correspondent pas"
     },
@@ -445,6 +463,7 @@
       "dialot_title_edit": "Modifier la bibliothèque",
       "field_analysis_analyze_dimensions": "Analyser les dimensions des pages",
       "field_analysis_hash_files": "Calculer une empreinte pour les fichiers",
+      "field_analysis_hash_koreader": "Calculer l'empreinte numérique des fichiers pour KOReader",
       "field_analysis_hash_pages": "Calculer une empreinte pour les pages",
       "field_convert_to_cbz": "Convertir automatiquement en CBZ",
       "field_import_barcode_isbn": "Code-barres ISBN",
@@ -496,6 +515,11 @@
       "label_ordering": "Par défaut, les livres d'une liste de lecture sont classés manuellement. Vous pouvez désactiver le classement manuel pour trier les livres par date de publication.",
       "tab_general": "Général",
       "tab_poster": "Couverture"
+    },
+    "edit_recommended": {
+      "button_confirm": "Sauvegarder les modifications",
+      "button_reset": "Rétablir les valeurs par défaut",
+      "dialog_title": "Editer la vue recommandée"
     },
     "edit_series": {
       "button_cancel": "Annuler",
@@ -636,6 +660,7 @@
     "delete_to_save": "Supprimer pour économiser {size}",
     "deleted_count": "Supprimé {count} fois",
     "empty_title": "Aucune page dupliquée trouvée",
+    "empty_title_known": "Aucun doublon",
     "filter": {
       "count": "Nombre",
       "date_added": "Date ajoutée",
@@ -651,7 +676,7 @@
     "matches_n": "Aucune correspondance | 1 correspondance | {count} correspondances",
     "new": "Nouveau",
     "saved_size": "{size} économisés",
-    "title": "Dupliquer les pages",
+    "title": "Pages en doublon",
     "unknown_size": "Taille inconnue"
   },
   "duplicates": {
@@ -690,6 +715,8 @@
       "SeriesFolderDeleted": "Dossier des séries supprimé"
     },
     "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
       "PDF": "PDF"
     },
     "media_status": {
@@ -740,8 +767,10 @@
   "epubreader": {
     "current_chapter": "Chapitre actuel",
     "page_of": "Page {page} sur {count}",
+    "publisher_font": "Éditeur",
     "settings": {
       "column_count": "Nombre de colonnes",
+      "font_family": "Police",
       "layout": "Disposition",
       "layout_paginated": "Paginé",
       "layout_scroll": "Faire défiler",
@@ -803,11 +832,14 @@
   "filter": {
     "age_rating": "Âge minimal",
     "age_rating_none": "Aucun",
+    "any": "Tous",
     "complete": "Terminé",
     "genre": "Genre",
     "in_progress": "En cours",
     "language": "Langue",
     "library": "Bibliothèque",
+    "media_profile": "Profil de média",
+    "media_status": "Statut du média",
     "oneshot": "One-shot",
     "publisher": "Éditeur",
     "read": "Lu",
@@ -837,6 +869,8 @@
   },
   "library_navigation": {
     "browse": "Parcourir",
+    "browse_books": "Livres",
+    "browse_series": "Séries",
     "collections": "Collections",
     "readlists": "Listes de lecture",
     "recommended": "Recommandé"
@@ -848,7 +882,7 @@
   },
   "media_analysis": {
     "comment": "Commentaire",
-    "media_analysis": "Analyse de média",
+    "media_analysis": "Analyse du média",
     "media_type": "Type de média",
     "name": "Nom",
     "size": "Taille",
@@ -869,10 +903,12 @@
     "empty_trash": "Vider la corbeille",
     "mark_read": "Marquer comme lu",
     "mark_unread": "Marquer comme non lu",
+    "pin": "Épingler",
     "refresh_metadata": "Actualiser les métadonnées",
     "scan_library_files": "Scanner les fichiers de la bibliothèque",
     "scan_library_files_deep": "Scanner les fichiers de la bibliothèque (profond)",
-    "select_all": "Tout sélectionner"
+    "select_all": "Tout sélectionner",
+    "unpin": "Désépingler"
   },
   "metrics": {
     "library_books": "Livres par bibliothèque",
@@ -883,10 +919,17 @@
     "tasks_total_time": "Durée totale des tâches",
     "title": "Statistiques"
   },
+  "missing_posters": {
+    "title": "Couvertures manquantes"
+  },
   "navigation": {
     "home": "Accueil",
     "libraries": "Bibliothèques",
     "logout": "Déconnexion"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Vous pouvez épingler un bibliothèque depuis le menu 3-points",
+    "title": "Aucune bibliothèque épinglée"
   },
   "page_not_found": {
     "go_back_to_home_page": "Revenir à la page d'accueil",
@@ -976,7 +1019,8 @@
     "number": "Numéro",
     "page_count": "Nombre de page",
     "random": "Aléatoire",
-    "release_date": "Date de publication"
+    "release_date": "Date de publication",
+    "series": "Séries"
   },
   "theme": {
     "dark": "Sombre",
@@ -998,6 +1042,20 @@
     "less": "Moins de titres",
     "more": "Plus de titres"
   },
+  "ui_settings": {
+    "general": "Général",
+    "label_oauth2_auto_login": "Login OAuth2 automatique",
+    "label_oauth2_hide_login": "Masquer le champs de login si OAuth2 est activé",
+    "label_poster_blur_unread": "Flouter les couvertures des livres et séries non lus",
+    "label_poster_stretch": "Étire la couverture",
+    "label_series_groups": "Regroupement de séries",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Alphabétique",
+      "japanese": "Gojūon (Japonais)"
+    },
+    "tooltip_oauth2_auto_login": "Nécessite un fournisseur OAuth2 unique, et 'masquer le champ de login' activé"
+  },
   "updates": {
     "available": "Mises à jour disponibles",
     "latest_installed": "La dernière version de Komga est déjà installée"
@@ -1006,6 +1064,7 @@
     "ADMIN": "Administrateur",
     "FILE_DOWNLOAD": "Téléchargement de fichier",
     "KOBO_SYNC": "Synchronisation Kobo",
+    "KOREADER_SYNC": "Synchronisation KOReader",
     "PAGE_STREAMING": "Lecture en ligne",
     "USER": "Utilisateur"
   },
