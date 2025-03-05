@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "description": "Komga REST API.\n\n## Reference\n\nCheck the API reference:\n- on the [Komga website](https://komga.org/docs/openapi/komga-api)\n- on any running Komga instance at `/swagger-ui.html`\n- on [GitHub](https://raw.githubusercontent.com/gotson/komga/refs/heads/master/komga/docs/openapi.json)\n\n## Authentication\n\nMost endpoints require authentication. Authentication is done using either:\n- Basic Authentication\n- Passing an API Key in the `X-API-Key` header\n\n## Sessions\n\nUpon successful authentication, a session is created, and can be reused.\n\n- By default, a `SESSION` cookie is set via `Set-Cookie` response header. This works well for browsers and clients that can handle cookies.\n- If you specify a header `X-Auth-Token` during authentication, the session ID will be returned via this same header. You can then pass that header again for subsequent requests to reuse the session.\n\nIf you need to set the session cookie later on, you can call `/api/v1/login/set-cookie` with `X-Auth-Token`. The response will contain the `Set-Cookie` header.\n\n## Remember Me\n\nDuring authentication, if a request parameter `remember-me` is passed and set to `true`, the server will also return a `remember-me` cookie. This cookie will be used to login automatically even if the session has expired.\n\n## Logout\n\nYou can explicitly logout an existing session by calling `/api/logout`. This would return a `204`.\n\n## Deprecation\n\nAPI endpoints marked as deprecated will be removed in the next major version.",
+    "description": "Komga REST API.\n\n## Reference\n\nCheck the API reference:\n- on the [Komga website](https://komga.org/docs/openapi/komga-api)\n- on any running Komga instance at `/swagger-ui.html`\n- on [GitHub](https://raw.githubusercontent.com/gotson/komga/refs/heads/master/komga/docs/openapi.json)\n\n## Authentication\n\nMost endpoints require authentication. Authentication is done using either:\n- Basic Authentication\n- Passing an API Key in the `X-API-Key` header\n\n## Sessions\n\nUpon successful authentication, a session is created, and can be reused.\n\n- By default, a `KOMGA-SESSION` cookie is set via `Set-Cookie` response header. This works well for browsers and clients that can handle cookies.\n- If you specify a header `X-Auth-Token` during authentication, the session ID will be returned via this same header. You can then pass that header again for subsequent requests to reuse the session.\n\nIf you need to set the session cookie later on, you can call `/api/v1/login/set-cookie` with `X-Auth-Token`. The response will contain the `Set-Cookie` header.\n\n## Remember Me\n\nDuring authentication, if a request parameter `remember-me` is passed and set to `true`, the server will also return a `komga-remember-me` cookie. This cookie will be used to login automatically even if the session has expired.\n\n## Logout\n\nYou can explicitly logout an existing session by calling `/api/logout`. This would return a `204`.\n\n## Deprecation\n\nAPI endpoints marked as deprecated will be removed in the next major version.",
     "license": {
       "name": "MIT",
       "url": "https://github.com/gotson/komga/blob/master/LICENSE"
     },
     "title": "Komga API",
-    "version": "1.20.0"
+    "version": "1.21.0"
   },
   "externalDocs": {
     "description": "Komga documentation",
@@ -23,11 +23,11 @@
       "description": "Local development server",
       "variables": {
         "port": {
-          "default": "25600",
           "enum": [
             "8080",
             "25600"
-          ]
+          ],
+          "default": "25600"
         }
       }
     }
@@ -10149,6 +10149,20 @@
           "propertyName": "operator"
         }
       },
+      "EqualityNullableString": {
+        "required": [
+          "operator"
+        ],
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "operator"
+        }
+      },
       "EqualityPosterMatch": {
         "required": [
           "operator"
@@ -10224,6 +10238,12 @@
                   },
                   {
                     "$ref": "#/components/schemas/IsNot"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IsNotNullT"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IsNullT"
                   }
                 ]
               }
@@ -10322,6 +10342,9 @@
             "$ref": "#/components/schemas/EqualityString"
           },
           {
+            "$ref": "#/components/schemas/EqualityNullableString"
+          },
+          {
             "$ref": "#/components/schemas/EqualityReadStatus"
           },
           {
@@ -10369,9 +10392,6 @@
                     "format": "int32"
                   },
                   "negative": {
-                    "type": "boolean"
-                  },
-                  "positive": {
                     "type": "boolean"
                   },
                   "seconds": {
@@ -10428,6 +10448,9 @@
             "$ref": "#/components/schemas/EqualityString"
           },
           {
+            "$ref": "#/components/schemas/EqualityNullableString"
+          },
+          {
             "$ref": "#/components/schemas/EqualityReadStatus"
           },
           {
@@ -10467,9 +10490,6 @@
                     "format": "int32"
                   },
                   "negative": {
-                    "type": "boolean"
-                  },
-                  "positive": {
                     "type": "boolean"
                   },
                   "seconds": {
@@ -10515,6 +10535,9 @@
         "allOf": [
           {
             "$ref": "#/components/schemas/NumericNullableInteger"
+          },
+          {
+            "$ref": "#/components/schemas/EqualityNullableString"
           }
         ]
       },
@@ -10531,6 +10554,9 @@
         "allOf": [
           {
             "$ref": "#/components/schemas/NumericNullableInteger"
+          },
+          {
+            "$ref": "#/components/schemas/EqualityNullableString"
           }
         ]
       },
@@ -13211,6 +13237,12 @@
                   },
                   {
                     "$ref": "#/components/schemas/IsNot"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IsNotNullT"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IsNullT"
                   }
                 ]
               }
@@ -13361,6 +13393,12 @@
                   },
                   {
                     "$ref": "#/components/schemas/IsNot"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IsNotNullT"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IsNullT"
                   }
                 ]
               }

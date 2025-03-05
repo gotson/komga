@@ -1,3 +1,75 @@
+# [1.21.0](https://github.com/gotson/komga/compare/1.20.0...1.21.0) (2025-03-05)
+## 🚀 Features
+**api**
+- use unique cookie names ([e7335fa](https://github.com/gotson/komga/commits/e7335fa)), closes [#1889](https://github.com/gotson/komga/issues/1889)
+- allow isNull / isNotNull on some search criteria ([171cf8c](https://github.com/gotson/komga/commits/171cf8c))
+
+**webui**
+- add media status condition in books view filters ([9563310](https://github.com/gotson/komga/commits/9563310))
+- add unavailable condition in series and books filters ([1b8fa45](https://github.com/gotson/komga/commits/1b8fa45)), closes [#1580](https://github.com/gotson/komga/issues/1580)
+- add any/none filtering on more criteria ([87d73cc](https://github.com/gotson/komga/commits/87d73cc)), closes [#1884](https://github.com/gotson/komga/issues/1884)
+
+## 🐛 Fixes
+**api**
+- better matching of series name when importing books with metadata ([8b6d23e](https://github.com/gotson/komga/commits/8b6d23e))
+- missing admin permission on global settings endpoint ([1fe7a00](https://github.com/gotson/komga/commits/1fe7a00))
+
+**webui**
+- remove pin/unpin from library action menu ([278ae7a](https://github.com/gotson/komga/commits/278ae7a)), closes [#1887](https://github.com/gotson/komga/issues/1887)
+- better handling of dates missing leading zero series filters ([400135c](https://github.com/gotson/komga/commits/400135c))
+- better handling of dates missing leading zero in book edit dialogs ([a3bf04a](https://github.com/gotson/komga/commits/a3bf04a))
+- better display of edit recommended dialog on mobile ([d2aaf40](https://github.com/gotson/komga/commits/d2aaf40))
+- better placement of edit dashboard button on mobile ([4d3e6e4](https://github.com/gotson/komga/commits/4d3e6e4))
+- libraries ordering does not work on Chrome ([e528c7e](https://github.com/gotson/komga/commits/e528c7e))
+
+## 🔄️ Changes
+
+- ktlint ([bf3a978](https://github.com/gotson/komga/commits/bf3a978))
+- rename swagger package to openapi ([6b27836](https://github.com/gotson/komga/commits/6b27836))
+- remove openapi annotations from OPDS controllers ([1638d2b](https://github.com/gotson/komga/commits/1638d2b))
+
+## 🛠  Build
+**komga-tray**
+- bump jdk to 23 ([ca93ed8](https://github.com/gotson/komga/commits/ca93ed8))
+- update conveyor compatibility to 17 ([7f93aae](https://github.com/gotson/komga/commits/7f93aae))
+
+**webui**
+- update Browserslist db ([23fa56e](https://github.com/gotson/komga/commits/23fa56e))
+
+**unscoped**
+- use .svu.yml configuration file ([42223b7](https://github.com/gotson/komga/commits/42223b7))
+- dispatch events when openapi.json changes ([fb9459b](https://github.com/gotson/komga/commits/fb9459b))
+
+## 📝 Documentation
+**api**
+- update cookie names ([fd8b05f](https://github.com/gotson/komga/commits/fd8b05f))
+- only include servers when generating the openapi reference ([66c711e](https://github.com/gotson/komga/commits/66c711e)), closes [#1890](https://github.com/gotson/komga/issues/1890)
+- add required roles in operation descriptions ([f2280b8](https://github.com/gotson/komga/commits/f2280b8))
+- add missing global security requirements ([51c4617](https://github.com/gotson/komga/commits/51c4617))
+- add missing default port value for localhost server ([707f9a0](https://github.com/gotson/komga/commits/707f9a0))
+- fix broken link ([d475a33](https://github.com/gotson/komga/commits/d475a33))
+
+**unscoped**
+- typo in openApi spec ([d6b5bca](https://github.com/gotson/komga/commits/d6b5bca))
+
+## 🌐 Translation
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([fafbe6c](https://github.com/gotson/komga/commits/fafbe6c))
+- translated using Weblate (Korean) ([c43f0a3](https://github.com/gotson/komga/commits/c43f0a3))
+- translated using Weblate (Finnish) ([b87f78a](https://github.com/gotson/komga/commits/b87f78a))
+- translated using Weblate (French) ([ab65970](https://github.com/gotson/komga/commits/ab65970))
+- translated using Weblate (Spanish) ([7e436ed](https://github.com/gotson/komga/commits/7e436ed))
+- translated using Weblate (Italian) ([1a5c395](https://github.com/gotson/komga/commits/1a5c395))
+- translated using Weblate (Hungarian) ([5977218](https://github.com/gotson/komga/commits/5977218))
+- translated using Weblate (Croatian) ([c1963fe](https://github.com/gotson/komga/commits/c1963fe))
+- translated using Weblate (Portuguese) ([4b2826c](https://github.com/gotson/komga/commits/4b2826c))
+- translated using Weblate (Czech) ([e235ed7](https://github.com/gotson/komga/commits/e235ed7))
+- translated using Weblate (Japanese) ([e5b8254](https://github.com/gotson/komga/commits/e5b8254))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 16.0 to 17.0 ([40b2508](https://github.com/gotson/komga/commits/40b2508))
+
 # [1.20.0](https://github.com/gotson/komga/compare/1.19.1...1.20.0) (2025-02-19)
 ## 🚀 Features
 **api**
