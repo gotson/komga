@@ -100,7 +100,7 @@
               >{{ $t('common.unavailable') }}
               </v-list-item-subtitle>
             </v-list-item-content>
-            <v-list-item-action class="ma-0">
+            <v-list-item-action class="ma-0" v-if="isAdmin">
               <library-actions-menu :library="l"/>
             </v-list-item-action>
           </v-list-item>

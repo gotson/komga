@@ -7,12 +7,6 @@
         </v-btn>
       </template>
       <v-list dense>
-        <v-list-item v-if="!library.unpinned" @click="unpin">
-          <v-list-item-title>{{ $t('menu.unpin') }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item v-if="library.unpinned" @click="pin">
-          <v-list-item-title>{{ $t('menu.pin') }}</v-list-item-title>
-        </v-list-item>
         <v-list-item @click="scan(false)" v-if="isAdmin">
           <v-list-item-title>{{ $t('menu.scan_library_files') }}</v-list-item-title>
         </v-list-item>
@@ -69,7 +63,6 @@
 import Vue from 'vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import {LibraryDto} from '@/types/komga-libraries'
-import {ClientSettingLibraryUpdate} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'LibraryActionsMenu',
@@ -93,22 +86,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    unpin() {
-      this.$store.dispatch('updateLibrarySetting', {
-        libraryId: this.library.id,
-        patch: {
-          unpinned: true,
-        },
-      } as ClientSettingLibraryUpdate)
-    },
-    pin() {
-      this.$store.dispatch('updateLibrarySetting', {
-        libraryId: this.library.id,
-        patch: {
-          unpinned: false,
-        },
-      } as ClientSettingLibraryUpdate)
-    },
     scan(scanDeep: boolean) {
       this.$komgaLibraries.scanLibrary(this.library, scanDeep)
     },

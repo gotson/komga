@@ -26,29 +26,22 @@
         v-bind="dragOptions"
         handle=".handle"
       >
-        <template v-for="(l, index) in localItems">
-          <v-hover :key="index"
-                   v-slot="{ hover }"
-                   :disabled="!l.unpinned"
-          >
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon class="handle">mdi-drag-horizontal-variant</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title class="handle">{{ l.name }}</v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-icon>
-                <v-btn icon v-if="!l.unpinned" @click.stop.capture.prevent="unpin(l.id)" x-small>
-                  <v-icon>mdi-pin</v-icon>
-                </v-btn>
-                <v-btn icon v-if="hover && l.unpinned" @click.stop.capture.prevent="pin(l.id)" x-small>
-                  <v-icon>mdi-pin-off</v-icon>
-                </v-btn>
-              </v-list-item-icon>
-            </v-list-item>
-          </v-hover>
-        </template>
+        <v-list-item v-for="l in localItems" :key="l.id">
+          <v-list-item-icon>
+            <v-icon class="handle">mdi-drag-horizontal-variant</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title class="handle">{{ l.name }}</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-icon>
+            <v-btn icon v-if="!l.unpinned" @click.stop.capture.prevent="unpin(l.id)" x-small>
+              <v-icon>mdi-pin</v-icon>
+            </v-btn>
+            <v-btn icon v-if="l.unpinned" @click.stop.capture.prevent="pin(l.id)" x-small>
+              <v-icon>mdi-pin-off</v-icon>
+            </v-btn>
+          </v-list-item-icon>
+        </v-list-item>
       </draggable>
     </v-list>
   </div>
