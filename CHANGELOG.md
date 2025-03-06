@@ -1,3 +1,8 @@
+# [1.21.1](https://github.com/gotson/komga/compare/1.21.0...1.21.1) (2025-03-06)
+## 🐛 Fixes
+**api**
+- book import would return incorrect matched series ([10e0bde](https://github.com/gotson/komga/commits/10e0bde))
+
 # [1.21.0](https://github.com/gotson/komga/compare/1.20.0...1.21.0) (2025-03-05)
 ## 🚀 Features
 **api**
