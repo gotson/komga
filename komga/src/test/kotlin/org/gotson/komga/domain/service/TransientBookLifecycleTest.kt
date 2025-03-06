@@ -68,4 +68,48 @@ class TransientBookLifecycleTest(
     assertThat(seriesId).isEqualTo(seriesExact.id)
     assertThat(number).isEqualTo(15F)
   }
+
+  @Test
+  fun `when getting metadata for transient book without series then no series is matched`() {
+    seriesLifecycle.createSeries(makeSeries("Batman and Robin", libraryId = library.id))
+    val seriesExact = makeSeries("Batman", libraryId = library.id)
+    seriesLifecycle.createSeries(seriesExact)
+    seriesLifecycle.createSeries(makeSeries("Batman and Robin (2022)", libraryId = library.id))
+
+    val book =
+      TransientBook(
+        makeBook("whatever"),
+        Media(),
+      )
+
+    every { mockProvider.getBookMetadataFromBook(any()) } returns BookMetadataPatch(null, null, null, null, null, null, null, null, null, emptyList())
+    every { mockProvider.getSeriesMetadataFromBook(any(), any()) } returns SeriesMetadataPatch(null, null, null, null, null, null, null, null, null, null, emptySet())
+
+    val (seriesId, number) = transientBookLifecycle.getMetadata(book)
+
+    assertThat(seriesId).isNull()
+    assertThat(number).isNull()
+  }
+
+  @Test
+  fun `when getting metadata for transient book with blank series then no series is matched`() {
+    seriesLifecycle.createSeries(makeSeries("Batman and Robin", libraryId = library.id))
+    val seriesExact = makeSeries("Batman", libraryId = library.id)
+    seriesLifecycle.createSeries(seriesExact)
+    seriesLifecycle.createSeries(makeSeries("Batman and Robin (2022)", libraryId = library.id))
+
+    val book =
+      TransientBook(
+        makeBook("whatever"),
+        Media(),
+      )
+
+    every { mockProvider.getBookMetadataFromBook(any()) } returns BookMetadataPatch(null, null, null, null, null, null, null, null, null, emptyList())
+    every { mockProvider.getSeriesMetadataFromBook(any(), any()) } returns SeriesMetadataPatch(" ", null, null, null, null, null, null, null, null, null, emptySet())
+
+    val (seriesId, number) = transientBookLifecycle.getMetadata(book)
+
+    assertThat(seriesId).isNull()
+    assertThat(number).isNull()
+  }
 }

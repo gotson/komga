@@ -72,19 +72,23 @@ class TransientBookLifecycle(
       seriesMetadataProviders
         .flatMap {
           buildList {
-            if (it.supportsAppendVolume) add(it.getSeriesMetadataFromBook(bookWithMedia, true)?.title)
-            add(it.getSeriesMetadataFromBook(bookWithMedia, false)?.title)
+            if (it.supportsAppendVolume) add(it.getSeriesMetadataFromBook(bookWithMedia, true)?.title?.ifBlank { null })
+            add(it.getSeriesMetadataFromBook(bookWithMedia, false)?.title?.ifBlank { null })
           }
         }.filterNotNull()
 
-    val exactSearch = SearchCondition.AnyOfSeries(seriesNamesFromMetadata.map { SearchCondition.Title(SearchOperator.Is(it)) })
-    val exactMatches = seriesRepository.findAll(exactSearch, SearchContext.ofAnonymousUser(), Pageable.unpaged())
     val series =
-      if (!exactMatches.isEmpty) {
-        exactMatches.content.first()
+      if (seriesNamesFromMetadata.isNotEmpty()) {
+        val exactSearch = SearchCondition.AnyOfSeries(seriesNamesFromMetadata.map { SearchCondition.Title(SearchOperator.Is(it)) })
+        val exactMatches = seriesRepository.findAll(exactSearch, SearchContext.ofAnonymousUser(), Pageable.unpaged())
+        if (!exactMatches.isEmpty) {
+          exactMatches.content.first()
+        } else {
+          val containsSearch = SearchCondition.AnyOfSeries(seriesNamesFromMetadata.map { SearchCondition.Title(SearchOperator.Contains(it)) })
+          seriesRepository.findAll(containsSearch, SearchContext.ofAnonymousUser(), Pageable.unpaged()).content.firstOrNull()
+        }
       } else {
-        val containsSearch = SearchCondition.AnyOfSeries(seriesNamesFromMetadata.map { SearchCondition.Title(SearchOperator.Contains(it)) })
-        seriesRepository.findAll(containsSearch, SearchContext.ofAnonymousUser(), Pageable.unpaged()).content.firstOrNull()
+        null
       }
 
     return series?.id to number
