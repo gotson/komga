@@ -39,7 +39,7 @@
               <tr>
                 <td class="font-weight-medium">{{ $t('dialog.transient_book_details.label_format') }}</td>
                 <td :class="rightBook ? 'diff' : ''">{{ getBookFormatFromMediaType(leftBook.mediaType).type }}</td>
-                <td v-if="rightBook">{{ getBookFormatFromMediaType(rightBook.media.mediaType).type }}</td>
+                <td v-if="rightBook">{{ getBookFormatFromMedia(rightBook.media).type }}</td>
               </tr>
 
               <tr>
@@ -69,7 +69,7 @@
 import Vue, {PropType} from 'vue'
 import {TransientBookDto} from '@/types/komga-transientbooks'
 import {BookDto, PageDto} from '@/types/komga-books'
-import {getBookFormatFromMedia} from '@/functions/book-format'
+import {getBookFormatFromMedia, getBookFormatFromMediaType} from '@/functions/book-format'
 import PagesTable from '@/components/PagesTable.vue'
 
 export default Vue.extend({
@@ -78,7 +78,8 @@ export default Vue.extend({
   data: () => {
     return {
       modal: false,
-      getBookFormatFromMediaType: getBookFormatFromMedia,
+      getBookFormatFromMediaType: getBookFormatFromMediaType,
+      getBookFormatFromMedia: getBookFormatFromMedia,
     }
   },
   props: {
