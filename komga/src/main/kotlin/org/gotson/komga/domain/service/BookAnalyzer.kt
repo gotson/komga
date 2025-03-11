@@ -23,6 +23,7 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.divina.DivinaExtractor
 import org.gotson.komga.infrastructure.mediacontainer.epub.EpubExtractor
+import org.gotson.komga.infrastructure.mediacontainer.epub.epub
 import org.gotson.komga.infrastructure.mediacontainer.pdf.PdfExtractor
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -143,29 +144,84 @@ class BookAnalyzer(
     book: Book,
     analyzeDimensions: Boolean,
   ): Media {
-    val manifest = epubExtractor.getManifest(book.path, analyzeDimensions)
-    val entriesErrorSummary =
-      manifest.missingResources
-        .map { it.fileName }
-        .ifEmpty { null }
-        ?.joinToString(prefix = "ERR_1033 [", postfix = "]") { it }
-    return Media(
-      status = Media.Status.READY,
-      pages = manifest.divinaPages,
-      files = manifest.resources,
-      pageCount = manifest.pageCount,
-      epubDivinaCompatible = manifest.divinaPages.isNotEmpty(),
-      epubIsKepub = manifest.isKepub,
-      extension =
-        MediaExtensionEpub(
-          toc = manifest.toc,
-          landmarks = manifest.landmarks,
-          pageList = manifest.pageList,
-          isFixedLayout = manifest.isFixedLayout,
-          positions = manifest.positions,
-        ),
-      comment = entriesErrorSummary,
-    )
+    book.path.epub { epub ->
+      val (resources, missingResources) = epubExtractor.getResources(epub).partition { it.fileSize != null }
+      val isFixedLayout = epubExtractor.isFixedLayout(epub)
+      val pageCount = epubExtractor.computePageCount(epub)
+      val isKepub = epubExtractor.isKepub(epub, resources)
+
+      val errors = mutableListOf<String>()
+
+      val toc =
+        try {
+          epubExtractor.getToc(epub)
+        } catch (e: Exception) {
+          logger.error(e) { "Error while getting EPUB TOC" }
+          errors.add("ERR_1035")
+          emptyList()
+        }
+
+      val landmarks =
+        try {
+          epubExtractor.getLandmarks(epub)
+        } catch (e: Exception) {
+          logger.error(e) { "Error while getting EPUB Landmarks" }
+          errors.add("ERR_1036")
+          emptyList()
+        }
+
+      val pageList =
+        try {
+          epubExtractor.getPageList(epub)
+        } catch (e: Exception) {
+          logger.error(e) { "Error while getting EPUB page list" }
+          errors.add("ERR_1037")
+          emptyList()
+        }
+
+      val divinaPages =
+        try {
+          epubExtractor.getDivinaPages(epub, isFixedLayout, pageCount, analyzeDimensions)
+        } catch (e: Exception) {
+          logger.error(e) { "Error while getting EPUB Divina pages" }
+          errors.add("ERR_1038")
+          emptyList()
+        }
+
+      val positions =
+        try {
+          epubExtractor.computePositions(epub, book.path, resources, isFixedLayout, isKepub)
+        } catch (e: Exception) {
+          logger.error(e) { "Error while getting EPUB positions" }
+          errors.add("ERR_1039")
+          emptyList()
+        }
+
+      val entriesErrorSummary =
+        missingResources
+          .map { it.fileName }
+          .ifEmpty { null }
+          ?.joinToString(prefix = "ERR_1033 [", postfix = "]") { it }
+      val allErrors = (errors + entriesErrorSummary).joinToString(" ")
+
+      return Media(
+        status = Media.Status.READY,
+        pages = divinaPages,
+        files = resources,
+        pageCount = pageCount,
+        epubDivinaCompatible = divinaPages.isNotEmpty(),
+        epubIsKepub = isKepub,
+        extension =
+          MediaExtensionEpub(
+            toc = toc,
+            landmarks = landmarks,
+            pageList = pageList,
+            isFixedLayout = isFixedLayout,
+            positions = positions,
+          ),
+        comment = allErrors,
+      )
+    }
   }
 
   private fun analyzePdf(

@@ -38,3 +38,8 @@
 | ERR_1032     | EPUB file has wrong media type                          |
 | ERR_1033     | Some entries are missing                                |
 | ERR_1034     | An API key with that comment already exists             |
+| ERR_1035     | Error while getting EPUB TOC                            |
+| ERR_1036     | Error while getting EPUB Landmarks                      |
+| ERR_1037     | Error while getting EPUB page list                      |
+| ERR_1038     | Error while getting EPUB divina pages                   |
+| ERR_1039     | Error while getting EPUB positions                      |
