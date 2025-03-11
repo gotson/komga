@@ -21,7 +21,12 @@ fun Document.getManifest() =
 fun normalizeHref(
   opfDir: Path?,
   href: String,
-) = (opfDir?.resolve(href)?.normalize() ?: Paths.get(href)).invariantSeparatorsPathString
+): String {
+  val anchor = href.substringAfterLast("#", "")
+  val base = href.substringBeforeLast("#")
+  val resolvedPath = (opfDir?.resolve(base)?.normalize() ?: Paths.get(base)).invariantSeparatorsPathString
+  return resolvedPath + if (anchor.isNotBlank()) "#$anchor" else ""
+}
 
 /**
  * Process an OPF document and extracts TOC entries
