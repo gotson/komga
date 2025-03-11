@@ -137,7 +137,14 @@ class KepubConverter(
         destinationPath.toString(),
       )
     logger.debug { "Starting conversion with: ${command.joinToString(" ")}" }
-    val process = Runtime.getRuntime().exec(command)
+    val process =
+      try {
+        Runtime.getRuntime().exec(command)
+      } catch (e: Exception) {
+        logger.error(e) { "Failed to create process" }
+        return null
+      }
+
     if (!process.waitFor(10, TimeUnit.SECONDS)) {
       logger.error { "Kepub conversion timeout. Command: ${command.joinToString(" ")}" }
       return null
