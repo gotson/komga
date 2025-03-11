@@ -54,8 +54,8 @@ class NavTest {
           listOf(
             EpubTocEntry("Spring", "${prefix}chapter 001.xhtml"),
             EpubTocEntry("Summer", "${prefix}chapter 027.xhtml"),
-            EpubTocEntry("Fall", "${prefix}chapter053.xhtml"),
-            EpubTocEntry("Winter", "${prefix}chapter079.xhtml"),
+            EpubTocEntry("Fall", "${prefix}chapter053.xhtml#what:why"),
+            EpubTocEntry("Winter", "${prefix}chapter 079.xhtml"),
           ),
       ),
       EpubTocEntry("Acknowledgments", "${prefix}acknowledgements.xhtml"),
