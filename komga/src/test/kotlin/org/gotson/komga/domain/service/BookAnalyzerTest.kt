@@ -66,7 +66,7 @@ class BookAnalyzerTest(
       ],
     )
     fun `given rar4 solid or encrypted archive when analyzing then media status is UNSUPPORTED`(fileName: String) {
-      val file = ClassPathResource("archives/rar4-solid.rar")
+      val file = ClassPathResource("archives/$fileName")
       val book = Book("book", file.url, LocalDateTime.now())
 
       val media = bookAnalyzer.analyze(book, false)
