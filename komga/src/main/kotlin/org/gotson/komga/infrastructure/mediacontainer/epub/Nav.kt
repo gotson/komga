@@ -4,7 +4,7 @@ import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.infrastructure.util.getEntryBytes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import org.springframework.web.util.UriUtils
+import java.net.URLDecoder
 import java.nio.file.Path
 import kotlin.io.path.Path
 
@@ -34,7 +34,7 @@ private fun navLiElementToTocEntry(
   navDir: Path?,
 ): EpubTocEntry? {
   val title = element.selectFirst(":root > a, span")?.text()
-  val href = element.selectFirst(":root > a")?.attr("href")?.let { UriUtils.decode(it, Charsets.UTF_8) }
+  val href = element.selectFirst(":root > a")?.attr("href")?.let { URLDecoder.decode(it, Charsets.UTF_8) }
   val children = element.select(":root > ol > li").mapNotNull { navLiElementToTocEntry(it, navDir) }
   if (title != null) return EpubTocEntry(title, href?.let { normalizeHref(navDir, it) }, children)
   return null

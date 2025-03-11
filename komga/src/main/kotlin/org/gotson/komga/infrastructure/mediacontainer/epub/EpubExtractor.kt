@@ -17,7 +17,7 @@ import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.web.util.UriUtils
+import java.net.URLDecoder
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.deleteIfExists
@@ -91,7 +91,7 @@ class EpubExtractor(
     val pages =
       spine.map { page ->
         MediaFile(
-          normalizeHref(epub.opfDir, UriUtils.decode(page.href, Charsets.UTF_8)),
+          normalizeHref(epub.opfDir, URLDecoder.decode(page.href, Charsets.UTF_8)),
           page.mediaType,
           MediaFile.SubType.EPUB_PAGE,
         )
@@ -100,7 +100,7 @@ class EpubExtractor(
     val assets =
       epub.manifest.values.filterNot { spine.contains(it) }.map {
         MediaFile(
-          normalizeHref(epub.opfDir, UriUtils.decode(it.href, Charsets.UTF_8)),
+          normalizeHref(epub.opfDir, URLDecoder.decode(it.href, Charsets.UTF_8)),
           it.mediaType,
           MediaFile.SubType.EPUB_ASSET,
         )

@@ -2,7 +2,7 @@ package org.gotson.komga.infrastructure.mediacontainer.epub
 
 import org.gotson.komga.domain.model.EpubTocEntry
 import org.jsoup.nodes.Document
-import org.springframework.web.util.UriUtils
+import java.net.URLDecoder
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.invariantSeparatorsPathString
@@ -40,7 +40,7 @@ fun processOpfGuide(
   return guide.select("reference").map { ref ->
     EpubTocEntry(
       ref.attr("title"),
-      ref.attr("href").ifBlank { null }?.let { normalizeHref(opfDir, UriUtils.decode(it, Charsets.UTF_8)) },
+      ref.attr("href").ifBlank { null }?.let { normalizeHref(opfDir, URLDecoder.decode(it, Charsets.UTF_8)) },
     )
   }
 }

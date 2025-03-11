@@ -39,8 +39,8 @@ import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.support.TransactionTemplate
-import org.springframework.web.util.UriUtils
 import java.io.File
+import java.net.URLDecoder
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlin.io.path.deleteIfExists
@@ -489,7 +489,7 @@ class BookLifecycle(
             newProgression.locator.href
               .replaceAfter("#", "")
               .removeSuffix("#")
-              .let { UriUtils.decode(it, Charsets.UTF_8) }
+              .let { URLDecoder.decode(it, Charsets.UTF_8) }
           require(href in media.files.map { it.fileName }) { "Resource does not exist in book: $href" }
           requireNotNull(newProgression.locator.locations?.progression) { "location.progression is required" }
 

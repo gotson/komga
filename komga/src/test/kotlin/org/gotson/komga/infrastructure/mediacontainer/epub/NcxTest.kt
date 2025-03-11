@@ -64,6 +64,7 @@ class NcxTest {
           ),
       ),
       EpubTocEntry("ACKNOWLEDGMENTS", "${prefix}Text/Mart_9780553897852_epub_ack_r1.htm"),
+      EpubTocEntry("Omake 1: Ichika’s Q&A", "${prefix}Text/First Omake - Ichika’s Q&A.xhtml"),
     )
 
   private fun getExpectedNcxPageList(prefix: String = "") =

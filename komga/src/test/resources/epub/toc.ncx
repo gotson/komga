@@ -86,6 +86,12 @@
             </navLabel>
             <content src="Text/Mart_9780553897852_epub_ack_r1.htm"/>
         </navPoint>
+        <navPoint id="navPoint-1" playOrder="1" class="chapter">
+            <navLabel>
+                <text>Omake 1: Ichika’s Q&amp;A</text>
+            </navLabel>
+            <content src="Text/First%20Omake%20-%20Ichika’s%20Q%26A.xhtml"/>
+        </navPoint>
     </navMap>
     <pageList>
         <pageTarget type="normal" id="id_cov" value="Cover Page">
