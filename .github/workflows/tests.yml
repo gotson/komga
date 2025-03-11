@@ -12,8 +12,12 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    name: Test server
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+      fail-fast: false
+    name: Test server - ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Java 17
@@ -33,18 +37,18 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.os }}
           path: komga/build/test-results/
 
       - name: Upload Unit Test Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports
+          name: test-reports-${{ matrix.os }}
           path: komga/build/reports/tests/
 
       - name: Conveyor - compute JDK module list
-        if: github.event_name == 'push' && github.repository_owner == 'gotson'
+        if: github.event_name == 'push' && github.repository_owner == 'gotson' && contains(matrix.os, 'ubuntu')
         uses: hydraulic-software/conveyor/actions/build@v17.0
         with:
           command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
@@ -53,7 +57,7 @@ jobs:
 
       - name: Compare JDK required modules
         id: conveyor_compare
-        if: github.event_name == 'push' && github.repository_owner == 'gotson'
+        if: github.event_name == 'push' && github.repository_owner == 'gotson' && contains(matrix.os, 'ubuntu')
         run: diff --unified  ./komga-tray/conveyor/required-jdk-modules.txt ./output/required-jdk-modules.txt
 
       - name: Upload JDK required modules
