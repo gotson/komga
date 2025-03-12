@@ -1,3 +1,34 @@
+# [1.21.2](https://github.com/gotson/komga/compare/1.21.1...1.21.2) (2025-03-12)
+## 🐛 Fixes
+**conveyor**
+- disable Linux builds for desktop app ([0d144a6](https://github.com/gotson/komga/commits/0d144a6))
+
+**opds**
+- keep reading paging would spill over to on-deck ([9be980d](https://github.com/gotson/komga/commits/9be980d))
+
+**webui**
+- import book details does not show format ([b7069c2](https://github.com/gotson/komga/commits/b7069c2))
+
+**unscoped**
+- replace UriUtils.decode with URLDecode.decode ([6553437](https://github.com/gotson/komga/commits/6553437)), closes [#1909](https://github.com/gotson/komga/issues/1909)
+- better handling of epub path with anchor on windows ([cd6b83d](https://github.com/gotson/komga/commits/cd6b83d)), closes [#1909](https://github.com/gotson/komga/issues/1909)
+- more robust process handling for kepubify ([48e6eaf](https://github.com/gotson/komga/commits/48e6eaf))
+- don't fail epub analysis when optional features are missing ([465467c](https://github.com/gotson/komga/commits/465467c)), closes [#1909](https://github.com/gotson/komga/issues/1909)
+
+## 🔄️ Changes
+**conveyor**
+- remove key added by mistake ([1250a97](https://github.com/gotson/komga/commits/1250a97))
+
+## 🛠  Build
+
+- fix parameterized test ([62d193d](https://github.com/gotson/komga/commits/62d193d))
+- add corner cases for epub nav ([01ef2b0](https://github.com/gotson/komga/commits/01ef2b0))
+- also run tests on windows and macos ([d299020](https://github.com/gotson/komga/commits/d299020))
+
+## ⚙️ Dependencies
+**webui**
+- bump axios from 1.7.4 to 1.8.2 in /komga-webui (#1910) ([9454552](https://github.com/gotson/komga/commits/9454552)), closes [#1910](https://github.com/gotson/komga/issues/1910)
+
 # [1.21.1](https://github.com/gotson/komga/compare/1.21.0...1.21.1) (2025-03-06)
 ## 🐛 Fixes
 **api**
