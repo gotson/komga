@@ -23,11 +23,11 @@
       "description": "Local development server",
       "variables": {
         "port": {
+          "default": "25600",
           "enum": [
             "8080",
             "25600"
-          ],
-          "default": "25600"
+          ]
         }
       }
     }
@@ -330,7 +330,7 @@
       "get": {
         "deprecated": true,
         "description": "Use GET /api/v2/authors instead. Deprecated since 1.20.0.",
-        "operationId": "getAuthorsV1",
+        "operationId": "getAuthorsDeprecated",
         "parameters": [
           {
             "in": "query",
@@ -481,7 +481,7 @@
       "get": {
         "deprecated": true,
         "description": "Use POST /api/v1/books/list instead. Deprecated since 1.19.0.",
-        "operationId": "getAllBooks",
+        "operationId": "getAllBooksDeprecated",
         "parameters": [
           {
             "in": "query",
@@ -624,7 +624,7 @@
     "/api/v1/books/duplicates": {
       "get": {
         "description": "Return books that have the same file hash.\n\nRequired role: **ADMIN**",
-        "operationId": "getDuplicateBooks",
+        "operationId": "getBooksDuplicates",
         "parameters": [
           {
             "in": "query",
@@ -728,7 +728,7 @@
     "/api/v1/books/latest": {
       "get": {
         "description": "Return newly added or updated books.",
-        "operationId": "getLatestBooks",
+        "operationId": "getBooksLatest",
         "parameters": [
           {
             "in": "query",
@@ -785,7 +785,7 @@
     },
     "/api/v1/books/list": {
       "post": {
-        "operationId": "getBooksList",
+        "operationId": "getBooks",
         "parameters": [
           {
             "in": "query",
@@ -864,7 +864,7 @@
     "/api/v1/books/metadata": {
       "patch": {
         "description": "Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.\n\nRequired role: **ADMIN**",
-        "operationId": "updateBatchMetadata",
+        "operationId": "updateBookMetadataByBatch",
         "requestBody": {
           "content": {
             "application/json": {
@@ -964,7 +964,7 @@
     "/api/v1/books/thumbnails": {
       "put": {
         "description": "Required role: **ADMIN**",
-        "operationId": "regenerateThumbnails",
+        "operationId": "booksRegenerateThumbnails",
         "parameters": [
           {
             "in": "query",
@@ -998,7 +998,7 @@
     },
     "/api/v1/books/{bookId}": {
       "get": {
-        "operationId": "getOneBook",
+        "operationId": "getBookById",
         "parameters": [
           {
             "in": "path",
@@ -1040,7 +1040,7 @@
     "/api/v1/books/{bookId}/analyze": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "analyze_3",
+        "operationId": "bookAnalyze",
         "parameters": [
           {
             "in": "path",
@@ -1108,7 +1108,7 @@
       },
       "get": {
         "description": "Download the book file.\n\nRequired role: **FILE_DOWNLOAD**",
-        "operationId": "getBookFile",
+        "operationId": "downloadBookFile",
         "parameters": [
           {
             "in": "path",
@@ -1155,7 +1155,7 @@
     "/api/v1/books/{bookId}/file/*": {
       "get": {
         "description": "Download the book file.\n\nRequired role: **FILE_DOWNLOAD**",
-        "operationId": "getBookFile_1",
+        "operationId": "downloadBookFile_1",
         "parameters": [
           {
             "in": "path",
@@ -1201,7 +1201,7 @@
     },
     "/api/v1/books/{bookId}/manifest": {
       "get": {
-        "operationId": "getWebPubManifest",
+        "operationId": "getBookWebPubManifest",
         "parameters": [
           {
             "in": "path",
@@ -1252,7 +1252,7 @@
     },
     "/api/v1/books/{bookId}/manifest/divina": {
       "get": {
-        "operationId": "getWebPubManifestDivina",
+        "operationId": "getBookWebPubManifestDivina",
         "parameters": [
           {
             "in": "path",
@@ -1298,7 +1298,7 @@
     },
     "/api/v1/books/{bookId}/manifest/epub": {
       "get": {
-        "operationId": "getWebPubManifestEpub",
+        "operationId": "getBookWebPubManifestEpub",
         "parameters": [
           {
             "in": "path",
@@ -1344,7 +1344,7 @@
     },
     "/api/v1/books/{bookId}/manifest/pdf": {
       "get": {
-        "operationId": "getWebPubManifestPdf",
+        "operationId": "getBookWebPubManifestPdf",
         "parameters": [
           {
             "in": "path",
@@ -1391,7 +1391,7 @@
     "/api/v1/books/{bookId}/metadata": {
       "patch": {
         "description": "Set a field to null to unset the metadata. You can omit fields you don\u0027t want to update.\n\nRequired role: **ADMIN**",
-        "operationId": "updateMetadata_1",
+        "operationId": "updateBookMetadata",
         "parameters": [
           {
             "in": "path",
@@ -1436,7 +1436,7 @@
     "/api/v1/books/{bookId}/metadata/refresh": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "refreshMetadata_2",
+        "operationId": "bookRefreshMetadata",
         "parameters": [
           {
             "in": "path",
@@ -1470,7 +1470,7 @@
     },
     "/api/v1/books/{bookId}/next": {
       "get": {
-        "operationId": "getBookSiblingNext_1",
+        "operationId": "getBookSiblingNext",
         "parameters": [
           {
             "in": "path",
@@ -1556,7 +1556,7 @@
     "/api/v1/books/{bookId}/pages/{pageNumber}": {
       "get": {
         "description": "Required role: **PAGE_STREAMING**",
-        "operationId": "getBookPage",
+        "operationId": "getBookPageByNumber",
         "parameters": [
           {
             "in": "path",
@@ -1652,7 +1652,7 @@
     "/api/v1/books/{bookId}/pages/{pageNumber}/raw": {
       "get": {
         "description": "Returns the book page in raw format, without content negotiation.\n\nRequired role: **PAGE_STREAMING**",
-        "operationId": "getBookPageRaw",
+        "operationId": "getBookPageRawByNumber",
         "parameters": [
           {
             "in": "path",
@@ -1710,7 +1710,7 @@
     "/api/v1/books/{bookId}/pages/{pageNumber}/thumbnail": {
       "get": {
         "description": "The image is resized to 300px on the largest dimension.",
-        "operationId": "getBookPageThumbnail",
+        "operationId": "getBookPageThumbnailByNumber",
         "parameters": [
           {
             "in": "path",
@@ -1768,7 +1768,7 @@
     "/api/v1/books/{bookId}/positions": {
       "get": {
         "description": "The Positions API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.",
-        "operationId": "getPositions",
+        "operationId": "getBookPositions",
         "parameters": [
           {
             "in": "path",
@@ -1814,7 +1814,7 @@
     },
     "/api/v1/books/{bookId}/previous": {
       "get": {
-        "operationId": "getBookSiblingPrevious_1",
+        "operationId": "getBookSiblingPrevious",
         "parameters": [
           {
             "in": "path",
@@ -1856,7 +1856,7 @@
     "/api/v1/books/{bookId}/progression": {
       "get": {
         "description": "The Progression API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.",
-        "operationId": "getProgression",
+        "operationId": "getBookProgression",
         "parameters": [
           {
             "in": "path",
@@ -1901,7 +1901,7 @@
       },
       "put": {
         "description": "The Progression API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.",
-        "operationId": "markProgression",
+        "operationId": "updateBookProgression",
         "parameters": [
           {
             "in": "path",
@@ -1946,7 +1946,7 @@
     "/api/v1/books/{bookId}/read-progress": {
       "delete": {
         "description": "Mark book as unread",
-        "operationId": "deleteReadProgress",
+        "operationId": "deleteBookReadProgress",
         "parameters": [
           {
             "in": "path",
@@ -1979,7 +1979,7 @@
       },
       "patch": {
         "description": "Mark book as read and/or change page progress.",
-        "operationId": "markReadProgress",
+        "operationId": "markBookReadProgress",
         "parameters": [
           {
             "in": "path",
@@ -2023,7 +2023,7 @@
     },
     "/api/v1/books/{bookId}/readlists": {
       "get": {
-        "operationId": "getAllReadListsByBook",
+        "operationId": "getReadListsByBookId",
         "parameters": [
           {
             "in": "path",
@@ -2068,7 +2068,7 @@
     "/api/v1/books/{bookId}/resource/{resource}": {
       "get": {
         "description": "Return a resource from within an Epub book.",
-        "operationId": "getBookResource",
+        "operationId": "getBookEpubResource",
         "parameters": [
           {
             "in": "path",
@@ -2381,7 +2381,7 @@
     "/api/v1/books/{bookId}/thumbnails/{thumbnailId}/selected": {
       "put": {
         "description": "Required role: **ADMIN**",
-        "operationId": "markSelectedBookThumbnail",
+        "operationId": "markBookThumbnailSelected",
         "parameters": [
           {
             "in": "path",
@@ -2455,7 +2455,7 @@
       },
       "post": {
         "description": "Creates an admin user with the provided credentials.",
-        "operationId": "claimAdmin",
+        "operationId": "claimServer",
         "parameters": [
           {
             "in": "header",
@@ -2506,7 +2506,7 @@
     "/api/v1/client-settings/global": {
       "delete": {
         "description": "Setting key should be a valid lowercase namespace string like \u0027application.domain.key\u0027\n\nRequired role: **ADMIN**",
-        "operationId": "deleteGlobalSetting_1",
+        "operationId": "deleteGlobalSettings",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2631,7 +2631,7 @@
     "/api/v1/client-settings/user": {
       "delete": {
         "description": "Setting key should be a valid lowercase namespace string like \u0027application.domain.key\u0027",
-        "operationId": "deleteGlobalSetting",
+        "operationId": "deleteUserSettings",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2751,7 +2751,7 @@
     },
     "/api/v1/collections": {
       "get": {
-        "operationId": "getAll_3",
+        "operationId": "getCollections",
         "parameters": [
           {
             "in": "query",
@@ -2826,7 +2826,7 @@
       },
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "addOne_3",
+        "operationId": "createCollection",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2868,7 +2868,7 @@
     "/api/v1/collections/{id}": {
       "delete": {
         "description": "Required role: **ADMIN**",
-        "operationId": "deleteOne_2",
+        "operationId": "deleteCollectionById",
         "parameters": [
           {
             "in": "path",
@@ -2900,7 +2900,7 @@
         ]
       },
       "get": {
-        "operationId": "getOne_2",
+        "operationId": "getCollectionById",
         "parameters": [
           {
             "in": "path",
@@ -2940,7 +2940,7 @@
       },
       "patch": {
         "description": "Required role: **ADMIN**",
-        "operationId": "updateOne_2",
+        "operationId": "updateCollectionById",
         "parameters": [
           {
             "in": "path",
@@ -2984,7 +2984,7 @@
     },
     "/api/v1/collections/{id}/series": {
       "get": {
-        "operationId": "getSeriesForCollection",
+        "operationId": "getSeriesByCollectionId",
         "parameters": [
           {
             "in": "path",
@@ -3442,7 +3442,7 @@
     "/api/v1/collections/{id}/thumbnails/{thumbnailId}/selected": {
       "put": {
         "description": "Required role: **ADMIN**",
-        "operationId": "markSelectedCollectionThumbnail",
+        "operationId": "markCollectionThumbnailSelected",
         "parameters": [
           {
             "in": "path",
@@ -3526,7 +3526,7 @@
     "/api/v1/fonts/families": {
       "get": {
         "description": "List all available font families.",
-        "operationId": "listFonts",
+        "operationId": "getFonts",
         "responses": {
           "200": {
             "content": {
@@ -3721,7 +3721,7 @@
     "/api/v1/history": {
       "get": {
         "description": "Required role: **ADMIN**",
-        "operationId": "getAll_4",
+        "operationId": "getHistoricalEvents",
         "parameters": [
           {
             "description": "Zero-based page index (0..N)",
@@ -3840,7 +3840,7 @@
     "/api/v1/libraries": {
       "get": {
         "description": "The libraries are filtered based on the current user\u0027s permissions",
-        "operationId": "getAll_2",
+        "operationId": "getLibraries",
         "responses": {
           "200": {
             "content": {
@@ -3873,7 +3873,7 @@
       },
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "addOne_2",
+        "operationId": "addLibrary",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3915,7 +3915,7 @@
     "/api/v1/libraries/{libraryId}": {
       "delete": {
         "description": "Required role: **ADMIN**",
-        "operationId": "deleteOne",
+        "operationId": "deleteLibraryById",
         "parameters": [
           {
             "in": "path",
@@ -3947,7 +3947,7 @@
         ]
       },
       "get": {
-        "operationId": "getOne",
+        "operationId": "getLibraryById",
         "parameters": [
           {
             "in": "path",
@@ -3987,7 +3987,7 @@
       },
       "patch": {
         "description": "You can omit fields you don\u0027t want to update\n\nRequired role: **ADMIN**",
-        "operationId": "patchOne",
+        "operationId": "updateLibraryById",
         "parameters": [
           {
             "in": "path",
@@ -4031,7 +4031,7 @@
       "put": {
         "deprecated": true,
         "description": "Use PATCH /api/v1/libraries/{libraryId} instead. Deprecated since 1.3.0.\n\nRequired role: **ADMIN**",
-        "operationId": "updateOne",
+        "operationId": "updateLibraryByIdDeprecated",
         "parameters": [
           {
             "in": "path",
@@ -4077,7 +4077,7 @@
     "/api/v1/libraries/{libraryId}/analyze": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "analyze_2",
+        "operationId": "libraryAnalyze",
         "parameters": [
           {
             "in": "path",
@@ -4112,7 +4112,7 @@
     "/api/v1/libraries/{libraryId}/empty-trash": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "emptyTrash",
+        "operationId": "libraryEmptyTrash",
         "parameters": [
           {
             "in": "path",
@@ -4147,7 +4147,7 @@
     "/api/v1/libraries/{libraryId}/metadata/refresh": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "refreshMetadata_1",
+        "operationId": "libraryRefreshMetadata",
         "parameters": [
           {
             "in": "path",
@@ -4182,7 +4182,7 @@
     "/api/v1/libraries/{libraryId}/scan": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "scan",
+        "operationId": "libraryScan",
         "parameters": [
           {
             "in": "path",
@@ -4225,7 +4225,7 @@
     "/api/v1/login/set-cookie": {
       "get": {
         "description": "Forcefully return Set-Cookie header, even if the session is contained in the X-Auth-Token header.",
-        "operationId": "headerToCookie",
+        "operationId": "convertHeaderSessionToCookie",
         "responses": {
           "204": {
             "description": "No Content"
@@ -4249,7 +4249,7 @@
     },
     "/api/v1/oauth2/providers": {
       "get": {
-        "operationId": "getProviders",
+        "operationId": "getOAuth2Providers",
         "responses": {
           "200": {
             "content": {
@@ -4583,7 +4583,7 @@
     "/api/v1/page-hashes/{pageHash}/delete-all": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "performDelete",
+        "operationId": "deleteDuplicatePagesByPageHash",
         "parameters": [
           {
             "in": "path",
@@ -4618,7 +4618,7 @@
     "/api/v1/page-hashes/{pageHash}/delete-match": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "deleteSingleMatch",
+        "operationId": "deleteSingleMatchByPageHash",
         "parameters": [
           {
             "in": "path",
@@ -4769,7 +4769,7 @@
     },
     "/api/v1/readlists": {
       "get": {
-        "operationId": "getAll_1",
+        "operationId": "getReadLists",
         "parameters": [
           {
             "in": "query",
@@ -4844,7 +4844,7 @@
       },
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "addOne_1",
+        "operationId": "createReadList",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4886,7 +4886,7 @@
     "/api/v1/readlists/match/comicrack": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "matchFromComicRackList",
+        "operationId": "matchComicRackList",
         "requestBody": {
           "content": {
             "application/json": {
@@ -4936,7 +4936,7 @@
     "/api/v1/readlists/{id}": {
       "delete": {
         "description": "Required role: **ADMIN**",
-        "operationId": "deleteOne_1",
+        "operationId": "deleteReadListById",
         "parameters": [
           {
             "in": "path",
@@ -4968,7 +4968,7 @@
         ]
       },
       "get": {
-        "operationId": "getOne_1",
+        "operationId": "getReadListById",
         "parameters": [
           {
             "in": "path",
@@ -5008,7 +5008,7 @@
       },
       "patch": {
         "description": "Required role: **ADMIN**",
-        "operationId": "updateOne_1",
+        "operationId": "updateReadListById",
         "parameters": [
           {
             "in": "path",
@@ -5052,7 +5052,7 @@
     },
     "/api/v1/readlists/{id}/books": {
       "get": {
-        "operationId": "getBooksForReadList",
+        "operationId": "getBooksByReadListId",
         "parameters": [
           {
             "in": "path",
@@ -5192,7 +5192,7 @@
     },
     "/api/v1/readlists/{id}/books/{bookId}/next": {
       "get": {
-        "operationId": "getBookSiblingNext",
+        "operationId": "getBookSiblingNextInReadList",
         "parameters": [
           {
             "in": "path",
@@ -5241,7 +5241,7 @@
     },
     "/api/v1/readlists/{id}/books/{bookId}/previous": {
       "get": {
-        "operationId": "getBookSiblingPrevious",
+        "operationId": "getBookSiblingPreviousInReadList",
         "parameters": [
           {
             "in": "path",
@@ -5291,7 +5291,7 @@
     "/api/v1/readlists/{id}/file": {
       "get": {
         "description": "Download the whole readlist as a ZIP file.\n\nRequired role: **FILE_DOWNLOAD**",
-        "operationId": "getReadListFile",
+        "operationId": "downloadReadListAsZip",
         "parameters": [
           {
             "in": "path",
@@ -5338,7 +5338,7 @@
     "/api/v1/readlists/{id}/read-progress/tachiyomi": {
       "get": {
         "description": "Mihon specific, due to how read progress is handled in Mihon.",
-        "operationId": "getReadProgress",
+        "operationId": "getMihonReadProgressByReadListId",
         "parameters": [
           {
             "in": "path",
@@ -5378,7 +5378,7 @@
       },
       "put": {
         "description": "Mihon specific, due to how read progress is handled in Mihon.",
-        "operationId": "markReadProgressTachiyomi",
+        "operationId": "updateMihonReadProgressByReadListId",
         "parameters": [
           {
             "in": "path",
@@ -5678,7 +5678,7 @@
     "/api/v1/readlists/{id}/thumbnails/{thumbnailId}/selected": {
       "put": {
         "description": "Required role: **ADMIN**",
-        "operationId": "markSelectedReadListThumbnail",
+        "operationId": "markReadListThumbnailSelected",
         "parameters": [
           {
             "in": "path",
@@ -5757,7 +5757,7 @@
       "get": {
         "deprecated": true,
         "description": "Use POST /api/v1/series/list instead. Deprecated since 1.19.0.",
-        "operationId": "getAllSeries",
+        "operationId": "getSeriesDeprecated",
         "parameters": [
           {
             "in": "query",
@@ -6011,7 +6011,7 @@
       "get": {
         "deprecated": true,
         "description": "Use POST /api/v1/series/list/alphabetical-groups instead. Deprecated since 1.19.0.",
-        "operationId": "getAlphabeticalGroups",
+        "operationId": "getSeriesAlphabeticalGroupsDeprecated",
         "parameters": [
           {
             "in": "query",
@@ -6232,7 +6232,7 @@
     "/api/v1/series/latest": {
       "get": {
         "description": "Return recently added or updated series.",
-        "operationId": "getLatestSeries",
+        "operationId": "getSeriesLatest",
         "parameters": [
           {
             "in": "query",
@@ -6316,7 +6316,7 @@
     },
     "/api/v1/series/list": {
       "post": {
-        "operationId": "getSeriesList",
+        "operationId": "getSeries",
         "parameters": [
           {
             "in": "query",
@@ -6395,7 +6395,7 @@
     "/api/v1/series/list/alphabetical-groups": {
       "post": {
         "description": "List series grouped by the first character of their sort title.",
-        "operationId": "getSeriesListByAlphabeticalGroups",
+        "operationId": "getSeriesAlphabeticalGroups",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6440,7 +6440,7 @@
     "/api/v1/series/new": {
       "get": {
         "description": "Return newly added series.",
-        "operationId": "getNewSeries",
+        "operationId": "getSeriesNew",
         "parameters": [
           {
             "in": "query",
@@ -6583,7 +6583,7 @@
     "/api/v1/series/updated": {
       "get": {
         "description": "Return recently updated series, but not newly added ones.",
-        "operationId": "getUpdatedSeries",
+        "operationId": "getSeriesUpdated",
         "parameters": [
           {
             "in": "query",
@@ -6667,7 +6667,7 @@
     },
     "/api/v1/series/{seriesId}": {
       "get": {
-        "operationId": "getOneSeries",
+        "operationId": "getSeriesById",
         "parameters": [
           {
             "in": "path",
@@ -6709,7 +6709,7 @@
     "/api/v1/series/{seriesId}/analyze": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "analyze_1",
+        "operationId": "seriesAnalyze",
         "parameters": [
           {
             "in": "path",
@@ -6745,7 +6745,7 @@
       "get": {
         "deprecated": true,
         "description": "Use POST /api/v1/books/list instead. Deprecated since 1.19.0.",
-        "operationId": "getAllBooksBySeries",
+        "operationId": "getBooksBySeriesId",
         "parameters": [
           {
             "in": "path",
@@ -6886,7 +6886,7 @@
     },
     "/api/v1/series/{seriesId}/collections": {
       "get": {
-        "operationId": "getAllCollectionsBySeries",
+        "operationId": "getCollectionsBySeriesId",
         "parameters": [
           {
             "in": "path",
@@ -6931,7 +6931,7 @@
     "/api/v1/series/{seriesId}/file": {
       "delete": {
         "description": "Delete all of the series\u0027 books files on disk.\n\nRequired role: **ADMIN**",
-        "operationId": "deleteSeries",
+        "operationId": "deleteSeriesFile",
         "parameters": [
           {
             "in": "path",
@@ -6964,7 +6964,7 @@
       },
       "get": {
         "description": "Download the whole series as a ZIP file.\n\nRequired role: **FILE_DOWNLOAD**",
-        "operationId": "getSeriesFile",
+        "operationId": "downloadSeriesAsZip",
         "parameters": [
           {
             "in": "path",
@@ -7011,7 +7011,7 @@
     "/api/v1/series/{seriesId}/metadata": {
       "patch": {
         "description": "Required role: **ADMIN**",
-        "operationId": "updateMetadata",
+        "operationId": "updateSeriesMetadata",
         "parameters": [
           {
             "in": "path",
@@ -7056,7 +7056,7 @@
     "/api/v1/series/{seriesId}/metadata/refresh": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "refreshMetadata",
+        "operationId": "seriesRefreshMetadata",
         "parameters": [
           {
             "in": "path",
@@ -7091,7 +7091,7 @@
     "/api/v1/series/{seriesId}/read-progress": {
       "delete": {
         "description": "Mark all book for series as unread",
-        "operationId": "markAsUnread",
+        "operationId": "markSeriesAsUnread",
         "parameters": [
           {
             "in": "path",
@@ -7124,7 +7124,7 @@
       },
       "post": {
         "description": "Mark all book for series as read",
-        "operationId": "markAsRead",
+        "operationId": "markSeriesAsRead",
         "parameters": [
           {
             "in": "path",
@@ -7158,7 +7158,7 @@
     },
     "/api/v1/series/{seriesId}/thumbnail": {
       "get": {
-        "operationId": "getSeriesDefaultThumbnail",
+        "operationId": "getSeriesThumbnail",
         "parameters": [
           {
             "in": "path",
@@ -7249,7 +7249,7 @@
       },
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "postUserUploadedSeriesThumbnail",
+        "operationId": "addUserUploadedSeriesThumbnail",
         "parameters": [
           {
             "in": "path",
@@ -7414,7 +7414,7 @@
     "/api/v1/series/{seriesId}/thumbnails/{thumbnailId}/selected": {
       "put": {
         "description": "Required role: **ADMIN**",
-        "operationId": "postMarkSelectedSeriesThumbnail",
+        "operationId": "markSeriesThumbnailSelected",
         "parameters": [
           {
             "in": "path",
@@ -7457,7 +7457,7 @@
     "/api/v1/settings": {
       "get": {
         "description": "Required role: **ADMIN**",
-        "operationId": "getSettings",
+        "operationId": "getServerSettings",
         "responses": {
           "200": {
             "content": {
@@ -7487,7 +7487,7 @@
       },
       "patch": {
         "description": "You can omit fields you don\u0027t want to update\n\nRequired role: **ADMIN**",
-        "operationId": "updateSettings",
+        "operationId": "updateServerSettings",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7580,7 +7580,7 @@
     "/api/v1/syncpoints/me": {
       "delete": {
         "description": "If an API Key ID is passed, deletes only the sync points associated with that API Key. Deleting sync points will allow a Kobo to sync from scratch upon the next sync.",
-        "operationId": "deleteMySyncPointsByApiKey",
+        "operationId": "deleteSyncPointsForCurrentUser",
         "parameters": [
           {
             "in": "query",
@@ -7829,7 +7829,7 @@
     "/api/v1/transient-books": {
       "post": {
         "description": "Scan provided folder for transient books.\n\nRequired role: **ADMIN**",
-        "operationId": "scanForTransientBooks",
+        "operationId": "scanTransientBooks",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7874,7 +7874,7 @@
     "/api/v1/transient-books/{id}/analyze": {
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "analyze",
+        "operationId": "analyzeTransientBook",
         "parameters": [
           {
             "in": "path",
@@ -7916,7 +7916,7 @@
     "/api/v1/transient-books/{id}/pages/{pageNumber}": {
       "get": {
         "description": "Required role: **ADMIN**",
-        "operationId": "getSourcePage",
+        "operationId": "getPageByTransientBookId",
         "parameters": [
           {
             "in": "path",
@@ -8084,7 +8084,7 @@
     "/api/v2/series/{seriesId}/read-progress/tachiyomi": {
       "get": {
         "description": "Mihon specific, due to how read progress is handled in Mihon.",
-        "operationId": "getReadProgressTachiyomiV2",
+        "operationId": "getMihonReadProgressBySeriesId",
         "parameters": [
           {
             "in": "path",
@@ -8124,7 +8124,7 @@
       },
       "put": {
         "description": "Mihon specific, due to how read progress is handled in Mihon.",
-        "operationId": "markReadProgressTachiyomiV2",
+        "operationId": "updateMihonReadProgressBySeriesId",
         "parameters": [
           {
             "in": "path",
@@ -8169,7 +8169,7 @@
     "/api/v2/users": {
       "get": {
         "description": "Required role: **ADMIN**",
-        "operationId": "getAll",
+        "operationId": "getUsers",
         "responses": {
           "200": {
             "content": {
@@ -8202,7 +8202,7 @@
       },
       "post": {
         "description": "Required role: **ADMIN**",
-        "operationId": "addOne",
+        "operationId": "addUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8314,7 +8314,7 @@
     },
     "/api/v2/users/me": {
       "get": {
-        "operationId": "getMe",
+        "operationId": "getCurrentUser",
         "responses": {
           "200": {
             "content": {
@@ -8345,7 +8345,7 @@
     },
     "/api/v2/users/me/api-keys": {
       "get": {
-        "operationId": "getApiKeys",
+        "operationId": "getApiKeysForCurrentUser",
         "responses": {
           "200": {
             "content": {
@@ -8377,7 +8377,7 @@
         ]
       },
       "post": {
-        "operationId": "createApiKey",
+        "operationId": "createApiKeyForCurrentUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8418,7 +8418,7 @@
     },
     "/api/v2/users/me/api-keys/{keyId}": {
       "delete": {
-        "operationId": "deleteApiKey",
+        "operationId": "deleteApiKeyByKeyId",
         "parameters": [
           {
             "in": "path",
@@ -8452,7 +8452,7 @@
     },
     "/api/v2/users/me/authentication-activity": {
       "get": {
-        "operationId": "getMyAuthenticationActivity",
+        "operationId": "getAuthenticationActivityForCurrentUser",
         "parameters": [
           {
             "in": "query",
@@ -8522,7 +8522,7 @@
     },
     "/api/v2/users/me/password": {
       "patch": {
-        "operationId": "updateMyPassword",
+        "operationId": "updatePasswordForCurrentUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8557,7 +8557,7 @@
     "/api/v2/users/{id}": {
       "delete": {
         "description": "Required role: **ADMIN**",
-        "operationId": "delete",
+        "operationId": "deleteUserById",
         "parameters": [
           {
             "in": "path",
@@ -8590,7 +8590,7 @@
       },
       "patch": {
         "description": "Required role: **ADMIN**",
-        "operationId": "updateUser",
+        "operationId": "updateUserById",
         "parameters": [
           {
             "in": "path",
@@ -8635,7 +8635,7 @@
     "/api/v2/users/{id}/authentication-activity/latest": {
       "get": {
         "description": "Required role: **ADMIN**",
-        "operationId": "getLatestAuthenticationActivityForUser",
+        "operationId": "getLatestAuthenticationActivityByUserId",
         "parameters": [
           {
             "in": "path",
@@ -8685,7 +8685,7 @@
     "/api/v2/users/{id}/password": {
       "patch": {
         "description": "Required role: **ADMIN**",
-        "operationId": "updatePassword",
+        "operationId": "updatePasswordByUserId",
         "parameters": [
           {
             "in": "path",
@@ -10394,6 +10394,9 @@
                   "negative": {
                     "type": "boolean"
                   },
+                  "positive": {
+                    "type": "boolean"
+                  },
                   "seconds": {
                     "type": "integer",
                     "format": "int64"
@@ -10490,6 +10493,9 @@
                     "format": "int32"
                   },
                   "negative": {
+                    "type": "boolean"
+                  },
+                  "positive": {
                     "type": "boolean"
                   },
                   "seconds": {
