@@ -163,6 +163,18 @@ class BookAnalyzerTest(
     }
 
     @Test
+    fun `given regular epub archive when analyzing then comment is empty`() {
+      val file = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
+      val book = Book("book", file.url, LocalDateTime.now())
+
+      val media = bookAnalyzer.analyze(book, false)
+
+      assertThat(media.mediaType).isEqualTo("application/epub+zip")
+      assertThat(media.status).isEqualTo(Media.Status.READY)
+      assertThat(media.comment).isNull()
+    }
+
+    @Test
     fun `given epub archive when toc cannot be extracted then media status is READY with comments`() {
       val file = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
       val book = Book("book", file.url, LocalDateTime.now())

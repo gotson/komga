@@ -202,7 +202,12 @@ class BookAnalyzer(
           .map { it.fileName }
           .ifEmpty { null }
           ?.joinToString(prefix = "ERR_1033 [", postfix = "]") { it }
-      val allErrors = (errors + entriesErrorSummary).joinToString(" ")
+
+      val allErrors =
+        (errors + entriesErrorSummary)
+          .filterNotNull()
+          .joinToString(" ")
+          .ifBlank { null }
 
       return Media(
         status = Media.Status.READY,
