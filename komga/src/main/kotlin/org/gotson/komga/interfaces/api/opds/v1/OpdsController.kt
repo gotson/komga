@@ -293,7 +293,7 @@ class OpdsController(
         pageable,
       )
 
-    val builder = uriBuilder(ROUTE_ON_DECK)
+    val builder = uriBuilder(ROUTE_KEEP_READING)
 
     return OpdsFeedAcquisition(
       id = ID_KEEP_READING,
