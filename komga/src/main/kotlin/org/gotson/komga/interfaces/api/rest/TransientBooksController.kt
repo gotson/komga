@@ -42,7 +42,7 @@ class TransientBooksController(
 ) {
   @PostMapping
   @Operation(summary = "Scan folder for transient books", description = "Scan provided folder for transient books.")
-  fun scanForTransientBooks(
+  fun scanTransientBooks(
     @RequestBody request: ScanRequestDto,
   ): List<TransientBookDto> =
     try {
@@ -56,7 +56,7 @@ class TransientBooksController(
 
   @PostMapping("{id}/analyze")
   @Operation(summary = "Analyze transient book")
-  fun analyze(
+  fun analyzeTransientBook(
     @PathVariable id: String,
   ): TransientBookDto =
     transientBookRepository.findByIdOrNull(id)?.let {
@@ -68,7 +68,7 @@ class TransientBooksController(
     produces = [MediaType.ALL_VALUE],
   )
   @Operation(summary = "Get transient book page")
-  fun getSourcePage(
+  fun getPageByTransientBookId(
     @PathVariable id: String,
     @PathVariable pageNumber: Int,
   ): ResponseEntity<ByteArray> =

@@ -103,7 +103,7 @@ class ReadListController(
   @Operation(summary = "List readlists", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @PageableWithoutSortAsQueryParam
   @GetMapping
-  fun getAll(
+  fun getReadLists(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
@@ -134,7 +134,7 @@ class ReadListController(
 
   @Operation(summary = "Get readlist details", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @GetMapping("{id}")
-  fun getOne(
+  fun getReadListById(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ): ReadListDto =
@@ -217,7 +217,7 @@ class ReadListController(
   @PutMapping("{id}/thumbnails/{thumbnailId}/selected")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun markSelectedReadListThumbnail(
+  fun markReadListThumbnailSelected(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
@@ -249,7 +249,7 @@ class ReadListController(
   @Operation(summary = "Create readlist", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
-  fun addOne(
+  fun createReadList(
     @Valid @RequestBody
     readList: ReadListCreationDto,
   ): ReadListDto =
@@ -270,7 +270,7 @@ class ReadListController(
   @Operation(summary = "Match ComicRack list", tags = [OpenApiConfiguration.TagNames.COMICRACK])
   @PostMapping("match/comicrack")
   @PreAuthorize("hasRole('ADMIN')")
-  fun matchFromComicRackList(
+  fun matchComicRackList(
     @RequestParam("file") file: MultipartFile,
   ): ReadListRequestMatchDto =
     try {
@@ -283,7 +283,7 @@ class ReadListController(
   @PatchMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun updateOne(
+  fun updateReadListById(
     @PathVariable id: String,
     @Valid @RequestBody
     readList: ReadListUpdateDto,
@@ -308,7 +308,7 @@ class ReadListController(
   @DeleteMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun deleteOne(
+  fun deleteReadListById(
     @PathVariable id: String,
   ) {
     readListRepository.findByIdOrNull(id)?.let {
@@ -320,7 +320,7 @@ class ReadListController(
   @PageableWithoutSortAsQueryParam
   @AuthorsAsQueryParam
   @GetMapping("{id}/books")
-  fun getBooksForReadList(
+  fun getBooksByReadListId(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
@@ -370,7 +370,7 @@ class ReadListController(
 
   @Operation(summary = "Get previous book in readlist", tags = [OpenApiConfiguration.TagNames.READLIST_BOOKS])
   @GetMapping("{id}/books/{bookId}/previous")
-  fun getBookSiblingPrevious(
+  fun getBookSiblingPreviousInReadList(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
     @PathVariable bookId: String,
@@ -388,7 +388,7 @@ class ReadListController(
 
   @Operation(summary = "Get next book in readlist", tags = [OpenApiConfiguration.TagNames.READLIST_BOOKS])
   @GetMapping("{id}/books/{bookId}/next")
-  fun getBookSiblingNext(
+  fun getBookSiblingNextInReadList(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
     @PathVariable bookId: String,
@@ -406,7 +406,7 @@ class ReadListController(
 
   @Operation(summary = "Get readlist read progress (Mihon)", description = "Mihon specific, due to how read progress is handled in Mihon.", tags = [OpenApiConfiguration.TagNames.MIHON])
   @GetMapping("{id}/read-progress/tachiyomi")
-  fun getReadProgress(
+  fun getMihonReadProgressByReadListId(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): TachiyomiReadProgressDto =
@@ -417,7 +417,7 @@ class ReadListController(
   @Operation(summary = "Update readlist read progress (Mihon)", description = "Mihon specific, due to how read progress is handled in Mihon.", tags = [OpenApiConfiguration.TagNames.MIHON])
   @PutMapping("{id}/read-progress/tachiyomi")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun markReadProgressTachiyomi(
+  fun updateMihonReadProgressByReadListId(
     @PathVariable id: String,
     @Valid @RequestBody
     readProgress: TachiyomiReadProgressUpdateDto,
@@ -437,7 +437,7 @@ class ReadListController(
   @Operation(summary = "Download readlist", description = "Download the whole readlist as a ZIP file.", tags = [OpenApiConfiguration.TagNames.READLISTS])
   @GetMapping("{id}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
   @PreAuthorize("hasRole('FILE_DOWNLOAD')")
-  fun getReadListFile(
+  fun downloadReadListAsZip(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ): ResponseEntity<StreamingResponseBody> {

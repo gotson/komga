@@ -38,7 +38,7 @@ class SettingsController(
 ) {
   @GetMapping
   @Operation(summary = "Retrieve server settings")
-  fun getSettings(): SettingsDto =
+  fun getServerSettings(): SettingsDto =
     SettingsDto(
       komgaSettingsProvider.deleteEmptyCollections,
       komgaSettingsProvider.deleteEmptyReadLists,
@@ -55,7 +55,7 @@ class SettingsController(
   @PatchMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "Update server settings", description = "You can omit fields you don't want to update")
-  fun updateSettings(
+  fun updateServerSettings(
     @Valid @RequestBody
     @Parameter(description = "Fields to update. You can omit fields you don't want to update.")
     newSettings: SettingsUpdateDto,

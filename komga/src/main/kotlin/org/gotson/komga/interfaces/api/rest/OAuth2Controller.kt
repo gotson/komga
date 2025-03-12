@@ -24,7 +24,7 @@ class OAuth2Controller(
 
   @GetMapping("providers")
   @Operation(summary = "List registered OAuth2 providers")
-  fun getProviders() = registrationIds
+  fun getOAuth2Providers() = registrationIds
 }
 
 data class OAuth2ClientDto(

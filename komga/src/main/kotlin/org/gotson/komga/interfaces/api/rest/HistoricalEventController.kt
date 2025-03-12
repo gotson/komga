@@ -27,7 +27,7 @@ class HistoricalEventController(
   @GetMapping
   @PageableAsQueryParam
   @Operation(summary = "List historical events")
-  fun getAll(
+  fun getHistoricalEvents(
     @Parameter(hidden = true) page: Pageable,
   ): Page<HistoricalEventDto> {
     val sort =

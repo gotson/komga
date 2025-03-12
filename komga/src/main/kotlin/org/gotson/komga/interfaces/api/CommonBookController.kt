@@ -201,7 +201,7 @@ class CommonBookController(
     produces = [MediaType.ALL_VALUE],
   )
   @PreAuthorize("hasRole('PAGE_STREAMING')")
-  fun getBookPageRaw(
+  fun getBookPageRawByNumber(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: ServletWebRequest,
     @PathVariable bookId: String,
@@ -264,7 +264,7 @@ class CommonBookController(
     ],
     produces = ["*/*"],
   )
-  fun getBookResource(
+  fun getBookEpubResource(
     request: HttpServletRequest,
     @AuthenticationPrincipal principal: KomgaPrincipal?,
     @PathVariable bookId: String,
@@ -323,7 +323,7 @@ class CommonBookController(
     produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
   )
   @PreAuthorize("hasRole('FILE_DOWNLOAD')")
-  fun getBookFile(
+  fun downloadBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ResponseEntity<StreamingResponseBody> = getBookFileInternal(principal, bookId)
@@ -373,7 +373,7 @@ class CommonBookController(
     ],
     produces = [MEDIATYPE_PROGRESSION_JSON_VALUE],
   )
-  fun getProgression(
+  fun getBookProgression(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ResponseEntity<R2Progression> =
@@ -393,7 +393,7 @@ class CommonBookController(
     ],
   )
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun markProgression(
+  fun updateBookProgression(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
     @RequestBody progression: R2Progression,

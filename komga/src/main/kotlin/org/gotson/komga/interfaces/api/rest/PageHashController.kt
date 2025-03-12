@@ -120,7 +120,7 @@ class PageHashController(
   @Operation(summary = "Delete all duplicate pages by hash")
   @PostMapping("{pageHash}/delete-all")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun performDelete(
+  fun deleteDuplicatePagesByPageHash(
     @PathVariable pageHash: String,
   ) {
     val toRemove =
@@ -145,7 +145,7 @@ class PageHashController(
   @Operation(summary = "Delete specific duplicate page")
   @PostMapping("{pageHash}/delete-match")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun deleteSingleMatch(
+  fun deleteSingleMatchByPageHash(
     @PathVariable pageHash: String,
     @RequestBody matchDto: PageHashMatchDto,
   ) {

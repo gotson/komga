@@ -88,7 +88,7 @@ class FontsController(
 
   @GetMapping("families")
   @Operation(summary = "List font families", description = "List all available font families.")
-  fun listFonts(): Set<String> = fonts.keys
+  fun getFonts(): Set<String> = fonts.keys
 
   @GetMapping("resource/{fontFamily}/{fontFile}")
   @Operation(summary = "Download font file")

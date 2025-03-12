@@ -28,10 +28,10 @@ class DashboardBenchmark : AbstractRestBenchmark() {
     super.prepareData()
 
     // mark some books in progress
-    bookController.getAllBooks(principal, readStatus = listOf(ReadStatus.IN_PROGRESS), page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).let { page ->
+    bookController.getAllBooksDeprecated(principal, readStatus = listOf(ReadStatus.IN_PROGRESS), page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).let { page ->
       if (page.totalElements < DEFAULT_PAGE_SIZE) {
-        bookController.getAllBooks(principal, readStatus = listOf(ReadStatus.UNREAD), page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).content.forEach { book ->
-          bookController.markReadProgress(book.id, ReadProgressUpdateDto(2, false), principal)
+        bookController.getAllBooksDeprecated(principal, readStatus = listOf(ReadStatus.UNREAD), page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).content.forEach { book ->
+          bookController.markBookReadProgress(book.id, ReadProgressUpdateDto(2, false), principal)
         }
       }
     }
@@ -39,16 +39,16 @@ class DashboardBenchmark : AbstractRestBenchmark() {
     // mark some books read for on deck
     bookController.getBooksOnDeck(principal, page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).let { page ->
       if (page.totalElements < DEFAULT_PAGE_SIZE) {
-        seriesController.getAllSeries(principal, readStatus = listOf(ReadStatus.UNREAD), oneshot = false, page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).content.forEach { series ->
-          val book = seriesController.getAllBooksBySeries(principal, series.id, page = Pageable.ofSize(1)).content.first()
-          bookController.markReadProgress(book.id, ReadProgressUpdateDto(null, true), principal)
+        seriesController.getSeriesDeprecated(principal, readStatus = listOf(ReadStatus.UNREAD), oneshot = false, page = Pageable.ofSize(DEFAULT_PAGE_SIZE)).content.forEach { series ->
+          val book = seriesController.getBooksBySeriesId(principal, series.id, page = Pageable.ofSize(1)).content.first()
+          bookController.markBookReadProgress(book.id, ReadProgressUpdateDto(null, true), principal)
         }
       }
     }
 
     // retrieve most recent book release date
     bookLatestReleaseDate = bookController
-      .getAllBooks(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("metadata.releaseDate"))))
+      .getAllBooksDeprecated(principal, page = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("metadata.releaseDate"))))
       .content
       .firstOrNull()
       ?.metadata
@@ -73,7 +73,7 @@ class DashboardBenchmark : AbstractRestBenchmark() {
 
   @Benchmark
   fun getBooksInProgress() {
-    bookController.getAllBooks(principal, readStatus = listOf(ReadStatus.IN_PROGRESS), page = pageableBooksInProgress)
+    bookController.getAllBooksDeprecated(principal, readStatus = listOf(ReadStatus.IN_PROGRESS), page = pageableBooksInProgress)
   }
 
   val pageableBooksOnDeck = Pageable.ofSize(DEFAULT_PAGE_SIZE)
@@ -87,34 +87,34 @@ class DashboardBenchmark : AbstractRestBenchmark() {
 
   @Benchmark
   fun getBooksLatest() {
-    bookController.getAllBooks(principal, page = pageableBooksLatest)
+    bookController.getAllBooksDeprecated(principal, page = pageableBooksLatest)
   }
 
   val pageableBooksRecentlyReleased = PageRequest.of(0, DEFAULT_PAGE_SIZE, Sort.by(Sort.Order.desc("metadata.releaseDate")))
 
   @Benchmark
   fun getBooksRecentlyReleased() {
-    bookController.getAllBooks(principal, releasedAfter = bookLatestReleaseDate.minusMonths(1), page = pageableBooksRecentlyReleased)
+    bookController.getAllBooksDeprecated(principal, releasedAfter = bookLatestReleaseDate.minusMonths(1), page = pageableBooksRecentlyReleased)
   }
 
   val pageableSeriesNew = Pageable.ofSize(DEFAULT_PAGE_SIZE)
 
   @Benchmark
   fun getSeriesNew() {
-    seriesController.getNewSeries(principal, page = pageableSeriesNew)
+    seriesController.getSeriesNew(principal, page = pageableSeriesNew)
   }
 
   val pageableSeriesUpdated = Pageable.ofSize(DEFAULT_PAGE_SIZE)
 
   @Benchmark
   fun getSeriesUpdated() {
-    seriesController.getUpdatedSeries(principal, page = pageableSeriesUpdated)
+    seriesController.getSeriesUpdated(principal, page = pageableSeriesUpdated)
   }
 
   val pageableBooksToCheck = Pageable.ofSize(1)
 
   @Benchmark
   fun getBooksToCheck() {
-    bookController.getAllBooks(principal, mediaStatus = listOf(Media.Status.ERROR, Media.Status.UNSUPPORTED), page = pageableBooksToCheck)
+    bookController.getAllBooksDeprecated(principal, mediaStatus = listOf(Media.Status.ERROR, Media.Status.UNSUPPORTED), page = pageableBooksToCheck)
   }
 }

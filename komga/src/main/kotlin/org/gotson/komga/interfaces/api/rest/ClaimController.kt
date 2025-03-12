@@ -35,7 +35,7 @@ class ClaimController(
 
   @PostMapping
   @Operation(summary = "Claim server", description = "Creates an admin user with the provided credentials.")
-  fun claimAdmin(
+  fun claimServer(
     @Email(regexp = ".+@.+\\..+")
     @RequestHeader("X-Komga-Email")
     email: String,

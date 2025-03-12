@@ -120,7 +120,7 @@ class BookController(
   @PageableAsQueryParam
   @GetMapping("api/v1/books")
   @Operation(summary = "List books", description = "Use POST /api/v1/books/list instead. Deprecated since 1.19.0.", tags = [OpenApiConfiguration.TagNames.BOOKS, OpenApiConfiguration.TagNames.DEPRECATED])
-  fun getAllBooks(
+  fun getAllBooksDeprecated(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String? = null,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>? = null,
@@ -172,7 +172,7 @@ class BookController(
   @PageableAsQueryParam
   @PostMapping("api/v1/books/list")
   @Operation(summary = "List books", tags = [OpenApiConfiguration.TagNames.BOOKS])
-  fun getBooksList(
+  fun getBooks(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestBody search: BookSearch,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
@@ -203,7 +203,7 @@ class BookController(
   @Operation(summary = "List latest books", description = "Return newly added or updated books.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PageableWithoutSortAsQueryParam
   @GetMapping("api/v1/books/latest")
-  fun getLatestBooks(
+  fun getBooksLatest(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
@@ -247,7 +247,7 @@ class BookController(
   @PageableAsQueryParam
   @GetMapping("api/v1/books/duplicates")
   @PreAuthorize("hasRole('ADMIN')")
-  fun getDuplicateBooks(
+  fun getBooksDuplicates(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
@@ -273,7 +273,7 @@ class BookController(
 
   @Operation(summary = "Get book details", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping("api/v1/books/{bookId}")
-  fun getOneBook(
+  fun getBookById(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): BookDto =
@@ -313,7 +313,7 @@ class BookController(
 
   @Operation(summary = "List book's readlists", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping("api/v1/books/{bookId}/readlists")
-  fun getAllReadListsByBook(
+  fun getReadListsByBookId(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "bookId") bookId: String,
   ): List<ReadListDto> {
@@ -400,7 +400,7 @@ class BookController(
   @PutMapping("api/v1/books/{bookId}/thumbnails/{thumbnailId}/selected")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun markSelectedBookThumbnail(
+  fun markBookThumbnailSelected(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "bookId") bookId: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
@@ -471,7 +471,7 @@ class BookController(
     produces = [MediaType.ALL_VALUE],
   )
   @PreAuthorize("hasRole('PAGE_STREAMING')")
-  fun getBookPage(
+  fun getBookPageByNumber(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: ServletWebRequest,
     @PathVariable bookId: String,
@@ -498,7 +498,7 @@ class BookController(
     value = ["api/v1/books/{bookId}/pages/{pageNumber}/thumbnail"],
     produces = [MediaType.IMAGE_JPEG_VALUE],
   )
-  fun getBookPageThumbnail(
+  fun getBookPageThumbnailByNumber(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     request: WebRequest,
     @PathVariable bookId: String,
@@ -540,7 +540,7 @@ class BookController(
     value = ["api/v1/books/{bookId}/manifest"],
     produces = [MEDIATYPE_WEBPUB_JSON_VALUE, MEDIATYPE_DIVINA_JSON_VALUE],
   )
-  fun getWebPubManifest(
+  fun getBookWebPubManifest(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ResponseEntity<WPPublicationDto> {
@@ -556,7 +556,7 @@ class BookController(
     value = ["api/v1/books/{bookId}/positions"],
     produces = [MEDIATYPE_POSITION_LIST_JSON_VALUE],
   )
-  fun getPositions(
+  fun getBookPositions(
     request: HttpServletRequest,
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
@@ -589,7 +589,7 @@ class BookController(
     value = ["api/v1/books/{bookId}/manifest/epub"],
     produces = [MEDIATYPE_WEBPUB_JSON_VALUE],
   )
-  fun getWebPubManifestEpub(
+  fun getBookWebPubManifestEpub(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): WPPublicationDto = commonBookController.getWebPubManifestEpubInternal(principal, bookId, webPubGenerator)
@@ -599,7 +599,7 @@ class BookController(
     value = ["api/v1/books/{bookId}/manifest/pdf"],
     produces = [MEDIATYPE_WEBPUB_JSON_VALUE],
   )
-  fun getWebPubManifestPdf(
+  fun getBookWebPubManifestPdf(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): WPPublicationDto = commonBookController.getWebPubManifestPdfInternal(principal, bookId, webPubGenerator)
@@ -609,7 +609,7 @@ class BookController(
     value = ["api/v1/books/{bookId}/manifest/divina"],
     produces = [MEDIATYPE_DIVINA_JSON_VALUE],
   )
-  fun getWebPubManifestDivina(
+  fun getBookWebPubManifestDivina(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): WPPublicationDto = commonBookController.getWebPubManifestDivinaInternal(principal, bookId, webPubGenerator)
@@ -618,7 +618,7 @@ class BookController(
   @PostMapping("api/v1/books/{bookId}/analyze")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun analyze(
+  fun bookAnalyze(
     @PathVariable bookId: String,
   ) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
@@ -630,7 +630,7 @@ class BookController(
   @PostMapping("api/v1/books/{bookId}/metadata/refresh")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun refreshMetadata(
+  fun bookRefreshMetadata(
     @PathVariable bookId: String,
   ) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
@@ -643,7 +643,7 @@ class BookController(
   @PatchMapping("api/v1/books/{bookId}/metadata")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun updateMetadata(
+  fun updateBookMetadata(
     @PathVariable bookId: String,
     @Parameter(description = "Metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid
@@ -663,7 +663,7 @@ class BookController(
   @PatchMapping("api/v1/books/metadata")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun updateBatchMetadata(
+  fun updateBookMetadataByBatch(
     @Parameter(description = "A map of book IDs which values are the metadata fields to update. Set a field to null to unset the metadata. You can omit fields you don't want to update.")
     @Valid
     @RequestBody
@@ -686,7 +686,7 @@ class BookController(
   @Operation(summary = "Mark book's read progress", description = "Mark book as read and/or change page progress.", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @PatchMapping("api/v1/books/{bookId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun markReadProgress(
+  fun markBookReadProgress(
     @PathVariable bookId: String,
     @Parameter(description = "page can be omitted if completed is set to true. completed can be omitted, and will be set accordingly depending on the page passed and the total number of pages in the book.")
     @Valid
@@ -711,7 +711,7 @@ class BookController(
   @Operation(summary = "Mark book as unread", description = "Mark book as unread", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @DeleteMapping("api/v1/books/{bookId}/read-progress")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun deleteReadProgress(
+  fun deleteBookReadProgress(
     @PathVariable bookId: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ) {
@@ -762,7 +762,7 @@ class BookController(
   @PutMapping("api/v1/books/thumbnails")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun regenerateThumbnails(
+  fun booksRegenerateThumbnails(
     @RequestParam(name = "for_bigger_result_only", required = false) forBiggerResultOnly: Boolean = false,
   ) {
     taskEmitter.findBookThumbnailsToRegenerate(forBiggerResultOnly, LOWEST_PRIORITY)

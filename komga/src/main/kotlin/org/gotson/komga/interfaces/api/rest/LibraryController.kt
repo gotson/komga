@@ -60,7 +60,7 @@ class LibraryController(
     summary = "List all libraries",
     description = "The libraries are filtered based on the current user's permissions",
   )
-  fun getAll(
+  fun getLibraries(
     @AuthenticationPrincipal principal: KomgaPrincipal,
   ): List<LibraryDto> =
     if (principal.user.canAccessAllLibraries()) {
@@ -71,7 +71,7 @@ class LibraryController(
 
   @GetMapping("{libraryId}")
   @Operation(summary = "Get details for a single library")
-  fun getOne(
+  fun getLibraryById(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable libraryId: String,
   ): LibraryDto =
@@ -83,7 +83,7 @@ class LibraryController(
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
   @Operation(summary = "Create a library")
-  fun addOne(
+  fun addLibrary(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Valid @RequestBody
     library: LibraryCreationDto,
@@ -140,19 +140,19 @@ class LibraryController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @Deprecated("Use PATCH /v1/libraries/{libraryId} instead", ReplaceWith("patchOne"))
   @Operation(summary = "Update a library", description = "Use PATCH /api/v1/libraries/{libraryId} instead. Deprecated since 1.3.0.", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
-  fun updateOne(
+  fun updateLibraryByIdDeprecated(
     @PathVariable libraryId: String,
     @Valid @RequestBody
     library: LibraryUpdateDto,
   ) {
-    patchOne(libraryId, library)
+    updateLibraryById(libraryId, library)
   }
 
   @PatchMapping("/{libraryId}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "Update a library", description = "You can omit fields you don't want to update")
-  fun patchOne(
+  fun updateLibraryById(
     @PathVariable libraryId: String,
     @Parameter(description = "Fields to update. You can omit fields you don't want to update.")
     @Valid
@@ -215,7 +215,7 @@ class LibraryController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "Delete a library")
-  fun deleteOne(
+  fun deleteLibraryById(
     @PathVariable libraryId: String,
   ) {
     libraryRepository.findByIdOrNull(libraryId)?.let {
@@ -227,7 +227,7 @@ class LibraryController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @Operation(summary = "Scan a library")
-  fun scan(
+  fun libraryScan(
     @PathVariable libraryId: String,
     @RequestParam(required = false) deep: Boolean = false,
   ) {
@@ -240,7 +240,7 @@ class LibraryController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @Operation(summary = "Analyze a library")
-  fun analyze(
+  fun libraryAnalyze(
     @PathVariable libraryId: String,
   ) {
     val books =
@@ -257,7 +257,7 @@ class LibraryController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @Operation(summary = "Refresh metadata for a library")
-  fun refreshMetadata(
+  fun libraryRefreshMetadata(
     @PathVariable libraryId: String,
   ) {
     val books =
@@ -276,7 +276,7 @@ class LibraryController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @Operation(summary = "Empty trash for a library")
-  fun emptyTrash(
+  fun libraryEmptyTrash(
     @PathVariable libraryId: String,
   ) {
     libraryRepository.findByIdOrNull(libraryId)?.let { library ->

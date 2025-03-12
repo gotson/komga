@@ -26,7 +26,7 @@ class SyncPointController(
     summary = "Delete all sync points",
     description = "If an API Key ID is passed, deletes only the sync points associated with that API Key. Deleting sync points will allow a Kobo to sync from scratch upon the next sync.",
   )
-  fun deleteMySyncPointsByApiKey(
+  fun deleteSyncPointsForCurrentUser(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(required = false, name = "key_id") keyIds: Collection<String>?,
   ) {

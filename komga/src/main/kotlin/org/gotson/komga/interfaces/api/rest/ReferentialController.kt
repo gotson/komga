@@ -28,7 +28,7 @@ class ReferentialController(
   @GetMapping("v1/authors")
   @Deprecated("Use GET /v2/authors instead", ReplaceWith("getAuthors"))
   @Operation(summary = "List authors", description = "Use GET /api/v2/authors instead. Deprecated since 1.20.0.", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
-  fun getAuthorsV1(
+  fun getAuthorsDeprecated(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", defaultValue = "") search: String,
     @RequestParam(name = "library_id", required = false) libraryId: String?,

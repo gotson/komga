@@ -82,7 +82,7 @@ class SeriesCollectionController(
   @Operation(summary = "List collections", tags = [OpenApiConfiguration.TagNames.COLLECTIONS])
   @PageableWithoutSortAsQueryParam
   @GetMapping
-  fun getAll(
+  fun getCollections(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "search", required = false) searchTerm: String?,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,
@@ -112,7 +112,7 @@ class SeriesCollectionController(
 
   @Operation(summary = "Get collection details", tags = [OpenApiConfiguration.TagNames.COLLECTIONS])
   @GetMapping("{id}")
-  fun getOne(
+  fun getCollectionById(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ): CollectionDto =
@@ -195,7 +195,7 @@ class SeriesCollectionController(
   @PutMapping("{id}/thumbnails/{thumbnailId}/selected")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  fun markSelectedCollectionThumbnail(
+  fun markCollectionThumbnailSelected(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
@@ -227,7 +227,7 @@ class SeriesCollectionController(
   @Operation(summary = "Create collection", tags = [OpenApiConfiguration.TagNames.COLLECTIONS])
   @PostMapping
   @PreAuthorize("hasRole('ADMIN')")
-  fun addOne(
+  fun createCollection(
     @Valid @RequestBody
     collection: CollectionCreationDto,
   ): CollectionDto =
@@ -248,7 +248,7 @@ class SeriesCollectionController(
   @PatchMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun updateOne(
+  fun updateCollectionById(
     @PathVariable id: String,
     @Valid @RequestBody
     collection: CollectionUpdateDto,
@@ -272,7 +272,7 @@ class SeriesCollectionController(
   @DeleteMapping("{id}")
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun deleteOne(
+  fun deleteCollectionById(
     @PathVariable id: String,
   ) {
     collectionRepository.findByIdOrNull(id)?.let {
@@ -284,7 +284,7 @@ class SeriesCollectionController(
   @PageableWithoutSortAsQueryParam
   @AuthorsAsQueryParam
   @GetMapping("{id}/series")
-  fun getSeriesForCollection(
+  fun getSeriesByCollectionId(
     @PathVariable id: String,
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: List<String>?,

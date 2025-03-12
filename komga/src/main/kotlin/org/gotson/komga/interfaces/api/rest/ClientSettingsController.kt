@@ -142,7 +142,7 @@ class ClientSettingsController(
       ),
     ],
   )
-  fun deleteGlobalSetting(
+  fun deleteGlobalSettings(
     @RequestBody keysToDelete: Set<
       @Pattern(regexp = KEY_REGEX)
       String,
@@ -164,7 +164,7 @@ class ClientSettingsController(
       ),
     ],
   )
-  fun deleteGlobalSetting(
+  fun deleteUserSettings(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestBody keysToDelete: Set<
       @Pattern(regexp = KEY_REGEX)

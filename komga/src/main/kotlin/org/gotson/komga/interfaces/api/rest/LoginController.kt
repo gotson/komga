@@ -23,7 +23,7 @@ class LoginController(
   @Operation(summary = "Set cookie", description = "Forcefully return Set-Cookie header, even if the session is contained in the X-Auth-Token header.")
   @GetMapping("api/v1/login/set-cookie")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun headerToCookie(
+  fun convertHeaderSessionToCookie(
     request: HttpServletRequest,
     response: HttpServletResponse,
     session: HttpSession,
