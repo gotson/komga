@@ -163,7 +163,7 @@
                  :class="appearanceClass()"
                  v-if="!verticalScroll"
     >
-      <v-row>
+      <v-row v-if="progressMarkers">
         <v-col cols="10" class="text-truncate">
           {{ $t('epubreader.page_of', {page: progressionPage, count: progressionPageCount}) }}
           ({{ progressionTitle || $t('epubreader.current_chapter') }})
@@ -249,6 +249,9 @@
               <v-btn-toggle mandatory v-model="columnCount" class="py-3">
                 <v-btn v-for="(c, i) in columnCounts" :key="i" :value="c.value">{{ c.text }}</v-btn>
               </v-btn-toggle>
+            </v-list-item>
+            <v-list-item>
+              <settings-switch v-model="progressMarkers" :label="$t('epubreader.settings.progress_markers')"/>
             </v-list-item>
 
             <v-list-item class="justify-center">
@@ -412,6 +415,7 @@ export default Vue.extend({
         alwaysFullscreen: false,
         navigationClick: true,
         navigationButtons: true,
+        progressMarkers: true,
       },
       navigationOptions: [
         {text: this.$t('epubreader.settings.navigation_options.buttons').toString(), value: 'button'},
@@ -615,6 +619,15 @@ export default Vue.extend({
         this.$store.commit('setWebreaderAlwaysFullscreen', alwaysFullscreen)
         if (alwaysFullscreen) this.enterFullscreen()
         else screenfull.isEnabled && screenfull.exit()
+      },
+    },
+    progressMarkers: {
+      get: function (): boolean {
+        return this.settings.progressMarkers
+      },
+      set: function (value: boolean): void {
+        this.settings.progressMarkers = value
+        this.$store.commit('setWebreaderProgressMarkers', value)
       },
     },
     navigationMode: {
