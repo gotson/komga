@@ -19,7 +19,14 @@
   },
   "account_settings": {
     "account_settings": "Accountinstellingen",
-    "change_password": "wijzig wachtwoord"
+    "api_key": {
+      "created_date": "Aanmaakdatum: {date}",
+      "generate_api_key": "Genereer API-sleutel",
+      "no_keys": "Nog geen API-sleutels aangemaakt"
+    },
+    "change_password": "wijzig wachtwoord",
+    "details": "Details",
+    "my_account": "Mijn account"
   },
   "announcements": {
     "mark_all_read": "Alles markeren als gelezen",
@@ -27,6 +34,7 @@
     "tab_title": "Aankondigingen"
   },
   "authentication_activity": {
+    "api_key": "API-sleutel",
     "datetime": "Datum en tijd",
     "email": "E-mail",
     "error": "Fout",
@@ -60,7 +68,7 @@
     "field_import_path": "Importeren uit map",
     "info_part1": "Met dit scherm kunt u bestanden importeren die zich buiten uw bestaande bibliotheken bevinden. U kunt alleen bestanden importeren in bestaande series. In dit geval verplaatst of kopieert Komga de bestanden naar de map van de gekozen serie.",
     "info_part2": "Als u een nummer kiest voor een boek en er bestaat al een boek met dat nummer, dan kunt u de 2 boeken vergelijken. Als u besluit het boek te importeren, dan zal Komga het bestaande boek bijwerken met het nieuwe, waarbij het oude bestand wordt vervangen door het nieuwe.",
-    "no_files_found": "Geen bestanden gevonden.",
+    "no_files_found": "Geen bestanden gevonden",
     "notification": {
       "go_to_book": "Ga naar boek",
       "import_failure": "Boek importeren mislukt: {file}",
@@ -128,6 +136,7 @@
       "general": "Algemeen",
       "gestures": "Gebaren",
       "page_layout": "Paginaopmaak",
+      "page_margin": "Pagina marge",
       "paged": "Opties voor gepagineerde reader",
       "reading_mode": "Leesmodus",
       "scale_type": "Schaaltype",
@@ -161,6 +170,7 @@
   },
   "browse_book": {
     "comment": "OPMERKING",
+    "date_modified": "LAATST GEWIJZIGD",
     "download_file": "Download bestand",
     "file": "BESTAND",
     "format": "BESTANDSTYPE",
@@ -170,6 +180,8 @@
     "outdated_tooltip": "Het bestand voor dit boek is veranderd, dit boek moet opnieuw geanalyseerd worden",
     "read_book": "Lees boek",
     "read_incognito": "Incognito lezen",
+    "remove_from_collection": "Verwijder boek uit verzameling",
+    "remove_from_readlist": "Boek verwijderen uit leeslijst",
     "size": "GROOTTE"
   },
   "browse_collection": {
@@ -184,6 +196,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Dit is het oudste jaar van de verschijningsdata van alle boeken in de serie",
+    "remove_from_collection": "Serie uit verzameling verwijderen",
     "series_no_summary": "Deze serie heeft geen samenvatting, dus hebben we er een voor je uitgezocht!",
     "summary_from_book": "Samenvatting uit boek {number}:"
   },
@@ -194,6 +207,7 @@
   "common": {
     "age": "Leeftijd",
     "all_libraries": "Alle bibliotheken",
+    "all_of": "Allemaal",
     "book": "Boek",
     "books": "Boeken",
     "books_n": "Geen boek | 1 boek | {count} boeken",
@@ -203,6 +217,7 @@
     "choose_image": "Kies een afbeelding",
     "close": "Sluiten",
     "collections": "Verzamelingen",
+    "copied": "Gekopieerd!",
     "create": "Maak",
     "delete": "Verwijderen",
     "dimension": "b: {width}, h: {height}",
@@ -211,8 +226,10 @@
     "dismiss": "Verwerpen",
     "download": "Downloaden",
     "drag_drop": "slepen en neerzetten",
+    "duplicate": "Duplicaat",
     "email": "E-mail",
     "epub": "Epub",
+    "error": "Fout",
     "filename": "Bestandsnaam",
     "filter_no_matches": "Het actieve filter vindt geen overeenkomsten",
     "genre": "Genre",
@@ -220,12 +237,16 @@
     "go_to_library": "Ga naar bibliotheek",
     "go_to_readlist": "Ga naar leeslijst",
     "go_to_series": "Ga naar series",
+    "i_understand": "Ik begrijp het",
     "library": "Bibliotheek",
     "locale_name": "Nederlands",
     "locale_rtl": "false",
     "lock_all": "Vergrendel alles",
+    "media": "Media",
+    "more": "Meer",
     "n_selected": "{count} geselecteerd",
     "nothing_to_show": "Niets te tonen",
+    "ok": "OK",
     "oneshot": "One-shot",
     "outdated": "Verouderd",
     "page": "Pagina",
@@ -242,12 +263,15 @@
     "readlist": "Lees lijst",
     "readlists": "Leeslijsten",
     "remember-me": "Onthoud mij",
+    "reorder": "Opnieuw ordenen",
     "required": "Vereist",
     "reset_filters": "Filters resetten",
     "roles": "Rollen",
     "save_changes": "Wijzigingen opslaan",
     "series": "Serie | Series",
+    "settings": "Instellingen",
     "tags": "Labels",
+    "ui": "Gebruikersinterface",
     "unavailable": "Niet beschikbaar",
     "unlock_all": "Ontgrendel alles",
     "url": "URL",
@@ -286,6 +310,12 @@
     "tab_title": "Gegevens importeren"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Genereer",
+      "dialog_title": "Genereer nieuwe API-sleutel",
+      "field_comment": "Opmerking",
+      "field_comment_hint": "Waar dient deze API-sleutel voor?"
+    },
     "add_to_collection": {
       "button_create": "Maken",
       "card_collection_subtitle": "Geen serie | 1 serie | {count} series",
@@ -318,6 +348,12 @@
     "book_picker": {
       "filter": "Filter op boeknummer, titel of releasedatum",
       "title": "Selecteer Boek"
+    },
+    "delete_apikey": {
+      "button_confirm": "Verwijderen",
+      "confirm_delete": "Ik begrijp het, verwijder de API-sleutel \"{name}\"",
+      "dialog_title": "API-sleutel verwijderen",
+      "warning_html": "Toepassingen of scripts die deze API-sleutel gebruiken, hebben geen toegang meer tot de Komga API. Je kunt deze actie niet ongedaan maken."
     },
     "delete_book": {
       "button_confirm": "Verwijder",
@@ -417,6 +453,7 @@
       "dialot_title_edit": "Bibliotheek bewerken",
       "field_analysis_analyze_dimensions": "Analyseer pagina dimensies",
       "field_analysis_hash_files": "Bereken hash voor bestanden",
+      "field_analysis_hash_koreader": "Bereken hash voor bestanden voor KOReader",
       "field_analysis_hash_pages": "Bereken hash voor pagina's",
       "field_convert_to_cbz": "Automatisch converteren naar CBZ",
       "field_import_barcode_isbn": "ISBN streepjescode",
@@ -468,6 +505,10 @@
       "label_ordering": "Standaard worden boeken in een leeslijst handmatig geordend. Je kunt handmatig ordenen uitschakelen om boeken op releasedatum te sorteren.",
       "tab_general": "Algemeen",
       "tab_poster": "Poster"
+    },
+    "edit_recommended": {
+      "button_confirm": "Wijzigingen opslaan",
+      "dialog_title": "Aanbevolen weergave bewerken"
     },
     "edit_series": {
       "button_cancel": "Annuleren",
@@ -537,6 +578,9 @@
       },
       "title": "Doelbestandsnaam"
     },
+    "force_kobo_sync": {
+      "warning_html": "Dit verwijdert alle synchronisatiegeschiedenis voor deze API-sleutel. Je Kobo zal bij de volgende synchronisatie alles synchroniseren."
+    },
     "password_change": {
       "button_cancel": "Annuleren",
       "button_confirm": "Wijzig wachtwoord",
@@ -604,8 +648,11 @@
     "delete_to_save": "Verwijderen om {size} te besparen",
     "deleted_count": "{count} keer verwijderd",
     "empty_title": "Geen duplicaatpagina's gevonden",
+    "empty_title_known": "Geen duplicaten bekend",
     "filter": {
       "count": "Aantal",
+      "date_added": "Datum toegevoegd",
+      "date_modified": "Datum gewijzigd",
       "delete_count": "Aantal verwijderingen",
       "delete_size": "Bespaarde ruimte",
       "match_count": "Overeenkomst aantal",
@@ -655,6 +702,11 @@
       "DuplicatePageDeleted": "Duplicaatpagina verwijderd",
       "SeriesFolderDeleted": "Series map verwijderd"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Fout",
       "OUTDATED": "Verouderd",
@@ -703,8 +755,10 @@
   "epubreader": {
     "current_chapter": "Huidig hoofdstuk",
     "page_of": "Pagina {page} van {count}",
+    "publisher_font": "Uitgever",
     "settings": {
       "column_count": "Kolom aantal",
+      "font_family": "Lettertype",
       "layout": "Layout",
       "layout_paginated": "Gepagineerd",
       "layout_scroll": "Scroll",
@@ -740,7 +794,7 @@
     "ERR_1007": "Sommige vermeldingen konden niet worden geanalyseerd",
     "ERR_1008": "Onbekende fout bij het ophalen van boekvermeldingen",
     "ERR_1009": "Er bestaat al een leeslijst met deze naam",
-    "ERR_1015": "Fout bij het deserialiseren van ComicRack Leeslijst",
+    "ERR_1015": "Fout tijdens het uitpakken van ComicRack CBL",
     "ERR_1016": "Map niet toegankelijk of geen map",
     "ERR_1017": "Kan map die deel uitmaakt van een bestaande bibliotheek niet scannen",
     "ERR_1018": "Bestand niet gevonden",
@@ -749,18 +803,31 @@
     "ERR_1022": "Recent geïmporteerd boek kan niet worden gescanned",
     "ERR_1023": "Boek bestaat al in Leeslijst",
     "ERR_1025": "OAuth2 login error: geen bestaande gebruiker met dit emailadres",
-    "ERR_1026": "OpenID Connect login error: email niet bevestigd"
+    "ERR_1026": "OpenID Connect login error: email niet bevestigd",
+    "ERR_1029": "ComicRack CBL bevat geen enkel Boek-element",
+    "ERR_1030": "ComicRack CBL heeft geen Naam-element",
+    "ERR_1031": "ComicRack CBL Boek mist serie of nummer",
+    "ERR_1032": "EPUB-bestand heeft verkeerd mediatype",
+    "ERR_1034": "Er is al een API-sleutel met die opmerking",
+    "ERR_1035": "Fout tijdens het ophalen van EPUB TOC",
+    "ERR_1037": "Fout tijdens het ophalen van EPUB paginalijst",
+    "ERR_1039": "Fout tijdens het ophalen van EPUB posities"
   },
   "filter": {
     "age_rating": "leeftijdsclassificatie",
     "age_rating_none": "Geen",
+    "complete": "Compleet",
     "genre": "genre",
     "in_progress": "Wordt uitgevoerd",
     "language": "taal",
     "library": "Bibliotheek",
+    "media_profile": "Mediaprofiel",
+    "media_status": "Mediastatus",
+    "oneshot": "One-shot",
     "publisher": "uitgever",
     "read": "Lezen",
     "release_date": "Verschijningsdatum",
+    "sharing_label": "Label delen",
     "status": "status",
     "tag": "label",
     "unread": "ongelezen"
@@ -769,12 +836,24 @@
     "filter": "filter",
     "sort": "sorteren"
   },
+  "history": {
+    "header": {
+      "book": "Boek",
+      "date": "Datum",
+      "details": "Details",
+      "series": "Series",
+      "type": "Type"
+    },
+    "title": "Geschiedenis"
+  },
   "home": {
     "theme": "Thema",
     "translation": "Vertaling"
   },
   "library_navigation": {
     "browse": "Bladeren",
+    "browse_books": "Boeken",
+    "browse_series": "Series",
     "collections": "Verzamelingen",
     "readlists": "Leeslijsten",
     "recommended": "Aanbevolen"
@@ -797,14 +876,32 @@
     "add_to_collection": "Aan verzameling toevoegen",
     "add_to_readlist": "Toevoegen aan leeslijst",
     "analyze": "Analyseer",
+    "bulk_edit_metadata": "Metadata in bulk bewerken",
     "delete": "Verwijderen",
+    "deselect_all": "Alles deselecteren",
+    "download_readlist": "Download leeslijst",
     "download_series": "Serie downloaden",
     "edit": "Bewerk",
     "edit_metadata": "Bewerk metadata",
+    "empty_trash": "Prullenbak leegmaken",
     "mark_read": "Markeer als gelezen",
     "mark_unread": "Markeer als ongelezen",
+    "pin": "Pin",
     "refresh_metadata": "Ververs metadata",
-    "scan_library_files": "Scan bibliotheekbestanden"
+    "scan_library_files": "Scan bibliotheekbestanden",
+    "scan_library_files_deep": "Scan bibliotheekbestanden (diepgaand)",
+    "select_all": "Alles selecteren"
+  },
+  "metrics": {
+    "library_books": "Boeken per bibliotheek",
+    "library_disk_space": "Bibliotheek schijfruimte",
+    "library_series": "Series per bibliotheek",
+    "tasks_executed": "Uitgevoerde taken",
+    "tasks_total_time": "Totalen tijd taken",
+    "title": "Statistieken"
+  },
+  "missing_posters": {
+    "title": "Ontbrekende posters"
   },
   "navigation": {
     "home": "Beginscherm",
@@ -819,6 +916,12 @@
   "read_more": {
     "less": "Lees minder",
     "more": "Lees meer"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Duplicaat boek",
+      "error_choose_book": "Kies een boek"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Beheer leeslijst",
@@ -837,34 +940,84 @@
   },
   "server": {
     "server_management": {
+      "button_cancel_all_tasks": "Alle taken annuleren",
+      "button_empty_trash": "Prullenbak leegmaken voor alle bibliotheken",
+      "button_scan_libraries": "Scan alle bibliotheken",
+      "button_scan_libraries_deep": "Scan alle bibliotheken (diepgaand)",
       "button_shutdown": "Afsluiten",
+      "download_log": "Download logbestand",
+      "notification_tasks_cancelled": "Geen taken om te annuleren | Eén taak geannuleerd | {count} geannuleerde taken",
       "section_title": "Serverbeheer"
     },
-    "tab_title": "Server"
+    "tab_title": "Server",
+    "updates": "Updates"
   },
   "server_settings": {
+    "config_precedence": "Heeft voorrang op het configuratiebestand",
+    "dialog_regenerate_thumbnails": {
+      "btn_alternate": "Ja, alle boeken",
+      "btn_cancel": "Nee"
+    },
+    "label_delete_empty_collections": "Lege verzamelingen verwijderen na scannen",
+    "label_delete_empty_readlists": "Lege leeslijsten verwijderen na scannen",
+    "label_kobo_port": "Kobo Sync externe poort",
+    "label_server_context_path": "Basis-URL",
+    "requires_restart": "Opnieuw opstarten vereist om effect te hebben",
     "server_settings": "Serverinstellingen"
   },
   "settings_user": {
+    "change_password": "Wachtwoord wijzigen",
     "edit_user": "Bewerk gebruiker",
+    "latest_activity": "Laatste activiteit: {date}",
+    "no_recent_activity": "Geen recente activiteit",
     "role_administrator": "Administrator",
     "role_user": "Gebruiker"
   },
   "sort": {
     "books_count": "Aantal boeken",
     "date_added": "Datum toegevoegd",
+    "date_read": "Datum gelezen",
     "date_updated": "Datum bijgewerkt",
     "file_name": "Bestandsnaam",
     "file_size": "Bestandsgrootte",
     "folder_name": "Mapnaam",
     "name": "Naam",
     "number": "Nummer",
-    "release_date": "Publicatiedatum"
+    "page_count": "Aantal pagina's",
+    "random": "Willekeurig",
+    "release_date": "Publicatiedatum",
+    "series": "Series"
   },
   "theme": {
     "dark": "Donker",
     "light": "Licht",
     "system": "Systeem"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Verwijderen",
+    "tooltip_mark_as_selected": "Markeer als geselecteerd",
+    "tooltip_selected": "Geselecteerd",
+    "tooltip_to_be_deleted": "Te verwijderen",
+    "tooltip_to_be_uploaded": "Te uploaden",
+    "tooltip_too_big": "Bestand te groot!"
+  },
+  "titles_more": {
+    "less": "Minder titels",
+    "more": "Meer titels"
+  },
+  "ui_settings": {
+    "label_oauth2_hide_login": "Verberg inlogvelden als OAuth2 is ingeschakeld",
+    "label_series_groups": "Series groeperen",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Alfabetisch",
+      "japanese": "Gojūon (Japans)"
+    },
+    "tooltip_oauth2_auto_login": "Vereist één enkele OAuth2-provider en 'verberg inlogvelden' ingeschakeld"
+  },
+  "updates": {
+    "available": "Er zijn updates beschikbaar",
+    "latest_installed": "De nieuwste versie van Komga is al geïnstalleerd"
   },
   "user_roles": {
     "ADMIN": "Administrator",
@@ -873,9 +1026,14 @@
     "USER": "Gebruiker"
   },
   "users": {
+    "api_keys": "API-sleutels",
+    "authentication_activity": "Authenticatie activiteit",
     "users": "Gebruikers"
   },
   "validation": {
+    "context_path": "Moet beginnen met '/', mag niet eindigen met '/-_' en mag alleen '/-_a-z0-9' bevatten",
+    "one_or_more": "Moet 1 of meer zijn",
+    "tcp_port": "Moet zijn tussen 1 en 65535",
     "zero_or_more": "Moet groter of gelijk aan 0 zijn"
   },
   "welcome": {
