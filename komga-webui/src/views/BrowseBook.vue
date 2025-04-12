@@ -36,6 +36,9 @@
       >{{ $t('browse_book.navigation_within_readlist', {name: contextName}) }}
       </v-alert>
 
+      <!--   Page Size   -->
+      <page-size-select v-model="pageSize" />
+
       <!--   Navigate to previous book   -->
       <v-btn
         icon
@@ -433,6 +436,13 @@
         </v-col>
       </v-row>
 
+      <v-row>
+        <v-col>
+          <pages-browser :bookId="bookId" :totalPages="previewPages" :pageSize="pageSize"
+            :readRouteName="readRouteName" :blur="shouldBlur"></pages-browser>
+        </v-col>
+      </v-row>
+
     </v-container>
 
   </div>
@@ -441,6 +451,8 @@
 <script lang="ts">
 import BookActionsMenu from '@/components/menus/BookActionsMenu.vue'
 import ItemCard from '@/components/ItemCard.vue'
+import PagesBrowser from '@/components/PagesBrowser.vue'
+import PageSizeSelect from '@/components/PageSizeSelect.vue'
 import ToolbarSticky from '@/components/bars/ToolbarSticky.vue'
 import {groupAuthorsByRole} from '@/functions/authors'
 import {getBookFormatFromMedia, getBookReadRouteFromMedia} from '@/functions/book-format'
@@ -471,10 +483,11 @@ import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/t
 import {RawLocation} from 'vue-router/types/router'
 import {ReadListDto} from '@/types/komga-readlists'
 import {BookSearch, SearchConditionSeriesId, SearchConditionTag, SearchOperatorIs} from '@/types/komga-search'
+import {CLIENT_SETTING} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'BrowseBook',
-  components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels, VueHorizontal, RtlIcon},
+  components: {ReadMore, ToolbarSticky, ItemCard, BookActionsMenu, ReadListsExpansionPanels, VueHorizontal, RtlIcon, PagesBrowser, PageSizeSelect},
   data: () => {
     return {
       MediaStatus,
@@ -488,6 +501,8 @@ export default Vue.extend({
       siblingNext: {} as BookDto,
       readLists: [] as ReadListDto[],
       readMore: false,
+      page: 1,
+      pageSize: 20,
     }
   },
   async created() {
@@ -524,6 +539,12 @@ export default Vue.extend({
     }
 
     next()
+  },
+  async mounted() {
+    this.pageSize = this.$store.state.persistedState.browsingPageSize || this.pageSize
+    this.$watch('pageSize', (val) => {
+      this.$store.commit('setBrowsingPageSize', val)
+    })
   },
   computed: {
     readRouteName(): string {
@@ -598,6 +619,19 @@ export default Vue.extend({
       const allRoles = this.$_.uniq([...authorRoles, ...(this.book.metadata.authors.map(x => x.role))])
       return allRoles.filter(x => this.authorsByRole[x])
     },
+    previewPages(): number {
+      if (this.book.media.mediaProfile.toLowerCase() === 'epub')
+        return 0
+      else
+        return this.book.media.pagesCount
+    },
+    isBlurUnread(): boolean {
+      return this.$store.getters.getClientSettings[CLIENT_SETTING.WEBUI_POSTER_BLUR_UNREAD]?.value === 'true'
+    },
+    shouldBlur(): boolean | undefined {
+      return this.isBlurUnread && !this.isRead
+    },
+
   },
   methods: {
     getLibraryName(item: BookDto): string {
