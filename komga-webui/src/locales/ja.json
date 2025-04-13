@@ -382,6 +382,12 @@
       "title": "ライブラリを削除",
       "warning_html": "ライブラリ <b>{name}</b> はこのサーバから削除されます。メディアファイルには影響しません。削除はなかったことに<b>できません</b>。続けますか？"
     },
+    "delete_page": {
+      "button_confirm": "削除",
+      "confirm_delete": "はい、ページ \"{number}\" を削除します",
+      "dialog_title": "ページを削除",
+      "warning_html": "ページ <b>{number}</b> はこの書籍から削除されます。これによりファイルが変更され、<b>元に戻すことはできません</b>。続行する前にバックアップを作成してください。続行しますか？"
+    },
     "delete_readlist": {
       "button_confirm": "削除",
       "confirm_delete": "はい、読書リスト「{name}」を削除します",

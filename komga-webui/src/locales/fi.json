@@ -389,6 +389,12 @@
       "title": "Poista kirjasto",
       "warning_html": "Kirjasto <b>{name}</b> poistetaan palvelimelta. Tämä ei vaikuta mediatiedostoihisi. Tätä <b>ei voi</b> kumota. Haluatko jatkaa?"
     },
+    "delete_page": {
+      "button_confirm": "Poista",
+      "confirm_delete": "Kyllä, poista sivu \"{number}\"",
+      "dialog_title": "Poista sivu",
+      "warning_html": "Sivu <b>{number}</b> poistetaan tästä kirjasta. Tämä muokkaa tiedostojasi, eikä sitä <b>voi</b> perua. Ota varmuuskopio ennen jatkamista. Haluatko jatkaa?"
+    },
     "delete_readlist": {
       "button_confirm": "Poista",
       "confirm_delete": "Kyllä, poista lukulista ”{name}”",

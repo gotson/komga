@@ -389,6 +389,12 @@
       "title": "Apagar biblioteca",
       "warning_html": "A biblioteca <b>{name}</b> será removida deste servidor. Os seus ficheiros de media não serão afetados. Isto <b>não poderá</b> ser anulado. Prosseguir?"
     },
+    "delete_page": {
+      "button_confirm": "Apagar",
+      "confirm_delete": "Sim, apagar a página \"{number}\"",
+      "dialog_title": "Apagar Página",
+      "warning_html": "A página <b>{number}</b> será removida deste livro. Isto modificará os seus ficheiros e <b>não</b> poderá ser desfeito. Faça um backup antes de continuar. Continuar?"
+    },
     "delete_readlist": {
       "button_confirm": "Apagar",
       "confirm_delete": "Sim, apagar a lista de leitura \"{name}\"",

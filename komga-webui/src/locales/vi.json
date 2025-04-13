@@ -312,6 +312,12 @@
       "title": "Xóa Thư viện",
       "warning_html": "Thư viện <b>{name}</b> sẽ bị xóa khỏi máy chủ này. Các tệp phương tiện của bạn sẽ không bị ảnh hưởng. Điều này <b> không thể hoàn tác</b>. Tiếp tục?"
     },
+    "delete_page": {
+      "button_confirm": "Xóa",
+      "confirm_delete": "Có, xóa trang \"{number}\"",
+      "dialog_title": "Xóa Trang",
+      "warning_html": "Trang <b>{number}</b> sẽ bị xóa khỏi cuốn sách này. Điều này sẽ thay đổi các tệp của bạn và <b>không thể</b> hoàn tác. Hãy sao lưu trước khi tiếp tục. Tiếp tục?"
+    },
     "delete_readlist": {
       "button_confirm": "Xóa",
       "confirm_delete": "Có, xóa danh sách đọc \"{name}\"",

@@ -344,6 +344,12 @@
       "title": "Slett bibliotek",
       "warning_html": "Biblioteket <b>{name}</b> vil bli fjernet fra tjeneren. Dette har ingen innvirkning på dine mediefiler. Dette kan <b>ikke</b> angres. Fortsett?"
     },
+    "delete_page": {
+      "button_confirm": "Slett",
+      "confirm_delete": "Ja, slett siden \"{number}\"",
+      "dialog_title": "Slett side",
+      "warning_html": "Siden <b>{number}</b> vil bli fjernet fra denne boken. Dette vil endre filene dine og <b>kan ikke</b> angres. Ta en sikkerhetskopi før du fortsetter. Vil du fortsette?"
+    },
     "delete_readlist": {
       "button_confirm": "Slett",
       "confirm_delete": "Ja, slett leselisten «{name}»",

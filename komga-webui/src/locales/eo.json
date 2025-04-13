@@ -298,6 +298,12 @@
       "title": "Forigi Bibliotekon",
       "warning_html": "La biblioteko <b>{name}</b> estas forigota de ĉi tiu servilo. Viaj dosieroj ne ŝanĝiĝos. Tio <b>ne</b> esteas malfarebla. Ĉu daŭrigi?"
     },
+    "delete_page": {
+      "button_confirm": "Forigi",
+      "confirm_delete": "Jes, forigu paĝon «{number}»",
+      "dialog_title": "Forigi Paĝon",
+      "warning_html": "Paĝo <b>{number}</b> estos forigita el ĉi tiu libro. Tio modifos viajn dosierojn kaj <b>ne</b> estos malfarebla. Faru sekurkopion antaŭ ol daŭrigi. Ĉu daŭrigi?"
+    },
     "delete_readlist": {
       "button_confirm": "Forigi",
       "confirm_delete": "Jes, forigu la legoliston «{name}»",

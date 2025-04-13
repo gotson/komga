@@ -338,6 +338,12 @@
       "title": "Hapus Pustaka",
       "warning_html": "Pustaka <b>{name}</b> akan dihapus dari server ini. Berkas media Anda tidak akan terpengaruh. Ini <b>tidak dapat</b> diurungkan. Lanjutkan?"
     },
+    "delete_page": {
+      "button_confirm": "Hapus",
+      "confirm_delete": "Ya, hapus halaman \"{number}\"",
+      "dialog_title": "Hapus Halaman",
+      "warning_html": "Halaman <b>{number}</b> akan dihapus dari buku ini. Ini akan mengubah file Anda dan <b>tidak dapat</b> dibatalkan. Cadangkan sebelum melanjutkan. Lanjutkan?"
+    },
     "delete_readlist": {
       "button_confirm": "Hapus",
       "confirm_delete": "Ya, hapus daftar bacaan \"{name}\"",

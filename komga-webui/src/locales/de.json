@@ -389,6 +389,12 @@
       "title": "Bibliothek löschen",
       "warning_html": "Die Bibliothek <b>{name}</b> wird vom Server gelöscht. Die physikalischen Dateien bleiben unverändert. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
     },
+    "delete_page": {
+      "button_confirm": "Löschen",
+      "confirm_delete": "Ja, lösche Seite \"{number}\"",
+      "dialog_title": "Seite löschen",
+      "warning_html": "Seite <b>{number}</b> wird aus diesem Buch entfernt. Dies wird Ihre Dateien ändern und <b>kann nicht</b> rückgängig gemacht werden. Sichern Sie Ihre Daten, bevor Sie fortfahren. Fortfahren?"
+    },
     "delete_readlist": {
       "button_confirm": "Löschen",
       "confirm_delete": "Ja, die Leseliste „{name}“ löschen",

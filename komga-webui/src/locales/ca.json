@@ -344,6 +344,12 @@
       "title": "Suprimeix la biblioteca",
       "warning_html": "Se suprimirà la biblioteca <b>{name}</b> d'aquest servidor però no els seus fitxers multimedia. Un cop fet <b>no es pot recuperar</b>. Voleu continuar?"
     },
+    "delete_page": {
+      "button_confirm": "Suprimeix",
+      "confirm_delete": "Sí, suprimeix la pàgina «{number}»",
+      "dialog_title": "Suprimeix la pàgina",
+      "warning_html": "La pàgina <b>{number}</b> serà eliminada d'aquest llibre. Això modificarà els vostres fitxers i <b>no</b> es podrà desfer. Feu una còpia de seguretat abans de continuar. Voleu continuar?"
+    },
     "delete_readlist": {
       "button_confirm": "Suprimeix",
       "confirm_delete": "Sí, suprimeix la llista de lectura \"{name}\"",

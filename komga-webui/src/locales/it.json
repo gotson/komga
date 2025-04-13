@@ -389,6 +389,12 @@
       "title": "Elimina Libreria",
       "warning_html": "La libreria <b>{name}</b> sarà rimossa da questo server. I tuoi file multimediali non saranno interessati. Questo <b> non può</b> essere annullato. Continuare?"
     },
+    "delete_page": {
+      "button_confirm": "Elimina",
+      "confirm_delete": "Sì, elimina la pagina \"{number}\"",
+      "dialog_title": "Elimina Pagina",
+      "warning_html": "La pagina <b>{number}</b> sarà rimossa da questo libro. Questo modificherà i tuoi file e <b>non</b> potrà essere annullato. Effettua un backup prima di procedere. Continuare?"
+    },
     "delete_readlist": {
       "button_confirm": "Elimina",
       "confirm_delete": "Sì, cancella la lista di lettura «{name}»",

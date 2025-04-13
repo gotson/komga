@@ -389,6 +389,12 @@
       "title": "Eliminar biblioteca",
       "warning_html": "La biblioteca <b>{name}</b> será removida de este servidor. Sus archivos no serán afectados. Esto <b>no</b> se puede deshacer. ¿Continuar?"
     },
+    "delete_page": {
+      "button_confirm": "Eliminar",
+      "confirm_delete": "Sí, eliminar la página \"{number}\"",
+      "dialog_title": "Eliminar página",
+      "warning_html": "La página <b>{number}</b> será eliminada de este libro. Esto modificará tus archivos y <b>no</b> se podrá deshacer. Haz una copia de seguridad antes de continuar. ¿Deseas proceder?"
+    },
     "delete_readlist": {
       "button_confirm": "Eliminar",
       "confirm_delete": "Sí, eliminar la lista de lectura «{name}»",

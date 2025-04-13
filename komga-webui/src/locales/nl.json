@@ -343,6 +343,12 @@
       "title": "Verwijder Bibliotheek",
       "warning_html": "De bibliotheek <b>{name}</b> zal van deze server worden verwijderd. Uw mediabestanden zullen niet worden beïnvloed. Dit kan <b>niet</b> ongedaan worden gemaakt. Doorgaan?"
     },
+    "delete_page": {
+      "button_confirm": "Verwijderen",
+      "confirm_delete": "Ja, verwijder pagina \"{number}\"",
+      "dialog_title": "Pagina verwijderen",
+      "warning_html": "Pagina <b>{number}</b> zal uit dit boek worden verwijderd. Dit zal uw bestanden wijzigen en <b>kan niet</b> ongedaan worden gemaakt. Maak een back-up voordat u doorgaat. Doorgaan?"
+    },
     "delete_readlist": {
       "button_confirm": "Verwijderen",
       "confirm_delete": "Ja, verwijder de leeslijst \"{name}\"",

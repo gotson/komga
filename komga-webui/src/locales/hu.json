@@ -389,6 +389,12 @@
       "title": "Könyvtár törlése",
       "warning_html": "A(z) <b>{name}</b> könyvtár törölve lesz erről a szerverről. A médiafájljaid nem lesznek befolyásolva. Ezt a műveletet <b>nem</b> lehet visszavonni. Folytatod?"
     },
+    "delete_page": {
+      "button_confirm": "Törlés",
+      "confirm_delete": "Igen, törölje az oldalt \"{number}\"",
+      "dialog_title": "Oldal törlése",
+      "warning_html": "Az oldal <b>{number}</b> el lesz távolítva ebből a könyvből. Ez módosítani fogja a fájljaidat, és <b>nem</b> lehet visszavonni. Készíts biztonsági másolatot a folytatás előtt. Folytatod?"
+    },
     "delete_readlist": {
       "button_confirm": "Törlés",
       "confirm_delete": "Igen, törölje a(z) \"{name}\" olvasólistát",

@@ -367,6 +367,12 @@
       "title": "Slet biblioteket",
       "warning_html": "Biblioteket <b>{name}</b> fjernes fra denne server. Dine mediefiler vil ikke blive påvirket. Dette <b>kan ikke</b> fortrydes. Fortsæt?"
     },
+    "delete_page": {
+      "button_confirm": "Slet",
+      "confirm_delete": "Ja, slet side \"{number}\"",
+      "dialog_title": "Slet side",
+      "warning_html": "Siden <b>{number}</b> vil blive fjernet fra denne bog. Dette vil ændre dine filer og <b>kan ikke</b> fortrydes. Lav en sikkerhedskopi, før du fortsætter. Fortsæt?"
+    },
     "delete_readlist": {
       "button_confirm": "Slet",
       "confirm_delete": "Ja, slet læselisten \"{name}\"",

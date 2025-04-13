@@ -389,6 +389,12 @@
       "title": "Izbriši biblioteku",
       "warning_html": "Biblioteka <b>{name}</b> će se ukloniti s ovog servera. Tvoje se medijske datoteke neće promijeniti. Ovo je <b>nepovratna radnja</b>. Nastaviti?"
     },
+    "delete_page": {
+      "button_confirm": "Izbriši",
+      "confirm_delete": "Da, izbriši stranicu \"{number}\"",
+      "dialog_title": "Izbriši stranicu",
+      "warning_html": "Stranica <b>{number}</b> će biti uklonjena iz ove knjige. Ovo će promijeniti tvoje datoteke i <b>ne može</b> biti poništeno. Napravi sigurnosnu kopiju prije nastavka. Nastaviti?"
+    },
     "delete_readlist": {
       "button_confirm": "Izbriši",
       "confirm_delete": "Da, izbriši listu čitanja „{name}”",

@@ -338,6 +338,12 @@
       "title": "Redera bibliotek",
       "warning_html": "Biblioteket <b>{name}</b> kommer att tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
     },
+    "delete_page": {
+      "button_confirm": "Ta bort",
+      "confirm_delete": "Ja, ta bort sidan \"{number}\"",
+      "dialog_title": "Ta bort sida",
+      "warning_html": "Sidan <b>{number}</b> kommer att tas bort från denna bok. Detta kommer att ändra dina filer och <b>kan inte</b> ångras. Säkerhetskopiera innan du fortsätter. Fortsätta?"
+    },
     "delete_readlist": {
       "button_confirm": "Radera",
       "confirm_delete": "Ja, radera läslistan ”{name}”",

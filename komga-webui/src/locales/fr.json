@@ -389,6 +389,12 @@
       "title": "Supprimer la bibliothèque",
       "warning_html": "La bibliothèque <b>{name}</b> sera supprimée de ce serveur. Vos fichiers ne seront pas affectés. Cette action <b>est irréversible</b>. Voulez-vous continuer ?"
     },
+    "delete_page": {
+      "button_confirm": "Supprimer",
+      "confirm_delete": "Oui, supprimer la page « {number} »",
+      "dialog_title": "Supprimer la page",
+      "warning_html": "La page <b>{number}</b> sera supprimée de ce livre. Cela modifiera vos fichiers et <b>ne peut pas</b> être annulé. Sauvegardez avant de continuer. Voulez-vous continuer ?"
+    },
     "delete_readlist": {
       "button_confirm": "Supprimer",
       "confirm_delete": "Oui, supprimer la liste de lecture « {name} »",

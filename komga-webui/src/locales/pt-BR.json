@@ -343,6 +343,12 @@
       "title": "Excluir Biblioteca",
       "warning_html": "A biblioteca <b>{name}</b> será removida deste servidor. Seus arquivos originais não serão afetados. Isso <b>não poderá</b> ser desfeito. Prosseguir?"
     },
+    "delete_page": {
+      "button_confirm": "Excluir",
+      "confirm_delete": "Sim, excluir a página \"{number}\"",
+      "dialog_title": "Excluir Página",
+      "warning_html": "A página <b>{number}</b> será removida deste livro. Isso modificará seus arquivos e <b>não</b> poderá ser desfeito. Faça um backup antes de continuar. Continuar?"
+    },
     "delete_readlist": {
       "button_confirm": "Excluir",
       "confirm_delete": "Sim, excluir a lista de leitura \"{name}\"",

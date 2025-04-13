@@ -383,6 +383,12 @@
       "title": "Usuń bibliotekę",
       "warning_html": "Biblioteka <b>{name}</b> zostanie usunięta z tego serwera. Nie będzie to miało wpływu na Twoje pliki. Ta czynność <b>nie może</b> być cofnięta. Kontynuować?"
     },
+    "delete_page": {
+      "button_confirm": "Usuń",
+      "confirm_delete": "Tak, usuń stronę \"{number}\"",
+      "dialog_title": "Usuń stronę",
+      "warning_html": "Strona <b>{number}</b> zostanie usunięta z tej książki. To zmodyfikuje Twoje pliki i <b>nie może</b> zostać cofnięte. Wykonaj kopię zapasową przed kontynuowaniem. Kontynuować?"
+    },
     "delete_readlist": {
       "button_confirm": "Usuń",
       "confirm_delete": "Tak, usuń listę \"{name}\"",

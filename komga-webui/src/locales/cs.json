@@ -389,6 +389,12 @@
       "title": "Odstranit knihovnu",
       "warning_html": "Knihovna <b>{name}</b> bude odstraněna z tohoto serveru. Vaše mediální soubory nebudou ovlivněny. Tuto akci <b>nelze</b> vzít zpět. Pokračovat?"
     },
+    "delete_page": {
+      "button_confirm": "Odstranit",
+      "confirm_delete": "Ano, odstranit stránku \"{number}\"",
+      "dialog_title": "Odstranit stránku",
+      "warning_html": "Stránka <b>{number}</b> bude odstraněna z této knihy. Tím se změní vaše soubory a <b>nelze</b> to vrátit zpět. Před pokračováním si vytvořte zálohu. Pokračovat?"
+    },
     "delete_readlist": {
       "button_confirm": "Odstranit",
       "confirm_delete": "Ano, odstranit seznam četby \"{name}\"",

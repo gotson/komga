@@ -344,6 +344,12 @@
       "title": "删除書庫",
       "warning_html": "書庫 <b>{name}</b> 將從此伺服器中删除。您的媒體檔案不會受到影響。此操作<b>無法</b>復原。繼續嗎？"
     },
+    "delete_page": {
+      "button_confirm": "刪除",
+      "confirm_delete": "是的，刪除頁面 \"{number}\"",
+      "dialog_title": "刪除頁面",
+      "warning_html": "頁面 <b>{number}</b> 將從此書中移除。這將修改您的檔案，且<b>無法</b>復原。請在繼續之前備份。是否繼續？"
+    },
     "delete_readlist": {
       "button_confirm": "刪除",
       "confirm_delete": "是的，删除閱讀列表 “{name}”",

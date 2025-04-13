@@ -369,6 +369,12 @@
       "title": "Kütüphaneyi Sil",
       "warning_html": "<b>{name}</b> kütüphanesi bu sunucudan silinecektir. Dosyalarınız bu işlemden etkilenmeyecektir. Bu işlem <b>geri alınamaz</b>. Devam et ?"
     },
+    "delete_page": {
+      "button_confirm": "Sil",
+      "confirm_delete": "Evet, sayfa \"{number}\" silinsin",
+      "dialog_title": "Sayfayı Sil",
+      "warning_html": "Sayfa <b>{number}</b> bu kitaptan kaldırılacak. Bu işlem dosyalarınızı değiştirecek ve <b>geri alınamaz</b>. Devam etmeden önce yedek alın. Devam edilsin mi?"
+    },
     "delete_readlist": {
       "button_confirm": "Sil",
       "confirm_delete": "Evet, \"{name}\" okuma listesini sil",

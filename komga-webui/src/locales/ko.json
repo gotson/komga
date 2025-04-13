@@ -389,6 +389,12 @@
       "title": "서재 삭제",
       "warning_html": "서재 <b>{name}</b> 이(가) 이 서버에서 제거됩니다. 미디어 파일은 영향을 받지 않습니다. <b>이 일은 되돌릴 수 없습니다.</b> 계속하시겠습니까?"
     },
+    "delete_page": {
+      "button_confirm": "삭제",
+      "confirm_delete": "네, 페이지 \"{number}\" 을(를) 삭제합니다",
+      "dialog_title": "페이지 삭제",
+      "warning_html": "페이지 <b>{number}</b>이(가) 이 책에서 제거됩니다. 이 작업은 파일을 수정하며 <b>되돌릴 수 없습니다</b>. 계속하기 전에 백업을 진행하세요. 계속하시겠습니까?"
+    },
     "delete_readlist": {
       "button_confirm": "삭제",
       "confirm_delete": "네, 읽기 목록 \"{name}\"을(를) 삭제합니다",

@@ -389,6 +389,12 @@
       "title": "删除库",
       "warning_html": "库 <b>{name}</b> 将从此服务器中删除。您的媒体文件不会受到影响。此操作<b>无法</b>撤消。继续吗？"
     },
+    "delete_page": {
+      "button_confirm": "删除",
+      "confirm_delete": "是的，删除页面 \"{number}\"",
+      "dialog_title": "删除页面",
+      "warning_html": "页面 <b>{number}</b> 将从此书中移除。这将修改您的文件，并且<b>无法</b>撤销。请在继续之前备份。是否继续？"
+    },
     "delete_readlist": {
       "button_confirm": "删除",
       "confirm_delete": "是的，删除阅读列表 “{name}”",
