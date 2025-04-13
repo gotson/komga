@@ -389,6 +389,12 @@
       "title": "Delete Library",
       "warning_html": "The library <b>{name}</b> will be removed from this server. Your media files will not be affected. This <b>cannot</b> be undone. Continue?"
     },
+    "delete_page": {
+      "button_confirm": "Delete",
+      "confirm_delete": "Yes, delete page \"{number}\"",
+      "dialog_title": "Delete Page",
+      "warning_html": "Page <b>{number}</b> will be removed from this book. This will modify your files and <b>cannot</b> be undone. Backup before proceeding. Continue?"
+    },
     "delete_readlist": {
       "button_confirm": "Delete",
       "confirm_delete": "Yes, delete the read list \"{name}\"",

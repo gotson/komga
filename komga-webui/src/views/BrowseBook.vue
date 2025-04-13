@@ -438,8 +438,12 @@
 
       <v-row>
         <v-col>
-          <pages-browser :bookId="bookId" :totalPages="previewPages" :pageSize="pageSize"
-            :readRouteName="readRouteName" :blur="shouldBlur"></pages-browser>
+          <pages-browser
+            :bookId="bookId"
+            :pageSize="pageSize"
+            :readRouteName="readRouteName"
+            :blur="shouldBlur"
+          />
         </v-col>
       </v-row>
 

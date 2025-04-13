@@ -41,6 +41,7 @@ export interface PageDto {
   height?: number,
   sizeBytes?: number,
   size: string,
+  fileHash?: string,
 }
 
 export interface PageDtoWithUrl {
