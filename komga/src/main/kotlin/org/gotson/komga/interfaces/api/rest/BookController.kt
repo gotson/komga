@@ -458,6 +458,7 @@ class BookController(
               width = bookPage.dimension?.width,
               height = bookPage.dimension?.height,
               sizeBytes = bookPage.fileSize,
+              fileHash = bookPage.fileHash,
             )
           }
         }

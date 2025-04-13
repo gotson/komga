@@ -10,4 +10,5 @@ data class PageDto(
   val height: Int?,
   val sizeBytes: Long?,
   val size: String = sizeBytes?.let { BinaryByteUnit.format(it) } ?: "",
+  val fileHash: String?,
 )
