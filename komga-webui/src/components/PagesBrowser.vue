@@ -46,7 +46,7 @@
                   </v-btn>
 
                   <v-btn icon
-                    v-if="showDelete(page)"
+                    v-if="isAdmin && canDelete(page)"
                     :style="'position: absolute; bottom: 5px; ' + ($vuetify.rtl ? 'left' : 'right' ) +': 5px'"
                     @click="promptDeletePage(page)">
                     <v-icon>mdi-delete</v-icon>
@@ -137,6 +137,9 @@ export default Vue.extend({
       let end: number = this.currentPage * this.pageSize
       return this.pages.slice(start, end)
     },
+    isAdmin(): boolean {
+      return this.$store.getters.meAdmin
+    },
   },
   methods: {
     async loadPages(bookId: string) {
@@ -148,9 +151,8 @@ export default Vue.extend({
     getThumbnailUrl(page: PageDto): string {
       return bookPageThumbnailUrl(this.bookId, page.number)
     },
-    showDelete(page: PageDto): boolean {
-      let hash = page.fileHash ?? ''
-      return hash.trim().length !== 0
+    canDelete(page: PageDto): boolean {
+      return (page.fileHash ?? '').trim().length !== 0
     },
     goTo(page: PageDto, incognito: boolean = false): void {
       this.$router.push(
