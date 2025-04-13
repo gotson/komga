@@ -28,7 +28,7 @@ export default class KomgaPageHashesService {
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve known page hashes'
-      if (e.response.data.message) {
+      if (e.response?.data?.message) {
         msg += `: ${e.response.data.message}`
       }
       throw new Error(msg)
@@ -43,7 +43,7 @@ export default class KomgaPageHashesService {
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve unknown page hashes'
-      if (e.response.data.message) {
+      if (e.response?.data?.message) {
         msg += `: ${e.response.data.message}`
       }
       throw new Error(msg)
@@ -57,8 +57,8 @@ export default class KomgaPageHashesService {
         paramsSerializer: params => qs.stringify(params, {indices: false}),
       })).data
     } catch (e) {
-      let msg = `An error occurred while trying to retrieve matches for page hash: ${pageHash}`
-      if (e.response.data.message) {
+      let msg = `An error occurred while trying to retrieve matches for page hash: ${pageHash.hash}`
+      if (e.response?.data?.message) {
         msg += `: ${e.response.data.message}`
       }
       throw new Error(msg)
@@ -69,8 +69,8 @@ export default class KomgaPageHashesService {
     try {
       await this.http.put(API_PAGE_HASH, pageHash)
     } catch (e) {
-      let msg = `An error occurred while trying to add page hash ${pageHash}`
-      if (e.response.data.message) {
+      let msg = `An error occurred while trying to add page hash ${pageHash.hash}`
+      if (e.response?.data?.message) {
         msg += `: ${e.response.data.message}`
       }
       throw new Error(msg)
@@ -81,8 +81,8 @@ export default class KomgaPageHashesService {
     try {
       await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/delete-all`)
     } catch (e) {
-      let msg = `An error occurred while trying to execute delete all matches on page hash ${pageHash}`
-      if (e.response.data.message) {
+      let msg = `An error occurred while trying to execute delete all matches on page hash ${pageHash.hash}`
+      if (e.response?.data?.message) {
         msg += `: ${e.response.data.message}`
       }
       throw new Error(msg)
@@ -93,8 +93,8 @@ export default class KomgaPageHashesService {
     try {
       await this.http.post(`${API_PAGE_HASH}/${pageHash.hash}/delete-match`, match)
     } catch (e) {
-      let msg = `An error occurred while trying to execute delete single match on page hash ${pageHash}`
-      if (e.response.data.message) {
+      let msg = `An error occurred while trying to execute delete single match on page hash ${pageHash.hash}`
+      if (e.response?.data?.message) {
         msg += `: ${e.response.data.message}`
       }
       throw new Error(msg)
