@@ -570,7 +570,7 @@
     },
     "empty_trash": {
       "body": "Di default il media server non rimuove le informazioni sui media immediatamente. Questo è utile se un drive è temporaneamente disconnesso. Quando svuoti il cestino di una libreria, tutte le informazioni dei media mancanti sono cancellate.",
-      "button_confirm": "Vuoto",
+      "button_confirm": "Svuota",
       "title": "Svuota il cestino per la libreria"
     },
     "file_browser": {
@@ -827,7 +827,12 @@
     "ERR_1031": "Al libro ComicRack CBL manca la serie o il numero",
     "ERR_1032": "Il file EPUB ha un tipo di supporto errato",
     "ERR_1033": "Mancano alcune voci",
-    "ERR_1034": "Una chiave API con quel commento già esiste"
+    "ERR_1034": "Una chiave API con quel commento già esiste",
+    "ERR_1035": "Errore durante l'ottenimento del EPUB TOC",
+    "ERR_1036": "Errore durante l'acquisizione dei EPUB Landmarks",
+    "ERR_1037": "Errore durante l'acquisizione della lista pagine dell'EPUB",
+    "ERR_1038": "Errore durante l'acquisizione delle pagine EPUB divina",
+    "ERR_1039": "Errore durante l'acquisizione delle posizioni EPUB"
   },
   "filter": {
     "age_rating": "Fascia d'età",
