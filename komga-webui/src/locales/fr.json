@@ -827,7 +827,9 @@
     "ERR_1031": "Série ou numéro manquant au livre ComicRack CBL",
     "ERR_1032": "Le fichier EPUB a un type de fichier erroné",
     "ERR_1033": "Entrées manquantes",
-    "ERR_1034": "Une clé API avec ce commentaire existe déjà"
+    "ERR_1034": "Une clé API avec ce commentaire existe déjà",
+    "ERR_1036": "Erreur pendant l'acquisition des repères EPUB",
+    "ERR_1037": "Erreur pendant l'acquisition de la liste des pages EPUB"
   },
   "filter": {
     "age_rating": "Âge minimal",
