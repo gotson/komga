@@ -464,6 +464,7 @@ export default Vue.extend({
     this.scale = this.$store.state.persistedState.webreader.paged.scale
     this.continuousScale = this.$store.state.persistedState.webreader.continuous.scale
     this.sidePadding = this.$store.state.persistedState.webreader.continuous.padding
+    this.pageMargin = this.$store.state.persistedState.webreader.continuous.margin
     this.backgroundColor = this.$store.state.persistedState.webreader.background
 
     this.setup(this.bookId, Number(this.$route.query.page))
