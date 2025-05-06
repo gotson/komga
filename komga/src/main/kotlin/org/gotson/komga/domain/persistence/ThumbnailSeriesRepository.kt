@@ -1,8 +1,6 @@
 package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.ThumbnailSeries
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 
 interface ThumbnailSeriesRepository {
   fun findByIdOrNull(thumbnailId: String): ThumbnailSeries?
@@ -16,13 +14,9 @@ interface ThumbnailSeriesRepository {
     type: ThumbnailSeries.Type,
   ): Collection<ThumbnailSeries>
 
-  fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailSeries>
-
   fun insert(thumbnail: ThumbnailSeries)
 
   fun update(thumbnail: ThumbnailSeries)
-
-  fun updateMetadata(thumbnails: Collection<ThumbnailSeries>)
 
   fun markSelected(thumbnail: ThumbnailSeries)
 

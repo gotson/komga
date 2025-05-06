@@ -9,9 +9,6 @@ import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailSeriesRecord
 import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
@@ -58,25 +55,6 @@ class ThumbnailSeriesDao(
       .map { it.toDomain() }
       .firstOrNull()
 
-  override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailSeries> {
-    val query =
-      dsl
-        .selectFrom(ts)
-        .where(ts.FILE_SIZE.eq(0))
-        .or(ts.MEDIA_TYPE.eq(""))
-        .or(ts.WIDTH.eq(0))
-        .or(ts.HEIGHT.eq(0))
-
-    val count = query.count()
-    val items =
-      query
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchInto(ts)
-        .map { it.toDomain() }
-
-    return PageImpl(items, pageable, count.toLong())
-  }
-
   override fun insert(thumbnail: ThumbnailSeries) {
     dsl
       .insertInto(ts)
@@ -107,22 +85,6 @@ class ThumbnailSeriesDao(
       .set(ts.FILE_SIZE, thumbnail.fileSize)
       .where(ts.ID.eq(thumbnail.id))
       .execute()
-  }
-
-  override fun updateMetadata(thumbnails: Collection<ThumbnailSeries>) {
-    dsl.batched { c ->
-      thumbnails.forEach {
-        c
-          .dsl()
-          .update(ts)
-          .set(ts.MEDIA_TYPE, it.mediaType)
-          .set(ts.WIDTH, it.dimension.width)
-          .set(ts.HEIGHT, it.dimension.height)
-          .set(ts.FILE_SIZE, it.fileSize)
-          .where(ts.ID.eq(it.id))
-          .execute()
-      }
-    }
   }
 
   @Transactional

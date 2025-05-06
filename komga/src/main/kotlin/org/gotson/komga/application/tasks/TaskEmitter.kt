@@ -274,10 +274,6 @@ class TaskEmitter(
     submitTask(Task.DeleteSeries(seriesId, priority))
   }
 
-  fun fixThumbnailsWithoutMetadata(priority: Int = DEFAULT_PRIORITY) {
-    submitTask(Task.FixThumbnailsWithoutMetadata(priority))
-  }
-
   fun findBookThumbnailsToRegenerate(
     forBiggerResultOnly: Boolean,
     priority: Int = DEFAULT_PRIORITY,

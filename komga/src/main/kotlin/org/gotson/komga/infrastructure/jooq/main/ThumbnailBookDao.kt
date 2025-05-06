@@ -9,9 +9,6 @@ import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailBookRecord
 import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.net.URL
@@ -58,25 +55,6 @@ class ThumbnailBookDao(
       .map { it.toDomain() }
       .firstOrNull()
 
-  override fun findAllWithoutMetadata(pageable: Pageable): Page<ThumbnailBook> {
-    val query =
-      dsl
-        .selectFrom(tb)
-        .where(tb.FILE_SIZE.eq(0))
-        .or(tb.MEDIA_TYPE.eq(""))
-        .or(tb.WIDTH.eq(0))
-        .or(tb.HEIGHT.eq(0))
-
-    val count = dsl.fetchCount(query)
-    val items =
-      query
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchInto(tb)
-        .map { it.toDomain() }
-
-    return PageImpl(items, pageable, count.toLong())
-  }
-
   override fun findAllBookIdsByThumbnailTypeAndDimensionSmallerThan(
     type: ThumbnailBook.Type,
     size: Int,
@@ -121,22 +99,6 @@ class ThumbnailBookDao(
       .set(tb.FILE_SIZE, thumbnail.fileSize)
       .where(tb.ID.eq(thumbnail.id))
       .execute()
-  }
-
-  override fun updateMetadata(thumbnails: Collection<ThumbnailBook>) {
-    dsl.batched { c ->
-      thumbnails.forEach {
-        c
-          .dsl()
-          .update(tb)
-          .set(tb.MEDIA_TYPE, it.mediaType)
-          .set(tb.WIDTH, it.dimension.width)
-          .set(tb.HEIGHT, it.dimension.height)
-          .set(tb.FILE_SIZE, it.fileSize)
-          .where(tb.ID.eq(it.id))
-          .execute()
-      }
-    }
   }
 
   @Transactional

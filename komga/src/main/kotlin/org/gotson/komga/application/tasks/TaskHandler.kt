@@ -16,7 +16,6 @@ import org.gotson.komga.domain.service.LocalArtworkLifecycle
 import org.gotson.komga.domain.service.PageHashLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
-import org.gotson.komga.domain.service.ThumbnailLifecycle
 import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
 import org.gotson.komga.interfaces.scheduler.METER_TASKS_EXECUTION
 import org.gotson.komga.interfaces.scheduler.METER_TASKS_FAILURE
@@ -44,7 +43,6 @@ class TaskHandler(
   private val bookPageEditor: BookPageEditor,
   private val searchIndexLifecycle: SearchIndexLifecycle,
   private val pageHashLifecycle: PageHashLifecycle,
-  private val thumbnailLifecycle: ThumbnailLifecycle,
   private val meterRegistry: MeterRegistry,
 ) {
   fun handleTask(task: Task) {
@@ -178,11 +176,6 @@ class TaskHandler(
             seriesRepository.findByIdOrNull(task.seriesId)?.let { series ->
               seriesLifecycle.deleteSeriesFiles(series)
             }
-          }
-
-          is Task.FixThumbnailsWithoutMetadata -> {
-            if (thumbnailLifecycle.fixThumbnailsMetadata())
-              taskEmitter.fixThumbnailsWithoutMetadata(LOWEST_PRIORITY)
           }
 
           is Task.FindBookThumbnailsToRegenerate -> {
