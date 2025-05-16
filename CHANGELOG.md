@@ -1,3 +1,39 @@
+# [1.21.3](https://github.com/gotson/komga/compare/1.21.2...1.21.3) (2025-05-16)
+## 🐛 Fixes
+**webui**
+- add missing characters for Japanese series grouping ([0a2c3ac](https://github.com/gotson/komga/commits/0a2c3ac)), closes [#1959](https://github.com/gotson/komga/issues/1959)
+- webtoon page margin is not restored ([80fa75a](https://github.com/gotson/komga/commits/80fa75a)), closes [#1944](https://github.com/gotson/komga/issues/1944)
+
+**unscoped**
+- epubs would have a "null" comment in the Media ([343add1](https://github.com/gotson/komga/commits/343add1))
+
+## 🔄️ Changes
+
+- remove startup task to fix missing thumbnail metadata ([a568a7d](https://github.com/gotson/komga/commits/a568a7d))
+- rename REST controller operations for better clarity in generated openapi spec ([95afb4b](https://github.com/gotson/komga/commits/95afb4b))
+
+## 🛠  Build
+**conveyor**
+- update conveyor compatibility to 18 ([2120edb](https://github.com/gotson/komga/commits/2120edb))
+
+**webui**
+- update Browserslist db ([e0a8edf](https://github.com/gotson/komga/commits/e0a8edf))
+- update Browserslist db (#1926) ([9ae39c0](https://github.com/gotson/komga/commits/9ae39c0)), closes [#1926](https://github.com/gotson/komga/issues/1926)
+
+## 📝 Documentation
+**api**
+- better operationId ([f03ba84](https://github.com/gotson/komga/commits/f03ba84))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 17.0 to 18.0 ([ec7d4e3](https://github.com/gotson/komga/commits/ec7d4e3))
+- bump peter-evans/dockerhub-description from 4.0.0 to 4.0.2 ([08941f0](https://github.com/gotson/komga/commits/08941f0))
+
+**webui**
+- bump http-proxy-middleware in /komga-webui ([6c486c0](https://github.com/gotson/komga/commits/6c486c0))
+- bump @babel/helpers from 7.22.15 to 7.27.0 in /komga-webui ([c618047](https://github.com/gotson/komga/commits/c618047))
+- bump @babel/runtime from 7.22.15 to 7.27.0 in /komga-webui ([77c8aa5](https://github.com/gotson/komga/commits/77c8aa5))
+
 # [1.21.2](https://github.com/gotson/komga/compare/1.21.1...1.21.2) (2025-03-12)
 ## 🐛 Fixes
 **conveyor**
