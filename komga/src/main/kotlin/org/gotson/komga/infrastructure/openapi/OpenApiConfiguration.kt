@@ -5,8 +5,11 @@ import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.PathItem
+import io.swagger.v3.oas.models.examples.Example
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
+import io.swagger.v3.oas.models.media.Content
+import io.swagger.v3.oas.models.media.MediaType
 import io.swagger.v3.oas.models.responses.ApiResponse
 import io.swagger.v3.oas.models.responses.ApiResponses
 import io.swagger.v3.oas.models.security.SecurityRequirement
@@ -35,6 +38,7 @@ import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.DUP
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.FILE_SYSTEM
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.HISTORY
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.LIBRARIES
+import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.MANAGEMENT
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.MIHON
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.OAUTH2
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames.READLISTS
@@ -169,6 +173,75 @@ class OpenApiConfiguration(
           .summary("Logout current session")
           .get(logoutOperation.operationId("getLogout"))
           .post(logoutOperation.operationId("postLogout")),
+      ).path(
+        "/actuator/info",
+        PathItem()
+          .summary("Get general information about the server")
+          .get(
+            Operation()
+              .operationId("getActuatorInfo")
+              .tags(listOf(MANAGEMENT))
+              .description("Required role: **ADMIN**")
+              .summary("Get server information")
+              .responses(
+                ApiResponses().addApiResponse(
+                  "200",
+                  ApiResponse()
+                    .description("OK")
+                    .content(
+                      Content()
+                        .addMediaType(
+                          "application/json",
+                          MediaType()
+                            .addExamples(
+                              "Example",
+                              Example()
+                                .value(
+                                  """
+{
+  "git": {
+    "branch": "master",
+    "commit": {
+      "id": "9be980d",
+      "time": "2025-03-12T03:40:38Z"
+    }
+  },
+  "build": {
+    "artifact": "komga",
+    "name": "komga",
+    "version": "1.21.2",
+    "group": "komga"
+  },
+  "java": {
+    "version": "23.0.2",
+    "vendor": {
+      "name": "Eclipse Adoptium",
+      "version": "Temurin-23.0.2+7"
+    },
+    "runtime": {
+      "name": "OpenJDK Runtime Environment",
+      "version": "23.0.2+7"
+    },
+    "jvm": {
+      "name": "OpenJDK 64-Bit Server VM",
+      "vendor": "Eclipse Adoptium",
+      "version": "23.0.2+7"
+    }
+  },
+  "os": {
+    "name": "Linux",
+    "version": "6.8.0-57-generic",
+    "arch": "amd64"
+  }
+}
+                                  """.trimIndent(),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+              ),
+          ),
       )
   }
 
@@ -272,6 +345,7 @@ class OpenApiConfiguration(
           FILE_SYSTEM,
           RELEASES,
           ANNOUNCEMENTS,
+          MANAGEMENT,
         ),
       ),
       TagGroup(
@@ -327,6 +401,7 @@ class OpenApiConfiguration(
     const val FILE_SYSTEM = "File system"
     const val SERVER_SETTINGS = "Server settings"
     const val RELEASES = "Releases"
+    const val MANAGEMENT = "Management"
 
     const val ANNOUNCEMENTS = "Announcements"
     const val MIHON = "Mihon"
@@ -368,6 +443,7 @@ class OpenApiConfiguration(
       Tag().name(SERVER_SETTINGS).description("Store and retrieve server settings"),
       Tag().name(RELEASES).description("Retrieve releases information"),
       Tag().name(ANNOUNCEMENTS).description("Retrieve announcements from the Komga website"),
+      Tag().name(MANAGEMENT).description("Manage server"),
       Tag().name(MIHON),
       Tag().name(COMICRACK),
       Tag().name(CLIENT_SETTINGS).description("Store and retrieve global and per-user settings. Those settings are not used by Komga itself, but can be stored for convenience by client applications."),
