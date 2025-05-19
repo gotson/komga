@@ -233,7 +233,7 @@
     "i_understand": "Anladım",
     "library": "Kütüphane",
     "locale_name": "Türkçe",
-    "locale_rtl": "hayır",
+    "locale_rtl": "false",
     "lock_all": "Hepsini kilitle",
     "n_selected": "{count} tane seçildi",
     "nothing_to_show": "Gösterilecek bir şey yok",
