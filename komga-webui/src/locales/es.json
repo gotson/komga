@@ -827,7 +827,12 @@
     "ERR_1031": "Al libro del ComicRack CBL le falta la serie o el número",
     "ERR_1032": "El archivo EPUB tiene un tipo de medio incorrecto",
     "ERR_1033": "Faltan algunos datos",
-    "ERR_1034": "Una clave API con ese comentario ya existe"
+    "ERR_1034": "Una clave API con ese comentario ya existe",
+    "ERR_1035": "Error al obtener el índice del EPUB",
+    "ERR_1036": "Error al obtener los puntos de referencia del EPUB",
+    "ERR_1037": "Error al obtener la lista de páginas del EPUB",
+    "ERR_1038": "Error al obtener las páginas divina del EPUB",
+    "ERR_1039": "Error al obtener las posiciones EPUB"
   },
   "filter": {
     "age_rating": "clasificación de edad",
