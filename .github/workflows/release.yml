@@ -201,20 +201,6 @@ jobs:
             build/jreleaser/trace.log
             build/jreleaser/output.properties
 
-      - name: JReleaser Announce
-        if: inputs.github_release
-        run: ./gradlew jreleaserAnnounce
-        env:
-          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: JReleaser Announce output
-        if: always() && inputs.github_release
-        uses: actions/upload-artifact@v4
-        with:
-          name: jreleaser-announce
-          path: |
-            build/jreleaser/trace.log
-            build/jreleaser/output.properties
-
       # Sometimes the workflow will fail because it's out of disk space
       - name: Cleanup Conveyor output
         run: rm -fr ./output
