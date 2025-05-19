@@ -64,6 +64,7 @@ class UserController(
   @Operation(summary = "Retrieve current user", tags = [TagNames.CURRENT_USER])
   fun getCurrentUser(
     @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "remember-me", required = false) rememberMe: Boolean?,
   ): UserDto = principal.toDto()
 
   @PatchMapping("me/password")
