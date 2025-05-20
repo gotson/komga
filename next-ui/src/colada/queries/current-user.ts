@@ -1,7 +1,7 @@
-import {useQuery} from '@pinia/colada'
+import {defineQuery, useQuery} from '@pinia/colada'
 import {komgaClient} from '@/api/komga-client'
 
-export function useCurrentUser() {
+export const useCurrentUser = defineQuery(() => {
   return useQuery({
     key: () => ['current-user'],
     query: () => komgaClient.GET('/api/v2/users/me')
@@ -12,4 +12,4 @@ export function useCurrentUser() {
     gcTime: false,
     autoRefetch: true,
   })
-}
+})

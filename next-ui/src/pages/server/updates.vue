@@ -75,7 +75,7 @@
         <v-col cols="12">
           <!-- eslint-disable vue/no-v-html -->
           <div
-            class="releases"
+            class="release"
             v-html="marked(release.description)"
           />
           <!-- eslint-enable vue/no-v-html -->
@@ -103,15 +103,15 @@ const {isLatestVersion, latestRelease: latest} = useLatestVersion()
 </script>
 
 <style lang="scss">
-.releases p {
+.release p {
   margin-bottom: 16px;
 }
 
-.releases ul {
+.release ul {
   padding-left: 24px;
 }
 
-.releases a {
+.release a {
   color: var(--v-anchor-base);
 }
 </style>

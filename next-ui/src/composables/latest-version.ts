@@ -2,7 +2,7 @@ import {useAppReleases} from '@/colada/queries/app-releases.ts'
 import {useBuildVersion} from '@/composables/buid-version.ts'
 
 export function useLatestVersion() {
-  const {data, } = useAppReleases()
+  const {data } = useAppReleases()
 
   const {buildVersion} = useBuildVersion()
   const latestRelease = computed(() => data.value?.find(x => x.latest))
