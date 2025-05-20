@@ -4,7 +4,7 @@
     <div class="d-flex align-center text-caption text-medium-emphasis pa-2">
       <div class="d-flex ms-auto">
         <BuildCommit class="me-2" />
-        <BuidVersion />
+        <BuildVersion />
       </div>
     </div>
   </template>
