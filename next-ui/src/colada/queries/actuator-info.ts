@@ -1,8 +1,8 @@
-import {useQuery} from '@pinia/colada'
+import {defineQuery, useQuery} from '@pinia/colada'
 import {komgaClient} from '@/api/komga-client'
 import type {ActuatorInfo} from '@/types/Actuator'
 
-export function useActuatorInfo() {
+export const useActuatorInfo = defineQuery(() => {
   return useQuery({
     key: () => ['actuator-info'],
     query: () => komgaClient.GET('/actuator/info')
@@ -12,4 +12,4 @@ export function useActuatorInfo() {
     staleTime: 60 * 60 * 1000,
     gcTime: false,
   })
-}
+})
