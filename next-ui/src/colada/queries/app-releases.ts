@@ -1,0 +1,14 @@
+import {useQuery} from '@pinia/colada'
+import {komgaClient} from '@/api/komga-client'
+
+export function useAppReleases() {
+  return useQuery({
+    key: () => ['app-releases'],
+    query: () => komgaClient.GET('/api/v1/releases')
+      // unwrap the openapi-fetch structure on success
+      .then((res) => res.data),
+    // 1 hour
+    staleTime: 60 * 60 * 1000,
+    gcTime: false,
+  })
+}
