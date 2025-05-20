@@ -1,7 +1,7 @@
-import {useQuery} from '@pinia/colada'
+import {defineQuery, useQuery} from '@pinia/colada'
 import {komgaClient} from '@/api/komga-client'
 
-export function useAppReleases() {
+export const useAppReleases = defineQuery(() => {
   return useQuery({
     key: () => ['app-releases'],
     query: () => komgaClient.GET('/api/v1/releases')
@@ -11,4 +11,4 @@ export function useAppReleases() {
     staleTime: 60 * 60 * 1000,
     gcTime: false,
   })
-}
+})
