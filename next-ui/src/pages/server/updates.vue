@@ -98,9 +98,8 @@ import {useLatestVersion} from '@/composables/latest-version.ts'
 
 const {data, error} = useAppReleases()
 
-const latest = computed(() => data.value?.find(x => x.latest))
 const {buildVersion: currentVersion} = useBuildVersion()
-const {isLatestVersion} = useLatestVersion()
+const {isLatestVersion, latestRelease: latest} = useLatestVersion()
 </script>
 
 <style lang="scss">
