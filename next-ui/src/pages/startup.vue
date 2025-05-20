@@ -1,0 +1,41 @@
+<template>
+  <v-container max-width="550px">
+    <v-row justify="center">
+      <v-col>
+        <v-img src="@/assets/logo.svg" />
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script lang="ts" setup>
+import {useCurrentUser} from '@/colada/queries/current-user'
+import {onMounted} from 'vue'
+
+async function checkAuthenticated() {
+  const router = useRouter()
+  const route = useRoute()
+  const {data, error, refresh} = useCurrentUser()
+
+  await refresh()
+  if (data.value) {
+    if(route.query.redirect)
+      await router.push({path: route.query.redirect.toString()})
+    else
+      await router.push('/')
+  }
+  if (error.value) {
+    await router.push({name: '/login', query: {redirect: route.query.redirect}})
+  }
+}
+
+onMounted(() => checkAuthenticated())
+
+// TODO: exchange header token for cookie
+</script>
+
+<route lang="yaml">
+meta:
+  layout: single
+  noAuth: true
+</route>
