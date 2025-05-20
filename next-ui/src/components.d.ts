@@ -21,6 +21,7 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     BuidVersion: typeof import('./components/BuidVersion.vue')['default']
     BuildCommit: typeof import('./components/BuildCommit.vue')['default']
+    BuildVersion: typeof import('./components/BuildVersion.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     LoginForm: typeof import('./components/LoginForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
