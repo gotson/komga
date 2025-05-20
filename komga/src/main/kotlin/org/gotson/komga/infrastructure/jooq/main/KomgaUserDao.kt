@@ -8,7 +8,6 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.jooq.main.Tables
-import org.gotson.komga.jooq.main.tables.records.AnnouncementsReadRecord
 import org.gotson.komga.jooq.main.tables.records.UserApiKeyRecord
 import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
@@ -172,7 +171,12 @@ class KomgaUserDao(
     user: KomgaUser,
     announcementIds: Set<String>,
   ) {
-    dsl.batchStore(announcementIds.map { AnnouncementsReadRecord(user.id, it) }).execute()
+    dsl
+      .batch(
+        announcementIds.map {
+          dsl.insertInto(ar).values(user.id, it).onDuplicateKeyIgnore()
+        },
+      ).execute()
   }
 
   private fun insertRoles(user: KomgaUser) {

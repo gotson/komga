@@ -216,4 +216,21 @@ class KomgaUserDaoTest(
     assertThat(found?.email).isEqualTo("user1@example.org")
     assertThat(notFound).isNull()
   }
+
+  @Test
+  fun `given user when saving announcement as read then it works`() {
+    val user = KomgaUser("user1@example.org", "p")
+    komgaUserDao.insert(user)
+
+    assertThat(komgaUserDao.findAnnouncementIdsReadByUserId(user.id)).isEmpty()
+
+    komgaUserDao.saveAnnouncementIdsRead(user, setOf("1"))
+    assertThat(komgaUserDao.findAnnouncementIdsReadByUserId(user.id)).containsExactlyInAnyOrder("1")
+
+    komgaUserDao.saveAnnouncementIdsRead(user, setOf("2"))
+    assertThat(komgaUserDao.findAnnouncementIdsReadByUserId(user.id)).containsExactlyInAnyOrder("1", "2")
+
+    komgaUserDao.saveAnnouncementIdsRead(user, setOf("2"))
+    assertThat(komgaUserDao.findAnnouncementIdsReadByUserId(user.id)).containsExactlyInAnyOrder("1", "2")
+  }
 }
