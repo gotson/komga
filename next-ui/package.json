@@ -1,0 +1,52 @@
+{
+  "name": "next-ui",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build --force",
+    "lint": "eslint . --fix",
+    "openapi-generate": "npx tsx ./openapi-generator.ts"
+  },
+  "dependencies": {
+    "@pinia/colada": "^0.15.3",
+    "@pinia/colada-plugin-auto-refetch": "^0.0.6",
+    "@vueuse/core": "^13.1.0",
+    "core-js": "^3.37.1",
+    "marked": "^15.0.11",
+    "openapi-fetch": "^0.14.0",
+    "pinia-plugin-persistedstate": "^4.3.0",
+    "vue": "^3.4.31",
+    "vuetify": "^3.6.14"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@mdi/font": "7.4.47",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.9.0",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/eslint-config-typescript": "^14.1.3",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.14.0",
+    "eslint-plugin-vue": "^10.1.0",
+    "npm-run-all2": "^8.0.1",
+    "openapi-typescript": "^7.8.0",
+    "pinia": "^3.0.2",
+    "sass": "1.77.8",
+    "sass-embedded": "^1.77.8",
+    "typescript": "^5.8.3",
+    "unplugin-auto-import": "^19.2.0",
+    "unplugin-fonts": "^1.1.1",
+    "unplugin-vue-components": "^28.5.0",
+    "unplugin-vue-router": "^0.12.0",
+    "vite": "^6.3.5",
+    "vite-plugin-vue-layouts-next": "^0.1.1",
+    "vite-plugin-vuetify": "^2.0.3",
+    "vue-router": "^4.4.0",
+    "vue-tsc": "^2.1.10"
+  }
+}
