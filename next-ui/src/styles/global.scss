@@ -1,0 +1,16 @@
+html {
+    overflow-y: auto !important;
+}
+
+.link-none {
+    text-decoration: none;
+}
+
+.link-underline {
+    text-decoration: none;
+    color: var(--v-anchor-base)
+}
+
+.link-underline:hover {
+    text-decoration: underline;
+}
