@@ -13,5 +13,5 @@ export function useLatestVersion() {
     else return undefined
   })
 
-  return {isLatestVersion}
+  return {isLatestVersion, latestRelease}
 }
