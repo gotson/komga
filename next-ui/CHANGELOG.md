@@ -1,0 +1,2 @@
+- upgrade to VueJS 3 and Vuetify 3
+- use material design 3 blueprints
