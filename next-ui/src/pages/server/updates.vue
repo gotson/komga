@@ -118,5 +118,5 @@ const {isLatestVersion, latestRelease: latest} = useLatestVersion()
 
 <route lang="yaml">
 meta:
-requiresRole: ADMIN
+  requiresRole: ADMIN
 </route>
