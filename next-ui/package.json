@@ -10,7 +10,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --fix",
-    "openapi-generate": "npx tsx ./openapi-generator.ts"
+    "openapi-generate": "npx tsx ./openapi-generator.mts"
   },
   "dependencies": {
     "@pinia/colada": "^0.15.3",
