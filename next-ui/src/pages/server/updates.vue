@@ -50,7 +50,7 @@
               v-if="release.version == currentVersion"
               class="mx-2 mt-n3"
               size="small"
-              label
+              rounded
               color="info"
             >
               Currently installed
@@ -59,7 +59,7 @@
               v-if="release.version == latest?.version"
               class="mx-2 mt-n3"
               size="small"
-              label
+              rounded
             >
               Latest
             </v-chip>

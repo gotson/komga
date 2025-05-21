@@ -11,7 +11,7 @@ const DATE = ts.factory.createTypeReferenceNode(ts.factory.createIdentifier("Dat
 const NULL = ts.factory.createLiteralTypeNode(ts.factory.createNull()); // `null`
 
 const ast = await openapiTS(mySchema, {
-  transform(schemaObject, metadata) {
+  transform(schemaObject) {
     if (schemaObject.format === "date-time") {
       return schemaObject.nullable
         ? ts.factory.createUnionTypeNode([DATE, NULL])
