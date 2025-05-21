@@ -12,7 +12,7 @@
       :loading="isLoading"
       :items="users"
       :headers="headers"
-      :hide-default-footer="users?.length < 11"
+      :hide-default-footer="hideFooter"
     >
       <template #[`item.roles`]="{ value }">
         <div class="d-flex ga-1">
@@ -68,12 +68,14 @@ import {UserRoles} from '@/types/UserRoles.ts'
 const {data: users, error, isLoading} = useUsers()
 const {data: me} = useCurrentUser()
 
+const hideFooter = computed(() => users.value && users.value.length < 11)
+
 const headers = [
   {title: 'Email', key: 'email'},
   {title: 'Latest Activity', key: 'activity', value: (item: components["schemas"]["UserDto"]) => latestActivity[item.id]},
   {title: 'Roles', value: 'roles', sortable: false},
   {title: 'Actions', key: 'actions', align: 'end', sortable: false},
-]
+] as const // workaround for https://github.com/vuetifyjs/vuetify/issues/18901
 
 function getRoleColor(role: UserRoles) {
   if(role === UserRoles.ADMIN) return 'error'
