@@ -10,8 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import {useCurrentUserRole} from '@/composables/current-user-role.ts'
-import {UserRoles} from '@/types/UserRoles.ts'
+import {useCurrentUser} from '@/colada/queries/current-user.ts'
 
-const {hasRole: isAdmin} = useCurrentUserRole(UserRoles.ADMIN)
+const {isAdmin} = useCurrentUser()
 </script>

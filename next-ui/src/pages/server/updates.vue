@@ -93,13 +93,8 @@
 <script lang="ts" setup>
 import {useAppReleases} from '@/colada/queries/app-releases.ts'
 import {marked} from 'marked'
-import {useBuildVersion} from '@/composables/buid-version.ts'
-import {useLatestVersion} from '@/composables/latest-version.ts'
 
-const {data, error} = useAppReleases()
-
-const {buildVersion: currentVersion} = useBuildVersion()
-const {isLatestVersion, latestRelease: latest} = useLatestVersion()
+const {data, error, buildVersion: currentVersion, isLatestVersion, latestRelease: latest} = useAppReleases()
 </script>
 
 <style lang="scss">
