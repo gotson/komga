@@ -39,7 +39,7 @@
                 icon="mdi-check"
                 elevation="3"
                 color="success"
-                variant="tonal"
+                variant="outlined"
                 size="small"
                 :disabled="item._komga?.read"
                 @click="markRead(item.id)"
