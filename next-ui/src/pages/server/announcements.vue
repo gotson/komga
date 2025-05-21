@@ -7,9 +7,9 @@
     Error loading data
   </v-alert>
 
-  <template v-if="data">
+  <template v-if="announcements">
     <div
-      v-for="(item, index) in data.items"
+      v-for="(item, index) in announcements.items"
       :key="index"
     >
       <v-row
@@ -60,7 +60,7 @@
         </v-col>
       </v-row>
       <v-divider
-        v-if="index != data.items.length - 1"
+        v-if="index != announcements.items.length - 1"
         class="my-8"
       />
     </div>
@@ -82,17 +82,17 @@
 import {useAnnouncements} from '@/colada/queries/announcements.ts'
 import {useMarkAnnouncementsRead} from '@/colada/mutations/mark-announcements-read.ts'
 
-const {data, error, unreadCount} = useAnnouncements()
+const {data: announcements, error, unreadCount} = useAnnouncements()
 
-const {mutate} = useMarkAnnouncementsRead()
+const {mutate: markAnnouncementsRead} = useMarkAnnouncementsRead()
 
 function markAllRead() {
-  const ids = data.value?.items.map(x => x.id)
-  if(ids) mutate(ids)
+  const ids = announcements.value?.items.map(x => x.id)
+  if(ids) markAnnouncementsRead(ids)
 }
 
 function markRead(id: string) {
-  mutate([id])
+  markAnnouncementsRead([id])
 }
 </script>
 
