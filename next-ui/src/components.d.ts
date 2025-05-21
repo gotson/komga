@@ -19,7 +19,6 @@ declare module 'vue' {
     AppDrawerMenuMedia: typeof import('./components/app/drawer/AppDrawerMenuMedia.vue')['default']
     AppDrawerMenuServer: typeof import('./components/app/drawer/AppDrawerMenuServer.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
-    BuidVersion: typeof import('./components/BuidVersion.vue')['default']
     BuildCommit: typeof import('./components/BuildCommit.vue')['default']
     BuildVersion: typeof import('./components/BuildVersion.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
