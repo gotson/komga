@@ -20,9 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {useBuildVersion} from '@/composables/buid-version.ts'
-import {useLatestVersion} from '@/composables/latest-version.ts'
+import {useAppReleases} from '@/colada/queries/app-releases.ts'
 
-const {buildVersion} = useBuildVersion()
-const {isLatestVersion} = useLatestVersion()
+const {buildVersion, isLatestVersion} = useAppReleases()
 </script>
