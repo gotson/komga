@@ -11,7 +11,7 @@
       >
         <template #prepend>
           <v-badge
-            :model-value="unreadCount > 0 && !$refs.group.isOpen"
+            :model-value="unreadCount > 0 && !($refs as any).group.isOpen"
             dot
             floating
             color="info"
