@@ -7,7 +7,7 @@
     Error loading data
   </v-alert>
 
-  <template v-if="data">
+  <template v-if="releases">
     <v-row>
       <v-col>
         <div v-if="isLatestVersion == true">
@@ -30,7 +30,7 @@
     </v-row>
 
     <div
-      v-for="(release, index) in data"
+      v-for="(release, index) in releases"
       :key="index"
     >
       <v-row
@@ -83,7 +83,7 @@
       </v-row>
 
       <v-divider
-        v-if="index != data.length - 1"
+        v-if="index != releases.length - 1"
         class="my-8"
       />
     </div>
@@ -94,7 +94,7 @@
 import {useAppReleases} from '@/colada/queries/app-releases.ts'
 import {marked} from 'marked'
 
-const {data, error, buildVersion: currentVersion, isLatestVersion, latestRelease: latest} = useAppReleases()
+const {data: releases, error, buildVersion: currentVersion, isLatestVersion, latestRelease: latest} = useAppReleases()
 </script>
 
 <style lang="scss">
