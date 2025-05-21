@@ -31,7 +31,7 @@
         <v-col cols="auto">
           <v-tooltip
             text="Mark as read"
-            :disabled="item._komga.read"
+            :disabled="item._komga?.read"
           >
             <template #activator="{ props }">
               <v-fab
@@ -41,7 +41,7 @@
                 color="success"
                 variant="tonal"
                 size="small"
-                :disabled="item._komga.read"
+                :disabled="item._komga?.read"
                 @click="markRead(item.id)"
               />
             </template>
@@ -87,7 +87,8 @@ const {data, error, unreadCount} = useAnnouncements()
 const {mutate} = useMarkAnnouncementsRead()
 
 function markAllRead() {
-  mutate(data.value.items.map(x => x.id))
+  const ids = data.value?.items.map(x => x.id)
+  if(ids) mutate(ids)
 }
 
 function markRead(id: string) {
