@@ -90,7 +90,7 @@ import FormUserRoles from '@/components/forms/user/FormUserRoles.vue'
 import type {Component} from 'vue'
 
 // API data
-const {data: users, error, isLoading} = useUsers()
+const {data: users, error, isLoading, refetch: refetchUsers} = useUsers()
 const {data: me} = useCurrentUser()
 
 
@@ -128,6 +128,8 @@ watch(users, (users) => {
     getLatestActivity(user.id)
   }
 })
+
+onMounted(() => refetchUsers())
 
 
 // Dialogs handling
