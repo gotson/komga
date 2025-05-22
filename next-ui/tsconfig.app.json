@@ -13,6 +13,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vite-plugin-vue-layouts-next/client"]
+    "types": ["vite-plugin-vue-layouts-next/client"],
+    "skipLibCheck": true,
   }
 }
