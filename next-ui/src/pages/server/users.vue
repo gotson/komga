@@ -27,34 +27,54 @@
         </div>
       </template>
 
-      <template #[`item.actions`]="{ item }">
+      <template #[`item.actions`]="{ item : user }">
         <div class="d-flex ga-1 justify-end">
           <v-icon-btn
             v-tooltip:bottom="'Reset password'"
             icon="mdi-lock-reset"
-            @click="changePassword(item.id)"
+            @click="showDialog(ACTION.PASSWORD, user)"
+            @mouseenter="activator = $event.currentTarget"
           />
           <v-icon-btn
             v-tooltip:bottom="'Edit restrictions'"
             icon="mdi-book-lock"
-            :disabled="me?.id == item.id"
-            @click="editRestrictions(item.id)"
+            :disabled="me?.id == user.id"
+            @click="showDialog(ACTION.RESTRICTIONS, user)"
+            @mouseenter="activator = $event.currentTarget"
           />
           <v-icon-btn
             v-tooltip:bottom="'Edit user'"
             icon="mdi-pencil"
-            :disabled="me?.id == item.id"
-            @click="editUser(item.id)"
+            :disabled="me?.id == user.id"
+            @click="showDialog(ACTION.EDIT, user)"
+            @mouseenter="activator = $event.currentTarget"
           />
           <v-icon-btn
             v-tooltip:bottom="'Delete user'"
             icon="mdi-delete"
-            :disabled="me?.id == item.id"
-            @click="deleteUser(item.id)"
+            :disabled="me?.id == user.id"
+            @click="showDialog(ACTION.DELETE, user)"
+            @mouseenter="activator = $event.currentTarget"
           />
         </div>
       </template>
     </v-data-table>
+
+    <DialogConfirmEdit
+      v-model:record="userRecord"
+      :activator="activator"
+      :title="dialogTitle"
+      :subtitle="userRecord?.email"
+      max-width="400"
+      @update:record="handleConfirmation()"
+    >
+      <template #text="{proxyModel}">
+        <component
+          :is="dialogComponent"
+          v-model="proxyModel.value"
+        />
+      </template>
+    </DialogConfirmEdit>
   </template>
 </template>
 
@@ -64,12 +84,18 @@ import {komgaClient} from '@/api/komga-client.ts'
 import type {components} from '@/generated/openapi/komga'
 import {useCurrentUser} from '@/colada/queries/current-user.ts'
 import {UserRoles} from '@/types/UserRoles.ts'
+import {useUpdateUser} from '@/colada/mutations/update-user.ts'
+import FormUserChangePassword from '@/components/forms/user/FormUserChangePassword.vue'
+import FormUserRoles from '@/components/forms/user/FormUserRoles.vue'
+import type {Component} from 'vue'
 
+// API data
 const {data: users, error, isLoading} = useUsers()
 const {data: me} = useCurrentUser()
 
-const hideFooter = computed(() => users.value && users.value.length < 11)
 
+// Table
+const hideFooter = computed(() => users.value && users.value.length < 11)
 const headers = [
   {title: 'Email', key: 'email'},
   {title: 'Latest Activity', key: 'activity', value: (item: components["schemas"]["UserDto"]) => latestActivity[item.id]},
@@ -104,20 +130,53 @@ watch(users, (users) => {
 })
 
 
-function editRestrictions(userId: string) {
-  console.log('edit restrictions: ', userId)
+// Dialogs handling
+const userRecord = ref<components["schemas"]["UserDto"]>()
+const currentAction = ref<ACTION>()
+const activator = ref<Element>()
+const dialogTitle = ref<string>()
+const dialogComponent = shallowRef<Component>()
+
+const {mutate: mutateUser} = useUpdateUser()
+
+enum ACTION {
+  EDIT, DELETE, RESTRICTIONS, PASSWORD
 }
 
-function deleteUser(userId: string) {
-  console.log('delete: ', userId)
+function showDialog(action: ACTION, user: components["schemas"]["UserDto"]) {
+  currentAction.value = action
+  switch (action) {
+    case ACTION.EDIT:
+      dialogTitle.value = 'Edit Roles'
+      dialogComponent.value = FormUserRoles
+      break;
+    case ACTION.DELETE:
+      dialogTitle.value = 'Delete User'
+      dialogComponent.value = FormUserRoles
+      break;
+    case ACTION.RESTRICTIONS:
+      dialogTitle.value = 'Edit Restrictions'
+      dialogComponent.value = FormUserRoles
+      break;
+    case ACTION.PASSWORD:
+      dialogTitle.value = 'Change Password'
+      dialogComponent.value = FormUserChangePassword
+  }
+  userRecord.value = user
 }
 
-function editUser(userId: string) {
-  console.log('edit: ', userId)
-}
-
-function changePassword(userId: string) {
-  console.log('change password: ', userId)
+function handleConfirmation() {
+  switch (currentAction.value) {
+    case ACTION.EDIT:
+      mutateUser(userRecord.value!)
+      break;
+    case ACTION.DELETE:
+      break;
+    case ACTION.RESTRICTIONS:
+      break;
+    case ACTION.PASSWORD:
+      break;
+  }
 }
 </script>
 
