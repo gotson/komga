@@ -13,8 +13,8 @@
     "openapi-generate": "npx tsx ./openapi-generator.mts"
   },
   "dependencies": {
-    "@pinia/colada": "^0.15.3",
-    "@pinia/colada-plugin-auto-refetch": "^0.0.6",
+    "@pinia/colada": "^0.16.0",
+    "@pinia/colada-plugin-auto-refetch": "^0.1.0",
     "@vueuse/core": "^13.1.0",
     "core-js": "^3.37.1",
     "marked": "^15.0.11",
