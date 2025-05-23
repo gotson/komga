@@ -12,7 +12,7 @@ import {useLogout} from '@/colada/mutations/logout'
 const router = useRouter()
 const {mutateAsync: logoutAsync} = useLogout()
 
-async function performLogout() {
-  logoutAsync().then(() => router.push('/login'))
+function performLogout() {
+  void logoutAsync().then(() => router.push('/login'))
 }
 </script>
