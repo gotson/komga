@@ -10,16 +10,6 @@
         src="@/assets/logo.svg"
       />
 
-      <div class="text-center">
-        <div class="text-body-2">
-          Welcome "{{ currentUser?.email }}"
-        </div>
-
-        <VBtn @click="performLogout">
-          Logout
-        </VBtn>
-      </div>
-
       <div class="py-4" />
 
       <v-row>
@@ -172,17 +162,6 @@
 </template>
 
 <script setup lang="ts">
-import {useCurrentUser} from '@/colada/queries/current-user'
-import {useLogout} from '@/colada/mutations/logout'
-
-const {data: currentUser} = useCurrentUser()
-
-const router = useRouter()
-const {mutateAsync: logoutAsync} = useLogout()
-
-async function performLogout() {
-  logoutAsync().then(() => router.push('/login'))
-}
 </script>
 
 <script lang="ts">
