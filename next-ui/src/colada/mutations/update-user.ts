@@ -18,3 +18,18 @@ export const useUpdateUser = defineMutation(() => {
     },
   })
 })
+
+export const useUpdateUserPassword = defineMutation(() => {
+  return useMutation({
+    mutation: ({userId, newPassword}: { userId: string, newPassword: string }) =>
+      komgaClient.PATCH('/api/v2/users/{id}/password', {
+        params: {path: {id: userId}},
+        body: {
+          password: newPassword,
+        },
+      }),
+    onError: (error) => {
+      console.log('update user password error', error)
+    },
+  })
+})

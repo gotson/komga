@@ -61,12 +61,12 @@
     </v-data-table>
 
     <DialogConfirmEdit
-      v-model:record="userRecord"
+      v-model:record="dialogRecord"
       :activator="activator"
       :title="dialogTitle"
       :subtitle="userRecord?.email"
       max-width="400"
-      @update:record="handleConfirmation()"
+      @update:record="handleDialogConfirmation()"
     >
       <template #text="{proxyModel}">
         <component
@@ -84,7 +84,7 @@ import {komgaClient} from '@/api/komga-client.ts'
 import type {components} from '@/generated/openapi/komga'
 import {useCurrentUser} from '@/colada/queries/current-user.ts'
 import {UserRoles} from '@/types/UserRoles.ts'
-import {useUpdateUser} from '@/colada/mutations/update-user.ts'
+import {useUpdateUser, useUpdateUserPassword} from '@/colada/mutations/update-user.ts'
 import FormUserChangePassword from '@/components/forms/user/FormUserChangePassword.vue'
 import FormUserRoles from '@/components/forms/user/FormUserRoles.vue'
 import type {Component} from 'vue'
@@ -133,13 +133,19 @@ onMounted(() => refetchUsers())
 
 
 // Dialogs handling
+// stores the user being actioned upon
 const userRecord = ref<components["schemas"]["UserDto"]>()
+// stores the ongoing action, so we can handle the action when the dialog is closed with changes
 const currentAction = ref<ACTION>()
+// the record passed to the dialog's form's model
+const dialogRecord = ref<unknown>()
 const activator = ref<Element>()
 const dialogTitle = ref<string>()
+// dynamic component for the dialog's inner form
 const dialogComponent = shallowRef<Component>()
 
 const {mutate: mutateUser} = useUpdateUser()
+const {mutate: mutateUserPassword} = useUpdateUserPassword()
 
 enum ACTION {
   EDIT, DELETE, RESTRICTIONS, PASSWORD
@@ -151,32 +157,41 @@ function showDialog(action: ACTION, user: components["schemas"]["UserDto"]) {
     case ACTION.EDIT:
       dialogTitle.value = 'Edit Roles'
       dialogComponent.value = FormUserRoles
+      dialogRecord.value = user
       break;
     case ACTION.DELETE:
       dialogTitle.value = 'Delete User'
       dialogComponent.value = FormUserRoles
+      dialogRecord.value = user
       break;
     case ACTION.RESTRICTIONS:
       dialogTitle.value = 'Edit Restrictions'
       dialogComponent.value = FormUserRoles
+      dialogRecord.value = user
       break;
     case ACTION.PASSWORD:
       dialogTitle.value = 'Change Password'
       dialogComponent.value = FormUserChangePassword
+      // password change initiated with an empty string
+      dialogRecord.value = ''
   }
   userRecord.value = user
 }
 
-function handleConfirmation() {
+function handleDialogConfirmation() {
   switch (currentAction.value) {
     case ACTION.EDIT:
-      mutateUser(userRecord.value!)
+      mutateUser(dialogRecord.value as components["schemas"]["UserDto"])
       break;
     case ACTION.DELETE:
       break;
     case ACTION.RESTRICTIONS:
       break;
     case ACTION.PASSWORD:
+      mutateUserPassword({
+        userId: userRecord.value!.id,
+        newPassword: dialogRecord.value as string,
+      })
       break;
   }
 }
