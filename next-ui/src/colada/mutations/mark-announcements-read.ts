@@ -7,7 +7,7 @@ export const useMarkAnnouncementsRead = defineMutation(() => {
     mutation: (announcementIds: string[]) =>
       komgaClient.PUT('/api/v1/announcements', {body: announcementIds}),
     onSuccess: () => {
-      queryCache.invalidateQueries({key: ['announcements']})
+      void queryCache.invalidateQueries({key: ['announcements']})
     },
     onError: (error) => {
       console.log('announcements mark read error', error)
