@@ -10,12 +10,15 @@
       @save="close()"
     >
       <template #default="{ model: proxyModel, cancel, save, isPristine }">
-        <v-card
-          :title="title"
-          :subtitle="subtitle"
+        <v-form
+          v-model="formValid"
+          @submit.prevent="submitForm(save)"
         >
-          <template #text>
-            <v-form v-model="formValid">
+          <v-card
+            :title="title"
+            :subtitle="subtitle"
+          >
+            <template #text>
               <slot
                 name="text"
                 :proxy-model="proxyModel"
@@ -23,22 +26,21 @@
                 :save="save"
                 :is-pristine="isPristine"
               />
-            </v-form>
-          </template>
+            </template>
 
-          <template #actions>
-            <v-spacer />
-            <v-btn
-              text="Cancel"
-              @click="close()"
-            />
-            <v-btn
-              :disabled="!formValid"
-              text="Save"
-              @click="save"
-            />
-          </template>
-        </v-card>
+            <template #actions>
+              <v-spacer />
+              <v-btn
+                text="Cancel"
+                @click="close()"
+              />
+              <v-btn
+                text="Save"
+                type="submit"
+              />
+            </template>
+          </v-card>
+        </v-form>
       </template>
     </v-confirm-edit>
   </v-dialog>
@@ -49,6 +51,10 @@ const showDialog = defineModel<boolean>('dialog', {required: false})
 const record = defineModel<unknown>('record', {required: true})
 
 const formValid = ref<boolean>(false)
+
+function submitForm(callback: () => void) {
+  if(formValid.value) callback()
+}
 
 export interface Props {
   title?: string,
