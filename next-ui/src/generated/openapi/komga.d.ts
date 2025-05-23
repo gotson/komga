@@ -2719,7 +2719,7 @@ export interface components {
         };
         Author: components["schemas"]["Series"] & {
             author: components["schemas"]["Is"] | components["schemas"]["IsNot"];
-        } & components["schemas"]["Book"];
+        }  ;
         AuthorDto: {
             name: string;
             role: string;
@@ -2895,7 +2895,7 @@ export interface components {
         };
         Deleted: components["schemas"]["Series"] & {
             deleted: components["schemas"]["IsFalse"] | components["schemas"]["IsTrue"];
-        } & components["schemas"]["Book"];
+        }  ;
         DirectoryListingDto: {
             directories: components["schemas"]["PathDto"][];
             files: components["schemas"]["PathDto"][];
@@ -3131,7 +3131,7 @@ export interface components {
         };
         LibraryId: components["schemas"]["Series"] & {
             libraryId: components["schemas"]["Is"] | components["schemas"]["IsNot"];
-        } & components["schemas"]["Book"];
+        }  ;
         /** @description Fields to update. You can omit fields you don't want to update. */
         LibraryUpdateDto: {
             analyzeDimensions?: boolean;
@@ -3219,7 +3219,7 @@ export interface components {
         };
         OneShot: components["schemas"]["Series"] & {
             oneShot: components["schemas"]["IsFalse"] | components["schemas"]["IsTrue"];
-        } & components["schemas"]["Book"];
+        }  ;
         PageAuthenticationActivityDto: {
             content?: components["schemas"]["AuthenticationActivityDto"][];
             empty?: boolean;
@@ -3580,10 +3580,10 @@ export interface components {
         };
         ReadStatus: components["schemas"]["Series"] & {
             readStatus: components["schemas"]["Is"] | components["schemas"]["IsNot"];
-        } & components["schemas"]["Book"];
+        }  ;
         ReleaseDate: components["schemas"]["Series"] & {
             releaseDate: components["schemas"]["After"] | components["schemas"]["Before"] | components["schemas"]["IsInTheLast"] | components["schemas"]["IsNotInTheLast"] | components["schemas"]["IsNotNull"] | components["schemas"]["IsNull"];
-        } & components["schemas"]["Book"];
+        }  ;
         ReleaseDto: {
             description: string;
             latest: boolean;
@@ -3802,7 +3802,7 @@ export interface components {
         };
         Tag: components["schemas"]["Series"] & {
             tag: components["schemas"]["Is"] | components["schemas"]["IsNot"] | components["schemas"]["IsNotNullT"] | components["schemas"]["IsNullT"];
-        } & components["schemas"]["Book"];
+        }  ;
         Text: {
             after?: string;
             before?: string;
@@ -3862,7 +3862,7 @@ export interface components {
         };
         Title: components["schemas"]["Series"] & {
             title: components["schemas"]["BeginsWith"] | components["schemas"]["Contains"] | components["schemas"]["DoesNotBeginWith"] | components["schemas"]["DoesNotContain"] | components["schemas"]["DoesNotEndWith"] | components["schemas"]["EndsWith"] | components["schemas"]["Is"] | components["schemas"]["IsNot"];
-        } & components["schemas"]["Book"];
+        }  ;
         TitleSort: components["schemas"]["Series"] & {
             titleSort: components["schemas"]["BeginsWith"] | components["schemas"]["Contains"] | components["schemas"]["DoesNotBeginWith"] | components["schemas"]["DoesNotContain"] | components["schemas"]["DoesNotEndWith"] | components["schemas"]["EndsWith"] | components["schemas"]["Is"] | components["schemas"]["IsNot"];
         };

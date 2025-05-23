@@ -57,7 +57,7 @@ const rememberMe = ref(false)
 const router = useRouter()
 const route = useRoute()
 
-async function performLogin() {
+function performLogin() {
   const queryCache = useQueryCache()
   const {mutate} = useMutation({
     mutation: () =>
@@ -76,9 +76,9 @@ async function performLogin() {
       queryCache.setQueryData(['current-user'], data)
       queryCache.cancelQueries({key: ['current-user']})
       if(route.query.redirect)
-        router.push({path: route.query.redirect.toString()})
+        void router.push({path: route.query.redirect.toString()})
       else
-        router.push('/')
+        void router.push('/')
     },
     onError: (error) => {
       //TODO: handle error
