@@ -5,9 +5,9 @@
  */
 
 import pluginVue from 'eslint-plugin-vue'
-import vueTsEslintConfig from '@vue/eslint-config-typescript'
+import {defineConfigWithVueTs, vueTsConfigs} from '@vue/eslint-config-typescript'
 
-export default [
+export default defineConfigWithVueTs(
   {
     name: 'app/files-to-lint',
     files: ['**/*.{ts,mts,tsx,vue}'],
@@ -15,11 +15,11 @@ export default [
 
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', 'openapi-generator.mts'],
   },
 
   ...pluginVue.configs['flat/recommended'],
-  ...vueTsEslintConfig(),
+  vueTsConfigs.recommendedTypeChecked,
 
   {
     rules: {
@@ -33,4 +33,4 @@ export default [
       'vue/multi-word-component-names': 'off',
     }
   }
-]
+)

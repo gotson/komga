@@ -15,13 +15,15 @@
           :subtitle="subtitle"
         >
           <template #text>
-            <slot
-              name="text"
-              :proxy-model="proxyModel"
-              :cancel="cancel"
-              :save="save"
-              :is-pristine="isPristine"
-            />
+            <v-form v-model="formValid">
+              <slot
+                name="text"
+                :proxy-model="proxyModel"
+                :cancel="cancel"
+                :save="save"
+                :is-pristine="isPristine"
+              />
+            </v-form>
           </template>
 
           <template #actions>
@@ -31,7 +33,7 @@
               @click="close()"
             />
             <v-btn
-              :disabled="isPristine"
+              :disabled="!formValid"
               text="Save"
               @click="save"
             />
@@ -46,7 +48,9 @@
 const showDialog = defineModel<boolean>('dialog', {required: false})
 const record = defineModel<unknown>('record', {required: true})
 
-interface Props {
+const formValid = ref<boolean>(false)
+
+export interface Props {
   title?: string,
   subtitle?: string,
   maxWidth?: string | number,

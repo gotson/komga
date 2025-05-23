@@ -4,7 +4,7 @@ import type {paths} from '@/generated/openapi/komga'
 
 // Middleware that throws on error, so it works with Pinia Colada
 const coladaMiddleware: Middleware = {
-  async onResponse({response}: {response: Response}) {
+  onResponse({response}: {response: Response}) {
     if (!response.ok)
       throw new Error(`${response.url}: ${response.status} ${response.statusText}`)
     // return response untouched
