@@ -7,7 +7,7 @@ export const useLogout = defineMutation(() => {
     mutation: () =>
       komgaClient.POST('/api/logout'),
     onSuccess: () => {
-      queryCache.invalidateQueries({key: ['current-user']})
+      void queryCache.invalidateQueries({key: ['current-user']})
     },
     onError: (error) => {
       console.log('logout error', error)
