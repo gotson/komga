@@ -21,7 +21,6 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     BuildCommit: typeof import('./components/BuildCommit.vue')['default']
     BuildVersion: typeof import('./components/BuildVersion.vue')['default']
-    DialogConfirm: typeof import('./components/dialogs/DialogConfirm.vue')['default']
     DialogConfirmEdit: typeof import('./components/dialogs/DialogConfirmEdit.vue')['default']
     FormUserChangePassword: typeof import('./components/forms/user/FormUserChangePassword.vue')['default']
     FormUserRoles: typeof import('./components/forms/user/FormUserRoles.vue')['default']
