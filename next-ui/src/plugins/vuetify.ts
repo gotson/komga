@@ -11,11 +11,13 @@ import 'vuetify/styles'
 // Composables
 import {createVuetify} from 'vuetify'
 import {md3} from 'vuetify/blueprints'
-import {VIconBtn} from 'vuetify/labs/components'
 
+// Labs
+import {VIconBtn} from 'vuetify/labs/components'
+import {createRulesPlugin} from 'vuetify/labs/rules'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-export default createVuetify({
+export const vuetify = createVuetify({
   theme: {
     defaultTheme: 'light',
     themes: {
@@ -42,3 +44,11 @@ export default createVuetify({
     VIconBtn,
   },
 })
+
+export const vuetifyRulesPlugin = createRulesPlugin({
+  aliases: {
+    sameAs: (other?: string, err?: string) => {
+      return (v: unknown) => other === v || err || 'Field must be same'
+    },
+  },
+}, vuetify.locale)
