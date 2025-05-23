@@ -11,7 +11,7 @@ export const useUpdateUser = defineMutation(() => {
         body: user,
       }),
     onSuccess: () => {
-      queryCache.invalidateQueries({key: ['users']})
+      void queryCache.invalidateQueries({key: ['users']})
     },
     onError: (error) => {
       console.log('update user error', error)
