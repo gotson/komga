@@ -33,3 +33,19 @@ export const useUpdateUserPassword = defineMutation(() => {
     },
   })
 })
+
+export const useDeleteUser = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
+    mutation: (userId: string) =>
+      komgaClient.DELETE('/api/v2/users/{id}', {
+        params: {path: {id: userId}},
+      }),
+    onSuccess: () => {
+      void queryCache.invalidateQueries({key: ['users']})
+    },
+    onError: (error) => {
+      console.log('delete user error', error)
+    },
+  })
+})
