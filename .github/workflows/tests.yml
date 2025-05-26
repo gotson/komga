@@ -49,7 +49,7 @@ jobs:
 
       - name: Conveyor - compute JDK module list
         if: github.event_name == 'push' && github.repository_owner == 'gotson' && contains(matrix.os, 'ubuntu')
-        uses: hydraulic-software/conveyor/actions/build@v18.0
+        uses: hydraulic-software/conveyor/actions/build@v18.1
         with:
           command: -f conveyor.detect.conf -Kapp.machines=mac.aarch64 make processed-jars
           signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
