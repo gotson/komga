@@ -54,7 +54,7 @@
             icon="mdi-delete"
             :disabled="me?.id == user.id"
             @click="showDialog(ACTION.DELETE, user)"
-            @mouseenter="activator = $event.currentTarget"
+            @mouseenter="activatorDelete = $event.currentTarget"
           />
         </div>
       </template>
@@ -75,6 +75,33 @@
         />
       </template>
     </DialogConfirmEdit>
+
+    <DialogConfirm
+      :activator="activatorDelete"
+      :title="dialogTitle"
+      :subtitle="userRecord?.email"
+      ok-text="Delete"
+      :validate-text="userRecord?.email"
+      max-width="600"
+      @confirm="handleDialogConfirmation()"
+    >
+      <template #warning>
+        <v-alert
+          type="warning"
+          variant="tonal"
+          class="mb-4"
+        >
+          <div>The user account will be deleted from this server.</div>
+          <ul class="ps-8">
+            <li>The read progress for this user account will be permanently deleted.</li>
+            <li>Authentication activity for this user will be permanently deleted.</li>
+          </ul>
+          <div class="font-weight-bold mt-4">
+            This action cannot be undone.
+          </div>
+        </v-alert>
+      </template>
+    </DialogConfirm>
   </template>
 </template>
 
@@ -84,7 +111,7 @@ import {komgaClient} from '@/api/komga-client.ts'
 import type {components} from '@/generated/openapi/komga'
 import {useCurrentUser} from '@/colada/queries/current-user.ts'
 import {UserRoles} from '@/types/UserRoles.ts'
-import {useUpdateUser, useUpdateUserPassword} from '@/colada/mutations/update-user.ts'
+import {useDeleteUser, useUpdateUser, useUpdateUserPassword} from '@/colada/mutations/update-user.ts'
 import FormUserChangePassword from '@/components/forms/user/FormUserChangePassword.vue'
 import FormUserRoles from '@/components/forms/user/FormUserRoles.vue'
 import type {Component} from 'vue'
@@ -140,12 +167,14 @@ const currentAction = ref<ACTION>()
 // the record passed to the dialog's form's model
 const dialogRecord = ref<unknown>()
 const activator = ref<Element>()
+const activatorDelete = ref<Element>()
 const dialogTitle = ref<string>()
 // dynamic component for the dialog's inner form
 const dialogComponent = shallowRef<Component>()
 
 const {mutate: mutateUser} = useUpdateUser()
 const {mutate: mutateUserPassword} = useUpdateUserPassword()
+const {mutate: mutateDeleteUser} = useDeleteUser()
 
 enum ACTION {
   EDIT, DELETE, RESTRICTIONS, PASSWORD
@@ -184,6 +213,7 @@ function handleDialogConfirmation() {
       mutateUser(dialogRecord.value as components["schemas"]["UserDto"])
       break;
     case ACTION.DELETE:
+      mutateDeleteUser(userRecord.value!.id)
       break;
     case ACTION.RESTRICTIONS:
       break;
