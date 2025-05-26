@@ -47,6 +47,7 @@
 </template>
 
 <script setup lang="ts">
+/** Dialog super component de la race*/
 const showDialog = defineModel<boolean>('dialog', {required: false})
 const record = defineModel<unknown>('record', {required: true})
 
@@ -56,7 +57,11 @@ function submitForm(callback: () => void) {
   if(formValid.value) callback()
 }
 
-export interface Props {
+interface Props {
+  /**
+   * Dialog title
+   * @type string
+   */
   title?: string,
   subtitle?: string,
   maxWidth?: string | number,
@@ -74,4 +79,3 @@ function close() {
   showDialog.value = false
 }
 </script>
-
