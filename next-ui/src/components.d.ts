@@ -24,6 +24,7 @@ declare module 'vue' {
     DialogConfirm: typeof import('./components/dialogs/DialogConfirm.vue')['default']
     DialogConfirmEdit: typeof import('./components/dialogs/DialogConfirmEdit.vue')['default']
     FormUserChangePassword: typeof import('./components/forms/user/FormUserChangePassword.vue')['default']
+    FormUserEdit: typeof import('./components/forms/user/FormUserEdit.vue')['default']
     FormUserRoles: typeof import('./components/forms/user/FormUserRoles.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     LoginForm: typeof import('./components/LoginForm.vue')['default']
