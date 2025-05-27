@@ -11,6 +11,9 @@ import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
+import org.gotson.komga.interfaces.api.rest.dto.AllowExcludeDto
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.hasItem
 import org.hamcrest.text.MatchesPattern
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -69,19 +72,126 @@ class UserControllerTest(
       .forEach { userLifecycle.deleteUser(it) }
   }
 
-  @ParameterizedTest
-  @ValueSource(strings = ["user", "user@domain"])
+  @Nested
+  inner class Create {
+    @ParameterizedTest
+    @ValueSource(strings = ["user", "user@domain"])
+    @WithMockCustomUser(roles = ["ADMIN"])
+    fun `when creating a user with invalid email then returns bad request`(email: String) {
+      // language=JSON
+      val jsonString = """{"email":"$email","password":"password"}"""
+
+      mockMvc
+        .post("/api/v2/users") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isBadRequest() }
+        }
+    }
+
+    @Test
+    @WithMockCustomUser(roles = ["ADMIN"])
+    fun `when creating a user with limited fields then returns created user`() {
+      // language=JSON
+      val jsonString =
+        """
+          {
+            "email":"newuser@example.org",
+            "password":"password"
+        }
+        """.trimIndent()
+
+      mockMvc
+        .post("/api/v2/users") {
+          contentType = MediaType.APPLICATION_JSON
+          content = jsonString
+        }.andExpect {
+          status { isCreated() }
+          jsonPath("$.roles") { value(hasItem("USER")) }
+          jsonPath("$.sharedAllLibraries") { value(true) }
+          jsonPath("$.sharedLibrariesId") { doesNotExist() }
+          jsonPath("$.labelsAllow") { isEmpty() }
+          jsonPath("$.labelsExclude") { isEmpty() }
+          jsonPath("$.ageRestriction") { isEmpty() }
+        }
+    }
+  }
+
+  @Test
   @WithMockCustomUser(roles = ["ADMIN"])
-  fun `when creating a user with invalid email then returns bad request`(email: String) {
+  fun `when creating a user with all fields then returns created user`() {
     // language=JSON
-    val jsonString = """{"email":"$email","password":"password"}"""
+    val jsonString =
+      """
+      {
+        "email":"newuser@example.org",
+        "password":"password",
+        "roles": ["${UserRoles.FILE_DOWNLOAD.name}"],
+        "ageRestriction": {
+          "age": 5,
+          "restriction": "${AllowExcludeDto.NONE}"
+        },
+        "labelsAllow": ["allowTag"],
+        "labelsExclude": ["excludeTag"],
+        "sharedLibraries": {
+          "all": "false",
+          "libraryIds" : ["1", "157"]
+        }
+      }
+      """.trimIndent()
 
     mockMvc
       .post("/api/v2/users") {
         contentType = MediaType.APPLICATION_JSON
         content = jsonString
       }.andExpect {
-        status { isBadRequest() }
+        status { isCreated() }
+        jsonPath("$.roles") { value(allOf(hasItem("USER"), hasItem(UserRoles.FILE_DOWNLOAD.name))) }
+        jsonPath("$.labelsAllow") { value(hasItem("allowtag")) }
+        jsonPath("$.labelsExclude") { value(hasItem("excludetag")) }
+        jsonPath("$.ageRestriction") { doesNotExist() }
+        jsonPath("$.sharedAllLibraries") { value(false) }
+        jsonPath("$.sharedLibrariesIds") { value(hasItem("1")) }
+      }
+  }
+
+  @Test
+  @WithMockCustomUser(roles = ["ADMIN"])
+  fun `when creating a user with some fields then returns created user`() {
+    // language=JSON
+    val jsonString =
+      """
+      {
+        "email":"newuser@example.org",
+        "password":"password",
+        "roles": ["${UserRoles.FILE_DOWNLOAD.name}"],
+        "ageRestriction": {
+          "age": 5,
+          "restriction": "${AllowExcludeDto.ALLOW_ONLY}"
+        },
+        "labelsAllow": ["allowTag"],
+        "labelsExclude": ["excludeTag"],
+        "sharedLibraries": {
+          "all": "false",
+          "libraryIds" : ["1", "157"]
+        }
+      }
+      """.trimIndent()
+
+    mockMvc
+      .post("/api/v2/users") {
+        contentType = MediaType.APPLICATION_JSON
+        content = jsonString
+      }.andExpect {
+        status { isCreated() }
+        jsonPath("$.roles") { value(allOf(hasItem("USER"), hasItem(UserRoles.FILE_DOWNLOAD.name))) }
+        jsonPath("$.labelsAllow") { value(hasItem("allowtag")) }
+        jsonPath("$.labelsExclude") { value(hasItem("excludetag")) }
+        jsonPath("$.ageRestriction.age") { value(5) }
+        jsonPath("$.ageRestriction.restriction") { value(AllowExclude.ALLOW_ONLY.name) }
+        jsonPath("$.sharedAllLibraries") { value(false) }
+        jsonPath("$.sharedLibrariesIds") { value(hasItem("1")) }
       }
   }
 

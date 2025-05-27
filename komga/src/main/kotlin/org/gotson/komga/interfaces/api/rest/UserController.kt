@@ -7,6 +7,7 @@ import jakarta.validation.Valid
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.DuplicateNameException
+import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserEmailAlreadyExistsException
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
@@ -16,6 +17,7 @@ import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.interfaces.api.rest.dto.AllowExcludeDto
 import org.gotson.komga.interfaces.api.rest.dto.ApiKeyDto
 import org.gotson.komga.interfaces.api.rest.dto.ApiKeyRequestDto
 import org.gotson.komga.interfaces.api.rest.dto.AuthenticationActivityDto
@@ -95,8 +97,35 @@ class UserController(
     newUser: UserCreationDto,
   ): UserDto =
     try {
-      userLifecycle.createUser(newUser.toDomain()).toDto()
-    } catch (e: UserEmailAlreadyExistsException) {
+      userLifecycle
+        .createUser(
+          with(newUser) {
+            KomgaUser(
+              email,
+              password,
+              roles = UserRoles.Companion.valuesOf(roles),
+              // keep existing behaviour before those properties were added, by default new user has access to all libraries
+              sharedAllLibraries = sharedLibraries == null || sharedLibraries.all,
+              sharedLibrariesIds =
+                if (sharedLibraries == null || sharedLibraries.all)
+                  emptySet()
+                else
+                  libraryRepository.findAllByIds(sharedLibraries.libraryIds).map { it.id }.toSet(),
+              // keep existing behaviour before those properties were added, by default no restrictions are applied
+              restrictions =
+                ContentRestrictions(
+                  ageRestriction =
+                    if (ageRestriction == null || ageRestriction.restriction == AllowExcludeDto.NONE)
+                      null
+                    else
+                      AgeRestriction(ageRestriction.age, ageRestriction.restriction.toDomain()),
+                  labelsAllow = labelsAllow ?: emptySet(),
+                  labelsExclude = labelsExclude ?: emptySet(),
+                ),
+            )
+          },
+        ).toDto()
+    } catch (_: UserEmailAlreadyExistsException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "A user with this email already exists")
     }
 
@@ -142,10 +171,10 @@ class UserController(
               ContentRestrictions(
                 ageRestriction =
                   if (isSet("ageRestriction")) {
-                    if (ageRestriction == null)
+                    if (ageRestriction == null || ageRestriction?.restriction == AllowExcludeDto.NONE)
                       null
                     else
-                      AgeRestriction(ageRestriction!!.age, ageRestriction!!.restriction)
+                      AgeRestriction(ageRestriction!!.age, ageRestriction!!.restriction.toDomain())
                   } else {
                     existing.restrictions.ageRestriction
                   },

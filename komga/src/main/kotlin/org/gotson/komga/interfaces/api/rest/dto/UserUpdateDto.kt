@@ -40,10 +40,24 @@ class UserUpdateDto {
 data class AgeRestrictionUpdateDto(
   @get:PositiveOrZero
   val age: Int,
-  val restriction: AllowExclude,
+  val restriction: AllowExcludeDto,
 )
 
 data class SharedLibrariesUpdateDto(
   val all: Boolean,
   val libraryIds: Set<String>,
 )
+
+enum class AllowExcludeDto {
+  ALLOW_ONLY,
+  EXCLUDE,
+  NONE,
+  ;
+
+  fun toDomain() =
+    when (this) {
+      ALLOW_ONLY -> AllowExclude.ALLOW_ONLY
+      EXCLUDE -> AllowExclude.EXCLUDE
+      NONE -> throw IllegalArgumentException()
+    }
+}
