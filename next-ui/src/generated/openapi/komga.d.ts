@@ -2669,7 +2669,7 @@ export interface components {
             /** Format: int32 */
             age: number;
             /** @enum {string} */
-            restriction: "ALLOW_ONLY" | "EXCLUDE";
+            restriction: "ALLOW_ONLY" | "EXCLUDE" | "NONE";
         };
         AllOfBook: components["schemas"]["Book"] & {
             allOf: (components["schemas"]["AllOfBook"] | components["schemas"]["AnyOfBook"] | components["schemas"]["Author"] | components["schemas"]["Deleted"] | components["schemas"]["LibraryId"] | components["schemas"]["MediaProfile"] | components["schemas"]["MediaStatus"] | components["schemas"]["NumberSort"] | components["schemas"]["OneShot"] | components["schemas"]["Poster"] | components["schemas"]["ReadListId"] | components["schemas"]["ReadStatus"] | components["schemas"]["ReleaseDate"] | components["schemas"]["SeriesId"] | components["schemas"]["Tag"] | components["schemas"]["Title"])[];
@@ -3885,9 +3885,13 @@ export interface components {
             url: string;
         };
         UserCreationDto: {
+            ageRestriction?: components["schemas"]["AgeRestrictionUpdateDto"];
             email: string;
+            labelsAllow?: string[];
+            labelsExclude?: string[];
             password: string;
             roles: string[];
+            sharedLibraries?: components["schemas"]["SharedLibrariesUpdateDto"];
         };
         UserDto: {
             ageRestriction?: components["schemas"]["AgeRestrictionDto"];
