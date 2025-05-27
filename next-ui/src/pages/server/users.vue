@@ -14,6 +14,30 @@
       :headers="headers"
       :hide-default-footer="hideFooter"
     >
+      <template #top>
+        <v-toolbar flat>
+          <v-toolbar-title>
+            <v-icon
+              color="medium-emphasis"
+              icon="mdi-account-multiple"
+              size="x-small"
+              start
+            />
+            Users
+          </v-toolbar-title>
+
+          <v-btn
+            class="me-2"
+            prepend-icon="mdi-plus"
+            rounded="lg"
+            text="Add a User"
+            border
+            @click="showDialog(ACTION.ADD)"
+            @mouseenter="activator = $event.currentTarget"
+          />
+        </v-toolbar>
+      </template>
+
       <template #[`item.roles`]="{ value }">
         <div class="d-flex ga-1">
           <v-chip
@@ -30,16 +54,9 @@
       <template #[`item.actions`]="{ item : user }">
         <div class="d-flex ga-1 justify-end">
           <v-icon-btn
-            v-tooltip:bottom="'Reset password'"
+            v-tooltip:bottom="'Change password'"
             icon="mdi-lock-reset"
             @click="showDialog(ACTION.PASSWORD, user)"
-            @mouseenter="activator = $event.currentTarget"
-          />
-          <v-icon-btn
-            v-tooltip:bottom="'Edit restrictions'"
-            icon="mdi-book-lock"
-            :disabled="me?.id == user.id"
-            @click="showDialog(ACTION.RESTRICTIONS, user)"
             @mouseenter="activator = $event.currentTarget"
           />
           <v-icon-btn
@@ -65,7 +82,7 @@
       :activator="activator"
       :title="dialogTitle"
       :subtitle="userRecord?.email"
-      max-width="400"
+      :max-width="currentAction === ACTION.PASSWORD ? 400 : 600"
       @update:record="handleDialogConfirmation()"
     >
       <template #text="{proxyModel}">
@@ -111,10 +128,11 @@ import {komgaClient} from '@/api/komga-client.ts'
 import type {components} from '@/generated/openapi/komga'
 import {useCurrentUser} from '@/colada/queries/current-user.ts'
 import {UserRoles} from '@/types/UserRoles.ts'
-import {useDeleteUser, useUpdateUser, useUpdateUserPassword} from '@/colada/mutations/update-user.ts'
+import {useCreateUser, useDeleteUser, useUpdateUser, useUpdateUserPassword} from '@/colada/mutations/update-user.ts'
 import FormUserChangePassword from '@/components/forms/user/FormUserChangePassword.vue'
-import FormUserRoles from '@/components/forms/user/FormUserRoles.vue'
+import FormUserEdit from '@/components/forms/user/FormUserEdit.vue'
 import type {Component} from 'vue'
+import {useLibraries} from '@/colada/queries/libraries.ts'
 
 // API data
 const {data: users, error, isLoading, refetch: refetchUsers} = useUsers()
@@ -172,30 +190,57 @@ const dialogTitle = ref<string>()
 // dynamic component for the dialog's inner form
 const dialogComponent = shallowRef<Component>()
 
+const {mutate: mutateCreateUser} = useCreateUser()
 const {mutate: mutateUser} = useUpdateUser()
 const {mutate: mutateUserPassword} = useUpdateUserPassword()
 const {mutate: mutateDeleteUser} = useDeleteUser()
+const {data: libraries} = useLibraries()
 
 enum ACTION {
-  EDIT, DELETE, RESTRICTIONS, PASSWORD
+  ADD, EDIT, DELETE, PASSWORD
 }
 
-function showDialog(action: ACTION, user: components["schemas"]["UserDto"]) {
+function showDialog(action: ACTION, user?: components["schemas"]["UserDto"]) {
   currentAction.value = action
   switch (action) {
+    case ACTION.ADD:
+      dialogTitle.value = 'Add User'
+      dialogComponent.value = FormUserEdit
+      dialogRecord.value = {
+        email: '',
+        password: '',
+        roles: [UserRoles.PAGE_STREAMING, UserRoles.FILE_DOWNLOAD],
+        sharedLibraries: {
+          all: true,
+          // we fill the array with all libraries for a nicer display in the edit dialog
+          libraryIds: libraries.value?.map(x => x.id) || [],
+        },
+        ageRestriction: {
+          age: 0,
+          restriction: 'NONE',
+        }
+      } as components["schemas"]["UserCreationDto"]
+      break;
     case ACTION.EDIT:
-      dialogTitle.value = 'Edit Roles'
-      dialogComponent.value = FormUserRoles
-      dialogRecord.value = user
+      dialogTitle.value = 'Edit User'
+      dialogComponent.value = FormUserEdit
+      dialogRecord.value = {
+        ...user,
+        roles: user?.roles.filter(x => x !== 'USER'),
+        sharedLibraries: {
+          all: user?.sharedAllLibraries,
+          // we fill the array with all libraries for a nicer display in the edit dialog
+          libraryIds: user?.sharedAllLibraries ? libraries.value?.map(x => x.id) || [] : user?.sharedLibrariesIds,
+        },
+        ageRestriction: user?.ageRestriction || {
+          age: 0,
+          restriction: 'NONE',
+        }
+      } as components["schemas"]["UserUpdateDto"]
       break;
     case ACTION.DELETE:
       dialogTitle.value = 'Delete User'
-      dialogComponent.value = FormUserRoles
-      dialogRecord.value = user
-      break;
-    case ACTION.RESTRICTIONS:
-      dialogTitle.value = 'Edit Restrictions'
-      dialogComponent.value = FormUserRoles
+      dialogComponent.value = FormUserEdit
       dialogRecord.value = user
       break;
     case ACTION.PASSWORD:
@@ -209,13 +254,14 @@ function showDialog(action: ACTION, user: components["schemas"]["UserDto"]) {
 
 function handleDialogConfirmation() {
   switch (currentAction.value) {
+    case ACTION.ADD:
+      mutateCreateUser(dialogRecord.value as components["schemas"]["UserCreationDto"])
+      break;
     case ACTION.EDIT:
       mutateUser(dialogRecord.value as components["schemas"]["UserDto"])
       break;
     case ACTION.DELETE:
       mutateDeleteUser(userRecord.value!.id)
-      break;
-    case ACTION.RESTRICTIONS:
       break;
     case ACTION.PASSWORD:
       mutateUserPassword({
