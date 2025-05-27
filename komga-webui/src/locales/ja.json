@@ -95,6 +95,7 @@
     "beginning_of_book": "ここが書籍の先頭です。",
     "changing_reading_direction": "読み方向を変更する",
     "cycling_page_layout": "ページレイアウトを切り替える",
+    "cycling_page_margin": "ページ余白の切り替え",
     "cycling_scale": "表示サイズを切り替える",
     "cycling_side_padding": "左右の余白を切り替える",
     "download_current_page": "このページをダウンロードする",
@@ -148,6 +149,7 @@
     "shortcuts": {
       "close": "閉じる",
       "cycle_page_layout": "ページレイアウトを切り替える",
+      "cycle_page_margin": "ページ余白の切り替え",
       "cycle_scale": "大きさを切り替える",
       "cycle_side_padding": "左右の余白を切り替える",
       "first_page": "最初のページ",
@@ -209,6 +211,8 @@
   "common": {
     "age": "年齢",
     "all_libraries": "全ライブラリ",
+    "all_of": "すべての",
+    "any_of": "いずれかの",
     "book": "書籍",
     "books": "書籍",
     "books_n": "0 冊 | 1 冊 | {count} 冊",
@@ -243,6 +247,8 @@
     "locale_name": "日本語",
     "locale_rtl": "false",
     "lock_all": "すべてをロックする",
+    "media": "メディア",
+    "more": "さらに",
     "n_selected": "{count} 冊を選択中",
     "nothing_to_show": "表示するものはありません",
     "ok": "OK",
@@ -256,6 +262,7 @@
     "password": "パスワード",
     "pdf": "PDF",
     "pending_tasks": "保留中のタスクなし | 1タスク保留中 | {count} タスク保留中",
+    "pinned_libraries": "ピン留めされたライブラリ",
     "publisher": "出版社",
     "read": "読む",
     "read_on": "読了済 {date}",
@@ -456,6 +463,7 @@
       "dialot_title_edit": "ライブラリを編集",
       "field_analysis_analyze_dimensions": "ページ寸法の分析",
       "field_analysis_hash_files": "ファイルのハッシュを計算する",
+      "field_analysis_hash_koreader": "KOReader 用にファイルのハッシュを計算する",
       "field_analysis_hash_pages": "ページのハッシュを計算する",
       "field_convert_to_cbz": "自動的にCBZに変換",
       "field_import_barcode_isbn": "ISBN バーコード",
@@ -509,7 +517,9 @@
       "tab_poster": "ポスター"
     },
     "edit_recommended": {
-      "button_confirm": "変更を保存"
+      "button_confirm": "変更を保存",
+      "button_reset": "デフォルトにリセット",
+      "dialog_title": "推奨レイアウトの編集"
     },
     "edit_series": {
       "button_cancel": "キャンセル",
@@ -664,7 +674,7 @@
     "info": "重複ページを削除すると、ファイルが変更されます。自動削除を使用する前に、ファイルをバックアップし、手動削除を使用してください。",
     "known": "既知",
     "matches_n": "マッチなし｜1マッチ｜{count}マッチ",
-    "new": "ニュー",
+    "new": "新規",
     "saved_size": "保存された{size}",
     "title": "重複ページ",
     "unknown_size": "サイズ不明"
@@ -714,7 +724,7 @@
       "OUTDATED": "Outdated",
       "READY": "Ready",
       "UNKNOWN": "Unknown",
-      "UNSUPPORTED": "Unsupported"
+      "UNSUPPORTED": "非対応"
     },
     "page_hash_action": {
       "DELETE_AUTO": "自動削除",
@@ -757,6 +767,7 @@
   "epubreader": {
     "current_chapter": "現在の章",
     "page_of": "{page} / {count} ページ",
+    "publisher_font": "配信元",
     "settings": {
       "column_count": "列数",
       "font_family": "フォント",
@@ -816,16 +827,24 @@
     "ERR_1031": "ComicRack CBL Bookにシリーズまたは番号がありません",
     "ERR_1032": "EPUBのメディアタイプが間違っています",
     "ERR_1033": "いくつかの項目が欠落しています",
-    "ERR_1034": "そのコメントのAPIキーは既に存在します"
+    "ERR_1034": "そのコメントのAPIキーは既に存在します",
+    "ERR_1035": "EPUBファイルの目次を読み込む際にエラーが発生しました",
+    "ERR_1036": "EPUBのランドマーク取得中にエラーが発生しました",
+    "ERR_1037": "EPUBのページリスト取得中にエラーが発生しました",
+    "ERR_1038": "EPUBファイルから Divina ページを取得する際にエラーが発生しました",
+    "ERR_1039": "EPUBファイルからの位置情報の取得中にエラーが発生しました"
   },
   "filter": {
     "age_rating": "年齢レーティング",
     "age_rating_none": "なし",
+    "any": "いずれかの",
     "complete": "完了",
     "genre": "ジャンル",
     "in_progress": "処理中",
     "language": "言語",
     "library": "ライブラリ",
+    "media_profile": "メディアプロファイル",
+    "media_status": "メディアステータス",
     "oneshot": "ワンショット",
     "publisher": "出版社",
     "read": "読み込み",
@@ -855,6 +874,8 @@
   },
   "library_navigation": {
     "browse": "ブラウズ",
+    "browse_books": "本",
+    "browse_series": "シリーズ",
     "collections": "コレクション",
     "readlists": "読書リスト",
     "recommended": "おすすめ"
@@ -887,10 +908,12 @@
     "empty_trash": "ゴミ箱を空にする",
     "mark_read": "既読にする",
     "mark_unread": "未読にする",
+    "pin": "ピン",
     "refresh_metadata": "情報を更新",
     "scan_library_files": "ライブラリ内のファイルをスキャン",
     "scan_library_files_deep": "ライブラリのファイルをディープスキャン",
-    "select_all": "全て選択"
+    "select_all": "全て選択",
+    "unpin": "ピン留めを外す"
   },
   "metrics": {
     "library_books": "ライブラリごとの冊数",
@@ -899,12 +922,19 @@
     "library_sidecars": "ライブラリーごとのサイドカー",
     "tasks_executed": "実行されたタスク",
     "tasks_total_time": "タスクの総実行時間",
-    "title": "指標"
+    "title": "統計"
+  },
+  "missing_posters": {
+    "title": "欠けているポスター"
   },
   "navigation": {
     "home": "ホーム",
     "libraries": "ライブラリ",
     "logout": "ログアウト"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "ライブラリは3点メニューからピン留めできます",
+    "title": "ピン留めされたライブラリはありません"
   },
   "page_not_found": {
     "go_back_to_home_page": "ホームページに戻る",
@@ -943,6 +973,7 @@
       "button_scan_libraries": "すべてのライブラリをスキャン",
       "button_scan_libraries_deep": "すべてのライブラリをディープスキャン",
       "button_shutdown": "シャットダウン",
+      "download_log": "ログファイルをダウンロード",
       "notification_tasks_cancelled": "キャンセルするタスクがありません | 1個のタスクがキャンセルされました | {count}個のタスクがキャンセルされました",
       "section_title": "サーバ管理"
     },
@@ -984,6 +1015,7 @@
   "sort": {
     "books_count": "書籍の数",
     "date_added": "追加した日",
+    "date_read": "読んだ日",
     "date_updated": "更新した日",
     "file_name": "ファイル名",
     "file_size": "ファイルサイズ",
@@ -992,7 +1024,8 @@
     "number": "巻数",
     "page_count": "ページ数",
     "random": "ランダム",
-    "release_date": "発行日"
+    "release_date": "発行日",
+    "series": "シリーズ"
   },
   "theme": {
     "dark": "ダーク",
@@ -1014,11 +1047,30 @@
     "less": "敬称略",
     "more": "その他のタイトル"
   },
+  "ui_settings": {
+    "general": "一般",
+    "label_oauth2_auto_login": "自動OAuth2ログイン",
+    "label_oauth2_hide_login": "OAuth2有効時にログインフィールドを隠す",
+    "label_poster_blur_unread": "未読の本やシリーズのポスター画像をぼかす",
+    "label_poster_stretch": "枠に合うようにポスター画像を伸ばす",
+    "label_series_groups": "シリーズのグループ化",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "アルファベット",
+      "japanese": "五十音 (日本語)"
+    },
+    "tooltip_oauth2_auto_login": "OAuth2プロバイダーが一つのみで、「ログインフィールドを隠す」が有効になっている必要があります"
+  },
+  "updates": {
+    "available": "アップデートが利用可能です",
+    "latest_installed": "既に最新バージョンのKomgaがインストールされています"
+  },
   "user_roles": {
     "ADMIN": "管理者",
     "FILE_DOWNLOAD": "ファイルのダウンロード",
-    "KOBO_SYNC": "Kobo Sync",
-    "PAGE_STREAMING": "ストリーム配信",
+    "KOBO_SYNC": "Kobo 同期",
+    "KOREADER_SYNC": "KOReader 同期",
+    "PAGE_STREAMING": "ページのストリーミング",
     "USER": "ユーザ"
   },
   "users": {
