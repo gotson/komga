@@ -22,4 +22,5 @@ pnpm-debug.log*
 *.sw?
 
 # FormatJS compiled translation files
+!/src/i18n/README.md
 src/i18n
