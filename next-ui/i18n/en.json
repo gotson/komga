@@ -1,34 +1,102 @@
 {
-  "8dsA6c": {
-    "defaultMessage": "User Interface",
-    "description": "Drawer menu for User Interface"
+  "2g7iOx": {
+    "defaultMessage": "Metrics",
+    "description": "Drawer menu for Server > Metrics"
   },
-  "9yKJ2S": {
+  "DxtDpt": {
+    "defaultMessage": "Media Analysis",
+    "description": "Drawer menu for Media > Media Analysis"
+  },
+  "G7quju": {
+    "defaultMessage": "Announcements",
+    "description": "Drawer menu for Server > Announcements"
+  },
+  "HaWCi3": {
     "defaultMessage": "Settings",
-    "description": "Drawer menu for Server Settings"
+    "description": "Drawer menu for Server > Settings"
   },
-  "BXkzdX": {
-    "defaultMessage": "Users",
-    "description": "Drawer menu for Users"
+  "Hl9H/B": {
+    "defaultMessage": "Media",
+    "description": "Drawer menu for Media"
   },
   "IpvWiZ": {
     "defaultMessage": "Server",
     "description": "Drawer menu for Server"
   },
-  "Nn5L5Q": {
-    "defaultMessage": "Announcements",
-    "description": "Drawer menu for Announcements"
+  "JGOfZq": {
+    "defaultMessage": "Users",
+    "description": "Drawer menu for Server > Users"
+  },
+  "MvwDsn": {
+    "defaultMessage": "Known",
+    "description": "Drawer menu for Media > Duplicate Pages > Known"
+  },
+  "N7+QXi": {
+    "defaultMessage": "Import",
+    "description": "Drawer menu for Import"
+  },
+  "Nb0V0p": {
+    "defaultMessage": "Missing Posters",
+    "description": "Drawer menu for Media > Missing Posters"
+  },
+  "Y6VlM9": {
+    "defaultMessage": "Read List",
+    "description": "Drawer menu for Import > Read List"
+  },
+  "Yf4DJ2": {
+    "defaultMessage": "User Interface",
+    "description": "Drawer menu for Server > User Interface"
+  },
+  "cAu/I6": {
+    "defaultMessage": "Duplicate Pages",
+    "description": "Drawer menu for Media > Duplicate Pages"
+  },
+  "cGFtPg": {
+    "defaultMessage": "Activity",
+    "description": "Drawer menu for My Account > Activity"
+  },
+  "eW3fXu": {
+    "defaultMessage": "Duplicate Files",
+    "description": "Drawer menu for Media > Duplicate Files"
+  },
+  "fQIepD": {
+    "defaultMessage": "Books",
+    "description": "Drawer menu for Import > Books"
+  },
+  "l/To3S": {
+    "defaultMessage": "History",
+    "description": "Drawer menu for History"
+  },
+  "lDnmZD": {
+    "defaultMessage": "Updates",
+    "description": "Drawer menu for Server > Updates"
   },
   "localename": {
     "defaultMessage": "English",
     "description": "The name of the locale, shown in the language selection menu. Must be translated to the language's name"
   },
-  "nGrxDH": {
-    "defaultMessage": "Updates",
-    "description": "Drawer menu for Updates"
+  "oFOkWZ": {
+    "defaultMessage": "API Keys",
+    "description": "Drawer menu for My Account > API Keys"
   },
-  "nr3gEG": {
-    "defaultMessage": "Metrics",
-    "description": "Drawer menu for Metrics"
+  "od545m": {
+    "defaultMessage": "My Account",
+    "description": "Drawer menu for My Account"
+  },
+  "qiZm6U": {
+    "defaultMessage": "Unknown",
+    "description": "Drawer menu for Media > Duplicate Pages > Unknown"
+  },
+  "rw/Dkw": {
+    "defaultMessage": "User Interface",
+    "description": "Drawer menu for My Account > User Interface"
+  },
+  "ti4Pzo": {
+    "defaultMessage": "Logout",
+    "description": "Drawer menu for Logout"
+  },
+  "xYGXuU": {
+    "defaultMessage": "Details",
+    "description": "Drawer menu for My Account > Details"
   }
 }
