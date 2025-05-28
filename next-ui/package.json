@@ -5,14 +5,15 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "run-p i18n-compile type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --fix",
     "openapi-generate": "npx tsx ./openapi-generator.mts",
-    "i18n-extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --out-file src/i18n/en.json",
-    "i18n-compile": "formatjs compile-folder i18n src/i18n"
+    "i18n-extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --out-file i18n/en.json",
+    "i18n-compile": "formatjs compile-folder i18n src/i18n",
+    "i18n-verify": "formatjs verify --missing-keys --source-locale=en \"i18n/*.json\""
   },
   "dependencies": {
     "@pinia/colada": "^0.16.1",

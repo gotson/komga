@@ -3,39 +3,68 @@
     <template #activator="{ props }">
       <v-list-item
         v-bind="props"
-        title="Media"
+        :title="$formatMessage({
+          description: 'Drawer menu for Media',
+          defaultMessage: 'Media',
+          id: 'Hl9H/B'
+        })"
         prepend-icon="mdi-book-cog"
       />
     </template>
 
     <v-list-item
       to="/media/analysis"
-      title="Media Analysis"
+
+      :title="$formatMessage({
+        description: 'Drawer menu for Media > Media Analysis',
+        defaultMessage: 'Media Analysis',
+        id: 'DxtDpt'
+      })"
     />
     <v-list-item
       to="/media/missing-posters"
-      title="Missing Posters"
+      :title="$formatMessage({
+        description: 'Drawer menu for Media > Missing Posters',
+        defaultMessage: 'Missing Posters',
+        id: 'Nb0V0p'
+      })"
     />
     <v-list-item
       to="/media/duplicate-files"
-      title="Duplicate Files"
+      :title="$formatMessage({
+        description: 'Drawer menu for Media > Duplicate Files',
+        defaultMessage: 'Duplicate Files',
+        id: 'eW3fXu'
+      })"
     />
 
     <v-list-group value="Duplicate Pages">
       <template #activator="{ props }">
         <v-list-item
           v-bind="props"
-          title="Duplicate Pages"
+          :title="$formatMessage({
+            description: 'Drawer menu for Media > Duplicate Pages',
+            defaultMessage: 'Duplicate Pages',
+            id: 'cAu/I6'
+          })"
         />
       </template>
 
       <v-list-item
         to="/media/duplicate-pages/known"
-        title="Known"
+        :title="$formatMessage({
+          description: 'Drawer menu for Media > Duplicate Pages > Known',
+          defaultMessage: 'Known',
+          id: 'MvwDsn'
+        })"
       />
       <v-list-item
         to="/media/duplicate-pages/unknown"
-        title="Unknown"
+        :title="$formatMessage({
+          description: 'Drawer menu for Media > Duplicate Pages > Unknown',
+          defaultMessage: 'Unknown',
+          id: 'qiZm6U'
+        })"
       />
     </v-list-group>
   </v-list-group>

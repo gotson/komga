@@ -3,26 +3,46 @@
     <template #activator="{ props }">
       <v-list-item
         v-bind="props"
-        title="My Account"
+        :title="$formatMessage({
+          description: 'Drawer menu for My Account',
+          defaultMessage: 'My Account',
+          id: 'od545m'
+        })"
         prepend-icon="mdi-account"
       />
     </template>
 
     <v-list-item
       to="/account/details"
-      title="Details"
+      :title="$formatMessage({
+        description: 'Drawer menu for My Account > Details',
+        defaultMessage: 'Details',
+        id: 'xYGXuU'
+      })"
     />
     <v-list-item
       to="/account/api-keys"
-      title="API Keys"
+      :title="$formatMessage({
+        description: 'Drawer menu for My Account > API Keys',
+        defaultMessage: 'API Keys',
+        id: 'oFOkWZ'
+      })"
     />
     <v-list-item
       to="/account/ui"
-      title="User Interface"
+      :title="$formatMessage({
+        description: 'Drawer menu for My Account > User Interface',
+        defaultMessage: 'User Interface',
+        id: 'rw/Dkw'
+      })"
     />
     <v-list-item
       to="/account/activity"
-      title="Activity"
+      :title="$formatMessage({
+        description: 'Drawer menu for My Account > Activity',
+        defaultMessage: 'Activity',
+        id: 'cGFtPg'
+      })"
     />
   </v-list-group>
 </template>
