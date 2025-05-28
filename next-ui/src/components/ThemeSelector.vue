@@ -7,12 +7,16 @@
       />
     </template>
 
-    <v-list>
+    <v-list
+      :selected="[appStore.theme]"
+      color="primary"
+    >
       <v-list-item
         v-for="theme in themes"
         :key="theme.value"
         :prepend-icon="theme.icon"
         :title="theme.title"
+        :value="theme.value"
         @click="appStore.theme = theme.value"
       />
     </v-list>
