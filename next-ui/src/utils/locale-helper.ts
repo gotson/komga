@@ -2,6 +2,7 @@ import {defineMessage} from 'vue-intl'
 
 export const defaultLocale = 'en'
 
+// eslint-disable-next-line
 const localeName = defineMessage({
   description: 'The name of the locale, shown in the language selection menu. Must be translated to the language\'s name',
   defaultMessage: 'English',
@@ -26,8 +27,8 @@ async function loadAvailableLocales(): Promise<Record<string, string>> {
     const matched = path.match(/([A-Za-z0-9-_]+)\./i)
     if (matched && matched.length > 1) {
       const locale = matched[1]
-      const messages = await localeFiles[path]!() as Record<string, {defaultMessage: string}>
-      locales[locale!] = messages[localeName.id]!.defaultMessage
+      const messages = await localeFiles[path]!() as Record<string, string>
+      locales[locale!] = messages[localeName.id]!
     }
   }
   return locales

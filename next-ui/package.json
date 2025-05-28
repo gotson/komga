@@ -11,7 +11,8 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --fix",
     "openapi-generate": "npx tsx ./openapi-generator.mts",
-    "i18n-extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --out-file src/i18n/en.json"
+    "i18n-extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --out-file src/i18n/en.json",
+    "i18n-compile": "formatjs compile-folder i18n src/i18n"
   },
   "dependencies": {
     "@pinia/colada": "^0.16.1",
