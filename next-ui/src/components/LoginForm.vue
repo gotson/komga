@@ -10,7 +10,11 @@
       <v-col>
         <v-text-field
           v-model="username"
-          label="Email"
+          :label="$formatMessage({
+            description: 'Login screen: email field label',
+            defaultMessage: 'Email',
+            id: 'QIr0z7'
+          })"
           autofocus
         />
       </v-col>
@@ -20,7 +24,11 @@
       <v-col>
         <v-text-field
           v-model="password"
-          label="Password"
+          :label="$formatMessage({
+            description: 'Login screen: password field label',
+            defaultMessage: 'Password',
+            id: '5AAGkA'
+          })"
           type="password"
         />
       </v-col>
@@ -30,7 +38,11 @@
       <v-col>
         <v-checkbox
           v-model="rememberMe"
-          label="Remember me"
+          :label="$formatMessage({
+            description: 'Login screen: Remember Me checkbox',
+            defaultMessage: 'Remember Me',
+            id: '0YG9GQ'
+          })"
         />
       </v-col>
     </v-row>
@@ -38,7 +50,11 @@
     <v-row>
       <v-col>
         <v-btn
-          text="Sign in"
+          :text="$formatMessage({
+            description: 'Login screen: Sign In button',
+            defaultMessage: 'Sign in',
+            id: '02SRax'
+          })"
           @click="performLogin"
         />
       </v-col>
