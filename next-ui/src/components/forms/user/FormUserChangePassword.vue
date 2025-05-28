@@ -2,7 +2,11 @@
   <v-text-field
     v-model="newPassword"
     :rules="[rules.required()]"
-    label="New password"
+    :label="$formatMessage({
+      description: 'User password change dialog: New Password field label',
+      defaultMessage: 'New password',
+      id: 'WhasCZ'
+    })"
     autocomplete="off"
     autofocus
     :type="showPassword ? 'text' : 'password'"
@@ -12,8 +16,16 @@
   <v-text-field
     v-model="confirmPassword"
     class="mt-2"
-    :rules="[rules.sameAs(newPassword, 'Passwords must be identical')]"
-    label="Confirm password"
+    :rules="[rules.sameAs(newPassword, $formatMessage({
+      description: 'User password change dialog: Error message if passwords differ',
+      defaultMessage: 'Passwords must be identical',
+      id: 'LaxrEO'
+    }))]"
+    :label="$formatMessage({
+      description: 'User password change dialog: Confirm Password field label',
+      defaultMessage: 'Confirm password',
+      id: 'nJiYF7'
+    })"
     autocomplete="off"
     :type="showPassword ? 'text' : 'password'"
     :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
