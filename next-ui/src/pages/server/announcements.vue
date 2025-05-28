@@ -30,7 +30,11 @@
         </v-col>
         <v-col cols="auto">
           <v-tooltip
-            text="Mark as read"
+            :text="$formatMessage({
+              description: 'Announcements view: mark as read button tooltip',
+              defaultMessage: 'Mark as read',
+              id: 'sUSVQS'
+            })"
             :disabled="item._komga?.read"
           >
             <template #activator="{ props }">

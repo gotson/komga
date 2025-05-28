@@ -12,7 +12,11 @@
       color="primary"
     >
       <v-list-subheader
-        title="Translations"
+        :title="$formatMessage({
+          description: 'Translations pop-up menu header',
+          defaultMessage: 'Translations',
+          id: 'InW6ko'
+        })"
         class="text-high-emphasis text-uppercase font-weight-black"
       />
 
@@ -29,7 +33,13 @@
         target="_blank"
       >
         <v-list-item-title class="font-weight-bold">
-          Help translate
+          {{
+            $formatMessage({
+              description: 'Translations pop-up menu footer',
+              defaultMessage: 'Help translate',
+              id: '3rSWpQ'
+            })
+          }}
         </v-list-item-title>
       </v-list-item>
     </v-list>
