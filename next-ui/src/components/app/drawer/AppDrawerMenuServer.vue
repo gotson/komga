@@ -29,42 +29,42 @@
     <v-list-item
       to="/server/users"
       :title="$formatMessage({
-        description: 'Drawer menu for Users',
+        description: 'Drawer menu for Server > Users',
         defaultMessage: 'Users',
-        id: 'BXkzdX'
+        id: 'JGOfZq'
       })"
     />
     <v-list-item
       to="/server/settings"
       :title="$formatMessage({
-        description: 'Drawer menu for Server Settings',
+        description: 'Drawer menu for Server > Settings',
         defaultMessage: 'Settings',
-        id: '9yKJ2S'
+        id: 'HaWCi3'
       })"
     />
     <v-list-item
       to="/server/ui"
       :title="$formatMessage({
-        description: 'Drawer menu for User Interface',
+        description: 'Drawer menu for Server > User Interface',
         defaultMessage: 'User Interface',
-        id: '8dsA6c'
+        id: 'Yf4DJ2'
       })"
     />
     <v-list-item
       to="/server/metrics"
       :title="$formatMessage({
-        description: 'Drawer menu for Metrics',
+        description: 'Drawer menu for Server > Metrics',
         defaultMessage: 'Metrics',
-        id: 'nr3gEG'
+        id: '2g7iOx'
       })"
     />
 
     <v-list-item
       to="/server/announcements"
       :title="$formatMessage({
-        description: 'Drawer menu for Announcements',
+        description: 'Drawer menu for Server > Announcements',
         defaultMessage: 'Announcements',
-        id: 'Nn5L5Q'
+        id: 'G7quju'
       })"
     >
       <template #append>
@@ -80,9 +80,9 @@
     <v-list-item
       to="/server/updates"
       :title="$formatMessage({
-        description: 'Drawer menu for Updates',
+        description: 'Drawer menu for Server > Updates',
         defaultMessage: 'Updates',
-        id: 'nGrxDH'
+        id: 'lDnmZD'
       })"
     />
   </v-list-group>
