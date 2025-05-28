@@ -48,7 +48,7 @@ export const vuetify = createVuetify({
 export const vuetifyRulesPlugin = createRulesPlugin({
   aliases: {
     sameAs: (other?: string, err?: string) => {
-      return (v: unknown) => other === v || err || 'Field must be same'
+      return (v: unknown) => other === v || err || 'Field must have the same value'
     },
   },
 }, vuetify.locale)

@@ -1,0 +1,10 @@
+{
+  "9yKJ2S": {
+    "defaultMessage": "Réglages",
+    "description": "Drawer menu for Server Settings"
+  },
+  "localename": {
+    "defaultMessage": "Français",
+    "description": "The name of the locale, shown in the language selection menu. Must be translated to the language's name"
+  }
+}
