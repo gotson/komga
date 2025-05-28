@@ -10,6 +10,7 @@ import pinia from '../stores'
 import router from '../router'
 import {PiniaColada} from '@pinia/colada'
 import { PiniaColadaAutoRefetch } from '@pinia/colada-plugin-auto-refetch'
+import {vueIntl} from '@/plugins/vue-intl.ts'
 
 // Types
 import type {App} from 'vue'
@@ -21,6 +22,7 @@ export function registerPlugins(app: App) {
   app
     .use(vuetify)
     .use(vuetifyRulesPlugin)
+    .use(vueIntl)
     // .use(DataLoaderPlugin, {router})
     .use(router)
     .use(pinia)
