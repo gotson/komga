@@ -12,7 +12,7 @@
   <v-text-field
     v-model="confirmPassword"
     class="mt-2"
-    :rules="[rules.sameAs(newPassword)]"
+    :rules="[rules.sameAs(newPassword, 'Passwords must be identical')]"
     label="Confirm password"
     autocomplete="off"
     :type="showPassword ? 'text' : 'password'"

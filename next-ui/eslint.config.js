@@ -6,6 +6,7 @@
 
 import pluginVue from 'eslint-plugin-vue'
 import {defineConfigWithVueTs, vueTsConfigs} from '@vue/eslint-config-typescript'
+import formatjs from 'eslint-plugin-formatjs'
 
 export default defineConfigWithVueTs(
   {
@@ -32,5 +33,20 @@ export default defineConfigWithVueTs(
       ],
       'vue/multi-word-component-names': 'off',
     }
-  }
+  },
+
+  {
+    plugins: {
+      formatjs,
+    },
+    rules: {
+      'formatjs/no-offset': 'error',
+      'formatjs/enforce-id': [
+        'error',
+        {
+          idInterpolationPattern: '[sha512:contenthash:base64:6]',
+        },
+      ],
+    },
+  },
 )

@@ -28,8 +28,17 @@
     />
     <v-list-item
       to="/server/settings"
-      title="Settings"
-    />
+    >
+      <v-list-item-title>
+        {{
+          $formatMessage({
+            description: 'Drawer menu for Server Settings',
+            defaultMessage: 'Settings',
+            id: '9yKJ2S'
+          })
+        }}
+      </v-list-item-title>
+    </v-list-item>
     <v-list-item
       to="/server/ui"
       title="User Interface"
