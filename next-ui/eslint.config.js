@@ -35,12 +35,13 @@ export default defineConfigWithVueTs(
     }
   },
 
+  formatjs.configs.recommended,
+
   {
     plugins: {
       formatjs,
     },
     rules: {
-      'formatjs/no-offset': 'error',
       'formatjs/enforce-id': [
         'error',
         {
