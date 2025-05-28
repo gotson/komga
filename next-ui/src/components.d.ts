@@ -25,11 +25,11 @@ declare module 'vue' {
     DialogConfirmEdit: typeof import('./components/dialogs/DialogConfirmEdit.vue')['default']
     FormUserChangePassword: typeof import('./components/forms/user/FormUserChangePassword.vue')['default']
     FormUserEdit: typeof import('./components/forms/user/FormUserEdit.vue')['default']
-    FormUserRoles: typeof import('./components/forms/user/FormUserRoles.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    LocaleSelector: typeof import('./components/LocaleSelector.vue')['default']
     LoginForm: typeof import('./components/LoginForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    ThemeSelector: typeof import('./components/app/bar/ThemeSelector.vue')['default']
+    ThemeSelector: typeof import('./components/ThemeSelector.vue')['default']
   }
 }
