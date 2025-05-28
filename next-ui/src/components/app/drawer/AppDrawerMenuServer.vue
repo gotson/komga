@@ -6,7 +6,11 @@
     <template #activator="{ props }">
       <v-list-item
         v-bind="props"
-        title="Server"
+        :title="$formatMessage({
+          description: 'Drawer menu for Server',
+          defaultMessage: 'Server',
+          id: 'IpvWiZ'
+        })"
         prepend-icon="mdi-cog"
       >
         <template #prepend>
@@ -24,33 +28,44 @@
 
     <v-list-item
       to="/server/users"
-      title="Users"
+      :title="$formatMessage({
+        description: 'Drawer menu for Users',
+        defaultMessage: 'Users',
+        id: 'BXkzdX'
+      })"
     />
     <v-list-item
       to="/server/settings"
-    >
-      <v-list-item-title>
-        {{
-          $formatMessage({
-            description: 'Drawer menu for Server Settings',
-            defaultMessage: 'Settings',
-            id: '9yKJ2S'
-          })
-        }}
-      </v-list-item-title>
-    </v-list-item>
+      :title="$formatMessage({
+        description: 'Drawer menu for Server Settings',
+        defaultMessage: 'Settings',
+        id: '9yKJ2S'
+      })"
+    />
     <v-list-item
       to="/server/ui"
-      title="User Interface"
+      :title="$formatMessage({
+        description: 'Drawer menu for User Interface',
+        defaultMessage: 'User Interface',
+        id: '8dsA6c'
+      })"
     />
     <v-list-item
       to="/server/metrics"
-      title="Metrics"
+      :title="$formatMessage({
+        description: 'Drawer menu for Metrics',
+        defaultMessage: 'Metrics',
+        id: 'nr3gEG'
+      })"
     />
 
     <v-list-item
       to="/server/announcements"
-      title="Announcements"
+      :title="$formatMessage({
+        description: 'Drawer menu for Announcements',
+        defaultMessage: 'Announcements',
+        id: 'Nn5L5Q'
+      })"
     >
       <template #append>
         <v-badge
@@ -64,7 +79,11 @@
 
     <v-list-item
       to="/server/updates"
-      title="Updates"
+      :title="$formatMessage({
+        description: 'Drawer menu for Updates',
+        defaultMessage: 'Updates',
+        id: 'nGrxDH'
+      })"
     />
   </v-list-group>
 </template>
