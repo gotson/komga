@@ -31,11 +31,19 @@
             <template #actions>
               <v-spacer />
               <v-btn
-                text="Cancel"
+                :text="$formatMessage({
+                  description: 'ConfirmEdit dialog: Cancel button',
+                  defaultMessage: 'Cancel',
+                  id: 'G/T8/2'
+                })"
                 @click="close()"
               />
               <v-btn
-                text="Save"
+                :text="$formatMessage({
+                  description: 'ConfirmEdit dialog: Save button',
+                  defaultMessage: 'Save',
+                  id: 'N9WFH4'
+                })"
                 type="submit"
               />
             </template>
@@ -47,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-/** Dialog super component de la race*/
 const showDialog = defineModel<boolean>('dialog', {required: false})
 const record = defineModel<unknown>('record', {required: true})
 

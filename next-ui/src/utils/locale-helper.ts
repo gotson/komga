@@ -2,11 +2,10 @@ import {defineMessage} from 'vue-intl'
 
 export const defaultLocale = 'en'
 
-// eslint-disable-next-line
 const localeName = defineMessage({
   description: 'The name of the locale, shown in the language selection menu. Must be translated to the language\'s name',
   defaultMessage: 'English',
-  id: 'localename'
+  id: 'app.locale-name'
 })
 
 /**
