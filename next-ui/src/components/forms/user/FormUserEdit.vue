@@ -4,14 +4,22 @@
       v-model="user!.email"
       autofocus
       :rules="[rules.required(), rules.email()]"
-      label="Email"
+      :label="$formatMessage({
+        description: 'User creationd ialog: Email field',
+        defaultMessage: 'Email',
+        id: 'b5wVJa'
+      })"
       prepend-icon="mdi-account"
     />
     <v-text-field
       v-model="user.password"
       class="mt-1"
       :rules="[rules.required()]"
-      label="Password"
+      :label="$formatMessage({
+        description: 'User creation dialog: Password field',
+        defaultMessage: 'Password',
+        id: 'o+A10T'
+      })"
       autocomplete="off"
       :type="showPassword ? 'text' : 'password'"
       :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -26,7 +34,11 @@
     chips
     closable-chips
     multiple
-    label="Roles"
+    :label="$formatMessage({
+      description: 'User creation/edit dialog: Roles field',
+      defaultMessage: 'Roles',
+      id: 'CUxhzL'
+    })"
     prepend-icon="mdi-key-chain"
     :items="userRoles"
   />
@@ -35,7 +47,11 @@
   <v-select
     v-model="user.sharedLibraries!.libraryIds"
     multiple
-    label="Shared Libraries"
+    :label="$formatMessage({
+      description: 'User creation/edit dialog: Shared Libraries field',
+      defaultMessage: 'Shared Libraries',
+      id: 'UvhIIT'
+    })"
     :items="libraries"
     item-title="name"
     item-value="id"
@@ -46,7 +62,11 @@
       <!--  Show an All Libraries chip instead of the selection  -->
       <v-chip
         v-if="user.sharedLibraries?.all"
-        text="All libraries"
+        :text="$formatMessage({
+          description: 'User creation/edit dialog: Shared Libraries field, value shown when user has access to all libraries',
+          defaultMessage: 'All libraries',
+          id: 'app.user-create-dialog.all_libraries'
+        })"
         size="small"
       />
     </template>
@@ -62,7 +82,11 @@
 
     <template #prepend-item>
       <v-list-item
-        title="All libraries"
+        :title="$formatMessage({
+          description: 'User creation/edit dialog: Shared Libraries field, value shown when user has access to all libraries',
+          defaultMessage: 'All libraries',
+          id: 'app.user-create-dialog.all_libraries'
+        })"
         @click="selectAllLibraries"
       >
         <template #prepend>
@@ -88,7 +112,11 @@
     <v-col>
       <v-select
         v-model="user.ageRestriction!.restriction"
-        label="Age restriction"
+        :label="$formatMessage({
+          description: 'User creation/edit dialog: Age restriction field label',
+          defaultMessage: 'Age restriction',
+          id: 'hEOGa9'
+        })"
         :items="ageRestrictions"
         prepend-icon="mdi-folder-lock"
       />
@@ -97,7 +125,11 @@
       <v-number-input
         v-model="user.ageRestriction!.age"
         :disabled="user.ageRestriction?.restriction?.toString() === 'NONE'"
-        label="Age"
+        :label="$formatMessage({
+          description: 'User creation/edit dialog: Age Restriction > Age field label',
+          defaultMessage: 'Age',
+          id: 'jywpqq'
+        })"
         :min="0"
         :rules="[rules.required()]"
       />
@@ -107,7 +139,11 @@
   <!-- Allow labels -->
   <v-combobox
     v-model="user.labelsAllow"
-    label="Allow only labels"
+    :label="$formatMessage({
+      description: 'User creation/edit dialog: Allow only labels field label',
+      defaultMessage: 'Allow only labels',
+      id: 'Sj0HXz'
+    })"
     chips
     closable-chips
     multiple
@@ -116,7 +152,15 @@
   >
     <template #prepend-item>
       <v-list-item>
-        <span class="font-weight-medium">Select an item or create one</span>
+        <span class="font-weight-medium">
+          {{
+            $formatMessage({
+              description: 'User creation/edit dialog: Allow only labels field selection',
+              defaultMessage: 'Select an item or create one',
+              id: 'app.user-create-dialog..select_create_one'
+            })
+          }}
+        </span>
       </v-list-item>
     </template>
   </v-combobox>
@@ -124,7 +168,11 @@
   <!-- Exclude labels -->
   <v-combobox
     v-model="user.labelsExclude"
-    label="Exclude labels"
+    :label="$formatMessage({
+      description: 'User creation/edit dialog: Exclude labels field label',
+      defaultMessage: 'Exclude labels',
+      id: '3W0jUi'
+    })"
     chips
     closable-chips
     multiple
@@ -133,7 +181,15 @@
   >
     <template #prepend-item>
       <v-list-item>
-        <span class="font-weight-medium">Select an item or create one</span>
+        <span class="font-weight-medium">
+          {{
+            $formatMessage({
+              description: 'User creation/edit dialog: Exclude labels field selection',
+              defaultMessage: 'Select an item or create one',
+              id: 'app.user-create-dialog.select_create_one'
+            })
+          }}
+        </span>
       </v-list-item>
     </template>
   </v-combobox>
@@ -142,20 +198,23 @@
 <script setup lang="ts">
 import {UserRoles} from '@/types/UserRoles.ts'
 import type {components} from '@/generated/openapi/komga'
-import { useRules } from 'vuetify/labs/rules'
+import {useRules} from 'vuetify/labs/rules'
 import {useLibraries} from '@/colada/queries/libraries.ts'
 import {useSharingLabels} from '@/colada/queries/referential.ts'
+import {useIntl} from 'vue-intl'
 
 const rules = useRules()
+const intl = useIntl()
 
 interface UserExtend {
   id?: string,
   email: string,
   password?: string,
 }
-type UserCreation = components["schemas"]["UserCreationDto"] & UserExtend
-type UserUpdate = components["schemas"]["UserUpdateDto"] & UserExtend
-const user = defineModel<UserCreation |  UserUpdate>({required: true})
+
+type UserCreation = components['schemas']['UserCreationDto'] & UserExtend
+type UserUpdate = components['schemas']['UserUpdateDto'] & UserExtend
+const user = defineModel<UserCreation | UserUpdate>({required: true})
 
 const showPassword = ref<boolean>(false)
 
@@ -173,8 +232,29 @@ const userRoles = computed(() => Object.keys(UserRoles).map(x => ({
 })))
 
 const ageRestrictions = [
-  {title: 'No restriction', value: 'NONE'},
-  {title: 'Allow only under', value: 'ALLOW_ONLY'},
-  {title: 'Exclude over', value: 'EXCLUDE'},
+  {
+    title: intl.formatMessage({
+      description: 'User creation/edit dialog: Age restriction field possible option',
+      defaultMessage: 'No restriction',
+      id: 'AeA9Ka'
+    }),
+    value: 'NONE'
+  },
+  {
+    title: intl.formatMessage({
+      description: 'User creation/edit dialog: Age restriction field possible option',
+      defaultMessage: 'Allow only under',
+      id: '/bathK'
+    }),
+    value: 'ALLOW_ONLY'
+  },
+  {
+    title: intl.formatMessage({
+      description: 'User creation/edit dialog: Age restriction field possible option',
+      defaultMessage: 'Exclude over',
+      id: 'wmGcF+'
+    }),
+    value: 'EXCLUDE'
+  },
 ]
 </script>
