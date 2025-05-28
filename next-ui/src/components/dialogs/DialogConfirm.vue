@@ -15,7 +15,17 @@
         <template #text>
           <slot name="warning" />
           <slot name="text">
-            Please type <span class="font-weight-bold">{{ validateText }}</span> to confirm.
+            {{
+              $formatMessage(
+                {
+                  description: 'Confirmation dialog: default hint to retype validation text',
+                  defaultMessage: 'Please type {validateText} to confirm.',
+                  id: 'eVoe+D'
+                },
+                {
+                  validateText: validateText,
+                })
+            }}
           </slot>
 
           <v-text-field
@@ -28,7 +38,11 @@
         <template #actions>
           <v-spacer />
           <v-btn
-            text="Cancel"
+            :text="$formatMessage({
+              description: 'Confirmation dialog: Cancel button',
+              defaultMessage: 'Cancel',
+              id: 'pENCUD'
+            })"
             @click="close()"
           />
           <v-btn
@@ -47,6 +61,7 @@
 
 <script setup lang="ts">
 import {useRules} from 'vuetify/labs/rules'
+import {useIntl} from 'vue-intl'
 
 const showDialog = defineModel<boolean>('dialog', {required: false})
 const emit = defineEmits<{
@@ -56,6 +71,7 @@ const emit = defineEmits<{
 const formValid = ref<boolean>(false)
 
 const rules = useRules()
+const intl = useIntl()
 
 function submitForm() {
   if(formValid.value) {
@@ -76,7 +92,11 @@ export interface Props {
 const {
   title = undefined,
   subtitle = undefined,
-  okText = 'Confirm',
+  okText = intl.formatMessage({
+    description: 'Confirmation dialog: OK button default text',
+    defaultMessage: 'Confirm',
+    id: 't8vOuG'
+  }),
   validateText = 'confirm',
   maxWidth = undefined,
   activator = undefined,

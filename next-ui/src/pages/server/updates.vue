@@ -15,7 +15,13 @@
             type="success"
             variant="tonal"
           >
-            The latest version of Komga is already installed
+            {{
+              $formatMessage({
+                description: 'Updates view: banner shown at the top',
+                defaultMessage: 'The latest version of Komga is already installed',
+                id: 'WNY0pu'
+              })
+            }}
           </v-alert>
         </div>
         <div v-if="isLatestVersion == false">
@@ -23,7 +29,13 @@
             type="warning"
             variant="tonal"
           >
-            Updates are available
+            {{
+              $formatMessage({
+                description: 'Updates view: banner shown at the top',
+                defaultMessage: 'Updates are available',
+                id: 'n1Ik+L'
+              })
+            }}
           </v-alert>
         </div>
       </v-col>
@@ -53,7 +65,13 @@
               rounded
               color="info"
             >
-              Currently installed
+              {{
+                $formatMessage({
+                  description: 'Updates view: badge showing next to the currently installed release number',
+                  defaultMessage: 'Currently installed',
+                  id: '3jrAF6'
+                })
+              }}
             </v-chip>
             <v-chip
               v-if="release.version == latest?.version"
@@ -61,7 +79,13 @@
               size="small"
               rounded
             >
-              Latest
+              {{
+                $formatMessage({
+                  description: 'Updates view: badge showing next to the latest release number',
+                  defaultMessage: 'Latest',
+                  id: '2Bh8F2'
+                })
+              }}
             </v-chip>
           </div>
           <!-- TODO: i18n the date           -->

@@ -1,11 +1,55 @@
 {
+  "/bathK": {
+    "defaultMessage": "Allow only under",
+    "description": "User creation/edit dialog: Age restriction field possible option"
+  },
+  "02SRax": {
+    "defaultMessage": "Sign in",
+    "description": "Login screen: Sign In button"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "Remember Me",
+    "description": "Login screen: Remember Me checkbox"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "Latest",
+    "description": "Updates view: badge showing next to the latest release number"
+  },
   "2g7iOx": {
     "defaultMessage": "Metrics",
     "description": "Drawer menu for Server > Metrics"
   },
+  "3W0jUi": {
+    "defaultMessage": "Exclude labels",
+    "description": "User creation/edit dialog: Exclude labels field label"
+  },
+  "3jrAF6": {
+    "defaultMessage": "Currently installed",
+    "description": "Updates view: badge showing next to the currently installed release number"
+  },
+  "3rSWpQ": {
+    "defaultMessage": "Help translate",
+    "description": "Translations pop-up menu footer"
+  },
+  "5AAGkA": {
+    "defaultMessage": "Password",
+    "description": "Login screen: password field label"
+  },
+  "AeA9Ka": {
+    "defaultMessage": "No restriction",
+    "description": "User creation/edit dialog: Age restriction field possible option"
+  },
+  "CUxhzL": {
+    "defaultMessage": "Roles",
+    "description": "User creation/edit dialog: Roles field"
+  },
   "DxtDpt": {
     "defaultMessage": "Media Analysis",
     "description": "Drawer menu for Media > Media Analysis"
+  },
+  "G/T8/2": {
+    "defaultMessage": "Cancel",
+    "description": "ConfirmEdit dialog: Cancel button"
   },
   "G7quju": {
     "defaultMessage": "Announcements",
@@ -19,6 +63,10 @@
     "defaultMessage": "Media",
     "description": "Drawer menu for Media"
   },
+  "InW6ko": {
+    "defaultMessage": "Translations",
+    "description": "Translations pop-up menu header"
+  },
   "IpvWiZ": {
     "defaultMessage": "Server",
     "description": "Drawer menu for Server"
@@ -26,6 +74,10 @@
   "JGOfZq": {
     "defaultMessage": "Users",
     "description": "Drawer menu for Server > Users"
+  },
+  "LaxrEO": {
+    "defaultMessage": "Passwords must be identical",
+    "description": "User password change dialog: Error message if passwords differ"
   },
   "MvwDsn": {
     "defaultMessage": "Known",
@@ -35,9 +87,33 @@
     "defaultMessage": "Import",
     "description": "Drawer menu for Import"
   },
+  "N9WFH4": {
+    "defaultMessage": "Save",
+    "description": "ConfirmEdit dialog: Save button"
+  },
   "Nb0V0p": {
     "defaultMessage": "Missing Posters",
     "description": "Drawer menu for Media > Missing Posters"
+  },
+  "QIr0z7": {
+    "defaultMessage": "Email",
+    "description": "Login screen: email field label"
+  },
+  "Sj0HXz": {
+    "defaultMessage": "Allow only labels",
+    "description": "User creation/edit dialog: Allow only labels field label"
+  },
+  "UvhIIT": {
+    "defaultMessage": "Shared Libraries",
+    "description": "User creation/edit dialog: Shared Libraries field"
+  },
+  "WNY0pu": {
+    "defaultMessage": "The latest version of Komga is already installed",
+    "description": "Updates view: banner shown at the top"
+  },
+  "WhasCZ": {
+    "defaultMessage": "New password",
+    "description": "User password change dialog: New Password field label"
   },
   "Y6VlM9": {
     "defaultMessage": "Read List",
@@ -47,6 +123,26 @@
     "defaultMessage": "User Interface",
     "description": "Drawer menu for Server > User Interface"
   },
+  "app.locale-name": {
+    "defaultMessage": "English",
+    "description": "The name of the locale, shown in the language selection menu. Must be translated to the language's name"
+  },
+  "app.user-create-dialog..select_create_one": {
+    "defaultMessage": "Select an item or create one",
+    "description": "User creation/edit dialog: Allow only labels field selection"
+  },
+  "app.user-create-dialog.all_libraries": {
+    "defaultMessage": "All libraries",
+    "description": "User creation/edit dialog: Shared Libraries field, value shown when user has access to all libraries"
+  },
+  "app.user-create-dialog.select_create_one": {
+    "defaultMessage": "Select an item or create one",
+    "description": "User creation/edit dialog: Exclude labels field selection"
+  },
+  "b5wVJa": {
+    "defaultMessage": "Email",
+    "description": "User creationd ialog: Email field"
+  },
   "cAu/I6": {
     "defaultMessage": "Duplicate Pages",
     "description": "Drawer menu for Media > Duplicate Pages"
@@ -54,6 +150,10 @@
   "cGFtPg": {
     "defaultMessage": "Activity",
     "description": "Drawer menu for My Account > Activity"
+  },
+  "eVoe+D": {
+    "defaultMessage": "Please type {validateText} to confirm.",
+    "description": "Confirmation dialog: default hint to retype validation text"
   },
   "eW3fXu": {
     "defaultMessage": "Duplicate Files",
@@ -63,6 +163,14 @@
     "defaultMessage": "Books",
     "description": "Drawer menu for Import > Books"
   },
+  "hEOGa9": {
+    "defaultMessage": "Age restriction",
+    "description": "User creation/edit dialog: Age restriction field label"
+  },
+  "jywpqq": {
+    "defaultMessage": "Age",
+    "description": "User creation/edit dialog: Age Restriction > Age field label"
+  },
   "l/To3S": {
     "defaultMessage": "History",
     "description": "Drawer menu for History"
@@ -71,9 +179,17 @@
     "defaultMessage": "Updates",
     "description": "Drawer menu for Server > Updates"
   },
-  "localename": {
-    "defaultMessage": "English",
-    "description": "The name of the locale, shown in the language selection menu. Must be translated to the language's name"
+  "n1Ik+L": {
+    "defaultMessage": "Updates are available",
+    "description": "Updates view: banner shown at the top"
+  },
+  "nJiYF7": {
+    "defaultMessage": "Confirm password",
+    "description": "User password change dialog: Confirm Password field label"
+  },
+  "o+A10T": {
+    "defaultMessage": "Password",
+    "description": "User creation dialog: Password field"
   },
   "oFOkWZ": {
     "defaultMessage": "API Keys",
@@ -83,6 +199,10 @@
     "defaultMessage": "My Account",
     "description": "Drawer menu for My Account"
   },
+  "pENCUD": {
+    "defaultMessage": "Cancel",
+    "description": "Confirmation dialog: Cancel button"
+  },
   "qiZm6U": {
     "defaultMessage": "Unknown",
     "description": "Drawer menu for Media > Duplicate Pages > Unknown"
@@ -91,9 +211,21 @@
     "defaultMessage": "User Interface",
     "description": "Drawer menu for My Account > User Interface"
   },
+  "sUSVQS": {
+    "defaultMessage": "Mark as read",
+    "description": "Announcements view: mark as read button tooltip"
+  },
+  "t8vOuG": {
+    "defaultMessage": "Confirm",
+    "description": "Confirmation dialog: OK button default text"
+  },
   "ti4Pzo": {
     "defaultMessage": "Logout",
     "description": "Drawer menu for Logout"
+  },
+  "wmGcF+": {
+    "defaultMessage": "Exclude over",
+    "description": "User creation/edit dialog: Age restriction field possible option"
   },
   "xYGXuU": {
     "defaultMessage": "Details",
