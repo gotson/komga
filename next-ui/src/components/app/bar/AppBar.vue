@@ -11,6 +11,7 @@
       </RouterLink>
       Komga
     </v-app-bar-title>
+    <LocaleSelector />
     <ThemeSelector />
   </v-app-bar>
 </template>
