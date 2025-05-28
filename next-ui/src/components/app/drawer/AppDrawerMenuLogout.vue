@@ -1,6 +1,10 @@
 <template>
   <v-list-item
-    title="Logout"
+    :title="$formatMessage({
+      description: 'Drawer menu for Logout',
+      defaultMessage: 'Logout',
+      id: 'ti4Pzo'
+    })"
     prepend-icon="mdi-power"
     @click="performLogout"
   />
