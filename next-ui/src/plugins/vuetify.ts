@@ -16,8 +16,28 @@ import {md3} from 'vuetify/blueprints'
 import {VIconBtn} from 'vuetify/labs/components'
 import {createRulesPlugin} from 'vuetify/labs/rules'
 
+
+import {availableLocales, currentLocale, defaultLocale} from '@/utils/locale-helper'
+
+// load vuetify locales only for the available locales in i18n
+async function loadVuetifyLocale(locale: string) {
+  return await import(`../../node_modules/vuetify/lib/locale/${locale}.js`)
+}
+
+const messages: Record<string, string> = {};
+void (async()=>{
+for (const locale of Object.keys(availableLocales)) {
+  messages[locale] = (await loadVuetifyLocale(locale)).default
+}
+})();
+
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export const vuetify = createVuetify({
+  locale: {
+    locale: currentLocale,
+    fallback: defaultLocale,
+    messages,
+  },
   theme: {
     defaultTheme: 'light',
     themes: {

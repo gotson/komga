@@ -1,5 +1,5 @@
 import {createIntl} from 'vue-intl'
-import {currentLocale, defaultLocale, loadLocale} from '@/utils/locale-helper.ts'
+import {currentLocale, defaultLocale, loadLocale} from '@/utils/locale-helper'
 
 const messages = loadLocale(currentLocale)
 
