@@ -157,7 +157,7 @@
             $formatMessage({
               description: 'User creation/edit dialog: Allow only labels field selection',
               defaultMessage: 'Select an item or create one',
-              id: 'app.user-create-dialog..select_create_one'
+              id: 'app.user-create-dialog.select_create_one'
             })
           }}
         </span>
