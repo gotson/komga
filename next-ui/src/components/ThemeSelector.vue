@@ -32,7 +32,7 @@ const themeIcon = computed(
 function cycleTheme() {
   const index = themes.findIndex(x => x.value === appStore.theme)
   const newIndex = (index + 1) % themes.length
-  appStore.theme = themes[newIndex]?.value
+  appStore.theme = themes[newIndex]!.value
 }
 </script>
 
