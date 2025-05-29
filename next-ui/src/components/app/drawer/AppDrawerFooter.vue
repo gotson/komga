@@ -10,7 +10,11 @@
         class="text-caption"
         href="https://komga.org"
         target="_blank"
-        text="Documentation"
+        :text="$formatMessage({
+          description:'Drawer menu footer: documentation link',
+          defaultMessage:'Documentation',
+          id: 'ccAMWS',
+        })"
       />
     </div>
   </div>
