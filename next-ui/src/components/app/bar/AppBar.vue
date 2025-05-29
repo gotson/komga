@@ -5,7 +5,7 @@
     </template>
     <v-app-bar-title>
       <RouterLink to="/">
-        <v-avatar>
+        <v-avatar start>
           <v-img src="@/assets/logo.svg" />
         </v-avatar>
       </RouterLink>
