@@ -395,7 +395,7 @@ class OpenApiConfiguration(
     const val OAUTH2 = "OAuth2"
 
     const val SYNCPOINTS = "Sync points"
-    const val CLAIM = "Claim server"
+    const val CLAIM = "Claim"
     const val TASKS = "Tasks"
     const val HISTORY = "History"
     const val FILE_SYSTEM = "File system"
