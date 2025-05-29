@@ -61,7 +61,6 @@
 
 <script setup lang="ts">
 import {useRules} from 'vuetify/labs/rules'
-import {useIntl} from 'vue-intl'
 
 const showDialog = defineModel<boolean>('dialog', {required: false})
 const emit = defineEmits<{
@@ -71,7 +70,6 @@ const emit = defineEmits<{
 const formValid = ref<boolean>(false)
 
 const rules = useRules()
-const intl = useIntl()
 
 function submitForm() {
   if(formValid.value) {
