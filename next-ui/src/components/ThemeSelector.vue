@@ -1,26 +1,8 @@
 <template>
-  <v-menu>
-    <template #activator="{ props }">
-      <v-btn
-        v-bind="props"
-        :icon="themeIcon"
-      />
-    </template>
-
-    <v-list
-      :selected="[appStore.theme]"
-      color="primary"
-    >
-      <v-list-item
-        v-for="theme in themes"
-        :key="theme.value"
-        :prepend-icon="theme.icon"
-        :title="theme.title"
-        :value="theme.value"
-        @click="appStore.theme = theme.value"
-      />
-    </v-list>
-  </v-menu>
+  <v-btn
+    :icon="themeIcon"
+    @click="cycleTheme()"
+  />
 </template>
 
 <script setup lang="ts">
@@ -30,25 +12,28 @@ const appStore = useAppStore()
 
 const themes= [
   {
-    title: 'Light',
     value: 'light',
-    icon: 'mdi-brightness-7'
+    icon: 'mdi-weather-sunny'
   },
   {
-    title: 'Dark',
     value: 'dark',
-    icon: 'mdi-brightness-3'
+    icon: 'mdi-weather-night'
   },
   {
-    title: 'System',
     value: 'system',
-    icon: 'mdi-brightness-auto'
+    icon: 'mdi-theme-light-dark'
   },
 ]
 
 const themeIcon = computed(
   () => themes.find(x => x.value === appStore.theme)?.icon || 'mdi-brightness-auto'
 )
+
+function cycleTheme() {
+  const index = themes.findIndex(x => x.value === appStore.theme)
+  const newIndex = (index + 1) % themes.length
+  appStore.theme = themes[newIndex]?.value
+}
 </script>
 
 <script lang="ts">
