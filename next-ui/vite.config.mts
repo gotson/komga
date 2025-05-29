@@ -6,6 +6,7 @@ import Layouts from 'vite-plugin-vue-layouts-next'
 import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import dir2json from "vite-plugin-dir2json";
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -55,6 +56,9 @@ export default defineConfig({
         ],
       },
     }),
+    dir2json({
+      dts: true
+    })
   ],
   define: { 'process.env': {} },
   resolve: {

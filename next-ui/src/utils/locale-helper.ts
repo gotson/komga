@@ -1,4 +1,5 @@
 import {defineMessage} from 'vue-intl'
+import localeMessages from '../i18n?dir2json&ext=.json&1'
 
 export const defaultLocale = 'en'
 
@@ -13,24 +14,18 @@ const localeName = defineMessage({
  * If the translation file does not exist, loads the `defaultLocale` instead.
  * @param locale the locale code, e.g. 'fr'
  */
-export async function loadLocale(locale: string) {
+export function loadLocale(locale: string) {
   const localeToLoad = locale in availableLocales ? locale : defaultLocale
-  const { default: messages } = await import(`@/i18n/${localeToLoad}.json`);
-  return messages;
+  return (localeMessages as Record<string, unknown>)[localeToLoad];
 }
 
-async function loadAvailableLocales(): Promise<Record<string, string>> {
-  const localeFiles = import.meta.glob('@/i18n/*.json')
-  const locales: Record<string, string> = {}
-  for (const path in localeFiles) {
-    const matched = path.match(/([A-Za-z0-9-_]+)\./i)
-    if (matched && matched.length > 1) {
-      const locale = matched[1]
-      const messages = await localeFiles[path]!() as Record<string, string>
-      locales[locale!] = messages.default![localeName.id]!
-    }
-  }
-  return locales
+
+function loadAvailableLocales(): Record<string, string> {
+  const localesInfo: Record<string, string> = {}
+  Object.keys(localeMessages).forEach(x =>
+    localesInfo[x] = (localeMessages as unknown as Record<string, Record<string, string>>)[x]![localeName.id]!
+  )
+  return localesInfo
 }
 
 /**
@@ -38,7 +33,7 @@ async function loadAvailableLocales(): Promise<Record<string, string>> {
  * Key is the locale code (e.g. 'fr')
  * Value is the locale name in its own locale (e.g. 'Français')
  */
-export const availableLocales = await loadAvailableLocales()
+export const availableLocales = loadAvailableLocales()
 
 /**
  * Gets the saved locale from localStorage.
