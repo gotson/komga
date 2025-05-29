@@ -6,7 +6,6 @@
 declare module "*i18n?dir2json&ext=.json&1" {
   const json: {
   "en": string;
-  "fr": string;
 };
   export default json;
 }
