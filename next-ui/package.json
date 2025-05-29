@@ -50,6 +50,7 @@
     "unplugin-vue-components": "^28.5.0",
     "unplugin-vue-router": "^0.12.0",
     "vite": "^6.3.5",
+    "vite-plugin-dir2json": "^1.3.0",
     "vite-plugin-vue-layouts-next": "^0.1.2",
     "vite-plugin-vuetify": "^2.0.3",
     "vue-router": "^4.4.0",
