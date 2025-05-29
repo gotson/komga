@@ -5,15 +5,15 @@
       autofocus
       :rules="[rules.required(), rules.email()]"
       :label="$formatMessage({
-        description: 'User creationd ialog: Email field',
+        description: 'User creation dialog: Email field',
         defaultMessage: 'Email',
-        id: 'b5wVJa'
+        id: 'ToD0+o'
       })"
       prepend-icon="mdi-account"
     />
     <v-text-field
       v-model="user.password"
-      class="mt-1"
+      class="mt-1 mb-2"
       :rules="[rules.required()]"
       :label="$formatMessage({
         description: 'User creation dialog: Password field',
