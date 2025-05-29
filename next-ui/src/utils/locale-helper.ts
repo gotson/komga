@@ -14,9 +14,9 @@ const localeName = defineMessage({
  * If the translation file does not exist, loads the `defaultLocale` instead.
  * @param locale the locale code, e.g. 'fr'
  */
-export function loadLocale(locale: string) {
+export function loadLocale(locale: string): Record<string, string> {
   const localeToLoad = locale in availableLocales ? locale : defaultLocale
-  return (localeMessages as Record<string, unknown>)[localeToLoad];
+  return (localeMessages as unknown as Record<string, Record<string, string>>)[localeToLoad]!;
 }
 
 
