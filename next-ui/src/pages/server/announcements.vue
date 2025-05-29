@@ -71,14 +71,25 @@
 
     <v-fab
       :active="unreadCount > 0"
-      color="success"
       location="bottom right"
       app
-      icon="mdi-check-all"
+      icon
       size="x-large"
       class="ms-n5"
       @click="markAllRead()"
-    />
+    >
+      <!--  Workaround for https://github.com/vuetifyjs/vuetify/issues/21439  -->
+      <v-btn
+        v-tooltip:start="$formatMessage({
+          description: 'Announcements view: mark all as read button tooltip',
+          defaultMessage: 'Mark all as read',
+          id: 'da/wb0'
+        })"
+        color="success"
+        size="x-large"
+        icon="mdi-check-all"
+      />
+    </v-fab>
   </template>
 </template>
 
