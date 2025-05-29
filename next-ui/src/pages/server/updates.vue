@@ -88,9 +88,8 @@
               }}
             </v-chip>
           </div>
-          <!-- TODO: i18n the date           -->
           <div class="mt-2 subtitle-1">
-            {{ release.releaseDate }}
+            {{ $formatDate(release.releaseDate, {dateStyle: 'long'}) }}
           </div>
         </v-col>
       </v-row>
