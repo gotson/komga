@@ -27,10 +27,6 @@
     "defaultMessage": "Currently installed",
     "description": "Updates view: badge showing next to the currently installed release number"
   },
-  "3rSWpQ": {
-    "defaultMessage": "Help translate",
-    "description": "Translations pop-up menu footer"
-  },
   "5AAGkA": {
     "defaultMessage": "Password",
     "description": "Login screen: password field label"
@@ -46,6 +42,10 @@
   "DxtDpt": {
     "defaultMessage": "Media Analysis",
     "description": "Drawer menu for Media > Media Analysis"
+  },
+  "FLqm9f": {
+    "defaultMessage": "Help us translate",
+    "description": "Translations pop-up menu footer"
   },
   "G/T8/2": {
     "defaultMessage": "Cancel",
@@ -127,10 +127,6 @@
     "defaultMessage": "English",
     "description": "The name of the locale, shown in the language selection menu. Must be translated to the language's name"
   },
-  "app.user-create-dialog..select_create_one": {
-    "defaultMessage": "Select an item or create one",
-    "description": "User creation/edit dialog: Allow only labels field selection"
-  },
   "app.user-create-dialog.all_libraries": {
     "defaultMessage": "All libraries",
     "description": "User creation/edit dialog: Shared Libraries field, value shown when user has access to all libraries"
@@ -150,6 +146,10 @@
   "cGFtPg": {
     "defaultMessage": "Activity",
     "description": "Drawer menu for My Account > Activity"
+  },
+  "da/wb0": {
+    "defaultMessage": "Mark all as read",
+    "description": "Announcements view: mark all as read button tooltip"
   },
   "eVoe+D": {
     "defaultMessage": "Please type {validateText} to confirm.",

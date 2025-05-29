@@ -27,7 +27,7 @@ async function loadAvailableLocales(): Promise<Record<string, string>> {
     if (matched && matched.length > 1) {
       const locale = matched[1]
       const messages = await localeFiles[path]!() as Record<string, string>
-      locales[locale!] = messages[localeName.id]!
+      locales[locale!] = messages.default![localeName.id]!
     }
   }
   return locales
