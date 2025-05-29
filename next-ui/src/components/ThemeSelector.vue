@@ -26,7 +26,7 @@ const themes= [
 ]
 
 const themeIcon = computed(
-  () => themes.find(x => x.value === appStore.theme)?.icon || 'mdi-brightness-auto'
+  () => themes.find(x => x.value === appStore.theme)?.icon || 'mdi-theme-light-dark'
 )
 
 function cycleTheme() {
