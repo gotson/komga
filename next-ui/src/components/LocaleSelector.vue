@@ -29,15 +29,15 @@
       />
 
       <v-list-item
-        href="https://hosted.weblate.org/projects/komga/webui/"
+        href="https://hosted.weblate.org/projects/komga/next-ui/"
         target="_blank"
       >
         <v-list-item-title class="font-weight-bold">
           {{
             $formatMessage({
               description: 'Translations pop-up menu footer',
-              defaultMessage: 'Help translate',
-              id: '3rSWpQ'
+              defaultMessage: 'Help us translate',
+              id: 'FLqm9f'
             })
           }}
         </v-list-item-title>
