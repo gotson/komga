@@ -25,7 +25,7 @@
             >{{ item.title }}</a>
           </div>
           <div class="mt-2 subtitle-1">
-            {{ item.date_modified }}
+            {{ $formatDate(item.date_modified, {dateStyle: 'long'}) }}
           </div>
         </v-col>
         <v-col cols="auto">
