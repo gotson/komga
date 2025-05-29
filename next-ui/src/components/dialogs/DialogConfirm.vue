@@ -92,11 +92,7 @@ export interface Props {
 const {
   title = undefined,
   subtitle = undefined,
-  okText = intl.formatMessage({
-    description: 'Confirmation dialog: OK button default text',
-    defaultMessage: 'Confirm',
-    id: 't8vOuG'
-  }),
+  okText = 'Confirm',
   validateText = 'confirm',
   maxWidth = undefined,
   activator = undefined,
