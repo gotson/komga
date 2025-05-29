@@ -103,6 +103,10 @@
     "defaultMessage": "Allow only labels",
     "description": "User creation/edit dialog: Allow only labels field label"
   },
+  "ToD0+o": {
+    "defaultMessage": "Email",
+    "description": "User creation dialog: Email field"
+  },
   "UvhIIT": {
     "defaultMessage": "Shared Libraries",
     "description": "User creation/edit dialog: Shared Libraries field"
@@ -134,10 +138,6 @@
   "app.user-create-dialog.select_create_one": {
     "defaultMessage": "Select an item or create one",
     "description": "User creation/edit dialog: Exclude labels field selection"
-  },
-  "b5wVJa": {
-    "defaultMessage": "Email",
-    "description": "User creationd ialog: Email field"
   },
   "cAu/I6": {
     "defaultMessage": "Duplicate Pages",
@@ -214,10 +214,6 @@
   "sUSVQS": {
     "defaultMessage": "Mark as read",
     "description": "Announcements view: mark as read button tooltip"
-  },
-  "t8vOuG": {
-    "defaultMessage": "Confirm",
-    "description": "Confirmation dialog: OK button default text"
   },
   "ti4Pzo": {
     "defaultMessage": "Logout",
