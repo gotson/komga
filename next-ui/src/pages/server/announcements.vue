@@ -1,13 +1,17 @@
 <template>
-  <v-alert
-    v-if="error"
-    type="error"
-    variant="tonal"
-  >
-    Error loading data
-  </v-alert>
+  <v-skeleton-loader
+    v-if="isLoading"
+    type="article, paragraph"
+  />
 
-  <template v-if="announcements">
+  <v-empty-state
+    v-else-if="error"
+    icon="mdi-connection"
+    :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
+    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
+  />
+
+  <template v-else-if="announcements">
     <div
       v-for="(item, index) in announcements.items"
       :key="index"
@@ -96,8 +100,9 @@
 <script lang="ts" setup>
 import {useAnnouncements} from '@/colada/queries/announcements.ts'
 import {useMarkAnnouncementsRead} from '@/colada/mutations/mark-announcements-read.ts'
+import {commonMessages} from '@/utils/common-messages.ts'
 
-const {data: announcements, error, unreadCount} = useAnnouncements()
+const {data: announcements, error, unreadCount, isLoading} = useAnnouncements()
 
 const {mutate: markAnnouncementsRead} = useMarkAnnouncementsRead()
 
