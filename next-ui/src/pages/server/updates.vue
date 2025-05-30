@@ -1,7 +1,7 @@
 <template>
   <v-skeleton-loader
     v-if="isLoading"
-    type="article, paragraph"
+    type="heading, text, paragraph@3"
   />
 
   <v-empty-state
