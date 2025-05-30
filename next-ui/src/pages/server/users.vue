@@ -1,11 +1,10 @@
 <template>
-  <v-alert
+  <v-empty-state
     v-if="error"
-    type="error"
-    variant="tonal"
-  >
-    Error loading data
-  </v-alert>
+    icon="mdi-connection"
+    :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
+    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
+  />
 
   <template v-else>
     <v-data-table
@@ -133,6 +132,7 @@ import FormUserChangePassword from '@/components/forms/user/FormUserChangePasswo
 import FormUserEdit from '@/components/forms/user/FormUserEdit.vue'
 import type {Component} from 'vue'
 import {useLibraries} from '@/colada/queries/libraries.ts'
+import {commonMessages} from '@/utils/common-messages.ts'
 
 // API data
 const {data: users, error, isLoading, refetch: refetchUsers} = useUsers()
