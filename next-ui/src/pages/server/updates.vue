@@ -1,13 +1,17 @@
 <template>
-  <v-alert
-    v-if="error"
-    type="error"
-    variant="tonal"
-  >
-    Error loading data
-  </v-alert>
+  <v-skeleton-loader
+    v-if="isLoading"
+    type="article, paragraph"
+  />
 
-  <template v-if="releases">
+  <v-empty-state
+    v-else-if="error"
+    icon="mdi-connection"
+    :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
+    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
+  />
+
+  <template v-else-if="releases">
     <v-row>
       <v-col>
         <div v-if="isLatestVersion == true">
@@ -116,8 +120,9 @@
 <script lang="ts" setup>
 import {useAppReleases} from '@/colada/queries/app-releases.ts'
 import {marked} from 'marked'
+import {commonMessages} from '@/utils/common-messages.ts'
 
-const {data: releases, error, buildVersion: currentVersion, isLatestVersion, latestRelease: latest} = useAppReleases()
+const {data: releases, error, buildVersion: currentVersion, isLatestVersion, latestRelease: latest, isLoading} = useAppReleases()
 </script>
 
 <style lang="scss">
