@@ -27,6 +27,8 @@
       <BuildVersion />
     </div>
   </div>
+
+<!--  <AppFooter />-->
 </template>
 
 <script setup lang="ts">
