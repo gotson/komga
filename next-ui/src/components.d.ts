@@ -23,6 +23,7 @@ declare module 'vue' {
     BuildVersion: typeof import('./components/BuildVersion.vue')['default']
     DialogConfirm: typeof import('./components/dialogs/DialogConfirm.vue')['default']
     DialogConfirmEdit: typeof import('./components/dialogs/DialogConfirmEdit.vue')['default']
+    Discord: typeof import('./components/icons/discord.vue')['default']
     FormUserChangePassword: typeof import('./components/forms/user/FormUserChangePassword.vue')['default']
     FormUserEdit: typeof import('./components/forms/user/FormUserEdit.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
