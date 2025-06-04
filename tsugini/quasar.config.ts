@@ -72,6 +72,8 @@ export default defineConfig((ctx) => {
         colada: fileURLToPath(new URL('./src/colada', import.meta.url)),
         openapi: fileURLToPath(new URL('./src/generated/openapi', import.meta.url)),
         types: fileURLToPath(new URL('./src/types', import.meta.url)),
+        styles: fileURLToPath(new URL('./src/styles', import.meta.url)),
+        utils: fileURLToPath(new URL('./src/utils', import.meta.url)),
       },
 
       // Komga: cannot use the import syntax as it breaks the type checker, meaning we cannot use strongly typed options
