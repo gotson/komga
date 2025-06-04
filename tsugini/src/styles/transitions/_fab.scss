@@ -1,0 +1,13 @@
+.fab {
+    &-enter-active,
+    &-leave-active {
+        transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    &-enter-from,
+    &-leave-to {
+        opacity: 0;
+        transform: rotate(180deg) scale(0.2) skew(20deg);
+        filter: hue-rotate(90deg);
+    }
+}
