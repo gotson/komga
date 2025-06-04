@@ -6,6 +6,7 @@ komga:
   cors.allowed-origins:
     - http://localhost:8081
     - http://localhost:3000
+    - http://localhost:8085
     - https://komga.org
   oauth2-account-creation: false
   config-dir: ${rootDir}/config-dir
