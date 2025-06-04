@@ -1,0 +1,12 @@
+.link-none {
+    text-decoration: none;
+}
+
+.link-underline {
+    text-decoration: none;
+    color: var(--input-text-color)
+}
+
+.link-underline:hover {
+    text-decoration: underline;
+}
