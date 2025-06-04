@@ -281,6 +281,7 @@ class CommonBookController(
     if (ServletWebRequest(request).checkNotModified(getBookLastModified(media))) {
       return ResponseEntity
         .status(HttpStatus.NOT_MODIFIED)
+        .header("Content-Security-Policy", "script-src 'none'; object-src 'none';")
         .setNotModified(media)
         .body(ByteArray(0))
     }
@@ -305,6 +306,7 @@ class CommonBookController(
               .builder("inline")
               .filename(FilenameUtils.getName(resourceName), StandardCharsets.UTF_8)
               .build()
+          set("Content-Security-Policy", "script-src 'none'; object-src 'none';")
         },
       ).contentType(getMediaTypeOrDefault(res.mediaType))
       .setNotModified(media)
