@@ -1,0 +1,170 @@
+<template>
+  <q-expansion-item
+    icon="mdi-cog"
+    :label="
+      $formatMessage({
+        description: 'Drawer menu for Server',
+        defaultMessage: 'Server',
+        id: 'IpvWiZ',
+      })
+    "
+  >
+    <template #header>
+      <q-item-section avatar>
+        <q-icon name="mdi-cog">
+          <q-badge
+            v-if="unreadCount > 0"
+            color="info"
+            rounded
+            floating
+          />
+        </q-icon>
+      </q-item-section>
+      <q-item-section>
+        {{
+          $formatMessage({
+            description: 'Drawer menu for Server',
+            defaultMessage: 'Server',
+            id: 'IpvWiZ',
+          })
+        }}
+      </q-item-section>
+    </template>
+    <!--        <template #prepend>-->
+    <!--          <v-badge-->
+    <!--            :model-value="unreadCount > 0 && !($refs as any).group.isOpen"-->
+    <!--            dot-->
+    <!--            floating-->
+    <!--            color="info"-->
+    <!--          >-->
+    <!--            <v-icon>mdi-cog</v-icon>-->
+    <!--          </v-badge>-->
+    <!--        </template>-->
+
+    <q-item
+      to="/server/users"
+      clickable
+      :inset-level="1"
+    >
+      <q-item-section>
+        {{
+          $formatMessage({
+            description: 'Drawer menu for Server > Users',
+            defaultMessage: 'Users',
+            id: 'JGOfZq',
+          })
+        }}
+      </q-item-section>
+    </q-item>
+
+    <q-item
+      to="/server/announcements"
+      clickable
+      :inset-level="1"
+    >
+      <q-item-section>
+        <q-item-label
+          >{{
+            $formatMessage({
+              description: 'Drawer menu for Server > Announcements',
+              defaultMessage: 'Announcements',
+              id: 'G7quju',
+            })
+          }}
+        </q-item-label>
+      </q-item-section>
+      <q-item-section
+        side
+        v-if="unreadCount > 0"
+      >
+        <q-badge
+          color="info"
+          rounded
+          >{{ unreadCount }}</q-badge
+        >
+      </q-item-section>
+    </q-item>
+
+    <q-item
+      to="/server/updates"
+      clickable
+      :inset-level="1"
+    >
+      <q-item-section>{{
+        $formatMessage({
+          description: 'Drawer menu for Server > Updates',
+          defaultMessage: 'Updates',
+          id: 'lDnmZD',
+        })
+      }}</q-item-section>
+    </q-item>
+
+    <!--    <q-item-->
+    <!--      to="/server/settings"-->
+    <!--      :title="-->
+    <!--        $formatMessage({-->
+    <!--          description: 'Drawer menu for Server > Settings',-->
+    <!--          defaultMessage: 'Settings',-->
+    <!--          id: 'HaWCi3',-->
+    <!--        })-->
+    <!--      "-->
+    <!--    />-->
+    <!--    <q-item-->
+    <!--      to="/server/ui"-->
+    <!--      :title="-->
+    <!--        $formatMessage({-->
+    <!--          description: 'Drawer menu for Server > User Interface',-->
+    <!--          defaultMessage: 'User Interface',-->
+    <!--          id: 'Yf4DJ2',-->
+    <!--        })-->
+    <!--      "-->
+    <!--    />-->
+    <!--    <q-item-->
+    <!--      to="/server/metrics"-->
+    <!--      :title="-->
+    <!--        $formatMessage({-->
+    <!--          description: 'Drawer menu for Server > Metrics',-->
+    <!--          defaultMessage: 'Metrics',-->
+    <!--          id: '2g7iOx',-->
+    <!--        })-->
+    <!--      "-->
+    <!--    />-->
+
+    <!--    <q-item-->
+    <!--      to="/server/announcements"-->
+    <!--      :title="-->
+    <!--        $formatMessage({-->
+    <!--          description: 'Drawer menu for Server > Announcements',-->
+    <!--          defaultMessage: 'Announcements',-->
+    <!--          id: 'G7quju',-->
+    <!--        })-->
+    <!--      "-->
+    <!--    >-->
+    <!--      <template #append>-->
+    <!--        <v-badge-->
+    <!--          :model-value="unreadCount > 0"-->
+    <!--          :content="unreadCount"-->
+    <!--          inline-->
+    <!--          color="info"-->
+    <!--        />-->
+    <!--      </template>-->
+    <!--    </q-item>-->
+
+    <!--    <q-item-->
+    <!--      to="/server/updates"-->
+    <!--      :title="-->
+    <!--        $formatMessage({-->
+    <!--          description: 'Drawer menu for Server > Updates',-->
+    <!--          defaultMessage: 'Updates',-->
+    <!--          id: 'lDnmZD',-->
+    <!--        })-->
+    <!--      "-->
+    <!--    />-->
+  </q-expansion-item>
+</template>
+
+<script setup lang="ts">
+import { useAnnouncements } from 'colada/queries/announcements'
+
+const { unreadCount } = useAnnouncements()
+</script>
