@@ -10,7 +10,6 @@
 
 <script lang="ts" setup>
 import {useCurrentUser} from '@/colada/queries/current-user'
-import {onMounted} from 'vue'
 
 async function checkAuthenticated() {
   const router = useRouter()
