@@ -1,5 +1,6 @@
 <template>
   <q-expansion-item
+    v-model="expanded"
     icon="mdi-cog"
     :label="
       $formatMessage({
@@ -12,12 +13,14 @@
     <template #header>
       <q-item-section avatar>
         <q-icon name="mdi-cog">
-          <q-badge
-            v-if="unreadCount > 0"
-            color="info"
-            rounded
-            floating
-          />
+          <Transition name="fab">
+            <q-badge
+              v-if="!expanded && unreadCount > 0"
+              color="info"
+              rounded
+              floating
+            />
+          </Transition>
         </q-icon>
       </q-item-section>
       <q-item-section>
@@ -73,15 +76,15 @@
           }}
         </q-item-label>
       </q-item-section>
-      <q-item-section
-        side
-        v-if="unreadCount > 0"
-      >
-        <q-badge
-          color="info"
-          rounded
-          >{{ unreadCount }}</q-badge
-        >
+      <q-item-section side>
+        <Transition name="fab">
+          <q-badge
+            v-if="unreadCount > 0"
+            color="info"
+            rounded
+            >{{ unreadCount }}</q-badge
+          >
+        </Transition>
       </q-item-section>
     </q-item>
 
@@ -167,4 +170,10 @@
 import { useAnnouncements } from 'colada/queries/announcements'
 
 const { unreadCount } = useAnnouncements()
+
+const expanded = ref<boolean>(false)
 </script>
+
+<style scoped lang="scss">
+@use 'styles/transitions/fab';
+</style>
