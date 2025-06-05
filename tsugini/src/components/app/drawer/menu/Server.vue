@@ -33,21 +33,12 @@
         }}
       </q-item-section>
     </template>
-    <!--        <template #prepend>-->
-    <!--          <v-badge-->
-    <!--            :model-value="unreadCount > 0 && !($refs as any).group.isOpen"-->
-    <!--            dot-->
-    <!--            floating-->
-    <!--            color="info"-->
-    <!--          >-->
-    <!--            <v-icon>mdi-cog</v-icon>-->
-    <!--          </v-badge>-->
-    <!--        </template>-->
 
     <q-item
       to="/server/users"
       clickable
       :inset-level="1"
+      active-class="drawer-menu-active"
     >
       <q-item-section>
         {{
@@ -64,6 +55,7 @@
       to="/server/announcements"
       clickable
       :inset-level="1"
+      active-class="drawer-menu-active"
     >
       <q-item-section>
         <q-item-label
@@ -92,6 +84,7 @@
       to="/server/updates"
       clickable
       :inset-level="1"
+      active-class="drawer-menu-active"
     >
       <q-item-section>{{
         $formatMessage({
@@ -176,4 +169,5 @@ const expanded = ref<boolean>(false)
 
 <style scoped lang="scss">
 @use 'styles/transitions/fab';
+@use 'styles/drawer';
 </style>

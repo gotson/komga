@@ -1,141 +1,136 @@
 <template>
-  <v-skeleton-loader
-    v-if="isLoading"
-    type="heading, text, paragraph@3"
-  />
+  <q-card v-if="isLoading">
+    <q-card-section>
+      <q-skeleton type="text" />
+      <q-skeleton
+        type="text"
+        width="200px"
+      />
+    </q-card-section>
 
-  <v-empty-state
+    <q-card-section>
+      <q-skeleton
+        height="300px"
+        square
+      />
+    </q-card-section>
+  </q-card>
+
+  <KEmptyState
     v-else-if="error"
-    icon="mdi-connection"
     :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
+    :sub-title="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
+    icon="mdi-connection"
+    icon-size="250px"
+    avatar-color="grey-4"
   />
 
   <template v-else-if="releases">
-    <v-row>
-      <v-col>
+    <div>
+      <div>
         <div v-if="isLatestVersion == true">
-          <v-alert
-            type="success"
-            variant="tonal"
-          >
+          <KBanner type="positive">
             {{
               $formatMessage({
                 description: 'Updates view: banner shown at the top',
                 defaultMessage: 'The latest version of Komga is already installed',
-                id: 'WNY0pu'
+                id: 'WNY0pu',
               })
             }}
-          </v-alert>
+          </KBanner>
         </div>
         <div v-if="isLatestVersion == false">
-          <v-alert
-            type="warning"
-            variant="tonal"
-          >
+          <KBanner type="warning">
             {{
               $formatMessage({
                 description: 'Updates view: banner shown at the top',
                 defaultMessage: 'Updates are available',
-                id: 'n1Ik+L'
+                id: 'n1Ik+L',
               })
             }}
-          </v-alert>
+          </KBanner>
         </div>
-      </v-col>
-    </v-row>
+      </div>
+    </div>
 
     <div
       v-for="(release, index) in releases"
       :key="index"
+      class="q-py-sm"
     >
-      <v-row
-        justify="space-between"
-        align="center"
-      >
-        <v-col cols="auto">
-          <div>
+      <q-card>
+        <q-card-section>
+          <div class="text-h3">
             <a
               :href="release.url"
               target="_blank"
-              class="text-h4 font-weight-medium link-underline me-2"
-            >{{
-              release.version
-            }}</a>
-            <v-chip
+              class="link-underline q-mr-sm"
+              >{{ release.version }}</a
+            >
+            <q-chip
               v-if="release.version == currentVersion"
-              class="mx-2 mt-n3"
-              size="small"
-              rounded
-              color="info"
+              class="chip-info"
+              :ripple="false"
             >
               {{
                 $formatMessage({
-                  description: 'Updates view: badge showing next to the currently installed release number',
+                  description:
+                    'Updates view: badge showing next to the currently installed release number',
                   defaultMessage: 'Currently installed',
-                  id: '3jrAF6'
+                  id: '3jrAF6',
                 })
               }}
-            </v-chip>
-            <v-chip
+            </q-chip>
+            <q-chip
               v-if="release.version == latest?.version"
-              class="mx-2 mt-n3"
-              size="small"
-              rounded
+              :ripple="false"
             >
               {{
                 $formatMessage({
                   description: 'Updates view: badge showing next to the latest release number',
                   defaultMessage: 'Latest',
-                  id: '2Bh8F2'
+                  id: '2Bh8F2',
                 })
               }}
-            </v-chip>
+            </q-chip>
           </div>
-          <div class="mt-2 subtitle-1">
-            {{ $formatDate(release.releaseDate, {dateStyle: 'long'}) }}
+          <div class="text-subtitle1">
+            {{ $formatDate(release.releaseDate, { dateStyle: 'long' }) }}
           </div>
-        </v-col>
-      </v-row>
+        </q-card-section>
 
-      <v-row>
-        <v-col cols="12">
+        <q-card-section>
           <!-- eslint-disable vue/no-v-html -->
           <div
             class="release"
             v-html="marked(release.description)"
           />
           <!-- eslint-enable vue/no-v-html -->
-        </v-col>
-      </v-row>
-
-      <v-divider
-        v-if="index != releases.length - 1"
-        class="my-8"
-      />
+        </q-card-section>
+      </q-card>
     </div>
   </template>
 </template>
 
 <script lang="ts" setup>
-import {useAppReleases} from '@/colada/queries/app-releases.ts'
-import {marked} from 'marked'
-import {commonMessages} from '@/utils/common-messages.ts'
+import { useAppReleases } from 'colada/queries/app-releases'
+import { marked } from 'marked'
+import { commonMessages } from 'utils/i18n/common-messages'
 
-const {data: releases, error, buildVersion: currentVersion, isLatestVersion, latestRelease: latest, isLoading} = useAppReleases()
+const {
+  data: releases,
+  error,
+  buildVersion: currentVersion,
+  isLatestVersion,
+  latestRelease: latest,
+  isLoading,
+} = useAppReleases()
 </script>
 
 <style lang="scss">
-.release p {
-  margin-bottom: 16px;
-}
-
-.release ul {
-  padding-left: 24px;
-}
-
-.release a {
-  color: var(--v-anchor-base);
+.release h2 {
+  font-size: 24px;
+  line-height: 1.5rem;
 }
 </style>
 
