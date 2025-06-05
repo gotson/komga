@@ -5,18 +5,18 @@
  */
 
 // Plugins
-import {vuetify, vuetifyRulesPlugin} from './vuetify'
+import { vuetify, vuetifyRulesPlugin } from './vuetify'
 import pinia from '../stores'
 import router from '../router'
-import {PiniaColada} from '@pinia/colada'
+import { PiniaColada } from '@pinia/colada'
 import { PiniaColadaAutoRefetch } from '@pinia/colada-plugin-auto-refetch'
-import {vueIntl} from '@/plugins/vue-intl.ts'
+import { vueIntl } from '@/plugins/vue-intl'
 
 // Types
-import type {App} from 'vue'
+import type { App } from 'vue'
 // Navigation guards
-import {useLoginGuard} from '@/router/login-guard'
-import {useRoleGuard} from '@/router/role-guard.ts'
+import { useLoginGuard } from '@/router/login-guard'
+import { useRoleGuard } from '@/router/role-guard'
 
 export function registerPlugins(app: App) {
   app
@@ -27,9 +27,7 @@ export function registerPlugins(app: App) {
     .use(router)
     .use(pinia)
     .use(PiniaColada, {
-      plugins: [
-        PiniaColadaAutoRefetch()
-      ]
+      plugins: [PiniaColadaAutoRefetch()],
     })
 
   // register navigation guards
