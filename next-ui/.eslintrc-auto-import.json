@@ -73,6 +73,8 @@
     "useModel": true,
     "useTemplateRef": true,
     "Slot": true,
-    "Slots": true
+    "Slots": true,
+    "onBeforeRouteLeave": true,
+    "onBeforeRouteUpdate": true
   }
 }

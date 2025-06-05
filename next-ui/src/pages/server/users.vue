@@ -131,8 +131,8 @@ import {
   useUpdateUser,
   useUpdateUserPassword,
 } from '@/colada/mutations/update-user'
-import FormUserChangePassword from '@/components/forms/user/FormUserChangePassword.vue'
-import FormUserEdit from '@/components/forms/user/FormUserEdit.vue'
+import FormUserChangePassword from '@/components/form/user/ChangePassword.vue'
+import FormUserEdit from '@/components/form/user/Edit.vue'
 import type { Component } from 'vue'
 import { useLibraries } from '@/colada/queries/libraries'
 import { commonMessages } from '@/utils/i18n/common-messages'

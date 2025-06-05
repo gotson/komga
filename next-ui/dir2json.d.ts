@@ -8,7 +8,7 @@ declare module "*i18n?dir2json&ext=.json&1" {
   export default json;
 }
 
-declare module '*dir2json' {
-  const json: any
-  export default json
+declare module "*dir2json" {
+  const json: any;
+  export default json;
 }

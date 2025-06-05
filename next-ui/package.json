@@ -11,7 +11,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "prettier": "prettier --check \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "prettier": "prettier --check \"**/*.{js,ts,vue,scss,html,md,json}\"",
     "prettier:fix": "npm run prettier -- --write",
     "openapi-generate": "npx tsx ./openapi-generator.mts",
     "i18n-extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --out-file i18n/en.json",
