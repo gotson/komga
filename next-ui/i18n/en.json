@@ -147,6 +147,10 @@
     "defaultMessage": "Activity",
     "description": "Drawer menu for My Account > Activity"
   },
+  "ccAMWS": {
+    "defaultMessage": "Documentation",
+    "description": "Drawer menu footer: documentation link"
+  },
   "da/wb0": {
     "defaultMessage": "Mark all as read",
     "description": "Announcements view: mark all as read button tooltip"
@@ -166,6 +170,14 @@
   "hEOGa9": {
     "defaultMessage": "Age restriction",
     "description": "User creation/edit dialog: Age restriction field label"
+  },
+  "hYO2n6": {
+    "defaultMessage": "There might be a problem with your connection or your server.",
+    "description": "Common message: an error happened while loading data, explanation"
+  },
+  "ixQlWv": {
+    "defaultMessage": "Something went wrong",
+    "description": "Common message: an error happened while loading data"
   },
   "jywpqq": {
     "defaultMessage": "Age",
