@@ -21,10 +21,7 @@
             autofocus
             :disable="isLoading"
             lazy-rules
-            :rules="[
-              (x) => !!x || 'Required',
-              (x, r) => r.email(x) || 'Must be a valid email address',
-            ]"
+            :rules="[required(), (x, r) => r.email(x) || 'Must be a valid email address']"
           />
         </div>
       </div>
@@ -37,7 +34,7 @@
             type="password"
             :disable="isLoading"
             lazy-rules
-            :rules="[(x) => !!x || 'Required']"
+            :rules="[required()]"
           />
         </div>
       </div>
@@ -73,6 +70,7 @@ import type { ErrorCause } from 'api/komga-client'
 import { komgaClient } from 'api/komga-client'
 import { useAppStore } from 'stores/app'
 import { Notify } from 'quasar'
+import { required } from 'utils/rules'
 
 const username = ref('')
 const password = ref('')

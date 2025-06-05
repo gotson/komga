@@ -1,11 +1,16 @@
 <template>
-  <q-header elevated>
+  <q-header
+    :elevated="!$q.dark.isActive"
+    :class="$q.dark.isActive ? 'bg-dark' : 'bg-white'"
+  >
     <q-toolbar>
       <q-btn
         flat
         dense
         round
         icon="mdi-menu"
+        :color="$q.dark.isActive ? 'white' : 'dark'"
+        class="q-mr-md"
         aria-label="Menu"
         @click="appStore.drawer = !appStore.drawer"
       />
@@ -16,9 +21,11 @@
         </q-avatar>
       </RouterLink>
 
-      <q-toolbar-title>Komga</q-toolbar-title>
+      <q-toolbar-title :class="$q.dark.isActive ? 'text-white' : 'text-dark'"
+        >Komga</q-toolbar-title
+      >
 
-      <div>Quasar v{{ $q.version }}</div>
+      <ThemeSelector />
     </q-toolbar>
   </q-header>
 </template>
