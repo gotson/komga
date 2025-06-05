@@ -20,7 +20,7 @@
     </q-card-actions>
   </q-card>
 
-  <EmptyState
+  <KEmptyState
     v-else-if="error"
     :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
     :sub-title="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
@@ -122,6 +122,7 @@ function markRead(id: string) {
 <style lang="scss">
 .announcement h2 {
   font-size: 24px;
+  line-height: 1.5rem;
 }
 </style>
 

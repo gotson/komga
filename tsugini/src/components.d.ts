@@ -17,12 +17,16 @@ declare module 'vue' {
     AppDrawerMenuImport: typeof import('./components/app/drawer/menu/Import.vue')['default']
     AppDrawerMenuLogout: typeof import('./components/app/drawer/menu/Logout.vue')['default']
     AppDrawerMenuMedia: typeof import('./components/app/drawer/menu/Media.vue')['default']
-    AppDrawerMenuMenu: typeof import('./components/app/drawer/menu/Menu.vue')['default']
     AppDrawerMenuServer: typeof import('./components/app/drawer/menu/Server.vue')['default']
-    EmptyState: typeof import('./components/EmptyState.vue')['default']
     EssentialLink: typeof import('./components/EssentialLink.vue')['default']
     ExampleComponent: typeof import('./components/ExampleComponent.vue')['default']
+    FormUserChangePassword: typeof import('./components/form/user/ChangePassword.vue')['default']
+    FormUserEdit: typeof import('./components/form/user/Edit.vue')['default']
+    KBanner: typeof import('./components/KBanner.vue')['default']
+    KEmptyState: typeof import('./components/KEmptyState.vue')['default']
+    QTable: typeof import('quasar')['QTable']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ThemeSelector: typeof import('./components/ThemeSelector.vue')['default']
   }
 }
