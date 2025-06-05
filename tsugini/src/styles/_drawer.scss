@@ -1,0 +1,8 @@
+@use "quasar/src/css/variables" as q;
+
+.body--light .drawer-menu-active {
+    background: q.$grey-3;
+}
+.body--dark .drawer-menu-active {
+    background: q.$grey-9;
+}
