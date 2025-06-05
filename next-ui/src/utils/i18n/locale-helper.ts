@@ -1,12 +1,13 @@
-import {defineMessage} from 'vue-intl'
+import { defineMessage } from 'vue-intl'
 import localeMessages from '../i18n?dir2json&ext=.json&1'
 
 export const defaultLocale = 'en'
 
 const localeName = defineMessage({
-  description: 'The name of the locale, shown in the language selection menu. Must be translated to the language\'s name',
+  description:
+    "The name of the locale, shown in the language selection menu. Must be translated to the language's name",
   defaultMessage: 'English',
-  id: 'app.locale-name'
+  id: 'app.locale-name',
 })
 
 /**
@@ -16,14 +17,16 @@ const localeName = defineMessage({
  */
 export function loadLocale(locale: string): Record<string, string> {
   const localeToLoad = locale in availableLocales ? locale : defaultLocale
-  return (localeMessages as unknown as Record<string, Record<string, string>>)[localeToLoad]!;
+  return (localeMessages as unknown as Record<string, Record<string, string>>)[localeToLoad]!
 }
-
 
 function loadAvailableLocales(): Record<string, string> {
   const localesInfo: Record<string, string> = {}
-  Object.keys(localeMessages).forEach(x =>
-    localesInfo[x] = (localeMessages as unknown as Record<string, Record<string, string>>)[x]![localeName.id]!
+  Object.keys(localeMessages).forEach(
+    (x) =>
+      (localesInfo[x] = (localeMessages as unknown as Record<string, Record<string, string>>)[x]![
+        localeName.id
+      ]!),
   )
   return localesInfo
 }
@@ -51,7 +54,7 @@ export const currentLocale = getLocale()
  * @param locale the new locale
  */
 export function setLocale(locale: string) {
-  if(locale !== currentLocale) {
+  if (locale !== currentLocale) {
     localStorage.setItem('userLocale', locale)
     window.location.reload()
   }

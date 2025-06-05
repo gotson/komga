@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import {useCurrentUser} from '@/colada/queries/current-user.ts'
+import { useCurrentUser } from '@/colada/queries/current-user'
 
-const {isAdmin} = useCurrentUser()
+const { isAdmin } = useCurrentUser()
 </script>
