@@ -50,7 +50,7 @@
         </div>
       </template>
 
-      <template #[`item.actions`]="{ item : user }">
+      <template #[`item.actions`]="{ item: user }">
         <div class="d-flex ga-1 justify-end">
           <v-icon-btn
             v-tooltip:bottom="'Change password'"
@@ -84,7 +84,7 @@
       :max-width="currentAction === ACTION.PASSWORD ? 400 : 600"
       @update:record="handleDialogConfirmation()"
     >
-      <template #text="{proxyModel}">
+      <template #text="{ proxyModel }">
         <component
           :is="dialogComponent"
           v-model="proxyModel.value"
@@ -112,9 +112,7 @@
             <li>The read progress for this user account will be permanently deleted.</li>
             <li>Authentication activity for this user will be permanently deleted.</li>
           </ul>
-          <div class="font-weight-bold mt-4">
-            This action cannot be undone.
-          </div>
+          <div class="font-weight-bold mt-4">This action cannot be undone.</div>
         </v-alert>
       </template>
     </DialogConfirm>
@@ -122,64 +120,72 @@
 </template>
 
 <script lang="ts" setup>
-import {useUsers} from '@/colada/queries/users.ts'
-import {komgaClient} from '@/api/komga-client.ts'
-import type {components} from '@/generated/openapi/komga'
-import {useCurrentUser} from '@/colada/queries/current-user.ts'
-import {UserRoles} from '@/types/UserRoles.ts'
-import {useCreateUser, useDeleteUser, useUpdateUser, useUpdateUserPassword} from '@/colada/mutations/update-user.ts'
+import { useUsers } from '@/colada/queries/users'
+import { komgaClient } from '@/api/komga-client'
+import type { components } from '@/generated/openapi/komga'
+import { useCurrentUser } from '@/colada/queries/current-user'
+import { UserRoles } from '@/types/UserRoles'
+import {
+  useCreateUser,
+  useDeleteUser,
+  useUpdateUser,
+  useUpdateUserPassword,
+} from '@/colada/mutations/update-user'
 import FormUserChangePassword from '@/components/forms/user/FormUserChangePassword.vue'
 import FormUserEdit from '@/components/forms/user/FormUserEdit.vue'
-import type {Component} from 'vue'
-import {useLibraries} from '@/colada/queries/libraries.ts'
-import {commonMessages} from '@/utils/common-messages.ts'
+import type { Component } from 'vue'
+import { useLibraries } from '@/colada/queries/libraries'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 // API data
-const {data: users, error, isLoading, refetch: refetchUsers} = useUsers()
-const {data: me} = useCurrentUser()
-
+const { data: users, error, isLoading, refetch: refetchUsers } = useUsers()
+const { data: me } = useCurrentUser()
 
 // Table
 const hideFooter = computed(() => users.value && users.value.length < 11)
 const headers = [
-  {title: 'Email', key: 'email'},
-  {title: 'Latest Activity', key: 'activity', value: (item: components["schemas"]["UserDto"]) => latestActivity[item.id]},
-  {title: 'Roles', value: 'roles', sortable: false},
-  {title: 'Actions', key: 'actions', align: 'end', sortable: false},
+  { title: 'Email', key: 'email' },
+  {
+    title: 'Latest Activity',
+    key: 'activity',
+    value: (item: components['schemas']['UserDto']) => latestActivity[item.id],
+  },
+  { title: 'Roles', value: 'roles', sortable: false },
+  { title: 'Actions', key: 'actions', align: 'end', sortable: false },
 ] as const // workaround for https://github.com/vuetifyjs/vuetify/issues/18901
 
 function getRoleColor(role: UserRoles) {
-  if(role === UserRoles.ADMIN) return 'error'
+  if (role === UserRoles.ADMIN) return 'error'
 }
-
 
 // store each user's latest activity in a map
 // when the 'users' change, we call the API for each user
 const latestActivity: Record<string, Date | undefined> = reactive({})
 
 function getLatestActivity(userId: string) {
-  komgaClient.GET('/api/v2/users/{id}/authentication-activity/latest', {
-    params: {
-      path: { id: userId }
-    }
-  })
+  komgaClient
+    .GET('/api/v2/users/{id}/authentication-activity/latest', {
+      params: {
+        path: { id: userId },
+      },
+    })
     // unwrap the openapi-fetch structure on success
-    .then((res) => latestActivity[userId] = res.data?.dateTime)
+    .then((res) => (latestActivity[userId] = res.data?.dateTime))
     .catch(() => {})
 }
 
 watch(users, (users) => {
-  if(users) for (const user of users) {
-    getLatestActivity(user.id)
-  }
+  if (users)
+    for (const user of users) {
+      getLatestActivity(user.id)
+    }
 })
 
 onMounted(() => refetchUsers())
 
-
 // Dialogs handling
 // stores the user being actioned upon
-const userRecord = ref<components["schemas"]["UserDto"]>()
+const userRecord = ref<components['schemas']['UserDto']>()
 // stores the ongoing action, so we can handle the action when the dialog is closed with changes
 const currentAction = ref<ACTION>()
 // the record passed to the dialog's form's model
@@ -190,17 +196,20 @@ const dialogTitle = ref<string>()
 // dynamic component for the dialog's inner form
 const dialogComponent = shallowRef<Component>()
 
-const {mutate: mutateCreateUser} = useCreateUser()
-const {mutate: mutateUser} = useUpdateUser()
-const {mutate: mutateUserPassword} = useUpdateUserPassword()
-const {mutate: mutateDeleteUser} = useDeleteUser()
-const {data: libraries} = useLibraries()
+const { mutate: mutateCreateUser } = useCreateUser()
+const { mutate: mutateUser } = useUpdateUser()
+const { mutate: mutateUserPassword } = useUpdateUserPassword()
+const { mutate: mutateDeleteUser } = useDeleteUser()
+const { data: libraries } = useLibraries()
 
 enum ACTION {
-  ADD, EDIT, DELETE, PASSWORD
+  ADD,
+  EDIT,
+  DELETE,
+  PASSWORD,
 }
 
-function showDialog(action: ACTION, user?: components["schemas"]["UserDto"]) {
+function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
   currentAction.value = action
   switch (action) {
     case ACTION.ADD:
@@ -213,36 +222,38 @@ function showDialog(action: ACTION, user?: components["schemas"]["UserDto"]) {
         sharedLibraries: {
           all: true,
           // we fill the array with all libraries for a nicer display in the edit dialog
-          libraryIds: libraries.value?.map(x => x.id) || [],
+          libraryIds: libraries.value?.map((x) => x.id) || [],
         },
         ageRestriction: {
           age: 0,
           restriction: 'NONE',
-        }
-      } as components["schemas"]["UserCreationDto"]
-      break;
+        },
+      } as components['schemas']['UserCreationDto']
+      break
     case ACTION.EDIT:
       dialogTitle.value = 'Edit User'
       dialogComponent.value = FormUserEdit
       dialogRecord.value = {
         ...user,
-        roles: user?.roles.filter(x => x !== 'USER'),
+        roles: user?.roles.filter((x) => x !== 'USER'),
         sharedLibraries: {
           all: user?.sharedAllLibraries,
           // we fill the array with all libraries for a nicer display in the edit dialog
-          libraryIds: user?.sharedAllLibraries ? libraries.value?.map(x => x.id) || [] : user?.sharedLibrariesIds,
+          libraryIds: user?.sharedAllLibraries
+            ? libraries.value?.map((x) => x.id) || []
+            : user?.sharedLibrariesIds,
         },
         ageRestriction: user?.ageRestriction || {
           age: 0,
           restriction: 'NONE',
-        }
-      } as components["schemas"]["UserUpdateDto"]
-      break;
+        },
+      } as components['schemas']['UserUpdateDto']
+      break
     case ACTION.DELETE:
       dialogTitle.value = 'Delete User'
       dialogComponent.value = FormUserEdit
       dialogRecord.value = user
-      break;
+      break
     case ACTION.PASSWORD:
       dialogTitle.value = 'Change Password'
       dialogComponent.value = FormUserChangePassword
@@ -255,20 +266,20 @@ function showDialog(action: ACTION, user?: components["schemas"]["UserDto"]) {
 function handleDialogConfirmation() {
   switch (currentAction.value) {
     case ACTION.ADD:
-      mutateCreateUser(dialogRecord.value as components["schemas"]["UserCreationDto"])
-      break;
+      mutateCreateUser(dialogRecord.value as components['schemas']['UserCreationDto'])
+      break
     case ACTION.EDIT:
-      mutateUser(dialogRecord.value as components["schemas"]["UserDto"])
-      break;
+      mutateUser(dialogRecord.value as components['schemas']['UserDto'])
+      break
     case ACTION.DELETE:
       mutateDeleteUser(userRecord.value!.id)
-      break;
+      break
     case ACTION.PASSWORD:
       mutateUserPassword({
         userId: userRecord.value!.id,
         newPassword: dialogRecord.value as string,
       })
-      break;
+      break
   }
 }
 </script>
