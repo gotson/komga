@@ -5,6 +5,8 @@ import ViteFonts from 'unplugin-fonts/vite'
 import Layouts from 'vite-plugin-vue-layouts-next'
 import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import dir2json from 'vite-plugin-dir2json'
@@ -32,6 +34,7 @@ export default defineConfig({
       dts: 'src/components.d.ts',
       directoryAsNamespace: true,
       collapseSamePrefixes: true,
+      resolvers: [IconsResolver()],
     }),
     Vue({
       template: { transformAssetUrls },
@@ -56,6 +59,9 @@ export default defineConfig({
     }),
     dir2json({
       dts: true,
+    }),
+    Icons({
+      autoInstall: true,
     }),
   ],
   define: { 'process.env': {} },
