@@ -20,11 +20,12 @@
                 {
                   description: 'Confirmation dialog: default hint to retype validation text',
                   defaultMessage: 'Please type {validateText} to confirm.',
-                  id: 'eVoe+D'
+                  id: 'eVoe+D',
                 },
                 {
                   validateText: validateText,
-                })
+                },
+              )
             }}
           </slot>
 
@@ -38,11 +39,13 @@
         <template #actions>
           <v-spacer />
           <v-btn
-            :text="$formatMessage({
-              description: 'Confirmation dialog: Cancel button',
-              defaultMessage: 'Cancel',
-              id: 'pENCUD'
-            })"
+            :text="
+              $formatMessage({
+                description: 'Confirmation dialog: Cancel button',
+                defaultMessage: 'Cancel',
+                id: 'pENCUD',
+              })
+            "
             @click="close()"
           />
           <v-btn
@@ -60,9 +63,9 @@
 </template>
 
 <script setup lang="ts">
-import {useRules} from 'vuetify/labs/rules'
+import { useRules } from 'vuetify/labs/rules'
 
-const showDialog = defineModel<boolean>('dialog', {required: false})
+const showDialog = defineModel<boolean>('dialog', { required: false })
 const emit = defineEmits<{
   confirm: []
 }>()
@@ -72,19 +75,19 @@ const formValid = ref<boolean>(false)
 const rules = useRules()
 
 function submitForm() {
-  if(formValid.value) {
+  if (formValid.value) {
     emit('confirm')
     close()
   }
 }
 
 export interface Props {
-  title?: string,
-  subtitle?: string,
-  okText?: string,
-  validateText?: string,
-  maxWidth?: string | number,
-  activator?: Element | string,
+  title?: string
+  subtitle?: string
+  okText?: string
+  validateText?: string
+  maxWidth?: string | number
+  activator?: Element | string
 }
 
 const {
@@ -100,4 +103,3 @@ function close() {
   showDialog.value = false
 }
 </script>
-
