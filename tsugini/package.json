@@ -19,6 +19,8 @@
     "@pinia/colada": "^0.16.1",
     "@pinia/colada-plugin-auto-refetch": "^0.1.0",
     "@quasar/extras": "^1.16.4",
+    "@vueuse/core": "^13.3.0",
+    "marked": "^15.0.12",
     "openapi-fetch": "^0.14.0",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.3.0",
