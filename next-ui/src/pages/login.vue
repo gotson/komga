@@ -56,6 +56,7 @@
                 id: '0YG9GQ',
               })
             "
+            hide-details
           />
         </v-col>
       </v-row>
@@ -82,6 +83,7 @@
             v-model="showError"
             color="error"
             :text="showErrorText"
+            timer="red"
           >
             <template v-slot:actions>
               <v-btn
