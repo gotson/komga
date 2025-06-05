@@ -3,7 +3,11 @@
 
 import { defineConfig } from '#q-app/wrappers'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
-import { QuasarResolver } from 'unplugin-vue-components/resolvers'
+import {
+  QuasarResolver,
+  VueUseComponentsResolver,
+  VueUseDirectiveResolver,
+} from 'unplugin-vue-components/resolvers'
 import { fileURLToPath } from 'node:url'
 
 export default defineConfig((ctx) => {
@@ -91,11 +95,7 @@ export default defineConfig((ctx) => {
             dts: 'src/components.d.ts',
             directoryAsNamespace: true,
             collapseSamePrefixes: true,
-            resolvers: [
-              QuasarResolver(),
-              // VueUseComponentsResolver(),
-              // VueUseDirectiveResolver()
-            ],
+            resolvers: [QuasarResolver()],
           },
         ],
         [
@@ -149,7 +149,7 @@ export default defineConfig((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'Dialog'],
     },
 
     // animations: 'all', // --- includes all animations

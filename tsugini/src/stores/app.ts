@@ -5,6 +5,7 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     loginRememberMe: false,
     drawer: !useQuasar().platform.is.mobile.valueOf(),
+    theme: 'auto' as 'auto' | boolean,
   }),
   persist: true,
 })
