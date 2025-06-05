@@ -11,7 +11,7 @@
           id: 'ToD0+o',
         })
       "
-      prepend-icon="mdi-account"
+      :prepend-icon="mdiAccount"
     />
     <v-text-field
       v-model="user.password"
@@ -26,7 +26,7 @@
       "
       autocomplete="off"
       :type="showPassword ? 'text' : 'password'"
-      :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+      :append-inner-icon="showPassword ? mdiEye : mdiEyeOff"
       prepend-icon="mdi-none"
       @click:append-inner="showPassword = !showPassword"
     />
@@ -45,7 +45,7 @@
         id: 'CUxhzL',
       })
     "
-    prepend-icon="mdi-key-chain"
+    :prepend-icon="mdiKeyChain"
     :items="userRoles"
   />
 
@@ -63,7 +63,7 @@
     :items="libraries"
     item-title="name"
     item-value="id"
-    prepend-icon="mdi-book-multiple"
+    :prepend-icon="mdiBookMultiple"
   >
     <!--  Workaround for the lack of a slot to override the whole selection  -->
     <template #prepend-inner>
@@ -134,7 +134,7 @@
           })
         "
         :items="ageRestrictions"
-        prepend-icon="mdi-folder-lock"
+        :prepend-icon="mdiFolderLock"
       />
     </v-col>
     <v-col>
@@ -218,6 +218,12 @@
 </template>
 
 <script setup lang="ts">
+import mdiEye from '~icons/mdi/eye'
+import mdiEyeOff from '~icons/mdi/eye-off'
+import mdiAccount from '~icons/mdi/account'
+import mdiKeyChain from '~icons/mdi/key-chain'
+import mdiBookMultiple from '~icons/mdi/book-multiple'
+import mdiFolderLock from '~icons/mdi/folder-lock'
 import { UserRoles } from '@/types/UserRoles'
 import type { components } from '@/generated/openapi/komga'
 import { useRules } from 'vuetify/labs/rules'
