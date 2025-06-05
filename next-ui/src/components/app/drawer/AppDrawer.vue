@@ -1,7 +1,5 @@
 <template>
-  <v-navigation-drawer
-    v-model="appStore.drawer"
-  >
+  <v-navigation-drawer v-model="appStore.drawer">
     <AppDrawerMenu />
 
     <template #append>
@@ -11,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import {useAppStore} from '@/stores/app'
+import { useAppStore } from '@/stores/app'
 
 const appStore = useAppStore()
 </script>

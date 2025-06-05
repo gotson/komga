@@ -1,6 +1,6 @@
-import {defineMutation, useMutation, useQueryCache} from '@pinia/colada'
-import {komgaClient} from '@/api/komga-client'
-import type {components} from '@/generated/openapi/komga'
+import { defineMutation, useMutation, useQueryCache } from '@pinia/colada'
+import { komgaClient } from '@/api/komga-client'
+import type { components } from '@/generated/openapi/komga'
 
 export const useCreateUser = defineMutation(() => {
   const queryCache = useQueryCache()
@@ -10,7 +10,7 @@ export const useCreateUser = defineMutation(() => {
         body: user,
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({key: ['users']})
+      void queryCache.invalidateQueries({ key: ['users'] })
     },
     onError: (error) => {
       console.log('create user error', error)
@@ -22,11 +22,11 @@ export const useUpdateUser = defineMutation(() => {
   return useMutation({
     mutation: (user: components['schemas']['UserDto']) =>
       komgaClient.PATCH('/api/v2/users/{id}', {
-        params: {path: {id: user.id}},
+        params: { path: { id: user.id } },
         body: user,
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({key: ['users']})
+      void queryCache.invalidateQueries({ key: ['users'] })
     },
     onError: (error) => {
       console.log('update user error', error)
@@ -36,9 +36,9 @@ export const useUpdateUser = defineMutation(() => {
 
 export const useUpdateUserPassword = defineMutation(() => {
   return useMutation({
-    mutation: ({userId, newPassword}: { userId: string, newPassword: string }) =>
+    mutation: ({ userId, newPassword }: { userId: string; newPassword: string }) =>
       komgaClient.PATCH('/api/v2/users/{id}/password', {
-        params: {path: {id: userId}},
+        params: { path: { id: userId } },
         body: {
           password: newPassword,
         },
@@ -54,10 +54,10 @@ export const useDeleteUser = defineMutation(() => {
   return useMutation({
     mutation: (userId: string) =>
       komgaClient.DELETE('/api/v2/users/{id}', {
-        params: {path: {id: userId}},
+        params: { path: { id: userId } },
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({key: ['users']})
+      void queryCache.invalidateQueries({ key: ['users'] })
     },
     onError: (error) => {
       console.log('delete user error', error)

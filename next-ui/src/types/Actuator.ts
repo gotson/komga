@@ -1,22 +1,22 @@
 export interface ActuatorInfo {
-  git: ActuatorGit,
+  git: ActuatorGit
   build: ActuatorBuild
 }
 
 export interface ActuatorGit {
-  commit: ActuatorGitCommit,
+  commit: ActuatorGitCommit
   branch: string
 }
 
 export interface ActuatorGitCommit {
-  time: Date,
+  time: Date
   id: string
 }
 
 export interface ActuatorBuild {
-  version: string,
-  artifact: string,
-  name: string,
-  group: string,
+  version: string
+  artifact: string
+  name: string
+  group: string
   time: Date
 }

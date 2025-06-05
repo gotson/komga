@@ -10,11 +10,13 @@
         class="text-caption"
         href="https://komga.org"
         target="_blank"
-        :text="$formatMessage({
-          description:'Drawer menu footer: documentation link',
-          defaultMessage:'Documentation',
-          id: 'ccAMWS',
-        })"
+        :text="
+          $formatMessage({
+            description: 'Drawer menu footer: documentation link',
+            defaultMessage: 'Documentation',
+            id: 'ccAMWS',
+          })
+        "
       />
     </div>
   </div>
@@ -28,11 +30,11 @@
     </div>
   </div>
 
-<!--  <AppFooter />-->
+  <!--  <AppFooter />-->
 </template>
 
 <script setup lang="ts">
-import {useCurrentUser} from '@/colada/queries/current-user.ts'
+import { useCurrentUser } from '@/colada/queries/current-user'
 
-const {isAdmin} = useCurrentUser()
+const { isAdmin } = useCurrentUser()
 </script>

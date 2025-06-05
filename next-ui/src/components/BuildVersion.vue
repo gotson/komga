@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {useAppReleases} from '@/colada/queries/app-releases.ts'
+import { useAppReleases } from '@/colada/queries/app-releases'
 
-const {buildVersion, isLatestVersion} = useAppReleases()
+const { buildVersion, isLatestVersion } = useAppReleases()
 </script>

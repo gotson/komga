@@ -23,7 +23,7 @@
               $formatMessage({
                 description: 'Updates view: banner shown at the top',
                 defaultMessage: 'The latest version of Komga is already installed',
-                id: 'WNY0pu'
+                id: 'WNY0pu',
               })
             }}
           </v-alert>
@@ -37,7 +37,7 @@
               $formatMessage({
                 description: 'Updates view: banner shown at the top',
                 defaultMessage: 'Updates are available',
-                id: 'n1Ik+L'
+                id: 'n1Ik+L',
               })
             }}
           </v-alert>
@@ -49,19 +49,15 @@
       v-for="(release, index) in releases"
       :key="index"
     >
-      <v-row
-        justify="space-between"
-        align="center"
-      >
-        <v-col cols="auto">
+      <v-card class="my-4">
+        <template #title>
           <div>
             <a
               :href="release.url"
               target="_blank"
               class="text-h4 font-weight-medium link-underline me-2"
-            >{{
-              release.version
-            }}</a>
+              >{{ release.version }}</a
+            >
             <v-chip
               v-if="release.version == currentVersion"
               class="mx-2 mt-n3"
@@ -71,9 +67,10 @@
             >
               {{
                 $formatMessage({
-                  description: 'Updates view: badge showing next to the currently installed release number',
+                  description:
+                    'Updates view: badge showing next to the currently installed release number',
                   defaultMessage: 'Currently installed',
-                  id: '3jrAF6'
+                  id: '3jrAF6',
                 })
               }}
             </v-chip>
@@ -87,42 +84,43 @@
                 $formatMessage({
                   description: 'Updates view: badge showing next to the latest release number',
                   defaultMessage: 'Latest',
-                  id: '2Bh8F2'
+                  id: '2Bh8F2',
                 })
               }}
             </v-chip>
           </div>
-          <div class="mt-2 subtitle-1">
-            {{ $formatDate(release.releaseDate, {dateStyle: 'long'}) }}
-          </div>
-        </v-col>
-      </v-row>
+        </template>
 
-      <v-row>
-        <v-col cols="12">
+        <template #subtitle>
+          {{ $formatDate(release.releaseDate, { dateStyle: 'long' }) }}
+        </template>
+
+        <template #text>
           <!-- eslint-disable vue/no-v-html -->
           <div
             class="release"
             v-html="marked(release.description)"
           />
           <!-- eslint-enable vue/no-v-html -->
-        </v-col>
-      </v-row>
-
-      <v-divider
-        v-if="index != releases.length - 1"
-        class="my-8"
-      />
+        </template>
+      </v-card>
     </div>
   </template>
 </template>
 
 <script lang="ts" setup>
-import {useAppReleases} from '@/colada/queries/app-releases.ts'
-import {marked} from 'marked'
-import {commonMessages} from '@/utils/common-messages.ts'
+import { useAppReleases } from '@/colada/queries/app-releases'
+import { marked } from 'marked'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
-const {data: releases, error, buildVersion: currentVersion, isLatestVersion, latestRelease: latest, isLoading} = useAppReleases()
+const {
+  data: releases,
+  error,
+  buildVersion: currentVersion,
+  isLatestVersion,
+  latestRelease: latest,
+  isLoading,
+} = useAppReleases()
 </script>
 
 <style lang="scss">

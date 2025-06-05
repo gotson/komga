@@ -31,19 +31,23 @@
             <template #actions>
               <v-spacer />
               <v-btn
-                :text="$formatMessage({
-                  description: 'ConfirmEdit dialog: Cancel button',
-                  defaultMessage: 'Cancel',
-                  id: 'G/T8/2'
-                })"
+                :text="
+                  $formatMessage({
+                    description: 'ConfirmEdit dialog: Cancel button',
+                    defaultMessage: 'Cancel',
+                    id: 'G/T8/2',
+                  })
+                "
                 @click="close()"
               />
               <v-btn
-                :text="$formatMessage({
-                  description: 'ConfirmEdit dialog: Save button',
-                  defaultMessage: 'Save',
-                  id: 'N9WFH4'
-                })"
+                :text="
+                  $formatMessage({
+                    description: 'ConfirmEdit dialog: Save button',
+                    defaultMessage: 'Save',
+                    id: 'N9WFH4',
+                  })
+                "
                 type="submit"
               />
             </template>
@@ -55,13 +59,13 @@
 </template>
 
 <script setup lang="ts">
-const showDialog = defineModel<boolean>('dialog', {required: false})
-const record = defineModel<unknown>('record', {required: true})
+const showDialog = defineModel<boolean>('dialog', { required: false })
+const record = defineModel<unknown>('record', { required: true })
 
 const formValid = ref<boolean>(false)
 
 function submitForm(callback: () => void) {
-  if(formValid.value) callback()
+  if (formValid.value) callback()
 }
 
 interface Props {
@@ -69,10 +73,10 @@ interface Props {
    * Dialog title
    * @type string
    */
-  title?: string,
-  subtitle?: string,
-  maxWidth?: string | number,
-  activator?: Element | string,
+  title?: string
+  subtitle?: string
+  maxWidth?: string | number
+  activator?: Element | string
 }
 
 const {

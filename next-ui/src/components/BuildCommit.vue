@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import {useActuatorInfo} from '@/colada/queries/actuator-info'
+import { useActuatorInfo } from '@/colada/queries/actuator-info'
 
-const {commitId} = useActuatorInfo()
+const { commitId } = useActuatorInfo()
 </script>

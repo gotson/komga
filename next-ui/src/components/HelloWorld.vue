@@ -27,22 +27,16 @@
             </template>
 
             <template #title>
-              <h2 class="text-h5 font-weight-bold">
-                Get started
-              </h2>
+              <h2 class="text-h5 font-weight-bold">Get started</h2>
             </template>
 
             <template #subtitle>
               <div class="text-subtitle-1">
                 Replace this page by removing
                 <v-kbd>
-                  {{
-                    `
+                  {{ `
 
-
-
-
-                  <HelloWorld/>
+                  <HelloWorld />
                   ` }}
                 </v-kbd>
                 in
@@ -161,8 +155,6 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
-<script lang="ts">
-</script>
+<script lang="ts"></script>

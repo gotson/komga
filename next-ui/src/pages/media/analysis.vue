@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-  //
+//
 </script>
 
 <route lang="yaml">

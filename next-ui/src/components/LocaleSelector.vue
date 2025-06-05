@@ -12,11 +12,13 @@
       color="primary"
     >
       <v-list-subheader
-        :title="$formatMessage({
-          description: 'Translations pop-up menu header',
-          defaultMessage: 'Translations',
-          id: 'InW6ko'
-        })"
+        :title="
+          $formatMessage({
+            description: 'Translations pop-up menu header',
+            defaultMessage: 'Translations',
+            id: 'InW6ko',
+          })
+        "
         class="text-high-emphasis text-uppercase font-weight-black"
       />
 
@@ -37,7 +39,7 @@
             $formatMessage({
               description: 'Translations pop-up menu footer',
               defaultMessage: 'Help us translate',
-              id: 'FLqm9f'
+              id: 'FLqm9f',
             })
           }}
         </v-list-item-title>
@@ -47,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import {availableLocales, currentLocale, setLocale} from '@/utils/locale-helper.ts'
+import { availableLocales, currentLocale, setLocale } from '@/utils/i18n/locale-helper'
 
 const locales = Object.entries(availableLocales).map(([k, v]) => ({
   title: v,
@@ -55,9 +57,6 @@ const locales = Object.entries(availableLocales).map(([k, v]) => ({
 }))
 </script>
 
-<script lang="ts">
-</script>
+<script lang="ts"></script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
