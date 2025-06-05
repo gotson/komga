@@ -1,20 +1,22 @@
 <template>
   <v-list-item
-    :title="$formatMessage({
-      description: 'Drawer menu for Logout',
-      defaultMessage: 'Logout',
-      id: 'ti4Pzo'
-    })"
+    :title="
+      $formatMessage({
+        description: 'Drawer menu for Logout',
+        defaultMessage: 'Logout',
+        id: 'ti4Pzo',
+      })
+    "
     prepend-icon="mdi-power"
     @click="performLogout"
   />
 </template>
 
 <script setup lang="ts">
-import {useLogout} from '@/colada/mutations/logout'
+import { useLogout } from '@/colada/mutations/logout'
 
 const router = useRouter()
-const {mutateAsync: logoutAsync} = useLogout()
+const { mutateAsync: logoutAsync } = useLogout()
 
 function performLogout() {
   void logoutAsync().then(() => router.push('/login'))
