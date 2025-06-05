@@ -7,12 +7,13 @@
         id: 'ti4Pzo',
       })
     "
-    prepend-icon="mdi-power"
+    :prepend-icon="mdiPower"
     @click="performLogout"
   />
 </template>
 
 <script setup lang="ts">
+import mdiPower from '~icons/mdi/power'
 import { useLogout } from '@/colada/mutations/logout'
 
 const router = useRouter()

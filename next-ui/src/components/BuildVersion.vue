@@ -6,7 +6,7 @@
       :model-value="isLatestVersion == false"
     >
       <v-btn
-        prepend-icon="mdi-tag-outline"
+        :prepend-icon="mdiTagOutline"
         variant="text"
         color="grey"
         size="small"
@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+import mdiTagOutline from '~icons/mdi/tag-outline'
 import { useAppReleases } from '@/colada/queries/app-releases'
 
 const { buildVersion, isLatestVersion } = useAppReleases()
