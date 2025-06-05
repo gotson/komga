@@ -24,7 +24,6 @@
     "allowUnusedLabels": false,
     "noImplicitOverride": true,
     "allowImportingTsExtensions": false,
-    "exactOptionalPropertyTypes": true,
     "lib": ["esnext", "dom", "dom.iterable"]
   }
 }
