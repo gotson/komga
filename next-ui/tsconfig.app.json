@@ -3,17 +3,28 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "./dir2json.d.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "composite": false,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "noUncheckedIndexedAccess": true, // openapi-ts
-    "allowImportingTsExtensions":true,
+    "target": "ESNext",
+    "moduleResolution": "bundler", // Komga: https://uvr.esm.is/introduction.html#setup
+    "noUncheckedIndexedAccess": true, // Komga: https://openapi-ts.dev/introduction
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vite-plugin-vue-layouts-next/client"],
+    "types": [
+      "unplugin-vue-router/client", // Komga: https://uvr.esm.is/introduction.html#setup
+      "vite-plugin-vue-layouts-next/client" // Komga: https://github.com/loicduong/vite-plugin-vue-layouts-next#client-types
+    ],
     "skipLibCheck": true,
+    "isolatedModules": true,
+    "module": "preserve",
+    "noEmit": true,
+    "strict": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noImplicitOverride": true,
+    "allowImportingTsExtensions": false,
+    "exactOptionalPropertyTypes": true,
+    "lib": ["esnext", "dom", "dom.iterable"]
   }
 }

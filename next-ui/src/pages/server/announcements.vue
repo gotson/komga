@@ -16,60 +16,47 @@
       v-for="(item, index) in announcements.items"
       :key="index"
     >
-      <v-row
-        justify="space-between"
-        align="center"
-      >
-        <v-col cols="auto">
-          <div class="ml-n2">
-            <a
-              :href="item.url"
-              target="_blank"
-              class="text-h3 font-weight-medium link-underline"
-            >{{ item.title }}</a>
-          </div>
-          <div class="mt-2 subtitle-1">
-            {{ $formatDate(item.date_modified, {dateStyle: 'long'}) }}
-          </div>
-        </v-col>
-        <v-col cols="auto">
-          <v-tooltip
-            :text="$formatMessage({
-              description: 'Announcements view: mark as read button tooltip',
-              defaultMessage: 'Mark as read',
-              id: 'sUSVQS'
-            })"
-            :disabled="item._komga?.read"
+      <v-card class="mb-4">
+        <template #title>
+          <a
+            :href="item.url"
+            target="_blank"
+            class="text-h3 font-weight-medium link-underline"
+            >{{ item.title }}</a
           >
-            <template #activator="{ props }">
-              <v-fab
-                v-bind="props"
-                icon="mdi-check"
-                elevation="3"
-                color="success"
-                variant="outlined"
-                size="small"
-                :disabled="item._komga?.read"
-                @click="markRead(item.id)"
-              />
-            </template>
-          </v-tooltip>
-        </v-col>
-      </v-row>
+        </template>
+        <template #subtitle>
+          {{ $formatDate(item.date_modified, { dateStyle: 'long' }) }}
+        </template>
 
-      <v-row>
-        <v-col cols="12">
+        <template #text>
           <!-- eslint-disable vue/no-v-html -->
           <div
             class="announcement"
             v-html="item.content_html"
           />
           <!-- eslint-enable vue/no-v-html -->
-        </v-col>
-      </v-row>
-      <v-divider
-        v-if="index != announcements.items.length - 1"
-        class="my-8"
+        </template>
+
+        <template #actions>
+          <v-spacer />
+          <v-btn
+            :text="
+              $formatMessage({
+                description: 'Announcements view: mark as read button tooltip',
+                defaultMessage: 'Mark as read',
+                id: 'sUSVQS',
+              })
+            "
+            :disabled="item._komga?.read"
+            @click="markRead(item.id)"
+          />
+        </template>
+      </v-card>
+
+      <div
+        v-if="index == announcements.items.length - 1"
+        class="mb-16"
       />
     </div>
 
@@ -84,11 +71,13 @@
     >
       <!--  Workaround for https://github.com/vuetifyjs/vuetify/issues/21439  -->
       <v-btn
-        v-tooltip:start="$formatMessage({
-          description: 'Announcements view: mark all as read button tooltip',
-          defaultMessage: 'Mark all as read',
-          id: 'da/wb0'
-        })"
+        v-tooltip:start="
+          $formatMessage({
+            description: 'Announcements view: mark all as read button tooltip',
+            defaultMessage: 'Mark all as read',
+            id: 'da/wb0',
+          })
+        "
         color="success"
         size="x-large"
         icon="mdi-check-all"
@@ -98,17 +87,17 @@
 </template>
 
 <script lang="ts" setup>
-import {useAnnouncements} from '@/colada/queries/announcements.ts'
-import {useMarkAnnouncementsRead} from '@/colada/mutations/mark-announcements-read.ts'
-import {commonMessages} from '@/utils/common-messages.ts'
+import { useAnnouncements } from '@/colada/queries/announcements'
+import { useMarkAnnouncementsRead } from '@/colada/mutations/mark-announcements-read'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
-const {data: announcements, error, unreadCount, isLoading} = useAnnouncements()
+const { data: announcements, error, unreadCount, isLoading } = useAnnouncements()
 
-const {mutate: markAnnouncementsRead} = useMarkAnnouncementsRead()
+const { mutate: markAnnouncementsRead } = useMarkAnnouncementsRead()
 
 function markAllRead() {
-  const ids = announcements.value?.items.map(x => x.id)
-  if(ids) markAnnouncementsRead(ids)
+  const ids = announcements.value?.items.map((x) => x.id)
+  if (ids) markAnnouncementsRead(ids)
 }
 
 function markRead(id: string) {

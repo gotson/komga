@@ -6,39 +6,36 @@
 </template>
 
 <script setup lang="ts">
-import {useAppStore} from '@/stores/app'
+import { useAppStore } from '@/stores/app'
 
 const appStore = useAppStore()
 
-const themes= [
+const themes = [
   {
     value: 'light',
-    icon: 'mdi-weather-sunny'
+    icon: 'mdi-weather-sunny',
   },
   {
     value: 'dark',
-    icon: 'mdi-weather-night'
+    icon: 'mdi-weather-night',
   },
   {
     value: 'system',
-    icon: 'mdi-theme-light-dark'
+    icon: 'mdi-theme-light-dark',
   },
 ]
 
 const themeIcon = computed(
-  () => themes.find(x => x.value === appStore.theme)?.icon || 'mdi-theme-light-dark'
+  () => themes.find((x) => x.value === appStore.theme)?.icon || 'mdi-theme-light-dark',
 )
 
 function cycleTheme() {
-  const index = themes.findIndex(x => x.value === appStore.theme)
+  const index = themes.findIndex((x) => x.value === appStore.theme)
   const newIndex = (index + 1) % themes.length
   appStore.theme = themes[newIndex]!.value
 }
 </script>
 
-<script lang="ts">
-</script>
+<script lang="ts"></script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
