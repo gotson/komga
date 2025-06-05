@@ -17,14 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import {useAppStore} from '@/stores/app'
+import { useAppStore } from '@/stores/app'
 
 const appStore = useAppStore()
 </script>
 
-<script lang="ts">
-</script>
+<script lang="ts"></script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
