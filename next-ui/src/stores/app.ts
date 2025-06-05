@@ -1,6 +1,6 @@
 // Utilities
-import {defineStore} from 'pinia'
-import {useDisplay} from 'vuetify'
+import { defineStore } from 'pinia'
+import { useDisplay } from 'vuetify'
 
 export const useAppStore = defineStore('app', {
   state: () => ({
