@@ -5,8 +5,8 @@
  */
 
 // Styles
-import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 // Composables
 import { createVuetify } from 'vuetify'
@@ -36,6 +36,13 @@ export const vuetify = createVuetify({
     locale: currentLocale,
     fallback: defaultLocale,
     messages,
+  },
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
   },
   theme: {
     defaultTheme: 'light',

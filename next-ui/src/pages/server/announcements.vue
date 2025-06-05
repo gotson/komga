@@ -80,13 +80,14 @@
         "
         color="success"
         size="x-large"
-        icon="mdi-check-all"
+        :icon="mdiCheckAll"
       />
     </v-fab>
   </template>
 </template>
 
 <script lang="ts" setup>
+import mdiCheckAll from '~icons/mdi/check-all'
 import { useAnnouncements } from '@/colada/queries/announcements'
 import { useMarkAnnouncementsRead } from '@/colada/mutations/mark-announcements-read'
 import { commonMessages } from '@/utils/i18n/common-messages'

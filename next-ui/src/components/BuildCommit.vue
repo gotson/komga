@@ -1,7 +1,7 @@
 <template>
   <template v-if="commitId">
     <v-btn
-      prepend-icon="mdi-source-commit"
+      :prepend-icon="mdiSourceCommit"
       variant="text"
       color="grey"
       size="small"
@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import mdiSourceCommit from '~icons/mdi/source-commit'
 import { useActuatorInfo } from '@/colada/queries/actuator-info'
 
 const { commitId } = useActuatorInfo()

@@ -12,7 +12,7 @@
     autocomplete="off"
     autofocus
     :type="showPassword ? 'text' : 'password'"
-    :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+    :append-inner-icon="showPassword ? mdiEye : mdiEyeOff"
     @click:append-inner="showPassword = !showPassword"
   />
   <v-text-field
@@ -37,12 +37,14 @@
     "
     autocomplete="off"
     :type="showPassword ? 'text' : 'password'"
-    :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+    :append-inner-icon="showPassword ? mdiEye : mdiEyeOff"
     @click:append-inner="showPassword = !showPassword"
   />
 </template>
 
 <script setup lang="ts">
+import mdiEye from '~icons/mdi/eye'
+import mdiEyeOff from '~icons/mdi/eye-off'
 import { useRules } from 'vuetify/labs/rules'
 
 const rules = useRules()

@@ -8,6 +8,10 @@
         id: 'l/To3S',
       })
     "
-    prepend-icon="mdi-clock-time-four-outline"
+    :prepend-icon="mdiClockTimeFourOutline"
   />
 </template>
+
+<script setup lang="ts">
+import mdiClockTimeFourOutline from '~icons/mdi/clock-time-four-outline'
+</script>
