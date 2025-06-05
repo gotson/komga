@@ -1,12 +1,13 @@
 // Plugins
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import ViteFonts from "unplugin-fonts/vite"
+import ViteFonts from 'unplugin-fonts/vite'
 import Layouts from 'vite-plugin-vue-layouts-next'
 import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
+import { VueRouterAutoImports } from 'unplugin-vue-router'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-import dir2json from "vite-plugin-dir2json";
+import dir2json from 'vite-plugin-dir2json'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -20,12 +21,7 @@ export default defineConfig({
     }),
     Layouts(),
     AutoImport({
-      imports: [
-        'vue',
-        {
-          'vue-router/auto': ['useRoute', 'useRouter'],
-        }
-      ],
+      imports: ['vue', VueRouterAutoImports],
       dts: 'src/auto-imports.d.ts',
       eslintrc: {
         enabled: true,
@@ -34,6 +30,8 @@ export default defineConfig({
     }),
     Components({
       dts: 'src/components.d.ts',
+      directoryAsNamespace: true,
+      collapseSamePrefixes: true,
     }),
     Vue({
       template: { transformAssetUrls },
@@ -49,31 +47,23 @@ export default defineConfig({
       fontsource: {
         families: [
           {
-            name: "Roboto",
+            name: 'Roboto',
             weights: [100, 300, 400, 500, 700, 900],
-            styles: ["normal", "italic"],
+            styles: ['normal', 'italic'],
           },
         ],
       },
     }),
     dir2json({
-      dts: true
-    })
+      dts: true,
+    }),
   ],
   define: { 'process.env': {} },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
-    extensions: [
-      '.js',
-      '.json',
-      '.jsx',
-      '.mjs',
-      '.ts',
-      '.tsx',
-      '.vue',
-    ],
+    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
   },
   server: {
     port: 3000,
