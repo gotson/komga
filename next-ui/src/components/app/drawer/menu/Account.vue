@@ -10,7 +10,7 @@
             id: 'od545m',
           })
         "
-        prepend-icon="mdi-account"
+        :prepend-icon="mdiAccount"
       />
     </template>
 
@@ -57,7 +57,9 @@
   </v-list-group>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import mdiAccount from '~icons/mdi/account'
+</script>
 
 <script lang="ts"></script>
 
