@@ -19,7 +19,15 @@
   },
   "account_settings": {
     "account_settings": "Pengaturan Akun",
-    "change_password": "ubah kata sandi"
+    "api_key": {
+      "created_date": "Tanggal dibuat: {date}",
+      "force_kobo_sync": "Paksa Kobo sync",
+      "generate_api_key": "Buat kunci API",
+      "no_keys": "Belum ada kunci API yang dibuat"
+    },
+    "change_password": "ubah kata sandi",
+    "details": "Rincian",
+    "my_account": "Akun Saya"
   },
   "announcements": {
     "mark_all_read": "Tandai semua sebagai dibaca",
@@ -27,6 +35,7 @@
     "tab_title": "Pengumuman"
   },
   "authentication_activity": {
+    "api_key": "Kunci API",
     "datetime": "Tanggal & Waktu",
     "email": "Email",
     "error": "Error",
@@ -86,6 +95,7 @@
     "beginning_of_book": "Anda berada di awal buku.",
     "changing_reading_direction": "Mengubah Arah Bacaan ke",
     "cycling_page_layout": "Tata Letak Halaman Memutar",
+    "cycling_page_margin": "Ganti Batas Halaman",
     "cycling_scale": "Skala Perputaran",
     "cycling_side_padding": "Padding Sisi Perputaran",
     "download_current_page": "Unduh halaman saat ini",
@@ -128,6 +138,7 @@
       "general": "Umum",
       "gestures": "Gestur",
       "page_layout": "Tata letak halaman",
+      "page_margin": "Batas halaman",
       "paged": "Opsi Pembaca yang diberi halaman",
       "reading_mode": "Mode membaca",
       "scale_type": "Tipe skala",
@@ -137,9 +148,10 @@
     },
     "shortcuts": {
       "close": "Tutup",
-      "cycle_page_layout": "Tata Letak Halaman Memutar",
-      "cycle_scale": "Skala perputaran",
-      "cycle_side_padding": "Padding sisi perputaran",
+      "cycle_page_layout": "Ganti tata letak halaman",
+      "cycle_page_margin": "Ganti batas halaman",
+      "cycle_scale": "Ganti skala",
+      "cycle_side_padding": "Ganti padding",
       "first_page": "Halaman pertama",
       "fullscreen": "Masuk/keluar mode layar penuh",
       "last_page": "Halaman terakhir",
@@ -161,6 +173,8 @@
   },
   "browse_book": {
     "comment": "KOMENTAR",
+    "date_created": "TANGGAL DIBUAT",
+    "date_modified": "TERAKHIR DIUBAH",
     "download_file": "Unduh berkas",
     "file": "BERKAS",
     "format": "FORMAT",
@@ -170,6 +184,8 @@
     "outdated_tooltip": "Berkas untuk buku ini telah diubah, buku ini perlu dianalisis ulang",
     "read_book": "Baca buku",
     "read_incognito": "Baca dalam penyamaran",
+    "remove_from_collection": "Hapus buku dari koleksi",
+    "remove_from_readlist": "Hapus buku dari daftar bacaan",
     "size": "UKURAN"
   },
   "browse_collection": {
@@ -184,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Ini adalah tahun paling awal dari tanggal rilis dari semua buku dalam seri",
+    "remove_from_collection": "Hapus seri buku dari koleksi",
     "series_no_summary": "Seri ini tidak memiliki rangkuman, jadi kami memilih satu untuk Anda!",
     "summary_from_book": "Ringkasan dari buku {number}:"
   },
@@ -194,21 +211,30 @@
   "common": {
     "age": "Umur",
     "all_libraries": "Semua Pustaka",
+    "all_of": "Semua",
+    "any_of": "Sembarang",
     "book": "Buku",
     "books": "Buku",
     "books_n": "Tidak ada buku | 1 buku | {count} buku",
     "books_total": "{count} / {total} buku",
     "cancel": "Batalkan",
+    "cbx": "Arsip komik",
     "choose_image": "Pilih gambar",
     "close": "Tutup",
     "collections": "Koleksi",
+    "copied": "Disalin!",
     "create": "Buat",
     "delete": "Hapus",
+    "dimension": "l: {width}, t: {height}",
+    "discard": "Buang",
     "disk_space": "Ruang disk",
     "dismiss": "Hentikan",
     "download": "Unduh",
     "drag_drop": "drag dan drop",
+    "duplicate": "Gandakan",
     "email": "Email",
+    "epub": "Epub",
+    "error": "Galat",
     "filename": "Nama berkas",
     "filter_no_matches": "Filter aktif tidak memiliki kecocokan",
     "genre": "Genre",
@@ -216,12 +242,16 @@
     "go_to_library": "Menuju pustaka",
     "go_to_readlist": "Menuju daftar bacaan",
     "go_to_series": "Menuju ke seri",
+    "i_understand": "Saya mengerti",
     "library": "Pustaka",
     "locale_name": "Bahasa Indonesia",
     "locale_rtl": "false",
     "lock_all": "Kunci seluruhnya",
+    "media": "Media",
+    "more": "Lanjutan",
     "n_selected": "{count} terpilih",
     "nothing_to_show": "Tidak ada yang dapat ditampilkan",
+    "ok": "OK",
     "oneshot": "One-shot",
     "outdated": "Kedaluwarsa",
     "page": "Halaman",
@@ -230,19 +260,25 @@
     "pages_left": "Tidak ada halaman tersisa | 1 halaman tersisa | {count} halaman tersisa",
     "pages_n": "Tidak ada halaman | 1 halaman | {count} halaman",
     "password": "Kata sandi",
+    "pdf": "PDF",
     "pending_tasks": "Tidak ada tugas tertunda | 1 tugas tertunda | {count} tugas tertunda",
+    "pinned_libraries": "Pustaka Disematkan",
     "publisher": "Penerbit",
     "read": "Baca",
     "read_on": "Telah dibaca pada {date}",
     "readlist": "Daftar Bacaan",
     "readlists": "Daftar Bacaan",
+    "remember-me": "Ingat saya",
+    "reorder": "Urutkan ulang",
     "required": "Diperlukan",
     "reset_filters": "Setel ulang filter",
     "roles": "Peran",
     "save_changes": "Simpan perubahan",
     "series": "Seri | Seri",
+    "settings": "Pengaturan",
     "sidecars": "Sidecars",
     "tags": "Tag",
+    "ui": "Antarmuka",
     "unavailable": "Tidak tersedia",
     "unlock_all": "Buka seluruhnya",
     "url": "URL",
@@ -266,6 +302,7 @@
     "comicrack_preambule_html": "Anda dapat mengimpor Daftar Bacaan ComicRack yang ada dalam format <code>.cbl</code>.<br>Komga akan mencoba mencocokkan seri dan nomor buku yang disediakan dengan seri dan buku di perpustakaan Anda.",
     "dialog_confirmation": {
       "body": "Tidak ditemukan kecocokan pada {unmatched} dari {total} buku",
+      "body2": "{duplicates} dari {total} telah digandakan",
       "create": "Tetap buat",
       "title": "Beberapa buku tidak cocok"
     },
@@ -281,6 +318,14 @@
     "tab_title": "Impor Data"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Buat",
+      "context": "Kunci API dapat digunakan untuk otentikasi melalui protokol Kobo Sync.",
+      "dialog_title": "Buat kunci API baru",
+      "field_comment": "Komentar",
+      "field_comment_hint": "Untuk apa kunci API ini?",
+      "info_copy": "Pastikan Anda telah menyalin kunci API Anda sekarang. Anda tidak dapat melihatnya lagi!"
+    },
     "add_to_collection": {
       "button_create": "Buat",
       "card_collection_subtitle": "Tidak ada seri | 1 Seri | {count} seri",
@@ -313,6 +358,12 @@
     "book_picker": {
       "filter": "Filter berdasarkan nomor buku, judul, atau tanggal rilis",
       "title": "Pilih Buku"
+    },
+    "delete_apikey": {
+      "button_confirm": "Hapus",
+      "confirm_delete": "Saya mengerti, hapus kunci API \"{name}\"",
+      "dialog_title": "Hapus kunci API",
+      "warning_html": "Seluruh aplikasi yang menggunakan kunci API ini akan kehilangan akses ke API Komga. Anda tidak dapat membatalkan tindakan ini."
     },
     "delete_book": {
       "button_confirm": "Hapus",
@@ -412,6 +463,7 @@
       "dialot_title_edit": "Edit Pustaka",
       "field_analysis_analyze_dimensions": "Analisis dimensi halaman",
       "field_analysis_hash_files": "Hitung hash untuk file",
+      "field_analysis_hash_koreader": "Hitung hash berkas untuk KOReader",
       "field_analysis_hash_pages": "Hitung hash untuk halaman",
       "field_convert_to_cbz": "Secara otomatis dikonversi ke CBZ",
       "field_import_barcode_isbn": "Barkode ISBN",
@@ -428,8 +480,10 @@
       "field_oneshotsdirectory": "Direktori One-Shots",
       "field_repair_extensions": "Memperbaiki ekstensi berkas yang salah secara otomatis",
       "field_root_folder": "Folder akar",
+      "field_scan_interval": "Interval pemindaian",
       "field_scanner_empty_trash_after_scan": "Kosongkan tempat sampah setiap kali pemindaian",
       "field_scanner_force_directory_modified_time": "Paksa waktu modifikasi direktori",
+      "field_scanner_scan_startup": "Pindai pada startup",
       "field_series_cover": "Sampul seri",
       "file_browser_dialog_button_confirm": "Pilih",
       "file_browser_dialog_title": "Folder akar Pustaka",
@@ -440,6 +494,8 @@
       "label_import_epub": "Impor metadata dari berkas EPUB",
       "label_import_local": "Impor aset media lokal",
       "label_import_mylar": "Impor metadata yang dihasilkan oleh Mylar",
+      "label_scan_directory_exclusions": "Kecualikan direktori",
+      "label_scan_types": "Pindai untuk jenis berkas berikut",
       "label_scanner": "Pemindai",
       "label_series_cover": "Sampul seri",
       "tab_general": "Umum",
@@ -459,6 +515,11 @@
       "label_ordering": "Secara default, buku dalam daftar baca diurutkan secara manual. Anda dapat menonaktifkan pengurutan manual untuk mengurutkan buku berdasarkan tanggal rilis.",
       "tab_general": "Umum",
       "tab_poster": "Poster"
+    },
+    "edit_recommended": {
+      "button_confirm": "Simpan perubahan",
+      "button_reset": "Kembalikan ke default",
+      "dialog_title": "Edit tampilan yang disarankan"
     },
     "edit_series": {
       "button_cancel": "Batal",
@@ -528,6 +589,10 @@
       },
       "title": "Nama Berkas Tujuan"
     },
+    "force_kobo_sync": {
+      "dialog_title": "Paksa Kobo sync",
+      "warning_html": "Ini akan menghapus semua riwayat sinkronisasi untuk kunci API ini. Kobo Anda akan menyinkronkan semuanya pada sinkronisasi berikutnya."
+    },
     "password_change": {
       "button_cancel": "Batal",
       "button_confirm": "Ganti Kata Sandi",
@@ -595,8 +660,11 @@
     "delete_to_save": "Hapus untuk mengosongkan {size}",
     "deleted_count": "Dihapus {count} kali",
     "empty_title": "Tidak ada halaman duplikat yang ditemukan",
+    "empty_title_known": "Tidak ditemukan duplikat",
     "filter": {
       "count": "Hitung",
+      "date_added": "Tanggal ditambahkan",
+      "date_modified": "Tanggal diubah",
       "delete_count": "Jumlah penghapusan",
       "delete_size": "Ruang disimpan",
       "match_count": "Cocokkan hitungan",
@@ -608,7 +676,7 @@
     "matches_n": "Tidak ada kecocokan | 1 kecocokan| {count} kecocokan",
     "new": "Baru",
     "saved_size": "{size} terbebas",
-    "title": "Halaman duplikat",
+    "title": "Halaman Duplikat",
     "unknown_size": "Ukuran tidak diketahui"
   },
   "duplicates": {
@@ -622,12 +690,34 @@
       "HARDLINK": "Hardlink/Salin Berkas",
       "MOVE": "Pindahkan Berkas"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "Siang",
+        "night": "Malam",
+        "sepia": "Sepia"
+      },
+      "column_count": {
+        "auto": "Otomatis",
+        "one": "Satu",
+        "two": "Dua"
+      },
+      "reading_direction": {
+        "auto": "Otomatis",
+        "ltr": "Kiri ke kanan",
+        "rtl": "Kanan ke kiri"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "Buku dikonversi",
       "BookFileDeleted": "Berkas buku dihapus",
       "BookImported": "Pesan diimpor",
       "DuplicatePageDeleted": "Halaman duplikat dihapus",
       "SeriesFolderDeleted": "Folder seri dihapus"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
     },
     "media_status": {
       "ERROR": "Kesalahan",
@@ -647,6 +737,14 @@
       "VERTICAL": "Vertikal",
       "WEBTOON": "Webtoon"
     },
+    "scan_interval": {
+      "DAILY": "Harian",
+      "DISABLED": "Dimatikan",
+      "EVERY_12H": "Setiap 12 jam",
+      "EVERY_6H": "Setiap 6 jam",
+      "HOURLY": "Setiap jam",
+      "WEEKLY": "Setiap minggu"
+    },
     "series_cover": {
       "FIRST": "Pertama",
       "FIRST_UNREAD_OR_FIRST": "Pertama belum dibaca yang lain terlebih dahulu",
@@ -658,6 +756,45 @@
       "ENDED": "Berakhir",
       "HIATUS": "Hiatus",
       "ONGOING": "Berlanjut"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "Bawaan (300px)",
+      "LARGE": "Besar (900px)",
+      "MEDIUM": "Sedang (600px)",
+      "XLARGE": "Ekstra besar (1200px)"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "Bab sekarang",
+    "page_of": "Halaman {page} dari {count}",
+    "publisher_font": "Penerbit",
+    "settings": {
+      "column_count": "Jumlah kolom",
+      "font_family": "Huruf",
+      "layout": "Tata letak",
+      "layout_paginated": "Halaman",
+      "layout_scroll": "Gulir",
+      "navigation_mode": "Mode navigasi",
+      "navigation_options": {
+        "both": "Keduanya",
+        "buttons": "Tombol",
+        "click": "Klik / Sentuh"
+      },
+      "page_margins": "Batas halaman",
+      "viewing_theme": "Tema tampilan"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Ganti jumlah kolom",
+      "cycle_viewing_theme": "Ganti tema pembaca",
+      "font_size_decrease": "Perkecil ukuran huruf",
+      "font_size_increase": "Perbesar ukuran huruf",
+      "menus": "Menu",
+      "next": "Lanjut",
+      "previous": "Mundur",
+      "reader_navigation": "Navigasi pembaca",
+      "scroll": "Ubah tata letak menjadi menggulir",
+      "settings": "Pengaturan",
+      "show_hide_toc": "Tampilkan/sembunyikan daftar isi"
     }
   },
   "error_codes": {
@@ -687,16 +824,27 @@
     "ERR_1028": "Kesalahan login OpenID Connect: tidak ada atribut email",
     "ERR_1029": "ComicRack CBL tidak mengandung elemen Buku apa pun",
     "ERR_1030": "ComicRack CBL tidak memiliki elemen Nama",
-    "ERR_1031": "ComicRack CBL Book tidak memiliki seri atau nomor"
+    "ERR_1031": "ComicRack CBL Book tidak memiliki seri atau nomor",
+    "ERR_1032": "Berkas EPUB memiliki jenis media yang salah",
+    "ERR_1033": "Terdapat entri yang hilang",
+    "ERR_1034": "API kunci dengan komentar tersebut sudah ada",
+    "ERR_1035": "Galat saat membaca daftar isi EPUB",
+    "ERR_1036": "Galat saat membaca EPUB Landmarks",
+    "ERR_1037": "Galat saat membaca daftar halaman EPUB",
+    "ERR_1038": "Galat saat membaca halaman divina EPUB",
+    "ERR_1039": "Galat saat membaca posisi EPUB"
   },
   "filter": {
     "age_rating": "peringkat usia",
     "age_rating_none": "Tanpa rating",
+    "any": "Apapun",
     "complete": "Selesai",
     "genre": "Genre",
     "in_progress": "Sedang Dibaca",
     "language": "Bahasa",
     "library": "pustaka",
+    "media_profile": "Profil media",
+    "media_status": "Status media",
     "oneshot": "One-shot",
     "publisher": "Penerbit",
     "read": "Telah Dibaca",
@@ -726,6 +874,8 @@
   },
   "library_navigation": {
     "browse": "Jelajahi",
+    "browse_books": "Buku",
+    "browse_series": "Seri",
     "collections": "Koleksi",
     "readlists": "Daftar Bacaan",
     "recommended": "Disarankan"
@@ -737,7 +887,7 @@
   },
   "media_analysis": {
     "comment": "Komentar",
-    "media_analysis": "Analisis media",
+    "media_analysis": "Analisis Media",
     "media_type": "Tipe Media",
     "name": "Nama",
     "size": "Ukuran",
@@ -758,10 +908,12 @@
     "empty_trash": "Kosongkan sampah",
     "mark_read": "Tandai sebagai telah dibaca",
     "mark_unread": "Tandai sebagai belum dibaca",
+    "pin": "Sematkan",
     "refresh_metadata": "Segarkan metadata",
     "scan_library_files": "Pindai berkas pustaka",
     "scan_library_files_deep": "Pindai file pustaka (mendalam)",
-    "select_all": "Pilih semua"
+    "select_all": "Pilih semua",
+    "unpin": "Lepas sematan"
   },
   "metrics": {
     "library_books": "Buku per pustaka",
@@ -772,10 +924,17 @@
     "tasks_total_time": "Total waktu tugas",
     "title": "Metrik"
   },
+  "missing_posters": {
+    "title": "Poster Hilang"
+  },
   "navigation": {
     "home": "Beranda",
     "libraries": "Pustaka",
     "logout": "Keluar"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Anda dapat menyematkan sebuah pustaka dari menu 3 titik",
+    "title": "Tidak ada pustaka yang disematkan"
   },
   "page_not_found": {
     "go_back_to_home_page": "Kembali ke beranda",
@@ -814,12 +973,34 @@
       "button_scan_libraries": "Pindai semua pustaka",
       "button_scan_libraries_deep": "Pindai semua pustaka (mendalam)",
       "button_shutdown": "Matikan server",
+      "download_log": "Unduh berkas catatan",
       "notification_tasks_cancelled": "Tidak ada tugas untuk dibatalkan | Satu tugas dibatalkan | {count} tugas dibatalkan",
       "section_title": "Manajemen Server"
     },
-    "tab_title": "Server"
+    "tab_title": "Server",
+    "updates": "Pembaruan"
   },
   "server_settings": {
+    "config_precedence": "Akan didahulukan sebelum berkas konfigurasi",
+    "dialog_regenerate_thumbnails": {
+      "body": "Ukuran sampul telah berubah. Perbarui sampul?",
+      "btn_alternate": "Ya, untuk semua buku",
+      "btn_cancel": "Tidak",
+      "btn_confirm": "Ya, hanya untuk yang lebih besar",
+      "title": "Perbarui sampul"
+    },
+    "hint_kobo_port": "Nyalakan hanya ketika terjadi masalah dengan sampul dan unduhan",
+    "label_delete_empty_collections": "Hapus kumpulan yang kosong setelah pemindaian",
+    "label_delete_empty_readlists": "Hapus daftar bacaan kosong setelah pemindaian",
+    "label_kepubify_path": "Jalur ke kepubify",
+    "label_kobo_port": "Port eksternal Kobo Sync",
+    "label_kobo_proxy": "Proksi permintaan Kobo Sync ke Kobo Store",
+    "label_rememberme_duration": "Durasi ingat saya (dalam hari)",
+    "label_server_context_path": "Base URL",
+    "label_server_port": "Port Server",
+    "label_task_pool_size": "Jumlah utas tugas",
+    "label_thumbnail_size": "Ukuran sampul",
+    "requires_restart": "Server perlu dimulai ulang untuk menyimpan perubahan",
     "server_settings": "Pengaturan Server"
   },
   "settings_user": {
@@ -834,13 +1015,17 @@
   "sort": {
     "books_count": "Jumlah buku",
     "date_added": "Tanggal Ditambahkan",
+    "date_read": "Tanggal dibaca",
     "date_updated": "Tanggal diperbarui",
     "file_name": "Nama berkas",
     "file_size": "Ukuran berkas",
     "folder_name": "Nama folder",
     "name": "Nama",
     "number": "Nomor",
-    "release_date": "Tanggal rilis"
+    "page_count": "Jumlah halaman",
+    "random": "Acak",
+    "release_date": "Tanggal rilis",
+    "series": "Seri"
   },
   "theme": {
     "dark": "Gelap",
@@ -862,17 +1047,41 @@
     "less": "Lebih sedikit judul",
     "more": "Lebih banyak judul"
   },
+  "ui_settings": {
+    "general": "Umum",
+    "label_oauth2_auto_login": "Masuk otomatis dengan OAuth2",
+    "label_oauth2_hide_login": "Sembunyikan laman masuk jika OAuth2 diaktifkan",
+    "label_poster_blur_unread": "Buramkan poster untuk buku dan seri yang belum dibaca",
+    "label_poster_stretch": "Regangkan ukuran poster ke kartu",
+    "label_series_groups": "Kelompokkan seri",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Menurut abjad",
+      "japanese": "Gojūon (Bahasa Jepang)"
+    },
+    "tooltip_oauth2_auto_login": "Membutuhkan satu penyedia OAuth, dan 'sembunyikan laman masuk' diaktifkan"
+  },
+  "updates": {
+    "available": "Pembaruan tersedia",
+    "latest_installed": "Anda sudah memasang Komga versi terbaru"
+  },
   "user_roles": {
     "ADMIN": "Administrator",
     "FILE_DOWNLOAD": "Pengunduhan berkas",
+    "KOBO_SYNC": "Sinkronisasi Kobo",
+    "KOREADER_SYNC": "Sinkronisasi KOReader",
     "PAGE_STREAMING": "Streaming halaman",
     "USER": "Pengguna"
   },
   "users": {
-    "authentication_activity": "Otentikasi Aktifitas",
+    "api_keys": "Kunci API",
+    "authentication_activity": "Aktifitas Otentikasi",
     "users": "Pengguna"
   },
   "validation": {
+    "context_path": "Harus dimulai dengan '/', tidak berakhir dengan '/-_', dan hanya mengandung '/-_a-z0-9'",
+    "one_or_more": "Harus 1 atau lebih",
+    "tcp_port": "Harus diantara 1 dan 65535",
     "zero_or_more": "Harus lebih dari 0"
   },
   "welcome": {
