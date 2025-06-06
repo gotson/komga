@@ -518,7 +518,8 @@
     },
     "edit_recommended": {
       "button_confirm": "Änderungen speichern",
-      "button_reset": "Zurücksetzen auf Standardwerte"
+      "button_reset": "Zurücksetzen auf Standardwerte",
+      "dialog_title": "Konfiguriere die Übersicht"
     },
     "edit_series": {
       "button_cancel": "Abbrechen",
@@ -659,6 +660,7 @@
     "delete_to_save": "Löschen, um {size} freizugeben",
     "deleted_count": "{count} Einträge gelöscht",
     "empty_title": "Keine doppelten Seiten gefunden",
+    "empty_title_known": "Keine bekannten Duplikate",
     "filter": {
       "count": "Anzahl",
       "date_added": "Hinzugefügt am",
@@ -712,6 +714,11 @@
       "DuplicatePageDeleted": "Doppelte Seiten gelöscht",
       "SeriesFolderDeleted": "Serienordner gelöscht"
     },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Fehler",
       "OUTDATED": "Veraltet",
@@ -760,8 +767,10 @@
   "epubreader": {
     "current_chapter": "Aktuelles Kapitel",
     "page_of": "Seite {page} von {count}",
+    "publisher_font": "Verlag",
     "settings": {
       "column_count": "Spaltenzahl",
+      "font_family": "Schriftart",
       "layout": "Layout",
       "layout_paginated": "Blättern",
       "layout_scroll": "Scrollen",
@@ -818,16 +827,24 @@
     "ERR_1031": "ComicRack CBL für das Buch fehlt die Serie oder Nummer",
     "ERR_1032": "EPUB-Datei hat falschen Medientyp",
     "ERR_1033": "Es fehlen einige Eingaben",
-    "ERR_1034": "Ein API Schlüssel mit diesem Hinweis existiert bereits"
+    "ERR_1034": "Ein API Schlüssel mit diesem Hinweis existiert bereits",
+    "ERR_1035": "Fehler in der EPUB TOC",
+    "ERR_1036": "Fehler bei den EPUB Lesezeichen",
+    "ERR_1037": "Fehler bei der EPUB Seitenliste",
+    "ERR_1038": "Fehler bei den EPUB divina Seiten",
+    "ERR_1039": "Fehler bei den EPUB Positionen"
   },
   "filter": {
     "age_rating": "Altersfreigabe",
     "age_rating_none": "Keine",
+    "any": "Alle",
     "complete": "Fertig",
     "genre": "Genre",
     "in_progress": "In Bearbeitung",
     "language": "Sprache",
     "library": "Bibliothek",
+    "media_profile": "Medienprofil",
+    "media_status": "Medienstatus",
     "oneshot": "One-Shot",
     "publisher": "Verlag",
     "read": "Gelesen",
@@ -857,6 +874,8 @@
   },
   "library_navigation": {
     "browse": "Stöbern",
+    "browse_books": "Bücher",
+    "browse_series": "Serien",
     "collections": "Sammlungen",
     "readlists": "Leseliste",
     "recommended": "Empfohlen"
@@ -889,10 +908,12 @@
     "empty_trash": "Bereinigen",
     "mark_read": "Als gelesen markieren",
     "mark_unread": "Als ungelesen markieren",
+    "pin": "Anpinnen",
     "refresh_metadata": "Erneuere Metadaten",
     "scan_library_files": "Überprüfe (Scan) Bibliotheksdateien",
     "scan_library_files_deep": "(Tiefen) Scan der Bibliotheksdateien",
-    "select_all": "Alle auswählen"
+    "select_all": "Alle auswählen",
+    "unpin": "Lösen"
   },
   "metrics": {
     "library_books": "Bücher pro Bibliothek",
@@ -903,10 +924,17 @@
     "tasks_total_time": "Benötigte Gesamtzeit für die Aufgaben",
     "title": "Metriken"
   },
+  "missing_posters": {
+    "title": "Fehlende Poster"
+  },
   "navigation": {
     "home": "Übersicht",
     "libraries": "Bibliotheken",
     "logout": "Abmelden"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Es ist möglich über das 3 Punkte Menü eine Bibliothek anzupinnen",
+    "title": "Keine angehefteten Bibliotheken"
   },
   "page_not_found": {
     "go_back_to_home_page": "Zurück zur Startseite",
@@ -996,7 +1024,8 @@
     "number": "Nummer",
     "page_count": "Anzahl Seiten",
     "random": "Zufallsortierung",
-    "release_date": "Veröffentlichungsdatum"
+    "release_date": "Veröffentlichungsdatum",
+    "series": "Serie"
   },
   "theme": {
     "dark": "Dunkel",
@@ -1018,6 +1047,20 @@
     "less": "Weniger Titel",
     "more": "Weitere Titel"
   },
+  "ui_settings": {
+    "general": "Allgemein",
+    "label_oauth2_auto_login": "Automatischer OAuth2 Login",
+    "label_oauth2_hide_login": "Verstecke die Login Felder wenn OAuth2 aktiviert ist",
+    "label_poster_blur_unread": "Vertrübe Poster für ungelesene Bücher und Serien",
+    "label_poster_stretch": "Passe die Poster den Kacheln an",
+    "label_series_groups": "Seriengruppierung",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Alphabetisch",
+      "japanese": "Gojūon (Japanisch)"
+    },
+    "tooltip_oauth2_auto_login": "Benötigt einen einzigen OAuth2 Anbieter und aktiviere \"Verstecke die Login Felder\""
+  },
   "updates": {
     "available": "Aktuallisierung ist verfügbar",
     "latest_installed": "Die neueste Version von Komga ist schon installiert"
@@ -1025,7 +1068,8 @@
   "user_roles": {
     "ADMIN": "Systemverwalter",
     "FILE_DOWNLOAD": "Datei-Herunterladen",
-    "KOBO_SYNC": "Kobo Sync",
+    "KOBO_SYNC": "Kobo Syncronisation",
+    "KOREADER_SYNC": "KOReader Synchronisation",
     "PAGE_STREAMING": "Online lesen",
     "USER": "Benutzer"
   },
