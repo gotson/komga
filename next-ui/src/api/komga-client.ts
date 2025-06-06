@@ -1,6 +1,7 @@
 import type { Middleware } from 'openapi-fetch'
 import createClient from 'openapi-fetch'
 import type { paths } from '@/generated/openapi/komga'
+import { globalProperties } from '@/main'
 
 // Middleware that throws on error, so it works with Pinia Colada
 const coladaMiddleware: Middleware = {
@@ -23,7 +24,11 @@ const coladaMiddleware: Middleware = {
   onError() {
     throw new Error('error', {
       cause: {
-        message: 'Server is unreachable',
+        message: globalProperties.$intl.formatMessage({
+          description: 'Network error: error message when the server cannot be reached',
+          defaultMessage: 'Server is unreachable',
+          id: '/6WuF/',
+        }),
       },
     })
   },

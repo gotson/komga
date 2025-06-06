@@ -4,9 +4,9 @@
     :disabled="isLoading"
     @submit.prevent="submitForm()"
   >
-    <v-container max-width="550px">
+    <v-container max-width="450px">
       <v-row justify="center">
-        <v-col>
+        <v-col cols="10">
           <v-img src="@/assets/logo.svg" />
         </v-col>
       </v-row>
@@ -41,12 +41,17 @@
             "
             type="password"
             :rules="[rules.required()]"
+            :error-messages="loginError"
+            @update:modelValue="loginError = ''"
           />
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col>
+      <v-row
+        align="center"
+        justify="space-between"
+      >
+        <v-col cols="auto">
           <v-checkbox
             v-model="rememberMe"
             :label="
@@ -58,6 +63,22 @@
             "
             hide-details
           />
+        </v-col>
+
+        <v-col cols="auto">
+          <a
+            href="https://komga.org/docs/faq#i-forgot-my-password"
+            target="_blank"
+            class="link-underline"
+          >
+            {{
+              $formatMessage({
+                description: 'Login screen: Forgot your password link',
+                defaultMessage: 'Forgot your password?',
+                id: 'r6JNfI',
+              })
+            }}
+          </a>
         </v-col>
       </v-row>
 
@@ -73,28 +94,19 @@
             "
             :loading="isLoading"
             type="submit"
+            block
           />
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col>
-          <v-snackbar
-            v-model="showError"
-            color="error"
-            :text="showErrorText"
-            timer="red"
-          >
-            <template v-slot:actions>
-              <v-btn
-                color="white"
-                variant="text"
-                @click="showError = false"
-              >
-                Dismiss
-              </v-btn>
-            </template></v-snackbar
-          >
+      <v-divider class="my-8" />
+
+      <v-row justify="center">
+        <v-col cols="auto">
+          <div class="d-flex ga-4">
+            <LocaleSelector />
+            <ThemeSelector />
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -105,15 +117,19 @@
 import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { useRules } from 'vuetify/labs/rules'
+import { useMessagesStore } from '@/stores/messages'
+import { useIntl } from 'vue-intl'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const rules = useRules()
+const messagesStore = useMessagesStore()
+const intl = useIntl()
 
 const formValid = ref<boolean>(false)
 const username = ref('')
 const password = ref('')
 const rememberMe = ref(false)
-const showError = ref<boolean>(false)
-const showErrorText = ref<string>('')
+const loginError = ref<string>('')
 
 const router = useRouter()
 const route = useRoute()
@@ -139,8 +155,17 @@ const { mutate: performLogin, isLoading } = useMutation({
     else void router.push('/')
   },
   onError: (error) => {
-    showErrorText.value = (error.cause as ErrorCause).message || 'Invalid authentication'
-    showError.value = true
+    if ((error.cause as ErrorCause).status === 401)
+      loginError.value = intl.formatMessage({
+        description: 'Login screen: error message displayed when login failed',
+        defaultMessage: 'Invalid login or password',
+        id: 'AjWlka',
+      })
+    else
+      messagesStore.messages.push({
+        text:
+          (error.cause as ErrorCause).message || intl.formatMessage(commonMessages.networkError),
+      })
   },
 })
 

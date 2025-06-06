@@ -11,4 +11,9 @@ export const commonMessages = {
     defaultMessage: 'There might be a problem with your connection or your server.',
     id: 'hYO2n6',
   }),
+  networkError: defineMessage({
+    description: 'Common message: a network error happened when communicating with the server',
+    defaultMessage: 'Network error',
+    id: 'Z/EY89',
+  }),
 }
