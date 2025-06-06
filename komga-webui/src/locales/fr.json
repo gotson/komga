@@ -98,7 +98,7 @@
     "cycling_page_margin": "Cycler la marge de la page",
     "cycling_scale": "Changer la mise à l'échelle",
     "cycling_side_padding": "Changer la bordure latérale",
-    "download_current_page": "Télécharger la page courante",
+    "download_current_page": "Télécharger la page actuelle",
     "end_of_book": "Vous avez atteint la fin du livre.",
     "from_series_metadata": "à partir des métadonnées de la série",
     "move_next": "Cliquez ou appuyez à nouveau sur « Suivant » pour passer au livre suivant.",
@@ -110,9 +110,9 @@
     "paged_reader_layout": {
       "double": "Double pages",
       "double_no_cover": "Double pages (sans couverture)",
-      "single": "Simple page"
+      "single": "Page Simple"
     },
-    "reader_settings": "Paramètres de la liseuse",
+    "reader_settings": "Paramètres de lecture",
     "scale_type": {
       "continuous_original": "Original",
       "continuous_width": "Ajuster largeur",
@@ -827,7 +827,12 @@
     "ERR_1031": "Série ou numéro manquant au livre ComicRack CBL",
     "ERR_1032": "Le fichier EPUB a un type de fichier erroné",
     "ERR_1033": "Entrées manquantes",
-    "ERR_1034": "Une clé API avec ce commentaire existe déjà"
+    "ERR_1034": "Une clé API avec ce commentaire existe déjà",
+    "ERR_1035": "Erreur pendant l'acquisition de la table des matières de l'EPUB",
+    "ERR_1036": "Erreur pendant l'acquisition des repères de l'EPUB",
+    "ERR_1037": "Erreur pendant l'acquisition de la liste des pages de l'EPUB",
+    "ERR_1038": "Erreur pendant l'acquisition des pages DiViNa de 'EPUB",
+    "ERR_1039": "Erreur pendant l'acquisition des positions de l'EPUB"
   },
   "filter": {
     "age_rating": "Âge minimal",
