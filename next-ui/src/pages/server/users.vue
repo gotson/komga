@@ -32,7 +32,7 @@
             text="Add a User"
             border
             @click="showDialog(ACTION.ADD)"
-            @mouseenter="activator = $event.currentTarget"
+            @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
           />
         </v-toolbar>
       </template>
@@ -56,66 +56,25 @@
             v-tooltip:bottom="'Change password'"
             :icon="mdiLockReset"
             @click="showDialog(ACTION.PASSWORD, user)"
-            @mouseenter="activator = $event.currentTarget"
+            @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
           />
           <v-icon-btn
             v-tooltip:bottom="'Edit user'"
             :icon="mdiPencil"
             :disabled="me?.id == user.id"
             @click="showDialog(ACTION.EDIT, user)"
-            @mouseenter="activator = $event.currentTarget"
+            @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
           />
           <v-icon-btn
             v-tooltip:bottom="'Delete user'"
             :icon="mdiDelete"
             :disabled="me?.id == user.id"
             @click="showDialog(ACTION.DELETE, user)"
-            @mouseenter="activatorDelete = $event.currentTarget"
+            @mouseenter="dialogConfirm.activator = $event.currentTarget"
           />
         </div>
       </template>
     </v-data-table>
-
-    <DialogConfirmEdit
-      v-model:record="dialogRecord"
-      :activator="activator"
-      :title="dialogTitle"
-      :subtitle="userRecord?.email"
-      :max-width="currentAction === ACTION.PASSWORD ? 400 : 600"
-      @update:record="handleDialogConfirmation()"
-    >
-      <template #text="{ proxyModel }">
-        <component
-          :is="dialogComponent"
-          v-model="proxyModel.value"
-        />
-      </template>
-    </DialogConfirmEdit>
-
-    <DialogConfirm
-      :activator="activatorDelete"
-      :title="dialogTitle"
-      :subtitle="userRecord?.email"
-      ok-text="Delete"
-      :validate-text="userRecord?.email"
-      max-width="600"
-      @confirm="handleDialogConfirmation()"
-    >
-      <template #warning>
-        <v-alert
-          type="warning"
-          variant="tonal"
-          class="mb-4"
-        >
-          <div>The user account will be deleted from this server.</div>
-          <ul class="ps-8">
-            <li>The read progress for this user account will be permanently deleted.</li>
-            <li>Authentication activity for this user will be permanently deleted.</li>
-          </ul>
-          <div class="font-weight-bold mt-4">This action cannot be undone.</div>
-        </v-alert>
-      </template>
-    </DialogConfirm>
   </template>
 </template>
 
@@ -138,9 +97,11 @@ import {
 } from '@/colada/mutations/update-user'
 import FormUserChangePassword from '@/components/form/user/ChangePassword.vue'
 import FormUserEdit from '@/components/form/user/Edit.vue'
-import type { Component } from 'vue'
+import NoticeUserDeletion from '@/components/notice/UserDeletion.vue'
 import { useLibraries } from '@/colada/queries/libraries'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { storeToRefs } from 'pinia'
+import { useDialogsStore } from '@/stores/dialogs'
 
 // API data
 const { data: users, error, isLoading, refetch: refetchUsers } = useUsers()
@@ -193,13 +154,8 @@ onMounted(() => refetchUsers())
 const userRecord = ref<components['schemas']['UserDto']>()
 // stores the ongoing action, so we can handle the action when the dialog is closed with changes
 const currentAction = ref<ACTION>()
-// the record passed to the dialog's form's model
-const dialogRecord = ref<unknown>()
-const activator = ref<Element>()
-const activatorDelete = ref<Element>()
-const dialogTitle = ref<string>()
-// dynamic component for the dialog's inner form
-const dialogComponent = shallowRef<Component>()
+
+const { confirmEdit: dialogConfirmEdit, confirm: dialogConfirm } = storeToRefs(useDialogsStore())
 
 const { mutate: mutateCreateUser } = useCreateUser()
 const { mutate: mutateUser } = useUpdateUser()
@@ -218,9 +174,15 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
   currentAction.value = action
   switch (action) {
     case ACTION.ADD:
-      dialogTitle.value = 'Add User'
-      dialogComponent.value = FormUserEdit
-      dialogRecord.value = {
+      dialogConfirmEdit.value.dialogProps = {
+        title: 'Add User',
+        maxWidth: 600,
+      }
+      dialogConfirmEdit.value.slot = {
+        component: markRaw(FormUserEdit),
+        props: {},
+      }
+      dialogConfirmEdit.value.record = {
         email: '',
         password: '',
         roles: [UserRoles.PAGE_STREAMING, UserRoles.FILE_DOWNLOAD],
@@ -234,11 +196,19 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           restriction: 'NONE',
         },
       } as components['schemas']['UserCreationDto']
+      dialogConfirmEdit.value.recordUpdatedCallback = handleDialogConfirmation
       break
     case ACTION.EDIT:
-      dialogTitle.value = 'Edit User'
-      dialogComponent.value = FormUserEdit
-      dialogRecord.value = {
+      dialogConfirmEdit.value.dialogProps = {
+        title: 'Edit User',
+        subtitle: user?.email,
+        maxWidth: 600,
+      }
+      dialogConfirmEdit.value.slot = {
+        component: markRaw(FormUserEdit),
+        props: {},
+      }
+      dialogConfirmEdit.value.record = {
         ...user,
         roles: user?.roles.filter((x) => x !== 'USER'),
         sharedLibraries: {
@@ -253,17 +223,35 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           restriction: 'NONE',
         },
       } as components['schemas']['UserUpdateDto']
+      dialogConfirmEdit.value.recordUpdatedCallback = handleDialogConfirmation
       break
     case ACTION.DELETE:
-      dialogTitle.value = 'Delete User'
-      dialogComponent.value = FormUserEdit
-      dialogRecord.value = user
+      dialogConfirm.value.dialogProps = {
+        title: 'Delete User',
+        subtitle: user?.email,
+        maxWidth: 600,
+        validateText: user?.email,
+        okText: 'Delete',
+      }
+      dialogConfirm.value.slotWarning = {
+        component: markRaw(NoticeUserDeletion),
+        props: {},
+      }
+      dialogConfirm.value.confirmCallback = handleDialogConfirmation
       break
     case ACTION.PASSWORD:
-      dialogTitle.value = 'Change Password'
-      dialogComponent.value = FormUserChangePassword
+      dialogConfirmEdit.value.dialogProps = {
+        title: 'Change Password',
+        subtitle: user?.email,
+        maxWidth: 400,
+      }
+      dialogConfirmEdit.value.slot = {
+        component: markRaw(FormUserChangePassword),
+        props: {},
+      }
       // password change initiated with an empty string
-      dialogRecord.value = ''
+      dialogConfirmEdit.value.record = ''
+      dialogConfirmEdit.value.recordUpdatedCallback = handleDialogConfirmation
   }
   userRecord.value = user
 }
@@ -271,10 +259,10 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
 function handleDialogConfirmation() {
   switch (currentAction.value) {
     case ACTION.ADD:
-      mutateCreateUser(dialogRecord.value as components['schemas']['UserCreationDto'])
+      mutateCreateUser(dialogConfirmEdit.value.record as components['schemas']['UserCreationDto'])
       break
     case ACTION.EDIT:
-      mutateUser(dialogRecord.value as components['schemas']['UserDto'])
+      mutateUser(dialogConfirmEdit.value.record as components['schemas']['UserDto'])
       break
     case ACTION.DELETE:
       mutateDeleteUser(userRecord.value!.id)
@@ -282,7 +270,7 @@ function handleDialogConfirmation() {
     case ACTION.PASSWORD:
       mutateUserPassword({
         userId: userRecord.value!.id,
-        newPassword: dialogRecord.value as string,
+        newPassword: dialogConfirmEdit.value.record as string,
       })
       break
   }
