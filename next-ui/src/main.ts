@@ -18,3 +18,5 @@ const app = createApp(App)
 registerPlugins(app)
 
 app.mount('#app')
+
+export const globalProperties = app.config.globalProperties
