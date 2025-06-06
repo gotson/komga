@@ -68,7 +68,7 @@ function submitForm(callback: () => void) {
   if (formValid.value) callback()
 }
 
-interface Props {
+export interface DialogConfirmEditProps {
   /**
    * Dialog title
    * @type string
@@ -84,7 +84,7 @@ const {
   subtitle = undefined,
   maxWidth = undefined,
   activator = undefined,
-} = defineProps<Props>()
+} = defineProps<DialogConfirmEditProps>()
 
 function close() {
   showDialog.value = false
