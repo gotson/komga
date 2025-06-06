@@ -29,6 +29,7 @@ declare module 'vue' {
     LocaleSelector: typeof import('./components/LocaleSelector.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SnackQueue: typeof import('./components/SnackQueue.vue')['default']
     ThemeSelector: typeof import('./components/ThemeSelector.vue')['default']
   }
 }
