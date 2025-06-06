@@ -1,6 +1,8 @@
 <template>
   <v-app>
     <router-view />
+
+    <SnackQueue />
   </v-app>
 </template>
 
