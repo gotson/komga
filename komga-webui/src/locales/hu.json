@@ -827,7 +827,12 @@
     "ERR_1031": "A ComicRack CBL könyvből hiányzik a sorozat vagy a szám",
     "ERR_1032": "Az EPUB fájl nem megfelelő médiatípussal rendelkezik",
     "ERR_1033": "Hiányoznak elemek",
-    "ERR_1034": "Ezzel a megjegyzéssel már létezik egy API-kulcs"
+    "ERR_1034": "Ezzel a megjegyzéssel már létezik egy API-kulcs",
+    "ERR_1035": "Hiba történt az EPUB tartalomjegyzék lekérésekor",
+    "ERR_1036": "Hiba történt az EPUB mérföldkövek lekérésekor",
+    "ERR_1037": "Hiba történt az EPUB oldallista lekérésekor",
+    "ERR_1038": "Hiba történt az EPUB divina oldalak lekérésekor",
+    "ERR_1039": "Hiba történt az EPUB pozíciók lekérésekor"
   },
   "filter": {
     "age_rating": "korhatár-besorolás",
