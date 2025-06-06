@@ -827,7 +827,12 @@
     "ERR_1031": "ComicRack CBL Kirjasta puuttuu sarja tai numero",
     "ERR_1032": "EPUB-tiedostossa on väärä mediatyyppi",
     "ERR_1033": "Jotkin merkinnät puuttuvat",
-    "ERR_1034": "API-avain samalla kommentilla on jo olemassa"
+    "ERR_1034": "API-avain samalla kommentilla on jo olemassa",
+    "ERR_1035": "Virhe hakiessa EPUBin sisällysluetteloa",
+    "ERR_1036": "Virhe hakiessa EPUBin merkkipaikkoja",
+    "ERR_1037": "Virhe hakiessa EPUBin sivulistaa",
+    "ERR_1038": "Virhe hakiessa EPUBin divina sivuja",
+    "ERR_1039": "Virhe hakiessa EPUBin sijainteja"
   },
   "filter": {
     "age_rating": "ikäluokitus",
