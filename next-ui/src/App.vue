@@ -3,6 +3,8 @@
     <router-view />
 
     <SnackQueue />
+    <DialogInstanceConfirmEdit />
+    <DialogInstanceConfirm />
   </v-app>
 </template>
 

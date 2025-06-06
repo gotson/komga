@@ -81,7 +81,7 @@ function submitForm() {
   }
 }
 
-export interface Props {
+export interface DialogConfirmProps {
   title?: string
   subtitle?: string
   okText?: string
@@ -97,7 +97,7 @@ const {
   validateText = 'confirm',
   maxWidth = undefined,
   activator = undefined,
-} = defineProps<Props>()
+} = defineProps<DialogConfirmProps>()
 
 function close() {
   showDialog.value = false
