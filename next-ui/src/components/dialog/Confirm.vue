@@ -3,12 +3,14 @@
     v-model="showDialog"
     :activator="activator"
     :max-width="maxWidth"
+    :fullscreen="fullscreen"
   >
     <template #default="{ isActive }">
       <v-form
         v-model="formValid"
         @submit.prevent="submitForm(isActive)"
         :disabled="loading"
+        class="fill-height"
       >
         <v-card
           :title="title"
@@ -95,6 +97,7 @@ export interface DialogConfirmProps {
   activator?: Element | string
   loading?: boolean
   closeOnSave?: boolean
+  fullscreen?: boolean
 }
 
 const {
@@ -106,5 +109,6 @@ const {
   activator = undefined,
   loading = false,
   closeOnSave = true,
+  fullscreen = undefined,
 } = defineProps<DialogConfirmProps>()
 </script>
