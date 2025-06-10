@@ -16,7 +16,7 @@ export const useDialogsStore = defineStore('dialogs', {
         props: {},
       },
       record: undefined,
-      recordUpdatedCallback: () => {},
+      callback: () => {},
     } as DialogConfirmEditActivation,
     confirm: {
       dialogProps: {},
@@ -24,24 +24,24 @@ export const useDialogsStore = defineStore('dialogs', {
         component: undefined,
         props: {},
       },
-      confirmCallback: () => {},
+      callback: () => {},
     } as DialogConfirmActivation,
   }),
 })
 
-interface DialogConfirmEditActivation {
+interface DialogActivation<T> {
   activator?: Element | string
-  dialogProps: DialogConfirmEditProps
-  slot: ComponentWithProps
-  record?: unknown
-  recordUpdatedCallback: () => void
+  dialogProps: T
+  callback: (hideDialog: () => void, setLoading: (isLoading: boolean) => void) => void
 }
 
-interface DialogConfirmActivation {
-  activator?: Element | string
-  dialogProps: DialogConfirmProps
+interface DialogConfirmEditActivation extends DialogActivation<DialogConfirmEditProps> {
+  slot: ComponentWithProps
+  record?: unknown
+}
+
+interface DialogConfirmActivation extends DialogActivation<DialogConfirmProps> {
   slotWarning: ComponentWithProps
-  confirmCallback: () => void
 }
 
 interface ComponentWithProps {
