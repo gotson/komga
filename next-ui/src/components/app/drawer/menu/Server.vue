@@ -1,9 +1,6 @@
 <template>
-  <v-list-group
-    ref="group"
-    value="Server"
-  >
-    <template #activator="{ props }">
+  <v-list-group value="Server">
+    <template #activator="{ props, isOpen }">
       <v-list-item
         v-bind="props"
         :title="
@@ -16,7 +13,7 @@
       >
         <template #prepend>
           <v-badge
-            :model-value="unreadCount > 0 && !($refs as any).group.isOpen"
+            :model-value="unreadCount > 0 && !isOpen"
             dot
             floating
             color="info"
