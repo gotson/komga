@@ -85,7 +85,7 @@ import mdiLockReset from '~icons/mdi/lock-reset'
 import mdiPencil from '~icons/mdi/pencil'
 import mdiDelete from '~icons/mdi/delete'
 import { useUsers } from '@/colada/queries/users'
-import { komgaClient } from '@/api/komga-client'
+import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/queries/current-user'
 import { UserRoles } from '@/types/UserRoles'
@@ -102,6 +102,10 @@ import { useLibraries } from '@/colada/queries/libraries'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
+import { useMessagesStore } from '@/stores/messages'
+import { useIntl } from 'vue-intl'
+
+const intl = useIntl()
 
 // API data
 const { data: users, error, isLoading, refetch: refetchUsers } = useUsers()
@@ -157,11 +161,12 @@ const currentAction = ref<ACTION>()
 
 const { confirmEdit: dialogConfirmEdit, confirm: dialogConfirm } = storeToRefs(useDialogsStore())
 
-const { mutate: mutateCreateUser } = useCreateUser()
-const { mutate: mutateUser } = useUpdateUser()
-const { mutate: mutateUserPassword } = useUpdateUserPassword()
-const { mutate: mutateDeleteUser } = useDeleteUser()
+const { mutateAsync: mutateCreateUser } = useCreateUser()
+const { mutateAsync: mutateUser } = useUpdateUser()
+const { mutateAsync: mutateUserPassword } = useUpdateUserPassword()
+const { mutateAsync: mutateDeleteUser } = useDeleteUser()
 const { data: libraries } = useLibraries()
+const messagesStore = useMessagesStore()
 
 enum ACTION {
   ADD,
@@ -177,6 +182,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
       dialogConfirmEdit.value.dialogProps = {
         title: 'Add User',
         maxWidth: 600,
+        closeOnSave: false,
       }
       dialogConfirmEdit.value.slot = {
         component: markRaw(FormUserEdit),
@@ -196,13 +202,14 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           restriction: 'NONE',
         },
       } as components['schemas']['UserCreationDto']
-      dialogConfirmEdit.value.recordUpdatedCallback = handleDialogConfirmation
+      dialogConfirmEdit.value.callback = handleDialogConfirmation
       break
     case ACTION.EDIT:
       dialogConfirmEdit.value.dialogProps = {
         title: 'Edit User',
         subtitle: user?.email,
         maxWidth: 600,
+        closeOnSave: false,
       }
       dialogConfirmEdit.value.slot = {
         component: markRaw(FormUserEdit),
@@ -223,7 +230,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           restriction: 'NONE',
         },
       } as components['schemas']['UserUpdateDto']
-      dialogConfirmEdit.value.recordUpdatedCallback = handleDialogConfirmation
+      dialogConfirmEdit.value.callback = handleDialogConfirmation
       break
     case ACTION.DELETE:
       dialogConfirm.value.dialogProps = {
@@ -232,18 +239,20 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         maxWidth: 600,
         validateText: user?.email,
         okText: 'Delete',
+        closeOnSave: false,
       }
       dialogConfirm.value.slotWarning = {
         component: markRaw(NoticeUserDeletion),
         props: {},
       }
-      dialogConfirm.value.confirmCallback = handleDialogConfirmation
+      dialogConfirm.value.callback = handleDialogConfirmation
       break
     case ACTION.PASSWORD:
       dialogConfirmEdit.value.dialogProps = {
         title: 'Change Password',
         subtitle: user?.email,
         maxWidth: 400,
+        closeOnSave: false,
       }
       dialogConfirmEdit.value.slot = {
         component: markRaw(FormUserChangePassword),
@@ -251,29 +260,92 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
       }
       // password change initiated with an empty string
       dialogConfirmEdit.value.record = ''
-      dialogConfirmEdit.value.recordUpdatedCallback = handleDialogConfirmation
+      dialogConfirmEdit.value.callback = handleDialogConfirmation
   }
   userRecord.value = user
 }
 
-function handleDialogConfirmation() {
+function handleDialogConfirmation(
+  hideDialog: () => void,
+  setLoading: (isLoading: boolean) => void,
+) {
+  let mutation: Promise<unknown> | undefined
+  let successMessage: string | undefined
+
+  setLoading(true)
+
   switch (currentAction.value) {
     case ACTION.ADD:
-      mutateCreateUser(dialogConfirmEdit.value.record as components['schemas']['UserCreationDto'])
+      const newUser = dialogConfirmEdit.value.record as components['schemas']['UserCreationDto']
+      mutation = mutateCreateUser(newUser)
+      successMessage = intl.formatMessage(
+        {
+          description: 'Snackbar notification shown upon successful user creation',
+          defaultMessage: 'User created: {email}',
+          id: 'egrxd6',
+        },
+        {
+          email: newUser.email,
+        },
+      )
       break
     case ACTION.EDIT:
-      mutateUser(dialogConfirmEdit.value.record as components['schemas']['UserDto'])
+      const editUser = dialogConfirmEdit.value.record as components['schemas']['UserDto']
+      mutation = mutateUser(editUser)
+      successMessage = intl.formatMessage(
+        {
+          description: 'Snackbar notification shown upon successful user update',
+          defaultMessage: 'User updated: {email}',
+          id: 'kvbi4j',
+        },
+        {
+          email: editUser.email,
+        },
+      )
       break
     case ACTION.DELETE:
-      mutateDeleteUser(userRecord.value!.id)
+      mutation = mutateDeleteUser(userRecord.value!.id)
+      successMessage = intl.formatMessage(
+        {
+          description: 'Snackbar notification shown upon successful user deletion',
+          defaultMessage: 'User deleted: {email}',
+          id: 'V/OYJE',
+        },
+        {
+          email: userRecord.value!.email,
+        },
+      )
       break
     case ACTION.PASSWORD:
-      mutateUserPassword({
+      mutation = mutateUserPassword({
         userId: userRecord.value!.id,
         newPassword: dialogConfirmEdit.value.record as string,
       })
+      successMessage = intl.formatMessage(
+        {
+          description: "Snackbar notification shown upon successful user's password modification",
+          defaultMessage: 'Password changed for user: {email}',
+          id: 'JbF1nK',
+        },
+        {
+          email: userRecord.value!.email,
+        },
+      )
       break
   }
+
+  mutation
+    ?.then(() => {
+      hideDialog()
+      if (successMessage) messagesStore.messages.push({ text: successMessage })
+    })
+    .catch((error) => {
+      messagesStore.messages.push({
+        text:
+          (error.cause as ErrorCause).message || intl.formatMessage(commonMessages.networkError),
+      })
+      setLoading(false)
+    })
 }
 </script>
 
