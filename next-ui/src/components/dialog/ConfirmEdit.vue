@@ -4,57 +4,62 @@
     :activator="activator"
     :max-width="maxWidth"
   >
-    <v-confirm-edit
-      v-model="record"
-      hide-actions
-      @save="close()"
-    >
-      <template #default="{ model: proxyModel, cancel, save, isPristine }">
-        <v-form
-          v-model="formValid"
-          @submit.prevent="submitForm(save)"
-        >
-          <v-card
-            :title="title"
-            :subtitle="subtitle"
+    <template #default="{ isActive }">
+      <v-confirm-edit
+        v-model="record"
+        hide-actions
+        @save="closeOnSave ? (isActive.value = false) : undefined"
+      >
+        <template #default="{ model: proxyModel, cancel, save, isPristine }">
+          <v-form
+            v-model="formValid"
+            @submit.prevent="submitForm(save)"
+            :disabled="loading"
           >
-            <template #text>
-              <slot
-                name="text"
-                :proxy-model="proxyModel"
-                :cancel="cancel"
-                :save="save"
-                :is-pristine="isPristine"
-              />
-            </template>
+            <v-card
+              :title="title"
+              :subtitle="subtitle"
+              :loading="loading"
+            >
+              <template #text>
+                <slot
+                  name="text"
+                  :proxy-model="proxyModel"
+                  :cancel="cancel"
+                  :save="save"
+                  :is-pristine="isPristine"
+                />
+              </template>
 
-            <template #actions>
-              <v-spacer />
-              <v-btn
-                :text="
-                  $formatMessage({
-                    description: 'ConfirmEdit dialog: Cancel button',
-                    defaultMessage: 'Cancel',
-                    id: 'G/T8/2',
-                  })
-                "
-                @click="close()"
-              />
-              <v-btn
-                :text="
-                  $formatMessage({
-                    description: 'ConfirmEdit dialog: Save button',
-                    defaultMessage: 'Save',
-                    id: 'N9WFH4',
-                  })
-                "
-                type="submit"
-              />
-            </template>
-          </v-card>
-        </v-form>
-      </template>
-    </v-confirm-edit>
+              <template #actions>
+                <v-spacer />
+                <v-btn
+                  :text="
+                    $formatMessage({
+                      description: 'ConfirmEdit dialog: Cancel button',
+                      defaultMessage: 'Cancel',
+                      id: 'G/T8/2',
+                    })
+                  "
+                  @click="isActive.value = false"
+                />
+                <v-btn
+                  :text="
+                    $formatMessage({
+                      description: 'ConfirmEdit dialog: Save button',
+                      defaultMessage: 'Save',
+                      id: 'N9WFH4',
+                    })
+                  "
+                  type="submit"
+                  :loading="loading"
+                />
+              </template>
+            </v-card>
+          </v-form>
+        </template>
+      </v-confirm-edit>
+    </template>
   </v-dialog>
 </template>
 
@@ -77,6 +82,8 @@ export interface DialogConfirmEditProps {
   subtitle?: string
   maxWidth?: string | number
   activator?: Element | string
+  loading?: boolean
+  closeOnSave?: boolean
 }
 
 const {
@@ -84,9 +91,7 @@ const {
   subtitle = undefined,
   maxWidth = undefined,
   activator = undefined,
+  loading = false,
+  closeOnSave = true,
 } = defineProps<DialogConfirmEditProps>()
-
-function close() {
-  showDialog.value = false
-}
 </script>

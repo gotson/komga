@@ -4,61 +4,66 @@
     :activator="activator"
     :max-width="maxWidth"
   >
-    <v-form
-      v-model="formValid"
-      @submit.prevent="submitForm()"
-    >
-      <v-card
-        :title="title"
-        :subtitle="subtitle"
+    <template #default="{ isActive }">
+      <v-form
+        v-model="formValid"
+        @submit.prevent="submitForm(isActive)"
+        :disabled="loading"
       >
-        <template #text>
-          <slot name="warning" />
-          <slot name="text">
-            {{
-              $formatMessage(
-                {
-                  description: 'Confirmation dialog: default hint to retype validation text',
-                  defaultMessage: 'Please type {validateText} to confirm.',
-                  id: 'eVoe+D',
-                },
-                {
-                  validateText: validateText,
-                },
-              )
-            }}
-          </slot>
+        <v-card
+          :title="title"
+          :subtitle="subtitle"
+          :loading="loading"
+        >
+          <template #text>
+            <slot name="warning" />
+            <slot name="text">
+              {{
+                $formatMessage(
+                  {
+                    description: 'Confirmation dialog: default hint to retype validation text',
+                    defaultMessage: 'Please type {validateText} to confirm.',
+                    id: 'eVoe+D',
+                  },
+                  {
+                    validateText: validateText,
+                  },
+                )
+              }}
+            </slot>
 
-          <v-text-field
-            :rules="[rules.sameAs(validateText)]"
-            hide-details
-            class="mt-2"
-          />
-        </template>
+            <v-text-field
+              :rules="[rules.sameAs(validateText)]"
+              hide-details
+              class="mt-2"
+            />
+          </template>
 
-        <template #actions>
-          <v-spacer />
-          <v-btn
-            :text="
-              $formatMessage({
-                description: 'Confirmation dialog: Cancel button',
-                defaultMessage: 'Cancel',
-                id: 'pENCUD',
-              })
-            "
-            @click="close()"
-          />
-          <v-btn
-            :disabled="!formValid"
-            :text="okText"
-            type="submit"
-            variant="elevated"
-            rounded="xs"
-            color="error"
-          />
-        </template>
-      </v-card>
-    </v-form>
+          <template #actions>
+            <v-spacer />
+            <v-btn
+              :text="
+                $formatMessage({
+                  description: 'Confirmation dialog: Cancel button',
+                  defaultMessage: 'Cancel',
+                  id: 'pENCUD',
+                })
+              "
+              @click="isActive.value = false"
+            />
+            <v-btn
+              :loading="loading"
+              :disabled="!formValid"
+              :text="okText"
+              type="submit"
+              variant="elevated"
+              rounded="xs"
+              color="error"
+            />
+          </template>
+        </v-card>
+      </v-form>
+    </template>
   </v-dialog>
 </template>
 
@@ -74,10 +79,10 @@ const formValid = ref<boolean>(false)
 
 const rules = useRules()
 
-function submitForm() {
+function submitForm(isActive: Ref<boolean, boolean>) {
   if (formValid.value) {
     emit('confirm')
-    close()
+    if (closeOnSave) isActive.value = false
   }
 }
 
@@ -88,6 +93,8 @@ export interface DialogConfirmProps {
   validateText?: string
   maxWidth?: string | number
   activator?: Element | string
+  loading?: boolean
+  closeOnSave?: boolean
 }
 
 const {
@@ -97,9 +104,7 @@ const {
   validateText = 'confirm',
   maxWidth = undefined,
   activator = undefined,
+  loading = false,
+  closeOnSave = true,
 } = defineProps<DialogConfirmProps>()
-
-function close() {
-  showDialog.value = false
-}
 </script>

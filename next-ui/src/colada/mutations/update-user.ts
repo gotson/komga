@@ -12,9 +12,6 @@ export const useCreateUser = defineMutation(() => {
     onSuccess: () => {
       void queryCache.invalidateQueries({ key: ['users'] })
     },
-    onError: (error) => {
-      console.log('create user error', error)
-    },
   })
 })
 export const useUpdateUser = defineMutation(() => {
@@ -28,9 +25,6 @@ export const useUpdateUser = defineMutation(() => {
     onSuccess: () => {
       void queryCache.invalidateQueries({ key: ['users'] })
     },
-    onError: (error) => {
-      console.log('update user error', error)
-    },
   })
 })
 
@@ -43,9 +37,6 @@ export const useUpdateUserPassword = defineMutation(() => {
           password: newPassword,
         },
       }),
-    onError: (error) => {
-      console.log('update user password error', error)
-    },
   })
 })
 
@@ -58,9 +49,6 @@ export const useDeleteUser = defineMutation(() => {
       }),
     onSuccess: () => {
       void queryCache.invalidateQueries({ key: ['users'] })
-    },
-    onError: (error) => {
-      console.log('delete user error', error)
     },
   })
 })
