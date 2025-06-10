@@ -3,6 +3,7 @@
     v-model="showDialog"
     :activator="activator"
     :max-width="maxWidth"
+    :fullscreen="fullscreen"
   >
     <template #default="{ isActive }">
       <v-confirm-edit
@@ -15,6 +16,7 @@
             v-model="formValid"
             @submit.prevent="submitForm(save)"
             :disabled="loading"
+            class="fill-height"
           >
             <v-card
               :title="title"
@@ -84,6 +86,7 @@ export interface DialogConfirmEditProps {
   activator?: Element | string
   loading?: boolean
   closeOnSave?: boolean
+  fullscreen?: boolean
 }
 
 const {
@@ -93,5 +96,6 @@ const {
   activator = undefined,
   loading = false,
   closeOnSave = true,
+  fullscreen = undefined,
 } = defineProps<DialogConfirmEditProps>()
 </script>
