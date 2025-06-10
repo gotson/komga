@@ -12,6 +12,7 @@
       :items="users"
       :headers="headers"
       :hide-default-footer="hideFooter"
+      mobile-breakpoint="md"
     >
       <template #top>
         <v-toolbar flat>
@@ -38,7 +39,7 @@
       </template>
 
       <template #[`item.roles`]="{ value }">
-        <div class="d-flex ga-1">
+        <div class="d-flex ga-1 flex-wrap">
           <v-chip
             v-for="role in value"
             :key="role"
@@ -104,6 +105,7 @@ import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
+import { useDisplay } from 'vuetify'
 
 const intl = useIntl()
 
@@ -166,7 +168,9 @@ const { mutateAsync: mutateUser } = useUpdateUser()
 const { mutateAsync: mutateUserPassword } = useUpdateUserPassword()
 const { mutateAsync: mutateDeleteUser } = useDeleteUser()
 const { data: libraries } = useLibraries()
+
 const messagesStore = useMessagesStore()
+const display = useDisplay()
 
 enum ACTION {
   ADD,
@@ -183,6 +187,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         title: 'Add User',
         maxWidth: 600,
         closeOnSave: false,
+        fullscreen: display.xs.value,
       }
       dialogConfirmEdit.value.slot = {
         component: markRaw(FormUserEdit),
@@ -210,6 +215,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         subtitle: user?.email,
         maxWidth: 600,
         closeOnSave: false,
+        fullscreen: display.xs.value,
       }
       dialogConfirmEdit.value.slot = {
         component: markRaw(FormUserEdit),
