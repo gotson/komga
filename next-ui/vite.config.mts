@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 // Plugins
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -80,5 +82,8 @@ export default defineConfig({
         api: 'modern-compiler',
       },
     },
+  },
+  test: {
+    restoreMocks: true,
   },
 })
