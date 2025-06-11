@@ -348,7 +348,7 @@ function handleDialogConfirmation(
     .catch((error) => {
       messagesStore.messages.push({
         text:
-          (error.cause as ErrorCause).message || intl.formatMessage(commonMessages.networkError),
+          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
       })
       setLoading(false)
     })
