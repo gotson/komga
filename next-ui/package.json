@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "run-s i18n-compile type-check \"build-only {@}\" --",
+    "build": "run-s i18n:compile \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
@@ -14,9 +14,9 @@
     "prettier": "prettier --check \"**/*.{js,ts,vue,scss,html,md,json}\"",
     "prettier:fix": "npm run prettier -- --write",
     "openapi-generate": "npx tsx ./openapi-generator.mts",
-    "i18n-extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --out-file i18n/en.json",
-    "i18n-compile": "formatjs compile-folder i18n src/i18n",
-    "i18n-verify": "formatjs verify --missing-keys --source-locale=en \"i18n/*.json\""
+    "i18n:extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --out-file i18n/en.json",
+    "i18n:compile": "formatjs compile-folder i18n src/i18n",
+    "i18n:verify": "formatjs verify --missing-keys --source-locale=en \"i18n/*.json\""
   },
   "dependencies": {
     "@pinia/colada": "^0.17.0",
