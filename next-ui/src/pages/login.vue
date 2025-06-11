@@ -155,7 +155,7 @@ const { mutate: performLogin, isLoading } = useMutation({
     else void router.push('/')
   },
   onError: (error) => {
-    if ((error.cause as ErrorCause).status === 401)
+    if ((error?.cause as ErrorCause)?.status === 401)
       loginError.value = intl.formatMessage({
         description: 'Login screen: error message displayed when login failed',
         defaultMessage: 'Invalid login or password',
@@ -164,7 +164,7 @@ const { mutate: performLogin, isLoading } = useMutation({
     else
       messagesStore.messages.push({
         text:
-          (error.cause as ErrorCause).message || intl.formatMessage(commonMessages.networkError),
+          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
       })
   },
 })
