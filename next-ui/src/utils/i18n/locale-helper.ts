@@ -42,7 +42,7 @@ export const availableLocales = loadAvailableLocales()
  * Gets the saved locale from localStorage.
  * If the locale is not valid, defaults to 'en'.
  */
-function getLocale(): string {
+export function getLocale(): string {
   const storageLocale = localStorage.getItem('userLocale') ?? defaultLocale
   return storageLocale in availableLocales ? storageLocale : defaultLocale
 }
