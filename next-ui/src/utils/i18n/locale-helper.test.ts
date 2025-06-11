@@ -1,5 +1,3 @@
-// @vitest-environment jsdom
-
 import { beforeAll, expect, test, vi } from 'vitest'
 import { loadLocale, defaultLocale, setLocale, getLocale, availableLocales } from './locale-helper'
 
