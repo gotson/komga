@@ -35,7 +35,7 @@ const coladaMiddleware: Middleware = {
 }
 
 const client = createClient<paths>({
-  baseUrl: 'http://localhost:8080',
+  baseUrl: import.meta.env.VITE_KOMGA_API_URL,
   // required to pass the session cookie on all requests
   credentials: 'include',
   // required to avoid browser basic-auth popups
