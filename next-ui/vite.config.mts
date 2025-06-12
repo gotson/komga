@@ -16,6 +16,7 @@ import dir2json from 'vite-plugin-dir2json'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -84,7 +85,32 @@ export default defineConfig({
     },
   },
   test: {
-    environment: 'happy-dom',
-    restoreMocks: true,
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'unit',
+          environment: 'happy-dom',
+          restoreMocks: true,
+        },
+      },
+      {
+        test: {
+          name: 'storybook',
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: 'playwright',
+            instances: [{ browser: 'chromium' }],
+          },
+          setupFiles: ['.storybook/vitest.setup.ts'],
+        },
+        plugins: [
+          // The plugin will run tests for the stories defined in your Storybook config
+          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+          storybookTest(),
+        ],
+      },
+    ],
   },
 })
