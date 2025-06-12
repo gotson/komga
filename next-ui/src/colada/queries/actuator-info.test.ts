@@ -1,14 +1,21 @@
-import { afterAll, afterEach, beforeAll, expect, test } from 'vitest'
+import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest'
 import { server } from '@/mocks/api/node'
 import { useActuatorInfo } from '@/colada/queries/actuator-info'
-import { mockPiniaColada } from '@/mocks/pinia-colada'
+import { createMockColada } from '@/mocks/pinia-colada'
+import { http, HttpResponse } from 'msw'
+import { baseUrl } from '@/mocks/api/handlers/base'
+import { VueWrapper } from '@vue/test-utils'
 
+let mock: VueWrapper
 beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => {
-  server.close()
-  mockPiniaColada.unmount()
+beforeEach(() => {
+  mock = createMockColada()
 })
+afterEach(() => {
+  server.resetHandlers()
+  mock.unmount()
+})
+afterAll(() => server.close())
 
 test('when getting actuator-info then values are correct', async () => {
   const { buildVersion, commitId, refresh } = useActuatorInfo()
@@ -16,4 +23,18 @@ test('when getting actuator-info then values are correct', async () => {
   await refresh()
   expect(buildVersion.value).toBe('9.9.9')
   expect(commitId.value).toBe('ABC123')
+})
+
+test('when failing to get actuator-info then values are undefined', async () => {
+  server.use(
+    http.get(baseUrl + 'actuator/info', () => {
+      return HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }),
+  )
+
+  const { buildVersion, commitId, refresh } = useActuatorInfo()
+
+  await refresh()
+  expect(buildVersion.value).toBeUndefined()
+  expect(commitId.value).toBeUndefined()
 })
