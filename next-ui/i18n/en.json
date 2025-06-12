@@ -35,6 +35,10 @@
     "defaultMessage": "No restriction",
     "description": "User creation/edit dialog: Age restriction field possible option"
   },
+  "AjWlka": {
+    "defaultMessage": "Invalid login or password",
+    "description": "Login screen: error message displayed when login failed"
+  },
   "CUxhzL": {
     "defaultMessage": "Roles",
     "description": "User creation/edit dialog: Roles field"
@@ -75,6 +79,10 @@
     "defaultMessage": "Users",
     "description": "Drawer menu for Server > Users"
   },
+  "JbF1nK": {
+    "defaultMessage": "Password changed for user: {email}",
+    "description": "Snackbar notification shown upon successful user's password modification"
+  },
   "LaxrEO": {
     "defaultMessage": "Passwords must be identical",
     "description": "User password change dialog: Error message if passwords differ"
@@ -111,6 +119,10 @@
     "defaultMessage": "Shared Libraries",
     "description": "User creation/edit dialog: Shared Libraries field"
   },
+  "V/OYJE": {
+    "defaultMessage": "User deleted: {email}",
+    "description": "Snackbar notification shown upon successful user deletion"
+  },
   "WNY0pu": {
     "defaultMessage": "The latest version of Komga is already installed",
     "description": "Updates view: banner shown at the top"
@@ -119,6 +131,10 @@
     "defaultMessage": "New password",
     "description": "User password change dialog: New Password field label"
   },
+  "Xz+JXU": {
+    "defaultMessage": "error",
+    "description": "Common message: an unkown error happened"
+  },
   "Y6VlM9": {
     "defaultMessage": "Read List",
     "description": "Drawer menu for Import > Read List"
@@ -126,6 +142,10 @@
   "Yf4DJ2": {
     "defaultMessage": "User Interface",
     "description": "Drawer menu for Server > User Interface"
+  },
+  "Z/EY89": {
+    "defaultMessage": "Network error",
+    "description": "Common message: a network error happened when communicating with the server"
   },
   "app.locale-name": {
     "defaultMessage": "English",
@@ -163,6 +183,10 @@
     "defaultMessage": "Duplicate Files",
     "description": "Drawer menu for Media > Duplicate Files"
   },
+  "egrxd6": {
+    "defaultMessage": "User created: {email}",
+    "description": "Snackbar notification shown upon successful user creation"
+  },
   "fQIepD": {
     "defaultMessage": "Books",
     "description": "Drawer menu for Import > Books"
@@ -182,6 +206,10 @@
   "jywpqq": {
     "defaultMessage": "Age",
     "description": "User creation/edit dialog: Age Restriction > Age field label"
+  },
+  "kvbi4j": {
+    "defaultMessage": "User updated: {email}",
+    "description": "Snackbar notification shown upon successful user update"
   },
   "l/To3S": {
     "defaultMessage": "History",
@@ -218,6 +246,10 @@
   "qiZm6U": {
     "defaultMessage": "Unknown",
     "description": "Drawer menu for Media > Duplicate Pages > Unknown"
+  },
+  "r6JNfI": {
+    "defaultMessage": "Forgot your password?",
+    "description": "Login screen: Forgot your password link"
   },
   "rw/Dkw": {
     "defaultMessage": "User Interface",

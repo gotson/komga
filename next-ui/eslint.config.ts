@@ -1,3 +1,5 @@
+import storybook from 'eslint-plugin-storybook'
+
 /**
  * .eslint.js
  *
@@ -23,6 +25,8 @@ export default defineConfigWithVueTs(
       '**/coverage/**',
       'openapi-generator.mts',
       '**/generated/openapi/komga.d.ts',
+      'public-msw/**/*',
+      'eslint.config.ts',
     ],
   },
 
@@ -66,4 +70,15 @@ export default defineConfigWithVueTs(
   },
 
   eslintConfigPrettier,
+
+  ...storybook.configs['flat/recommended'],
+
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
 )
