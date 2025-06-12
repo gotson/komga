@@ -16,4 +16,9 @@ export const commonMessages = {
     defaultMessage: 'Network error',
     id: 'Z/EY89',
   }),
+  error: defineMessage({
+    description: 'Common message: an unkown error happened',
+    defaultMessage: 'error',
+    id: 'Xz+JXU',
+  }),
 }
