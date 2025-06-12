@@ -1,9 +1,9 @@
-import { beforeAll, expect, test, vi } from 'vitest'
+import { beforeEach, expect, test, vi } from 'vitest'
 import { loadLocale, defaultLocale, setLocale, getLocale, availableLocales } from './locale-helper'
 
-beforeAll(() => {
+beforeEach(() => {
   // mock the available locales, as locales are checked against what's available
-  vi.mock('../i18n?dir2json&ext=.json&1', () => {
+  vi.mock('@/i18n?dir2json&ext=.json&1', () => {
     return {
       default: {
         en: {
