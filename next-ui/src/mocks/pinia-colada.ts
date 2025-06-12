@@ -6,9 +6,9 @@ const DummyComponent = {
   template: '<p></p>',
 }
 
-const pinia = createPinia()
-export const mockPiniaColada = mount(DummyComponent, {
-  global: {
-    plugins: [pinia, [PiniaColada, {}]],
-  },
-})
+export const createMockColada = () =>
+  mount(DummyComponent, {
+    global: {
+      plugins: [createPinia(), [PiniaColada, {}]],
+    },
+  })
