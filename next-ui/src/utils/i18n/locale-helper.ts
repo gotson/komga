@@ -1,5 +1,5 @@
 import { defineMessage } from 'vue-intl'
-import localeMessages from '../i18n?dir2json&ext=.json&1'
+import localeMessages from '@/i18n?dir2json&ext=.json&1'
 
 export const defaultLocale = 'en'
 

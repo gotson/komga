@@ -24,3 +24,6 @@ pnpm-debug.log*
 # FormatJS compiled translation files
 !/src/i18n/README.md
 src/i18n
+
+*storybook.log
+storybook-static

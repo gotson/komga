@@ -19,8 +19,8 @@ export const useAppReleases = defineQuery(() => {
   const latestRelease = computed(() => data.value?.find((x) => x.latest))
 
   const isLatestVersion = computed(() => {
-    if (buildVersion.value && latestRelease.value)
-      return buildVersion.value == latestRelease.value?.version
+    if (buildVersion.value && data.value)
+      return data.value?.some((x) => x.latest && x.version == buildVersion.value)
     else return undefined
   })
 
