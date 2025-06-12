@@ -95,3 +95,32 @@ jobs:
       - name: npm test
         working-directory: komga-webui
         run: npm run test:unit
+
+  next-ui:
+    runs-on: ubuntu-latest
+    name: Test next-ui
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: next-ui/package-lock.json
+      - name: npm install
+        working-directory: next-ui
+        run: npm install
+      - name: test:unit
+        working-directory: next-ui
+        run: npm run test:unit
+      - name: lint
+        working-directory: next-ui
+        run: npm run lint
+      - name: prettier
+        working-directory: next-ui
+        run: npm run prettier
+      - name: type-check
+        working-directory: next-ui
+        run: npm run type-check
+      - name: build
+        working-directory: next-ui
+        run: npm run build-only
