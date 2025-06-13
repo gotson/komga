@@ -25,7 +25,7 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
-    "@pinia/colada": "^0.17.0",
+    "@pinia/colada": "^0.17.1",
     "@pinia/colada-plugin-auto-refetch": "^0.2.0",
     "@vueuse/core": "^13.3.0",
     "core-js": "^3.37.1",
