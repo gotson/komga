@@ -1,21 +1,17 @@
-import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest'
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest'
 import { server } from '@/mocks/api/node'
 import { createMockColada } from '@/mocks/pinia-colada'
 import { useAppReleases } from '@/colada/queries/app-releases'
-import { VueWrapper } from '@vue/test-utils'
+import { enableAutoUnmount } from '@vue/test-utils'
 
-let mock: VueWrapper
 beforeAll(() => server.listen())
-beforeEach(() => {
-  mock = createMockColada()
-})
-afterEach(() => {
-  server.resetHandlers()
-  mock.unmount()
-})
+afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
+enableAutoUnmount(afterEach)
+
 test('when getting app releases then values are correct', async () => {
+  createMockColada(useAppReleases)
   const { latestRelease, isLatestVersion, refresh } = useAppReleases()
 
   await refresh()
