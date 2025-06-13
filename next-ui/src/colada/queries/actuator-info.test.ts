@@ -5,6 +5,7 @@ import { createMockColada } from '@/mocks/pinia-colada'
 import { http } from 'msw'
 import { baseUrl, response401Unauthorized } from '@/mocks/api/handlers/base'
 import { VueWrapper } from '@vue/test-utils'
+import type { ErrorCause } from '@/api/komga-client'
 
 let mock: VueWrapper
 beforeAll(() => server.listen())
@@ -33,5 +34,5 @@ test('when failing to get actuator-info then values are undefined', async () => 
   await refresh()
   expect(buildVersion.value).toBeUndefined()
   expect(commitId.value).toBeUndefined()
-  expect(error.value).not.toBeUndefined()
+  expect((error.value?.cause as ErrorCause).status).toBe(401)
 })
