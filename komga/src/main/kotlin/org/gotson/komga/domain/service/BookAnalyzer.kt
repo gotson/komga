@@ -147,7 +147,6 @@ class BookAnalyzer(
     book.path.epub { epub ->
       val (resources, missingResources) = epubExtractor.getResources(epub).partition { it.fileSize != null }
       val isFixedLayout = epubExtractor.isFixedLayout(epub)
-      val pageCount = epubExtractor.computePageCount(epub)
       val isKepub = epubExtractor.isKepub(epub, resources)
 
       val errors = mutableListOf<String>()
@@ -181,7 +180,7 @@ class BookAnalyzer(
 
       val divinaPages =
         try {
-          epubExtractor.getDivinaPages(epub, isFixedLayout, pageCount, analyzeDimensions)
+          epubExtractor.getDivinaPages(epub, isFixedLayout, analyzeDimensions)
         } catch (e: Exception) {
           logger.error(e) { "Error while getting EPUB Divina pages" }
           errors.add("ERR_1038")
@@ -213,7 +212,7 @@ class BookAnalyzer(
         status = Media.Status.READY,
         pages = divinaPages,
         files = resources,
-        pageCount = pageCount,
+        pageCount = epubExtractor.computePageCount(epub),
         epubDivinaCompatible = divinaPages.isNotEmpty(),
         epubIsKepub = isKepub,
         extension =

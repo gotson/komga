@@ -230,7 +230,7 @@ class BookAnalyzerTest(
       val file = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
       val book = Book("book", file.url, LocalDateTime.now())
 
-      every { epubExtractor.getDivinaPages(any(), any(), any(), any()) } throws Exception("mock exception")
+      every { epubExtractor.getDivinaPages(any(), any(), any()) } throws Exception("mock exception")
 
       val media = bookAnalyzer.analyze(book, false)
 

@@ -115,13 +115,25 @@ class EpubExtractor(
   fun getDivinaPages(
     epub: EpubPackage,
     isFixedLayout: Boolean,
-    pageCount: Int,
     analyzeDimensions: Boolean,
   ): List<BookPage> {
     if (!isFixedLayout) {
       logger.info { "Epub Divina detection failed: book is not fixed layout" }
       return emptyList()
     }
+
+    val pageCount =
+      run {
+        val spine =
+          epub.opfDoc
+            .select("spine > itemref")
+            .map { it.attr("idref") }
+            .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
+
+        epub.zip.entries
+          .toList()
+          .count { it.name in spine }
+      }
 
     val pagesWithImages =
       epub.opfDoc
@@ -200,6 +212,10 @@ class EpubExtractor(
     return false
   }
 
+  /**
+   * Computes an approximate page count using the Readium method,
+   * which counts 1 page for every 1024 bytes of compressed data for each resource.
+   */
   fun computePageCount(epub: EpubPackage): Int {
     val spine =
       epub.opfDoc
