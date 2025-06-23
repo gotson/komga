@@ -1,3 +1,54 @@
+# [1.22.0](https://github.com/gotson/komga/compare/1.21.3...1.22.0) (2025-06-23)
+## 🚀 Features
+**api**
+- user creation supports restrictions ([1f0817b](https://github.com/gotson/komga/commits/1f0817b))
+
+## 🐛 Fixes
+**api**
+- add CSP response header for untrusted epub resources ([25de597](https://github.com/gotson/komga/commits/25de597))
+- marking already read announcement as read would return error 500 ([8cf2403](https://github.com/gotson/komga/commits/8cf2403))
+
+## 🛠  Build
+**release**
+- remove unused announce step ([2911348](https://github.com/gotson/komga/commits/2911348))
+
+**webui**
+- update Browserslist db ([bc8a5df](https://github.com/gotson/komga/commits/bc8a5df))
+
+## 📝 Documentation
+**api**
+- add /actuator/info in OpenAPI specification ([1ab46a7](https://github.com/gotson/komga/commits/1ab46a7))
+- document remember-me parameter on Retrieve Current User API ([cc78cd3](https://github.com/gotson/komga/commits/cc78cd3))
+
+**openapi**
+- rename Claim Server tag to avoid conflict with operation name ([a17ff43](https://github.com/gotson/komga/commits/a17ff43))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Assamese) ([56e7cff](https://github.com/gotson/komga/commits/56e7cff))
+- translated using Weblate (Indonesian) ([4082451](https://github.com/gotson/komga/commits/4082451))
+- translated using Weblate (Bulgarian) ([fb7f144](https://github.com/gotson/komga/commits/fb7f144))
+
+**webui**
+- translated using Weblate (Chinese (Simplified Han script)) ([aad3e4a](https://github.com/gotson/komga/commits/aad3e4a))
+- translated using Weblate (Chinese (Traditional Han script)) ([b228f0e](https://github.com/gotson/komga/commits/b228f0e))
+- translated using Weblate (Korean) ([324262f](https://github.com/gotson/komga/commits/324262f))
+- translated using Weblate (Finnish) ([0423f82](https://github.com/gotson/komga/commits/0423f82))
+- translated using Weblate (French) ([d77d9cb](https://github.com/gotson/komga/commits/d77d9cb))
+- translated using Weblate (Spanish) ([80e7cfb](https://github.com/gotson/komga/commits/80e7cfb))
+- translated using Weblate (Dutch) ([b762fe0](https://github.com/gotson/komga/commits/b762fe0))
+- translated using Weblate (Indonesian) ([f00ec95](https://github.com/gotson/komga/commits/f00ec95))
+- translated using Weblate (Italian) ([d8a374a](https://github.com/gotson/komga/commits/d8a374a))
+- translated using Weblate (Hungarian) ([299ef6c](https://github.com/gotson/komga/commits/299ef6c))
+- translated using Weblate (Portuguese) ([009bc6e](https://github.com/gotson/komga/commits/009bc6e))
+- translated using Weblate (Japanese) ([1197ecf](https://github.com/gotson/komga/commits/1197ecf))
+- translated using Weblate (German) ([6629741](https://github.com/gotson/komga/commits/6629741))
+- translated using Weblate (Turkish) ([b570169](https://github.com/gotson/komga/commits/b570169))
+
+## ⚙️ Dependencies
+**ci**
+- bump hydraulic-software/conveyor from 18.0 to 18.1 ([e2a0b94](https://github.com/gotson/komga/commits/e2a0b94))
+
 # [1.21.3](https://github.com/gotson/komga/compare/1.21.2...1.21.3) (2025-05-16)
 ## 🐛 Fixes
 **webui**
