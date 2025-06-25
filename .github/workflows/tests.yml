@@ -112,6 +112,9 @@ jobs:
       - name: test:unit
         working-directory: next-ui
         run: npm run test:unit
+      - name: test:storybook
+        working-directory: next-ui
+        run: npm run test:storybook
       - name: lint
         working-directory: next-ui
         run: npm run lint
