@@ -1,4 +1,5 @@
 dir2json.d.ts
 src/auto-imports.d.ts
 src/components.d.ts
+src/generated/openapi/komga.d.ts
 public-msw/mockServiceWorker.js
