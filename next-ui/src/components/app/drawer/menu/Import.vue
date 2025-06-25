@@ -10,7 +10,7 @@
             id: 'N7+QXi',
           })
         "
-        :prepend-icon="mdiImport"
+        prepend-icon="i-mdi:import"
       />
     </template>
 
@@ -38,6 +38,4 @@
   </v-list-group>
 </template>
 
-<script setup lang="ts">
-import mdiImport from '~icons/mdi/import'
-</script>
+<script setup lang="ts"></script>

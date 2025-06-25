@@ -3,7 +3,7 @@
   <div class="d-flex align-center text-caption text-medium-emphasis pa-2">
     <div class="d-flex ms-auto">
       <v-btn
-        :prepend-icon="mdiHelpCircleOutline"
+        prepend-icon="i-mdi:help-circle-outline"
         variant="text"
         color="grey"
         size="small"
@@ -34,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import mdiHelpCircleOutline from '~icons/mdi/help-circle-outline'
 import { useCurrentUser } from '@/colada/queries/current-user'
 
 const { isAdmin } = useCurrentUser()

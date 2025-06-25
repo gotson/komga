@@ -1,7 +1,7 @@
 <template>
   <v-empty-state
     v-if="error"
-    icon="mdi-connection"
+    icon="i-mdi:connection"
     :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
     :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
   />
@@ -19,7 +19,7 @@
           <v-toolbar-title>
             <v-icon
               color="medium-emphasis"
-              :icon="mdiAccountMultiple"
+              icon="i-mdi:account-multiple"
               size="x-small"
               start
             />
@@ -28,7 +28,7 @@
 
           <v-btn
             class="me-2"
-            :prepend-icon="mdiPlus"
+            prepend-icon="i-mdi:plus"
             rounded="lg"
             text="Add a User"
             border
@@ -55,20 +55,20 @@
         <div class="d-flex ga-1 justify-end">
           <v-icon-btn
             v-tooltip:bottom="'Change password'"
-            :icon="mdiLockReset"
+            icon="i-mdi:lock-reset"
             @click="showDialog(ACTION.PASSWORD, user)"
             @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
           />
           <v-icon-btn
             v-tooltip:bottom="'Edit user'"
-            :icon="mdiPencil"
+            icon="i-mdi:pencil"
             :disabled="me?.id == user.id"
             @click="showDialog(ACTION.EDIT, user)"
             @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
           />
           <v-icon-btn
             v-tooltip:bottom="'Delete user'"
-            :icon="mdiDelete"
+            icon="i-mdi:delete"
             :disabled="me?.id == user.id"
             @click="showDialog(ACTION.DELETE, user)"
             @mouseenter="dialogConfirm.activator = $event.currentTarget"
@@ -80,11 +80,6 @@
 </template>
 
 <script lang="ts" setup>
-import mdiAccountMultiple from '~icons/mdi/account-multiple'
-import mdiPlus from '~icons/mdi/plus'
-import mdiLockReset from '~icons/mdi/lock-reset'
-import mdiPencil from '~icons/mdi/pencil'
-import mdiDelete from '~icons/mdi/delete'
 import { useUsers } from '@/colada/queries/users'
 import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'

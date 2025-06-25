@@ -6,7 +6,7 @@
   >
     <v-btn
       :loading="isLoading"
-      :prepend-icon="mdiTagOutline"
+      prepend-icon="i-mdi:tag-outline"
       variant="text"
       color="grey"
       size="small"
@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import mdiTagOutline from '~icons/mdi/tag-outline'
 import { useAppReleases } from '@/colada/queries/app-releases'
 import { commonMessages } from '@/utils/i18n/common-messages'
 

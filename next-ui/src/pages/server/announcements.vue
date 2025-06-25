@@ -6,7 +6,7 @@
 
   <v-empty-state
     v-else-if="error"
-    icon="mdi-connection"
+    icon="i-mdi:connection"
     :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
     :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
   />
@@ -80,14 +80,13 @@
         "
         color="success"
         size="x-large"
-        :icon="mdiCheckAll"
+        icon="i-mdi:check-all"
       />
     </v-fab>
   </template>
 </template>
 
 <script lang="ts" setup>
-import mdiCheckAll from '~icons/mdi/check-all'
 import { useAnnouncements } from '@/colada/queries/announcements'
 import { useMarkAnnouncementsRead } from '@/colada/mutations/mark-announcements-read'
 import { commonMessages } from '@/utils/i18n/common-messages'

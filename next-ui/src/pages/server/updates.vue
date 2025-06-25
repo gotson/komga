@@ -6,7 +6,7 @@
 
   <v-empty-state
     v-else-if="error"
-    icon="mdi-connection"
+    icon="i-mdi:connection"
     :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
     :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
   />

@@ -18,7 +18,7 @@
             floating
             color="info"
           >
-            <v-icon :icon="mdiCog"></v-icon>
+            <v-icon icon="i-mdi:cog"></v-icon>
           </v-badge>
         </template>
       </v-list-item>
@@ -99,7 +99,6 @@
 </template>
 
 <script setup lang="ts">
-import mdiCog from '~icons/mdi/cog'
 import { useAnnouncements } from '@/colada/queries/announcements'
 
 const { unreadCount } = useAnnouncements()
