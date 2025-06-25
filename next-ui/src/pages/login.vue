@@ -23,7 +23,7 @@
               })
             "
             autofocus
-            :rules="[rules.required(), rules.email()]"
+            :rules="['required', 'email']"
           />
         </v-col>
       </v-row>
@@ -40,7 +40,7 @@
               })
             "
             type="password"
-            :rules="[rules.required()]"
+            :rules="['required']"
             :error-messages="loginError"
             @update:modelValue="loginError = ''"
           />
@@ -116,12 +116,10 @@
 <script lang="ts" setup>
 import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import { useMutation, useQueryCache } from '@pinia/colada'
-import { useRules } from 'vuetify/labs/rules'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
-const rules = useRules()
 const messagesStore = useMessagesStore()
 const intl = useIntl()
 
