@@ -120,6 +120,7 @@ jobs:
         with:
           command: npm run --prefix next-ui test:storybook
           max_attempts: '3'
+          timeout_minutes: '5'
       - name: lint
         working-directory: next-ui
         run: npm run lint
