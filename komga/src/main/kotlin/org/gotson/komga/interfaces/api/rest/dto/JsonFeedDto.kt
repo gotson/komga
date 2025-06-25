@@ -7,8 +7,8 @@ import java.time.OffsetDateTime
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(
+  //language=JSON
   example =
-    //language=JSON
     """
   {
   "version": "https://jsonfeed.org/version/1",
