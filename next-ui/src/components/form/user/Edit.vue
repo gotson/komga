@@ -3,7 +3,7 @@
     <v-text-field
       v-model="user!.email"
       autofocus
-      :rules="[rules.required(), rules.email()]"
+      :rules="['required', 'email']"
       :label="
         $formatMessage({
           description: 'User creation dialog: Email field',
@@ -16,7 +16,7 @@
     <v-text-field
       v-model="user.password"
       class="mt-1 mb-2"
-      :rules="[rules.required()]"
+      :rules="['required']"
       :label="
         $formatMessage({
           description: 'User creation dialog: Password field',
@@ -149,7 +149,7 @@
           })
         "
         :min="0"
-        :rules="[rules.required()]"
+        :rules="['required']"
       />
     </v-col>
   </v-row>
@@ -226,12 +226,10 @@ import mdiBookMultiple from '~icons/mdi/book-multiple'
 import mdiFolderLock from '~icons/mdi/folder-lock'
 import { UserRoles } from '@/types/UserRoles'
 import type { components } from '@/generated/openapi/komga'
-import { useRules } from 'vuetify/labs/rules'
 import { useLibraries } from '@/colada/queries/libraries'
 import { useSharingLabels } from '@/colada/queries/referential'
 import { useIntl } from 'vue-intl'
 
-const rules = useRules()
 const intl = useIntl()
 
 interface UserExtend {

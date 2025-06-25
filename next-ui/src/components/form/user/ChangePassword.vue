@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     v-model="newPassword"
-    :rules="[rules.required()]"
+    :rules="['required']"
     :label="
       $formatMessage({
         description: 'User password change dialog: New Password field label',
@@ -19,14 +19,15 @@
     v-model="confirmPassword"
     class="mt-2"
     :rules="[
-      rules.sameAs(
+      [
+        'sameAs',
         newPassword,
         $formatMessage({
           description: 'User password change dialog: Error message if passwords differ',
           defaultMessage: 'Passwords must be identical',
           id: 'LaxrEO',
         }),
-      ),
+      ],
     ]"
     :label="
       $formatMessage({
@@ -45,9 +46,6 @@
 <script setup lang="ts">
 import mdiEye from '~icons/mdi/eye'
 import mdiEyeOff from '~icons/mdi/eye-off'
-import { useRules } from 'vuetify/labs/rules'
-
-const rules = useRules()
 
 const newPassword = defineModel<string>({ required: true })
 

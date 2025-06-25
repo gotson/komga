@@ -35,7 +35,7 @@
             </slot>
 
             <v-text-field
-              :rules="[rules.sameAs(validateText)]"
+              :rules="[['sameAs', validateText]]"
               hide-details
               class="mt-2"
             />
@@ -70,16 +70,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRules } from 'vuetify/labs/rules'
-
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const emit = defineEmits<{
   confirm: []
 }>()
 
 const formValid = ref<boolean>(false)
-
-const rules = useRules()
 
 function submitForm(isActive: Ref<boolean, boolean>) {
   if (formValid.value) {
