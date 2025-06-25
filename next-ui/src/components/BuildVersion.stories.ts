@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import { http, HttpResponse, delay } from 'msw'
-import { baseUrl, response401Unauthorized } from '@/mocks/api/handlers/base'
+import { http, delay } from 'msw'
 import BuildVersion from './BuildVersion.vue'
-import { releasesResponseOk, releasesResponseOkNotLatest } from '@/mocks/api/handlers/releases'
+import { releasesResponseOkNotLatest } from '@/mocks/api/handlers/releases'
+import { response401Unauthorized } from '@/mocks/api/handlers'
+import { httpTyped } from '@/mocks/api/httpTyped'
 
 const meta = {
   component: BuildVersion,
@@ -31,7 +32,9 @@ export const OutdatedVersion: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get(baseUrl + 'api/v1/releases', () => HttpResponse.json(releasesResponseOkNotLatest)),
+        httpTyped.get('/api/v1/releases', ({ response }) =>
+          response(200).json(releasesResponseOkNotLatest),
+        ),
       ],
     },
   },
@@ -40,12 +43,7 @@ export const OutdatedVersion: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(baseUrl + 'api/v1/releases', async () => {
-          await delay(5_000)
-          return HttpResponse.json(releasesResponseOk)
-        }),
-      ],
+      handlers: [http.all('*', async () => await delay(5_000))],
     },
   },
 }
@@ -53,10 +51,7 @@ export const Loading: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(baseUrl + 'actuator/info', response401Unauthorized),
-        http.get(baseUrl + 'api/v1/releases', response401Unauthorized),
-      ],
+      handlers: [http.all('*', response401Unauthorized)],
     },
   },
 }
