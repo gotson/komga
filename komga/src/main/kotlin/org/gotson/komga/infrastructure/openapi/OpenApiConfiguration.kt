@@ -197,6 +197,7 @@ class OpenApiConfiguration(
                               "Example",
                               Example()
                                 .value(
+                                  //language=JSON
                                   """
 {
   "git": {
