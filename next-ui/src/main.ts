@@ -6,6 +6,7 @@
 
 // Plugins
 import { registerPlugins } from '@/plugins'
+import 'virtual:uno.css'
 
 // Components
 import App from './App.vue'

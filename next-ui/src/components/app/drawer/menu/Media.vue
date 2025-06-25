@@ -10,7 +10,7 @@
             id: 'Hl9H/B',
           })
         "
-        :prepend-icon="mdiBookCog"
+        prepend-icon="i-mdi:book-cog"
       />
     </template>
 
@@ -82,6 +82,4 @@
     </v-list-group>
   </v-list-group>
 </template>
-<script setup lang="ts">
-import mdiBookCog from '~icons/mdi/book-cog'
-</script>
+<script setup lang="ts"></script>
