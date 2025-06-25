@@ -15,7 +15,7 @@ export const useAppReleases = defineQuery(() => {
     gcTime: false,
   })
 
-  const { buildVersion } = useActuatorInfo()
+  const { buildVersion, refresh: actuatorRefresh } = useActuatorInfo()
   const latestRelease = computed(() => data.value?.find((x) => x.latest))
 
   const isLatestVersion = computed(() => {
@@ -30,5 +30,6 @@ export const useAppReleases = defineQuery(() => {
     buildVersion,
     latestRelease,
     isLatestVersion,
+    actuatorRefresh,
   }
 })
