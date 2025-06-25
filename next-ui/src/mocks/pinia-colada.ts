@@ -5,6 +5,7 @@ import { mount } from '@vue/test-utils'
 export const createMockColada = (setupFn: () => unknown) => {
   return mount(
     {
+      template: '<p></p>',
       setup() {
         setupFn()
         return {}
