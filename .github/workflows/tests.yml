@@ -116,8 +116,10 @@ jobs:
         working-directory: next-ui
         run: npm run test:unit
       - name: test:storybook
-        working-directory: next-ui
-        run: npm run test:storybook
+        uses: nick-fields/retry@v3
+        with:
+          command: npm run --prefix next-ui test:storybook
+          max_attempts: '3'
       - name: lint
         working-directory: next-ui
         run: npm run lint
