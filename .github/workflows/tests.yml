@@ -108,7 +108,7 @@ jobs:
           cache-dependency-path: next-ui/package-lock.json
       - name: npm install
         working-directory: next-ui
-        run: npm install
+        run: npm ci
       - name: npx playwright install --with-deps
         working-directory: next-ui
         run: npx playwright install --with-deps
