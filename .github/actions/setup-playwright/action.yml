@@ -11,7 +11,7 @@ runs:
     - name: Extract Playwright version
       id: playwright-version
       shell: bash
-      run: echo "PLAYWRIGHT_VERSION=$(jq -r '.devDependencies.playwright' package.json)" >> $GITHUB_ENV
+      run: echo "PLAYWRIGHT_VERSION=$(jq -r '.packages."".devDependencies.playwright' package-lock.json)" >> $GITHUB_ENV
       working-directory: ${{ inputs.working-directory }}
 
     - name: Cache Playwright
