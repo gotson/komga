@@ -2,7 +2,7 @@ name: "Setup Playwright"
 description: "Setup Playwright with caching, using npm (should already be installed)"
 inputs:
   working-directory:
-    description: Specifies the working directory where the command is run.
+    description: Specifies the working directory for the Playwright installation.
     default: .
 runs:
   using: "composite"
@@ -21,7 +21,7 @@ runs:
         key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
 
     - name: Install Playwright dependencies
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
       shell: bash
       run: npx playwright install --with-deps --only-shell
       working-directory: ${{ inputs.working-directory }}
-
