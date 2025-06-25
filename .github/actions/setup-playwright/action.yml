@@ -1,0 +1,20 @@
+name: "Setup Playwright"
+description: "Setup Playwright with caching, using npm (should already be installed)"
+runs:
+  using: "composite"
+  steps:
+    - name: Extract Playwright version
+      id: playwright-version
+      shell: bash
+      run: echo "PLAYWRIGHT_VERSION=$(jq -r '.devDependencies.playwright' package.json)" >> $GITHUB_ENV
+
+    - name: Cache Playwright
+      id: playwright-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+
+    - name: Install Playwright dependencies
+      shell: bash
+      run: npx playwright install --with-deps --only-shell
