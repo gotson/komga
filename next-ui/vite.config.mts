@@ -17,6 +17,10 @@ import dir2json from 'vite-plugin-dir2json'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
+import * as path from 'path'
+
+const dirname =
+  typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url))
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -95,6 +99,7 @@ export default defineConfig({
         },
       },
       {
+        extends: true,
         test: {
           name: 'storybook',
           browser: {
@@ -104,11 +109,19 @@ export default defineConfig({
             instances: [{ browser: 'chromium' }],
           },
           setupFiles: ['.storybook/vitest.setup.ts'],
+          globals: true,
+          server: {
+            deps: {
+              inline: ['vuetify'],
+            },
+          },
         },
         plugins: [
           // The plugin will run tests for the stories defined in your Storybook config
           // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-          storybookTest(),
+          storybookTest({
+            configDir: path.join(dirname, '.storybook'),
+          }),
         ],
       },
     ],
