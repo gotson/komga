@@ -39,6 +39,7 @@ export default defineConfig({
     }),
     Components({
       dts: 'src/components.d.ts',
+      globsExclude: ['src/components/*.stories.vue'],
       directoryAsNamespace: true,
       collapseSamePrefixes: true,
       resolvers: [IconsResolver()],
