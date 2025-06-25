@@ -43,7 +43,7 @@ class AnnouncementControllerTest(
             LocalDate.of(2023, 3, 21).atStartOfDay(),
             ZoneOffset.UTC,
           ),
-          JsonFeedDto.AuthorDto("gotson", "https://github.com/gotson"),
+          JsonFeedDto.ItemAuthorDto("gotson", "https://github.com/gotson"),
           setOf(
             "breaking change",
             "upgrade",
