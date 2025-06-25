@@ -6,7 +6,8 @@
     "src/**/*.vue",
     "./dir2json.d.ts",
     "./.storybook/**/*",
-    "vitest.shims.d.ts"
+    "vitest.shims.d.ts",
+    "uno.config.ts"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {

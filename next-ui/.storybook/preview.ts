@@ -9,6 +9,7 @@ import { createPinia } from 'pinia'
 import { PiniaColada } from '@pinia/colada'
 import { PiniaColadaAutoRefetch } from '@pinia/colada-plugin-auto-refetch'
 import { vueIntl } from '@/plugins/vue-intl'
+import 'virtual:uno.css'
 
 initialize(
   {

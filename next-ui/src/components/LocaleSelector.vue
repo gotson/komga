@@ -3,7 +3,7 @@
     <template #activator="{ props }">
       <v-btn
         v-bind="props"
-        :icon="mdiTranslate"
+        icon="i-mdi:translate"
       />
     </template>
 
@@ -49,7 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import mdiTranslate from '~icons/mdi/translate'
 import { availableLocales, currentLocale, setLocale } from '@/utils/i18n/locale-helper'
 
 const locales = Object.entries(availableLocales).map(([k, v]) => ({

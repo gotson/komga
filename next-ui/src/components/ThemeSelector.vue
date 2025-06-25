@@ -6,9 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import mdiWeatherSunny from '~icons/mdi/weather-sunny'
-import mdiWeatherNight from '~icons/mdi/weather-night'
-import mdiThemeLightDark from '~icons/mdi/theme-light-dark'
 import { useAppStore } from '@/stores/app'
 
 const appStore = useAppStore()
@@ -16,20 +13,20 @@ const appStore = useAppStore()
 const themes = [
   {
     value: 'light',
-    icon: mdiWeatherSunny,
+    icon: 'i-mdi:weather-sunny',
   },
   {
     value: 'dark',
-    icon: mdiWeatherNight,
+    icon: 'i-mdi:weather-night',
   },
   {
     value: 'system',
-    icon: mdiThemeLightDark,
+    icon: 'i-mdi:theme-light-dark',
   },
 ]
 
 const themeIcon = computed(
-  () => themes.find((x) => x.value === appStore.theme)?.icon || mdiThemeLightDark,
+  () => themes.find((x) => x.value === appStore.theme)?.icon || 'i-mdi:theme-light-dark',
 )
 
 function cycleTheme() {
