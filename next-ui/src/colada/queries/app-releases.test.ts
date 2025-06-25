@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, expect, test } from 'vitest'
+import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest'
 import { server } from '@/mocks/api/node'
 import { createMockColada } from '@/mocks/pinia-colada'
 import { useAppReleases } from '@/colada/queries/app-releases'
@@ -10,11 +10,14 @@ afterAll(() => server.close())
 
 enableAutoUnmount(afterEach)
 
-test('when getting app releases then values are correct', async () => {
-  createMockColada(useAppReleases)
-  const { latestRelease, isLatestVersion, refresh } = useAppReleases()
+describe('colada releases', () => {
+  test('when getting app releases then values are correct', async () => {
+    createMockColada(useAppReleases)
+    const { latestRelease, isLatestVersion, refresh, actuatorRefresh } = useAppReleases()
 
-  await refresh()
-  expect(latestRelease.value!.version).toBe('9.9.9')
-  expect(isLatestVersion.value).toBe(true)
+    await refresh()
+    await actuatorRefresh()
+    expect(latestRelease.value!.version).toBe('1.21.2')
+    expect(isLatestVersion.value).toBe(true)
+  })
 })

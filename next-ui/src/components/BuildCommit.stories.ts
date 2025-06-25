@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import BuildCommit from './BuildCommit.vue'
-import { http, HttpResponse, delay } from 'msw'
-import { baseUrl, response401Unauthorized } from '@/mocks/api/handlers/base'
-import { actuatorResponseOk } from '@/mocks/api/handlers/actuator'
+import { http, delay } from 'msw'
+
+import { response401Unauthorized } from '@/mocks/api/handlers'
 
 const meta = {
   component: BuildCommit,
@@ -30,12 +30,7 @@ export const Default: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(baseUrl + 'actuator/info', async () => {
-          await delay(5_000)
-          return HttpResponse.json(actuatorResponseOk)
-        }),
-      ],
+      handlers: [http.all('*', async () => await delay(5_000))],
     },
   },
 }
@@ -43,7 +38,7 @@ export const Loading: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [http.get(baseUrl + 'actuator/info', response401Unauthorized)],
+      handlers: [http.all('*', response401Unauthorized)],
     },
   },
 }

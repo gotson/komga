@@ -1,5 +1,16 @@
-import { actuatorHandlers } from '@/mocks/api/handlers/actuator'
-import { announcementsHandlers } from '@/mocks/api/handlers/announcements'
 import { releasesHandlers } from '@/mocks/api/handlers/releases'
+import { fromOpenApi } from '@mswjs/source/open-api'
+import type { OpenAPIV3 } from 'openapi-types'
+import spec from '../../../../komga/docs/openapi.json'
+import { HttpResponse } from 'msw'
 
-export const handlers = [...actuatorHandlers, ...announcementsHandlers, ...releasesHandlers]
+const doc = {
+  basePath: import.meta.env.VITE_KOMGA_API_URL,
+  ...spec,
+} as unknown as OpenAPIV3.Document
+
+// manually defined handlers need to be before fromOpenApi
+export const handlers = [...releasesHandlers, ...(await fromOpenApi(doc))]
+
+export const response401Unauthorized = () =>
+  HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
