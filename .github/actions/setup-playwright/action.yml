@@ -24,3 +24,4 @@ runs:
       shell: bash
       run: npx playwright install --with-deps --only-shell
       working-directory: ${{ inputs.working-directory }}
+
