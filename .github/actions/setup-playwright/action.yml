@@ -1,3 +1,4 @@
+# From https://github.com/microsoft/playwright/issues/7249#issuecomment-2806545369
 name: "Setup Playwright"
 description: "Setup Playwright with caching, using npm (should already be installed)"
 inputs:
