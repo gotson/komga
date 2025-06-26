@@ -28,6 +28,14 @@ export const releasesResponseOkNotLatest = [
     preRelease: false,
     description: 'Truncated',
   },
+  {
+    version: '1.21.2',
+    releaseDate: new Date('2025-03-12T04:19:30Z'),
+    url: 'https://github.com/gotson/komga/releases/tag/1.21.2',
+    latest: false,
+    preRelease: false,
+    description: 'Truncated',
+  },
 ]
 
 export const releasesHandlers = [
