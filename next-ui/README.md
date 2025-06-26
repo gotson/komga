@@ -11,6 +11,7 @@ The `openapi-generate` tasks will generate bindings, and should be run when the 
 ## Tests
 
 Vitest projects are used to specify different kind of tests:
+
 - `unit`: unit tests
 - `storybook`: component tests, defined in Storybook stories. Those can be run from Storybook directly or through Vitest.
 
@@ -21,6 +22,7 @@ Vitest projects are used to specify different kind of tests:
 Both **ESLint** and b are used in combination.
 
 Tasks:
+
 - ESLint: `lint` and `lint:fix`
 - Prettier: `prettier` and `prettier:fix`
 
@@ -39,6 +41,7 @@ Vite does not perform type-checking and leaves the job to the IDE. The `type-che
 Message IDs are generated automatically using the ESLint plugin, and hard-coded message IDs should be avoided.
 
 Tasks:
+
 - `i18n:extract`: extracts the messages from the source into the `i18n` folder. This folder is what Weblate uses.
 - `i18n:compile`: compiles the translated files in `i18n` into `./src/i18n`. This folder is what the application uses at runtime.
 
@@ -47,6 +50,7 @@ The Vite plugin [dir2json](https://github.com/buddywang/vite-plugin-dir2json) is
 ## Components
 
 Vue template files are segregated in different categories depending on usage:
+
 - `./src/components`: Pure UI components, driven by model/props. Those are reusable components.
 - `./src/fragments`: Fragments interact with other layers of the application, like API or Pinia stores. They are split into separate files for easier organization, but are not necessarily reused.
 - `./src/pages`: Pages make use of components/fragments as well as API / Pinia stores. Each Component in that folder is converted to a navigable route using [unplugin-vue-router](https://github.com/posva/unplugin-vue-router). Pages contain a special `<route>` to define the layout to use as well as other router meta attributes.
