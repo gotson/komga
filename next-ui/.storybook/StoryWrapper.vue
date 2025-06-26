@@ -15,3 +15,7 @@ export default {
   },
 }
 </script>
+
+<style>
+@import '../src/styles/global.scss';
+</style>
