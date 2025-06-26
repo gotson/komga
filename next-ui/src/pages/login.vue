@@ -104,8 +104,8 @@
       <v-row justify="center">
         <v-col cols="auto">
           <div class="d-flex ga-4">
-            <LocaleSelector />
-            <ThemeSelector />
+            <FragmentLocaleSelector />
+            <FragmentThemeSelector />
           </div>
         </v-col>
       </v-row>

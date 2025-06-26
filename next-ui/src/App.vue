@@ -2,9 +2,9 @@
   <v-app>
     <router-view />
 
-    <SnackQueue />
-    <DialogInstanceConfirmEdit />
-    <DialogInstanceConfirm />
+    <FragmentSnackQueue />
+    <FragmentDialogInstanceConfirmEdit />
+    <FragmentDialogInstanceConfirm />
   </v-app>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-  <AppBar />
+  <LayoutAppBar />
 
-  <AppDrawer />
+  <LayoutAppDrawer />
 
   <v-main scrollable>
     <v-container

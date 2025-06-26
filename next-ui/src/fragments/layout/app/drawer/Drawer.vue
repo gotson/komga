@@ -1,9 +1,9 @@
 <template>
   <v-navigation-drawer v-model="appStore.drawer">
-    <AppDrawerMenu />
+    <LayoutAppDrawerMenu />
 
     <template #append>
-      <AppDrawerFooter />
+      <LayoutAppDrawerFooter />
     </template>
   </v-navigation-drawer>
 </template>
