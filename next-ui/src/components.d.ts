@@ -30,6 +30,7 @@ declare module 'vue' {
     LayoutAppDrawerMenuLogout: typeof import('./fragments/layout/app/drawer/menu/Logout.vue')['default']
     LayoutAppDrawerMenuMedia: typeof import('./fragments/layout/app/drawer/menu/Media.vue')['default']
     LayoutAppDrawerMenuServer: typeof import('./fragments/layout/app/drawer/menu/Server.vue')['default']
+    ReleaseCard: typeof import('./components/release/Card.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UserDeletionWarning: typeof import('./components/user/DeletionWarning.vue')['default']

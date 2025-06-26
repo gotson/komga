@@ -22,6 +22,7 @@
         @mark-read="markRead"
       />
 
+      <!--  Bottom spacing for the FAB  -->
       <div
         v-if="index == announcements.items.length - 1"
         class="mb-16"
