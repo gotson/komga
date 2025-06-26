@@ -91,9 +91,6 @@ import {
   useUpdateUser,
   useUpdateUserPassword,
 } from '@/colada/mutations/update-user'
-import FormUserChangePassword from '@/components/form/user/ChangePassword.vue'
-import FormUserEdit from '@/components/form/user/Edit.vue'
-import NoticeUserDeletion from '@/components/notice/UserDeletion.vue'
 import { useLibraries } from '@/colada/queries/libraries'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
@@ -101,6 +98,9 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
+import UserDeletionWarning from '@/components/user/DeletionWarning.vue'
+import UserFormCreateEdit from '@/components/user/form/CreateEdit.vue'
+import UserFormChangePassword from '@/components/user/form/ChangePassword.vue'
 
 const intl = useIntl()
 
@@ -185,7 +185,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         fullscreen: display.xs.value,
       }
       dialogConfirmEdit.value.slot = {
-        component: markRaw(FormUserEdit),
+        component: markRaw(UserFormCreateEdit),
         props: {},
       }
       dialogConfirmEdit.value.record = {
@@ -213,7 +213,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         fullscreen: display.xs.value,
       }
       dialogConfirmEdit.value.slot = {
-        component: markRaw(FormUserEdit),
+        component: markRaw(UserFormCreateEdit),
         props: {},
       }
       dialogConfirmEdit.value.record = {
@@ -243,7 +243,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         closeOnSave: false,
       }
       dialogConfirm.value.slotWarning = {
-        component: markRaw(NoticeUserDeletion),
+        component: markRaw(UserDeletionWarning),
         props: {},
       }
       dialogConfirm.value.callback = handleDialogConfirmation
@@ -256,7 +256,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         closeOnSave: false,
       }
       dialogConfirmEdit.value.slot = {
-        component: markRaw(FormUserChangePassword),
+        component: markRaw(UserFormChangePassword),
         props: {},
       }
       // password change initiated with an empty string
