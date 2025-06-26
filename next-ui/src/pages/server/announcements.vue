@@ -16,43 +16,11 @@
       v-for="(item, index) in announcements.items"
       :key="index"
     >
-      <v-card class="mb-4">
-        <template #title>
-          <a
-            :href="item.url"
-            target="_blank"
-            class="text-h3 font-weight-medium link-underline"
-            >{{ item.title }}</a
-          >
-        </template>
-        <template #subtitle>
-          {{ $formatDate(item.date_modified, { dateStyle: 'long' }) }}
-        </template>
-
-        <template #text>
-          <!-- eslint-disable vue/no-v-html -->
-          <div
-            class="announcement"
-            v-html="item.content_html"
-          />
-          <!-- eslint-enable vue/no-v-html -->
-        </template>
-
-        <template #actions>
-          <v-spacer />
-          <v-btn
-            :text="
-              $formatMessage({
-                description: 'Announcements view: mark as read button tooltip',
-                defaultMessage: 'Mark as read',
-                id: 'sUSVQS',
-              })
-            "
-            :disabled="item._komga?.read"
-            @click="markRead(item.id)"
-          />
-        </template>
-      </v-card>
+      <AnnouncementCard
+        class="mb-4"
+        :item="item"
+        @mark-read="markRead"
+      />
 
       <div
         v-if="index == announcements.items.length - 1"
@@ -104,20 +72,6 @@ function markRead(id: string) {
   markAnnouncementsRead([id])
 }
 </script>
-
-<style lang="scss">
-.announcement p {
-  margin-bottom: 16px;
-}
-
-.announcement ul {
-  padding-left: 24px;
-}
-
-.announcement a {
-  color: var(--v-anchor-base);
-}
-</style>
 
 <route lang="yaml">
 meta:
