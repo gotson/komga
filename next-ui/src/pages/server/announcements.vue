@@ -50,6 +50,7 @@
         color="success"
         size="x-large"
         icon="i-mdi:check-all"
+        aria-label="mark all read"
       />
     </v-fab>
   </template>
