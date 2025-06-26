@@ -1,11 +1,12 @@
 <template>
-  <v-theme-provider
-    with-background
+  <v-app
     :theme="themeName"
     class="pa-2"
   >
-    <slot name="story"></slot>
-  </v-theme-provider>
+    <v-main>
+      <slot name="story"></slot>
+    </v-main>
+  </v-app>
 </template>
 
 <script lang="ts">
