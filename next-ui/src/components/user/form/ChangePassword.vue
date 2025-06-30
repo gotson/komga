@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-const newPassword = defineModel<string>({ required: true })
+const newPassword = defineModel<string>()
 
 const confirmPassword = ref<string>()
 const showPassword = ref<boolean>(false)
