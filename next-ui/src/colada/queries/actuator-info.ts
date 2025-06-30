@@ -9,7 +9,7 @@ export const useActuatorInfo = defineQuery(() => {
       komgaClient
         .GET('/actuator/info')
         // unwrap the openapi-fetch structure on success
-        .then((res) => res.data as ActuatorInfo),
+        .then((res) => res.data as unknown as ActuatorInfo),
     // 1 hour
     staleTime: 60 * 60 * 1000,
     gcTime: false,
