@@ -27,3 +27,4 @@ src/i18n
 
 *storybook.log
 storybook-static
+coverage
