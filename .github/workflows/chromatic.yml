@@ -30,4 +30,5 @@ jobs:
         with:
           workingDir: next-ui
           buildScriptName: 'storybook:build'
+          exitOnceUploaded: true
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
