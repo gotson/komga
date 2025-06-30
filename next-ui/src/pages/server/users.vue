@@ -51,27 +51,34 @@
         </div>
       </template>
 
+      <template #[`item.activity`]="{ value }">
+        {{ $formatDate(value, { dateStyle: 'medium', timeStyle: 'short' }) }}
+      </template>
+
       <template #[`item.actions`]="{ item: user }">
         <div class="d-flex ga-1 justify-end">
           <v-icon-btn
-            v-tooltip:bottom="'Change password'"
+            v-tooltip:bottom="$formatMessage(messages.changePassword)"
             icon="i-mdi:lock-reset"
             @click="showDialog(ACTION.PASSWORD, user)"
             @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
+            :aria-label="$formatMessage(messages.changePassword)"
           />
           <v-icon-btn
-            v-tooltip:bottom="'Edit user'"
+            v-tooltip:bottom="$formatMessage(messages.editUser)"
             icon="i-mdi:pencil"
             :disabled="me?.id == user.id"
             @click="showDialog(ACTION.EDIT, user)"
             @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
+            :aria-label="$formatMessage(messages.editUser)"
           />
           <v-icon-btn
-            v-tooltip:bottom="'Delete user'"
+            v-tooltip:bottom="$formatMessage(messages.deleteUser)"
             icon="i-mdi:delete"
             :disabled="me?.id == user.id"
             @click="showDialog(ACTION.DELETE, user)"
             @mouseenter="dialogConfirm.activator = $event.currentTarget"
+            :aria-label="$formatMessage(messages.deleteUser)"
           />
         </div>
       </template>
@@ -96,7 +103,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useMessagesStore } from '@/stores/messages'
-import { useIntl } from 'vue-intl'
+import { defineMessage, useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
 import UserDeletionWarning from '@/components/user/DeletionWarning.vue'
 import UserFormCreateEdit from '@/fragments/fragment/user/form/CreateEdit.vue'
@@ -347,6 +354,24 @@ function handleDialogConfirmation(
       })
       setLoading(false)
     })
+}
+
+const messages = {
+  deleteUser: defineMessage({
+    description: 'Tooltip for the delete user button in the users table',
+    defaultMessage: 'Delete user',
+    id: 'r6CqyT',
+  }),
+  editUser: defineMessage({
+    description: 'Tooltip for the edit user button in the users table',
+    defaultMessage: 'Edit user',
+    id: 'K40g4r',
+  }),
+  changePassword: defineMessage({
+    description: 'Tooltip for the change password button in the users table',
+    defaultMessage: 'Change password',
+    id: 'r7xCeA',
+  }),
 }
 </script>
 
