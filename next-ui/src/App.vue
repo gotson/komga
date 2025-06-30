@@ -3,8 +3,8 @@
     <router-view />
 
     <FragmentSnackQueue />
-    <FragmentDialogInstanceConfirmEdit />
-    <FragmentDialogInstanceConfirm />
+    <FragmentDialogConfirmEdit />
+    <FragmentDialogConfirm />
   </v-app>
 </template>
 
