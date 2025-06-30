@@ -38,5 +38,5 @@ export const actuatorInfo = {
 }
 
 export const actuatorHandlers = [
-  httpTyped.get('/actuator/info', ({ response }) => response(200).json(actuatorInfo as never)),
+  httpTyped.get('/actuator/info', ({ response }) => response(200).json(actuatorInfo)),
 ]
