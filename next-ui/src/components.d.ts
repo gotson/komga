@@ -19,6 +19,7 @@ declare module 'vue' {
     FragmentLocaleSelector: typeof import('./fragments/fragment/LocaleSelector.vue')['default']
     FragmentSnackQueue: typeof import('./fragments/fragment/SnackQueue.vue')['default']
     FragmentThemeSelector: typeof import('./fragments/fragment/ThemeSelector.vue')['default']
+    FragmentUserFormCreateEdit: typeof import('./fragments/fragment/user/form/CreateEdit.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     LayoutAppBar: typeof import('./fragments/layout/app/Bar.vue')['default']
     LayoutAppDrawer: typeof import('./fragments/layout/app/drawer/Drawer.vue')['default']
