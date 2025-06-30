@@ -5,7 +5,7 @@ import { createMockColada } from '@/mocks/pinia-colada'
 import { enableAutoUnmount } from '@vue/test-utils'
 import type { ErrorCause } from '@/api/komga-client'
 import { response401Unauthorized } from '@/mocks/api/handlers'
-import { httpTyped } from '@/mocks/api/httpTyped'
+import { http } from 'msw'
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
@@ -24,7 +24,7 @@ describe('colada actuator', () => {
   })
 
   test('when failing to get actuator-info then values are undefined', async () => {
-    server.use(httpTyped.get('/actuator/info', response401Unauthorized))
+    server.use(http.get('/actuator/info', response401Unauthorized))
 
     createMockColada(useActuatorInfo)
     const { buildVersion, commitId, refresh, error } = useActuatorInfo()
