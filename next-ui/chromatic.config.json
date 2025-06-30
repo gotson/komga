@@ -1,0 +1,8 @@
+{
+  "$schema": "https://www.chromatic.com/config-file.schema.json",
+  "onlyChanged": true,
+  "projectId": "Project:686209edfaf1ea006b62decc",
+  "storybookBaseDir": "next-ui",
+  "zip": true,
+  "buildScriptName": "storybook:build"
+}

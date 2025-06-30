@@ -22,7 +22,8 @@
     "i18n:compile": "formatjs compile-folder i18n src/i18n",
     "i18n:verify": "formatjs verify --missing-keys --source-locale=en \"i18n/*.json\"",
     "storybook:dev": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "chromatic": "npm run chromatic"
   },
   "dependencies": {
     "@pinia/colada": "^0.17.1",
@@ -57,6 +58,7 @@
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.5.1",
     "@vue/tsconfig": "^0.7.0",
+    "chromatic": "^13.0.1",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-formatjs": "^5.4.0",
