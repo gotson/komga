@@ -22,6 +22,7 @@ export default defineConfigWithVueTs(
       '**/dist/**',
       '**/dist-ssr/**',
       '**/coverage/**',
+      '**/storybook-static/**',
       'openapi-generator.mts',
       '**/generated/openapi/komga.d.ts',
       'public-msw/**/*',
