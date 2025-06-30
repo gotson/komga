@@ -24,7 +24,7 @@ describe('colada actuator', () => {
   })
 
   test('when failing to get actuator-info then values are undefined', async () => {
-    server.use(http.get('/actuator/info', response401Unauthorized))
+    server.use(http.get('*/actuator/info', response401Unauthorized))
 
     createMockColada(useActuatorInfo)
     const { buildVersion, commitId, refresh, error } = useActuatorInfo()
