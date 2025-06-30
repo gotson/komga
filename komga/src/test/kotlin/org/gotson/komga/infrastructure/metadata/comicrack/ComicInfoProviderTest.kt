@@ -389,7 +389,7 @@ class ComicInfoProviderTest {
 
       with(patch) {
         assertThat(title).isEqualTo("séries")
-        assertThat(titleSort).isEqualTo("series")
+        assertThat(titleSort).isEqualTo("séries")
         assertThat(status).isNull()
         assertThat(collections).containsExactlyInAnyOrder("collections", "multiple")
         assertThat(publisher).isEqualTo("publisher")

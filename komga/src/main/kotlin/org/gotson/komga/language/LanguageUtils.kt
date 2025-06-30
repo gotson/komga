@@ -46,6 +46,9 @@ fun LocalDateTime.notEquals(
   precision: TemporalUnit = ChronoUnit.MILLIS,
 ) = this.truncatedTo(precision) != other.truncatedTo(precision)
 
+/**
+ * Warning: This affects the Unicode code points of Korean Hangul.
+ */
 fun String.stripAccents(): String = StringUtils.stripAccents(this)
 
 fun LocalDate.toDate(): Date = Date.from(this.atStartOfDay(ZoneId.of("Z")).toInstant())

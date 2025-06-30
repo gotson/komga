@@ -155,7 +155,7 @@ class SeriesLifecycle(
       seriesMetadataRepository.insert(
         SeriesMetadata(
           title = series.name,
-          titleSort = series.name.stripAccents(),
+          titleSort = series.name,
           seriesId = series.id,
         ),
       )

@@ -14,7 +14,6 @@ import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.infrastructure.mediacontainer.epub.getPackageFileContent
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
-import org.gotson.komga.language.stripAccents
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
 import org.jsoup.safety.Safelist
@@ -138,7 +137,7 @@ class EpubMetadataProvider(
 
       return SeriesMetadataPatch(
         title = series,
-        titleSort = series?.stripAccents(),
+        titleSort = series,
         status = null,
         readingDirection = direction,
         publisher = publisher,

@@ -10,7 +10,6 @@ import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
 import org.gotson.komga.infrastructure.jooq.csAlias
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
 import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.noCase
 import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toSortField
@@ -85,7 +84,7 @@ class SeriesDtoDao(
 
   private val sorts =
     mapOf(
-      "metadata.titleSort" to d.TITLE_SORT.noCase(),
+      "metadata.titleSort" to d.TITLE_SORT.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
       "createdDate" to s.CREATED_DATE,
       "created" to s.CREATED_DATE,
       "lastModifiedDate" to s.LAST_MODIFIED_DATE,

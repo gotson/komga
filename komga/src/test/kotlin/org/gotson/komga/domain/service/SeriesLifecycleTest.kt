@@ -168,33 +168,6 @@ class SeriesLifecycleTest(
     assertThat(savedBooks.map { it.number }).containsExactly(1, 2, 3, 4, 5)
   }
 
-  @Test
-  fun `given series name with diacritics when creating series then diacritics are stripped from metadata titlesort`() {
-    // given
-    val series1 = makeSeries("À l'assaut", library.id)
-    val series2 = makeSeries("Être ou ne pas être", library.id)
-    val series3 = makeSeries("Écarlate", library.id)
-
-    // when
-    val created1 = seriesLifecycle.createSeries(series1)
-    val created2 = seriesLifecycle.createSeries(series2)
-    val created3 = seriesLifecycle.createSeries(series3)
-
-    // then
-    with(seriesMetadataRepository.findById(created1.id)) {
-      assertThat(title).isEqualTo(series1.name)
-      assertThat(titleSort).isEqualTo("A l'assaut")
-    }
-    with(seriesMetadataRepository.findById(created2.id)) {
-      assertThat(title).isEqualTo(series2.name)
-      assertThat(titleSort).isEqualTo("Etre ou ne pas etre")
-    }
-    with(seriesMetadataRepository.findById(created3.id)) {
-      assertThat(title).isEqualTo(series3.name)
-      assertThat(titleSort).isEqualTo("Ecarlate")
-    }
-  }
-
   @Nested
   inner class Transactions {
     @Test

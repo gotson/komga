@@ -60,7 +60,7 @@ class MylarSeriesProviderTest {
 
     with(patch) {
       assertThat(title).isEqualTo("Sàndman")
-      assertThat(titleSort).isEqualTo("Sandman")
+      assertThat(titleSort).isEqualTo("Sàndman")
       assertThat(status).isEqualTo(SeriesMetadata.Status.ENDED)
       assertThat(summary).isEqualTo("Sandman comics formatted")
       assertThat(readingDirection).isNull()

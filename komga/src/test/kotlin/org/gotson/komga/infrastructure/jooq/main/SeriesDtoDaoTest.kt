@@ -128,6 +128,32 @@ class SeriesDtoDaoTest(
   }
 
   @Nested
+  inner class SortCriteria {
+    @Test
+    fun `given series when sorting by title sort then results are ordered`() {
+      // given
+      seriesLifecycle.createSeries(makeSeries("Éb", library.id))
+      seriesLifecycle.createSeries(makeSeries("Ea", library.id))
+      seriesLifecycle.createSeries(makeSeries("Ec", library.id))
+
+      searchIndexLifecycle.rebuildIndex()
+      Thread.sleep(500) // index rebuild is done asynchronously, and need a slight delay to be updated
+
+      // when
+      val found =
+        seriesDtoDao
+          .findAll(
+            SeriesSearch(),
+            SearchContext(user),
+            UnpagedSorted(Sort.by("metadata.titleSort")),
+          ).content
+
+      // then
+      assertThat(found.map { it.metadata.title }).containsExactly("Ea", "Éb", "Ec")
+    }
+  }
+
+  @Nested
   inner class ReadProgress {
     @Test
     fun `given series in various read status when searching for read series then only read series are returned`() {
