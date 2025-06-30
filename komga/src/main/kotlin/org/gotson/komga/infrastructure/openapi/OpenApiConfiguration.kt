@@ -194,11 +194,12 @@ class OpenApiConfiguration(
                         .addMediaType(
                           "application/json",
                           MediaType()
-                            .schema(Schema<Map<String, Any>>().apply {
-                              type = "object"
-                              additionalProperties = true
-                            })
-                            .addExamples(
+                            .schema(
+                              Schema<Map<String, Any>>().apply {
+                                type = "object"
+                                additionalProperties = true
+                              },
+                            ).addExamples(
                               "Example",
                               Example()
                                 .value(
