@@ -42,7 +42,6 @@
     "@eslint/js": "^9.29.0",
     "@formatjs/cli": "^6.7.2",
     "@iconify-json/mdi": "^1.2.3",
-    "@mswjs/source": "^0.4.1",
     "@storybook/addon-a11y": "^9.0.13",
     "@storybook/addon-docs": "^9.0.13",
     "@storybook/addon-themes": "^9.0.13",
