@@ -29,4 +29,5 @@ jobs:
         uses: chromaui/action@latest
         with:
           workingDir: next-ui
+          buildScriptName: 'storybook:build'
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
