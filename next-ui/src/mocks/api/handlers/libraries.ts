@@ -1,4 +1,5 @@
 import { httpTyped } from '@/mocks/api/httpTyped'
+import type { components } from '@/generated/openapi/komga'
 
 export const libraries = [
   {
@@ -32,7 +33,7 @@ export const libraries = [
     analyzeDimensions: false,
     oneshotsDirectory: '_oneshots',
     unavailable: false,
-  },
+  } as components['schemas']['LibraryDto'],
   {
     id: '2',
     name: 'Comics',
@@ -62,9 +63,8 @@ export const libraries = [
     hashPages: false,
     hashKoreader: false,
     analyzeDimensions: true,
-    oneshotsDirectory: null,
     unavailable: false,
-  },
+  } as components['schemas']['LibraryDto'],
 ]
 
 export const librariesHandlers = [
