@@ -7,90 +7,25 @@
   />
 
   <template v-else>
-    <v-data-table
+    <FragmentUserTable
+      :users="users"
       :loading="isLoading"
-      :items="users"
-      :headers="headers"
-      :hide-default-footer="hideFooter"
-      mobile-breakpoint="md"
-    >
-      <template #top>
-        <v-toolbar flat>
-          <v-toolbar-title>
-            <v-icon
-              color="medium-emphasis"
-              icon="i-mdi:account-multiple"
-              size="x-small"
-              start
-            />
-            Users
-          </v-toolbar-title>
-
-          <v-btn
-            class="me-2"
-            prepend-icon="i-mdi:plus"
-            rounded="lg"
-            text="Add a User"
-            border
-            @click="showDialog(ACTION.ADD)"
-            @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
-          />
-        </v-toolbar>
-      </template>
-
-      <template #[`item.roles`]="{ value }">
-        <div class="d-flex ga-1 flex-wrap">
-          <v-chip
-            v-for="role in value"
-            :key="role"
-            :color="getRoleColor(role)"
-            :text="role"
-            size="x-small"
-            rounded
-          />
-        </div>
-      </template>
-
-      <template #[`item.activity`]="{ value }">
-        {{ $formatDate(value, { dateStyle: 'medium', timeStyle: 'short' }) }}
-      </template>
-
-      <template #[`item.actions`]="{ item: user }">
-        <div class="d-flex ga-1 justify-end">
-          <v-icon-btn
-            v-tooltip:bottom="$formatMessage(messages.changePassword)"
-            icon="i-mdi:lock-reset"
-            @click="showDialog(ACTION.PASSWORD, user)"
-            @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
-            :aria-label="$formatMessage(messages.changePassword)"
-          />
-          <v-icon-btn
-            v-tooltip:bottom="$formatMessage(messages.editUser)"
-            icon="i-mdi:pencil"
-            :disabled="me?.id == user.id"
-            @click="showDialog(ACTION.EDIT, user)"
-            @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
-            :aria-label="$formatMessage(messages.editUser)"
-          />
-          <v-icon-btn
-            v-tooltip:bottom="$formatMessage(messages.deleteUser)"
-            icon="i-mdi:delete"
-            :disabled="me?.id == user.id"
-            @click="showDialog(ACTION.DELETE, user)"
-            @mouseenter="dialogConfirm.activator = $event.currentTarget"
-            :aria-label="$formatMessage(messages.deleteUser)"
-          />
-        </div>
-      </template>
-    </v-data-table>
+      @add-user="showDialog(ACTION.ADD)"
+      @change-password="(user) => showDialog(ACTION.PASSWORD, user)"
+      @edit-user="(user) => showDialog(ACTION.EDIT, user)"
+      @delete-user="(user) => showDialog(ACTION.DELETE, user)"
+      @enter-add-user="(target) => (dialogConfirmEdit.activator = target)"
+      @enter-edit-user="(target) => (dialogConfirmEdit.activator = target)"
+      @enter-change-password="(target) => (dialogConfirmEdit.activator = target)"
+      @enter-delete-user="(target) => (dialogConfirm.activator = target)"
+    />
   </template>
 </template>
 
 <script lang="ts" setup>
 import { useUsers } from '@/colada/queries/users'
-import { type ErrorCause, komgaClient } from '@/api/komga-client'
+import { type ErrorCause } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
-import { useCurrentUser } from '@/colada/queries/current-user'
 import { UserRoles } from '@/types/UserRoles'
 import {
   useCreateUser,
@@ -103,7 +38,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useMessagesStore } from '@/stores/messages'
-import { defineMessage, useIntl } from 'vue-intl'
+import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
 import UserDeletionWarning from '@/components/user/DeletionWarning.vue'
 import UserFormCreateEdit from '@/fragments/fragment/user/form/CreateEdit.vue'
@@ -113,47 +48,6 @@ const intl = useIntl()
 
 // API data
 const { data: users, error, isLoading, refetch: refetchUsers } = useUsers()
-const { data: me } = useCurrentUser()
-
-// Table
-const hideFooter = computed(() => users.value && users.value.length < 11)
-const headers = [
-  { title: 'Email', key: 'email' },
-  {
-    title: 'Latest Activity',
-    key: 'activity',
-    value: (item: components['schemas']['UserDto']) => latestActivity[item.id],
-  },
-  { title: 'Roles', value: 'roles', sortable: false },
-  { title: 'Actions', key: 'actions', align: 'end', sortable: false },
-] as const // workaround for https://github.com/vuetifyjs/vuetify/issues/18901
-
-function getRoleColor(role: UserRoles) {
-  if (role === UserRoles.ADMIN) return 'error'
-}
-
-// store each user's latest activity in a map
-// when the 'users' change, we call the API for each user
-const latestActivity: Record<string, Date | undefined> = reactive({})
-
-function getLatestActivity(userId: string) {
-  komgaClient
-    .GET('/api/v2/users/{id}/authentication-activity/latest', {
-      params: {
-        path: { id: userId },
-      },
-    })
-    // unwrap the openapi-fetch structure on success
-    .then((res) => (latestActivity[userId] = res.data?.dateTime))
-    .catch(() => {})
-}
-
-watch(users, (users) => {
-  if (users)
-    for (const user of users) {
-      getLatestActivity(user.id)
-    }
-})
 
 onMounted(() => refetchUsers())
 
@@ -354,24 +248,6 @@ function handleDialogConfirmation(
       })
       setLoading(false)
     })
-}
-
-const messages = {
-  deleteUser: defineMessage({
-    description: 'Tooltip for the delete user button in the users table',
-    defaultMessage: 'Delete user',
-    id: 'r6CqyT',
-  }),
-  editUser: defineMessage({
-    description: 'Tooltip for the edit user button in the users table',
-    defaultMessage: 'Edit user',
-    id: 'K40g4r',
-  }),
-  changePassword: defineMessage({
-    description: 'Tooltip for the change password button in the users table',
-    defaultMessage: 'Change password',
-    id: 'r7xCeA',
-  }),
 }
 </script>
 
