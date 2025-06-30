@@ -1,0 +1,32 @@
+name: Chromatic
+
+on:
+  push:
+    branches:
+      - 'next-ui'
+
+jobs:
+  chromatic:
+    name: Run Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: next-ui/package-lock.json
+
+      - name: npm install
+        working-directory: next-ui
+        run: npm ci
+
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          workingDir: next-ui
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
