@@ -20,6 +20,7 @@ declare module 'vue' {
     FragmentSnackQueue: typeof import('./fragments/fragment/SnackQueue.vue')['default']
     FragmentThemeSelector: typeof import('./fragments/fragment/ThemeSelector.vue')['default']
     FragmentUserFormCreateEdit: typeof import('./fragments/fragment/user/form/CreateEdit.vue')['default']
+    FragmentUserTable: typeof import('./fragments/fragment/user/Table.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     LayoutAppBar: typeof import('./fragments/layout/app/Bar.vue')['default']
     LayoutAppDrawer: typeof import('./fragments/layout/app/drawer/Drawer.vue')['default']
@@ -36,6 +37,5 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     UserDeletionWarning: typeof import('./components/user/DeletionWarning.vue')['default']
     UserFormChangePassword: typeof import('./components/user/form/ChangePassword.vue')['default']
-    UserFormCreateEdit: typeof import('./components/user/form/CreateEdit.vue')['default']
   }
 }
