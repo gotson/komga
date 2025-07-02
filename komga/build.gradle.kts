@@ -265,7 +265,7 @@ val sqliteMigrationDirs =
       ),
   )
 
-task("flywayMigrateMain", FlywayMigrateTask::class) {
+tasks.register("flywayMigrateMain", FlywayMigrateTask::class) {
   val id = "main"
   url = sqliteUrls[id]
   locations = arrayOf("classpath:db/migration/sqlite")
@@ -287,7 +287,7 @@ task("flywayMigrateMain", FlywayMigrateTask::class) {
   mixed = true
 }
 
-task("flywayMigrateTasks", FlywayMigrateTask::class) {
+tasks.register("flywayMigrateTasks", FlywayMigrateTask::class) {
   val id = "tasks"
   url = sqliteUrls[id]
   locations = arrayOf("classpath:tasks/migration/sqlite")
