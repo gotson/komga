@@ -173,13 +173,7 @@
     <template #prepend-item>
       <v-list-item>
         <span class="font-weight-medium">
-          {{
-            $formatMessage({
-              description: 'User creation/edit dialog: Allow only labels field selection',
-              defaultMessage: 'Select an item or create one',
-              id: 'app.user-create-dialog.select_create_one',
-            })
-          }}
+          {{ $formatMessage(commonMessages.selectItemOrCreateOne) }}
         </span>
       </v-list-item>
     </template>
@@ -204,13 +198,7 @@
     <template #prepend-item>
       <v-list-item>
         <span class="font-weight-medium">
-          {{
-            $formatMessage({
-              description: 'User creation/edit dialog: Exclude labels field selection',
-              defaultMessage: 'Select an item or create one',
-              id: 'app.user-create-dialog.select_create_one',
-            })
-          }}
+          {{ $formatMessage(commonMessages.selectItemOrCreateOne) }}
         </span>
       </v-list-item>
     </template>
@@ -223,6 +211,7 @@ import type { components } from '@/generated/openapi/komga'
 import { useLibraries } from '@/colada/queries/libraries'
 import { useSharingLabels } from '@/colada/queries/referential'
 import { useIntl } from 'vue-intl'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
 
