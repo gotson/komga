@@ -3,6 +3,8 @@ import localeMessages from '@/i18n?dir2json&ext=.json&1'
 
 export const defaultLocale = 'en'
 
+const USER_LOCALE_KEY = 'komga.userLocale'
+
 const localeName = defineMessage({
   description:
     "The name of the locale, shown in the language selection menu. Must be translated to the language's name",
@@ -43,7 +45,7 @@ export const availableLocales = loadAvailableLocales()
  * If the locale is not valid, defaults to 'en'.
  */
 export function getLocale(): string {
-  const storageLocale = localStorage.getItem('userLocale') ?? defaultLocale
+  const storageLocale = localStorage.getItem(USER_LOCALE_KEY) ?? defaultLocale
   return storageLocale in availableLocales ? storageLocale : defaultLocale
 }
 
@@ -55,7 +57,7 @@ export const currentLocale = getLocale()
  */
 export function setLocale(locale: string) {
   if (locale !== currentLocale) {
-    localStorage.setItem('userLocale', locale)
+    localStorage.setItem(USER_LOCALE_KEY, locale)
     window.location.reload()
   }
 }
