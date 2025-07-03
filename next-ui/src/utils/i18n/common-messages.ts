@@ -21,4 +21,9 @@ export const commonMessages = {
     defaultMessage: 'error',
     id: 'Xz+JXU',
   }),
+  selectItemOrCreateOne: defineMessage({
+    description: 'Common message: shown in combobox',
+    defaultMessage: 'Select an item or create one',
+    id: 'HXms0S',
+  }),
 }
