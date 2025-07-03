@@ -1,0 +1,15 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './updates.stories';
+
+<Meta of={Stories} />
+
+# Updates
+
+Page showing the updates (releases) retrieved from the Komga server.
+
+The latest and current release will display a chip next to the version number.
+
+The top banner will inform the user whether an update is available or not.
+
+<Canvas of={Stories.Latest} />

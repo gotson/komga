@@ -2,6 +2,7 @@
   <v-btn
     :icon="themeIcon"
     @click="cycleTheme()"
+    aria-label="theme selector"
   />
 </template>
 

@@ -1,0 +1,18 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './Table.stories';
+
+<Meta of={Stories} />
+
+# FragmentUserTable
+
+A Vuetify [Data Table](https://vuetifyjs.com/en/components/data-tables/basics/) to display a list of users.
+
+Actions are available for each user:
+- Change password
+- Edit (not available for the current user)
+- Delete (not available for the current user)
+
+Actions are hooked up in the `users` page.
+
+<Canvas of={Stories.Default} />
