@@ -59,6 +59,14 @@
     "defaultMessage": "Announcements",
     "description": "Drawer menu for Server > Announcements"
   },
+  "GZCEBS": {
+    "defaultMessage": "Add a user",
+    "description": "Users table global header: add user button"
+  },
+  "HXms0S": {
+    "defaultMessage": "Select an item or create one",
+    "description": "Common message: shown in combobox"
+  },
   "HaWCi3": {
     "defaultMessage": "Settings",
     "description": "Drawer menu for Server > Settings"
@@ -82,6 +90,10 @@
   "JbF1nK": {
     "defaultMessage": "Password changed for user: {email}",
     "description": "Snackbar notification shown upon successful user's password modification"
+  },
+  "K40g4r": {
+    "defaultMessage": "Edit user",
+    "description": "Tooltip for the edit user button in the users table"
   },
   "LaxrEO": {
     "defaultMessage": "Passwords must be identical",
@@ -155,9 +167,9 @@
     "defaultMessage": "All libraries",
     "description": "User creation/edit dialog: Shared Libraries field, value shown when user has access to all libraries"
   },
-  "app.user-create-dialog.select_create_one": {
-    "defaultMessage": "Select an item or create one",
-    "description": "User creation/edit dialog: Exclude labels field selection"
+  "c+hx0g": {
+    "defaultMessage": "Users",
+    "description": "Users table global header"
   },
   "cAu/I6": {
     "defaultMessage": "Duplicate Pages",
@@ -219,6 +231,10 @@
     "defaultMessage": "Updates",
     "description": "Drawer menu for Server > Updates"
   },
+  "lvCpSX": {
+    "defaultMessage": "Actions",
+    "description": "User table header: user actions"
+  },
   "n1Ik+L": {
     "defaultMessage": "Updates are available",
     "description": "Updates view: banner shown at the top"
@@ -247,9 +263,17 @@
     "defaultMessage": "Unknown",
     "description": "Drawer menu for Media > Duplicate Pages > Unknown"
   },
+  "r6CqyT": {
+    "defaultMessage": "Delete user",
+    "description": "Tooltip for the delete user button in the users table"
+  },
   "r6JNfI": {
     "defaultMessage": "Forgot your password?",
     "description": "Login screen: Forgot your password link"
+  },
+  "r7xCeA": {
+    "defaultMessage": "Change password",
+    "description": "Tooltip for the change password button in the users table"
   },
   "rw/Dkw": {
     "defaultMessage": "User Interface",
@@ -263,6 +287,10 @@
     "defaultMessage": "Logout",
     "description": "Drawer menu for Logout"
   },
+  "ut2gmo": {
+    "defaultMessage": "Roles",
+    "description": "User table header: user roles"
+  },
   "wmGcF+": {
     "defaultMessage": "Exclude over",
     "description": "User creation/edit dialog: Age restriction field possible option"
@@ -270,5 +298,13 @@
   "xYGXuU": {
     "defaultMessage": "Details",
     "description": "Drawer menu for My Account > Details"
+  },
+  "y1P/K4": {
+    "defaultMessage": "Latest activity",
+    "description": "User table header: user latest activity"
+  },
+  "zfQq+w": {
+    "defaultMessage": "Email",
+    "description": "User table header: user email"
   }
 }
