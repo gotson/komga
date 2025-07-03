@@ -25,6 +25,10 @@ jobs:
         working-directory: next-ui
         run: npm ci
 
+      - name: npm i18n:compile
+        working-directory: next-ui
+        run: npm i18n:compile
+
       - name: Run Chromatic
         uses: chromaui/action@latest
         with:
