@@ -10,6 +10,8 @@ import { PiniaColada } from '@pinia/colada'
 import { PiniaColadaAutoRefetch } from '@pinia/colada-plugin-auto-refetch'
 import { vueIntl } from '@/plugins/vue-intl'
 import 'virtual:uno.css'
+import { availableLocales } from '@/utils/i18n/locale-helper'
+import { localeDecorator } from './locale.decorator'
 
 initialize(
   {
@@ -17,6 +19,14 @@ initialize(
   },
   handlers,
 )
+
+const locales: object[] = []
+Object.entries(availableLocales).forEach(([code, name]) => {
+  locales.push({
+    value: code,
+    title: name,
+  })
+})
 
 const preview: Preview = {
   parameters: {
@@ -35,6 +45,19 @@ const preview: Preview = {
     },
   },
   loaders: [mswLoader],
+  globalTypes: {
+    locale: {
+      name: 'Locale',
+      description: 'Internationalization locale',
+      toolbar: {
+        icon: 'globe',
+        items: locales,
+      },
+    },
+  },
+  initialGlobals: {
+    locale: 'en',
+  },
 }
 
 export default preview
@@ -60,4 +83,5 @@ export const decorators = [
     },
     defaultTheme: 'light', // The key of your default theme
   }),
+  localeDecorator(),
 ]
