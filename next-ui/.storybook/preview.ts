@@ -12,7 +12,6 @@ import { vueIntl } from '@/plugins/vue-intl'
 import 'virtual:uno.css'
 import { availableLocales } from '@/utils/i18n/locale-helper'
 import { localeDecorator } from './locale.decorator'
-import { INITIAL_VIEWPORTS } from 'storybook/viewport'
 import { viewports } from './viewport'
 
 initialize(
