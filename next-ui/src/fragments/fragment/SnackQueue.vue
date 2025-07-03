@@ -2,6 +2,7 @@
   <v-snackbar-queue
     v-model="messagesStore.messages"
     timer
+    close-on-content-click
   />
 </template>
 
