@@ -1,0 +1,11 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './BuildVersion.stories';
+
+<Meta of={Stories} />
+
+# FragmentBuildVersion
+
+A button showing the current version of the Komga server. Will show a dot badge if a new update is available.
+
+<Canvas of={Stories.Default} />
