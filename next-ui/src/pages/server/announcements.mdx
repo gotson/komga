@@ -1,0 +1,13 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './announcements.stories';
+
+<Meta of={Stories} />
+
+# Announcements
+
+Page showing the announcements retrieved from the Komga server.
+
+Announcements can be marked as read either one by one, or in bulk using the floating action button.
+
+<Canvas of={Stories.Unread} />
