@@ -12,6 +12,8 @@ import { vueIntl } from '@/plugins/vue-intl'
 import 'virtual:uno.css'
 import { availableLocales } from '@/utils/i18n/locale-helper'
 import { localeDecorator } from './locale.decorator'
+import { INITIAL_VIEWPORTS } from 'storybook/viewport'
+import { viewports } from './viewport'
 
 initialize(
   {
@@ -36,7 +38,9 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-
+    viewport: {
+      options: [...viewports],
+    },
     a11y: {
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations
