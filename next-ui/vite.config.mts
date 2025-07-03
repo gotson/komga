@@ -117,6 +117,33 @@ export default defineConfig({
             },
           },
         },
+        optimizeDeps: {
+          include: [
+            'vuetify/components/VAlert',
+            'vuetify/components/VApp',
+            'vuetify/components/VBadge',
+            'vuetify/components/VBtn',
+            'vuetify/components/VCard',
+            'vuetify/components/VCheckbox',
+            'vuetify/components/VChip',
+            'vuetify/components/VCombobox',
+            'vuetify/components/VDataTable',
+            'vuetify/components/VEmptyState',
+            'vuetify/components/VFab',
+            'vuetify/components/VGrid',
+            'vuetify/components/VIcon',
+            'vuetify/components/VList',
+            'vuetify/components/VMain',
+            'vuetify/components/VMenu',
+            'vuetify/components/VNumberInput',
+            'vuetify/components/VSelect',
+            'vuetify/components/VSkeletonLoader',
+            'vuetify/components/VSnackbarQueue',
+            'vuetify/components/VTextField',
+            'vuetify/components/VToolbar',
+            'vuetify/directives',
+          ],
+        },
         plugins: [
           // The plugin will run tests for the stories defined in your Storybook config
           // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
