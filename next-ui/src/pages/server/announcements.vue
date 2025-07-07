@@ -1,6 +1,6 @@
 <template>
   <v-skeleton-loader
-    v-if="isLoading"
+    v-if="isPending"
     type="heading, text, paragraph@3"
   />
 
@@ -61,7 +61,7 @@ import { useAnnouncements } from '@/colada/queries/announcements'
 import { useMarkAnnouncementsRead } from '@/colada/mutations/mark-announcements-read'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
-const { data: announcements, error, unreadCount, isLoading } = useAnnouncements()
+const { data: announcements, error, unreadCount, isPending } = useAnnouncements()
 
 const { mutate: markAnnouncementsRead } = useMarkAnnouncementsRead()
 
