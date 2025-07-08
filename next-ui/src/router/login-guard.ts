@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-import { useCurrentUser } from '@/colada/queries/current-user'
+import { useCurrentUser } from '@/colada/users'
 
 // check if the user is authenticated before navigating to any page
 // the authentication is cached by Pinia Colada

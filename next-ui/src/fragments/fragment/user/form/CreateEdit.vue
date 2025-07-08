@@ -208,8 +208,8 @@
 <script setup lang="ts">
 import { UserRoles } from '@/types/UserRoles'
 import type { components } from '@/generated/openapi/komga'
-import { useLibraries } from '@/colada/queries/libraries'
-import { useSharingLabels } from '@/colada/queries/referential'
+import { useLibraries } from '@/colada/libraries'
+import { useSharingLabels } from '@/colada/referential'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 

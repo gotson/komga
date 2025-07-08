@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest'
 import { server } from '@/mocks/api/node'
-import { useActuatorInfo } from '@/colada/queries/actuator-info'
+import { useActuatorInfo } from '@/colada/actuator-info'
 import { createMockColada } from '@/mocks/pinia-colada'
 import { enableAutoUnmount } from '@vue/test-utils'
 import type { ErrorCause } from '@/api/komga-client'
