@@ -57,8 +57,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useAnnouncements } from '@/colada/queries/announcements'
-import { useMarkAnnouncementsRead } from '@/colada/mutations/mark-announcements-read'
+import { useAnnouncements, useMarkAnnouncementsRead } from '@/colada/announcements'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const { data: announcements, error, unreadCount, isPending } = useAnnouncements()
