@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLogout } from '@/colada/mutations/logout'
+import { useLogout } from '@/colada/users'
 
 const router = useRouter()
 const { mutateAsync: logoutAsync } = useLogout()

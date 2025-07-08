@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAppReleases } from '@/colada/queries/app-releases'
+import { useAppReleases } from '@/colada/app-releases'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const { buildVersion, isLatestVersion, isLoading } = useAppReleases()
