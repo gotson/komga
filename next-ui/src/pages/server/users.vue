@@ -23,17 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useUsers } from '@/colada/queries/users'
 import { type ErrorCause } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
 import { UserRoles } from '@/types/UserRoles'
-import {
-  useCreateUser,
-  useDeleteUser,
-  useUpdateUser,
-  useUpdateUserPassword,
-} from '@/colada/mutations/update-user'
-import { useLibraries } from '@/colada/queries/libraries'
+import { useLibraries } from '@/colada/libraries'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
@@ -43,6 +36,13 @@ import { useDisplay } from 'vuetify'
 import UserDeletionWarning from '@/components/user/DeletionWarning.vue'
 import UserFormCreateEdit from '@/fragments/fragment/user/form/CreateEdit.vue'
 import UserFormChangePassword from '@/components/user/form/ChangePassword.vue'
+import {
+  useCreateUser,
+  useDeleteUser,
+  useUpdateUser,
+  useUpdateUserPassword,
+  useUsers,
+} from '@/colada/users'
 
 const intl = useIntl()
 
