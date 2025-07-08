@@ -1,6 +1,6 @@
 import { defineQuery, useQuery } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
-import { useActuatorInfo } from '@/colada/queries/actuator-info'
+import { useActuatorInfo } from '@/colada/actuator-info'
 
 export const useAppReleases = defineQuery(() => {
   const { data, ...rest } = useQuery({

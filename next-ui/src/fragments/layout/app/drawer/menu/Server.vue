@@ -99,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAnnouncements } from '@/colada/queries/announcements'
+import { useAnnouncements } from '@/colada/announcements'
 
 const { unreadCount } = useAnnouncements()
 </script>
