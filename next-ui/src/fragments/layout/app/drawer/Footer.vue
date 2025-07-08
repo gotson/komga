@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCurrentUser } from '@/colada/queries/current-user'
+import { useCurrentUser } from '@/colada/users'
 
 const { isAdmin } = useCurrentUser()
 </script>
