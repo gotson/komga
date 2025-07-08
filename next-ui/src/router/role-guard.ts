@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-import { useCurrentUser } from '@/colada/queries/current-user'
+import { useCurrentUser } from '@/colada/users'
 
 // check if the user has the necessary role before navigating to restricted pages
 // the authentication is cached by Pinia Colada

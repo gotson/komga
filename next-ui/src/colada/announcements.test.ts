@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, test } from 'vitest'
 import { server } from '@/mocks/api/node'
 import { createMockColada } from '@/mocks/pinia-colada'
-import { useAnnouncements } from '@/colada/queries/announcements'
+import { useAnnouncements } from '@/colada/announcements'
 import { enableAutoUnmount } from '@vue/test-utils'
 
 beforeAll(() => server.listen())

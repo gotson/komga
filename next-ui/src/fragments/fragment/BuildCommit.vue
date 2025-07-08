@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { useActuatorInfo } from '@/colada/queries/actuator-info'
+import { useActuatorInfo } from '@/colada/actuator-info'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const { commitId, isLoading } = useActuatorInfo()

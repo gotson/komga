@@ -93,9 +93,10 @@
 <script lang="ts" setup>
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
-import { useCurrentUser } from '@/colada/queries/current-user'
 import { UserRoles } from '@/types/UserRoles'
 import { defineMessage, useIntl } from 'vue-intl'
+
+import { useCurrentUser } from '@/colada/users'
 
 const intl = useIntl()
 
