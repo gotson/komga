@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppReleases } from '@/colada/queries/app-releases'
+import { useAppReleases } from '@/colada/app-releases'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const {
