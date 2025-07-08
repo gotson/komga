@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useCurrentUser } from '@/colada/queries/current-user'
+import { useCurrentUser } from '@/colada/users'
 
 async function checkAuthenticated() {
   const router = useRouter()
