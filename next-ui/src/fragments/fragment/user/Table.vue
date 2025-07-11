@@ -57,7 +57,19 @@
     </template>
 
     <template #[`item.activity`]="{ value }">
-      {{ $formatDate(value, { dateStyle: 'medium', timeStyle: 'short' }) }}
+      <template v-if="value"
+        >{{ $formatDate(value, { dateStyle: 'medium', timeStyle: 'short' }) }}
+      </template>
+      <template v-else
+        >{{
+          $formatMessage({
+            description:
+              'Shown in users table when there is no recent authentication activity for the user',
+            defaultMessage: 'No recent activity',
+            id: 'CvsH7/',
+          })
+        }}
+      </template>
     </template>
 
     <template #[`item.actions`]="{ item: user }">
@@ -188,6 +200,7 @@ watch(
         getLatestActivity(user.id)
       }
   },
+  { immediate: true },
 )
 
 const messages = {
