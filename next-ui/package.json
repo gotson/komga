@@ -38,7 +38,7 @@
     "pinia-plugin-persistedstate": "^4.4.1",
     "vue": "^3.5.17",
     "vue-intl": "^6.5.25",
-    "vuetify": "^3.8.11"
+    "vuetify": "^3.9.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.0.1",
@@ -52,7 +52,7 @@
     "@storybook/vue3-vite": "^9.0.16",
     "@testing-library/vue": "^8.1.0",
     "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^24.0.12",
+    "@types/node": "^24.0.13",
     "@unocss/preset-icons": "^66.3.3",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vitest/browser": "^3.2.4",
@@ -72,7 +72,7 @@
     "npm-run-all2": "^8.0.4",
     "openapi-msw": "^1.2.0",
     "openapi-typescript": "^7.8.0",
-    "playwright": "^1.53.2",
+    "playwright": "^1.54.0",
     "prettier": "^3.6.2",
     "sass": "^1.89.2",
     "sass-embedded": "^1.89.2",
