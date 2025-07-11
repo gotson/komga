@@ -295,6 +295,7 @@
     "comicrack_preambule_html": "U kunt bestaande ComicRack leeslijsten importeren in <code>.cbl</code> formaat.<br>Komga zal proberen om de opgegeven serie en boeknummer te matchen met series en boeken in uw bibliotheken.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} boeken komen niet overeen",
+      "body2": "{duplicates} / {total} boeken zijn gedupliceerd",
       "create": "Toch aanmaken",
       "title": "Sommige boeken komen niet overeen"
     },
@@ -312,9 +313,11 @@
   "dialog": {
     "add_api_key": {
       "button_confirm": "Genereer",
+      "context": "API-sleutels kunnen worden gebruikt voor authenticatie via het Kobo Sync-protocol.",
       "dialog_title": "Genereer nieuwe API-sleutel",
       "field_comment": "Opmerking",
-      "field_comment_hint": "Waar dient deze API-sleutel voor?"
+      "field_comment_hint": "Waar dient deze API-sleutel voor?",
+      "info_copy": "Zorg ervoor dat u uw API-sleutel nu kopieert. U kunt deze niet meer zien!"
     },
     "add_to_collection": {
       "button_create": "Maken",
@@ -508,6 +511,7 @@
     },
     "edit_recommended": {
       "button_confirm": "Wijzigingen opslaan",
+      "button_reset": "Resetten naar standaardinstellingen",
       "dialog_title": "Aanbevolen weergave bewerken"
     },
     "edit_series": {
@@ -579,6 +583,7 @@
       "title": "Doelbestandsnaam"
     },
     "force_kobo_sync": {
+      "dialog_title": "Kobo-synchronisatie forceren",
       "warning_html": "Dit verwijdert alle synchronisatiegeschiedenis voor deze API-sleutel. Je Kobo zal bij de volgende synchronisatie alles synchroniseren."
     },
     "password_change": {
@@ -664,7 +669,7 @@
     "matches_n": "Geen overeenkomsten | 1 overeenkomst | {count} overeenkomsten",
     "new": "Nieuw",
     "saved_size": "{size} bespaard",
-    "title": "Duplicaatpagina's",
+    "title": "Dubbele pagina's",
     "unknown_size": "Onbekende grootte"
   },
   "duplicates": {
@@ -816,6 +821,7 @@
   "filter": {
     "age_rating": "leeftijdsclassificatie",
     "age_rating_none": "Geen",
+    "any": "Elk",
     "complete": "Compleet",
     "genre": "genre",
     "in_progress": "Wordt uitgevoerd",
@@ -860,7 +866,7 @@
   },
   "login": {
     "create_user_account": "Maak gebruikersaccount aan",
-    "login": "Login",
+    "login": "Aanmelden",
     "unclaimed_html": "Deze Komga server is nog niet actief, u moet een gebruikersaccount aanmaken om toegang te krijgen.<br><br>Kies een <strong>e-mail</strong> en <strong>wachtwoord</strong> en klik op <strong>Gebruikersaccount aanmaken</strong>."
   },
   "media_analysis": {
@@ -999,13 +1005,15 @@
     "tooltip_selected": "Geselecteerd",
     "tooltip_to_be_deleted": "Te verwijderen",
     "tooltip_to_be_uploaded": "Te uploaden",
-    "tooltip_too_big": "Bestand te groot!"
+    "tooltip_too_big": "Bestand te groot!",
+    "tooltip_user_uploaded": "Door gebruiker geüpload"
   },
   "titles_more": {
     "less": "Minder titels",
     "more": "Meer titels"
   },
   "ui_settings": {
+    "general": "Algemeen",
     "label_oauth2_hide_login": "Verberg inlogvelden als OAuth2 is ingeschakeld",
     "label_series_groups": "Series groeperen",
     "section_oauth2": "OAuth2",
