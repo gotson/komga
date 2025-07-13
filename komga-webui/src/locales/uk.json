@@ -1,0 +1,182 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} з {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Завантаження елементів...",
+      "noResultsText": "Відповідних записів не знайдено"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Рядків на сторінку:",
+      "sortBy": "Сортувати за"
+    },
+    "fileInput": {
+      "counter": "{0} файлів",
+      "counterSize": "{0} файлів(всього {1})"
+    },
+    "noDataText": "Дані недоступні"
+  },
+  "account_settings": {
+    "account_settings": "Налаштування профілю",
+    "api_key": {
+      "created_date": "Дата створення: {date}",
+      "force_kobo_sync": "Примусова синхронізація Kobo",
+      "generate_api_key": "Згенерувати API ключ",
+      "no_keys": "Ключі API ще не створено"
+    },
+    "change_password": "змінити пароль",
+    "details": "Детальніше",
+    "my_account": "Мій Профіль"
+  },
+  "announcements": {
+    "mark_all_read": "Відмітити все, як прочитане",
+    "mark_read": "Відмітити, як прочитане",
+    "tab_title": "Оголошення"
+  },
+  "authentication_activity": {
+    "api_key": "API ключ",
+    "datetime": "Дата та час",
+    "email": "Електронна пошта",
+    "error": "Помилка",
+    "ip": "IP",
+    "source": "Джерело",
+    "success": "Підтвердити",
+    "user_agent": "Клієнт"
+  },
+  "author_roles": {
+    "colorist": "колорист",
+    "cover": "обкладинка",
+    "editor": "редактори",
+    "inker": "художники",
+    "letterer": "художник шрифтів",
+    "penciller": "пенсилер",
+    "translator": "перекладач",
+    "writer": "письменник"
+  },
+  "book_card": {
+    "error": "Помилка",
+    "no_release_date": "Без дати випуску",
+    "unknown": "Аналізується",
+    "unread": "Непрочитана",
+    "unsupported": "Не підтримується"
+  },
+  "book_import": {
+    "button_browse": "Відкрити",
+    "button_import": "Імпортувати",
+    "button_scan": "Сканувати",
+    "button_select_series": "Обрати Серію",
+    "field_import_path": "Імпортувати з теки",
+    "info_part1": "Цей екран дозволяє імпортувати файли, що знаходяться за межами ваших існуючих бібліотек. Ви можете імпортувати файли лише в існуючі серії, і в цьому випадку Komga перемістить або скопіює файли в каталог вибраної серії.",
+    "info_part2": "Якщо ви оберете номер для книги, і книга з таким номером вже існує, ви зможете порівняти ці дві книги. Якщо ви вирішите імпортувати книгу, Komga оновить існуючу книгу новою, фактично замінивши старий файл новим.",
+    "no_files_found": "Файлів не знайдено",
+    "notification": {
+      "go_to_book": "Перейти до книги",
+      "import_failure": "Не вдалося імпортувати книгу: {file}",
+      "import_successful": "Книга успішно імпортована: {book}",
+      "source_file": "Вихідний файл: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Книгу потрібно спочатку проаналізувати",
+      "error_choose_series": "Оберіть серію",
+      "error_only_import_no_errors": "Можна імпортувати лише книги без помилок",
+      "warning_upgrade": "Існуючу книгу буде оновлено"
+    },
+    "table": {
+      "destination_name": "Назва пункту призначення",
+      "file_name": "Назва файлу",
+      "number": "Номер",
+      "series": "Серія"
+    },
+    "title": "Імпорт",
+    "try_another_directory": "Спробуйте пошукати в іншому каталозі"
+  },
+  "bookreader": {
+    "beginning_of_book": "Ви на початку книги.",
+    "changing_reading_direction": "Зміна напрямку читання на",
+    "cycling_page_layout": "Шаблон сторінки",
+    "cycling_page_margin": "Відступи",
+    "cycling_scale": "Масштабування",
+    "cycling_side_padding": "Cycling Side Padding",
+    "download_current_page": "Завантажити поточку сторінку",
+    "end_of_book": "Ви дійшли до кінця книги.",
+    "from_series_metadata": "з метаданих серії",
+    "move_next": "Натисніть або затисніть кнопку «Далі» ще раз, щоб перейти до наступної книги.",
+    "move_next_exit": "Натисніть або затисніть кнопку «Далі» ще раз, щоб вийти з читалки.",
+    "move_previous": "Натисніть або затисніть кнопку «Попередня» ще раз, щоб перейти до попередньої книги.",
+    "notification_poster_set_book": "Поточна сторінка встановлена як обкладинка книги.",
+    "notification_poster_set_readlist": "Поточна сторінка встановлена як обкладинка списку читання.",
+    "notification_poster_set_series": "Поточна сторінка встановлена як обкладинка серії.",
+    "paged_reader_layout": {
+      "double": "Дві сторінки",
+      "double_no_cover": "Дві сторінки (без обкладинки)",
+      "single": "Одна сторінка"
+    },
+    "reader_settings": "Налаштування читалки",
+    "scale_type": {
+      "continuous_original": "Оригінальний",
+      "continuous_width": "По ширині",
+      "height": "По висоті",
+      "original": "Оригінальний",
+      "screen": "Під розміри екрану",
+      "width": "По ширині",
+      "width_shrink_only": "По ширині (тільки стиснення)"
+    },
+    "set_current_page_as_book_poster": "Встановити сторінку, як обкладинку книги",
+    "set_current_page_as_readlist_poster": "Встановити сторінку, як обкладинку списку читання",
+    "set_current_page_as_series_poster": "Встановити сторінку, як обкладинку серії",
+    "settings": {
+      "always_fullscreen": "Завжди на повний екран",
+      "animate_page_transitions": "Анімація при переході між сторінками",
+      "background_color": "Колір фону",
+      "background_colors": {
+        "black": "Чорний",
+        "gray": "Сірий",
+        "white": "Білий"
+      },
+      "display": "Дисплей",
+      "general": "Основне",
+      "gestures": "Жести",
+      "page_layout": "Шаблон сторінки",
+      "page_margin": "Відступ сторінки",
+      "reading_mode": "Режим читання",
+      "scale_type": "Тип масштабування",
+      "side_padding": "Бокові відступи",
+      "side_padding_none": "Нічого",
+      "webtoon": "Налаштування читалки Webtoon"
+    },
+    "shortcuts": {
+      "close": "Закрити",
+      "first_page": "Перша сторінка",
+      "fullscreen": "Увімкнути/вимкнути повноекранний режим",
+      "last_page": "Остання сторінка",
+      "left_to_right": "Зліва на право",
+      "menus": "Меню",
+      "next_page": "Наступна сторінка",
+      "previous_page": "Попередня сторінка",
+      "reader_navigation": "Навігація читалкою",
+      "right_to_left": "З права вліво",
+      "settings": "Налаштування",
+      "show_hide_help": "Показати/сховати підказки",
+      "show_hide_settings": "Показати/сховати меню налаштувань",
+      "show_hide_thumbnails": "Показати/сховати менеджер мініатюр",
+      "show_hide_toolbars": "Показати/сховати панель інструментів",
+      "vertical": "Вертикально",
+      "webtoon": "Вебкомікс"
+    },
+    "tooltip_incognito": "Прогрес читання не буде збережено"
+  },
+  "browse_book": {
+    "comment": "КОМЕНТАР",
+    "date_created": "СТВОРИТИ",
+    "date_modified": "ОСТАННЯ ЗМІНА",
+    "download_file": "Завантажити файл",
+    "file": "ФАЙЛ",
+    "format": "ФОРМАТ",
+    "isbn": "ISBN",
+    "links": "ПОСИЛАННЯ"
+  },
+  "common": {
+    "locale_name": "Українська"
+  }
+}
