@@ -21,6 +21,7 @@
     "account_settings": "Accountinstellingen",
     "api_key": {
       "created_date": "Aanmaakdatum: {date}",
+      "force_kobo_sync": "Kobo synchronisatie forceren",
       "generate_api_key": "Genereer API-sleutel",
       "no_keys": "Nog geen API-sleutels aangemaakt"
     },
@@ -94,6 +95,7 @@
     "beginning_of_book": "Je bent bij het begin van het boek.",
     "changing_reading_direction": "Wijzig leesrichting naar",
     "cycling_page_layout": "Wisselen paginaopmaak",
+    "cycling_page_margin": "Pagina marge wisselen",
     "cycling_scale": "Wisselen schaal",
     "cycling_side_padding": "Wisselen marges",
     "download_current_page": "Download huidige pagina",
@@ -170,6 +172,7 @@
   },
   "browse_book": {
     "comment": "OPMERKING",
+    "date_created": "GEMAAKT",
     "date_modified": "LAATST GEWIJZIGD",
     "download_file": "Download bestand",
     "file": "BESTAND",
@@ -208,6 +211,7 @@
     "age": "Leeftijd",
     "all_libraries": "Alle bibliotheken",
     "all_of": "Allemaal",
+    "any_of": "Een van",
     "book": "Boek",
     "books": "Boeken",
     "books_n": "Geen boek | 1 boek | {count} boeken",
@@ -257,6 +261,7 @@
     "password": "Wachtwoord",
     "pdf": "PDF",
     "pending_tasks": "Geen openstaande taken | 1 openstaande taak | {count} openstaande taken",
+    "pinned_libraries": "Vastgepinde bibliotheken",
     "publisher": "Uitgever",
     "read": "Lezen",
     "read_on": "Gelezen op {date}",
@@ -295,6 +300,7 @@
     "comicrack_preambule_html": "U kunt bestaande ComicRack leeslijsten importeren in <code>.cbl</code> formaat.<br>Komga zal proberen om de opgegeven serie en boeknummer te matchen met series en boeken in uw bibliotheken.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} boeken komen niet overeen",
+      "body2": "{duplicates} / {total} boeken zijn gedupliceerd",
       "create": "Toch aanmaken",
       "title": "Sommige boeken komen niet overeen"
     },
@@ -312,9 +318,11 @@
   "dialog": {
     "add_api_key": {
       "button_confirm": "Genereer",
+      "context": "API-sleutels kunnen worden gebruikt voor authenticatie via het Kobo Sync-protocol.",
       "dialog_title": "Genereer nieuwe API-sleutel",
       "field_comment": "Opmerking",
-      "field_comment_hint": "Waar dient deze API-sleutel voor?"
+      "field_comment_hint": "Waar dient deze API-sleutel voor?",
+      "info_copy": "Zorg ervoor dat u uw API-sleutel nu kopieert. U kunt deze niet meer zien!"
     },
     "add_to_collection": {
       "button_create": "Maken",
@@ -508,6 +516,7 @@
     },
     "edit_recommended": {
       "button_confirm": "Wijzigingen opslaan",
+      "button_reset": "Resetten naar standaardinstellingen",
       "dialog_title": "Aanbevolen weergave bewerken"
     },
     "edit_series": {
@@ -579,6 +588,7 @@
       "title": "Doelbestandsnaam"
     },
     "force_kobo_sync": {
+      "dialog_title": "Kobo-synchronisatie forceren",
       "warning_html": "Dit verwijdert alle synchronisatiegeschiedenis voor deze API-sleutel. Je Kobo zal bij de volgende synchronisatie alles synchroniseren."
     },
     "password_change": {
@@ -664,7 +674,7 @@
     "matches_n": "Geen overeenkomsten | 1 overeenkomst | {count} overeenkomsten",
     "new": "Nieuw",
     "saved_size": "{size} bespaard",
-    "title": "Duplicaatpagina's",
+    "title": "Dubbele pagina's",
     "unknown_size": "Onbekende grootte"
   },
   "duplicates": {
@@ -799,11 +809,15 @@
     "ERR_1017": "Kan map die deel uitmaakt van een bestaande bibliotheek niet scannen",
     "ERR_1018": "Bestand niet gevonden",
     "ERR_1019": "Importeren niet mogelijk als het bestand onderdeel is van een bestaande bibliotheek",
+    "ERR_1020": "Het te upgraden boek behoort niet tot de opgegeven serie",
     "ERR_1021": "Doelbestand bestaat al",
     "ERR_1022": "Recent geïmporteerd boek kan niet worden gescanned",
     "ERR_1023": "Boek bestaat al in Leeslijst",
+    "ERR_1024": "OAuth2 inlogfout: geen e-mailkenmerk",
     "ERR_1025": "OAuth2 login error: geen bestaande gebruiker met dit emailadres",
     "ERR_1026": "OpenID Connect login error: email niet bevestigd",
+    "ERR_1027": "OpenID Connect inlogfout: geen e-mail-geverifieerd kenmerk",
+    "ERR_1028": "OpenID Connect inlogfout: geen e-mailkenmerk",
     "ERR_1029": "ComicRack CBL bevat geen enkel Boek-element",
     "ERR_1030": "ComicRack CBL heeft geen Naam-element",
     "ERR_1031": "ComicRack CBL Boek mist serie of nummer",
@@ -816,6 +830,7 @@
   "filter": {
     "age_rating": "leeftijdsclassificatie",
     "age_rating_none": "Geen",
+    "any": "Elk",
     "complete": "Compleet",
     "genre": "genre",
     "in_progress": "Wordt uitgevoerd",
@@ -860,7 +875,7 @@
   },
   "login": {
     "create_user_account": "Maak gebruikersaccount aan",
-    "login": "Login",
+    "login": "Aanmelden",
     "unclaimed_html": "Deze Komga server is nog niet actief, u moet een gebruikersaccount aanmaken om toegang te krijgen.<br><br>Kies een <strong>e-mail</strong> en <strong>wachtwoord</strong> en klik op <strong>Gebruikersaccount aanmaken</strong>."
   },
   "media_analysis": {
@@ -999,13 +1014,15 @@
     "tooltip_selected": "Geselecteerd",
     "tooltip_to_be_deleted": "Te verwijderen",
     "tooltip_to_be_uploaded": "Te uploaden",
-    "tooltip_too_big": "Bestand te groot!"
+    "tooltip_too_big": "Bestand te groot!",
+    "tooltip_user_uploaded": "Door gebruiker geüpload"
   },
   "titles_more": {
     "less": "Minder titels",
     "more": "Meer titels"
   },
   "ui_settings": {
+    "general": "Algemeen",
     "label_oauth2_hide_login": "Verberg inlogvelden als OAuth2 is ingeschakeld",
     "label_series_groups": "Series groeperen",
     "section_oauth2": "OAuth2",
