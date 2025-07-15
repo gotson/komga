@@ -8,11 +8,11 @@ import org.springframework.core.task.AsyncTaskExecutor
 
 @Configuration
 class AsynchronousSpringEventsConfig(
-  private val taskExecutor: AsyncTaskExecutor,
+  private val applicationTaskExecutor: AsyncTaskExecutor,
 ) {
   @Bean("applicationEventMulticaster")
   fun simpleApplicationEventMulticaster(): ApplicationEventMulticaster =
     SimpleApplicationEventMulticaster().apply {
-      setTaskExecutor(taskExecutor)
+      setTaskExecutor(applicationTaskExecutor)
     }
 }
