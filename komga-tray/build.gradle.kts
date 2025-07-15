@@ -5,13 +5,19 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
   }
-  id("com.gorylenko.gradle-git-properties") version "2.4.2"
-  id("org.jetbrains.compose") version "1.5.11"
+  id("com.gorylenko.gradle-git-properties") version "2.5.2"
+  id("org.jetbrains.compose") version "1.8.2"
+  id("org.jetbrains.kotlin.plugin.compose") version "2.2.0"
   id("dev.hydraulic.conveyor") version "1.12"
   application
 }
 
 group = "org.gotson"
+
+repositories {
+  mavenCentral()
+  google()
+}
 
 kotlin {
   compilerOptions {
