@@ -44,7 +44,7 @@ allprojects {
   }
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version = "1.5.0"
+    version = "1.6.0"
     filter {
       exclude("**/generated-src/**")
       exclude("**/generated/**")
