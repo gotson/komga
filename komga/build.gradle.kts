@@ -10,9 +10,9 @@ plugins {
   kotlin("plugin.spring")
   kotlin("kapt")
   id("org.springframework.boot") version "3.5.3"
-  id("com.gorylenko.gradle-git-properties") version "2.4.2"
-  id("nu.studer.jooq") version "9.0"
-  id("org.flywaydb.flyway") version "10.20.1"
+  id("com.gorylenko.gradle-git-properties") version "2.5.2"
+  id("nu.studer.jooq") version "10.1"
+  id("org.flywaydb.flyway") version "11.7.2"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
   id("com.google.devtools.ksp") version "1.9.21-1.0.16"
