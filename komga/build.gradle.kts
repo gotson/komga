@@ -1,4 +1,3 @@
-
 import nu.studer.gradle.jooq.JooqGenerate
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.flywaydb.gradle.task.FlywayMigrateTask
@@ -302,6 +301,14 @@ tasks.register("flywayMigrateTasks", FlywayMigrateTask::class) {
     mkdir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
   }
   mixed = true
+}
+
+buildscript {
+  configurations["classpath"].resolutionStrategy.eachDependency {
+    if (requested.group.startsWith("org.jooq") && requested.name.startsWith("jooq")) {
+      useVersion("3.19.24")
+    }
+  }
 }
 
 jooq {

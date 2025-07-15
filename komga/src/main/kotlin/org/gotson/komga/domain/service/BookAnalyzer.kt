@@ -45,7 +45,7 @@ class BookAnalyzer(
   private val imageConverter: ImageConverter,
   private val imageAnalyzer: ImageAnalyzer,
   private val hasher: Hasher,
-  @Value("#{@komgaProperties.pageHashing}") private val pageHashing: Int,
+  @param:Value("#{@komgaProperties.pageHashing}") private val pageHashing: Int,
   private val komgaSettingsProvider: KomgaSettingsProvider,
   @Qualifier("thumbnailType")
   private val thumbnailType: ImageType,
