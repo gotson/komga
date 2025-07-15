@@ -140,7 +140,7 @@ class KoboControllerTest(
 
   @Nested
   inner class HostHeader(
-    @param:Value("\${server.port:#{null}}") private val configServerPort: Int?,
+    @param:Value($$"${server.port:#{null}}") private val configServerPort: Int?,
   ) {
     @ParameterizedTest
     @MethodSource("headers")

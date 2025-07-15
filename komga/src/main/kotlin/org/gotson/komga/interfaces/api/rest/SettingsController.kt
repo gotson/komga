@@ -31,8 +31,8 @@ import kotlin.time.Duration.Companion.days
 @Tag(name = OpenApiConfiguration.TagNames.SERVER_SETTINGS)
 class SettingsController(
   private val komgaSettingsProvider: KomgaSettingsProvider,
-  @param:Value("\${server.port:#{null}}") private val configServerPort: Int?,
-  @param:Value("\${server.servlet.context-path:#{null}}") private val configServerContextPath: String?,
+  @param:Value($$"${server.port:#{null}}") private val configServerPort: Int?,
+  @param:Value($$"${server.servlet.context-path:#{null}}") private val configServerContextPath: String?,
   private val serverSettings: WebServerEffectiveSettings,
   private val kepubConverter: KepubConverter,
 ) {

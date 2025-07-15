@@ -22,7 +22,7 @@ import java.io.File
 @Component
 class TrayIconRunner(
   @param:Value("#{komgaProperties.configDir}") komgaConfigDir: String,
-  @param:Value("\${logging.file.name}") logFileName: String,
+  @param:Value($$"${logging.file.name}") logFileName: String,
   serverSettings: WebServerEffectiveSettings,
   env: Environment,
 ) : ApplicationRunner {

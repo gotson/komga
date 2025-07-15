@@ -62,7 +62,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 
 @Configuration
 class OpenApiConfiguration(
-  @param:Value("\${application.version}") private val appVersion: String,
+  @param:Value($$"${application.version}") private val appVersion: String,
   env: Environment,
 ) {
   private val generateOpenApi = env.activeProfiles.contains("generate-openapi")
