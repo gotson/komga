@@ -58,14 +58,14 @@ dependencies {
 
   api("io.github.oshai:kotlin-logging-jvm:6.0.9")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
 
-  implementation("commons-io:commons-io:2.18.0")
-  implementation("org.apache.commons:commons-lang3:3.14.0")
-  implementation("commons-validator:commons-validator:1.9.0")
+  implementation("commons-io:commons-io:2.19.0")
+  implementation("org.apache.commons:commons-lang3:3.18.0")
+  implementation("commons-validator:commons-validator:1.10.0")
 
   run {
     // v10 requires JDK 21
@@ -84,7 +84,7 @@ dependencies {
   implementation("org.apache.commons:commons-compress:1.27.1")
   implementation("com.github.junrar:junrar:7.5.5")
   implementation("com.github.gotson.nightcompress:nightcompress:1.1.0")
-  implementation("org.apache.pdfbox:pdfbox:3.0.3")
+  implementation("org.apache.pdfbox:pdfbox:3.0.5")
   implementation("net.grey-panther:natural-comparator:1.1")
   implementation("org.jsoup:jsoup:1.18.3")
 
@@ -108,8 +108,8 @@ dependencies {
 
   implementation("com.github.ben-manes.caffeine:caffeine")
 
-  implementation("org.xerial:sqlite-jdbc:3.48.0.0")
-  jooqGenerator("org.xerial:sqlite-jdbc:3.48.0.0")
+  implementation("org.xerial:sqlite-jdbc:3.50.2.0")
+  jooqGenerator("org.xerial:sqlite-jdbc:3.50.2.0")
 
   if (version.toString().endsWith(".0.0")) {
     ksp("com.github.gotson.bestbefore:bestbefore-processor-kotlin:0.1.0")
@@ -121,9 +121,9 @@ dependencies {
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("com.ninja-squad:springmockk:4.0.2")
   testImplementation("io.mockk:mockk:1.13.11")
-  testImplementation("com.google.jimfs:jimfs:1.3.0")
+  testImplementation("com.google.jimfs:jimfs:1.3.1")
 
-  testImplementation("com.tngtech.archunit:archunit-junit5:1.3.0")
+  testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.37")
@@ -303,7 +303,7 @@ tasks.register("flywayMigrateTasks", FlywayMigrateTask::class) {
 }
 
 jooq {
-  version = "3.19.15"
+  version = "3.19.24"
   configurations {
     create("main") {
       jooqConfiguration.apply {
