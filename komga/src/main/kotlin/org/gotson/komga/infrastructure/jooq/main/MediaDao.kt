@@ -31,7 +31,7 @@ private val logger = KotlinLogging.logger {}
 @Component
 class MediaDao(
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val mapper: ObjectMapper,
 ) : MediaRepository {
   private val m = Tables.MEDIA

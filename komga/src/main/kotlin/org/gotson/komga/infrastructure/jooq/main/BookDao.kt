@@ -32,7 +32,7 @@ import java.time.ZoneId
 @Component
 class BookDao(
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookRepository {
   private val b = Tables.BOOK
   private val m = Tables.MEDIA

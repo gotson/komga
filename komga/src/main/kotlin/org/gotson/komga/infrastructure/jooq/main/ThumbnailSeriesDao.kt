@@ -16,7 +16,7 @@ import java.net.URL
 @Component
 class ThumbnailSeriesDao(
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : ThumbnailSeriesRepository {
   private val ts = Tables.THUMBNAIL_SERIES
 

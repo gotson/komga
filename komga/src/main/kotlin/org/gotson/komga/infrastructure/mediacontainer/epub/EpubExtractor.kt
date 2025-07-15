@@ -33,7 +33,7 @@ class EpubExtractor(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
   private val kepubConverter: KepubConverter,
-  @Value("#{@komgaProperties.epubDivinaLetterCountThreshold}") private val letterCountThreshold: Int,
+  @param:Value("#{@komgaProperties.epubDivinaLetterCountThreshold}") private val letterCountThreshold: Int,
 ) {
   /**
    * Retrieves a specific entry by name from the zip archive

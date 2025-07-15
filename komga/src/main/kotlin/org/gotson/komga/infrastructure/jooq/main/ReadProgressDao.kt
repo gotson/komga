@@ -24,7 +24,7 @@ import java.time.ZoneId
 @Component
 class ReadProgressDao(
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val mapper: ObjectMapper,
 ) : ReadProgressRepository {
   private val r = Tables.READ_PROGRESS

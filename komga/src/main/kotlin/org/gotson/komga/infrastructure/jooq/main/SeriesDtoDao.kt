@@ -58,7 +58,7 @@ const val BOOKS_READ_COUNT = "booksReadCount"
 class SeriesDtoDao(
   private val dsl: DSLContext,
   private val luceneHelper: LuceneHelper,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val transactionTemplate: TransactionTemplate,
 ) : SeriesDtoRepository {
   private val s = Tables.SERIES

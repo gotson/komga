@@ -20,7 +20,7 @@ import java.time.ZoneId
 @Component
 class SeriesMetadataDao(
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SeriesMetadataRepository {
   private val d = Tables.SERIES_METADATA
   private val g = Tables.SERIES_METADATA_GENRE

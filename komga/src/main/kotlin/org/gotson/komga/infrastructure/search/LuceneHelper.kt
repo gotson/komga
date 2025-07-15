@@ -36,7 +36,7 @@ class LuceneHelper(
   private val searchAnalyzer: Analyzer,
   private val taskScheduler: TaskScheduler,
   private val indexAnalyzer: Analyzer,
-  @Value("#{@komgaProperties.lucene.commitDelay}")
+  @param:Value("#{@komgaProperties.lucene.commitDelay}")
   private val commitDelay: Duration,
 ) {
   private val indexWriter: IndexWriter = IndexWriter(directory, IndexWriterConfig(indexAnalyzer))

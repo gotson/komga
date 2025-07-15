@@ -24,7 +24,7 @@ private val logger = KotlinLogging.logger {}
 class TasksDao(
   @Qualifier("tasksDslContext")
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.tasksDb.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.tasksDb.batchChunkSize}") private val batchSize: Int,
   private val objectMapper: ObjectMapper,
 ) : TasksRepository {
   private val t = Tables.TASK

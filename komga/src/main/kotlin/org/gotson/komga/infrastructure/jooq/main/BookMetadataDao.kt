@@ -21,7 +21,7 @@ import java.time.ZoneId
 @Component
 class BookMetadataDao(
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookMetadataRepository {
   private val d = Tables.BOOK_METADATA
   private val a = Tables.BOOK_METADATA_AUTHOR

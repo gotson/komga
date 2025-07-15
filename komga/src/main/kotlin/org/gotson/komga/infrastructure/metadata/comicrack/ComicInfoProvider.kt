@@ -29,7 +29,7 @@ private const val COMIC_INFO = "ComicInfo.xml"
 
 @Service
 class ComicInfoProvider(
-  @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
+  @param:Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
   private val bookAnalyzer: BookAnalyzer,
   private val isbnValidator: ISBNValidator,
 ) : BookMetadataProvider,

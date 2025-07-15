@@ -17,7 +17,7 @@ import java.net.URL
 @Component
 class SidecarDao(
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SidecarRepository {
   private val sc = Tables.SIDECAR
   private val l = Tables.LIBRARY

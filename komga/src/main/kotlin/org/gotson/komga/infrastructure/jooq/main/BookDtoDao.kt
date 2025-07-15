@@ -53,7 +53,7 @@ import java.net.URL
 class BookDtoDao(
   private val dsl: DSLContext,
   private val luceneHelper: LuceneHelper,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val transactionTemplate: TransactionTemplate,
   private val bookCommonDao: BookCommonDao,
 ) : BookDtoRepository {

@@ -33,7 +33,7 @@ import java.time.ZoneId
 class SeriesCollectionDao(
   private val dsl: DSLContext,
   private val luceneHelper: LuceneHelper,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SeriesCollectionRepository {
   private val c = Tables.COLLECTION
   private val cs = Tables.COLLECTION_SERIES

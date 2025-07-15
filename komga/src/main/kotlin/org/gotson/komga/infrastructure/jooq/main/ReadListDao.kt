@@ -34,7 +34,7 @@ import java.util.SortedMap
 class ReadListDao(
   private val dsl: DSLContext,
   private val luceneHelper: LuceneHelper,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : ReadListRepository {
   private val rl = Tables.READLIST
   private val rlb = Tables.READLIST_BOOK

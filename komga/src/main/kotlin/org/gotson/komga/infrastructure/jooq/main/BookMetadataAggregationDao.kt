@@ -19,7 +19,7 @@ import java.time.ZoneId
 @Component
 class BookMetadataAggregationDao(
   private val dsl: DSLContext,
-  @Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
+  @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookMetadataAggregationRepository {
   private val d = Tables.BOOK_METADATA_AGGREGATION
   private val a = Tables.BOOK_METADATA_AGGREGATION_AUTHOR

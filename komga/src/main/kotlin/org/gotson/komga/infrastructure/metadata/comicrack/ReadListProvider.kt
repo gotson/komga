@@ -13,7 +13,7 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class ReadListProvider(
-  @Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
+  @param:Autowired(required = false) private val mapper: XmlMapper = XmlMapper(),
 ) {
   @Throws(ComicRackListException::class)
   fun importFromCbl(cbl: ByteArray): ReadListRequest {

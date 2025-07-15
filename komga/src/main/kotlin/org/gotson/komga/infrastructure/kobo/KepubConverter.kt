@@ -23,7 +23,7 @@ private val logger = KotlinLogging.logger {}
 @Component
 class KepubConverter(
   private val settingsProvider: KomgaSettingsProvider,
-  @Value("\${komga.kobo.kepubify-path:#{null}}") val kepubifyConfigurationPath: String?,
+  @param:Value("\${komga.kobo.kepubify-path:#{null}}") val kepubifyConfigurationPath: String?,
 ) {
   final var kepubifyPath: Path? = null
     private set

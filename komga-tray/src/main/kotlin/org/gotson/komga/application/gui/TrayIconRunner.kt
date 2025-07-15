@@ -21,8 +21,8 @@ import java.io.File
 @Profile("!test")
 @Component
 class TrayIconRunner(
-  @Value("#{komgaProperties.configDir}") komgaConfigDir: String,
-  @Value("\${logging.file.name}") logFileName: String,
+  @param:Value("#{komgaProperties.configDir}") komgaConfigDir: String,
+  @param:Value("\${logging.file.name}") logFileName: String,
   serverSettings: WebServerEffectiveSettings,
   env: Environment,
 ) : ApplicationRunner {
