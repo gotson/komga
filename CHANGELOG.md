@@ -1,3 +1,77 @@
+# [1.22.1](https://github.com/gotson/komga/compare/1.22.0...1.22.1) (2025-07-15)
+## 🐛 Fixes
+
+- don't strip accents on input data and sort series title with unicode collation ([c2c697f](https://github.com/gotson/komga/commits/c2c697f))
+- epub divina heuristic ([5f9cc44](https://github.com/gotson/komga/commits/5f9cc44)), closes [#1997](https://github.com/gotson/komga/issues/1997)
+
+## 🔄️ Changes
+**komga**
+- remove artemis cleanup ([9567df1](https://github.com/gotson/komga/commits/9567df1))
+
+**komga-tray**
+- remove deprecated methods ([d56c3e3](https://github.com/gotson/komga/commits/d56c3e3))
+
+**unscoped**
+- use interpolation prefix ([1de36b7](https://github.com/gotson/komga/commits/1de36b7))
+- add param target for some annotations to fix archunit tests ([1975ff2](https://github.com/gotson/komga/commits/1975ff2))
+- fix types for new Kotlin compiler ([34c7d8b](https://github.com/gotson/komga/commits/34c7d8b))
+- replace deprecated AntPathRequestMatcher with PathPatternRequestMatcher ([f674d65](https://github.com/gotson/komga/commits/f674d65))
+- remove unused params ([d4de08a](https://github.com/gotson/komga/commits/d4de08a))
+- use new syntax for gradle task registation ([d112e69](https://github.com/gotson/komga/commits/d112e69))
+
+## 🛠  Build
+**docker**
+- bump base image from ubuntu:24.10 to ubuntu:25.04 for amr64/arm64 ([6f951bd](https://github.com/gotson/komga/commits/6f951bd))
+
+**komga**
+- align jooq version for jooq plugin ([5f00bd5](https://github.com/gotson/komga/commits/5f00bd5))
+- add kotlin compiler parameter to remove warnings ([ce7816b](https://github.com/gotson/komga/commits/ce7816b))
+
+**webui**
+- update Browserslist db ([ddc5f72](https://github.com/gotson/komga/commits/ddc5f72))
+
+**unscoped**
+- update ktlint gradle plugin configuration ([eacf305](https://github.com/gotson/komga/commits/eacf305))
+- update build.gradle for newer Kotlin ([f2841ea](https://github.com/gotson/komga/commits/f2841ea))
+- use Java 21 ([71e8e9a](https://github.com/gotson/komga/commits/71e8e9a))
+- add enable native access attribute to jar manifest ([8602740](https://github.com/gotson/komga/commits/8602740))
+
+## 📝 Documentation
+
+- minimum Java version is 21 ([388349d](https://github.com/gotson/komga/commits/388349d))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Ukrainian) ([c960e45](https://github.com/gotson/komga/commits/c960e45))
+
+**webui**
+- translated using Weblate (Dutch) ([239be60](https://github.com/gotson/komga/commits/239be60))
+- translated using Weblate (Ukrainian) ([7873671](https://github.com/gotson/komga/commits/7873671))
+- translated using Weblate (Tamil) ([da2bf7d](https://github.com/gotson/komga/commits/da2bf7d))
+
+## ⚙️ Dependencies
+**build**
+- update Gradle to 8.14.3 ([267292d](https://github.com/gotson/komga/commits/267292d))
+- bump JReleaser from 1.10.0 to 1.19.0 ([4189833](https://github.com/gotson/komga/commits/4189833))
+- bump Gradle from 8.11.1 to 8.14.2 ([a980009](https://github.com/gotson/komga/commits/a980009))
+
+**komga**
+- bump deps ([48207cb](https://github.com/gotson/komga/commits/48207cb))
+- bump ksp plugin ([4b9a146](https://github.com/gotson/komga/commits/4b9a146))
+- bump deps ([c898906](https://github.com/gotson/komga/commits/c898906))
+- bump Gradle plugins ([e7a0a52](https://github.com/gotson/komga/commits/e7a0a52))
+- bump Spring Boot to 3.5.3 ([9ac225b](https://github.com/gotson/komga/commits/9ac225b))
+- bump icu4j from 76.1 to 77.1 ([39bc3b2](https://github.com/gotson/komga/commits/39bc3b2))
+
+**komga-tray**
+- bump Gradle plugins ([0f74e6e](https://github.com/gotson/komga/commits/0f74e6e))
+
+**unscoped**
+- bump ben-manes version plugin to 0.52.0 ([cd99019](https://github.com/gotson/komga/commits/cd99019))
+- bump ktlint to 1.6.0 ([9bc3794](https://github.com/gotson/komga/commits/9bc3794))
+- bump Kotlin to 2.2.0 ([aa80ef8](https://github.com/gotson/komga/commits/aa80ef8))
+- bump ktlint plugin to 13.0.0 ([1235220](https://github.com/gotson/komga/commits/1235220))
+
 # [1.22.0](https://github.com/gotson/komga/compare/1.21.3...1.22.0) (2025-06-23)
 ## 🚀 Features
 **api**
