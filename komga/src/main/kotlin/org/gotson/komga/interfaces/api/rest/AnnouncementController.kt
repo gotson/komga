@@ -36,7 +36,7 @@ class AnnouncementController(
     Caffeine
       .newBuilder()
       .expireAfterAccess(1, TimeUnit.DAYS)
-      .build<String, JsonFeedDto>()
+      .build<String, JsonFeedDto?>()
 
   @GetMapping
   @PreAuthorize("hasRole('ADMIN')")

@@ -58,7 +58,7 @@ class ReleaseController(
       }
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-  fun fetchGitHubReleases(): List<GithubReleaseDto>? {
+  fun fetchGitHubReleases(): List<GithubReleaseDto> {
     val response =
       webClient
         .get()
@@ -67,6 +67,6 @@ class ReleaseController(
         }.retrieve()
         .toEntity(object : ParameterizedTypeReference<List<GithubReleaseDto>>() {})
         .block()
-    return response?.body
+    return response?.body ?: emptyList()
   }
 }
