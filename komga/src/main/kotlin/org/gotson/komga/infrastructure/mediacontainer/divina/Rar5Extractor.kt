@@ -19,7 +19,7 @@ import java.nio.file.Path
 
 private val logger = KotlinLogging.logger {}
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 class Rar5Configuration : BeanDefinitionRegistryPostProcessor {
   override fun postProcessBeanFactory(beanFactory: ConfigurableListableBeanFactory) {}
 
