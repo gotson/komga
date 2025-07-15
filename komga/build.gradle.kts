@@ -56,7 +56,7 @@ dependencies {
 
   implementation("org.flywaydb:flyway-core")
 
-  api("io.github.oshai:kotlin-logging-jvm:6.0.9")
+  api("io.github.oshai:kotlin-logging-jvm:7.0.7")
 
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
 
@@ -78,7 +78,7 @@ dependencies {
 
   implementation("com.ibm.icu:icu4j:77.1")
 
-  implementation("com.appmattus.crypto:cryptohash:0.10.1")
+  implementation("com.appmattus.crypto:cryptohash:1.0.2")
 
   implementation("org.apache.tika:tika-core:2.9.1")
   implementation("org.apache.commons:commons-compress:1.27.1")
@@ -120,12 +120,12 @@ dependencies {
   }
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("com.ninja-squad:springmockk:4.0.2")
-  testImplementation("io.mockk:mockk:1.13.11")
+  testImplementation("io.mockk:mockk:1.14.4")
   testImplementation("com.google.jimfs:jimfs:1.3.1")
 
   testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 
-  benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+  benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.37")
   kaptBenchmark("org.openjdk.jmh:jmh-generator-annprocess:1.37")
   kaptBenchmark("org.springframework.boot:spring-boot-configuration-processor:3.5.3")
