@@ -374,6 +374,9 @@ sourceSets {
     }
   }
 }
+tasks.runKtlintFormatOverMainSourceSet {
+  dependsOn("generateTasksJooq")
+}
 tasks.runKtlintCheckOverMainSourceSet {
   dependsOn("generateTasksJooq")
 }
