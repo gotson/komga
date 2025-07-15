@@ -21,9 +21,6 @@ komga:
 spring:
   flyway:
     enabled: true
-  artemis:
-    embedded:
-      data-directory: \${komga.config-dir}/artemis/\${komga.workspace}
 #logging:
 #  level:
 #    root: ERROR

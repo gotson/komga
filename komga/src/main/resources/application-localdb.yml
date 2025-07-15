@@ -6,7 +6,3 @@ komga:
     data-directory: \${komga.config-dir}/lucene/\${komga.workspace}
   tasks-db:
     file: \${komga.config-dir}/\${komga.workspace}-tasks.sqlite
-spring:
-  artemis:
-    embedded:
-      data-directory: \${komga.config-dir}/artemis/\${komga.workspace}
