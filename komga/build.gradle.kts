@@ -141,6 +141,7 @@ kotlin {
         "-Xjsr305=strict",
         "-Xemit-jvm-type-annotations",
         "-opt-in=kotlin.time.ExperimentalTime",
+        "-Xannotation-default-target=param-property",
       )
   }
 }
