@@ -2,7 +2,7 @@
 import nu.studer.gradle.jooq.JooqGenerate
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.flywaydb.gradle.task.FlywayMigrateTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.util.prefixIfNot
 
 plugins {
@@ -133,22 +133,23 @@ dependencies {
   developmentOnly("org.springframework.boot:spring-boot-devtools:3.5.3")
 }
 
+kotlin {
+  compilerOptions {
+    jvmTarget = JvmTarget.JVM_17
+    freeCompilerArgs =
+      listOf(
+        "-Xjsr305=strict",
+        "-Xemit-jvm-type-annotations",
+        "-opt-in=kotlin.time.ExperimentalTime",
+      )
+  }
+}
+
 val webui = "$rootDir/komga-webui"
 tasks {
   withType<JavaCompile> {
     sourceCompatibility = "17"
     targetCompatibility = "17"
-  }
-  withType<KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = "17"
-      freeCompilerArgs =
-        listOf(
-          "-Xjsr305=strict",
-          "-Xemit-jvm-type-annotations",
-          "-opt-in=kotlin.time.ExperimentalTime",
-        )
-    }
   }
 
   withType<Test> {

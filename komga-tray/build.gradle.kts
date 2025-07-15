@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   run {
@@ -13,15 +13,16 @@ plugins {
 
 group = "org.gotson"
 
+kotlin {
+  compilerOptions {
+    jvmTarget = JvmTarget.JVM_17
+  }
+}
+
 tasks {
   withType<JavaCompile> {
     sourceCompatibility = "17"
     targetCompatibility = "17"
-  }
-  withType<KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = "17"
-    }
   }
 }
 
