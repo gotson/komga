@@ -23,7 +23,6 @@ import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.session.SessionRegistry
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
@@ -170,7 +169,6 @@ class SecurityConfiguration(
   @Bean
   fun koboFilterChain(
     http: HttpSecurity,
-    encoder: PasswordEncoder,
   ): SecurityFilterChain {
     http {
       cors {}
@@ -209,7 +207,6 @@ class SecurityConfiguration(
   @Bean
   fun kosyncFilterChain(
     http: HttpSecurity,
-    encoder: PasswordEncoder,
   ): SecurityFilterChain {
     http {
       cors {}
