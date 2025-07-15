@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -27,6 +26,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import org.gotson.komga.RB
+import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.springframework.core.io.ClassPathResource
 
 @Preview
@@ -50,7 +50,7 @@ fun showErrorDialog(
               Dp.Unspecified,
             ),
         ),
-      icon = loadSvgPainter(ClassPathResource("icons/komga-color.svg").inputStream, LocalDensity.current),
+      icon = ClassPathResource("icons/komga-color.svg").inputStream.readAllBytes().decodeToSvgPainter(LocalDensity.current),
     ) {
       Column(
         modifier = Modifier.padding(16.dp),
@@ -60,7 +60,7 @@ fun showErrorDialog(
           modifier = Modifier.padding(bottom = 16.dp),
         ) {
           Image(
-            painter = loadSvgPainter(ClassPathResource("icons/komga-color.svg").inputStream, LocalDensity.current),
+            painter = ClassPathResource("icons/komga-color.svg").inputStream.readAllBytes().decodeToSvgPainter(LocalDensity.current),
             contentDescription = "Komga logo",
             modifier =
               Modifier

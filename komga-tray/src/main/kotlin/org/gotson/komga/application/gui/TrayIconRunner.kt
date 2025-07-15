@@ -1,13 +1,13 @@
 package org.gotson.komga.application.gui
 
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.window.Tray
 import androidx.compose.ui.window.application
 import org.gotson.komga.RB
 import org.gotson.komga.infrastructure.web.WebServerEffectiveSettings
 import org.gotson.komga.openExplorer
 import org.gotson.komga.openUrl
+import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -39,7 +39,7 @@ class TrayIconRunner(
   private fun runTray() {
     application {
       Tray(
-        icon = loadSvgPainter(ClassPathResource("icons/$iconFileName").inputStream, LocalDensity.current),
+        icon = ClassPathResource("icons/$iconFileName").inputStream.readAllBytes().decodeToSvgPainter(LocalDensity.current),
         menu = {
           Item(RB.getString("menu.open_komga"), onClick = { openUrl(komgaUrl) })
           Item(RB.getString("menu.show_log"), onClick = { openExplorer(logFile) })

@@ -36,6 +36,7 @@ dependencies {
   implementation(project(":komga"))
 
   implementation(compose.desktop.currentOs)
+  implementation(compose.components.resources)
 
   linuxAmd64(compose.desktop.linux_x64)
   macAmd64(compose.desktop.macos_x64)
