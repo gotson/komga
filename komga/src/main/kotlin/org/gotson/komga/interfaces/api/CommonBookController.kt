@@ -180,11 +180,11 @@ class CommonBookController(
         ).contentType(getMediaTypeOrDefault(pageContent.mediaType))
         .setNotModified(media)
         .body(pageContent.bytes)
-    } catch (ex: IndexOutOfBoundsException) {
+    } catch (_: IndexOutOfBoundsException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
     } catch (ex: ImageConversionException) {
       throw ResponseStatusException(HttpStatus.NOT_FOUND, ex.message)
-    } catch (ex: MediaNotReadyException) {
+    } catch (_: MediaNotReadyException) {
       throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
     } catch (ex: NoSuchFileException) {
       logger.warn(ex) { "File not found: $book" }
@@ -244,11 +244,11 @@ class CommonBookController(
         ).contentType(getMediaTypeOrDefault(pageContent.mediaType))
         .setNotModified(media)
         .body(pageContent.bytes)
-    } catch (ex: IndexOutOfBoundsException) {
+    } catch (_: IndexOutOfBoundsException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
     } catch (ex: MediaUnsupportedException) {
       throw ResponseStatusException(HttpStatus.BAD_REQUEST, ex.message)
-    } catch (ex: MediaNotReadyException) {
+    } catch (_: MediaNotReadyException) {
       throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book analysis failed")
     } catch (ex: NoSuchFileException) {
       logger.warn(ex) { "File not found: $book" }
@@ -293,7 +293,7 @@ class CommonBookController(
     val bytes =
       try {
         bookAnalyzer.getFileContent(BookWithMedia(book, media), resourceName)
-      } catch (e: EntryNotFoundException) {
+      } catch (_: EntryNotFoundException) {
         throw ResponseStatusException(HttpStatus.NOT_FOUND)
       }
 
