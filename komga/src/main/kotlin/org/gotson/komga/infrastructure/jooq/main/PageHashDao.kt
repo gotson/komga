@@ -187,9 +187,9 @@ class PageHashDao(
       .from(p)
       .innerJoin(ph)
       .on(p.FILE_HASH.eq(ph.HASH))
-      .apply { libraryId?.let<String, Unit> { innerJoin(b).on(b.ID.eq(p.BOOK_ID)) } }
+      .apply { libraryId?.let { innerJoin(b).on(b.ID.eq(p.BOOK_ID)) } }
       .where(ph.ACTION.`in`(actions))
-      .apply { libraryId?.let<String, Unit> { and(b.LIBRARY_ID.eq(it)) } }
+      .apply { libraryId?.let { and(b.LIBRARY_ID.eq(it)) } }
       .fetch {
         it.value1() to
           BookPageNumbered(
