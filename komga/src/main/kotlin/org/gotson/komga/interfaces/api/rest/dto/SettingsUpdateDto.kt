@@ -31,7 +31,7 @@ class SettingsUpdateDto {
       isSet[prop.name] = true
     }
 
-  @get:Pattern(regexp = "^\\/[\\w-\\/]*[a-zA-Z0-9]\$")
+  @get:Pattern(regexp = "^/[\\w-/]*[a-zA-Z0-9]$")
   var serverContextPath: String?
     by Delegates.observable(null) { prop, _, _ ->
       isSet[prop.name] = true
