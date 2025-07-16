@@ -210,7 +210,7 @@ class WebPubGenerator(
       children = children.map { it.toWPLinkDto(uriBuilder) },
     )
 
-  protected open fun toWPMetadataDto(bookDto: BookDto) =
+  protected fun toWPMetadataDto(bookDto: BookDto) =
     WPMetadataDto(
       title = bookDto.metadata.title,
       description = bookDto.metadata.summary,
