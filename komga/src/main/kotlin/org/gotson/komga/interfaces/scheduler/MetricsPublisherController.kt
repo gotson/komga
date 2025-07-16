@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.scheduler
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.MeterRegistry
@@ -20,8 +19,6 @@ import org.springframework.context.annotation.Profile
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.util.concurrent.atomic.AtomicLong
-
-private val logger = KotlinLogging.logger {}
 
 private const val LIBRARIES = "libraries"
 private const val SERIES = "series"

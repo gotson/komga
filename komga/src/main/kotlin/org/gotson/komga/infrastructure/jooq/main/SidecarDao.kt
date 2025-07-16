@@ -20,7 +20,6 @@ class SidecarDao(
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SidecarRepository {
   private val sc = Tables.SIDECAR
-  private val l = Tables.LIBRARY
 
   override fun findAll(): Collection<SidecarStored> = dsl.selectFrom(sc).fetch().map { it.toDomain() }
 

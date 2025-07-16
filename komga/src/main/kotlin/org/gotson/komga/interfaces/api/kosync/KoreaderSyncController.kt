@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.api.kosync
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.R2Device
@@ -25,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.time.ZonedDateTime
-
-private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("/koreader", produces = ["application/vnd.koreader.v1+json"])

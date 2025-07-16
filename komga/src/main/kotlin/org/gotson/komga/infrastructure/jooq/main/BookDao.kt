@@ -39,7 +39,6 @@ class BookDao(
   private val d = Tables.BOOK_METADATA
   private val sd = Tables.SERIES_METADATA
   private val r = Tables.READ_PROGRESS
-  private val rlb = Tables.READLIST_BOOK
 
   private val sorts =
     mapOf(

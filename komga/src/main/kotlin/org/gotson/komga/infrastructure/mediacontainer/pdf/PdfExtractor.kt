@@ -1,6 +1,5 @@
 package org.gotson.komga.infrastructure.mediacontainer.pdf
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.multipdf.PageExtractor
 import org.apache.pdfbox.pdmodel.PDPage
@@ -17,8 +16,6 @@ import java.io.ByteArrayOutputStream
 import java.nio.file.Path
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
-
-private val logger = KotlinLogging.logger {}
 
 @Service
 class PdfExtractor(

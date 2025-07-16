@@ -1,6 +1,5 @@
 package org.gotson.komga.infrastructure.jooq.main
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchField
 import org.gotson.komga.domain.model.SeriesSearch
@@ -47,8 +46,6 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionTemplate
 import java.net.URL
-
-private val logger = KotlinLogging.logger {}
 
 const val BOOKS_UNREAD_COUNT = "booksUnreadCount"
 const val BOOKS_IN_PROGRESS_COUNT = "booksInProgressCount"

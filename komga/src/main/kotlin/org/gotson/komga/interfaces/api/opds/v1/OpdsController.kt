@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.api.opds.v1
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -76,8 +75,6 @@ import java.text.DecimalFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Optional
-
-private val logger = KotlinLogging.logger {}
 
 private const val ROUTE_BASE = "/opds/v1.2/"
 private const val ROUTE_CATALOG = "catalog"

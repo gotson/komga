@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -65,8 +64,6 @@ import org.springframework.web.server.ResponseStatusException
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
-
-private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v1/collections", produces = [MediaType.APPLICATION_JSON_VALUE])

@@ -153,13 +153,6 @@ class LibraryDao(
 
   override fun count(): Long = dsl.fetchCount(l).toLong()
 
-  fun findDirectoryExclusions(libraryId: String): Set<String> =
-    dsl
-      .select(le.EXCLUSION)
-      .from(le)
-      .where(le.LIBRARY_ID.eq(libraryId))
-      .fetchSet(le.EXCLUSION)
-
   private fun insertDirectoryExclusions(library: Library) {
     if (library.scanDirectoryExclusions.isNotEmpty()) {
       dsl

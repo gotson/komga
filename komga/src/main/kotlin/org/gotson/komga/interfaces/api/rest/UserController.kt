@@ -1,6 +1,5 @@
 package org.gotson.komga.interfaces.api.rest
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
@@ -48,8 +47,6 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
-
-private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("api/v2/users", produces = [MediaType.APPLICATION_JSON_VALUE])

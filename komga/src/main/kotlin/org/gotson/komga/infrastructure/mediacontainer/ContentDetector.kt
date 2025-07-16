@@ -1,6 +1,5 @@
 package org.gotson.komga.infrastructure.mediacontainer
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.tika.config.TikaConfig
 import org.apache.tika.io.TikaInputStream
 import org.apache.tika.metadata.Metadata
@@ -8,8 +7,6 @@ import org.springframework.stereotype.Service
 import java.io.InputStream
 import java.nio.file.Path
 import kotlin.io.path.name
-
-private val logger = KotlinLogging.logger {}
 
 @Service
 class ContentDetector(

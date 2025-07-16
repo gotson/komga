@@ -39,8 +39,6 @@ fun <T, R : Any> Iterable<T>.mostFrequent(transform: (T) -> R?): R? =
 
 fun Iterable<String>.lowerNotBlank() = this.map { it.lowercase().trim() }.filter { it.isNotBlank() }
 
-fun <T> Iterable<T>.toSetOrNull() = this.toSet().ifEmpty { null }
-
 fun LocalDateTime.notEquals(
   other: LocalDateTime,
   precision: TemporalUnit = ChronoUnit.MILLIS,
