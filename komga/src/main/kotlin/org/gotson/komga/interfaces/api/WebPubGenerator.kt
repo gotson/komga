@@ -149,7 +149,7 @@ class WebPubGenerator(
     val uriBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment(*pathSegments.toTypedArray())
     val extension =
       when (media.extension) {
-          is ProxyExtension if media.extension.proxyForType<MediaExtensionEpub>() -> mediaRepository.findExtensionByIdOrNull(media.bookId) as? MediaExtensionEpub
+        is ProxyExtension if media.extension.proxyForType<MediaExtensionEpub>() -> mediaRepository.findExtensionByIdOrNull(media.bookId) as? MediaExtensionEpub
         is MediaExtensionEpub -> media.extension
         else -> null
       }
