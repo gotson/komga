@@ -11,7 +11,7 @@ enum class YesNo(
   ;
 
   companion object {
-    private val map = values().associateBy(YesNo::value)
+    private val map = entries.associateBy(YesNo::value)
 
     @JvmStatic
     @JsonCreator

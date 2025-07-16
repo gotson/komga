@@ -24,7 +24,7 @@ enum class AgeRating(
   ;
 
   companion object {
-    private val map = values().associateBy { it.value.toLowerNoSpace() }
+    private val map = entries.associateBy { it.value.toLowerNoSpace() }
 
     @JvmStatic
     @JsonCreator

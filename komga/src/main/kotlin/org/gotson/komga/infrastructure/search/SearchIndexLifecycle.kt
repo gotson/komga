@@ -37,7 +37,7 @@ class SearchIndexLifecycle(
   }
 
   fun rebuildIndex(entities: Set<LuceneEntity>? = null) {
-    val targetEntities = entities ?: LuceneEntity.values().toSet()
+    val targetEntities = entities ?: LuceneEntity.entries.toSet()
 
     logger.info { "Rebuild index for: ${targetEntities.map { it.type }}" }
 
