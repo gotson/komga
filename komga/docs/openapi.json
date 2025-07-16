@@ -15,21 +15,8 @@
   },
   "servers": [
     {
-      "url": "https://demo.komga.org",
-      "description": "Demo server"
-    },
-    {
-      "url": "http://localhost:{port}",
-      "description": "Local development server",
-      "variables": {
-        "port": {
-          "enum": [
-            "8080",
-            "25600"
-          ],
-          "default": "25600"
-        }
-      }
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
     }
   ],
   "security": [
@@ -188,7 +175,6 @@
                   }
                 },
                 "schema": {
-                  "type": "object",
                   "additionalProperties": true
                 }
               }
@@ -10514,40 +10500,74 @@
           }
         ]
       },
+      "ItemAuthorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Author\u0027s name",
+            "example": "gotson"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of a site owned by the author",
+            "example": "https://github.com/gotson"
+          }
+        }
+      },
       "ItemDto": {
         "type": "object",
         "properties": {
           "_komga": {
-            "$ref": "#/components/schemas/KomgaExtensionDto"
+            "$ref": "#/components/schemas/KomgaExtensionDto",
+            "description": "Additional fields for the item"
           },
           "author": {
-            "$ref": "#/components/schemas/AuthorDto"
+            "$ref": "#/components/schemas/ItemAuthorDto",
+            "description": "Author of the item"
           },
           "content_html": {
-            "type": "string"
+            "type": "string",
+            "description": "HTML of the item",
+            "example": "\u003cp\u003eA longer text…\u003c/p\u003e"
           },
           "date_modified": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Modification date in RFC 3339 format",
+            "example": "2023-12-15T00:00:00Z"
           },
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique for that item for that feed over time",
+            "example": "https://komga.org/blog/ebook-drop2"
           },
           "summary": {
-            "type": "string"
+            "type": "string",
+            "description": "A plain text sentence or two describing the item",
+            "example": "Version 1.9.0 contains the second feature drop for Ebooks support."
           },
           "tags": {
             "type": "array",
+            "description": "Tags describing the item",
+            "examples": [
+              "upgrade",
+              "komga"
+            ],
             "items": {
               "type": "string"
             },
             "uniqueItems": true
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Plain text title",
+            "example": "eBook drop 2"
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "description": "URL of the resource described by the item",
+            "example": "https://komga.org/blog/ebook-drop2"
           }
         },
         "required": [
@@ -10557,12 +10577,62 @@
       },
       "JsonFeedDto": {
         "type": "object",
+        "example": {
+          "version": "https://jsonfeed.org/version/1",
+          "title": "Announcements",
+          "home_page_url": "https://komga.org/blog",
+          "description": "Latest Komga announcements",
+          "items": [
+            {
+              "id": "https://komga.org/blog/ebook-drop2",
+              "url": "https://komga.org/blog/ebook-drop2",
+              "title": "eBook drop 2",
+              "summary": "Version 1.9.0 contains the second feature drop for Ebooks support.",
+              "content_html": "\u003cp\u003eA longer text…\u003c/p\u003e",
+              "date_modified": "2023-12-15T00:00:00Z",
+              "author": {
+                "name": "gotson",
+                "url": "https://github.com/gotson"
+              },
+              "tags": [
+                "upgrade",
+                "komga"
+              ],
+              "_komga": {
+                "read": false
+              }
+            },
+            {
+              "id": "https://komga.org/blog/ebook-support",
+              "url": "https://komga.org/blog/ebook-support",
+              "title": "eBook support",
+              "summary": "Version 1.8.0 is bringing a long awaited feature: proper eBook support!",
+              "content_html": "\u003cp\u003eA longer text…\u003c/p\u003e",
+              "date_modified": "2023-11-29T00:00:00Z",
+              "author": {
+                "name": "gotson",
+                "url": "https://github.com/gotson"
+              },
+              "tags": [
+                "upgrade",
+                "komga"
+              ],
+              "_komga": {
+                "read": true
+              }
+            }
+          ]
+        },
         "properties": {
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Provides more detail on what the feed is about",
+            "example": "Latest Komga announcements"
           },
           "home_page_url": {
-            "type": "string"
+            "type": "string",
+            "description": "URL of the resource that the feed describes",
+            "example": "https://komga.org/blog"
           },
           "items": {
             "type": "array",
@@ -10571,10 +10641,14 @@
             }
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the feed",
+            "example": "Announcements"
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "URL of the version of the format the feed uses",
+            "example": "https://jsonfeed.org/version/1"
           }
         },
         "required": [
@@ -10587,7 +10661,9 @@
         "type": "object",
         "properties": {
           "read": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the current item has been marked read by the current user",
+            "example": false
           }
         },
         "required": [
