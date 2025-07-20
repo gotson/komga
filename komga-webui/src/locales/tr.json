@@ -25,7 +25,9 @@
       "generate_api_key": "API anahtarı oluştur",
       "no_keys": "Henüz API anahtarı oluşturulmamış"
     },
-    "change_password": "Şifre Değiştir"
+    "change_password": "Şifre Değiştir",
+    "details": "Detaylar",
+    "my_account": "Hesabım"
   },
   "announcements": {
     "mark_all_read": "Hepsini okundu olarak işaretle",
@@ -135,6 +137,7 @@
       "general": "Genel",
       "gestures": "Sürükleme ile Geçişler",
       "page_layout": "Sayfa düzeni",
+      "page_margin": "Sayfa Boşluğu",
       "paged": "Sayfalandırılmış Okuyucu Seçenekleri",
       "reading_mode": "Okuma modu",
       "scale_type": "Ölçeklendirme şekli",
@@ -168,6 +171,8 @@
   },
   "browse_book": {
     "comment": "YORUM",
+    "date_created": "OLUŞTURULDU",
+    "date_modified": "SON DÜZENLENEN",
     "download_file": "Dosyayı indir",
     "file": "DOSYA",
     "format": "FORMAT",
@@ -177,6 +182,8 @@
     "outdated_tooltip": "Kitap dosyası değişti, kitabın tekrar analiz edilmesi gerekiyor",
     "read_book": "Kitabı oku",
     "read_incognito": "Gizli modda oku",
+    "remove_from_collection": "Kitabı koleksiyondan kaldır",
+    "remove_from_readlist": "Kitabı okuma listesinden kaldır",
     "size": "BOYUT"
   },
   "browse_collection": {
@@ -191,6 +198,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Kitap serisindeki yayınlanma tarihi arasında en erken yayınlanma tarihi",
+    "remove_from_collection": "Serileri koleksiyondan kaldır",
     "series_no_summary": "Bu serinin bir özeti yok, ama biz sizin için bir özet seçtik!",
     "summary_from_book": "{number} numaralı kitaptan özet:"
   },
@@ -221,8 +229,10 @@
     "dismiss": "Çöpe at",
     "download": "İndir",
     "drag_drop": "sürükle bırak",
+    "duplicate": "Çoğalt",
     "email": "e-Posta",
     "epub": "ePub",
+    "error": "Hata",
     "filename": "Dosya Adı",
     "filter_no_matches": "Etkin filtre için eşleşme yok",
     "genre": "Tür",
@@ -235,8 +245,11 @@
     "locale_name": "Türkçe",
     "locale_rtl": "false",
     "lock_all": "Hepsini kilitle",
+    "media": "Medya",
+    "more": "Daha fazla",
     "n_selected": "{count} tane seçildi",
     "nothing_to_show": "Gösterilecek bir şey yok",
+    "ok": "Tamam",
     "oneshot": "One-shot",
     "outdated": "Güncel değil",
     "page": "Sayfa",
