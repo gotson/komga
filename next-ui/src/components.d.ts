@@ -37,6 +37,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     ServerSettings: typeof import('./components/server/Settings.vue')['default']
     UserDeletionWarning: typeof import('./components/user/DeletionWarning.vue')['default']
+    UserDetails: typeof import('./components/user/Details.vue')['default']
     UserFormChangePassword: typeof import('./components/user/form/ChangePassword.vue')['default']
   }
 }
