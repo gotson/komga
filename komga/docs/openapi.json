@@ -15,8 +15,21 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
-      "description": "Generated server url"
+      "url": "https://demo.komga.org",
+      "description": "Demo server"
+    },
+    {
+      "url": "http://localhost:{port}",
+      "description": "Local development server",
+      "variables": {
+        "port": {
+          "default": "25600",
+          "enum": [
+            "8080",
+            "25600"
+          ]
+        }
+      }
     }
   ],
   "security": [
@@ -13074,12 +13087,7 @@
             "type": "integer",
             "format": "int32"
           }
-        },
-        "required": [
-          "configurationSource",
-          "databaseSource",
-          "effectiveValue"
-        ]
+        }
       },
       "SettingMultiSourceString": {
         "type": "object",
@@ -13093,12 +13101,7 @@
           "effectiveValue": {
             "type": "string"
           }
-        },
-        "required": [
-          "configurationSource",
-          "databaseSource",
-          "effectiveValue"
-        ]
+        }
       },
       "SettingsDto": {
         "type": "object",
