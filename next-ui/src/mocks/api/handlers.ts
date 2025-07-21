@@ -5,6 +5,7 @@ import { HttpResponse } from 'msw'
 import { librariesHandlers } from '@/mocks/api/handlers/libraries'
 import { referentialHandlers } from '@/mocks/api/handlers/referential'
 import { usersHandlers } from '@/mocks/api/handlers/users'
+import { settingsHandlers } from '@/mocks/api/handlers/settings'
 
 export const handlers = [
   ...librariesHandlers,
@@ -13,6 +14,7 @@ export const handlers = [
   ...announcementHandlers,
   ...releasesHandlers,
   ...usersHandlers,
+  ...settingsHandlers,
 ]
 
 export const response401Unauthorized = () =>
