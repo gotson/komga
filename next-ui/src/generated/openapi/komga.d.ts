@@ -2739,7 +2739,7 @@ export interface components {
         } & (Omit<components["schemas"]["StringOp"], "operator"> & {
             value: string;
         });
-        Book: Record<string, never>;
+        Book: unknown;
         BookDto: {
             /** Format: date-time */
             created: Date;
@@ -2952,7 +2952,7 @@ export interface components {
         GreaterThan: {
             operator: "GreaterThan";
         } & (Omit<components["schemas"]["NumericNullableInteger"], "operator"> & {
-            value: Record<string, never>;
+            value: unknown;
         } & Omit<components["schemas"]["NumericFloat"], "operator">);
         GroupCountDto: {
             /** Format: int32 */
@@ -2972,7 +2972,7 @@ export interface components {
         Is: {
             operator: "Is";
         } & (Omit<components["schemas"]["NumericNullableInteger"], "operator"> & {
-            value: Record<string, never>;
+            value: unknown;
         } & Omit<components["schemas"]["EqualityAuthorMatch"], "operator"> & Omit<components["schemas"]["EqualityString"], "operator"> & Omit<components["schemas"]["EqualityNullableString"], "operator"> & Omit<components["schemas"]["EqualityReadStatus"], "operator"> & Omit<components["schemas"]["EqualityStatus"], "operator"> & Omit<components["schemas"]["StringOp"], "operator"> & Omit<components["schemas"]["EqualityMediaProfile"], "operator"> & Omit<components["schemas"]["NumericFloat"], "operator"> & Omit<components["schemas"]["EqualityPosterMatch"], "operator">);
         IsFalse: {
             operator: "IsFalse";
@@ -2980,43 +2980,17 @@ export interface components {
         IsInTheLast: {
             operator: "IsInTheLast";
         } & (Omit<components["schemas"]["Date"], "operator"> & {
-            duration: {
-                /** Format: int32 */
-                nano?: number;
-                negative?: boolean;
-                positive?: boolean;
-                /** Format: int64 */
-                seconds?: number;
-                units?: {
-                    dateBased?: boolean;
-                    durationEstimated?: boolean;
-                    timeBased?: boolean;
-                }[];
-                zero?: boolean;
-            };
+            duration: string;
         });
         IsNot: {
             operator: "IsNot";
         } & (Omit<components["schemas"]["NumericNullableInteger"], "operator"> & {
-            value: Record<string, never>;
+            value: unknown;
         } & Omit<components["schemas"]["EqualityAuthorMatch"], "operator"> & Omit<components["schemas"]["EqualityString"], "operator"> & Omit<components["schemas"]["EqualityNullableString"], "operator"> & Omit<components["schemas"]["EqualityReadStatus"], "operator"> & Omit<components["schemas"]["EqualityStatus"], "operator"> & Omit<components["schemas"]["StringOp"], "operator"> & Omit<components["schemas"]["EqualityMediaProfile"], "operator"> & Omit<components["schemas"]["NumericFloat"], "operator"> & Omit<components["schemas"]["EqualityPosterMatch"], "operator">);
         IsNotInTheLast: {
             operator: "IsNotInTheLast";
         } & (Omit<components["schemas"]["Date"], "operator"> & {
-            duration: {
-                /** Format: int32 */
-                nano?: number;
-                negative?: boolean;
-                positive?: boolean;
-                /** Format: int64 */
-                seconds?: number;
-                units?: {
-                    dateBased?: boolean;
-                    durationEstimated?: boolean;
-                    timeBased?: boolean;
-                }[];
-                zero?: boolean;
-            };
+            duration: string;
         });
         IsNotNull: {
             operator: "IsNotNull";
@@ -3033,7 +3007,6 @@ export interface components {
         IsTrue: {
             operator: "IsTrue";
         } & Omit<components["schemas"]["Boolean"], "operator">;
-        /** @description Author of the item */
         ItemAuthorDto: {
             /**
              * @description Author's name
@@ -3047,7 +3020,9 @@ export interface components {
             url?: string;
         };
         ItemDto: {
+            /** @description Additional fields for the item */
             _komga?: components["schemas"]["KomgaExtensionDto"];
+            /** @description Author of the item */
             author?: components["schemas"]["ItemAuthorDto"];
             /**
              * @description HTML of the item
@@ -3152,7 +3127,6 @@ export interface components {
              */
             version: string;
         };
-        /** @description Additional fields for the item */
         KomgaExtensionDto: {
             /**
              * @description Whether the current item has been marked read by the current user
@@ -3166,7 +3140,7 @@ export interface components {
         LessThan: {
             operator: "LessThan";
         } & (Omit<components["schemas"]["NumericNullableInteger"], "operator"> & {
-            value: Record<string, never>;
+            value: unknown;
         } & Omit<components["schemas"]["NumericFloat"], "operator">);
         LibraryCreationDto: {
             analyzeDimensions: boolean;
@@ -3701,7 +3675,7 @@ export interface components {
         ScanRequestDto: {
             path: string;
         };
-        Series: Record<string, never>;
+        Series: unknown;
         SeriesDto: {
             /** Format: int32 */
             booksCount: number;
@@ -3809,16 +3783,16 @@ export interface components {
         };
         SettingMultiSourceInteger: {
             /** Format: int32 */
-            configurationSource: number;
+            configurationSource?: number;
             /** Format: int32 */
-            databaseSource: number;
+            databaseSource?: number;
             /** Format: int32 */
-            effectiveValue: number;
+            effectiveValue?: number;
         };
         SettingMultiSourceString: {
-            configurationSource: string;
-            databaseSource: string;
-            effectiveValue: string;
+            configurationSource?: string;
+            databaseSource?: string;
+            effectiveValue?: string;
         };
         SettingsDto: {
             deleteEmptyCollections: boolean;
@@ -3867,7 +3841,7 @@ export interface components {
             sorted?: boolean;
             unsorted?: boolean;
         };
-        StreamingResponseBody: Record<string, never>;
+        StreamingResponseBody: unknown;
         StringOp: {
             operator: string;
         };
@@ -4038,7 +4012,7 @@ export interface components {
             href?: string;
             properties: {
                 [key: string]: {
-                    [key: string]: Record<string, never>;
+                    [key: string]: unknown;
                 };
             };
             rel?: string;
@@ -4073,7 +4047,7 @@ export interface components {
             /** @enum {string} */
             readingProgression?: "rtl" | "ltr" | "ttb" | "btt" | "auto";
             rendition: {
-                [key: string]: Record<string, never>;
+                [key: string]: unknown;
             };
             sortAs?: string;
             subject: string[];
