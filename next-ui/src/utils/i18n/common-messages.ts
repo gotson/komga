@@ -26,4 +26,9 @@ export const commonMessages = {
     defaultMessage: 'Select an item or create one',
     id: 'HXms0S',
   }),
+  changePasswordDialogTitle: defineMessage({
+    description: 'Change Password dialog title',
+    defaultMessage: 'Change Password',
+    id: 'dHyAgE',
+  }),
 }
