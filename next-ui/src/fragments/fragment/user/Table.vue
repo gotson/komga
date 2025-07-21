@@ -49,7 +49,7 @@
           v-for="role in value"
           :key="role"
           :color="getRoleColor(role)"
-          :text="role"
+          :text="$formatMessage(userRolesMessages[role as UserRoles])"
           size="x-small"
           rounded
         />
@@ -105,7 +105,7 @@
 <script lang="ts" setup>
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
-import { UserRoles } from '@/types/UserRoles'
+import { UserRoles, userRolesMessages } from '@/types/UserRoles'
 import { defineMessage, useIntl } from 'vue-intl'
 
 import { useCurrentUser } from '@/colada/users'
