@@ -80,7 +80,11 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
   switch (action) {
     case ACTION.ADD:
       dialogConfirmEdit.value.dialogProps = {
-        title: 'Add User',
+        title: intl.formatMessage({
+          description: 'Add user dialog title',
+          defaultMessage: 'Add User',
+          id: 'Bl30xt',
+        }),
         maxWidth: 600,
         closeOnSave: false,
         fullscreen: display.xs.value,
@@ -107,7 +111,11 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
       break
     case ACTION.EDIT:
       dialogConfirmEdit.value.dialogProps = {
-        title: 'Edit User',
+        title: intl.formatMessage({
+          description: 'Edit user dialog title',
+          defaultMessage: 'Edit User',
+          id: 'Zh8AOV',
+        }),
         subtitle: user?.email,
         maxWidth: 600,
         closeOnSave: false,
@@ -136,11 +144,19 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
       break
     case ACTION.DELETE:
       dialogConfirm.value.dialogProps = {
-        title: 'Delete User',
+        title: intl.formatMessage({
+          description: 'Delete user dialog title',
+          defaultMessage: 'Delete User',
+          id: '9XDmYO',
+        }),
         subtitle: user?.email,
         maxWidth: 600,
         validateText: user?.email,
-        okText: 'Delete',
+        okText: intl.formatMessage({
+          description: 'Delete user dialog: confirmation button text',
+          defaultMessage: 'Delete',
+          id: 'o8WeX3',
+        }),
         closeOnSave: false,
       }
       dialogConfirm.value.slotWarning = {
@@ -151,7 +167,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
       break
     case ACTION.PASSWORD:
       dialogConfirmEdit.value.dialogProps = {
-        title: 'Change Password',
+        title: intl.formatMessage(commonMessages.changePasswordDialogTitle),
         subtitle: user?.email,
         maxWidth: 400,
         closeOnSave: false,
