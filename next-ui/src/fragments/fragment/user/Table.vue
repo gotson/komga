@@ -31,7 +31,7 @@
           :text="
             $formatMessage({
               description: 'Users table global header: add user button',
-              defaultMessage: 'Add a user',
+              defaultMessage: 'Add',
               id: 'GZCEBS',
             })
           "

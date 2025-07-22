@@ -31,7 +31,7 @@
           :text="
             $formatMessage({
               description: 'API Key table global header: generate API key button',
-              defaultMessage: 'Generate API Key',
+              defaultMessage: 'Generate',
               id: '6MkTnp',
             })
           "
