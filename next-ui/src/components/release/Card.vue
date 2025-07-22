@@ -8,36 +8,36 @@
           class="text-h4 font-weight-medium link-underline me-2"
           >{{ release.version }}</a
         >
-        <v-chip
-          v-if="current"
-          class="mx-2 mt-n3"
-          size="small"
-          rounded
-          color="info"
-        >
-          {{
-            $formatMessage({
-              description:
-                'Updates view: badge showing next to the currently installed release number',
-              defaultMessage: 'Currently installed',
-              id: '3jrAF6',
-            })
-          }}
-        </v-chip>
-        <v-chip
-          v-if="latest"
-          class="mx-2 mt-n3"
-          size="small"
-          rounded
-        >
-          {{
-            $formatMessage({
-              description: 'Updates view: badge showing next to the latest release number',
-              defaultMessage: 'Latest',
-              id: '2Bh8F2',
-            })
-          }}
-        </v-chip>
+        <span class="d-inline-flex mt-n3 ga-2 ms-2">
+          <v-chip
+            v-if="current"
+            size="small"
+            rounded
+            color="info"
+          >
+            {{
+              $formatMessage({
+                description:
+                  'Updates view: badge showing next to the currently installed release number',
+                defaultMessage: 'Installed',
+                id: 'WADecv',
+              })
+            }}
+          </v-chip>
+          <v-chip
+            v-if="latest"
+            size="small"
+            rounded
+          >
+            {{
+              $formatMessage({
+                description: 'Updates view: badge showing next to the latest release number',
+                defaultMessage: 'Latest',
+                id: '2Bh8F2',
+              })
+            }}
+          </v-chip>
+        </span>
       </div>
     </template>
 

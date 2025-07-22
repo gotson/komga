@@ -1,26 +1,31 @@
 <template>
-  <v-empty-state
-    v-if="error"
-    icon="i-mdi:connection"
-    :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-  />
-
-  <template v-else-if="currentUser">
-    <UserDetails :user="currentUser" />
-    <v-btn
-      :text="
-        $formatMessage({
-          description: 'User details screen: change password button',
-          defaultMessage: 'Change password',
-          id: 'sGsWvI',
-        })
-      "
-      class="mt-8"
-      @click="changePassword()"
-      @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
+  <v-container
+    fluid
+    class="pa-4"
+  >
+    <v-empty-state
+      v-if="error"
+      icon="i-mdi:connection"
+      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
+      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
     />
-  </template>
+
+    <template v-else-if="currentUser">
+      <UserDetails :user="currentUser" />
+      <v-btn
+        :text="
+          $formatMessage({
+            description: 'User details screen: change password button',
+            defaultMessage: 'Change password',
+            id: 'sGsWvI',
+          })
+        "
+        class="mt-8"
+        @click="changePassword()"
+        @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
+      />
+    </template>
+  </v-container>
 </template>
 
 <script lang="ts" setup>

@@ -1,24 +1,32 @@
 <template>
-  <v-empty-state
-    v-if="error"
-    icon="i-mdi:connection"
-    :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-  />
-
-  <template v-else>
-    <FragmentApikeyTable
-      :api-keys="apiKeys"
-      :loading="isLoading"
-      @enter-add-api-key="(target) => (dialogGenerateActivator = target)"
-      @enter-force-sync-api-key="(target) => (dialogConfirm.activator = target)"
-      @force-sync-api-key="(apiKey) => showDialog(ACTION.FORCE_SYNC, apiKey)"
-      @enter-delete-api-key="(target) => (dialogConfirm.activator = target)"
-      @delete-api-key="(apiKey) => showDialog(ACTION.DELETE, apiKey)"
+  <v-container
+    fluid
+    class="pa-0 pa-sm-4"
+  >
+    <v-empty-state
+      v-if="error"
+      icon="i-mdi:connection"
+      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
+      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
     />
-  </template>
 
-  <FragmentApikeyGenerateDialog :activator="dialogGenerateActivator" />
+    <template v-else>
+      <FragmentApikeyTable
+        :api-keys="apiKeys"
+        :loading="isLoading"
+        @enter-add-api-key="(target) => (dialogGenerateActivator = target)"
+        @enter-force-sync-api-key="(target) => (dialogConfirm.activator = target)"
+        @force-sync-api-key="(apiKey) => showDialog(ACTION.FORCE_SYNC, apiKey)"
+        @enter-delete-api-key="(target) => (dialogConfirm.activator = target)"
+        @delete-api-key="(apiKey) => showDialog(ACTION.DELETE, apiKey)"
+      />
+    </template>
+
+    <FragmentApikeyGenerateDialog
+      :activator="dialogGenerateActivator"
+      :fullscreen="display.xs.value"
+    />
+  </v-container>
 </template>
 
 <script lang="ts" setup>
@@ -33,8 +41,10 @@ import ApikeyDeletionWarning from '@/components/apikey/DeletionWarning.vue'
 import ForceSyncWarning from '@/components/apikey/ForceSyncWarning.vue'
 import { useApiKeys, useDeleteApiKey } from '@/colada/users'
 import { useDeleteSyncPoints } from '@/colada/syncpoints'
+import { useDisplay } from 'vuetify'
 
 const intl = useIntl()
+const display = useDisplay()
 
 // API data
 const { data: apiKeys, error, isLoading, refetch: refetchApiKeys } = useApiKeys()
@@ -79,6 +89,7 @@ function showDialog(action: ACTION, apiKey?: components['schemas']['ApiKeyDto'])
           id: 'IE0XzE',
         }),
         closeOnSave: false,
+        fullscreen: display.xs.value,
       }
       dialogConfirm.value.slotWarning = {
         component: markRaw(ApikeyDeletionWarning),
@@ -102,6 +113,7 @@ function showDialog(action: ACTION, apiKey?: components['schemas']['ApiKeyDto'])
           id: 'W3BUf7',
         }),
         closeOnSave: false,
+        fullscreen: display.xs.value,
       }
       dialogConfirm.value.slotWarning = {
         component: markRaw(ForceSyncWarning),

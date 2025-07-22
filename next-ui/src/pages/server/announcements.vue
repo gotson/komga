@@ -1,59 +1,61 @@
 <template>
-  <v-skeleton-loader
-    v-if="isPending"
-    type="heading, text, paragraph@3"
-  />
+  <v-container fluid>
+    <v-skeleton-loader
+      v-if="isPending"
+      type="heading, text, paragraph@3"
+    />
 
-  <v-empty-state
-    v-else-if="error"
-    icon="i-mdi:connection"
-    :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-  />
+    <v-empty-state
+      v-else-if="error"
+      icon="i-mdi:connection"
+      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
+      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
+    />
 
-  <template v-else-if="announcements">
-    <div
-      v-for="(item, index) in announcements.items"
-      :key="index"
-    >
-      <AnnouncementCard
-        class="mb-4"
-        :item="item"
-        @mark-read="markRead"
-      />
-
-      <!--  Bottom spacing for the FAB  -->
+    <template v-else-if="announcements">
       <div
-        v-if="index == announcements.items.length - 1"
-        class="mb-16"
-      />
-    </div>
+        v-for="(item, index) in announcements.items"
+        :key="index"
+      >
+        <AnnouncementCard
+          class="mb-4"
+          :item="item"
+          @mark-read="markRead"
+        />
 
-    <v-fab
-      :active="unreadCount > 0"
-      location="bottom right"
-      app
-      icon
-      size="x-large"
-      class="ms-n5"
-      @click="markAllRead()"
-    >
-      <!--  Workaround for https://github.com/vuetifyjs/vuetify/issues/21439  -->
-      <v-btn
-        v-tooltip:start="
-          $formatMessage({
-            description: 'Announcements view: mark all as read button tooltip',
-            defaultMessage: 'Mark all as read',
-            id: 'da/wb0',
-          })
-        "
-        color="success"
+        <!--  Bottom spacing for the FAB  -->
+        <div
+          v-if="index == announcements.items.length - 1"
+          class="mb-16"
+        />
+      </div>
+
+      <v-fab
+        :active="unreadCount > 0"
+        location="bottom right"
+        app
+        icon
         size="x-large"
-        icon="i-mdi:check-all"
-        aria-label="mark all read"
-      />
-    </v-fab>
-  </template>
+        class="ms-n5"
+        @click="markAllRead()"
+      >
+        <!--  Workaround for https://github.com/vuetifyjs/vuetify/issues/21439  -->
+        <v-btn
+          v-tooltip:start="
+            $formatMessage({
+              description: 'Announcements view: mark all as read button tooltip',
+              defaultMessage: 'Mark all as read',
+              id: 'da/wb0',
+            })
+          "
+          color="success"
+          size="x-large"
+          icon="i-mdi:check-all"
+          aria-label="mark all read"
+        />
+      </v-fab>
+    </template>
+  </v-container>
 </template>
 
 <script lang="ts" setup>

@@ -9,101 +9,110 @@
         @submit.prevent="submitForm(save)"
         :disabled="loading"
       >
-        <v-list>
-          <v-list-subheader
-            :class="headerClass"
-            class="mb-2"
-            >{{
-              $formatMessage({
-                description: 'Server settings: section header for posters',
-                defaultMessage: 'Posters',
-                id: 'a5MYiP',
-              })
-            }}
-          </v-list-subheader>
-          <v-select
-            v-model="proxyModel.value.thumbnailSize"
-            :label="
-              $formatMessage({
-                description: 'Server settings: selection of poster size',
-                defaultMessage: 'Generated poster size',
-                id: 'eDA9Gm',
-              })
-            "
-            :items="thumbnailSizes"
-          />
-        </v-list>
+        <v-row>
+          <v-col>
+            <div class="text-subtitle-2">
+              {{
+                $formatMessage({
+                  description: 'Server settings: section header for posters',
+                  defaultMessage: 'Posters',
+                  id: 'a5MYiP',
+                })
+              }}
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-select
+              v-model="proxyModel.value.thumbnailSize"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: selection of poster size',
+                  defaultMessage: 'Generated poster size',
+                  id: 'eDA9Gm',
+                })
+              "
+              :items="thumbnailSizes"
+            />
+          </v-col>
+        </v-row>
 
-        <v-divider />
+        <v-divider class="mb-4" />
 
-        <v-list>
-          <v-list-subheader :class="headerClass"
-            >{{
-              $formatMessage({
-                description: 'Server settings: section header for scan behaviour',
-                defaultMessage: 'Overall scan behaviour',
-                id: 'dSlkbn',
-              })
-            }}
-          </v-list-subheader>
-          <v-checkbox
-            v-model="proxyModel.value.deleteEmptyCollections"
-            :label="
-              $formatMessage({
-                description: 'Server settings: checkbox to delete empty collections after scan',
-                defaultMessage: 'Delete empty collections after scan',
-                id: 'pHdVzh',
-              })
-            "
-            hide-details
-          />
+        <v-row>
+          <v-col>
+            <div class="text-subtitle-2">
+              {{
+                $formatMessage({
+                  description: 'Server settings: section header for scan behaviour',
+                  defaultMessage: 'Overall scan behaviour',
+                  id: 'dSlkbn',
+                })
+              }}
+            </div>
+            <v-checkbox
+              v-model="proxyModel.value.deleteEmptyCollections"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: checkbox to delete empty collections after scan',
+                  defaultMessage: 'Delete empty collections after scan',
+                  id: 'pHdVzh',
+                })
+              "
+              hide-details
+            />
+            <v-checkbox
+              v-model="proxyModel.value.deleteEmptyReadLists"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: checkbox to delete empty readlists after scan',
+                  defaultMessage: 'Delete empty read lists after scan',
+                  id: 'kqV7EJ',
+                })
+              "
+              hide-details
+            />
+          </v-col>
+        </v-row>
 
-          <v-checkbox
-            v-model="proxyModel.value.deleteEmptyReadLists"
-            :label="
-              $formatMessage({
-                description: 'Server settings: checkbox to delete empty readlists after scan',
-                defaultMessage: 'Delete empty read lists after scan',
-                id: 'kqV7EJ',
-              })
-            "
-            hide-details
-          />
-        </v-list>
+        <v-divider class="mb-4" />
 
-        <v-divider />
+        <v-row>
+          <v-col>
+            <div class="text-subtitle-2">
+              {{
+                $formatMessage({
+                  description: 'Server settings: section header for tasks',
+                  defaultMessage: 'Tasks',
+                  id: '8hC76W',
+                })
+              }}
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-number-input
+              v-model="proxyModel.value.taskPoolSize"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: input field for task threads',
+                  defaultMessage: 'Task threads',
+                  id: 'rHwSrF',
+                })
+              "
+              :min="1"
+              :rules="['required']"
+            ></v-number-input>
+          </v-col>
+        </v-row>
 
-        <v-list>
-          <v-list-subheader
-            :class="headerClass"
-            class="mb-2"
-            >{{
-              $formatMessage({
-                description: 'Server settings: section header for tasks',
-                defaultMessage: 'Tasks',
-                id: '8hC76W',
-              })
-            }}
-          </v-list-subheader>
-          <v-number-input
-            v-model="proxyModel.value.taskPoolSize"
-            :label="
-              $formatMessage({
-                description: 'Server settings: input field for task threads',
-                defaultMessage: 'Task threads',
-                id: 'rHwSrF',
-              })
-            "
-            :min="1"
-            :rules="['required']"
-          ></v-number-input>
-        </v-list>
+        <v-divider class="mb-4" />
 
-        <v-divider />
-
-        <v-list>
-          <v-list-subheader class="mb-4">
-            <div :class="headerClass">
+        <v-row>
+          <v-col>
+            <div class="text-subtitle-2">
               {{
                 $formatMessage({
                   description: 'Server settings: section header for remember me',
@@ -113,38 +122,41 @@
               }}
             </div>
             <div class="text-caption">{{ messageRequiresRestart }}</div>
-          </v-list-subheader>
-          <v-number-input
-            v-model="proxyModel.value.rememberMeDurationDays"
-            :label="
-              $formatMessage({
-                description: 'Server settings: input field for remember me duration',
-                defaultMessage: 'Remember me duration (in days)',
-                id: 'iDU5FS',
-              })
-            "
-            :min="1"
-            :rules="['required']"
-          ></v-number-input>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-number-input
+              v-model="proxyModel.value.rememberMeDurationDays"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: input field for remember me duration',
+                  defaultMessage: 'Remember me duration (in days)',
+                  id: 'iDU5FS',
+                })
+              "
+              :min="1"
+              :rules="['required']"
+            ></v-number-input>
+            <v-checkbox
+              v-model="proxyModel.value.renewRememberMeKey"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: checkbox to regenerate the remember me key',
+                  defaultMessage: 'Regenerate the \'remember me\' key',
+                  id: 'UaD47n',
+                })
+              "
+              hide-details
+            />
+          </v-col>
+        </v-row>
 
-          <v-checkbox
-            v-model="proxyModel.value.renewRememberMeKey"
-            :label="
-              $formatMessage({
-                description: 'Server settings: checkbox to regenerate the remember me key',
-                defaultMessage: 'Regenerate the \'remember me\' key',
-                id: 'UaD47n',
-              })
-            "
-            hide-details
-          />
-        </v-list>
+        <v-divider class="mb-4" />
 
-        <v-divider />
-
-        <v-list>
-          <v-list-subheader class="mb-4">
-            <div :class="headerClass">
+        <v-row>
+          <v-col>
+            <div class="text-subtitle-2">
               {{
                 $formatMessage({
                   description: 'Server settings: section header for HTTP server',
@@ -154,144 +166,159 @@
               }}
             </div>
             <div class="text-caption">{{ messageRequiresRestart }}</div>
-          </v-list-subheader>
+          </v-col>
+        </v-row>
 
-          <v-number-input
-            v-model="proxyModel.value.serverPort"
-            :label="
-              $formatMessage({
-                description: 'Server settings: input field for server port',
-                defaultMessage: 'Server listening port',
-                id: '+r8FCS',
-              })
-            "
-            :min="1"
-            :max="65535"
-            :placeholder="settings?.serverPort.configurationSource?.toString()"
-            :persistent-placeholder="!!settings?.serverPort.configurationSource"
-            clearable
-          >
-            <template
-              v-slot:append-inner
-              v-if="!!settings?.serverPort.configurationSource"
-            >
-              <v-icon
-                icon="i-mdi:information-outline"
-                v-tooltip:bottom="messagePrecedence"
-              ></v-icon>
-            </template>
-          </v-number-input>
-
-          <v-text-field
-            v-model="proxyModel.value.serverContextPath"
-            :label="
-              $formatMessage({
-                description: 'Server settings: input field for server base URL',
-                defaultMessage: 'Server base URL',
-                id: 'eRJOa6',
-              })
-            "
-            :placeholder="settings?.serverContextPath.configurationSource?.toString()"
-            :persistent-placeholder="!!settings?.serverContextPath.configurationSource"
-            clearable
-            :rules="[
-              [
-                'pattern',
-                /^\/[-a-zA-Z0-9_\/]*[a-zA-Z0-9]$/,
+        <v-row>
+          <v-col>
+            <v-number-input
+              v-model="proxyModel.value.serverPort"
+              :label="
                 $formatMessage({
-                  description: 'Server settings: error message when server context path is invalid',
-                  defaultMessage:
-                    'Must start with \'/\', not end with \'/-_\', and contain only \'/-_a-z0-9\'',
-                  id: 'Lto2Lg',
-                }),
-              ],
-            ]"
-            ><template
-              v-slot:append-inner
-              v-if="!!settings?.serverContextPath.configurationSource"
+                  description: 'Server settings: input field for server port',
+                  defaultMessage: 'Server listening port',
+                  id: '+r8FCS',
+                })
+              "
+              :min="1"
+              :max="65535"
+              :placeholder="settings?.serverPort.configurationSource?.toString()"
+              :persistent-placeholder="!!settings?.serverPort.configurationSource"
+              clearable
+              hide-details
             >
-              <v-icon
-                icon="i-mdi:information-outline"
-                v-tooltip:bottom="messagePrecedence"
-              ></v-icon> </template
-          ></v-text-field>
-        </v-list>
+              <template
+                v-slot:append-inner
+                v-if="!!settings?.serverPort.configurationSource"
+              >
+                <v-icon
+                  icon="i-mdi:information-outline"
+                  v-tooltip:bottom="messagePrecedence"
+                ></v-icon>
+              </template>
+            </v-number-input>
+          </v-col>
+        </v-row>
 
-        <v-divider />
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="proxyModel.value.serverContextPath"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: input field for server base URL',
+                  defaultMessage: 'Server base URL',
+                  id: 'eRJOa6',
+                })
+              "
+              :placeholder="settings?.serverContextPath.configurationSource?.toString()"
+              :persistent-placeholder="!!settings?.serverContextPath.configurationSource"
+              clearable
+              :rules="[
+                [
+                  'pattern',
+                  /^\/[-a-zA-Z0-9_\/]*[a-zA-Z0-9]$/,
+                  $formatMessage({
+                    description:
+                      'Server settings: error message when server context path is invalid',
+                    defaultMessage:
+                      'Must start with \'/\', not end with \'/-_\', and contain only \'/-_a-z0-9\'',
+                    id: 'Lto2Lg',
+                  }),
+                ],
+              ]"
+              ><template
+                v-slot:append-inner
+                v-if="!!settings?.serverContextPath.configurationSource"
+              >
+                <v-icon
+                  icon="i-mdi:information-outline"
+                  v-tooltip:bottom="messagePrecedence"
+                ></v-icon> </template
+            ></v-text-field>
+          </v-col>
+        </v-row>
 
-        <v-list>
-          <v-list-subheader :class="headerClass"
-            >{{
-              $formatMessage({
-                description: 'Server settings: section header for Kobo Sync',
-                defaultMessage: 'Kobo Sync',
-                id: 'rRFQKU',
-              })
-            }}
-          </v-list-subheader>
-          <v-checkbox
-            v-model="proxyModel.value.koboProxy"
-            :label="
-              $formatMessage({
-                description:
-                  'Server settings: checkbox to enable Kobo Store proxying for Kobo Sync ',
-                defaultMessage: 'Proxy unhandled requests to Kobo Store',
-                id: 'iNBto3',
-              })
-            "
-            hide-details
-          />
+        <v-divider class="mb-4" />
 
-          <v-number-input
-            v-model="proxyModel.value.koboPort"
-            :label="
-              $formatMessage({
-                description: 'Server settings: input field for kobo sync port',
-                defaultMessage: 'Kobo Sync external port',
-                id: '4AKIbg',
-              })
-            "
-            :min="1"
-            :max="65535"
-            :hint="
-              $formatMessage({
-                description: 'Server settings: input field hint for kobo sync port',
-                defaultMessage: 'Set only in case of sync issues with covers and downloads',
-                id: 'TwB29u',
-              })
-            "
-            persistent-hint
-            clearable
-          ></v-number-input>
-        </v-list>
+        <v-row>
+          <v-col>
+            <div class="text-subtitle-2">
+              {{
+                $formatMessage({
+                  description: 'Server settings: section header for Kobo Sync',
+                  defaultMessage: 'Kobo Sync',
+                  id: 'rRFQKU',
+                })
+              }}
+            </div>
+            <v-checkbox
+              v-model="proxyModel.value.koboProxy"
+              :label="
+                $formatMessage({
+                  description:
+                    'Server settings: checkbox to enable Kobo Store proxying for Kobo Sync ',
+                  defaultMessage: 'Proxy unhandled requests to Kobo Store',
+                  id: 'iNBto3',
+                })
+              "
+              hide-details
+            />
+            <v-number-input
+              v-model="proxyModel.value.koboPort"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: input field for kobo sync port',
+                  defaultMessage: 'Kobo Sync external port',
+                  id: '4AKIbg',
+                })
+              "
+              :min="1"
+              :max="65535"
+              :hint="
+                $formatMessage({
+                  description: 'Server settings: input field hint for kobo sync port',
+                  defaultMessage: 'Set only in case of sync issues with covers and downloads',
+                  id: 'TwB29u',
+                })
+              "
+              persistent-hint
+              clearable
+            ></v-number-input>
+          </v-col>
+        </v-row>
 
-        <v-list>
-          <v-btn
-            :text="
-              $formatMessage({
-                description: 'Server settings: button to discard any changes made',
-                defaultMessage: 'Discard',
-                id: 'kh49ZJ',
-              })
-            "
-            @click="cancel"
-            :disabled="isPristine"
-            variant="text"
-          ></v-btn>
-          <v-btn
-            :text="
-              $formatMessage({
-                description: 'Server settings: button to save any changes made',
-                defaultMessage: 'Save changes',
-                id: 'FpwJlU',
-              })
-            "
-            type="submit"
-            :disabled="isPristine"
-            variant="text"
-            :loading="loading"
-          ></v-btn>
-        </v-list>
+        <v-row>
+          <v-col cols="auto">
+            <v-btn
+              :text="
+                $formatMessage({
+                  description: 'Server settings: button to discard any changes made',
+                  defaultMessage: 'Discard',
+                  id: 'kh49ZJ',
+                })
+              "
+              @click="cancel"
+              :disabled="isPristine"
+              variant="text"
+            ></v-btn>
+          </v-col>
+          <v-col cols="auto">
+            <v-btn
+              :text="
+                $formatMessage({
+                  description: 'Server settings: button to save any changes made',
+                  defaultMessage: 'Save changes',
+                  id: 'FpwJlU',
+                })
+              "
+              type="submit"
+              :disabled="isPristine"
+              variant="text"
+              :loading="loading"
+            ></v-btn>
+          </v-col>
+        </v-row>
       </v-form>
     </template>
   </v-confirm-edit>
@@ -303,7 +330,6 @@ import { useIntl } from 'vue-intl'
 import type { components } from '@/generated/openapi/komga'
 
 const intl = useIntl()
-const headerClass = 'text-subtitle1 font-weight-bold'
 
 const { settings, loading = false } = defineProps<{
   settings?: components['schemas']['SettingsDto']
