@@ -32,7 +32,7 @@
             $formatMessage({
               description: 'Users table global header: add user button',
               defaultMessage: 'Add',
-              id: 'GZCEBS',
+              id: 'X80giU',
             })
           "
           border
