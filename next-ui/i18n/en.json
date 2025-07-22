@@ -1,15 +1,35 @@
 {
+  "+r8FCS": {
+    "defaultMessage": "Server listening port",
+    "description": "Server settings: input field for server port"
+  },
   "/bathK": {
     "defaultMessage": "Allow only under",
     "description": "User creation/edit dialog: Age restriction field possible option"
+  },
+  "/lE31l": {
+    "defaultMessage": "Force Kobo sync",
+    "description": "Force Sync API Key dialog title"
   },
   "02SRax": {
     "defaultMessage": "Sign in",
     "description": "Login screen: Sign In button"
   },
+  "0DGOZl": {
+    "defaultMessage": "Default (300px)",
+    "description": "Thumbnail size: default"
+  },
+  "0FEy0X": {
+    "defaultMessage": "Password changed",
+    "description": "Snackbar notification shown upon successful current user's password modification"
+  },
   "0YG9GQ": {
     "defaultMessage": "Remember Me",
     "description": "Login screen: Remember Me checkbox"
+  },
+  "2+oQ1g": {
+    "defaultMessage": "User",
+    "description": "User role: user"
   },
   "2Bh8F2": {
     "defaultMessage": "Latest",
@@ -23,13 +43,37 @@
     "defaultMessage": "Exclude labels",
     "description": "User creation/edit dialog: Exclude labels field label"
   },
-  "3jrAF6": {
-    "defaultMessage": "Currently installed",
-    "description": "Updates view: badge showing next to the currently installed release number"
+  "3beD4X": {
+    "defaultMessage": "Delete API Key",
+    "description": "Delete API Key dialog title"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Kobo Sync external port",
+    "description": "Server settings: input field for kobo sync port"
   },
   "5AAGkA": {
     "defaultMessage": "Password",
     "description": "Login screen: password field label"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "HTTP Server",
+    "description": "Server settings: section header for HTTP server"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "Requires restart to take effect",
+    "description": "Server settings: input field hint for settings that require a restart"
+  },
+  "8N1oqm": {
+    "defaultMessage": "Administrator",
+    "description": "User role: admin"
+  },
+  "8hC76W": {
+    "defaultMessage": "Tasks",
+    "description": "Server settings: section header for tasks"
+  },
+  "9XDmYO": {
+    "defaultMessage": "Delete User",
+    "description": "Delete user dialog title"
   },
   "AeA9Ka": {
     "defaultMessage": "No restriction",
@@ -39,17 +83,45 @@
     "defaultMessage": "Invalid login or password",
     "description": "Login screen: error message displayed when login failed"
   },
+  "Bl30xt": {
+    "defaultMessage": "Add User",
+    "description": "Add user dialog title"
+  },
+  "BwX4xr": {
+    "defaultMessage": "KOReader sync",
+    "description": "User role: koreader_sync"
+  },
+  "C7iLlR": {
+    "defaultMessage": "X-Large (1200px)",
+    "description": "Thumbnail size: x-large"
+  },
+  "C9LkYh": {
+    "defaultMessage": "Comment",
+    "description": "Generate API key dialog: input field label"
+  },
   "CUxhzL": {
     "defaultMessage": "Roles",
     "description": "User creation/edit dialog: Roles field"
+  },
+  "CvsH7/": {
+    "defaultMessage": "No recent activity",
+    "description": "Shown in users table when there is no recent authentication activity for the user"
   },
   "DxtDpt": {
     "defaultMessage": "Media Analysis",
     "description": "Drawer menu for Media > Media Analysis"
   },
+  "EabQ38": {
+    "defaultMessage": "Remember me",
+    "description": "Server settings: section header for remember me"
+  },
   "FLqm9f": {
     "defaultMessage": "Help us translate",
     "description": "Translations pop-up menu footer"
+  },
+  "FpwJlU": {
+    "defaultMessage": "Save changes",
+    "description": "Server settings: button to save any changes made"
   },
   "G/T8/2": {
     "defaultMessage": "Cancel",
@@ -60,12 +132,16 @@
     "description": "Drawer menu for Server > Announcements"
   },
   "GZCEBS": {
-    "defaultMessage": "Add a user",
+    "defaultMessage": "Add",
     "description": "Users table global header: add user button"
   },
   "HXms0S": {
     "defaultMessage": "Select an item or create one",
     "description": "Common message: shown in combobox"
+  },
+  "HZqgan": {
+    "defaultMessage": "Close",
+    "description": "Generate API key dialog: close button"
   },
   "HaWCi3": {
     "defaultMessage": "Settings",
@@ -74,6 +150,10 @@
   "Hl9H/B": {
     "defaultMessage": "Media",
     "description": "Drawer menu for Media"
+  },
+  "IE0XzE": {
+    "defaultMessage": "Delete",
+    "description": "Delete API Key dialog: confirmation button text"
   },
   "InW6ko": {
     "defaultMessage": "Translations",
@@ -91,6 +171,10 @@
     "defaultMessage": "Password changed for user: {email}",
     "description": "Snackbar notification shown upon successful user's password modification"
   },
+  "Jm5RAA": {
+    "defaultMessage": "Kobo sync",
+    "description": "User role: kobo_sync"
+  },
   "K40g4r": {
     "defaultMessage": "Edit user",
     "description": "Tooltip for the edit user button in the users table"
@@ -98,6 +182,10 @@
   "LaxrEO": {
     "defaultMessage": "Passwords must be identical",
     "description": "User password change dialog: Error message if passwords differ"
+  },
+  "Lto2Lg": {
+    "defaultMessage": "Must start with '/', not end with '/-_', and contain only '/-_a-z0-9'",
+    "description": "Server settings: error message when server context path is invalid"
   },
   "MvwDsn": {
     "defaultMessage": "Known",
@@ -111,21 +199,49 @@
     "defaultMessage": "Save",
     "description": "ConfirmEdit dialog: Save button"
   },
+  "NArFTo": {
+    "defaultMessage": "API key deleted: {apiKeyComment}",
+    "description": "Snackbar notification shown upon successful API key deletion"
+  },
+  "NN7kAK": {
+    "defaultMessage": "Kobo sync forced: {apiKeyComment}",
+    "description": "Snackbar notification shown upon successful API key force sync"
+  },
   "Nb0V0p": {
     "defaultMessage": "Missing Posters",
     "description": "Drawer menu for Media > Missing Posters"
+  },
+  "OW1/zn": {
+    "defaultMessage": "No recent activity",
+    "description": "Shown in API key table when there is no recent authentication activity for the key"
   },
   "QIr0z7": {
     "defaultMessage": "Email",
     "description": "Login screen: email field label"
   },
+  "ROFRn4": {
+    "defaultMessage": "Generate",
+    "description": "API Key table global header: generate API key button"
+  },
   "Sj0HXz": {
     "defaultMessage": "Allow only labels",
     "description": "User creation/edit dialog: Allow only labels field label"
   },
+  "TL5bVZ": {
+    "defaultMessage": "Settings updated",
+    "description": "Snackbar notification shown upon successful server settings update"
+  },
   "ToD0+o": {
     "defaultMessage": "Email",
     "description": "User creation dialog: Email field"
+  },
+  "TwB29u": {
+    "defaultMessage": "Set only in case of sync issues with covers and downloads",
+    "description": "Server settings: input field hint for kobo sync port"
+  },
+  "UaD47n": {
+    "defaultMessage": "Regenerate the 'remember me' key",
+    "description": "Server settings: checkbox to regenerate the remember me key"
   },
   "UvhIIT": {
     "defaultMessage": "Shared Libraries",
@@ -135,6 +251,22 @@
     "defaultMessage": "User deleted: {email}",
     "description": "Snackbar notification shown upon successful user deletion"
   },
+  "VP+GhR": {
+    "defaultMessage": "Generate",
+    "description": "Generate API key dialog: generate button"
+  },
+  "W3BUf7": {
+    "defaultMessage": "I understand",
+    "description": "Force Sync API Key dialog: confirmation button text"
+  },
+  "WADecv": {
+    "defaultMessage": "Installed",
+    "description": "Updates view: badge showing next to the currently installed release number"
+  },
+  "WLwQG8": {
+    "defaultMessage": "No API keys created yet",
+    "description": "API Key table: shown when table has no data"
+  },
   "WNY0pu": {
     "defaultMessage": "The latest version of Komga is already installed",
     "description": "Updates view: banner shown at the top"
@@ -142,6 +274,10 @@
   "WhasCZ": {
     "defaultMessage": "New password",
     "description": "User password change dialog: New Password field label"
+  },
+  "X/Z8x+": {
+    "defaultMessage": "Make sure to copy your API key now. You won't be able to see it again!",
+    "description": "Generate API key dialog: message shown after key creation"
   },
   "Xz+JXU": {
     "defaultMessage": "error",
@@ -159,6 +295,18 @@
     "defaultMessage": "Network error",
     "description": "Common message: a network error happened when communicating with the server"
   },
+  "Zh8AOV": {
+    "defaultMessage": "Edit User",
+    "description": "Edit user dialog title"
+  },
+  "a5MYiP": {
+    "defaultMessage": "Posters",
+    "description": "Server settings: section header for posters"
+  },
+  "aa6dBv": {
+    "defaultMessage": "Page streaming",
+    "description": "User role: page_streaming"
+  },
   "app.locale-name": {
     "defaultMessage": "English",
     "description": "The name of the locale, shown in the language selection menu. Must be translated to the language's name"
@@ -170,6 +318,10 @@
   "c+hx0g": {
     "defaultMessage": "Users",
     "description": "Users table global header"
+  },
+  "c00+tT": {
+    "defaultMessage": "File download",
+    "description": "User role: file_download"
   },
   "cAu/I6": {
     "defaultMessage": "Duplicate Pages",
@@ -183,9 +335,25 @@
     "defaultMessage": "Documentation",
     "description": "Drawer menu footer: documentation link"
   },
+  "dHyAgE": {
+    "defaultMessage": "Change Password",
+    "description": "Change Password dialog title"
+  },
+  "dSlkbn": {
+    "defaultMessage": "Overall scan behaviour",
+    "description": "Server settings: section header for scan behaviour"
+  },
   "da/wb0": {
     "defaultMessage": "Mark all as read",
     "description": "Announcements view: mark all as read button tooltip"
+  },
+  "eDA9Gm": {
+    "defaultMessage": "Generated poster size",
+    "description": "Server settings: selection of poster size"
+  },
+  "eRJOa6": {
+    "defaultMessage": "Server base URL",
+    "description": "Server settings: input field for server base URL"
   },
   "eVoe+D": {
     "defaultMessage": "Please type {validateText} to confirm.",
@@ -203,6 +371,10 @@
     "defaultMessage": "Books",
     "description": "Drawer menu for Import > Books"
   },
+  "gNiEAF": {
+    "defaultMessage": "Comment",
+    "description": "API Key table header: key comment"
+  },
   "hEOGa9": {
     "defaultMessage": "Age restriction",
     "description": "User creation/edit dialog: Age restriction field label"
@@ -210,6 +382,30 @@
   "hYO2n6": {
     "defaultMessage": "There might be a problem with your connection or your server.",
     "description": "Common message: an error happened while loading data, explanation"
+  },
+  "hgiBeR": {
+    "defaultMessage": "Latest activity",
+    "description": "API Key table header: key latest activity"
+  },
+  "hude41": {
+    "defaultMessage": "Delete API Key",
+    "description": "Tooltip for the delete API key button in the API Key table"
+  },
+  "hxUnz6": {
+    "defaultMessage": "Large (900px)",
+    "description": "Thumbnail size: large"
+  },
+  "iDU5FS": {
+    "defaultMessage": "Remember me duration (in days)",
+    "description": "Server settings: input field for remember me duration"
+  },
+  "iNBto3": {
+    "defaultMessage": "Proxy unhandled requests to Kobo Store",
+    "description": "Server settings: checkbox to enable Kobo Store proxying for Kobo Sync "
+  },
+  "iin6d2": {
+    "defaultMessage": "API Keys can be used to authenticate through the Kobo Sync protocol or the REST API.",
+    "description": "Generate API key dialog: description"
   },
   "ixQlWv": {
     "defaultMessage": "Something went wrong",
@@ -219,6 +415,14 @@
     "defaultMessage": "Age",
     "description": "User creation/edit dialog: Age Restriction > Age field label"
   },
+  "kh49ZJ": {
+    "defaultMessage": "Discard",
+    "description": "Server settings: button to discard any changes made"
+  },
+  "kqV7EJ": {
+    "defaultMessage": "Delete empty read lists after scan",
+    "description": "Server settings: checkbox to delete empty readlists after scan"
+  },
   "kvbi4j": {
     "defaultMessage": "User updated: {email}",
     "description": "Snackbar notification shown upon successful user update"
@@ -227,6 +431,10 @@
     "defaultMessage": "History",
     "description": "Drawer menu for History"
   },
+  "l7+H/k": {
+    "defaultMessage": "Takes precedence over the configuration file",
+    "description": "Server settings: tooltip shown for configuration items that can be overriden"
+  },
   "lDnmZD": {
     "defaultMessage": "Updates",
     "description": "Drawer menu for Server > Updates"
@@ -234,6 +442,10 @@
   "lvCpSX": {
     "defaultMessage": "Actions",
     "description": "User table header: user actions"
+  },
+  "mP9Ldq": {
+    "defaultMessage": "Creation date",
+    "description": "API Key table header: key creation date"
   },
   "n1Ik+L": {
     "defaultMessage": "Updates are available",
@@ -247,9 +459,17 @@
     "defaultMessage": "Password",
     "description": "User creation dialog: Password field"
   },
+  "o8WeX3": {
+    "defaultMessage": "Delete",
+    "description": "Delete user dialog: confirmation button text"
+  },
   "oFOkWZ": {
     "defaultMessage": "API Keys",
     "description": "Drawer menu for My Account > API Keys"
+  },
+  "oWsqnh": {
+    "defaultMessage": "What's this API key for?",
+    "description": "Generate API key dialog: input field hint"
   },
   "od545m": {
     "defaultMessage": "My Account",
@@ -258,6 +478,14 @@
   "pENCUD": {
     "defaultMessage": "Cancel",
     "description": "Confirmation dialog: Cancel button"
+  },
+  "pHdVzh": {
+    "defaultMessage": "Delete empty collections after scan",
+    "description": "Server settings: checkbox to delete empty collections after scan"
+  },
+  "q7gxLw": {
+    "defaultMessage": "The user account will be deleted from this server.<ul><li>The read progress for this user account will be permanently deleted.</li><li>Authentication activity for this user will be permanently deleted.</li></ul><b>This action cannot be undone.</b>",
+    "description": "User deletion warning notice"
   },
   "qiZm6U": {
     "defaultMessage": "Unknown",
@@ -275,13 +503,37 @@
     "defaultMessage": "Change password",
     "description": "Tooltip for the change password button in the users table"
   },
+  "rHwSrF": {
+    "defaultMessage": "Task threads",
+    "description": "Server settings: input field for task threads"
+  },
+  "rKyTwd": {
+    "defaultMessage": "Actions",
+    "description": "API Key table header: key actions"
+  },
+  "rRFQKU": {
+    "defaultMessage": "Kobo Sync",
+    "description": "Server settings: section header for Kobo Sync"
+  },
   "rw/Dkw": {
     "defaultMessage": "User Interface",
     "description": "Drawer menu for My Account > User Interface"
   },
+  "sGsWvI": {
+    "defaultMessage": "Change password",
+    "description": "User details screen: change password button"
+  },
   "sUSVQS": {
     "defaultMessage": "Mark as read",
     "description": "Announcements view: mark as read button tooltip"
+  },
+  "t0Tkmy": {
+    "defaultMessage": "Force Kobo sync",
+    "description": "Tooltip for the force Kobo sync button in the API Key table"
+  },
+  "t1LnqS": {
+    "defaultMessage": "Medium (600px)",
+    "description": "Thumbnail size: medium"
   },
   "ti4Pzo": {
     "defaultMessage": "Logout",
@@ -303,8 +555,20 @@
     "defaultMessage": "Latest activity",
     "description": "User table header: user latest activity"
   },
+  "yDWzUi": {
+    "defaultMessage": "API Keys",
+    "description": "API Key table global header"
+  },
+  "ycrpqO": {
+    "defaultMessage": "Generate new API key",
+    "description": "Generate API key dialog: title"
+  },
   "zfQq+w": {
     "defaultMessage": "Email",
     "description": "User table header: user email"
+  },
+  "zphiTI": {
+    "defaultMessage": "An API key with that comment already exists",
+    "description": "API Key generate dialog: error message displayed when an API key with the same comment already exists"
   }
 }
