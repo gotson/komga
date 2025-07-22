@@ -1,13 +1,17 @@
 <template>
   <v-dialog
-    ref="dialogRef"
     v-model="showDialog"
     :activator="activator"
+    :fullscreen="fullscreen"
+    :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     max-width="600px"
     @after-leave="reset()"
   >
     <template #default="{ isActive }">
-      <v-form @submit.prevent="generateApiKey()">
+      <v-form
+        @submit.prevent="generateApiKey()"
+        class="fill-height"
+      >
         <v-card
           :title="
             $formatMessage({
@@ -150,7 +154,11 @@ const messagesStore = useMessagesStore()
 const { isSupported: clipboardSupported, copy, copied } = useClipboard({ copiedDuring: 3000 })
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
-const activator = defineModel<Element | string>('activator', { required: false })
+
+const { fullscreen = undefined, activator = undefined } = defineProps<{
+  fullscreen?: boolean
+  activator?: Element | string
+}>()
 
 const comment = ref<string>('')
 const creationError = ref<string>('')

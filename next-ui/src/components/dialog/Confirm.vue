@@ -4,6 +4,7 @@
     :activator="activator"
     :max-width="maxWidth"
     :fullscreen="fullscreen"
+    :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
   >
     <template #default="{ isActive }">
       <v-form
