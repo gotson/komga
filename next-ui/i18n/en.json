@@ -107,6 +107,10 @@
     "defaultMessage": "No recent activity",
     "description": "Shown in users table when there is no recent authentication activity for the user"
   },
+  "D/yypj": {
+    "defaultMessage": "<ul><li>This will delete all sync history for this API key.</li><li>Your Kobo will sync everything on the next sync.</li></ul>",
+    "description": "API Key for sync warning notice"
+  },
   "DxtDpt": {
     "defaultMessage": "Media Analysis",
     "description": "Drawer menu for Media > Media Analysis"
@@ -134,6 +138,10 @@
   "GZCEBS": {
     "defaultMessage": "Add",
     "description": "Users table global header: add user button"
+  },
+  "HOBFqq": {
+    "defaultMessage": "error",
+    "description": "Common message: an unknown error happened"
   },
   "HXms0S": {
     "defaultMessage": "Select an item or create one",
@@ -279,9 +287,9 @@
     "defaultMessage": "Make sure to copy your API key now. You won't be able to see it again!",
     "description": "Generate API key dialog: message shown after key creation"
   },
-  "Xz+JXU": {
-    "defaultMessage": "error",
-    "description": "Common message: an unkown error happened"
+  "Y0cG3G": {
+    "defaultMessage": "The API key will be deleted from this server.<ul><li>Any application or scripts using this API key will no longer be able to access the Komga API.</li><li>Authentication activity for this API key will be permanently deleted.</li></ul><b>This action cannot be undone.</b>",
+    "description": "API Key deletion warning notice"
   },
   "Y6VlM9": {
     "defaultMessage": "Read List",
