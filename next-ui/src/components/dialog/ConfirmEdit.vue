@@ -4,6 +4,8 @@
     :activator="activator"
     :max-width="maxWidth"
     :fullscreen="fullscreen"
+    :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
+    :scrollable="scrollable"
   >
     <template #default="{ isActive }">
       <v-confirm-edit
@@ -87,6 +89,7 @@ export interface DialogConfirmEditProps {
   loading?: boolean
   closeOnSave?: boolean
   fullscreen?: boolean
+  scrollable?: boolean
 }
 
 const {
@@ -97,5 +100,6 @@ const {
   loading = false,
   closeOnSave = true,
   fullscreen = undefined,
+  scrollable = undefined,
 } = defineProps<DialogConfirmEditProps>()
 </script>

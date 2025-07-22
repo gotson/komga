@@ -1,4 +1,4 @@
-import { defineMutation, useMutation, useQueryCache } from '@pinia/colada'
+import { defineMutation, useMutation } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 
 export const useDeleteSyncPoints = defineMutation(() => {

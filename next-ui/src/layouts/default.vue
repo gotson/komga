@@ -4,12 +4,7 @@
   <LayoutAppDrawer />
 
   <v-main scrollable>
-    <v-container
-      fluid
-      class="pa-6"
-    >
-      <router-view />
-    </v-container>
+    <router-view />
   </v-main>
 </template>
 
