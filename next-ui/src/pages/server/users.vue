@@ -1,25 +1,30 @@
 <template>
-  <v-empty-state
-    v-if="error"
-    icon="i-mdi:connection"
-    :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-  />
-
-  <template v-else>
-    <FragmentUserTable
-      :users="users"
-      :loading="isLoading"
-      @add-user="showDialog(ACTION.ADD)"
-      @change-password="(user) => showDialog(ACTION.PASSWORD, user)"
-      @edit-user="(user) => showDialog(ACTION.EDIT, user)"
-      @delete-user="(user) => showDialog(ACTION.DELETE, user)"
-      @enter-add-user="(target) => (dialogConfirmEdit.activator = target)"
-      @enter-edit-user="(target) => (dialogConfirmEdit.activator = target)"
-      @enter-change-password="(target) => (dialogConfirmEdit.activator = target)"
-      @enter-delete-user="(target) => (dialogConfirm.activator = target)"
+  <v-container
+    fluid
+    class="pa-0 pa-sm-4"
+  >
+    <v-empty-state
+      v-if="error"
+      icon="i-mdi:connection"
+      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
+      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
     />
-  </template>
+
+    <template v-else>
+      <FragmentUserTable
+        :users="users"
+        :loading="isLoading"
+        @add-user="showDialog(ACTION.ADD)"
+        @change-password="(user) => showDialog(ACTION.PASSWORD, user)"
+        @edit-user="(user) => showDialog(ACTION.EDIT, user)"
+        @delete-user="(user) => showDialog(ACTION.DELETE, user)"
+        @enter-add-user="(target) => (dialogConfirmEdit.activator = target)"
+        @enter-edit-user="(target) => (dialogConfirmEdit.activator = target)"
+        @enter-change-password="(target) => (dialogConfirmEdit.activator = target)"
+        @enter-delete-user="(target) => (dialogConfirm.activator = target)"
+      />
+    </template>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
@@ -85,6 +90,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           defaultMessage: 'Add User',
           id: 'Bl30xt',
         }),
+        scrollable: true,
         maxWidth: 600,
         closeOnSave: false,
         fullscreen: display.xs.value,
@@ -117,6 +123,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           id: 'Zh8AOV',
         }),
         subtitle: user?.email,
+        scrollable: true,
         maxWidth: 600,
         closeOnSave: false,
         fullscreen: display.xs.value,
@@ -158,6 +165,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           id: 'o8WeX3',
         }),
         closeOnSave: false,
+        fullscreen: display.xs.value,
       }
       dialogConfirm.value.slotWarning = {
         component: markRaw(UserDeletionWarning),
@@ -171,6 +179,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         subtitle: user?.email,
         maxWidth: 400,
         closeOnSave: false,
+        fullscreen: display.xs.value,
       }
       dialogConfirmEdit.value.slot = {
         component: markRaw(UserFormChangePassword),
