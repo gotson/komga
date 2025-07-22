@@ -38,6 +38,7 @@
               :rules="[['sameAs', validateText]]"
               hide-details
               class="mt-2"
+              autofocus
             />
           </template>
 
