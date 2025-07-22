@@ -6,7 +6,7 @@ import type { paths } from '@/generated/openapi/komga'
 const coladaMiddleware: Middleware = {
   async onResponse({ response }: { response: Response }) {
     if (!response.ok) {
-      let body: unknown
+      let body: SpringError = {}
       try {
         body = await response.json()
       } catch (ignoreErr) {}
@@ -14,6 +14,7 @@ const coladaMiddleware: Middleware = {
         cause: {
           body: body,
           status: response.status,
+          message: body?.message,
         },
       })
     }
@@ -33,6 +34,10 @@ const client = createClient<paths>({
   headers: { 'X-Requested-With': 'XMLHttpRequest' },
 })
 client.use(coladaMiddleware)
+
+interface SpringError {
+  message?: string
+}
 
 export interface ErrorCause {
   body?: unknown
