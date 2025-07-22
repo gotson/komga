@@ -30,10 +30,48 @@ const latestActivity = {
   source: 'Password',
 }
 
+const newApiKey = {
+  id: '0JJJHMRR586H7',
+  userId: '0JEDA00AV4Z7G',
+  key: '8dad7cbdb4e3420b9536f726c9123346',
+  comment: 'Kobo Libra',
+  createdDate: new Date('2025-01-21T07:04:42Z'),
+  lastModifiedDate: new Date('2025-01-21T07:04:42Z'),
+}
+
+export const apiKeys = [
+  {
+    id: '0JJJHMRR586H7',
+    userId: '0JEDA00AV4Z7G',
+    key: '******',
+    comment: 'Kobo Libra',
+    createdDate: new Date('2025-01-21T07:04:42Z'),
+    lastModifiedDate: new Date('2025-01-21T07:04:42Z'),
+  },
+  {
+    id: '0JQCGQV2Z6NVD',
+    userId: '0JEDA00AV4Z7G',
+    key: '******',
+    comment: 'Komf',
+    createdDate: new Date('2025-02-05T05:51:31Z'),
+    lastModifiedDate: new Date('2025-02-05T05:51:31Z'),
+  },
+  {
+    id: '0K2PJZMP0Q6WA',
+    userId: '0JEDA00AV4Z7G',
+    key: '******',
+    comment: 'Kobo Sage',
+    createdDate: new Date('2025-03-12T09:32:35Z'),
+    lastModifiedDate: new Date('2025-03-12T09:32:35Z'),
+  },
+]
+
 export const usersHandlers = [
   httpTyped.get('/api/v2/users/me', ({ response }) => response(200).json(userAdmin)),
   httpTyped.get('/api/v2/users', ({ response }) => response(200).json(users)),
   httpTyped.get('/api/v2/users/{id}/authentication-activity/latest', ({ response }) =>
     response(200).json(latestActivity),
   ),
+  httpTyped.get('/api/v2/users/me/api-keys', ({ response }) => response(200).json(apiKeys)),
+  httpTyped.post('/api/v2/users/me/api-keys', ({ response }) => response(200).json(newApiKey)),
 ]
