@@ -32,7 +32,7 @@
             $formatMessage({
               description: 'API Key table global header: generate API key button',
               defaultMessage: 'Generate',
-              id: '6MkTnp',
+              id: 'ROFRn4',
             })
           "
           border
