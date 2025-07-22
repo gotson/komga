@@ -1,7 +1,7 @@
 <template>
   <v-container
     fluid
-    class="pa-4"
+    class="pa-0 pa-sm-4"
   >
     <v-skeleton-loader
       type="article@6, button@2"
@@ -15,13 +15,15 @@
       :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
     />
     <template v-else-if="settings">
-      <div class="d-flex">
-        <ServerSettings
-          :settings="settings"
-          :loading="loading"
-          @update-settings="(s) => saveSettings(s)"
-        />
-      </div>
+      <v-card max-width="600px">
+        <v-card-text>
+          <ServerSettings
+            :settings="settings"
+            :loading="loading"
+            @update-settings="(s) => saveSettings(s)"
+          />
+        </v-card-text>
+      </v-card>
     </template>
   </v-container>
 </template>
