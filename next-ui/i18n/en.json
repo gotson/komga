@@ -135,10 +135,6 @@
     "defaultMessage": "Announcements",
     "description": "Drawer menu for Server > Announcements"
   },
-  "GZCEBS": {
-    "defaultMessage": "Add",
-    "description": "Users table global header: add user button"
-  },
   "HOBFqq": {
     "defaultMessage": "error",
     "description": "Common message: an unknown error happened"
@@ -286,6 +282,10 @@
   "X/Z8x+": {
     "defaultMessage": "Make sure to copy your API key now. You won't be able to see it again!",
     "description": "Generate API key dialog: message shown after key creation"
+  },
+  "X80giU": {
+    "defaultMessage": "Add",
+    "description": "Users table global header: add user button"
   },
   "Y0cG3G": {
     "defaultMessage": "The API key will be deleted from this server.<ul><li>Any application or scripts using this API key will no longer be able to access the Komga API.</li><li>Authentication activity for this API key will be permanently deleted.</li></ul><b>This action cannot be undone.</b>",
