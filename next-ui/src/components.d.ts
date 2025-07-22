@@ -10,9 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AnnouncementCard: typeof import('./components/announcement/Card.vue')['default']
     ApikeyDeletionWarning: typeof import('./components/apikey/DeletionWarning.vue')['default']
-    ApikeyDetails: typeof import('@/fragments/fragment/apikey/Details.vue')['default']
     ApikeyForceSyncWarning: typeof import('./components/apikey/ForceSyncWarning.vue')['default']
-    ApikeyTable: typeof import('@/fragments/fragment/apikey/Table.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     DialogConfirm: typeof import('./components/dialog/Confirm.vue')['default']
     DialogConfirmEdit: typeof import('./components/dialog/ConfirmEdit.vue')['default']
