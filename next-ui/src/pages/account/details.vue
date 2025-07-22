@@ -11,19 +11,21 @@
     />
 
     <template v-else-if="currentUser">
-      <UserDetails :user="currentUser" />
-      <v-btn
-        :text="
-          $formatMessage({
-            description: 'User details screen: change password button',
-            defaultMessage: 'Change password',
-            id: 'sGsWvI',
-          })
-        "
-        class="mt-8"
-        @click="changePassword()"
-        @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
-      />
+      <UserDetails :user="currentUser">
+        <template #actions>
+          <v-btn
+            :text="
+              $formatMessage({
+                description: 'User details screen: change password button',
+                defaultMessage: 'Change password',
+                id: 'sGsWvI',
+              })
+            "
+            @click="changePassword()"
+            @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
+          />
+        </template>
+      </UserDetails>
     </template>
   </v-container>
 </template>
@@ -37,8 +39,10 @@ import UserFormChangePassword from '@/components/user/form/ChangePassword.vue'
 import type { ErrorCause } from '@/api/komga-client'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
+import { useDisplay } from 'vuetify'
 
 const intl = useIntl()
+const display = useDisplay()
 
 const { data: currentUser, error } = useCurrentUser()
 const { mutateAsync: mutateUserPassword } = useUpdateUserPassword()
@@ -52,6 +56,7 @@ function changePassword() {
     subtitle: currentUser.value?.email,
     maxWidth: 400,
     closeOnSave: false,
+    fullscreen: display.xs.value,
   }
   dialogConfirmEdit.value.slot = {
     component: markRaw(UserFormChangePassword),
