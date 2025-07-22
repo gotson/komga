@@ -20,7 +20,7 @@
     "prettier": "prettier --check \"**/*.{js,ts,vue,scss,html,md,json}\"",
     "prettier:fix": "npm run prettier -- --write",
     "openapi-generate": "npx tsx ./openapi-generator.mts",
-    "i18n:extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --out-file i18n/en.json",
+    "i18n:extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --ignore=\"**/*.stories.*\" --out-file i18n/en.json",
     "i18n:compile": "formatjs compile-folder i18n src/i18n",
     "i18n:verify": "formatjs verify --missing-keys --source-locale=en \"i18n/*.json\"",
     "storybook:dev": "storybook dev -p 6006",
