@@ -1,24 +1,29 @@
 <template>
-  <v-skeleton-loader
-    type="article@6, button@2"
-    v-if="isPending"
-  />
+  <v-container
+    fluid
+    class="pa-4"
+  >
+    <v-skeleton-loader
+      type="article@6, button@2"
+      v-if="isPending"
+    />
 
-  <v-empty-state
-    v-else-if="error"
-    icon="i-mdi:connection"
-    :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-    :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-  />
-  <template v-else-if="settings">
-    <div class="d-flex">
-      <ServerSettings
-        :settings="settings"
-        :loading="loading"
-        @update-settings="(s) => saveSettings(s)"
-      />
-    </div>
-  </template>
+    <v-empty-state
+      v-else-if="error"
+      icon="i-mdi:connection"
+      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
+      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
+    />
+    <template v-else-if="settings">
+      <div class="d-flex">
+        <ServerSettings
+          :settings="settings"
+          :loading="loading"
+          @update-settings="(s) => saveSettings(s)"
+        />
+      </div>
+    </template>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
