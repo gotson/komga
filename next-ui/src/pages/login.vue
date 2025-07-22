@@ -4,9 +4,12 @@
     :disabled="isLoading"
     @submit.prevent="submitForm()"
   >
-    <v-container max-width="450px">
+    <v-container max-width="400px">
       <v-row justify="center">
-        <v-col cols="10">
+        <v-col
+          cols="7"
+          sm="10"
+        >
           <v-img src="@/assets/logo.svg" />
         </v-col>
       </v-row>
@@ -47,11 +50,8 @@
         </v-col>
       </v-row>
 
-      <v-row
-        align="center"
-        justify="space-between"
-      >
-        <v-col cols="auto">
+      <v-row>
+        <v-col class="py-0">
           <v-checkbox
             v-model="rememberMe"
             :label="
@@ -63,22 +63,6 @@
             "
             hide-details
           />
-        </v-col>
-
-        <v-col cols="auto">
-          <a
-            href="https://komga.org/docs/faq#i-forgot-my-password"
-            target="_blank"
-            class="link-underline"
-          >
-            {{
-              $formatMessage({
-                description: 'Login screen: Forgot your password link',
-                defaultMessage: 'Forgot your password?',
-                id: 'r6JNfI',
-              })
-            }}
-          </a>
         </v-col>
       </v-row>
 
@@ -99,7 +83,25 @@
         </v-col>
       </v-row>
 
-      <v-divider class="my-8" />
+      <v-row justify="center">
+        <v-col cols="auto">
+          <a
+            href="https://komga.org/docs/faq#i-forgot-my-password"
+            target="_blank"
+            class="link-underline text-body-2"
+          >
+            {{
+              $formatMessage({
+                description: 'Login screen: Forgot your password link',
+                defaultMessage: 'Forgot your password?',
+                id: 'r6JNfI',
+              })
+            }}
+          </a>
+        </v-col>
+      </v-row>
+
+      <v-divider class="my-4" />
 
       <v-row justify="center">
         <v-col cols="auto">
