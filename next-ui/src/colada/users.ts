@@ -6,6 +6,7 @@ import type { components } from '@/generated/openapi/komga'
 export const QUERY_KEYS_USERS = {
   root: ['users'] as const,
   currentUser: ['current-user'] as const,
+  apiKeys: ['current-user', 'api-keys'] as const,
 }
 
 export const useUsers = defineQuery(() => {
@@ -102,6 +103,50 @@ export const useDeleteUser = defineMutation(() => {
       }),
     onSuccess: () => {
       void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.root })
+    },
+  })
+})
+
+///////////
+// API KEYS
+///////////
+
+export const useApiKeys = defineQuery(() => {
+  return useQuery({
+    key: () => QUERY_KEYS_USERS.apiKeys,
+    query: () =>
+      komgaClient
+        .GET('/api/v2/users/me/api-keys')
+        // unwrap the openapi-fetch structure on success
+        .then((res) => res.data),
+  })
+})
+
+export const useCreateApiKey = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
+    mutation: (apiKey: components['schemas']['ApiKeyRequestDto']) =>
+      komgaClient
+        .POST('/api/v2/users/me/api-keys', {
+          body: apiKey,
+        })
+        // unwrap the openapi-fetch structure on success
+        .then((res) => res.data),
+    onSuccess: () => {
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.apiKeys })
+    },
+  })
+})
+
+export const useDeleteApiKey = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
+    mutation: (keyId: string) =>
+      komgaClient.DELETE('/api/v2/users/me/api-keys/{keyId}', {
+        params: { path: { keyId: keyId } },
+      }),
+    onSuccess: () => {
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.apiKeys })
     },
   })
 })
