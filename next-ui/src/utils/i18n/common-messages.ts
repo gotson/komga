@@ -17,9 +17,9 @@ export const commonMessages = {
     id: 'Z/EY89',
   }),
   error: defineMessage({
-    description: 'Common message: an unkown error happened',
+    description: 'Common message: an unknown error happened',
     defaultMessage: 'error',
-    id: 'Xz+JXU',
+    id: 'HOBFqq',
   }),
   selectItemOrCreateOne: defineMessage({
     description: 'Common message: shown in combobox',
