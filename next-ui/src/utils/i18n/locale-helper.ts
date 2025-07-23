@@ -1,7 +1,8 @@
 import { defineMessage } from 'vue-intl'
 import localeMessages from '@/i18n?dir2json&ext=.json&1'
+import { match } from '@formatjs/intl-localematcher'
 
-export const defaultLocale = 'en'
+export const fallbackLocale = 'en'
 
 const USER_LOCALE_KEY = 'komga.userLocale'
 
@@ -14,11 +15,11 @@ const localeName = defineMessage({
 
 /**
  * Loads messages from a translation file by its locale code.
- * If the translation file does not exist, loads the `defaultLocale` instead.
+ * If the translation file does not exist, loads the `fallbackLocale` instead.
  * @param locale the locale code, e.g. 'fr'
  */
 export function loadLocale(locale: string): Record<string, string> {
-  const localeToLoad = locale in availableLocales ? locale : defaultLocale
+  const localeToLoad = locale in availableLocales ? locale : fallbackLocale
   return (localeMessages as unknown as Record<string, Record<string, string>>)[localeToLoad]!
 }
 
@@ -41,12 +42,20 @@ function loadAvailableLocales(): Record<string, string> {
 export const availableLocales = loadAvailableLocales()
 
 /**
- * Gets the saved locale from localStorage.
- * If the locale is not valid, defaults to 'en'.
+ * Gets the saved locale from localStorage if defined and valid.
+ * Else tries to get the best matching language from the brower's preferred languages.
+ * If the locale is not valid, defaults to 'fallbackLocale'.
  */
 export function getLocale(): string {
-  const storageLocale = localStorage.getItem(USER_LOCALE_KEY) ?? defaultLocale
-  return storageLocale in availableLocales ? storageLocale : defaultLocale
+  const storageLocale = localStorage.getItem(USER_LOCALE_KEY)
+  console.log('locale from storage:', storageLocale)
+  if (storageLocale && storageLocale in availableLocales) return storageLocale
+
+  // get the browser's preferred languages and see if we can match it to an available locale
+  console.log('preferred languages:', navigator.languages)
+  const s = match(navigator.languages, Object.keys(availableLocales), fallbackLocale)
+  console.log('match:', s)
+  return s
 }
 
 export const currentLocale = getLocale()
