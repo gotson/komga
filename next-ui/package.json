@@ -28,6 +28,7 @@
     "chromatic": "npm run chromatic"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.6.1",
     "@pinia/colada": "^0.17.1",
     "@pinia/colada-plugin-auto-refetch": "^0.2.0",
     "@vueuse/core": "^13.5.0",

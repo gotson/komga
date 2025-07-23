@@ -1,42 +1,64 @@
-import { beforeEach, expect, test, vi } from 'vitest'
-import { loadLocale, defaultLocale, setLocale, getLocale, availableLocales } from './locale-helper'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { loadLocale, fallbackLocale, setLocale, getLocale, availableLocales } from './locale-helper'
 
-beforeEach(() => {
-  // mock the available locales, as locales are checked against what's available
-  vi.mock('@/i18n?dir2json&ext=.json&1', () => {
-    return {
-      default: {
-        en: {
-          sample: 'sample',
-        },
-        fr: {
-          sample: 'échantillon',
-        },
-      } as Record<string, Record<string, string>>,
-    }
+describe('locale', () => {
+  beforeEach(() => {
+    // mock the available locales, as locales are checked against what's available
+    vi.mock('@/i18n?dir2json&ext=.json&1', () => {
+      return {
+        default: {
+          en: {
+            sample: 'sample',
+          },
+          fr: {
+            sample: 'échantillon',
+          },
+        } as Record<string, Record<string, string>>,
+      }
+    })
   })
-})
 
-test('given available locales when getting available locales then they are returned', () => {
-  expect(Object.keys(availableLocales)).toStrictEqual(['en', 'fr'])
-})
+  afterEach(() => {
+    localStorage.clear()
+  })
 
-test('when trying to load unknown locale then default locale is loaded', () => {
-  const localeDefault = loadLocale(defaultLocale)
-  const localeUnknown = loadLocale('unknown')
+  test('given available locales when getting available locales then they are returned', () => {
+    expect(Object.keys(availableLocales)).toStrictEqual(['en', 'fr'])
+  })
 
-  expect(localeUnknown).toBe(localeDefault)
-})
+  test('when trying to load unknown locale then fallback locale is loaded', () => {
+    const localeFallback = loadLocale(fallbackLocale)
+    const localeUnknown = loadLocale('unknown')
 
-test('when setting locale then it is persisted', () => {
-  const spy = vi.fn(() => {})
-  vi.spyOn(window, 'location', 'get').mockReturnValue({
-    reload: spy,
-  } as unknown as Location)
+    expect(localeUnknown).toBe(localeFallback)
+  })
 
-  setLocale('fr')
-  const newLocale = getLocale()
+  test('when setting locale then it is persisted', () => {
+    const spy = vi.fn(() => {})
+    vi.spyOn(window, 'location', 'get').mockReturnValue({
+      reload: spy,
+    } as unknown as Location)
 
-  expect(newLocale).toBe('fr')
-  expect(spy).toHaveBeenCalledOnce()
+    setLocale('fr')
+    const newLocale = getLocale()
+
+    expect(newLocale).toBe('fr')
+    expect(spy).toHaveBeenCalledOnce()
+  })
+
+  test('given browser preferred languages in available locales when getting locale then preferred language is used', () => {
+    vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['fr-XX', 'zh'])
+
+    const locale = getLocale()
+
+    expect(locale).toBe('fr')
+  })
+
+  test('given browser preferred languages not in available locales when getting locale then fallback locale is used', () => {
+    vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['ja-JP', 'zh-CN'])
+
+    const locale = getLocale()
+
+    expect(locale).toBe(fallbackLocale)
+  })
 })

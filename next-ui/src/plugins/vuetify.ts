@@ -16,7 +16,7 @@ import { md3 } from 'vuetify/blueprints'
 import { VIconBtn } from 'vuetify/labs/components'
 import { createRulesPlugin } from 'vuetify/labs/rules'
 
-import { availableLocales, currentLocale, defaultLocale } from '@/utils/i18n/locale-helper'
+import { availableLocales, currentLocale, fallbackLocale } from '@/utils/i18n/locale-helper'
 
 // load vuetify locales only for the available locales in i18n
 async function loadVuetifyLocale(locale: string) {
@@ -34,7 +34,7 @@ void (async () => {
 export const vuetify = createVuetify({
   locale: {
     locale: currentLocale,
-    fallback: defaultLocale,
+    fallback: fallbackLocale,
     messages,
   },
   icons: {
