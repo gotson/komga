@@ -124,6 +124,8 @@ jobs:
       - name: test:storybook
         working-directory: next-ui
         run: npm run test:storybook
+        env:
+          LANG: en_US # fix for https://github.com/microsoft/playwright/issues/34046
 
       - name: lint
         working-directory: next-ui
