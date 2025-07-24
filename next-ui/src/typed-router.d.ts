@@ -32,6 +32,7 @@ declare module 'vue-router/auto-routes' {
     '/media/duplicate-pages/known': RouteRecordInfo<'/media/duplicate-pages/known', '/media/duplicate-pages/known', Record<never, never>, Record<never, never>>,
     '/media/duplicate-pages/unknown': RouteRecordInfo<'/media/duplicate-pages/unknown', '/media/duplicate-pages/unknown', Record<never, never>, Record<never, never>>,
     '/media/missing-posters': RouteRecordInfo<'/media/missing-posters', '/media/missing-posters', Record<never, never>, Record<never, never>>,
+    '/server/activity': RouteRecordInfo<'/server/activity', '/server/activity', Record<never, never>, Record<never, never>>,
     '/server/announcements': RouteRecordInfo<'/server/announcements', '/server/announcements', Record<never, never>, Record<never, never>>,
     '/server/metrics': RouteRecordInfo<'/server/metrics', '/server/metrics', Record<never, never>, Record<never, never>>,
     '/server/settings': RouteRecordInfo<'/server/settings', '/server/settings', Record<never, never>, Record<never, never>>,
