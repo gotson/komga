@@ -1,4 +1,11 @@
-import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
+import {
+  defineMutation,
+  defineQuery,
+  defineQueryOptions,
+  useMutation,
+  useQuery,
+  useQueryCache,
+} from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import { UserRoles } from '@/types/UserRoles'
 import type { components } from '@/generated/openapi/komga'
@@ -150,3 +157,61 @@ export const useDeleteApiKey = defineMutation(() => {
     },
   })
 })
+
+///////////
+// Authentication Activity
+///////////
+
+export const authenticationActivityQuery = defineQueryOptions(
+  ({
+    page,
+    size,
+    sort,
+    unpaged,
+  }: {
+    page?: number
+    size?: number
+    sort?: string[]
+    unpaged?: boolean
+  }) => ({
+    key: ['authentication-activity', { page: page, size: size, sort: sort, unpaged: unpaged }],
+    query: () =>
+      komgaClient
+        .GET('/api/v2/users/authentication-activity', {
+          params: {
+            query: { page: page, size: size, sort: sort, unpaged: unpaged },
+          },
+        })
+        // unwrap the openapi-fetch structure on success
+        .then((res) => res.data),
+  }),
+)
+
+export const myAuthenticationActivityQuery = defineQueryOptions(
+  ({
+    page,
+    size,
+    sort,
+    unpaged,
+  }: {
+    page?: number
+    size?: number
+    sort?: string[]
+    unpaged?: boolean
+  }) => ({
+    key: [
+      ...QUERY_KEYS_USERS.currentUser,
+      'authentication-activity',
+      { page: page, size: size, sort: sort, unpaged: unpaged },
+    ],
+    query: () =>
+      komgaClient
+        .GET('/api/v2/users/me/authentication-activity', {
+          params: {
+            query: { page: page, size: size, sort: sort, unpaged: unpaged },
+          },
+        })
+        // unwrap the openapi-fetch structure on success
+        .then((res) => res.data),
+  }),
+)
