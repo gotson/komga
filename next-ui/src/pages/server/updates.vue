@@ -58,7 +58,6 @@
 
 <script lang="ts" setup>
 import { useAppReleases } from '@/colada/app-releases'
-import { commonMessages } from '@/utils/i18n/common-messages'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 
 const {
