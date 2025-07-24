@@ -21,18 +21,22 @@
           <template #text>
             <slot name="warning" />
             <slot name="text">
-              {{
-                $formatMessage(
-                  {
+              <FormattedMessage
+                :messageDescriptor="
+                  defineMessage({
                     description: 'Confirmation dialog: default hint to retype validation text',
-                    defaultMessage: 'Please type {validateText} to confirm.',
-                    id: 'eVoe+D',
-                  },
-                  {
-                    validateText: validateText,
-                  },
-                )
-              }}
+                    defaultMessage: 'Please type <b>{validateText}</b> to confirm.',
+                    id: 'XnidLu',
+                  })
+                "
+                :values="{ validateText: validateText }"
+              >
+                <template #b="Content">
+                  <span class="font-weight-bold">
+                    <component :is="Content" />
+                  </span>
+                </template>
+              </FormattedMessage>
             </slot>
 
             <v-text-field
@@ -72,6 +76,8 @@
 </template>
 
 <script setup lang="ts">
+import { defineMessage } from 'vue-intl'
+
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const emit = defineEmits<{
   confirm: []
