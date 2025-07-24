@@ -5,12 +5,7 @@
       type="heading, text, paragraph@3"
     />
 
-    <v-empty-state
-      v-else-if="error"
-      icon="i-mdi:connection"
-      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-    />
+    <EmptyStateNetworkError v-else-if="error" />
 
     <template v-else-if="releases">
       <v-row>
@@ -64,6 +59,7 @@
 <script lang="ts" setup>
 import { useAppReleases } from '@/colada/app-releases'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 
 const {
   data: releases,
