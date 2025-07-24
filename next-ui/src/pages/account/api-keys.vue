@@ -3,12 +3,7 @@
     fluid
     class="pa-0 pa-sm-4"
   >
-    <v-empty-state
-      v-if="error"
-      icon="i-mdi:connection"
-      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-    />
+    <EmptyStateNetworkError v-if="error" />
 
     <template v-else>
       <FragmentApikeyTable
@@ -42,6 +37,7 @@ import ForceSyncWarning from '@/components/apikey/ForceSyncWarning.vue'
 import { useApiKeys, useDeleteApiKey } from '@/colada/users'
 import { useDeleteSyncPoints } from '@/colada/syncpoints'
 import { useDisplay } from 'vuetify'
+import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 
 const intl = useIntl()
 const display = useDisplay()
