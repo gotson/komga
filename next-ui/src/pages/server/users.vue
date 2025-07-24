@@ -1,7 +1,7 @@
 <template>
   <v-container
     fluid
-    class="pa-0 pa-sm-4"
+    class="pa-0 pa-sm-4 h-100 h-sm-auto"
   >
     <EmptyStateNetworkError v-if="error" />
 
