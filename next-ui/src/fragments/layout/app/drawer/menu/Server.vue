@@ -34,6 +34,18 @@
         })
       "
     />
+
+    <v-list-item
+      to="/server/activity"
+      :title="
+        $formatMessage({
+          description: 'Drawer menu for Server > Authentication Activity',
+          defaultMessage: 'Activity',
+          id: 'm9tuzy',
+        })
+      "
+    />
+
     <v-list-item
       to="/server/settings"
       :title="
