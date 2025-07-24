@@ -55,7 +55,6 @@
 
 <script lang="ts" setup>
 import { useAnnouncements, useMarkAnnouncementsRead } from '@/colada/announcements'
-import { commonMessages } from '@/utils/i18n/common-messages'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 
 const { data: announcements, error, unreadCount, isPending } = useAnnouncements()

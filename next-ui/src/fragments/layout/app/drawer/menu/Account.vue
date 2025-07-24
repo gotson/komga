@@ -49,8 +49,8 @@
       :title="
         $formatMessage({
           description: 'Drawer menu for My Account > Activity',
-          defaultMessage: 'Activity',
-          id: 'cGFtPg',
+          defaultMessage: 'My activity',
+          id: 'Xx+ITC',
         })
       "
     />
