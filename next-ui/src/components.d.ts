@@ -14,6 +14,7 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     DialogConfirm: typeof import('./components/dialog/Confirm.vue')['default']
     DialogConfirmEdit: typeof import('./components/dialog/ConfirmEdit.vue')['default']
+    EmptyStateNetworkError: typeof import('./components/EmptyStateNetworkError.vue')['default']
     FormattedMessage: typeof import('./components/FormattedMessage.ts')['default']
     FragmentApikeyGenerateDialog: typeof import('./fragments/fragment/apikey/GenerateDialog.vue')['default']
     FragmentApikeyTable: typeof import('./fragments/fragment/apikey/Table.vue')['default']

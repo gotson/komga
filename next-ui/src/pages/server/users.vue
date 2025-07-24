@@ -3,12 +3,7 @@
     fluid
     class="pa-0 pa-sm-4"
   >
-    <v-empty-state
-      v-if="error"
-      icon="i-mdi:connection"
-      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-    />
+    <EmptyStateNetworkError v-if="error" />
 
     <template v-else>
       <FragmentUserTable

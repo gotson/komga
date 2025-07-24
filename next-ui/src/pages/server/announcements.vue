@@ -5,12 +5,7 @@
       type="heading, text, paragraph@3"
     />
 
-    <v-empty-state
-      v-else-if="error"
-      icon="i-mdi:connection"
-      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-    />
+    <EmptyStateNetworkError v-else-if="error" />
 
     <template v-else-if="announcements">
       <div
@@ -61,6 +56,7 @@
 <script lang="ts" setup>
 import { useAnnouncements, useMarkAnnouncementsRead } from '@/colada/announcements'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 
 const { data: announcements, error, unreadCount, isPending } = useAnnouncements()
 

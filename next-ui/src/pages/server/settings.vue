@@ -8,12 +8,8 @@
       v-if="isPending"
     />
 
-    <v-empty-state
-      v-else-if="error"
-      icon="i-mdi:connection"
-      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-    />
+    <EmptyStateNetworkError v-else-if="error" />
+
     <template v-else-if="settings">
       <v-card max-width="600px">
         <v-card-text>

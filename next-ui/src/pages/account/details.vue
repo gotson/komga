@@ -3,12 +3,7 @@
     fluid
     class="pa-4"
   >
-    <v-empty-state
-      v-if="error"
-      icon="i-mdi:connection"
-      :title="$formatMessage(commonMessages.somethingWentWrongTitle)"
-      :text="$formatMessage(commonMessages.somethingWentWrongSubTitle)"
-    />
+    <EmptyStateNetworkError v-if="error" />
 
     <template v-else-if="currentUser">
       <UserDetails :user="currentUser">
@@ -40,6 +35,7 @@ import type { ErrorCause } from '@/api/komga-client'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
+import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 
 const intl = useIntl()
 const display = useDisplay()
