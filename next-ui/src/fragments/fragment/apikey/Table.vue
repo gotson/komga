@@ -4,6 +4,9 @@
     :items="apiKeys"
     :headers="headers"
     :hide-default-footer="hideFooter"
+    fixed-header
+    fixed-footer
+    style="height: 100%"
     mobile-breakpoint="md"
   >
     <template #top>
