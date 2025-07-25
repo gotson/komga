@@ -8,8 +8,8 @@
     fixed-footer
     multi-sort
     mobile-breakpoint="md"
-    @update:options="updateOptions"
     style="height: 100%"
+    @update:options="updateOptions"
   >
     <template #top>
       <v-toolbar flat>

@@ -9,8 +9,8 @@
   >
     <template #default="{ isActive }">
       <v-form
-        @submit.prevent="generateApiKey()"
         class="fill-height"
+        @submit.prevent="generateApiKey()"
       >
         <v-card
           :title="
@@ -56,9 +56,9 @@
                 "
                 :rules="['required']"
                 :error-messages="creationError"
-                @update:modelValue="creationError = ''"
                 :disabled="isLoading || !!createdKey"
                 autofocus
+                @update:model-value="creationError = ''"
               />
             </div>
 
@@ -82,13 +82,13 @@
 
                 <div>
                   <v-text-field
+                    v-model="createdKey.key"
                     readonly
                     :label="createdKey.comment"
-                    v-model="createdKey.key"
                   >
                     <template
-                      #append-inner
                       v-if="clipboardSupported"
+                      #append-inner
                     >
                       <v-fab-transition>
                         <v-icon

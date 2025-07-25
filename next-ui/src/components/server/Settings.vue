@@ -3,11 +3,11 @@
     v-model="settingsUpdate"
     hide-actions
   >
-    <template v-slot:default="{ model: proxyModel, cancel, save, isPristine }">
+    <template #default="{ model: proxyModel, cancel, save, isPristine }">
       <v-form
         v-model="formValid"
-        @submit.prevent="submitForm(save)"
         :disabled="loading"
+        @submit.prevent="submitForm(save)"
       >
         <v-row>
           <v-col>
@@ -188,12 +188,12 @@
               hide-details
             >
               <template
-                v-slot:append-inner
                 v-if="!!settings?.serverPort.configurationSource"
+                #append-inner
               >
                 <v-icon
-                  icon="i-mdi:information-outline"
                   v-tooltip:bottom="messagePrecedence"
+                  icon="i-mdi:information-outline"
                 ></v-icon>
               </template>
             </v-number-input>
@@ -228,12 +228,12 @@
                 ],
               ]"
               ><template
-                v-slot:append-inner
                 v-if="!!settings?.serverContextPath.configurationSource"
+                #append-inner
               >
                 <v-icon
-                  icon="i-mdi:information-outline"
                   v-tooltip:bottom="messagePrecedence"
+                  icon="i-mdi:information-outline"
                 ></v-icon> </template
             ></v-text-field>
           </v-col>
@@ -298,9 +298,9 @@
                   id: 'kh49ZJ',
                 })
               "
-              @click="cancel"
               :disabled="isPristine"
               variant="text"
+              @click="cancel"
             ></v-btn>
           </v-col>
           <v-col cols="auto">
