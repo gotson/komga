@@ -79,16 +79,16 @@
         <v-icon-btn
           v-tooltip:bottom="$formatMessage(messages.forceKoboSync)"
           icon="i-mdi:sync-alert"
+          :aria-label="$formatMessage(messages.forceKoboSync)"
           @click="emit('forceSyncApiKey', apiKey)"
           @mouseenter="emit('enterForceSyncApiKey', $event.currentTarget)"
-          :aria-label="$formatMessage(messages.forceKoboSync)"
         />
         <v-icon-btn
           v-tooltip:bottom="$formatMessage(messages.deleteApiKey)"
           icon="i-mdi:delete"
+          :aria-label="$formatMessage(messages.deleteApiKey)"
           @click="emit('deleteApiKey', apiKey)"
           @mouseenter="emit('enterDeleteApiKey', $event.currentTarget)"
-          :aria-label="$formatMessage(messages.deleteApiKey)"
         />
       </div>
     </template>

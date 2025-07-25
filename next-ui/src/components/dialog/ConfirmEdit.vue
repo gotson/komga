@@ -16,9 +16,9 @@
         <template #default="{ model: proxyModel, cancel, save, isPristine }">
           <v-form
             v-model="formValid"
-            @submit.prevent="submitForm(save)"
             :disabled="loading"
             class="fill-height"
+            @submit.prevent="submitForm(save)"
           >
             <v-card
               :title="title"

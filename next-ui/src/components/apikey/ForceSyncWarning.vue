@@ -4,7 +4,7 @@
     variant="tonal"
     class="mb-4"
   >
-    <FormattedMessage :messageDescriptor="message">
+    <FormattedMessage :message-descriptor="message">
       <template #ul="Content">
         <ul class="ps-8">
           <component :is="Content" />

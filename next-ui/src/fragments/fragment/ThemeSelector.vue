@@ -1,8 +1,8 @@
 <template>
   <v-btn
     :icon="themeIcon"
-    @click="cycleTheme()"
     aria-label="theme selector"
+    @click="cycleTheme()"
   />
 </template>
 

@@ -21,8 +21,8 @@
     </template>
 
     <template
-      #actions
       v-if="slots.actions"
+      #actions
     >
       <slot name="actions"></slot>
     </template>

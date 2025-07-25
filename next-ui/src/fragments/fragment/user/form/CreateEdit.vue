@@ -40,8 +40,8 @@
   <v-row>
     <v-col>
       <v-divider
-        class="mb-4"
         v-if="!user.id"
+        class="mb-4"
       />
       <div class="text-subtitle-2">Permissions</div>
     </v-col>

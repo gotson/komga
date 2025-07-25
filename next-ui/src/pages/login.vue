@@ -45,7 +45,7 @@
             type="password"
             :rules="['required']"
             :error-messages="loginError"
-            @update:modelValue="loginError = ''"
+            @update:model-value="loginError = ''"
           />
         </v-col>
       </v-row>

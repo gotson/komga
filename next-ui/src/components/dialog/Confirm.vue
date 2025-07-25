@@ -9,9 +9,9 @@
     <template #default="{ isActive }">
       <v-form
         v-model="formValid"
-        @submit.prevent="submitForm(isActive)"
         :disabled="loading"
         class="fill-height"
+        @submit.prevent="submitForm(isActive)"
       >
         <v-card
           :title="title"
@@ -22,7 +22,7 @@
             <slot name="warning" />
             <slot name="text">
               <FormattedMessage
-                :messageDescriptor="
+                :message-descriptor="
                   defineMessage({
                     description: 'Confirmation dialog: default hint to retype validation text',
                     defaultMessage: 'Please type <b>{validateText}</b> to confirm.',
