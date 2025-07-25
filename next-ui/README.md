@@ -19,7 +19,7 @@ Vitest projects are used to specify different kind of tests:
 
 ## Code formatting
 
-Both **ESLint** and b are used in combination.
+Both **ESLint** and **Prettier** are used in combination.
 
 Tasks:
 
