@@ -25,7 +25,7 @@ export const Default: Story = {
   args: {},
   play: () => {
     const messagesStore = useMessagesStore()
-    messagesStore.messages = [{ text: 'Default notification' }]
+    messagesStore.messages = [{ text: 'Default notification', timer: false }]
   },
 }
 
@@ -51,6 +51,7 @@ export const Success: Story = {
       {
         text: 'Success',
         color: 'success',
+        timer: false,
       },
     ]
   },
@@ -64,6 +65,7 @@ export const Warning: Story = {
       {
         text: 'Warning',
         color: 'warning',
+        timer: false,
       },
     ]
   },
@@ -77,6 +79,7 @@ export const Error: Story = {
       {
         text: 'Error',
         color: 'error',
+        timer: false,
       },
     ]
   },
@@ -90,6 +93,7 @@ export const Info: Story = {
       {
         text: 'Info',
         color: 'info',
+        timer: false,
       },
     ]
   },
