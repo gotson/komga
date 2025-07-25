@@ -1,10 +1,10 @@
 <template>
   <DialogConfirmEdit
     v-model="showDialog"
-    :loading="loading"
     v-bind="confirmEdit.dialogProps"
-    :activator="confirmEdit.activator"
     v-model:record="confirmEdit.record"
+    :loading="loading"
+    :activator="confirmEdit.activator"
     @update:record="confirmEdit.callback(hideDialog, setLoading)"
   >
     <template #text="{ proxyModel }">
