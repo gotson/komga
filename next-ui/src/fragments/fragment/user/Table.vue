@@ -80,25 +80,25 @@
         <v-icon-btn
           v-tooltip:bottom="$formatMessage(messages.changePassword)"
           icon="i-mdi:lock-reset"
+          :aria-label="$formatMessage(messages.changePassword)"
           @click="emit('changePassword', user)"
           @mouseenter="emit('enterChangePassword', $event.currentTarget)"
-          :aria-label="$formatMessage(messages.changePassword)"
         />
         <v-icon-btn
           v-tooltip:bottom="$formatMessage(messages.editUser)"
           icon="i-mdi:pencil"
           :disabled="me?.id == user.id"
+          :aria-label="$formatMessage(messages.editUser)"
           @click="emit('editUser', user)"
           @mouseenter="emit('enterEditUser', $event.currentTarget)"
-          :aria-label="$formatMessage(messages.editUser)"
         />
         <v-icon-btn
           v-tooltip:bottom="$formatMessage(messages.deleteUser)"
           icon="i-mdi:delete"
           :disabled="me?.id == user.id"
+          :aria-label="$formatMessage(messages.deleteUser)"
           @click="emit('deleteUser', user)"
           @mouseenter="emit('enterDeleteUser', $event.currentTarget)"
-          :aria-label="$formatMessage(messages.deleteUser)"
         />
       </div>
     </template>
