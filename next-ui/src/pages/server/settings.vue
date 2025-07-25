@@ -4,8 +4,8 @@
     class="pa-0 pa-sm-4"
   >
     <v-skeleton-loader
-      type="article@6, button@2"
       v-if="isPending"
+      type="article@6, button@2"
     />
 
     <EmptyStateNetworkError v-else-if="error" />
