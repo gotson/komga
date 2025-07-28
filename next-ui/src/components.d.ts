@@ -43,7 +43,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ServerSettings: typeof import('./components/server/Settings.vue')['default']
-    UserAuthenticationActivityTable: typeof import('./components/user/AuthenticationActivityTable.vue')['default']
     UserDeletionWarning: typeof import('./components/user/DeletionWarning.vue')['default']
     UserDetails: typeof import('./components/user/Details.vue')['default']
     UserFormChangePassword: typeof import('./components/user/form/ChangePassword.vue')['default']
