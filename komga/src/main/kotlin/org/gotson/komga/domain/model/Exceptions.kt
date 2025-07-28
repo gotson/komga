@@ -60,3 +60,7 @@ class ComicRackListException(
 class EntryNotFoundException(
   message: String,
 ) : Exception(message)
+
+class ConfigurationException(
+  message: String,
+) : Exception(message)

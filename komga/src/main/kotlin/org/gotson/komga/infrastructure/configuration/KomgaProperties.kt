@@ -73,6 +73,8 @@ class KomgaProperties {
     var busyTimeout: Duration? = null
 
     var pragmas: Map<String, String> = emptyMap()
+
+    var checkLocalFilesystem: Boolean = true
   }
 
   class Fonts {
