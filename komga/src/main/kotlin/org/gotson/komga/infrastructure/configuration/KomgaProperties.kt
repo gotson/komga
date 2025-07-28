@@ -21,6 +21,7 @@ class KomgaProperties {
   private fun makeDirs() {
     try {
       Path(database.file).parent.createDirectories()
+      Path(tasksDb.file).parent.createDirectories()
     } catch (_: Exception) {
     }
   }
