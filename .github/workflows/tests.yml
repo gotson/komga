@@ -47,6 +47,12 @@ jobs:
           name: test-reports-${{ matrix.os }}
           path: komga/build/reports/tests/
 
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v5
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+
       - name: Conveyor - compute JDK module list
         if: github.event_name == 'push' && github.repository_owner == 'gotson' && contains(matrix.os, 'ubuntu')
         uses: hydraulic-software/conveyor/actions/build@v18.1
