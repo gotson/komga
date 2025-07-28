@@ -19,3 +19,6 @@ export const handlers = [
 
 export const response401Unauthorized = () =>
   HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+export const response502BadGateway = () =>
+  HttpResponse.json({ error: 'Bad gateway' }, { status: 502 })
