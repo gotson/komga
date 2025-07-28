@@ -7,7 +7,7 @@
       "url": "https://github.com/gotson/komga/blob/master/LICENSE"
     },
     "title": "Komga API",
-    "version": "1.22.1"
+    "version": "1.23.0"
   },
   "externalDocs": {
     "description": "Komga documentation",
@@ -13101,7 +13101,7 @@
           },
           "serverContextPath": {
             "type": "string",
-            "pattern": "^\\/[\\w-\\/]*[a-zA-Z0-9]$"
+            "pattern": "^/[\\w-/]*[a-zA-Z0-9]$"
           },
           "serverPort": {
             "type": "integer",

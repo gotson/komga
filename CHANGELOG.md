@@ -1,3 +1,34 @@
+# [1.23.0](https://github.com/gotson/komga/compare/1.22.1...1.23.0) (2025-07-28)
+## 🚀 Features
+
+- check if database files are on local filesystem on startup ([93b2130](https://github.com/gotson/komga/commits/93b2130))
+
+## 🐛 Fixes
+
+- ensure tasksDB parent directory is created ([eb1e602](https://github.com/gotson/komga/commits/eb1e602))
+
+## 🔄️ Changes
+
+- ktlint format ([756d9f9](https://github.com/gotson/komga/commits/756d9f9))
+- use guard condition in when ([83a995f](https://github.com/gotson/komga/commits/83a995f))
+- remove redundant qualifier ([d82af1b](https://github.com/gotson/komga/commits/d82af1b))
+- rename unused exceptions ([5ba13d0](https://github.com/gotson/komga/commits/5ba13d0))
+- simplify condition ([b84a958](https://github.com/gotson/komga/commits/b84a958))
+- simplify regex string ([c955f2d](https://github.com/gotson/komga/commits/c955f2d))
+- remove explicit type ([65c8575](https://github.com/gotson/komga/commits/65c8575))
+- replace enum.values() with enum.entries ([03993ac](https://github.com/gotson/komga/commits/03993ac))
+- remove unused code ([b7d1824](https://github.com/gotson/komga/commits/b7d1824))
+- fix warning on startup ([209792f](https://github.com/gotson/komga/commits/209792f))
+
+## 🛠  Build
+
+- add os name to junit test report ([ba83452](https://github.com/gotson/komga/commits/ba83452))
+- publish junit test report ([8952b83](https://github.com/gotson/komga/commits/8952b83))
+
+## 🌐 Translation
+**webui**
+- translated using Weblate (Turkish) ([dc1248e](https://github.com/gotson/komga/commits/dc1248e))
+
 # [1.22.1](https://github.com/gotson/komga/compare/1.22.0...1.22.1) (2025-07-15)
 ## 🐛 Fixes
 
