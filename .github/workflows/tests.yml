@@ -52,6 +52,7 @@ jobs:
         if: always()
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
+          check_name: 'JUnit Test Report: ${{ matrix.os }}'
 
       - name: Conveyor - compute JDK module list
         if: github.event_name == 'push' && github.repository_owner == 'gotson' && contains(matrix.os, 'ubuntu')
