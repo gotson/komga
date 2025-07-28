@@ -106,12 +106,22 @@
           id: 'lDnmZD',
         })
       "
-    />
+      ><template #append>
+        <v-badge
+          :model-value="!isLatestVersion"
+          inline
+          content="!"
+          color="warning"
+        />
+      </template>
+    </v-list-item>
   </v-list-group>
 </template>
 
 <script setup lang="ts">
 import { useAnnouncements } from '@/colada/announcements'
+import { useAppReleases } from '@/colada/app-releases'
 
 const { unreadCount } = useAnnouncements()
+const { isLatestVersion } = useAppReleases()
 </script>
