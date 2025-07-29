@@ -1,0 +1,13 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './AuthenticationActivityTable.stories';
+
+<Meta of={Stories} />
+
+# FragmentUserTable
+
+A Vuetify [Data Table](https://vuetifyjs.com/en/components/data-tables/basics/) to display a list of authentication activity entries.
+
+The table can be configured to only display entries for the current user, in which case the `email` column will be hidden.
+
+<Canvas of={Stories.Default} />
