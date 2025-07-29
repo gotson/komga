@@ -1,44 +1,42 @@
 <template>
   <v-card>
     <template #title>
-      <div>
+      <span class="d-inline-flex ga-2 align-center">
         <a
           :href="release.url"
           target="_blank"
-          class="text-h4 font-weight-medium link-underline me-2"
+          class="text-h4 font-weight-medium link-underline"
           >{{ release.version }}</a
         >
-        <span class="d-inline-flex mt-n3 ga-2 ms-2">
-          <v-chip
-            v-if="current"
-            size="small"
-            rounded
-            color="info"
-          >
-            {{
-              $formatMessage({
-                description:
-                  'Updates view: badge showing next to the currently installed release number',
-                defaultMessage: 'Installed',
-                id: 'WADecv',
-              })
-            }}
-          </v-chip>
-          <v-chip
-            v-if="latest"
-            size="small"
-            rounded
-          >
-            {{
-              $formatMessage({
-                description: 'Updates view: badge showing next to the latest release number',
-                defaultMessage: 'Latest',
-                id: '2Bh8F2',
-              })
-            }}
-          </v-chip>
-        </span>
-      </div>
+        <v-chip
+          v-if="current"
+          size="small"
+          rounded
+          color="info"
+        >
+          {{
+            $formatMessage({
+              description:
+                'Updates view: badge showing next to the currently installed release number',
+              defaultMessage: 'Installed',
+              id: 'WADecv',
+            })
+          }}
+        </v-chip>
+        <v-chip
+          v-if="latest"
+          size="small"
+          rounded
+        >
+          {{
+            $formatMessage({
+              description: 'Updates view: badge showing next to the latest release number',
+              defaultMessage: 'Latest',
+              id: '2Bh8F2',
+            })
+          }}
+        </v-chip>
+      </span>
     </template>
 
     <template #subtitle>
