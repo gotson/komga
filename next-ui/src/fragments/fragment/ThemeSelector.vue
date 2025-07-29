@@ -1,7 +1,13 @@
 <template>
   <v-btn
     :icon="themeIcon"
-    aria-label="theme selector"
+    :aria-label="
+      $formatMessage({
+        description: 'Theme selector button: aria-label',
+        defaultMessage: 'theme selector',
+        id: '0XDhyR',
+      })
+    "
     @click="cycleTheme()"
   />
 </template>

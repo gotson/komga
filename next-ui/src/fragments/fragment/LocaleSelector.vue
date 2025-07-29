@@ -4,6 +4,13 @@
       <v-btn
         v-bind="props"
         icon="i-mdi:translate"
+        :aria-label="
+          $formatMessage({
+            description: 'Locale selector button: aria-label',
+            defaultMessage: 'language selector',
+            id: 'dQ9kx9',
+          })
+        "
       />
     </template>
 
