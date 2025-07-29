@@ -81,6 +81,9 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  optimizeDeps: {
+    exclude: ['vuetify'],
+  },
   test: {
     coverage: {
       reporter: ['text', 'json-summary', 'json', 'html'],
@@ -111,9 +114,6 @@ export default defineConfig({
               inline: ['vuetify'],
             },
           },
-        },
-        optimizeDeps: {
-          exclude: ['vuetify'],
         },
         plugins: [
           // The plugin will run tests for the stories defined in your Storybook config
