@@ -1,0 +1,11 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './login.stories';
+
+<Meta of={Stories} />
+
+# Login
+
+The state of the _Remember Me_ checkbox is persisted in local storage, so the last value used is restored.
+
+<Canvas of={Stories.Default} />
