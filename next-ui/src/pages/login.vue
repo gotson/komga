@@ -53,7 +53,7 @@
       <v-row>
         <v-col class="py-0">
           <v-checkbox
-            v-model="rememberMe"
+            v-model="appStore.rememberMe"
             :label="
               $formatMessage({
                 description: 'Login screen: Remember Me checkbox',
@@ -121,14 +121,15 @@ import { useMutation, useQueryCache } from '@pinia/colada'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { useAppStore } from '@/stores/app'
 
 const messagesStore = useMessagesStore()
 const intl = useIntl()
+const appStore = useAppStore()
 
 const formValid = ref<boolean>(false)
 const username = ref('')
 const password = ref('')
-const rememberMe = ref(false)
 const loginError = ref<string>('')
 
 const router = useRouter()
@@ -144,7 +145,7 @@ const { mutate: performLogin, isLoading } = useMutation({
       },
       params: {
         query: {
-          'remember-me': rememberMe.value,
+          'remember-me': appStore.rememberMe,
         },
       },
     }),
