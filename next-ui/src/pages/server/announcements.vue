@@ -36,17 +36,11 @@
       >
         <!--  Workaround for https://github.com/vuetifyjs/vuetify/issues/21439  -->
         <v-btn
-          v-tooltip:start="
-            $formatMessage({
-              description: 'Announcements view: mark all as read button tooltip',
-              defaultMessage: 'Mark all as read',
-              id: 'da/wb0',
-            })
-          "
+          v-tooltip:start="$formatMessage(markAllReadMessage)"
           color="success"
           size="x-large"
           icon="i-mdi:check-all"
-          aria-label="mark all read"
+          :aria-label="$formatMessage(markAllReadMessage)"
         />
       </v-fab>
     </template>
@@ -56,6 +50,7 @@
 <script lang="ts" setup>
 import { useAnnouncements, useMarkAnnouncementsRead } from '@/colada/announcements'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
+import { defineMessage } from 'vue-intl'
 
 const { data: announcements, error, unreadCount, isPending } = useAnnouncements()
 
@@ -69,6 +64,12 @@ function markAllRead() {
 function markRead(id: string) {
   markAnnouncementsRead([id])
 }
+
+const markAllReadMessage = defineMessage({
+  description: 'Announcements view: mark all as read button tooltip',
+  defaultMessage: 'Mark all as read',
+  id: 'da/wb0',
+})
 </script>
 
 <route lang="yaml">
