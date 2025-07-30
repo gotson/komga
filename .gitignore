@@ -2,6 +2,9 @@
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
 
+### Kotlin
+.kotlin
+
 ### NodeJS
 node_modules
 
