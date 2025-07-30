@@ -4,8 +4,7 @@ import org.gotson.komga.domain.model.AlternateTitle
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SeriesMetadataRecord
 import org.gotson.komga.language.toCurrentTimeZone
@@ -273,14 +272,14 @@ class SeriesMetadataDao(
 
   @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, seriesIds)
-
-    dsl.deleteFrom(g).where(g.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(st).where(st.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(sl).where(sl.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(slk).where(slk.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(sat).where(sat.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(d).where(d.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.withTempTable(batchSize, seriesIds).use {
+      dsl.deleteFrom(g).where(g.SERIES_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(st).where(st.SERIES_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(sl).where(sl.SERIES_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(slk).where(slk.SERIES_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(sat).where(sat.SERIES_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(d).where(d.SERIES_ID.`in`(it.selectTempStrings())).execute()
+    }
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()

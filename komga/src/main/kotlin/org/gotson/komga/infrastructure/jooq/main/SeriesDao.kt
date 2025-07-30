@@ -6,9 +6,8 @@ import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.csAlias
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SeriesRecord
 import org.gotson.komga.language.toCurrentTimeZone
@@ -62,15 +61,15 @@ class SeriesDao(
     libraryId: String,
     urls: Collection<URL>,
   ): List<Series> {
-    dsl.insertTempStrings(batchSize, urls.map { it.toString() })
-
-    return dsl
-      .selectFrom(s)
-      .where(s.LIBRARY_ID.eq(libraryId))
-      .and(s.DELETED_DATE.isNull)
-      .and(s.URL.notIn(dsl.selectTempStrings()))
-      .fetchInto(s)
-      .map { it.toDomain() }
+    dsl.withTempTable(batchSize, urls.map { it.toString() }).use { tempTable ->
+      return dsl
+        .selectFrom(s)
+        .where(s.LIBRARY_ID.eq(libraryId))
+        .and(s.DELETED_DATE.isNull)
+        .and(s.URL.notIn(tempTable.selectTempStrings()))
+        .fetchInto(s)
+        .map { it.toDomain() }
+    }
   }
 
   override fun findNotDeletedByLibraryIdAndUrlOrNull(
@@ -204,9 +203,9 @@ class SeriesDao(
 
   @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, seriesIds)
-
-    dsl.deleteFrom(s).where(s.ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.withTempTable(batchSize, seriesIds).use {
+      dsl.deleteFrom(s).where(s.ID.`in`(it.selectTempStrings())).execute()
+    }
   }
 
   override fun count(): Long = dsl.fetchCount(s).toLong()

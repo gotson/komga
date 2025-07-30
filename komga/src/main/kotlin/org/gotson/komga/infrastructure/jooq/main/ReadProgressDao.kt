@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.infrastructure.jooq.TempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.deserializeJsonGz
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.serializeJsonGz
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ReadProgressRecord
@@ -144,17 +144,17 @@ class ReadProgressDao(
 
   @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, bookIds)
-
-    dsl.deleteFrom(r).where(r.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
-    aggregateSeriesProgress(bookIds)
+    dsl.withTempTable(batchSize, bookIds).use { tempTable ->
+      dsl.deleteFrom(r).where(r.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
+      aggregateSeriesProgress(tempTable)
+    }
   }
 
   @Transactional
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, seriesIds)
-
-    dsl.deleteFrom(rs).where(rs.SERIES_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.withTempTable(batchSize, seriesIds).use {
+      dsl.deleteFrom(rs).where(rs.SERIES_ID.`in`(it.selectTempStrings())).execute()
+    }
   }
 
   @Transactional
@@ -162,14 +162,14 @@ class ReadProgressDao(
     bookIds: Collection<String>,
     userId: String,
   ) {
-    dsl.insertTempStrings(batchSize, bookIds)
-
-    dsl
-      .deleteFrom(r)
-      .where(r.BOOK_ID.`in`(dsl.selectTempStrings()))
-      .and(r.USER_ID.eq(userId))
-      .execute()
-    aggregateSeriesProgress(bookIds, userId)
+    dsl.withTempTable(batchSize, bookIds).use { tempTable ->
+      dsl
+        .deleteFrom(r)
+        .where(r.BOOK_ID.`in`(tempTable.selectTempStrings()))
+        .and(r.USER_ID.eq(userId))
+        .execute()
+      aggregateSeriesProgress(tempTable, userId)
+    }
   }
 
   @Transactional
@@ -182,13 +182,23 @@ class ReadProgressDao(
     bookIds: Collection<String>,
     userId: String? = null,
   ) {
-    dsl.insertTempStrings(batchSize, bookIds)
+    dsl.withTempTable(batchSize, bookIds).use { tempTable ->
+      aggregateSeriesProgress(tempTable, userId)
+    }
+  }
 
+  /**
+   * Get the book IDs from an existing TempTable to avoid recreating another temporary table if one already exists.
+   */
+  private fun aggregateSeriesProgress(
+    bookIdsTempTable: TempTable,
+    userId: String? = null,
+  ) {
     val seriesIdsQuery =
       dsl
         .select(b.SERIES_ID)
         .from(b)
-        .where(b.ID.`in`(dsl.selectTempStrings()))
+        .where(b.ID.`in`(bookIdsTempTable.selectTempStrings()))
 
     dsl
       .deleteFrom(rs)

@@ -6,9 +6,8 @@ import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.rlbAlias
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookRecord
@@ -81,13 +80,13 @@ class BookDao(
 
   @Transactional
   override fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book> {
-    dsl.insertTempStrings(batchSize, seriesIds)
-
-    return dsl
-      .selectFrom(b)
-      .where(b.SERIES_ID.`in`(dsl.selectTempStrings()))
-      .fetchInto(b)
-      .map { it.toDomain() }
+    dsl.withTempTable(batchSize, seriesIds).use { tempTable ->
+      return dsl
+        .selectFrom(b)
+        .where(b.SERIES_ID.`in`(tempTable.selectTempStrings()))
+        .fetchInto(b)
+        .map { it.toDomain() }
+    }
   }
 
   @Transactional
@@ -95,15 +94,16 @@ class BookDao(
     libraryId: String,
     urls: Collection<URL>,
   ): Collection<Book> {
-    dsl.insertTempStrings(batchSize, urls.map { it.toString() })
+    dsl.withTempTable(batchSize, urls.map { it.toString() }).use { tempTable ->
 
-    return dsl
-      .selectFrom(b)
-      .where(b.LIBRARY_ID.eq(libraryId))
-      .and(b.DELETED_DATE.isNull)
-      .and(b.URL.notIn(dsl.selectTempStrings()))
-      .fetchInto(b)
-      .map { it.toDomain() }
+      return dsl
+        .selectFrom(b)
+        .where(b.LIBRARY_ID.eq(libraryId))
+        .and(b.DELETED_DATE.isNull)
+        .and(b.URL.notIn(tempTable.selectTempStrings()))
+        .fetchInto(b)
+        .map { it.toDomain() }
+    }
   }
 
   override fun findAllDeletedByFileSize(fileSize: Long): Collection<Book> =
@@ -402,9 +402,9 @@ class BookDao(
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, bookIds)
-
-    dsl.deleteFrom(b).where(b.ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.withTempTable(batchSize, bookIds).use { tempTable ->
+      dsl.deleteFrom(b).where(b.ID.`in`(tempTable.selectTempStrings())).execute()
+    }
   }
 
   override fun deleteAll() {

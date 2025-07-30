@@ -4,9 +4,8 @@ import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toCondition
 import org.gotson.komga.infrastructure.jooq.toSortField
@@ -246,12 +245,12 @@ class SeriesCollectionDao(
 
   @Transactional
   override fun removeSeriesFromAll(seriesIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, seriesIds)
-
-    dsl
-      .deleteFrom(cs)
-      .where(cs.SERIES_ID.`in`(dsl.selectTempStrings()))
-      .execute()
+    dsl.withTempTable(batchSize, seriesIds).use {
+      dsl
+        .deleteFrom(cs)
+        .where(cs.SERIES_ID.`in`(it.selectTempStrings()))
+        .execute()
+    }
   }
 
   @Transactional

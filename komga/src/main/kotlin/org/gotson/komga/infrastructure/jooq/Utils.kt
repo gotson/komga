@@ -7,7 +7,6 @@ import org.gotson.komga.domain.model.MediaExtension
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.Condition
-import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.SortField
 import org.jooq.impl.DSL
@@ -46,27 +45,6 @@ fun Field<String>.inOrNoCondition(list: Collection<String>?): Condition =
   }
 
 fun Field<String>.udfStripAccents() = DSL.function(SqliteUdfDataSource.UDF_STRIP_ACCENTS, String::class.java, this)
-
-fun DSLContext.insertTempStrings(
-  batchSize: Int,
-  collection: Collection<String>,
-) {
-  this.deleteFrom(Tables.TEMP_STRING_LIST).execute()
-  if (collection.isNotEmpty()) {
-    collection.chunked(batchSize).forEach { chunk ->
-      this
-        .batch(
-          this.insertInto(Tables.TEMP_STRING_LIST, Tables.TEMP_STRING_LIST.STRING).values(null as String?),
-        ).also { step ->
-          chunk.forEach {
-            step.bind(it)
-          }
-        }.execute()
-    }
-  }
-}
-
-fun DSLContext.selectTempStrings() = this.select(Tables.TEMP_STRING_LIST.STRING).from(Tables.TEMP_STRING_LIST)
 
 fun ContentRestrictions.toCondition(): Condition {
   val ageAllowed =

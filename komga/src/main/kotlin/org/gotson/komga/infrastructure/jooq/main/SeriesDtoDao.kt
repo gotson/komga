@@ -6,10 +6,9 @@ import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.csAlias
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toSortField
 import org.gotson.komga.infrastructure.search.LuceneEntity
@@ -308,49 +307,49 @@ class SeriesDtoDao(
     lateinit var alternateTitles: Map<String, List<AlternateTitleDto>>
     lateinit var aggregatedAuthors: Map<String, List<AuthorDto>>
     lateinit var aggregatedTags: Map<String, List<String>>
-    transactionTemplate.executeWithoutResult {
-      dsl.insertTempStrings(batchSize, seriesIds)
+
+    dsl.withTempTable(batchSize, seriesIds).use { tempTable ->
       genres =
         dsl
           .selectFrom(g)
-          .where(g.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .where(g.SERIES_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.genre })
 
       tags =
         dsl
           .selectFrom(st)
-          .where(st.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .where(st.SERIES_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.tag })
 
       sharingLabels =
         dsl
           .selectFrom(sl)
-          .where(sl.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .where(sl.SERIES_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.label })
 
       links =
         dsl
           .selectFrom(slk)
-          .where(slk.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .where(slk.SERIES_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.seriesId }, { WebLinkDto(it.label, it.url) })
 
       alternateTitles =
         dsl
           .selectFrom(sat)
-          .where(sat.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .where(sat.SERIES_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.seriesId }, { AlternateTitleDto(it.label, it.title) })
 
       aggregatedAuthors =
         dsl
           .selectFrom(bmaa)
-          .where(bmaa.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .where(bmaa.SERIES_ID.`in`(tempTable.selectTempStrings()))
           .filter { it.name != null }
           .groupBy({ it.seriesId }, { AuthorDto(it.name, it.role) })
 
       aggregatedTags =
         dsl
           .selectFrom(bmat)
-          .where(bmat.SERIES_ID.`in`(dsl.selectTempStrings()))
+          .where(bmat.SERIES_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.tag })
     }
 

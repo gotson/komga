@@ -4,8 +4,7 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.BookMetadataRepository
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAuthorRecord
 import org.gotson.komga.jooq.main.tables.records.BookMetadataRecord
@@ -246,12 +245,12 @@ class BookMetadataDao(
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, bookIds)
-
-    dsl.deleteFrom(a).where(a.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(bt).where(bt.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(bl).where(bl.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(d).where(d.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.withTempTable(batchSize, bookIds).use {
+      dsl.deleteFrom(a).where(a.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(bt).where(bt.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(bl).where(bl.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(d).where(d.BOOK_ID.`in`(it.selectTempStrings())).execute()
+    }
   }
 
   override fun count(): Long = dsl.fetchCount(d).toLong()

@@ -3,8 +3,7 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.model.SidecarStored
 import org.gotson.komga.domain.persistence.SidecarRepository
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SidecarRecord
 import org.jooq.DSLContext
@@ -46,13 +45,13 @@ class SidecarDao(
     libraryId: String,
     urls: Collection<URL>,
   ) {
-    dsl.insertTempStrings(batchSize, urls.map { it.toString() })
-
-    dsl
-      .deleteFrom(sc)
-      .where(sc.LIBRARY_ID.eq(libraryId))
-      .and(sc.URL.`in`(dsl.selectTempStrings()))
-      .execute()
+    dsl.withTempTable(batchSize, urls.map { it.toString() }).use {
+      dsl
+        .deleteFrom(sc)
+        .where(sc.LIBRARY_ID.eq(libraryId))
+        .and(sc.URL.`in`(it.selectTempStrings()))
+        .execute()
+    }
   }
 
   override fun deleteByLibraryId(libraryId: String) {

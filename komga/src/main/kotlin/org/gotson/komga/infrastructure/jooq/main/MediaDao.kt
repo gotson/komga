@@ -8,9 +8,8 @@ import org.gotson.komga.domain.model.MediaExtension
 import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.ProxyExtension
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.deserializeMediaExtension
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.serializeJsonGz
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.MediaFileRecord
@@ -278,11 +277,11 @@ class MediaDao(
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, bookIds)
-
-    dsl.deleteFrom(p).where(p.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(f).where(f.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
-    dsl.deleteFrom(m).where(m.BOOK_ID.`in`(dsl.selectTempStrings())).execute()
+    dsl.withTempTable(batchSize, bookIds).use {
+      dsl.deleteFrom(p).where(p.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(f).where(f.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dsl.deleteFrom(m).where(m.BOOK_ID.`in`(it.selectTempStrings())).execute()
+    }
   }
 
   override fun count(): Long = dsl.fetchCount(m).toLong()

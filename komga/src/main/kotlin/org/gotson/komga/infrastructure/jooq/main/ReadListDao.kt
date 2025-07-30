@@ -4,9 +4,8 @@ import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
-import org.gotson.komga.infrastructure.jooq.insertTempStrings
-import org.gotson.komga.infrastructure.jooq.selectTempStrings
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toCondition
 import org.gotson.komga.infrastructure.jooq.toSortField
@@ -251,12 +250,12 @@ class ReadListDao(
 
   @Transactional
   override fun removeBooksFromAll(bookIds: Collection<String>) {
-    dsl.insertTempStrings(batchSize, bookIds)
-
-    dsl
-      .deleteFrom(rlb)
-      .where(rlb.BOOK_ID.`in`(dsl.selectTempStrings()))
-      .execute()
+    dsl.withTempTable(batchSize, bookIds).use {
+      dsl
+        .deleteFrom(rlb)
+        .where(rlb.BOOK_ID.`in`(it.selectTempStrings()))
+        .execute()
+    }
   }
 
   @Transactional
