@@ -33,7 +33,7 @@ class ReleaseController(
   private val cache =
     Caffeine
       .newBuilder()
-      .expireAfterAccess(1, TimeUnit.DAYS)
+      .expireAfterAccess(1, TimeUnit.HOURS)
       .build<String, List<GithubReleaseDto>>()
 
   @GetMapping
