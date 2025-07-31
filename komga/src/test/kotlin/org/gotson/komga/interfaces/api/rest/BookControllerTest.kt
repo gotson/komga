@@ -909,7 +909,6 @@ class BookControllerTest(
 
       val response = mockMvc.get(url).andReturn().response
 
-      Thread.sleep(100)
       bookLifecycle.addThumbnailForBook(
         ThumbnailBook(
           thumbnail = Random.nextBytes(1),

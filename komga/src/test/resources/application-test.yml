@@ -3,8 +3,6 @@ application.version: TESTING
 komga:
   database:
     file: "file:database?mode=memory"
-  lucene:
-    commit-delay: 0s
   tasks-db:
     file: "file:tasks?mode=memory"
 
