@@ -15,16 +15,10 @@ import org.apache.lucene.queryparser.classic.ParseException
 import org.apache.lucene.queryparser.classic.QueryParser
 import org.apache.lucene.search.BooleanClause
 import org.apache.lucene.search.BooleanQuery
-import org.apache.lucene.search.SearcherFactory
 import org.apache.lucene.search.SearcherManager
 import org.apache.lucene.search.TermQuery
 import org.apache.lucene.store.Directory
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.scheduling.TaskScheduler
 import org.springframework.stereotype.Component
-import java.time.Duration
-import java.time.ZonedDateTime
-import java.util.concurrent.ScheduledFuture
 
 private val logger = KotlinLogging.logger {}
 
@@ -34,14 +28,11 @@ private const val MAX_RESULTS = 1000
 class LuceneHelper(
   private val directory: Directory,
   private val searchAnalyzer: Analyzer,
-  private val taskScheduler: TaskScheduler,
   private val indexAnalyzer: Analyzer,
-  @param:Value("#{@komgaProperties.lucene.commitDelay}")
-  private val commitDelay: Duration,
+  private val indexWriter: IndexWriter,
+  private val searcherManager: SearcherManager,
+  private val luceneCommitter: LuceneCommitter,
 ) {
-  private val indexWriter: IndexWriter = IndexWriter(directory, IndexWriterConfig(indexAnalyzer))
-  private val searcherManager = SearcherManager(indexWriter, SearcherFactory())
-
   fun indexExists(): Boolean = DirectoryReader.indexExists(directory)
 
   fun setIndexVersion(version: Int) {
@@ -87,7 +78,7 @@ class LuceneHelper(
         val searcher = searcherManager.acquire()
         val topDocs = searcher.search(booleanQuery, MAX_RESULTS)
         topDocs.scoreDocs.map { searcher.storedFields().document(it.doc)[entity.id] }
-      } catch (e: ParseException) {
+      } catch (_: ParseException) {
         emptyList()
       } catch (e: Exception) {
         logger.error(e) { "Error fetching entities from index" }
@@ -104,12 +95,12 @@ class LuceneHelper(
 
   fun addDocument(doc: Document) {
     indexWriter.addDocument(doc)
-    commitAndMaybeRefresh()
+    luceneCommitter.commitAndMaybeRefresh()
   }
 
   fun addDocuments(docs: Iterable<Document>) {
     indexWriter.addDocuments(docs)
-    commitAndMaybeRefresh()
+    luceneCommitter.commitAndMaybeRefresh()
   }
 
   fun updateDocument(
@@ -117,25 +108,11 @@ class LuceneHelper(
     doc: Document,
   ) {
     indexWriter.updateDocument(term, doc)
-    commitAndMaybeRefresh()
+    luceneCommitter.commitAndMaybeRefresh()
   }
 
   fun deleteDocuments(term: Term) {
     indexWriter.deleteDocuments(term)
-    commitAndMaybeRefresh()
-  }
-
-  @Volatile
-  private var commitFuture: ScheduledFuture<*>? = null
-
-  private val commitRunnable =
-    Runnable {
-      indexWriter.commit()
-      searcherManager.maybeRefresh()
-    }
-
-  private fun commitAndMaybeRefresh() {
-    if (commitFuture == null || commitFuture!!.isDone)
-      commitFuture = taskScheduler.schedule(commitRunnable, ZonedDateTime.now().plus(commitDelay).toInstant())
+    luceneCommitter.commitAndMaybeRefresh()
   }
 }
