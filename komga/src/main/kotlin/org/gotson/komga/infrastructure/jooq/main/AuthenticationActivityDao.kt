@@ -10,6 +10,7 @@ import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -20,7 +21,8 @@ import java.time.LocalDateTime
 
 @Component
 class AuthenticationActivityDao(
-  private val dsl: DSLContext,
+  private val dslRW: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
 ) : AuthenticationActivityRepository {
   private val aa = Tables.AUTHENTICATION_ACTIVITY
 
@@ -52,7 +54,7 @@ class AuthenticationActivityDao(
     user: KomgaUser,
     apiKeyId: String?,
   ): AuthenticationActivity? =
-    dsl
+    dslRO
       .selectFrom(aa)
       .where(aa.USER_ID.eq(user.id))
       .or(aa.EMAIL.eq(user.email))
@@ -66,12 +68,12 @@ class AuthenticationActivityDao(
     conditions: Condition,
     pageable: Pageable,
   ): PageImpl<AuthenticationActivity> {
-    val count = dsl.fetchCount(aa, conditions)
+    val count = dslRO.fetchCount(aa, conditions)
 
     val orderBy = pageable.sort.toOrderBy(sorts)
 
     val items =
-      dsl
+      dslRO
         .selectFrom(aa)
         .where(conditions)
         .orderBy(orderBy)
@@ -91,14 +93,14 @@ class AuthenticationActivityDao(
   }
 
   override fun insert(activity: AuthenticationActivity) {
-    dsl
+    dslRW
       .insertInto(aa, aa.USER_ID, aa.EMAIL, aa.API_KEY_ID, aa.API_KEY_COMMENT, aa.IP, aa.USER_AGENT, aa.SUCCESS, aa.ERROR, aa.SOURCE)
       .values(activity.userId, activity.email, activity.apiKeyId, activity.apiKeyComment, activity.ip, activity.userAgent, activity.success, activity.error, activity.source)
       .execute()
   }
 
   override fun deleteByUser(user: KomgaUser) {
-    dsl
+    dslRW
       .deleteFrom(aa)
       .where(aa.USER_ID.eq(user.id))
       .or(aa.EMAIL.eq(user.email))
@@ -106,7 +108,7 @@ class AuthenticationActivityDao(
   }
 
   override fun deleteOlderThan(dateTime: LocalDateTime) {
-    dsl
+    dslRW
       .deleteFrom(aa)
       .where(aa.DATE_TIME.lt(dateTime))
       .execute()

@@ -19,17 +19,31 @@ import javax.sql.DataSource
 // as advised in https://docs.spring.io/spring-boot/docs/3.1.4/reference/htmlsingle/#howto.data-access.configure-jooq-with-multiple-datasources
 @Configuration
 class KomgaJooqConfiguration {
-  @Bean("dslContext")
+  @Bean("dslContextRW")
   @Primary
-  fun mainDslContext(
+  fun mainDslContextRW(
     dataSource: DataSource,
     transactionProvider: ObjectProvider<TransactionProvider?>,
     executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>,
   ): DSLContext = createDslContext(dataSource, transactionProvider, executeListenerProviders)
 
-  @Bean("tasksDslContext")
-  fun tasksDslContext(
-    @Qualifier("tasksDataSource") dataSource: DataSource,
+  @Bean("dslContextRO")
+  fun mainDslContextRO(
+    @Qualifier("sqliteDataSourceRO") dataSource: DataSource,
+    transactionProvider: ObjectProvider<TransactionProvider?>,
+    executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>,
+  ): DSLContext = createDslContext(dataSource, transactionProvider, executeListenerProviders)
+
+  @Bean("tasksDslContextRW")
+  fun tasksDslContextRW(
+    @Qualifier("tasksDataSourceRW") dataSource: DataSource,
+    transactionProvider: ObjectProvider<TransactionProvider?>,
+    executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>,
+  ): DSLContext = createDslContext(dataSource, transactionProvider, executeListenerProviders)
+
+  @Bean("tasksDslContextRO")
+  fun tasksDslContextRO(
+    @Qualifier("tasksDataSourceRO") dataSource: DataSource,
     transactionProvider: ObjectProvider<TransactionProvider?>,
     executeListenerProviders: ObjectProvider<ExecuteListenerProvider?>,
   ): DSLContext = createDslContext(dataSource, transactionProvider, executeListenerProviders)

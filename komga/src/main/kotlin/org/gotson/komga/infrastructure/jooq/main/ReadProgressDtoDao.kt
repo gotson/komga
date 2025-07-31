@@ -10,12 +10,13 @@ import org.jooq.DSLContext
 import org.jooq.Record2
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.rowNumber
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
 @Component
 class ReadProgressDtoDao(
-  private val dsl: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
 ) : ReadProgressDtoRepository {
   private val rlb = Tables.READLIST_BOOK
   private val b = Tables.BOOK
@@ -31,7 +32,7 @@ class ReadProgressDtoDao(
     userId: String,
   ): TachiyomiReadProgressV2Dto {
     val numberSortReadProgress =
-      dsl
+      dslRO
         .select(
           d.NUMBER_SORT,
           r.COMPLETED,
@@ -47,7 +48,7 @@ class ReadProgressDtoDao(
         .toList()
 
     val maxNumberSort =
-      dsl
+      dslRO
         .select(DSL.max(d.NUMBER_SORT))
         .from(b)
         .leftJoin(d)
@@ -63,7 +64,7 @@ class ReadProgressDtoDao(
   private fun getSeriesBooksCount(
     seriesId: String,
     userId: String,
-  ) = dsl
+  ) = dslRO
     .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
     .select(countRead.`as`(BOOKS_READ_COUNT))
     .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))
@@ -87,7 +88,7 @@ class ReadProgressDtoDao(
     userId: String,
   ): TachiyomiReadProgressDto {
     val indexedReadProgress =
-      dsl
+      dslRO
         .select(
           rowNumber().over().orderBy(rlb.NUMBER),
           r.COMPLETED,
@@ -103,7 +104,7 @@ class ReadProgressDtoDao(
         .toList()
 
     val booksCountRecord =
-      dsl
+      dslRO
         .select(countUnread.`as`(BOOKS_UNREAD_COUNT))
         .select(countRead.`as`(BOOKS_READ_COUNT))
         .select(countInProgress.`as`(BOOKS_IN_PROGRESS_COUNT))

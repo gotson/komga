@@ -16,8 +16,8 @@ class AutowiringTest(
   fun `Application loads properly with test properties`() = Unit
 
   @Test
-  fun `Application has 2 dsl contexts`() {
-    assertThat(dataSources).hasSize(2)
-    assertThat(dslContexts).hasSize(2)
+  fun `Application has 4 dsl contexts`() {
+    assertThat(dataSources).hasSize(4)
+    assertThat(dslContexts).hasSize(4)
   }
 }

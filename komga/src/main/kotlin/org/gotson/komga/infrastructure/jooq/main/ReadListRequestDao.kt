@@ -12,12 +12,13 @@ import org.jooq.impl.DSL.ltrim
 import org.jooq.impl.DSL.row
 import org.jooq.impl.DSL.value
 import org.jooq.impl.DSL.values
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
 @Component
 class ReadListRequestDao(
-  private val dsl: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
 ) : ReadListRequestRepository {
   private val sd = Tables.SERIES_METADATA
   private val b = Tables.BOOK
@@ -32,7 +33,7 @@ class ReadListRequestDao(
     val numberField = "number"
     val requestsTable = values(*requestsAsRows.toTypedArray()).`as`("request", indexField, seriesField, numberField)
     val matchedRequests =
-      dsl
+      dslRO
         .select(
           requestsTable.field(indexField, Int::class.java),
           sd.SERIES_ID,

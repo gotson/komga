@@ -10,12 +10,13 @@ import org.gotson.komga.interfaces.api.kobo.dto.PublisherDto
 import org.gotson.komga.interfaces.api.kobo.persistence.KoboDtoRepository
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import java.time.ZoneId
 
 @Component
 class KoboDtoDao(
-  private val dsl: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
   private val mapper: ObjectMapper,
 ) : KoboDtoRepository {
   private val b = Tables.BOOK
@@ -29,7 +30,7 @@ class KoboDtoDao(
     bookIds: Collection<String>,
   ): Collection<KoboBookMetadataDto> {
     val records =
-      dsl
+      dslRO
         .select(
           d.BOOK_ID,
           d.TITLE,
@@ -71,7 +72,7 @@ class KoboDtoDao(
       val mediaExtension = mapper.deserializeMediaExtension(mr.extensionClass, mr.extensionValueBlob) as? MediaExtensionEpub
 
       val authors =
-        dsl
+        dslRO
           .selectFrom(a)
           .where(a.BOOK_ID.`in`(bookIds))
           .filter { it.name != null }

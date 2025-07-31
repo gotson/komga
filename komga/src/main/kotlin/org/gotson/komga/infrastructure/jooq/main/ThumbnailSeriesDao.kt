@@ -7,6 +7,7 @@ import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailSeriesRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -14,20 +15,21 @@ import java.net.URL
 
 @Component
 class ThumbnailSeriesDao(
-  private val dsl: DSLContext,
+  private val dslRW: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : ThumbnailSeriesRepository {
   private val ts = Tables.THUMBNAIL_SERIES
 
   override fun findByIdOrNull(thumbnailId: String): ThumbnailSeries? =
-    dsl
+    dslRO
       .selectFrom(ts)
       .where(ts.ID.eq(thumbnailId))
       .fetchOneInto(ts)
       ?.toDomain()
 
   override fun findAllBySeriesId(seriesId: String): Collection<ThumbnailSeries> =
-    dsl
+    dslRO
       .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .fetchInto(ts)
@@ -37,7 +39,7 @@ class ThumbnailSeriesDao(
     seriesId: String,
     type: ThumbnailSeries.Type,
   ): Collection<ThumbnailSeries> =
-    dsl
+    dslRO
       .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .and(ts.TYPE.eq(type.toString()))
@@ -45,7 +47,7 @@ class ThumbnailSeriesDao(
       .map { it.toDomain() }
 
   override fun findSelectedBySeriesIdOrNull(seriesId: String): ThumbnailSeries? =
-    dsl
+    dslRO
       .selectFrom(ts)
       .where(ts.SERIES_ID.eq(seriesId))
       .and(ts.SELECTED.isTrue)
@@ -55,7 +57,7 @@ class ThumbnailSeriesDao(
       .firstOrNull()
 
   override fun insert(thumbnail: ThumbnailSeries) {
-    dsl
+    dslRW
       .insertInto(ts)
       .set(ts.ID, thumbnail.id)
       .set(ts.SERIES_ID, thumbnail.seriesId)
@@ -71,7 +73,7 @@ class ThumbnailSeriesDao(
   }
 
   override fun update(thumbnail: ThumbnailSeries) {
-    dsl
+    dslRW
       .update(ts)
       .set(ts.SERIES_ID, thumbnail.seriesId)
       .set(ts.THUMBNAIL, thumbnail.thumbnail)
@@ -88,14 +90,14 @@ class ThumbnailSeriesDao(
 
   @Transactional
   override fun markSelected(thumbnail: ThumbnailSeries) {
-    dsl
+    dslRW
       .update(ts)
       .set(ts.SELECTED, false)
       .where(ts.SERIES_ID.eq(thumbnail.seriesId))
       .and(ts.ID.ne(thumbnail.id))
       .execute()
 
-    dsl
+    dslRW
       .update(ts)
       .set(ts.SELECTED, true)
       .where(ts.SERIES_ID.eq(thumbnail.seriesId))
@@ -104,17 +106,17 @@ class ThumbnailSeriesDao(
   }
 
   override fun delete(thumbnailSeriesId: String) {
-    dsl.deleteFrom(ts).where(ts.ID.eq(thumbnailSeriesId)).execute()
+    dslRW.deleteFrom(ts).where(ts.ID.eq(thumbnailSeriesId)).execute()
   }
 
   override fun deleteBySeriesId(seriesId: String) {
-    dsl.deleteFrom(ts).where(ts.SERIES_ID.eq(seriesId)).execute()
+    dslRW.deleteFrom(ts).where(ts.SERIES_ID.eq(seriesId)).execute()
   }
 
   @Transactional
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
-    dsl.withTempTable(batchSize, seriesIds).use {
-      dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(it.selectTempStrings())).execute()
+    dslRW.withTempTable(batchSize, seriesIds).use {
+      dslRW.deleteFrom(ts).where(ts.SERIES_ID.`in`(it.selectTempStrings())).execute()
     }
   }
 

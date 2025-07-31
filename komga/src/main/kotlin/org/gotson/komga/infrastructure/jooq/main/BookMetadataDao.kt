@@ -10,6 +10,7 @@ import org.gotson.komga.jooq.main.tables.records.BookMetadataAuthorRecord
 import org.gotson.komga.jooq.main.tables.records.BookMetadataRecord
 import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -19,7 +20,8 @@ import java.time.ZoneId
 
 @Component
 class BookMetadataDao(
-  private val dsl: DSLContext,
+  private val dslRW: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookMetadataRepository {
   private val d = Tables.BOOK_METADATA
@@ -29,16 +31,15 @@ class BookMetadataDao(
 
   private val groupFields = arrayOf(*d.fields(), *a.fields())
 
-  override fun findById(bookId: String): BookMetadata = find(dsl, listOf(bookId)).first()
+  override fun findById(bookId: String): BookMetadata = dslRO.find(listOf(bookId)).first()
 
-  override fun findByIdOrNull(bookId: String): BookMetadata? = find(dsl, listOf(bookId)).firstOrNull()
+  override fun findByIdOrNull(bookId: String): BookMetadata? = dslRO.find(listOf(bookId)).firstOrNull()
 
-  override fun findAllByIds(bookIds: Collection<String>): Collection<BookMetadata> = find(dsl, bookIds)
+  override fun findAllByIds(bookIds: Collection<String>): Collection<BookMetadata> = dslRO.find(bookIds)
 
-  private fun find(
-    dsl: DSLContext,
+  private fun DSLContext.find(
     bookIds: Collection<String>,
-  ) = dsl
+  ) = this
     .select(*groupFields)
     .from(d)
     .leftJoin(a)
@@ -49,18 +50,18 @@ class BookMetadataDao(
       { it.into(d) },
       { it.into(a) },
     ).map { (dr, ar) ->
-      dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.bookId), findLinks(dr.bookId))
+      dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, this.findTags(dr.bookId), this.findLinks(dr.bookId))
     }
 
-  private fun findTags(bookId: String) =
-    dsl
+  private fun DSLContext.findTags(bookId: String) =
+    this
       .select(bt.TAG)
       .from(bt)
       .where(bt.BOOK_ID.eq(bookId))
       .fetchSet(bt.TAG)
 
-  private fun findLinks(bookId: String) =
-    dsl
+  private fun DSLContext.findLinks(bookId: String) =
+    this
       .select(bl.LABEL, bl.URL)
       .from(bl)
       .where(bl.BOOK_ID.eq(bookId))
@@ -76,9 +77,9 @@ class BookMetadataDao(
   override fun insert(metadatas: Collection<BookMetadata>) {
     if (metadatas.isNotEmpty()) {
       metadatas.chunked(batchSize).forEach { chunk ->
-        dsl
+        dslRW
           .batch(
-            dsl
+            dslRW
               .insertInto(
                 d,
                 d.BOOK_ID,
@@ -122,9 +123,9 @@ class BookMetadataDao(
           }.execute()
       }
 
-      insertAuthors(metadatas)
-      insertTags(metadatas)
-      insertLinks(metadatas)
+      dslRW.insertAuthors(metadatas)
+      dslRW.insertTags(metadatas)
+      dslRW.insertLinks(metadatas)
     }
   }
 
@@ -139,7 +140,7 @@ class BookMetadataDao(
   }
 
   private fun updateMetadata(metadata: BookMetadata) {
-    dsl
+    dslRW
       .update(d)
       .set(d.TITLE, metadata.title)
       .set(d.TITLE_LOCK, metadata.titleLock)
@@ -160,30 +161,30 @@ class BookMetadataDao(
       .where(d.BOOK_ID.eq(metadata.bookId))
       .execute()
 
-    dsl
+    dslRW
       .deleteFrom(a)
       .where(a.BOOK_ID.eq(metadata.bookId))
       .execute()
-    dsl
+    dslRW
       .deleteFrom(bt)
       .where(bt.BOOK_ID.eq(metadata.bookId))
       .execute()
-    dsl
+    dslRW
       .deleteFrom(bl)
       .where(bl.BOOK_ID.eq(metadata.bookId))
       .execute()
 
-    insertAuthors(listOf(metadata))
-    insertTags(listOf(metadata))
-    insertLinks(listOf(metadata))
+    dslRW.insertAuthors(listOf(metadata))
+    dslRW.insertTags(listOf(metadata))
+    dslRW.insertLinks(listOf(metadata))
   }
 
-  private fun insertAuthors(metadatas: Collection<BookMetadata>) {
+  private fun DSLContext.insertAuthors(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.authors.isNotEmpty() }) {
       metadatas.chunked(batchSize).forEach { chunk ->
-        dsl
+        this
           .batch(
-            dsl
+            this
               .insertInto(a, a.BOOK_ID, a.NAME, a.ROLE)
               .values(null as String?, null, null),
           ).also { step ->
@@ -197,12 +198,12 @@ class BookMetadataDao(
     }
   }
 
-  private fun insertTags(metadatas: Collection<BookMetadata>) {
+  private fun DSLContext.insertTags(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.tags.isNotEmpty() }) {
       metadatas.chunked(batchSize).forEach { chunk ->
-        dsl
+        this
           .batch(
-            dsl
+            this
               .insertInto(bt, bt.BOOK_ID, bt.TAG)
               .values(null as String?, null),
           ).also { step ->
@@ -216,12 +217,12 @@ class BookMetadataDao(
     }
   }
 
-  private fun insertLinks(metadatas: Collection<BookMetadata>) {
+  private fun DSLContext.insertLinks(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.links.isNotEmpty() }) {
       metadatas.chunked(batchSize).forEach { chunk ->
-        dsl
+        this
           .batch(
-            dsl
+            this
               .insertInto(bl, bl.BOOK_ID, bl.LABEL, bl.URL)
               .values(null as String?, null, null),
           ).also { step ->
@@ -237,23 +238,23 @@ class BookMetadataDao(
 
   @Transactional
   override fun delete(bookId: String) {
-    dsl.deleteFrom(a).where(a.BOOK_ID.eq(bookId)).execute()
-    dsl.deleteFrom(bt).where(bt.BOOK_ID.eq(bookId)).execute()
-    dsl.deleteFrom(bl).where(bl.BOOK_ID.eq(bookId)).execute()
-    dsl.deleteFrom(d).where(d.BOOK_ID.eq(bookId)).execute()
+    dslRW.deleteFrom(a).where(a.BOOK_ID.eq(bookId)).execute()
+    dslRW.deleteFrom(bt).where(bt.BOOK_ID.eq(bookId)).execute()
+    dslRW.deleteFrom(bl).where(bl.BOOK_ID.eq(bookId)).execute()
+    dslRW.deleteFrom(d).where(d.BOOK_ID.eq(bookId)).execute()
   }
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dsl.withTempTable(batchSize, bookIds).use {
-      dsl.deleteFrom(a).where(a.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dsl.deleteFrom(bt).where(bt.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dsl.deleteFrom(bl).where(bl.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dsl.deleteFrom(d).where(d.BOOK_ID.`in`(it.selectTempStrings())).execute()
+    dslRW.withTempTable(batchSize, bookIds).use {
+      dslRW.deleteFrom(a).where(a.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dslRW.deleteFrom(bt).where(bt.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dslRW.deleteFrom(bl).where(bl.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dslRW.deleteFrom(d).where(d.BOOK_ID.`in`(it.selectTempStrings())).execute()
     }
   }
 
-  override fun count(): Long = dsl.fetchCount(d).toLong()
+  override fun count(): Long = dslRO.fetchCount(d).toLong()
 
   private fun BookMetadataRecord.toDomain(
     authors: List<Author>,

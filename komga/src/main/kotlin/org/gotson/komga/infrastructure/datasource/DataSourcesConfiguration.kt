@@ -7,6 +7,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
+import org.sqlite.SQLiteConfig
 import org.sqlite.SQLiteDataSource
 import javax.sql.DataSource
 
@@ -14,17 +15,38 @@ import javax.sql.DataSource
 class DataSourcesConfiguration(
   private val komgaProperties: KomgaProperties,
 ) {
-  @Bean("sqliteDataSource")
+  @Bean("sqliteDataSourceRW")
   @Primary
-  fun sqliteDataSource(): DataSource = buildDataSource("SqliteMainPool", SqliteUdfDataSource::class.java, komgaProperties.database)
-
-  @Bean("tasksDataSource")
-  fun tasksDataSource(): DataSource =
-    buildDataSource("SqliteTasksPool", SQLiteDataSource::class.java, komgaProperties.tasksDb)
+  fun sqliteDataSourceRW(): DataSource =
+    buildDataSource("SqliteMainPoolRW", SqliteUdfDataSource::class.java, komgaProperties.database)
       .apply {
-        // force pool size to 1 for tasks datasource
+        // force pool size to 1 if the pool is only used for writes
+        if (komgaProperties.database.shouldSeparateReadFromWrites()) this.maximumPoolSize = 1
+      }
+
+  @Bean("sqliteDataSourceRO")
+  fun sqliteDataSourceRO(): DataSource =
+    if (komgaProperties.database.shouldSeparateReadFromWrites())
+      buildDataSource("SqliteMainPoolRO", SqliteUdfDataSource::class.java, komgaProperties.database)
+    else
+      sqliteDataSourceRW()
+
+  @Bean("tasksDataSourceRW")
+  fun tasksDataSourceRW(): DataSource =
+    buildDataSource("SqliteTasksPoolRW", SQLiteDataSource::class.java, komgaProperties.tasksDb)
+      .apply {
+        // pool size is always 1:
+        // - if there's only 1 pool for read and writes, size should be 1
+        // - if there's a separate read pool, the write pool size should be 1
         this.maximumPoolSize = 1
       }
+
+  @Bean("tasksDataSourceRO")
+  fun tasksDataSourceRO(): DataSource =
+    if (komgaProperties.tasksDb.shouldSeparateReadFromWrites())
+      buildDataSource("SqliteTasksPoolRO", SQLiteDataSource::class.java, komgaProperties.tasksDb)
+    else
+      tasksDataSourceRW()
 
   private fun buildDataSource(
     poolName: String,
@@ -57,7 +79,7 @@ class DataSourcesConfiguration(
     }
 
     val poolSize =
-      if (databaseProps.file.contains(":memory:") || databaseProps.file.contains("mode=memory"))
+      if (databaseProps.isMemory())
         1
       else if (databaseProps.poolSize != null)
         databaseProps.poolSize!!
@@ -72,4 +94,8 @@ class DataSourcesConfiguration(
       },
     )
   }
+
+  fun KomgaProperties.Database.isMemory() = file.contains(":memory:") || file.contains("mode=memory")
+
+  fun KomgaProperties.Database.shouldSeparateReadFromWrites(): Boolean = !isMemory() && journalMode == SQLiteConfig.JournalMode.WAL
 }

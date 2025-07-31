@@ -9,6 +9,7 @@ import org.gotson.komga.jooq.main.tables.records.BookMetadataAggregationAuthorRe
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAggregationRecord
 import org.gotson.komga.language.toCurrentTimeZone
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -17,19 +18,20 @@ import java.time.ZoneId
 
 @Component
 class BookMetadataAggregationDao(
-  private val dsl: DSLContext,
+  private val dslRW: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : BookMetadataAggregationRepository {
   private val d = Tables.BOOK_METADATA_AGGREGATION
   private val a = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val t = Tables.BOOK_METADATA_AGGREGATION_TAG
 
-  override fun findById(seriesId: String): BookMetadataAggregation = findOne(listOf(seriesId)).first()
+  override fun findById(seriesId: String): BookMetadataAggregation = dslRO.findOne(listOf(seriesId)).first()
 
-  override fun findByIdOrNull(seriesId: String): BookMetadataAggregation? = findOne(listOf(seriesId)).firstOrNull()
+  override fun findByIdOrNull(seriesId: String): BookMetadataAggregation? = dslRO.findOne(listOf(seriesId)).firstOrNull()
 
-  private fun findOne(seriesIds: Collection<String>) =
-    dsl
+  private fun DSLContext.findOne(seriesIds: Collection<String>) =
+    this
       .select(*d.fields(), *a.fields())
       .from(d)
       .leftJoin(a)
@@ -39,11 +41,11 @@ class BookMetadataAggregationDao(
         { it.into(d) },
         { it.into(a) },
       ).map { (dr, ar) ->
-        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, findTags(dr.seriesId))
+        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, this.findTags(dr.seriesId))
       }
 
-  private fun findTags(seriesId: String) =
-    dsl
+  private fun DSLContext.findTags(seriesId: String) =
+    this
       .select(t.TAG)
       .from(t)
       .where(t.SERIES_ID.eq(seriesId))
@@ -51,7 +53,7 @@ class BookMetadataAggregationDao(
 
   @Transactional
   override fun insert(metadata: BookMetadataAggregation) {
-    dsl
+    dslRW
       .insertInto(d)
       .set(d.SERIES_ID, metadata.seriesId)
       .set(d.RELEASE_DATE, metadata.releaseDate)
@@ -59,13 +61,13 @@ class BookMetadataAggregationDao(
       .set(d.SUMMARY_NUMBER, metadata.summaryNumber)
       .execute()
 
-    insertAuthors(metadata)
-    insertTags(metadata)
+    dslRW.insertAuthors(metadata)
+    dslRW.insertTags(metadata)
   }
 
   @Transactional
   override fun update(metadata: BookMetadataAggregation) {
-    dsl
+    dslRW
       .update(d)
       .set(d.SUMMARY, metadata.summary)
       .set(d.SUMMARY_NUMBER, metadata.summaryNumber)
@@ -74,26 +76,26 @@ class BookMetadataAggregationDao(
       .where(d.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
-    dsl
+    dslRW
       .deleteFrom(a)
       .where(a.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
-    dsl
+    dslRW
       .deleteFrom(t)
       .where(t.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
-    insertAuthors(metadata)
-    insertTags(metadata)
+    dslRW.insertAuthors(metadata)
+    dslRW.insertTags(metadata)
   }
 
-  private fun insertAuthors(metadata: BookMetadataAggregation) {
+  private fun DSLContext.insertAuthors(metadata: BookMetadataAggregation) {
     if (metadata.authors.isNotEmpty()) {
       metadata.authors.chunked(batchSize).forEach { chunk ->
-        dsl
+        this
           .batch(
-            dsl
+            this
               .insertInto(a, a.SERIES_ID, a.NAME, a.ROLE)
               .values(null as String?, null, null),
           ).also { step ->
@@ -105,12 +107,12 @@ class BookMetadataAggregationDao(
     }
   }
 
-  private fun insertTags(metadata: BookMetadataAggregation) {
+  private fun DSLContext.insertTags(metadata: BookMetadataAggregation) {
     if (metadata.tags.isNotEmpty()) {
       metadata.tags.chunked(batchSize).forEach { chunk ->
-        dsl
+        this
           .batch(
-            dsl
+            this
               .insertInto(t, t.SERIES_ID, t.TAG)
               .values(null as String?, null),
           ).also { step ->
@@ -124,21 +126,21 @@ class BookMetadataAggregationDao(
 
   @Transactional
   override fun delete(seriesId: String) {
-    dsl.deleteFrom(a).where(a.SERIES_ID.eq(seriesId)).execute()
-    dsl.deleteFrom(t).where(t.SERIES_ID.eq(seriesId)).execute()
-    dsl.deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
+    dslRW.deleteFrom(a).where(a.SERIES_ID.eq(seriesId)).execute()
+    dslRW.deleteFrom(t).where(t.SERIES_ID.eq(seriesId)).execute()
+    dslRW.deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
   }
 
   @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dsl.withTempTable(batchSize, seriesIds).use {
-      dsl.deleteFrom(a).where(a.SERIES_ID.`in`(it.selectTempStrings())).execute()
-      dsl.deleteFrom(t).where(t.SERIES_ID.`in`(it.selectTempStrings())).execute()
-      dsl.deleteFrom(d).where(d.SERIES_ID.`in`(it.selectTempStrings())).execute()
+    dslRW.withTempTable(batchSize, seriesIds).use {
+      dslRW.deleteFrom(a).where(a.SERIES_ID.`in`(it.selectTempStrings())).execute()
+      dslRW.deleteFrom(t).where(t.SERIES_ID.`in`(it.selectTempStrings())).execute()
+      dslRW.deleteFrom(d).where(d.SERIES_ID.`in`(it.selectTempStrings())).execute()
     }
   }
 
-  override fun count(): Long = dsl.fetchCount(d).toLong()
+  override fun count(): Long = dslRO.fetchCount(d).toLong()
 
   private fun BookMetadataAggregationRecord.toDomain(
     authors: List<Author>,

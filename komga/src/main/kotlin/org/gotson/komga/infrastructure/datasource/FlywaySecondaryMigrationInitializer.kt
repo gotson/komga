@@ -8,7 +8,7 @@ import javax.sql.DataSource
 
 @Component
 class FlywaySecondaryMigrationInitializer(
-  @Qualifier("tasksDataSource")
+  @Qualifier("tasksDataSourceRW")
   private val tasksDataSource: DataSource,
 ) : InitializingBean {
   // by default Spring Boot will perform migration only on the @Primary datasource

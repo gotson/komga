@@ -2,11 +2,13 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 @Component
 class ServerSettingsDao(
-  private val dsl: DSLContext,
+  private val dslRW: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
 ) {
   private val s = Tables.SERVER_SETTINGS
 
@@ -14,7 +16,7 @@ class ServerSettingsDao(
     key: String,
     clazz: Class<T>,
   ): T? =
-    dsl
+    dslRO
       .select(s.VALUE)
       .from(s)
       .where(s.KEY.eq(key))
@@ -24,7 +26,7 @@ class ServerSettingsDao(
     key: String,
     value: String,
   ) {
-    dsl
+    dslRW
       .insertInto(s)
       .values(key, value)
       .onDuplicateKeyUpdate()
@@ -47,10 +49,10 @@ class ServerSettingsDao(
   }
 
   fun deleteSetting(key: String) {
-    dsl.deleteFrom(s).where(s.KEY.eq(key)).execute()
+    dslRW.deleteFrom(s).where(s.KEY.eq(key)).execute()
   }
 
   fun deleteAll() {
-    dsl.deleteFrom(s).execute()
+    dslRW.deleteFrom(s).execute()
   }
 }

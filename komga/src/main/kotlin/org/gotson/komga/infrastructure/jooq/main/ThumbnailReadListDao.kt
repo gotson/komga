@@ -6,31 +6,33 @@ import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailReadlistRecord
 import org.jooq.DSLContext
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
 class ThumbnailReadListDao(
-  private val dsl: DSLContext,
+  private val dslRW: DSLContext,
+  @Qualifier("dslContextRO") private val dslRO: DSLContext,
 ) : ThumbnailReadListRepository {
   private val tr = Tables.THUMBNAIL_READLIST
 
   override fun findAllByReadListId(readListId: String): Collection<ThumbnailReadList> =
-    dsl
+    dslRO
       .selectFrom(tr)
       .where(tr.READLIST_ID.eq(readListId))
       .fetchInto(tr)
       .map { it.toDomain() }
 
   override fun findByIdOrNull(thumbnailId: String): ThumbnailReadList? =
-    dsl
+    dslRO
       .selectFrom(tr)
       .where(tr.ID.eq(thumbnailId))
       .fetchOneInto(tr)
       ?.toDomain()
 
   override fun findSelectedByReadListIdOrNull(readListId: String): ThumbnailReadList? =
-    dsl
+    dslRO
       .selectFrom(tr)
       .where(tr.READLIST_ID.eq(readListId))
       .and(tr.SELECTED.isTrue)
@@ -40,7 +42,7 @@ class ThumbnailReadListDao(
       .firstOrNull()
 
   override fun insert(thumbnail: ThumbnailReadList) {
-    dsl
+    dslRW
       .insertInto(tr)
       .set(tr.ID, thumbnail.id)
       .set(tr.READLIST_ID, thumbnail.readListId)
@@ -55,7 +57,7 @@ class ThumbnailReadListDao(
   }
 
   override fun update(thumbnail: ThumbnailReadList) {
-    dsl
+    dslRW
       .update(tr)
       .set(tr.READLIST_ID, thumbnail.readListId)
       .set(tr.THUMBNAIL, thumbnail.thumbnail)
@@ -71,14 +73,14 @@ class ThumbnailReadListDao(
 
   @Transactional
   override fun markSelected(thumbnail: ThumbnailReadList) {
-    dsl
+    dslRW
       .update(tr)
       .set(tr.SELECTED, false)
       .where(tr.READLIST_ID.eq(thumbnail.readListId))
       .and(tr.ID.ne(thumbnail.id))
       .execute()
 
-    dsl
+    dslRW
       .update(tr)
       .set(tr.SELECTED, true)
       .where(tr.READLIST_ID.eq(thumbnail.readListId))
@@ -87,15 +89,15 @@ class ThumbnailReadListDao(
   }
 
   override fun delete(thumbnailReadListId: String) {
-    dsl.deleteFrom(tr).where(tr.ID.eq(thumbnailReadListId)).execute()
+    dslRW.deleteFrom(tr).where(tr.ID.eq(thumbnailReadListId)).execute()
   }
 
   override fun deleteByReadListId(readListId: String) {
-    dsl.deleteFrom(tr).where(tr.READLIST_ID.eq(readListId)).execute()
+    dslRW.deleteFrom(tr).where(tr.READLIST_ID.eq(readListId)).execute()
   }
 
   override fun deleteByReadListIds(readListIds: Collection<String>) {
-    dsl.deleteFrom(tr).where(tr.READLIST_ID.`in`(readListIds)).execute()
+    dslRW.deleteFrom(tr).where(tr.READLIST_ID.`in`(readListIds)).execute()
   }
 
   private fun ThumbnailReadlistRecord.toDomain() =
