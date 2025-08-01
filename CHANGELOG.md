@@ -1,3 +1,43 @@
+# [1.23.1](https://github.com/gotson/komga/compare/1.23.0...1.23.1) (2025-08-01)
+## 🐛 Fixes
+**api**
+- reduce cache for announcements and releases to 1h ([e019f5d](https://github.com/gotson/komga/commits/e019f5d))
+
+## 🏎 Perf
+
+- separate database reads from writes ([f9d9139](https://github.com/gotson/komga/commits/f9d9139))
+- use sqlite temporary tables for long parameter list ([7464e64](https://github.com/gotson/komga/commits/7464e64))
+
+## 🔄️ Changes
+**benchmark**
+- replace deprecated methods ([9046a61](https://github.com/gotson/komga/commits/9046a61))
+
+**unscoped**
+- ktlint format ([9986f9d](https://github.com/gotson/komga/commits/9986f9d))
+- move lucene commit to separate class ([243355f](https://github.com/gotson/komga/commits/243355f))
+- replace deprecated property ([cfa3995](https://github.com/gotson/komga/commits/cfa3995))
+
+## 🧪 Tests
+
+- use synchronous lucene committer for tests ([0e52bde](https://github.com/gotson/komga/commits/0e52bde))
+- use synchronous events for tests ([a80eb59](https://github.com/gotson/komga/commits/a80eb59))
+
+## 🛠  Build
+**docker**
+- downgrade base image from ubuntu:25.04 to ubuntu:24.10 for arm64/arm64 ([ffd2d0c](https://github.com/gotson/komga/commits/ffd2d0c)), closes [#2021](https://github.com/gotson/komga/issues/2021)
+
+**webui**
+- update Browserslist db ([8c4fb26](https://github.com/gotson/komga/commits/8c4fb26))
+
+## ⚙️ Dependencies
+**komga**
+- bump spring boot to 3.5.4 ([d8d2029](https://github.com/gotson/komga/commits/d8d2029))
+- bump bestbefore-processor-kotlin to 0.2.0 ([5af98a5](https://github.com/gotson/komga/commits/5af98a5))
+- bump spring-session-caffeine to 2.1.0 ([0a0bd96](https://github.com/gotson/komga/commits/0a0bd96))
+
+**webui**
+- bump on-headers and compression in /komga-webui ([cd98fed](https://github.com/gotson/komga/commits/cd98fed))
+
 # [1.23.0](https://github.com/gotson/komga/compare/1.22.1...1.23.0) (2025-07-28)
 ## 🚀 Features
 
