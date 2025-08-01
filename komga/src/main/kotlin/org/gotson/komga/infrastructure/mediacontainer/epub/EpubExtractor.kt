@@ -229,9 +229,28 @@ class EpubExtractor(
       .sumOf { ceil(it.compressedSize / 1024.0).toInt() }
   }
 
-  fun isFixedLayout(epub: EpubPackage) =
-    epub.opfDoc.selectFirst("metadata > *|meta[property=rendition:layout]")?.text() == "pre-paginated" ||
-      epub.opfDoc.selectFirst("metadata > *|meta[name=fixed-layout]")?.attr("content") == "true"
+  fun isFixedLayout(epub: EpubPackage): Boolean {
+    // EPUB 3
+    if (epub.opfDoc.selectFirst("metadata > *|meta[property=rendition:layout]")?.text() == "pre-paginated") return true
+
+    // EPUB 2
+    if (epub.opfDoc.selectFirst("metadata > *|meta[name=fixed-layout]")?.attr("content") == "true") return true
+
+    // Additional rules: Image files account for more than 40%
+    val imageTypes = setOf("image/jpeg", "image/png", "image/webp", "image/gif", "image/avif", "image/jxl")
+    val imageCount = epub.manifest.values.count { it.mediaType in imageTypes }
+    val totalCount = epub.manifest.size
+
+    if (totalCount > 0) {
+      val imageRatio = imageCount.toDouble() / totalCount
+      if (imageRatio >= 0.40) {
+        logger.info { "EPUB detected as fixed-layout by image ratio: $imageCount/$totalCount = ${(imageRatio * 100).roundToInt()}%" }
+        return true
+      }
+    }
+
+    return false
+  }
 
   fun computePositions(
     epub: EpubPackage,
