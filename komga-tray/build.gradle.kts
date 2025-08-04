@@ -5,7 +5,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
   }
-  id("com.gorylenko.gradle-git-properties") version "2.5.2"
+  alias(libs.plugins.gradleGitProperties)
   id("org.jetbrains.compose") version "1.8.2"
   id("org.jetbrains.kotlin.plugin.compose") version "2.2.0"
   id("dev.hydraulic.conveyor") version "1.12"

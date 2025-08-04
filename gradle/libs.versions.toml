@@ -1,0 +1,10 @@
+[versions]
+sqliteJdbc = "3.50.2.0"
+nightmonkeys = "1.0.0"
+twelvemonkeys = "3.12.0"
+springboot = "3.5.4"
+lucene = "9.9.1" # v10 requires JDK 21
+jooq = "3.19.24" # should be aligned with the version provided by Spring Boot
+
+[plugins]
+gradleGitProperties = {id = "com.gorylenko.gradle-git-properties", version = "2.5.2"}
