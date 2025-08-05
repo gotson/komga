@@ -46,6 +46,7 @@ class SettingsUpdateDto {
       isSet[prop.name] = true
     }
 
+  @Deprecated("Will be removed in a future version")
   var kepubifyPath: String?
     by Delegates.observable(null) { prop, _, _ ->
       isSet[prop.name] = true
