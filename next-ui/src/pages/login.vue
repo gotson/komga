@@ -1,6 +1,6 @@
 <template>
   <v-form
-    v-model="formValid"
+    ref="form"
     :disabled="isLoading"
     @submit.prevent="submitForm()"
   >
@@ -116,18 +116,19 @@
 </template>
 
 <script lang="ts" setup>
-import { type ErrorCause, komgaClient } from '@/api/komga-client'
-import { useMutation, useQueryCache } from '@pinia/colada'
+import { type ErrorCause } from '@/api/komga-client'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useAppStore } from '@/stores/app'
+import { useLogin } from '@/colada/users'
+import { useClaimStatus } from '@/colada/claim'
 
 const messagesStore = useMessagesStore()
 const intl = useIntl()
 const appStore = useAppStore()
 
-const formValid = ref<boolean>(false)
+const form = ref()
 const username = ref('')
 const password = ref('')
 const loginError = ref<string>('')
@@ -135,44 +136,40 @@ const loginError = ref<string>('')
 const router = useRouter()
 const route = useRoute()
 
-const queryCache = useQueryCache()
-const { mutate: performLogin, isLoading } = useMutation({
-  mutation: () =>
-    komgaClient.GET('/api/v2/users/me', {
-      headers: {
-        authorization: 'Basic ' + btoa(username.value + ':' + password.value),
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      params: {
-        query: {
-          'remember-me': appStore.rememberMe,
-        },
-      },
-    }),
-  onSuccess: ({ data }) => {
-    queryCache.setQueryData(['current-user'], data)
-    queryCache.cancelQueries({ key: ['current-user'] })
-    if (route.query.redirect) void router.push({ path: route.query.redirect.toString() })
-    else void router.push('/')
-  },
-  onError: (error) => {
-    if ((error?.cause as ErrorCause)?.status === 401)
-      loginError.value = intl.formatMessage({
-        description: 'Login screen: error message displayed when login failed',
-        defaultMessage: 'Invalid login or password',
-        id: 'AjWlka',
-      })
-    else
-      messagesStore.messages.push({
-        text:
-          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
-      })
-  },
-})
+const { mutateAsync: performLogin, isLoading } = useLogin()
 
-function submitForm() {
-  if (formValid.value) performLogin()
+async function submitForm() {
+  const { valid } = await form.value.validate()
+  if (valid)
+    performLogin({
+      username: username.value,
+      password: password.value,
+      rememberMe: appStore.rememberMe,
+    })
+      .then(() => {
+        if (route.query.redirect) void router.push({ path: route.query.redirect.toString() })
+        else void router.push('/')
+      })
+      .catch((error) => {
+        if ((error?.cause as ErrorCause)?.status === 401)
+          loginError.value = intl.formatMessage({
+            description: 'Login screen: error message displayed when login failed',
+            defaultMessage: 'Invalid login or password',
+            id: 'AjWlka',
+          })
+        else
+          messagesStore.messages.push({
+            text:
+              (error?.cause as ErrorCause)?.message ||
+              intl.formatMessage(commonMessages.networkError),
+          })
+      })
 }
+
+const { refresh: claimStatus } = useClaimStatus()
+void claimStatus().then(({ data }) => {
+  if (data?.isClaimed == false) void router.push('/')
+})
 </script>
 
 <route lang="yaml">
