@@ -6,15 +6,17 @@ import { librariesHandlers } from '@/mocks/api/handlers/libraries'
 import { referentialHandlers } from '@/mocks/api/handlers/referential'
 import { usersHandlers } from '@/mocks/api/handlers/users'
 import { settingsHandlers } from '@/mocks/api/handlers/settings'
+import { claimHandlers } from '@/mocks/api/handlers/claim'
 
 export const handlers = [
-  ...librariesHandlers,
-  ...referentialHandlers,
   ...actuatorHandlers,
   ...announcementHandlers,
+  ...claimHandlers,
+  ...librariesHandlers,
+  ...referentialHandlers,
   ...releasesHandlers,
-  ...usersHandlers,
   ...settingsHandlers,
+  ...usersHandlers,
 ]
 
 export const response401Unauthorized = () =>
