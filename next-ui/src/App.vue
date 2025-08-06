@@ -6,9 +6,12 @@
     <FragmentDialogConfirmEdit />
     <FragmentDialogConfirm />
   </v-app>
+
+  <PiniaColadaDevtools />
 </template>
 
 <script lang="ts" setup>
+import { PiniaColadaDevtools } from '@pinia/colada-devtools'
 import { useThemeWatcher } from '@/composables/themeWatcher'
 
 useThemeWatcher()
