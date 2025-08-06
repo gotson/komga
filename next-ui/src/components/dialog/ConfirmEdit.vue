@@ -15,7 +15,7 @@
       >
         <template #default="{ model: proxyModel, cancel, save, isPristine }">
           <v-form
-            v-model="formValid"
+            ref="form"
             :disabled="loading"
             class="fill-height"
             @submit.prevent="submitForm(save)"
@@ -71,10 +71,11 @@
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const record = defineModel<unknown>('record', { required: true })
 
-const formValid = ref<boolean>(false)
+const form = ref()
 
-function submitForm(callback: () => void) {
-  if (formValid.value) callback()
+async function submitForm(callback: () => void) {
+  const { valid } = await form.value.validate()
+  if (valid) callback()
 }
 
 export interface DialogConfirmEditProps {
