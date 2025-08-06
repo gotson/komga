@@ -10,7 +10,11 @@ export function useLoginGuard(router: Router) {
       const { data } = useCurrentUser()
       const authenticated = data.value
       if (!authenticated) {
-        const query = Object.assign({}, to.query, { redirect: to.fullPath })
+        const query = Object.assign(
+          {},
+          to.query,
+          to.fullPath !== '/' ? { redirect: to.fullPath } : {},
+        )
         return { name: '/startup', query: query }
       }
     }
