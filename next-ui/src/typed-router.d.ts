@@ -42,4 +42,120 @@ declare module 'vue-router/auto-routes' {
     '/server/users': RouteRecordInfo<'/server/users', '/server/users', Record<never, never>, Record<never, never>>,
     '/startup': RouteRecordInfo<'/startup', '/startup', Record<never, never>, Record<never, never>>,
   }
+
+  /**
+   * Route file to route info map by unplugin-vue-router.
+   * Used by the volar plugin to automatically type useRoute()
+   *
+   * Each key is a file path relative to the project root with 2 properties:
+   * - routes: union of route names of the possible routes when in this page (passed to useRoute<...>())
+   * - views: names of nested views (can be passed to <RouterView name="...">)
+   *
+   * @internal
+   */
+  export interface _RouteFileInfoMap {
+    'src/pages/index.vue': {
+      routes: '/'
+      views: never
+    }
+    'src/pages/account/activity.vue': {
+      routes: '/account/activity'
+      views: never
+    }
+    'src/pages/account/api-keys.vue': {
+      routes: '/account/api-keys'
+      views: never
+    }
+    'src/pages/account/details.vue': {
+      routes: '/account/details'
+      views: never
+    }
+    'src/pages/account/ui.vue': {
+      routes: '/account/ui'
+      views: never
+    }
+    'src/pages/claim.vue': {
+      routes: '/claim'
+      views: never
+    }
+    'src/pages/history.vue': {
+      routes: '/history'
+      views: never
+    }
+    'src/pages/import/books.vue': {
+      routes: '/import/books'
+      views: never
+    }
+    'src/pages/import/readlist.vue': {
+      routes: '/import/readlist'
+      views: never
+    }
+    'src/pages/login.vue': {
+      routes: '/login'
+      views: never
+    }
+    'src/pages/media/analysis.vue': {
+      routes: '/media/analysis'
+      views: never
+    }
+    'src/pages/media/duplicate-files.vue': {
+      routes: '/media/duplicate-files'
+      views: never
+    }
+    'src/pages/media/duplicate-pages/known.vue': {
+      routes: '/media/duplicate-pages/known'
+      views: never
+    }
+    'src/pages/media/duplicate-pages/unknown.vue': {
+      routes: '/media/duplicate-pages/unknown'
+      views: never
+    }
+    'src/pages/media/missing-posters.vue': {
+      routes: '/media/missing-posters'
+      views: never
+    }
+    'src/pages/server/activity.vue': {
+      routes: '/server/activity'
+      views: never
+    }
+    'src/pages/server/announcements.vue': {
+      routes: '/server/announcements'
+      views: never
+    }
+    'src/pages/server/metrics.vue': {
+      routes: '/server/metrics'
+      views: never
+    }
+    'src/pages/server/settings.vue': {
+      routes: '/server/settings'
+      views: never
+    }
+    'src/pages/server/ui.vue': {
+      routes: '/server/ui'
+      views: never
+    }
+    'src/pages/server/updates.vue': {
+      routes: '/server/updates'
+      views: never
+    }
+    'src/pages/server/users.vue': {
+      routes: '/server/users'
+      views: never
+    }
+    'src/pages/startup.vue': {
+      routes: '/startup'
+      views: never
+    }
+  }
+
+  /**
+   * Get a union of possible route names in a certain route component file.
+   * Used by the volar plugin to automatically type useRoute()
+   *
+   * @internal
+   */
+  export type _RouteNamesForFilePath<FilePath extends string> =
+    _RouteFileInfoMap extends Record<FilePath, infer Info>
+      ? Info['routes']
+      : keyof RouteNamedMap
 }
