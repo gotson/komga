@@ -46,6 +46,7 @@
     "@eslint/js": "^9.32.0",
     "@formatjs/cli": "^6.7.2",
     "@iconify-json/mdi": "^1.2.3",
+    "@pinia/colada-devtools": "^0.1.5",
     "@storybook/addon-a11y": "^9.0.18",
     "@storybook/addon-docs": "^9.0.18",
     "@storybook/addon-themes": "^9.0.18",
