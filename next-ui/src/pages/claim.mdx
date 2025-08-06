@@ -1,0 +1,15 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './claim.stories';
+
+<Meta of={Stories} />
+
+# Claim
+
+If the server is unclaimed, this page will be used instead of the login page. This is how they differ:
+- information banner displayed at the top
+- password confirmation is required
+- remember me is not shown
+- OAuth2 login is not shown
+
+<Canvas of={Stories.Default} />
