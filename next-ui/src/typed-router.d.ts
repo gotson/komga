@@ -23,6 +23,7 @@ declare module 'vue-router/auto-routes' {
     '/account/api-keys': RouteRecordInfo<'/account/api-keys', '/account/api-keys', Record<never, never>, Record<never, never>>,
     '/account/details': RouteRecordInfo<'/account/details', '/account/details', Record<never, never>, Record<never, never>>,
     '/account/ui': RouteRecordInfo<'/account/ui', '/account/ui', Record<never, never>, Record<never, never>>,
+    '/claim': RouteRecordInfo<'/claim', '/claim', Record<never, never>, Record<never, never>>,
     '/history': RouteRecordInfo<'/history', '/history', Record<never, never>, Record<never, never>>,
     '/import/books': RouteRecordInfo<'/import/books', '/import/books', Record<never, never>, Record<never, never>>,
     '/import/readlist': RouteRecordInfo<'/import/readlist', '/import/readlist', Record<never, never>, Record<never, never>>,

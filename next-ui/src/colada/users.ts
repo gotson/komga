@@ -52,6 +52,36 @@ export const useCurrentUser = defineQuery(() => {
   }
 })
 
+export const useLogin = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
+    mutation: ({
+      username,
+      password,
+      rememberMe,
+    }: {
+      username: string
+      password: string
+      rememberMe?: boolean
+    }) =>
+      komgaClient.GET('/api/v2/users/me', {
+        headers: {
+          authorization: 'Basic ' + btoa(username + ':' + password),
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        params: {
+          query: {
+            'remember-me': rememberMe,
+          },
+        },
+      }),
+    onSuccess: ({ data }) => {
+      queryCache.setQueryData(QUERY_KEYS_USERS.currentUser, data)
+      queryCache.cancelQueries({ key: QUERY_KEYS_USERS.currentUser })
+    },
+  })
+})
+
 export const useLogout = defineMutation(() => {
   const queryCache = useQueryCache()
   return useMutation({

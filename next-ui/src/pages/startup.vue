@@ -10,19 +10,24 @@
 
 <script lang="ts" setup>
 import { useCurrentUser } from '@/colada/users'
+import { useClaimStatus } from '@/colada/claim'
 
 async function checkAuthenticated() {
   const router = useRouter()
   const route = useRoute()
   const { data, error, refresh } = useCurrentUser()
+  const { data: claimData, refresh: claimRefresh } = useClaimStatus()
 
   await refresh()
+  await claimRefresh()
   if (data.value) {
     if (route.query.redirect) await router.push({ path: route.query.redirect.toString() })
     else await router.push('/')
   }
   if (error.value) {
-    await router.push({ name: '/login', query: { redirect: route.query.redirect } })
+    if (claimData.value?.isClaimed)
+      await router.push({ name: '/login', query: { redirect: route.query.redirect } })
+    else await router.push({ name: '/claim', query: { redirect: route.query.redirect } })
   }
 }
 
