@@ -8,6 +8,7 @@
   >
     <template #default="{ isActive }">
       <v-form
+        ref="form"
         v-model="formValid"
         :disabled="loading"
         class="fill-height"
@@ -83,10 +84,12 @@ const emit = defineEmits<{
   confirm: []
 }>()
 
+const form = ref()
 const formValid = ref<boolean>(false)
 
-function submitForm(isActive: Ref<boolean, boolean>) {
-  if (formValid.value) {
+async function submitForm(isActive: Ref<boolean, boolean>) {
+  const { valid } = await form.value.validate()
+  if (valid) {
     emit('confirm')
     if (closeOnSave) isActive.value = false
   }

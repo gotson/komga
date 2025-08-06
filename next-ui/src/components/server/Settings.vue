@@ -5,7 +5,7 @@
   >
     <template #default="{ model: proxyModel, cancel, save, isPristine }">
       <v-form
-        v-model="formValid"
+        ref="form"
         :disabled="loading"
         @submit.prevent="submitForm(save)"
       >
@@ -373,10 +373,11 @@ watch(
   { immediate: true },
 )
 
-const formValid = ref<boolean>(false)
+const form = ref()
 
-function submitForm(callback: () => void) {
-  if (formValid.value) {
+async function submitForm(callback: () => void) {
+  const { valid } = await form.value.validate()
+  if (valid) {
     callback()
     emit('updateSettings', settingsUpdate.value)
   }
