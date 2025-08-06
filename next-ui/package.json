@@ -25,7 +25,7 @@
     "i18n:verify": "formatjs verify --missing-keys --source-locale=en \"i18n/*.json\"",
     "storybook:dev": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "chromatic": "npm run chromatic"
+    "chromatic": "chromatic"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.6.1",
