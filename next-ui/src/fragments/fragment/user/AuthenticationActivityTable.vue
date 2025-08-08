@@ -1,8 +1,9 @@
 <template>
   <v-data-table-server
+    v-model:sort-by="sortBy"
     :loading="isLoading"
     :items="data?.content"
-    :items-length="lastTotalElements"
+    :items-length="data?.totalElements || 0"
     :headers="headers"
     fixed-header
     fixed-footer
@@ -72,6 +73,8 @@ import { authenticationActivityQuery, myAuthenticationActivityQuery } from '@/co
 const intl = useIntl()
 
 const { forMe = false } = defineProps<{ forMe?: boolean }>()
+
+const sortBy = ref<SortItem[]>([{ key: 'dateTime', order: 'desc' }])
 
 const headers = computed(() => {
   const h = []
@@ -152,12 +155,6 @@ const { data, isLoading, error } = useQuery(
   forMe ? myAuthenticationActivityQuery : authenticationActivityQuery,
   () => ({ ...pageRequest.value }),
 )
-
-const lastTotalElements = ref<number>(0)
-watch(data, (data) => {
-  // to avoid NaN showing in the table footer
-  if (data && data.totalElements) lastTotalElements.value = data.totalElements
-})
 
 function updateOptions({
   page,
