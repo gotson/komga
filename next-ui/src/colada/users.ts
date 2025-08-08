@@ -214,6 +214,7 @@ export const authenticationActivityQuery = defineQueryOptions(
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
+    placeholderData: (previousData: any) => previousData, // eslint-disable-line @typescript-eslint/no-explicit-any
   }),
 )
 
@@ -243,5 +244,6 @@ export const myAuthenticationActivityQuery = defineQueryOptions(
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
+    placeholderData: (previousData: any) => previousData, // eslint-disable-line @typescript-eslint/no-explicit-any
   }),
 )
