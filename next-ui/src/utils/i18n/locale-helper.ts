@@ -48,14 +48,10 @@ export const availableLocales = loadAvailableLocales()
  */
 export function getLocale(): string {
   const storageLocale = localStorage.getItem(USER_LOCALE_KEY)
-  console.log('locale from storage:', storageLocale)
   if (storageLocale && storageLocale in availableLocales) return storageLocale
 
   // get the browser's preferred languages and see if we can match it to an available locale
-  console.log('preferred languages:', navigator.languages)
-  const s = match(navigator.languages, Object.keys(availableLocales), fallbackLocale)
-  console.log('match:', s)
-  return s
+  return match(navigator.languages, Object.keys(availableLocales), fallbackLocale)
 }
 
 export const currentLocale = getLocale()
