@@ -10,7 +10,16 @@
           cols="7"
           sm="10"
         >
-          <v-img src="@/assets/logo.svg" />
+          <v-img
+            src="@/assets/logo.svg"
+            :alt="
+              $formatMessage({
+                description: 'Login page: Komga logo alt text',
+                defaultMessage: 'Komga logo',
+                id: 'uXY7Eg',
+              })
+            "
+          />
         </v-col>
       </v-row>
 
