@@ -64,7 +64,7 @@ export default defineConfigWithVueTs(
         'error',
         {
           idInterpolationPattern: '[sha512:contenthash:base64:6]',
-          idWhitelist: ['app.*'],
+          idWhitelist: ['app.*', 'enum.*'],
         },
       ],
     },
