@@ -3814,6 +3814,10 @@ export interface components {
         SettingsUpdateDto: {
             deleteEmptyCollections?: boolean;
             deleteEmptyReadLists?: boolean;
+            /**
+             * @deprecated
+             * @description Will be removed in a future version
+             */
             kepubifyPath?: string;
             /** Format: int32 */
             koboPort?: number;
@@ -4640,6 +4644,13 @@ export interface operations {
                 content: {
                     "*/*": components["schemas"]["ValidationErrorResponse"];
                 };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -8132,6 +8143,13 @@ export interface operations {
                 content: {
                     "*/*": components["schemas"]["ValidationErrorResponse"];
                 };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
