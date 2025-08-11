@@ -1,7 +1,18 @@
 <template>
   <v-app-bar elevation="2">
     <template #prepend>
-      <v-app-bar-nav-icon @click="appStore.drawer = !appStore.drawer" />
+      <v-app-bar-nav-icon @click="appStore.drawer = !appStore.drawer">
+        <template #default>
+          <v-badge
+            :model-value="unreadCount > 0 && !appStore.drawer"
+            dot
+            floating
+            color="info"
+          >
+            <v-icon icon="i-mdi:menu"></v-icon>
+          </v-badge>
+        </template>
+      </v-app-bar-nav-icon>
     </template>
     <v-app-bar-title>
       <RouterLink to="/">
@@ -18,8 +29,10 @@
 
 <script setup lang="ts">
 import { useAppStore } from '@/stores/app'
+import { useAnnouncements } from '@/colada/announcements'
 
 const appStore = useAppStore()
+const { unreadCount } = useAnnouncements()
 </script>
 
 <script lang="ts"></script>
