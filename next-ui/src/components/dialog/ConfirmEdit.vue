@@ -6,6 +6,7 @@
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     :scrollable="scrollable"
+    :aria-label="title"
   >
     <template #default="{ isActive }">
       <v-confirm-edit
