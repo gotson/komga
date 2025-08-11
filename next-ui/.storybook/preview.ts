@@ -12,7 +12,8 @@ import { vueIntl } from '@/plugins/vue-intl'
 import 'virtual:uno.css'
 import { availableLocales } from '@/utils/i18n/locale-helper'
 import { localeDecorator } from './locale.decorator'
-import { viewports } from './viewport'
+import { vuetifyViewports } from './viewport'
+import { allModes } from './modes'
 
 initialize(
   {
@@ -31,6 +32,9 @@ Object.entries(availableLocales).forEach(([code, name]) => {
 
 const preview: Preview = {
   parameters: {
+    chromatic: {
+      modes: allModes,
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -38,7 +42,7 @@ const preview: Preview = {
       },
     },
     viewport: {
-      options: [...viewports],
+      options: { ...vuetifyViewports },
     },
     a11y: {
       // 'todo' - show a11y violations in the test UI only
