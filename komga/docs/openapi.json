@@ -1061,6 +1061,9 @@
               }
             },
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "summary": "Get book details",
@@ -6731,6 +6734,9 @@
               }
             },
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "summary": "Get series details",
