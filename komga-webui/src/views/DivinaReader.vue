@@ -906,14 +906,14 @@ export default Vue.extend({
     }, 50),
     downloadCurrentPage() {
       new jsFileDownloader({
-        url: this.currentPage.url,
+        url: `${this.currentPage.url}?contentNegotiation=false`,
         filename: `${this.book.name}-${this.currentPage.number}.${this.currentPage.fileName.split('.').pop()}`,
         withCredentials: true,
         forceDesktopMode: true,
       })
     },
     async setCurrentPageAsPoster(type: ItemTypes) {
-      const imageFile = await getFileFromUrl(this.currentPage.url, 'poster', 'image/jpeg', {credentials: 'include'})
+      const imageFile = await getFileFromUrl(`${this.currentPage.url}?contentNegotiation=false`, 'poster', 'image/jpeg', {credentials: 'include'})
       const newImageFile = await resizeImageFile(imageFile)
       switch (type) {
         case ItemTypes.BOOK:
