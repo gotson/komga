@@ -5,6 +5,7 @@
     :max-width="maxWidth"
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
+    :aria-label="title"
   >
     <template #default="{ isActive }">
       <v-form

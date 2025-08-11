@@ -48,6 +48,14 @@
         :src="pageHashKnownThumbnailUrl(event.properties['page file hash'])"
         lazy-src="@/assets/cover.svg"
         class="my-2"
+        :alt="
+          $formatMessage({
+            description:
+              'History Table, expansion panel for deleted page: alt description for deleted page',
+            defaultMessage: 'Deleted page',
+            id: 'Qxij/I',
+          })
+        "
       >
         <template #placeholder>
           <div class="d-flex align-center justify-center fill-height">
