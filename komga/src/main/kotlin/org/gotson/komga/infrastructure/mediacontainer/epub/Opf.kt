@@ -8,7 +8,7 @@ import java.nio.file.Paths
 import kotlin.io.path.invariantSeparatorsPathString
 
 fun Document.getManifest() =
-  select("manifest > item").associate {
+  select("*|manifest > *|item").associate {
     it.attr("id") to
       ManifestItem(
         it.attr("id"),
@@ -36,8 +36,8 @@ fun processOpfGuide(
   opf: Document,
   opfDir: Path?,
 ): List<EpubTocEntry> {
-  val guide = opf.selectFirst("guide") ?: return emptyList()
-  return guide.select("reference").map { ref ->
+  val guide = opf.selectFirst("*|guide") ?: return emptyList()
+  return guide.select("*|reference").map { ref ->
     EpubTocEntry(
       ref.attr("title"),
       ref.attr("href").ifBlank { null }?.let { normalizeHref(opfDir, URLDecoder.decode(it, Charsets.UTF_8)) },

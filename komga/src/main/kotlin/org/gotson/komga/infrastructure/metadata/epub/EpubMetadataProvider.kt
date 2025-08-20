@@ -51,22 +51,22 @@ class EpubMetadataProvider(
     getPackageFileContent(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
-      val title = opf.selectFirst("metadata > dc|title")?.text()?.ifBlank { null }
+      val title = opf.selectFirst("*|metadata > *|title")?.text()?.ifBlank { null }
       val description =
         opf
-          .selectFirst("metadata > dc|description")
+          .selectFirst("*|metadata > *|description")
           ?.text()
           ?.let { Jsoup.clean(it, Safelist.none()) }
           ?.ifBlank { null }
-      val date = opf.selectFirst("metadata > dc|date")?.text()?.let { parseDate(it) }
+      val date = opf.selectFirst("*|metadata > *|date")?.text()?.let { parseDate(it) }
 
       val authorRoles =
         opf
-          .select("metadata > *|meta[property=role][scheme=marc:relators]")
+          .select("*|metadata > *|meta[property=role][scheme=marc:relators]")
           .associate { it.attr("refines").removePrefix("#") to it.text() }
       val authors =
         opf
-          .select("metadata > dc|creator")
+          .select("*|metadata > *|creator")
           .mapNotNull { el ->
             val name = el.text().trim()
             if (name.isBlank()) {
@@ -81,16 +81,16 @@ class EpubMetadataProvider(
 
       val isbn =
         opf
-          .select("metadata > dc|identifier")
+          .select("*|metadata > *|identifier")
           .map { it.text().lowercase().removePrefix("isbn:") }
           .firstNotNullOfOrNull { isbnValidator.validate(it) }
 
       val seriesIndex =
         opf
-          .selectFirst("metadata > *|meta[property=belongs-to-collection]")
+          .selectFirst("*|metadata > *|meta[property=belongs-to-collection]")
           ?.attr("id")
           ?.let { id ->
-            opf.selectFirst("metadata > *|meta[refines=#$id][property=group-position]")
+            opf.selectFirst("*|metadata > *|meta[refines=#$id][property=group-position]")
           }?.text()
 
       return BookMetadataPatch(
@@ -116,18 +116,18 @@ class EpubMetadataProvider(
     getPackageFileContent(book.book.path)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
-      val series = opf.selectFirst("metadata > *|meta[property=belongs-to-collection]")?.text()?.ifBlank { null }
-      val publisher = opf.selectFirst("metadata > dc|publisher")?.text()?.ifBlank { null }
-      val language = opf.selectFirst("metadata > dc|language")?.text()?.ifBlank { null }
+      val series = opf.selectFirst("*|metadata > *|meta[property=belongs-to-collection]")?.text()?.ifBlank { null }
+      val publisher = opf.selectFirst("*|metadata > *|publisher")?.text()?.ifBlank { null }
+      val language = opf.selectFirst("*|metadata > *|language")?.text()?.ifBlank { null }
       val genres =
         opf
-          .select("metadata > dc|subject")
+          .select("*|metadata > *|subject")
           .mapNotNull { it.text().trim().ifBlank { null } }
           .toSet()
           .ifEmpty { null }
 
       val direction =
-        opf.getElementsByTag("spine").first()?.attr("page-progression-direction")?.let {
+        opf.selectFirst("*|spine")?.attr("page-progression-direction")?.let {
           when (it) {
             "rtl" -> SeriesMetadata.ReadingDirection.RIGHT_TO_LEFT
             "ltr" -> SeriesMetadata.ReadingDirection.LEFT_TO_RIGHT

@@ -14,6 +14,8 @@ import org.gotson.komga.infrastructure.mediacontainer.epub.getPackageFileContent
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.core.io.ClassPathResource
 import java.time.LocalDate
 
@@ -37,9 +39,15 @@ class EpubMetadataProviderTest {
 
   @Nested
   inner class Book {
-    @Test
-    fun `given epub 3 opf when getting book metadata then metadata patch is valid`() {
-      val opf = ClassPathResource("epub/Panik im Paradies.opf")
+    @ParameterizedTest
+    @ValueSource(
+      strings = [
+        "epub/Panik im Paradies.opf",
+        "epub/Panik im Paradies - namespace.opf",
+      ],
+    )
+    fun `given epub 3 opf when getting book metadata then metadata patch is valid`(opfFile: String) {
+      val opf = ClassPathResource(opfFile)
       mockkStatic(::getPackageFileContent)
       every { getPackageFileContent(any()) } returns opf.file.readText()
 
@@ -128,9 +136,15 @@ class EpubMetadataProviderTest {
 
   @Nested
   inner class Series {
-    @Test
-    fun `given epub 3 opf when getting series metadata then metadata patch is valid`() {
-      val opf = ClassPathResource("epub/Panik im Paradies.opf")
+    @ParameterizedTest
+    @ValueSource(
+      strings = [
+        "epub/Panik im Paradies.opf",
+        "epub/Panik im Paradies - namespace.opf",
+      ],
+    )
+    fun `given epub 3 opf when getting series metadata then metadata patch is valid`(opfFile: String) {
+      val opf = ClassPathResource(opfFile)
       mockkStatic(::getPackageFileContent)
       every { getPackageFileContent(any()) } returns opf.file.readText()
 
