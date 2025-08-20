@@ -30,7 +30,7 @@ inline fun <R> Path.epub(block: (EpubPackage) -> R): R =
  */
 fun ZipFile.getPackagePath(): String =
   getEntryInputStream("META-INF/container.xml")
-    ?.use { Jsoup.parse(it, null, "") }
+    ?.use { Jsoup.parse(it, null, "", Parser.xmlParser()) }
     ?.getElementsByTag("rootfile")
     ?.first()
     ?.attr("full-path") ?: throw MediaUnsupportedException("META-INF/container.xml does not contain rootfile tag")

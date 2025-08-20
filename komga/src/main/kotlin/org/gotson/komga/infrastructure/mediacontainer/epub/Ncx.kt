@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.infrastructure.util.getEntryBytes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.parser.Parser
 import java.net.URLDecoder
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -23,7 +24,7 @@ fun processNcx(
   navType: Epub2Nav,
 ): List<EpubTocEntry> =
   Jsoup
-    .parse(document.content)
+    .parse(document.content, "", Parser.xmlParser())
     .select("${navType.level1} > ${navType.level2}")
     .toList()
     .mapNotNull { ncxElementToTocEntry(navType, it, document.path.parent) }
