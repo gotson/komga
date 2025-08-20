@@ -82,7 +82,7 @@ dependencies {
   implementation("com.github.gotson.nightcompress:nightcompress:1.1.1")
   implementation("org.apache.pdfbox:pdfbox:3.0.5")
   implementation("net.grey-panther:natural-comparator:1.1")
-  implementation("org.jsoup:jsoup:1.18.3")
+  implementation("org.jsoup:jsoup:1.21.1")
 
   implementation("net.coobird:thumbnailator:0.4.20")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:${libs.versions.twelvemonkeys.get()}")
