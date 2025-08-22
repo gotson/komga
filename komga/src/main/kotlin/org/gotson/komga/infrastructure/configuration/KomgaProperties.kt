@@ -67,7 +67,7 @@ class KomgaProperties {
     @get:Positive
     var maxPoolSize: Int = 1
 
-    var journalMode: JournalMode? = null
+    var journalMode: JournalMode? = JournalMode.WAL
 
     @DurationUnit(ChronoUnit.SECONDS)
     var busyTimeout: Duration? = null
