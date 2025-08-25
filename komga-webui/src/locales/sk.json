@@ -1,0 +1,447 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} z {2}"
+    },
+    "dataIterator": {
+      "loadingText": "Načítavanie položiek...",
+      "noResultsText": "Nenašli sa žiadne zodpovedajúce položky"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Riady na stranu:",
+      "sortBy": "Zoradiť podľa"
+    },
+    "fileInput": {
+      "counter": "{0} súbory",
+      "counterSize": "{0} súbory ({1} celkom)"
+    },
+    "noDataText": "K dispozícii nie sú žiadne údaje"
+  },
+  "account_settings": {
+    "account_settings": "Nastavenie účtu",
+    "api_key": {
+      "created_date": "Dátum vytvorenia: {date}",
+      "force_kobo_sync": "Vynútiť synchronizáciu Kobo",
+      "generate_api_key": "Generovať API kľúč",
+      "no_keys": "Zatiaľ neboli vytvorené žiadne kľúče API"
+    },
+    "change_password": "zmeniť heslo",
+    "details": "Podrobnosti",
+    "my_account": "Môj účet"
+  },
+  "announcements": {
+    "mark_all_read": "Označiť všetko ako prečítané",
+    "mark_read": "Označiť ako prečítané",
+    "tab_title": "Oznámenia"
+  },
+  "authentication_activity": {
+    "api_key": "API kľúč",
+    "datetime": "Dátum Čas",
+    "email": "E-mail",
+    "error": "Chyba",
+    "ip": "IP",
+    "source": "Zdroj",
+    "success": "Úspešne",
+    "user_agent": "Identifikácia klienta"
+  },
+  "author_roles": {
+    "colorist": "koloristi",
+    "cover": "obálka",
+    "editor": "editori",
+    "inker": "inkeri",
+    "letterer": "písmári",
+    "penciller": "kresliari",
+    "translator": "prekladatelia",
+    "writer": "autori"
+  },
+  "book_card": {
+    "error": "Chyba",
+    "no_release_date": "Bez dátumu vydania",
+    "unknown": "Čaká na analýzu",
+    "unread": "Neprečítané",
+    "unsupported": "Nepodporované"
+  },
+  "book_import": {
+    "button_browse": "Prechádzať",
+    "button_import": "Importovať",
+    "button_scan": "Skenovať",
+    "button_select_series": "Vybrať sériu",
+    "field_import_path": "Importovať z priečinka",
+    "info_part1": "Na tejto obrazovke môžete importovať súbory, ktoré nie sú súčasťou vašich existujúcich knižníc. Súbory môžete importovať iba do existujúcich sérií, pričom Komga presunie alebo skopíruje súbory do adresára zvolenej série.",
+    "info_part2": "Ak vyberiete číslo pre knihu a kniha s týmto číslom už existuje, budete môcť porovnať obe knihy. Ak sa rozhodnete knihu importovať, Komga aktualizuje existujúcu knihu novou verziou, čím efektívne nahradí starý súbor novým.",
+    "no_files_found": "Nenašli sa žiadne súbory",
+    "notification": {
+      "go_to_book": "Prejsť na knihu",
+      "import_failure": "Nepodarilo sa importovať knihu: {file}",
+      "import_successful": "Kniha bola úspešne importovaná: {book}",
+      "source_file": "Zdrojový súbor: {file}"
+    },
+    "row": {
+      "error_analyze_first": "Kniha musí byť najprv analyzovaná",
+      "error_choose_series": "Vyberte sériu",
+      "error_only_import_no_errors": "Môžte importovať iba knihy bez chýb",
+      "warning_upgrade": "Existujúca kniha bude aktualizovaná"
+    },
+    "table": {
+      "destination_name": "Názov umiestnenia",
+      "file_name": "Názov súboru",
+      "number": "Číslo",
+      "series": "Séria"
+    },
+    "title": "Importovať",
+    "try_another_directory": "Skúste vyhľadať v inom adresári"
+  },
+  "bookreader": {
+    "beginning_of_book": "Ste na začiatku knihy.",
+    "changing_reading_direction": "Zmena smeru čítania na",
+    "cycling_page_layout": "Zmeniť vzhľad strany",
+    "cycling_page_margin": "Zmeniť okraj strany",
+    "cycling_scale": "Zmeniť mierku",
+    "cycling_side_padding": "Zmeniť odsadenie strany",
+    "download_current_page": "Stiahnuť aktuálnu stranu",
+    "end_of_book": "Dostali ste sa na koniec knihy.",
+    "from_series_metadata": "z metadát série",
+    "move_next": "Kliknite alebo stlačte znovu tlačidlo „Ďalej“, aby ste prešli na ďalšiu knihu.",
+    "move_next_exit": "Kliknite alebo stlačte znovu tlačidlo „Ďalej“, aby ste opustili čítačku.",
+    "move_previous": "Kliknite alebo stlačte znovu tlačidlo „Predchádzajúca“, aby ste prešli na predchádzajúcu knihu.",
+    "notification_poster_set_book": "Súčasná strana bola nastavená ako plagát knihy.",
+    "notification_poster_set_readlist": "Súčasná strana bola nastavená ako plagát zoznamu čítania.",
+    "notification_poster_set_series": "Súčasná strana bola nastavená ako plagát série.",
+    "paged_reader_layout": {
+      "double": "Dvojstránka",
+      "double_no_cover": "Dvojstránka (bez obálky)",
+      "single": "Jedna strana"
+    },
+    "reader_settings": "Nastavenia čítačky",
+    "scale_type": {
+      "continuous_original": "Pôvodný",
+      "continuous_width": "Prispôsobiť šírke",
+      "height": "Prispôsobiť výške",
+      "original": "Pôvodný",
+      "screen": "Obrazovka",
+      "width": "Prispôsobiť šírke",
+      "width_shrink_only": "Prispôsobiť šírke (len zmenšiť)"
+    },
+    "set_current_page_as_book_poster": "Nastaviť stranu ako plagát knihy",
+    "set_current_page_as_readlist_poster": "Nastaviť stranu ako plagát pre zoznam čítania",
+    "set_current_page_as_series_poster": "Nastaviť stranu ako plagát série",
+    "settings": {
+      "always_fullscreen": "Vždy na celú obrazovku",
+      "animate_page_transitions": "Animovať prechody medzi stranami",
+      "background_color": "Farba pozadia",
+      "background_colors": {
+        "black": "Čierna",
+        "gray": "Šedá",
+        "white": "Biela"
+      },
+      "display": "Zobrazenie",
+      "general": "Všeobecné",
+      "gestures": "Gestá",
+      "page_layout": "Rozloženie strany",
+      "page_margin": "Okraj strany",
+      "paged": "Možnosti čítačky so stránkovaním",
+      "reading_mode": "Režim čítania",
+      "scale_type": "Typ mierky",
+      "side_padding": "Bočné odsadenie",
+      "side_padding_none": "Žiadne",
+      "webtoon": "Nastavenia čítačky Webtoon"
+    },
+    "shortcuts": {
+      "close": "Zavrieť",
+      "cycle_page_layout": "Zmena rozloženia strany",
+      "cycle_page_margin": "Zmena okraja strany",
+      "cycle_scale": "Zmena mierky",
+      "cycle_side_padding": "Zmena bočného odsadenia",
+      "first_page": "Prvá strana",
+      "fullscreen": "Spustiť/ukončiť režim celej obrazovky",
+      "last_page": "Posledná strana",
+      "left_to_right": "Zľava doprava",
+      "menus": "Ponuky",
+      "next_page": "Ďalšia strana",
+      "previous_page": "Predchádzajúca strana",
+      "reader_navigation": "Navigácia čítačky",
+      "right_to_left": "Sprava doľava",
+      "settings": "Nastavenia",
+      "show_hide_help": "Zobraziť/skryť nápovedu",
+      "show_hide_settings": "Zobraziť/skryť menu nastavení",
+      "show_hide_thumbnails": "Zobraziť/skryť prehliadač náhľadov",
+      "show_hide_toolbars": "Zobraziť/skryť panely nástrojov",
+      "vertical": "Vertikálne",
+      "webtoon": "Webtoon"
+    },
+    "tooltip_incognito": "Priebeh čítania nebude uložený"
+  },
+  "browse_book": {
+    "comment": "KOMENTÁR",
+    "date_created": "VYTVORENÉ",
+    "date_modified": "POSLEDNÁ ÚPRAVA",
+    "download_file": "Stiahnuť súbor",
+    "file": "SÚBOR",
+    "format": "FORMÁT",
+    "isbn": "ISBN",
+    "links": "ODKAZY",
+    "navigation_within_readlist": "Navigácia v zozname čítania: {name}",
+    "outdated_tooltip": "Súbor pre túto knihu bol zmenený, táto kniha musí byť znovu analyzovaná",
+    "read_book": "Čítať knihu",
+    "read_incognito": "Čítať inkognito",
+    "remove_from_collection": "Odstrániť knihu zo zbierky",
+    "remove_from_readlist": "Odstrániť knihu zo zoznamu čítania",
+    "size": "VEĽKOSŤ"
+  },
+  "browse_collection": {
+    "edit_collection": "Upraviť zbierku",
+    "edit_elements": "Upraviť prvky",
+    "manual_ordering": "manuálne zoradenie"
+  },
+  "browse_readlist": {
+    "edit_elements": "Upraviť prvky",
+    "edit_readlist": "Upraviť zoznam čítania",
+    "manual_ordering": "manuálne zoradenie"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Toto je najskorší rok z dátumov vydania všetkých kníh zo série",
+    "remove_from_collection": "Odstrániť sériu zo zbierky",
+    "series_no_summary": "Táto séria nemá žiadne zhrnutie, tak sme jedno vybrali za vás!",
+    "summary_from_book": "Zhrnutie z knihy {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Spravovať zbierku",
+    "title": "{name} zbierka"
+  },
+  "common": {
+    "age": "Vek",
+    "all_libraries": "Všetky knižnice",
+    "all_of": "Všetky z",
+    "any_of": "Ktorýkoľvek z",
+    "book": "Kniha",
+    "books": "Knihy",
+    "books_n": "Žiadna kniha | 1 kniha | {count} knihy",
+    "books_total": "{count} / {total} knihy",
+    "cancel": "Zrušiť",
+    "cbx": "Archív komiksov",
+    "choose_image": "Vybrať obrázok",
+    "close": "Zatvoriť",
+    "collections": "Zbierky",
+    "copied": "Skopírované!",
+    "create": "Vytvoriť",
+    "delete": "Zmazať",
+    "dimension": "š: {width}, v: {height}",
+    "discard": "Zahodiť",
+    "disk_space": "Miesto na disku",
+    "dismiss": "Odísť",
+    "download": "Stiahnuť",
+    "drag_drop": "presunúť pomocou myši",
+    "duplicate": "Duplikovať",
+    "email": "E-mail",
+    "epub": "Epub",
+    "error": "Chyba",
+    "filename": "Názov súboru",
+    "filter_no_matches": "Aktívny filter nemá žiadne zhody",
+    "genre": "Žáner",
+    "go_to_collection": "Prejsť do zbierky",
+    "go_to_library": "Prejsť do knižnice",
+    "go_to_readlist": "Prejsť do zoznamu čítania",
+    "go_to_series": "Prejsť na sériu",
+    "i_understand": "Rozumiem",
+    "library": "Knižnica",
+    "locale_name": "Slovenčina",
+    "locale_rtl": "false",
+    "lock_all": "Zamknúť všetko",
+    "media": "Média",
+    "more": "Viac",
+    "n_selected": "{count} vybrané",
+    "nothing_to_show": "Nič na zobrazenie",
+    "ok": "OK",
+    "outdated": "Zastarané",
+    "page": "Strana",
+    "page_number": "Číslo strany",
+    "pages": "strany",
+    "pages_left": "Žiadne ďalšie strany | Zostáva 1 strana | Zostávajú {count} strany",
+    "pages_n": "Žiadne stránky | 1 strana | {count} strany",
+    "password": "Heslo",
+    "pdf": "PDF",
+    "pending_tasks": "Žiadne čakajúce úlohy | 1 čakajúca úloha | {count} čakajúcich úloh",
+    "pinned_libraries": "Pripnuté knižnice",
+    "publisher": "Vydavateľ",
+    "read": "Čítať",
+    "read_on": "Čítané {date}",
+    "readlist": "Zoznam čítania",
+    "readlists": "Zoznamy čítania",
+    "remember-me": "Zapamätaj si ma",
+    "reorder": "Zmeniť poradie",
+    "required": "Povinné",
+    "reset_filters": "Resetovať filtre",
+    "roles": "Roly",
+    "save_changes": "Uložiť zmeny",
+    "series": "Séria | Série",
+    "settings": "Nastavenia",
+    "tags": "Štítky",
+    "ui": "Používateľské rozhranie",
+    "unavailable": "Nedostupné",
+    "unlock_all": "Odomknúť všetko",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "Pomocou panela filtrov môžete zmeniť aktívny filter",
+    "year": "rok"
+  },
+  "dashboard": {
+    "keep_reading": "Pokračovať v čítaní",
+    "on_deck": "V poradí",
+    "recently_added_books": "Nedávno pridané knihy",
+    "recently_added_series": "Nedávno pridané série",
+    "recently_read_books": "Nedávno prečítané knihy",
+    "recently_released_books": "Nedávno vydané knihy",
+    "recently_updated_series": "Nedávno aktualizované série"
+  },
+  "data_import": {
+    "book_number": "Číslo knihy: {name}",
+    "book_series": "Séria: {name}",
+    "button_import": "Importovať",
+    "comicrack_preambule_html": "Existujúce zoznamy čítania ComicRack môžete importovať vo formáte <code>.cbl</code>.<br>Komga sa pokúsi priradiť zadané čísla sérií a kníh k sériám a knihám vo vašich knižniciach.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} kníh je neporovnaných",
+      "body2": "{duplicates} / {total} kníh je duplicitných",
+      "create": "Napriek tomu vytvoriť",
+      "title": "Niektoré knihy sa nezhodujú"
+    },
+    "field_file_label": "Zoznam čítania ComicRack (.cbl)",
+    "field_files_label": "Zoznamy čítania ComicRack (.cbl)",
+    "import_read_lists": "Importovať zoznamy čítania",
+    "imported_as": "Importované ako {name}",
+    "readlist_created": "Zoznam čítania vytvorený: {name}",
+    "requested_number": "Požadované číslo",
+    "requested_series": "Požadovaná séria",
+    "results_preambule": "Výsledok importu je uvedený nižšie. Môžete tiež skontrolovať nespárované knihy pre každý poskytnutý súbor.",
+    "size_limit": "Veľkosť by mala byť menšia ako {size} MB",
+    "tab_title": "Import dát"
+  },
+  "dialog": {
+    "add_api_key": {
+      "button_confirm": "Generovať",
+      "context": "Kľúče API možno používať na overenie prostredníctvom protokolu Kobo Sync.",
+      "dialog_title": "Generovať nový kľúč API",
+      "field_comment": "Poznámka",
+      "field_comment_hint": "Na čo slúži tento API kľúč?",
+      "info_copy": "Nezabudnite si teraz skopírovať svoj API kľúč. Už ho nebudete môcť znovu zobraziť!"
+    },
+    "add_to_collection": {
+      "button_create": "Vytvoriť",
+      "card_collection_subtitle": "Žiadne série | 1 séria| {count} série",
+      "dialog_title": "Pridať do zbierky",
+      "field_search_create": "Vyhľadať alebo vytvoriť zbierku",
+      "field_search_create_error": "Zbierka s týmto názvom už existuje",
+      "label_no_matching_collection": "Žiadna zodpovedajúca zbierka"
+    },
+    "add_to_readlist": {
+      "button_create": "Vytvoriť",
+      "card_readlist_subtitle": "Žiadna kniha | 1 kniha | {count} knihy",
+      "dialog_title": "Pridať do zoznamu čítania",
+      "field_search_create": "Vyhľadať alebo vytvoriť zoznam čítania",
+      "field_search_create_error": "Zoznam čítania s týmto názvom už existuje",
+      "label_no_matching_readlist": "Žiadny zodpovedajúci zoznam čítania"
+    },
+    "add_user": {
+      "button_cancel": "Zrušiť",
+      "button_confirm": "Pridať",
+      "dialog_title": "Pridať používateľa",
+      "field_email": "E-mail",
+      "field_email_error": "Musí byť platná e-mailová adresa",
+      "field_password": "Heslo"
+    },
+    "analyze_library": {
+      "body": "Analyzuje všetky mediálne súbory v knižnici. Analýza zhromaždí informácie o médiách. V závislosti od veľkosti vašej knižnice to môže trvať dlhší čas.",
+      "button_confirm": "Analyzovať",
+      "title": "Analyzovať knižnicu"
+    },
+    "book_picker": {
+      "filter": "Filtrovať podľa čísla knihy, názvu alebo dátumu vydania",
+      "title": "Vybrať knihu"
+    },
+    "delete_apikey": {
+      "button_confirm": "Odstrániť",
+      "confirm_delete": "Rozumiem, odstrániť kľúč API \"{name}\"",
+      "dialog_title": "Odstrániť API kľúč",
+      "warning_html": "Aplikácie alebo skripty používajúce tento kľúč API už nebudú mať prístup ku Komga API. Tuto akciu nemožno vrátiť späť."
+    },
+    "delete_book": {
+      "button_confirm": "Odstrániť",
+      "confirm_delete": "Áno, odstrániť knihu \"{name}\" a jej súbory",
+      "confirm_delete_multiple": "Áno, odstrániť {count} kníh a ich súbory",
+      "dialog_title": "Odstrániť knihu",
+      "dialog_title_multiple": "Odstrániť knihy",
+      "warning_html": "Kniha <b>{name}</b> bude spolu s uloženými mediálnymi súbormi odstránená z tohto servera. Túto akciu <b>nie je možné</b> vrátiť späť. Pokračovať?",
+      "warning_multiple_html": "{count} kníh bude odstránených z tohto servera spolu s uloženými mediálnymi súbormi. Túto akciu <b>nie je možné</b> vrátiť späť. Pokračovať?"
+    },
+    "delete_collection": {
+      "button_confirm": "Odstrániť",
+      "confirm_delete": "Áno, odstrániť zbierku \"{name}\"",
+      "confirm_delete_multiple": "Áno, odstrániť {count} zbierky",
+      "dialog_title": "Odstrániť zbierku",
+      "dialog_title_multiple": "Odstrániť zbierky",
+      "warning_html": "Zbierka <b>{name}</b> bude odstránená z tohto servera. Vaše mediálne súbory nebudú ovplyvnené. Túto akciu <b>nie je možne</b> vrátiť späť. Pokračovať?",
+      "warning_multiple_html": "{count} zbierky budú odstránené z tohto servera. Vaše multimediálne súbory nebudú ovplyvnené. Túto akciu <b>nie je možné</b> vrátiť späť. Pokračovať?"
+    },
+    "delete_library": {
+      "button_confirm": "Odstrániť",
+      "confirm_delete": "Áno, odstrániť knižnicu \"{name}\"",
+      "title": "Odstrániť knižnicu",
+      "warning_html": "Knižnica <b>{name}</b> bude odstránená z tohto servera. Vaše mediálne súbory nebudú ovplyvnené. Túto akciu <b>nie je možné</b> vrátiť späť. Pokračovať?"
+    },
+    "delete_readlist": {
+      "button_confirm": "Odstrániť",
+      "confirm_delete": "Áno, odstrániť zoznam čítania \"{name}\"",
+      "confirm_delete_multiple": "Áno, odstrániť {count} zoznamy čítania",
+      "dialog_title": "Odstrániť zoznam čítania",
+      "dialog_title_multiple": "Odstrániť zoznamy čítania",
+      "warning_html": "Zoznam čítania <b>{name}</b> bude odstránený z tohto servera. Vaše mediálne súbory nebudú ovplyvnené. Túto akciu <b>nie je možné</b> vrátiť späť. Pokračovať?"
+    },
+    "delete_series": {
+      "button_confirm": "Odstrániť",
+      "confirm_delete": "Áno, odstrániť sériu \"{name}\" a jej súbory",
+      "confirm_delete_multiple": "Áno, odstrániť {count} série a ich súbory",
+      "dialog_title": "Odstrániť sériu"
+    },
+    "delete_user": {
+      "button_confirm": "Odstrániť",
+      "confirm_delete": "Áno, odstrániť používateľa \"{name}\"",
+      "dialog_title": "Odstrániť používateľa",
+      "warning_html": "Používateľ <b>{name}</b> bude odstránený z tohto servera. Túto akciu <b>nie je možné</b> vrátiť späť. Pokračovať?"
+    },
+    "empty_trash": {
+      "body": "V štandardnom nastavení mediálny server neodstraňuje informácie o médiách ihneď. To je užitočné v prípade, ak je disk dočasne odpojený. Keď vyprázdnite kôš knižnice, všetky informácie o chýbajúcich médiách sa odstránia."
+    },
+    "force_kobo_sync": {
+      "warning_html": "Týmto sa vymaže celá história synchronizácie pre tento kľúč API. Váš Kobo synchronizuje všetko pri najbližšej synchronizácii."
+    }
+  },
+  "duplicate_pages": {
+    "action_auto_delete_remaining": "Automaticky odstrániť zostávajúcich ({count})",
+    "action_delete_auto": "Automatické odstránenie",
+    "action_delete_manual": "Manuálne odstránenie",
+    "action_delete_matches": "Odstrániť zhody",
+    "action_manual_delete_remaining": "Manuálne odstránenie zostávajúcich ({count})",
+    "delete_to_save": "Odstrániť, aby sa ušetrilo {size}",
+    "deleted_count": "Odstránené {count} krát"
+  },
+  "enums": {
+    "historical_event_type": {
+      "BookFileDeleted": "Súbor knihy bol odstránený",
+      "DuplicatePageDeleted": "Duplicitná strana bola odstránená",
+      "SeriesFolderDeleted": "Priečinok série bol odstránený"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Automatické odstránenie",
+      "DELETE_MANUAL": "Manuálne odstránenie"
+    }
+  },
+  "menu": {
+    "delete": "Odstrániť"
+  },
+  "server_settings": {
+    "label_delete_empty_collections": "Po skenovaní odstrániť prázdne zbierky",
+    "label_delete_empty_readlists": "Po skenovaní odstrániť prázdne zoznamy čítania"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Odstrániť",
+    "tooltip_to_be_deleted": "Na odstránenie"
+  }
+}
