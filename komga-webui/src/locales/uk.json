@@ -97,7 +97,7 @@
     "cycling_page_layout": "Шаблон сторінки",
     "cycling_page_margin": "Відступи",
     "cycling_scale": "Масштабування",
-    "cycling_side_padding": "Cycling Side Padding",
+    "cycling_side_padding": "Бічні накладки для велосипедистів",
     "download_current_page": "Завантажити поточку сторінку",
     "end_of_book": "Ви дійшли до кінця книги.",
     "from_series_metadata": "з метаданих серії",
@@ -139,6 +139,7 @@
       "gestures": "Жести",
       "page_layout": "Шаблон сторінки",
       "page_margin": "Відступ сторінки",
+      "paged": "Параметри зчитування з розбивкою на сторінки",
       "reading_mode": "Режим читання",
       "scale_type": "Тип масштабування",
       "side_padding": "Бокові відступи",
@@ -147,6 +148,10 @@
     },
     "shortcuts": {
       "close": "Закрити",
+      "cycle_page_layout": "Перемикання макета сторінки",
+      "cycle_page_margin": "Перемикання полів сторінки",
+      "cycle_scale": "Шкала циклу",
+      "cycle_side_padding": "Бічна підкладка для велосипеда",
       "first_page": "Перша сторінка",
       "fullscreen": "Увімкнути/вимкнути повноекранний режим",
       "last_page": "Остання сторінка",
@@ -174,9 +179,914 @@
     "file": "ФАЙЛ",
     "format": "ФОРМАТ",
     "isbn": "ISBN",
-    "links": "ПОСИЛАННЯ"
+    "links": "ПОСИЛАННЯ",
+    "navigation_within_readlist": "Навігація у списку для читання: {name}",
+    "outdated_tooltip": "Файл цієї книги змінився, цю книгу потрібно проаналізувати повторно",
+    "read_book": "Читати книгу",
+    "read_incognito": "Читати інкогніто",
+    "remove_from_collection": "Вилучити книгу з колекції",
+    "remove_from_readlist": "Вилучити книгу зі списку прочитаних",
+    "size": "РОЗМІР"
+  },
+  "browse_collection": {
+    "edit_collection": "Редагувати колекцію",
+    "edit_elements": "Редагувати елементи",
+    "manual_ordering": "ручне замовлення"
+  },
+  "browse_readlist": {
+    "edit_elements": "Редагувати елементи",
+    "edit_readlist": "Редагувати список прочитаних",
+    "manual_ordering": "ручне замовлення"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Це найдавніший рік з дат виходу всіх книг серії",
+    "remove_from_collection": "Вилучити серію з колекції",
+    "series_no_summary": "У цієї серії немає короткого опису, тому ми вибрали його для вас!",
+    "summary_from_book": "Короткий зміст з книги {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Керування колекцією",
+    "title": "колекція {name}"
   },
   "common": {
-    "locale_name": "Українська"
+    "age": "Вік",
+    "all_libraries": "Усі бібліотеки",
+    "all_of": "Усі з",
+    "any_of": "Будь-який з",
+    "book": "Книга",
+    "books": "Книги",
+    "books_n": "Немає книги | 1 книга | {count} книг",
+    "books_total": "{count} / {total} книг",
+    "cancel": "Скасувати",
+    "cbx": "Архів коміксів",
+    "choose_image": "Виберіть зображення",
+    "close": "Закрити",
+    "collections": "Колекції",
+    "copied": "Скопійовано!",
+    "create": "Створити",
+    "delete": "Видалити",
+    "dimension": "У: {width}, г: {height}",
+    "discard": "Відкинути",
+    "disk_space": "Місце на диску",
+    "dismiss": "Відхилити",
+    "download": "Завантажити",
+    "drag_drop": "перетягування",
+    "duplicate": "Дублікат",
+    "email": "Електронна пошта",
+    "epub": "Електронна книга",
+    "error": "Помилка",
+    "filename": "Ім'я файлу",
+    "filter_no_matches": "Активний фільтр не має збігів",
+    "genre": "Жанр",
+    "go_to_collection": "Перейти до колекції",
+    "go_to_library": "Іди до бібліотеки",
+    "go_to_readlist": "Перейти до списку прочитання",
+    "go_to_series": "Перейти до серії",
+    "i_understand": "Я розумію",
+    "library": "Бібліотека",
+    "locale_name": "Українська",
+    "locale_rtl": "false",
+    "lock_all": "Заблокувати все",
+    "media": "Медіа",
+    "more": "Більше",
+    "n_selected": "Вибрано {count}",
+    "nothing_to_show": "Нічого показати",
+    "ok": "Гаразд",
+    "oneshot": "Одноразовий",
+    "outdated": "Застарілий",
+    "page": "Сторінка",
+    "page_number": "Номер сторінки",
+    "pages": "сторінки",
+    "pages_left": "Не залишилося сторінок | Залишилася 1 сторінка | Залишилося {count} сторінок",
+    "pages_n": "Немає сторінок | 1 сторінка | {count} сторінок",
+    "password": "Пароль",
+    "pdf": "PDF",
+    "pending_tasks": "Немає завдань, що очікують на розгляд | 1 завдання, що очікує на розгляд | {count} завдань, що очікують на розгляд",
+    "pinned_libraries": "Закріплені бібліотеки",
+    "publisher": "Видавець",
+    "read": "Читати",
+    "read_on": "Читайте далі {date}",
+    "readlist": "Список прочитаних",
+    "readlists": "Списки для читання",
+    "remember-me": "Запам'ятай мене",
+    "reorder": "Знову замовити",
+    "required": "Обов'язково",
+    "reset_filters": "Скинути фільтри",
+    "roles": "Ролі",
+    "save_changes": "Зберегти зміни",
+    "series": "Серія | Серія",
+    "settings": "Налаштування",
+    "sidecars": "Коляски",
+    "tags": "Теги",
+    "ui": "Інтерфейс користувача",
+    "unavailable": "Недоступно",
+    "unlock_all": "Розблокувати все",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "Використовуйте панель фільтрів, щоб змінити активний фільтр",
+    "year": "рік"
+  },
+  "dashboard": {
+    "keep_reading": "Продовжуйте читати",
+    "on_deck": "На палубі",
+    "recently_added_books": "Нещодавно додані книги",
+    "recently_added_series": "Нещодавно додані серії",
+    "recently_read_books": "Нещодавно прочитані книги",
+    "recently_released_books": "Нещодавно випущені книги",
+    "recently_updated_series": "Нещодавно оновлені серії"
+  },
+  "data_import": {
+    "book_number": "Номер книги: {name}",
+    "book_series": "Серія: {name}",
+    "button_import": "Імпорт",
+    "button_match": "Матч",
+    "comicrack_preambule_html": "Ви можете імпортувати існуючі списки читання ComicRack у форматі <code>.cbl</code>.<br>Komga спробує зіставити надану серію та номер книги із серіями та книгами у ваших бібліотеках.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} книг не мають збігів",
+      "body2": "{duplicates} / {total} книг дублюються",
+      "create": "Створити все одно",
+      "title": "Деякі книги не збігаються"
+    },
+    "field_file_label": "Список для читання ComicRack (.cbl)",
+    "field_files_label": "Списки для читання ComicRack (.cbl)",
+    "import_read_lists": "Імпорт списків прочитаного",
+    "imported_as": "Імпортовано як {name}",
+    "readlist_created": "Список для читання створено: {name}",
+    "requested_number": "Запитаний номер",
+    "requested_series": "Запитана серія",
+    "results_preambule": "Результат імпорту показано нижче. Ви також можете перевірити незбігані книги для кожного наданого файлу.",
+    "size_limit": "Розмір має бути меншим за {size} МБ",
+    "tab_title": "Імпорт даних"
+  },
+  "dialog": {
+    "add_api_key": {
+      "button_confirm": "Згенерувати",
+      "context": "Ключі API можна використовувати для автентифікації через протокол Kobo Sync.",
+      "dialog_title": "Згенерувати новий ключ API",
+      "field_comment": "Коментар",
+      "field_comment_hint": "Для чого цей ключ API?",
+      "info_copy": "Обов’язково скопіюйте свій ключ API зараз. Ви більше його не побачите!"
+    },
+    "add_to_collection": {
+      "button_create": "Створити",
+      "card_collection_subtitle": "Без серій | 1 серія | {count} серій",
+      "dialog_title": "Додати до колекції",
+      "field_search_create": "Пошук або створення колекції",
+      "field_search_create_error": "Колекція з такою назвою вже існує",
+      "label_no_matching_collection": "Немає відповідної колекції"
+    },
+    "add_to_readlist": {
+      "button_create": "Створити",
+      "card_readlist_subtitle": "Немає книги | 1 книга | {count} книг",
+      "dialog_title": "Додати до списку прочитання",
+      "field_search_create": "Пошук або створення списку для читання",
+      "field_search_create_error": "Список для читання з такою назвою вже існує",
+      "label_no_matching_readlist": "Немає відповідного списку для читання"
+    },
+    "add_user": {
+      "button_cancel": "Скасувати",
+      "button_confirm": "Додати",
+      "dialog_title": "Додати користувача",
+      "field_email": "Електронна пошта",
+      "field_email_error": "Має бути дійсна адреса електронної пошти",
+      "field_password": "Пароль"
+    },
+    "analyze_library": {
+      "body": "Аналізує всі медіафайли в бібліотеці. Аналіз збирає інформацію про медіафайли. Залежно від розміру вашої бібліотеки, це може тривати довго.",
+      "button_confirm": "Аналіз",
+      "title": "Аналіз бібліотеки"
+    },
+    "book_picker": {
+      "filter": "Фільтрувати за номером книги, назвою або датою виходу",
+      "title": "Виберіть книгу"
+    },
+    "delete_apikey": {
+      "button_confirm": "Видалити",
+      "confirm_delete": "Я розумію, видаліть ключ API \"{name}\"",
+      "dialog_title": "Видалити ключ API",
+      "warning_html": "Будь-які програми чи скрипти, що використовують цей ключ API, більше не матимуть доступу до API Komga. Ви не можете скасувати цю дію."
+    },
+    "delete_book": {
+      "button_confirm": "Видалити",
+      "confirm_delete": "Так, видалити книгу «{name}» та її файли",
+      "confirm_delete_multiple": "Так, видалити {count} книг та їхні файли",
+      "dialog_title": "Видалити книгу",
+      "dialog_title_multiple": "Видалити книги",
+      "warning_html": "Книгу <b>{name}</b> буде видалено з цього сервера разом зі збереженими медіафайлами. Цю дію <b>неможливо</b> скасувати. Продовжити?",
+      "warning_multiple_html": "{count} Книги будуть вилучені з цього сервера разом зі збереженими медіафайлами. Цю дію <b>неможливо</b> скасувати. Продовжити?"
+    },
+    "delete_collection": {
+      "button_confirm": "Видалити",
+      "confirm_delete": "Так, видалити колекцію \"{name}\"",
+      "confirm_delete_multiple": "Так, видалити {count} колекцій",
+      "dialog_title": "Видалити колекцію",
+      "dialog_title_multiple": "Видалити колекції",
+      "warning_html": "Колекцію <b>{name}</b> буде видалено з цього сервера. Ваші медіафайли залишаться в силі. Цю дію <b>неможливо</b> скасувати. Продовжити?",
+      "warning_multiple_html": "{count} Колекції будуть видалені з цього сервера. Ваші медіафайли залишаться в силі. Цю дію <b>неможливо</b> скасувати. Продовжити?"
+    },
+    "delete_library": {
+      "button_confirm": "Видалити",
+      "confirm_delete": "Так, видалити бібліотеку \"{name}\"",
+      "title": "Видалити бібліотеку",
+      "warning_html": "Бібліотеку <b>{name}</b> буде видалено з цього сервера. Ваші медіафайли залишаться в силі. Цю дію <b>неможливо</b> скасувати. Продовжити?"
+    },
+    "delete_readlist": {
+      "button_confirm": "Видалити",
+      "confirm_delete": "Так, видалити список прочитаного \"{name}\"",
+      "confirm_delete_multiple": "Так, видалити {count} списків прочитання",
+      "dialog_title": "Видалити список прочитаних",
+      "dialog_title_multiple": "Видалити списки прочитаного",
+      "warning_html": "Список для читання <b>{name}</b> буде видалено з цього сервера. Ваші медіафайли залишаться в силі. Цю дію <b>неможливо</b> скасувати. Продовжити?",
+      "warning_multiple_html": "{count} Списки прочитання будуть видалені з цього сервера. Ваші медіафайли залишаться в силі. Цю дію <b>неможливо</b> скасувати. Продовжити?"
+    },
+    "delete_series": {
+      "button_confirm": "Видалити",
+      "confirm_delete": "Так, видалити серію \"{name}\" та її файли",
+      "confirm_delete_multiple": "Так, видалити {count} серій та їхні файли",
+      "dialog_title": "Видалити серію",
+      "warning_html": "Серіал <b>{name}</b> буде видалено з цього сервера разом зі збереженими медіафайлами. Цю дію <b>неможливо</b> скасувати. Продовжити?",
+      "warning_multiple_html": "Серії ({count}) будуть видалені з цього сервера разом зі збереженими медіафайлами. Цю дію <b>неможливо</b> скасувати. Продовжити?"
+    },
+    "delete_user": {
+      "button_confirm": "Видалити",
+      "confirm_delete": "Так, видалити користувача \"{name}\"",
+      "dialog_title": "Видалити користувача",
+      "warning_html": "Користувача <b>{name}</b> буде видалено з цього сервера. Цю дію <b>неможливо</b> скасувати. Продовжити?"
+    },
+    "edit_books": {
+      "add_author_role_error_duplicate": "Вже існує",
+      "authors_notice_multiple_edit": "Ви редагуєте авторів кількох книг. Це замінить існуючих авторів кожної книги.",
+      "button_cancel": "Скасувати",
+      "button_confirm": "Зберегти зміни",
+      "copy_from": "Копіювати з {field}",
+      "dialog_title_multiple": "Редагувати книгу {count} | Редагувати книги {count}",
+      "dialog_title_single": "Редагувати {book}",
+      "field_alternate_title": "Альтернативна назва",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "Повинен бути дійсний ISBN 13",
+      "field_link_label": "Мітка",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "Має бути http або https",
+      "field_link_url_error_url": "Має бути дійсна URL-адреса",
+      "field_number": "Номер",
+      "field_number_sort": "Номер сортування",
+      "field_number_sort_hint": "Ви можете використовувати десяткові числа",
+      "field_release_date": "Дата випуску",
+      "field_release_date_error": "Має бути дійсна дата у форматі РРРР-ММ-ДД",
+      "field_summary": "Короткий зміст",
+      "field_tags": "Теги",
+      "field_title": "Назва",
+      "number_sort_decrement": "Зменшити все на 1",
+      "number_sort_increment": "Збільшити все на 1",
+      "tab_authors": "Автори",
+      "tab_general": "Загальне",
+      "tab_links": "Посилання",
+      "tab_poster": "Плакат",
+      "tab_tags": "Теги",
+      "tags_notice_multiple_edit": "Ви редагуєте теги для кількох книг. Це замінить існуючі теги кожної книги."
+    },
+    "edit_collection": {
+      "button_cancel": "Скасувати",
+      "button_confirm": "Зберегти зміни",
+      "dialog_title": "Редагувати колекцію",
+      "field_manual_ordering": "Ручне замовлення",
+      "label_ordering": "За замовчуванням серії в колекції будуть упорядковані за назвою. Ви можете ввімкнути ручне впорядкування, щоб визначити свій власний порядок.",
+      "tab_general": "Загальне",
+      "tab_poster": "Плакат"
+    },
+    "edit_library": {
+      "button_browse": "Переглянути",
+      "button_cancel": "Скасувати",
+      "button_confirm_add": "Додати",
+      "button_confirm_edit": "Редагувати",
+      "button_next": "Далі",
+      "dialog_title_add": "Додати бібліотеку",
+      "dialot_title_edit": "Редагувати бібліотеку",
+      "field_analysis_analyze_dimensions": "Аналіз розмірів сторінок",
+      "field_analysis_hash_files": "Обчислити хеш для файлів",
+      "field_analysis_hash_koreader": "Обчислити хеш файлів для KOReader",
+      "field_analysis_hash_pages": "Обчислити хеш для сторінок",
+      "field_convert_to_cbz": "Автоматично конвертувати в CBZ",
+      "field_import_barcode_isbn": "Штрих-код ISBN",
+      "field_import_comicinfo_book": "Метадані книги",
+      "field_import_comicinfo_collections": "Колекції",
+      "field_import_comicinfo_readlists": "Списки читання",
+      "field_import_comicinfo_series": "Метадані серіалу",
+      "field_import_comicinfo_series_append_volume": "Додати том до назви серії",
+      "field_import_epub_book": "Метадані книги",
+      "field_import_epub_series": "Метадані серіалу",
+      "field_import_local_artwork": "Місцеві витвори мистецтва",
+      "field_import_mylar_series": "Метадані серіалу",
+      "field_name": "Ім'я",
+      "field_oneshotsdirectory": "Довідник One-Shots",
+      "field_repair_extensions": "Автоматичне виправлення неправильних розширень файлів",
+      "field_root_folder": "Коренева папка",
+      "field_scan_interval": "Інтервал сканування",
+      "field_scanner_empty_trash_after_scan": "Автоматично очищувати кошик після кожного сканування",
+      "field_scanner_force_directory_modified_time": "Примусово змінений час каталогу",
+      "field_scanner_scan_startup": "Сканування під час запуску",
+      "field_series_cover": "Обкладинка серії",
+      "file_browser_dialog_button_confirm": "Виберіть",
+      "file_browser_dialog_title": "Коренева папка бібліотеки",
+      "label_analysis": "Аналізи",
+      "label_file_management": "Керування файлами",
+      "label_import_barcode_isbn": "Імпорт ISBN у штрих-код",
+      "label_import_comicinfo": "Імпорт метаданих для CBR/CBZ, що містять файл ComicInfo.xml",
+      "label_import_epub": "Імпорт метаданих з файлів EPUB",
+      "label_import_local": "Імпорт локальних медіаресурсів",
+      "label_import_mylar": "Імпорт метаданих, згенерованих Mylar",
+      "label_scan_directory_exclusions": "Виключення з каталогу",
+      "label_scan_types": "Сканувати ці типи файлів",
+      "label_scanner": "Сканер",
+      "label_series_cover": "Обкладинка серії",
+      "tab_general": "Загальне",
+      "tab_metadata": "Метадані",
+      "tab_options": "Опції",
+      "tooltip_oneshotsdirectory": "Залиште порожнім, щоб вимкнути",
+      "tooltip_scanner_force_modified_time": "Увімкнути, якщо бібліотека знаходиться на Google Диску",
+      "tooltip_use_resources": "Може споживати багато ресурсів на великих бібліотеках або повільному обладнанні"
+    },
+    "edit_readlist": {
+      "button_cancel": "Скасувати",
+      "button_confirm": "Зберегти зміни",
+      "dialog_title": "Редагувати список прочитаних",
+      "field_manual_ordering": "Ручне замовлення",
+      "field_name": "Ім'я",
+      "field_summary": "Короткий зміст",
+      "label_ordering": "За замовчуванням книги у списку прочитання впорядковуються вручну. Ви можете вимкнути ручне впорядкування, щоб сортувати книги за датою випуску.",
+      "tab_general": "Загальне",
+      "tab_poster": "Плакат"
+    },
+    "edit_recommended": {
+      "button_confirm": "Зберегти зміни",
+      "button_reset": "Скинути налаштування за замовчуванням",
+      "dialog_title": "Редагувати рекомендований перегляд"
+    },
+    "edit_series": {
+      "button_cancel": "Скасувати",
+      "button_confirm": "Зберегти зміни",
+      "dialog_title_multiple": "Редагувати {count} серій | Редагувати {count} серій",
+      "dialog_title_single": "Редагувати {series}",
+      "field_age_rating": "Віковий рейтинг",
+      "field_age_rating_error": "Віковий рейтинг має бути 0 або більше",
+      "field_genres": "Жанри",
+      "field_labels": "Мітки",
+      "field_language": "Мова",
+      "field_language_hint": "Тег мови IETF BCP 47",
+      "field_publisher": "Видавець",
+      "field_reading_direction": "Напрямок читання",
+      "field_sort_title": "Сортувати заголовок",
+      "field_status": "Статус",
+      "field_summary": "Короткий зміст",
+      "field_tags": "Теги",
+      "field_title": "Назва",
+      "field_total_book_count": "Загальна кількість книг",
+      "field_total_book_count_error": "Загальна кількість книг має бути 1 або більше",
+      "mixed": "ЗМІШАНИЙ",
+      "tab_general": "Загальне",
+      "tab_poster": "Плакат",
+      "tab_sharing": "Спільне використання",
+      "tab_tags": "Теги",
+      "tab_titles": "Альтернативні назви",
+      "tags_notice_multiple_edit": "Ви редагуєте теги для кількох серій. Це замінить існуючі теги кожної серії."
+    },
+    "edit_user": {
+      "button_cancel": "Скасувати",
+      "button_confirm": "Зберегти зміни",
+      "dialog_title": "Редагувати користувача",
+      "label_roles_for": "Ролі для {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "Дозволити лише під",
+        "exclude_over": "Виключити понад",
+        "none": "Без обмежень"
+      },
+      "edit_restrictions_for": "Редагувати обмеження для {name}",
+      "label_age_restriction": "Вікове обмеження",
+      "label_allow_only_labels": "Дозволити лише мітки",
+      "label_exclude_labels": "Виключити мітки",
+      "tab_content_restrictions": "Обмеження контенту",
+      "tab_shared_libraries": "Спільні бібліотеки"
+    },
+    "empty_trash": {
+      "body": "За замовчуванням медіасервер не видаляє інформацію про медіафайли одразу. Це допомагає, якщо диск тимчасово відключено. Під час очищення кошика бібліотеки вся інформація про відсутні медіафайли видаляється.",
+      "button_confirm": "Порожній",
+      "title": "Очистити кошик для бібліотеки"
+    },
+    "file_browser": {
+      "button_cancel": "Скасувати",
+      "button_confirm_default": "Виберіть",
+      "dialog_title_default": "Браузер файлів",
+      "parent_directory": "Батьківський"
+    },
+    "filename_chooser": {
+      "button_choose": "Виберіть",
+      "field_destination_filename": "Ім'я файлу призначення",
+      "label_source_filename": "Ім'я вихідного файлу",
+      "table": {
+        "existing_file": "Існуючий файл",
+        "order": "Замовлення"
+      },
+      "title": "Ім'я файлу призначення'"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Примусова синхронізація Kobo",
+      "warning_html": "Це видалить всю історію синхронізації для цього ключа API. Ваш Kobo синхронізує все під час наступної синхронізації."
+    },
+    "password_change": {
+      "button_cancel": "Скасувати",
+      "button_confirm": "Змінити пароль",
+      "dialog_title": "Змінити пароль",
+      "field_new_password": "Новий пароль",
+      "field_new_password_error": "Потрібен новий пароль.",
+      "field_repeat_password": "Повторіть новий пароль",
+      "field_repeat_password_error": "Паролі мають бути однаковими."
+    },
+    "refresh_library_metadata": {
+      "body": "Оновлює метадані для всіх медіафайлів у бібліотеці. Залежно від розміру вашої бібліотеки, це може тривати довго.",
+      "button_confirm": "Оновити",
+      "title": "Оновити метадані для бібліотеки"
+    },
+    "series_picker": {
+      "label_search_series": "Пошук серій",
+      "no_results": "Серії не знайдено",
+      "title": "Виберіть серію"
+    },
+    "server_stop": {
+      "button_confirm": "Стій",
+      "confirmation_message": "Ви впевнені, що хочете зупинити Komga?",
+      "dialog_title": "Вимкнути сервер"
+    },
+    "shortcut_help": {
+      "label_description": "Опис",
+      "label_key": "Ключ"
+    },
+    "transient_book_details": {
+      "label_candidate": "Кандидат",
+      "label_existing": "Існуючі",
+      "label_format": "Формат",
+      "label_name": "Ім'я",
+      "label_pages": "Сторінки",
+      "label_size": "Розмір",
+      "pages_table": {
+        "filename": "Ім'я Файлу",
+        "height": "Висота",
+        "index": "Індекс",
+        "media_type": "Тип медіа",
+        "size": "Розмір",
+        "width": "Ширина"
+      },
+      "title": "Деталі книги",
+      "title_comparison": "Порівняння книг"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "Кандидат",
+      "label_existing": "Існуючі",
+      "page_of_pages": "{page} / {pages}",
+      "title": "Перевірити книгу",
+      "title_comparison": "Порівняння книг"
+    }
+  },
+  "duplicate_pages": {
+    "action_auto_delete_remaining": "Залишок автоматичного видалення ({count})",
+    "action_delete_auto": "Автоматичне видалення",
+    "action_delete_manual": "Ручне видалення",
+    "action_delete_matches": "Видалити збіги",
+    "action_ignore": "Ігнорувати",
+    "action_ignore_remaining": "Ігнорувати решту ({count})",
+    "action_manual_delete_remaining": "Залишилося ручного видалення ({count})",
+    "confirm_auto_delete_remaining": "Усі хеші сторінок, що залишилися на цій сторінці ({count}), будуть позначені для автоматичного видалення.",
+    "confirm_manual_delete_remaining": "Усі хеші сторінок, що залишилися на цій сторінці ({count}), будуть позначені для ручного видалення.",
+    "delete_to_save": "Видалити, щоб зберегти {size}",
+    "deleted_count": "Видалено {count} разів",
+    "empty_title": "Дублікатів сторінок не знайдено",
+    "empty_title_known": "Немає відомих дублікатів",
+    "filter": {
+      "count": "Кількість",
+      "date_added": "Дата додавання",
+      "date_modified": "Дата зміни",
+      "delete_count": "Кількість видалень",
+      "delete_size": "Зекономлено місце",
+      "match_count": "Кількість матчів",
+      "size": "Розмір",
+      "total_size": "Загальний розмір"
+    },
+    "info": "Видалення дублікатів сторінок призведе до змінення ваших файлів. Створіть резервну копію файлів та видаліть їх вручну, перш ніж використовувати автоматичне видалення.",
+    "known": "Відомий",
+    "matches_n": "Немає збігів | 1 збіг | {count} збігів",
+    "new": "Новий",
+    "saved_size": "Збережено {size}",
+    "title": "Дублікати сторінок",
+    "unknown_size": "Невідомий розмір"
+  },
+  "duplicates": {
+    "file_hash": "Хеш файлу",
+    "size": "Розмір",
+    "title": "Дублікати файлів",
+    "url": "URL"
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "Жорстке посилання/копіювання файлів",
+      "MOVE": "Переміщення файлів"
+    },
+    "epubreader": {
+      "appearances": {
+        "day": "День",
+        "night": "Ніч",
+        "sepia": "Сепія"
+      },
+      "column_count": {
+        "auto": "Авто",
+        "one": "Один",
+        "two": "Два"
+      },
+      "reading_direction": {
+        "auto": "Автоматичний",
+        "ltr": "Зліва направо",
+        "rtl": "Справа наліво"
+      }
+    },
+    "historical_event_type": {
+      "BookConverted": "Книга перетворена",
+      "BookFileDeleted": "Файл книги видалено",
+      "BookImported": "Імпортовано книгу",
+      "DuplicatePageDeleted": "Дублікат сторінки видалено",
+      "SeriesFolderDeleted": "Папку серіалу видалено"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
+    "media_status": {
+      "ERROR": "Помилка",
+      "OUTDATED": "Застарілий",
+      "READY": "Готовий",
+      "UNKNOWN": "Невідомо",
+      "UNSUPPORTED": "Не підтримується"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "Автоматичне видалення",
+      "DELETE_MANUAL": "Ручне видалення",
+      "IGNORE": "Ігнорувати"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "Зліва направо",
+      "RIGHT_TO_LEFT": "Справа наліво",
+      "VERTICAL": "Вертикальний",
+      "WEBTOON": "Вебмультфільм"
+    },
+    "scan_interval": {
+      "DAILY": "Щоденно",
+      "DISABLED": "Вимкнено",
+      "EVERY_12H": "Кожні 12 годин",
+      "EVERY_6H": "Кожні 6 годин",
+      "HOURLY": "Щогодини",
+      "WEEKLY": "Щотижнево"
+    },
+    "series_cover": {
+      "FIRST": "Перший",
+      "FIRST_UNREAD_OR_FIRST": "Спочатку непрочитані, інакше спочатку",
+      "FIRST_UNREAD_OR_LAST": "Спочатку непрочитані, інакше останні",
+      "LAST": "Останній"
+    },
+    "series_status": {
+      "ABANDONED": "Покинутий",
+      "ENDED": "Закінчилося",
+      "HIATUS": "Перерва",
+      "ONGOING": "Поточний"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "За замовчуванням (300 пікселів)",
+      "LARGE": "Великий (900 пікселів)",
+      "MEDIUM": "Середній (600 пікселів)",
+      "XLARGE": "Дуже великий (1200 пікселів)"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "Поточний розділ",
+    "page_of": "Сторінка {page} з {count}",
+    "publisher_font": "Видавець",
+    "settings": {
+      "column_count": "Кількість стовпців",
+      "font_family": "Шрифт",
+      "layout": "Макет",
+      "layout_paginated": "Пагінована",
+      "layout_scroll": "Прокрутити",
+      "navigation_mode": "Режим навігації",
+      "navigation_options": {
+        "both": "Обидва",
+        "buttons": "Ґудзики",
+        "click": "Клацніть / Торкніться"
+      },
+      "page_margins": "Поля сторінки",
+      "viewing_theme": "Перегляд теми"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Циклічна кількість стовпців",
+      "cycle_viewing_theme": "Тема перегляду велосипедів",
+      "font_size_decrease": "Зменшити розмір шрифту",
+      "font_size_increase": "Збільшити розмір шрифту",
+      "menus": "Меню",
+      "next": "Вперед",
+      "previous": "Назад",
+      "reader_navigation": "Навігація читача",
+      "scroll": "Змінити макет на прокручування",
+      "settings": "Налаштування",
+      "show_hide_toc": "Показати/приховати зміст"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "Не вдалося отримати доступ до файлу під час аналізу",
+    "ERR_1001": "Тип медіа не підтримується",
+    "ERR_1002": "Зашифровані RAR-архіви не підтримуються",
+    "ERR_1003": "Архів Solid RAR не підтримується",
+    "ERR_1004": "Багатотомні RAR-архіви не підтримуються",
+    "ERR_1005": "Невідома помилка під час аналізу книги",
+    "ERR_1006": "Книга не містить жодної сторінки",
+    "ERR_1007": "Деякі записи не вдалося проаналізувати",
+    "ERR_1008": "Невідома помилка під час отримання записів книги",
+    "ERR_1009": "Список для читання з такою назвою вже існує'",
+    "ERR_1015": "Помилка під час десеріалізації ComicRack CBL",
+    "ERR_1016": "Каталог недоступний або не є каталогом",
+    "ERR_1017": "Не вдається сканувати папку, яка є частиною існуючої бібліотеки",
+    "ERR_1018": "Файл не знайдено",
+    "ERR_1019": "Неможливо імпортувати файл, який є частиною існуючої бібліотеки",
+    "ERR_1020": "Книга для оновлення не належить до наданої серії",
+    "ERR_1021": "Цільовий файл вже існує",
+    "ERR_1022": "Не вдалося відсканувати нещодавно імпортовану книгу",
+    "ERR_1023": "Книга вже є у списку для читання",
+    "ERR_1024": "Помилка входу OAuth2: немає атрибута електронної пошти",
+    "ERR_1025": "Помилка входу OAuth2: локального користувача з такою електронною адресою не існує",
+    "ERR_1026": "Помилка входу в OpenID Connect: електронна адреса не підтверджена",
+    "ERR_1027": "Помилка входу в OpenID Connect: немає атрибута email_verified",
+    "ERR_1028": "Помилка входу в OpenID Connect: немає атрибута електронної пошти",
+    "ERR_1029": "ComicRack CBL не містить жодного елемента Book",
+    "ERR_1030": "ComicRack CBL не має елемента Name",
+    "ERR_1031": "У книзі ComicRack CBL відсутня серія або номер",
+    "ERR_1032": "Файл EPUB має неправильний тип медіафайлу",
+    "ERR_1033": "Деякі записи відсутні",
+    "ERR_1034": "Ключ API з цим коментарем вже існує",
+    "ERR_1035": "Помилка під час отримання змісту EPUB",
+    "ERR_1036": "Помилка під час отримання орієнтирів EPUB",
+    "ERR_1037": "Помилка під час отримання списку сторінок EPUB",
+    "ERR_1038": "Помилка під час отримання сторінок EPUB divina",
+    "ERR_1039": "Помилка під час отримання позицій EPUB"
+  },
+  "filter": {
+    "age_rating": "віковий рейтинг",
+    "age_rating_none": "Жоден",
+    "any": "Будь-який",
+    "complete": "Завершено",
+    "genre": "жанр",
+    "in_progress": "У процесі",
+    "language": "мова",
+    "library": "бібліотека",
+    "media_profile": "Медіа-профіль",
+    "media_status": "Стан медіа",
+    "oneshot": "Одноразовий",
+    "publisher": "видавець",
+    "read": "Читати",
+    "release_date": "дата випуску",
+    "sharing_label": "Мітка спільного доступу",
+    "status": "статус",
+    "tag": "тег",
+    "unread": "Непрочитане"
+  },
+  "filter_drawer": {
+    "filter": "фільтр",
+    "sort": "сортувати"
+  },
+  "history": {
+    "header": {
+      "book": "Книга",
+      "date": "Дата",
+      "details": "Деталі",
+      "series": "Серія",
+      "type": "Тип"
+    },
+    "title": "Історія"
+  },
+  "home": {
+    "theme": "Тема",
+    "translation": "Переклад"
+  },
+  "library_navigation": {
+    "browse": "Переглянути",
+    "browse_books": "Книги",
+    "browse_series": "Серія",
+    "collections": "Колекції",
+    "readlists": "Списки для читання",
+    "recommended": "Рекомендовано"
+  },
+  "login": {
+    "create_user_account": "Створити обліковий запис користувача",
+    "login": "Увійти",
+    "unclaimed_html": "Цей сервер Komga ще не активний, вам потрібно створити обліковий запис користувача, щоб мати до нього доступ.<br><br>Виберіть <strong>електронну пошту</strong> та <strong>пароль</strong> і натисніть <strong>Створити обліковий запис користувача</strong>."
+  },
+  "media_analysis": {
+    "comment": "Коментар",
+    "media_analysis": "Медіа-аналіз",
+    "media_type": "Тип носія",
+    "name": "Ім'я",
+    "size": "Розмір",
+    "status": "Статус",
+    "url": "URL"
+  },
+  "menu": {
+    "add_to_collection": "Додати до колекції",
+    "add_to_readlist": "Додати до списку прочитання",
+    "analyze": "Аналіз",
+    "bulk_edit_metadata": "Масове редагування метаданих",
+    "delete": "Видалити",
+    "deselect_all": "Зняти вибір усіх",
+    "download_readlist": "Завантажити список для читання",
+    "download_series": "Завантажити серію",
+    "edit": "Редагувати",
+    "edit_metadata": "Редагувати метадані",
+    "empty_trash": "Очистити кошик",
+    "mark_read": "Позначити як прочитане",
+    "mark_unread": "Позначити як непрочитане",
+    "pin": "Закріпити",
+    "refresh_metadata": "Оновити метадані",
+    "scan_library_files": "Сканування файлів бібліотеки",
+    "scan_library_files_deep": "Сканувати файли бібліотеки (глибоко)",
+    "select_all": "Вибрати все",
+    "unpin": "Відкріпити"
+  },
+  "metrics": {
+    "library_books": "Книги на бібліотеку",
+    "library_disk_space": "Місце на диску бібліотеки",
+    "library_series": "Серії на бібліотеку",
+    "library_sidecars": "Коляски на бібліотеку",
+    "tasks_executed": "Виконані завдання",
+    "tasks_total_time": "Загальний час виконання завдань",
+    "title": "Метрики"
+  },
+  "missing_posters": {
+    "title": "Відсутні плакати"
+  },
+  "navigation": {
+    "home": "Дім",
+    "libraries": "Бібліотеки",
+    "logout": "Вийти"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Ви можете закріпити бібліотеку з меню з трьома крапками",
+    "title": "Немає закріплених бібліотек"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "Повернутися на головну сторінку",
+    "page_does_not_exist": "Сторінка, яку ви шукаєте, не існує.",
+    "page_not_found": "Сторінку не знайдено"
+  },
+  "read_more": {
+    "less": "Читати менше",
+    "more": "Читати більше"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Дублікат книги",
+      "error_choose_book": "Виберіть у книгу"
+    }
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "Керування списком прочитаних",
+    "title": "Список прочитаного {name}"
+  },
+  "search": {
+    "no_results": "Пошук не дав результатів",
+    "search": "Пошук",
+    "search_for_something_else": "Спробуйте пошукати щось інше",
+    "search_results_for": "Результати пошуку для \"{name}\""
+  },
+  "searchbox": {
+    "in_library": "З {library}",
+    "no_results": "Немає результатів",
+    "search_all": "Шукати все…"
+  },
+  "server": {
+    "server_management": {
+      "button_cancel_all_tasks": "Скасувати всі завдання",
+      "button_empty_trash": "Очистити кошик для всіх бібліотек",
+      "button_scan_libraries": "Сканувати всі бібліотеки",
+      "button_scan_libraries_deep": "Сканувати всі бібліотеки (глибоко)",
+      "button_shutdown": "Вимкнути",
+      "download_log": "Завантажити файл журналу",
+      "notification_tasks_cancelled": "Немає завдань для скасування | Одне завдання скасовано | {count} завдань скасовано",
+      "section_title": "Керування сервером"
+    },
+    "tab_title": "Сервер",
+    "updates": "Оновлення"
+  },
+  "server_settings": {
+    "config_precedence": "Має пріоритет над файлом конфігурації",
+    "dialog_regenerate_thumbnails": {
+      "body": "Розмір мініатюр змінився. Бажаєте створити мініатюри книг заново?",
+      "btn_alternate": "Так, усі книги",
+      "btn_cancel": "Ні",
+      "btn_confirm": "Так, але тільки якщо більший",
+      "title": "Згенерувати мініатюри знову"
+    },
+    "hint_kobo_port": "Встановлювати лише у разі проблем із синхронізацією обкладинок та завантажень",
+    "label_delete_empty_collections": "Видалити порожні колекції після сканування",
+    "label_delete_empty_readlists": "Видалити порожні списки прочитання після сканування",
+    "label_kepubify_path": "Шлях до kepubify",
+    "label_kobo_port": "Зовнішній порт Kobo Sync",
+    "label_kobo_proxy": "Запити синхронізації проксі-сервера Kobo до магазину Kobo",
+    "label_rememberme_duration": "Тривалість дії функції «Запам’ятати мене» (у днях)",
+    "label_server_context_path": "Базова URL-адреса",
+    "label_server_port": "Порт сервера",
+    "label_task_pool_size": "Гілки завдань",
+    "label_thumbnail_size": "Розмір мініатюр",
+    "requires_restart": "Потрібен перезапуск, щоб набути чинності",
+    "server_settings": "Налаштування сервера"
+  },
+  "settings_user": {
+    "change_password": "Змінити пароль",
+    "edit_restrictions": "Редагувати обмеження",
+    "edit_user": "Редагувати користувача",
+    "latest_activity": "Остання активність: {date}",
+    "no_recent_activity": "Немає нещодавньої активності",
+    "role_administrator": "Адміністратор",
+    "role_user": "Користувач"
+  },
+  "sort": {
+    "books_count": "Кількість книг",
+    "date_added": "Дата додавання",
+    "date_read": "Дата прочитання",
+    "date_updated": "Дата оновлення",
+    "file_name": "Ім'я файлу",
+    "file_size": "Розмір файлу",
+    "folder_name": "Назва папки",
+    "name": "Ім'я",
+    "number": "Номер",
+    "page_count": "Кількість сторінок",
+    "random": "Випадкове",
+    "release_date": "Дата випуску'",
+    "series": "Серія"
+  },
+  "theme": {
+    "dark": "Темний",
+    "light": "Світло",
+    "system": "Система"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "Видалити",
+    "tooltip_generated": "Згенеровані ілюстрації",
+    "tooltip_mark_as_selected": "Позначити як вибране",
+    "tooltip_selected": "Вибрано",
+    "tooltip_sidecar": "Місцеві витвори мистецтва",
+    "tooltip_to_be_deleted": "Буде видалено",
+    "tooltip_to_be_uploaded": "Для завантаження",
+    "tooltip_too_big": "Файл занадто великий!",
+    "tooltip_user_uploaded": "Завантажено користувачем"
+  },
+  "titles_more": {
+    "less": "Менше назв",
+    "more": "Більше назв"
+  },
+  "ui_settings": {
+    "general": "Загальне",
+    "label_oauth2_auto_login": "Автоматичний вхід OAuth2",
+    "label_oauth2_hide_login": "Приховати поля входу, якщо ввімкнено OAuth2",
+    "label_poster_blur_unread": "Розмиття плаката для непрочитаних книг та серій",
+    "label_poster_stretch": "Розтягніть плакат, щоб він підходив до листівки",
+    "label_series_groups": "Групування серій",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Алфавітний",
+      "japanese": "Годзюон (японська)"
+    },
+    "tooltip_oauth2_auto_login": "Потрібен один постачальник OAuth2 та ввімкнена функція «приховувати поля входу»"
+  },
+  "updates": {
+    "available": "Доступні оновлення",
+    "latest_installed": "Остання версія Komga вже встановлена"
+  },
+  "user_roles": {
+    "ADMIN": "Адміністратор",
+    "FILE_DOWNLOAD": "Завантаження файлу",
+    "KOBO_SYNC": "Синхронізація Kobo",
+    "KOREADER_SYNC": "Синхронізація KOReader",
+    "PAGE_STREAMING": "Потокове передавання сторінок",
+    "USER": "Користувач"
+  },
+  "users": {
+    "api_keys": "Ключі API",
+    "authentication_activity": "Активність автентифікації",
+    "users": "Користувачі"
+  },
+  "validation": {
+    "context_path": "Повинно починатися з '/', не закінчуватися на '/-_' та містити лише '/-_a-z0-9'",
+    "one_or_more": "Має бути 1 або більше",
+    "tcp_port": "Має бути від 1 до 65535",
+    "zero_or_more": "Має бути 0 або більше"
+  },
+  "welcome": {
+    "add_library": "Додати бібліотеку'",
+    "no_libraries_yet": "Ще не додано жодної бібліотеки!",
+    "welcome_message": "Ласкаво просимо до Komga"
   }
 }
