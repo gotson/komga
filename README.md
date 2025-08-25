@@ -51,6 +51,12 @@ Check the [development guidelines](./DEVELOPING.md).
 
 [![Jetbrains_logo](./.github/readme-images/jetbrains.svg)](https://www.jetbrains.com/?from=Komga)
 
+Thanks to [JetBrains](https://www.jetbrains.com/?from=Komga) for providing the development environment that helps us develop Komga.
+
+[![Chromatic logo](https://user-images.githubusercontent.com/321738/84662277-e3db4f80-af1b-11ea-88f5-91d67a5e59f6.png)](https://www.chromatic.com)
+
+Thanks to [Chromatic](https://www.chromatic.com/) for providing the visual testing platform that helps us review UI changes and catch visual regressions.
+
 ## Credits
 
 The Komga icon is based on an icon made by [Freepik](https://www.freepik.com/home) from www.flaticon.com
