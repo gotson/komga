@@ -1,3 +1,58 @@
+# [1.23.2](https://github.com/gotson/komga/compare/1.23.1...1.23.2) (2025-08-25)
+## 🐛 Fixes
+**kobo**
+- NullPointer exception ([138c0ed](https://github.com/gotson/komga/commits/138c0ed)), closes [#2045](https://github.com/gotson/komga/issues/2045)
+
+**webui**
+- ignore content negotiation when downloading page ([85a33d4](https://github.com/gotson/komga/commits/85a33d4)), closes [#2042](https://github.com/gotson/komga/issues/2042)
+
+**unscoped**
+- ignore xml namespace in EPUB opf file ([3ab21ff](https://github.com/gotson/komga/commits/3ab21ff)), closes [#2043](https://github.com/gotson/komga/issues/2043)
+
+## 🏎 Perf
+
+- enable SQLite WAL mode by default ([e7b56b2](https://github.com/gotson/komga/commits/e7b56b2))
+
+## 🔄️ Changes
+**api**
+- mark kepubifyPath as deprecated ([d147586](https://github.com/gotson/komga/commits/d147586))
+
+**unscoped**
+- use Jsoup XmlParser instead of HTML parser where needed ([4e7c49d](https://github.com/gotson/komga/commits/4e7c49d))
+
+## 🛠  Build
+**deps**
+- move redundant versions to gradle version catalog ([18ec31f](https://github.com/gotson/komga/commits/18ec31f))
+
+## 📝 Documentation
+
+- update sponsors ([0bcf1e4](https://github.com/gotson/komga/commits/0bcf1e4))
+
+## 🌐 Translation
+**komga-tray**
+- translated using Weblate (Slovak) ([4a598e3](https://github.com/gotson/komga/commits/4a598e3))
+- translated using Weblate (Assamese) ([9ce6258](https://github.com/gotson/komga/commits/9ce6258))
+- added translation using Weblate (Slovak) ([c6a424e](https://github.com/gotson/komga/commits/c6a424e))
+- translated using Weblate (Ukrainian) ([45a105a](https://github.com/gotson/komga/commits/45a105a))
+
+**webui**
+- translated using Weblate (Slovak) ([9a6f664](https://github.com/gotson/komga/commits/9a6f664))
+- translated using Weblate (Ukrainian) ([ed271fc](https://github.com/gotson/komga/commits/ed271fc))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/checkout from 4 to 5 ([ea5a470](https://github.com/gotson/komga/commits/ea5a470))
+- bump hydraulic-software/conveyor from 18.1 to 19.0 ([a333b75](https://github.com/gotson/komga/commits/a333b75))
+
+**webui**
+- bump brace-expansion from 1.1.11 to 1.1.12 in /komga-webui ([777acbb](https://github.com/gotson/komga/commits/777acbb))
+- bump ws in /komga-webui ([30f6d3a](https://github.com/gotson/komga/commits/30f6d3a))
+
+**unscoped**
+- bump jsoup to 1.21.1 ([8b62988](https://github.com/gotson/komga/commits/8b62988))
+- bump nightcompress from 1.1.0 to 1.1.1 ([eb8a2df](https://github.com/gotson/komga/commits/eb8a2df))
+- bump ktlint from 1.6.0 to 1.7.1 ([54c818e](https://github.com/gotson/komga/commits/54c818e))
+
 # [1.23.1](https://github.com/gotson/komga/compare/1.23.0...1.23.1) (2025-08-01)
 ## 🐛 Fixes
 **api**
