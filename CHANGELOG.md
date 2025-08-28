@@ -1,3 +1,16 @@
+# [1.23.3](https://github.com/gotson/komga/compare/1.23.2...1.23.3) (2025-08-28)
+## 🐛 Fixes
+**api**
+- cannot create readlist or collection with database in WAL mode ([1776174](https://github.com/gotson/komga/commits/1776174))
+
+## 🛠  Build
+**release**
+- fail jreleaser on publish errors ([6b4d81e](https://github.com/gotson/komga/commits/6b4d81e))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/setup-java from 4 to 5 ([b837963](https://github.com/gotson/komga/commits/b837963))
+
 # [1.23.2](https://github.com/gotson/komga/compare/1.23.1...1.23.2) (2025-08-25)
 ## 🐛 Fixes
 **kobo**
