@@ -88,7 +88,7 @@ class KoboProxy(
         .uri { uriBuilder ->
           uriBuilder
             .path(path)
-            .queryParams(LinkedMultiValueMap(request.parameterMap.mapValues { it.value.toList() }))
+            .query(request.queryString)
             .build()
             .also { logger.debug { "Proxy URL: $it" } }
         }.headers { headersOut ->
