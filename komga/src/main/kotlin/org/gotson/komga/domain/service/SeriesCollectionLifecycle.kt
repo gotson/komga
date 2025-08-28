@@ -11,7 +11,6 @@ import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
 import org.gotson.komga.infrastructure.image.MosaicGenerator
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 
 private val logger = KotlinLogging.logger {}
@@ -28,7 +27,6 @@ class SeriesCollectionLifecycle(
   @Throws(
     DuplicateNameException::class,
   )
-  @Transactional
   fun addCollection(collection: SeriesCollection): SeriesCollection {
     logger.info { "Adding new collection: $collection" }
 
@@ -42,7 +40,6 @@ class SeriesCollectionLifecycle(
     return collectionRepository.findByIdOrNull(collection.id)!!
   }
 
-  @Transactional
   fun updateCollection(toUpdate: SeriesCollection) {
     logger.info { "Update collection: $toUpdate" }
 
@@ -70,7 +67,6 @@ class SeriesCollectionLifecycle(
    * Add series to collection by name.
    * Collection will be created if it doesn't exist.
    */
-  @Transactional
   fun addSeriesToCollection(
     collectionName: String,
     series: Series,

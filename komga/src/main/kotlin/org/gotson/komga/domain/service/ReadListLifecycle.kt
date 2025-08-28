@@ -13,7 +13,6 @@ import org.gotson.komga.infrastructure.image.MosaicGenerator
 import org.gotson.komga.infrastructure.metadata.comicrack.ReadListProvider
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionTemplate
 
 private val logger = KotlinLogging.logger {}
@@ -32,7 +31,6 @@ class ReadListLifecycle(
   @Throws(
     DuplicateNameException::class,
   )
-  @Transactional
   fun addReadList(readList: ReadList): ReadList {
     logger.info { "Adding new read list: $readList" }
 
@@ -46,7 +44,6 @@ class ReadListLifecycle(
     return readListRepository.findByIdOrNull(readList.id)!!
   }
 
-  @Transactional
   fun updateReadList(toUpdate: ReadList) {
     logger.info { "Update read list: $toUpdate" }
     val existing =
@@ -74,7 +71,6 @@ class ReadListLifecycle(
    * Add book to read list by name.
    * Read list will be created if it doesn't exist.
    */
-  @Transactional
   fun addBookToReadList(
     readListName: String,
     book: Book,
