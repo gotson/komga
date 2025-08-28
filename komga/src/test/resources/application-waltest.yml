@@ -1,7 +1,0 @@
-komga:
-  database:
-    file: "\${java.io.tmpdir}/database.sqlite"
-    journal-mode: WAL
-  tasks-db:
-    file: "\${java.io.tmpdir}/tasks.sqlite"
-    journal-mode: WAL

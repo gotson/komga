@@ -11,7 +11,6 @@ import javax.sql.DataSource
 
 class DataSourcesConfigurationTest {
   @SpringBootTest
-  @ActiveProfiles("test", "waltest")
   @Nested
   inner class WalMode(
     @Autowired private val dataSourceRW: DataSource,
@@ -27,6 +26,7 @@ class DataSourcesConfigurationTest {
   }
 
   @SpringBootTest
+  @ActiveProfiles("test", "memorydb")
   @Nested
   inner class MemoryMode(
     @Autowired private val dataSourceRW: DataSource,

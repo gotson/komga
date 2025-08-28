@@ -2,9 +2,11 @@ application.version: TESTING
 
 komga:
   database:
-    file: "file:database?mode=memory"
+    file: "\${java.io.tmpdir}/database\${random.uuid}.sqlite"
+    journal-mode: WAL
   tasks-db:
-    file: "file:tasks?mode=memory"
+    file: "\${java.io.tmpdir}/tasks\${random.uuid}.sqlite"
+    journal-mode: WAL
 
 spring:
   flyway:
