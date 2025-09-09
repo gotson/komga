@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailSeriesCollection
 import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailCollectionRecord
 import org.jooq.DSLContext
@@ -12,9 +13,10 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class ThumbnailSeriesCollectionDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : ThumbnailSeriesCollectionRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  ThumbnailSeriesCollectionRepository {
   private val tc = Tables.THUMBNAIL_COLLECTION
 
   override fun findByIdOrNull(thumbnailId: String): ThumbnailSeriesCollection? =

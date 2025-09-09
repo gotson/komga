@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.persistence.LibraryRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.LibraryRecord
 import org.gotson.komga.language.toCurrentTimeZone
@@ -17,9 +18,10 @@ import java.time.ZoneId
 
 @Component
 class LibraryDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : LibraryRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  LibraryRepository {
   private val l = Tables.LIBRARY
   private val ul = Tables.USER_LIBRARY_SHARING
   private val le = Tables.LIBRARY_EXCLUSIONS

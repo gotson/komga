@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.AlternateTitle
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SeriesMetadataRecord
@@ -19,10 +20,11 @@ import java.time.ZoneId
 
 @Component
 class SeriesMetadataDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
-) : SeriesMetadataRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  SeriesMetadataRepository {
   private val d = Tables.SERIES_METADATA
   private val g = Tables.SERIES_METADATA_GENRE
   private val st = Tables.SERIES_METADATA_TAG

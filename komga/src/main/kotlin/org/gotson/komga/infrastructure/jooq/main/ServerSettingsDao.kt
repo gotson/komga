@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Qualifier
@@ -7,9 +8,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class ServerSettingsDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO) {
   private val s = Tables.SERVER_SETTINGS
 
   fun <T> getSettingByKey(

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.gotson.komga.domain.model.R2Locator
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.persistence.ReadProgressRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.deserializeJsonGz
@@ -24,11 +25,12 @@ import java.time.ZoneId
 
 @Component
 class ReadProgressDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val mapper: ObjectMapper,
-) : ReadProgressRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  ReadProgressRepository {
   private val r = Tables.READ_PROGRESS
   private val rs = Tables.READ_PROGRESS_SERIES
   private val b = Tables.BOOK

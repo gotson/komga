@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.csAlias
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
@@ -52,10 +53,12 @@ const val BOOKS_READ_COUNT = "booksReadCount"
 
 @Component
 class SeriesDtoDao(
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   private val luceneHelper: LuceneHelper,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
-) : SeriesDtoRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  SeriesDtoRepository {
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val rs = Tables.READ_PROGRESS_SERIES

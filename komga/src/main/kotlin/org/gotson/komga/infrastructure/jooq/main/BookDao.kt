@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.rlbAlias
 import org.gotson.komga.infrastructure.jooq.toOrderBy
@@ -30,10 +31,11 @@ import java.time.ZoneId
 
 @Component
 class BookDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
-) : BookRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  BookRepository {
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA

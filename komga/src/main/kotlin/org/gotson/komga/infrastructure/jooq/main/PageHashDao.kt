@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.PageHashKnown
 import org.gotson.komga.domain.model.PageHashMatch
 import org.gotson.komga.domain.model.PageHashUnknown
 import org.gotson.komga.domain.persistence.PageHashRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.PageHashRecord
@@ -25,9 +26,10 @@ import java.time.ZoneId
 
 @Component
 class PageHashDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : PageHashRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  PageHashRepository {
   private val p = Tables.MEDIA_PAGE
   private val b = Tables.BOOK
   private val ph = Tables.PAGE_HASH

@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.domain.persistence.KomgaUserRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.UserApiKeyRecord
 import org.gotson.komga.language.toCurrentTimeZone
@@ -21,9 +22,10 @@ import java.time.ZoneId
 
 @Component
 class KomgaUserDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : KomgaUserRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  KomgaUserRepository {
   private val u = Tables.USER
   private val ur = Tables.USER_ROLE
   private val ul = Tables.USER_LIBRARY_SHARING

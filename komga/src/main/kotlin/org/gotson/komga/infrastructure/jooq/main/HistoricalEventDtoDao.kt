@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.interfaces.api.persistence.HistoricalEventDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.HistoricalEventDto
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Component
 
 @Component
 class HistoricalEventDtoDao(
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : HistoricalEventDtoRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  HistoricalEventDtoRepository {
   private val e = Tables.HISTORICAL_EVENT
   private val ep = Tables.HISTORICAL_EVENT_PROPERTIES
 

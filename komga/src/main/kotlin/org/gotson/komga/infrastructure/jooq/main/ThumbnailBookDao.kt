@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailBookRecord
@@ -15,10 +16,11 @@ import java.net.URL
 
 @Component
 class ThumbnailBookDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
-) : ThumbnailBookRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  ThumbnailBookRepository {
   private val tb = Tables.THUMBNAIL_BOOK
 
   override fun findAllByBookId(bookId: String): Collection<ThumbnailBook> =

@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.ContentRestrictions
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.toCondition
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.DSLContext
@@ -19,8 +20,9 @@ import java.time.LocalDateTime
 
 @Component
 class BookCommonDao(
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO) {
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA

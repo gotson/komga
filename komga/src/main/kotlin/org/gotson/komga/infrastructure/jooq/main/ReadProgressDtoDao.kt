@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.interfaces.api.persistence.ReadProgressDtoRepository
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressDto
 import org.gotson.komga.interfaces.api.rest.dto.TachiyomiReadProgressV2Dto
@@ -16,8 +17,10 @@ import java.math.BigDecimal
 
 @Component
 class ReadProgressDtoDao(
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : ReadProgressDtoRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  ReadProgressDtoRepository {
   private val rlb = Tables.READLIST_BOOK
   private val b = Tables.BOOK
   private val d = Tables.BOOK_METADATA

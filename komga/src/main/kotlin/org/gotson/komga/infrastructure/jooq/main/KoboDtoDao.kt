@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gotson.komga.domain.model.MediaExtensionEpub
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.deserializeMediaExtension
 import org.gotson.komga.interfaces.api.kobo.dto.ContributorDto
 import org.gotson.komga.interfaces.api.kobo.dto.KoboBookMetadataDto
@@ -16,9 +17,11 @@ import java.time.ZoneId
 
 @Component
 class KoboDtoDao(
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   private val mapper: ObjectMapper,
-) : KoboDtoRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  KoboDtoRepository {
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA

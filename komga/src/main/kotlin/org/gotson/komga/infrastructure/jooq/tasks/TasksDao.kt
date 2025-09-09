@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.tasks.Task
 import org.gotson.komga.application.tasks.TasksRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.jooq.tasks.Tables
 import org.jooq.DSLContext
 import org.jooq.Query
@@ -22,11 +23,12 @@ private val logger = KotlinLogging.logger {}
 @Component
 @DependsOn("flywaySecondaryMigrationInitializer")
 class TasksDao(
-  @Qualifier("tasksDslContextRW") private val dslRW: DSLContext,
-  @Qualifier("tasksDslContextRO") private val dslRO: DSLContext,
+  @Qualifier("tasksDslContextRW") dslRW: DSLContext,
+  @Qualifier("tasksDslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.tasksDb.batchChunkSize}") private val batchSize: Int,
   private val objectMapper: ObjectMapper,
-) : TasksRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  TasksRepository {
   private val t = Tables.TASK
 
   private val tasksAvailableCondition =

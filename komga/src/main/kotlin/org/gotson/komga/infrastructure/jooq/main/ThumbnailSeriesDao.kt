@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailSeriesRecord
@@ -15,10 +16,11 @@ import java.net.URL
 
 @Component
 class ThumbnailSeriesDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
-) : ThumbnailSeriesRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  ThumbnailSeriesRepository {
   private val ts = Tables.THUMBNAIL_SERIES
 
   override fun findByIdOrNull(thumbnailId: String): ThumbnailSeries? =

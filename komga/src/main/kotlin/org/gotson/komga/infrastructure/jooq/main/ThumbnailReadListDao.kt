@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailReadList
 import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailReadlistRecord
 import org.jooq.DSLContext
@@ -12,9 +13,10 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class ThumbnailReadListDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : ThumbnailReadListRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  ThumbnailReadListRepository {
   private val tr = Tables.THUMBNAIL_READLIST
 
   override fun findAllByReadListId(readListId: String): Collection<ThumbnailReadList> =

@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.csAlias
 import org.gotson.komga.jooq.main.Tables
@@ -28,10 +29,11 @@ import java.time.ZoneId
 
 @Component
 class SeriesDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
-) : SeriesRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  SeriesRepository {
   private val s = Tables.SERIES
   private val d = Tables.SERIES_METADATA
   private val rs = Tables.READ_PROGRESS_SERIES

@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.AuthenticationActivity
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.AuthenticationActivityRecord
@@ -21,9 +22,10 @@ import java.time.LocalDateTime
 
 @Component
 class AuthenticationActivityDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : AuthenticationActivityRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  AuthenticationActivityRepository {
   private val aa = Tables.AUTHENTICATION_ACTIVITY
 
   private val sorts =

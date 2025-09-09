@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.interfaces.api.rest.dto.ClientSettingDto
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.DSLContext
@@ -8,9 +9,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class ClientSettingsDtoDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO) {
   private val g = Tables.CLIENT_SETTINGS_GLOBAL
   private val u = Tables.CLIENT_SETTINGS_USER
 

@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.ReadListRequestBookMatchBook
 import org.gotson.komga.domain.model.ReadListRequestBookMatchSeries
 import org.gotson.komga.domain.model.ReadListRequestBookMatches
 import org.gotson.komga.domain.persistence.ReadListRequestRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.noCase
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.DSLContext
@@ -18,8 +19,10 @@ import java.time.LocalDate
 
 @Component
 class ReadListRequestDao(
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
-) : ReadListRequestRepository {
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
+) : SplitDslDaoBase(dslRW, dslRO),
+  ReadListRequestRepository {
   private val sd = Tables.SERIES_METADATA
   private val b = Tables.BOOK
   private val bd = Tables.BOOK_METADATA

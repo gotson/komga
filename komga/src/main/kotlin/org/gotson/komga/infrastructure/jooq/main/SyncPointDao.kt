@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.SyncPoint.ReadList.Companion.ON_DECK_ID
 import org.gotson.komga.domain.persistence.SyncPointRepository
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.language.toZonedDateTime
 import org.jooq.DSLContext
@@ -28,10 +29,11 @@ import java.time.ZoneId
 
 @Component
 class SyncPointDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   private val bookCommonDao: BookCommonDao,
-) : SyncPointRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  SyncPointRepository {
   private val b = Tables.BOOK
   private val m = Tables.MEDIA
   private val d = Tables.BOOK_METADATA
@@ -128,7 +130,7 @@ class SyncPointDao(
           .where(condition),
       ).execute()
 
-    return dslRW.findByIdOrNull(syncPointId)!!
+    return findByIdOrNull(syncPointId)!!
   }
 
   @Transactional
@@ -172,10 +174,9 @@ class SyncPointDao(
     }
   }
 
-  override fun findByIdOrNull(syncPointId: String): SyncPoint? = dslRO.findByIdOrNull(syncPointId)
-
-  private fun DSLContext.findByIdOrNull(syncPointId: String): SyncPoint? =
-    selectFrom(sp)
+  override fun findByIdOrNull(syncPointId: String): SyncPoint? =
+    dslRO
+      .selectFrom(sp)
       .where(sp.ID.eq(syncPointId))
       .fetchInto(sp)
       .map {

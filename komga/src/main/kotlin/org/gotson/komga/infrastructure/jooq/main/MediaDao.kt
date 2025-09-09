@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.MediaExtension
 import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.ProxyExtension
 import org.gotson.komga.domain.persistence.MediaRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.deserializeMediaExtension
 import org.gotson.komga.infrastructure.jooq.serializeJsonGz
@@ -27,11 +28,12 @@ import java.time.ZoneId
 
 @Component
 class MediaDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val mapper: ObjectMapper,
-) : MediaRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  MediaRepository {
   private val m = Tables.MEDIA
   private val p = Tables.MEDIA_PAGE
   private val f = Tables.MEDIA_FILE

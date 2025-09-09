@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.BookMetadataRepository
+import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAuthorRecord
@@ -20,10 +21,11 @@ import java.time.ZoneId
 
 @Component
 class BookMetadataDao(
-  private val dslRW: DSLContext,
-  @Qualifier("dslContextRO") private val dslRO: DSLContext,
+  dslRW: DSLContext,
+  @Qualifier("dslContextRO") dslRO: DSLContext,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
-) : BookMetadataRepository {
+) : SplitDslDaoBase(dslRW, dslRO),
+  BookMetadataRepository {
   private val d = Tables.BOOK_METADATA
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val bt = Tables.BOOK_METADATA_TAG
