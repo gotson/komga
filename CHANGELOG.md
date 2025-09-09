@@ -1,3 +1,25 @@
+# [1.23.4](https://github.com/gotson/komga/compare/1.23.3...1.23.4) (2025-09-09)
+## 🐛 Fixes
+**kobo**
+- update default kobo resources ([166b1ee](https://github.com/gotson/komga/commits/166b1ee)), closes [#2066](https://github.com/gotson/komga/issues/2066)
+- fail to create proxy url ([058af49](https://github.com/gotson/komga/commits/058af49)), closes [#2063](https://github.com/gotson/komga/issues/2063)
+
+## 🏎 Perf
+
+- send events outside of db transaction ([51bfb35](https://github.com/gotson/komga/commits/51bfb35))
+
+## 🧪 Tests
+
+- run tests with a WAL database instead of memorydb ([7888a53](https://github.com/gotson/komga/commits/7888a53))
+
+## 🛠  Build
+**webui**
+- update Browserslist db ([0e63e74](https://github.com/gotson/komga/commits/0e63e74))
+
+## ⚙️ Dependencies
+**ci**
+- bump actions/setup-node from 4 to 5 ([3f64435](https://github.com/gotson/komga/commits/3f64435))
+
 # [1.23.3](https://github.com/gotson/komga/compare/1.23.2...1.23.3) (2025-08-28)
 ## 🐛 Fixes
 **api**
