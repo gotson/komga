@@ -1,5 +1,6 @@
 package org.gotson.komga.interfaces.api.kosync
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.R2Device
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.time.ZonedDateTime
 
+private val logger = KotlinLogging.logger {}
+
 @RestController
 @RequestMapping("/koreader", produces = ["application/vnd.koreader.v1+json"])
 class KoreaderSyncController(
@@ -48,8 +51,14 @@ class KoreaderSyncController(
     @PathVariable bookHash: String,
   ): DocumentProgressDto {
     val books = bookRepository.findAllByHashKoreader(bookHash)
-    if (books.isEmpty()) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")
-    if (books.size > 1) throw ResponseStatusException(HttpStatus.CONFLICT, "More than 1 book found with the same hash")
+    if (books.isEmpty()) {
+      logger.debug { "No book found with KOReader hash: $bookHash" }
+      throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")
+    }
+    if (books.size > 1) {
+      logger.debug { "No unique book found with KOReader hash: $bookHash. Found ${books.size} books with the same hash." }
+      throw ResponseStatusException(HttpStatus.CONFLICT, "More than 1 book found with the same hash")
+    }
 
     val book = books.first()
     val media = mediaRepository.findById(book.id)
@@ -69,7 +78,10 @@ class KoreaderSyncController(
       when (media.profile) {
         MediaProfile.DIVINA, MediaProfile.PDF -> readProgress.page.toString()
         MediaProfile.EPUB -> {
-          val extension = mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Epub extension not found")
+          val extension =
+            mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
+              ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Epub extension not found")
+                .also { logger.error { "Epub extension not found for book ${book.id}. Book should be re-analyzed." } }
 
           // convert the href to its index for KOReader
           val resourceIndex =
@@ -81,6 +93,7 @@ class KoreaderSyncController(
           // return a progress string that points to the beginning of the resource
           "/body/DocFragment[${resourceIndex + 1}].0"
         }
+
         null -> throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book has no media profile")
       }
 
@@ -99,8 +112,14 @@ class KoreaderSyncController(
     @RequestBody koreaderProgress: DocumentProgressDto,
   ) {
     val books = bookRepository.findAllByHashKoreader(koreaderProgress.document)
-    if (books.isEmpty()) throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")
-    if (books.size > 1) throw ResponseStatusException(HttpStatus.CONFLICT, "More than 1 book found with the same hash")
+    if (books.isEmpty()) {
+      logger.debug { "No book found with KOReader hash: ${koreaderProgress.document}" }
+      throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")
+    }
+    if (books.size > 1) {
+      logger.debug { "No unique book found with KOReader hash: ${koreaderProgress.document}. Found ${books.size} books with the same hash." }
+      throw ResponseStatusException(HttpStatus.CONFLICT, "More than 1 book found with the same hash")
+    }
 
     val book = books.first()
     val media = mediaRepository.findById(book.id)
@@ -139,8 +158,12 @@ class KoreaderSyncController(
                 ?.value
                 ?.toIntOrNull()
               ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get Epub resource index from progress: ${koreaderProgress.progress}")
+                .also { logger.error { "Could not get Epub resource index from progress: ${koreaderProgress.progress}" } }
 
-          val extension = mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Epub extension not found")
+          val extension =
+            mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
+              ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Epub extension not found")
+                .also { logger.error { "Epub extension not found for book ${book.id}. Book should be re-analyzed." } }
 
           // get the href from the index provided by KOReader
           val href =
