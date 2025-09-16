@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.api.rest.dto
 import java.time.LocalDateTime
 
 data class HistoricalEventDto(
+  val id: String,
   val type: String,
   val timestamp: LocalDateTime,
   val bookId: String?,

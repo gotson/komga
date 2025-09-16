@@ -44,6 +44,7 @@ class HistoricalEventDtoDao(
         .map { er ->
           val epr = dslRO.selectFrom(ep).where(ep.ID.eq(er.id)).fetch()
           HistoricalEventDto(
+            id = er.id,
             type = er.type,
             timestamp = er.timestamp,
             bookId = er.bookId,
