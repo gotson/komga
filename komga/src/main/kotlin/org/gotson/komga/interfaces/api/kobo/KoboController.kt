@@ -570,7 +570,10 @@ class KoboController(
         locator =
           if (koboUpdate.statusInfo.status == StatusDto.FINISHED) {
             // If the book is finished, Kobo sends the first resource instead of the last, so we can't trust what Kobo sent
-            val epubExtension = mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub ?: throw IllegalArgumentException("Epub extension not found")
+            val epubExtension =
+              mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
+                ?: throw IllegalArgumentException("Epub extension not found")
+                  .also { logger.error { "Epub extension not found for book ${book.id}. Book should be re-analyzed." } }
             epubExtension.positions.last()
           } else {
             R2Locator(

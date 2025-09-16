@@ -418,6 +418,7 @@ class BookLifecycle(
         val extension =
           mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
             ?: throw IllegalArgumentException("Epub extension not found")
+              .also { logger.error { "Epub extension not found for book ${book.id}. Book should be re-analyzed." } }
         extension.positions[page - 1]
       } else {
         null
@@ -496,6 +497,7 @@ class BookLifecycle(
           val extension =
             mediaRepository.findExtensionByIdOrNull(book.id) as? MediaExtensionEpub
               ?: throw IllegalArgumentException("Epub extension not found")
+                .also { logger.error { "Epub extension not found for book ${book.id}. Book should be re-analyzed." } }
           // match progression with positions
           val matchingPositions = extension.positions.filter { it.href == href }
           val matchedPosition =
