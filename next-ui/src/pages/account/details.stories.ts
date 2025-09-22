@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import AccountDetails from './details.vue'
+import DialogConfirmEdit from '@/fragments/fragment/dialog/ConfirmEdit.vue'
 
 const meta = {
   component: AccountDetails,
   render: (args: object) => ({
-    components: { AccountDetails },
+    components: { AccountDetails, DialogConfirmEdit },
     setup() {
       return { args }
     },
-    template: '<AccountDetails />',
+    template: '<AccountDetails /><DialogConfirmEdit/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
