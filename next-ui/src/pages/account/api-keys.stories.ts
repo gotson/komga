@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ApiKeys from './api-keys.vue'
+import DialogConfirm from '@/fragments/fragment/dialog/Confirm.vue'
 
 const meta = {
   component: ApiKeys,
   render: (args: object) => ({
-    components: { ApiKeys },
+    components: { ApiKeys, DialogConfirm },
     setup() {
       return { args }
     },
-    template: '<ApiKeys />',
+    template: '<ApiKeys /><DialogConfirm/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
