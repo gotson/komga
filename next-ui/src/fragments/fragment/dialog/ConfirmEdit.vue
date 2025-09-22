@@ -12,6 +12,7 @@
         :is="confirmEdit.slot.component"
         v-bind="confirmEdit.slot.props"
         v-model="proxyModel.value"
+        class="mt-1"
       />
     </template>
   </DialogConfirmEdit>
