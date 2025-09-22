@@ -14,6 +14,7 @@ import { availableLocales } from '@/utils/i18n/locale-helper'
 import { localeDecorator } from './locale.decorator'
 import { vuetifyViewports } from './viewport'
 import { allModes } from './modes'
+import { PiniaColadaDelay } from '@pinia/colada-plugin-delay'
 
 initialize(
   {
@@ -76,7 +77,12 @@ setup((app) => {
   app.use(vueIntl)
   app.use(createPinia())
   app.use(PiniaColada, {
-    plugins: [PiniaColadaAutoRefetch()],
+    plugins: [
+      PiniaColadaAutoRefetch(),
+      PiniaColadaDelay({
+        delay: 200, // default delay
+      }),
+    ],
   })
 })
 
