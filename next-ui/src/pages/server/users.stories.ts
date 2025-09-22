@@ -2,17 +2,18 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import users from './users.vue'
 import { http, delay } from 'msw'
-
+import DialogConfirm from '@/fragments/fragment/dialog/Confirm.vue'
+import DialogConfirmEdit from '@/fragments/fragment/dialog/ConfirmEdit.vue'
 import { response401Unauthorized } from '@/mocks/api/handlers'
 
 const meta = {
   component: users,
   render: (args: object) => ({
-    components: { users },
+    components: { users, DialogConfirm, DialogConfirmEdit },
     setup() {
       return { args }
     },
-    template: '<users />',
+    template: '<users /><DialogConfirm/><DialogConfirmEdit/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
