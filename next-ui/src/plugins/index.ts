@@ -10,6 +10,7 @@ import pinia from '../stores'
 import router from '../router'
 import { PiniaColada } from '@pinia/colada'
 import { PiniaColadaAutoRefetch } from '@pinia/colada-plugin-auto-refetch'
+import { PiniaColadaDelay } from '@pinia/colada-plugin-delay'
 import { vueIntl } from '@/plugins/vue-intl'
 
 // Types
@@ -27,7 +28,12 @@ export function registerPlugins(app: App) {
     .use(router)
     .use(pinia)
     .use(PiniaColada, {
-      plugins: [PiniaColadaAutoRefetch()],
+      plugins: [
+        PiniaColadaAutoRefetch(),
+        PiniaColadaDelay({
+          delay: 200, // default delay
+        }),
+      ],
     })
 
   // register navigation guards
