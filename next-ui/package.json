@@ -31,6 +31,7 @@
     "@formatjs/intl-localematcher": "^0.6.1",
     "@pinia/colada": "^0.17.5",
     "@pinia/colada-plugin-auto-refetch": "^0.2.2",
+    "@pinia/colada-plugin-delay": "^0.1.0",
     "@vueuse/core": "^13.9.0",
     "core-js": "^3.45.1",
     "marked": "^16.3.0",
