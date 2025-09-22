@@ -42,7 +42,7 @@
             </slot>
 
             <v-text-field
-              :rules="[['sameAs', validateText]]"
+              :rules="[['sameAsIgnoreCase', validateText]]"
               hide-details
               class="mt-2"
               autofocus
