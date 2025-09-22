@@ -11,7 +11,6 @@
       { value: 100, title: '100' },
     ]"
     :headers="headers"
-    item-value="timestamp"
     fixed-header
     fixed-footer
     multi-sort

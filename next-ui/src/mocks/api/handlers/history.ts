@@ -5,6 +5,7 @@ import { http, HttpResponse } from 'msw'
 import logoUrl from '@/assets/logo.svg'
 
 export const historyBookImported = {
+  id: 'H1',
   type: 'BookImported',
   timestamp: new Date('2025-08-07T09:36:22.596'),
   bookId: 'B5',
@@ -17,6 +18,7 @@ export const historyBookImported = {
 }
 
 export const historySeriesFolderDeleted = {
+  id: 'H2',
   type: 'SeriesFolderDeleted',
   timestamp: new Date('2025-08-05T21:33:56.452'),
   seriesId: '404',
@@ -27,6 +29,7 @@ export const historySeriesFolderDeleted = {
 }
 
 export const historyBookFileDeleted = {
+  id: 'H3',
   type: 'BookFileDeleted',
   timestamp: new Date('2025-08-05T21:33:56.445'),
   bookId: '404',
@@ -38,6 +41,7 @@ export const historyBookFileDeleted = {
 }
 
 export const historyBookImportedForUpgrade = {
+  id: 'H4',
   type: 'BookImported',
   timestamp: new Date('2025-07-28T17:52:14.126'),
   bookId: 'B15',
@@ -50,6 +54,7 @@ export const historyBookImportedForUpgrade = {
 }
 
 export const historyBookFileDeletedForUpgrade = {
+  id: 'H5',
   type: 'BookFileDeleted',
   timestamp: new Date('2025-07-28T17:52:14.016'),
   bookId: 'b14',
@@ -61,6 +66,7 @@ export const historyBookFileDeletedForUpgrade = {
 }
 
 export const historyDuplicatePageDeleted = {
+  id: 'H6',
   type: 'DuplicatePageDeleted',
   timestamp: new Date('2025-07-26T21:33:18.809'),
   bookId: 'B5',
@@ -76,6 +82,7 @@ export const historyDuplicatePageDeleted = {
 }
 
 export const historyBookConverted = {
+  id: 'H7',
   type: 'BookConverted',
   timestamp: new Date('2025-07-07T17:33:39.545'),
   bookId: 'B25',
