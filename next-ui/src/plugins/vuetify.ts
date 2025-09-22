@@ -79,6 +79,12 @@ export const vuetifyRulesPlugin = createRulesPlugin(
       sameAs: (other?: string, err?: string) => {
         return (v: unknown) => other === v || err || 'Field must have the same value'
       },
+      sameAsIgnoreCase: (other?: string, err?: string) => {
+        return (v: unknown) =>
+          other?.localeCompare(String(v), undefined, { sensitivity: 'accent' }) == 0 ||
+          err ||
+          'Field must have the same value'
+      },
     },
   },
   vuetify.locale,
