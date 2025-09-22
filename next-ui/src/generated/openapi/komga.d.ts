@@ -2961,6 +2961,7 @@ export interface components {
         };
         HistoricalEventDto: {
             bookId?: string;
+            id: string;
             properties: {
                 [key: string]: string;
             };
