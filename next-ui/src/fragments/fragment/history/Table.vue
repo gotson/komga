@@ -96,7 +96,7 @@ import FragmentHistoryExpandBookFileDeleted from '@/fragments/fragment/history/e
 import FragmentHistoryExpandBookImported from '@/fragments/fragment/history/expand/BookImported.vue'
 import FragmentHistoryExpandBookConverted from '@/fragments/fragment/history/expand/BookConverted.vue'
 import FragmentHistoryExpandDuplicatePageDeleted from '@/fragments/fragment/history/expand/DuplicatePageDeleted.vue'
-import FragmentHistoryExpandSeriesFolderDeleted from '@/fragments/fragment/history/expand/SeriesFolderDeleted.vue'
+import FragmentHistoryExpandSeriesDirectoryDeleted from '@/fragments/fragment/history/expand/SeriesDirectoryDeleted.vue'
 import { historicalEventMessages } from '@/utils/i18n/enum/historical-event'
 import type { MessageDescriptor } from '@formatjs/intl/src/types'
 import { seriesDetailQuery } from '@/colada/series'
@@ -188,7 +188,7 @@ function getExpandedComponent(eventType: string): Component | null {
     case 'BookFileDeleted':
       return markRaw(FragmentHistoryExpandBookFileDeleted)
     case 'SeriesFolderDeleted':
-      return markRaw(FragmentHistoryExpandSeriesFolderDeleted)
+      return markRaw(FragmentHistoryExpandSeriesDirectoryDeleted)
     case 'DuplicatePageDeleted':
       return markRaw(FragmentHistoryExpandDuplicatePageDeleted)
     case 'BookConverted':

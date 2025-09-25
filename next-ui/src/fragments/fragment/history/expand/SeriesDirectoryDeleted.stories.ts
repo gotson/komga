@@ -1,22 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import SeriesFolderDeleted from './SeriesFolderDeleted.vue'
+import SeriesDirectoryDeleted from './SeriesDirectoryDeleted.vue'
 import { historySeriesFolderDeleted } from '@/mocks/api/handlers/history'
 
 const meta = {
-  component: SeriesFolderDeleted,
+  component: SeriesDirectoryDeleted,
   render: (args: object) => ({
-    components: { SeriesFolderDeleted },
+    components: { SeriesDirectoryDeleted },
     setup() {
       return { args }
     },
-    template: '<SeriesFolderDeleted v-bind="args" />',
+    template: '<SeriesDirectoryDeleted v-bind="args" />',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
   },
   args: {},
-} satisfies Meta<typeof SeriesFolderDeleted>
+} satisfies Meta<typeof SeriesDirectoryDeleted>
 
 export default meta
 type Story = StoryObj<typeof meta>
