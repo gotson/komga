@@ -10,7 +10,7 @@ const { event } = defineProps<{
 }>()
 
 const rows = computed(() => [
-  { header: 'Folder', value: event.properties.name },
+  { header: 'Directory', value: event.properties.name },
   { header: 'Reason', value: event.properties.reason },
 ])
 </script>

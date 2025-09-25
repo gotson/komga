@@ -26,7 +26,7 @@ declare module 'vue' {
     FragmentHistoryExpandBookFileDeleted: typeof import('./fragments/fragment/history/expand/BookFileDeleted.vue')['default']
     FragmentHistoryExpandBookImported: typeof import('./fragments/fragment/history/expand/BookImported.vue')['default']
     FragmentHistoryExpandDuplicatePageDeleted: typeof import('./fragments/fragment/history/expand/DuplicatePageDeleted.vue')['default']
-    FragmentHistoryExpandSeriesFolderDeleted: typeof import('./fragments/fragment/history/expand/SeriesFolderDeleted.vue')['default']
+    FragmentHistoryExpandSeriesDirectoryDeleted: typeof import('./fragments/fragment/history/expand/SeriesDirectoryDeleted.vue')['default']
     FragmentHistoryExpandTable: typeof import('./fragments/fragment/history/expand/Table.vue')['default']
     FragmentHistoryTable: typeof import('./fragments/fragment/history/Table.vue')['default']
     FragmentLocaleSelector: typeof import('./fragments/fragment/LocaleSelector.vue')['default']

@@ -1,1 +1,1 @@
-This folder contains the compiled translation files, using `npm run i18n-compile`.
+This directory contains the compiled translation files, using `npm run i18n-compile`.
