@@ -1,6 +1,6 @@
 # Components
 
-Vue template files in this folder are automatically imported.
+Vue template files in this directory are automatically imported.
 
 ## 🚀 Usage
 

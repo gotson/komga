@@ -9,7 +9,7 @@ export const historicalEventMessages: Record<string, MessageDescriptor> = {
   }),
   SeriesFolderDeleted: defineMessage({
     description: 'Historical event: SeriesFolderDeleted',
-    defaultMessage: 'Series Folder Deleted',
+    defaultMessage: 'Series Directory Deleted',
     id: 'enum.historicalEvent.SeriesFolderDeleted',
   }),
   DuplicatePageDeleted: defineMessage({
