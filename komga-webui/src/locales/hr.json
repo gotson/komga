@@ -138,7 +138,7 @@
       "general": "Općenito",
       "gestures": "Geste",
       "page_layout": "Raspored stranica",
-      "page_margin": "Margine stranica",
+      "page_margin": "Margina stranice",
       "paged": "Postavke prikaza stranica",
       "reading_mode": "Modus čitanja",
       "scale_type": "Vrsta skaliranja",
@@ -780,7 +780,7 @@
         "buttons": "Gumbovi",
         "click": "Pritisni / Dodirni"
       },
-      "page_margins": "Margine stranica",
+      "page_margins": "Margine stranice",
       "viewing_theme": "Tema prikaza"
     },
     "shortcuts": {
@@ -827,7 +827,12 @@
     "ERR_1031": "ComicRack CBL knjizi nedostaje serija ili broj",
     "ERR_1032": "EPUB datoteka sadrži neispravnu vrstu medija",
     "ERR_1033": "Neki unosi nedostaju",
-    "ERR_1034": "API ključ s tim komentarom već postoji"
+    "ERR_1034": "API ključ s tim komentarom već postoji",
+    "ERR_1035": "Greška prilikom dohvaćanja tablice sadržaja EPUB-a",
+    "ERR_1036": "Greška prilikom dohvaćanja straničnika EPUB-a",
+    "ERR_1037": "Greška prilikom dohvaćanja popisa stranica EPUB-a",
+    "ERR_1038": "Greška prilikom dohvaćanja divina stranica EPUB-a",
+    "ERR_1039": "Greška prilikom dohvaćanja pozicija EPUB-a"
   },
   "filter": {
     "age_rating": "dobna kategorija",
