@@ -827,7 +827,12 @@
     "ERR_1031": "V ComicRack CBL Book chybí série nebo číslo",
     "ERR_1032": "Soubor EPUB má chybný typ média",
     "ERR_1033": "Některé položky chybí",
-    "ERR_1034": "API key s touto poznámkou již existuje"
+    "ERR_1034": "API key s touto poznámkou již existuje",
+    "ERR_1035": "Chyba při získávání obsahu EPUB",
+    "ERR_1036": "Chyba při získávání záložek EPUB",
+    "ERR_1037": "CHyba při získávání seznamu stran EPUB",
+    "ERR_1038": "Chyba při získávání stran EPUB Divina",
+    "ERR_1039": "Chyba při získávání pozic EPUB"
   },
   "filter": {
     "age_rating": "Věkové hodnocení",
