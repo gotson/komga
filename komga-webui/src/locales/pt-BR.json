@@ -19,7 +19,15 @@
   },
   "account_settings": {
     "account_settings": "Configurações de conta",
-    "change_password": "alterar senha"
+    "api_key": {
+      "created_date": "Data de criação: {date}",
+      "force_kobo_sync": "Forçar sincronização com Kobo",
+      "generate_api_key": "Gerar chave de API",
+      "no_keys": "Nenhuma Chave de API foi criada"
+    },
+    "change_password": "alterar senha",
+    "details": "Detalhes",
+    "my_account": "Minha conta"
   },
   "announcements": {
     "mark_all_read": "Marque todos como lido",
@@ -27,6 +35,7 @@
     "tab_title": "Anúncios"
   },
   "authentication_activity": {
+    "api_key": "Chave de API",
     "datetime": "Data e Hora",
     "email": "E-mail",
     "error": "Erro",
@@ -86,6 +95,7 @@
     "beginning_of_book": "Você está no inicio do livro.",
     "changing_reading_direction": "Mudar Direção de Leitura para",
     "cycling_page_layout": "Alterando Layout de Página",
+    "cycling_page_margin": "Alterando Margem de Página",
     "cycling_scale": "Alterando Escala",
     "cycling_side_padding": "Alterando Preenchimento Lateral",
     "download_current_page": "Baixar a pagina atual",
@@ -128,6 +138,7 @@
       "general": "Geral",
       "gestures": "Gestos",
       "page_layout": "Layout de página",
+      "page_margin": "Margem de página",
       "paged": "Opções do Reader paginado",
       "reading_mode": "Modo de leitura",
       "scale_type": "Tipo de escala",
@@ -138,6 +149,7 @@
     "shortcuts": {
       "close": "Fechar",
       "cycle_page_layout": "Alterar layout de página",
+      "cycle_page_margin": "Alterar margem de página",
       "cycle_scale": "Alterar escala",
       "cycle_side_padding": "Alterar preenchimento lateral",
       "first_page": "Primeira página",
@@ -161,6 +173,8 @@
   },
   "browse_book": {
     "comment": "COMENTÁRIO",
+    "date_created": "CRIADO",
+    "date_modified": "MODIFICADO POR ÚLTIMO",
     "download_file": "Baixar arquivo",
     "file": "ARQUIVO",
     "format": "FORMATO",
@@ -170,6 +184,8 @@
     "outdated_tooltip": "O arquivo para este livro foi alterado, este livro deve ser reanalisado",
     "read_book": "Ler livro",
     "read_incognito": "Ler incógnito",
+    "remove_from_collection": "Remover livro da coleção",
+    "remove_from_readlist": "Remover livro da lista de leitura",
     "size": "TAMANHO"
   },
   "browse_collection": {
@@ -184,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Este é o ano mais antigo dentre as datas de lançamento de todos os livros na série",
+    "remove_from_collection": "Remover série da coleção",
     "series_no_summary": "Esta série não contém um resumo, então escolhemos um para você!",
     "summary_from_book": "Resumo do livro {number}:"
   },
@@ -194,6 +211,8 @@
   "common": {
     "age": "Idade",
     "all_libraries": "Todas as bibliotecas",
+    "all_of": "Todos",
+    "any_of": "Qualquer",
     "book": "Livro",
     "books": "Livros",
     "books_n": "Nenhum livro | 1 livro | {count} livros",
@@ -203,6 +222,7 @@
     "choose_image": "Escolher uma imagem",
     "close": "Fechar",
     "collections": "Coleções",
+    "copied": "Copiado!",
     "create": "Criar",
     "delete": "Excluir",
     "dimension": "l: {width}, a:{height}",
@@ -211,8 +231,10 @@
     "dismiss": "Ignorar",
     "download": "Baixar",
     "drag_drop": "Arrastar e soltar",
+    "duplicate": "Duplicado",
     "email": "Email",
     "epub": "Epub",
+    "error": "Erro",
     "filename": "Nome do arquivo",
     "filter_no_matches": "O filtro ativo não contém correspondências",
     "genre": "Gênero",
@@ -220,12 +242,17 @@
     "go_to_library": "Ir para biblioteca",
     "go_to_readlist": "Ir para lista de lidos",
     "go_to_series": "Ir para séries",
+    "i_understand": "Eu compreendo",
     "library": "Biblioteca",
     "locale_name": "Português (Brasil)",
     "locale_rtl": "false",
     "lock_all": "Bloquear todos",
+    "media": "Mídia",
+    "more": "Mais",
     "n_selected": "{count} selecionados",
     "nothing_to_show": "Nada para exibir",
+    "ok": "OK",
+    "oneshot": "One-shot",
     "outdated": "Desatualizado",
     "page": "Página",
     "page_number": "Número da página",
@@ -235,19 +262,23 @@
     "password": "Senha",
     "pdf": "PDF",
     "pending_tasks": "Nenhuma tarefa pendente | 1 tarefa pendente | {count} tarefas pendentes",
+    "pinned_libraries": "Bibliotecas Fixadas",
     "publisher": "Editora",
     "read": "Ler",
     "read_on": "Lido em {date}",
     "readlist": "Lista de Leitura",
     "readlists": "Listas de Leitura",
     "remember-me": "Me lembre",
+    "reorder": "Reordernar",
     "required": "Obrigatório",
     "reset_filters": "Redefinir filtros",
     "roles": "Funções",
     "save_changes": "Salvar mudanças",
     "series": "Séries | Séries",
+    "settings": "Configurações",
     "sidecars": "Carrinho",
     "tags": "Tags",
+    "ui": "Interface de Usuário",
     "unavailable": "Indisponível",
     "unlock_all": "Desbloquear tudo",
     "url": "URL",
@@ -271,6 +302,7 @@
     "comicrack_preambule_html": "Você pode importar Listas de Leitura do ComicRack existentes no formato <code>.cbl</code><br>Komga tentará combinar a série fornecida e o número do livro com as séries e livros em suas bibliotecas.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} livro(s) não foram marcados",
+      "body2": "{duplicates} / {total} livros são duplicados",
       "create": "Criar de todo modo",
       "title": "Alguns livros não estão combinados"
     },
@@ -286,6 +318,9 @@
     "tab_title": "Importação de Dados"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Gerar"
+    },
     "add_to_collection": {
       "button_create": "Criar",
       "card_collection_subtitle": "Nenhuma série | 1 série | {count} série",
