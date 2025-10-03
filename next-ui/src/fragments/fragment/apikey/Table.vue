@@ -99,6 +99,7 @@
 import type { components } from '@/generated/openapi/komga'
 import { defineMessage, useIntl } from 'vue-intl'
 import { komgaClient } from '@/api/komga-client'
+import { watchImmediate } from '@vueuse/core'
 
 const intl = useIntl()
 
@@ -172,7 +173,7 @@ function getLatestActivity(key: components['schemas']['ApiKeyDto']) {
     .catch(() => {})
 }
 
-watch(
+watchImmediate(
   () => apiKeys,
   (apiKeys) => {
     if (apiKeys)
@@ -180,7 +181,6 @@ watch(
         getLatestActivity(key)
       }
   },
-  { immediate: true },
 )
 
 const messages = {
