@@ -1,4 +1,8 @@
 import { httpTyped } from '@/mocks/api/httpTyped'
+import { mockPage } from '@/mocks/api/pageable'
+import { PageRequest } from '@/types/PageRequest'
+import { http, HttpResponse } from 'msw'
+import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 
 const book = {
   id: '05RKH8CC8B4RW',
@@ -57,11 +61,50 @@ const book = {
   oneshot: false,
 }
 
+export function mockBooks(count: number) {
+  return [...Array(count).keys()].map((index) =>
+    Object.assign({}, book, {
+      id: `BOOK${index + 1}`,
+      name: `Book ${index + 1}`,
+      number: index + 1,
+      metadata: {
+        title: `Book ${index + 1}`,
+        number: `${index + 1}`,
+        numberSort: index + 1,
+        ...(index % 2 === 0 && {
+          releaseDate: `19${String(index).slice(-2).padStart(2, '0')}-05-10`,
+        }),
+      },
+    }),
+  )
+}
+
 export const booksHandlers = [
+  httpTyped.post('/api/v1/books/list', ({ query, response }) => {
+    return response(200).json(
+      mockPage(
+        mockBooks(50),
+        new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
+      ),
+    )
+  }),
   httpTyped.get('/api/v1/books/{bookId}', ({ params, response }) => {
     if (params.bookId === '404') return response(404).empty()
     return response(200).json(
       Object.assign({}, book, { metadata: { title: `Book ${params.bookId}` } }),
     )
+  }),
+  httpTyped.post('/api/v1/books/import', ({ response }) => {
+    return response(202).empty()
+  }),
+  http.get('*/api/v1/books/*/thumbnail', async () => {
+    // Get an ArrayBuffer from reading the file from disk or fetching it.
+    const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
+
+    return HttpResponse.arrayBuffer(buffer, {
+      headers: {
+        'content-type': 'image/jpg',
+      },
+    })
   }),
 ]
