@@ -46,6 +46,9 @@ spring:
   jackson:
     deserialization:
       FAIL_ON_NULL_FOR_PRIMITIVES: true
+    mapper:
+      accept-case-insensitive-properties: true
+      accept-case-insensitive-values: true
   config:
     import:
       - "optional:file:\${komga.config-dir}/application.yml"
