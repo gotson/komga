@@ -112,6 +112,7 @@ import { UserRoles, userRolesMessages } from '@/types/UserRoles'
 import { defineMessage, useIntl } from 'vue-intl'
 
 import { useCurrentUser } from '@/colada/users'
+import { watchImmediate } from '@vueuse/core'
 
 const intl = useIntl()
 
@@ -195,7 +196,7 @@ function getLatestActivity(userId: string) {
     .catch(() => {})
 }
 
-watch(
+watchImmediate(
   () => users,
   (users) => {
     if (users)
@@ -203,7 +204,6 @@ watch(
         getLatestActivity(user.id)
       }
   },
-  { immediate: true },
 )
 
 const messages = {

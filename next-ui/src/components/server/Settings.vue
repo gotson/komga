@@ -328,6 +328,7 @@
 import { ThumbnailSize, thumbnailSizeMessages } from '@/types/ThumbnailSize'
 import { useIntl } from 'vue-intl'
 import type { components } from '@/generated/openapi/komga'
+import { watchImmediate } from '@vueuse/core'
 
 const intl = useIntl()
 
@@ -353,7 +354,7 @@ const settingsUpdate = ref<components['schemas']['SettingsUpdateDto']>({
   koboPort: undefined,
 })
 
-watch(
+watchImmediate(
   () => settings,
   () => {
     if (settings)
@@ -370,7 +371,6 @@ watch(
         koboPort: settings.koboPort,
       }
   },
-  { immediate: true },
 )
 
 const form = ref()
