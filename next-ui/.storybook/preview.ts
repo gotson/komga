@@ -19,6 +19,7 @@ import { PiniaColadaDelay } from '@pinia/colada-plugin-delay'
 initialize(
   {
     onUnhandledRequest: 'bypass',
+    quiet: true,
   },
   handlers,
 )
