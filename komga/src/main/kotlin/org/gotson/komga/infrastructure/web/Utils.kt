@@ -21,7 +21,6 @@ fun ResponseEntity.BodyBuilder.setCachePrivate() = this.cacheControl(cachePrivat
 val cachePrivate =
   CacheControl
     .maxAge(0, TimeUnit.SECONDS)
-    .noTransform()
     .cachePrivate()
     .mustRevalidate()
 
