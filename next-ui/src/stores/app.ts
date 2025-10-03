@@ -7,6 +7,7 @@ export const useAppStore = defineStore('app', {
     drawer: !useDisplay().mobile.value.valueOf(),
     theme: 'system',
     rememberMe: false,
+    importBooksPath: '',
   }),
   persist: true,
 })

@@ -1,0 +1,13 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './books.stories';
+
+<Meta of={Stories} />
+
+# Import Books
+
+Book import works in 2 steps:
+1. Browse for or input the import directory.
+2. Scanned books are shown in the table, allowing to fine-tune the import.
+
+<Canvas of={Stories.Default} />
