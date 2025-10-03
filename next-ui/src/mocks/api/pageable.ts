@@ -23,7 +23,7 @@ export function mockPage<T>(data: T[], pageRequest: PageRequest) {
       paged: !unpaged,
     },
     last: false,
-    totalPages: data.length / size,
+    totalPages: Math.ceil(data.length / size),
     totalElements: data.length,
     first: false,
     size: size,
