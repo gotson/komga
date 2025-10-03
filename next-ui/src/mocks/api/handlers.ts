@@ -10,20 +10,27 @@ import { claimHandlers } from '@/mocks/api/handlers/claim'
 import { historyHandlers } from '@/mocks/api/handlers/history'
 import { seriesHandlers } from '@/mocks/api/handlers/series'
 import { booksHandlers } from '@/mocks/api/handlers/books'
+import { filesystemHandlers } from '@/mocks/api/handlers/filesystem'
+import { transientBooksHandlers } from '@/mocks/api/handlers/transient-books'
 
 export const handlers = [
   ...actuatorHandlers,
   ...announcementHandlers,
   ...booksHandlers,
   ...claimHandlers,
+  ...filesystemHandlers,
   ...historyHandlers,
   ...librariesHandlers,
   ...referentialHandlers,
   ...releasesHandlers,
   ...seriesHandlers,
   ...settingsHandlers,
+  ...transientBooksHandlers,
   ...usersHandlers,
 ]
+
+export const response400BadRequest = () =>
+  HttpResponse.json({ error: 'Bad Request' }, { status: 400 })
 
 export const response404NotFound = () => HttpResponse.json({ error: 'NotFound' }, { status: 404 })
 
