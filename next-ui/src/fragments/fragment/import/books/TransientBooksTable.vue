@@ -399,7 +399,7 @@ function onDisplayedItems(items: { key: string }[]) {
 // Table setup
 const itemsPerPage = ref<number>(display.smAndDown.value ? 1 : 10)
 const itemsPerPageOptions = computed(() => (display.smAndDown.value ? [1, 5] : [10, 25, 50]))
-const hideFooter = computed(() => importBooks.value.length < itemsPerPage.value)
+const hideFooter = computed(() => importBooks.value.length < (display.smAndDown.value ? 1 : 10))
 
 const headers = [
   {
