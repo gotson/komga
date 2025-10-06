@@ -117,7 +117,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Build
         run: ./gradlew :komga:prepareThymeLeaf :komga:bootJar :komga-tray:jar
