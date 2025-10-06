@@ -299,15 +299,42 @@ class BookImport {
   public get statusMessage(): string {
     switch (this.transientBook.status) {
       case MediaStatus.UNKNOWN.valueOf():
-        return 'Book needs to be analyzed first'
+        return intl.formatMessage({
+          description: 'Import books: status message: book needs to be analyzed first',
+          defaultMessage: 'Book needs to be analyzed first',
+          id: 'CPMLrI',
+        })
       case MediaStatus.UNSUPPORTED.valueOf():
-        return 'Book format is not supported'
+        return intl.formatMessage({
+          description: 'Import books: status message: book format is not supported',
+          defaultMessage: 'Book format is not supported',
+          id: 'g2UW+6',
+        })
       case MediaStatus.ERROR.valueOf():
-        return 'Book could not be analyzed'
+        return intl.formatMessage({
+          description: 'Import books: status message: book could not be analyzed',
+          defaultMessage: 'Book could not be analyzed',
+          id: '8jE3eP',
+        })
     }
-    if (!this.series) return 'Choose a series'
-    if (this.imported) return 'Import requested'
-    if (this.upgradeBook) return 'Book will be upgraded'
+    if (!this.series)
+      return intl.formatMessage({
+        description: 'Import books: status message: choose a series',
+        defaultMessage: 'Choose a series',
+        id: 'cM9FuW',
+      })
+    if (this.imported)
+      return intl.formatMessage({
+        description: 'Import books: status message: import requested',
+        defaultMessage: 'Import requested',
+        id: 'YHxouG',
+      })
+    if (this.upgradeBook)
+      return intl.formatMessage({
+        description: 'Import books: status message: book will be upgraded',
+        defaultMessage: 'Book will be upgraded',
+        id: 'UoaxO7',
+      })
     return ''
   }
 }
@@ -429,11 +456,19 @@ const headers = [
 
 const copyOptions = [
   {
-    title: 'Hardlink/Copy files',
+    title: intl.formatMessage({
+      description: 'Import books: copy option: hardlink/copy',
+      defaultMessage: 'Hardlink/Copy files',
+      id: 'ap/Lnw',
+    }),
     value: 'HARDLINK',
   },
   {
-    title: 'Move files',
+    title: intl.formatMessage({
+      description: 'Import books: copy option: move',
+      defaultMessage: 'Move files',
+      id: 'EMhLEN',
+    }),
     value: 'MOVE',
   },
 ]
