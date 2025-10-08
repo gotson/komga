@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.security
 import jakarta.servlet.Filter
 import org.gotson.komga.domain.model.UserRoles
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
+import org.gotson.komga.infrastructure.hash.Hasher
 import org.gotson.komga.infrastructure.security.apikey.ApiKeyAuthenticationFilter
 import org.gotson.komga.infrastructure.security.apikey.ApiKeyAuthenticationProvider
 import org.gotson.komga.infrastructure.security.apikey.HeaderApiKeyAuthenticationConverter
@@ -34,6 +35,7 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher
 
 @Configuration
@@ -51,6 +53,7 @@ class SecurityConfiguration(
   private val opdsAuthenticationEntryPoint: OpdsAuthenticationEntryPoint,
   private val authenticationEventPublisher: AuthenticationEventPublisher,
   private val tokenEncoder: TokenEncoder,
+  private val hasher: Hasher,
   clientRegistrationRepository: InMemoryClientRegistrationRepository?,
 ) {
   private val oauth2Enabled = clientRegistrationRepository != null
@@ -158,7 +161,7 @@ class SecurityConfiguration(
         )
       }
 
-    http.addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter::class.java)
+    http.addFilterAfter(restAuthenticationFilter(), BasicAuthenticationFilter::class.java)
 
     return http.build()
   }
@@ -239,19 +242,19 @@ class SecurityConfiguration(
   fun koboAuthenticationFilter(): Filter =
     ApiKeyAuthenticationFilter(
       apiKeyAuthenticationProvider(),
-      UriRegexApiKeyAuthenticationConverter(Regex("""/kobo/([\w-]+)"""), tokenEncoder, userAgentWebAuthenticationDetailsSource),
+      UriRegexApiKeyAuthenticationConverter(Regex("""/kobo/([\w-]+)"""), hasher, tokenEncoder, userAgentWebAuthenticationDetailsSource),
     )
 
   fun kosyncAuthenticationFilter(): Filter =
     ApiKeyAuthenticationFilter(
       apiKeyAuthenticationProvider(),
-      HeaderApiKeyAuthenticationConverter("X-Auth-User", tokenEncoder, userAgentWebAuthenticationDetailsSource),
+      HeaderApiKeyAuthenticationConverter("X-Auth-User", hasher, tokenEncoder, userAgentWebAuthenticationDetailsSource),
     )
 
   fun restAuthenticationFilter(): Filter =
     ApiKeyAuthenticationFilter(
       apiKeyAuthenticationProvider(),
-      HeaderApiKeyAuthenticationConverter("X-API-Key", tokenEncoder, userAgentWebAuthenticationDetailsSource),
+      HeaderApiKeyAuthenticationConverter("X-API-Key", hasher, tokenEncoder, userAgentWebAuthenticationDetailsSource),
     )
 
   fun apiKeyAuthenticationProvider(): AuthenticationManager =

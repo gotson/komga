@@ -55,6 +55,8 @@ class ApiKeyAuthenticationFilter(
     } catch (ex: AuthenticationException) {
       unsuccessfulAuthentication(request, response, ex)
     }
+
+    filterChain.doFilter(request, response)
   }
 
   private fun unsuccessfulAuthentication(
@@ -78,7 +80,6 @@ class ApiKeyAuthenticationFilter(
       }
     securityContextHolderStrategy.context = context
     securityContextRepository.saveContext(context, request, response)
-    filterChain.doFilter(request, response)
   }
 
   private fun authenticationIsRequired(username: String): Boolean {

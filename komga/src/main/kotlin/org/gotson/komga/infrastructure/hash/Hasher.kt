@@ -20,6 +20,8 @@ class Hasher {
     return computeHash(path.inputStream())
   }
 
+  fun computeHash(string: String): String = computeHash(string.byteInputStream())
+
   fun computeHash(stream: InputStream): String {
     val hash = Algorithm.XXH3_128.Seeded(SEED.toLong()).createDigest()
 
