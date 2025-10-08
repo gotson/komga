@@ -7,7 +7,7 @@
       "url": "https://github.com/gotson/komga/blob/master/LICENSE"
     },
     "title": "Komga API",
-    "version": "1.23.4"
+    "version": "1.23.5"
   },
   "externalDocs": {
     "description": "Komga documentation",
@@ -10313,6 +10313,9 @@
           "bookId": {
             "type": "string"
           },
+          "id": {
+            "type": "string"
+          },
           "properties": {
             "type": "object",
             "additionalProperties": {
@@ -10331,6 +10334,7 @@
           }
         },
         "required": [
+          "id",
           "properties",
           "timestamp",
           "type"
