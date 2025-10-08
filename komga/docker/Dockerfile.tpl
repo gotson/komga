@@ -9,7 +9,8 @@ FROM ubuntu:24.10 as build-amd64
 ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:23-jre $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
-RUN apt -y update && \
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list.d/ubuntu.sources && \
+    apt -y update && \
     apt -y install ca-certificates locales libjxl-dev libheif-dev libwebp-dev libarchive-dev wget curl && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
@@ -23,7 +24,8 @@ FROM ubuntu:24.10 as build-arm64
 ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:23-jre $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
-RUN apt -y update && \
+RUN sed -i -re 's/([a-z]{2}\.)?ports.ubuntu.com\/ubuntu-ports/old-releases.ubuntu.com\/ubuntu/g' /etc/apt/sources.list.d/ubuntu.sources && \
+    apt -y update && \
     apt -y install ca-certificates locales libjxl-dev libheif-dev libwebp-dev libarchive-dev wget curl && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
