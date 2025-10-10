@@ -1,5 +1,5 @@
 <template>
-  <fragment-history-expand-table :rows="rows" />
+  <FragmentHistoryExpandTable :rows="rows" />
 </template>
 
 <script setup lang="ts">

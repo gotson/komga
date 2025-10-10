@@ -4,7 +4,7 @@
   <LayoutAppDrawer />
 
   <v-main scrollable>
-    <router-view />
+    <RouterView />
   </v-main>
 </template>
 

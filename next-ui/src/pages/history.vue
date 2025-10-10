@@ -3,7 +3,7 @@
     fluid
     class="pa-0 pa-sm-4 h-100 h-sm-auto"
   >
-    <fragment-history-table />
+    <FragmentHistoryTable />
   </v-container>
 </template>
 
