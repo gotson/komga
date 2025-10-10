@@ -76,7 +76,7 @@
             ? (dialogSeriesPickerActivator = $event.currentTarget as Element)
             : (dialogSeriesPickerActivator = undefined)
         "
-        @click="item.selectable ? (currentActionedItem = [item]) : undefined"
+        @click="item.selectable ? (currentActionedItems = [item]) : undefined"
       >
         <span
           v-if="item.series"
@@ -99,7 +99,7 @@
             ? (dialogBookPickerActivator = $event.currentTarget as Element)
             : undefined
         "
-        @click="item.upgradable ? (currentActionedItem = [item]) : undefined"
+        @click="item.upgradable ? (currentActionedItems = [item]) : undefined"
       >
         <v-chip
           v-if="item.upgradeBook"
@@ -140,7 +140,7 @@
             ? (dialogFileNamePickerActivator = $event.currentTarget as Element)
             : (dialogFileNamePickerActivator = undefined)
         "
-        @click="item.selectable ? (currentActionedItem = [item]) : undefined"
+        @click="item.selectable ? (currentActionedItems = [item]) : undefined"
       >
         {{ item.destinationName }}
       </div>
@@ -208,7 +208,7 @@
           color=""
           :disabled="loading || selectedBookIds.length == 0"
           @mouseenter="dialogSeriesPickerActivator = $event.currentTarget as Element"
-          @click="currentActionedItem = selectedBooks"
+          @click="currentActionedItems = selectedBooks"
         />
       </v-col>
 
@@ -238,15 +238,15 @@
   <DialogBookPicker
     :activator="dialogBookPickerActivator"
     :fullscreen="display.xs.value"
-    :books="currentActionedItem?.at(0)?.seriesBooks"
+    :books="currentActionedItems?.at(0)?.seriesBooks"
     @selected-book="(book) => bookPicked(book)"
   />
 
   <DialogFileNamePicker
     :activator="dialogFileNamePickerActivator"
     :fullscreen="display.xs.value"
-    :existing-name="currentActionedItem?.at(0)?.destinationName"
-    :series-books="currentActionedItem?.at(0)?.seriesBooks"
+    :existing-name="currentActionedItems?.at(0)?.destinationName"
+    :series-books="currentActionedItems?.at(0)?.seriesBooks"
     @selected-name="(name) => fileNamePicked(name)"
   />
 </template>
@@ -360,7 +360,7 @@ const importBooks = ref<BookImport[]>([])
 syncRefs(importBooksRO, importBooks)
 
 // the current items being acted upon, used for dialog callback
-const currentActionedItem = ref<BookImport[]>()
+const currentActionedItems = ref<BookImport[]>()
 // the selected book IDs, used to programmatically select items
 const selectedBookIds = ref<string[]>([])
 // the selected books
@@ -478,8 +478,8 @@ const copyMode = ref<string>(copyOptions[0]!.value)
 const dialogSeriesPickerActivator = ref<Element | undefined>(undefined)
 
 function seriesPicked(series: components['schemas']['SeriesDto']) {
-  if (currentActionedItem.value) {
-    currentActionedItem.value.forEach((it) => assignSeries(it, series))
+  if (currentActionedItems.value) {
+    currentActionedItems.value.forEach((it) => assignSeries(it, series))
   }
 }
 
@@ -487,8 +487,8 @@ function seriesPicked(series: components['schemas']['SeriesDto']) {
 const dialogBookPickerActivator = ref<Element | undefined>(undefined)
 
 function bookPicked(book: components['schemas']['BookDto']) {
-  if (currentActionedItem.value) {
-    currentActionedItem.value.forEach((it) => assignBookNumber(it, book.metadata.numberSort))
+  if (currentActionedItems.value) {
+    currentActionedItems.value.forEach((it) => assignBookNumber(it, book.metadata.numberSort))
   }
 }
 
@@ -496,8 +496,8 @@ function bookPicked(book: components['schemas']['BookDto']) {
 const dialogFileNamePickerActivator = ref<Element | undefined>(undefined)
 
 function fileNamePicked(name: string) {
-  if (currentActionedItem.value) {
-    currentActionedItem.value.forEach((it) => (it.destinationName = name))
+  if (currentActionedItems.value) {
+    currentActionedItems.value.forEach((it) => (it.destinationName = name))
   }
 }
 
