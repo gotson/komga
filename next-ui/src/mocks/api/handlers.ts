@@ -12,6 +12,7 @@ import { seriesHandlers } from '@/mocks/api/handlers/series'
 import { booksHandlers } from '@/mocks/api/handlers/books'
 import { filesystemHandlers } from '@/mocks/api/handlers/filesystem'
 import { transientBooksHandlers } from '@/mocks/api/handlers/transient-books'
+import { readListsHandlers } from '@/mocks/api/handlers/readlists'
 
 export const handlers = [
   ...actuatorHandlers,
@@ -21,6 +22,7 @@ export const handlers = [
   ...filesystemHandlers,
   ...historyHandlers,
   ...librariesHandlers,
+  ...readListsHandlers,
   ...referentialHandlers,
   ...releasesHandlers,
   ...seriesHandlers,
