@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import { http, delay } from 'msw'
 import TransientBooksTable from './TransientBooksTable.vue'
-import { response401Unauthorized } from '@/mocks/api/handlers'
+import { response400BadRequest } from '@/mocks/api/handlers'
 import { scanned } from '@/mocks/api/handlers/transient-books'
 import SnackQueue from '@/fragments/fragment/SnackQueue.vue'
 
@@ -52,7 +52,7 @@ export const ErrorOnImport: Story = {
   },
   parameters: {
     msw: {
-      handlers: [http.all('*/v1/books/import', response401Unauthorized)],
+      handlers: [http.all('*/v1/books/import', response400BadRequest)],
     },
   },
 }
