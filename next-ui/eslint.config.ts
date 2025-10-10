@@ -50,6 +50,14 @@ export default defineConfigWithVueTs(
       'no-empty': ['error', { allowEmptyCatch: true }],
       'vue/multi-word-component-names': 'off',
       'vue/require-default-prop': 'off',
+      'vue/component-name-in-template-casing': [
+        'error',
+        'PascalCase',
+        {
+          registeredComponentsOnly: false,
+          ignores: ['/^v-/'],
+        },
+      ],
     },
   },
 
