@@ -33,6 +33,7 @@ declare module 'vue' {
     FragmentHistoryExpandTable: typeof import('./fragments/fragment/history/expand/Table.vue')['default']
     FragmentHistoryTable: typeof import('./fragments/fragment/history/Table.vue')['default']
     FragmentImportBooksTransientBooksTable: typeof import('./fragments/fragment/import/books/TransientBooksTable.vue')['default']
+    FragmentImportReadlistTable: typeof import('./fragments/fragment/import/readlist/Table.vue')['default']
     FragmentLocaleSelector: typeof import('./fragments/fragment/LocaleSelector.vue')['default']
     FragmentRemoteFileList: typeof import('./fragments/fragment/RemoteFileList.vue')['default']
     FragmentSnackQueue: typeof import('./fragments/fragment/SnackQueue.vue')['default']
