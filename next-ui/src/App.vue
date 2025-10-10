@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <router-view />
+    <RouterView />
 
     <FragmentSnackQueue />
     <FragmentDialogConfirmEdit />
