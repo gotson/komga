@@ -1,0 +1,24 @@
+FROM eclipse-temurin:17-jre
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget "https://github.com/pgaskin/kepubify/releases/latest/download/kepubify-linux-64bit" -O /usr/bin/kepubify && \
+    chmod +x /usr/bin/kepubify && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+VOLUME /tmp
+VOLUME /config
+VOLUME /data
+WORKDIR /app
+
+# Copy the JAR file
+COPY build/libs/*.jar app.jar
+
+ENV KOMGA_CONFIGDIR="/config"
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
+EXPOSE 25600
+
+ENTRYPOINT ["java", "-Dspring.profiles.include=docker", "-jar", "app.jar", "--spring.config.additional-location=file:/config/"]

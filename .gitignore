@@ -54,6 +54,17 @@ application-oauth2.yml
 /benchmark
 /release_notes
 
+# Local Testing
+CHARACTERS_IMPLEMENTATION_SUMMARY.md
+docker-compose.test.yml
+start-test.ps1
+stop-test.ps1
+test-api.ps1
+
+# Local configs
+test-config/
+test-data/
+
 ### Conveyor
 output/
 secret/
