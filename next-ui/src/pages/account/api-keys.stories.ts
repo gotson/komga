@@ -6,11 +6,11 @@ import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
 const meta = {
   component: ApiKeys,
   render: (args: object) => ({
-    components: { ApiKeys, DialogConfirm: DialogConfirmInstance },
+    components: { ApiKeys, DialogConfirmInstance },
     setup() {
       return { args }
     },
-    template: '<ApiKeys /><DialogConfirm/>',
+    template: '<ApiKeys /><DialogConfirmInstance/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout

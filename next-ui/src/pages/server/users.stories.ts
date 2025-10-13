@@ -11,13 +11,13 @@ const meta = {
   render: (args: object) => ({
     components: {
       users,
-      DialogConfirm: DialogConfirmInstance,
-      DialogConfirmEdit: DialogConfirmEditInstance,
+      DialogConfirmInstance,
+      DialogConfirmEditInstance,
     },
     setup() {
       return { args }
     },
-    template: '<users /><DialogConfirm/><DialogConfirmEdit/>',
+    template: '<users /><DialogConfirmInstance/><DialogConfirmEditInstance/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
