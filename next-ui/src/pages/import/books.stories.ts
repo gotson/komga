@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ImportBooks from './books.vue'
-import DialogConfirmEdit from '@/fragments/fragment/dialog/ConfirmEdit.vue'
+import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
 import { delay, http } from 'msw'
 
 const meta = {
   component: ImportBooks,
   render: (args: object) => ({
-    components: { ImportBooks, DialogConfirmEdit },
+    components: { ImportBooks, DialogConfirmEdit: DialogConfirmEditInstance },
     setup() {
       return { args }
     },

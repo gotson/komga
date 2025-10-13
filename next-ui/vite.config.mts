@@ -38,7 +38,7 @@ export default defineConfig({
     }),
     Components({
       dts: 'src/components.d.ts',
-      dirs: ['src/components', 'src/fragments'],
+      dirs: ['src/components'],
       extensions: ['vue', 'ts'],
       include: [/\.vue$/, /\.[tj]s$/],
       globsExclude: ['src/**/*.stories.*'],
