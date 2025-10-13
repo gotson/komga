@@ -7,11 +7,11 @@ import { delay, http } from 'msw'
 const meta = {
   component: ImportBooks,
   render: (args: object) => ({
-    components: { ImportBooks, DialogConfirmEdit: DialogConfirmEditInstance },
+    components: { ImportBooks, DialogConfirmEditInstance },
     setup() {
       return { args }
     },
-    template: '<ImportBooks /><DialogConfirmEdit/>',
+    template: '<ImportBooks /><DialogConfirmEditInstance/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
