@@ -3,7 +3,7 @@
     fluid
     class="pa-0 pa-sm-4 h-100 h-sm-auto"
   >
-    <FragmentUserAuthenticationActivityTable />
+    <UserAuthenticationActivityTable />
   </v-container>
 </template>
 

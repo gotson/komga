@@ -3,7 +3,7 @@
     :loading="isLoading"
     @scan="(directory) => doScan(directory)"
   />
-  <FragmentImportBooksTransientBooksTable
+  <ImportBooksTransientBooksTable
     v-if="transientBooks"
     :loading="isLoading"
     :books="transientBooks"

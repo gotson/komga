@@ -1,0 +1,11 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './BuildCommit.stories';
+
+<Meta of={Stories} />
+
+# BuildCommit
+
+A button showing the current Github commit sha, retrieved from the Komga server. Clicking on the button will redirect to the particular commit at Github.
+
+<Canvas of={Stories.Default} />

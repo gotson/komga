@@ -51,12 +51,11 @@ The Vite plugin [dir2json](https://github.com/buddywang/vite-plugin-dir2json) is
 
 Vue template files are segregated in different categories depending on usage:
 
-- `./src/components`: Pure UI components, driven by model/props. Those are reusable components.
-- `./src/fragments`: Fragments interact with other layers of the application, like API or Pinia stores. They are split into separate files for easier organization, but are not necessarily reused.
-- `./src/pages`: Pages make use of components/fragments as well as API / Pinia stores. Each Component in that folder is converted to a navigable route using [unplugin-vue-router](https://github.com/posva/unplugin-vue-router). Pages contain a special `<route>` to define the layout to use as well as other router meta attributes.
+- `./src/components`: UI components.
+- `./src/pages`: Pages make use of components as well as API / Pinia stores. Each Component in that folder is converted to a navigable route using [unplugin-vue-router](https://github.com/posva/unplugin-vue-router). Pages contain a special `<route>` to define the layout to use as well as other router meta attributes.
 - `./src/layouts`: Wrapper component around Pages.
 
-Components and Fragments are automatically imported using [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components).
+Components are automatically imported using [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components).
 
 ## Icons
 
