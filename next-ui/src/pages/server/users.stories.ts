@@ -2,14 +2,18 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import users from './users.vue'
 import { http, delay } from 'msw'
-import DialogConfirm from '@/fragments/fragment/dialog/Confirm.vue'
-import DialogConfirmEdit from '@/fragments/fragment/dialog/ConfirmEdit.vue'
+import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
+import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
 import { response401Unauthorized } from '@/mocks/api/handlers'
 
 const meta = {
   component: users,
   render: (args: object) => ({
-    components: { users, DialogConfirm, DialogConfirmEdit },
+    components: {
+      users,
+      DialogConfirm: DialogConfirmInstance,
+      DialogConfirmEdit: DialogConfirmEditInstance,
+    },
     setup() {
       return { args }
     },
