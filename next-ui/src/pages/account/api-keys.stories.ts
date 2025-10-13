@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ApiKeys from './api-keys.vue'
-import DialogConfirm from '@/fragments/fragment/dialog/Confirm.vue'
+import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
 
 const meta = {
   component: ApiKeys,
   render: (args: object) => ({
-    components: { ApiKeys, DialogConfirm },
+    components: { ApiKeys, DialogConfirm: DialogConfirmInstance },
     setup() {
       return { args }
     },

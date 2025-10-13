@@ -2,9 +2,9 @@
   <v-app>
     <RouterView />
 
-    <FragmentSnackQueue />
-    <FragmentDialogConfirmEdit />
-    <FragmentDialogConfirm />
+    <SnackQueue />
+    <DialogConfirmEditInstance />
+    <DialogConfirmInstance />
   </v-app>
 
   <PiniaColadaDevtools />
