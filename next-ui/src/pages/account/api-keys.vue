@@ -6,7 +6,7 @@
     <EmptyStateNetworkError v-if="error" />
 
     <template v-else>
-      <FragmentApikeyTable
+      <ApikeyTable
         :api-keys="apiKeys"
         :loading="isLoading"
         @enter-add-api-key="(target) => (dialogGenerateActivator = target)"
@@ -17,7 +17,7 @@
       />
     </template>
 
-    <FragmentApikeyGenerateDialog
+    <ApikeyGenerateDialog
       :activator="dialogGenerateActivator"
       :fullscreen="display.xs.value"
     />

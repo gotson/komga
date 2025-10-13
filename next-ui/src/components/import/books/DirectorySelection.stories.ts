@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import DirectorySelection from './DirectorySelection.vue'
-import DialogConfirmEdit from '@/fragments/fragment/dialog/ConfirmEdit.vue'
+import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
 import { useAppStore } from '@/stores/app'
 import { fn } from 'storybook/test'
 
 const meta = {
   component: DirectorySelection,
   render: (args: object) => ({
-    components: { DirectorySelection, DialogConfirmEdit },
+    components: { DirectorySelection, DialogConfirmEdit: DialogConfirmEditInstance },
     setup() {
       return { args }
     },

@@ -6,7 +6,7 @@
     <EmptyStateNetworkError v-if="error" />
 
     <template v-else>
-      <FragmentUserTable
+      <UserTable
         :users="users"
         :loading="isLoading"
         @add-user="showDialog(ACTION.ADD)"
@@ -34,7 +34,7 @@ import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
 import UserDeletionWarning from '@/components/user/DeletionWarning.vue'
-import UserFormCreateEdit from '@/fragments/fragment/user/form/CreateEdit.vue'
+import UserFormCreateEdit from '@/components/user/form/CreateEdit.vue'
 import UserFormChangePassword from '@/components/user/form/ChangePassword.vue'
 import {
   useCreateUser,
