@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
-import FragmentRemoteFileList from '@/fragments/fragment/RemoteFileList.vue'
+import RemoteFileList from '@/components/RemoteFileList.vue'
 import { useDisplay } from 'vuetify'
 import { useAppStore } from '@/stores/app'
 import { useIntl } from 'vue-intl'
@@ -86,7 +86,7 @@ function browse() {
     fullscreen: display.xs.value,
   }
   dialogConfirmEdit.value.slot = {
-    component: markRaw(FragmentRemoteFileList),
+    component: markRaw(RemoteFileList),
     props: {},
   }
   dialogConfirmEdit.value.record = appStore.importBooksPath || '' // workaround for https://github.com/vuetifyjs/vuetify/issues/4144

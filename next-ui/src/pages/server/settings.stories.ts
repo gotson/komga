@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import settings from './settings.vue'
-import SnackQueue from '@/fragments/fragment/SnackQueue.vue'
+import SnackQueue from '@/components/SnackQueue.vue'
 import { http, delay } from 'msw'
 
 import { response401Unauthorized } from '@/mocks/api/handlers'
