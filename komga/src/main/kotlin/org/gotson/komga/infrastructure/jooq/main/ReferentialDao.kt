@@ -37,6 +37,7 @@ class ReferentialDao(
   private val g = Tables.SERIES_METADATA_GENRE
   private val bt = Tables.BOOK_METADATA_TAG
   private val st = Tables.SERIES_METADATA_TAG
+  private val bc = Tables.BOOK_METADATA_CHARACTER
   private val cs = Tables.COLLECTION_SERIES
   private val rb = Tables.READLIST_BOOK
   private val sl = Tables.SERIES_METADATA_SHARING
@@ -338,6 +339,49 @@ class ReferentialDao(
           .where(cs.COLLECTION_ID.eq(collectionId))
           .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } },
       ).fetchSet(0, String::class.java)
+      .sortedBy { it.stripAccents().lowercase() }
+      .toSet()
+
+  override fun findAllSeriesAndBookCharacters(filterOnLibraryIds: Collection<String>?): Set<String> =
+    dslRO
+      .select(bc.CHARACTER.`as`("character"))
+      .from(bc)
+      .apply { filterOnLibraryIds?.let { leftJoin(b).on(bc.BOOK_ID.eq(b.ID)).where(b.LIBRARY_ID.`in`(it)) } }
+      .fetchSet(0, String::class.java)
+      .sortedBy { it.stripAccents().lowercase() }
+      .toSet()
+
+  override fun findAllSeriesAndBookCharactersByLibraries(
+    libraryIds: Set<String>,
+    filterOnLibraryIds: Collection<String>?,
+  ): Set<String> =
+    dslRO
+      .select(bc.CHARACTER.`as`("character"))
+      .from(bc)
+      .leftJoin(b)
+      .on(bc.BOOK_ID.eq(b.ID))
+      .where(b.LIBRARY_ID.`in`(libraryIds))
+      .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+      .fetchSet(0, String::class.java)
+      .sortedBy { it.stripAccents().lowercase() }
+      .toSet()
+
+  override fun findAllSeriesAndBookCharactersByCollection(
+    collectionId: String,
+    filterOnLibraryIds: Collection<String>?,
+  ): Set<String> =
+    dslRO
+      .select(bc.CHARACTER.`as`("character"))
+      .from(bc)
+      .leftJoin(b)
+      .on(bc.BOOK_ID.eq(b.ID))
+      .leftJoin(s)
+      .on(b.SERIES_ID.eq(s.ID))
+      .leftJoin(cs)
+      .on(s.ID.eq(cs.SERIES_ID))
+      .where(cs.COLLECTION_ID.eq(collectionId))
+      .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+      .fetchSet(0, String::class.java)
       .sortedBy { it.stripAccents().lowercase() }
       .toSet()
 

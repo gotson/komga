@@ -65,6 +65,7 @@ data class SeriesMetadataDto(
 data class BookMetadataAggregationDto(
   val authors: List<AuthorDto> = emptyList(),
   val tags: Set<String> = emptySet(),
+  val characters: Set<String> = emptySet(),
   @JsonFormat(pattern = "yyyy-MM-dd")
   val releaseDate: LocalDate?,
   val summary: String,

@@ -67,6 +67,7 @@ class BookDtoDao(
   private val sd = Tables.SERIES_METADATA
   private val rlb = Tables.READLIST_BOOK
   private val bt = Tables.BOOK_METADATA_TAG
+  private val bc = Tables.BOOK_METADATA_CHARACTER
   private val bl = Tables.BOOK_METADATA_LINK
 
   private val onDeckFields = b.fields() + m.fields() + d.fields() + r.fields() + sd.TITLE
@@ -445,6 +446,7 @@ class BookDtoDao(
 
     lateinit var authors: Map<String, List<AuthorDto>>
     lateinit var tags: Map<String, List<String>>
+    lateinit var characters: Map<String, List<String>>
     lateinit var links: Map<String, List<WebLinkDto>>
     dsl.withTempTable(batchSize, bookIds).use { tempTable ->
       authors =
@@ -459,6 +461,12 @@ class BookDtoDao(
           .selectFrom(bt)
           .where(bt.BOOK_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.bookId }, { it.tag })
+
+      characters =
+        dsl
+          .selectFrom(bc)
+          .where(bc.BOOK_ID.`in`(tempTable.selectTempStrings()))
+          .groupBy({ it.bookId }, { it.character })
 
       links =
         dsl
@@ -475,7 +483,7 @@ class BookDtoDao(
         val rr = rec.into(r)
         val seriesTitle = rec.into(sd.TITLE).component1()
 
-        br.toDto(mr.toDto(), dr.toDto(authors[br.id].orEmpty(), tags[br.id].orEmpty().toSet(), links[br.id].orEmpty()), if (rr.userId != null) rr.toDto() else null, seriesTitle)
+        br.toDto(mr.toDto(), dr.toDto(authors[br.id].orEmpty(), tags[br.id].orEmpty().toSet(), characters[br.id].orEmpty().toSet(), links[br.id].orEmpty()), if (rr.userId != null) rr.toDto() else null, seriesTitle)
       }
   }
 
@@ -517,6 +525,7 @@ class BookDtoDao(
   private fun BookMetadataRecord.toDto(
     authors: List<AuthorDto>,
     tags: Set<String>,
+    characters: Set<String>,
     links: List<WebLinkDto>,
   ) = BookMetadataDto(
     title = title,
@@ -533,6 +542,8 @@ class BookDtoDao(
     authorsLock = authorsLock,
     tags = tags,
     tagsLock = tagsLock,
+    characters = characters,
+    charactersLock = charactersLock,
     isbn = isbn,
     isbnLock = isbnLock,
     links = links,

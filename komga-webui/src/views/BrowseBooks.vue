@@ -158,6 +158,7 @@ import {
   SearchConditionAllOfBook,
   SearchConditionAnyOfBook,
   SearchConditionAuthor,
+  SearchConditionCharacter,
   SearchConditionDeleted,
   SearchConditionLibraryId,
   SearchConditionMediaProfile,
@@ -222,6 +223,7 @@ export default Vue.extend({
       drawer: false,
       filterOptions: {
         tag: [] as NameValue[],
+        character: [] as NameValue[],
       },
     }
   },
@@ -375,6 +377,18 @@ export default Vue.extend({
           ],
           anyAllSelector: true,
         },
+        character: {
+          name: this.$t('filter.character').toString(),
+          values: [
+            {
+              name: this.$t('filter.any').toString(),
+              value: new SearchConditionCharacter(new SearchOperatorIsNotNull()),
+              nValue: new SearchConditionCharacter(new SearchOperatorIsNull()),
+            },
+            ...this.filterOptions.character,
+          ],
+          anyAllSelector: true,
+        },
         mediaProfile: {
           name: this.$t('filter.media_profile').toString(), values: Object.values(MediaProfile).map(x => ({
             name: i18n.t(`enums.media_profile.${x}`),
@@ -447,17 +461,20 @@ export default Vue.extend({
       const requestLibraryIds = libraryId !== LIBRARIES_ALL ? [libraryId] : this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => it.id)
 
       // load dynamic filters
-      const [tags] = await Promise.all([
+      const [tags, characters] = await Promise.all([
         this.$komgaReferential.getBookTags(undefined, undefined, requestLibraryIds),
+        this.$komgaReferential.getCharacters(undefined, undefined, requestLibraryIds),
       ])
       this.$set(this.filterOptions, 'tag', toNameValueCondition(tags, x => new SearchConditionTag(new SearchOperatorIs(x)), x => new SearchConditionTag(new SearchOperatorIsNot(x))))
+      this.$set(this.filterOptions, 'character', toNameValueCondition(characters, x => new SearchConditionCharacter(new SearchOperatorIs(x)), x => new SearchConditionCharacter(new SearchOperatorIsNot(x))))
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
-      if (route.query.readStatus || route.query.tag || authorRoles.some(role => role in route.query) || route.query.oneshot || route.query.deleted || route.query.mediaProfile || route.query.mediaStatus) {
+      if (route.query.readStatus || route.query.tag || route.query.character || authorRoles.some(role => role in route.query) || route.query.oneshot || route.query.deleted || route.query.mediaProfile || route.query.mediaStatus) {
         activeFilters = {
           readStatus: route.query.readStatus || [],
           tag: route.query.tag || [],
+          character: route.query.character || [],
           oneshot: route.query.oneshot || [],
           deleted: route.query.deleted || [],
           mediaProfile: route.query.mediaProfile || [],
@@ -491,6 +508,7 @@ export default Vue.extend({
       const validFilter = {
         readStatus: this.$_.intersectionWith(filters.readStatus, extractFilterOptionsValues(this.filterOptionsList.readStatus.values), objIsEqual) || [],
         tag: this.$_.intersectionWith(filters.tag, extractFilterOptionsValues(this.filterOptions.tag), objIsEqual) || [],
+        character: this.$_.intersectionWith(filters.character, extractFilterOptionsValues(this.filterOptions.character), objIsEqual) || [],
         oneshot: this.$_.intersectionWith(filters.oneshot, extractFilterOptionsValues(this.filterOptionsList.oneshot.values), objIsEqual) || [],
         deleted: this.$_.intersectionWith(filters.deleted, extractFilterOptionsValues(this.filterOptionsList.deleted.values), objIsEqual) || [],
         mediaProfile: this.$_.intersectionWith(filters.mediaProfile, extractFilterOptionsValues(this.filterOptionsPanel.mediaProfile.values), objIsEqual) || [],
@@ -603,6 +621,7 @@ export default Vue.extend({
       }
       if (this.filters.readStatus && this.filters.readStatus.length > 0) conditions.push(new SearchConditionAnyOfBook(this.filters.readStatus))
       if (this.filters.tag && this.filters.tag.length > 0) this.filtersMode?.tag?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.tag)) : conditions.push(new SearchConditionAnyOfBook(this.filters.tag))
+      if (this.filters.character && this.filters.character.length > 0) this.filtersMode?.character?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.character)) : conditions.push(new SearchConditionAnyOfBook(this.filters.character))
       if (this.filters.oneshot && this.filters.oneshot.length > 0) conditions.push(...this.filters.oneshot)
       if (this.filters.mediaProfile && this.filters.mediaProfile.length > 0) this.filtersMode?.mediaProfile?.allOf ? conditions.push(new SearchConditionAllOfBook(this.filters.mediaProfile)) : conditions.push(new SearchConditionAnyOfBook(this.filters.mediaProfile))
       if (this.filters.deleted && this.filters.deleted.length > 0) conditions.push(...this.filters.deleted)

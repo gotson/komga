@@ -99,6 +99,18 @@ interface ReferentialRepository {
     filterOnLibraryIds: Collection<String>?,
   ): Set<String>
 
+  fun findAllSeriesAndBookCharacters(filterOnLibraryIds: Collection<String>?): Set<String>
+
+  fun findAllSeriesAndBookCharactersByLibraries(
+    libraryIds: Set<String>,
+    filterOnLibraryIds: Collection<String>?,
+  ): Set<String>
+
+  fun findAllSeriesAndBookCharactersByCollection(
+    collectionId: String,
+    filterOnLibraryIds: Collection<String>?,
+  ): Set<String>
+
   fun findAllSeriesTags(filterOnLibraryIds: Collection<String>?): Set<String>
 
   fun findAllSeriesTagsByLibrary(

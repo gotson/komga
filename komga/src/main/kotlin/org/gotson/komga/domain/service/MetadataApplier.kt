@@ -33,6 +33,7 @@ class MetadataApplier {
         isbn = getIfNotLocked(isbn, patch.isbn, isbnLock),
         links = getIfNotLocked(links, patch.links, linksLock),
         tags = getIfNotLocked(tags, patch.tags, tagsLock),
+        characters = getIfNotLocked(characters, patch.characters, charactersLock),
       )
     }
 

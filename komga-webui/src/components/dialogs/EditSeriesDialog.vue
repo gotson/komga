@@ -395,6 +395,32 @@
                     </v-combobox>
                   </v-col>
                 </v-row>
+
+                <!-- Characters -->
+                <v-row>
+                  <v-col cols="12">
+                    <span class="text-body-2">{{ $t('dialog.edit_series.field_characters') }}</span>
+                    <v-combobox v-model="form.characters"
+                                :items="charactersAvailable"
+                                @input="$v.form.characters.$touch()"
+                                @change="form.charactersLock = true"
+                                hide-selected
+                                chips
+                                deletable-chips
+                                multiple
+                                filled
+                                dense
+                    >
+                      <template v-slot:prepend>
+                        <v-icon :color="form.charactersLock ? 'secondary' : ''"
+                                @click="form.charactersLock = !form.charactersLock"
+                        >
+                          {{ form.charactersLock ? 'mdi-lock' : 'mdi-lock-open' }}
+                        </v-icon>
+                      </template>
+                    </v-combobox>
+                  </v-col>
+                </v-row>
               </v-container>
             </v-card>
           </v-tab-item>
@@ -597,6 +623,8 @@ export default Vue.extend({
         genresLock: false,
         tags: [],
         tagsLock: false,
+        characters: [],
+        charactersLock: false,
         totalBookCount: undefined as number | undefined,
         totalBookCountLock: false,
         sharingLabels: [],
@@ -621,6 +649,7 @@ export default Vue.extend({
       },
       genresAvailable: [] as string[],
       tagsAvailable: [] as string[],
+      charactersAvailable: [] as string[],
       sharingLabelsAvailable: [] as string[],
     }
   },
@@ -639,6 +668,7 @@ export default Vue.extend({
       if(val) {
         this.getThumbnails(this.series)
         this.loadAvailableTags()
+        this.loadAvailableCharacters()
         this.loadAvailableGenres()
         this.loadAvailableSharingLabels()
       } else {
@@ -744,6 +774,9 @@ export default Vue.extend({
     async loadAvailableTags() {
       this.tagsAvailable = await this.$komgaReferential.getTags()
     },
+    async loadAvailableCharacters() {
+      this.charactersAvailable = await this.$komgaReferential.getCharacters()
+    },
     async loadAvailableGenres() {
       this.genresAvailable = await this.$komgaReferential.getGenres()
     },
@@ -809,6 +842,11 @@ export default Vue.extend({
         const tagsLock = this.$_.uniq(series.map(x => x.metadata.tagsLock))
         this.form.tagsLock = tagsLock.length > 1 ? false : tagsLock[0]
 
+        this.form.characters = []
+
+        const charactersLock = this.$_.uniq(series.map(x => x.metadata.charactersLock))
+        this.form.charactersLock = charactersLock.length > 1 ? false : charactersLock[0]
+
         this.form.sharingLabels = []
 
         const sharingLabelsLock = this.$_.uniq(series.map(x => x.metadata.sharingLabelsLock))
@@ -819,6 +857,7 @@ export default Vue.extend({
       } else {
         this.form.genres = []
         this.form.tags = []
+        this.form.characters = []
         this.form.sharingLabels = []
         this.form.links = []
         this.form.alternateTitles = []
