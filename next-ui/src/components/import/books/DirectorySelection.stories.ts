@@ -8,11 +8,11 @@ import { fn } from 'storybook/test'
 const meta = {
   component: DirectorySelection,
   render: (args: object) => ({
-    components: { DirectorySelection, DialogConfirmEdit: DialogConfirmEditInstance },
+    components: { DirectorySelection, DialogConfirmEditInstance },
     setup() {
       return { args }
     },
-    template: '<DirectorySelection v-bind="args"/><DialogConfirmEdit/>',
+    template: '<DirectorySelection v-bind="args"/><DialogConfirmEditInstance/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
