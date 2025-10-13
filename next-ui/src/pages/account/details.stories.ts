@@ -6,11 +6,11 @@ import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.v
 const meta = {
   component: AccountDetails,
   render: (args: object) => ({
-    components: { AccountDetails, DialogConfirmEdit: DialogConfirmEditInstance },
+    components: { AccountDetails, DialogConfirmEditInstance },
     setup() {
       return { args }
     },
-    template: '<AccountDetails /><DialogConfirmEdit/>',
+    template: '<AccountDetails /><DialogConfirmEditInstance/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
