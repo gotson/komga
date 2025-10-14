@@ -3046,7 +3046,11 @@ export interface components {
              * @example Version 1.9.0 contains the second feature drop for Ebooks support.
              */
             summary?: string;
-            /** @description Tags describing the item */
+            /**
+             * @description Tags describing the item
+             * @example upgrade
+             * @example komga
+             */
             tags: string[];
             /**
              * @description Plain text title
@@ -5469,7 +5473,7 @@ export interface operations {
             content: {
                 "multipart/form-data": {
                     /** Format: binary */
-                    file: string;
+                    file: File;
                 };
             };
         };
@@ -6155,7 +6159,7 @@ export interface operations {
             content: {
                 "multipart/form-data": {
                     /** Format: binary */
-                    file: string;
+                    file: File;
                 };
             };
         };
@@ -7242,9 +7246,9 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": {
+                "multipart/form-data": {
                     /** Format: binary */
-                    file: string;
+                    file: File;
                 };
             };
         };
@@ -7644,7 +7648,7 @@ export interface operations {
             content: {
                 "multipart/form-data": {
                     /** Format: binary */
-                    file: string;
+                    file: File;
                 };
             };
         };
@@ -8518,7 +8522,7 @@ export interface operations {
             content: {
                 "multipart/form-data": {
                     /** Format: binary */
-                    file: string;
+                    file: File;
                 };
             };
         };
