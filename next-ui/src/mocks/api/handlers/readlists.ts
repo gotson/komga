@@ -1,4 +1,6 @@
 import { httpTyped } from '@/mocks/api/httpTyped'
+import { mockPage } from '@/mocks/api/pageable'
+import { PageRequest } from '@/types/PageRequest'
 
 export const matchCbl = {
   readListMatch: { name: "Jupiter's Legacy", errorCode: '' },
@@ -134,7 +136,58 @@ export const matchCbl = {
   errorCode: '',
 }
 
+export const emptyCbl = {
+  error: 'Bad Request',
+  message: 'ERR_1029',
+}
+
+export const garbledCbl = {
+  error: 'Bad Request',
+  message: 'ERR_1015',
+}
+
+const rl1 = {
+  id: '02AQZYKBS00J8',
+  name: 'Readlist example',
+  summary: 'An example read list to show off how it works in Komga.',
+  ordered: true,
+  bookIds: ['BOOK1', 'BOOK2'],
+  createdDate: new Date('2020-08-20T05:45:38Z'),
+  lastModifiedDate: new Date('2021-08-09T08:42:38Z'),
+  filtered: false,
+}
+
+const rl2 = {
+  id: '02AQZYKBS00J8',
+  name: 'Elfes',
+  summary: 'Elfes readlist',
+  ordered: false,
+  bookIds: ['BOOK3', 'BOOK4'],
+  createdDate: new Date('2020-08-20T05:45:38Z'),
+  lastModifiedDate: new Date('2021-08-09T08:42:38Z'),
+  filtered: false,
+}
+
+const readlists = [rl1, rl2]
+
 export const readListsHandlers = [
+  httpTyped.get('/api/v1/readlists', ({ query, response }) => {
+    const selectedReadLists = query.get('search')
+      ? readlists.filter((it) => !!it.name.match(new RegExp(query.get('search')!, 'i')))
+      : readlists
+
+    return response(200).json(
+      mockPage(
+        selectedReadLists,
+        new PageRequest(
+          Number(query.get('page')),
+          Number(query.get('size')),
+          undefined,
+          Boolean(query.get('unpaged')),
+        ),
+      ),
+    )
+  }),
   httpTyped.post('/api/v1/readlists', async ({ request, response }) => {
     const body = await request.json()
     return response(200).json({

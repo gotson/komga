@@ -13,6 +13,7 @@ import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
 
 // Labs
+import { VFileUpload } from 'vuetify/labs/VFileUpload'
 import { VIconBtn } from 'vuetify/labs/components'
 import { createRulesPlugin } from 'vuetify/labs/rules'
 
@@ -69,6 +70,7 @@ export const vuetify = createVuetify({
   },
   blueprint: md3,
   components: {
+    VFileUpload,
     VIconBtn,
   },
 })

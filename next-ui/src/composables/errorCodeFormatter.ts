@@ -4,7 +4,8 @@ import { errorCodeMessages } from '@/utils/i18n/enum/error-codes'
 export function useErrorCodeFormatter() {
   const intl = useIntl()
 
-  function convertErrorCodes(message: string): string {
+  function convertErrorCodes(message?: string): string {
+    if (!message) return ''
     const match = message.match(/ERR_\d{4}/g)
     let r = message
     match?.forEach((errorCode) => {
