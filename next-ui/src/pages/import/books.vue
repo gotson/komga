@@ -1,13 +1,18 @@
 <template>
-  <ImportBooksDirectorySelection
-    :loading="isLoading"
-    @scan="(directory) => doScan(directory)"
-  />
-  <ImportBooksTransientBooksTable
-    v-if="transientBooks"
-    :loading="isLoading"
-    :books="transientBooks"
-  />
+  <v-container
+    fluid
+    class="pa-0 pa-sm-4 h-100 h-sm-auto"
+  >
+    <ImportBooksDirectorySelection
+      :loading="isLoading"
+      @scan="(directory) => doScan(directory)"
+    />
+    <ImportBooksTransientBooksTable
+      v-if="transientBooks"
+      :loading="isLoading"
+      :books="transientBooks"
+    />
+  </v-container>
 </template>
 
 <script lang="ts" setup>
