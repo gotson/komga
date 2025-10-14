@@ -50,6 +50,7 @@ const singleMatch = {
     },
   ],
 }
+
 export const Created: Story = {
   args: {
     match: singleMatch,
@@ -66,6 +67,12 @@ export const Created: Story = {
     },
     template: '<Table v-bind="args"/>',
   }),
+}
+
+export const DuplicateName: Story = {
+  args: {
+    match: { ...singleMatch, readListMatch: { name: 'Elfes', errorCode: '' } },
+  },
 }
 
 export const Empty: Story = {
