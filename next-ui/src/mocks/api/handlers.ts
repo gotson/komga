@@ -1,7 +1,7 @@
 import { actuatorHandlers } from '@/mocks/api/handlers/actuator'
 import { announcementHandlers } from '@/mocks/api/handlers/announcements'
 import { releasesHandlers } from '@/mocks/api/handlers/releases'
-import { HttpResponse } from 'msw'
+import { HttpResponse, type JsonBodyType } from 'msw'
 import { librariesHandlers } from '@/mocks/api/handlers/libraries'
 import { referentialHandlers } from '@/mocks/api/handlers/referential'
 import { usersHandlers } from '@/mocks/api/handlers/users'
@@ -33,6 +33,8 @@ export const handlers = [
 
 export const response400BadRequest = () =>
   HttpResponse.json({ error: 'Bad Request' }, { status: 400 })
+
+export const response400 = (body: JsonBodyType) => HttpResponse.json(body, { status: 400 })
 
 export const response404NotFound = () => HttpResponse.json({ error: 'NotFound' }, { status: 404 })
 
