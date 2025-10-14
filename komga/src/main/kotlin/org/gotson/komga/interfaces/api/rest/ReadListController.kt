@@ -268,7 +268,7 @@ class ReadListController(
     }
 
   @Operation(summary = "Match ComicRack list", tags = [OpenApiConfiguration.TagNames.COMICRACK])
-  @PostMapping("match/comicrack")
+  @PostMapping("match/comicrack", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
   @PreAuthorize("hasRole('ADMIN')")
   fun matchComicRackList(
     @RequestParam("file") file: MultipartFile,
