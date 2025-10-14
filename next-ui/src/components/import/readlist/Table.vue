@@ -1,220 +1,223 @@
 <template>
-  <v-data-table
-    v-model="selectedIndices"
-    :loading="creating || loading"
-    :items="readListEntries"
-    item-value="index"
-    :headers="headers"
-    :search="filterRef"
-    :custom-filter="filterFn"
-    :hide-default-footer="hideFooter"
-    fixed-header
-    fixed-footer
-    show-select
-    item-selectable="selectable"
-    select-strategy="page"
-    mobile-breakpoint="md"
-  >
-    <template #no-data>
-      <v-empty-state
-        icon="i-mdi:filter"
-        :title="
-          $formatMessage({
-            description:
-              'Import reading list table: shown when table has no data because of the selected filter - title',
-            defaultMessage: 'No data',
-            id: 'AJa6Tq',
-          })
-        "
-        :text="
-          $formatMessage({
-            description:
-              'Import reading list table: shown when table has no data because of the selected filter - subtitle',
-            defaultMessage: 'Try adjusting the filters',
-            id: 'NpjqFA',
-          })
-        "
-      />
-    </template>
-
-    <template #top>
-      <v-toolbar flat>
-        <v-spacer />
-        <v-chip-group
-          v-model="filterSelect"
-          multiple
-          class="ms-2"
-          :disabled="finishedState"
-        >
-          <v-chip
-            v-for="f in filterOptions"
-            :key="f.value"
-            :value="f.value"
-            :text="f.title"
-            filter
-            rounded
-            color="primary"
-          />
-        </v-chip-group>
-      </v-toolbar>
-    </template>
-
-    <template #[`item.request.request.series`]="{ value }">
-      <div
-        v-for="s in value"
-        :key="s"
-      >
-        {{ s }}
-      </div>
-    </template>
-
-    <template #[`item.series`]="{ item, internalItem, isSelected, value }">
-      <div
-        :class="finishedState ? undefined : 'cursor-pointer'"
-        @mouseenter="
-          finishedState
-            ? undefined
-            : (dialogSeriesPickerActivator = $event.currentTarget as Element)
-        "
-        @click="finishedState ? undefined : (currentActionedItem = item)"
-      >
-        <template v-if="value">
-          <div>{{ value?.title }}</div>
-          <div v-if="value?.releaseDate">
-            {{ $formatDate(value?.releaseDate, { year: 'numeric', timeZone: 'UTC' }) }}
-          </div>
-        </template>
-        <div
-          v-else
-          style="height: 2em"
-          :class="isSelected(internalItem) ? 'missing' : ''"
-        />
-      </div>
-    </template>
-
-    <template #[`item.book`]="{ item, internalItem, isSelected, value }">
-      <div
-        :class="finishedState || !item?.series ? undefined : 'cursor-pointer'"
-        @mouseenter="
-          finishedState || !item?.series
-            ? undefined
-            : (dialogBookPickerActivator = $event.currentTarget as Element)
-        "
-        @click="finishedState || !item?.series ? undefined : (currentActionedItem = item)"
-      >
-        <span v-if="value">{{ value.number }} - {{ value.title }}</span>
-        <div
-          v-else
-          style="height: 2em"
-          :class="isSelected(internalItem) && item?.series ? 'missing' : ''"
-        />
-      </div>
-    </template>
-
-    <template #[`header.statusMessage`]>
-      <v-icon icon="i-mdi:alert-circle-outline" />
-    </template>
-
-    <template #[`item.statusMessage`]="{ item, value, internalItem, isSelected }">
-      <template v-if="isSelected(internalItem)">
-        <v-icon
-          v-if="duplicateBookIds?.includes(item.book?.bookId)"
-          v-tooltip="
+  <div>
+    <v-data-table
+      v-model="selectedIndices"
+      :loading="creating || loading"
+      :items="readListEntries"
+      item-value="index"
+      :headers="headers"
+      :search="filterRef"
+      :custom-filter="filterFn"
+      :hide-default-footer="hideFooter"
+      fixed-header
+      fixed-footer
+      show-select
+      item-selectable="selectable"
+      select-strategy="page"
+      mobile-breakpoint="md"
+    >
+      <template #no-data>
+        <v-empty-state
+          icon="i-mdi:filter"
+          :title="
             $formatMessage({
-              description: 'Import reading list table: tooltip for status - duplicate book',
-              defaultMessage: 'Duplicate book',
-              id: '1MAL38',
+              description:
+                'Import reading list table: shown when table has no data because of the selected filter - title',
+              defaultMessage: 'No data',
+              id: 'AJa6Tq',
             })
           "
-          icon="i-mdi:alert-circle"
-          color="warning"
-        />
-        <v-icon
-          v-else-if="value"
-          v-tooltip="value"
-          icon="i-mdi:alert-circle"
-          color="error"
-        />
-      </template>
-    </template>
-  </v-data-table>
-
-  <v-container fluid>
-    <v-row
-      justify="space-between"
-      align="end"
-    >
-      <v-col
-        cols="12"
-        sm=""
-      >
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="readListName"
-              :rules="['required']"
-              :disabled="finishedState"
-              clearable
-              :label="
-                $formatMessage({
-                  description: 'Import reading list: bottom bar: reading list name',
-                  defaultMessage: 'Name',
-                  id: 'rrF/Z2',
-                })
-              "
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-textarea
-              v-model="readListSummary"
-              rows="2"
-              hide-details
-              :disabled="finishedState"
-              clearable
-              :label="
-                $formatMessage({
-                  description: 'Import reading list: bottom bar: reading list summary',
-                  defaultMessage: 'Summary',
-                  id: 'uW+6XG',
-                })
-              "
-            />
-          </v-col>
-        </v-row>
-      </v-col>
-
-      <v-col cols="auto">
-        <v-btn
-          :color="finishedState ? 'success' : 'primary'"
           :text="
             $formatMessage({
-              description: 'Import reading list: bottom bar: create button',
-              defaultMessage: 'Create',
-              id: 'dipMGb',
+              description:
+                'Import reading list table: shown when table has no data because of the selected filter - subtitle',
+              defaultMessage: 'Try adjusting the filters',
+              id: 'NpjqFA',
             })
           "
-          :disabled="!isFormValid || creating || loading || finishedState"
-          :prepend-icon="finishedState ? 'i-mdi:check' : undefined"
-          @click="doCreateReadList"
         />
-      </v-col>
-    </v-row>
-  </v-container>
+      </template>
 
-  <DialogSeriesPicker
-    :activator="dialogSeriesPickerActivator"
-    :fullscreen="display.xs.value"
-    @selected-series="(series) => seriesPicked(series)"
-  />
+      <template #top>
+        <v-toolbar flat>
+          <v-spacer />
+          <v-chip-group
+            v-model="filterSelect"
+            multiple
+            class="ms-2"
+            :disabled="finishedState"
+          >
+            <v-chip
+              v-for="f in filterOptions"
+              :key="f.value"
+              :value="f.value"
+              :text="f.title"
+              filter
+              rounded
+              color="primary"
+            />
+          </v-chip-group>
+        </v-toolbar>
+      </template>
 
-  <DialogBookPicker
-    :activator="dialogBookPickerActivator"
-    :fullscreen="display.xs.value"
-    :books="dialogBookPickerBooks"
-    @selected-book="(book) => bookPicked(book)"
-  />
+      <template #[`item.request.request.series`]="{ value }">
+        <div
+          v-for="s in value"
+          :key="s"
+        >
+          {{ s }}
+        </div>
+      </template>
+
+      <template #[`item.series`]="{ item, internalItem, isSelected, value }">
+        <div
+          :class="finishedState ? undefined : 'cursor-pointer'"
+          @mouseenter="
+            finishedState
+              ? undefined
+              : (dialogSeriesPickerActivator = $event.currentTarget as Element)
+          "
+          @click="finishedState ? undefined : (currentActionedItem = item)"
+        >
+          <template v-if="value">
+            <div>{{ value?.title }}</div>
+            <div v-if="value?.releaseDate">
+              {{ $formatDate(value?.releaseDate, { year: 'numeric', timeZone: 'UTC' }) }}
+            </div>
+          </template>
+          <div
+            v-else
+            style="height: 2em"
+            :class="isSelected(internalItem) ? 'missing' : ''"
+          />
+        </div>
+      </template>
+
+      <template #[`item.book`]="{ item, internalItem, isSelected, value }">
+        <div
+          :class="finishedState || !item?.series ? undefined : 'cursor-pointer'"
+          @mouseenter="
+            finishedState || !item?.series
+              ? undefined
+              : (dialogBookPickerActivator = $event.currentTarget as Element)
+          "
+          @click="finishedState || !item?.series ? undefined : (currentActionedItem = item)"
+        >
+          <span v-if="value">{{ value.number }} - {{ value.title }}</span>
+          <div
+            v-else
+            style="height: 2em"
+            :class="isSelected(internalItem) && item?.series ? 'missing' : ''"
+          />
+        </div>
+      </template>
+
+      <template #[`header.statusMessage`]>
+        <v-icon icon="i-mdi:alert-circle-outline" />
+      </template>
+
+      <template #[`item.statusMessage`]="{ item, value, internalItem, isSelected }">
+        <template v-if="isSelected(internalItem)">
+          <v-icon
+            v-if="duplicateBookIds?.includes(item.book?.bookId)"
+            v-tooltip="
+              $formatMessage({
+                description: 'Import reading list table: tooltip for status - duplicate book',
+                defaultMessage: 'Duplicate book',
+                id: '1MAL38',
+              })
+            "
+            icon="i-mdi:alert-circle"
+            color="warning"
+          />
+          <v-icon
+            v-else-if="value"
+            v-tooltip="value"
+            icon="i-mdi:alert-circle"
+            color="error"
+          />
+        </template>
+      </template>
+    </v-data-table>
+
+    <v-container fluid>
+      <v-row
+        justify="space-between"
+        align="end"
+      >
+        <v-col
+          cols="12"
+          sm=""
+        >
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="readListName"
+                :rules="['required']"
+                :disabled="finishedState"
+                clearable
+                :label="
+                  $formatMessage({
+                    description: 'Import reading list: bottom bar: reading list name',
+                    defaultMessage: 'Name',
+                    id: 'rrF/Z2',
+                  })
+                "
+                :error-messages="readListNameAlreadyExists ? duplicateNameMessage : undefined"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-textarea
+                v-model="readListSummary"
+                rows="2"
+                hide-details
+                :disabled="finishedState"
+                clearable
+                :label="
+                  $formatMessage({
+                    description: 'Import reading list: bottom bar: reading list summary',
+                    defaultMessage: 'Summary',
+                    id: 'uW+6XG',
+                  })
+                "
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col cols="auto">
+          <v-btn
+            :color="finishedState ? 'success' : 'primary'"
+            :text="
+              $formatMessage({
+                description: 'Import reading list: bottom bar: create button',
+                defaultMessage: 'Create',
+                id: 'dipMGb',
+              })
+            "
+            :disabled="!isFormValid || creating || loading || finishedState"
+            :prepend-icon="finishedState ? 'i-mdi:check' : undefined"
+            @click="doCreateReadList"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <DialogSeriesPicker
+      :activator="dialogSeriesPickerActivator"
+      :fullscreen="display.xs.value"
+      @selected-series="(series) => seriesPicked(series)"
+    />
+
+    <DialogBookPicker
+      :activator="dialogBookPickerActivator"
+      :fullscreen="display.xs.value"
+      :books="dialogBookPickerBooks"
+      @selected-book="(book) => bookPicked(book)"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -231,10 +234,11 @@ import {
 import { useDisplay } from 'vuetify'
 import { useQuery } from '@pinia/colada'
 import { bookListQuery } from '@/colada/books'
-import { useCreateReadList } from '@/colada/readlists'
+import { useCreateReadList, useListReadLists } from '@/colada/readlists'
 import { useMessagesStore } from '@/stores/messages'
 import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { PageRequest } from '@/types/PageRequest'
 
 class ReadListEntry {
   index: number
@@ -257,7 +261,7 @@ class ReadListEntry {
   }
 
   public get importable(): boolean {
-    return !!this.series && !!this.book
+    return !!this.book
   }
 
   public get statusMessage(): string {
@@ -311,7 +315,7 @@ const selectedBooks = useArrayFilter(readListEntries, (it) =>
 )
 
 const duplicateBookIds = useArrayFilter(
-  useArrayMap(readListEntries, (it) => it.book?.bookId),
+  useArrayMap(selectedBooks, (it) => it.book?.bookId),
   (it, index, array) => !!it && array.indexOf(it) !== index,
 )
 
@@ -327,6 +331,18 @@ watchImmediate(
     readListCreated.value = undefined
   },
 )
+
+const { data: allReadLists } = useQuery(useListReadLists({ pageable: PageRequest.Unpaged() }))
+const readListNameAlreadyExists = computed(() =>
+  allReadLists.value?.content?.some(
+    (it) => it.name.localeCompare(readListName.value, undefined, { sensitivity: 'accent' }) == 0,
+  ),
+)
+const duplicateNameMessage = intl.formatMessage({
+  description: 'Import reading list: error message if read list name already exists',
+  defaultMessage: 'A read list with that name already exists',
+  id: 'LjqS9+',
+})
 
 const finishedState = computed<boolean>(() => !!readListCreated.value)
 
@@ -415,12 +431,19 @@ function filterFn(
 // Series Picker Dialog
 const dialogSeriesPickerActivator = ref<Element | undefined>(undefined)
 
-function seriesPicked(series: components['schemas']['SeriesDto']) {
+async function seriesPicked(series: components['schemas']['SeriesDto']) {
   if (currentActionedItem.value) {
     currentActionedItem.value.series = {
       seriesId: series.id,
       title: series.metadata.title,
       releaseDate: series.booksMetadata?.releaseDate,
+    }
+
+    const requestedNumber = currentActionedItem.value.request.request.number
+    const seriesBooks = await getSeriesBooks(series.id)
+    if (seriesBooks) {
+      const matchedBook = seriesBooks.content?.find((b) => b.metadata.number === requestedNumber)
+      if (matchedBook) bookPicked(matchedBook)
     }
   }
 }
@@ -455,14 +478,16 @@ const getSeriesBooks = useMemoize(async (seriesId: string) =>
     .then(({ data }) => data),
 )
 
-const isFormValid = computed<boolean>(() => !!readListName.value)
+const isFormValid = computed<boolean>(
+  () => !!readListName.value && !readListNameAlreadyExists.value,
+)
 const createPayload = computed(
   () =>
     ({
       name: readListName.value,
       summary: readListSummary.value,
       ordered: true,
-      bookIds: [],
+      bookIds: selectedBooks.value.map((it) => it.book?.bookId),
     }) as components['schemas']['ReadListCreationDto'],
 )
 
@@ -485,7 +510,7 @@ function doCreateReadList() {
   postReadList(createPayload.value)
     .then(({ data }) => {
       readListCreated.value = data
-      //TODO: add link
+      //TODO: add link to created readlist
       messagesStore.messages.push({
         text: 'Readlist created',
       })
