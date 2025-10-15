@@ -265,7 +265,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
 
-interface UserExtend {
+type UserExtend = {
   id?: string
   email: string
   password?: string
