@@ -96,7 +96,7 @@ async function submitForm(isActive: Ref<boolean, boolean>) {
   }
 }
 
-export interface DialogConfirmProps {
+export type DialogConfirmProps = {
   title?: string
   subtitle?: string
   okText?: string

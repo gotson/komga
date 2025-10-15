@@ -79,7 +79,7 @@ async function submitForm(callback: () => void) {
   if (valid) callback()
 }
 
-export interface DialogConfirmEditProps {
+export type DialogConfirmEditProps = {
   /**
    * Dialog title
    * @type string
