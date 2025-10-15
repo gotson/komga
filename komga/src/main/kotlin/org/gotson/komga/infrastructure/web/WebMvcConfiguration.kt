@@ -39,7 +39,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
       ).addResourceLocations("classpath:public/")
       .setCacheControl(CacheControl.noStore())
 
-    listOf("css", "fonts", "img", "js")
+    listOf("css", "fonts", "img", "js", "assets")
       .forEach {
         registry
           .addResourceHandler("/$it/**")
