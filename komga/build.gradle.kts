@@ -143,6 +143,7 @@ kotlin {
 }
 
 val webui = "$rootDir/komga-webui"
+val nextui = "$rootDir/next-ui"
 tasks {
   withType<JavaCompile> {
     sourceCompatibility = "17"
@@ -210,6 +211,18 @@ tasks {
     group = "web"
     dependsOn("copyWebDist")
     from("$webui/dist/index.html")
+    into("$projectDir/src/main/resources/public/")
+    filter { line ->
+      line.replace("((?:src|content|href)=\")([\\w]*/.*?)(\")".toRegex()) {
+        it.groups[0]?.value + " th:" + it.groups[1]?.value + "@{" + it.groups[2]?.value?.prefixIfNot("/") + "}" + it.groups[3]?.value
+      }
+    }
+  }
+
+  // modifies index.html to inject ThymeLeaf th: tags
+  register<Copy>("prepareThymeLeafNext") {
+    group = "web"
+    from("$nextui/dist/index.html")
     into("$projectDir/src/main/resources/public/")
     filter { line ->
       line.replace("((?:src|content|href)=\")([\\w]*/.*?)(\")".toRegex()) {
