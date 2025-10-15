@@ -60,3 +60,56 @@ Components are automatically imported using [unplugin-vue-components](https://gi
 ## Icons
 
 [UnoCSS Icons preset](https://unocss.dev/presets/icons) is used for icons, with the MDI set from Iconify.
+
+## Base URL
+
+The generated bundle is server by Apache Tomcat when running Spring. By default the site is hosted at `/`, but if `server.servlet-context-path` is set, the base URL can be dynamic.
+
+The base URL needs to be set correctly so the web app works:
+
+- in the API client
+- in the Vue Router, to properly handle the web history
+- in the generated bundle, to load other files (js/css/images)
+
+1. Vite is [configured](./vite.config.mts) with the experimental `renderBuiltUrl`, which will use a dynamic function (`window.buildUrl`) defined in `index.html` to generate the asset path at runtime. This is only supported withing JS files though.
+2. To handle the dynamic path in `index.html`, a Gradle task `prepareThymeLeafNext` modifies `index.html` to duplicate `href`, `src` and `content` attributes as Thymeleaf variants.
+
+    For example the following:
+
+    ```html
+    <script
+        type="module"
+        crossorigin
+        src="/assets/index-xEUJQodq.js"
+    ></script>
+    <link
+        rel="stylesheet"
+        crossorigin
+        href="/assets/index-CQqFNa2f.css"
+    />
+    ```
+
+    will be transformed to:
+
+    ```html
+    <script
+        type="module"
+        crossorigin
+        src="/assets/index-xEUJQodq.js"
+        th:src="@{/assets/index-xEUJQodq.js}"
+    ></script>
+    <link
+        rel="stylesheet"
+        crossorigin
+        href="/assets/index-CQqFNa2f.css"
+        th:href="@{/assets/index-CQqFNa2f.css}"
+    />
+    ```
+
+    In Thymeleaf, `@{}` will prepend the path with the context path dynamically when serving `index.html`.
+
+3. when the `index.html` is served by the `IndexController`, a `baseUrl` attribute is injected, which contains the servlet context path (by default `/`, but could be `/komga` for example)
+4. the `index.html` contains a Thymeleaf script block that will be processed when serving the page, effectively injecting the `baseUrl` value into `window.ressourceBaseUrl`.
+5. `window.ressourceBaseUrl` is subsequently used in Typescript code to set the base URL for:
+    - the API client and the images served [by API](./src/api/base.ts)
+    - the [Vue Router](./src/router/index.ts)
