@@ -81,6 +81,17 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  base: '/',
+  // support for the runtime base url (depending on the server.servlet.context-path)
+  // window.buildUrl is a function defined in index.html that dynamically provides the path
+  // it only works within js files though
+  experimental: {
+    renderBuiltUrl(filename, { hostType }) {
+      if (hostType === 'js') return { runtime: `window.buildUrl(${JSON.stringify(filename)})` }
+      // else if (hostType === 'html') return `@{/${filename}}`
+      else return { relative: true }
+    },
+  },
   optimizeDeps: {
     exclude: ['vuetify'],
   },

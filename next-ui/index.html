@@ -11,6 +11,16 @@
             content="width=device-width, initial-scale=1.0"
         />
         <title>Komga</title>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            window.resourceBaseUrl = /*[(${"'" + baseUrl + "'"})]*/ '/'
+            /*]]>*/
+        </script>
+        <script>
+            window.buildUrl = (filename) => {
+                return `${window.resourceBaseUrl}${filename}`
+            }
+        </script>
     </head>
     <body>
         <div id="app"></div>
