@@ -140,6 +140,7 @@
       </template>
     </v-data-table>
 
+    <!--region Creation Form-->
     <v-container fluid>
       <v-row
         justify="space-between"
@@ -204,6 +205,7 @@
         </v-col>
       </v-row>
     </v-container>
+    <!--endregion-->
 
     <DialogSeriesPicker
       :activator="dialogSeriesPickerActivator"
@@ -332,6 +334,7 @@ watchImmediate(
   },
 )
 
+//region Duplicate read list name check
 const { data: allReadLists } = useQuery(useListReadLists({ pageable: PageRequest.Unpaged() }))
 const readListNameAlreadyExists = computed(() =>
   allReadLists.value?.content?.some(
@@ -343,10 +346,11 @@ const duplicateNameMessage = intl.formatMessage({
   defaultMessage: 'A read list with that name already exists',
   id: 'LjqS9+',
 })
+//endregion
 
 const finishedState = computed<boolean>(() => !!readListCreated.value)
 
-// Table setup
+//region Table setup
 const hideFooter = computed(() => readListEntries.value.length < 10)
 
 const headers = [
@@ -396,8 +400,9 @@ const headers = [
     align: 'end',
   },
 ] as const // workaround for https://github.com/vuetifyjs/vuetify/issues/18901
+//endregion
 
-// Filtering
+//region Filtering
 const filterSelect = ref<string[]>([])
 const filterRef = computed(() => filterSelect.value.join(''))
 const filterOptions = [
@@ -427,8 +432,9 @@ function filterFn(
   if (!error && !duplicate && query.includes('o')) return true
   return false
 }
+//endregion
 
-// Series Picker Dialog
+//region Series Picker Dialog
 const dialogSeriesPickerActivator = ref<Element | undefined>(undefined)
 
 async function seriesPicked(series: components['schemas']['SeriesDto']) {
@@ -447,8 +453,9 @@ async function seriesPicked(series: components['schemas']['SeriesDto']) {
     }
   }
 }
+//endregion
 
-// Book Picker Dialog
+//region Book Picker Dialog
 const dialogBookPickerActivator = ref<Element | undefined>(undefined)
 const dialogBookPickerBooks = asyncComputed(async () =>
   currentActionedItem.value?.series
@@ -465,6 +472,7 @@ function bookPicked(book: components['schemas']['BookDto']) {
     }
   }
 }
+//endregion
 
 const getSeriesBooks = useMemoize(async (seriesId: string) =>
   useQuery(bookListQuery, () => ({
