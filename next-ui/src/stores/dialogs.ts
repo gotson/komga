@@ -29,22 +29,22 @@ export const useDialogsStore = defineStore('dialogs', {
   }),
 })
 
-interface DialogActivation<T> {
+type DialogActivation<T> = {
   activator?: Element | string
   dialogProps: T
   callback: (hideDialog: () => void, setLoading: (isLoading: boolean) => void) => void
 }
 
-interface DialogConfirmEditActivation extends DialogActivation<DialogConfirmEditProps> {
+type DialogConfirmEditActivation = DialogActivation<DialogConfirmEditProps> & {
   slot: ComponentWithProps
   record?: unknown
 }
 
-interface DialogConfirmActivation extends DialogActivation<DialogConfirmProps> {
+type DialogConfirmActivation = DialogActivation<DialogConfirmProps> & {
   slotWarning: ComponentWithProps
 }
 
-interface ComponentWithProps {
+type ComponentWithProps = {
   component?: Component
   props: object
 }
