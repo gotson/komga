@@ -1,19 +1,19 @@
-export interface ActuatorInfo {
+export type ActuatorInfo = {
   git: ActuatorGit
   build: ActuatorBuild
 }
 
-export interface ActuatorGit {
+export type ActuatorGit = {
   commit: ActuatorGitCommit
   branch: string
 }
 
-export interface ActuatorGitCommit {
+export type ActuatorGitCommit = {
   time: Date
   id: string
 }
 
-export interface ActuatorBuild {
+export type ActuatorBuild = {
   version: string
   artifact: string
   name: string
