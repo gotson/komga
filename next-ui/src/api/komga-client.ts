@@ -35,11 +35,11 @@ const client = createClient<paths>({
 })
 client.use(coladaMiddleware)
 
-interface SpringError {
+type SpringError = {
   message?: string
 }
 
-export interface ErrorCause {
+export type ErrorCause = {
   body?: unknown
   status?: number
   message?: string
