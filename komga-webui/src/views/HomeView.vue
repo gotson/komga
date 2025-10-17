@@ -309,6 +309,15 @@
               <v-list-item-title>{{ $t('navigation.logout') }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item :href="nextUrl" target="_blank">
+            <v-list-item-icon>
+              <v-icon>mdi-ab-testing</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Try the new UI</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
 
         <v-divider/>
@@ -383,6 +392,7 @@ import {LibraryDto} from '@/types/komga-libraries'
 import {BookSearch, SearchConditionAnyOfBook, SearchConditionMediaStatus, SearchOperatorIs} from '@/types/komga-search'
 import LibrariesActionsMenu from '@/components/menus/LibrariesActionsMenu.vue'
 import ReorderLibraries from '@/components/ReorderLibraries.vue'
+import urls from '@/functions/urls'
 
 export default Vue.extend({
   name: 'HomeView',
@@ -396,6 +406,7 @@ export default Vue.extend({
   },
   data: function () {
     return {
+      nextUrl: `${urls.originNoSlash}/next`,
       LIBRARIES_ALL,
       drawerVisible: this.$vuetify.breakpoint.lgAndUp,
       locales: this.$i18n.availableLocales.map((x: any) => ({text: this.$i18n.t('common.locale_name', x), value: x})),
