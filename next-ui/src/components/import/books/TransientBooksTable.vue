@@ -76,7 +76,7 @@
             ? (dialogSeriesPickerActivator = $event.currentTarget as Element)
             : (dialogSeriesPickerActivator = undefined)
         "
-        @click="item.selectable ? (currentActionedItems = [item]) : undefined"
+        @click="item.selectable ? selectSeriesForOne(item) : undefined"
       >
         <span
           v-if="item.series"
@@ -208,7 +208,7 @@
           color=""
           :disabled="loading || selectedBookIds.length == 0"
           @mouseenter="dialogSeriesPickerActivator = $event.currentTarget as Element"
-          @click="currentActionedItems = selectedBooks"
+          @click="selectSeriesForSelected()"
         />
       </v-col>
 
@@ -232,6 +232,7 @@
   <DialogSeriesPicker
     :activator="dialogSeriesPickerActivator"
     :fullscreen="display.xs.value"
+    :include-one-shots="dialogSeriesIncludeOneShots"
     @selected-series="(series) => seriesPicked(series)"
   />
 
@@ -474,8 +475,9 @@ const copyOptions = [
 ]
 const copyMode = ref<string>(copyOptions[0]!.value)
 
-// Series Picker Dialog
+//region Series Picker Dialog
 const dialogSeriesPickerActivator = ref<Element | undefined>(undefined)
+const dialogSeriesIncludeOneShots = ref<boolean>(true)
 
 function seriesPicked(series: components['schemas']['SeriesDto']) {
   if (currentActionedItems.value) {
@@ -483,7 +485,18 @@ function seriesPicked(series: components['schemas']['SeriesDto']) {
   }
 }
 
-// Book Picker Dialog
+function selectSeriesForSelected() {
+  dialogSeriesIncludeOneShots.value = false
+  currentActionedItems.value = selectedBooks.value
+}
+
+function selectSeriesForOne(item: BookImport) {
+  dialogSeriesIncludeOneShots.value = true
+  currentActionedItems.value = [item]
+}
+//endregion
+
+//region Book Picker Dialog
 const dialogBookPickerActivator = ref<Element | undefined>(undefined)
 
 function bookPicked(book: components['schemas']['BookDto']) {
@@ -491,6 +504,7 @@ function bookPicked(book: components['schemas']['BookDto']) {
     currentActionedItems.value.forEach((it) => assignBookNumber(it, book.metadata.numberSort))
   }
 }
+//endregion
 
 // File Name Picker dialog
 const dialogFileNamePickerActivator = ref<Element | undefined>(undefined)
