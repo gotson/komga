@@ -12,6 +12,8 @@
 import { useCurrentUser } from '@/colada/users'
 import { useClaimStatus } from '@/colada/claim'
 
+definePage({ alias: '/next' })
+
 async function checkAuthenticated() {
   const router = useRouter()
   const route = useRoute()

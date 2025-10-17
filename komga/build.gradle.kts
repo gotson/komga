@@ -219,9 +219,18 @@ tasks {
     }
   }
 
+  register<Copy>("copyWebDistNext") {
+    group = "web"
+    from("$nextui/dist/")
+    into("$projectDir/src/main/resources/public/")
+    excludes.add("index.html") //will be copied by 'prepareThymeLeafNext'
+    mustRunAfter(getByName("copyWebDist"))
+  }
+
   // modifies index.html to inject ThymeLeaf th: tags
   register<Copy>("prepareThymeLeafNext") {
     group = "web"
+    dependsOn("copyWebDistNext")
     from("$nextui/dist/index.html")
     into("$projectDir/src/main/resources/public/")
     filter { line ->
@@ -229,13 +238,14 @@ tasks {
         it.groups[0]?.value + " th:" + it.groups[1]?.value + "@{" + it.groups[2]?.value?.prefixIfNot("/") + "}" + it.groups[3]?.value
       }
     }
+    rename("index.html", "index-next.html")
   }
 
   withType<ProcessResources> {
     filesMatching("application*.yml") {
       expand(project.properties)
     }
-    mustRunAfter(getByName("prepareThymeLeaf"))
+    mustRunAfter(getByName("prepareThymeLeaf"), getByName("prepareThymeLeafNext"))
   }
 
   register<Test>("benchmark") {

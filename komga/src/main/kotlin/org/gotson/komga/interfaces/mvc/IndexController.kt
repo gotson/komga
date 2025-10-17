@@ -16,4 +16,10 @@ class IndexController(
     model.addAttribute("baseUrl", baseUrl)
     return "index"
   }
+
+  @GetMapping("/next")
+  fun indexNext(model: Model): String {
+    model.addAttribute("baseUrl", baseUrl)
+    return "index-next"
+  }
 }
