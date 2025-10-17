@@ -397,7 +397,7 @@ function onDisplayedItems(items: { key: string }[]) {
     })
 }
 
-// Table setup
+//region Table setup
 const itemsPerPage = ref<number>(display.smAndDown.value ? 1 : 10)
 const itemsPerPageOptions = computed(() => (display.smAndDown.value ? [1, 5] : [10, 25, 50]))
 const hideFooter = computed(() => importBooks.value.length < (display.smAndDown.value ? 1 : 10))
@@ -454,7 +454,9 @@ const headers = [
     align: 'end',
   },
 ] as const // workaround for https://github.com/vuetifyjs/vuetify/issues/18901
+//endregion
 
+//region Copy Options
 const copyOptions = [
   {
     title: intl.formatMessage({
@@ -474,6 +476,7 @@ const copyOptions = [
   },
 ]
 const copyMode = ref<string>(copyOptions[0]!.value)
+//endregion
 
 //region Series Picker Dialog
 const dialogSeriesPickerActivator = ref<Element | undefined>(undefined)
@@ -506,7 +509,7 @@ function bookPicked(book: components['schemas']['BookDto']) {
 }
 //endregion
 
-// File Name Picker dialog
+//region File Name Picker dialog
 const dialogFileNamePickerActivator = ref<Element | undefined>(undefined)
 
 function fileNamePicked(name: string) {
@@ -514,6 +517,7 @@ function fileNamePicked(name: string) {
     currentActionedItems.value.forEach((it) => (it.destinationName = name))
   }
 }
+//endregion
 
 function analyzeBook(book: BookImport) {
   const { refresh } = useQuery(transientBookAnalyze, () => ({
