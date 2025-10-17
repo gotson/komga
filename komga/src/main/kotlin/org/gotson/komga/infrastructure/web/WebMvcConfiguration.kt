@@ -27,6 +27,7 @@ class WebMvcConfiguration : WebMvcConfigurer {
     registry
       .addResourceHandler(
         "/index.html",
+        "/index-next.html",
         "/favicon.ico",
         "/favicon-16x16.png",
         "/favicon-32x32.png",
