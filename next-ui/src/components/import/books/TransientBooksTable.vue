@@ -520,48 +520,51 @@ function fileNamePicked(name: string) {
 //endregion
 
 function analyzeBook(book: BookImport) {
-  const { refresh } = useQuery(transientBookAnalyze, () => ({
+  void useQuery(transientBookAnalyze, () => ({
     transientBookId: book.transientBook.id,
   }))
-  void refresh().then(({ data }) => {
-    if (data) {
-      book.transientBook = data
-      if (book.transientBook.seriesId && book.transientBook.seriesId !== book.series?.id)
-        fetchSeries(book)
-    }
-  })
+    .refresh()
+    .then(({ data }) => {
+      if (data) {
+        book.transientBook = data
+        if (book.transientBook.seriesId && book.transientBook.seriesId !== book.series?.id)
+          fetchSeries(book)
+      }
+    })
 }
 
 function fetchSeries(book: BookImport) {
-  const { refresh } = useQuery(seriesDetailQuery, () => ({
+  void useQuery(seriesDetailQuery, () => ({
     seriesId: book.transientBook.seriesId!,
   }))
-  void refresh().then(({ data }) => {
-    if (data) {
-      assignSeries(book, data)
-    }
-  })
+    .refresh()
+    .then(({ data }) => {
+      if (data) assignSeries(book, data)
+    })
 }
 
 function fetchBooks(book: BookImport) {
-  const { refresh } = useQuery(bookListQuery, () => ({
+  void useQuery(bookListQuery, () => ({
     search: {
       condition: {
         seriesId: { operator: 'Is', value: book.series!.id },
       },
     } as components['schemas']['BookSearch'],
   }))
-  void refresh().then(({ data }) => {
-    if (data) {
-      book.seriesBooks = data.content
-      if (book.transientBook.number) assignBookNumber(book, book.transientBook.number)
-    }
-  })
+    .refresh()
+    .then(({ data }) => {
+      if (data) {
+        book.seriesBooks = data.content
+        if (book.series?.oneshot) book.upgradeBook = data.content?.at(0)
+        else if (book.transientBook.number) assignBookNumber(book, book.transientBook.number)
+      }
+    })
 }
 
 function assignSeries(book: BookImport, series: components['schemas']['SeriesDto']) {
   book.series = series
   fetchBooks(book)
+  // auto-select importable books
   if (book.importable && !selectedBookIds.value.includes(book.transientBook.id))
     selectedBookIds.value.push(book.transientBook.id)
 }
@@ -574,15 +577,12 @@ function unassignBook(book: BookImport) {
   book.upgradeBook = undefined
 }
 
-const importing = ref<boolean>(false)
+const { mutateAsync: postImportBooks, isLoading: importing } = useMutation({
+  mutation: () => komgaClient.POST('/api/v1/books/import', { body: importBatch.value }),
+})
 
 function doImportBooks() {
-  importing.value = true
-  const { mutateAsync } = useMutation({
-    mutation: () => komgaClient.POST('/api/v1/books/import', { body: importBatch.value }),
-  })
-
-  mutateAsync()
+  postImportBooks()
     .then(() => {
       selectedImportableBooks.value.forEach((it) => {
         it.imported = true
@@ -596,9 +596,6 @@ function doImportBooks() {
         text:
           (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
       })
-    })
-    .finally(() => {
-      importing.value = false
     })
 }
 </script>
