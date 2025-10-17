@@ -25,6 +25,7 @@ declare module 'vue-router/auto-routes' {
     '/account/details': RouteRecordInfo<'/account/details', '/account/details', Record<never, never>, Record<never, never>>,
     '/account/ui': RouteRecordInfo<'/account/ui', '/account/ui', Record<never, never>, Record<never, never>>,
     '/claim': RouteRecordInfo<'/claim', '/claim', Record<never, never>, Record<never, never>>,
+    '/error': RouteRecordInfo<'/error', '/error', Record<never, never>, Record<never, never>>,
     '/history': RouteRecordInfo<'/history', '/history', Record<never, never>, Record<never, never>>,
     '/import/books': RouteRecordInfo<'/import/books', '/import/books', Record<never, never>, Record<never, never>>,
     '/import/readlist': RouteRecordInfo<'/import/readlist', '/import/readlist', Record<never, never>, Record<never, never>>,
@@ -81,6 +82,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/claim.vue': {
       routes: '/claim'
+      views: never
+    }
+    'src/pages/error.vue': {
+      routes: '/error'
       views: never
     }
     'src/pages/history.vue': {

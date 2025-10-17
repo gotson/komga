@@ -179,10 +179,12 @@ async function submitForm() {
   }
 }
 
-const { refresh: claimStatus } = useClaimStatus()
-void claimStatus().then(({ data }) => {
-  if (data?.isClaimed) void router.push('/')
-})
+void useClaimStatus()
+  .refresh()
+  .then(({ data, error }) => {
+    if (error) void router.push('/error')
+    else if (data?.isClaimed) void router.push('/')
+  })
 </script>
 
 <route lang="yaml">
