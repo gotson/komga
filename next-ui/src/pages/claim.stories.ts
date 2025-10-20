@@ -59,7 +59,7 @@ export const Invalid: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', async () => await delay(5_000))],
+      handlers: [...meta.parameters.msw.handlers, http.post('*', async () => await delay(5_000))],
     },
   },
   play: async ({ canvas, userEvent }) => {
@@ -85,7 +85,7 @@ export const Loading: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', response502BadGateway)],
+      handlers: [...meta.parameters.msw.handlers, http.post('*', response502BadGateway)],
     },
   },
   play: async ({ canvas, userEvent }) => {

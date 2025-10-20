@@ -76,7 +76,7 @@ export const Loading: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', response502BadGateway)],
+      handlers: [http.post('*', response502BadGateway)],
     },
   },
   play: async ({ canvas, userEvent }) => {
