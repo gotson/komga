@@ -35,7 +35,7 @@ export const PresetPath: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', async () => await delay(2_000))],
+      handlers: [http.all('*/api/v1/filesystem', async () => await delay(2_000))],
     },
   },
 }
@@ -43,7 +43,7 @@ export const Loading: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', response401Unauthorized)],
+      handlers: [http.all('*/api/v1/filesystem', response401Unauthorized)],
     },
   },
 }
