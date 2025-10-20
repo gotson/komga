@@ -22,7 +22,7 @@ const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url))
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     VueRouter({
       dts: 'src/typed-router.d.ts',
@@ -82,16 +82,20 @@ export default defineConfig({
     port: 3000,
   },
   base: '/',
-  // support for the runtime base url (depending on the server.servlet.context-path)
-  // window.buildUrl is a function defined in index.html that dynamically provides the path
-  // it only works within js files though
-  experimental: {
-    renderBuiltUrl(filename, { hostType }) {
-      if (hostType === 'js') return { runtime: `window.buildUrl(${JSON.stringify(filename)})` }
-      // else if (hostType === 'html') return `@{/${filename}}`
-      else return { relative: true }
+  // use 'prod' when building the app because storybook always use 'production' and cannot be configured.
+  // if renderBuiltUrl is used, Storybook doesn't work
+  ...(mode === 'prod' && {
+    // support for the runtime base url (depending on the server.servlet.context-path)
+    // window.buildUrl is a function defined in index.html that dynamically provides the path
+    // it only works within js files though
+    experimental: {
+      renderBuiltUrl(filename, { hostType }) {
+        if (hostType === 'js') return { runtime: `window.buildUrl(${JSON.stringify(filename)})` }
+        // else if (hostType === 'html') return `@{/${filename}}`
+        else return { relative: true }
+      },
     },
-  },
+  }),
   optimizeDeps: {
     exclude: ['vuetify'],
   },
@@ -136,4 +140,4 @@ export default defineConfig({
       },
     ],
   },
-})
+}))
