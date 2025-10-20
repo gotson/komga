@@ -30,7 +30,7 @@ export const Default: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', async () => await delay(5_000))],
+      handlers: [http.all('*/actuator/info', async () => await delay(5_000))],
     },
   },
 }
@@ -38,7 +38,7 @@ export const Loading: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', response401Unauthorized)],
+      handlers: [http.all('*/actuator/info', response401Unauthorized)],
     },
   },
 }
