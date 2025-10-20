@@ -44,7 +44,7 @@ export const Outdated: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', async () => await delay(5_000))],
+      handlers: [http.all('*/api/v1/releases', async () => await delay(5_000))],
     },
   },
 }
@@ -52,7 +52,7 @@ export const Loading: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', response401Unauthorized)],
+      handlers: [http.all('*/api/v1/releases', response401Unauthorized)],
     },
   },
 }

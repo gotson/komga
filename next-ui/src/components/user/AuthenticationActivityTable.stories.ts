@@ -38,7 +38,9 @@ export const ForMe: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', async () => await delay(5_000))],
+      handlers: [
+        http.all('*/api/v2/users/authentication-activity', async () => await delay(5_000)),
+      ],
     },
   },
 }
@@ -58,7 +60,7 @@ export const NoData: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', response401Unauthorized)],
+      handlers: [http.all('*/api/v2/users/authentication-activity', response401Unauthorized)],
     },
   },
 }
