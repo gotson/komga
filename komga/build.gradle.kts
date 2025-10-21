@@ -166,7 +166,7 @@ tasks {
     enabled = true
   }
 
-  register<Exec>("npmInstall") {
+  register<Exec>("webuiNpmInstall") {
     group = "web"
     workingDir(webui)
     inputs.file("$webui/package.json")
@@ -181,9 +181,9 @@ tasks {
     )
   }
 
-  register<Exec>("npmBuild") {
+  register<Exec>("webuiNpmBuild") {
     group = "web"
-    dependsOn("npmInstall")
+    dependsOn("webuiNpmInstall")
     workingDir(webui)
     inputs.dir(webui)
     outputs.dir("$webui/dist")
@@ -199,17 +199,17 @@ tasks {
   }
 
   // copy the webui build into public
-  register<Sync>("copyWebDist") {
+  register<Sync>("webuiCopyDist") {
     group = "web"
-    dependsOn("npmBuild")
+    dependsOn("webuiNpmBuild")
     from("$webui/dist/")
     into("$projectDir/src/main/resources/public/")
   }
 
   // modifies index.html to inject ThymeLeaf th: tags
-  register<Copy>("prepareThymeLeaf") {
+  register<Copy>("webuiCopyIndex") {
     group = "web"
-    dependsOn("copyWebDist")
+    dependsOn("webuiCopyDist")
     from("$webui/dist/index.html")
     into("$projectDir/src/main/resources/public/")
     filter { line ->
@@ -219,18 +219,18 @@ tasks {
     }
   }
 
-  register<Copy>("copyWebDistNext") {
+  register<Copy>("nextuiCopyDist") {
     group = "web"
     from("$nextui/dist/")
     into("$projectDir/src/main/resources/public/")
-    excludes.add("index.html") //will be copied by 'prepareThymeLeafNext'
-    mustRunAfter(getByName("copyWebDist"))
+    excludes.add("index.html") // will be copied by 'nextuiCopyIndex'
+    mustRunAfter(getByName("webuiCopyDist"))
   }
 
   // modifies index.html to inject ThymeLeaf th: tags
-  register<Copy>("prepareThymeLeafNext") {
+  register<Copy>("nextuiCopyIndex") {
     group = "web"
-    dependsOn("copyWebDistNext")
+    dependsOn("nextuiCopyDist")
     from("$nextui/dist/index.html")
     into("$projectDir/src/main/resources/public/")
     filter { line ->
@@ -245,7 +245,7 @@ tasks {
     filesMatching("application*.yml") {
       expand(project.properties)
     }
-    mustRunAfter(getByName("prepareThymeLeaf"), getByName("prepareThymeLeafNext"))
+    mustRunAfter(getByName("webuiCopyIndex"), getByName("nextuiCopyIndex"))
   }
 
   register<Test>("benchmark") {
