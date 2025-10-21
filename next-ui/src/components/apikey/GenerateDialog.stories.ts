@@ -45,7 +45,7 @@ export const Created: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', async () => await delay(5_000))],
+      handlers: [http.all('*/api/*', async () => await delay(5_000))],
     },
   },
   play: async ({ userEvent }) => {
