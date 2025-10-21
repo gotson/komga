@@ -72,7 +72,7 @@ The base URL needs to be set correctly so the web app works:
 - in the generated bundle, to load other files (js/css/images)
 
 1. Vite is [configured](./vite.config.mts) with the experimental `renderBuiltUrl`, which will use a dynamic function (`window.buildUrl`) defined in `index.html` to generate the asset path at runtime. This is only supported withing JS files though.
-2. To handle the dynamic path in `index.html`, a Gradle task `prepareThymeLeafNext` modifies `index.html` to duplicate `href`, `src` and `content` attributes as Thymeleaf variants.
+2. To handle the dynamic path in `index.html`, a Gradle task `nextuiCopyIndex` modifies `index.html` to duplicate `href`, `src` and `content` attributes as Thymeleaf variants.
 
     For example the following:
 

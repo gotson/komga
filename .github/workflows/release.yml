@@ -128,7 +128,7 @@ jobs:
         run: npm run build
 
       - name: Build
-        run: ./gradlew :komga:prepareThymeLeaf :komga:prepareThymeLeafNext :komga:bootJar :komga-tray:jar
+        run: ./gradlew :komga:webuiCopyIndex :komga:nextuiCopyIndex :komga:bootJar :komga-tray:jar
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
 
