@@ -55,7 +55,7 @@ export const Invalid: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*', async () => await delay(5_000))],
+      handlers: [http.all('*/api/*', async () => await delay(5_000))],
     },
   },
   play: async ({ canvas, userEvent }) => {
@@ -76,7 +76,7 @@ export const Loading: Story = {
 export const Error: Story = {
   parameters: {
     msw: {
-      handlers: [http.post('*', response502BadGateway)],
+      handlers: [http.post('*/api/*', response502BadGateway)],
     },
   },
   play: async ({ canvas, userEvent }) => {

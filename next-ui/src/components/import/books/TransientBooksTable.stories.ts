@@ -41,7 +41,7 @@ export const Loading: Story = {
   },
   parameters: {
     msw: {
-      handlers: [http.all('*', async () => await delay(2_000))],
+      handlers: [http.all('*/api/*', async () => await delay(2_000))],
     },
   },
 }
