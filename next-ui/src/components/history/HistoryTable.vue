@@ -101,6 +101,7 @@ import { historicalEventMessages } from '@/utils/i18n/enum/historical-event'
 import type { MessageDescriptor } from '@formatjs/intl/src/types'
 import { seriesDetailQuery } from '@/colada/series'
 import { bookDetailQuery } from '@/colada/books'
+import { useMemoize } from '@vueuse/core'
 
 const intl = useIntl()
 
@@ -200,31 +201,33 @@ function getExpandedComponent(eventType: string): Component | null {
   }
 }
 
-const seriesCache = reactive<Record<string, string>>({})
-const seriesCacheNotFound = reactive<string[]>([])
-const booksCache = reactive<Record<string, string>>({})
-const booksCacheNotFound = reactive<string[]>([])
+const seriesCache = reactive<Record<string, string | undefined>>({})
+const booksCache = reactive<Record<string, string | undefined>>({})
+
+const getSeriesTitle = useMemoize(async (seriesId: string) =>
+  useQuery(seriesDetailQuery, () => ({ seriesId: seriesId }))
+    .refresh(true)
+    .then(({ data }) => data?.metadata.title)
+    .catch(() => undefined),
+)
+
+const getBookTitle = useMemoize(async (bookId: string) =>
+  useQuery(bookDetailQuery, () => ({ bookId: bookId }))
+    .refresh(true)
+    .then(({ data }) => data?.metadata.title)
+    .catch(() => undefined),
+)
 
 watch(data, (data) => {
   for (const seriesId of new Set(data?.content?.map((s) => s.seriesId))) {
-    if (seriesId && !seriesCacheNotFound.includes(seriesId) && !(seriesId in seriesCache)) {
-      const { refresh } = useQuery(seriesDetailQuery, () => ({ seriesId: seriesId }))
-      refresh(true)
-        .then(({ data }) => {
-          if (data) seriesCache[seriesId] = data.metadata.title
-        })
-        .catch(() => seriesCacheNotFound.push(seriesId))
+    if (seriesId) {
+      void getSeriesTitle(seriesId).then((title) => (seriesCache[seriesId] = title))
     }
   }
 
   for (const bookId of new Set(data?.content?.map((s) => s.bookId))) {
-    if (bookId && !booksCacheNotFound.includes(bookId) && !(bookId in booksCache)) {
-      const { refresh } = useQuery(bookDetailQuery, () => ({ bookId: bookId }))
-      refresh(true)
-        .then(({ data }) => {
-          if (data) booksCache[bookId] = data.metadata.title
-        })
-        .catch(() => booksCacheNotFound.push(bookId))
+    if (bookId) {
+      void getBookTitle(bookId).then((title) => (booksCache[bookId] = title))
     }
   }
 })

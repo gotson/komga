@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import Table from './Table.vue'
+import HistoryTable from './HistoryTable.vue'
 import { delay, http } from 'msw'
 import { response401Unauthorized } from '@/mocks/api/handlers'
 import { httpTyped } from '@/mocks/api/httpTyped'
@@ -8,19 +8,19 @@ import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
 
 const meta = {
-  component: Table,
+  component: HistoryTable,
   render: (args: object) => ({
-    components: { Table },
+    components: { HistoryTable },
     setup() {
       return { args }
     },
-    template: '<Table v-bind="args" />',
+    template: '<HistoryTable v-bind="args" />',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
   },
   args: {},
-} satisfies Meta<typeof Table>
+} satisfies Meta<typeof HistoryTable>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -32,7 +32,7 @@ export const Default: Story = {
 export const Loading: Story = {
   parameters: {
     msw: {
-      handlers: [http.all('*/api/v1/history', async () => await delay(5_000))],
+      handlers: [http.all('*/api/*', async () => await delay(5_000))],
     },
   },
 }

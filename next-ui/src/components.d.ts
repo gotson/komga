@@ -32,7 +32,7 @@ declare module 'vue' {
     HistoryExpandDuplicatePageDeleted: typeof import('./components/history/expand/DuplicatePageDeleted.vue')['default']
     HistoryExpandSeriesDirectoryDeleted: typeof import('./components/history/expand/SeriesDirectoryDeleted.vue')['default']
     HistoryExpandTable: typeof import('./components/history/expand/Table.vue')['default']
-    HistoryTable: typeof import('./components/history/Table.vue')['default']
+    HistoryTable: typeof import('./components/history/HistoryTable.vue')['default']
     ImportBooksDirectorySelection: typeof import('./components/import/books/DirectorySelection.vue')['default']
     ImportBooksTransientBooksTable: typeof import('./components/import/books/TransientBooksTable.vue')['default']
     ImportReadlistTable: typeof import('./components/import/readlist/Table.vue')['default']
