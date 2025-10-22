@@ -335,7 +335,7 @@ watchImmediate(
 )
 
 //region Duplicate read list name check
-const { data: allReadLists } = useQuery(useListReadLists({ pageable: PageRequest.Unpaged() }))
+const { data: allReadLists } = useQuery(useListReadLists({ pageRequest: PageRequest.Unpaged() }))
 const readListNameAlreadyExists = computed(() =>
   allReadLists.value?.content?.some(
     (it) => it.name.localeCompare(readListName.value, undefined, { sensitivity: 'accent' }) == 0,
