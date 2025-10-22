@@ -112,6 +112,7 @@ import type { components } from '@/generated/openapi/komga'
 import { seriesThumbnailUrl } from '@/api/images'
 import { refDebounced } from '@vueuse/core'
 import { useLibraries } from '@/colada/libraries'
+import { PageRequest } from '@/types/PageRequest'
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 
@@ -157,6 +158,7 @@ const {
   return {
     search: search,
     pause: !searchStringDebounced.value,
+    pageRequest: PageRequest.Unpaged(),
   }
 })
 

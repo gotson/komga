@@ -12,13 +12,17 @@ export const useListReadLists = defineQueryOptions(
   ({
     search,
     libraryId,
-    pageable,
+    pageRequest,
   }: {
     search?: string
     libraryId?: string
-    pageable?: PageRequest
+    pageRequest?: PageRequest
   }) => ({
-    key: QUERY_KEYS_READLIST.bySearch({ search: search, libraryId: libraryId, pageable: pageable }),
+    key: QUERY_KEYS_READLIST.bySearch({
+      search: search,
+      libraryId: libraryId,
+      pageRequest: pageRequest,
+    }),
     query: () =>
       komgaClient
         .GET('/api/v1/readlists', {
@@ -26,7 +30,7 @@ export const useListReadLists = defineQueryOptions(
             query: {
               search: search,
               libraryId: libraryId,
-              ...pageable,
+              ...pageRequest,
             },
           },
         })
