@@ -266,6 +266,7 @@ import { transientBookAnalyze } from '@/colada/transient-books'
 import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useMessagesStore } from '@/stores/messages'
+import { PageRequest } from '@/types/PageRequest'
 
 class BookImport {
   transientBook: components['schemas']['TransientBookDto']
@@ -550,6 +551,7 @@ function fetchBooks(book: BookImport) {
         seriesId: { operator: 'Is', value: book.series!.id },
       },
     } as components['schemas']['BookSearch'],
+    pageRequest: PageRequest.Unpaged(),
   }))
     .refresh()
     .then(({ data }) => {

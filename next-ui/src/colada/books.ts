@@ -1,11 +1,11 @@
 import { defineQueryOptions } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
+import type { PageRequest } from '@/types/PageRequest'
 
 export const QUERY_KEYS_BOOKS = {
   root: ['books'] as const,
-  bySearch: (search: components['schemas']['BookSearch']) =>
-    [...QUERY_KEYS_BOOKS.root, JSON.stringify(search)] as const,
+  bySearch: (request: object) => [...QUERY_KEYS_BOOKS.root, JSON.stringify(request)] as const,
   byId: (bookId: string) => [...QUERY_KEYS_BOOKS.root, bookId] as const,
 }
 
@@ -13,15 +13,22 @@ export const bookListQuery = defineQueryOptions(
   ({
     search,
     pause = false,
+    pageRequest,
   }: {
     search: components['schemas']['BookSearch']
     pause?: boolean
+    pageRequest?: PageRequest
   }) => ({
-    key: QUERY_KEYS_BOOKS.bySearch(search),
+    key: QUERY_KEYS_BOOKS.bySearch({ search: search, pageRequest: pageRequest }),
     query: () =>
       komgaClient
         .POST('/api/v1/books/list', {
           body: search,
+          params: {
+            query: {
+              ...pageRequest,
+            },
+          },
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
