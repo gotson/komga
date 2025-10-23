@@ -407,15 +407,27 @@ const filterSelect = ref<string[]>([])
 const filterRef = computed(() => filterSelect.value.join(''))
 const filterOptions = [
   {
-    title: 'OK',
+    title: intl.formatMessage({
+      description: 'Import reading list table filter: OK',
+      defaultMessage: 'OK',
+      id: '0ILHru',
+    }),
     value: 'o',
   },
   {
-    title: 'Error',
+    title: intl.formatMessage({
+      description: 'Import reading list table filter: Error',
+      defaultMessage: 'Error',
+      id: 'toP54Z',
+    }),
     value: 'e',
   },
   {
-    title: 'Duplicate',
+    title: intl.formatMessage({
+      description: 'Import reading list table filter: duplicate',
+      defaultMessage: 'Duplicate',
+      id: 'ALGXT9',
+    }),
     value: 'd',
   },
 ]
