@@ -179,6 +179,22 @@
       justify="space-between"
       align="center"
     >
+      <v-col>
+        <v-btn
+          :text="
+            $formatMessage({
+              description: 'Import books table: bottom bar: select series button',
+              defaultMessage: 'Select series',
+              id: 'SqZoei',
+            })
+          "
+          color=""
+          :disabled="loading || selectedBookIds.length == 0"
+          @mouseenter="dialogSeriesPickerActivator = $event.currentTarget as Element"
+          @click="selectSeriesForSelected()"
+        />
+      </v-col>
+
       <v-col cols="auto">
         <v-select
           v-model="copyMode"
@@ -194,22 +210,6 @@
           variant="outlined"
           min-width="250"
         ></v-select>
-      </v-col>
-
-      <v-col>
-        <v-btn
-          :text="
-            $formatMessage({
-              description: 'Import books table: bottom bar: select series button',
-              defaultMessage: 'Select series',
-              id: 'SqZoei',
-            })
-          "
-          color=""
-          :disabled="loading || selectedBookIds.length == 0"
-          @mouseenter="dialogSeriesPickerActivator = $event.currentTarget as Element"
-          @click="selectSeriesForSelected()"
-        />
       </v-col>
 
       <v-col cols="auto">
