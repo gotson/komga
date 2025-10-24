@@ -5,11 +5,11 @@
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     max-width="600px"
-    :aria-label="$formatMessage(titleMessage)"
+    :aria-label="dialogTitle"
     @after-leave="reset()"
   >
     <template #default="{ isActive }">
-      <v-card :title="$formatMessage(titleMessage)">
+      <v-card :title="dialogTitle">
         <template #append>
           <v-icon
             icon="i-mdi:close"
@@ -113,8 +113,10 @@ import { seriesThumbnailUrl } from '@/api/images'
 import { refDebounced } from '@vueuse/core'
 import { useLibraries } from '@/colada/libraries'
 import { PageRequest } from '@/types/PageRequest'
+import { useIntl } from 'vue-intl'
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
+const intl = useIntl()
 
 const {
   includeOneShots = true,
@@ -173,10 +175,10 @@ function reset() {
   searchStringRef.value = searchString
 }
 
-const titleMessage = {
+const dialogTitle = intl.formatMessage({
   description: 'Series picker dialog: title',
   defaultMessage: 'Select series',
-  id: 'ycrpqO',
-}
+  id: 'SIfmpC',
+})
 </script>
 <script setup lang="ts"></script>

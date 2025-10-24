@@ -6,11 +6,11 @@
     scrollable
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     max-width="600px"
-    :aria-label="$formatMessage(titleMessage)"
+    :aria-label="dialogTitle"
     @after-leave="reset()"
   >
     <template #default="{ isActive }">
-      <v-card :title="$formatMessage(titleMessage)">
+      <v-card :title="dialogTitle">
         <template #append>
           <v-icon
             icon="i-mdi:close"
@@ -165,11 +165,11 @@ function reset() {
   newName.value = existingName
 }
 
-const titleMessage = {
+const dialogTitle = intl.formatMessage({
   description: 'Filename picker dialog: title',
   defaultMessage: 'Destination filename',
-  id: 'ycrpqO',
-}
+  id: '3Pm2PO',
+})
 
 const bookTableHeaders = [
   {

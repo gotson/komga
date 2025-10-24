@@ -6,11 +6,11 @@
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     max-width="600px"
     scrollable
-    :aria-label="$formatMessage(titleMessage)"
+    :aria-label="dialogTitle"
     @after-leave="reset()"
   >
     <template #default="{ isActive }">
-      <v-card :title="$formatMessage(titleMessage)">
+      <v-card :title="dialogTitle">
         <template #append>
           <v-icon
             icon="i-mdi:close"
@@ -133,11 +133,11 @@ function reset() {
   filterRef.value = filter
 }
 
-const titleMessage = {
+const dialogTitle = intl.formatMessage({
   description: 'Book picker dialog: title',
   defaultMessage: 'Select book',
-  id: 'ycrpqO',
-}
+  id: 'SZHxy4',
+})
 
 function filterFn(
   value: string,
