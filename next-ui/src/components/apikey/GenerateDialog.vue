@@ -5,7 +5,7 @@
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     max-width="600px"
-    :aria-label="$formatMessage(titleMessage)"
+    :aria-label="dialogTitle"
     @after-leave="reset()"
   >
     <template #default="{ isActive }">
@@ -14,7 +14,7 @@
         @submit.prevent="generateApiKey()"
       >
         <v-card
-          :title="$formatMessage(titleMessage)"
+          :title="dialogTitle"
           :loading="isLoading"
         >
           <v-card-text>
@@ -188,9 +188,9 @@ function reset() {
   creationError.value = ''
 }
 
-const titleMessage = {
+const dialogTitle = intl.formatMessage({
   description: 'Generate API key dialog: title',
   defaultMessage: 'Generate new API key',
   id: 'ycrpqO',
-}
+})
 </script>
