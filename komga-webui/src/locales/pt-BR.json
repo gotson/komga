@@ -319,7 +319,12 @@
   },
   "dialog": {
     "add_api_key": {
-      "button_confirm": "Gerar"
+      "button_confirm": "Gerar",
+      "context": "Chaves API podem ser usadas para autenticar no protocolo Kobo Sync.",
+      "dialog_title": "Gerar chave de API",
+      "field_comment": "Comentar",
+      "field_comment_hint": "Como a chave API será usada?",
+      "info_copy": "Tenha a certeza de que a chave API foi salva. Você não poderá vê-la novamente!"
     },
     "add_to_collection": {
       "button_create": "Criar",
@@ -353,6 +358,12 @@
     "book_picker": {
       "filter": "Filtrar por número, título ou data de lançamento",
       "title": "Selecionar livro"
+    },
+    "delete_apikey": {
+      "button_confirm": "Excluir",
+      "confirm_delete": "Eu entendo, exclua a chave API \"{name}\"",
+      "dialog_title": "Deletar chave API",
+      "warning_html": "Quaisquer aplicativos ou scripts que utilizem esta chave API não poderão mais acessar a API Komga. Você não poderá desfazer esta ação."
     },
     "delete_book": {
       "button_confirm": "Excluir",
@@ -503,6 +514,9 @@
       "tab_general": "Geral",
       "tab_poster": "Pôster"
     },
+    "edit_recommended": {
+      "button_confirm": "Salvar mudanças"
+    },
     "edit_series": {
       "button_cancel": "Cancelar",
       "button_confirm": "Salvar mudanças",
@@ -571,6 +585,9 @@
       },
       "title": "Nome do Arquivo de Destino"
     },
+    "force_kobo_sync": {
+      "dialog_title": "Forçar sincronização com Kobo"
+    },
     "password_change": {
       "button_cancel": "Cancelar",
       "button_confirm": "Mudar senha",
@@ -638,6 +655,9 @@
       "HARDLINK": "Hardlink/Copiar arquivos",
       "MOVE": "Mover Arquivos"
     },
+    "media_profile": {
+      "PDF": "PDF"
+    },
     "media_status": {
       "ERROR": "Erro",
       "OUTDATED": "Desatualizado",
@@ -662,6 +682,14 @@
       "ENDED": "Finalizado",
       "HIATUS": "Interrompido",
       "ONGOING": "Em andamento"
+    }
+  },
+  "epubreader": {
+    "settings": {
+      "page_margins": "Margem de Páginas"
+    },
+    "shortcuts": {
+      "settings": "Configurações"
     }
   },
   "error_codes": {
@@ -695,6 +723,7 @@
     "in_progress": "Em progresso",
     "language": "idioma",
     "library": "biblioteca",
+    "oneshot": "One-shot",
     "publisher": "editora",
     "read": "Lidos",
     "release_date": "data de lançamento",
@@ -708,7 +737,8 @@
   },
   "history": {
     "header": {
-      "book": "Livro"
+      "book": "Livro",
+      "details": "Detalhes"
     }
   },
   "home": {
@@ -830,6 +860,9 @@
     "tooltip_too_big": "Arquivo muito grande!",
     "tooltip_user_uploaded": "Enviado pelo usuário"
   },
+  "ui_settings": {
+    "general": "Geral"
+  },
   "user_roles": {
     "ADMIN": "Administrador",
     "FILE_DOWNLOAD": "Baixar arquivos",
@@ -837,6 +870,7 @@
     "USER": "Usuário"
   },
   "users": {
+    "api_keys": "Chaves API",
     "authentication_activity": "Atividade de Autenticação",
     "users": "Usuários"
   },
