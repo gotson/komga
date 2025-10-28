@@ -71,6 +71,8 @@ export interface BookMetadataDto {
   authorsLock: boolean,
   tags: string[],
   tagsLock: boolean,
+  characters: string[],
+  charactersLock: boolean,
   isbn: string,
   isbnLock: boolean
   links?: WebLinkDto[],
@@ -100,6 +102,8 @@ export interface BookMetadataUpdateDto {
   authorsLock?: boolean,
   tags?: string[],
   tagsLock?: boolean
+  characters?: string[],
+  charactersLock?: boolean,
   isbn?: string,
   isbnLock?: boolean,
   links?: WebLinkDto[],

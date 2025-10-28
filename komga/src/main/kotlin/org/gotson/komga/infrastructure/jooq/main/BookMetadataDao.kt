@@ -29,6 +29,7 @@ class BookMetadataDao(
   private val d = Tables.BOOK_METADATA
   private val a = Tables.BOOK_METADATA_AUTHOR
   private val bt = Tables.BOOK_METADATA_TAG
+  private val bc = Tables.BOOK_METADATA_CHARACTER
   private val bl = Tables.BOOK_METADATA_LINK
 
   private val groupFields = arrayOf(*d.fields(), *a.fields())
@@ -52,7 +53,7 @@ class BookMetadataDao(
       { it.into(d) },
       { it.into(a) },
     ).map { (dr, ar) ->
-      dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, this.findTags(dr.bookId), this.findLinks(dr.bookId))
+      dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, this.findTags(dr.bookId), this.findCharacters(dr.bookId), this.findLinks(dr.bookId))
     }
 
   private fun DSLContext.findTags(bookId: String) =
@@ -61,6 +62,13 @@ class BookMetadataDao(
       .from(bt)
       .where(bt.BOOK_ID.eq(bookId))
       .fetchSet(bt.TAG)
+
+  private fun DSLContext.findCharacters(bookId: String) =
+    this
+      .select(bc.CHARACTER)
+      .from(bc)
+      .where(bc.BOOK_ID.eq(bookId))
+      .fetchSet(bc.CHARACTER)
 
   private fun DSLContext.findLinks(bookId: String) =
     this
@@ -97,10 +105,11 @@ class BookMetadataDao(
                 d.RELEASE_DATE_LOCK,
                 d.AUTHORS_LOCK,
                 d.TAGS_LOCK,
+                d.CHARACTERS_LOCK,
                 d.ISBN,
                 d.ISBN_LOCK,
                 d.LINKS_LOCK,
-              ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
+              ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
           ).also { step ->
             chunk.forEach {
               step.bind(
@@ -117,6 +126,7 @@ class BookMetadataDao(
                 it.releaseDateLock,
                 it.authorsLock,
                 it.tagsLock,
+                it.charactersLock,
                 it.isbn,
                 it.isbnLock,
                 it.linksLock,
@@ -127,6 +137,7 @@ class BookMetadataDao(
 
       dslRW.insertAuthors(metadatas)
       dslRW.insertTags(metadatas)
+      dslRW.insertCharacters(metadatas)
       dslRW.insertLinks(metadatas)
     }
   }
@@ -156,6 +167,7 @@ class BookMetadataDao(
       .set(d.RELEASE_DATE_LOCK, metadata.releaseDateLock)
       .set(d.AUTHORS_LOCK, metadata.authorsLock)
       .set(d.TAGS_LOCK, metadata.tagsLock)
+      .set(d.CHARACTERS_LOCK, metadata.charactersLock)
       .set(d.ISBN, metadata.isbn)
       .set(d.ISBN_LOCK, metadata.isbnLock)
       .set(d.LINKS_LOCK, metadata.linksLock)
@@ -172,12 +184,17 @@ class BookMetadataDao(
       .where(bt.BOOK_ID.eq(metadata.bookId))
       .execute()
     dslRW
+      .deleteFrom(bc)
+      .where(bc.BOOK_ID.eq(metadata.bookId))
+      .execute()
+    dslRW
       .deleteFrom(bl)
       .where(bl.BOOK_ID.eq(metadata.bookId))
       .execute()
 
     dslRW.insertAuthors(listOf(metadata))
     dslRW.insertTags(listOf(metadata))
+    dslRW.insertCharacters(listOf(metadata))
     dslRW.insertLinks(listOf(metadata))
   }
 
@@ -219,6 +236,25 @@ class BookMetadataDao(
     }
   }
 
+  private fun DSLContext.insertCharacters(metadatas: Collection<BookMetadata>) {
+    if (metadatas.any { it.characters.isNotEmpty() }) {
+      metadatas.chunked(batchSize).forEach { chunk ->
+        this
+          .batch(
+            this
+              .insertInto(bc, bc.BOOK_ID, bc.CHARACTER)
+              .values(null as String?, null),
+          ).also { step ->
+            chunk.forEach { metadata ->
+              metadata.characters.forEach {
+                step.bind(metadata.bookId, it)
+              }
+            }
+          }.execute()
+      }
+    }
+  }
+
   private fun DSLContext.insertLinks(metadatas: Collection<BookMetadata>) {
     if (metadatas.any { it.links.isNotEmpty() }) {
       metadatas.chunked(batchSize).forEach { chunk ->
@@ -242,6 +278,7 @@ class BookMetadataDao(
   override fun delete(bookId: String) {
     dslRW.deleteFrom(a).where(a.BOOK_ID.eq(bookId)).execute()
     dslRW.deleteFrom(bt).where(bt.BOOK_ID.eq(bookId)).execute()
+    dslRW.deleteFrom(bc).where(bc.BOOK_ID.eq(bookId)).execute()
     dslRW.deleteFrom(bl).where(bl.BOOK_ID.eq(bookId)).execute()
     dslRW.deleteFrom(d).where(d.BOOK_ID.eq(bookId)).execute()
   }
@@ -251,6 +288,7 @@ class BookMetadataDao(
     dslRW.withTempTable(batchSize, bookIds).use {
       dslRW.deleteFrom(a).where(a.BOOK_ID.`in`(it.selectTempStrings())).execute()
       dslRW.deleteFrom(bt).where(bt.BOOK_ID.`in`(it.selectTempStrings())).execute()
+      dslRW.deleteFrom(bc).where(bc.BOOK_ID.`in`(it.selectTempStrings())).execute()
       dslRW.deleteFrom(bl).where(bl.BOOK_ID.`in`(it.selectTempStrings())).execute()
       dslRW.deleteFrom(d).where(d.BOOK_ID.`in`(it.selectTempStrings())).execute()
     }
@@ -261,6 +299,7 @@ class BookMetadataDao(
   private fun BookMetadataRecord.toDomain(
     authors: List<Author>,
     tags: Set<String>,
+    characters: Set<String>,
     links: List<WebLink>,
   ) = BookMetadata(
     title = title,
@@ -270,6 +309,7 @@ class BookMetadataDao(
     releaseDate = releaseDate,
     authors = authors,
     tags = tags,
+    characters = characters,
     isbn = isbn,
     links = links,
     bookId = bookId,
@@ -282,6 +322,7 @@ class BookMetadataDao(
     releaseDateLock = releaseDateLock,
     authorsLock = authorsLock,
     tagsLock = tagsLock,
+    charactersLock = charactersLock,
     isbnLock = isbnLock,
     linksLock = linksLock,
   )

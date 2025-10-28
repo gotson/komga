@@ -9,6 +9,7 @@ class MetadataAggregator {
   fun aggregate(metadatas: Collection<BookMetadata>): BookMetadataAggregation {
     val authors = metadatas.flatMap { it.authors }.distinctBy { "${it.role}__${it.name}" }
     val tags = metadatas.flatMap { it.tags }.toSet()
+    val characters = metadatas.flatMap { it.characters }.toSet()
     val (summary, summaryNumber) =
       metadatas
         .sortedBy { it.numberSort }
@@ -18,6 +19,6 @@ class MetadataAggregator {
         } ?: ("" to "")
     val releaseDate = metadatas.mapNotNull { it.releaseDate }.minOrNull()
 
-    return BookMetadataAggregation(authors = authors, tags = tags, releaseDate = releaseDate, summary = summary, summaryNumber = summaryNumber)
+    return BookMetadataAggregation(authors = authors, tags = tags, characters = characters, releaseDate = releaseDate, summary = summary, summaryNumber = summaryNumber)
   }
 }

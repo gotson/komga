@@ -103,6 +103,7 @@ class ComicInfoProvider(
           }
 
       val tags = comicInfo.tags?.split(',')?.mapNotNull { it.trim().lowercase().ifBlank { null } }
+      val characters = comicInfo.characters?.split(',')?.mapNotNull { it.trim().lowercase().ifBlank { null } }
 
       val isbn = comicInfo.gtin?.let { isbnValidator.validate(it) }
 
@@ -116,6 +117,7 @@ class ComicInfoProvider(
         readLists = readLists,
         links = links?.ifEmpty { null },
         tags = if (!tags.isNullOrEmpty()) tags.toSet() else null,
+        characters = if (!characters.isNullOrEmpty()) characters.toSet() else null,
         isbn = isbn,
       )
     }

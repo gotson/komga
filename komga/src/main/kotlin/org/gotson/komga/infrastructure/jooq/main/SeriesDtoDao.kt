@@ -71,6 +71,7 @@ class SeriesDtoDao(
   private val bma = Tables.BOOK_METADATA_AGGREGATION
   private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
+  private val bmac = Tables.BOOK_METADATA_AGGREGATION_CHARACTER
 
   private val groupFields =
     arrayOf(
@@ -310,6 +311,7 @@ class SeriesDtoDao(
     lateinit var alternateTitles: Map<String, List<AlternateTitleDto>>
     lateinit var aggregatedAuthors: Map<String, List<AuthorDto>>
     lateinit var aggregatedTags: Map<String, List<String>>
+    lateinit var aggregatedCharacters: Map<String, List<String>>
 
     dsl.withTempTable(batchSize, seriesIds).use { tempTable ->
       genres =
@@ -354,6 +356,12 @@ class SeriesDtoDao(
           .selectFrom(bmat)
           .where(bmat.SERIES_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.seriesId }, { it.tag })
+
+      aggregatedCharacters =
+        dsl
+          .selectFrom(bmac)
+          .where(bmac.SERIES_ID.`in`(tempTable.selectTempStrings()))
+          .groupBy({ it.seriesId }, { it.character })
     }
 
     return records
@@ -372,7 +380,7 @@ class SeriesDtoDao(
           booksUnreadCount,
           booksInProgressCount,
           dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet(), links[sr.id].orEmpty(), alternateTitles[sr.id].orEmpty()),
-          bmar.toDto(aggregatedAuthors[sr.id].orEmpty(), aggregatedTags[sr.id].orEmpty().toSet()),
+          bmar.toDto(aggregatedAuthors[sr.id].orEmpty(), aggregatedTags[sr.id].orEmpty().toSet(), aggregatedCharacters[sr.id].orEmpty().toSet()),
         )
       }
   }
@@ -450,9 +458,11 @@ class SeriesDtoDao(
   private fun BookMetadataAggregationRecord.toDto(
     authors: List<AuthorDto>,
     tags: Set<String>,
+    characters: Set<String>,
   ) = BookMetadataAggregationDto(
     authors = authors,
     tags = tags,
+    characters = characters,
     releaseDate = releaseDate,
     summary = summary,
     summaryNumber = summaryNumber,
