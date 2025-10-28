@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia'
 import type { DialogConfirmEditProps } from '@/components/dialog/ConfirmEdit.vue'
 import type { DialogConfirmProps } from '@/components/dialog/Confirm.vue'
+import type { DialogSimpleProps } from '@/components/dialog/DialogSimple.vue'
 
 /**
  * Reusable dialogs.
@@ -14,6 +15,7 @@ export const useDialogsStore = defineStore('dialogs', {
       slot: {
         component: undefined,
         props: {},
+        handlers: {},
       },
       record: undefined,
       callback: () => {},
@@ -23,9 +25,19 @@ export const useDialogsStore = defineStore('dialogs', {
       slotWarning: {
         component: undefined,
         props: {},
+        handlers: {},
       },
       callback: () => {},
     } as DialogConfirmActivation,
+    simple: {
+      dialogProps: {},
+      slot: {
+        component: undefined,
+        props: {},
+        handlers: {},
+      },
+      callback: () => {},
+    } as DialogSimpleActivation,
   }),
 })
 
@@ -44,7 +56,12 @@ type DialogConfirmActivation = DialogActivation<DialogConfirmProps> & {
   slotWarning: ComponentWithProps
 }
 
+type DialogSimpleActivation = DialogActivation<DialogSimpleProps> & {
+  slot: ComponentWithProps
+}
+
 type ComponentWithProps = {
   component?: Component
-  props: object
+  props?: object
+  handlers?: object
 }
