@@ -7,37 +7,36 @@
                down: () => {if(swipe) {verticalPrev()}}
              }"
   >
-    <v-carousel v-model="carouselPage"
-                :show-arrows="false"
-                :continuous="false"
-                :reverse="flipDirection"
-                :vertical="vertical"
-                hide-delimiters
-                touchless
-                height="100%"
-    >
-      <!--  Carousel: pages  -->
-      <v-carousel-item v-for="(spread, i) in spreads"
-                       :key="`spread${i}`"
-                       :eager="eagerLoad(i)"
-                       class="full-height"
-                       :class="preRender(i) ? 'pre-render' : ''"
-                       :transition="animations ? undefined : false"
-                       :reverse-transition="animations ? undefined : false"
-      >
-        <div class="full-height d-flex flex-column justify-center">
-          <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0`">
-            <img v-for="(page, j) in spread"
-                 :alt="`Page ${page.number}`"
-                 :key="`spread${i}-${j}`"
-                 :src="page.url"
-                 :class="imgClass(spread)"
-                 class="img-fit-all"
-            />
-          </div>
-        </div>
-      </v-carousel-item>
-    </v-carousel>
+     <v-carousel v-model="carouselPage"
+                 :show-arrows="false"
+                 :continuous="false"
+                 :reverse="flipDirection"
+                 :vertical="vertical"
+                 hide-delimiters
+                 touchless
+                 height="100%"
+     >
+       <v-carousel-item v-for="item in visibleSpreads"
+                        :key="`spread${item.index}`"
+                        :eager="eagerLoad(item.index)"
+                        class="full-height"
+                        :class="preRender(item.index) ? 'pre-render' : ''"
+                        :transition="animations ? undefined : false"
+                        :reverse-transition="animations ? undefined : false"
+       >
+         <div class="full-height d-flex flex-column justify-center">
+           <div :class="`d-flex flex-row${flipDirection ? '-reverse' : ''} justify-center px-0 mx-0`">
+             <img v-for="(page, j) in item.spread"
+                  :alt="`Page ${page.number}`"
+                  :key="`spread${item.index}-${j}`"
+                  :src="page.url"
+                  :class="imgClass(item.spread)"
+                  class="img-fit-all"
+             />
+           </div>
+         </div>
+       </v-carousel-item>
+     </v-carousel>
 
     <!--  clickable zone: left  -->
     <div v-if="!vertical"
@@ -90,6 +89,7 @@ export default Vue.extend({
       logger: 'PagedReader',
       carouselPage: 0,
       spreads: [] as PageDtoWithUrl[][],
+      pageToSpreadIndex: new Map<number, number>(),
     }
   },
   props: {
@@ -126,6 +126,7 @@ export default Vue.extend({
     pages: {
       handler(val) {
         this.spreads = buildSpreads(val, this.pageLayout)
+        this.buildPageToSpreadIndexMap()
       },
       immediate: true,
     },
@@ -149,6 +150,7 @@ export default Vue.extend({
       handler(val) {
         const current = this.page
         this.spreads = buildSpreads(this.pages, val)
+        this.buildPageToSpreadIndexMap()
         this.carouselPage = this.toSpreadIndex(current)
       },
       immediate: true,
@@ -161,6 +163,16 @@ export default Vue.extend({
     window.removeEventListener('keydown', this.keyPressed)
   },
   computed: {
+    visibleSpreads(): Array<{ spread: PageDtoWithUrl[], index: number }> {
+      const range = 2
+      const start = Math.max(0, this.carouselPage - range)
+      const end = Math.min(this.spreads.length - 1, this.carouselPage + range)
+      const visible = []
+      for (let i = start; i <= end; i++) {
+        visible.push({ spread: this.spreads[i], index: i })
+      }
+      return visible
+    },
     shortcuts(): any {
       const shortcuts = []
       switch (this.readingDirection) {
@@ -199,6 +211,14 @@ export default Vue.extend({
     },
   },
   methods: {
+    buildPageToSpreadIndexMap() {
+      this.pageToSpreadIndex.clear()
+      for (let i = 0; i < this.spreads.length; i++) {
+        for (let j = 0; j < this.spreads[i].length; j++) {
+          this.pageToSpreadIndex.set(this.spreads[i][j].number, i)
+        }
+      }
+    },
     keyPressed(e: KeyboardEvent) {
       this.shortcuts[e.key]?.execute(this)
     },
@@ -260,12 +280,9 @@ export default Vue.extend({
       this.$debug('[toSpreadIndex]', `i:${i}`, `isDoublePages:${this.isDoublePages}`)
       if (this.spreads.length > 0) {
         if (this.isDoublePages) {
-          for (let j = 0; j < this.spreads.length; j++) {
-            for (let k = 0; k < this.spreads[j].length; k++) {
-              if (this.spreads[j][k].number === i) {
-                return j
-              }
-            }
+          const spreadIndex = this.pageToSpreadIndex.get(i)
+          if (spreadIndex !== undefined) {
+            return spreadIndex
           }
         } else {
           return i - 1
