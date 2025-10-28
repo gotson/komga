@@ -5,6 +5,7 @@
     <SnackQueue />
     <DialogConfirmEditInstance />
     <DialogConfirmInstance />
+    <DialogSimpleInstance />
   </v-app>
 
   <PiniaColadaDevtools />
