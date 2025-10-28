@@ -1,5 +1,10 @@
 <template>
-  <h1>Known</h1>
+  <v-container
+    fluid
+    class="pa-0 pa-sm-4 h-100 h-sm-auto"
+  >
+    <PageHashKnownTable />
+  </v-container>
 </template>
 
 <script lang="ts" setup>

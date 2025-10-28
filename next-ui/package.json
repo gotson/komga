@@ -34,6 +34,7 @@
     "@pinia/colada-plugin-delay": "^0.1.0",
     "@vueuse/core": "^13.9.0",
     "core-js": "^3.45.1",
+    "filesize": "^11.0.13",
     "marked": "^16.3.0",
     "openapi-fetch": "^0.14.1",
     "pinia": "^3.0.3",

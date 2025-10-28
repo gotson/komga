@@ -1,8 +1,6 @@
 import { httpTyped } from '@/mocks/api/httpTyped'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
-import { http, HttpResponse } from 'msw'
-import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 
 export const historyBookImported = {
   id: 'H1',
@@ -112,14 +110,4 @@ export const historyHandlers = [
       ),
     ),
   ),
-  http.get('*/api/v1/page-hashes/*/thumbnail', async () => {
-    // Get an ArrayBuffer from reading the file from disk or fetching it.
-    const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
-
-    return HttpResponse.arrayBuffer(buffer, {
-      headers: {
-        'content-type': 'image/jpg',
-      },
-    })
-  }),
 ]
