@@ -10,6 +10,11 @@ export function bookThumbnailUrl(bookId?: string): string | undefined {
   return undefined
 }
 
+export function bookPageThumbnailUrl(bookId?: string, page?: number): string | undefined {
+  if (bookId && page) return `${API_BASE_URL}/api/v1/books/${bookId}/pages/${page}/thumbnail`
+  return undefined
+}
+
 export function pageHashKnownThumbnailUrl(hash?: string): string | undefined {
   if (hash) return `${API_BASE_URL}/api/v1/page-hashes/${hash}/thumbnail`
   return undefined
