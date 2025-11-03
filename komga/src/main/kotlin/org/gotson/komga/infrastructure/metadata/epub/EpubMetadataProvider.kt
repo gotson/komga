@@ -147,6 +147,7 @@ class EpubMetadataProvider(
         genres = genres,
         totalBookCount = null,
         collections = emptySet(),
+        alternateTitles = null,
       )
     }
     return null

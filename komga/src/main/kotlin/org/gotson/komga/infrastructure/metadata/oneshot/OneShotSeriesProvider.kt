@@ -30,6 +30,7 @@ class OneShotSeriesProvider(
       null,
       1,
       emptySet(),
+      null,
     )
   }
 

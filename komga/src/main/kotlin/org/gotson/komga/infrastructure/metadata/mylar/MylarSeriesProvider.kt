@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.metadata.mylar
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.gotson.komga.domain.model.AlternateTitle
 import org.gotson.komga.domain.model.Library
 import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.Series
@@ -9,6 +10,7 @@ import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataProvider
+import org.gotson.komga.infrastructure.metadata.mylar.dto.AlternateTitleEntry
 import org.gotson.komga.infrastructure.metadata.mylar.dto.Status
 import org.gotson.komga.infrastructure.sidecar.SidecarSeriesConsumer
 import org.springframework.stereotype.Service
@@ -44,6 +46,19 @@ class MylarSeriesProvider(
         else
           "${metadata.name} (${metadata.year})"
 
+      // Convert alternate titles to AlternateTitle objects with language as label
+      val alternateTitles =
+        metadata.alternateTitles?.mapNotNull { alternateTitleEntry ->
+          if (alternateTitleEntry.title.isNotBlank()) {
+            AlternateTitle(
+              label = alternateTitleEntry.language?.uppercase() ?: "ALTERNATIVE",
+              title = alternateTitleEntry.title,
+            )
+          } else {
+            null
+          }
+        }
+
       return SeriesMetadataPatch(
         title = title,
         titleSort = title,
@@ -51,15 +66,17 @@ class MylarSeriesProvider(
           when (metadata.status) {
             Status.Ended -> SeriesMetadata.Status.ENDED
             Status.Continuing -> SeriesMetadata.Status.ONGOING
+            null -> null
           },
         summary = metadata.descriptionFormatted ?: metadata.descriptionText,
         readingDirection = null,
-        publisher = metadata.publisher,
+        publisher = metadata.publisher.takeIf { it.isNotBlank() && it != "Unknown" },
         ageRating = metadata.ageRating?.ageRating,
         language = null,
-        genres = null,
+        genres = metadata.genres?.toSet(),
         totalBookCount = metadata.totalIssues,
         collections = emptySet(),
+        alternateTitles = alternateTitles,
       )
     } catch (e: Exception) {
       logger.error(e) { "Error while retrieving metadata from $SERIES_JSON" }

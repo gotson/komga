@@ -155,6 +155,7 @@ class ComicInfoProvider(
             ?.split(',')
             ?.mapNotNull { it.trim().ifBlank { null } }
             ?.toSet() ?: emptySet(),
+        alternateTitles = null,
       )
     }
     return null
