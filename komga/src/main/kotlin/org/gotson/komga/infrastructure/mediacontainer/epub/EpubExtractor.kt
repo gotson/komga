@@ -67,7 +67,7 @@ class EpubExtractor(
           ?: // try id="cover-image"
           manifest.values.firstOrNull { it.id == "cover-image" }
       if (coverManifestItem != null) {
-        val href = coverManifestItem.href
+        val href = URLDecoder.decode(coverManifestItem.href, Charsets.UTF_8)
         val mediaType = coverManifestItem.mediaType
         val coverPath = normalizeHref(opfDir, href)
         zip.getEntryBytes(coverPath)?.let { coverBytes ->
