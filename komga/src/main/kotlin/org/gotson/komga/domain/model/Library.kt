@@ -36,10 +36,15 @@ data class Library(
   val analyzeDimensions: Boolean = true,
   val oneshotsDirectory: String? = null,
   val unavailableDate: LocalDateTime? = null,
+  val pluginConfigurations: Map<String, PluginConfiguration> = emptyMap(),
   val id: String = TsidCreator.getTsid256().toString(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
+  data class PluginConfiguration(
+    val enabled: Boolean = false,
+    val config: Map<String, String> = emptyMap(),
+  )
   enum class SeriesCover {
     FIRST,
     FIRST_UNREAD_OR_FIRST,

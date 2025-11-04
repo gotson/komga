@@ -1,0 +1,11 @@
+{
+  "id": "manga-metadata-example",
+  "name": "Manga Metadata Example Plugin",
+  "version": "1.0.0",
+  "description": "Example plugin that demonstrates fetching manga metadata from external sources",
+  "author": "Komga Team",
+  "komgaVersion": "1.0.0",
+  "entryPoint": "com.example.komga.plugin.MangaMetadataPlugin",
+  "type": "book-metadata",
+  "capabilities": ["TITLE", "SUMMARY", "AUTHORS", "RELEASE_DATE"]
+}
