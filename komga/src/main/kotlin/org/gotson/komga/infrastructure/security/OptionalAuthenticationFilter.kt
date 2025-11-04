@@ -19,7 +19,9 @@ private val logger = KotlinLogging.logger {}
  * Allows optional authentication for API endpoints.
  */
 @Component
-class OptionalAuthenticationFilter : OncePerRequestFilter() {
+class OptionalAuthenticationFilter(
+  private val realIpResolver: RealIpResolver,
+) : OncePerRequestFilter() {
   override fun doFilterInternal(
     request: HttpServletRequest,
     response: HttpServletResponse,
@@ -31,7 +33,13 @@ class OptionalAuthenticationFilter : OncePerRequestFilter() {
     if (existingAuth == null || !existingAuth.isAuthenticated) {
       // Check if this is a public endpoint
       if (isPublicEndpoint(request)) {
-        // Create anonymous user authentication
+        // Get real IP address from reverse proxy headers
+        val realIp = request.getRealIpAddress()
+        val sessionId = request.session?.id
+
+        logger.debug { "Creating anonymous user for IP: $realIp, session: $sessionId" }
+
+        // Create anonymous user authentication with real IP tracking
         val anonymousUser = AnonymousUser.asKomgaUser()
         val principal = KomgaPrincipal(anonymousUser)
 
@@ -49,7 +57,7 @@ class OptionalAuthenticationFilter : OncePerRequestFilter() {
 
         SecurityContextHolder.getContext().authentication = authentication
 
-        logger.debug { "Granted anonymous access to ${request.requestURI}" }
+        logger.debug { "Granted anonymous access to ${request.requestURI} from $realIp" }
       }
     }
 
