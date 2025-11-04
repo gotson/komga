@@ -4,7 +4,9 @@ import java.time.LocalDate
 
 data class BookMetadataPatch(
   val title: String? = null,
+  val titles: Map<String, String>? = null, // Language code -> title
   val summary: String? = null,
+  val summaries: Map<String, String>? = null, // Language code -> summary
   val number: String? = null,
   val numberSort: Float? = null,
   val releaseDate: LocalDate? = null,
