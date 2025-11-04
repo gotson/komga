@@ -4,13 +4,16 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.gotson.komga.domain.model.Plugin
+import org.gotson.komga.domain.service.ChapterCheckService
 import org.gotson.komga.domain.service.PluginDownloader
 import org.gotson.komga.domain.service.PluginLifecycle
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
+import org.gotson.komga.interfaces.api.rest.dto.ChapterCheckResultDto
 import org.gotson.komga.interfaces.api.rest.dto.PluginDto
 import org.gotson.komga.interfaces.api.rest.dto.PluginRepoDto
 import org.gotson.komga.interfaces.api.rest.dto.PluginStatusDto
+import org.gotson.komga.interfaces.api.rest.dto.PluginUpdateCheckDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -35,6 +38,7 @@ import java.nio.file.StandardCopyOption
 class PluginController(
   private val pluginLifecycle: PluginLifecycle,
   private val pluginDownloader: PluginDownloader,
+  private val chapterCheckService: ChapterCheckService,
 ) {
   @GetMapping
   @PreAuthorize("hasRole('ADMIN')")
@@ -238,6 +242,102 @@ class PluginController(
         HttpStatus.INTERNAL_SERVER_ERROR,
         "Failed to download and install plugin: ${e.message}",
       )
+    }
+  }
+
+  @PostMapping("check-updates")
+  @PreAuthorize("hasRole('ADMIN')")
+  @Operation(
+    summary = "Check for plugin updates",
+    description = "Check all loaded plugins for available updates from their repositories",
+  )
+  fun checkForUpdates(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): List<PluginUpdateCheckDto> {
+    val updates = mutableListOf<PluginUpdateCheckDto>()
+
+    pluginLifecycle.getLoadedPlugins().forEach { plugin ->
+      // Try to determine the repo from the plugin
+      val builtInRepos = pluginDownloader.getBuiltInRepos()
+      val repo = builtInRepos.values.find { it.name == plugin.name }
+
+      if (repo != null) {
+        val updateCheck = pluginDownloader.checkForUpdate(
+          owner = repo.owner,
+          repo = repo.repo,
+          currentVersion = plugin.version,
+        )
+
+        updates.add(
+          PluginUpdateCheckDto(
+            pluginId = plugin.id,
+            pluginName = plugin.name,
+            currentVersion = updateCheck.currentVersion,
+            latestVersion = updateCheck.latestVersion,
+            updateAvailable = updateCheck.updateAvailable,
+            releaseUrl = updateCheck.releaseUrl,
+            releaseNotes = updateCheck.releaseNotes,
+            error = updateCheck.error,
+          ),
+        )
+      }
+    }
+
+    return updates
+  }
+
+  @PostMapping("check-chapters/{seriesId}")
+  @PreAuthorize("hasRole('USER')")
+  @Operation(
+    summary = "Check for new chapters",
+    description = "Check if new chapters are available for a specific series",
+  )
+  fun checkNewChapters(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @PathVariable seriesId: String,
+  ): List<ChapterCheckResultDto> {
+    val results = chapterCheckService.checkNewChapters(seriesId)
+    return results.map {
+      ChapterCheckResultDto(
+        seriesId = it.seriesId,
+        seriesTitle = it.seriesTitle,
+        hasNewChapters = it.hasNewChapters,
+        latestChapterNumber = it.latestChapterNumber,
+        latestChapterTitle = it.latestChapterTitle,
+        latestChapterUrl = it.latestChapterUrl,
+        newChapterCount = it.newChapterCount,
+        lastChecked = it.lastChecked,
+        source = it.source,
+        message = it.message,
+      )
+    }
+  }
+
+  @PostMapping("check-all-chapters")
+  @PreAuthorize("hasRole('ADMIN')")
+  @Operation(
+    summary = "Check for new chapters across all series",
+    description = "Check all series for new chapters using available plugins",
+  )
+  fun checkAllChapters(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): Map<String, List<ChapterCheckResultDto>> {
+    val results = chapterCheckService.checkAllSeries()
+    return results.mapValues { (_, checkResults) ->
+      checkResults.map {
+        ChapterCheckResultDto(
+          seriesId = it.seriesId,
+          seriesTitle = it.seriesTitle,
+          hasNewChapters = it.hasNewChapters,
+          latestChapterNumber = it.latestChapterNumber,
+          latestChapterTitle = it.latestChapterTitle,
+          latestChapterUrl = it.latestChapterUrl,
+          newChapterCount = it.newChapterCount,
+          lastChecked = it.lastChecked,
+          source = it.source,
+          message = it.message,
+        )
+      }
     }
   }
 }

@@ -201,6 +201,61 @@ class PluginDownloader(
   }
 
   /**
+   * Check for plugin updates from a GitHub repository.
+   * @param owner GitHub repository owner
+   * @param repo GitHub repository name
+   * @param currentVersion Current version of the plugin
+   * @return UpdateCheckResult indicating if an update is available
+   */
+  fun checkForUpdate(owner: String, repo: String, currentVersion: String): UpdateCheckResult {
+    try {
+      logger.info { "Checking for updates: $owner/$repo (current: $currentVersion)" }
+
+      val releaseUrl = "https://api.github.com/repos/$owner/$repo/releases/latest"
+      val releaseInfo = fetchJson(releaseUrl)
+
+      val latestVersion = releaseInfo["tag_name"] as? String
+        ?: return UpdateCheckResult(
+          updateAvailable = false,
+          currentVersion = currentVersion,
+          latestVersion = null,
+          error = "Could not determine latest version",
+        )
+
+      // Remove 'v' prefix if present for comparison
+      val cleanLatestVersion = latestVersion.removePrefix("v")
+      val cleanCurrentVersion = currentVersion.removePrefix("v")
+
+      val updateAvailable = cleanLatestVersion != cleanCurrentVersion
+
+      return UpdateCheckResult(
+        updateAvailable = updateAvailable,
+        currentVersion = currentVersion,
+        latestVersion = latestVersion,
+        releaseUrl = releaseInfo["html_url"] as? String,
+        releaseNotes = releaseInfo["body"] as? String,
+      )
+    } catch (e: Exception) {
+      logger.error(e) { "Failed to check for updates: $owner/$repo" }
+      return UpdateCheckResult(
+        updateAvailable = false,
+        currentVersion = currentVersion,
+        latestVersion = null,
+        error = "Update check failed: ${e.message}",
+      )
+    }
+  }
+
+  data class UpdateCheckResult(
+    val updateAvailable: Boolean,
+    val currentVersion: String,
+    val latestVersion: String?,
+    val releaseUrl: String? = null,
+    val releaseNotes: String? = null,
+    val error: String? = null,
+  )
+
+  /**
    * Simple JSON parser for basic use cases.
    * In production, use a proper JSON library like Jackson.
    */

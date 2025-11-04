@@ -411,6 +411,80 @@ Response:
 }
 ```
 
+### Check for Plugin Updates
+
+```
+POST /api/v1/plugins/check-updates
+```
+
+Checks all loaded plugins for available updates from their repositories.
+
+Response:
+```json
+[
+  {
+    "pluginId": "manga-py",
+    "pluginName": "Manga-Py Metadata Plugin",
+    "currentVersion": "1.0.0",
+    "latestVersion": "1.1.0",
+    "updateAvailable": true,
+    "releaseUrl": "https://github.com/08shiro80/manga-py/releases/tag/v1.1.0",
+    "releaseNotes": "- Added support for more sources\n- Fixed bugs",
+    "error": null
+  }
+]
+```
+
+### Check for New Chapters
+
+```
+POST /api/v1/plugins/check-chapters/{seriesId}
+```
+
+Checks if new chapters are available for a specific series using loaded plugins.
+
+Response:
+```json
+[
+  {
+    "seriesId": "123",
+    "seriesTitle": "One Piece",
+    "hasNewChapters": true,
+    "latestChapterNumber": "1095",
+    "latestChapterTitle": "A World in Shock",
+    "latestChapterUrl": "https://mangadex.org/chapter/...",
+    "newChapterCount": 3,
+    "lastChecked": 1704297600000,
+    "source": "MangaDex",
+    "message": "3 new chapters available"
+  }
+]
+```
+
+### Check All Series for New Chapters
+
+```
+POST /api/v1/plugins/check-all-chapters
+```
+
+Checks all series in the library for new chapters.
+
+Response:
+```json
+{
+  "series-id-1": [
+    {
+      "seriesId": "123",
+      "seriesTitle": "One Piece",
+      "hasNewChapters": true,
+      "newChapterCount": 3,
+      ...
+    }
+  ],
+  "series-id-2": [...]
+}
+```
+
 ## Configuration
 
 ### Application Properties
@@ -488,6 +562,94 @@ Plugins declare which metadata fields they can extract:
 - `TAGS`: Genre tags
 - `ISBN`: ISBN identifier
 - `LINKS`: External links (e.g., to database page)
+
+## Chapter Checking
+
+Plugins can implement the `PluginChapterChecker` interface to check for new chapters:
+
+```kotlin
+interface PluginChapterChecker : KomgaPlugin {
+  fun checkNewChapters(series: Series): ChapterCheckResult?
+  fun getUpdateFrequencyMinutes(): Int = 60
+}
+```
+
+Example implementation:
+
+```kotlin
+class MangaDexChapterChecker : PluginChapterChecker {
+  override fun checkNewChapters(series: Series): ChapterCheckResult? {
+    // Search for series on MangaDex
+    val mangaId = findMangaId(series.name)
+    if (mangaId == null) return null
+
+    // Fetch latest chapters
+    val chapters = fetchLatestChapters(mangaId)
+    val localChapters = series.books.map { it.number }
+
+    // Determine new chapters
+    val newChapters = chapters.filter { it.number !in localChapters }
+
+    return ChapterCheckResult(
+      seriesId = series.id,
+      seriesTitle = series.name,
+      hasNewChapters = newChapters.isNotEmpty(),
+      latestChapterNumber = chapters.firstOrNull()?.number,
+      latestChapterTitle = chapters.firstOrNull()?.title,
+      latestChapterUrl = chapters.firstOrNull()?.url,
+      newChapterCount = newChapters.size,
+      source = "MangaDex"
+    )
+  }
+}
+```
+
+## Chapter Downloading
+
+Plugins can implement the `PluginChapterDownloader` interface to download chapters:
+
+```kotlin
+interface PluginChapterDownloader : KomgaPlugin {
+  fun downloadChapter(chapterUrl: String, destinationPath: String): ChapterDownloadResult
+  fun searchSeries(seriesTitle: String): List<SeriesSearchResult>
+}
+```
+
+Example:
+
+```kotlin
+class MangaDexDownloader : PluginChapterDownloader {
+  override fun downloadChapter(chapterUrl: String, destinationPath: String): ChapterDownloadResult {
+    // Download chapter pages
+    val pages = fetchChapterPages(chapterUrl)
+
+    // Create CBZ archive
+    val cbzPath = createCbz(pages, destinationPath)
+
+    return ChapterDownloadResult(
+      success = true,
+      filePath = cbzPath,
+      chapterNumber = extractChapterNumber(chapterUrl),
+      chapterTitle = extractChapterTitle(chapterUrl),
+      error = null
+    )
+  }
+
+  override fun searchSeries(seriesTitle: String): List<SeriesSearchResult> {
+    val results = searchMangaDex(seriesTitle)
+    return results.map { manga ->
+      SeriesSearchResult(
+        title = manga.title,
+        url = manga.url,
+        coverUrl = manga.coverUrl,
+        description = manga.description,
+        latestChapter = manga.latestChapter,
+        source = "MangaDex"
+      )
+    }
+  }
+}
+```
 
 ## Best Practices
 

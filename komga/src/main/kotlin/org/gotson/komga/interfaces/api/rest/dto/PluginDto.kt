@@ -33,3 +33,27 @@ data class PluginRepoDto(
   val repo: String,
   val description: String,
 )
+
+data class PluginUpdateCheckDto(
+  val pluginId: String,
+  val pluginName: String,
+  val currentVersion: String,
+  val latestVersion: String?,
+  val updateAvailable: Boolean,
+  val releaseUrl: String?,
+  val releaseNotes: String?,
+  val error: String?,
+)
+
+data class ChapterCheckResultDto(
+  val seriesId: String,
+  val seriesTitle: String,
+  val hasNewChapters: Boolean,
+  val latestChapterNumber: String?,
+  val latestChapterTitle: String?,
+  val latestChapterUrl: String?,
+  val newChapterCount: Int,
+  val lastChecked: Long,
+  val source: String,
+  val message: String?,
+)
