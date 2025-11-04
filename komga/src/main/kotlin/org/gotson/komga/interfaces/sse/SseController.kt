@@ -116,6 +116,7 @@ class SseController(
     logger.debug { "Publish SSE: '$name':$data" }
 
     synchronized(emitters) {
+      val deadEmitters = mutableListOf<SseEmitter>()
       emitters
         .filter { if (adminOnly) it.value.isAdmin else true }
         .filter { if (userIdOnly != null) it.value.id == userIdOnly else true }
@@ -127,9 +128,16 @@ class SseController(
                 .name(name)
                 .data(data, MediaType.APPLICATION_JSON),
             )
-          } catch (_: IOException) {
+          } catch (e: IOException) {
+            logger.debug(e) { "SSE emitter connection closed, removing from active connections" }
+            deadEmitters.add(emitter)
+          } catch (e: Exception) {
+            logger.warn(e) { "Unexpected error sending SSE event, removing emitter" }
+            deadEmitters.add(emitter)
           }
         }
+      // Clean up dead connections
+      deadEmitters.forEach { emitters.remove(it) }
     }
   }
 
