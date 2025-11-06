@@ -66,7 +66,7 @@ class BookAnalyzer(
       var mediaType =
         contentDetector.detectMediaType(book.path).let {
           logger.info { "Detected media type: $it" }
-          MediaType.fromMediaType(it) ?: return Media(mediaType = it, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
+          MediaType.fromMediaType(it, book.path.extension) ?: return Media(mediaType = it, status = Media.Status.UNSUPPORTED, comment = "ERR_1001", bookId = book.id)
         }
 
       if (book.path.extension.lowercase() == "epub" && mediaType != MediaType.EPUB) {
