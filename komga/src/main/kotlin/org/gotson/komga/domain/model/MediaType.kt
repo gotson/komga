@@ -12,10 +12,15 @@ enum class MediaType(
   RAR_5("application/x-rar-compressed; version=5", MediaProfile.DIVINA, "cbr", "application/vnd.comicbook-rar"),
   EPUB("application/epub+zip", MediaProfile.EPUB, "epub"),
   PDF("application/pdf", MediaProfile.PDF, "pdf"),
+  IMAGES("application/komga-images", MediaProfile.DIVINA, "komga_images"),
   ;
 
   companion object {
-    fun fromMediaType(mediaType: String?): MediaType? = entries.firstOrNull { it.type == mediaType }
+    fun fromMediaType(mediaType: String?, ext: String? = null): MediaType? = entries.firstOrNull {
+      if (mediaType == "application/octet-stream" && !ext.isNullOrBlank()) {
+        ext.lowercase() == it.fileExtension
+      } else it.type == mediaType
+    }
 
     fun matchingMediaProfile(mediaProfile: MediaProfile): Collection<MediaType> = entries.filter { it.profile == mediaProfile }
   }

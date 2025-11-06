@@ -59,6 +59,7 @@ class FileSystemScanner(
         if (scanCbx) addAll(listOf("cbz", "zip", "cbr", "rar"))
         if (scanPdf) add("pdf")
         if (scanEpub) add("epub")
+        add("komga_images")
       }
     logger.info { "Scanning folder: $root" }
     logger.info { "Scan for extensions: $scanForExtensions" }
