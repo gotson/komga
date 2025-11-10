@@ -50,6 +50,7 @@ class KoboProxy(
       HttpHeaders.USER_AGENT,
       HttpHeaders.ACCEPT,
       HttpHeaders.ACCEPT_LANGUAGE,
+      HttpHeaders.CONTENT_TYPE,
     )
 
   private val headersOutExclude =
