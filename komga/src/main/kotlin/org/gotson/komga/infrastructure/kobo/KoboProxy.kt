@@ -18,6 +18,7 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.toEntity
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.util.DefaultUriBuilderFactory
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.toJavaDuration
 
@@ -29,18 +30,26 @@ class KoboProxy(
   private val komgaSyncTokenGenerator: KomgaSyncTokenGenerator,
   private val komgaSettingsProvider: KomgaSettingsProvider,
 ) {
-  private val koboApiClient =
-    RestClient
-      .builder()
-      .baseUrl("https://storeapi.kobo.com")
-      .requestFactory(
-        ClientHttpRequestFactoryBuilder.reactor().build(
-          ClientHttpRequestFactorySettings
-            .defaults()
-            .withReadTimeout(1.minutes.toJavaDuration())
-            .withConnectTimeout(1.minutes.toJavaDuration()),
-        ),
-      ).build()
+  private val koboApiClient: RestClient
+
+  init {
+    val uriBuilderFactory = DefaultUriBuilderFactory("https://storeapi.kobo.com")
+    uriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE)
+
+    koboApiClient =
+      RestClient
+        .builder()
+        .uriBuilderFactory(
+          uriBuilderFactory,
+        ).requestFactory(
+          ClientHttpRequestFactoryBuilder.reactor().build(
+            ClientHttpRequestFactorySettings
+              .defaults()
+              .withReadTimeout(1.minutes.toJavaDuration())
+              .withConnectTimeout(1.minutes.toJavaDuration()),
+          ),
+        ).build()
+  }
 
   private val pathRegex = """\/kobo\/[-\w]*(.*)""".toRegex()
 
