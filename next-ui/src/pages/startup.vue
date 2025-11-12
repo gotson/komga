@@ -2,7 +2,19 @@
   <v-container max-width="550px">
     <v-row justify="center">
       <v-col>
-        <v-img src="@/assets/logo.svg" />
+        <v-img
+          src="@/assets/logo.svg"
+          width="500"
+          height="500"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-progress-linear
+          indeterminate
+          color="primary"
+        />
       </v-col>
     </v-row>
   </v-container>
