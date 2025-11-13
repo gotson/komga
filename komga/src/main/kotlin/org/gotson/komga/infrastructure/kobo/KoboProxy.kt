@@ -120,6 +120,7 @@ class KoboProxy(
         }.apply { if (body != null) body(body) }
         .retrieve()
         .onStatus(HttpStatusCode::isError) { _, response ->
+          logger.debug { "Kobo response: $response" }
           throw ResponseStatusException(response.statusCode, response.statusText)
         }.toEntity<JsonNode>()
 
