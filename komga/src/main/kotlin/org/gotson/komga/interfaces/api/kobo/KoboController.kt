@@ -193,6 +193,12 @@ class KoboController(
     val resources =
       try {
         koboProxy.proxyCurrentRequest().body?.get("Resources")
+      } catch (e: ResponseStatusException) {
+        if (e.getStatusCode().value() == 401) {
+          throw e
+        }
+        logger.warn { "Failed to get response from Kobo /v1/initialization, fallback to noproxy" }
+        null
       } catch (e: Exception) {
         logger.warn { "Failed to get response from Kobo /v1/initialization, fallback to noproxy" }
         null
