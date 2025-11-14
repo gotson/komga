@@ -19,7 +19,15 @@
   },
   "account_settings": {
     "account_settings": "إعدادات الحساب",
-    "change_password": "تغيير كلمة السر"
+    "api_key": {
+      "created_date": "تاريخ الصنع: {date}",
+      "force_kobo_sync": "إجبار مزامنة Kobo",
+      "generate_api_key": "توليد مفتاح API",
+      "no_keys": "لم يخلق مفتاح API بعد"
+    },
+    "change_password": "تغيير كلمة السر",
+    "details": "تفاصيل",
+    "my_account": "حسابي"
   },
   "announcements": {
     "mark_all_read": "اشر عليها بانها قرأت",
@@ -27,6 +35,7 @@
     "tab_title": "إعلانات"
   },
   "authentication_activity": {
+    "api_key": "مفتاح API",
     "datetime": "التاريخ والوقت",
     "email": "البريد الإلكتروني",
     "error": "خطأ",
@@ -85,7 +94,8 @@
   "bookreader": {
     "beginning_of_book": "أنت في بداية الكتاب.",
     "changing_reading_direction": "تغيير اتجاه القراءة إلى",
-    "cycling_page_layout": "تخطيط دوري للصفحة",
+    "cycling_page_layout": "تغيير تخطيط الصفحة",
+    "cycling_page_margin": "تغيير هامش الصفحة",
     "cycling_scale": "تغيير حجم التحرير",
     "cycling_side_padding": "تغيير الحدود الجانبية",
     "download_current_page": "تنزيل الصفحة الحالية",
@@ -128,6 +138,7 @@
       "general": "إعدادات عامة",
       "gestures": "الإيماءات",
       "page_layout": "تخطيط الصفحة",
+      "page_margin": "هامش الصفحة",
       "paged": "خيارات القارئ المرقم",
       "reading_mode": "وضع القراءة",
       "scale_type": "نوع القياس",
@@ -137,8 +148,9 @@
     },
     "shortcuts": {
       "close": "إغلاق",
-      "cycle_page_layout": "دورة تخطيط الصفحة",
-      "cycle_scale": "مقياس الدورة",
+      "cycle_page_layout": "تغيير تخطيط الصفحة",
+      "cycle_page_margin": "تغيير هامش الصفحة",
+      "cycle_scale": "تغيير الحجم",
       "cycle_side_padding": "تغيير الحدود الجانبية",
       "first_page": "الصفحة الأولى",
       "fullscreen": "إدخال/إنهاء ملء الشاشة",
@@ -161,6 +173,8 @@
   },
   "browse_book": {
     "comment": "تعليق",
+    "date_created": "صُنِع",
+    "date_modified": "آخر تعديل",
     "download_file": "تحميل الملف",
     "file": "ملف",
     "format": "صيغة",
@@ -170,6 +184,8 @@
     "outdated_tooltip": "تم تغيير ملف هذا الكتاب ، يجب إعادة تحليل هذا الكتاب",
     "read_book": "قراءة كتاب",
     "read_incognito": "قراءة التصفح المتخفي",
+    "remove_from_collection": "إزالة الكتاب من المجموعة",
+    "remove_from_readlist": "إزالة الكتاب من قائمة القراءة",
     "size": "حجم"
   },
   "browse_collection": {
@@ -184,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "هذه هي السنة الأولى من تواريخ الإصدار لجميع الكتب في السلسلة",
+    "remove_from_collection": "إزالة السلسلة من المجموعة",
     "series_no_summary": "هذه السلسلة لا تحتوي على ملخص ، لذلك اخترنا واحدًا لك!",
     "summary_from_book": "ملخص من الكتاب {number}:"
   },
@@ -194,6 +211,8 @@
   "common": {
     "age": "العمر",
     "all_libraries": "كل المكتبات",
+    "all_of": "كل من",
+    "any_of": "أي من",
     "book": "كتاب",
     "books": "كتب",
     "books_n": "لا يوجد كتاب | 1 كتاب | {count} كتب",
@@ -203,15 +222,19 @@
     "choose_image": "اختر صورة",
     "close": "إغلاق",
     "collections": "المجموعات",
+    "copied": "تم النسخ!",
     "create": "صنع",
     "delete": "حذف",
-    "discard": "تجاهل",
+    "dimension": "ع:{width}, ط:{height}",
+    "discard": "تخلص",
     "disk_space": "مساحة القرص",
     "dismiss": "رفض",
     "download": "تحميل",
     "drag_drop": "أمسك واسحب",
+    "duplicate": "مكرر",
     "email": "البريد الإلكتروني",
-    "epub": "Epub",
+    "epub": "EPUB",
+    "error": "خطأ",
     "filename": "اسم الملف",
     "filter_no_matches": "الفلتر النشط ليس له تطابق",
     "genre": "نوع",
@@ -219,13 +242,17 @@
     "go_to_library": "اذهب إلى المكتبة",
     "go_to_readlist": "انتقل إلى قائمة القراءة",
     "go_to_series": "الانتقال إلى السلسلة",
+    "i_understand": "فهمت",
     "library": "مكتبة",
     "locale_name": "العربية",
     "locale_rtl": "true",
     "lock_all": "قفل الكل",
+    "media": "الوسائط",
+    "more": "المزيد",
     "n_selected": "{count} مختار",
     "nothing_to_show": "لا شيء للعرض",
-    "oneshot": "طلقة واحدة",
+    "ok": "حسنا",
+    "oneshot": "قصة منفردة",
     "outdated": "متقادمة",
     "page": "صفحة",
     "page_number": "رقم الصفحة",
@@ -235,19 +262,23 @@
     "password": "كلمة السر",
     "pdf": "PDF",
     "pending_tasks": "لا توجد مهام معلقة | مهمة واحدة معلقة | {count} مهام معلقة",
+    "pinned_libraries": "المكتبات المثبتة",
     "publisher": "الناشر",
     "read": "اقرأ",
     "read_on": "قرأ في {date}",
     "readlist": "قائمة القراءة",
     "readlists": "قوائم القراءة",
     "remember-me": "تذكرني",
+    "reorder": "تغيير الترتيب",
     "required": "مطلوب",
     "reset_filters": "إعادة تعيين فلتر",
     "roles": "أدوار",
     "save_changes": "حفظ التغييرات",
     "series": "سلسلة",
+    "settings": "الإعدادات",
     "sidecars": "Sidecars",
     "tags": "التصنيف",
+    "ui": "واجهة المستخدم",
     "unavailable": "غير متوفر",
     "unlock_all": "فتح الكل",
     "url": "عنوان URL",
@@ -271,10 +302,11 @@
     "comicrack_preambule_html": "يمكنك استيراد قوائم قراءة ComicRack الحالية بتنسيق <code>cbl</code>.<br>سيحاول Komga مطابقة السلسلة ورقم الكتاب المقدمين مع السلسلة والكتب في مكتباتك.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} الكتب غير متطابقة",
+      "body2": "{duplicates} / {total} كتاب مكرر",
       "create": "الخلق على أي حال",
       "title": "بعض الكتب لا تتطابق"
     },
-    "field_file_label": "ComicRack Reading List (.cbl)",
+    "field_file_label": "قائمة قراءة ComicRack (من نوع cbl.)",
     "field_files_label": "قوائم القراءة ComicRack (.cbl)",
     "import_read_lists": "استيراد قوائم القراءة",
     "imported_as": "مستورد كـ {name}",
@@ -286,6 +318,14 @@
     "tab_title": "استيراد البيانات"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "توليد",
+      "context": "يمكن استعمال مفاتيح الAPI للتوثيق عبر بروتوكول Kobo Sync.",
+      "dialog_title": "توليد مفتاح API جديد",
+      "field_comment": "تعليق",
+      "field_comment_hint": "ما الغرض من مفتاح الAPI هذا؟",
+      "info_copy": "يرجى التأكد من نسخ مفتاح الAPI الآن. لا يستطاع النظر عليه مجددا!"
+    },
     "add_to_collection": {
       "button_create": "خلق",
       "card_collection_subtitle": "لا توجد سلسلة | 1 سلسلة | {count} سلسلة",
@@ -318,6 +358,12 @@
     "book_picker": {
       "filter": "مصنف حسب رقم الكتاب أو العنوان أو تاريخ الإصدار",
       "title": "حدد كتاب"
+    },
+    "delete_apikey": {
+      "button_confirm": "حذف",
+      "confirm_delete": "فهمت, حذف مفتاح الAPI المسمى {name}",
+      "dialog_title": "حذف مفتاح الAPI",
+      "warning_html": "كل التطبيقات التي تستعمل مفتاح الAPI هذا ستصبح غير قادرة على الوصول إلى الAPI التابع لKomga. لا يمكن التراجع عن هذا الإجراء."
     },
     "delete_book": {
       "button_confirm": "حذف",
@@ -389,6 +435,8 @@
       "field_summary": "ملخص",
       "field_tags": "التصنيف",
       "field_title": "العنوان",
+      "number_sort_decrement": "تقليل الجميع ب1",
+      "number_sort_increment": "زيادة الجميع ب1",
       "tab_authors": "المؤلفون",
       "tab_general": "إعدادات عامة",
       "tab_links": "الروابط",
@@ -415,6 +463,7 @@
       "dialot_title_edit": "تحرير المكتبة",
       "field_analysis_analyze_dimensions": "تحليل أبعاد الصفحات",
       "field_analysis_hash_files": "حساب تجزئة للملفات",
+      "field_analysis_hash_koreader": "حسابة التلبيد لملفات KOReader",
       "field_analysis_hash_pages": "حساب تجزئة الصفحات",
       "field_convert_to_cbz": "تحويل تلقائيا إلى CBZ",
       "field_import_barcode_isbn": "الباركود ردمك",
@@ -422,15 +471,19 @@
       "field_import_comicinfo_collections": "المجموعات",
       "field_import_comicinfo_readlists": "قوائم القراءة",
       "field_import_comicinfo_series": "سلسلة البيانات الوصفية",
+      "field_import_comicinfo_series_append_volume": "إضافة المجلد إلى عنوان المسلسل",
       "field_import_epub_book": "البيانات الوصفية للكتاب",
       "field_import_epub_series": "سلسلة البيانات الوصفية",
       "field_import_local_artwork": "الأعمال الفنية المحلية",
       "field_import_mylar_series": "سلسلة البيانات الوصفية",
       "field_name": "الاسم",
+      "field_oneshotsdirectory": "‬موقع القصص المنفردة",
       "field_repair_extensions": "إصلاح ملحقات الملفات غير الصحيحة تلقائيًا",
       "field_root_folder": "المجلد الرئيسي",
+      "field_scan_interval": "تكرار البحث عن الملفات",
       "field_scanner_empty_trash_after_scan": "تفريغ المهملات تلقائيا بعد كل فحص",
       "field_scanner_force_directory_modified_time": "فرض وقت تعديل الدليل",
+      "field_scanner_scan_startup": "البحث عن الملفات عند بدء البرنامج",
       "field_series_cover": "غلاف السلسلة",
       "file_browser_dialog_button_confirm": "إختيار",
       "file_browser_dialog_title": "المجلد الجذر للمكتبة",
@@ -441,11 +494,14 @@
       "label_import_epub": "استيراد البيانات الوصفية من ملفات EPUB",
       "label_import_local": "استيراد أصول الوسائط المحلية",
       "label_import_mylar": "استيراد البيانات الوصفية التي تم إنشاؤها بواسطة Mylar",
+      "label_scan_directory_exclusions": "استبعاد المواقع",
+      "label_scan_types": "البحث عن أنواع الملفات هذه",
       "label_scanner": "الماسح الضوئي",
       "label_series_cover": "غلاف السلسلة",
       "tab_general": "إعدادات عامة",
       "tab_metadata": "البيانات الوصفية",
       "tab_options": "الخيارات",
+      "tooltip_oneshotsdirectory": "يترك فارغا للتعطيل",
       "tooltip_scanner_force_modified_time": "تمكين إذا كانت المكتبة على Google Drive",
       "tooltip_use_resources": "يمكن أن تستهلك الكثير من الموارد في مكتبات كبيرة أو أجهزة بطيئة"
     },
@@ -453,10 +509,15 @@
       "button_cancel": "إلغاء",
       "button_confirm": "حفظ التغييرات",
       "dialog_title": "تحرير قائمة القراءة",
+      "field_manual_ordering": "ترتيب يدوي",
       "field_name": "الاسم",
       "field_summary": "ملخص",
       "tab_general": "عام",
       "tab_poster": "ملصق"
+    },
+    "edit_recommended": {
+      "button_confirm": "حفظ التعديلات",
+      "button_reset": "الإعادة إلى التعديلات الأصلية"
     },
     "edit_series": {
       "button_cancel": "إلغاء",
@@ -483,6 +544,7 @@
       "tab_poster": "ملصق",
       "tab_sharing": "مشاركة",
       "tab_tags": "التصنيف",
+      "tab_titles": "العناوين البديلة",
       "tags_notice_multiple_edit": "أنت تقوم بتحرير العلامات لسلسلة متعددة. سيؤدي هذا إلى تجاوز العلامات الموجودة في كل سلسلة."
     },
     "edit_user": {
@@ -525,6 +587,9 @@
       },
       "title": "اسم الوجهة"
     },
+    "force_kobo_sync": {
+      "dialog_title": "إجبار مزامنة Kobo"
+    },
     "password_change": {
       "button_cancel": "إلغاء",
       "button_confirm": "تغيير كلمة السر",
@@ -541,6 +606,7 @@
     },
     "series_picker": {
       "label_search_series": "سلسلة البحث",
+      "no_results": "لم يتم العثور على أي سلسلة",
       "title": "اختيار سلسلة"
     },
     "server_stop": {
@@ -579,21 +645,31 @@
     }
   },
   "duplicate_pages": {
+    "action_auto_delete_remaining": "باق إلغاء {count} أوتوماتيكيا",
     "action_delete_auto": "حذف تلقائي",
     "action_delete_manual": "حذف يدوي",
     "action_delete_matches": "حذف المطابقات",
     "action_ignore": "تجاهل",
+    "action_ignore_remaining": "تجاهل الباقي ({count})",
+    "action_manual_delete_remaining": "إلغاء الباقي يدويا ({count})",
     "delete_to_save": "حذف لحفظ {size}",
     "deleted_count": "تم حذف {count} مرة",
+    "empty_title": "لم يتم العثور على صفحات مكررة",
+    "empty_title_known": "لا توجد نسخ مكررة معروف عنها",
     "filter": {
       "count": "عدد",
+      "date_added": "تاريخ الإضافة",
+      "date_modified": "تاريخ التعديل",
       "delete_count": "عدد الحذف",
       "delete_size": "المساحة المحفوظة",
+      "match_count": "عدد النتائج المتطابقة",
       "size": "حجم",
       "total_size": "الحجم الإجمالي"
     },
     "info": "حذف الصفحات المكررة سيغيّر ملفاتك. احتفظ بنسخة احتياطية من ملفاتك واستخدم الحذف اليدوي قبل استخدام الحذف التلقائي.",
+    "known": "المعروفة",
     "matches_n": "لا يوجد تطابق | 1 تطابق | {count} التطابق",
+    "new": "الجديدة",
     "saved_size": "حُفظ {size}",
     "title": "صفحات مكررة",
     "unknown_size": "حجم مجهول"
@@ -609,12 +685,34 @@
       "HARDLINK": "ملفات الروابط الثابتة/النسخ",
       "MOVE": "نقل الملفات"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "النهار",
+        "night": "الليل",
+        "sepia": "سيبيا"
+      },
+      "column_count": {
+        "auto": "أوتوماتيكي",
+        "one": "واحد",
+        "two": "اثنان"
+      },
+      "reading_direction": {
+        "auto": "أوتوماتيكي",
+        "ltr": "من اليسار إلى اليمين",
+        "rtl": "من اليمين إلى اليسار"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "تمّ تحويل الكتاب",
       "BookFileDeleted": "تمّ مسح ملف الكتاب",
       "BookImported": "تمّ استيراد الكتاب",
       "DuplicatePageDeleted": "تمّ حذف الصفحة المكررة",
       "SeriesFolderDeleted": "تمّ حذف مجلد السلسلة"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
     },
     "media_status": {
       "ERROR": "خطأ",
@@ -634,6 +732,14 @@
       "VERTICAL": "عمودي",
       "WEBTOON": "ويبتون"
     },
+    "scan_interval": {
+      "DAILY": "يوميا",
+      "DISABLED": "معطل",
+      "EVERY_12H": "كل 12 ساعة",
+      "EVERY_6H": "كل 6 ساعات",
+      "HOURLY": "كل ساعة",
+      "WEEKLY": "كل أسبوع"
+    },
     "series_cover": {
       "FIRST": "أول",
       "LAST": "أخير"
@@ -643,6 +749,34 @@
       "ENDED": "مكتمل",
       "HIATUS": "متوقف",
       "ONGOING": "مستمر"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "الفصل الحالي",
+    "page_of": "الصفحة {page} من {count}",
+    "publisher_font": "الناشر",
+    "settings": {
+      "column_count": "عدد أعمدة",
+      "font_family": "الخط",
+      "layout": "تخطيط",
+      "layout_scroll": "تمرير",
+      "navigation_mode": "وضع التنقل",
+      "navigation_options": {
+        "both": "كلاهما",
+        "buttons": "أزرار",
+        "click": "نقر/ضغط"
+      },
+      "page_margins": "هوامش الصفحة"
+    },
+    "shortcuts": {
+      "cycle_pagination": "تغيير عدد الأعمدة",
+      "font_size_decrease": "تصغير الخط",
+      "font_size_increase": "تكبير الخط",
+      "menus": "القائمات",
+      "next": "أمام",
+      "previous": "خلف",
+      "settings": "الإعدادات",
+      "show_hide_toc": "إظهار/إخفاء الفهرس"
     }
   },
   "error_codes": {
@@ -667,11 +801,13 @@
   "filter": {
     "age_rating": "التصنيف العمري",
     "age_rating_none": "لا شيء",
+    "any": "أي",
     "complete": "اكتمل",
     "genre": "نوع",
     "in_progress": "قيد التقدم",
     "language": "اللغة",
     "library": "المكتبة",
+    "oneshot": "قصة منفردة",
     "publisher": "الناشر",
     "read": "اقرأ",
     "release_date": "تاريخ الاصدار",
@@ -699,6 +835,8 @@
   },
   "library_navigation": {
     "browse": "تصفّح",
+    "browse_books": "كتب",
+    "browse_series": "سلسلات",
     "collections": "المجموعات",
     "readlists": "قوائم القراءة",
     "recommended": "موصى به"
@@ -730,6 +868,7 @@
     "empty_trash": "إفراغ سلة المهملات",
     "mark_read": "تحديد كمقروء",
     "mark_unread": "تحديد كغير مقروء",
+    "pin": "تثبيت",
     "refresh_metadata": "تحديث البيانات الوصفية",
     "scan_library_files": "فحص ملفات المكتبة",
     "select_all": "تحديد الكل"
@@ -745,6 +884,9 @@
     "libraries": "المكتبات",
     "logout": "تسجيل الخروج"
   },
+  "no_libraries_pinned": {
+    "title": "لا مكتبات مثبتة"
+  },
   "page_not_found": {
     "go_back_to_home_page": "العودة إلى الصفحة الرئيسية",
     "page_does_not_exist": "الصفحة التي تبحث عنها غير موجودة.",
@@ -753,6 +895,12 @@
   "read_more": {
     "less": "أقرأ أقل",
     "more": "اقرأ أكثر"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "كتاب مكرر",
+      "error_choose_book": "اختيار كتاب"
+    }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "إدارة قائمة القراءة",
@@ -775,12 +923,21 @@
       "button_empty_trash": "إفراغ سلة المهملات لكل المكتبات",
       "button_scan_libraries": "مسح جميع المكتبات",
       "button_shutdown": "إيقاف التشغيل",
+      "download_log": "تحميل ملف السجل",
       "notification_tasks_cancelled": "لا يوجد مهام لإلغائها | تمّ إلغاء 1 مهمة | تمّ إلغاء {count} مهمة",
       "section_title": "إدارة الخادم"
     },
-    "tab_title": "خادم"
+    "tab_title": "خادم",
+    "updates": "تحديثات"
   },
   "server_settings": {
+    "dialog_regenerate_thumbnails": {
+      "btn_alternate": "نعم، جميع الكتب",
+      "btn_cancel": "لا",
+      "btn_confirm": "نعم، لكن فقط إن كانت اكبر"
+    },
+    "label_kobo_port": "باب مزامنة Kobo الخارجي",
+    "label_server_port": "باب الخادم",
     "server_settings": "إعدادات الخادم"
   },
   "settings_user": {
@@ -795,12 +952,15 @@
   "sort": {
     "books_count": "عدد الكتب",
     "date_added": "تاريخ الإضافة",
+    "date_read": "تاريخ القراءة",
     "date_updated": "تاريخ التحديث",
     "file_name": "اسم الملف",
     "file_size": "حجم الملف",
     "folder_name": "اسم المجلد",
     "name": "الاسم",
     "number": "رقم",
+    "page_count": "عدد الصفحات",
+    "random": "عشوائي",
     "release_date": "تاريخ الإصدار"
   },
   "theme": {
@@ -818,16 +978,36 @@
     "tooltip_too_big": "الملف كبير جدًا!",
     "tooltip_user_uploaded": "تمّ الرفع بواسطة المستخدم"
   },
+  "titles_more": {
+    "less": "عناوين أقل",
+    "more": "عناوين أكثر"
+  },
+  "ui_settings": {
+    "general": "عام",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "ابجدي",
+      "japanese": "غوجون (ياباني)"
+    }
+  },
+  "updates": {
+    "available": "توجد تحديثات"
+  },
   "user_roles": {
     "ADMIN": "مدير",
     "FILE_DOWNLOAD": "تحميل الملف",
-    "PAGE_STREAMING": "صفحات البث",
+    "KOBO_SYNC": "مزامنة Kobo",
+    "KOREADER_SYNC": "مزامنة KOReader",
+    "PAGE_STREAMING": "بث الصفحات",
     "USER": "مستخدم"
   },
   "users": {
+    "api_keys": "مفاتيح الAPI",
     "users": "المستخدمين"
   },
   "validation": {
+    "one_or_more": "يجب أن يكون 1 أو أكثر",
+    "tcp_port": "يجب أن يكون بين 1 و 65535",
     "zero_or_more": "يجب أن يكون 0 أو أكثر"
   },
   "welcome": {
