@@ -4,8 +4,8 @@
       "pageText": "{0}-{1} из {2}"
     },
     "dataIterator": {
-      "loadingText": "Загрузка объектов...",
-      "noResultsText": "Подходящих записей не найдено"
+      "loadingText": "Загрузка элементов...",
+      "noResultsText": "Совпадений не найдено"
     },
     "dataTable": {
       "itemsPerPageText": "Строк на странице:",
@@ -15,30 +15,33 @@
       "counter": "Файлов: {0}",
       "counterSize": "Файлов: {0} (всего {1})"
     },
-    "noDataText": "Отсутствуют данные"
+    "noDataText": "Данные отсутствуют"
   },
   "account_settings": {
-    "account_settings": "Настройки Аккаунта",
+    "account_settings": "Настройки аккаунта",
     "api_key": {
       "created_date": "Дата создания: {date}",
-      "generate_api_key": "Сгенерировать API ключ",
+      "force_kobo_sync": "Принудительная синхронизация с Kobo",
+      "generate_api_key": "Сгенерировать ключ API",
       "no_keys": "Ни одного ключа API еще не создано"
     },
-    "change_password": "изменить пароль"
+    "change_password": "изменить пароль",
+    "details": "Подробности",
+    "my_account": "Мой аккаунт"
   },
   "announcements": {
-    "mark_all_read": "Пометить всё как прочитанное",
-    "mark_read": "Пометить как прочитанное",
+    "mark_all_read": "Отметить всё как прочитанное",
+    "mark_read": "Отметить как прочитанное",
     "tab_title": "Объявления"
   },
   "authentication_activity": {
-    "api_key": "API Ключ",
-    "datetime": "Дата / Время",
+    "api_key": "API-ключ",
+    "datetime": "Дата/Время",
     "email": "Эл. почта",
     "error": "Ошибка",
     "ip": "IP-адрес",
     "source": "Источник",
-    "success": "Статус",
+    "success": "Успех",
     "user_agent": "User Agent"
   },
   "author_roles": {
@@ -54,18 +57,18 @@
   "book_card": {
     "error": "Ошибка",
     "no_release_date": "Дата релиза отсутствует",
-    "unknown": "Необходимо проанализировать",
+    "unknown": "Подлежит анализу",
     "unread": "Не прочитано",
-    "unsupported": "Неподдерживаемый"
+    "unsupported": "Не поддерживается"
   },
   "book_import": {
     "button_browse": "Обзор",
-    "button_import": "Импортировать",
+    "button_import": "Импорт",
     "button_scan": "Сканировать",
-    "button_select_series": "Выберите Серию",
+    "button_select_series": "Выберите серию",
     "field_import_path": "Импортировать из каталога",
-    "info_part1": "Этот раздел позволяет вам импортировать файлы, которые находятся за пределами ваших существующих библиотек. Вы можете импортировать файлы только в существующие Серии, в этом случае Komga переместит или скопирует файлы в каталог выбранной Серии.",
-    "info_part2": "Если вы выберете номер для книги и книга с таким номером уже существует, то вы сможете сравнить 2 книги. Если вы решите импортировать книгу, Komga обновит существующую книгу, эффективно заменив старый файл новым.",
+    "info_part1": "Этот раздел позволяет вам импортировать файлы, которые находятся за пределами ваших существующих библиотек. Вы можете импортировать файлы только в существующие серии; в этом случае Komga переместит или скопирует файлы в каталог выбранной серии.",
+    "info_part2": "Если вы укажете номер для книги, и книга с таким номером уже существует, вы сможете сравнить оба варианта. Если вы решите импортировать книгу, Komga обновит существующий вариант, заменив старый файл новым.",
     "no_files_found": "Файлы не найдены",
     "notification": {
       "go_to_book": "Перейти к книге",
@@ -74,9 +77,9 @@
       "source_file": "Исходный файл: {file}"
     },
     "row": {
-      "error_analyze_first": "Книгу нужно сначала проанализировать",
+      "error_analyze_first": "Книга нуждается в предварительном анализе",
       "error_choose_series": "Выберите серию",
-      "error_only_import_no_errors": "Можно импортировать только книги без ошибок",
+      "error_only_import_no_errors": "Можно импортировать только книги без наличия ошибок",
       "warning_upgrade": "Существующая книга будет обновлена"
     },
     "table": {
@@ -90,10 +93,11 @@
   },
   "bookreader": {
     "beginning_of_book": "Вы находитесь в начале книги.",
-    "changing_reading_direction": "Изменение Направления Чтения на",
-    "cycling_page_layout": "Переключить Формат Страниц",
-    "cycling_scale": "Переключить Масштабирование",
-    "cycling_side_padding": "Переключить Боковой Отступ",
+    "changing_reading_direction": "Изменение направления чтения на",
+    "cycling_page_layout": "Переключение макета страницы",
+    "cycling_page_margin": "Переключение полей страницы",
+    "cycling_scale": "Масштабирование",
+    "cycling_side_padding": "Переключение боковых отступов",
     "download_current_page": "Скачать текущую страницу",
     "end_of_book": "Вы достигли конца книги.",
     "from_series_metadata": "из метаданных серии",
@@ -104,8 +108,8 @@
     "notification_poster_set_readlist": "Текущая страница теперь используется в качестве постера списка чтения.",
     "notification_poster_set_series": "Текущая страница теперь используется в качестве постера серии.",
     "paged_reader_layout": {
-      "double": "Двойные страницы",
-      "double_no_cover": "Двойные страницы (без обложки)",
+      "double": "Две страницы",
+      "double_no_cover": "Две страницы (без обложки)",
       "single": "Одна страница"
     },
     "reader_settings": "Настройки Ридера",
@@ -114,16 +118,16 @@
       "continuous_width": "По ширине",
       "height": "По высоте",
       "original": "Исходное",
-      "screen": "По экрану",
+      "screen": "По размеру экрана",
       "width": "По ширине",
       "width_shrink_only": "По ширине (с отступами)"
     },
-    "set_current_page_as_book_poster": "Установить страницу в качестве постера для книги",
-    "set_current_page_as_readlist_poster": "Установить страницу в качестве постера для списка чтения",
-    "set_current_page_as_series_poster": "Установить страницу в качестве постера для серии",
+    "set_current_page_as_book_poster": "Установить страницу в качестве обложки для книги",
+    "set_current_page_as_readlist_poster": "Установить страницу в качестве обложки для списка чтения",
+    "set_current_page_as_series_poster": "Установить страницу в качестве обложки для серии",
     "settings": {
-      "always_fullscreen": "Всегда в полный экран",
-      "animate_page_transitions": "Анимировать переходы страниц",
+      "always_fullscreen": "Всегда полноэкранный режим",
+      "animate_page_transitions": "Анимировать переходы между страницами",
       "background_color": "Цвет фона",
       "background_colors": {
         "black": "Чёрный",
@@ -134,54 +138,60 @@
       "general": "Общее",
       "gestures": "Жесты",
       "page_layout": "Формат страницы",
-      "paged": "Настройки Отображения Страниц",
+      "page_margin": "Поля страницы",
+      "paged": "Настройки отображения страниц",
       "reading_mode": "Режим чтения",
       "scale_type": "Масштабирование",
-      "side_padding": "Боковой отступ",
+      "side_padding": "Боковые отступы",
       "side_padding_none": "Нет",
-      "webtoon": "Параметры Режима Webtoon"
+      "webtoon": "Настройки режима цифрового комикса"
     },
     "shortcuts": {
       "close": "Закрыть",
-      "cycle_page_layout": "Переключить формат страниц",
+      "cycle_page_layout": "Переключить макет страницы",
+      "cycle_page_margin": "Переключить поля страницы",
       "cycle_scale": "Переключить масштаб",
-      "cycle_side_padding": "Переключить боковой отступ",
+      "cycle_side_padding": "Переключить боковые отступы",
       "first_page": "Первая страница",
       "fullscreen": "Войти/выйти из полноэкранного режима",
       "last_page": "Последняя страница",
-      "left_to_right": "Слева Направо",
+      "left_to_right": "Слева направо",
       "menus": "Меню",
       "next_page": "Следующая страница",
       "previous_page": "Предыдущая страница",
       "reader_navigation": "Навигация",
-      "right_to_left": "Справа Налево",
+      "right_to_left": "Справа налево",
       "settings": "Настройки",
       "show_hide_help": "Показать/скрыть помощь",
       "show_hide_settings": "Показать/скрыть меню настроек",
-      "show_hide_thumbnails": "Показать/скрыть просмотр эскизов",
+      "show_hide_thumbnails": "Показать/скрыть обозреватель миниатюр",
       "show_hide_toolbars": "Показать/скрыть панели инструментов",
       "vertical": "Вертикально",
-      "webtoon": "Webtoon"
+      "webtoon": "Цифровой комикс"
     },
     "tooltip_incognito": "Прогресс чтения не будет сохранен"
   },
   "browse_book": {
     "comment": "КОММЕНТАРИЙ",
+    "date_created": "СОЗДАНО",
+    "date_modified": "ПОСЛЕДНЕЕ ИЗМЕНЕНИЕ",
     "download_file": "Скачать файл",
     "file": "ФАЙЛ",
     "format": "ФОРМАТ",
     "isbn": "ISBN",
     "links": "ССЫЛКИ",
-    "navigation_within_readlist": "Навигация в пределах списка чтения: {name}",
-    "outdated_tooltip": "Файл этой книги изменен, книгу необходимо повторно проанализировать",
+    "navigation_within_readlist": "Навигация внутри списка чтения: {name}",
+    "outdated_tooltip": "Файл этой книги изменился, книгу необходимо повторно проанализировать",
     "read_book": "Читать книгу",
     "read_incognito": "Читать инкогнито",
+    "remove_from_collection": "Удалить книгу из коллекции",
+    "remove_from_readlist": "Удалить книгу из списка чтения",
     "size": "РАЗМЕР"
   },
   "browse_collection": {
     "edit_collection": "Редактировать коллекцию",
     "edit_elements": "Редактировать элементы",
-    "manual_ordering": "ручной порядок"
+    "manual_ordering": "ручная сортировка"
   },
   "browse_readlist": {
     "edit_elements": "Редактировать элементы",
@@ -189,17 +199,19 @@
     "manual_ordering": "ручная сортировка"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "Это самая ранняя дата выпуска из всех книг в этой серии",
-    "series_no_summary": "У серии нет описания, поэтому мы подобрали его для вас!",
+    "earliest_year_from_release_dates": "Это самый ранний год из дат выхода всех книг серии",
+    "remove_from_collection": "Удалить серию из коллекции",
+    "series_no_summary": "У этой серии нет описания, поэтому мы подобрали его для вас!",
     "summary_from_book": "Краткое описание из книги {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "Управлять коллекцией",
+    "manage_collection": "Управление коллекцией",
     "title": "Коллекция {name}"
   },
   "common": {
     "age": "Возраст",
-    "all_libraries": "Все Библиотеки",
+    "all_libraries": "Все библиотеки",
+    "any_of": "Любой из",
     "book": "Книга",
     "books": "Книги",
     "books_n": "Книг нет | 1 книга | {count} книг",
@@ -212,14 +224,16 @@
     "copied": "Скопировано!",
     "create": "Создать",
     "delete": "Удалить",
-    "dimension": "шир.: {width} выс.: {height}",
+    "dimension": "шир.: {width}, выс.: {height}",
     "discard": "Отмена",
     "disk_space": "Дисковое пространство",
     "dismiss": "Отклонить",
     "download": "Скачать",
     "drag_drop": "перетащить",
+    "duplicate": "Дублировать",
     "email": "Эл. почта",
     "epub": "Epub",
+    "error": "Ошибка",
     "filename": "Имя файла",
     "filter_no_matches": "Нет совпадений по заданному фильтру",
     "genre": "Жанр",
@@ -227,12 +241,16 @@
     "go_to_library": "Вернуться к библиотеке",
     "go_to_readlist": "Перейти к списку чтения",
     "go_to_series": "Перейти к серии",
+    "i_understand": "Я понимаю",
     "library": "Библиотека",
     "locale_name": "Русский",
     "locale_rtl": "false",
     "lock_all": "Заблокировать все",
+    "media": "Медиа",
+    "more": "Ещё",
     "n_selected": "{count} выбрано",
     "nothing_to_show": "Нет данных для отображения",
+    "ok": "OK",
     "outdated": "Устарело",
     "page": "Страница",
     "page_number": "Номер страницы",
@@ -242,17 +260,20 @@
     "password": "Пароль",
     "pdf": "PDF",
     "pending_tasks": "Нет незавершенных задач | 1 незавершенная задача | {count} незавершенных задач",
+    "pinned_libraries": "Закреплённые библиотеки",
     "publisher": "Издатель",
     "read": "Читать",
-    "read_on": "Читать {date}",
+    "read_on": "Прочитано {date}",
     "readlist": "Список чтения",
     "readlists": "Списки чтения",
-    "remember-me": "Запомнить",
-    "required": "Необходимо",
+    "remember-me": "Запомнить меня",
+    "reorder": "Изменить порядок",
+    "required": "Обязательно",
     "reset_filters": "Сбросить фильтры",
     "roles": "Роли",
     "save_changes": "Сохранить изменения",
     "series": "Серии",
+    "settings": "Настройки",
     "tags": "Теги",
     "unavailable": "Недоступно",
     "unlock_all": "Разблокировать все",
