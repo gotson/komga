@@ -46,7 +46,7 @@
   },
   "author_roles": {
     "colorist": "koloristi",
-    "cover": "omot",
+    "cover": "naslovnica",
     "editor": "urednici",
     "inker": "bojitelj",
     "letterer": "tipografi",
@@ -109,7 +109,7 @@
     "notification_poster_set_series": "Trenutačna stranica je sada postavljena kao poster serije.",
     "paged_reader_layout": {
       "double": "Dvije stranice",
-      "double_no_cover": "Dvije stranice (bez omota)",
+      "double_no_cover": "Dvije stranice (bez naslovnice)",
       "single": "Jedna stranica"
     },
     "reader_settings": "Postavke čitača",
@@ -484,7 +484,7 @@
       "field_scanner_empty_trash_after_scan": "Automatski isprazni smeće nakon svakog pretraživanja",
       "field_scanner_force_directory_modified_time": "Pretraži mape na osnovi vremena promjene",
       "field_scanner_scan_startup": "Pretraži tijekom pokretanja",
-      "field_series_cover": "Omot serije",
+      "field_series_cover": "Naslovnica serije",
       "file_browser_dialog_button_confirm": "Odaberi",
       "file_browser_dialog_title": "Osnovna mapa biblioteke",
       "label_analysis": "Analiza",
@@ -497,7 +497,7 @@
       "label_scan_directory_exclusions": "Isključivanja mapa",
       "label_scan_types": "Traži ove vrste datoteka",
       "label_scanner": "Tražilica",
-      "label_series_cover": "Omot serije",
+      "label_series_cover": "Naslovnica serije",
       "tab_general": "Općenito",
       "tab_metadata": "Metapodaci",
       "tab_options": "Opcije",
@@ -989,7 +989,7 @@
       "btn_confirm": "Da, ali samo ako su veće",
       "title": "Nanovo generiraj minijature"
     },
-    "hint_kobo_port": "Postavi samo u slučaju problema sa sinkronizacijom omota i preuzimanja",
+    "hint_kobo_port": "Postavi samo u slučaju problema sa sinkronizacijom naslovnica i preuzimanja",
     "label_delete_empty_collections": "Izbriši prazne zbirke nakon pretraživanja",
     "label_delete_empty_readlists": "Izbriši prazne liste čitanja nakon pretraživanja",
     "label_kepubify_path": "Staza do kepubify",
