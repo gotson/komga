@@ -19,7 +19,15 @@
   },
   "account_settings": {
     "account_settings": "Configuración da conta",
-    "change_password": "Cambiar o contrasinal"
+    "api_key": {
+      "created_date": "Data de creación: {date}",
+      "force_kobo_sync": "Forzar a sincronización con Kobo",
+      "generate_api_key": "Xerar clave API",
+      "no_keys": "Aínda non se xerou clave API ningunha"
+    },
+    "change_password": "Cambiar o contrasinal",
+    "details": "Detalles",
+    "my_account": "A miña conta"
   },
   "announcements": {
     "mark_all_read": "Marcar todo como lido",
@@ -27,6 +35,7 @@
     "tab_title": "Avisos"
   },
   "authentication_activity": {
+    "api_key": "Clave API",
     "datetime": "Data e Hora",
     "email": "Correo electrónico",
     "error": "Erro",
@@ -58,9 +67,159 @@
     "button_scan": "Escanear",
     "button_select_series": "Escolle a serie",
     "field_import_path": "Importar dende un cartafol",
-    "info_part1": "Esta pantalla permitiralle importar arquivos que están fóra das súas bibliotecas existentes. Só pódese importar arquivos a series que xa existan, nese caso Komga moverá ou copiará os arquivos cara o directorio da serie escollida."
+    "info_part1": "Esta pantalla permitiralle importar arquivos que están fóra das súas bibliotecas existentes. Só pódese importar arquivos a series que xa existan, nese caso Komga moverá ou copiará os arquivos cara o directorio da serie escollida.",
+    "info_part2": "Se escolles un número para un libro e existe xa algún outro libro con ese número, poderás comparalos. Se decides importar o libro, Komga actualizará o existente co novo, substituindo o ficheiro existente co novo.",
+    "no_files_found": "Non se atoparon ficheiros",
+    "notification": {
+      "go_to_book": "Ir ao libro",
+      "import_failure": "Fallou a importación do libro: {file}",
+      "import_successful": "Libro importado con éxito: {book}",
+      "source_file": "Ficheiro orixe: {file}"
+    },
+    "row": {
+      "error_analyze_first": "É necesario analizar antes o libro",
+      "error_choose_series": "Escoller serie",
+      "error_only_import_no_errors": "Só se poden importar libros sen erros",
+      "warning_upgrade": "Actualizarase o libro existente"
+    },
+    "table": {
+      "destination_name": "Nome de destino",
+      "file_name": "Nome do ficheiro",
+      "number": "Número",
+      "series": "Serie"
+    },
+    "title": "Importar",
+    "try_another_directory": "Tenta atopar outro directorio"
+  },
+  "bookreader": {
+    "beginning_of_book": "Atópaste ao principio do libro.",
+    "changing_reading_direction": "Trocar o sentido de lectura a",
+    "download_current_page": "Baixar a páxina actual",
+    "end_of_book": "Chegaches ao final do libro.",
+    "from_series_metadata": "dende os metadatos da serie",
+    "move_next": "Volve pulsar \"Seguinte\" para pasar ao seguinte libro.",
+    "move_next_exit": "Volve pulser \"Seguinte\" para saír do lector.",
+    "move_previous": "Volve pulsar \"Anterior\" para pasar ao libro anterior.",
+    "notification_poster_set_book": "A portada do libro estableceuse á páxina actual.",
+    "notification_poster_set_readlist": "A portada da lista de lectura estableceuse á páxina actual.",
+    "notification_poster_set_series": "A portada de serie estableceuse á páxina actual.",
+    "paged_reader_layout": {
+      "double": "Dobre páxina",
+      "double_no_cover": "Dobre páxina (sen portada)",
+      "single": "Páxina simple"
+    },
+    "reader_settings": "Configuración do lector",
+    "scale_type": {
+      "continuous_original": "Orixinal",
+      "continuous_width": "Axuste á anchura",
+      "height": "Axuste á altura",
+      "original": "Orixinal",
+      "screen": "Pantalla"
+    },
+    "settings": {
+      "always_fullscreen": "Sempre a pantalla completa",
+      "animate_page_transitions": "Transicións de páxina animadas",
+      "background_color": "Cor de fondo",
+      "background_colors": {
+        "black": "Negro",
+        "gray": "Gris",
+        "white": "Branco"
+      },
+      "general": "Xeral",
+      "gestures": "Xestos",
+      "page_layout": "Disposición de páxina",
+      "page_margin": "Marxe de páxina",
+      "reading_mode": "Modo de lectura",
+      "side_padding_none": "Ningún"
+    },
+    "shortcuts": {
+      "close": "Pechar",
+      "first_page": "Primeira páxina",
+      "last_page": "Derradeira páxina",
+      "left_to_right": "De esquerda a dereita",
+      "menus": "Menús",
+      "next_page": "Seguinte páxina",
+      "previous_page": "Páxina anterior",
+      "right_to_left": "De dereita a esquerda"
+    },
+    "tooltip_incognito": "Non se gardará o progreso de lectura"
+  },
+  "browse_book": {
+    "comment": "COMENTARIO",
+    "date_created": "CREACIÓN",
+    "date_modified": "ÚLTIMA MODIFICACIÓN",
+    "download_file": "Baixar ficheiro",
+    "file": "FICHEIRO",
+    "format": "FORMATO",
+    "isbn": "ISBN",
+    "links": "LIGAZÓNS",
+    "outdated_tooltip": "Cambiouse o ficheiro deste libro; é necesario volver analizalo",
+    "read_book": "Ler libro",
+    "read_incognito": "Ler de incógnito",
+    "remove_from_collection": "Quitar libro da colección",
+    "remove_from_readlist": "Quitar libro da lista de lectura",
+    "size": "TAMAÑO"
+  },
+  "browse_collection": {
+    "edit_collection": "Editar colección",
+    "edit_elements": "Editar elementos",
+    "manual_ordering": "Ordenación manual"
+  },
+  "browse_readlist": {
+    "edit_elements": "Editar elementos",
+    "edit_readlist": "Editar lista de lectura",
+    "manual_ordering": "Ordenación manual"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "Este é o ano máis temperán entre as datas de lanzamento de tódolos libros da serie",
+    "remove_from_collection": "Quitar serie da colección",
+    "series_no_summary": "Esta serie non ten sumario, así que escollemos un por ti!",
+    "summary_from_book": "Sumario do libro {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "Xestionar colección",
+    "title": "{name} colección"
   },
   "common": {
-    "locale_name": "Galego"
+    "age": "Idade",
+    "all_libraries": "Tódalas bibliotecas",
+    "all_of": "Todo",
+    "any_of": "Calquera",
+    "book": "Libro",
+    "books": "Libros",
+    "books_n": "Ningún libro | 1 libro | {count} libros",
+    "books_total": "{count} / {total} libros",
+    "cancel": "Cancelar",
+    "choose_image": "Escoller unha imaxe",
+    "close": "Pechar",
+    "collections": "Coleccións",
+    "copied": "Copiado!",
+    "create": "Crear",
+    "delete": "Borrar",
+    "discard": "Descartar",
+    "disk_space": "Espazo en disco",
+    "download": "Baixar",
+    "duplicate": "Duplicar",
+    "epub": "EPUB",
+    "error": "Erro",
+    "filename": "Nome de ficheiro",
+    "genre": "Xénero",
+    "go_to_collection": "Ir á colección",
+    "go_to_library": "Ir á biblioteca",
+    "go_to_readlist": "Ir á lista de lectura",
+    "go_to_series": "Ir á serie",
+    "i_understand": "Entendido",
+    "library": "Biblioteca",
+    "locale_name": "Galego",
+    "more": "Máis",
+    "nothing_to_show": "Nada que amosar",
+    "page": "Páxina",
+    "page_number": "Número de páxina",
+    "pages": "páxinas",
+    "pages_left": "Non quedan páxinas | Queda 1 páxina | Quedan {count} páxinas",
+    "pages_n": "Ningunha páxina | 1 páxina | {count} páxinas",
+    "password": "Contrasinal",
+    "pdf": "PDF",
+    "pending_tasks": "Sen tarefas pendentes | 1 tarefa pendente | {count} tarefas pendentes"
   }
 }
