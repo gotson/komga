@@ -5,27 +5,29 @@
     },
     "dataIterator": {
       "loadingText": "กำลังโหลดรายการ...",
-      "noResultsText": "ไม่พบบันทึกที่ตรงกัน"
+      "noResultsText": "ไม่พบข้อมูลที่ตรงกัน"
     },
     "dataTable": {
       "itemsPerPageText": "แถวต่อหน้า:",
-      "sortBy": "เรียงตาม"
+      "sortBy": "จัดเรียงตาม"
     },
     "fileInput": {
       "counter": "{0} ไฟล์",
-      "counterSize": "{0} ไฟล์ (รวม {1})"
+      "counterSize": "{0} ไฟล์ (ทั้งหมด {1})"
     },
-    "noDataText": "ไม่มีข้อมูลพร้อมใช้งาน"
+    "noDataText": "ไม่มีข้อมูล"
   },
   "account_settings": {
     "account_settings": "การตั้งค่าบัญชี",
     "api_key": {
       "created_date": "วันที่สร้าง: {date}",
-      "force_kobo_sync": "บังคับซิงก์ Kobo",
-      "generate_api_key": "สร้างกุญแจ API",
-      "no_keys": "ยังไม่มีกุญแจ API สร้างขึ้นมา"
+      "force_kobo_sync": "บังคับให้ Kobo ซิงค์",
+      "generate_api_key": "สร้างคีย์ API",
+      "no_keys": "ยังไม่มีคีย์ API ที่สร้างขึ้น"
     },
-    "change_password": "เปลี่ยนรหัสผ่าน"
+    "change_password": "เปลี่ยนรหัสผ่าน",
+    "details": "รายละเอียด",
+    "my_account": "บัญชีของฉัน"
   },
   "announcements": {
     "mark_all_read": "ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว",
@@ -33,98 +35,99 @@
     "tab_title": "ประกาศ"
   },
   "authentication_activity": {
-    "api_key": "กุญแจ API",
+    "api_key": "คีย์ API",
     "datetime": "วันและเวลา",
     "email": "อีเมล",
-    "error": "ผิดพลาด",
+    "error": "ข้อผิดพลาด",
     "ip": "IP",
-    "source": "ที่มา",
+    "source": "แหล่งที่มา",
     "success": "สำเร็จ",
     "user_agent": "User Agent"
   },
   "author_roles": {
     "colorist": "ผู้ลงสี",
-    "cover": "ปก",
-    "editor": "ผู้แก้ไข",
-    "inker": "ผู้ลงหมึก",
-    "letterer": "ผู้ลงตัวอักษร",
-    "penciller": "ผู้วาดร่าง",
+    "cover": "หน้าปก",
+    "editor": "บรรณาธิการ",
+    "inker": "ผู้ตัดเส้น",
+    "letterer": "ผู้วางตัวอักษร",
+    "penciller": "ผู้วาดดินสอ",
     "translator": "ผู้แปล",
     "writer": "ผู้เขียน"
   },
   "book_card": {
-    "error": "ผิดพลาด",
+    "error": "ข้อผิดพลาด",
     "no_release_date": "ไม่มีวันที่เผยแพร่",
-    "unknown": "กำลังจะวิเคราะห์",
-    "unread": "ยังไม่ได้อ่าน",
-    "unsupported": "ไม่สนับสนุน"
+    "unknown": "รอการวิเคราะห์",
+    "unread": "ยังไม่อ่าน",
+    "unsupported": "ไม่รองรับ"
   },
   "book_import": {
-    "button_browse": "เรียกดู",
+    "button_browse": "เลือกไฟล์",
     "button_import": "นำเข้า",
     "button_scan": "สแกน",
     "button_select_series": "เลือกซีรีส์",
     "field_import_path": "นำเข้าจากโฟลเดอร์",
-    "info_part1": "คุณสามารถนำเข้าไฟล์ที่อยู่นอกไลบรารีที่มีอยู่ได้ผ่านหน้านี้ คุณสามารถนำเข้าไฟล์ลงในซีรีส์ที่มีอยู่ได้เท่านั้น ซึ่งในกรณีนี้ Komga จะย้ายหรือคัดลอกไฟล์ไปยังไดเร็กทอรีของซีรีส์ที่เลือก",
-    "info_part2": "หากคุณตังหมายเลขหนังสือ และมีหนังสือที่มีหมายเลขนั้นอยู่แล้ว คุณจะสามารถเปรียบเทียบหนังสือทั้ง 2 เล่มได้ หากคุณตัดสินใจนำเข้าหนังสือ Komga จะอัปเกรดหนังสือที่มีอยู่ด้วยเล่มใหม่ โดยแทนที่ไฟล์เก่าด้วยไฟล์ใหม่ไปเลย",
+    "info_part1": "หน้านี้ให้คุณนำเข้าไฟล์ที่อยู่นอกไลบรารีที่มีอยู่ของคุณ คุณสามารถนำเข้าไฟล์ลงในซีรีส์ที่มีอยู่เท่านั้น ซึ่งในกรณีนี้ Komga จะย้ายหรือคัดลอกไฟล์ไปยังไดเรกทอรีของซีรีส์ที่เลือก",
+    "info_part2": "หากคุณเลือกหมายเลขสำหรับหนังสือ และมีหนังสือที่มีหมายเลขนั้นอยู่แล้ว คุณจะสามารถเปรียบเทียบหนังสือทั้ง 2 เล่มได้ หากคุณตัดสินใจนำเข้าหนังสือ Komga จะอัปเกรดหนังสือที่มีอยู่ด้วยเล่มใหม่ ซึ่งจะแทนที่ไฟล์เก่าด้วยไฟล์ใหม่",
     "no_files_found": "ไม่พบไฟล์",
     "notification": {
-      "go_to_book": "ไปยังหนังสือ",
-      "import_failure": "ไม่สามารถนำเข้าหนังสือได้: {file}",
-      "import_successful": "นำเข้าหนังสือสำเร็จแล้ว: {book}",
+      "go_to_book": "ไปที่หนังสือ",
+      "import_failure": "นำเข้าหนังสือล้มเหลว: {file}",
+      "import_successful": "นำเข้าหนังสือสำเร็จ: {book}",
       "source_file": "ไฟล์ต้นฉบับ: {file}"
     },
     "row": {
-      "error_analyze_first": "หนังสือต้องมีการวิเคราะห์ก่อน",
+      "error_analyze_first": "ต้องวิเคราะห์หนังสือก่อน",
       "error_choose_series": "เลือกซีรีส์",
-      "error_only_import_no_errors": "สามารถนำเข้าหนังสือได้โดยไม่มีข้อผิดพลาดเท่านั้น",
+      "error_only_import_no_errors": "สามารถนำเข้าได้เฉพาะหนังสือที่ไม่มีข้อผิดพลาด",
       "warning_upgrade": "หนังสือที่มีอยู่จะถูกอัปเกรด"
     },
     "table": {
-      "destination_name": "ชื่อจุดหมาย",
+      "destination_name": "ชื่อปลายทาง",
       "file_name": "ชื่อไฟล์",
       "number": "หมายเลข",
       "series": "ซีรีส์"
     },
     "title": "นำเข้า",
-    "try_another_directory": "ลองค้นหาไดเรกทอรีอื่น"
+    "try_another_directory": "ลองค้นหาในไดเรกทอรีอื่น"
   },
   "bookreader": {
-    "beginning_of_book": "คุณอยู่ที่จุดเริ่มต้นของหนังสือ",
-    "changing_reading_direction": "เปลี่ยนทิศทางการอ่านเป็น",
-    "cycling_page_layout": "สลับเค้าโครงหน้า",
-    "cycling_scale": "สลับขนาด",
-    "cycling_side_padding": "สลับระยะห่างด้านข้าง",
+    "beginning_of_book": "คุณอยู่ที่ตอนต้นของหนังสือ",
+    "changing_reading_direction": "กำลังเปลี่ยนทิศทางการอ่านเป็น",
+    "cycling_page_layout": "กำลังสลับรูปแบบหน้า",
+    "cycling_page_margin": "กำลังสลับระยะขอบหน้า",
+    "cycling_scale": "กำลังสลับมาตราส่วน",
+    "cycling_side_padding": "กำลังสลับระยะห่างด้านข้าง",
     "download_current_page": "ดาวน์โหลดหน้าปัจจุบัน",
-    "end_of_book": "คุณมาถึงตอนจบของหนังสือแล้ว",
+    "end_of_book": "คุณได้อ่านถึงตอนท้ายของหนังสือแล้ว",
     "from_series_metadata": "จากข้อมูลเมตาของซีรีส์",
     "move_next": "คลิกหรือกด \"ถัดไป\" อีกครั้งเพื่อไปยังหนังสือเล่มถัดไป",
-    "move_next_exit": "คลิกหรือกด \"ถัดไป\" อีกครั้งเพื่อออกจากตัวอ่าน",
-    "move_previous": "คลิกหรือกด \"ก่อนหน้า\" อีกครั้งเพื่อไปยังหนังสือเล่มก่อนหน้า",
-    "notification_poster_set_book": "โปสเตอร์หนังสือได้รับการตั้งค่าตามหน้าปัจจุบันแล้ว",
-    "notification_poster_set_readlist": "โปสเตอร์รายการอ่านได้ถูกตั้งค่าตามหน้าปัจจุบันแล้ว",
-    "notification_poster_set_series": "โปสเตอร์ซีรีย์ได้ถูกตั้งค่าตามหน้าปัจจุบันแล้ว",
+    "move_next_exit": "คลิกหรือกด \"ถัดไป\" อีกครั้งเพื่อออกจากโปรแกรมอ่าน",
+    "move_previous": "คลิกหรือกด \"ก่อนหน้า\" อีกครั้งเพื่อไปยังหนังสือก่อนหน้า",
+    "notification_poster_set_book": "โปสเตอร์หนังสือถูกตั้งเป็นหน้าปัจจุบันแล้ว",
+    "notification_poster_set_readlist": "โปสเตอร์รายการอ่านถูกตั้งเป็นหน้าปัจจุบันแล้ว",
+    "notification_poster_set_series": "โปสเตอร์ซีรีส์ถูกตั้งเป็นหน้าปัจจุบันแล้ว",
     "paged_reader_layout": {
       "double": "หน้าคู่",
       "double_no_cover": "หน้าคู่ (ไม่มีปก)",
       "single": "หน้าเดี่ยว"
     },
-    "reader_settings": "การตั้งค่าตัวอ่าน",
+    "reader_settings": "การตั้งค่าโปรแกรมอ่าน",
     "scale_type": {
-      "continuous_original": "ต้นฉบับ",
+      "continuous_original": "ขนาดดั้งเดิม",
       "continuous_width": "พอดีความกว้าง",
       "height": "พอดีความสูง",
-      "original": "ต้นฉบับ",
-      "screen": "หน้าจอ",
+      "original": "ขนาดดั้งเดิม",
+      "screen": "พอดีหน้าจอ",
       "width": "พอดีความกว้าง",
-      "width_shrink_only": "พอดีความกว้าง (หดเท่านั้น)"
+      "width_shrink_only": "พอดีความกว้าง (ย่อเท่านั้น)"
     },
-    "set_current_page_as_book_poster": "ตั้งค่าหน้านี้เป็นโปสเตอร์ของหนังสือ",
-    "set_current_page_as_readlist_poster": "ตั้งค่าหน้านี้เป็นโปสเตอร์ของรายการอ่าน",
-    "set_current_page_as_series_poster": "ตั้งค่าหน้านี้เป็นโปสเตอร์ของซีรีส์",
+    "set_current_page_as_book_poster": "ตั้งค่าหน้าปัจจุบันเป็นโปสเตอร์หนังสือ",
+    "set_current_page_as_readlist_poster": "ตั้งค่าหน้าปัจจุบันเป็นโปสเตอร์รายการอ่าน",
+    "set_current_page_as_series_poster": "ตั้งค่าหน้าปัจจุบันเป็นโปสเตอร์ซีรีส์",
     "settings": {
-      "always_fullscreen": "เต็มจอเสมอ",
-      "animate_page_transitions": "ภาพเคลื่อนไหวเมื่อเปลี่ยนหน้า",
+      "always_fullscreen": "เต็มหน้าจอตลอดเวลา",
+      "animate_page_transitions": "ภาพเคลื่อนไหวการเปลี่ยนหน้า",
       "background_color": "สีพื้นหลัง",
       "background_colors": {
         "black": "สีดำ",
@@ -134,158 +137,956 @@
       "display": "การแสดงผล",
       "general": "ทั่วไป",
       "gestures": "ท่าทาง",
-      "page_layout": "เค้าโครงหน้า",
-      "paged": "ตัวเลือกตัวอ่านแบบแบ่งหน้า",
+      "page_layout": "รูปแบบหน้า",
+      "page_margin": "ระยะขอบหน้า",
+      "paged": "ตัวเลือกโปรแกรมอ่านแบบแบ่งหน้า",
       "reading_mode": "โหมดการอ่าน",
-      "scale_type": "ประเภทขนาด",
+      "scale_type": "ประเภทมาตราส่วน",
       "side_padding": "ระยะห่างด้านข้าง",
       "side_padding_none": "ไม่มี",
-      "webtoon": "ตัวเลือกตัวอ่านเว็บตูน"
+      "webtoon": "ตัวเลือกโปรแกรมอ่าน Webtoon"
     },
     "shortcuts": {
       "close": "ปิด",
-      "cycle_page_layout": "สลับเค้าโครงหน้า",
-      "cycle_scale": "สลับขนาด",
+      "cycle_page_layout": "สลับรูปแบบหน้า",
+      "cycle_page_margin": "สลับระยะขอบหน้า",
+      "cycle_scale": "สลับมาตราส่วน",
       "cycle_side_padding": "สลับระยะห่างด้านข้าง",
       "first_page": "หน้าแรก",
-      "fullscreen": "เข้าสู่/ออกจากเต็มจอ",
+      "fullscreen": "เข้า/ออกจากโหมดเต็มหน้าจอ",
       "last_page": "หน้าสุดท้าย",
-      "left_to_right": "ซ้ายไปขวา",
+      "left_to_right": "จากซ้ายไปขวา",
       "menus": "เมนู",
       "next_page": "หน้าถัดไป",
       "previous_page": "หน้าก่อนหน้า",
-      "reader_navigation": "การนำทางตัวอ่าน",
-      "right_to_left": "ขวาไปซ้าย",
+      "reader_navigation": "การนำทางในโปรแกรมอ่าน",
+      "right_to_left": "จากขวาไปซ้าย",
       "settings": "การตั้งค่า",
       "show_hide_help": "แสดง/ซ่อนความช่วยเหลือ",
       "show_hide_settings": "แสดง/ซ่อนเมนูการตั้งค่า",
-      "show_hide_thumbnails": "แสดง/ซ่อนตัวสำรวจรูปขนาดย่อ",
+      "show_hide_thumbnails": "แสดง/ซ่อนภาพขนาดย่อ",
       "show_hide_toolbars": "แสดง/ซ่อนแถบเครื่องมือ",
       "vertical": "แนวตั้ง",
       "webtoon": "เว็บตูน"
     },
-    "tooltip_incognito": "ความคืบหน้าการอ่านจะไม่ได้รับการบันทึก"
+    "tooltip_incognito": "ความคืบหน้าในการอ่านจะไม่ถูกบันทึก"
   },
   "browse_book": {
     "comment": "ความคิดเห็น",
+    "date_created": "สร้างเมื่อ",
+    "date_modified": "แก้ไขล่าสุด",
     "download_file": "ดาวน์โหลดไฟล์",
     "file": "ไฟล์",
     "format": "รูปแบบ",
     "isbn": "ISBN",
     "links": "ลิงก์",
     "navigation_within_readlist": "การนำทางภายในรายการอ่าน: {name}",
-    "outdated_tooltip": "ไฟล์สำหรับหนังสือเล่มนี้มีการเปลี่ยนแปลง หนังสือเล่มนี้จะต้องถูกวิเคราะห์ใหม่",
+    "outdated_tooltip": "ไฟล์สำหรับหนังสือเล่มนี้มีการเปลี่ยนแปลง ต้องวิเคราะห์หนังสือเล่มนี้ใหม่อีกครั้ง",
     "read_book": "อ่านหนังสือ",
     "read_incognito": "อ่านแบบไม่ระบุตัวตน",
+    "remove_from_collection": "ลบหนังสือออกจากคอลเลกชัน",
+    "remove_from_readlist": "ลบหนังสือออกจากรายการอ่าน",
     "size": "ขนาด"
   },
   "browse_collection": {
-    "edit_collection": "แก้ไขคอลเลคชั่น",
+    "edit_collection": "แก้ไขคอลเลกชัน",
     "edit_elements": "แก้ไของค์ประกอบ",
-    "manual_ordering": "การจัดลำดับด้วยตนเอง"
+    "manual_ordering": "จัดลำดับด้วยตนเอง"
   },
   "browse_readlist": {
     "edit_elements": "แก้ไของค์ประกอบ",
     "edit_readlist": "แก้ไขรายการอ่าน",
-    "manual_ordering": "การจัดลำดับด้วยตนเอง"
+    "manual_ordering": "จัดลำดับด้วยตนเอง"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "นี่คือปีแรกสุดที่หนังสือทั้งหมดในซีรีส์นี้วางจำหน่าย",
-    "series_no_summary": "ซีรีส์นี้ไม่มีบทสรุป ดังนั้นเราจึงเลือกบทสรุปมาให้คุณ!",
-    "summary_from_book": "บทสรุปจากเล่ม {number}:"
+    "earliest_year_from_release_dates": "นี่คือปีแรกสุดจากวันที่เผยแพร่ของหนังสือทุกเล่มในซีรีส์",
+    "remove_from_collection": "ลบซีรีส์ออกจากคอลเลกชัน",
+    "series_no_summary": "ซีรีส์นี้ไม่มีบทสรุป เราจึงเลือกบทสรุปมาให้คุณ!",
+    "summary_from_book": "บทสรุปจากหนังสือ {number}:"
   },
   "collections_expansion_panel": {
-    "manage_collection": "จัดการคอลเลคชั่น",
-    "title": "คอลเลคชั่น {name}"
+    "manage_collection": "จัดการคอลเลกชัน",
+    "title": "คอลเลกชัน {name}"
   },
   "common": {
     "age": "อายุ",
-    "all_libraries": "ห้องสมุดทั้งหมด",
+    "all_libraries": "ไลบรารีทั้งหมด",
+    "all_of": "ทั้งหมดของ",
+    "any_of": "อย่างใดอย่างหนึ่งของ",
     "book": "หนังสือ",
     "books": "หนังสือ",
     "books_n": "ไม่มีหนังสือ | 1 เล่ม | {count} เล่ม",
-    "books_total": "{count}/{total} เล่ม",
+    "books_total": "{count} / {total} เล่ม",
     "cancel": "ยกเลิก",
-    "cbx": "Comic Book archives",
-    "choose_image": "เลือกภาพ",
+    "cbx": "ไฟล์ Comic Book",
+    "choose_image": "เลือกรูปภาพ",
     "close": "ปิด",
-    "collections": "คอลเลคชั่น",
+    "collections": "คอลเลกชัน",
     "copied": "คัดลอกแล้ว!",
     "create": "สร้าง",
     "delete": "ลบ",
-    "dimension": "w: {width}, h: {height}",
-    "discard": "ทิ้ง",
+    "dimension": "ก: {width}, ส: {height}",
+    "discard": "ยกเลิก",
     "disk_space": "พื้นที่ดิสก์",
-    "dismiss": "ปิด",
+    "dismiss": "ปิดไป",
     "download": "ดาวน์โหลด",
     "drag_drop": "ลากและวาง",
+    "duplicate": "ทำซ้ำ",
     "email": "อีเมล",
     "epub": "Epub",
+    "error": "ข้อผิดพลาด",
     "filename": "ชื่อไฟล์",
-    "filter_no_matches": "ไม่พบรายการที่ตรงตามตัวกรอง",
+    "filter_no_matches": "ตัวกรองที่ใช้งานไม่มีผลลัพธ์ที่ตรงกัน",
     "genre": "ประเภท",
-    "go_to_collection": "ไปที่คอลเลคชั่น",
-    "go_to_library": "ไปที่ห้องสมุด",
+    "go_to_collection": "ไปที่คอลเลกชัน",
+    "go_to_library": "ไปที่ไลบรารี",
     "go_to_readlist": "ไปที่รายการอ่าน",
     "go_to_series": "ไปที่ซีรีส์",
     "i_understand": "ฉันเข้าใจ",
-    "library": "ห้องสมุด",
-    "locale_name": "ภาษาไทย",
+    "library": "ไลบรารี",
+    "locale_name": "ไทย",
     "locale_rtl": "false",
-    "lock_all": "ล็อคทั้งหมด",
-    "n_selected": "เลือกแล้ว {count}",
+    "lock_all": "ล็อกทั้งหมด",
+    "media": "สื่อ",
+    "more": "เพิ่มเติม",
+    "n_selected": "เลือก {count} รายการ",
     "nothing_to_show": "ไม่มีอะไรจะแสดง",
-    "oneshot": "One-shot",
+    "ok": "ตกลง",
+    "oneshot": "เรื่องสั้นจบในตอน",
     "outdated": "ล้าสมัย",
     "page": "หน้า",
     "page_number": "หมายเลขหน้า",
     "pages": "หน้า",
-    "pages_left": "ไม่มีหน้าเหลืออยู่ | เหลือ 1 หน้า | เหลือ {count} หน้า",
-    "pages_n": "ไม่มีหน้า | 1 หน้า | เหลือ {count} หน้า",
+    "pages_left": "ไม่มีหน้าเหลือ | เหลือ 1 หน้า | เหลือ {count} หน้า",
+    "pages_n": "ไม่มีหน้า | 1 หน้า | {count} หน้า",
     "password": "รหัสผ่าน",
     "pdf": "PDF",
-    "pending_tasks": "ไม่มีงานที่ค้างไว้ | 1 งานที่ค้างอยู่ | {count} งานที่ค้างอยู่",
+    "pending_tasks": "ไม่มีงานค้าง | 1 งานค้าง | {count} งานค้าง",
+    "pinned_libraries": "ไลบรารีที่ปักหมุด",
     "publisher": "สำนักพิมพ์",
-    "read": "อ่าน",
-    "read_on": "อ่านแล้ว {date}",
+    "read": "อ่านแล้ว",
+    "read_on": "อ่านเมื่อ {date}",
     "readlist": "รายการอ่าน",
     "readlists": "รายการอ่าน",
-    "remember-me": "จำฉันไว้",
-    "required": "จำเป็นต้องป้อน",
+    "remember-me": "จดจำฉันไว้",
+    "reorder": "จัดลำดับใหม่",
+    "required": "จำเป็น",
     "reset_filters": "รีเซ็ตตัวกรอง",
     "roles": "บทบาท",
     "save_changes": "บันทึกการเปลี่ยนแปลง",
-    "series": "ซีรีส์ | ซีรีส์",
-    "sidecars": "รถพ่วง",
+    "series": "ซีรีส์",
+    "settings": "การตั้งค่า",
+    "sidecars": "ไฟล์เสริม",
     "tags": "แท็ก",
+    "ui": "ส่วนติดต่อผู้ใช้",
     "unavailable": "ไม่พร้อมใช้งาน",
-    "unlock_all": "ปลดล็อคทั้งหมด",
+    "unlock_all": "ปลดล็อกทั้งหมด",
     "url": "URL",
-    "use_filter_panel_to_change_filter": "ใช้แผงตัวกรองเพื่อเปลี่ยนตัวกรองที่ต้องการ",
+    "use_filter_panel_to_change_filter": "ใช้แผงตัวกรองเพื่อเปลี่ยนตัวกรองที่ใช้งาน",
     "year": "ปี"
   },
   "dashboard": {
-    "keep_reading": "อ่านต่อไป",
-    "on_deck": "ที่อ่านไว้",
+    "keep_reading": "อ่านต่อ",
+    "on_deck": "รออ่าน",
     "recently_added_books": "หนังสือที่เพิ่มล่าสุด",
     "recently_added_series": "ซีรีส์ที่เพิ่มล่าสุด",
     "recently_read_books": "หนังสือที่อ่านล่าสุด",
-    "recently_released_books": "หนังสือที่เพิ่งออกใหม่",
-    "recently_updated_series": "ซีรีส์ที่เพิ่งอัพเดตล่าสุด"
+    "recently_released_books": "หนังสือที่ออกใหม่ล่าสุด",
+    "recently_updated_series": "ซีรีส์ที่อัปเดตล่าสุด"
   },
   "data_import": {
-    "book_number": "เลขที่หนังสือ: {name}",
+    "book_number": "หมายเลขหนังสือ: {name}",
     "book_series": "ซีรีส์: {name}",
     "button_import": "นำเข้า",
     "button_match": "จับคู่",
-    "comicrack_preambule_html": "คุณสามารถนำเข้ารายการอ่าน ComicRack ที่มีอยู่ในรูปแบบ <code>.cbl</code> ได้<br>โดย Komga จะพยายามจับคู่ชุดและหมายเลขหนังสือที่ให้มาด้วยชุดและหนังสือในห้องสมุดของคุณ",
+    "comicrack_preambule_html": "คุณสามารถนำเข้ารายการอ่าน ComicRack ที่มีอยู่ในรูปแบบ <code>.cbl</code><br>Komga จะพยายามจับคู่ซีรีส์และหมายเลขหนังสือที่ให้มากับซีรีส์และหนังสือในไลบรารีของคุณ",
     "dialog_confirmation": {
-      "body": "หนังสือ {unmatched} / {total} เล่มไม่ตรงกัน",
-      "create": "สร้างอยู่ดี",
-      "title": "หนังสือบางเล่มไม่ตรงกัน"
+      "body": "{unmatched} / {total} เล่มไม่ถูกจับคู่",
+      "body2": "{duplicates} / {total} เล่มซ้ำกัน",
+      "create": "สร้างต่อไป",
+      "title": "หนังสือบางเล่มไม่ถูกจับคู่"
+    },
+    "field_file_label": "รายการอ่าน ComicRack (.cbl)",
+    "field_files_label": "รายการอ่าน ComicRack (.cbl)",
+    "import_read_lists": "นำเข้ารายการอ่าน",
+    "imported_as": "นำเข้าเป็น {name}",
+    "readlist_created": "สร้างรายการอ่านแล้ว: {name}",
+    "requested_number": "หมายเลขที่ร้องขอ",
+    "requested_series": "ซีรีส์ที่ร้องขอ",
+    "results_preambule": "ผลลัพธ์ของการนำเข้าจะแสดงด้านล่าง คุณยังสามารถตรวจสอบหนังสือที่ไม่ถูกจับคู่สำหรับแต่ละไฟล์ที่ให้มา",
+    "size_limit": "ขนาดควรน้อยกว่า {size} MB",
+    "tab_title": "นำเข้าข้อมูล"
+  },
+  "dialog": {
+    "add_api_key": {
+      "button_confirm": "สร้าง",
+      "context": "คีย์ API สามารถใช้เพื่อยืนยันตัวตนผ่านโปรโตคอล Kobo Sync",
+      "dialog_title": "สร้างคีย์ API ใหม่",
+      "field_comment": "ความคิดเห็น",
+      "field_comment_hint": "คีย์ API นี้ใช้สำหรับอะไร?",
+      "info_copy": "โปรดคัดลอกคีย์ API ของคุณตอนนี้ คุณจะไม่สามารถเห็นมันได้อีก!"
+    },
+    "add_to_collection": {
+      "button_create": "สร้าง",
+      "card_collection_subtitle": "ไม่มีซีรีส์ | 1 ซีรีส์ | {count} ซีรีส์",
+      "dialog_title": "เพิ่มไปยังคอลเลกชัน",
+      "field_search_create": "ค้นหาหรือสร้างคอลเลกชัน",
+      "field_search_create_error": "มีคอลเลกชันชื่อนี้อยู่แล้ว",
+      "label_no_matching_collection": "ไม่พบคอลเลกชันที่ตรงกัน"
+    },
+    "add_to_readlist": {
+      "button_create": "สร้าง",
+      "card_readlist_subtitle": "ไม่มีหนังสือ | 1 เล่ม | {count} เล่ม",
+      "dialog_title": "เพิ่มไปยังรายการอ่าน",
+      "field_search_create": "ค้นหาหรือสร้างรายการอ่าน",
+      "field_search_create_error": "มีรายการอ่านชื่อนี้อยู่แล้ว",
+      "label_no_matching_readlist": "ไม่พบรายการอ่านที่ตรงกัน"
+    },
+    "add_user": {
+      "button_cancel": "ยกเลิก",
+      "button_confirm": "เพิ่ม",
+      "dialog_title": "เพิ่มผู้ใช้",
+      "field_email": "อีเมล",
+      "field_email_error": "ต้องเป็นที่อยู่อีเมลที่ถูกต้อง",
+      "field_password": "รหัสผ่าน"
+    },
+    "analyze_library": {
+      "body": "วิเคราะห์ไฟล์สื่อทั้งหมดในไลบรารี การวิเคราะห์จะรวบรวมข้อมูลเกี่ยวกับสื่อ อาจใช้เวลานานขึ้นอยู่กับขนาดไลบรารีของคุณ",
+      "button_confirm": "วิเคราะห์",
+      "title": "วิเคราะห์ไลบรารี"
+    },
+    "book_picker": {
+      "filter": "กรองตามหมายเลขหนังสือ, ชื่อเรื่อง, หรือวันที่เผยแพร่",
+      "title": "เลือกหนังสือ"
+    },
+    "delete_apikey": {
+      "button_confirm": "ลบ",
+      "confirm_delete": "ฉันเข้าใจ, ลบคีย์ API \"{name}\"",
+      "dialog_title": "ลบคีย์ API",
+      "warning_html": "แอปพลิเคชันหรือสคริปต์ใดๆ ที่ใช้คีย์ API นี้จะไม่สามารถเข้าถึง Komga API ได้อีกต่อไป คุณไม่สามารถยกเลิกการกระทำนี้ได้"
+    },
+    "delete_book": {
+      "button_confirm": "ลบ",
+      "confirm_delete": "ใช่, ลบหนังสือ \"{name}\" และไฟล์ของมัน",
+      "confirm_delete_multiple": "ใช่, ลบ {count} เล่มและไฟล์ของมัน",
+      "dialog_title": "ลบหนังสือ",
+      "dialog_title_multiple": "ลบหนังสือ",
+      "warning_html": "หนังสือ <b>{name}</b> จะถูกลบออกจากเซิร์ฟเวอร์นี้พร้อมกับไฟล์สื่อที่เก็บไว้ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?",
+      "warning_multiple_html": "หนังสือ {count} เล่มจะถูกลบออกจากเซิร์ฟเวอร์นี้พร้อมกับไฟล์สื่อที่เก็บไว้ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?"
+    },
+    "delete_collection": {
+      "button_confirm": "ลบ",
+      "confirm_delete": "ใช่, ลบคอลเลกชัน \"{name}\"",
+      "confirm_delete_multiple": "ใช่, ลบ {count} คอลเลกชัน",
+      "dialog_title": "ลบคอลเลกชัน",
+      "dialog_title_multiple": "ลบคอลเลกชัน",
+      "warning_html": "คอลเลกชัน <b>{name}</b> จะถูกลบออกจากเซิร์ฟเวอร์นี้ ไฟล์สื่อของคุณจะไม่ได้รับผลกระทบ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?",
+      "warning_multiple_html": "คอลเลกชัน {count} รายการจะถูกลบออกจากเซิร์ฟเวอร์นี้ ไฟล์สื่อของคุณจะไม่ได้รับผลกระทบ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?"
+    },
+    "delete_library": {
+      "button_confirm": "ลบ",
+      "confirm_delete": "ใช่, ลบไลบรารี \"{name}\"",
+      "title": "ลบไลบรารี",
+      "warning_html": "ไลบรารี <b>{name}</b> จะถูกลบออกจากเซิร์ฟเวอร์นี้ ไฟล์สื่อของคุณจะไม่ได้รับผลกระทบ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?"
+    },
+    "delete_readlist": {
+      "button_confirm": "ลบ",
+      "confirm_delete": "ใช่, ลบรายการอ่าน \"{name}\"",
+      "confirm_delete_multiple": "ใช่, ลบ {count} รายการอ่าน",
+      "dialog_title": "ลบรายการอ่าน",
+      "dialog_title_multiple": "ลบรายการอ่าน",
+      "warning_html": "รายการอ่าน <b>{name}</b> จะถูกลบออกจากเซิร์ฟเวอร์นี้ ไฟล์สื่อของคุณจะไม่ได้รับผลกระทบ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?",
+      "warning_multiple_html": "รายการอ่าน {count} รายการจะถูกลบออกจากเซิร์ฟเวอร์นี้ ไฟล์สื่อของคุณจะไม่ได้รับผลกระทบ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?"
+    },
+    "delete_series": {
+      "button_confirm": "ลบ",
+      "confirm_delete": "ใช่, ลบซีรีส์ \"{name}\" และไฟล์ของมัน",
+      "confirm_delete_multiple": "ใช่, ลบ {count} ซีรีส์และไฟล์ของมัน",
+      "dialog_title": "ลบซีรีส์",
+      "warning_html": "ซีรีส์ <b>{name}</b> จะถูกลบออกจากเซิร์ฟเวอร์นี้พร้อมกับไฟล์สื่อที่เก็บไว้ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?",
+      "warning_multiple_html": "ซีรีส์ {count} รายการจะถูกลบออกจากเซิร์ฟเวอร์นี้พร้อมกับไฟล์สื่อที่เก็บไว้ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?"
+    },
+    "delete_user": {
+      "button_confirm": "ลบ",
+      "confirm_delete": "ใช่, ลบผู้ใช้ \"{name}\"",
+      "dialog_title": "ลบผู้ใช้",
+      "warning_html": "ผู้ใช้ <b>{name}</b> จะถูกลบออกจากเซิร์ฟเวอร์นี้ การกระทำนี้ <b>ไม่สามารถ</b> ยกเลิกได้ ดำเนินการต่อหรือไม่?"
+    },
+    "edit_books": {
+      "add_author_role_error_duplicate": "มีอยู่แล้ว",
+      "authors_notice_multiple_edit": "คุณกำลังแก้ไขผู้แต่งสำหรับหนังสือหลายเล่ม ซึ่งจะเขียนทับผู้แต่งที่มีอยู่ของแต่ละเล่ม",
+      "button_cancel": "ยกเลิก",
+      "button_confirm": "บันทึกการเปลี่ยนแปลง",
+      "copy_from": "คัดลอกจาก {field}",
+      "dialog_title_multiple": "แก้ไข {count} เล่ม | แก้ไข {count} เล่ม",
+      "dialog_title_single": "แก้ไข {book}",
+      "field_alternate_title": "ชื่อเรื่องทางเลือก",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "ต้องเป็น ISBN 13 ที่ถูกต้อง",
+      "field_link_label": "ป้ายกำกับ",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "ต้องเป็น http หรือ https",
+      "field_link_url_error_url": "ต้องเป็น URL ที่ถูกต้อง",
+      "field_number": "หมายเลข",
+      "field_number_sort": "หมายเลขเรียงลำดับ",
+      "field_number_sort_hint": "คุณสามารถใช้เลขทศนิยมได้",
+      "field_release_date": "วันที่เผยแพร่",
+      "field_release_date_error": "ต้องเป็นวันที่ที่ถูกต้องในรูปแบบ YYYY-MM-DD",
+      "field_summary": "บทสรุป",
+      "field_tags": "แท็ก",
+      "field_title": "ชื่อเรื่อง",
+      "number_sort_decrement": "ลดทั้งหมดลง 1",
+      "number_sort_increment": "เพิ่มทั้งหมดขึ้น 1",
+      "tab_authors": "ผู้แต่ง",
+      "tab_general": "ทั่วไป",
+      "tab_links": "ลิงก์",
+      "tab_poster": "โปสเตอร์",
+      "tab_tags": "แท็ก",
+      "tags_notice_multiple_edit": "คุณกำลังแก้ไขแท็กสำหรับหนังสือหลายเล่ม ซึ่งจะเขียนทับแท็กที่มีอยู่ของแต่ละเล่ม"
+    },
+    "edit_collection": {
+      "button_cancel": "ยกเลิก",
+      "button_confirm": "บันทึกการเปลี่ยนแปลง",
+      "dialog_title": "แก้ไขคอลเลกชัน",
+      "field_manual_ordering": "จัดลำดับด้วยตนเอง",
+      "label_ordering": "โดยค่าเริ่มต้น ซีรีส์ในคอลเลกชันจะเรียงตามชื่อ คุณสามารถเปิดใช้งานการจัดลำดับด้วยตนเองเพื่อกำหนดลำดับของคุณเองได้",
+      "tab_general": "ทั่วไป",
+      "tab_poster": "โปสเตอร์"
+    },
+    "edit_library": {
+      "button_browse": "เลือกไฟล์",
+      "button_cancel": "ยกเลิก",
+      "button_confirm_add": "เพิ่ม",
+      "button_confirm_edit": "แก้ไข",
+      "button_next": "ถัดไป",
+      "dialog_title_add": "เพิ่มไลบรารี",
+      "dialot_title_edit": "แก้ไขไลบรารี",
+      "field_analysis_analyze_dimensions": "วิเคราะห์ขนาดหน้า",
+      "field_analysis_hash_files": "คำนวณแฮชสำหรับไฟล์",
+      "field_analysis_hash_koreader": "คำนวณแฮชสำหรับไฟล์สำหรับ KOReader",
+      "field_analysis_hash_pages": "คำนวณแฮชสำหรับหน้า",
+      "field_convert_to_cbz": "แปลงเป็น CBZ โดยอัตโนมัติ",
+      "field_import_barcode_isbn": "บาร์โค้ด ISBN",
+      "field_import_comicinfo_book": "ข้อมูลเมตาของหนังสือ",
+      "field_import_comicinfo_collections": "คอลเลกชัน",
+      "field_import_comicinfo_readlists": "รายการอ่าน",
+      "field_import_comicinfo_series": "ข้อมูลเมตาของซีรีส์",
+      "field_import_comicinfo_series_append_volume": "เพิ่มเล่มต่อท้ายชื่อซีรีส์",
+      "field_import_epub_book": "ข้อมูลเมตาของหนังสือ",
+      "field_import_epub_series": "ข้อมูลเมตาของซีรีส์",
+      "field_import_local_artwork": "อาร์ตเวิร์กในเครื่อง",
+      "field_import_mylar_series": "ข้อมูลเมตาของซีรีส์",
+      "field_name": "ชื่อ",
+      "field_oneshotsdirectory": "ไดเรกทอรีเรื่องสั้นจบในตอน",
+      "field_repair_extensions": "ซ่อมแซมนามสกุลไฟล์ที่ไม่ถูกต้องโดยอัตโนมัติ",
+      "field_root_folder": "โฟลเดอร์ราก",
+      "field_scan_interval": "ช่วงเวลาสแกน",
+      "field_scanner_empty_trash_after_scan": "ล้างถังขยะโดยอัตโนมัติหลังจากการสแกนทุกครั้ง",
+      "field_scanner_force_directory_modified_time": "บังคับเวลาแก้ไขไดเรกทอรี",
+      "field_scanner_scan_startup": "สแกนเมื่อเริ่มต้น",
+      "field_series_cover": "ปกซีรีส์",
+      "file_browser_dialog_button_confirm": "เลือก",
+      "file_browser_dialog_title": "โฟลเดอร์รากของไลบรารี",
+      "label_analysis": "การวิเคราะห์",
+      "label_file_management": "การจัดการไฟล์",
+      "label_import_barcode_isbn": "นำเข้า ISBN ภายในบาร์โค้ด",
+      "label_import_comicinfo": "นำเข้าข้อมูลเมตาสำหรับ CBR/CBZ ที่มีไฟล์ ComicInfo.xml",
+      "label_import_epub": "นำเข้าข้อมูลเมตาจากไฟล์ EPUB",
+      "label_import_local": "นำเข้าสินทรัพย์สื่อในเครื่อง",
+      "label_import_mylar": "นำเข้าข้อมูลเมตาที่สร้างโดย Mylar",
+      "label_scan_directory_exclusions": "การยกเว้นไดเรกทอรีในการสแกน",
+      "label_scan_types": "สแกนหาไฟล์ประเภทเหล่านี้",
+      "label_scanner": "สแกนเนอร์",
+      "label_series_cover": "ปกซีรีส์",
+      "tab_general": "ทั่วไป",
+      "tab_metadata": "ข้อมูลเมตา",
+      "tab_options": "ตัวเลือก",
+      "tooltip_oneshotsdirectory": "ปล่อยว่างเพื่อปิดใช้งาน",
+      "tooltip_scanner_force_modified_time": "เปิดใช้งานหากไลบรารีอยู่บน Google Drive",
+      "tooltip_use_resources": "อาจใช้ทรัพยากรจำนวนมากในไลบรารีขนาดใหญ่หรือฮาร์ดแวร์ที่ช้า"
+    },
+    "edit_readlist": {
+      "button_cancel": "ยกเลิก",
+      "button_confirm": "บันทึกการเปลี่ยนแปลง",
+      "dialog_title": "แก้ไขรายการอ่าน",
+      "field_manual_ordering": "จัดลำดับด้วยตนเอง",
+      "field_name": "ชื่อ",
+      "field_summary": "บทสรุป",
+      "label_ordering": "โดยค่าเริ่มต้น หนังสือในรายการอ่านจะเรียงลำดับด้วยตนเอง คุณสามารถปิดใช้งานการจัดลำดับด้วยตนเองเพื่อเรียงหนังสือตามวันที่เผยแพร่ได้",
+      "tab_general": "ทั่วไป",
+      "tab_poster": "โปสเตอร์"
+    },
+    "edit_recommended": {
+      "button_confirm": "บันทึกการเปลี่ยนแปลง",
+      "button_reset": "รีเซ็ตเป็นค่าเริ่มต้น",
+      "dialog_title": "แก้ไขมุมมองแนะนำ"
+    },
+    "edit_series": {
+      "button_cancel": "ยกเลิก",
+      "button_confirm": "บันทึกการเปลี่ยนแปลง",
+      "dialog_title_multiple": "แก้ไข {count} ซีรีส์ | แก้ไข {count} ซีรีส์",
+      "dialog_title_single": "แก้ไข {series}",
+      "field_age_rating": "การจัดระดับอายุ",
+      "field_age_rating_error": "การจัดระดับอายุต้องเป็น 0 หรือมากกว่า",
+      "field_genres": "ประเภท",
+      "field_labels": "ป้ายกำกับ",
+      "field_language": "ภาษา",
+      "field_language_hint": "แท็กภาษา IETF BCP 47",
+      "field_publisher": "สำนักพิมพ์",
+      "field_reading_direction": "ทิศทางการอ่าน",
+      "field_sort_title": "ชื่อเรื่องสำหรับเรียงลำดับ",
+      "field_status": "สถานะ",
+      "field_summary": "บทสรุป",
+      "field_tags": "แท็ก",
+      "field_title": "ชื่อเรื่อง",
+      "field_total_book_count": "จำนวนหนังสือทั้งหมด",
+      "field_total_book_count_error": "จำนวนหนังสือทั้งหมดต้องเป็น 1 หรือมากกว่า",
+      "mixed": "ผสม",
+      "tab_general": "ทั่วไป",
+      "tab_poster": "โปสเตอร์",
+      "tab_sharing": "การแชร์",
+      "tab_tags": "แท็ก",
+      "tab_titles": "ชื่อเรื่องทางเลือก",
+      "tags_notice_multiple_edit": "คุณกำลังแก้ไขแท็กสำหรับซีรีส์หลายรายการ ซึ่งจะเขียนทับแท็กที่มีอยู่ของแต่ละซีรีส์"
+    },
+    "edit_user": {
+      "button_cancel": "ยกเลิก",
+      "button_confirm": "บันทึกการเปลี่ยนแปลง",
+      "dialog_title": "แก้ไขผู้ใช้",
+      "label_roles_for": "บทบาทสำหรับ {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "อนุญาตเฉพาะต่ำกว่า",
+        "exclude_over": "ไม่รวมที่สูงกว่า",
+        "none": "ไม่มีข้อจำกัด"
+      },
+      "edit_restrictions_for": "แก้ไขข้อจำกัดสำหรับ {name}",
+      "label_age_restriction": "ข้อจำกัดด้านอายุ",
+      "label_allow_only_labels": "อนุญาตเฉพาะป้ายกำกับ",
+      "label_exclude_labels": "ไม่รวมป้ายกำกับ",
+      "tab_content_restrictions": "ข้อจำกัดด้านเนื้อหา",
+      "tab_shared_libraries": "ไลบรารีที่แชร์"
+    },
+    "empty_trash": {
+      "body": "โดยค่าเริ่มต้น เซิร์ฟเวอร์สื่อจะไม่ลบข้อมูลสำหรับสื่อทันที ซึ่งจะช่วยได้หากไดรฟ์ถูกตัดการเชื่อมต่อชั่วคราว เมื่อคุณล้างถังขยะสำหรับไลบรารี ข้อมูลทั้งหมดเกี่ยวกับสื่อที่หายไปจะถูกลบ",
+      "button_confirm": "ล้าง",
+      "title": "ล้างถังขยะสำหรับไลบรารี"
+    },
+    "file_browser": {
+      "button_cancel": "ยกเลิก",
+      "button_confirm_default": "เลือก",
+      "dialog_title_default": "เบราว์เซอร์ไฟล์",
+      "parent_directory": "ไดเรกทอรีแม่"
+    },
+    "filename_chooser": {
+      "button_choose": "เลือก",
+      "field_destination_filename": "ชื่อไฟล์ปลายทาง",
+      "label_source_filename": "ชื่อไฟล์ต้นฉบับ",
+      "table": {
+        "existing_file": "ไฟล์ที่มีอยู่",
+        "order": "ลำดับ"
+      },
+      "title": "ชื่อไฟล์ปลายทาง"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "บังคับให้ Kobo ซิงค์",
+      "warning_html": "การกระทำนี้จะลบประวัติการซิงค์ทั้งหมดสำหรับคีย์ API นี้ Kobo ของคุณจะซิงค์ทุกอย่างในการซิงค์ครั้งถัดไป"
+    },
+    "password_change": {
+      "button_cancel": "ยกเลิก",
+      "button_confirm": "เปลี่ยนรหัสผ่าน",
+      "dialog_title": "เปลี่ยนรหัสผ่าน",
+      "field_new_password": "รหัสผ่านใหม่",
+      "field_new_password_error": "จำเป็นต้องใช้รหัสผ่านใหม่",
+      "field_repeat_password": "ทำซ้ำรหัสผ่านใหม่",
+      "field_repeat_password_error": "รหัสผ่านต้องเหมือนกัน"
+    },
+    "refresh_library_metadata": {
+      "body": "รีเฟรชข้อมูลเมตาสำหรับไฟล์สื่อทั้งหมดในไลบรารี อาจใช้เวลานานขึ้นอยู่กับขนาดไลบรารีของคุณ",
+      "button_confirm": "รีเฟรช",
+      "title": "รีเฟรชข้อมูลเมตาสำหรับไลบรารี"
+    },
+    "series_picker": {
+      "label_search_series": "ค้นหาซีรีส์",
+      "no_results": "ไม่พบซีรีส์",
+      "title": "เลือกซีรีส์"
+    },
+    "server_stop": {
+      "button_confirm": "หยุด",
+      "confirmation_message": "คุณแน่ใจหรือไม่ว่าต้องการหยุด Komga?",
+      "dialog_title": "ปิดเซิร์ฟเวอร์"
+    },
+    "shortcut_help": {
+      "label_description": "คำอธิบาย",
+      "label_key": "คีย์"
+    },
+    "transient_book_details": {
+      "label_candidate": "ตัวเลือก",
+      "label_existing": "ที่มีอยู่",
+      "label_format": "รูปแบบ",
+      "label_name": "ชื่อ",
+      "label_pages": "หน้า",
+      "label_size": "ขนาด",
+      "pages_table": {
+        "filename": "ชื่อไฟล์",
+        "height": "ความสูง",
+        "index": "ดัชนี",
+        "media_type": "ประเภทสื่อ",
+        "size": "ขนาด",
+        "width": "ความกว้าง"
+      },
+      "title": "รายละเอียดหนังสือ",
+      "title_comparison": "เปรียบเทียบหนังสือ"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "ตัวเลือก",
+      "label_existing": "ที่มีอยู่",
+      "page_of_pages": "{page} / {pages}",
+      "title": "ตรวจสอบหนังสือ",
+      "title_comparison": "เปรียบเทียบหนังสือ"
     }
   },
+  "duplicate_pages": {
+    "action_auto_delete_remaining": "ลบที่เหลืออัตโนมัติ ({count})",
+    "action_delete_auto": "ลบอัตโนมัติ",
+    "action_delete_manual": "ลบด้วยตนเอง",
+    "action_delete_matches": "ลบรายการที่ตรงกัน",
+    "action_ignore": "ไม่สนใจ",
+    "action_ignore_remaining": "ไม่สนใจที่เหลือ ({count})",
+    "action_manual_delete_remaining": "ลบที่เหลือด้วยตนเอง ({count})",
+    "confirm_auto_delete_remaining": "แฮชของหน้าที่เหลือทั้งหมดในหน้านี้ ({count}) จะถูกทำเครื่องหมายสำหรับการลบอัตโนมัติ",
+    "confirm_manual_delete_remaining": "แฮชของหน้าที่เหลือทั้งหมดในหน้านี้ ({count}) จะถูกทำเครื่องหมายสำหรับการลบด้วยตนเอง",
+    "delete_to_save": "ลบเพื่อประหยัด {size}",
+    "deleted_count": "ลบไปแล้ว {count} ครั้ง",
+    "empty_title": "ไม่พบหน้าที่ซ้ำกัน",
+    "empty_title_known": "ไม่มีรายการซ้ำที่รู้จัก",
+    "filter": {
+      "count": "จำนวน",
+      "date_added": "วันที่เพิ่ม",
+      "date_modified": "วันที่แก้ไข",
+      "delete_count": "จำนวนการลบ",
+      "delete_size": "พื้นที่ที่ประหยัดได้",
+      "match_count": "จำนวนที่ตรงกัน",
+      "size": "ขนาด",
+      "total_size": "ขนาดทั้งหมด"
+    },
+    "info": "การลบหน้าที่ซ้ำกันจะแก้ไขไฟล์ของคุณ สำรองไฟล์ของคุณและใช้การลบด้วยตนเองก่อนใช้การลบอัตโนมัติ",
+    "known": "รู้จัก",
+    "matches_n": "ไม่ตรงกัน | 1 รายการที่ตรงกัน | {count} รายการที่ตรงกัน",
+    "new": "ใหม่",
+    "saved_size": "ประหยัดได้ {size}",
+    "title": "หน้าที่ซ้ำกัน",
+    "unknown_size": "ไม่ทราบขนาด"
+  },
+  "duplicates": {
+    "file_hash": "แฮชไฟล์",
+    "size": "ขนาด",
+    "title": "ไฟล์ที่ซ้ำกัน",
+    "url": "URL"
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "ฮาร์ดลิงก์/คัดลอกไฟล์",
+      "MOVE": "ย้ายไฟล์"
+    },
+    "epubreader": {
+      "appearances": {
+        "day": "กลางวัน",
+        "night": "กลางคืน",
+        "sepia": "ซีเปีย"
+      },
+      "column_count": {
+        "auto": "อัตโนมัติ",
+        "one": "หนึ่ง",
+        "two": "สอง"
+      },
+      "reading_direction": {
+        "auto": "อัตโนมัติ",
+        "ltr": "จากซ้ายไปขวา",
+        "rtl": "จากขวาไปซ้าย"
+      }
+    },
+    "historical_event_type": {
+      "BookConverted": "หนังสือถูกแปลง",
+      "BookFileDeleted": "ไฟล์หนังสือถูกลบ",
+      "BookImported": "หนังสือนำเข้า",
+      "DuplicatePageDeleted": "หน้าที่ซ้ำกันถูกลบ",
+      "SeriesFolderDeleted": "โฟลเดอร์ซีรีส์ถูกลบ"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
+    "media_status": {
+      "ERROR": "ข้อผิดพลาด",
+      "OUTDATED": "ล้าสมัย",
+      "READY": "พร้อม",
+      "UNKNOWN": "ไม่ทราบ",
+      "UNSUPPORTED": "ไม่รองรับ"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "ลบอัตโนมัติ",
+      "DELETE_MANUAL": "ลบด้วยตนเอง",
+      "IGNORE": "ไม่สนใจ"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "จากซ้ายไปขวา",
+      "RIGHT_TO_LEFT": "จากขวาไปซ้าย",
+      "VERTICAL": "แนวตั้ง",
+      "WEBTOON": "เว็บตูน"
+    },
+    "scan_interval": {
+      "DAILY": "รายวัน",
+      "DISABLED": "ปิดใช้งาน",
+      "EVERY_12H": "ทุก 12 ชั่วโมง",
+      "EVERY_6H": "ทุก 6 ชั่วโมง",
+      "HOURLY": "รายชั่วโมง",
+      "WEEKLY": "รายสัปดาห์"
+    },
+    "series_cover": {
+      "FIRST": "แรกสุด",
+      "FIRST_UNREAD_OR_FIRST": "เล่มแรกที่ยังไม่อ่าน หรือเล่มแรกสุด",
+      "FIRST_UNREAD_OR_LAST": "เล่มแรกที่ยังไม่อ่าน หรือเล่มล่าสุด",
+      "LAST": "ล่าสุด"
+    },
+    "series_status": {
+      "ABANDONED": "ถูกทิ้ง",
+      "ENDED": "จบแล้ว",
+      "HIATUS": "หยุดพัก",
+      "ONGOING": "กำลังดำเนินเรื่อง"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "ค่าเริ่มต้น (300px)",
+      "LARGE": "ใหญ่ (900px)",
+      "MEDIUM": "กลาง (600px)",
+      "XLARGE": "ใหญ่พิเศษ (1200px)"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "บทปัจจุบัน",
+    "page_of": "หน้า {page} จาก {count}",
+    "publisher_font": "สำนักพิมพ์",
+    "settings": {
+      "column_count": "จำนวนคอลัมน์",
+      "font_family": "แบบอักษร",
+      "layout": "เค้าโครง",
+      "layout_paginated": "แบ่งหน้า",
+      "layout_scroll": "เลื่อน",
+      "navigation_mode": "โหมดการนำทาง",
+      "navigation_options": {
+        "both": "ทั้งสอง",
+        "buttons": "ปุ่ม",
+        "click": "คลิก / แตะ"
+      },
+      "page_margins": "ระยะขอบหน้า",
+      "viewing_theme": "ธีมการดู"
+    },
+    "shortcuts": {
+      "cycle_pagination": "สลับจำนวนคอลัมน์",
+      "cycle_viewing_theme": "สลับธีมการดู",
+      "font_size_decrease": "ลดขนาดตัวอักษร",
+      "font_size_increase": "เพิ่มขนาดตัวอักษร",
+      "menus": "เมนู",
+      "next": "ไปข้างหน้า",
+      "previous": "ย้อนกลับ",
+      "reader_navigation": "การนำทางในโปรแกรมอ่าน",
+      "scroll": "เปลี่ยนเค้าโครงเป็นการเลื่อน",
+      "settings": "การตั้งค่า",
+      "show_hide_toc": "แสดง/ซ่อนสารบัญ"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "ไม่สามารถเข้าถึงไฟล์ได้ในระหว่างการวิเคราะห์",
+    "ERR_1001": "ไม่รองรับประเภทสื่อ",
+    "ERR_1002": "ไม่รองรับไฟล์ RAR ที่เข้ารหัส",
+    "ERR_1003": "ไม่รองรับไฟล์ RAR แบบ Solid",
+    "ERR_1004": "ไม่รองรับไฟล์ RAR แบบหลายวอลุ่ม",
+    "ERR_1005": "เกิดข้อผิดพลาดที่ไม่รู้จักขณะวิเคราะห์หนังสือ",
+    "ERR_1006": "หนังสือไม่มีหน้าใดๆ",
+    "ERR_1007": "ไม่สามารถวิเคราะห์บางรายการได้",
+    "ERR_1008": "เกิดข้อผิดพลาดที่ไม่รู้จักขณะรับรายการของหนังสือ",
+    "ERR_1009": "มีรายการอ่านชื่อนั้นอยู่แล้ว",
+    "ERR_1015": "เกิดข้อผิดพลาดขณะดีซีเรียลไลซ์ ComicRack CBL",
+    "ERR_1016": "ไดเรกทอรีไม่สามารถเข้าถึงได้หรือไม่ใช่ไดเรกทอรี",
+    "ERR_1017": "ไม่สามารถสแกนโฟลเดอร์ที่เป็นส่วนหนึ่งของไลบรารีที่มีอยู่",
+    "ERR_1018": "ไม่พบไฟล์",
+    "ERR_1019": "ไม่สามารถนำเข้าไฟล์ที่เป็นส่วนหนึ่งของไลบรารีที่มีอยู่",
+    "ERR_1020": "หนังสือที่จะอัปเกรดไม่ได้อยู่ในซีรีส์ที่ให้มา",
+    "ERR_1021": "ไฟล์ปลายทางมีอยู่แล้ว",
+    "ERR_1022": "ไม่สามารถสแกนหนังสือที่นำเข้าใหม่ได้",
+    "ERR_1023": "หนังสือมีอยู่ใน ReadingList แล้ว",
+    "ERR_1024": "ข้อผิดพลาดในการเข้าสู่ระบบ OAuth2: ไม่มีแอตทริบิวต์อีเมล",
+    "ERR_1025": "ข้อผิดพลาดในการเข้าสู่ระบบ OAuth2: ไม่มีผู้ใช้ในเครื่องที่มีอีเมลนั้น",
+    "ERR_1026": "ข้อผิดพลาดในการเข้าสู่ระบบ OpenID Connect: อีเมลไม่ได้รับการยืนยัน",
+    "ERR_1027": "ข้อผิดพลาดในการเข้าสู่ระบบ OpenID Connect: ไม่มีแอตทริบิวต์ email_verified",
+    "ERR_1028": "ข้อผิดพลาดในการเข้าสู่ระบบ OpenID Connect: ไม่มีแอตทริบิวต์อีเมล",
+    "ERR_1029": "ComicRack CBL ไม่มีองค์ประกอบ Book ใดๆ",
+    "ERR_1030": "ComicRack CBL ไม่มีองค์ประกอบ Name",
+    "ERR_1031": "ComicRack CBL Book ขาดซีรีส์หรือหมายเลข",
+    "ERR_1032": "ไฟล์ EPUB มีประเภทสื่อที่ไม่ถูกต้อง",
+    "ERR_1033": "บางรายการหายไป",
+    "ERR_1034": "มีคีย์ API ที่มีความคิดเห็นนั้นอยู่แล้ว",
+    "ERR_1035": "เกิดข้อผิดพลาดขณะรับ TOC ของ EPUB",
+    "ERR_1036": "เกิดข้อผิดพลาดขณะรับ Landmarks ของ EPUB",
+    "ERR_1037": "เกิดข้อผิดพลาดขณะรับรายการหน้าของ EPUB",
+    "ERR_1038": "เกิดข้อผิดพลาดขณะรับหน้า divina ของ EPUB",
+    "ERR_1039": "เกิดข้อผิดพลาดขณะรับตำแหน่งของ EPUB"
+  },
+  "filter": {
+    "age_rating": "การจัดระดับอายุ",
+    "age_rating_none": "ไม่มี",
+    "any": "ใดๆ",
+    "complete": "สมบูรณ์",
+    "genre": "ประเภท",
+    "in_progress": "กำลังดำเนินการ",
+    "language": "ภาษา",
+    "library": "ไลบรารี",
+    "media_profile": "โปรไฟล์สื่อ",
+    "media_status": "สถานะสื่อ",
+    "oneshot": "เรื่องสั้นจบในตอน",
+    "publisher": "สำนักพิมพ์",
+    "read": "อ่านแล้ว",
+    "release_date": "วันที่เผยแพร่",
+    "sharing_label": "ป้ายกำกับการแชร์",
+    "status": "สถานะ",
+    "tag": "แท็ก",
+    "unread": "ยังไม่อ่าน"
+  },
+  "filter_drawer": {
+    "filter": "ตัวกรอง",
+    "sort": "จัดเรียง"
+  },
+  "history": {
+    "header": {
+      "book": "หนังสือ",
+      "date": "วันที่",
+      "details": "รายละเอียด",
+      "series": "ซีรีส์",
+      "type": "ประเภท"
+    },
+    "title": "ประวัติ"
+  },
+  "home": {
+    "theme": "ธีม",
+    "translation": "การแปล"
+  },
+  "library_navigation": {
+    "browse": "เลือกชม",
+    "browse_books": "หนังสือ",
+    "browse_series": "ซีรีส์",
+    "collections": "คอลเลกชัน",
+    "readlists": "รายการอ่าน",
+    "recommended": "แนะนำ"
+  },
+  "login": {
+    "create_user_account": "สร้างบัญชีผู้ใช้",
+    "login": "ลงชื่อเข้าใช้",
+    "unclaimed_html": "เซิร์ฟเวอร์ Komga นี้ยังไม่เปิดใช้งาน คุณต้องสร้างบัญชีผู้ใช้เพื่อเข้าถึง<br><br>เลือก <strong>อีเมล</strong> และ <strong>รหัสผ่าน</strong> แล้วคลิกที่ <strong>สร้างบัญชีผู้ใช้</strong>"
+  },
+  "media_analysis": {
+    "comment": "ความคิดเห็น",
+    "media_analysis": "การวิเคราะห์สื่อ",
+    "media_type": "ประเภทสื่อ",
+    "name": "ชื่อ",
+    "size": "ขนาด",
+    "status": "สถานะ",
+    "url": "URL"
+  },
+  "menu": {
+    "add_to_collection": "เพิ่มไปยังคอลเลกชัน",
+    "add_to_readlist": "เพิ่มไปยังรายการอ่าน",
+    "analyze": "วิเคราะห์",
+    "bulk_edit_metadata": "แก้ไขข้อมูลเมตาหลายรายการ",
+    "delete": "ลบ",
+    "deselect_all": "ยกเลิกการเลือกทั้งหมด",
+    "download_readlist": "ดาวน์โหลดรายการอ่าน",
+    "download_series": "ดาวน์โหลดซีรีส์",
+    "edit": "แก้ไข",
+    "edit_metadata": "แก้ไขข้อมูลเมตา",
+    "empty_trash": "ล้างถังขยะ",
+    "mark_read": "ทำเครื่องหมายว่าอ่านแล้ว",
+    "mark_unread": "ทำเครื่องหมายว่ายังไม่อ่าน",
+    "pin": "ปักหมุด",
+    "refresh_metadata": "รีเฟรชข้อมูลเมตา",
+    "scan_library_files": "สแกนไฟล์ไลบรารี",
+    "scan_library_files_deep": "สแกนไฟล์ไลบรารี (เชิงลึก)",
+    "select_all": "เลือกทั้งหมด",
+    "unpin": "ถอดหมุด"
+  },
+  "metrics": {
+    "library_books": "หนังสือต่อไลบรารี",
+    "library_disk_space": "พื้นที่ดิสก์ไลบรารี",
+    "library_series": "ซีรีส์ต่อไลบรารี",
+    "library_sidecars": "ไฟล์เสริมต่อไลบรารี",
+    "tasks_executed": "งานที่ดำเนินการ",
+    "tasks_total_time": "เวลารวมของงาน",
+    "title": "เมตริก"
+  },
+  "missing_posters": {
+    "title": "โปสเตอร์ที่หายไป"
+  },
+  "navigation": {
+    "home": "หน้าแรก",
+    "libraries": "ไลบรารี",
+    "logout": "ออกจากระบบ"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "คุณสามารถปักหมุดไลบรารีได้จากเมนู 3 จุด",
+    "title": "ไม่มีไลบรารีที่ปักหมุด"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "กลับไปที่หน้าแรก",
+    "page_does_not_exist": "หน้าที่คุณกำลังมองหาไม่มีอยู่",
+    "page_not_found": "ไม่พบหน้า"
+  },
+  "read_more": {
+    "less": "อ่านน้อยลง",
+    "more": "อ่านเพิ่มเติม"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "หนังสือซ้ำ",
+      "error_choose_book": "เลือกหนังสือ"
+    }
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "จัดการรายการอ่าน",
+    "title": "รายการอ่าน {name}"
+  },
+  "search": {
+    "no_results": "การค้นหาไม่พบผลลัพธ์",
+    "search": "ค้นหา",
+    "search_for_something_else": "ลองค้นหาสิ่งอื่น",
+    "search_results_for": "ผลการค้นหาสำหรับ \"{name}\""
+  },
+  "searchbox": {
+    "in_library": "ใน {library}",
+    "no_results": "ไม่มีผลลัพธ์",
+    "search_all": "ค้นหาทั้งหมด…"
+  },
+  "server": {
+    "server_management": {
+      "button_cancel_all_tasks": "ยกเลิกงานทั้งหมด",
+      "button_empty_trash": "ล้างถังขยะสำหรับไลบรารีทั้งหมด",
+      "button_scan_libraries": "สแกนไลบรารีทั้งหมด",
+      "button_scan_libraries_deep": "สแกนไลบรารีทั้งหมด (เชิงลึก)",
+      "button_shutdown": "ปิด",
+      "download_log": "ดาวน์โหลดไฟล์บันทึก",
+      "notification_tasks_cancelled": "ไม่มีงานที่จะยกเลิก | ยกเลิกหนึ่งงาน | ยกเลิก {count} งาน",
+      "section_title": "การจัดการเซิร์ฟเวอร์"
+    },
+    "tab_title": "เซิร์ฟเวอร์",
+    "updates": "อัปเดต"
+  },
+  "server_settings": {
+    "config_precedence": "มีความสำคัญเหนือกว่าไฟล์การกำหนดค่า",
+    "dialog_regenerate_thumbnails": {
+      "body": "ขนาดภาพขนาดย่อมีการเปลี่ยนแปลง คุณต้องการสร้างภาพขนาดย่อของหนังสือใหม่หรือไม่?",
+      "btn_alternate": "ใช่, ทุกเล่ม",
+      "btn_cancel": "ไม่",
+      "btn_confirm": "ใช่, แต่เฉพาะถ้าใหญ่กว่า",
+      "title": "สร้างภาพขนาดย่อใหม่"
+    },
+    "hint_kobo_port": "ตั้งค่าเฉพาะในกรณีที่มีปัญหาการซิงค์กับปกและการดาวน์โหลด",
+    "label_delete_empty_collections": "ลบคอลเลกชันที่ว่างเปล่าหลังจากการสแกน",
+    "label_delete_empty_readlists": "ลบรายการอ่านที่ว่างเปล่าหลังจากการสแกน",
+    "label_kepubify_path": "เส้นทางไปยัง kepubify",
+    "label_kobo_port": "พอร์ตภายนอกของ Kobo Sync",
+    "label_kobo_proxy": "พร็อกซีคำขอ Kobo Sync ไปยัง Kobo Store",
+    "label_rememberme_duration": "ระยะเวลาจดจำฉัน (เป็นวัน)",
+    "label_server_context_path": "URL พื้นฐาน",
+    "label_server_port": "พอร์ตเซิร์ฟเวอร์",
+    "label_task_pool_size": "เธรดงาน",
+    "label_thumbnail_size": "ขนาดภาพขนาดย่อ",
+    "requires_restart": "ต้องรีสตาร์ทเพื่อให้มีผล",
+    "server_settings": "การตั้งค่าเซิร์ฟเวอร์"
+  },
+  "settings_user": {
+    "change_password": "เปลี่ยนรหัสผ่าน",
+    "edit_restrictions": "แก้ไขข้อจำกัด",
+    "edit_user": "แก้ไขผู้ใช้",
+    "latest_activity": "กิจกรรมล่าสุด: {date}",
+    "no_recent_activity": "ไม่มีกิจกรรมล่าสุด",
+    "role_administrator": "ผู้ดูแลระบบ",
+    "role_user": "ผู้ใช้"
+  },
+  "sort": {
+    "books_count": "จำนวนหนังสือ",
+    "date_added": "วันที่เพิ่ม",
+    "date_read": "วันที่อ่าน",
+    "date_updated": "วันที่อัปเดต",
+    "file_name": "ชื่อไฟล์",
+    "file_size": "ขนาดไฟล์",
+    "folder_name": "ชื่อโฟลเดอร์",
+    "name": "ชื่อ",
+    "number": "หมายเลข",
+    "page_count": "จำนวนหน้า",
+    "random": "สุ่ม",
+    "release_date": "วันที่เผยแพร่",
+    "series": "ซีรีส์"
+  },
+  "theme": {
+    "dark": "มืด",
+    "light": "สว่าง",
+    "system": "ระบบ"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "ลบ",
+    "tooltip_generated": "อาร์ตเวิร์กที่สร้างขึ้น",
+    "tooltip_mark_as_selected": "ทำเครื่องหมายว่าเลือกแล้ว",
+    "tooltip_selected": "เลือกแล้ว",
+    "tooltip_sidecar": "อาร์ตเวิร์กในเครื่อง",
+    "tooltip_to_be_deleted": "จะถูกลบ",
+    "tooltip_to_be_uploaded": "จะถูกอัปโหลด",
+    "tooltip_too_big": "ไฟล์ใหญ่เกินไป!",
+    "tooltip_user_uploaded": "ผู้ใช้อัปโหลด"
+  },
+  "titles_more": {
+    "less": "ชื่อเรื่องน้อยลง",
+    "more": "ชื่อเรื่องเพิ่มเติม"
+  },
+  "ui_settings": {
+    "general": "ทั่วไป",
+    "label_oauth2_auto_login": "เข้าสู่ระบบ OAuth2 อัตโนมัติ",
+    "label_oauth2_hide_login": "ซ่อนฟิลด์เข้าสู่ระบบหากเปิดใช้งาน OAuth2",
+    "label_poster_blur_unread": "เบลอโปสเตอร์สำหรับหนังสือและซีรีส์ที่ยังไม่อ่าน",
+    "label_poster_stretch": "ยืดโปสเตอร์ให้พอดีกับการ์ด",
+    "label_series_groups": "การจัดกลุ่มซีรีส์",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "ตามตัวอักษร",
+      "japanese": "โกจูอง (ญี่ปุ่น)"
+    },
+    "tooltip_oauth2_auto_login": "ต้องมีผู้ให้บริการ OAuth2 เพียงรายเดียว และเปิดใช้งาน 'ซ่อนฟิลด์เข้าสู่ระบบ'"
+  },
+  "updates": {
+    "available": "มีการอัปเดต",
+    "latest_installed": "ติดตั้ง Komga เวอร์ชันล่าสุดแล้ว"
+  },
+  "user_roles": {
+    "ADMIN": "ผู้ดูแลระบบ",
+    "FILE_DOWNLOAD": "ดาวน์โหลดไฟล์",
+    "KOBO_SYNC": "ซิงค์ Kobo",
+    "KOREADER_SYNC": "ซิงค์ KOReader",
+    "PAGE_STREAMING": "สตรีมหน้า",
+    "USER": "ผู้ใช้"
+  },
+  "users": {
+    "api_keys": "คีย์ API",
+    "authentication_activity": "กิจกรรมการรับรองตัวเอง",
+    "users": "ผู้ใช้"
+  },
+  "validation": {
+    "context_path": "ต้องขึ้นต้นด้วย '/', ไม่ลงท้ายด้วย '/-_', และมีเฉพาะ '/-_a-z0-9'",
+    "one_or_more": "ต้องเป็น 1 หรือมากกว่า",
+    "tcp_port": "ต้องอยู่ระหว่าง 1 ถึง 65535",
+    "zero_or_more": "ต้องเป็น 0 หรือมากกว่า"
+  },
   "welcome": {
+    "add_library": "เพิ่มไลบรารี",
+    "no_libraries_yet": "ยังไม่มีการเพิ่มไลบรารี!",
     "welcome_message": "ยินดีต้อนรับสู่ Komga"
   }
 }
