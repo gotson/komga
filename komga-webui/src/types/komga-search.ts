@@ -110,6 +110,14 @@ export class SearchConditionTag implements SearchConditionBook, SearchConditionS
   }
 }
 
+export class SearchConditionCharacter implements SearchConditionBook, SearchConditionSeries {
+  character: SearchOperatorEquality
+
+  constructor(op: SearchOperatorEquality) {
+    this.character = op
+  }
+}
+
 export class SearchConditionLanguage implements SearchConditionSeries {
   language: SearchOperatorEquality
 

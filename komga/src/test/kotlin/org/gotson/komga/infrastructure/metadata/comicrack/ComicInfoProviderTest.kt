@@ -96,6 +96,24 @@ class ComicInfoProviderTest {
     }
 
     @Test
+    fun `given comicInfo with characters when getting book metadata then characters are parsed correctly`() {
+      val comicInfo =
+        ComicInfo().apply {
+          characters = "Spider-Man, Mary Jane Watson, Green Goblin"
+        }
+
+      every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
+
+      val patch = comicInfoProvider.getBookMetadataFromBook(BookWithMedia(book, media))
+
+      with(patch!!) {
+        assertThat(characters as Iterable<String>)
+          .hasSize(3)
+          .containsExactlyInAnyOrder("spider-man", "mary jane watson", "green goblin")
+      }
+    }
+
+    @Test
     fun `given comicInfo with single link when getting book metadata then metadata patch is valid`() {
       val comicInfo =
         ComicInfo().apply {

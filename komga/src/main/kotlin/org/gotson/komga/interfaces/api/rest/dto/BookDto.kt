@@ -60,6 +60,8 @@ data class BookMetadataDto(
   val authorsLock: Boolean,
   val tags: Set<String>,
   val tagsLock: Boolean,
+  val characters: Set<String>,
+  val charactersLock: Boolean,
   val isbn: String,
   val isbnLock: Boolean,
   val links: List<WebLinkDto>,

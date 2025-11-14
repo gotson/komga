@@ -85,6 +85,18 @@ export default class KomgaReferentialService {
     }
   }
 
+  async getCharacters(): Promise<string[]> {
+    try {
+      return (await this.http.get('/api/v1/characters')).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve characters'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
   async getSharingLabels(libraryIds?: string[], collectionId?: string): Promise<string[]> {
     try {
       const params = {} as any
@@ -116,6 +128,25 @@ export default class KomgaReferentialService {
       })).data
     } catch (e) {
       let msg = 'An error occurred while trying to retrieve series and book tags'
+      if (e.response.data.message) {
+        msg += `: ${e.response.data.message}`
+      }
+      throw new Error(msg)
+    }
+  }
+
+  async getSeriesAndBookCharacters(libraryIds?: string[], collectionId?: string): Promise<string[]> {
+    try {
+      const params = {} as any
+      if (libraryIds) params.library_id = libraryIds
+      if (collectionId) params.collection_id = collectionId
+
+      return (await this.http.get('/api/v1/characters', {
+        params: params,
+        paramsSerializer: params => qs.stringify(params, {indices: false}),
+      })).data
+    } catch (e) {
+      let msg = 'An error occurred while trying to retrieve series and book characters'
       if (e.response.data.message) {
         msg += `: ${e.response.data.message}`
       }
