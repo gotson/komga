@@ -47,6 +47,14 @@
             <v-icon>mdi-view-grid</v-icon>
           </v-btn>
           <v-btn
+            v-if="hasToc"
+            icon
+            @click="showToc = !showToc"
+          >
+            <v-icon>mdi-table-of-contents</v-icon>
+          </v-btn>
+
+          <v-btn
             icon
             @click="showSettings = !showSettings"
           >
@@ -150,7 +158,24 @@
       ></paged-reader>
     </div>
 
-    <thumbnail-explorer-dialog
+    
+    <!-- EPUB TOC drawer (for EPUBs rendered in Divina) -->
+    <v-navigation-drawer
+	  v-model="showToc"
+		right
+		app
+		temporary
+		:width="$vuetify.breakpoint.smAndUp ? 420 : $vuetify.breakpoint.width - 56"
+    >
+      <v-toolbar dense flat>
+        <v-toolbar-title>Table of contents</v-toolbar-title>
+        <v-spacer/>
+        <v-btn icon @click="showToc = false"><v-icon>mdi-close</v-icon></v-btn>
+      </v-toolbar>
+      <toc-list :toc="toc" @goto="goToEntry" class="pa-2"></toc-list>
+
+    </v-navigation-drawer>
+<thumbnail-explorer-dialog
       v-model="showExplorer"
       :bookId="bookId"
       @go="goTo"
@@ -324,6 +349,10 @@ import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {checkImageSupport, ImageFeature} from '@/functions/check-image'
 import {bookPageUrl} from '@/functions/urls'
+
+import TocList from '@/components/TocList.vue'
+import {bookManifestUrl} from '@/functions/urls'
+import {TocEntry} from '@/types/epub'
 import {getFileFromUrl} from '@/functions/file'
 import {resizeImageFile} from '@/functions/resize-image'
 import {ReadingDirection} from '@/types/enum-books'
@@ -358,9 +387,16 @@ export default Vue.extend({
     SettingsSelect,
     ThumbnailExplorerDialog,
     ShortcutHelpDialog,
+    TocList,
   },
   data: function () {
     return {
+      // TOC (for EPUBs opened with Divina)
+      showToc: false,
+      toc: [] as TocEntry[],
+      spinePaths: [] as string[],
+
+
       ItemTypes,
       screenfull,
       fullscreenIcon: 'mdi-fullscreen',
@@ -508,6 +544,10 @@ export default Vue.extend({
     },
   },
   computed: {
+    hasToc(): boolean {
+      return this.toc && this.toc.length > 0
+    },
+
     continuousReader(): boolean {
       return this.readingDirection === ReadingDirection.WEBTOON
     },
@@ -665,6 +705,49 @@ export default Vue.extend({
     },
   },
   methods: {
+   
+    // Build TOC by reading the Readium manifest and mapping href -> spine index -> page#
+    async loadEpubToc(bookId: string) {
+      try {
+        const res = await fetch(bookManifestUrl(bookId), { credentials: 'include' })
+        if (!res.ok) return
+        const pub = await res.json()
+        const baseUrl = new URL(bookManifestUrl(bookId), window.location.href)
+        const normalize = (h: string) => {
+          try { return new URL(h, baseUrl).pathname } catch { return (h || '').split('#')[0] }
+        }
+        // readingOrder = EPUB spine in reading order
+        const spine = (pub.readingOrder || []).map((it: any) => normalize(it.href))
+        this.spinePaths = spine
+
+        const toEntries = (nodes: any[]): TocEntry[] => (nodes || []).map((n: any) => ({
+          title: n.title || n.name || n.href,
+          href: n.href,
+          children: toEntries(n.children || []),
+          page: this.hrefToPage(n.href),
+        }))
+        // Prefer explicit toc, otherwise fall back to landmarks if present
+        const tocTree = (pub.toc && pub.toc.length ? pub.toc : (pub.landmarks || []))
+        this.toc = toEntries(tocTree)
+      } catch {
+        // Non-EPUB or manifest missing → no TOC
+        this.toc = []
+        this.spinePaths = []
+      }
+    },
+    hrefToPage(href: string): number {
+      if (!href) return 1
+      const clean = href.split('#')[0]
+      let path: string
+      try { path = new URL(clean, window.location.href).pathname } catch { path = clean }
+      const idx = this.spinePaths.indexOf(path)
+      return idx >= 0 ? (idx + 1) : 1
+    },
+    goToEntry(entry: any) {
+      if (entry?.page) this.goTo(entry.page)
+      this.showToc = false
+    },
+
     enterFullscreen() {
       if (screenfull.isEnabled) screenfull.request(document.documentElement, {navigationUI: 'hide'})
     },
@@ -680,6 +763,9 @@ export default Vue.extend({
       this.shortcuts[e.key]?.execute(this)
     },
     async setup(bookId: string, page?: number) {
+      // Try to load EPUB navigation (harmless for non-EPUBs)
+      await this.loadEpubToc(bookId)
+
       this.$debug('[setup]', `bookId:${bookId}`, `page:${page}`)
       this.book = await this.$komgaBooks.getBook(bookId)
       this.series = await this.$komgaSeries.getOneSeries(this.book.seriesId)
