@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.kobo
 
+import java.nio.charset.StandardCharsets;
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -120,7 +121,8 @@ class KoboProxy(
         }.apply { if (body != null) body(body) }
         .retrieve()
         .onStatus(HttpStatusCode::isError) { _, response ->
-          logger.debug { "Kobo response: $response" }
+          var body = String(response.getBody().readAllBytes(), StandardCharsets.UTF_8)
+          logger.debug { "Kobo response: ${response.getStatusCode()}: $body"}
           throw ResponseStatusException(response.statusCode, response.statusText)
         }.toEntity<JsonNode>()
 
