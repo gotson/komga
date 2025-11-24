@@ -43,7 +43,7 @@ jobs:
       version_next: ${{ steps.versions.outputs.version_next }}
       should_release: ${{ steps.versions.outputs.should_release }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up Homebrew
@@ -72,7 +72,7 @@ jobs:
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
