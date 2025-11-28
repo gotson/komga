@@ -7,7 +7,7 @@
       "url": "https://github.com/gotson/komga/blob/master/LICENSE"
     },
     "title": "Komga API",
-    "version": "1.23.5"
+    "version": "1.23.6"
   },
   "externalDocs": {
     "description": "Komga documentation",
@@ -4919,7 +4919,7 @@
         "operationId": "matchComicRackList",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
