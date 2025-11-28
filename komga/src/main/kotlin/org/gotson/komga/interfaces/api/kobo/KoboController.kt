@@ -193,13 +193,8 @@ class KoboController(
     val resources =
       try {
         koboProxy.proxyCurrentRequest().body?.get("Resources")
-      } catch (e: ResponseStatusException) {
-        if (e.getStatusCode().value() == 401) {
-          throw e
-        }
-        logger.warn { "Failed to get response from Kobo /v1/initialization, fallback to noproxy" }
-        null
       } catch (e: Exception) {
+        if (e is ResponseStatusException && e.statusCode == HttpStatus.UNAUTHORIZED) throw e
         logger.warn { "Failed to get response from Kobo /v1/initialization, fallback to noproxy" }
         null
       } ?: koboProxy.nativeKoboResources
@@ -239,7 +234,7 @@ class KoboController(
   ): Any {
     try {
       return koboProxy.proxyCurrentRequest(body)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
       logger.warn { "Failed to get response from Kobo /v1/auth/device, fallback to noproxy" }
     }
 
@@ -401,7 +396,7 @@ class KoboController(
           addAll(
             // changed books are also passed as changed reading state because Kobo does not process ChangedEntitlement even if it contains a ReadingState
             (booksChanged.content + changedReadingState.content).mapNotNull { book ->
-              readProgress[book.bookId]?.let { it ->
+              readProgress[book.bookId]?.let {
                 ChangedReadingStateDto(
                   WrappedReadingStateDto(
                     it.toDto(),
