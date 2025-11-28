@@ -30,28 +30,24 @@ class KoboProxy(
   private val komgaSyncTokenGenerator: KomgaSyncTokenGenerator,
   private val komgaSettingsProvider: KomgaSettingsProvider,
 ) {
-  private val koboApiClient: RestClient
+  private val koboApiClient: RestClient =
+    RestClient
+      .builder()
+      .uriBuilderFactory(
+        DefaultUriBuilderFactory("https://storeapi.kobo.com")
+          .apply {
+            this.encodingMode = DefaultUriBuilderFactory.EncodingMode.NONE
+          },
+      ).requestFactory(
+        ClientHttpRequestFactoryBuilder.reactor().build(
+          ClientHttpRequestFactorySettings
+            .defaults()
+            .withReadTimeout(1.minutes.toJavaDuration())
+            .withConnectTimeout(1.minutes.toJavaDuration()),
+        ),
+      ).build()
 
-  init {
-    val uriBuilderFactory = DefaultUriBuilderFactory("https://storeapi.kobo.com")
-    uriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE)
-
-    koboApiClient =
-      RestClient
-        .builder()
-        .uriBuilderFactory(
-          uriBuilderFactory,
-        ).requestFactory(
-          ClientHttpRequestFactoryBuilder.reactor().build(
-            ClientHttpRequestFactorySettings
-              .defaults()
-              .withReadTimeout(1.minutes.toJavaDuration())
-              .withConnectTimeout(1.minutes.toJavaDuration()),
-          ),
-        ).build()
-  }
-
-  private val pathRegex = """\/kobo\/[-\w]*(.*)""".toRegex()
+  private val pathRegex = """/kobo/[-\w]*(.*)""".toRegex()
 
   private val headersOutInclude =
     setOf(
@@ -120,7 +116,7 @@ class KoboProxy(
         }.apply { if (body != null) body(body) }
         .retrieve()
         .onStatus(HttpStatusCode::isError) { _, response ->
-          logger.debug { "Kobo response: $response" }
+          logger.debug { "Kobo response: ${response.statusCode}: ${response.body.bufferedReader().use { it.readText() }}" }
           throw ResponseStatusException(response.statusCode, response.statusText)
         }.toEntity<JsonNode>()
 
