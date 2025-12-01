@@ -142,6 +142,19 @@ class ReferentialController(
       else -> referentialRepository.findAllBookTags(principal.user.getAuthorizedLibraryIds(null))
     }
 
+  @GetMapping("v1/characters")
+  @Operation(summary = "List characters", description = "Can be filtered by various criteria")
+  fun getCharacters(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+    @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
+    @RequestParam(name = "collection_id", required = false) collectionId: String?,
+  ): Set<String> =
+    when {
+      libraryIds.isNotEmpty() -> referentialRepository.findAllSeriesAndBookCharactersByLibraries(libraryIds, principal.user.getAuthorizedLibraryIds(null))
+      collectionId != null -> referentialRepository.findAllSeriesAndBookCharactersByCollection(collectionId, principal.user.getAuthorizedLibraryIds(null))
+      else -> referentialRepository.findAllSeriesAndBookCharacters(principal.user.getAuthorizedLibraryIds(null))
+    }
+
   @GetMapping("v1/tags/series")
   @Operation(summary = "List series tags", description = "Can be filtered by various criteria")
   fun getSeriesTags(

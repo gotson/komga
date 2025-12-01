@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 data class BookMetadataAggregation(
   val authors: List<Author> = emptyList(),
   val tags: Set<String> = emptySet(),
+  val characters: Set<String> = emptySet(),
   val releaseDate: LocalDate? = null,
   val summary: String = "",
   val summaryNumber: String = "",

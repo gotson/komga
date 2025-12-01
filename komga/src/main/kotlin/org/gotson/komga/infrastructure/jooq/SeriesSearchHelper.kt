@@ -137,6 +137,33 @@ class SeriesSearchHelper(
           }
         } to emptySet()
 
+      is SearchCondition.Character ->
+        Tables.SERIES.ID.let { field ->
+          val innerEquals = { character: String ->
+            DSL
+              .select(Tables.BOOK_METADATA_AGGREGATION_CHARACTER.SERIES_ID)
+              .from(Tables.BOOK_METADATA_AGGREGATION_CHARACTER)
+              .where(
+                Tables.BOOK_METADATA_AGGREGATION_CHARACTER.CHARACTER
+                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+                  .equalIgnoreCase(character),
+              )
+          }
+          val innerAny = {
+            DSL
+              .select(Tables.BOOK_METADATA_AGGREGATION_CHARACTER.SERIES_ID)
+              .from(Tables.BOOK_METADATA_AGGREGATION_CHARACTER)
+              .where(Tables.BOOK_METADATA_AGGREGATION_CHARACTER.CHARACTER.isNotNull)
+          }
+
+          when (searchCondition.operator) {
+            is SearchOperator.Is -> field.`in`(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNot -> field.notIn(innerEquals(searchCondition.operator.value))
+            is SearchOperator.IsNullT<*> -> field.notIn(innerAny())
+            is SearchOperator.IsNotNullT<*> -> field.`in`(innerAny())
+          }
+        } to emptySet()
+
       is SearchCondition.Author ->
         Tables.SERIES.ID.let { field ->
           val inner = { name: String?, role: String? ->
