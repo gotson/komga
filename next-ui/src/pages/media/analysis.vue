@@ -1,5 +1,5 @@
 <template>
-  <h1>Media Analysis</h1>
+  <EmptyStateConstruction />
 </template>
 
 <script lang="ts" setup>
