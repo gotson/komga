@@ -1,5 +1,6 @@
 <template>
   <v-list nav>
+    <LayoutAppDrawerMenuLibraries />
     <LayoutAppDrawerMenuImport v-if="isAdmin" />
     <LayoutAppDrawerMenuMedia v-if="isAdmin" />
     <LayoutAppDrawerMenuHistory v-if="isAdmin" />

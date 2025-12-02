@@ -14,12 +14,14 @@ import { filesystemHandlers } from '@/mocks/api/handlers/filesystem'
 import { transientBooksHandlers } from '@/mocks/api/handlers/transient-books'
 import { readListsHandlers } from '@/mocks/api/handlers/readlists'
 import { pageHashesHandlers } from '@/mocks/api/handlers/page-hashes'
+import { clientSettingsHandlers } from '@/mocks/api/handlers/client-settings'
 
 export const handlers = [
   ...actuatorHandlers,
   ...announcementHandlers,
   ...booksHandlers,
   ...claimHandlers,
+  ...clientSettingsHandlers,
   ...filesystemHandlers,
   ...historyHandlers,
   ...librariesHandlers,
