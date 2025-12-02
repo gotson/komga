@@ -19,3 +19,8 @@ export function pageHashKnownThumbnailUrl(hash?: string): string | undefined {
   if (hash) return `${API_BASE_URL}/api/v1/page-hashes/${hash}/thumbnail`
   return undefined
 }
+
+export function pageHashUnknownThumbnailUrl(hash?: string): string | undefined {
+  if (hash) return `${API_BASE_URL}/api/v1/page-hashes/unknown/${hash}/thumbnail`
+  return undefined
+}
