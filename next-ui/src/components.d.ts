@@ -54,6 +54,7 @@ declare module 'vue' {
     LocaleSelector: typeof import('./components/LocaleSelector.vue')['default']
     PageHashKnownTable: typeof import('./components/pageHash/KnownTable.vue')['default']
     PageHashMatchTable: typeof import('./components/pageHash/MatchTable.vue')['default']
+    PageHashUnknownTable: typeof import('./components/pageHash/UnknownTable.vue')['default']
     ReleaseCard: typeof import('./components/release/Card.vue')['default']
     RemoteFileList: typeof import('./components/RemoteFileList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

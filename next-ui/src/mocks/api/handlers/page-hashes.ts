@@ -21,6 +21,18 @@ export function mockPageHashesKnown(count: number): components['schemas']['PageH
   })
 }
 
+export function mockPageHashesUnknown(
+  count: number,
+): components['schemas']['PageHashUnknownDto'][] {
+  return [...Array(count).keys()].map((index) => {
+    return {
+      hash: `UNKN${index}`,
+      size: 1234 * (index + 1),
+      matchCount: index * 2,
+    }
+  })
+}
+
 export function mockPageHashMatches(count: number): components['schemas']['PageHashMatchDto'][] {
   return [...Array(count).keys()].map((index) => {
     return {
@@ -34,11 +46,22 @@ export function mockPageHashMatches(count: number): components['schemas']['PageH
   })
 }
 
+const knownHashes: string[] = []
+
 export const pageHashesHandlers = [
   httpTyped.get('/api/v1/page-hashes', ({ query, response }) => {
     let data = mockPageHashesKnown(50)
     const actions = query.getAll('action')
     if (actions.length > 0) data = data.filter((it) => actions.includes(it.action))
+    return response(200).json(
+      mockPage(
+        data,
+        new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
+      ),
+    )
+  }),
+  httpTyped.get('/api/v1/page-hashes/unknown', ({ query, response }) => {
+    const data = mockPageHashesUnknown(50).filter((it) => !knownHashes.includes(it.hash))
     return response(200).json(
       mockPage(
         data,
@@ -56,7 +79,10 @@ export const pageHashesHandlers = [
       ),
     )
   }),
-  httpTyped.put('/api/v1/page-hashes', ({ response }) => {
+  httpTyped.put('/api/v1/page-hashes', async ({ request, response }) => {
+    const body = await request.json()
+    knownHashes.push(body.hash)
+
     return response(202).empty()
   }),
   httpTyped.post('/api/v1/page-hashes/{pageHash}/delete-all', ({ response }) => {
@@ -82,4 +108,27 @@ export const pageHashesHandlers = [
       }),
     )
   }),
+  httpTyped.get(
+    '/api/v1/page-hashes/unknown/{pageHash}/thumbnail',
+    async ({ params, response }) => {
+      const hash = params.pageHash
+
+      // use landscape image for some images
+      const landscape = Number(hash.slice(-1)) % 2 === 0
+
+      // Get an ArrayBuffer from reading the file from disk or fetching it.
+      const buffer = await fetch(landscape ? mockThumbnailLandscapeUrl : mockThumbnailUrl).then(
+        (response) => response.arrayBuffer(),
+      )
+
+      return response.untyped(
+        HttpResponse.arrayBuffer(buffer, {
+          status: 200,
+          headers: {
+            'content-type': 'image/jpg',
+          },
+        }),
+      )
+    },
+  ),
 ]
