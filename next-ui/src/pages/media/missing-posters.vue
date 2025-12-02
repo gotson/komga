@@ -1,5 +1,5 @@
 <template>
-  <h1>Missing Posters</h1>
+  <EmptyStateConstruction />
 </template>
 
 <script lang="ts" setup>
