@@ -49,7 +49,6 @@
           width="200"
           height="200"
           contain
-          style="cursor: zoom-in"
           :src="bookPageThumbnailUrl(item.bookId, item.pageNumber)"
           lazy-src="@/assets/cover.svg"
           class="my-1"
