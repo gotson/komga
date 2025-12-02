@@ -9,6 +9,7 @@ import {
 import { komgaClient } from '@/api/komga-client'
 import { UserRoles } from '@/types/UserRoles'
 import type { components } from '@/generated/openapi/komga'
+import { QUERY_KEYS_CLIENT_SETTINGS } from '@/colada/client-settings'
 
 export const QUERY_KEYS_USERS = {
   root: ['users'] as const,
@@ -78,6 +79,8 @@ export const useLogin = defineMutation(() => {
     onSuccess: ({ data }) => {
       queryCache.setQueryData(QUERY_KEYS_USERS.currentUser, data)
       queryCache.cancelQueries({ key: QUERY_KEYS_USERS.currentUser })
+
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_CLIENT_SETTINGS.root })
     },
   })
 })
@@ -88,6 +91,8 @@ export const useLogout = defineMutation(() => {
     mutation: () => komgaClient.POST('/api/logout'),
     onSuccess: () => {
       void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.currentUser })
+
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_CLIENT_SETTINGS.root })
     },
   })
 })
