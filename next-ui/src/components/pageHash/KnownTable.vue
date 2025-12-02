@@ -126,18 +126,25 @@
         @update:model-value="(v) => updateHashAction(item, v)"
       >
         <v-btn
+          v-tooltip:bottom="
+            intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_AUTO])
+          "
           size="small"
           icon="i-mdi:robot"
           :value="PageHashActionEnum.DELETE_AUTO"
           color="success"
         />
         <v-btn
+          v-tooltip:bottom="
+            intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_MANUAL])
+          "
           size="small"
           icon="i-mdi:hand-back-right"
           :value="PageHashActionEnum.DELETE_MANUAL"
           color="warning"
         />
         <v-btn
+          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages[PageHashActionEnum.IGNORE])"
           size="small"
           icon="i-mdi:cancel"
           :value="PageHashActionEnum.IGNORE"
