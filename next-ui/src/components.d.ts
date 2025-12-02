@@ -49,6 +49,7 @@ declare module 'vue' {
     LayoutAppDrawerMenuAccount: typeof import('./components/layout/app/drawer/menu/Account.vue')['default']
     LayoutAppDrawerMenuHistory: typeof import('./components/layout/app/drawer/menu/History.vue')['default']
     LayoutAppDrawerMenuImport: typeof import('./components/layout/app/drawer/menu/Import.vue')['default']
+    LayoutAppDrawerMenuLibraries: typeof import('./components/layout/app/drawer/menu/Libraries.vue')['default']
     LayoutAppDrawerMenuLogout: typeof import('./components/layout/app/drawer/menu/Logout.vue')['default']
     LayoutAppDrawerMenuMedia: typeof import('./components/layout/app/drawer/menu/Media.vue')['default']
     LayoutAppDrawerMenuServer: typeof import('./components/layout/app/drawer/menu/Server.vue')['default']
