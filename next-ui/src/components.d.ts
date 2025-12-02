@@ -28,6 +28,7 @@ declare module 'vue' {
     DialogSeriesPicker: typeof import('./components/dialog/SeriesPicker.vue')['default']
     DialogSimple: typeof import('./components/dialog/DialogSimple.vue')['default']
     DialogSimpleInstance: typeof import('./components/dialog/DialogSimpleInstance.vue')['default']
+    EmptyStateConstruction: typeof import('./components/EmptyStateConstruction.vue')['default']
     EmptyStateNetworkError: typeof import('./components/EmptyStateNetworkError.vue')['default']
     FormattedMessage: typeof import('./components/FormattedMessage.ts')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']

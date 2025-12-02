@@ -1,5 +1,5 @@
 <template>
-  <h1>Duplicate Files</h1>
+  <EmptyStateConstruction />
 </template>
 
 <script lang="ts" setup>
