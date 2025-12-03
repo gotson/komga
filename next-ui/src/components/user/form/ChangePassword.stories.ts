@@ -38,7 +38,7 @@ export const MatchingPasswords: Story = {
     })
     await userEvent.type(password2, 'abc')
 
-    await waitFor(() => expect(canvas.getByText(/must be identical/i)).not.toBeVisible())
+    await waitFor(() => expect(canvas.queryByText(/must be identical/i)).toBeNull())
   },
 }
 
