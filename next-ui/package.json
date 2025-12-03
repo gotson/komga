@@ -41,7 +41,7 @@
     "pinia-plugin-persistedstate": "^4.7.1",
     "vue": "^3.5.25",
     "vue-intl": "^6.5.27",
-    "vuetify": "^3.10.12"
+    "vuetify": "^3.11.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.3",
