@@ -53,6 +53,7 @@ declare module 'vue' {
     LayoutAppDrawerMenuLogout: typeof import('./components/layout/app/drawer/menu/Logout.vue')['default']
     LayoutAppDrawerMenuMedia: typeof import('./components/layout/app/drawer/menu/Media.vue')['default']
     LayoutAppDrawerMenuServer: typeof import('./components/layout/app/drawer/menu/Server.vue')['default']
+    LayoutAppDrawerReorderLibraries: typeof import('./components/layout/app/drawer/ReorderLibraries.vue')['default']
     LocaleSelector: typeof import('./components/LocaleSelector.vue')['default']
     PageHashKnownTable: typeof import('./components/pageHash/KnownTable.vue')['default']
     PageHashMatchTable: typeof import('./components/pageHash/MatchTable.vue')['default']
