@@ -13,10 +13,9 @@ enableAutoUnmount(afterEach)
 describe('colada releases', () => {
   test('when getting app releases then values are correct', async () => {
     createMockColada(useAppReleases)
-    const { latestRelease, isLatestVersion, refresh, actuatorRefresh } = useAppReleases()
+    const { latestRelease, isLatestVersion, refresh } = useAppReleases()
 
     await refresh()
-    await actuatorRefresh()
     expect(latestRelease.value!.version).toBe('1.21.2')
     expect(isLatestVersion.value).toBe(true)
   })
