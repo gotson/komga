@@ -38,7 +38,9 @@ export const useClientSettingsUser = defineQuery(() => {
 export const useUpdateClientSettingsUser = defineMutation(() => {
   const queryCache = useQueryCache()
   return useMutation({
-    mutation: (settings: Record<string, components['schemas']['ClientSettingUserUpdateDto']>) =>
+    mutation: (
+      settings: Record<CLIENT_SETTING_USER, components['schemas']['ClientSettingUserUpdateDto']>,
+    ) =>
       komgaClient.PATCH('/api/v1/client-settings/user', {
         body: settings,
       }),
