@@ -1,9 +1,15 @@
 import { defineQuery, useQuery } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import { useActuatorInfo } from '@/colada/actuator-info'
+import { combinePromises } from '@/colada/utils'
 
 export const useAppReleases = defineQuery(() => {
-  const { data, ...rest } = useQuery({
+  const {
+    data,
+    refresh: refreshReleases,
+    refetch: refetchReleases,
+    ...rest
+  } = useQuery({
     key: () => ['app-releases'],
     query: () =>
       komgaClient
@@ -15,7 +21,11 @@ export const useAppReleases = defineQuery(() => {
     gcTime: false,
   })
 
-  const { buildVersion, refresh: actuatorRefresh } = useActuatorInfo()
+  const { buildVersion, refresh: refreshActuator, refetch: refetchActuator } = useActuatorInfo()
+
+  const refresh = combinePromises(refreshReleases, [refreshActuator])
+  const refetch = combinePromises(refetchReleases, [refetchActuator])
+
   const latestRelease = computed(() => data.value?.find((x) => x.latest))
 
   const isLatestVersion = computed(() => {
@@ -26,10 +36,11 @@ export const useAppReleases = defineQuery(() => {
 
   return {
     data,
+    refresh,
+    refetch,
     ...rest,
     buildVersion,
     latestRelease,
     isLatestVersion,
-    actuatorRefresh,
   }
 })
