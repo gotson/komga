@@ -2,6 +2,7 @@
   <v-data-table-server
     v-model="selectedHashes"
     v-model:sort-by="sortBy"
+    initial-sort-order="desc"
     :loading="isLoading"
     :items="data?.content"
     :items-length="data?.totalElements || 0"
@@ -227,7 +228,7 @@ const messagesStore = useMessagesStore()
 const { simple: dialogSimple } = storeToRefs(useDialogsStore())
 
 const selectedHashes = ref<components['schemas']['PageHashUnknownDto'][]>([])
-const sortBy = ref<SortItem[]>([{ key: 'deleteSize', order: 'desc' }])
+const sortBy = ref<SortItem[]>([{ key: 'matchCount', order: 'desc' }])
 
 //region headers
 const headers = [
@@ -250,6 +251,7 @@ const headers = [
     value: (item: components['schemas']['PageHashUnknownDto']) => {
       return getPageHashAction(item)
     },
+    sortable: false,
   },
   {
     title: intl.formatMessage({

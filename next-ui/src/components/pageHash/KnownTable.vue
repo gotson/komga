@@ -1,6 +1,7 @@
 <template>
   <v-data-table-server
     v-model:sort-by="sortBy"
+    initial-sort-order="desc"
     :loading="isLoading"
     :items="data?.content"
     :items-length="data?.totalElements || 0"
@@ -253,6 +254,7 @@ const headers = [
     value: (item: components['schemas']['PageHashKnownDto']) => {
       return getPageHashAction(item)
     },
+    sortable: false,
   },
   {
     title: intl.formatMessage({
