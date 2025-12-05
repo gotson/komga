@@ -42,14 +42,18 @@ class PageHashDao(
       "deleteCount" to ph.DELETE_COUNT,
       "deleteSize" to ph.SIZE * ph.DELETE_COUNT,
       "fileSize" to ph.SIZE,
+      "size" to ph.SIZE,
       "createdDate" to ph.CREATED_DATE,
+      "created" to ph.CREATED_DATE,
       "lastModifiedDate" to ph.LAST_MODIFIED_DATE,
+      "lastModified" to ph.LAST_MODIFIED_DATE,
     )
 
   private val sortsUnknown =
     mapOf(
       "hash" to p.FILE_HASH,
       "fileSize" to p.FILE_SIZE,
+      "size" to p.FILE_SIZE,
       "matchCount" to DSL.field("count"),
       "totalSize" to DSL.field("totalSize"),
       "url" to b.URL,
