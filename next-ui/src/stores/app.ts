@@ -9,6 +9,8 @@ export const useAppStore = defineStore('app', {
     theme: 'system',
     rememberMe: false,
     importBooksPath: '',
+    // transient
+    reorderLibraries: false,
   }),
   persist: {
     key: 'komga.nextui.app',

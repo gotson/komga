@@ -22,6 +22,7 @@
         "
       />
       <v-icon-btn
+        id="menu-libraries-drawer"
         icon="i-mdi:dots-vertical"
         :aria-label="
           $formatMessage({
@@ -31,6 +32,7 @@
           })
         "
       />
+      <MenuLibraries activator-id="#menu-libraries-drawer" />
     </template>
   </v-list-item>
 
@@ -100,6 +102,9 @@
 import { useLibraries } from '@/colada/libraries'
 import { useCurrentUser } from '@/colada/users'
 
-const { unpinned, pinned } = useLibraries()
+const { unpinned, pinned, refresh } = useLibraries()
 const { isAdmin } = useCurrentUser()
+
+// ensure freshness, especially if libraries have been reordered
+void refresh()
 </script>
