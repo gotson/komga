@@ -114,6 +114,16 @@ const localUnpinned = ref<components['schemas']['LibraryDto'][]>([])
 void refresh().then(() => {
   localPinned.value = pinned.value
   localUnpinned.value = unpinned.value
+
+  // start watching after initial values are set
+  watch([localPinned, localUnpinned], ([newPinned, newUnpinned]) => {
+    const newSettings: Record<string, ClientSettingUserLibrary> = {}
+    newPinned.forEach((it, index) => (newSettings[it.id] = { order: index, unpinned: false }))
+    newUnpinned.forEach(
+      (it, index) => (newSettings[it.id] = { order: newPinned.length + index, unpinned: true }),
+    )
+    mutate({ [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: { value: JSON.stringify(newSettings) } })
+  })
 })
 
 const draggableConfig = {
@@ -125,15 +135,6 @@ const draggableConfig = {
 }
 
 const { mutate } = useUpdateClientSettingsUser()
-
-watch([localPinned, localUnpinned], ([newPinned, newUnpinned]) => {
-  const newSettings: Record<string, ClientSettingUserLibrary> = {}
-  newPinned.forEach((it, index) => (newSettings[it.id] = { order: index, unpinned: false }))
-  newUnpinned.forEach(
-    (it, index) => (newSettings[it.id] = { order: newPinned.length + index, unpinned: true }),
-  )
-  mutate({ [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: { value: JSON.stringify(newSettings) } })
-})
 </script>
 
 <style lang="scss">
