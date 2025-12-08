@@ -55,6 +55,7 @@ declare module 'vue' {
     LayoutAppDrawerMenuServer: typeof import('./components/layout/app/drawer/menu/Server.vue')['default']
     LayoutAppDrawerReorderLibraries: typeof import('./components/layout/app/drawer/ReorderLibraries.vue')['default']
     LocaleSelector: typeof import('./components/LocaleSelector.vue')['default']
+    MenuLibraries: typeof import('./components/menu/MenuLibraries.vue')['default']
     PageHashKnownTable: typeof import('./components/pageHash/KnownTable.vue')['default']
     PageHashMatchTable: typeof import('./components/pageHash/MatchTable.vue')['default']
     PageHashUnknownTable: typeof import('./components/pageHash/UnknownTable.vue')['default']

@@ -1,6 +1,10 @@
 <template>
   <v-navigation-drawer v-model="appStore.drawer">
-    <LayoutAppDrawerMenu />
+    <v-slide-x-transition hide-on-leave>
+      <ReorderLibraries v-if="appStore.reorderLibraries" />
+    </v-slide-x-transition>
+
+    <LayoutAppDrawerMenu v-if="!appStore.reorderLibraries" />
 
     <template #append>
       <LayoutAppDrawerFooter />
@@ -10,6 +14,7 @@
 
 <script setup lang="ts">
 import { useAppStore } from '@/stores/app'
+import ReorderLibraries from '@/components/layout/app/drawer/ReorderLibraries.vue'
 
 const appStore = useAppStore()
 </script>

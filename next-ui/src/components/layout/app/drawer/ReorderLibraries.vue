@@ -19,6 +19,7 @@
               id: 'Ept33T',
             })
           "
+          @click="appStore.reorderLibraries = false"
         />
       </template>
     </v-list-item>
@@ -105,8 +106,13 @@ import { useLibraries } from '@/colada/libraries'
 import type { components } from '@/generated/openapi/komga'
 import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import { useUpdateClientSettingsUser } from '@/colada/client-settings'
+import { useAppStore } from '@/stores/app'
+
+const appStore = useAppStore()
 
 const { unpinned, pinned, refresh } = useLibraries()
+const { mutate } = useUpdateClientSettingsUser()
+
 const localPinned = ref<components['schemas']['LibraryDto'][]>([])
 const localUnpinned = ref<components['schemas']['LibraryDto'][]>([])
 
@@ -133,8 +139,6 @@ const draggableConfig = {
   chosenClass: 'chosen',
   animation: 150,
 }
-
-const { mutate } = useUpdateClientSettingsUser()
 </script>
 
 <style lang="scss">
