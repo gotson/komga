@@ -4,10 +4,15 @@ import { useDisplay } from 'vuetify'
 
 export const useAppStore = defineStore('app', {
   state: () => ({
+    // persisted
     drawer: !useDisplay().mobile.value.valueOf(),
     theme: 'system',
     rememberMe: false,
     importBooksPath: '',
   }),
-  persist: true,
+  persist: {
+    key: 'komga.nextui.app',
+    // explicitly state which keys are stored
+    pick: ['drawer', 'theme', 'rememberMe', 'importBooksPath'],
+  },
 })
