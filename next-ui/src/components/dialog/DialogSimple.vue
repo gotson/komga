@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import type { DialogSimpleProps } from '@/types/DialogProps'
+import type { DialogSimpleProps } from '@/types/dialog'
 
 const showDialog = defineModel<boolean>('dialog', { required: false, default: false })
 
