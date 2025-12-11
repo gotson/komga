@@ -2,15 +2,17 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import Drawer from './Drawer.vue'
 import { useAppStore } from '@/stores/app'
+import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
+import SnackQueue from '@/components/SnackQueue.vue'
 
 const meta = {
   component: Drawer,
   render: (args: object) => ({
-    components: { Drawer },
+    components: { Drawer, DialogConfirmEditInstance, SnackQueue },
     setup() {
       return { args }
     },
-    template: '<Drawer />',
+    template: '<Drawer /><DialogConfirmEditInstance/><SnackQueue/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
