@@ -137,7 +137,6 @@ function updateLibrary() {
       })
   }
 }
-
 //endregion
 </script>
 
