@@ -200,7 +200,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {BookDto} from '@/types/komga-books'
-import IsbnVerify from '@saekitominaga/isbn-verify'
+import IsbnVerify from '@w0s/isbn-verify'
 import {isMatch} from 'date-fns'
 import {ERROR} from '@/types/events'
 

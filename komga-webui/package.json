@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@d-i-t-a/reader": "github:gotson/R2D2BC#fork",
-    "@saekitominaga/isbn-verify": "^2.0.1",
+    "@w0s/isbn-verify": "^3.1.2",
     "axios": "^1.12.0",
     "chart.js": "^2.9.4",
     "core-js": "^3.8.3",
