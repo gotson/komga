@@ -37,24 +37,10 @@
 </template>
 
 <script setup lang="ts">
+import type { DialogSimpleProps } from '@/types/DialogProps'
+
 const showDialog = defineModel<boolean>('dialog', { required: false, default: false })
 
-export type DialogSimpleProps = {
-  /**
-   * Dialog title
-   * @type string
-   */
-  title?: string
-  subtitle?: string
-  maxWidth?: string | number
-  activator?: Element | string
-  loading?: boolean
-  fullscreen?: boolean
-  scrollable?: boolean
-  shown?: boolean
-}
-
-const props = defineProps<DialogSimpleProps>()
 const {
   title = undefined,
   subtitle = undefined,
@@ -63,5 +49,5 @@ const {
   loading = false,
   fullscreen = undefined,
   scrollable = undefined,
-} = toRefs(props)
+} = defineProps<DialogSimpleProps>()
 </script>
