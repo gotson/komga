@@ -61,6 +61,7 @@ declare module 'vue' {
     LibraryFormStepOptions: typeof import('./components/library/form/StepOptions.vue')['default']
     LibraryFormStepScanner: typeof import('./components/library/form/StepScanner.vue')['default']
     LibraryMenuLibraries: typeof import('./components/library/MenuLibraries.vue')['default']
+    LibraryMenuLibrary: typeof import('./components/library/MenuLibrary.vue')['default']
     LocaleSelector: typeof import('./components/LocaleSelector.vue')['default']
     MenuLibraries: typeof import('./components/menu/MenuLibraries.vue')['default']
     PageHashKnownTable: typeof import('./components/pageHash/KnownTable.vue')['default']

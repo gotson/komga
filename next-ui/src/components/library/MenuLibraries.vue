@@ -1,5 +1,8 @@
 <template>
-  <v-menu :activator="activatorId">
+  <v-menu
+    :activator="activatorId"
+    location="end"
+  >
     <v-list density="compact">
       <v-list-item
         v-for="(action, i) in actions"
