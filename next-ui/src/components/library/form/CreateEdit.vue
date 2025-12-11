@@ -22,6 +22,7 @@
         <template #next="{ next }">
           <v-btn
             color="primary"
+            :disabled="!model.name || !model.root"
             @click="next"
           ></v-btn>
         </template>
