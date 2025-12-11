@@ -24,7 +24,7 @@
         @click="createLibrary"
       />
       <v-icon-btn
-        id="menu-libraries-drawer"
+        id="ID01KC5N8S3V35QV04SYETY01M9H"
         icon="i-mdi:dots-vertical"
         :aria-label="
           $formatMessage({
@@ -34,7 +34,7 @@
           })
         "
       />
-      <LibraryMenuLibraries activator-id="#menu-libraries-drawer" />
+      <LibraryMenuLibraries activator-id="#ID01KC5N8S3V35QV04SYETY01M9H" />
     </template>
   </v-list-item>
 
@@ -47,6 +47,7 @@
     <template #append>
       <v-icon-btn
         v-if="isAdmin"
+        :id="`ID01KC5NTP02S3CMF12ZS2R4HNWX${library.id}`"
         icon="i-mdi:dots-vertical"
         :aria-label="
           $formatMessage({
@@ -55,6 +56,10 @@
             id: '3gimvl',
           })
         "
+      />
+      <LibraryMenuLibrary
+        :activator-id="`#ID01KC5NTP02S3CMF12ZS2R4HNWX${library.id}`"
+        :library="library"
       />
     </template>
   </v-list-item>
@@ -86,6 +91,7 @@
       <template #append>
         <v-icon-btn
           v-if="isAdmin"
+          :id="`ID01KC5QH18T79WTFFJWJ6ES4SFE${library.id}`"
           icon="i-mdi:dots-vertical"
           :aria-label="
             $formatMessage({
@@ -94,6 +100,10 @@
               id: '3gimvl',
             })
           "
+        />
+        <LibraryMenuLibrary
+          :activator-id="`#ID01KC5QH18T79WTFFJWJ6ES4SFE${library.id}`"
+          :library="library"
         />
       </template>
     </v-list-item>
@@ -145,39 +155,38 @@ function createLibrary() {
     props: { createMode: true },
   }
   dialogConfirmEdit.value.record = getLibraryDefaults()
-  dialogConfirmEdit.value.callback = handleDialogConfirmation
-}
+  dialogConfirmEdit.value.callback = (
+    hideDialog: () => void,
+    setLoading: (isLoading: boolean) => void,
+  ) => {
+    setLoading(true)
 
-function handleDialogConfirmation(
-  hideDialog: () => void,
-  setLoading: (isLoading: boolean) => void,
-) {
-  setLoading(true)
+    const newLib = dialogConfirmEdit.value.record as components['schemas']['LibraryCreationDto']
 
-  const newLib = dialogConfirmEdit.value.record as components['schemas']['LibraryCreationDto']
-
-  mutateCreateLibrary(newLib)
-    .then(() => {
-      hideDialog()
-      messagesStore.messages.push({
-        text: intl.formatMessage(
-          {
-            description: 'Snackbar notification shown upon successful library creation',
-            defaultMessage: 'Library created: {library}',
-            id: '+8++PW',
-          },
-          {
-            library: newLib.name,
-          },
-        ),
+    mutateCreateLibrary(newLib)
+      .then(() => {
+        hideDialog()
+        messagesStore.messages.push({
+          text: intl.formatMessage(
+            {
+              description: 'Snackbar notification shown upon successful library creation',
+              defaultMessage: 'Library created: {library}',
+              id: '+8++PW',
+            },
+            {
+              library: newLib.name,
+            },
+          ),
+        })
       })
-    })
-    .catch((error) => {
-      messagesStore.messages.push({
-        text:
-          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
+      .catch((error) => {
+        messagesStore.messages.push({
+          text:
+            (error?.cause as ErrorCause)?.message ||
+            intl.formatMessage(commonMessages.networkError),
+        })
+        setLoading(false)
       })
-      setLoading(false)
-    })
+  }
 }
 </script>
