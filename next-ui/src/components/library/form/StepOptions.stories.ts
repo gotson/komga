@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import StepOptions from './StepOptions.vue'
 import { SeriesCover } from '@/types/SeriesCover'
-import { fn } from 'storybook/test'
 
 const meta = {
   component: StepOptions,
