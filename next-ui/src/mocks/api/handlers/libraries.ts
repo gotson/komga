@@ -1,5 +1,6 @@
 import { httpTyped } from '@/mocks/api/httpTyped'
 import type { components } from '@/generated/openapi/komga'
+import { response400BadRequest, response404NotFound } from '@/mocks/api/handlers'
 
 export const libraries = [
   {
@@ -69,4 +70,30 @@ export const libraries = [
 
 export const librariesHandlers = [
   httpTyped.get('/api/v1/libraries', ({ response }) => response(200).json(libraries)),
+  httpTyped.post('/api/v1/libraries', async ({ request, response }) => {
+    const body = await request.json()
+
+    if (libraries.some((it) => it.id === body.name)) {
+      return response.untyped(response400BadRequest())
+    }
+
+    const lib = Object.assign({}, body, { unavailable: false, id: body.name })
+    libraries.push(lib)
+
+    return response(200).json(lib)
+  }),
+  httpTyped.patch('/api/v1/libraries/{libraryId}', async ({ request, params, response }) => {
+    const body = await request.json()
+    const libraryId = params['libraryId']
+
+    const existing = libraries.find((it) => it.id === libraryId)
+
+    if (!existing) {
+      return response.untyped(response404NotFound())
+    }
+
+    libraries[libraries.indexOf(existing)] = Object.assign({}, existing, body)
+
+    return response(204).empty()
+  }),
 ]

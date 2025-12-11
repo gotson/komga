@@ -1,7 +1,13 @@
-import { defineQuery, useQuery } from '@pinia/colada'
+import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import { useClientSettingsUser } from '@/colada/client-settings'
 import { combinePromises } from '@/colada/utils'
+import type { components } from '@/generated/openapi/komga'
+import { QUERY_KEYS_USERS } from '@/colada/users'
+
+export const QUERY_KEYS_LIBRARIES = {
+  root: ['libraries'] as const,
+}
 
 export const useLibraries = defineQuery(() => {
   const {
@@ -10,7 +16,7 @@ export const useLibraries = defineQuery(() => {
     refetch: refetchLibraries,
     ...rest
   } = useQuery({
-    key: () => ['libraries'],
+    key: () => QUERY_KEYS_LIBRARIES.root,
     query: () =>
       komgaClient
         .GET('/api/v1/libraries')
@@ -53,4 +59,35 @@ export const useLibraries = defineQuery(() => {
     refetch,
     ...rest,
   }
+})
+
+export const useCreateLibrary = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
+    mutation: (library: components['schemas']['LibraryCreationDto']) =>
+      komgaClient.POST('/api/v1/libraries', {
+        body: library,
+      }),
+    onSuccess: () => {
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+    },
+  })
+})
+
+export const useUpdateLibrary = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
+    mutation: (library: components['schemas']['LibraryDto']) =>
+      komgaClient.PATCH('/api/v1/libraries/{libraryId}', {
+        params: {
+          path: {
+            libraryId: library.id,
+          },
+        },
+        body: library,
+      }),
+    onSuccess: () => {
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+    },
+  })
 })
