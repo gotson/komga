@@ -1,10 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-import type {
-  DialogConfirmEditProps,
-  DialogConfirmProps,
-  DialogSimpleProps,
-} from '@/types/DialogProps'
+import type { DialogConfirmEditProps, DialogConfirmProps, DialogSimpleProps } from '@/types/dialog'
 
 /**
  * Reusable dialogs.
