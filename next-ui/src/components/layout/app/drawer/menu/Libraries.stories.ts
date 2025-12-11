@@ -7,15 +7,19 @@ import { expect, waitFor } from 'storybook/test'
 import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import type { components } from '@/generated/openapi/komga'
 import { VList } from 'vuetify/components'
+import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
+import SnackQueue from '@/components/SnackQueue.vue'
+import { delay, http } from 'msw'
+import { response401Unauthorized } from '@/mocks/api/handlers'
 
 const meta = {
   component: Libraries,
   render: (args: object) => ({
-    components: { Libraries, VList },
+    components: { Libraries, VList, DialogConfirmEditInstance, SnackQueue },
     setup() {
       return { args }
     },
-    template: '<v-list nav><Libraries /></v-list>',
+    template: '<v-list nav><Libraries /></v-list><DialogConfirmEditInstance/><SnackQueue/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
@@ -96,6 +100,26 @@ export const Ordered: Story = {
           }
           return response(200).json(settings)
         }),
+      ],
+    },
+  },
+}
+
+export const Loading: Story = {
+  parameters: {
+    msw: {
+      handlers: [http.all('*/api/*', async () => await delay(5_000))],
+    },
+  },
+}
+
+export const CreationError: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        httpTyped.post('/api/v1/libraries', ({ response }) =>
+          response.untyped(response401Unauthorized()),
+        ),
       ],
     },
   },

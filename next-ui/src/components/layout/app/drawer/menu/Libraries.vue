@@ -20,6 +20,8 @@
             id: '90yqRq',
           })
         "
+        @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
+        @click="createLibrary"
       />
       <v-icon-btn
         id="menu-libraries-drawer"
@@ -32,7 +34,7 @@
           })
         "
       />
-      <MenuLibraries activator-id="#menu-libraries-drawer" />
+      <LibraryMenuLibraries activator-id="#menu-libraries-drawer" />
     </template>
   </v-list-item>
 
@@ -99,12 +101,83 @@
 </template>
 
 <script setup lang="ts">
-import { useLibraries } from '@/colada/libraries'
+import { useCreateLibrary, useLibraries } from '@/colada/libraries'
 import { useCurrentUser } from '@/colada/users'
+import { storeToRefs } from 'pinia'
+import { useDialogsStore } from '@/stores/dialogs'
+import { useIntl } from 'vue-intl'
+import { useDisplay } from 'vuetify'
+import CreateEdit from '@/components/library/form/CreateEdit.vue'
+import { getLibraryDefaults } from '@/modules/libraries'
+import type { components } from '@/generated/openapi/komga'
+import { useMessagesStore } from '@/stores/messages'
+import type { ErrorCause } from '@/api/komga-client'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
+const intl = useIntl()
+const display = useDisplay()
 const { unpinned, pinned, refresh } = useLibraries()
 const { isAdmin } = useCurrentUser()
 
 // ensure freshness, especially if libraries have been reordered
 void refresh()
+
+const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
+const { mutateAsync: mutateCreateLibrary } = useCreateLibrary()
+const messagesStore = useMessagesStore()
+
+function createLibrary() {
+  dialogConfirmEdit.value.dialogProps = {
+    title: intl.formatMessage({
+      description: 'Create library dialog title',
+      defaultMessage: 'Create library',
+      id: 'nuoJ1n',
+    }),
+    maxWidth: 600,
+    okText: 'Create',
+    cardTextClass: 'px-0',
+    closeOnSave: false,
+    scrollable: true,
+    fullscreen: display.xs.value,
+  }
+  dialogConfirmEdit.value.slot = {
+    component: markRaw(CreateEdit),
+    props: { createMode: true },
+  }
+  dialogConfirmEdit.value.record = getLibraryDefaults()
+  dialogConfirmEdit.value.callback = handleDialogConfirmation
+}
+
+function handleDialogConfirmation(
+  hideDialog: () => void,
+  setLoading: (isLoading: boolean) => void,
+) {
+  setLoading(true)
+
+  const newLib = dialogConfirmEdit.value.record as components['schemas']['LibraryCreationDto']
+
+  mutateCreateLibrary(newLib)
+    .then(() => {
+      hideDialog()
+      messagesStore.messages.push({
+        text: intl.formatMessage(
+          {
+            description: 'Snackbar notification shown upon successful library creation',
+            defaultMessage: 'Library created: {library}',
+            id: '+8++PW',
+          },
+          {
+            library: newLib.name,
+          },
+        ),
+      })
+    })
+    .catch((error) => {
+      messagesStore.messages.push({
+        text:
+          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
+      })
+      setLoading(false)
+    })
+}
 </script>
