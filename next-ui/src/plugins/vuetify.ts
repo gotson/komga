@@ -14,7 +14,8 @@ import { md3 } from 'vuetify/blueprints'
 
 // Labs
 import { VFileUpload } from 'vuetify/labs/VFileUpload'
-import { VIconBtn } from 'vuetify/labs/components'
+import { VIconBtn } from 'vuetify/labs/VIconBtn'
+import { VStepperVertical, VStepperVerticalItem } from 'vuetify/labs/VStepperVertical'
 import { createRulesPlugin } from 'vuetify/labs/rules'
 
 import { availableLocales, currentLocale, fallbackLocale } from '@/utils/i18n/locale-helper'
@@ -72,6 +73,8 @@ export const vuetify = createVuetify({
   components: {
     VFileUpload,
     VIconBtn,
+    VStepperVertical,
+    VStepperVerticalItem,
   },
 })
 

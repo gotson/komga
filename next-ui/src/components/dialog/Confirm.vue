@@ -64,7 +64,14 @@
             <v-btn
               :loading="loading"
               :disabled="!formValid"
-              :text="okText"
+              :text="
+                okText ||
+                $formatMessage({
+                  description: 'Confirmation dialog: Confirm button',
+                  defaultMessage: 'Confirm',
+                  id: '33t+CB',
+                })
+              "
               type="submit"
               variant="elevated"
               rounded="xs"
@@ -111,7 +118,7 @@ export type DialogConfirmProps = {
 const {
   title = undefined,
   subtitle = undefined,
-  okText = 'Confirm',
+  okText = undefined,
   validateText = 'confirm',
   maxWidth = undefined,
   activator = undefined,

@@ -26,7 +26,7 @@
               :subtitle="subtitle"
               :loading="loading"
             >
-              <template #text>
+              <v-card-text :class="cardTextClass">
                 <slot
                   name="text"
                   :proxy-model="proxyModel"
@@ -34,7 +34,7 @@
                   :save="save"
                   :is-pristine="isPristine"
                 />
-              </template>
+              </v-card-text>
 
               <template #actions>
                 <v-spacer />
@@ -50,6 +50,7 @@
                 />
                 <v-btn
                   :text="
+                    okText ||
                     $formatMessage({
                       description: 'ConfirmEdit dialog: Save button',
                       defaultMessage: 'Save',
@@ -86,6 +87,8 @@ export type DialogConfirmEditProps = {
    */
   title?: string
   subtitle?: string
+  okText?: string
+  cardTextClass?: string
   maxWidth?: string | number
   activator?: Element | string
   loading?: boolean
@@ -97,6 +100,8 @@ export type DialogConfirmEditProps = {
 const {
   title = undefined,
   subtitle = undefined,
+  okText = undefined,
+  cardTextClass = undefined,
   maxWidth = undefined,
   activator = undefined,
   loading = false,

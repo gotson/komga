@@ -31,4 +31,9 @@ export const commonMessages = {
     defaultMessage: 'Change Password',
     id: 'dHyAgE',
   }),
+  resourceIntensive: defineMessage({
+    description: 'Resource intensive analysis warning',
+    defaultMessage: 'Can consume lots of resources on large libraries or slow hardware',
+    id: 'uoc99F',
+  }),
 }
