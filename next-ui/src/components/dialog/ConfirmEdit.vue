@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import type { DialogConfirmEditProps } from '@/types/DialogProps'
+import type { DialogConfirmEditProps } from '@/types/dialog'
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const record = defineModel<unknown>('record', { required: true })

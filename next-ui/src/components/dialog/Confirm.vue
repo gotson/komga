@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import { defineMessage } from 'vue-intl'
-import type { DialogConfirmProps } from '@/types/DialogProps'
+import type { DialogConfirmProps } from '@/types/dialog'
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const emit = defineEmits<{
