@@ -3,7 +3,6 @@ import { komgaClient } from '@/api/komga-client'
 import { useClientSettingsUser } from '@/colada/client-settings'
 import { combinePromises } from '@/colada/utils'
 import type { components } from '@/generated/openapi/komga'
-import { QUERY_KEYS_USERS } from '@/colada/users'
 
 export const QUERY_KEYS_LIBRARIES = {
   root: ['libraries'] as const,
