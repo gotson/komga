@@ -70,6 +70,8 @@
 </template>
 
 <script setup lang="ts">
+import type { DialogConfirmEditProps } from '@/types/DialogProps'
+
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const record = defineModel<unknown>('record', { required: true })
 
@@ -78,23 +80,6 @@ const form = ref()
 async function submitForm(callback: () => void) {
   const { valid } = await form.value.validate()
   if (valid) callback()
-}
-
-export type DialogConfirmEditProps = {
-  /**
-   * Dialog title
-   * @type string
-   */
-  title?: string
-  subtitle?: string
-  okText?: string
-  cardTextClass?: string
-  maxWidth?: string | number
-  activator?: Element | string
-  loading?: boolean
-  closeOnSave?: boolean
-  fullscreen?: boolean
-  scrollable?: boolean
 }
 
 const {

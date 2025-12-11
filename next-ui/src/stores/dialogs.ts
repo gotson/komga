@@ -1,8 +1,10 @@
 // Utilities
 import { defineStore } from 'pinia'
-import type { DialogConfirmEditProps } from '@/components/dialog/ConfirmEdit.vue'
-import type { DialogConfirmProps } from '@/components/dialog/Confirm.vue'
-import type { DialogSimpleProps } from '@/components/dialog/DialogSimple.vue'
+import type {
+  DialogConfirmEditProps,
+  DialogConfirmProps,
+  DialogSimpleProps,
+} from '@/types/DialogProps'
 
 /**
  * Reusable dialogs.

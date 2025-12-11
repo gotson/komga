@@ -86,6 +86,7 @@
 
 <script setup lang="ts">
 import { defineMessage } from 'vue-intl'
+import type { DialogConfirmProps } from '@/types/DialogProps'
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const emit = defineEmits<{
@@ -101,18 +102,6 @@ async function submitForm(isActive: Ref<boolean, boolean>) {
     emit('confirm')
     if (closeOnSave) isActive.value = false
   }
-}
-
-export type DialogConfirmProps = {
-  title?: string
-  subtitle?: string
-  okText?: string
-  validateText?: string
-  maxWidth?: string | number
-  activator?: Element | string
-  loading?: boolean
-  closeOnSave?: boolean
-  fullscreen?: boolean
 }
 
 const {
