@@ -143,7 +143,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Changelog output
         if: always() &&  needs.version.outputs.should_release
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: jreleaser-changelog
           path: |
@@ -182,7 +182,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
       - name: Upload Conveyor log
         if: always() && inputs.conveyor-copied-site
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: conveyor-make-copied-site
           path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
@@ -194,7 +194,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Release output
         if: always() && inputs.github_release
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: jreleaser-release
           path: |
@@ -212,7 +212,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: JReleaser Publish output
         if: always() && inputs.docker_release
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: jreleaser-publish
           path: |
@@ -236,7 +236,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
       - name: Upload Conveyor log
         if: always() && inputs.msstore_release
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: conveyor-ms-store-release
           path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
