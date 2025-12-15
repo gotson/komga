@@ -154,6 +154,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
         subtitle: user?.email,
         maxWidth: 600,
         validateText: user?.email,
+        mode: 'textinput',
         okText: intl.formatMessage({
           description: 'Delete user dialog: confirmation button text',
           defaultMessage: 'Delete',

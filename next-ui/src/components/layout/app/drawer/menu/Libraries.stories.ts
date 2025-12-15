@@ -8,6 +8,7 @@ import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/Clie
 import type { components } from '@/generated/openapi/komga'
 import { VList } from 'vuetify/components'
 import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
+import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
 import SnackQueue from '@/components/SnackQueue.vue'
 import { delay, http } from 'msw'
 import { response401Unauthorized } from '@/mocks/api/handlers'
@@ -15,11 +16,12 @@ import { response401Unauthorized } from '@/mocks/api/handlers'
 const meta = {
   component: Libraries,
   render: (args: object) => ({
-    components: { Libraries, VList, DialogConfirmEditInstance, SnackQueue },
+    components: { Libraries, VList, DialogConfirmEditInstance, DialogConfirmInstance, SnackQueue },
     setup() {
       return { args }
     },
-    template: '<v-list nav><Libraries /></v-list><DialogConfirmEditInstance/><SnackQueue/>',
+    template:
+      '<v-list nav><Libraries /></v-list><DialogConfirmEditInstance/><DialogConfirmInstance/><SnackQueue/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
