@@ -79,6 +79,7 @@ function showDialog(action: ACTION, apiKey?: components['schemas']['ApiKeyDto'])
         subtitle: apiKey?.comment,
         maxWidth: 600,
         validateText: apiKey?.comment,
+        mode: 'textinput',
         okText: intl.formatMessage({
           description: 'Delete API Key dialog: confirmation button text',
           defaultMessage: 'Delete',
@@ -103,6 +104,7 @@ function showDialog(action: ACTION, apiKey?: components['schemas']['ApiKeyDto'])
         subtitle: apiKey?.comment,
         maxWidth: 600,
         validateText: apiKey?.comment,
+        mode: 'textinput',
         okText: intl.formatMessage({
           description: 'Force Sync API Key dialog: confirmation button text',
           defaultMessage: 'I understand',

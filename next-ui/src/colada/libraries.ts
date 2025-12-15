@@ -90,3 +90,75 @@ export const useUpdateLibrary = defineMutation(() => {
     },
   })
 })
+
+export const useDeleteLibrary = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
+    mutation: (libraryId: string) =>
+      komgaClient.DELETE('/api/v1/libraries/{libraryId}', {
+        params: {
+          path: {
+            libraryId: libraryId,
+          },
+        },
+      }),
+    onSuccess: () => {
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+    },
+  })
+})
+
+export const useRefreshMetadataLibrary = defineMutation(() =>
+  useMutation({
+    mutation: (libraryId: string) =>
+      komgaClient.POST('/api/v1/libraries/{libraryId}/metadata/refresh', {
+        params: {
+          path: {
+            libraryId: libraryId,
+          },
+        },
+      }),
+  }),
+)
+
+export const useEmptyTrashLibrary = defineMutation(() =>
+  useMutation({
+    mutation: (libraryId: string) =>
+      komgaClient.POST('/api/v1/libraries/{libraryId}/empty-trash', {
+        params: {
+          path: {
+            libraryId: libraryId,
+          },
+        },
+      }),
+  }),
+)
+
+export const useScanLibrary = defineMutation(() =>
+  useMutation({
+    mutation: ({ libraryId, deep = false }: { libraryId: string; deep?: boolean }) =>
+      komgaClient.POST('/api/v1/libraries/{libraryId}/scan', {
+        params: {
+          path: {
+            libraryId: libraryId,
+          },
+          query: {
+            deep: deep,
+          },
+        },
+      }),
+  }),
+)
+
+export const useAnalyzeLibrary = defineMutation(() =>
+  useMutation({
+    mutation: (libraryId: string) =>
+      komgaClient.POST('/api/v1/libraries/{libraryId}/analyze', {
+        params: {
+          path: {
+            libraryId: libraryId,
+          },
+        },
+      }),
+  }),
+)

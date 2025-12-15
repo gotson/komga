@@ -36,4 +36,20 @@ export const commonMessages = {
     defaultMessage: 'Can consume lots of resources on large libraries or slow hardware',
     id: 'uoc99F',
   }),
+  dialogEmptyTrashTitle: defineMessage({
+    description: 'Library empty trash dialog: title',
+    defaultMessage: 'Empty trash',
+    id: 'ELttw/',
+  }),
+  dialogEmptyTrashConfirm: defineMessage({
+    description: 'Library empty trash dialog: confirm button',
+    defaultMessage: 'Empty trash',
+    id: '7M1pUf',
+  }),
+  dialogEmptyTrashNotice: defineMessage({
+    description: 'Library empty trash dialog: warning text',
+    defaultMessage:
+      "By default the media server doesn't remove information for media right away. This helps if a drive is temporarily disconnected. When you empty the trash for a library, all information about missing media is deleted.",
+    id: 'kDc7YL',
+  }),
 }
