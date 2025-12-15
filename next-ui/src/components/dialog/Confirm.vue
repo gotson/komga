@@ -24,6 +24,7 @@
             <slot name="warning" />
             <slot name="text">
               <FormattedMessage
+                v-if="mode === 'textinput'"
                 :message-descriptor="
                   defineMessage({
                     description: 'Confirmation dialog: default hint to retype validation text',
@@ -31,7 +32,9 @@
                     id: 'XnidLu',
                   })
                 "
-                :values="{ validateText: validateText }"
+                :values="{
+                  validateText: validateTextEffective,
+                }"
               >
                 <template #b="Content">
                   <span class="font-weight-bold">
@@ -42,10 +45,25 @@
             </slot>
 
             <v-text-field
-              :rules="[['sameAsIgnoreCase', validateText]]"
+              v-if="mode === 'textinput'"
+              :rules="[['sameAsIgnoreCase', validateTextEffective]]"
               hide-details
               class="mt-2"
               autofocus
+            />
+            <v-checkbox
+              v-if="mode === 'checkbox'"
+              :rules="['required']"
+              hide-details
+              :color="colorEffective"
+              :label="
+                checkboxLabel ||
+                $formatMessage({
+                  description: 'Confirmation dialog: default checkbox label',
+                  defaultMessage: 'Click to confirm',
+                  id: '3rNj7/',
+                })
+              "
             />
           </template>
 
@@ -63,19 +81,19 @@
             />
             <v-btn
               :loading="loading"
-              :disabled="!formValid"
+              :disabled="mode !== 'click' && !formValid"
               :text="
                 okText ||
                 $formatMessage({
-                  description: 'Confirmation dialog: Confirm button',
+                  description: 'Confirmation dialog: default confirm button',
                   defaultMessage: 'Confirm',
-                  id: '33t+CB',
+                  id: 'ddthL2',
                 })
               "
               type="submit"
               variant="elevated"
               rounded="xs"
-              color="error"
+              :color="colorEffective"
             />
           </template>
         </v-card>
@@ -85,8 +103,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineMessage } from 'vue-intl'
+import { defineMessage, useIntl } from 'vue-intl'
 import type { DialogConfirmProps } from '@/types/dialog'
+
+const intl = useIntl()
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const emit = defineEmits<{
@@ -104,11 +124,26 @@ async function submitForm(isActive: Ref<boolean, boolean>) {
   }
 }
 
+const validateTextEffective = computed(
+  () =>
+    validateText ||
+    intl.formatMessage({
+      description: 'Confirmation dialog: default validation text',
+      defaultMessage: 'confirm',
+      id: 'j7CGMQ',
+    }),
+)
+
+const colorEffective = computed(() => color || 'error')
+
 const {
   title = undefined,
   subtitle = undefined,
   okText = undefined,
-  validateText = 'confirm',
+  validateText = undefined,
+  checkboxLabel = undefined,
+  mode = 'click',
+  color = undefined,
   maxWidth = undefined,
   activator = undefined,
   loading = false,
