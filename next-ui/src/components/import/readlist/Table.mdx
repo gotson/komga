@@ -1,0 +1,14 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './Table.stories';
+
+<Meta of={Stories} />
+
+# ImportReadlistTable
+
+Data table displaying books to add to a new read list.
+- If a read list entry has a `seriesId` returned by the server, it will be automatically selected.
+- If a read list entry has a `bookId` returned by the server, it will be automatically selected.
+- When a series is picked, if there's a book in the series with the requested number, then it is selected automatically.
+- Only selected entries will be used upon creation.
+<Canvas of={Stories.Default} />
