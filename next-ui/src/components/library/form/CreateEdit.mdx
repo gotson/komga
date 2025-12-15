@@ -1,0 +1,14 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './CreateEdit.stories';
+
+<Meta of={Stories} />
+
+# LibraryFormCreateEdit
+
+Library creation and edition dialog.
+
+It is built using a stepper that behaves differently depending on creation/edition:
+- in creation mode, order of steps is enforced, and buttons to navigate between steps are shown
+- in edition mode, any step can be edited. Navigation buttons are not shown.
+<Canvas of={Stories.Create} />
