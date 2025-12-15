@@ -96,4 +96,25 @@ export const librariesHandlers = [
 
     return response(204).empty()
   }),
+  httpTyped.delete('/api/v1/libraries/{libraryId}', ({ params, response }) => {
+    const libraryId = params['libraryId']
+
+    const existing = libraries.find((it) => it.id === libraryId)
+
+    if (!existing) {
+      return response.untyped(response404NotFound())
+    }
+
+    libraries.splice(libraries.indexOf(existing), 1)
+
+    return response(204).empty()
+  }),
+  httpTyped.post('/api/v1/libraries/{libraryId}/metadata/refresh', ({ response }) =>
+    response(202).empty(),
+  ),
+  httpTyped.post('/api/v1/libraries/{libraryId}/analyze', ({ response }) => response(202).empty()),
+  httpTyped.post('/api/v1/libraries/{libraryId}/empty-trash', ({ response }) =>
+    response(202).empty(),
+  ),
+  httpTyped.post('/api/v1/libraries/{libraryId}/scan', ({ response }) => response(202).empty()),
 ]

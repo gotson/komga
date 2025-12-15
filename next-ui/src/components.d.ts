@@ -54,6 +54,7 @@ declare module 'vue' {
     LayoutAppDrawerMenuMedia: typeof import('./components/layout/app/drawer/menu/Media.vue')['default']
     LayoutAppDrawerMenuServer: typeof import('./components/layout/app/drawer/menu/Server.vue')['default']
     LayoutAppDrawerReorderLibraries: typeof import('./components/layout/app/drawer/ReorderLibraries.vue')['default']
+    LibraryDeletionWarning: typeof import('./components/library/DeletionWarning.vue')['default']
     LibraryFormCreateEdit: typeof import('./components/library/form/CreateEdit.vue')['default']
     LibraryFormStepGeneral: typeof import('./components/library/form/StepGeneral.vue')['default']
     LibraryFormStepMetadata: typeof import('./components/library/form/StepMetadata.vue')['default']

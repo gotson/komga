@@ -20,7 +20,9 @@
             id: '90yqRq',
           })
         "
-        @mouseenter="dialogConfirmEdit.activator = $event.currentTarget"
+        @mouseenter="
+          (event: Event) => (dialogConfirmEdit.activator = event.currentTarget as Element)
+        "
         @click="createLibrary"
       />
       <v-icon-btn
