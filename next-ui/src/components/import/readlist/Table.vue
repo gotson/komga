@@ -236,7 +236,7 @@ import {
 import { useDisplay } from 'vuetify'
 import { useQuery } from '@pinia/colada'
 import { bookListQuery } from '@/colada/books'
-import { useCreateReadList, useListReadLists } from '@/colada/readlists'
+import { useCreateReadList, readListsListQuery } from '@/colada/readlists'
 import { useMessagesStore } from '@/stores/messages'
 import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
@@ -335,7 +335,7 @@ watchImmediate(
 )
 
 //region Duplicate read list name check
-const { data: allReadLists } = useQuery(useListReadLists({ pageRequest: PageRequest.Unpaged() }))
+const { data: allReadLists } = useQuery(readListsListQuery({ pageRequest: PageRequest.Unpaged() }))
 const readListNameAlreadyExists = computed(() =>
   allReadLists.value?.content?.some(
     (it) => it.name.localeCompare(readListName.value, undefined, { sensitivity: 'accent' }) == 0,

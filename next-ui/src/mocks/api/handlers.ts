@@ -15,6 +15,7 @@ import { transientBooksHandlers } from '@/mocks/api/handlers/transient-books'
 import { readListsHandlers } from '@/mocks/api/handlers/readlists'
 import { pageHashesHandlers } from '@/mocks/api/handlers/page-hashes'
 import { clientSettingsHandlers } from '@/mocks/api/handlers/client-settings'
+import { collectionsHandlers } from '@/mocks/api/handlers/collections'
 
 export const handlers = [
   ...actuatorHandlers,
@@ -22,6 +23,7 @@ export const handlers = [
   ...booksHandlers,
   ...claimHandlers,
   ...clientSettingsHandlers,
+  ...collectionsHandlers,
   ...filesystemHandlers,
   ...historyHandlers,
   ...librariesHandlers,
