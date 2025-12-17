@@ -8,19 +8,21 @@ export const QUERY_KEYS_READLIST = {
   bySearch: (request: object) => [...QUERY_KEYS_READLIST.root, JSON.stringify(request)] as const,
 }
 
-export const useListReadLists = defineQueryOptions(
+export const readListsListQuery = defineQueryOptions(
   ({
     search,
-    libraryId,
+    libraryIds,
+    pause = false,
     pageRequest,
   }: {
     search?: string
-    libraryId?: string
+    libraryIds?: string[]
+    pause?: boolean
     pageRequest?: PageRequest
   }) => ({
     key: QUERY_KEYS_READLIST.bySearch({
       search: search,
-      libraryId: libraryId,
+      libraryIds: libraryIds,
       pageRequest: pageRequest,
     }),
     query: () =>
@@ -29,13 +31,15 @@ export const useListReadLists = defineQueryOptions(
           params: {
             query: {
               search: search,
-              libraryId: libraryId,
+              library_id: libraryIds,
               ...pageRequest,
             },
           },
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
+    enabled: !pause,
+    placeholderData: (previousData: any) => previousData, // eslint-disable-line @typescript-eslint/no-explicit-any
   }),
 )
 

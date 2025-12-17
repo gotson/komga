@@ -8,11 +8,13 @@
       })
     "
     prepend-icon="i-mdi:bookshelf"
+    to="/libraries/pinned"
   >
     <template #append>
       <v-icon-btn
         v-if="isAdmin"
         icon="i-mdi:plus"
+        variant="text"
         :aria-label="
           $formatMessage({
             description: 'Add library button: aria label',
@@ -23,11 +25,12 @@
         @mouseenter="
           (event: Event) => (dialogConfirmEdit.activator = event.currentTarget as Element)
         "
-        @click="createLibrary"
+        @click.prevent="createLibrary"
       />
       <v-icon-btn
         id="ID01KC5N8S3V35QV04SYETY01M9H"
         icon="i-mdi:dots-vertical"
+        variant="text"
         :aria-label="
           $formatMessage({
             description: 'Libraries menu button: aria label',
@@ -35,6 +38,7 @@
             id: 'hJEc5M',
           })
         "
+        @click.prevent
       />
       <LibraryMenuLibraries activator-id="#ID01KC5N8S3V35QV04SYETY01M9H" />
     </template>
@@ -44,6 +48,7 @@
     v-for="library in pinned"
     :key="library.id"
     :title="library.name"
+    :to="`/libraries/${library.id}`"
     prepend-icon="blank"
   >
     <template #append>
@@ -51,6 +56,7 @@
         v-if="isAdmin"
         :id="`ID01KC5NTP02S3CMF12ZS2R4HNWX${library.id}`"
         icon="i-mdi:dots-vertical"
+        variant="text"
         :aria-label="
           $formatMessage({
             description: 'Library menu button: aria label',
@@ -58,6 +64,7 @@
             id: '3gimvl',
           })
         "
+        @click.prevent
       />
       <LibraryMenuLibrary
         :activator-id="`#ID01KC5NTP02S3CMF12ZS2R4HNWX${library.id}`"
@@ -88,6 +95,7 @@
       v-for="library in unpinned"
       :key="library.id"
       :title="library.name"
+      :to="`/libraries/${library.id}`"
       prepend-icon="blank"
     >
       <template #append>
@@ -95,6 +103,7 @@
           v-if="isAdmin"
           :id="`ID01KC5QH18T79WTFFJWJ6ES4SFE${library.id}`"
           icon="i-mdi:dots-vertical"
+          variant="text"
           :aria-label="
             $formatMessage({
               description: 'Library menu button: aria label',
@@ -102,6 +111,7 @@
               id: '3gimvl',
             })
           "
+          @click.prevent
         />
         <LibraryMenuLibrary
           :activator-id="`#ID01KC5QH18T79WTFFJWJ6ES4SFE${library.id}`"
@@ -127,6 +137,7 @@ import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
+const router = useRouter()
 const display = useDisplay()
 const { unpinned, pinned, refresh } = useLibraries()
 const { isAdmin } = useCurrentUser()

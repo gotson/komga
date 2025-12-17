@@ -4,11 +4,16 @@
     location="end"
   >
     <v-list density="compact">
-      <v-list-item
+      <template
         v-for="(action, i) in actions"
         :key="i"
-        v-bind="action"
-      />
+      >
+        <v-divider v-if="action.divider" />
+        <v-list-item
+          v-else
+          v-bind="action"
+        />
+      </template>
     </v-list>
   </v-menu>
 </template>
@@ -38,6 +43,7 @@ const actions = [
     }),
     onClick: () => (appStore.reorderLibraries = true),
   },
+  { divider: true },
   {
     title: intl.formatMessage({
       description: 'Libraries menu: scan',
