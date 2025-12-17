@@ -17,6 +17,10 @@ export class PageRequest {
     return new PageRequest(undefined, undefined, undefined, true)
   }
 
+  static Zero(): PageRequest {
+    return new PageRequest(undefined, 0, undefined, undefined)
+  }
+
   /**
    * Can be used from v-data-table-server @update:options
    * @param page

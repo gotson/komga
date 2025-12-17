@@ -100,6 +100,52 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/libraries/[id]': RouteRecordInfo<
+      '/libraries/[id]',
+      '/libraries/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | '/libraries/[id]/books'
+      | '/libraries/[id]/collections'
+      | '/libraries/[id]/readlists'
+      | '/libraries/[id]/recommended'
+      | '/libraries/[id]/series'
+    >,
+    '/libraries/[id]/books': RouteRecordInfo<
+      '/libraries/[id]/books',
+      '/libraries/:id/books',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/libraries/[id]/collections': RouteRecordInfo<
+      '/libraries/[id]/collections',
+      '/libraries/:id/collections',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/libraries/[id]/readlists': RouteRecordInfo<
+      '/libraries/[id]/readlists',
+      '/libraries/:id/readlists',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/libraries/[id]/recommended': RouteRecordInfo<
+      '/libraries/[id]/recommended',
+      '/libraries/:id/recommended',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/libraries/[id]/series': RouteRecordInfo<
+      '/libraries/[id]/series',
+      '/libraries/:id/series',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
     '/login': RouteRecordInfo<
       '/login',
       '/login',
@@ -274,6 +320,47 @@ declare module 'vue-router/auto-routes' {
     'src/pages/import/readlist.vue': {
       routes:
         | '/import/readlist'
+      views:
+        | never
+    }
+    'src/pages/libraries/[id].vue': {
+      routes:
+        | '/libraries/[id]'
+        | '/libraries/[id]/books'
+        | '/libraries/[id]/collections'
+        | '/libraries/[id]/readlists'
+        | '/libraries/[id]/recommended'
+        | '/libraries/[id]/series'
+      views:
+        | 'default'
+    }
+    'src/pages/libraries/[id]/books.vue': {
+      routes:
+        | '/libraries/[id]/books'
+      views:
+        | never
+    }
+    'src/pages/libraries/[id]/collections.vue': {
+      routes:
+        | '/libraries/[id]/collections'
+      views:
+        | never
+    }
+    'src/pages/libraries/[id]/readlists.vue': {
+      routes:
+        | '/libraries/[id]/readlists'
+      views:
+        | never
+    }
+    'src/pages/libraries/[id]/recommended.vue': {
+      routes:
+        | '/libraries/[id]/recommended'
+      views:
+        | never
+    }
+    'src/pages/libraries/[id]/series.vue': {
+      routes:
+        | '/libraries/[id]/series'
       views:
         | never
     }
