@@ -22,6 +22,7 @@
     multi-sort
     mobile-breakpoint="md"
     @update:options="updateOptions"
+    @click:row="(_event: unknown, row: any) => row.toggleSelect(row.internalItem)"
   >
     <template #top>
       <v-toolbar flat>
@@ -140,6 +141,7 @@
           :value="PageHashActionEnum.DELETE_AUTO"
           :loading="value === PageHashActionEnum.DELETE_AUTO"
           color="success"
+          @click.stop
         />
         <v-btn
           v-tooltip:bottom="
@@ -150,6 +152,7 @@
           :value="PageHashActionEnum.DELETE_MANUAL"
           :loading="value === PageHashActionEnum.DELETE_MANUAL"
           color="warning"
+          @click.stop
         />
         <v-btn
           v-tooltip:bottom="intl.formatMessage(pageHashActionMessages[PageHashActionEnum.IGNORE])"
@@ -158,6 +161,7 @@
           :value="PageHashActionEnum.IGNORE"
           :loading="value === PageHashActionEnum.IGNORE"
           color=""
+          @click.stop
         />
       </v-btn-toggle>
     </template>
