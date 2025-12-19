@@ -137,7 +137,6 @@ import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
-const router = useRouter()
 const display = useDisplay()
 const { unpinned, pinned, refresh } = useLibraries()
 const { isAdmin } = useCurrentUser()

@@ -15,7 +15,7 @@ const collection1 = {
 const collections = [collection1]
 
 export const collectionsHandlers = [
-  httpTyped.get('/api/v1/collections', async ({ query, response }) => {
+  httpTyped.get('/api/v1/collections', ({ query, response }) => {
     const search = query.get('search')
 
     const selected = collections.filter((it) => {
