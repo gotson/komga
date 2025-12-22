@@ -1053,6 +1053,7 @@
     "label_oauth2_hide_login": "Masquer le champs de login si OAuth2 est activé",
     "label_poster_blur_unread": "Flouter les couvertures des livres et séries non lus",
     "label_poster_stretch": "Étire la couverture",
+    "label_book_title_show_number": "Afficher le numéro dans le titre du livre",
     "label_series_groups": "Regroupement de séries",
     "section_oauth2": "OAuth2",
     "series_groups": {

@@ -281,6 +281,9 @@ export default Vue.extend({
     isBlurUnread(): boolean {
       return this.$store.getters.getClientSettings[CLIENT_SETTING.WEBUI_POSTER_BLUR_UNREAD]?.value === 'true'
     },
+    showBookNumber(): boolean {
+      return this.$store.getters.getClientSettings[CLIENT_SETTING.WEBUI_BOOK_TITLE_SHOW_NUMBER]?.value !== 'false'
+    },
     shouldBlurPoster(): boolean | undefined {
       return (this.isUnread || this.allUnread) && this.isBlurUnread
     },
@@ -303,7 +306,11 @@ export default Vue.extend({
       return this.computedItem.thumbnailUrl() + this.thumbnailCacheBust
     },
     title(): ItemTitle | ItemTitle[] {
-      return this.computedItem.title(this.itemContext)
+      const context = [...this.itemContext]
+      if (!this.showBookNumber) {
+        context.push(ItemContext.HIDE_NUMBER)
+      }
+      return this.computedItem.title(context)
     },
     subtitleProps(): Object {
       return this.computedItem.subtitleProps()

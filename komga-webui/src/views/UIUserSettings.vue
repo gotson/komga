@@ -15,6 +15,13 @@
           :label="$t('ui_settings.label_poster_blur_unread')"
           hide-details
         />
+
+        <v-checkbox
+          v-model="form.bookTitleShowNumber"
+          @change="$v.form.bookTitleShowNumber.$touch()"
+          :label="$t('ui_settings.label_book_title_show_number')"
+          hide-details
+        />
       </v-col>
     </v-row>
     <v-row>
@@ -45,12 +52,14 @@ export default Vue.extend({
     form: {
       posterStretch: false,
       posterBlurUnread: false,
+      bookTitleShowNumber: true,
     },
   }),
   validations: {
     form: {
       posterStretch: {},
       posterBlurUnread: {},
+      bookTitleShowNumber: {},
     },
   },
   mounted() {
@@ -69,6 +78,7 @@ export default Vue.extend({
       await this.$store.dispatch('getClientSettingsUser')
       this.form.posterStretch = this.$store.state.komgaSettings.clientSettingsUser[CLIENT_SETTING.WEBUI_POSTER_STRETCH]?.value === 'true'
       this.form.posterBlurUnread = this.$store.state.komgaSettings.clientSettingsUser[CLIENT_SETTING.WEBUI_POSTER_BLUR_UNREAD]?.value === 'true'
+      this.form.bookTitleShowNumber = this.$store.state.komgaSettings.clientSettingsUser[CLIENT_SETTING.WEBUI_BOOK_TITLE_SHOW_NUMBER]?.value !== 'false'
       this.$v.form.$reset()
     },
     async saveSettings() {
@@ -81,6 +91,10 @@ export default Vue.extend({
       if (this.$v.form?.posterBlurUnread?.$dirty)
         newSettings[CLIENT_SETTING.WEBUI_POSTER_BLUR_UNREAD] = {
           value: this.form.posterBlurUnread ? 'true' : 'false',
+        }
+      if (this.$v.form?.bookTitleShowNumber?.$dirty)
+        newSettings[CLIENT_SETTING.WEBUI_BOOK_TITLE_SHOW_NUMBER] = {
+          value: this.form.bookTitleShowNumber ? 'true' : 'false',
         }
 
       await this.$komgaSettings.updateClientSettingUser(newSettings)

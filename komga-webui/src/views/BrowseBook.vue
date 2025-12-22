@@ -71,7 +71,7 @@
                   {{ book.metadata.title }}
                 </template>
                 <template v-else-if="contextReadList && book.oneshot">{{ book.metadata.title }}</template>
-                <template v-else>{{ book.metadata.number }} - {{ book.metadata.title }}</template>
+                <template v-else>{{ showBookNumber ? book.metadata.number + ' - ' : '' }}{{ book.metadata.title }}</template>
               </v-list-item-title>
             </v-list-item>
           </v-list-item-group>
@@ -471,6 +471,7 @@ import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/t
 import {RawLocation} from 'vue-router/types/router'
 import {ReadListDto} from '@/types/komga-readlists'
 import {BookSearch, SearchConditionSeriesId, SearchConditionTag, SearchOperatorIs} from '@/types/komga-search'
+import {CLIENT_SETTING} from '@/types/komga-clientsettings'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -531,6 +532,9 @@ export default Vue.extend({
     },
     isAdmin(): boolean {
       return this.$store.getters.meAdmin
+    },
+    showBookNumber(): boolean {
+      return this.$store.getters.getClientSettings[CLIENT_SETTING.WEBUI_BOOK_TITLE_SHOW_NUMBER]?.value !== 'false'
     },
     unavailable(): boolean {
       return this.book.deleted || this.$store.getters.getLibraryById(this.book.libraryId).unavailable

@@ -19,6 +19,7 @@ export enum ItemContext {
   FILE_SIZE = 'FILE_SIZE',
   SHOW_SERIES = 'SHOW_SERIES',
   READ_DATE = 'READ_DATE',
+  HIDE_NUMBER = 'HIDE_NUMBER',
 }
 
 export interface ItemTitle {
@@ -83,6 +84,10 @@ export class BookItem extends Item<BookDto> {
         title: this.item.metadata.title,
         to: this.to(),
       }
+    const hideNumber = context.includes(ItemContext.HIDE_NUMBER)
+    const bookTitle = hideNumber
+      ? this.item.metadata.title
+      : `${this.item.metadata.number} - ${this.item.metadata.title}`
     if (context.includes(ItemContext.SHOW_SERIES))
       return [
         {
@@ -90,12 +95,12 @@ export class BookItem extends Item<BookDto> {
           to: this.seriesTo(),
         },
         {
-          title: `${this.item.metadata.number} - ${this.item.metadata.title}`,
+          title: bookTitle,
           to: this.to(),
         },
       ]
     return {
-      title: `${this.item.metadata.number} - ${this.item.metadata.title}`,
+      title: bookTitle,
       to: this.to(),
     }
   }

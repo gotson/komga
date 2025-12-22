@@ -1053,6 +1053,7 @@
     "label_oauth2_hide_login": "Hide login fields if OAuth2 is enabled",
     "label_poster_blur_unread": "Blur poster for unread books and series",
     "label_poster_stretch": "Stretch poster to fit card",
+    "label_book_title_show_number": "Show book number in title",
     "label_series_groups": "Series grouping",
     "section_oauth2": "OAuth2",
     "series_groups": {
