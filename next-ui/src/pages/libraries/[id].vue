@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-const route = useRoute()
+const route = useRoute('/libraries/[id]')
 const router = useRouter()
 const libraryId = computed(() => route.params.id)
 
