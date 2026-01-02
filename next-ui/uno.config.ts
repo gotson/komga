@@ -1,5 +1,4 @@
-import presetIcons from '@unocss/preset-icons'
-import { defineConfig } from 'unocss'
+import { defineConfig, presetIcons } from 'unocss'
 import { aliases } from 'vuetify/iconsets/mdi'
 
 // build the safelist from the vuetify icon aliases
@@ -8,11 +7,6 @@ const vuetifyIcons = Object.keys(aliases).map(
 )
 
 export default defineConfig({
-  presets: [
-    presetIcons({
-      /* options */
-    }),
-    // ...other presets
-  ],
+  presets: [presetIcons()],
   safelist: vuetifyIcons,
 })

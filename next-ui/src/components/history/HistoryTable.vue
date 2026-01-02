@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { useIntl } from 'vue-intl'
+import { type MessageDescriptor, useIntl } from 'vue-intl'
 import { PageRequest, type SortItem } from '@/types/PageRequest'
 import { useQuery } from '@pinia/colada'
 import { historyQuery } from '@/colada/history'
@@ -98,7 +98,6 @@ import HistoryExpandBookConverted from '@/components/history/expand/BookConverte
 import HistoryExpandDuplicatePageDeleted from '@/components/history/expand/DuplicatePageDeleted.vue'
 import HistoryExpandSeriesDirectoryDeleted from '@/components/history/expand/SeriesDirectoryDeleted.vue'
 import { historicalEventMessages } from '@/utils/i18n/enum/historical-event'
-import type { MessageDescriptor } from '@formatjs/intl/src/types'
 import { seriesDetailQuery } from '@/colada/series'
 import { bookDetailQuery } from '@/colada/books'
 import { useMemoize } from '@vueuse/core'
