@@ -342,6 +342,37 @@
         </v-col>
       </v-row>
 
+      <!-- Characters -->
+      <v-row v-if="book.metadata.characters.length > 0" class="align-center text-caption">
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $i18n.t('common.characters') }}</v-col>
+        <v-col cols="8" sm="9" md="10" xl="11" class="py-1 text-capitalize">
+          <vue-horizontal>
+            <template v-slot:btn-prev>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-left</v-icon>
+              </v-btn>
+            </template>
+
+            <template v-slot:btn-next>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </template>
+            <v-chip v-for="(c, i) in book.metadata.characters.slice().sort((a, b) => a.localeCompare(b))"
+                    :key="i"
+                    class="me-2"
+                    :title="c"
+                    :to="{name:'browse-series', params: {seriesId: book.seriesId}, query: {character: [new SearchConditionCharacter(new SearchOperatorIs(c))]}}"
+                    label
+                    small
+                    outlined
+                    link
+            >{{ c }}
+            </v-chip>
+          </vue-horizontal>
+        </v-col>
+      </v-row>
+
       <v-row>
         <v-col>
           <read-lists-expansion-panels :read-lists="readLists">
@@ -470,7 +501,7 @@ import RtlIcon from '@/components/RtlIcon.vue'
 import {BookSseDto, LibrarySseDto, ReadListSseDto, ReadProgressSseDto} from '@/types/komga-sse'
 import {RawLocation} from 'vue-router/types/router'
 import {ReadListDto} from '@/types/komga-readlists'
-import {BookSearch, SearchConditionSeriesId, SearchConditionTag, SearchOperatorIs} from '@/types/komga-search'
+import {BookSearch, SearchConditionCharacter, SearchConditionSeriesId, SearchConditionTag, SearchOperatorIs} from '@/types/komga-search'
 
 export default Vue.extend({
   name: 'BrowseBook',
@@ -479,6 +510,7 @@ export default Vue.extend({
     return {
       MediaStatus,
       SearchConditionTag,
+      SearchConditionCharacter,
       SearchOperatorIs,
       book: {} as BookDto,
       context: {} as Context,

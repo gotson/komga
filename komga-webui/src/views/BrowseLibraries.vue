@@ -171,6 +171,7 @@ import {
   SearchConditionAnyOfBook,
   SearchConditionAnyOfSeries,
   SearchConditionAuthor,
+  SearchConditionCharacter,
   SearchConditionComplete,
   SearchConditionDeleted,
   SearchConditionGenre,
@@ -250,6 +251,7 @@ export default Vue.extend({
       filterOptions: {
         genre: [] as NameValue[],
         tag: [] as NameValue[],
+        character: [] as NameValue[],
         publisher: [] as NameValue[],
         language: [] as NameValue[],
         ageRating: [] as NameValue[],
@@ -459,6 +461,18 @@ export default Vue.extend({
           ],
           anyAllSelector: true,
         },
+        character: {
+          name: this.$t('filter.character').toString(),
+          values: [
+            {
+              name: this.$t('filter.any').toString(),
+              value: new SearchConditionCharacter(new SearchOperatorIsNotNull()),
+              nValue: new SearchConditionCharacter(new SearchOperatorIsNull()),
+            },
+            ...this.filterOptions.character,
+          ],
+          anyAllSelector: true,
+        },
         publisher: {
           name: this.$t('filter.publisher').toString(),
           values: [
@@ -579,9 +593,10 @@ export default Vue.extend({
       const requestLibraryIds = libraryId !== LIBRARIES_ALL ? [libraryId] : this.$store.getters.getLibrariesPinned.map((it: LibraryDto) => it.id)
 
       // load dynamic filters
-      const [genres, tags, publishers, languages, ageRatings, releaseDates, sharingLabels] = await Promise.all([
+      const [genres, tags, characters, publishers, languages, ageRatings, releaseDates, sharingLabels] = await Promise.all([
         this.$komgaReferential.getGenres(requestLibraryIds),
         this.$komgaReferential.getSeriesAndBookTags(requestLibraryIds),
+        this.$komgaReferential.getSeriesAndBookCharacters(requestLibraryIds),
         this.$komgaReferential.getPublishers(requestLibraryIds),
         this.$komgaReferential.getLanguages(requestLibraryIds),
         this.$komgaReferential.getAgeRatings(requestLibraryIds),
@@ -590,6 +605,7 @@ export default Vue.extend({
       ])
       this.$set(this.filterOptions, 'genre', toNameValueCondition(genres, x => new SearchConditionGenre(new SearchOperatorIs(x)), x => new SearchConditionGenre(new SearchOperatorIsNot(x))))
       this.$set(this.filterOptions, 'tag', toNameValueCondition(tags, x => new SearchConditionTag(new SearchOperatorIs(x)), x => new SearchConditionTag(new SearchOperatorIsNot(x))))
+      this.$set(this.filterOptions, 'character', toNameValueCondition(characters, x => new SearchConditionCharacter(new SearchOperatorIs(x)), x => new SearchConditionCharacter(new SearchOperatorIsNot(x))))
       this.$set(this.filterOptions, 'publisher', toNameValueCondition(publishers, x => new SearchConditionPublisher(new SearchOperatorIs(x)), x => new SearchConditionPublisher(new SearchOperatorIsNot(x))))
       this.$set(this.filterOptions, 'language', languages.map((x: NameValue) => {
         return {
@@ -620,12 +636,13 @@ export default Vue.extend({
 
       // get filter from query params or local storage and validate with available filter values
       let activeFilters: any
-      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete || route.query.oneshot || route.query.sharingLabel || route.query.deleted) {
+      if (route.query.status || route.query.readStatus || route.query.genre || route.query.tag || route.query.character || route.query.language || route.query.ageRating || route.query.publisher || authorRoles.some(role => role in route.query) || route.query.complete || route.query.oneshot || route.query.sharingLabel || route.query.deleted) {
         activeFilters = {
           status: route.query.status || [],
           readStatus: route.query.readStatus || [],
           genre: route.query.genre || [],
           tag: route.query.tag || [],
+          character: route.query.character || [],
           publisher: route.query.publisher || [],
           language: route.query.language || [],
           ageRating: route.query.ageRating || [],
@@ -665,6 +682,7 @@ export default Vue.extend({
         readStatus: this.$_.intersectionWith(filters.readStatus, extractFilterOptionsValues(this.filterOptionsList.readStatus.values), objIsEqual) || [],
         genre: this.$_.intersectionWith(filters.genre, extractFilterOptionsValues(this.filterOptions.genre), objIsEqual) || [],
         tag: this.$_.intersectionWith(filters.tag, extractFilterOptionsValues(this.filterOptions.tag), objIsEqual) || [],
+        character: this.$_.intersectionWith(filters.character, extractFilterOptionsValues(this.filterOptions.character), objIsEqual) || [],
         publisher: this.$_.intersectionWith(filters.publisher, extractFilterOptionsValues(this.filterOptions.publisher), objIsEqual) || [],
         language: this.$_.intersectionWith(filters.language, extractFilterOptionsValues(this.filterOptions.language), objIsEqual) || [],
         ageRating: this.$_.intersectionWith(filters.ageRating, extractFilterOptionsValues(this.filterOptions.ageRating), objIsEqual) || [],
@@ -786,6 +804,7 @@ export default Vue.extend({
       if (this.filters.readStatus && this.filters.readStatus.length > 0) conditions.push(new SearchConditionAnyOfSeries(this.filters.readStatus))
       if (this.filters.genre && this.filters.genre.length > 0) this.filtersMode?.genre?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.genre)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.genre))
       if (this.filters.tag && this.filters.tag.length > 0) this.filtersMode?.tag?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.tag)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.tag))
+      if (this.filters.character && this.filters.character.length > 0) this.filtersMode?.character?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.character)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.character))
       if (this.filters.language && this.filters.language.length > 0) this.filtersMode?.language?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.language)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.language))
       if (this.filters.publisher && this.filters.publisher.length > 0) this.filtersMode?.publisher?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.publisher)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.publisher))
       if (this.filters.ageRating && this.filters.ageRating.length > 0) this.filtersMode?.ageRating?.allOf ? conditions.push(new SearchConditionAllOfSeries(this.filters.ageRating)) : conditions.push(new SearchConditionAnyOfSeries(this.filters.ageRating))

@@ -27,6 +27,7 @@ class BookMetadataAggregationDao(
   private val d = Tables.BOOK_METADATA_AGGREGATION
   private val a = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val t = Tables.BOOK_METADATA_AGGREGATION_TAG
+  private val c = Tables.BOOK_METADATA_AGGREGATION_CHARACTER
 
   override fun findById(seriesId: String): BookMetadataAggregation = dslRO.findOne(listOf(seriesId)).first()
 
@@ -43,7 +44,7 @@ class BookMetadataAggregationDao(
         { it.into(d) },
         { it.into(a) },
       ).map { (dr, ar) ->
-        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, this.findTags(dr.seriesId))
+        dr.toDomain(ar.filterNot { it.name == null }.map { it.toDomain() }, this.findTags(dr.seriesId), this.findCharacters(dr.seriesId))
       }
 
   private fun DSLContext.findTags(seriesId: String) =
@@ -52,6 +53,13 @@ class BookMetadataAggregationDao(
       .from(t)
       .where(t.SERIES_ID.eq(seriesId))
       .fetchSet(t.TAG)
+
+  private fun DSLContext.findCharacters(seriesId: String) =
+    this
+      .select(c.CHARACTER)
+      .from(c)
+      .where(c.SERIES_ID.eq(seriesId))
+      .fetchSet(c.CHARACTER)
 
   @Transactional
   override fun insert(metadata: BookMetadataAggregation) {
@@ -88,8 +96,14 @@ class BookMetadataAggregationDao(
       .where(t.SERIES_ID.eq(metadata.seriesId))
       .execute()
 
+    dslRW
+      .deleteFrom(c)
+      .where(c.SERIES_ID.eq(metadata.seriesId))
+      .execute()
+
     dslRW.insertAuthors(metadata)
     dslRW.insertTags(metadata)
+    dslRW.insertCharacters(metadata)
   }
 
   private fun DSLContext.insertAuthors(metadata: BookMetadataAggregation) {
@@ -126,10 +140,28 @@ class BookMetadataAggregationDao(
     }
   }
 
+  private fun DSLContext.insertCharacters(metadata: BookMetadataAggregation) {
+    if (metadata.characters.isNotEmpty()) {
+      metadata.characters.chunked(batchSize).forEach { chunk ->
+        this
+          .batch(
+            this
+              .insertInto(c, c.SERIES_ID, c.CHARACTER)
+              .values(null as String?, null),
+          ).also { step ->
+            chunk.forEach {
+              step.bind(metadata.seriesId, it)
+            }
+          }.execute()
+      }
+    }
+  }
+
   @Transactional
   override fun delete(seriesId: String) {
     dslRW.deleteFrom(a).where(a.SERIES_ID.eq(seriesId)).execute()
     dslRW.deleteFrom(t).where(t.SERIES_ID.eq(seriesId)).execute()
+    dslRW.deleteFrom(c).where(c.SERIES_ID.eq(seriesId)).execute()
     dslRW.deleteFrom(d).where(d.SERIES_ID.eq(seriesId)).execute()
   }
 
@@ -138,6 +170,7 @@ class BookMetadataAggregationDao(
     dslRW.withTempTable(batchSize, seriesIds).use {
       dslRW.deleteFrom(a).where(a.SERIES_ID.`in`(it.selectTempStrings())).execute()
       dslRW.deleteFrom(t).where(t.SERIES_ID.`in`(it.selectTempStrings())).execute()
+      dslRW.deleteFrom(c).where(c.SERIES_ID.`in`(it.selectTempStrings())).execute()
       dslRW.deleteFrom(d).where(d.SERIES_ID.`in`(it.selectTempStrings())).execute()
     }
   }
@@ -147,9 +180,11 @@ class BookMetadataAggregationDao(
   private fun BookMetadataAggregationRecord.toDomain(
     authors: List<Author>,
     tags: Set<String>,
+    characters: Set<String>,
   ) = BookMetadataAggregation(
     authors = authors,
     tags = tags,
+    characters = characters,
     releaseDate = releaseDate,
     summary = summary,
     summaryNumber = summaryNumber,

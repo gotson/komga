@@ -12,6 +12,7 @@ data class BookMetadataPatch(
   val isbn: String? = null,
   val links: List<WebLink>? = null,
   val tags: Set<String>? = null,
+  val characters: Set<String>? = null,
   val readLists: List<ReadListEntry> = emptyList(),
 ) {
   data class ReadListEntry(
@@ -28,6 +29,7 @@ enum class BookMetadataPatchCapability {
   RELEASE_DATE,
   AUTHORS,
   TAGS,
+  CHARACTERS,
   ISBN,
   READ_LISTS,
   THUMBNAILS,

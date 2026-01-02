@@ -60,6 +60,13 @@ class BookMetadataUpdateDto {
 
   var tagsLock: Boolean? = null
 
+  var characters: Set<String>?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var charactersLock: Boolean? = null
+
   @get:NullOrBlankOrISBN
   var isbn: String?
     by Delegates.observable(null) { prop, _, _ ->
@@ -120,6 +127,13 @@ fun BookMetadata.patch(patch: BookMetadataUpdateDto) =
           this.tags
         },
       tagsLock = patch.tagsLock ?: this.tagsLock,
+      characters =
+        if (patch.isSet("characters")) {
+          if (patch.characters != null) patch.characters!! else emptySet()
+        } else {
+          this.characters
+        },
+      charactersLock = patch.charactersLock ?: this.charactersLock,
       isbn = if (patch.isSet("isbn")) patch.isbn?.filter { it.isDigit() } ?: "" else this.isbn,
       isbnLock = patch.isbnLock ?: this.isbnLock,
       links =

@@ -105,6 +105,12 @@ class SearchCondition {
   ) : Book,
     Series
 
+  data class Character(
+    @JsonProperty("character")
+    val operator: SearchOperator.EqualityNullable<String>,
+  ) : Book,
+    Series
+
   data class SharingLabel(
     @JsonProperty("sharingLabel")
     val operator: SearchOperator.EqualityNullable<String>,

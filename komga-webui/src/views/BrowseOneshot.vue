@@ -413,6 +413,37 @@
         </v-col>
       </v-row>
 
+      <!--  Characters    -->
+      <v-row v-if="book.metadata.characters.length > 0" class="align-center text-caption">
+        <v-col cols="4" sm="3" md="2" xl="1" class="py-1 text-uppercase">{{ $t('common.characters') }}</v-col>
+        <v-col cols="8" sm="9" md="10" xl="11" class="py-1 text-capitalize">
+          <vue-horizontal>
+            <template v-slot:btn-prev>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-left</v-icon>
+              </v-btn>
+            </template>
+
+            <template v-slot:btn-next>
+              <v-btn icon small>
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-btn>
+            </template>
+            <v-chip v-for="(c, i) in book.metadata.characters"
+                    :key="i"
+                    class="me-2"
+                    :title="c"
+                    :to="{name:'browse-libraries', params: {libraryId: book.libraryId}, query: {character: [new SearchConditionCharacter(new SearchOperatorIs(c))]}}"
+                    label
+                    small
+                    outlined
+                    link
+            >{{ c }}
+            </v-chip>
+          </vue-horizontal>
+        </v-col>
+      </v-row>
+
 
       <v-row>
         <v-col cols="12" class="pb-1">
@@ -573,6 +604,7 @@ import OneshotActionsMenu from '@/components/menus/OneshotActionsMenu.vue'
 import {
   BookSearch,
   SearchConditionAgeRating,
+  SearchConditionCharacter,
   SearchConditionGenre,
   SearchConditionLanguage,
   SearchConditionPublisher,
@@ -595,6 +627,7 @@ export default Vue.extend({
       SearchConditionPublisher,
       SearchConditionGenre,
       SearchConditionTag,
+      SearchConditionCharacter,
       SearchConditionLanguage,
       SearchConditionAgeRating,
       SearchOperatorIs,
