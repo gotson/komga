@@ -727,6 +727,50 @@ class BookControllerTest(
         .get("/api/v1/books/${book3.id}/next")
         .andExpect { status { isNotFound() } }
     }
+
+    @Test
+    @WithMockCustomUser
+    fun `given series with duplicate numberSort when getting siblings then order is stable`() {
+      val book1 = makeBook("1", libraryId = library.id, id = "1")
+      val book2 = makeBook("2", libraryId = library.id, id = "2")
+      val book3 = makeBook("3", libraryId = library.id, id = "3")
+      makeSeries(name = "series", libraryId = library.id).let { series ->
+        seriesLifecycle.createSeries(series).also { created ->
+          val books = listOf(book1, book2, book3)
+          seriesLifecycle.addBooks(created, books)
+          seriesLifecycle.sortBooks(created)
+        }
+      }
+
+      bookMetadataRepository.findById(book1.id).let { metadata ->
+        bookMetadataRepository.update(metadata.copy(numberSort = 1F))
+      }
+      bookMetadataRepository.findById(book2.id).let { metadata ->
+        bookMetadataRepository.update(metadata.copy(numberSort = 1F))
+      }
+      bookMetadataRepository.findById(book3.id).let { metadata ->
+        bookMetadataRepository.update(metadata.copy(numberSort = 2F))
+      }
+
+      mockMvc
+        .get("/api/v1/books/${book1.id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("2") }
+        }
+      mockMvc
+        .get("/api/v1/books/${book2.id}/previous")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("1") }
+        }
+      mockMvc
+        .get("/api/v1/books/${book2.id}/next")
+        .andExpect {
+          status { isOk() }
+          jsonPath("$.name") { value("3") }
+        }
+    }
   }
 
   @Nested

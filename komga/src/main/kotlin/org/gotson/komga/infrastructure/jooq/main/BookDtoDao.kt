@@ -323,11 +323,18 @@ class BookDtoDao(
     val seriesId = record.get(0, String::class.java)
     val numberSort = record.get(1, Float::class.java)
 
+    val orderBy =
+      if (next) {
+        listOf(d.NUMBER_SORT.asc(), b.ID.asc())
+      } else {
+        listOf(d.NUMBER_SORT.desc(), b.ID.desc())
+      }
+
     return dslRO
       .selectBase(userId)
       .where(b.SERIES_ID.eq(seriesId))
-      .orderBy(d.NUMBER_SORT.let { if (next) it.asc() else it.desc() })
-      .seek(numberSort)
+      .orderBy(orderBy)
+      .seek(numberSort, bookId)
       .limit(1)
       .fetchAndMap(dslRO)
       .firstOrNull()
