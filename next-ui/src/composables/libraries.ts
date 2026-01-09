@@ -24,7 +24,7 @@ export function useGetLibrariesById(libraryId: MaybeRefOrGetter<LibraryId>) {
         libs = unpinned.value
         break
       default:
-        const lib = all.value?.find((it) => it.id === libraryId)
+        const lib = all.value?.find((it) => it.id === toValue(libraryId))
         if (lib) libs = [lib]
         break
     }
