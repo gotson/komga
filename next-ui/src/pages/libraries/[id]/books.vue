@@ -8,5 +8,5 @@ series.vue
 
 <route lang="yaml">
 meta:
-  requiresRole: ADMIN
+  requiresRole: USER
 </route>
