@@ -42,6 +42,8 @@ declare module 'vue' {
     ImportBooksDirectorySelection: typeof import('./components/import/books/DirectorySelection.vue')['default']
     ImportBooksTransientBooksTable: typeof import('./components/import/books/TransientBooksTable.vue')['default']
     ImportReadlistTable: typeof import('./components/import/readlist/Table.vue')['default']
+    ItemCard: typeof import('./components/item/ItemCard.vue')['default']
+    ItemSeriesCard: typeof import('./components/item/SeriesCard.vue')['default']
     LayoutAppBar: typeof import('./components/layout/app/Bar.vue')['default']
     LayoutAppDrawer: typeof import('./components/layout/app/drawer/Drawer.vue')['default']
     LayoutAppDrawerFooter: typeof import('./components/layout/app/drawer/Footer.vue')['default']
