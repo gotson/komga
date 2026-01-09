@@ -6,17 +6,23 @@
 </template>
 
 <script lang="ts" setup>
+import { watchImmediate } from '@vueuse/core'
+
 const route = useRoute('/libraries/[id]')
 const router = useRouter()
 const libraryId = computed(() => route.params.id)
 
 //TODO: for now we always redirect to 'recommended', this should be persisted per libraryId
-watch(libraryId, () => {
-  void router.push({ name: '/libraries/[id]/recommended', params: { id: libraryId.value } })
+watchImmediate(libraryId, () => {
+  void router.replace({
+    name: '/libraries/[id]/series',
+    params: { id: libraryId.value },
+    query: route.query,
+  })
 })
 </script>
 
 <route lang="yaml">
 meta:
-  requiresRole: ADMIN
+  requiresRole: USER
 </route>

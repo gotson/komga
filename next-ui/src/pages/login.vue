@@ -156,7 +156,7 @@ async function submitForm() {
       rememberMe: appStore.rememberMe,
     })
       .then(() => {
-        if (route.query.redirect) void router.push({ path: route.query.redirect.toString() })
+        if (route.query.redirect) void router.push(route.query.redirect.toString())
         else void router.push('/')
       })
       .catch((error) => {
