@@ -1,5 +1,5 @@
 <template>
-  <LibraryHolder
+  <LibraryNavigation
     :key="libraryId"
     :library-id="libraryId"
   />
