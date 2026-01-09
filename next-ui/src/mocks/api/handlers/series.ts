@@ -4,7 +4,7 @@ import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 import { PageRequest } from '@/types/PageRequest'
 import { mockPage } from '@/mocks/api/pageable'
 
-const series1 = {
+export const mockSeries1 = {
   id: '57',
   libraryId: '1',
   name: 'Super Duck',
@@ -117,7 +117,7 @@ const series2 = {
   oneshot: false,
 }
 
-const series = [series1, series2]
+const series = [mockSeries1, series2]
 
 export const seriesHandlers = [
   httpTyped.post('/api/v1/series/list', async ({ query, request, response }) => {
@@ -137,7 +137,7 @@ export const seriesHandlers = [
   httpTyped.get('/api/v1/series/{seriesId}', ({ params, response }) => {
     if (params.seriesId === '404') return response(404).empty()
     return response(200).json(
-      Object.assign({}, series1, { metadata: { title: `Series ${params.seriesId}` } }),
+      Object.assign({}, mockSeries1, { metadata: { title: `Series ${params.seriesId}` } }),
     )
   }),
   http.get('*/api/v1/series/*/thumbnail', async () => {
