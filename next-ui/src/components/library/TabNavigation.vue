@@ -1,12 +1,18 @@
 <template>
-  <v-tabs :items="routes">
-    <template #tab="{ item: route }">
-      <v-tab
-        :text="route.title"
-        :to="route.to"
-      />
-    </template>
-  </v-tabs>
+  <v-app-bar>
+    <v-tabs
+      :items="routes"
+      center-active
+      grow
+    >
+      <template #tab="{ item: route }">
+        <v-tab
+          :text="route.title"
+          :to="route.to"
+        />
+      </template>
+    </v-tabs>
+  </v-app-bar>
 </template>
 
 <script setup lang="ts">
