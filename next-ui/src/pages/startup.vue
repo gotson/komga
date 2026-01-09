@@ -38,7 +38,7 @@ async function checkAuthenticated() {
   if (claimError.value) {
     await router.push({ name: '/error' })
   } else if (data.value) {
-    if (route.query.redirect) await router.push({ path: route.query.redirect.toString() })
+    if (route.query.redirect) await router.push(route.query.redirect.toString())
     else await router.push('/')
   } else if (error.value) {
     if (claimData.value?.isClaimed)
