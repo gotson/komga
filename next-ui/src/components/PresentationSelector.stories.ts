@@ -1,0 +1,50 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import PresentationSelector from './PresentationSelector.vue'
+import { expect, fn } from 'storybook/test'
+
+const meta = {
+  component: PresentationSelector,
+  render: (args: object) => ({
+    components: { PresentationSelector },
+    setup() {
+      return { args }
+    },
+    template: '<PresentationSelector v-model="args.modelValue" v-bind="args" />',
+  }),
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+  },
+  args: {
+    modelValue: 'grid',
+    modes: ['grid', 'list', 'table'],
+    'onUpdate:modelValue': fn(),
+  },
+} satisfies Meta<typeof PresentationSelector>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  args: {},
+}
+
+export const Clicked: Story = {
+  args: {},
+  play: async ({ canvas, userEvent }) => {
+    await expect(canvas.getByRole('button')).toBeEnabled()
+
+    await userEvent.click(canvas.getByRole('button'))
+  },
+}
+
+export const LimitedSet: Story = {
+  args: {
+    modes: ['grid', 'list'],
+  },
+  play: async ({ canvas, userEvent }) => {
+    await expect(canvas.getByRole('button')).toBeEnabled()
+
+    await userEvent.click(canvas.getByRole('button'))
+  },
+}
