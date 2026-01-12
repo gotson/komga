@@ -3,3 +3,4 @@
  */
 // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 export type LibraryId = string | 'all' | 'pinned' | 'unpinned'
+export type PresentationMode = 'grid' | 'list' | 'table'
