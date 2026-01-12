@@ -21,6 +21,11 @@ const meta = {
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: '',
+      },
+    },
   },
   args: {},
 } satisfies Meta<typeof UnknownTable>

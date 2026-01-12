@@ -13,6 +13,11 @@ const meta = {
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: 'A cycling button to change the theme.',
+      },
+    },
   },
   args: {},
 } satisfies Meta<typeof ThemeSelector>
