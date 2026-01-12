@@ -6,11 +6,10 @@
       :disabled="overlayDisabled"
     >
       <div
-        class="position-relative bg-scrim"
+        class="position-relative"
         v-bind="props"
       >
         <v-img
-          id="abc123"
           :contain="!stretchPoster"
           :position="stretchPoster ? 'top' : undefined"
           :src="posterUrl"
@@ -49,10 +48,12 @@
           :opacity="overlayTransparent ? 0 : 0.3"
           contained
           transition="fade-transition"
+          content-class="fill-height w-100"
         >
           <v-icon-btn
+            v-if="!disableSelection"
             :icon="
-              preSelect && !isHovering
+              isPreSelect && !isHovering
                 ? 'i-mdi:checkbox-blank-circle-outline'
                 : 'i-mdi:checkbox-marked-circle'
             "
@@ -61,33 +62,61 @@
             class="top-0 left-0 position-absolute"
             @click="emit('selection', !selected)"
           />
+
+          <v-hover
+            v-if="isHovering && fabIcon && !hideFab"
+            v-slot="{ isHovering: fabHover, props: fabProps }"
+          >
+            <v-fab
+              :icon="fabIcon"
+              location="center center"
+              absolute
+              :variant="fabHover ? 'flat' : 'outlined'"
+              :color="fabHover ? 'primary' : 'white'"
+              :class="{ plain: !fabHover }"
+              v-bind="fabProps"
+              @click="emit('clickFab')"
+            />
+          </v-hover>
         </v-overlay>
       </div>
     </v-hover>
 
-    <v-card-title class="text-subtitle-2 px-2">{{ title }}</v-card-title>
-    <v-card-subtitle
-      :class="`px-2 pb-1 ${allowEmptyLine1 ? 'min-height' : undefined} ${line1Classes}`"
-      >{{ line1 }}</v-card-subtitle
+    <v-card-title
+      :class="['text-subtitle-2 px-2 pb-0 mb-2', { 'force-line-count text-wrap': title.lines }]"
+      :style="[{ '--lines': title.lines }, { '--line-height': 1.6 }]"
+      >{{ title.text }}</v-card-title
     >
-    <v-card-subtitle
-      :class="`px-2 pb-1 ${allowEmptyLine2 ? 'min-height' : undefined} ${line2Classes}`"
-      >{{ line2 }}</v-card-subtitle
+
+    <template
+      v-for="(line, i) in lines"
+      :key="i"
     >
+      <v-card-subtitle
+        v-if="line.text || line.allowEmpty"
+        :class="[
+          'px-2 mb-1',
+          { 'min-height': line.allowEmpty },
+          line.classes,
+          { 'force-line-count text-wrap': line.lines },
+        ]"
+        :style="[{ '--lines': line.lines }, { '--line-height': 1.4 }]"
+        >{{ line.text }}
+      </v-card-subtitle>
+    </template>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import type { ItemCardEmits, ItemCardProps } from '@/types/ItemCard'
+import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 
 const {
   stretchPoster = true,
   width = 150,
-  allowEmptyLine1 = false,
-  allowEmptyLine2 = false,
   disableSelection = false,
   selected = false,
   preSelect = false,
+  fabIcon,
 } = defineProps<
   ItemCardProps & {
     /**
@@ -103,36 +132,11 @@ const {
     /**
      * Card title. Displayed under the poster.
      */
-    title: string
+    title: ItemCardTitle
     /**
-     * First line of text.
+     * Lines of text to display under the title.
      */
-    line1?: string
-    /**
-     * Classes to apply on `line1`.
-     */
-    line1Classes?: string
-    /**
-     * Second line of text.
-     */
-    line2?: string
-    /**
-     * Classes to apply on `line2`.
-     */
-    line2Classes?: string
-    /**
-     * Whether the `line1` container will be shown even if `line1` is empty.
-     *
-     * Defaults to `false`.
-     */
-    allowEmptyLine1?: boolean
-    /**
-     * Whether the `line2` container will be shown even if `line2` is empty.
-     *
-     * Defaults to `false`.
-     */
-    allowEmptyLine2?: boolean
-
+    lines?: ItemCardLine[]
     /**
      * Number displayed in the top-right corner.
      */
@@ -141,18 +145,25 @@ const {
      * Icon displayed in the top-right corner. Takes precedence over `topRight`.
      */
     topRightIcon?: string
+    fabIcon?: string
   }
 >()
 
-const emit = defineEmits<ItemCardEmits>()
+const emit = defineEmits<
+  ItemCardEmits & {
+    clickFab: []
+  }
+>()
 
 const isHovering = ref(false)
 
 const overlayDisabled = computed(() => {
-  return disableSelection
+  return disableSelection && !fabIcon
 })
-const overlayTransparent = computed(() => (selected || preSelect) && !isHovering.value)
+const isPreSelect = computed(() => preSelect && !selected && !disableSelection)
+const overlayTransparent = computed(() => (selected || isPreSelect.value) && !isHovering.value)
 const overlayShown = computed(() => isHovering.value || overlayTransparent.value || preSelect)
+const hideFab = computed(() => selected || isPreSelect.value)
 </script>
 
 <style lang="scss">
@@ -177,5 +188,9 @@ const overlayShown = computed(() => isHovering.value || overlayTransparent.value
 .inset {
   transform: scale(0.78);
   border-radius: 8px;
+}
+
+.plain {
+  opacity: 0.62;
 }
 </style>
