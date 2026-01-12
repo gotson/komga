@@ -99,6 +99,11 @@ export default defineConfig(({ mode }) => ({
   }),
   optimizeDeps: {
     exclude: ['vuetify'],
+    include: [
+      '@pinia/colada-devtools',
+      'pinia-plugin-persistedstate',
+      'unplugin-vue-router/runtime',
+    ],
   },
   test: {
     coverage: {
