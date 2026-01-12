@@ -19,4 +19,9 @@ export default {
 
 <style>
 @import '../src/styles/global.scss';
+
+.v-application__wrap {
+  min-height: unset !important;
+  height: auto !important;
+}
 </style>
