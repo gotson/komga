@@ -6,6 +6,11 @@ const meta = {
   component: FormattedMessage,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: 'Component to display formatted `formatjs` messages using dynamic slots.',
+      },
+    },
   },
   args: {},
 } satisfies Meta<typeof FormattedMessage>
