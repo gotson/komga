@@ -16,12 +16,20 @@ const meta = {
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: 'A flexible card that serves as the base for entity cards.',
+      },
+    },
   },
   args: {
-    title: 'Card title',
+    title: { text: 'Card title' },
     posterUrl: seriesThumbnailUrl('id'),
     width: 150,
     onSelection: fn(),
+    onClickFab: fn(),
+    preSelect: false,
+    selected: false,
   },
 } satisfies Meta<typeof ItemCard>
 
@@ -30,32 +38,37 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    line1: 'Line 1',
-    line2: 'Line 2',
+    lines: [{ text: 'Line 1' }, { text: 'Line 2' }],
     stretchPoster: true,
   },
 }
 
 export const LongText: Story = {
   args: {
-    title: 'A very long title that will wrap',
-    line1: 'A very long title that will wrap',
-    line2: 'A very long title that will wrap',
+    title: {
+      text: 'Short 2 lines',
+      lines: 2,
+    },
+    lines: [
+      {
+        text: 'A very long title that will wrap but that is very long so it takes more lines',
+        lines: 2,
+      },
+      { text: 'Short 2 lines', lines: 2 },
+    ],
     stretchPoster: true,
   },
 }
 
 export const EmptyLines: Story = {
   args: {
-    allowEmptyLine1: true,
-    allowEmptyLine2: true,
+    lines: [{ allowEmpty: true }, { allowEmpty: true }],
   },
 }
 
 export const NoEmptyLines: Story = {
   args: {
-    allowEmptyLine1: false,
-    allowEmptyLine2: false,
+    lines: [{ allowEmpty: false }, { allowEmpty: false }],
   },
 }
 
@@ -78,9 +91,20 @@ export const SelectableHover: Story = {
   },
 }
 
+export const FabHover: Story = {
+  args: {
+    fabIcon: 'i-mdi:check',
+    disableSelection: true,
+  },
+  play: ({ canvas, userEvent }) => {
+    userEvent.hover(canvas.getByRole('img'))
+  },
+}
+
 export const Selected: Story = {
   args: {
     selected: true,
+    fabIcon: 'i-mdi:check',
   },
 }
 
@@ -92,8 +116,7 @@ export const PreSelect: Story = {
 
 export const Big: Story = {
   args: {
-    line1: 'Line 1',
-    line2: 'Line 2',
+    lines: [{ text: 'Line 1' }, { text: 'Line 2' }],
     width: 300,
   },
 }
