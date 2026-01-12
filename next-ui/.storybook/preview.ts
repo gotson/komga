@@ -53,6 +53,7 @@ const preview: Preview = {
       test: 'todo',
     },
   },
+  tags: ['autodocs'],
   loaders: [mswLoader],
   globalTypes: {
     locale: {
