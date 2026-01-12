@@ -1,26 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import SeriesCard from './SeriesCard.vue'
+import Series from './Series.vue'
 import { mockSeries1 } from '@/mocks/api/handlers/series'
 import { fn } from 'storybook/test'
 
 const meta = {
-  component: SeriesCard,
+  component: Series,
   render: (args: object) => ({
-    components: { SeriesCard },
+    components: { Series },
     setup() {
       return { args }
     },
-    template: '<SeriesCard v-bind="args" />',
+    template: '<Series v-bind="args" />',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: '',
+      },
+    },
   },
   args: {
     series: mockSeries1,
     onSelection: fn(),
   },
-} satisfies Meta<typeof SeriesCard>
+} satisfies Meta<typeof Series>
 
 export default meta
 type Story = StoryObj<typeof meta>
