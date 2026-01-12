@@ -14,6 +14,11 @@ const meta = {
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: 'A button that will display a list of presentation modes when clicked.',
+      },
+    },
   },
   args: {
     modelValue: 'grid',
@@ -30,6 +35,7 @@ export const Default: Story = {
 }
 
 export const Clicked: Story = {
+  tags: ['!autodocs'],
   args: {},
   play: async ({ canvas, userEvent }) => {
     await expect(canvas.getByRole('button')).toBeEnabled()

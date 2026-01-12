@@ -13,6 +13,11 @@ const meta = {
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: 'A card showing the details of a Komga release.',
+      },
+    },
   },
   args: {},
 } satisfies Meta<typeof Card>
