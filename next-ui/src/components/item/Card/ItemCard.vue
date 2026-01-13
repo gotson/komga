@@ -50,6 +50,7 @@
           transition="fade-transition"
           content-class="fill-height w-100"
         >
+          <!--  Top right number / icon  -->
           <v-icon-btn
             v-if="!disableSelection"
             :icon="
@@ -63,6 +64,7 @@
             @click="emit('selection', !selected)"
           />
 
+          <!--  Center FAB  -->
           <v-hover
             v-if="isHovering && fabIcon && !hideFab"
             v-slot="{ isHovering: fabHover, props: fabProps }"
@@ -78,6 +80,16 @@
               @click="emit('clickFab')"
             />
           </v-hover>
+
+          <!--  Bottom left quick action icon  -->
+          <v-icon-btn
+            v-if="isHovering && quickActionIcon && !hideQuickAction"
+            :icon="quickActionIcon"
+            variant="plain"
+            color="white"
+            class="bottom-0 left-0 position-absolute"
+            @click="emit('clickQuickAction')"
+          />
         </v-overlay>
       </div>
     </v-hover>
@@ -145,13 +157,21 @@ const {
      * Icon displayed in the top-right corner. Takes precedence over `topRight`.
      */
     topRightIcon?: string
+    /**
+     * Icon displayed in the middle.
+     */
     fabIcon?: string
+    /**
+     * Icon displayed in the bottom-left corner.
+     */
+    quickActionIcon?: string
   }
 >()
 
 const emit = defineEmits<
   ItemCardEmits & {
     clickFab: []
+    clickQuickAction: []
   }
 >()
 
@@ -164,6 +184,7 @@ const isPreSelect = computed(() => preSelect && !selected && !disableSelection)
 const overlayTransparent = computed(() => (selected || isPreSelect.value) && !isHovering.value)
 const overlayShown = computed(() => isHovering.value || overlayTransparent.value || preSelect)
 const hideFab = computed(() => selected || isPreSelect.value)
+const hideQuickAction = computed(() => selected || isPreSelect.value)
 </script>
 
 <style lang="scss">
