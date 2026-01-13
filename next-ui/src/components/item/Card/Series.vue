@@ -6,6 +6,7 @@
     :top-right="unreadCount"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     fab-icon="i-mdi:play"
+    :quick-action-icon="quickActionIcon"
     v-bind="props"
     @selection="(val) => emit('selection', val)"
   />
@@ -16,6 +17,7 @@ import type { components } from '@/generated/openapi/komga'
 import { seriesThumbnailUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
+import { useCurrentUser } from '@/colada/users'
 
 const intl = useIntl()
 
@@ -71,4 +73,7 @@ const lines = computed<ItemCardLine[]>(() => {
     },
   ]
 })
+
+const { isAdmin } = useCurrentUser()
+const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))
 </script>

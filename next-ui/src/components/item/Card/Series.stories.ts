@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import Series from './Series.vue'
 import { mockSeries1 } from '@/mocks/api/handlers/series'
 import { fn } from 'storybook/test'
+import { httpTyped } from '@/mocks/api/httpTyped'
+import { userRegular } from '@/mocks/api/handlers/users'
 
 const meta = {
   component: Series,
@@ -66,5 +68,26 @@ export const Deleted: Story = {
 export const Selected: Story = {
   args: {
     selected: true,
+  },
+}
+
+export const Hover: Story = {
+  args: {},
+  play: ({ canvas, userEvent }) => {
+    userEvent.hover(canvas.getByRole('img'))
+  },
+}
+
+export const HoverNonAdmin: Story = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        httpTyped.get('/api/v2/users/me', ({ response }) => response(200).json(userRegular)),
+      ],
+    },
+  },
+  play: ({ canvas, userEvent }) => {
+    userEvent.hover(canvas.getByRole('img'))
   },
 }

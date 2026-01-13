@@ -28,6 +28,7 @@ const meta = {
     width: 150,
     onSelection: fn(),
     onClickFab: fn(),
+    onClickQuickAction: fn(),
     preSelect: false,
     selected: false,
   },
@@ -81,6 +82,15 @@ export const TopRightCount: Story = {
 export const TopRightIcon: Story = {
   args: {
     topRightIcon: 'i-mdi:check',
+  },
+}
+
+export const QuickActionIcon: Story = {
+  args: {
+    quickActionIcon: 'i-mdi:pencil',
+  },
+  play: ({ canvas, userEvent }) => {
+    userEvent.hover(canvas.getByRole('img'))
   },
 }
 
