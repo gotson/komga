@@ -14,3 +14,14 @@ html {
 .link-underline:hover {
     text-decoration: underline;
 }
+
+// This requires the following CSS variables to be set:
+// --lines: the number of lines to display
+// --line-height: the line height
+.force-line-count {
+    display: -webkit-box !important;
+    -webkit-line-clamp: var(--lines, 2);
+    -webkit-box-orient: vertical;
+    overflow: hidden !important;
+    height: calc(var(--line-height) * var(--lines, 1) * 1rem);
+}

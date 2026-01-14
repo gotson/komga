@@ -1,5 +1,8 @@
 <template>
-  <v-card :width="width">
+  <v-card
+    v-on-long-press.prevent="onCardLongPress"
+    :width="width"
+  >
     <v-hover
       v-slot="{ props }"
       v-model="isHovering"
@@ -52,7 +55,7 @@
         >
           <!--  Top right number / icon  -->
           <v-icon-btn
-            v-if="!disableSelection"
+            v-if="!hideSelection"
             :icon="
               isPreSelect && !isHovering
                 ? 'i-mdi:checkbox-blank-circle-outline'
@@ -89,6 +92,18 @@
             color="white"
             class="bottom-0 left-0 position-absolute"
             @click="emit('clickQuickAction')"
+            @mouseenter="(event: Event) => quickActionMouseEnter(event)"
+          />
+
+          <!--  Bottom right menu icon  -->
+          <v-icon-btn
+            v-if="isHovering && menuIcon && !hideMenu"
+            :icon="menuIcon"
+            variant="plain"
+            color="white"
+            class="bottom-0 right-0 position-absolute"
+            @click="emit('clickMenu')"
+            @mouseenter="(event: Event) => menuMouseEnter(event)"
           />
         </v-overlay>
       </div>
@@ -121,6 +136,14 @@
 
 <script setup lang="ts">
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
+import { vOnLongPress } from '@vueuse/components'
+import { usePrimaryInput } from '@/composables/device'
+
+const { isTouchPrimary } = usePrimaryInput()
+
+function onCardLongPress() {
+  if (isTouchPrimary.value) emit('cardLongPress')
+}
 
 const {
   stretchPoster = true,
@@ -129,6 +152,10 @@ const {
   selected = false,
   preSelect = false,
   fabIcon,
+  quickActionIcon,
+  quickActionMouseEnter = () => {},
+  menuIcon,
+  menuMouseEnter = () => {},
 } = defineProps<
   ItemCardProps & {
     /**
@@ -165,6 +192,20 @@ const {
      * Icon displayed in the bottom-left corner.
      */
     quickActionIcon?: string
+    /**
+     * Callback function called when the mouse enters the quick action button.
+     * @param event
+     */
+    quickActionMouseEnter?: (event: Event) => void
+    /**
+     * Icon displayed in the bottom-right corner.
+     */
+    menuIcon?: string
+    /**
+     * Callback function called when the mouse enters the menu button.
+     * @param event
+     */
+    menuMouseEnter?: (event: Event) => void
   }
 >()
 
@@ -172,19 +213,27 @@ const emit = defineEmits<
   ItemCardEmits & {
     clickFab: []
     clickQuickAction: []
+    clickMenu: []
+    cardLongPress: []
   }
 >()
 
 const isHovering = ref(false)
 
 const overlayDisabled = computed(() => {
-  return disableSelection && !fabIcon
+  return disableSelection && !fabIcon && !quickActionIcon && !menuIcon
 })
 const isPreSelect = computed(() => preSelect && !selected && !disableSelection)
-const overlayTransparent = computed(() => (selected || isPreSelect.value) && !isHovering.value)
-const overlayShown = computed(() => isHovering.value || overlayTransparent.value || preSelect)
-const hideFab = computed(() => selected || isPreSelect.value)
-const hideQuickAction = computed(() => selected || isPreSelect.value)
+const overlayTransparent = computed(
+  () => isTouchPrimary.value || ((selected || isPreSelect.value) && !isHovering.value),
+)
+const overlayShown = computed(() => isHovering.value || isPreSelect.value || selected)
+const hideSelection = computed(
+  () => disableSelection || (isTouchPrimary.value && !isPreSelect.value && !selected),
+)
+const hideFab = computed(() => selected || isPreSelect.value || isTouchPrimary.value)
+const hideQuickAction = computed(() => selected || isPreSelect.value || isTouchPrimary.value)
+const hideMenu = computed(() => selected || isPreSelect.value || isTouchPrimary.value)
 </script>
 
 <style lang="scss">

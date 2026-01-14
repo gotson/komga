@@ -22,3 +22,33 @@ export type ItemCardProps = {
 export type ItemCardEmits = {
   selection: [selected: boolean]
 }
+
+export type ItemCardTitle = {
+  /**
+   * Text to display.
+   */
+  text: string
+  /**
+   * Number of lines.
+   */
+  lines?: number
+}
+
+export type ItemCardLine = {
+  /**
+   * Text to display.
+   */
+  text?: string
+  /**
+   * Classes to apply.
+   */
+  classes?: string
+  /**
+   * Number of lines of text.
+   */
+  lines?: number
+  /**
+   * Whether the container will be shown even if `text` is empty.
+   */
+  allowEmpty?: boolean
+}
