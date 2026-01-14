@@ -32,7 +32,7 @@
             <v-col
               v-for="item in items"
               :key="item.raw.id"
-              cols="2"
+              cols="auto"
             >
               <ItemCardSeries
                 :series="item.raw"
