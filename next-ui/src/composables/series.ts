@@ -26,7 +26,7 @@ export function useEditSeriesMetadataDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateSeriesMetadata } = useUpdateSeriesMetadata()
 
-  const showDialog = (series: components['schemas']['SeriesDto']) => {
+  const prepareDialog = (series: components['schemas']['SeriesDto']) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit series metadata dialog title',
@@ -86,9 +86,14 @@ export function useEditSeriesMetadataDialog() {
     set: (val) => (dialogConfirmEdit.value.activator = val),
   })
 
+  function showDialog() {
+    dialogConfirmEdit.value.dialogProps.shown = true
+  }
+
   return {
-    showDialog: showDialog,
+    prepareDialog: prepareDialog,
     activator: activatorRef,
+    showDialog: showDialog,
   }
 }
 
@@ -241,7 +246,7 @@ export function useSeriesActions(
   ])
 
   //region Update Series metadata
-  const { showDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
+  const { prepareDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
     useEditSeriesMetadataDialog()
 
   function updateSeriesMetadata() {
