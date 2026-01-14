@@ -34,7 +34,7 @@
       </v-col>
       <v-col cols="auto">
         <v-btn
-          id="ID01KC5HANV8QMDAW8GW4HFZCY0B"
+          :id="id"
           :text="
             $formatMessage({
               description: 'Form add/edit library: General - root folder browse button',
@@ -60,7 +60,7 @@
     close-on-save
     scrollable
     :fullscreen="display.xs.value"
-    activator="#ID01KC5HANV8QMDAW8GW4HFZCY0B"
+    :activator="`#${id}`"
     @update:record="(val) => (model.root = val as string)"
   >
     <template #text="{ proxyModel }">
@@ -75,6 +75,8 @@ import RemoteFileList from '@/components/RemoteFileList.vue'
 import { useDisplay } from 'vuetify'
 
 const display = useDisplay()
+
+const id = useId()
 
 type LibraryCreationGeneral = Pick<components['schemas']['LibraryCreationDto'], 'name' | 'root'>
 
