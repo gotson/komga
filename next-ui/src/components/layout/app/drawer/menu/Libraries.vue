@@ -28,7 +28,7 @@
         @click.prevent="createLibrary"
       />
       <v-icon-btn
-        id="ID01KC5N8S3V35QV04SYETY01M9H"
+        :id="id"
         icon="i-mdi:dots-vertical"
         variant="text"
         :aria-label="
@@ -40,7 +40,7 @@
         "
         @click.prevent
       />
-      <LibraryMenuLibraries activator-id="#ID01KC5N8S3V35QV04SYETY01M9H" />
+      <LibraryMenuLibraries :activator-id="`#${id}`" />
     </template>
   </v-list-item>
 
@@ -54,7 +54,7 @@
     <template #append>
       <v-icon-btn
         v-if="isAdmin"
-        :id="`ID01KC5NTP02S3CMF12ZS2R4HNWX${library.id}`"
+        :id="`${id}${library.id}`"
         icon="i-mdi:dots-vertical"
         variant="text"
         :aria-label="
@@ -67,7 +67,7 @@
         @click.prevent
       />
       <LibraryMenuLibrary
-        :activator-id="`#ID01KC5NTP02S3CMF12ZS2R4HNWX${library.id}`"
+        :activator-id="`#${id}${library.id}`"
         :library="library"
       />
     </template>
@@ -140,6 +140,8 @@ const intl = useIntl()
 const display = useDisplay()
 const { unpinned, pinned, refresh } = useLibraries()
 const { isAdmin } = useCurrentUser()
+
+const id = useId()
 
 // ensure freshness, especially if libraries have been reordered
 void refresh()
