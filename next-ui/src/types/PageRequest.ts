@@ -1,4 +1,6 @@
 // from Vuetify
+import type { PageSize } from '@/types/page'
+
 export type SortItem = { key: string; order?: boolean | 'asc' | 'desc' }
 
 function vSortItemToSort(sortItem: SortItem): string {
@@ -12,6 +14,15 @@ export class PageRequest {
   readonly page?: number
   readonly size?: number
   readonly sort?: string[]
+
+  static FromPageSize(pageSize: PageSize, page?: number, sort?: string[]) {
+    return new PageRequest(
+      page,
+      pageSize === 'unpaged' ? undefined : pageSize,
+      sort,
+      pageSize === 'unpaged',
+    )
+  }
 
   static Unpaged(): PageRequest {
     return new PageRequest(undefined, undefined, undefined, true)
