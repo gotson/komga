@@ -9,8 +9,9 @@
       :disabled="overlayDisabled"
     >
       <div
-        class="position-relative"
+        :class="['position-relative', { 'cursor-pointer': isPreSelect || selected }]"
         v-bind="props"
+        @click="isPreSelect || selected ? emit('selection', !selected) : {}"
       >
         <v-img
           :contain="!stretchPoster"
@@ -57,14 +58,14 @@
           <v-icon-btn
             v-if="!hideSelection"
             :icon="
-              isPreSelect && !isHovering
-                ? 'i-mdi:checkbox-blank-circle-outline'
-                : 'i-mdi:checkbox-marked-circle'
+              selected || (isPreSelect && isHovering)
+                ? 'i-mdi:checkbox-marked-circle'
+                : 'i-mdi:checkbox-blank-circle-outline'
             "
             :variant="selected || preSelect ? 'text' : 'plain'"
             :color="selected ? 'primary' : 'white'"
             class="top-0 left-0 position-absolute"
-            @click="emit('selection', !selected)"
+            @click.stop="emit('selection', !selected)"
           />
 
           <!--  Center FAB  -->
@@ -80,7 +81,7 @@
               :color="fabHover ? 'primary' : 'white'"
               :class="{ plain: !fabHover }"
               v-bind="fabProps"
-              @click="emit('clickFab')"
+              @click.stop="emit('clickFab')"
             />
           </v-hover>
 
@@ -91,7 +92,7 @@
             variant="plain"
             color="white"
             class="bottom-0 left-0 position-absolute"
-            @click="emit('clickQuickAction')"
+            @click.stop="emit('clickQuickAction')"
             @mouseenter="(event: Event) => quickActionMouseEnter(event)"
           />
 
@@ -102,7 +103,7 @@
             variant="plain"
             color="white"
             class="bottom-0 right-0 position-absolute"
-            @click="emit('clickMenu')"
+            @click.stop="emit('clickMenu')"
             @mouseenter="(event: Event) => menuMouseEnter(event)"
           />
         </v-overlay>
@@ -146,7 +147,7 @@ function onCardLongPress() {
 }
 
 const {
-  stretchPoster = true,
+  stretchPoster = false,
   width = 150,
   disableSelection = false,
   selected = false,
