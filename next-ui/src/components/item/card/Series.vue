@@ -7,8 +7,23 @@
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     fab-icon="i-mdi:play"
     :quick-action-icon="quickActionIcon"
+    :quick-action-mouse-enter="
+      (event: Event) => (editMetadataActivator = event.currentTarget as Element)
+    "
+    :menu-icon="menuIcon"
+    :menu-mouse-enter="(event: Event) => (menuActivator = event.currentTarget as Element)"
     v-bind="props"
     @selection="(val) => emit('selection', val)"
+    @click-quick-action="showEditMetadataDialog()"
+    @card-long-press="bottomSheet = true"
+  />
+  <SeriesMenu
+    :series="series"
+    :activator="menuActivator"
+  />
+  <SeriesMenuBottomSheet
+    v-model="bottomSheet"
+    :series="series"
   />
 </template>
 
@@ -18,6 +33,7 @@ import { seriesThumbnailUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
+import { useEditSeriesMetadataDialog } from '@/composables/series'
 
 const intl = useIntl()
 
@@ -27,6 +43,8 @@ const { series, ...props } = defineProps<
   } & ItemCardProps
 >()
 const emit = defineEmits<ItemCardEmits>()
+
+const bottomSheet = ref(false)
 
 const isRead = computed(() => series.booksCount === series.booksReadCount)
 const unreadCount = computed(() =>
@@ -76,4 +94,14 @@ const lines = computed<ItemCardLine[]>(() => {
 
 const { isAdmin } = useCurrentUser()
 const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))
+const menuIcon = computed(() => (isAdmin.value ? 'i-mdi:dots-vertical' : undefined))
+
+const { showDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
+  useEditSeriesMetadataDialog()
+
+function showEditMetadataDialog() {
+  showEditSeriesMetadataDialog(series)
+}
+
+const menuActivator = ref()
 </script>
