@@ -150,4 +150,16 @@ export const seriesHandlers = [
       },
     })
   }),
+  httpTyped.patch('/api/v1/series/{seriesId}/metadata', ({ response }) => response(204).empty()),
+  httpTyped.post('/api/v1/series/{seriesId}/analyze', ({ response }) => response(202).empty()),
+  httpTyped.post('/api/v1/series/{seriesId}/metadata/refresh', ({ response }) =>
+    response(202).empty(),
+  ),
+  httpTyped.delete('/api/v1/series/{seriesId}/file', ({ response }) => response(202).empty()),
+  httpTyped.post('/api/v1/series/{seriesId}/read-progress', ({ response }) =>
+    response(204).empty(),
+  ),
+  httpTyped.delete('/api/v1/series/{seriesId}/read-progress', ({ response }) =>
+    response(204).empty(),
+  ),
 ]

@@ -33,6 +33,7 @@
     "@pinia/colada": "^0.21.1",
     "@pinia/colada-plugin-auto-refetch": "^0.2.4",
     "@pinia/colada-plugin-delay": "^0.1.4",
+    "@vueuse/components": "^14.1.0",
     "@vueuse/core": "^14.1.0",
     "@vueuse/router": "^14.1.0",
     "core-js": "^3.47.0",

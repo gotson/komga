@@ -94,6 +94,15 @@ export const QuickActionIcon: Story = {
   },
 }
 
+export const MenuIcon: Story = {
+  args: {
+    menuIcon: 'i-mdi:menu',
+  },
+  play: ({ canvas, userEvent }) => {
+    userEvent.hover(canvas.getByRole('img'))
+  },
+}
+
 export const SelectableHover: Story = {
   args: {},
   play: ({ canvas, userEvent }) => {
