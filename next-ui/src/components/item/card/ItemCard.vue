@@ -93,7 +93,6 @@
             color="white"
             class="bottom-0 left-0 position-absolute"
             @click.stop="emit('clickQuickAction')"
-            @mouseenter="(event: Event) => quickActionMouseEnter(event)"
           />
 
           <!--  Bottom right menu icon  -->
@@ -154,7 +153,6 @@ const {
   preSelect = false,
   fabIcon,
   quickActionIcon,
-  quickActionMouseEnter = () => {},
   menuIcon,
   menuMouseEnter = () => {},
 } = defineProps<
@@ -193,11 +191,6 @@ const {
      * Icon displayed in the bottom-left corner.
      */
     quickActionIcon?: string
-    /**
-     * Callback function called when the mouse enters the quick action button.
-     * @param event
-     */
-    quickActionMouseEnter?: (event: Event) => void
     /**
      * Icon displayed in the bottom-right corner.
      */

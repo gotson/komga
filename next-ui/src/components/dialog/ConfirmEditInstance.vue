@@ -25,6 +25,7 @@
  */
 import { useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
+import { syncRefs } from '@vueuse/core'
 
 const showDialog = ref<boolean>(false)
 const loading = ref<boolean>(false)
@@ -39,6 +40,11 @@ function hideDialog() {
 function setLoading(isLoading: boolean) {
   loading.value = isLoading
 }
+
+syncRefs(
+  toRef(() => confirmEdit.value.dialogProps.shown),
+  showDialog,
+)
 </script>
 
 <style scoped></style>
