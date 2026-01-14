@@ -51,7 +51,9 @@ export function usePagination() {
  * @param pageSize
  */
 export function useItemsPerPage(pageSize: MaybeRefOrGetter<PageSize>) {
-  const itemsPerPage = computed(() => (pageSize === 'unpaged' ? -1 : (pageSize as number)))
+  const itemsPerPage = computed(() =>
+    toValue(pageSize) === 'unpaged' ? -1 : (toValue(pageSize) as number),
+  )
 
   return {
     itemsPerPage: itemsPerPage,
