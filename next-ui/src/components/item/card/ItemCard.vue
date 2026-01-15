@@ -158,7 +158,7 @@ function onCardLongPress() {
 }
 
 const {
-  stretchPoster = true,
+  stretchPoster,
   width = 150,
   disableSelection = false,
   selected = false,
