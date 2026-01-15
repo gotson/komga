@@ -4,7 +4,7 @@ export type ItemCardProps = {
    *
    * Defaults to `150`.
    */
-  width?: string | number
+  width?: number
   /**
    * Disable card selection.
    */
@@ -17,6 +17,12 @@ export type ItemCardProps = {
    * State where the selection checkbox is shown, for instance when other items in the group have been selected already.
    */
   preSelect?: boolean
+  /**
+   * Whether to stretch the poster or not. If `false`, the image will have the `contain` property.
+   *
+   * Defaults to `true`.
+   */
+  stretchPoster?: boolean
 }
 
 export type ItemCardEmits = {
