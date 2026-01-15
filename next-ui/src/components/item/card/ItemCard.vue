@@ -14,8 +14,8 @@
         @click="isPreSelect || selected ? emit('selection', !selected) : {}"
       >
         <v-img
-          :contain="!stretchPoster"
-          :position="stretchPoster ? 'top' : undefined"
+          :cover="stretchPoster"
+          :position="stretchPoster ? 'top ' : undefined"
           :src="posterUrl"
           lazy-src="@/assets/cover.svg"
           aspect-ratio="0.7071"
@@ -146,7 +146,7 @@ function onCardLongPress() {
 }
 
 const {
-  stretchPoster = false,
+  stretchPoster = true,
   width = 150,
   disableSelection = false,
   selected = false,
@@ -161,12 +161,6 @@ const {
      * Poster URL.
      */
     posterUrl?: string
-    /**
-     * Whether to stretch the poster or not. If `false`, the image will have the `contain` property.
-     *
-     * Defaults to `true`.
-     */
-    stretchPoster?: boolean
     /**
      * Card title. Displayed under the poster.
      */
