@@ -8,10 +8,10 @@
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     fab-icon="i-mdi:play"
     :quick-action-icon="quickActionIcon"
+    :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
-    :menu-mouse-enter="(event: Event) => (menuActivator = event.currentTarget as Element)"
+    :menu-props="menuProps"
     v-bind="props"
-    @mouseenter="editMetadataActivator = `#${id}`"
     @selection="(val) => emit('selection', val)"
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
@@ -95,13 +95,21 @@ const lines = computed<ItemCardLine[]>(() => {
 
 const { isAdmin } = useCurrentUser()
 const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))
+const quickActionProps = computed(() => ({
+  id: `${id}_quick`,
+}))
 const menuIcon = computed(() => (isAdmin.value ? 'i-mdi:dots-vertical' : undefined))
+const menuProps = computed(() => ({
+  onmouseenter: (event: Event) => (menuActivator.value = event.currentTarget as Element),
+}))
 
 const {
   prepareDialog: prepareEditSeriesMetadataDialog,
   showDialog: showEditSeriesMetadataDialog,
   activator: editMetadataActivator,
 } = useEditSeriesMetadataDialog()
+
+editMetadataActivator.value = `#${id}_quick`
 
 function showEditMetadataDialog() {
   prepareEditSeriesMetadataDialog(series)
