@@ -35,6 +35,7 @@
               cols="auto"
             >
               <SeriesCard
+                stretch-poster
                 :series="item.raw"
                 :selected="isSelected(item)"
                 :pre-select="preSelect"
