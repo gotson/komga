@@ -31,6 +31,13 @@ const meta = {
     onClickQuickAction: fn(),
     preSelect: false,
     selected: false,
+    stretchPoster: true,
+  },
+  argTypes: {
+    posterUrl: {
+      options: [seriesThumbnailUrl('id'), seriesThumbnailUrl('idL')],
+      control: { type: 'radio' },
+    },
   },
 } satisfies Meta<typeof ItemCard>
 
@@ -82,6 +89,22 @@ export const TopRightCount: Story = {
 export const TopRightIcon: Story = {
   args: {
     topRightIcon: 'i-mdi:check',
+  },
+}
+
+export const LandscapeStretched: Story = {
+  args: {
+    topRightIcon: 'i-mdi:check',
+    posterUrl: seriesThumbnailUrl('idL'),
+    stretchPoster: true,
+  },
+}
+
+export const LandscapeNotStretched: Story = {
+  args: {
+    topRightIcon: 'i-mdi:check',
+    posterUrl: seriesThumbnailUrl('idL'),
+    stretchPoster: false,
   },
 }
 
