@@ -97,6 +97,7 @@ const { isAdmin } = useCurrentUser()
 const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))
 const quickActionProps = computed(() => ({
   id: `${id}_quick`,
+  onmouseenter: () => (editMetadataActivator.value = `#${id}_quick`),
 }))
 const menuIcon = computed(() => (isAdmin.value ? 'i-mdi:dots-vertical' : undefined))
 const menuProps = computed(() => ({
@@ -108,8 +109,6 @@ const {
   showDialog: showEditSeriesMetadataDialog,
   activator: editMetadataActivator,
 } = useEditSeriesMetadataDialog()
-
-editMetadataActivator.value = `#${id}_quick`
 
 function showEditMetadataDialog() {
   prepareEditSeriesMetadataDialog(series)
