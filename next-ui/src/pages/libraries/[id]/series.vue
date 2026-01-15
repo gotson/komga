@@ -72,6 +72,7 @@ import { useGetLibrariesById } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { useItemsPerPage, usePagination } from '@/composables/pagination'
 import { useSearchConditionLibraries } from '@/composables/search'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -79,9 +80,10 @@ const { libraries } = useGetLibrariesById(libraryId)
 const { librariesCondition } = useSearchConditionLibraries(libraries)
 
 const appStore = useAppStore()
+const { browsingPageSize } = storeToRefs(appStore)
 const presentationMode = appStore.getPresentationMode(`${libraryId}_series`, 'grid')
 
-const { itemsPerPage } = useItemsPerPage(appStore.browsingPageSize)
+const { itemsPerPage } = useItemsPerPage(browsingPageSize)
 const { page0, page1, pageCount } = usePagination()
 
 const selectedItems = ref<components['schemas']['SeriesDto'][]>([])
