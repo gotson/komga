@@ -34,7 +34,7 @@
               :key="item.raw.id"
               cols="auto"
             >
-              <ItemCardSeries
+              <SeriesCard
                 :series="item.raw"
                 :selected="isSelected(item)"
                 :pre-select="preSelect"

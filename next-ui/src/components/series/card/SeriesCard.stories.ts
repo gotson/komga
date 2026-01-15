@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import Series from './Series.vue'
+import SeriesCard from './SeriesCard.vue'
 import { mockSeries1 } from '@/mocks/api/handlers/series'
 import { fn } from 'storybook/test'
 import { httpTyped } from '@/mocks/api/httpTyped'
@@ -9,13 +9,13 @@ import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.v
 import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
 
 const meta = {
-  component: Series,
+  component: SeriesCard,
   render: (args: object) => ({
-    components: { Series, DialogConfirmEditInstance, DialogConfirmInstance },
+    components: { SeriesCard, DialogConfirmEditInstance, DialogConfirmInstance },
     setup() {
       return { args }
     },
-    template: '<Series v-bind="args" /><DialogConfirmEditInstance/><DialogConfirmInstance/>',
+    template: '<SeriesCard v-bind="args" /><DialogConfirmEditInstance/><DialogConfirmInstance/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
@@ -29,7 +29,7 @@ const meta = {
     series: mockSeries1,
     onSelection: fn(),
   },
-} satisfies Meta<typeof Series>
+} satisfies Meta<typeof SeriesCard>
 
 export default meta
 type Story = StoryObj<typeof meta>
