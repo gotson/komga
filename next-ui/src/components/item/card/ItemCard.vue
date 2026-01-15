@@ -88,6 +88,7 @@
           <!--  Bottom left quick action icon  -->
           <v-icon-btn
             v-if="isHovering && quickActionIcon && !hideQuickAction"
+            v-bind="quickActionPropsOverlay"
             :icon="quickActionIcon"
             variant="plain"
             color="white"
@@ -102,10 +103,20 @@
             variant="plain"
             color="white"
             class="bottom-0 right-0 position-absolute"
+            v-bind="menuProps"
             @click.stop="emit('clickMenu')"
-            @mouseenter="(event: Event) => menuMouseEnter(event)"
           />
         </v-overlay>
+
+        <!--  Underlay: Bottom left quick action icon  -->
+        <!--  Underlay is necessary to use as activator for dialogs, as the overlay disappears when it loses focus  -->
+        <v-icon-btn
+          v-bind="quickActionPropsUnderlay"
+          variant="text"
+          color="red"
+          class="bottom-0 left-0 position-absolute"
+          style="z-index: -50"
+        />
       </div>
     </v-hover>
 
@@ -138,6 +149,7 @@
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { vOnLongPress } from '@vueuse/components'
 import { usePrimaryInput } from '@/composables/device'
+import { reactiveOmit, reactivePick } from '@vueuse/core'
 
 const { isTouchPrimary } = usePrimaryInput()
 
@@ -153,8 +165,8 @@ const {
   preSelect = false,
   fabIcon,
   quickActionIcon,
+  quickActionProps = {},
   menuIcon,
-  menuMouseEnter = () => {},
 } = defineProps<
   ItemCardProps & {
     /**
@@ -186,14 +198,17 @@ const {
      */
     quickActionIcon?: string
     /**
+     * Props to pass to the menu icon element.
+     */
+    quickActionProps?: Record<string, unknown>
+    /**
      * Icon displayed in the bottom-right corner.
      */
     menuIcon?: string
     /**
-     * Callback function called when the mouse enters the menu button.
-     * @param event
+     * Props to pass to the menu icon element.
      */
-    menuMouseEnter?: (event: Event) => void
+    menuProps?: object
   }
 >()
 
@@ -222,6 +237,12 @@ const hideSelection = computed(
 const hideFab = computed(() => selected || isPreSelect.value || isTouchPrimary.value)
 const hideQuickAction = computed(() => selected || isPreSelect.value || isTouchPrimary.value)
 const hideMenu = computed(() => selected || isPreSelect.value || isTouchPrimary.value)
+
+// for the quick action button to work as a dialog activator
+// when the dialog is shown, the overlay disappears, along with the activator
+// we use an underlay with the same positioning, but a negative z-index, and we map the `id` to the underlay
+const quickActionPropsOverlay = reactiveOmit(quickActionProps, 'id')
+const quickActionPropsUnderlay = reactivePick(quickActionProps, 'id')
 </script>
 
 <style lang="scss">
