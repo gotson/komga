@@ -11,9 +11,9 @@
         v-if="manageActions.length > 0"
         :title="
           $formatMessage({
-            description: 'Series menu: manage',
-            defaultMessage: 'Manage series',
-            id: 'Ougw+k',
+            description: 'Book menu: manage',
+            defaultMessage: 'Manage book',
+            id: 'E8yw5g',
           })
         "
         append-icon="i-mdi:menu-right"
@@ -40,14 +40,14 @@
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { useSeriesActions } from '@/composables/series/useSeriesActions'
+import { useBookActions } from '@/composables/book/useBookActions'
 
-const { activator, series } = defineProps<{
+const { activator, book } = defineProps<{
   activator: string | Element
-  series: components['schemas']['SeriesDto']
+  book: components['schemas']['BookDto']
 }>()
 
-const { actions, manageActions } = useSeriesActions(series)
+const { actions, manageActions } = useBookActions(book)
 </script>
 
 <script lang="ts"></script>
