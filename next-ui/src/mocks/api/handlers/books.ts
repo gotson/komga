@@ -4,7 +4,7 @@ import { PageRequest } from '@/types/PageRequest'
 import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 
-const book = {
+export const mockBook = {
   id: '05RKH8CC8B4RW',
   seriesId: '57',
   seriesTitle: 'Super Duck',
@@ -63,7 +63,7 @@ const book = {
 
 export function mockBooks(count: number) {
   return [...Array(count).keys()].map((index) =>
-    Object.assign({}, book, {
+    Object.assign({}, mockBook, {
       id: `BOOK${index + 1}`,
       name: `Book ${index + 1}`,
       number: index + 1,
@@ -91,7 +91,7 @@ export const booksHandlers = [
   httpTyped.get('/api/v1/books/{bookId}', ({ params, response }) => {
     if (params.bookId === '404') return response(404).empty()
     return response(200).json(
-      Object.assign({}, book, { metadata: { title: `Book ${params.bookId}` } }),
+      Object.assign({}, mockBook, { metadata: { title: `Book ${params.bookId}` } }),
     )
   }),
   httpTyped.post('/api/v1/books/import', ({ response }) => {
@@ -107,4 +107,12 @@ export const booksHandlers = [
       },
     })
   }),
+  httpTyped.patch('/api/v1/books/{bookId}/metadata', ({ response }) => response(204).empty()),
+  httpTyped.post('/api/v1/books/{bookId}/analyze', ({ response }) => response(202).empty()),
+  httpTyped.post('/api/v1/books/{bookId}/metadata/refresh', ({ response }) =>
+    response(202).empty(),
+  ),
+  httpTyped.delete('/api/v1/books/{bookId}/file', ({ response }) => response(202).empty()),
+  httpTyped.patch('/api/v1/books/{bookId}/read-progress', ({ response }) => response(204).empty()),
+  httpTyped.delete('/api/v1/books/{bookId}/read-progress', ({ response }) => response(204).empty()),
 ]

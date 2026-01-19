@@ -23,18 +23,18 @@
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { useSeriesActions } from '@/composables/series/useSeriesActions'
+import { useBookActions } from '@/composables/book/useBookActions'
 
 const isShown = defineModel<boolean>({ default: false })
 
-const { series } = defineProps<{
-  series: components['schemas']['SeriesDto']
+const { book } = defineProps<{
+  book: components['schemas']['BookDto']
 }>()
 
 function afterClick() {
   isShown.value = false
 }
-const { actions, manageActions } = useSeriesActions(series, afterClick)
+const { actions, manageActions } = useBookActions(book, afterClick)
 </script>
 
 <script lang="ts"></script>
