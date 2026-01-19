@@ -32,7 +32,8 @@ import { seriesThumbnailUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
-import { useEditSeriesMetadataDialog } from '@/composables/series'
+
+import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 
 const intl = useIntl()
 

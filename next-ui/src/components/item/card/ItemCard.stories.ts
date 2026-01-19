@@ -156,6 +156,12 @@ export const PreSelect: Story = {
   },
 }
 
+export const Progress: Story = {
+  args: {
+    progressPercent: 33,
+  },
+}
+
 export const Big: Story = {
   args: {
     lines: [{ text: 'Line 1' }, { text: 'Line 2' }],

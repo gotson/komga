@@ -33,6 +33,7 @@
           <!--  This will just show lazy-src without the v-progress  -->
           <template #error></template>
 
+          <!--  Top-right icon  -->
           <div
             v-if="topRightIcon || topRight"
             class="top-0 right-0 position-absolute translucent text-white px-2 py-1 font-weight-bold text-caption"
@@ -44,6 +45,16 @@
             />
             <template v-else>{{ topRight }}</template>
           </div>
+
+          <!--  Progress bar  -->
+          <v-progress-linear
+            v-if="progressPercent"
+            :model-value="progressPercent"
+            color="primary"
+            height="10"
+            class="position-absolute bottom-0"
+            style="top: unset"
+          />
         </v-img>
 
         <!--  The overlay is outside the image, so that we can scale transform the image only -->
@@ -209,6 +220,7 @@ const {
      * Props to pass to the menu icon element.
      */
     menuProps?: object
+    progressPercent?: number
   }
 >()
 
