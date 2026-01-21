@@ -4,7 +4,7 @@ import { createMockColada } from '@/mocks/pinia-colada'
 import { enableAutoUnmount } from '@vue/test-utils'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { httpTyped } from '@/mocks/api/httpTyped'
-import { libraries } from '@/mocks/api/handlers/libraries'
+import { mockLibraries } from '@/mocks/api/handlers/libraries'
 import type { components } from '@/generated/openapi/komga'
 import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import { waitFor } from 'storybook/test'
@@ -15,17 +15,17 @@ beforeEach(() =>
   server.use(
     httpTyped.get('/api/v1/libraries', ({ response }) => {
       const bds = {
-        ...libraries[0],
+        ...mockLibraries[0],
         id: '3',
         name: 'BDs',
       } as components['schemas']['LibraryDto']
       const magazines = {
-        ...libraries[0],
+        ...mockLibraries[0],
         id: '4',
         name: 'Magazines',
       } as components['schemas']['LibraryDto']
       const manga = {
-        ...libraries[0],
+        ...mockLibraries[0],
         id: '5',
         name: 'Mangas',
       } as components['schemas']['LibraryDto']

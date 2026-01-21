@@ -4,7 +4,7 @@ import ReorderLibraries from './ReorderLibraries.vue'
 import { httpTyped } from '@/mocks/api/httpTyped'
 import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import type { components } from '@/generated/openapi/komga'
-import { libraries } from '@/mocks/api/handlers/libraries'
+import { mockLibraries } from '@/mocks/api/handlers/libraries'
 
 const meta = {
   component: ReorderLibraries,
@@ -31,21 +31,21 @@ type Story = StoryObj<typeof meta>
 
 const libHandler = httpTyped.get('/api/v1/libraries', ({ response }) => {
   const bds = {
-    ...libraries[0],
+    ...mockLibraries[0],
     id: '3',
     name: 'BDs',
   } as components['schemas']['LibraryDto']
   const magazines = {
-    ...libraries[0],
+    ...mockLibraries[0],
     id: '4',
     name: 'Magazines',
   } as components['schemas']['LibraryDto']
   const manga = {
-    ...libraries[0],
+    ...mockLibraries[0],
     id: '5',
     name: 'Mangas',
   } as components['schemas']['LibraryDto']
-  const libs = [...libraries, bds, magazines, manga]
+  const libs = [...mockLibraries, bds, magazines, manga]
   return response(200).json(libs)
 })
 

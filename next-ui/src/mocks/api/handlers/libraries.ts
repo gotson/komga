@@ -2,7 +2,7 @@ import { httpTyped } from '@/mocks/api/httpTyped'
 import type { components } from '@/generated/openapi/komga'
 import { response400BadRequest, response404NotFound } from '@/mocks/api/handlers'
 
-export const libraries = [
+export const mockLibraries = [
   {
     id: '1',
     name: 'eBooks',
@@ -69,16 +69,16 @@ export const libraries = [
 ]
 
 export const librariesHandlers = [
-  httpTyped.get('/api/v1/libraries', ({ response }) => response(200).json(libraries)),
+  httpTyped.get('/api/v1/libraries', ({ response }) => response(200).json(mockLibraries)),
   httpTyped.post('/api/v1/libraries', async ({ request, response }) => {
     const body = await request.json()
 
-    if (libraries.some((it) => it.id === body.name)) {
+    if (mockLibraries.some((it) => it.id === body.name)) {
       return response.untyped(response400BadRequest())
     }
 
     const lib = Object.assign({}, body, { unavailable: false, id: body.name })
-    libraries.push(lib)
+    mockLibraries.push(lib)
 
     return response(200).json(lib)
   }),
@@ -86,26 +86,26 @@ export const librariesHandlers = [
     const body = await request.json()
     const libraryId = params['libraryId']
 
-    const existing = libraries.find((it) => it.id === libraryId)
+    const existing = mockLibraries.find((it) => it.id === libraryId)
 
     if (!existing) {
       return response.untyped(response404NotFound())
     }
 
-    libraries[libraries.indexOf(existing)] = Object.assign({}, existing, body)
+    mockLibraries[mockLibraries.indexOf(existing)] = Object.assign({}, existing, body)
 
     return response(204).empty()
   }),
   httpTyped.delete('/api/v1/libraries/{libraryId}', ({ params, response }) => {
     const libraryId = params['libraryId']
 
-    const existing = libraries.find((it) => it.id === libraryId)
+    const existing = mockLibraries.find((it) => it.id === libraryId)
 
     if (!existing) {
       return response.untyped(response404NotFound())
     }
 
-    libraries.splice(libraries.indexOf(existing), 1)
+    mockLibraries.splice(mockLibraries.indexOf(existing), 1)
 
     return response(204).empty()
   }),
