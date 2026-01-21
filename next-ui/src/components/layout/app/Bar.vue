@@ -14,6 +14,7 @@
         </template>
       </v-app-bar-nav-icon>
     </template>
+
     <v-app-bar-title>
       <RouterLink to="/">
         <v-avatar start>
@@ -22,8 +23,11 @@
       </RouterLink>
       Komga
     </v-app-bar-title>
-    <LocaleSelector />
-    <ThemeSelector />
+
+    <template #append>
+      <LocaleSelector />
+      <ThemeSelector />
+    </template>
   </v-app-bar>
 </template>
 
