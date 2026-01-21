@@ -17,6 +17,7 @@ export const useAppStore = defineStore('app', {
      * Use the getter to ensure a default value is always set.
      */
     presentationMode: {} as Record<string, PresentationMode>,
+    gridCardWidth: 150,
     // transient
     reorderLibraries: false,
   }),
@@ -40,6 +41,7 @@ export const useAppStore = defineStore('app', {
       'importBooksPath',
       'browsingPageSize',
       'presentationMode',
+      'gridCardWidth',
     ],
   },
 })
