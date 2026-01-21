@@ -2,15 +2,26 @@
   <v-app-bar>
     <v-spacer />
 
-    <PageSizeSelector
-      v-model="appStore.browsingPageSize"
-      allow-unpaged
-      :sizes="[1, 10, 20]"
+    <v-slider
+      v-if="presentationMode === 'grid'"
+      v-model="appStore.gridCardWidth"
+      :min="130"
+      :max="200"
+      color="surface-darken"
+      hide-details
+      thumb-size="15"
+      max-width="80"
     />
 
     <PresentationSelector
       v-model="presentationMode"
       :modes="['grid', 'list']"
+    />
+
+    <PageSizeSelector
+      v-model="appStore.browsingPageSize"
+      allow-unpaged
+      :sizes="[1, 10, 20]"
     />
   </v-app-bar>
 
@@ -39,6 +50,7 @@
                 :series="item.raw"
                 :selected="isSelected(item)"
                 :pre-select="preSelect"
+                :width="appStore.gridCardWidth"
                 @selection="toggleSelect(item)"
               />
             </v-col>
