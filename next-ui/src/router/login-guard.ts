@@ -1,9 +1,11 @@
 import type { Router } from 'vue-router'
 import { useCurrentUser } from '@/colada/users'
 
-// check if the user is authenticated before navigating to any page
-// the authentication is cached by Pinia Colada
-// redirect to the startup page if not authenticated
+/**
+ * Check if the user is authenticated before navigating to any page.
+ * The authentication is cached by Pinia Colada.
+ * Redirect to the startup page if not authenticated.
+ */
 export function useLoginGuard(router: Router) {
   router.beforeEach((to) => {
     if (!to.meta.noAuth) {

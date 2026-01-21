@@ -11,5 +11,9 @@ declare module 'vue-router' {
   interface RouteMeta {
     noAuth?: boolean
     requiresRole?: UserRoles
+    /**
+     * Indicates whether the scroll position should be persisted and restored for this page.
+     */
+    scrollable?: boolean
   }
 }
