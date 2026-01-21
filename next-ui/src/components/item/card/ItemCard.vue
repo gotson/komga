@@ -253,8 +253,8 @@ const hideMenu = computed(() => selected || isPreSelect.value || isTouchPrimary.
 // for the quick action button to work as a dialog activator
 // when the dialog is shown, the overlay disappears, along with the activator
 // we use an underlay with the same positioning, but a negative z-index, and we map the `id` to the underlay
-const quickActionPropsOverlay = reactiveOmit(quickActionProps, 'id')
-const quickActionPropsUnderlay = reactivePick(quickActionProps, 'id')
+const quickActionPropsOverlay = reactiveOmit(reactive(quickActionProps), 'id')
+const quickActionPropsUnderlay = reactivePick(reactive(quickActionProps), 'id')
 </script>
 
 <style lang="scss">
