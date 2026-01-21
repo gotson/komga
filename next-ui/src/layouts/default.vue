@@ -1,5 +1,5 @@
 <template>
-  <LayoutAppBar />
+  <LayoutAppBarHolder />
 
   <LayoutAppDrawer />
 
