@@ -43,7 +43,7 @@ export const availableLocales = loadAvailableLocales()
 
 /**
  * Gets the saved locale from localStorage if defined and valid.
- * Else tries to get the best matching language from the brower's preferred languages.
+ * Else tries to get the best matching language from the browser's preferred languages.
  * If the locale is not valid, defaults to 'fallbackLocale'.
  */
 export function getLocale(): string {
