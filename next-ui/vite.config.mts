@@ -42,7 +42,7 @@ export default defineConfig(({ mode }) => ({
       dirs: ['src/components'],
       extensions: ['vue', 'ts'],
       include: [/\.vue$/, /\.[tj]s$/],
-      globsExclude: ['src/**/*.stories.*'],
+      excludeNames: [/\.stories/],
       directoryAsNamespace: true,
       collapseSamePrefixes: true,
     }),
