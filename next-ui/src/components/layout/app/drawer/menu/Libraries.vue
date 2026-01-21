@@ -44,41 +44,11 @@
     </template>
   </v-list-item>
 
-  <v-list-item
+  <LayoutAppDrawerMenuLibraryItem
     v-for="library in pinned"
     :key="library.id"
-    :title="library.name"
-    :to="`/libraries/${library.id}`"
-    prepend-icon="blank"
-  >
-    <template
-      v-if="library.unavailable"
-      #subtitle
-    >
-      <span class="text-error">{{ unavailableMessage }}</span>
-    </template>
-
-    <template #append>
-      <v-icon-btn
-        v-if="isAdmin"
-        :id="`${id}${library.id}`"
-        icon="i-mdi:dots-vertical"
-        variant="text"
-        :aria-label="
-          $formatMessage({
-            description: 'Library menu button: aria label',
-            defaultMessage: 'library menu',
-            id: '3gimvl',
-          })
-        "
-        @click.prevent
-      />
-      <LibraryMenuLibrary
-        :activator-id="`#${id}${library.id}`"
-        :library="library"
-      />
-    </template>
-  </v-list-item>
+    :library="library"
+  />
 
   <v-list-group
     v-if="unpinned.length > 0"
@@ -98,41 +68,11 @@
       />
     </template>
 
-    <v-list-item
+    <LayoutAppDrawerMenuLibraryItem
       v-for="library in unpinned"
       :key="library.id"
-      :title="library.name"
-      :to="`/libraries/${library.id}`"
-      prepend-icon="blank"
-    >
-      <template
-        v-if="library.unavailable"
-        #subtitle
-      >
-        <span class="text-error">{{ unavailableMessage }}</span>
-      </template>
-
-      <template #append>
-        <v-icon-btn
-          v-if="isAdmin"
-          :id="`ID01KC5QH18T79WTFFJWJ6ES4SFE${library.id}`"
-          icon="i-mdi:dots-vertical"
-          variant="text"
-          :aria-label="
-            $formatMessage({
-              description: 'Library menu button: aria label',
-              defaultMessage: 'library menu',
-              id: '3gimvl',
-            })
-          "
-          @click.prevent
-        />
-        <LibraryMenuLibrary
-          :activator-id="`#ID01KC5QH18T79WTFFJWJ6ES4SFE${library.id}`"
-          :library="library"
-        />
-      </template>
-    </v-list-item>
+      :library="library"
+    />
   </v-list-group>
 </template>
 
