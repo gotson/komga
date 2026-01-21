@@ -10,4 +10,5 @@
 <route lang="yaml">
 meta:
   requiresRole: USER
+  scrollable: true
 </route>
