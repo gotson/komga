@@ -74,6 +74,7 @@ import { useAppStore } from '@/stores/app'
 import { useItemsPerPage, usePagination } from '@/composables/pagination'
 import { useSearchConditionLibraries } from '@/composables/search'
 import { storeToRefs } from 'pinia'
+import { useSelectionStore } from '@/stores/selection'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -87,7 +88,8 @@ const presentationMode = appStore.getPresentationMode(`${libraryId}_series`, 'gr
 const { itemsPerPage } = useItemsPerPage(browsingPageSize)
 const { page0, page1, pageCount } = usePagination()
 
-const selectedItems = ref<components['schemas']['SeriesDto'][]>([])
+const selectionStore = useSelectionStore()
+const { selection: selectedItems } = storeToRefs(selectionStore)
 const preSelect = computed(() => selectedItems.value.length > 0)
 
 const { data: series } = useQuery(seriesListQuery, () => {
