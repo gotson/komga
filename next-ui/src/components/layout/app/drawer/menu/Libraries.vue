@@ -51,6 +51,13 @@
     :to="`/libraries/${library.id}`"
     prepend-icon="blank"
   >
+    <template
+      v-if="library.unavailable"
+      #subtitle
+    >
+      <span class="text-error">{{ unavailableMessage }}</span>
+    </template>
+
     <template #append>
       <v-icon-btn
         v-if="isAdmin"
@@ -98,6 +105,13 @@
       :to="`/libraries/${library.id}`"
       prepend-icon="blank"
     >
+      <template
+        v-if="library.unavailable"
+        #subtitle
+      >
+        <span class="text-error">{{ unavailableMessage }}</span>
+      </template>
+
       <template #append>
         <v-icon-btn
           v-if="isAdmin"
@@ -203,4 +217,10 @@ function createLibrary() {
       })
   }
 }
+
+const unavailableMessage = intl.formatMessage({
+  description: 'Library list item subtitle: unavailable',
+  defaultMessage: 'Unavailable',
+  id: '5rziSG',
+})
 </script>

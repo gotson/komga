@@ -12,6 +12,7 @@ import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
 import SnackQueue from '@/components/SnackQueue.vue'
 import { delay, http } from 'msw'
 import { response401Unauthorized } from '@/mocks/api/handlers'
+import { mockLibraries } from '@/mocks/api/handlers/libraries'
 
 const meta = {
   component: Libraries,
@@ -43,6 +44,37 @@ export const Default: Story = {
     await waitFor(() => expect(canvas.queryByLabelText(/add library/i)).not.toBeNull())
     await waitFor(() => expect(canvas.queryByLabelText(/libraries menu/i)).not.toBeNull())
     await waitFor(() => expect(canvas.queryAllByLabelText(/library menu/i)).not.toBeNull())
+  },
+}
+
+export const Unavailable: Story = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        httpTyped.get('/api/v1/libraries', ({ response }) =>
+          response(200).json(mockLibraries.map((it) => ({ ...it, unavailable: true }))),
+        ),
+        httpTyped.get('/api/v1/client-settings/user/list', ({ response }) => {
+          const userLibraries: Record<string, ClientSettingUserLibrary> = {
+            '2': {
+              unpinned: true,
+            },
+          }
+          const settings: Record<string, components['schemas']['ClientSettingUserUpdateDto']> = {
+            [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
+              value: JSON.stringify(userLibraries),
+            },
+          }
+          return response(200).json(settings)
+        }),
+      ],
+    },
+  },
+  play: async ({ canvas, userEvent }) => {
+    await waitFor(() => userEvent.click(canvas.getByText(/more/i)))
+    await waitFor(() => expect(canvas.queryByText(/comics/i)).toBeVisible())
+    await waitFor(() => expect(canvas.queryAllByText(/unavailable/i)).toHaveLength(2))
   },
 }
 
