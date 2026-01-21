@@ -18,6 +18,7 @@ import type { App } from 'vue'
 // Navigation guards
 import { useLoginGuard } from '@/router/login-guard'
 import { useRoleGuard } from '@/router/role-guard'
+import { useScroll } from '@/router/scroll'
 
 export function registerPlugins(app: App) {
   app
@@ -39,4 +40,5 @@ export function registerPlugins(app: App) {
   // register navigation guards
   useLoginGuard(router)
   useRoleGuard(router)
+  useScroll(router)
 }

@@ -9,11 +9,24 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
 
+import { scrollerQuery, scrollMap } from '@/router/scroll'
+
 const router = createRouter({
   history: createWebHistory(
     import.meta.env.PROD ? window.resourceBaseUrl : import.meta.env.BASE_URL,
   ),
   routes: setupLayouts(routes),
+  scrollBehavior(to) {
+    if (scrollMap.has(to.path)) {
+      const scrollTo = scrollMap.get(to.path)
+      return new Promise((resolve) => {
+        void nextTick(() => {
+          document.querySelector(scrollerQuery)?.scrollTo(0, scrollTo ?? 0)
+          resolve(false)
+        })
+      })
+    }
+  },
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
