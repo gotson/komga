@@ -347,7 +347,7 @@
       "confirm_delete": "Да, удалить коллекцию \"{name}\"",
       "confirm_delete_multiple": "Да, удалить выбранные ({count}) коллекции",
       "dialog_title": "Удалить коллекцию",
-      "dialog_title_multiple": "Удалить Коллекции",
+      "dialog_title_multiple": "Удалить коллекции",
       "warning_html": "Коллекция <b>{name}</b> будет удалена с этого сервера. Ваши медиа файлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?",
       "warning_multiple_html": "Выбранные ({count}) коллекции будут удалены с этого сервера. Ваши медиафайлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?"
     },
@@ -361,8 +361,8 @@
       "button_confirm": "Удалить",
       "confirm_delete": "Да, удалить список чтения \"{name}\"",
       "confirm_delete_multiple": "Да, удалить выбранные ({count}) списки чтения",
-      "dialog_title": "Удалить Список Чтения",
-      "dialog_title_multiple": "Удалить Списки чтения",
+      "dialog_title": "Удалить список чтения",
+      "dialog_title_multiple": "Удалить списки чтения",
       "warning_html": "Список чтения <b>{name}</b> будет удален с этого сервера. Ваши медиа файлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?",
       "warning_multiple_html": "Выбранные ({count}) списки чтения будут удалены с этого сервера. Ваши медиафайлы не будут затронуты. Это действие <b>не может</b> быть отменено. Продолжить?"
     },
@@ -376,32 +376,34 @@
     "delete_user": {
       "button_confirm": "Удалить",
       "confirm_delete": "Да, удалить пользователя \"{name}\"",
-      "dialog_title": "Удалить Пользователя",
-      "warning_html": "Пользователь <b>{name}</b> буден удален с этого сервера. Это действие <b>не может</b> быть отменено. Продолжить?"
+      "dialog_title": "Удалить пользователя",
+      "warning_html": "Пользователь <b>{name}</b> буден удален с этого сервера. Это действие <b>нельзя</b> отменить. Продолжить?"
     },
     "edit_books": {
       "add_author_role_error_duplicate": "Уже существует",
-      "authors_notice_multiple_edit": "Вы редактируете авторов для нескольких книг. Это действие перезапишет существующих авторов для каждой книги.",
+      "authors_notice_multiple_edit": "Вы редактируете авторов для нескольких книг. Это приведёт к перезаписи существующих авторов в каждой книге.",
       "button_cancel": "Отмена",
       "button_confirm": "Сохранить изменения",
+      "copy_from": "Копировать из {field}",
       "dialog_title_multiple": "Редактировать {count} книгу | Редактировать {count} книг(и)",
       "dialog_title_single": "Редактировать {book}",
+      "field_alternate_title": "Альтернативное название",
       "field_isbn": "ISBN",
       "field_isbn_error": "Должен быть действительный ISBN-13",
       "field_link_label": "Метка",
       "field_link_url": "URL",
       "field_number": "Номер",
-      "field_number_sort": "Номер сортировки",
+      "field_number_sort": "Порядковый номер",
       "field_number_sort_hint": "Вы можете использовать десятичные числа",
       "field_release_date": "Дата выхода",
       "field_release_date_error": "Дата должна быть в действительном YYYY-MM-DD формате",
-      "field_summary": "Краткое Описание",
+      "field_summary": "Аннотация",
       "field_tags": "Теги",
       "field_title": "Заголовок",
       "tab_authors": "Авторы",
       "tab_general": "Общее",
       "tab_links": "Ссылки",
-      "tab_poster": "Постер",
+      "tab_poster": "Обложка",
       "tab_tags": "Теги",
       "tags_notice_multiple_edit": "Вы редактируете теги для нескольких книг. Это действие перзапишет существующие теги для каждой книги."
     },
@@ -409,8 +411,8 @@
       "button_cancel": "Отмена",
       "button_confirm": "Сохранить изменения",
       "dialog_title": "Редактировать коллекцию",
-      "field_manual_ordering": "Ручной порядок",
-      "label_ordering": "По умолчанию серии в коллекции будут отсортированы по имени. Вы можете включить ручной порядок, чтобы указать собственный порядок.",
+      "field_manual_ordering": "Ручное упорядочивание",
+      "label_ordering": "По умолчанию серии в коллекции упорядочиваются по названию. Вы можете включить ручную сортировку, чтобы задать собственный порядок.",
       "tab_general": "Общее",
       "tab_poster": "Постер"
     },
@@ -420,76 +422,90 @@
       "button_confirm_add": "Добавить",
       "button_confirm_edit": "Редактировать",
       "button_next": "Далее",
-      "dialog_title_add": "Добавить Библиотеку",
-      "dialot_title_edit": "Редактировать Библиотеку",
+      "dialog_title_add": "Добавить библиотеку",
+      "dialot_title_edit": "Редактировать библиотеку",
       "field_analysis_analyze_dimensions": "Анализировать размеры страниц",
       "field_analysis_hash_files": "Вычислять хеш-суммы файлов",
+      "field_analysis_hash_koreader": "Вычислять хеш-суммы файлов для KOReader",
       "field_analysis_hash_pages": "Вычислять хеш-суммы страниц",
       "field_convert_to_cbz": "Автоматическая конвертация в CBZ",
-      "field_import_barcode_isbn": "ISBN штрихкод",
+      "field_import_barcode_isbn": "ISBN штрих-код",
       "field_import_comicinfo_book": "Метаданные книг",
       "field_import_comicinfo_collections": "Коллекции",
       "field_import_comicinfo_readlists": "Списки чтения",
       "field_import_comicinfo_series": "Метаданные серий",
-      "field_import_epub_book": "Метаданные книг",
-      "field_import_epub_series": "Метаданные серий",
+      "field_import_comicinfo_series_append_volume": "Включать том в название серии",
+      "field_import_epub_book": "Метаданные книги",
+      "field_import_epub_series": "Метаданные серии",
       "field_import_local_artwork": "Локальные обложки",
-      "field_import_mylar_series": "Метаданные серий",
+      "field_import_mylar_series": "Метаданные серии",
       "field_name": "Имя",
+      "field_oneshotsdirectory": "Каталог для ваншотов",
       "field_repair_extensions": "Автоматическое исправление неправильных расширений файлов",
       "field_root_folder": "Корневой каталог",
       "field_scanner_empty_trash_after_scan": "Автоматически очищать корзину после каждого сканирования",
       "field_scanner_force_directory_modified_time": "Выполнять поиск даты модификации каталога",
+      "field_scanner_scan_startup": "Сканировать при запуске",
       "field_series_cover": "Обложка серии",
       "file_browser_dialog_button_confirm": "Выбрать",
       "file_browser_dialog_title": "Корневой каталог библиотеки",
       "label_analysis": "Анализ",
       "label_file_management": "Управление файлами",
-      "label_import_barcode_isbn": "Импорт ISBN через штрихкод",
+      "label_import_barcode_isbn": "Импорт ISBN через штрих-код",
       "label_import_comicinfo": "Импорт метаданных для CBR/CBZ, содержащих файл ComicInfo.xml",
-      "label_import_epub": "Импорт метаданных из EPUB файлов",
+      "label_import_epub": "Импорт метаданных из файлов EPUB",
       "label_import_local": "Импорт локальных медиа данных",
       "label_import_mylar": "Импортировать метаданные созданные Mylar",
+      "label_scan_directory_exclusions": "Исключения из каталогов",
+      "label_scan_types": "Сканировать следующие типы файлов",
       "label_scanner": "Сканер",
       "label_series_cover": "Обложка серии",
       "tab_general": "Общее",
       "tab_metadata": "Метаданные",
       "tab_options": "Опции",
-      "tooltip_scanner_force_modified_time": "Включите если библиотека размещена на Google Drive",
-      "tooltip_use_resources": "Может потреблять много ресурсов на больших библиотеках или медленном оборудовании"
+      "tooltip_oneshotsdirectory": "Оставьте пустым для отключения",
+      "tooltip_scanner_force_modified_time": "Включите, если библиотека размещена на Google Drive",
+      "tooltip_use_resources": "Может потреблять много ресурсов при работе с большими библиотеками или на слабом оборудовании"
     },
     "edit_readlist": {
       "button_cancel": "Отмена",
       "button_confirm": "Сохранить изменения",
       "dialog_title": "Редактировать список чтения",
+      "field_manual_ordering": "Ручная сортировка",
       "field_name": "Имя",
-      "field_summary": "Сводка",
+      "field_summary": "Аннотация",
+      "label_ordering": "По умолчанию книги в списке чтения упорядочиваются вручную. Вы можете отключить ручную сортировку, чтобы упорядочить книги по дате выхода.",
       "tab_general": "Общее",
-      "tab_poster": "Постер"
+      "tab_poster": "Обложка"
+    },
+    "edit_recommended": {
+      "button_confirm": "Сохранить изменения",
+      "button_reset": "Сбросить по умолчанию",
+      "dialog_title": "Редактировать рекомендуемый вид"
     },
     "edit_series": {
       "button_cancel": "Отмена",
       "button_confirm": "Сохранить изменения",
       "dialog_title_multiple": "Редактировать {count} серию | Редактировать {count} серий",
       "dialog_title_single": "Редактировать {series}",
-      "field_age_rating": "Возрастной Рейтинг",
-      "field_age_rating_error": "Возрастной рейтинг должен быть 0 или больше",
+      "field_age_rating": "Возрастной рейтинг",
+      "field_age_rating_error": "Возрастной рейтинг может быть большим или равным 0",
       "field_genres": "Жанры",
       "field_labels": "Метки",
       "field_language": "Язык",
       "field_language_hint": "Языковой тег IETF BCP 47",
       "field_publisher": "Издатель",
-      "field_reading_direction": "Направление Чтения",
-      "field_sort_title": "Сортировать по Названию",
+      "field_reading_direction": "Направление чтения",
+      "field_sort_title": "Сортировать по названию",
       "field_status": "Статус",
-      "field_summary": "Краткое Описание",
+      "field_summary": "Краткое описание",
       "field_tags": "Теги",
       "field_title": "Название",
-      "field_total_book_count": "Общее Количество Книг",
-      "field_total_book_count_error": "Общее количество книг может быть 1 или более",
+      "field_total_book_count": "Общее количество книг",
+      "field_total_book_count_error": "Общее количество книг может быть большим или равным 1",
       "mixed": "СМЕШАННЫЙ",
       "tab_general": "Общее",
-      "tab_poster": "Постер",
+      "tab_poster": "Обложка",
       "tab_tags": "Теги",
       "tags_notice_multiple_edit": "Вы редактируете теги для нескольких серий. Это действие перезапишет существующие теги для каждой серии."
     },
@@ -504,12 +520,14 @@
         "none": "Без ограничений"
       },
       "edit_restrictions_for": "Редактировать ограничения для {name}",
-      "label_age_restriction": "Ограничение по возрасту",
+      "label_age_restriction": "Возрастное ограничение",
       "label_allow_only_labels": "Разрешить только метки",
-      "label_exclude_labels": "Исключить метки"
+      "label_exclude_labels": "Исключить метки",
+      "tab_content_restrictions": "Ограничения контента",
+      "tab_shared_libraries": "Общие библиотеки"
     },
     "empty_trash": {
-      "body": "По умолчанию медиа-сервер не удаляет информацию для медиа сразу. Это помогает, если диск временно отключен. Когда вы очищаете корзину для библиотеки, вся информация об отсутствующих медиафайлах удаляется.",
+      "body": "По умолчанию медиасервер не удаляет информацию о медиафайлах сразу. Это помогает, если диск был временно отключён. При очистке корзины библиотеки удаляется вся информация об отсутствующих медиафайлах.",
       "button_confirm": "Очистить",
       "title": "Очистить корзину для библиотеки"
     },
@@ -517,17 +535,17 @@
       "button_cancel": "Отмена",
       "button_confirm_default": "Выбрать",
       "dialog_title_default": "Обозреватель файлов",
-      "parent_directory": "Родитель"
+      "parent_directory": "Родительский каталог"
     },
     "filename_chooser": {
       "button_choose": "Выбрать",
       "field_destination_filename": "Имя файла назначения",
       "label_source_filename": "Исходное имя файла",
       "table": {
-        "existing_file": "Существующий Файл",
+        "existing_file": "Существующий файл",
         "order": "Порядок"
       },
-      "title": "Имя Файла Назначения"
+      "title": "Имя файла назначения"
     },
     "password_change": {
       "button_cancel": "Отмена",
@@ -545,6 +563,7 @@
     },
     "series_picker": {
       "label_search_series": "Поиск Серии",
+      "no_results": "No Series found",
       "title": "Выберите Серию"
     },
     "server_stop": {
@@ -633,44 +652,97 @@
       "ONGOING": "Выпускается"
     }
   },
+  "epubreader": {
+    "publisher_font": "Издатель",
+    "settings": {
+      "column_count": "Количество столбцов",
+      "font_family": "Шрифт",
+      "layout": "Вид",
+      "layout_paginated": "Постраничный",
+      "layout_scroll": "Непрерывный",
+      "navigation_mode": "Режим навигации",
+      "navigation_options": {
+        "both": "Оба",
+        "buttons": "Кнопки",
+        "click": "Клик/Касание"
+      },
+      "page_margins": "Поля страницы",
+      "viewing_theme": "Цветовая схема"
+    },
+    "shortcuts": {
+      "cycle_pagination": "Циклическое переключение количества столбцов",
+      "cycle_viewing_theme": "Циклическое переключение цветовой схемы",
+      "font_size_decrease": "Уменьшить размер шрифта",
+      "font_size_increase": "Увеличить размер шрифта",
+      "menus": "Меню",
+      "next": "Вперёд",
+      "previous": "Назад",
+      "reader_navigation": "Навигация",
+      "scroll": "Изменить вид на непрерывный",
+      "settings": "Настройки",
+      "show_hide_toc": "Показать/скрыть оглавление"
+    }
+  },
   "error_codes": {
     "ERR_1000": "Не удалось получить доступ к файлу во время анализа",
-    "ERR_1001": "Неподдерживаемый медиа формат",
-    "ERR_1002": "Зашифрованные архивы RAR не поддерживаются",
-    "ERR_1003": "Solid RAR архивы не поддерживаются",
-    "ERR_1004": "Multi-Volume RAR архивы не поддерживаются",
-    "ERR_1005": "Неизвестная ошибка при анализе книги",
+    "ERR_1001": "Тип медиафайла не поддерживается",
+    "ERR_1002": "Зашифрованные RAR-архивы не поддерживаются",
+    "ERR_1003": "Непрерывные RAR-архивы не поддерживаются",
+    "ERR_1004": "Многотомные RAR-архивы не поддерживаются",
+    "ERR_1005": "Неизвестная ошибка в процессе анализа книги",
     "ERR_1006": "Книга не содержит ни одной страницы",
-    "ERR_1007": "Некоторые записи не могут быть проанализированы",
-    "ERR_1008": "Неизвестная ошибка при получении записей книги",
+    "ERR_1007": "Некоторые записи не удалось проанализировать",
+    "ERR_1008": "Неизвестная ошибка в процессе получения записей книги",
     "ERR_1009": "Список чтения с таким именем уже существует",
-    "ERR_1015": "Ошибка при десериализации Списка чтения ComicRack",
+    "ERR_1015": "Ошибка при десериализации CBL-файла ComicRack",
     "ERR_1016": "Каталог недоступен или не является каталогом",
     "ERR_1017": "Невозможно просканировать папку, которая является частью существующей библиотеки",
     "ERR_1018": "Файл не найден",
     "ERR_1019": "Невозможно импортировать файл, который является частью существующей библиотеки",
-    "ERR_1020": "Книга для обновления не относится к указанной серии",
+    "ERR_1020": "Книга для обновления не принадлежит указанной серии",
     "ERR_1021": "Файл назначения уже существует",
-    "ERR_1022": "Недавно импортированная книга не может быть отсканирована"
+    "ERR_1022": "Недавно импортированную книгу не удалось просканировать",
+    "ERR_1023": "Книга уже присутствует в списке чтения",
+    "ERR_1024": "Ошибка входа через OAuth2: отсутствует атрибут 'email'",
+    "ERR_1025": "Ошибка входа через OAuth2: локальный пользователь с таким email не существует",
+    "ERR_1026": "Ошибка входа через OpenID Connect: email не подтверждён",
+    "ERR_1027": "Ошибка входа через OpenID Connect: отсутствует атрибут 'email_verified'",
+    "ERR_1028": "Ошибка входа через OpenID Connect: отсутствует атрибут 'email'",
+    "ERR_1029": "CBL-файл ComicRack не содержит ни одного элемента 'Book'",
+    "ERR_1030": "В CBL-файле ComicRack отсутствует элемент 'Name'",
+    "ERR_1031": "В элементе 'Book' CBL-файла ComicRack отсутствует серия или номер",
+    "ERR_1032": "Файл EPUB имеет неверный медиа-тип",
+    "ERR_1033": "Некоторые записи отсутствуют",
+    "ERR_1034": "Ключ API с таким комментарием уже существует",
+    "ERR_1035": "Ошибка при получении оглавления EPUB",
+    "ERR_1036": "Ошибка при получении навигационных меток EPUB",
+    "ERR_1037": "Ошибка при получении списка страниц EPUB",
+    "ERR_1038": "Ошибка при получении страниц divina в EPUB",
+    "ERR_1039": "Ошибка при получении позиций в EPUB"
   },
   "filter": {
-    "age_rating": "Возрастной Рейтинг",
-    "age_rating_none": "Нет",
+    "age_rating": "Возрастной рейтинг",
+    "age_rating_none": "Не задан",
+    "any": "Любой",
     "complete": "Завершенные",
-    "genre": "жанр",
-    "in_progress": "Читаю",
-    "language": "язык",
-    "library": "библиотека",
-    "publisher": "издатель",
+    "genre": "Жанр",
+    "in_progress": "В процессе",
+    "language": "Язык",
+    "library": "Библиотека",
+    "media_profile": "Медиапрофиль",
+    "media_status": "Статус медиа",
+    "oneshot": "Ван-шот",
+    "publisher": "Издатель",
     "read": "Прочитано",
-    "release_date": "дата выхода",
-    "status": "статус",
-    "tag": "тег",
-    "unread": "Непрочитанные"
+    "release_date": "Дата выхода",
+    "sharing_label": "Метка общего доступа",
+    "status": "Статус",
+    "tag": "Тег",
+    "unread": "Не прочитано"
   },
   "filter_drawer": {
-    "filter": "фильтр",
-    "sort": "сортировка"
+    "filter": "Фильтр",
+    "sort": "Сортировка"
   },
   "history": {
     "header": {
@@ -688,19 +760,21 @@
   },
   "library_navigation": {
     "browse": "Обзор",
+    "browse_books": "Книги",
+    "browse_series": "Серии",
     "collections": "Коллекции",
-    "readlists": "Списки Чтения",
+    "readlists": "Списки чтения",
     "recommended": "Рекомендуемые"
   },
   "login": {
-    "create_user_account": "Создать аккаунт пользователя",
+    "create_user_account": "Создать учётную запись пользователя",
     "login": "Войти",
-    "unclaimed_html": "Этот Komga сервер еще не активен, чтобы получить к нему доступ вам необходимо создать аккаунт пользователя.<br><br>Выберите <strong>эл. почту</strong> и <strong>пароль</strong> и нажмите на <strong>Создать аккаунт пользователя</strong>."
+    "unclaimed_html": "Этот сервер Komga еще не активtн: для доступа к нему необходимо создать учётную запись пользователя.<br><br>Выберите <strong>email</strong> и <strong>пароль</strong> и нажмите на <strong>Создать учетную запись пользователя</strong>."
   },
   "media_analysis": {
     "comment": "Комментарий",
-    "media_analysis": "Медиа анализ",
-    "media_type": "Медиатип",
+    "media_analysis": "Медиаанализ",
+    "media_type": "Тип медиа",
     "name": "Имя",
     "size": "Размер",
     "status": "Статус",
@@ -710,6 +784,7 @@
     "add_to_collection": "Добавить в коллекцию",
     "add_to_readlist": "Добавить в список чтения",
     "analyze": "Анализировать",
+    "bulk_edit_metadata": "Массовое редактирование метаданных",
     "delete": "Удалить",
     "deselect_all": "Отменить выбор",
     "download_readlist": "Скачать список чтения",
@@ -719,19 +794,33 @@
     "empty_trash": "Очистить корзину",
     "mark_read": "Отметить как прочитанное",
     "mark_unread": "Пометить как непрочитанное",
+    "pin": "Закрепить",
     "refresh_metadata": "Обновить метаданные",
     "scan_library_files": "Сканировать файлы библиотеки",
-    "select_all": "Выбрать всё"
+    "scan_library_files_deep": "Сканировать файлы библиотеки (полное сканирование)",
+    "select_all": "Выбрать всё",
+    "unpin": "Открепить"
   },
   "metrics": {
+    "library_books": "Книг в библиотеке",
+    "library_disk_space": "Дисковое пространство библиотеки",
+    "library_series": "Серий в библиотеке",
+    "library_sidecars": "Сопутствующих файлов в библиотеке",
     "tasks_executed": "Выполнено задач",
     "tasks_total_time": "Общее время выполнения задач",
     "title": "Метрики"
+  },
+  "missing_posters": {
+    "title": "Отсутствующие обложки"
   },
   "navigation": {
     "home": "Главная",
     "libraries": "Библиотеки",
     "logout": "Выйти"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Вы можете закрепить библиотеку через меню с тремя точками",
+    "title": "Нет закреплённых библиотек"
   },
   "page_not_found": {
     "go_back_to_home_page": "Вернуться на главную",
@@ -742,12 +831,18 @@
     "less": "Свернуть",
     "more": "Подробнее"
   },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "Дубликат книги",
+      "error_choose_book": "Выберите книгу"
+    }
+  },
   "readlists_expansion_panel": {
     "manage_readlist": "Управлять списком чтения",
     "title": "Список чтения {name}"
   },
   "search": {
-    "no_results": "Поиск не вернул результатов",
+    "no_results": "Поиск не дал результатов",
     "search": "Поиск",
     "search_for_something_else": "Попробуйте поискать что-нибудь другое",
     "search_results_for": "Результаты поиска по запросу \"{name}\""
@@ -755,39 +850,68 @@
   "searchbox": {
     "in_library": "в {library}",
     "no_results": "Ничего не найдено",
-    "search_all": "Найти все…"
+    "search_all": "Искать везде…"
   },
   "server": {
     "server_management": {
       "button_cancel_all_tasks": "Отменить все задачи",
       "button_empty_trash": "Очистить корзину для всех библиотек",
       "button_scan_libraries": "Сканировать все библиотеки",
+      "button_scan_libraries_deep": "Сканировать все библиотеки (полное сканирование)",
       "button_shutdown": "Выключить",
+      "download_log": "Скачать файл журнала",
+      "notification_tasks_cancelled": "Нет задач для отмены | Одна задача отменена | Отменено задач: {count}",
       "section_title": "Управление сервером"
     },
-    "tab_title": "Сервер"
+    "tab_title": "Сервер",
+    "updates": "Обновления"
   },
   "server_settings": {
-    "server_settings": "Настройки Сервера"
+    "config_precedence": "Имеет приоритет над конфигурационным файлом",
+    "dialog_regenerate_thumbnails": {
+      "body": "Размер миниатюр изменён. Хотите пересоздать миниатюры книг?",
+      "btn_alternate": "Да, все книги",
+      "btn_cancel": "Нет",
+      "btn_confirm": "Да, но только если размер стал больше",
+      "title": "Пересоздать миниатюры"
+    },
+    "hint_kobo_port": "Устанавливайте только в случае проблем с синхронизацией обложек и загрузок",
+    "label_delete_empty_collections": "Удалять пустые коллекции после сканирования",
+    "label_delete_empty_readlists": "Удалять пустые списки чтения после сканирования",
+    "label_kepubify_path": "Путь к kepubify",
+    "label_kobo_port": "Внешний порт синхронизации Kobo",
+    "label_kobo_proxy": "Проксировать запросы синхронизации Kobo в магазин Kobo",
+    "label_rememberme_duration": "Длительность сессии (в днях)",
+    "label_server_context_path": "Базовый URL",
+    "label_server_port": "Порт сервера",
+    "label_task_pool_size": "Потоки задач",
+    "label_thumbnail_size": "Размер миниатюр",
+    "requires_restart": "Требуется перезапуск для применения изменений",
+    "server_settings": "Настройки сервера"
   },
   "settings_user": {
     "change_password": "Изменить пароль",
+    "edit_restrictions": "Редактировать ограничения",
     "edit_user": "Редактировать пользователя",
-    "latest_activity": "Активность: {date}",
+    "latest_activity": "Последняя активность: {date}",
     "no_recent_activity": "Не обнаружено недавней активности",
     "role_administrator": "Администратор",
     "role_user": "Пользователь"
   },
   "sort": {
-    "books_count": "Количество книг",
-    "date_added": "Дата добавления",
-    "date_updated": "Дата обновления",
-    "file_name": "Имя файла",
-    "file_size": "Размер файла",
-    "folder_name": "Имя каталога",
-    "name": "Имя",
-    "number": "Номер",
-    "release_date": "Дата выхода"
+    "books_count": "По количеству книг",
+    "date_added": "По дате добавления",
+    "date_read": "По дате прочтения",
+    "date_updated": "По дате обновления",
+    "file_name": "По имени файла",
+    "file_size": "По размеру файла",
+    "folder_name": "По имени каталога",
+    "name": "По имени",
+    "number": "По номеру",
+    "page_count": "По количеству страниц",
+    "random": "В случайном порядке",
+    "release_date": "По дате выхода",
+    "series": "По сериям"
   },
   "theme": {
     "dark": "Тёмная",
@@ -795,17 +919,56 @@
     "system": "Системная"
   },
   "thumbnail_card": {
-    "tooltip_delete": "Удалить"
+    "tooltip_delete": "Удалить",
+    "tooltip_generated": "Сгенерированные обложки",
+    "tooltip_mark_as_selected": "Отметить как выбранные",
+    "tooltip_selected": "Выбранные",
+    "tooltip_sidecar": "Локальные обложки",
+    "tooltip_to_be_deleted": "Ожидает удаления",
+    "tooltip_to_be_uploaded": "Ожидает загрузки",
+    "tooltip_too_big": "Файл слишком большой!",
+    "tooltip_user_uploaded": "Загружено пользователем"
+  },
+  "titles_more": {
+    "less": "Меньше заголовков",
+    "more": "Больше заголовков"
+  },
+  "ui_settings": {
+    "general": "Общее",
+    "label_oauth2_auto_login": "Автоматический вход через OAuth2",
+    "label_oauth2_hide_login": "Скрывать поля авторизации, если включен OAuth2",
+    "label_poster_blur_unread": "Размывать обложки для непрочитанных книг и серий",
+    "label_poster_stretch": "Растягивать обложку по размеру карточки",
+    "label_series_groups": "Группировка серий",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Алфавитная",
+      "japanese": "Годзюон (Японский)"
+    },
+    "tooltip_oauth2_auto_login": "Требуется единственный OAuth2-провайдер и включённая опция «Скрывать поля авторизации»"
+  },
+  "updates": {
+    "available": "Доступны обновления",
+    "latest_installed": "Последняя версия Komga уже установлена"
   },
   "user_roles": {
     "ADMIN": "Администратор",
     "FILE_DOWNLOAD": "Скачивание файлов",
+    "KOBO_SYNC": "Синхронизация с Kobo",
+    "KOREADER_SYNC": "Синхронизация с KOReader",
     "PAGE_STREAMING": "Потоковый просмотр страниц",
     "USER": "Пользователь"
   },
   "users": {
-    "authentication_activity": "Проверка подлинности",
+    "api_keys": "Ключи API",
+    "authentication_activity": "Аутентификация активности",
     "users": "Пользователи"
+  },
+  "validation": {
+    "context_path": "Должно начинаться с '/', не заканчиваться на '/-_', и содержать только '/-_a-z0-9'",
+    "one_or_more": "Должно быть большим или равным 1",
+    "tcp_port": "Должно находиться в диапазоне от 1 до 65535",
+    "zero_or_more": "Должно быть большим или равным 0"
   },
   "welcome": {
     "add_library": "Добавить библиотеку",
