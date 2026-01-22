@@ -19,7 +19,15 @@
   },
   "account_settings": {
     "account_settings": "Kontoinställningar",
-    "change_password": "ändra lösenord"
+    "api_key": {
+      "created_date": "Skapades datum: {date}",
+      "force_kobo_sync": "Tvinga Kobo synk",
+      "generate_api_key": "Skapa API-nyckel",
+      "no_keys": "Inga API-nycklar skapade ännu"
+    },
+    "change_password": "ändra lösenord",
+    "details": "Detaljer",
+    "my_account": "Mitt konto"
   },
   "announcements": {
     "mark_all_read": "Markera alla som lästa",
@@ -27,6 +35,7 @@
     "tab_title": "Annonseringar"
   },
   "authentication_activity": {
+    "api_key": "API-nyckel",
     "datetime": "Datum & Tid",
     "email": "E-post",
     "error": "Fel",
@@ -86,6 +95,7 @@
     "beginning_of_book": "Du är i början av boken.",
     "changing_reading_direction": "Byt läsriktning till",
     "cycling_page_layout": "Växla Sidlayout",
+    "cycling_page_margin": "Växlar sidmarginal",
     "cycling_scale": "Växla Skala",
     "cycling_side_padding": "Växla Spaltfyllnad",
     "download_current_page": "Ladda ner nuvarande sida",
@@ -128,6 +138,7 @@
       "general": "Generella",
       "gestures": "Gester",
       "page_layout": "Sidlayout",
+      "page_margin": "Sidmarginal",
       "paged": "Inställningar för sidvisning",
       "reading_mode": "Läsläge",
       "scale_type": "Skal typ",
@@ -138,6 +149,7 @@
     "shortcuts": {
       "close": "Stäng",
       "cycle_page_layout": "Växla sidlayout",
+      "cycle_page_margin": "Växla sidmarginal",
       "cycle_scale": "Växla skala",
       "cycle_side_padding": "Växla sidofyllning",
       "first_page": "Första sidan",
@@ -161,6 +173,8 @@
   },
   "browse_book": {
     "comment": "KOMMENTAR",
+    "date_created": "SKAPADES",
+    "date_modified": "SENAST ÄNDRAD",
     "download_file": "Ladda ner fil",
     "file": "FIL",
     "format": "FORMAT",
@@ -170,6 +184,8 @@
     "outdated_tooltip": "Filen för den här boken har ändrats, boken måste analyseras om",
     "read_book": "Läs bok",
     "read_incognito": "Läs incognito",
+    "remove_from_collection": "Ta bort bok från samling",
+    "remove_from_readlist": "Ta bort bok från läslista",
     "size": "STORLEK"
   },
   "browse_collection": {
@@ -184,6 +200,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Detta är det tidigaste året från utgivningsdatum från alla böcker i serien",
+    "remove_from_collection": "Ta bort serie från samling",
     "series_no_summary": "Denna serie har ingen sammanfattning, så vi valde en för dig!",
     "summary_from_book": "Sammanfattning från bok {number}:"
   },
@@ -194,21 +211,28 @@
   "common": {
     "age": "Ålder",
     "all_libraries": "Alla bibliotek",
+    "all_of": "Samtliga",
+    "any_of": "Någon av",
     "book": "Bok",
     "books": "Böcker",
     "books_n": "Ingen bok | 1 bok | {count} böcker",
     "books_total": "{count} / {total} böcker",
     "cancel": "Avbryt",
+    "cbx": "Serietidningsarkiv",
     "choose_image": "Välj en bild",
     "close": "Stäng",
     "collections": "Samlingar",
+    "copied": "Kopierad!",
     "create": "Skapa",
     "delete": "Redera",
+    "dimension": "b: {width}, h: {height}",
     "disk_space": "Diskutrymme",
     "dismiss": "Avfärda",
     "download": "Ladda ner",
     "drag_drop": "dra och släpp",
     "email": "E-post",
+    "epub": "Epub",
+    "error": "Fel",
     "filename": "Filnamn",
     "filter_no_matches": "Det aktiva filtret ger ingen träff",
     "genre": "Genre",
@@ -216,12 +240,16 @@
     "go_to_library": "Gå till bibliotek",
     "go_to_readlist": "Gå till läslistan",
     "go_to_series": "Gå till serien",
+    "i_understand": "Jag förstår",
     "library": "Bibliotek",
     "locale_name": "Svenska",
     "locale_rtl": "false",
     "lock_all": "Lås alla",
+    "media": "Media",
+    "more": "Mer",
     "n_selected": "{count} valda",
     "nothing_to_show": "Inget att visa",
+    "ok": "OK",
     "oneshot": "One-shot",
     "outdated": "Föråldrad",
     "page": "Sida",
@@ -230,19 +258,25 @@
     "pages_left": "Inga sidor kvar | 1 sida kvar | {count} sidor kvar",
     "pages_n": "Inga sidor | 1 sida | {count} sidor",
     "password": "Lösenord",
+    "pdf": "PDF",
     "pending_tasks": "Inga väntande uppgifter | 1 väntande uppgift | {count} väntande uppgifter",
+    "pinned_libraries": "Fästa Bibliotek",
     "publisher": "Utgivare",
     "read": "Läs",
     "read_on": "Läst den {date}",
     "readlist": "Läslista",
     "readlists": "Läslistor",
+    "remember-me": "Kom ihåg mig",
+    "reorder": "Ordna om",
     "required": "Krävs",
     "reset_filters": "Återställ filter",
     "roles": "Roller",
     "save_changes": "Spara ändringar",
     "series": "Serier | Serier",
+    "settings": "Inställningar",
     "sidecars": "Sidovagnar",
     "tags": "Taggar",
+    "ui": "Gränssnitt",
     "unavailable": "Otillgänglig",
     "unlock_all": "Lås upp alla",
     "url": "URL",
@@ -281,6 +315,11 @@
     "tab_title": "Data import"
   },
   "dialog": {
+    "add_api_key": {
+      "context": "API-nycklar kan användas för autentisering via Kobo Synkprotokoll.",
+      "dialog_title": "Skapa ny API-nyckel",
+      "field_comment": "Kommentar"
+    },
     "add_to_collection": {
       "button_create": "Skapa",
       "card_collection_subtitle": "Ingen serie | 1 serie | {count} serier",
@@ -313,6 +352,12 @@
     "book_picker": {
       "filter": "Filtrera efter boknummer, titel, eller utgivningsdatum",
       "title": "Välj bok"
+    },
+    "delete_apikey": {
+      "button_confirm": "Radera",
+      "confirm_delete": "Jag förstår, radera API-nyckel \"{name}\"",
+      "dialog_title": "Radera API-nyckel",
+      "warning_html": "Applikationer eller skript som använder denna API-nyckel kommer inte längre kunna nyttja Komga API:et. Det går ej att ångra denna åtgärd."
     },
     "delete_book": {
       "button_confirm": "Ta bort",
@@ -456,9 +501,12 @@
       "field_manual_ordering": "Manuell sortering",
       "field_name": "Namn",
       "field_summary": "Sammanfattning",
-      "label_ordering": "Som standard, böcker i en läslista sorteras manuellt. Du kan inaktivera manuell sortering för att sortera böcker efter släppdatum.",
+      "label_ordering": "Som standard sorteras böcker i en läslista manuellt. Du kan inaktivera manuell sortering för att sortera böcker efter släppdatum.",
       "tab_general": "Allmänt",
       "tab_poster": "Affisch"
+    },
+    "edit_recommended": {
+      "button_confirm": "Spara ändringar"
     },
     "edit_series": {
       "button_cancel": "Avbryt",
@@ -527,6 +575,10 @@
         "order": "Ordning"
       },
       "title": "Namn på målfil"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "Tvinga Kobo synk",
+      "warning_html": "Detta raderar all synkhistorik för denna API-nyckel. Din Kobo kommer synka allt vid nästa synktillfälle."
     },
     "password_change": {
       "button_cancel": "Avbryt",
@@ -597,6 +649,8 @@
     "empty_title": "Inga dubbletter av sidor hittades",
     "filter": {
       "count": "Antal",
+      "date_added": "Datum tillagd",
+      "date_modified": "Datum ändrad",
       "delete_count": "Antal gånger raderat",
       "delete_size": "Sparat utrymme",
       "match_count": "Matcha antal",
@@ -622,12 +676,34 @@
       "HARDLINK": "Hårdlänk/kopiera filer",
       "MOVE": "Flytta filer"
     },
+    "epubreader": {
+      "appearances": {
+        "day": "Dag",
+        "night": "Natt",
+        "sepia": "Sepia"
+      },
+      "column_count": {
+        "auto": "Auto",
+        "one": "En",
+        "two": "Två"
+      },
+      "reading_direction": {
+        "auto": "Automatisk",
+        "ltr": "Vänster till höger",
+        "rtl": "Höger till vänster"
+      }
+    },
     "historical_event_type": {
       "BookConverted": "Boken konverterad",
       "BookFileDeleted": "Bokfilen raderad",
       "BookImported": "Boken importerad",
       "DuplicatePageDeleted": "Duplicerad sida borttagen",
       "SeriesFolderDeleted": "Seriemappen borttagen"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
     },
     "media_status": {
       "ERROR": "Fel",
@@ -647,6 +723,14 @@
       "VERTICAL": "Lodrät",
       "WEBTOON": "Webtoon"
     },
+    "scan_interval": {
+      "DAILY": "Varje dag",
+      "DISABLED": "Inaktiverad",
+      "EVERY_12H": "Varje 12 timmar",
+      "EVERY_6H": "Varje 6 timmar",
+      "HOURLY": "Varje timme",
+      "WEEKLY": "Varje vecka"
+    },
     "series_cover": {
       "FIRST": "Första",
       "FIRST_UNREAD_OR_FIRST": "Första olästa annars första",
@@ -658,6 +742,34 @@
       "ENDED": "Avslutad",
       "HIATUS": "Hiatus",
       "ONGOING": "Pågående"
+    },
+    "thumbnail_size": {
+      "LARGE": "Stor (900px)",
+      "MEDIUM": "Mellan (600px)"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "Nuvarande kapitel",
+    "page_of": "Sida {page} av {count}",
+    "publisher_font": "Utgivare",
+    "settings": {
+      "font_family": "Teckensnitt",
+      "layout": "Layout",
+      "layout_paginated": "Paginerad",
+      "navigation_mode": "Navigeringsläge",
+      "navigation_options": {
+        "buttons": "Knappar"
+      },
+      "page_margins": "Sidmarginal",
+      "viewing_theme": "Visningstema"
+    },
+    "shortcuts": {
+      "cycle_viewing_theme": "Växla visningstema",
+      "font_size_decrease": "Minska storlek på teckensnitt",
+      "font_size_increase": "Öka storlek på teckensnitt",
+      "menus": "Menyer",
+      "settings": "Inställningar",
+      "show_hide_toc": "Visa/dölj innehållsförteckning"
     }
   },
   "error_codes": {
