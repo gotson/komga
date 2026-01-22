@@ -18,7 +18,7 @@
     "filesize": "^10.0.12",
     "js-file-downloader": "^1.1.25",
     "language-tags": "^1.0.9",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "marked": "^15.0.4",
     "qs": "^6.14.1",
     "screenfull": "^5.2.0",
