@@ -19,8 +19,8 @@
           :label="
             $formatMessage({
               description: 'Form add/edit library: Metadata - comicinfo book metadata',
-              defaultMessage: 'Book metadata',
-              id: 'YHQNM8',
+              defaultMessage: 'Import book metadata',
+              id: '3b7v1+',
             })
           "
           hide-details
@@ -31,8 +31,8 @@
           :label="
             $formatMessage({
               description: 'Form add/edit library: Metadata - comicinfo series metadata',
-              defaultMessage: 'Series metadata',
-              id: '6zF2Um',
+              defaultMessage: 'Import series metadata',
+              id: 'MoOECu',
             })
           "
           hide-details
@@ -40,6 +40,7 @@
 
         <v-checkbox
           v-model="model.importComicInfoSeriesAppendVolume"
+          :disabled="!model.importComicInfoSeries"
           :label="
             $formatMessage({
               description:
@@ -49,31 +50,60 @@
             })
           "
           hide-details
+          class="ms-8"
         />
 
         <v-checkbox
           v-model="model.importComicInfoCollection"
           :label="
             $formatMessage({
-              description: 'Form add/edit library: Metadata - comcinfo collections',
-              defaultMessage: 'Collections',
-              id: 'Ahipg5',
+              description: 'Form add/edit library: Metadata - comicinfo collections',
+              defaultMessage: 'Create or add to collections',
+              id: '3MUQYL',
             })
           "
           hide-details
-        />
+        >
+          <template #append>
+            <v-icon
+              v-tooltip:bottom="
+                $formatMessage({
+                  description:
+                    'Form add/edit library: Metadata - Comicinfo.xml collections - information tooltip',
+                  defaultMessage: `The 'SeriesGroup' element will be used`,
+                  id: 'VcueWO',
+                })
+              "
+              icon="i-mdi:information-outline"
+            ></v-icon>
+          </template>
+        </v-checkbox>
 
         <v-checkbox
           v-model="model.importComicInfoReadList"
           :label="
             $formatMessage({
-              description: 'Form add/edit library: Metadata - comcinfo read lists',
-              defaultMessage: 'Read lists',
-              id: 'AV3Iae',
+              description: 'Form add/edit library: Metadata - comicinfo read lists',
+              defaultMessage: 'Create or add to read lists',
+              id: '/Acs82',
             })
           "
           hide-details
-        />
+        >
+          <template #append>
+            <v-icon
+              v-tooltip:bottom="
+                $formatMessage({
+                  description:
+                    'Form add/edit library: Metadata - Comicinfo.xml collections - information tooltip',
+                  defaultMessage: `The 'AlternateSeries' or 'StoryArc' elements will be used`,
+                  id: 'nyxfPy',
+                })
+              "
+              icon="i-mdi:information-outline"
+            ></v-icon>
+          </template>
+        </v-checkbox>
       </v-col>
     </v-row>
 
@@ -95,8 +125,8 @@
           :label="
             $formatMessage({
               description: 'Form add/edit library: Metadata - epub book metadata',
-              defaultMessage: 'Book metadata',
-              id: '7bZ3Eg',
+              defaultMessage: 'Import book metadata',
+              id: '81BMAQ',
             })
           "
           hide-details
@@ -107,8 +137,8 @@
           :label="
             $formatMessage({
               description: 'Form add/edit library: Metadata - epub series metadata',
-              defaultMessage: 'Series metadata',
-              id: '8PXwjO',
+              defaultMessage: 'Import series metadata',
+              id: '4CX0cY',
             })
           "
           hide-details
@@ -124,8 +154,8 @@
           {{
             $formatMessage({
               description: 'Form add/edit library: Metadata - section header for mylar series.json',
-              defaultMessage: 'series.json (Mylar)',
-              id: 'xofdkF',
+              defaultMessage: 'Mylar (series.json)',
+              id: 'FVq9w5',
             })
           }}
         </div>
@@ -135,8 +165,8 @@
           :label="
             $formatMessage({
               description: 'Form add/edit library: Metadata - mylar series metadata',
-              defaultMessage: 'Series metadata',
-              id: 'JvSGEY',
+              defaultMessage: 'Import series metadata',
+              id: '9TJRkm',
             })
           "
           hide-details
@@ -164,8 +194,8 @@
           :label="
             $formatMessage({
               description: 'Form add/edit library: Metadata - local artwork',
-              defaultMessage: 'Local artwork',
-              id: 'iBj0mW',
+              defaultMessage: 'Use local artwork',
+              id: 'GnHrCd',
             })
           "
           hide-details
@@ -181,8 +211,8 @@
           {{
             $formatMessage({
               description: 'Form add/edit library: Metadata - section header for ISBN barcode',
-              defaultMessage: 'ISBN within barcode',
-              id: 'eHS96Q',
+              defaultMessage: 'Barcode',
+              id: 'jyrqhz',
             })
           }}
           <v-icon
@@ -198,8 +228,8 @@
           :label="
             $formatMessage({
               description: 'Form add/edit library: Metadata - isbn barcode',
-              defaultMessage: 'ISBN',
-              id: 'cKUU8S',
+              defaultMessage: 'Import ISBN from barcode',
+              id: 'B2wcN0',
             })
           "
           hide-details
