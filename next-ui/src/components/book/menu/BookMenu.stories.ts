@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import BookMenu from './BookMenu.vue'
-import { mockSeries1 } from '@/mocks/api/handlers/series'
 import { httpTyped } from '@/mocks/api/httpTyped'
 import { userRegular } from '@/mocks/api/handlers/users'
 import { expect } from 'storybook/test'
