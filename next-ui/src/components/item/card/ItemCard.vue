@@ -65,7 +65,7 @@
           transition="fade-transition"
           content-class="fill-height w-100"
         >
-          <!--  Top right number / icon  -->
+          <!--  Top left selection  -->
           <v-icon-btn
             v-if="!hideSelection"
             :icon="
