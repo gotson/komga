@@ -1,19 +1,22 @@
 <template>
-  <v-menu>
-    <template #activator="{ props }">
-      <v-btn
-        v-bind="props"
-        :icon="allModes[currentMode].icon"
-        :aria-label="
-          $formatMessage({
-            description: 'Presentation selector button: aria-label',
-            defaultMessage: 'presentation selector',
-            id: 'sUl0GP',
-          })
-        "
-      />
-    </template>
+  <v-btn
+    :id="id"
+    v-tooltip:bottom="allModes[currentMode].title"
+    :icon="allModes[currentMode].icon"
+    :aria-label="
+      $formatMessage({
+        description: 'Presentation selector button: aria-label',
+        defaultMessage: 'presentation selector',
+        id: 'sUl0GP',
+      })
+    "
+    @click="toggle ? cycleMode() : undefined"
+  />
 
+  <v-menu
+    :activator="`#${id}`"
+    :disabled="toggle"
+  >
     <v-list
       :selected="[currentMode]"
       color="primary"
@@ -35,6 +38,7 @@ import { useIntl } from 'vue-intl'
 import type { PresentationMode } from '@/types/libraries'
 
 const intl = useIntl()
+const id = useId()
 
 const allModes: Record<PresentationMode, { title: string; icon: string }> = {
   grid: {
@@ -65,9 +69,16 @@ const allModes: Record<PresentationMode, { title: string; icon: string }> = {
 
 const currentMode = defineModel<PresentationMode>({ required: true, default: 'grid' })
 
-const { modes } = defineProps<{
+const { modes, toggle = false } = defineProps<{
   modes: PresentationMode[]
+  toggle?: boolean
 }>()
+
+function cycleMode() {
+  const index = modes.findIndex((x) => x === currentMode.value)
+  const newIndex = (index + 1) % modes.length
+  currentMode.value = modes[newIndex]!
+}
 </script>
 
 <script lang="ts"></script>

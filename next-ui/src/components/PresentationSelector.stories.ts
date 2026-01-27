@@ -34,6 +34,12 @@ export const Default: Story = {
   args: {},
 }
 
+export const Toggle: Story = {
+  args: {
+    toggle: true,
+  },
+}
+
 export const Clicked: Story = {
   tags: ['!autodocs'],
   args: {},
@@ -52,5 +58,12 @@ export const LimitedSet: Story = {
     await expect(canvas.getByRole('button')).toBeEnabled()
 
     await userEvent.click(canvas.getByRole('button'))
+  },
+}
+
+export const LimitedSetToggle: Story = {
+  args: {
+    modes: ['grid', 'list'],
+    toggle: true,
   },
 }
