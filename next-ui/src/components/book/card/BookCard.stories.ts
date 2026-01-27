@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import BookCard from './BookCard.vue'
-import { mockSeries1 } from '@/mocks/api/handlers/series'
 import { fn } from 'storybook/test'
 import { httpTyped } from '@/mocks/api/httpTyped'
 import { userRegular } from '@/mocks/api/handlers/users'

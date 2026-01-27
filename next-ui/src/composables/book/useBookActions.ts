@@ -16,7 +16,6 @@ import {
   useMarkBookUnread,
   useRefreshMetadataBook,
 } from '@/colada/books'
-import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 
 export function useBookActions(
