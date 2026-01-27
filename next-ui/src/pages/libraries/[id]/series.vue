@@ -3,7 +3,7 @@
     <v-spacer />
 
     <v-slider
-      v-if="presentationMode === 'grid'"
+      v-if="display.smAndUp.value"
       v-model="appStore.gridCardWidth"
       :min="130"
       :max="200"
@@ -14,8 +14,10 @@
     />
 
     <PresentationSelector
+      v-if="display.smAndUp.value"
       v-model="presentationMode"
       :modes="['grid', 'list']"
+      toggle
     />
 
     <PageSizeSelector
@@ -36,7 +38,7 @@
     >
       <template #default="{ items, toggleSelect, isSelected }">
         <v-container
-          v-if="presentationMode === 'grid'"
+          v-if="presentationModeEffective === 'grid'"
           fluid
         >
           <v-row>
@@ -50,22 +52,33 @@
                 :series="item.raw"
                 :selected="isSelected(item)"
                 :pre-select="preSelect"
-                :width="appStore.gridCardWidth"
+                :width="display.xs.value ? undefined : appStore.gridCardWidth"
                 @selection="toggleSelect(item)"
               />
             </v-col>
           </v-row>
         </v-container>
 
-        <v-list v-if="presentationMode === 'list'">
-          <v-list-item
+        <v-container
+          v-if="presentationModeEffective === 'list'"
+          fluid
+        >
+          <v-row
             v-for="item in items"
             :key="item.raw.id"
-            :title="item.raw.metadata.title"
-            :base-color="isSelected(item) ? 'red' : 'blue'"
-            @click="toggleSelect(item)"
-          />
-        </v-list>
+          >
+            <v-col>
+              <SeriesCardWide
+                stretch-poster
+                :series="item.raw"
+                :selected="isSelected(item)"
+                :pre-select="preSelect"
+                :width="appStore.gridCardWidth"
+                @selection="toggleSelect(item)"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
       </template>
     </v-data-iterator>
 
@@ -87,15 +100,20 @@ import { useItemsPerPage, usePagination } from '@/composables/pagination'
 import { useSearchConditionLibraries } from '@/composables/search'
 import { storeToRefs } from 'pinia'
 import { useSelectionStore } from '@/stores/selection'
+import { useDisplay } from 'vuetify'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
 const { libraries } = useGetLibrariesById(libraryId)
 const { librariesCondition } = useSearchConditionLibraries(libraries)
 
+const display = useDisplay()
 const appStore = useAppStore()
 const { browsingPageSize } = storeToRefs(appStore)
 const presentationMode = appStore.getPresentationMode(`${libraryId}_series`, 'grid')
+const presentationModeEffective = computed(() =>
+  display.xs.value ? 'grid' : presentationMode.value,
+)
 
 const { itemsPerPage } = useItemsPerPage(browsingPageSize)
 const { page0, page1, pageCount } = usePagination()
