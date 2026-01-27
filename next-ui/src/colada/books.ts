@@ -2,7 +2,6 @@ import { defineMutation, defineQueryOptions, useMutation } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
 import type { PageRequest } from '@/types/PageRequest'
-import { seriesMetadataToDto } from '@/functions/series'
 
 export const QUERY_KEYS_BOOKS = {
   root: ['books'] as const,

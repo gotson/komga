@@ -157,10 +157,4 @@ function createLibrary() {
       })
   }
 }
-
-const unavailableMessage = intl.formatMessage({
-  description: 'Library list item subtitle: unavailable',
-  defaultMessage: 'Unavailable',
-  id: '5rziSG',
-})
 </script>
