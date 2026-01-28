@@ -55,6 +55,19 @@ class SseController(
     return emitter
   }
 
+  @Scheduled(fixedRate = 15_000)
+  fun heartbeat() {
+    if (emitters.isNotEmpty())
+      synchronized(emitters) {
+        emitters.forEach { (emitter, _) ->
+          try {
+            emitter.send(SseEmitter.event().comment("heartbeat"))
+          } catch (_: IOException) {
+          }
+        }
+      }
+  }
+
   @Scheduled(fixedRate = 10_000)
   fun taskCount() {
     if (emitters.isNotEmpty()) {
