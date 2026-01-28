@@ -46,7 +46,7 @@ class EpubExtractor(
   fun isEpub(path: Path): Boolean =
     try {
       getEntryStream(path, "mimetype").decodeToString().trim() == "application/epub+zip"
-    } catch (e: Exception) {
+    } catch (_: Exception) {
       false
     }
 
@@ -139,24 +139,31 @@ class EpubExtractor(
       epub.opfDoc
         .select("*|spine > *|itemref")
         .map { it.attr("idref") }
-        .mapNotNull { idref -> epub.manifest[idref]?.href?.let { normalizeHref(epub.opfDir, it) } }
-        .map { pagePath ->
-          val doc = epub.zip.getEntryInputStream(pagePath)?.use { Jsoup.parse(it, null, "") } ?: return@map emptyList()
+        .mapNotNull { idref ->
+          val manifestItem = epub.manifest[idref] ?: return@mapNotNull null
+          normalizeHref(epub.opfDir, manifestItem.href) to manifestItem.mediaType
+        }.map { (pagePath, mediaType) ->
+          if (mediaType.startsWith("image", true)) {
+            // image in spine
+            listOf(Path(pagePath).normalize().invariantSeparatorsPathString)
+          } else {
+            val doc = epub.zip.getEntryInputStream(pagePath)?.use { Jsoup.parse(it, null, "") } ?: return@map emptyList()
 
-          // if a page has text over the threshold then the book is not divina compatible
-          if (doc.body().text().length > letterCountThreshold) return emptyList()
+            // if a page has text over the threshold then the book is not divina compatible
+            if (doc.body().text().length > letterCountThreshold) return emptyList()
 
-          val img =
-            doc
-              .getElementsByTag("img")
-              .map { it.attr("src") } // get the src, which can be a relative path
+            val img =
+              doc
+                .getElementsByTag("img")
+                .map { it.attr("src") } // get the src, which can be a relative path
 
-          val svg =
-            doc
-              .select("svg > image[xlink:href]")
-              .map { it.attr("xlink:href") } // get the source, which can be a relative path
+            val svg =
+              doc
+                .select("svg > image[xlink:href]")
+                .map { it.attr("xlink:href") } // get the source, which can be a relative path
 
-          (img + svg).map { (Path(pagePath).parent ?: Path("")).resolve(it).normalize().invariantSeparatorsPathString } // resolve it against the page folder
+            (img + svg).map { (Path(pagePath).parent ?: Path("")).resolve(it).normalize().invariantSeparatorsPathString } // resolve it against the page folder
+          }
         }
 
     if (pagesWithImages.size != pageCount) {
@@ -164,7 +171,7 @@ class EpubExtractor(
       return emptyList()
     }
     // Only keep unique image path for each page. KCC sometimes generates HTML pages with 5 times the same image.
-    val imagesPath = pagesWithImages.map { it.distinct() }.flatten()
+    val imagesPath = pagesWithImages.flatMap { it.distinct() }
     if (imagesPath.size != pageCount) {
       logger.info { "Epub Divina detection failed: book has ${imagesPath.size} detected images, but $pageCount total pages" }
       return emptyList()
@@ -259,7 +266,7 @@ class EpubExtractor(
             val positions = computePositionsFromKoboSpan(readingOrder) { filename -> getZipEntryBytes(kepub, filename).decodeToString() }
             kepub.deleteIfExists()
             positions
-          } catch (e: Exception) {
+          } catch (_: Exception) {
             logger.warn { "Could not convert to Kepub to compute positions: $path" }
             emptyMap()
           }

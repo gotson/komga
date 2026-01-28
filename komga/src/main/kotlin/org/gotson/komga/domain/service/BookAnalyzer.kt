@@ -212,7 +212,7 @@ class BookAnalyzer(
         status = Media.Status.READY,
         pages = divinaPages,
         files = resources,
-        pageCount = epubExtractor.computePageCount(epub),
+        pageCount = if (divinaPages.isNotEmpty()) divinaPages.size else epubExtractor.computePageCount(epub),
         epubDivinaCompatible = divinaPages.isNotEmpty(),
         epubIsKepub = isKepub,
         extension =
@@ -265,26 +265,27 @@ class BookAnalyzer(
 
   fun getPoster(book: BookWithMedia): TypedBytes? =
     when (book.media.profile) {
-      MediaProfile.DIVINA ->
-        divinaExtractors[book.media.mediaType]
-          ?.getEntryStream(
-            book.book.path,
-            book.media.pages
-              .first()
-              .fileName,
-          )?.let {
-            TypedBytes(
-              it,
-              book.media.pages
-                .first()
-                .mediaType,
-            )
-          }
-
+      MediaProfile.DIVINA -> divinaExtractors[book.media.mediaType]?.getPoster(book)
       MediaProfile.PDF -> pdfExtractor.getPageContentAsImage(book.book.path, 1)
-      MediaProfile.EPUB -> epubExtractor.getCover(book.book.path)
+      MediaProfile.EPUB -> epubExtractor.getCover(book.book.path) ?: if (book.media.epubDivinaCompatible) divinaExtractors[MediaType.ZIP.type]?.getPoster(book) else null
       null -> null
     }
+
+  private fun DivinaExtractor.getPoster(book: BookWithMedia): TypedBytes =
+    this
+      .getEntryStream(
+        book.book.path,
+        book.media.pages
+          .first()
+          .fileName,
+      ).let {
+        TypedBytes(
+          it,
+          book.media.pages
+            .first()
+            .mediaType,
+        )
+      }
 
   @Throws(
     MediaNotReadyException::class,
