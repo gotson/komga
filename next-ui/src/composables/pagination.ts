@@ -11,7 +11,9 @@ import { useRouteQuery } from '@vueuse/router'
  * The consumer is responsible for updating `pageCount`.
  */
 export function usePagination() {
-  const queryPage = useRouteQuery('page', '1', { transform: Number })
+  const queryPage = useRouteQuery('page', '1', {
+    transform: (input) => Math.abs(Number(input)) || 1,
+  })
   const page0 = ref(queryPage.value - 1)
   const page1 = ref(queryPage.value)
   const pageCount = ref(0)
