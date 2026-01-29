@@ -114,14 +114,8 @@ class EpubExtractor(
 
   fun getDivinaPages(
     epub: EpubPackage,
-    isFixedLayout: Boolean,
     analyzeDimensions: Boolean,
   ): List<BookPage> {
-    if (!isFixedLayout) {
-      logger.info { "Epub Divina detection failed: book is not fixed layout" }
-      return emptyList()
-    }
-
     val pageCount =
       run {
         val spine =

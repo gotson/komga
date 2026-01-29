@@ -144,7 +144,6 @@ class BookAnalyzerTest(
 
       assertThat(media.mediaType).isEqualTo("application/epub+zip")
       assertThat(media.status).isEqualTo(Media.Status.READY)
-      assertThat(media.pages).hasSize(0)
     }
   }
 
@@ -230,7 +229,7 @@ class BookAnalyzerTest(
       val file = ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub")
       val book = Book("book", file.url, LocalDateTime.now())
 
-      every { epubExtractor.getDivinaPages(any(), any(), any()) } throws Exception("mock exception")
+      every { epubExtractor.getDivinaPages(any(), any()) } throws Exception("mock exception")
 
       val media = bookAnalyzer.analyze(book, false)
 
