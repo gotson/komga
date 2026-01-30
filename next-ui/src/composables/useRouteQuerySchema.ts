@@ -36,6 +36,6 @@ export function useRouteQuerySchema<T extends v.GenericSchema>(queryName: string
   })
 
   return {
-    data: data as v.InferOutput<T>,
+    data: data as Ref<v.InferOutput<T>>,
   }
 }
