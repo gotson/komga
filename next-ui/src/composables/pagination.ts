@@ -12,7 +12,7 @@ import * as v from 'valibot'
  * The consumer is responsible for updating `pageCount`.
  */
 export function usePagination() {
-  const queryPage = useRouteQuery('page', '1', {
+  const queryPage = useRouteQuery('page', 1, {
     transform: (input) => v.parse(SchemaStrictlyPositive, input),
   })
   const page0 = ref(queryPage.value - 1)
