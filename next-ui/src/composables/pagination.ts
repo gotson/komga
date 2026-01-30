@@ -1,6 +1,7 @@
 import { syncRef } from '@vueuse/core'
-import type { PageSize } from '@/types/page'
+import { type PageSize, SchemaStrictlyPositive } from '@/types/page'
 import { useRouteQuery } from '@vueuse/router'
+import * as v from 'valibot'
 
 /**
  * Provide synchronized refs for page tracking in 0-index and 1-index.
@@ -12,7 +13,7 @@ import { useRouteQuery } from '@vueuse/router'
  */
 export function usePagination() {
   const queryPage = useRouteQuery('page', '1', {
-    transform: (input) => Math.abs(Number(input)) || 1,
+    transform: (input) => v.parse(SchemaStrictlyPositive, input),
   })
   const page0 = ref(queryPage.value - 1)
   const page1 = ref(queryPage.value)
