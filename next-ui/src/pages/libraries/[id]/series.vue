@@ -114,7 +114,7 @@ import { useSelectionStore } from '@/stores/selection'
 import { useDisplay } from 'vuetify'
 import { schemaFilterSeriesStatusToConditions } from '@/functions/filter'
 import * as v from 'valibot'
-import { SchemaFilterSeriesStatus } from '@/types/filter'
+import { SchemaFilterSeriesStatus, SchemaSeriesStatus } from '@/types/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 
 const route = useRoute('/libraries/[id]/series')
@@ -142,7 +142,7 @@ const { data: filter } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
 const conds = computed(() => ({
   allOf: [
     librariesCondition.value as components['schemas']['AnyOfSeries'],
-    schemaFilterSeriesStatusToConditions(filter),
+    schemaFilterSeriesStatusToConditions(filter.value),
   ],
 }))
 
@@ -164,8 +164,8 @@ watch(series, (newSeries) => {
 
 const filterStatusItems: {
   title: string
-  value: v.InferOutput<typeof SeriesStatus>
-  valueExclude?: v.InferOutput<typeof SeriesStatus>
+  value: v.InferOutput<typeof SchemaSeriesStatus>
+  valueExclude?: v.InferOutput<typeof SchemaSeriesStatus>
 }[] = [
   { title: 'Ended', value: { i: 'i', v: 'ENDED' }, valueExclude: { i: 'e', v: 'ENDED' } },
   { title: 'Ongoing', value: { i: 'i', v: 'ONGOING' }, valueExclude: { i: 'e', v: 'ONGOING' } },

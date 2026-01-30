@@ -8,7 +8,7 @@ export const SchemaAnyAll = v.object({
 
 const SchemaIncludeExclude = v.object({ i: v.optional(v.picklist(['i', 'e'])) })
 
-const SchemaSeriesStatus = v.object({
+export const SchemaSeriesStatus = v.object({
   ...SchemaIncludeExclude.entries,
   v: v.optional(v.picklist(['ENDED', 'ONGOING', 'ABANDONED', 'HIATUS'])),
 })
