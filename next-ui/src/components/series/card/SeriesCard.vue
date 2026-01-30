@@ -12,7 +12,7 @@
     :menu-icon="menuIcon"
     :menu-props="menuProps"
     v-bind="props"
-    @selection="(val) => emit('selection', val)"
+    @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
   />

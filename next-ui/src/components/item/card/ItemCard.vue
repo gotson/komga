@@ -11,7 +11,9 @@
       <div
         :class="['position-relative', { 'cursor-pointer': isPreSelect || selected }]"
         v-bind="props"
-        @click="isPreSelect || selected ? emit('selection', !selected) : {}"
+        @click="
+          (event: Event) => (isPreSelect || selected ? emit('selection', !selected, event) : {})
+        "
       >
         <v-img
           :cover="stretchPoster"
@@ -76,7 +78,7 @@
             :variant="selected || preSelect ? 'text' : 'plain'"
             :color="selected ? 'primary' : 'white'"
             class="top-0 left-0 position-absolute"
-            @click.stop="emit('selection', !selected)"
+            @click.stop="(event: Event) => emit('selection', !selected, event)"
           />
 
           <!--  Center FAB  -->

@@ -26,7 +26,7 @@ export type ItemCardProps = {
 }
 
 export type ItemCardEmits = {
-  selection: [selected: boolean]
+  selection: [selected: boolean, event: Event]
 }
 
 export type ItemCardTitle = {

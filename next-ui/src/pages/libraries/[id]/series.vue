@@ -54,7 +54,7 @@
         >
           <v-row>
             <v-col
-              v-for="item in items"
+              v-for="(item, idx) in items"
               :key="item.raw.id"
               cols="auto"
             >
@@ -64,7 +64,7 @@
                 :selected="isSelected(item)"
                 :pre-select="preSelect"
                 :width="display.xs.value ? undefined : appStore.gridCardWidth"
-                @selection="toggleSelect(item)"
+                @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
               />
             </v-col>
           </v-row>
@@ -75,7 +75,7 @@
           fluid
         >
           <v-row
-            v-for="item in items"
+            v-for="(item, idx) in items"
             :key="item.raw.id"
           >
             <v-col>
@@ -85,7 +85,7 @@
                 :selected="isSelected(item)"
                 :pre-select="preSelect"
                 :width="appStore.gridCardWidth"
-                @selection="toggleSelect(item)"
+                @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
               />
             </v-col>
           </v-row>

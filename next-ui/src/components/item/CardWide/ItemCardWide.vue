@@ -8,7 +8,9 @@
       v-bind="props"
       :elevation="isHovering ? 3 : 1"
       :class="isPreSelect || selected ? 'cursor-pointer' : 'cursor-default'"
-      @click="isPreSelect || selected ? emit('selection', !selected) : {}"
+      @click="
+        (event: Event) => (isPreSelect || selected ? emit('selection', !selected, event) : {})
+      "
     >
       <v-card-text>
         <div class="d-flex flex-row ga-4">
@@ -25,7 +27,7 @@
                 :variant="selected ? 'text' : 'flat'"
                 class="position-absolute top-0 left-0"
                 style="z-index: 2"
-                @click.stop="emit('selection', !selected)"
+                @click.stop="(event: Event) => emit('selection', !selected, event)"
               />
             </v-fade-transition>
 
