@@ -28,8 +28,8 @@ export function usePagination() {
     direction: 'ltr',
   })
 
-  watch([page1, pageCount], ([newPage1, newPageCount]) => {
-    if (newPage1 > newPageCount) page1.value = newPageCount
+  watch([page0, pageCount], ([newPage0, newPageCount]) => {
+    if (newPage0 > newPageCount) page0.value = newPageCount
   })
 
   return {
