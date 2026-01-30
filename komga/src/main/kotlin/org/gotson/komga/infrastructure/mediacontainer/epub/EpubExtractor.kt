@@ -337,7 +337,8 @@ class EpubExtractor(
 
   fun getToc(epub: EpubPackage): List<EpubTocEntry> {
     // Epub 3
-    epub.getNavResource()?.let { return processNav(it, Epub3Nav.TOC) }
+    epub.getNavResource()?.let { processNav(it, Epub3Nav.TOC) }?.let { if (it.isNotEmpty()) return it }
+
     // Epub 2
     epub.getNcxResource()?.let { return processNcx(it, Epub2Nav.TOC) }
     return emptyList()
@@ -345,7 +346,8 @@ class EpubExtractor(
 
   fun getPageList(epub: EpubPackage): List<EpubTocEntry> {
     // Epub 3
-    epub.getNavResource()?.let { return processNav(it, Epub3Nav.PAGELIST) }
+    epub.getNavResource()?.let { processNav(it, Epub3Nav.PAGELIST) }?.let { if (it.isNotEmpty()) return it }
+
     // Epub 2
     epub.getNcxResource()?.let { return processNcx(it, Epub2Nav.PAGELIST) }
     return emptyList()
@@ -353,7 +355,7 @@ class EpubExtractor(
 
   fun getLandmarks(epub: EpubPackage): List<EpubTocEntry> {
     // Epub 3
-    epub.getNavResource()?.let { return processNav(it, Epub3Nav.LANDMARKS) }
+    epub.getNavResource()?.let { processNav(it, Epub3Nav.LANDMARKS) }?.let { if (it.isNotEmpty()) return it }
 
     // Epub 2
     return processOpfGuide(epub.opfDoc, epub.opfDir)
