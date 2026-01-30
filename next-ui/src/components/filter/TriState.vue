@@ -10,7 +10,9 @@
 </template>
 
 <script setup lang="ts">
-const model = defineModel<string>()
+export type IncludeExclude = 'include' | 'exclude' | undefined
+
+const model = defineModel<IncludeExclude>()
 
 const icon = computed(() => states.value.find((it) => it.value === model.value)?.icon)
 
@@ -19,8 +21,17 @@ const {
   triState = true,
   color,
 } = defineProps<{
+  /**
+   * Label shown next to the checkbox.
+   */
   label: string
+  /**
+   * Whether the component can handle tri-state. Default to `true`.
+   */
   triState?: boolean
+  /**
+   * Base color. Applies to the checkbox when the value is not `undefined`.
+   */
   color?: string
 }>()
 

@@ -22,6 +22,7 @@ const meta = {
   },
   args: {
     'onUpdate:modelValue': fn(),
+    'onUpdate:mode': fn(),
     items: [
       { title: 'Tag 1', value: '+tag1', valueExclude: '-tag1' },
       { title: 'Tag 2', value: '+tag2', valueExclude: '-tag2' },
@@ -41,16 +42,18 @@ export const Default: Story = {
 export const InitialValue: Story = {
   args: {
     modelValue: ['+tag1', '-tag2', 'crap'],
+    mode: 'allOf',
   },
 }
 
 export const Color: Story = {
   args: {
+    modelValue: ['+tag1', '-tag2', 'crap'],
     color: 'red',
   },
 }
 
-export const Objects: Story = {
+export const ValueObjects: Story = {
   args: {
     items: [
       { title: 'Tag 1', value: { include: 'tag1' }, valueExclude: { exclude: 'tag1' } },

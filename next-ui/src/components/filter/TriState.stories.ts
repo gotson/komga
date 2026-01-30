@@ -46,12 +46,6 @@ export const ValidModel: Story = {
   },
 }
 
-export const InvalidModel: Story = {
-  args: {
-    modelValue: 'nope',
-  },
-}
-
 export const BiState: Story = {
   args: {
     label: 'bi state',

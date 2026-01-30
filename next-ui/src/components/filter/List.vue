@@ -19,8 +19,12 @@
 <script setup lang="ts">
 import { syncRef } from '@vueuse/core'
 import type { AnyAll } from '@/types/filter'
+import type { IncludeExclude } from '@/components/filter/TriState.vue'
 
 const model = defineModel<unknown[]>({ default: [] })
+/**
+ * Selection mode.
+ */
 const anyAll = defineModel<AnyAll>('mode', { default: 'anyOf' })
 
 //TODO: handle mode better
@@ -36,12 +40,12 @@ const { items = [], color } = defineProps<{
 }>()
 
 function initializeInternalModel() {
-  const c: Record<number, string | undefined> = {}
+  const c: Record<number, IncludeExclude> = {}
   items.forEach((_it, i) => (c[i] = undefined))
   return c
 }
 
-const internalModel = ref<Record<number, string | undefined>>(initializeInternalModel())
+const internalModel = ref<Record<number, IncludeExclude>>(initializeInternalModel())
 
 syncRef(model, internalModel, {
   direction: 'both',
@@ -68,7 +72,7 @@ syncRef(model, internalModel, {
           }
 
         return acc
-      }, {}) as Record<number, string | undefined>,
+      }, {}) as Record<number, IncludeExclude>,
     rtl: (right) =>
       items
         .map((it, i) =>
