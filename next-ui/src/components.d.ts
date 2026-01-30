@@ -36,6 +36,8 @@ declare module 'vue' {
     DialogSimpleInstance: typeof import('./components/dialog/DialogSimpleInstance.vue')['default']
     EmptyStateConstruction: typeof import('./components/EmptyStateConstruction.vue')['default']
     EmptyStateNetworkError: typeof import('./components/EmptyStateNetworkError.vue')['default']
+    FilterList: typeof import('./components/filter/List.vue')['default']
+    FilterTriState: typeof import('./components/filter/TriState.vue')['default']
     FormattedMessage: typeof import('./components/FormattedMessage.ts')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     HistoryExpandBookConverted: typeof import('./components/history/expand/BookConverted.vue')['default']

@@ -27,6 +27,17 @@
     />
   </v-app-bar>
 
+  <div>FILTER</div>
+  <div>{{ filter }}</div>
+  <div>CONDITION</div>
+  <div>{{ conds }}</div>
+
+  <FilterList
+    v-model="filter.v"
+    v-model:mode="filter.m"
+    :items="filterStatusItems"
+  />
+
   <template v-if="series">
     <v-data-iterator
       v-model="selectedItems"
@@ -101,6 +112,10 @@ import { useSearchConditionLibraries } from '@/composables/search'
 import { storeToRefs } from 'pinia'
 import { useSelectionStore } from '@/stores/selection'
 import { useDisplay } from 'vuetify'
+import { schemaFilterSeriesStatusToConditions } from '@/functions/filter'
+import * as v from 'valibot'
+import { SchemaFilterSeriesStatus } from '@/types/filter'
+import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -122,9 +137,19 @@ const selectionStore = useSelectionStore()
 const { selection: selectedItems } = storeToRefs(selectionStore)
 const preSelect = computed(() => selectedItems.value.length > 0)
 
+const { data: filter } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
+
+const conds = computed(() => ({
+  allOf: [
+    librariesCondition.value as components['schemas']['AnyOfSeries'],
+    schemaFilterSeriesStatusToConditions(filter),
+  ],
+}))
+
 const { data: series } = useQuery(seriesListQuery, () => {
   const search: components['schemas']['SeriesSearch'] = {
-    condition: librariesCondition.value as components['schemas']['AnyOfSeries'],
+    // condition: librariesCondition.value as components['schemas']['AnyOfSeries'],
+    condition: conds.value as components['schemas']['AllOfSeries'],
   }
 
   return {
@@ -136,6 +161,21 @@ const { data: series } = useQuery(seriesListQuery, () => {
 watch(series, (newSeries) => {
   if (newSeries) pageCount.value = newSeries.totalPages ?? 0
 })
+
+const filterStatusItems: {
+  title: string
+  value: v.InferOutput<typeof SeriesStatus>
+  valueExclude?: v.InferOutput<typeof SeriesStatus>
+}[] = [
+  { title: 'Ended', value: { i: 'i', v: 'ENDED' }, valueExclude: { i: 'e', v: 'ENDED' } },
+  { title: 'Ongoing', value: { i: 'i', v: 'ONGOING' }, valueExclude: { i: 'e', v: 'ONGOING' } },
+  { title: 'Hiatus', value: { i: 'i', v: 'HIATUS' }, valueExclude: { i: 'e', v: 'HIATUS' } },
+  {
+    title: 'Abandoned',
+    value: { i: 'i', v: 'ABANDONED' },
+    valueExclude: { i: 'e', v: 'ABANDONED' },
+  },
+]
 </script>
 
 <route lang="yaml">
