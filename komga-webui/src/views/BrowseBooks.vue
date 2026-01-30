@@ -175,6 +175,7 @@ import {
 } from '@/types/komga-search'
 import i18n from '@/i18n'
 import {objIsEqual} from '@/functions/object'
+import {getCustomRoles} from '@/functions/author-roles'
 import {
   FILTER_ANY,
   FILTER_NONE,
@@ -660,10 +661,11 @@ export default Vue.extend({
       this.$store.dispatch('dialogAddBooksToReadList', this.selectedBooks.map(b => b.id))
     },
     editSingleBook(book: BookDto) {
-      this.$store.dispatch('dialogUpdateBooks', book)
+      this.$store.dispatch('dialogUpdateBooks', {books: book})
     },
     editMultipleBooks() {
-      this.$store.dispatch('dialogUpdateBooks', this.selectedBooks)
+      const customRoles = getCustomRoles(this.selectedBooks)
+      this.$store.dispatch('dialogUpdateBooks', {books: this.selectedBooks, roles: customRoles})
     },
     bulkEditMultipleBooks() {
       this.$store.dispatch('dialogUpdateBulkBooks', this.$_.sortBy(this.selectedBooks, ['metadata.numberSort']))

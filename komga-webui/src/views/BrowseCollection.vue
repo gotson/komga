@@ -150,6 +150,7 @@ import MultiSelectBar from '@/components/bars/MultiSelectBar.vue'
 import {LIBRARIES_ALL} from '@/types/library'
 import {ReadStatus} from '@/types/enum-books'
 import {SeriesStatus, SeriesStatusKeyValue} from '@/types/enum-series'
+import {getCustomRoles} from '@/functions/author-roles'
 import {mergeFilterParams, toNameValue} from '@/functions/filter'
 import FilterDrawer from '@/components/FilterDrawer.vue'
 import FilterPanels from '@/components/FilterPanels.vue'
@@ -500,7 +501,7 @@ export default Vue.extend({
         const book = (await this.$komgaBooks.getBooksList({
           condition: new SearchConditionSeriesId(new SearchOperatorIs(series.id)),
         } as BookSearch)).content[0]
-        this.$store.dispatch('dialogUpdateOneshots', {series: series, book: book})
+        this.$store.dispatch('dialogUpdateOneshots', {oneshots: {series: series, book: book}})
       } else
         this.$store.dispatch('dialogUpdateSeries', series)
     },
@@ -510,7 +511,8 @@ export default Vue.extend({
           condition: new SearchConditionSeriesId(new SearchOperatorIs(s.id)),
         } as BookSearch)))
         const oneshots = this.selectedSeries.map((s, index) => ({series: s, book: books[index].content[0]} as Oneshot))
-        this.$store.dispatch('dialogUpdateOneshots', oneshots)
+        const customRole = getCustomRoles(oneshots.map(o => o.book))
+        this.$store.dispatch('dialogUpdateOneshots', {oneshots, roles: customRole})
       } else
         this.$store.dispatch('dialogUpdateSeries', this.selectedSeries)
     },

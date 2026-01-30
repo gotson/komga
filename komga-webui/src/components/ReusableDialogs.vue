@@ -58,6 +58,7 @@
     <edit-books-dialog
       v-model="updateBooksDialog"
       :books="updateBooks"
+      :additional-roles="updateBooksAdditionalRoles"
     />
 
     <bulk-edit-books-dialog
@@ -68,6 +69,7 @@
     <edit-oneshot-dialog
       v-model="updateOneshotsDialog"
       :oneshots="updateOneshots"
+      :additional-roles="updateOneshotsAdditionalRoles"
     />
 
     <edit-series-dialog
@@ -240,6 +242,9 @@ export default Vue.extend({
     updateBooks(): BookDto | BookDto[] {
       return this.$store.state.updateBooks
     },
+    updateBooksAdditionalRoles(): string[] {
+      return this.$store.state.updateBooksAdditionalRoles
+    },
     // books bulk
     updateBulkBooksDialog: {
       get(): boolean {
@@ -277,6 +282,9 @@ export default Vue.extend({
     },
     updateOneshots(): Oneshot | Oneshot[] {
       return this.$store.state.updateOneshots
+    },
+    updateOneshotsAdditionalRoles(): string[] {
+      return this.$store.state.updateOneshotsAdditionalRoles
     },
     // series
     updateSeriesDialog: {
