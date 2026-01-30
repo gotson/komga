@@ -1,6 +1,11 @@
 import { describe, expect, test } from 'vitest'
 import * as v from 'valibot'
-import { SchemaAnyAll } from '@/types/filter'
+import {
+  SchemaAnyAll,
+  SchemaFilterSeriesStatus,
+  SchemaFilterStrings,
+  SchemaSeriesStatus,
+} from '@/types/filter'
 
 describe('schema any all', () => {
   test('anyOf', () => {
@@ -28,5 +33,43 @@ describe('schema any all', () => {
     const defaults = v.getDefaults(SchemaAnyAll)
 
     expect(defaults).toStrictEqual(input)
+  })
+})
+
+describe('schema series status', () => {
+  test('correct value', () => {
+    const input = { v: 'ENDED' }
+    const result = v.parse(SchemaSeriesStatus, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('case insensitive', () => {
+    const input = { v: 'enDeD' }
+    const result = v.parse(SchemaSeriesStatus, input)
+
+    expect(result).toStrictEqual({ v: 'ENDED' })
+  })
+
+  test('other value throws error', () => {
+    const input = { v: 'whatever' }
+
+    expect(() => v.parse(SchemaSeriesStatus, input)).toThrowError()
+  })
+})
+
+describe('filter schemas have a default value', () => {
+  test('SchemaFilterSeriesStatus', () => {
+    const expected = { m: 'anyOf', v: [] }
+    const defaults = v.getDefaults(SchemaFilterSeriesStatus)
+
+    expect(defaults).toStrictEqual(expected)
+  })
+
+  test('SchemaFilterStrings', () => {
+    const expected = { m: 'anyOf', v: [] }
+    const defaults = v.getDefaults(SchemaFilterStrings)
+
+    expect(defaults).toStrictEqual(expected)
   })
 })
