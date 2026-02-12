@@ -101,19 +101,12 @@ class SeriesSearchHelper(
             DSL
               .select(Tables.SERIES_METADATA_TAG.SERIES_ID)
               .from(Tables.SERIES_METADATA_TAG)
-              .where(
-                Tables.SERIES_METADATA_TAG.TAG
-                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
-                  .equalIgnoreCase(tag),
-              ).union(
+              .where(Tables.SERIES_METADATA_TAG.TAG.unicode1().equal(tag))
+              .union(
                 DSL
                   .select(Tables.BOOK_METADATA_AGGREGATION_TAG.SERIES_ID)
                   .from(Tables.BOOK_METADATA_AGGREGATION_TAG)
-                  .where(
-                    Tables.BOOK_METADATA_AGGREGATION_TAG.TAG
-                      .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
-                      .equalIgnoreCase(tag),
-                  ),
+                  .where(Tables.BOOK_METADATA_AGGREGATION_TAG.TAG.unicode1().equal(tag)),
               )
           }
           val innerAny = {
@@ -216,11 +209,7 @@ class SeriesSearchHelper(
             DSL
               .select(Tables.SERIES_METADATA_GENRE.SERIES_ID)
               .from(Tables.SERIES_METADATA_GENRE)
-              .where(
-                Tables.SERIES_METADATA_GENRE.GENRE
-                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
-                  .equalIgnoreCase(genre),
-              )
+              .where(Tables.SERIES_METADATA_GENRE.GENRE.unicode1().equal(genre))
           }
           val innerAny = {
             DSL
@@ -247,11 +236,7 @@ class SeriesSearchHelper(
             DSL
               .select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
               .from(Tables.SERIES_METADATA_SHARING)
-              .where(
-                Tables.SERIES_METADATA_SHARING.LABEL
-                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
-                  .equalIgnoreCase(label),
-              )
+              .where(Tables.SERIES_METADATA_SHARING.LABEL.unicode1().equal(label))
           }
           val innerAny = {
             DSL

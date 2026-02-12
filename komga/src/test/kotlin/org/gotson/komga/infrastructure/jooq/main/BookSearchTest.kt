@@ -534,7 +534,7 @@ class BookSearchTest(
     }
 
     run {
-      val search = BookSearch(SearchCondition.Tag(SearchOperator.Is("FICTION")))
+      val search = BookSearch(SearchCondition.Tag(SearchOperator.Is("FICTîON")))
       val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -870,7 +870,7 @@ class BookSearchTest(
     run {
       val search =
         BookSearch(
-          SearchCondition.Author(SearchOperator.Is(AuthorMatch("john"))),
+          SearchCondition.Author(SearchOperator.Is(AuthorMatch("jÒhn"))),
         )
       val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
@@ -883,7 +883,7 @@ class BookSearchTest(
     run {
       val search =
         BookSearch(
-          SearchCondition.Author(SearchOperator.Is(AuthorMatch("john", "writer"))),
+          SearchCondition.Author(SearchOperator.Is(AuthorMatch("john", "WRÎTER"))),
         )
       val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content

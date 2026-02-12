@@ -12,6 +12,7 @@ import org.gotson.komga.infrastructure.jooq.csAlias
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toSortField
+import org.gotson.komga.infrastructure.jooq.unicode3
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.infrastructure.web.toFilePath
@@ -82,7 +83,7 @@ class SeriesDtoDao(
 
   private val sorts =
     mapOf(
-      "metadata.titleSort" to d.TITLE_SORT.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "metadata.titleSort" to d.TITLE_SORT.unicode3(),
       "createdDate" to s.CREATED_DATE,
       "created" to s.CREATED_DATE,
       "lastModifiedDate" to s.LAST_MODIFIED_DATE,
@@ -90,7 +91,7 @@ class SeriesDtoDao(
       "booksMetadata.releaseDate" to bma.RELEASE_DATE,
       "readDate" to rs.MOST_RECENT_READ_DATE,
       "collection.number" to cs.NUMBER,
-      "name" to s.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "name" to s.NAME.unicode3(),
       "booksCount" to s.BOOK_COUNT,
       "random" to DSL.rand(),
     )

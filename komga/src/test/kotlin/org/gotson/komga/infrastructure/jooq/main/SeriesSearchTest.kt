@@ -439,7 +439,7 @@ class SeriesSearchTest(
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Tag(SearchOperator.Is("FICTION")))
+      val search = SeriesSearch(SearchCondition.Tag(SearchOperator.Is("FîCTION")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -453,7 +453,7 @@ class SeriesSearchTest(
           SearchCondition.AllOfSeries(
             listOf(
               SearchCondition.Tag(SearchOperator.Is("FICTION")),
-              SearchCondition.Tag(SearchOperator.Is("horror")),
+              SearchCondition.Tag(SearchOperator.Is("hórror")),
             ),
           ),
         )
@@ -535,7 +535,7 @@ class SeriesSearchTest(
     }
     makeSeries("2", library2.id).let { series ->
       seriesLifecycle.createSeries(series)
-      seriesMetadataRepository.findById(series.id).let { seriesMetadataRepository.update(it.copy(sharingLabels = setOf("kids"))) }
+      seriesMetadataRepository.findById(series.id).let { seriesMetadataRepository.update(it.copy(sharingLabels = setOf("kÎds"))) }
     }
     makeSeries("3", library1.id).let { series ->
       seriesLifecycle.createSeries(series)
@@ -708,7 +708,7 @@ class SeriesSearchTest(
     }
     makeSeries("2", library2.id).let { series ->
       seriesLifecycle.createSeries(series)
-      seriesMetadataRepository.findById(series.id).let { seriesMetadataRepository.update(it.copy(genres = setOf("kids"))) }
+      seriesMetadataRepository.findById(series.id).let { seriesMetadataRepository.update(it.copy(genres = setOf("kÎds"))) }
     }
     makeSeries("3", library1.id).let { series ->
       seriesLifecycle.createSeries(series)
