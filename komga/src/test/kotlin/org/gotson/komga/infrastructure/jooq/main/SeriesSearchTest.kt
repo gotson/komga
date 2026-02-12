@@ -649,7 +649,7 @@ class SeriesSearchTest(
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Publisher(SearchOperator.Is("marvelOUS")))
+      val search = SeriesSearch(SearchCondition.Publisher(SearchOperator.Is("mÂrvelOUS")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -658,7 +658,7 @@ class SeriesSearchTest(
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Publisher(SearchOperator.IsNot("marvelOUS")))
+      val search = SeriesSearch(SearchCondition.Publisher(SearchOperator.IsNot("mÂrvelOUS")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -1201,12 +1201,12 @@ class SeriesSearchTest(
     makeSeries("2", library1.id).let { series ->
       seriesLifecycle.createSeries(series)
       seriesMetadataRepository.findById(series.id).let {
-        seriesMetadataRepository.update(it.copy(title = "Series 2"))
+        seriesMetadataRepository.update(it.copy(title = "Series two"))
       }
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Title(SearchOperator.Is("seRIES 1")))
+      val search = SeriesSearch(SearchCondition.Title(SearchOperator.Is("séRIES 1")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -1215,7 +1215,7 @@ class SeriesSearchTest(
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Title(SearchOperator.IsNot("series 1")))
+      val search = SeriesSearch(SearchCondition.Title(SearchOperator.IsNot("séRIES 1")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -1224,7 +1224,7 @@ class SeriesSearchTest(
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Title(SearchOperator.Contains("series")))
+      val search = SeriesSearch(SearchCondition.Title(SearchOperator.Contains("séRIES")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -1233,16 +1233,16 @@ class SeriesSearchTest(
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Title(SearchOperator.DoesNotContain("1")))
+      val search = SeriesSearch(SearchCondition.Title(SearchOperator.DoesNotContain("TWÔ")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
-      assertThat(found.map { it.name }).containsExactlyInAnyOrder("2")
-      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2")
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1")
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Title(SearchOperator.BeginsWith("series")))
+      val search = SeriesSearch(SearchCondition.Title(SearchOperator.BeginsWith("séRIES")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -1251,7 +1251,7 @@ class SeriesSearchTest(
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Title(SearchOperator.DoesNotBeginWith("series")))
+      val search = SeriesSearch(SearchCondition.Title(SearchOperator.DoesNotBeginWith("séRIES")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
@@ -1260,21 +1260,21 @@ class SeriesSearchTest(
     }
 
     run {
-      val search = SeriesSearch(SearchCondition.Title(SearchOperator.EndsWith("1")))
-      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
-      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
-
-      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1")
-      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1")
-    }
-
-    run {
-      val search = SeriesSearch(SearchCondition.Title(SearchOperator.DoesNotEndWith("1")))
+      val search = SeriesSearch(SearchCondition.Title(SearchOperator.EndsWith("TWÔ")))
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
       assertThat(found.map { it.name }).containsExactlyInAnyOrder("2")
       assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2")
+    }
+
+    run {
+      val search = SeriesSearch(SearchCondition.Title(SearchOperator.DoesNotEndWith("TWÔ")))
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1")
     }
   }
 

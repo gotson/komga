@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq
 
 import org.gotson.komga.domain.model.SearchOperator
+import org.gotson.komga.language.stripAccents
 import org.jooq.Field
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -10,8 +11,8 @@ fun SearchOperator.Equality<String>.toCondition(
   field: Field<String>,
   ignoreCase: Boolean = false,
 ) = when (this) {
-  is SearchOperator.Is -> if (ignoreCase) field.equalIgnoreCase(this.value) else field.eq(this.value)
-  is SearchOperator.IsNot -> if (ignoreCase) field.notEqualIgnoreCase(this.value) else field.ne(this.value)
+  is SearchOperator.Is -> if (ignoreCase) field.unicode1().equal(this.value) else field.equal(this.value)
+  is SearchOperator.IsNot -> if (ignoreCase) field.unicode1().notEqual(this.value) else field.notEqual(this.value)
 }
 
 fun <T> SearchOperator.Equality<T>.toCondition(field: Field<T>) =
@@ -30,14 +31,14 @@ fun <T> SearchOperator.Equality<T>.toCondition(
 
 fun SearchOperator.StringOp.toCondition(field: Field<String>) =
   when (this) {
-    is SearchOperator.BeginsWith -> field.startsWithIgnoreCase(value)
-    is SearchOperator.DoesNotBeginWith -> field.startsWithIgnoreCase(value).not()
-    is SearchOperator.EndsWith -> field.endsWithIgnoreCase(value)
-    is SearchOperator.DoesNotEndWith -> field.endsWithIgnoreCase(value).not()
-    is SearchOperator.Contains -> field.containsIgnoreCase(value)
-    is SearchOperator.DoesNotContain -> field.notContainsIgnoreCase(value)
-    is SearchOperator.Is<*> -> field.equalIgnoreCase(value as String)
-    is SearchOperator.IsNot<*> -> field.notEqualIgnoreCase(value as String)
+    is SearchOperator.BeginsWith -> field.udfStripAccents().startsWithIgnoreCase(value.stripAccents())
+    is SearchOperator.DoesNotBeginWith -> field.udfStripAccents().startsWithIgnoreCase(value.stripAccents()).not()
+    is SearchOperator.EndsWith -> field.udfStripAccents().endsWithIgnoreCase(value.stripAccents())
+    is SearchOperator.DoesNotEndWith -> field.udfStripAccents().endsWithIgnoreCase(value.stripAccents()).not()
+    is SearchOperator.Contains -> field.udfStripAccents().containsIgnoreCase(value.stripAccents())
+    is SearchOperator.DoesNotContain -> field.udfStripAccents().notContainsIgnoreCase(value.stripAccents())
+    is SearchOperator.Is<*> -> field.unicode1().equal(value as String)
+    is SearchOperator.IsNot<*> -> field.unicode1().notEqual(value as String)
   }
 
 fun SearchOperator.Date.toCondition(field: Field<LocalDate>) =
