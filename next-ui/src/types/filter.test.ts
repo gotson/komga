@@ -39,21 +39,21 @@ describe('schema any all', () => {
 
 describe('schema series status', () => {
   test('correct value', () => {
-    const input = { v: 'ENDED' }
+    const input = 'ENDED'
     const result = v.parse(SchemaSeriesStatus, input)
 
     expect(result).toStrictEqual(input)
   })
 
   test('case insensitive', () => {
-    const input = { v: 'enDeD' }
+    const input = 'enDeD'
     const result = v.parse(SchemaSeriesStatus, input)
 
-    expect(result).toStrictEqual({ v: 'ENDED' })
+    expect(result).toStrictEqual('ENDED')
   })
 
   test('other value throws error', () => {
-    const input = { v: 'whatever' }
+    const input = 'whatever'
 
     expect(() => v.parse(SchemaSeriesStatus, input)).toThrowError()
   })

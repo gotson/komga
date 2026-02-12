@@ -4,3 +4,4 @@ src/components.d.ts
 src/typed-router.d.ts
 src/generated/openapi/komga.d.ts
 public-msw/mockServiceWorker.js
+filters.md
