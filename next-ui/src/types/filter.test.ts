@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest'
 import * as v from 'valibot'
 import {
   SchemaAnyAll,
+  SchemaFilterAuthors,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
   SchemaSeriesStatus,
@@ -60,7 +61,7 @@ describe('schema series status', () => {
 
 describe('filter schemas have a default value', () => {
   test('SchemaFilterSeriesStatus', () => {
-    const expected = { m: 'anyOf', v: [] }
+    const expected = { v: [] }
     const defaults = v.getDefaults(SchemaFilterSeriesStatus)
 
     expect(defaults).toStrictEqual(expected)
@@ -69,6 +70,13 @@ describe('filter schemas have a default value', () => {
   test('SchemaFilterStrings', () => {
     const expected = { m: 'anyOf', v: [] }
     const defaults = v.getDefaults(SchemaFilterStrings)
+
+    expect(defaults).toStrictEqual(expected)
+  })
+
+  test('SchemaFilterAuthors', () => {
+    const expected = { m: 'anyOf', v: [] }
+    const defaults = v.getDefaults(SchemaFilterAuthors)
 
     expect(defaults).toStrictEqual(expected)
   })

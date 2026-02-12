@@ -5,6 +5,7 @@ export function mockPage<T>(data: T[], pageRequest: PageRequest) {
   const size = Number(pageRequest.size) || 20
   const unpaged = pageRequest.unpaged || false
   const sort = pageRequest.sort
+  const totalPages = Math.ceil(data.length / size)
 
   const start = page * size
   const slice = unpaged ? data : data.slice(start, start + size)
@@ -28,12 +29,12 @@ export function mockPage<T>(data: T[], pageRequest: PageRequest) {
       unpaged: unpaged,
       paged: !unpaged,
     },
-    last: false,
-    totalPages: Math.ceil(data.length / size),
+    last: page === totalPages - 1,
+    totalPages: totalPages,
     totalElements: data.length,
-    first: false,
+    first: page === 0,
     size: size,
-    number: 1,
+    number: page,
     sort: {
       empty: false,
       unsorted: false,

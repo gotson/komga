@@ -16,6 +16,10 @@ const model = defineModel<IncludeExclude>()
 
 const icon = computed(() => states.value.find((it) => it.value === model.value)?.icon)
 
+const emit = defineEmits<{
+  change: [newValue: IncludeExclude, oldValue: IncludeExclude]
+}>()
+
 const {
   label,
   triState = true,
@@ -35,31 +39,37 @@ const {
   color?: string
 }>()
 
-const states = computed(() => [
-  {
-    icon: 'i-mdi:checkbox-marked',
-    value: 'include',
-  },
-  ...(triState
-    ? [
-        {
-          icon: 'i-mdi:close-box',
-          value: 'exclude',
-        },
-      ]
-    : []),
-  {
-    icon: 'i-mdi:checkbox-blank-outline',
-    value: undefined,
-  },
-])
+const states = computed(
+  () =>
+    [
+      {
+        icon: 'i-mdi:checkbox-marked',
+        value: 'include',
+      },
+      ...(triState
+        ? [
+            {
+              icon: 'i-mdi:close-box',
+              value: 'exclude',
+            },
+          ]
+        : []),
+      {
+        icon: 'i-mdi:checkbox-blank-outline',
+        value: undefined,
+      },
+    ] as { icon: string; value: IncludeExclude }[],
+)
 
 if (!states.value.some((it) => it.value === model.value)) model.value = undefined
 
 function cycle() {
   const index = states.value.findIndex((x) => x.value === model.value)
   const newIndex = (index + 1) % states.value.length
-  model.value = states.value[newIndex]!.value
+  const oldVal = model.value
+  const newVal = states.value[newIndex]!.value
+  model.value = newVal
+  emit('change', newVal, oldVal)
 }
 </script>
 

@@ -1,31 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import TriState from './TriState.vue'
+import Author from './Author.vue'
 import { fn } from 'storybook/test'
 
 const meta = {
-  component: TriState,
+  component: Author,
   render: (args: object) => ({
-    components: { TriState },
+    components: { Author },
     setup() {
       return { args }
     },
-    template: '<TriState v-model="args.modelValue"/>',
+    template: '<Author v-model="args.modelValue"/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     docs: {
       description: {
-        component:
-          'A tri-state component used for filtering. Can also be configured as a simple checkbox.',
+        component: 'Author filter.',
       },
     },
   },
   args: {
-    label: 'tri state',
     'onUpdate:modelValue': fn(),
+    modelValue: [],
   },
-} satisfies Meta<typeof TriState>
+} satisfies Meta<typeof Author>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -34,22 +33,24 @@ export const Default: Story = {
   args: {},
 }
 
-export const Color: Story = {
+export const Writer: Story = {
   args: {
-    color: 'primary',
-    modelValue: 'include',
+    role: 'writer',
   },
 }
 
-export const ValidModel: Story = {
+export const NoData: Story = {
   args: {
-    modelValue: 'exclude',
+    role: 'nodata',
   },
 }
 
-export const BiState: Story = {
+export const InitialValue: Story = {
   args: {
-    label: 'bi state',
-    triState: false,
+    modelValue: [
+      { i: 'e', v: 'Author 2 (inker)' },
+      { i: 'i', v: 'Author 3 (colorist)' },
+      { i: 'i', v: 'Author 0 (writer)' },
+    ],
   },
 }

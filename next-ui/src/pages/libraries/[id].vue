@@ -7,10 +7,15 @@
 
 <script lang="ts" setup>
 import { watchImmediate } from '@vueuse/core'
+import { filterKeys } from '@/types/filter'
+import { useGetLibrariesById } from '@/composables/libraries'
 
 const route = useRoute('/libraries/[id]')
 const router = useRouter()
 const libraryId = computed(() => route.params.id)
+const { libraries } = useGetLibrariesById(libraryId)
+
+provide(filterKeys.context, { library_id: libraries.value?.map((it) => it.id) })
 
 //TODO: for now we always redirect to 'recommended', this should be persisted per libraryId
 watchImmediate(libraryId, () => {

@@ -1,31 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import TriState from './TriState.vue'
+import AnyAll from './AnyAll.vue'
 import { fn } from 'storybook/test'
 
 const meta = {
-  component: TriState,
+  component: AnyAll,
   render: (args: object) => ({
-    components: { TriState },
+    components: { AnyAll },
     setup() {
       return { args }
     },
-    template: '<TriState v-model="args.modelValue"/>',
+    template: '<AnyAll />',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     docs: {
       description: {
-        component:
-          'A tri-state component used for filtering. Can also be configured as a simple checkbox.',
+        component: 'Selector for how multiple conditions are applied.',
       },
     },
   },
   args: {
-    label: 'tri state',
     'onUpdate:modelValue': fn(),
   },
-} satisfies Meta<typeof TriState>
+} satisfies Meta<typeof AnyAll>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -33,23 +31,28 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {},
 }
-
-export const Color: Story = {
+export const Props: Story = {
   args: {
-    color: 'primary',
-    modelValue: 'include',
+    props: { rounded: false, color: 'red' },
   },
 }
 
-export const ValidModel: Story = {
+export const TextAndIcon: Story = {
   args: {
-    modelValue: 'exclude',
+    text: true,
+    icons: true,
   },
 }
 
-export const BiState: Story = {
+export const TextOnly: Story = {
   args: {
-    label: 'bi state',
-    triState: false,
+    text: true,
+    icons: false,
+  },
+}
+
+export const InitialValue: Story = {
+  args: {
+    modelValue: 'allOf',
   },
 }
