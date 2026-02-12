@@ -146,7 +146,11 @@ class BookSearchHelper(
             DSL
               .select(Tables.BOOK_METADATA_TAG.BOOK_ID)
               .from(Tables.BOOK_METADATA_TAG)
-              .where(Tables.BOOK_METADATA_TAG.TAG.unicode1().equal(tag))
+              .where(
+                Tables.BOOK_METADATA_TAG.TAG
+                  .unicode1()
+                  .equal(tag),
+              )
           }
           val innerAny = {
             DSL
@@ -170,8 +174,21 @@ class BookSearchHelper(
               .select(Tables.BOOK_METADATA_AUTHOR.BOOK_ID)
               .from(Tables.BOOK_METADATA_AUTHOR)
               .where(DSL.noCondition())
-              .apply { if (name != null) and(Tables.BOOK_METADATA_AUTHOR.NAME.unicode1().equal(name)) }
-              .apply { if (role != null) and(Tables.BOOK_METADATA_AUTHOR.ROLE.unicode1().equal(role)) }
+              .apply {
+                if (name != null)
+                  and(
+                    Tables.BOOK_METADATA_AUTHOR.NAME
+                      .unicode1()
+                      .equal(name),
+                  )
+              }.apply {
+                if (role != null)
+                  and(
+                    Tables.BOOK_METADATA_AUTHOR.ROLE
+                      .unicode1()
+                      .equal(role),
+                  )
+              }
           }
           when (searchCondition.operator) {
             is SearchOperator.Is -> {

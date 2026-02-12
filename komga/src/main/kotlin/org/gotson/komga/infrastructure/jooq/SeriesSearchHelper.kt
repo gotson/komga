@@ -6,7 +6,6 @@ import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SeriesMetadata
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.Condition
 import org.jooq.impl.DSL
@@ -101,12 +100,19 @@ class SeriesSearchHelper(
             DSL
               .select(Tables.SERIES_METADATA_TAG.SERIES_ID)
               .from(Tables.SERIES_METADATA_TAG)
-              .where(Tables.SERIES_METADATA_TAG.TAG.unicode1().equal(tag))
-              .union(
+              .where(
+                Tables.SERIES_METADATA_TAG.TAG
+                  .unicode1()
+                  .equal(tag),
+              ).union(
                 DSL
                   .select(Tables.BOOK_METADATA_AGGREGATION_TAG.SERIES_ID)
                   .from(Tables.BOOK_METADATA_AGGREGATION_TAG)
-                  .where(Tables.BOOK_METADATA_AGGREGATION_TAG.TAG.unicode1().equal(tag)),
+                  .where(
+                    Tables.BOOK_METADATA_AGGREGATION_TAG.TAG
+                      .unicode1()
+                      .equal(tag),
+                  ),
               )
           }
           val innerAny = {
@@ -141,17 +147,15 @@ class SeriesSearchHelper(
                 if (name != null)
                   and(
                     Tables.BOOK_METADATA_AGGREGATION_AUTHOR.NAME
-                      .collate(
-                        SqliteUdfDataSource.COLLATION_UNICODE_3,
-                      ).equalIgnoreCase(name),
+                      .unicode1()
+                      .equal(name),
                   )
               }.apply {
                 if (role != null)
                   and(
                     Tables.BOOK_METADATA_AGGREGATION_AUTHOR.ROLE
-                      .collate(
-                        SqliteUdfDataSource.COLLATION_UNICODE_3,
-                      ).equalIgnoreCase(role),
+                      .unicode1()
+                      .equal(role),
                   )
               }
           }
@@ -209,7 +213,11 @@ class SeriesSearchHelper(
             DSL
               .select(Tables.SERIES_METADATA_GENRE.SERIES_ID)
               .from(Tables.SERIES_METADATA_GENRE)
-              .where(Tables.SERIES_METADATA_GENRE.GENRE.unicode1().equal(genre))
+              .where(
+                Tables.SERIES_METADATA_GENRE.GENRE
+                  .unicode1()
+                  .equal(genre),
+              )
           }
           val innerAny = {
             DSL
@@ -236,7 +244,11 @@ class SeriesSearchHelper(
             DSL
               .select(Tables.SERIES_METADATA_SHARING.SERIES_ID)
               .from(Tables.SERIES_METADATA_SHARING)
-              .where(Tables.SERIES_METADATA_SHARING.LABEL.unicode1().equal(label))
+              .where(
+                Tables.SERIES_METADATA_SHARING.LABEL
+                  .unicode1()
+                  .equal(label),
+              )
           }
           val innerAny = {
             DSL

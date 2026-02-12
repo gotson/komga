@@ -17,9 +17,14 @@ import java.util.zip.GZIPOutputStream
 
 fun Field<String>.noCase() = this.collate("NOCASE")
 
+/**
+ * Warning: SQLite doesn't use collations with LIKE
+ */
 fun Field<String>.unicode1() = this.collate(SqliteUdfDataSource.COLLATION_UNICODE_1)
 
 fun Field<String>.unicode3() = this.collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+
+fun Field<String>.udfStripAccents() = DSL.function(SqliteUdfDataSource.UDF_STRIP_ACCENTS, String::class.java, this)
 
 fun Sort.toOrderBy(sorts: Map<String, Field<out Any>>): List<SortField<out Any>> =
   this.mapNotNull {

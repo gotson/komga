@@ -49,7 +49,7 @@ class ReferentialDao(
       .selectDistinct(a.NAME, a.ROLE)
       .from(a)
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
-      .where(a.NAME.unicode1().contains(search))
+      .where(a.NAME.udfStripAccents().contains(search.stripAccents()))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .orderBy(a.NAME.unicode3())
       .fetchInto(a)
@@ -65,7 +65,7 @@ class ReferentialDao(
       .from(bmaa)
       .leftJoin(s)
       .on(bmaa.SERIES_ID.eq(s.ID))
-      .where(bmaa.NAME.unicode1().contains(search))
+      .where(bmaa.NAME.udfStripAccents().contains(search.stripAccents()))
       .and(s.LIBRARY_ID.eq(libraryId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(bmaa.NAME.unicode3())
@@ -83,7 +83,7 @@ class ReferentialDao(
       .leftJoin(cs)
       .on(bmaa.SERIES_ID.eq(cs.SERIES_ID))
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) } }
-      .where(bmaa.NAME.unicode1().contains(search))
+      .where(bmaa.NAME.udfStripAccents().contains(search.stripAccents()))
       .and(cs.COLLECTION_ID.eq(collectionId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(bmaa.NAME.unicode3())
@@ -99,7 +99,7 @@ class ReferentialDao(
       .selectDistinct(bmaa.NAME, bmaa.ROLE)
       .from(bmaa)
       .apply { filterOnLibraryIds?.let { leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) } }
-      .where(bmaa.NAME.unicode1().contains(search))
+      .where(bmaa.NAME.udfStripAccents().contains(search.stripAccents()))
       .and(bmaa.SERIES_ID.eq(seriesId))
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(bmaa.NAME.unicode3())
@@ -220,7 +220,7 @@ class ReferentialDao(
       .selectDistinct(a.NAME)
       .from(a)
       .apply { filterOnLibraryIds?.let { leftJoin(b).on(a.BOOK_ID.eq(b.ID)) } }
-      .where(a.NAME.unicode1().contains(search))
+      .where(a.NAME.udfStripAccents().contains(search.stripAccents()))
       .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
       .orderBy(a.NAME.unicode3())
       .fetch(a.NAME)
