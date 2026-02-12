@@ -3,6 +3,9 @@ package org.gotson.komga.interfaces.api.rest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.gotson.komga.domain.model.FilterBy
+import org.gotson.komga.domain.model.FilterByEntity
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.openapi.PageableWithoutSortAsQueryParam
@@ -49,11 +52,11 @@ class ReferentialV2Controller(
         )
 
     return when {
-      libraryIds.isNotEmpty() -> referentialRepository.findAllAuthorsByNameAndLibraries(search, role, libraryIds, principal.user.getAuthorizedLibraryIds(null), pageRequest)
-      collectionId != null -> referentialRepository.findAllAuthorsByNameAndCollection(search, role, collectionId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
-      seriesId != null -> referentialRepository.findAllAuthorsByNameAndSeries(search, role, seriesId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
-      readListId != null -> referentialRepository.findAllAuthorsByNameAndReadList(search, role, readListId, principal.user.getAuthorizedLibraryIds(null), pageRequest)
-      else -> referentialRepository.findAllAuthorsByName(search, role, principal.user.getAuthorizedLibraryIds(null), pageRequest)
+      libraryIds.isNotEmpty() -> referentialRepository.findAuthors(SearchContext(principal.user), search, role, FilterBy(FilterByEntity.LIBRARY, libraryIds), pageRequest)
+      collectionId != null -> referentialRepository.findAuthors(SearchContext(principal.user), search, role, FilterBy(FilterByEntity.COLLECTION, setOf(collectionId)), pageRequest)
+      seriesId != null -> referentialRepository.findAuthors(SearchContext(principal.user), search, role, FilterBy(FilterByEntity.SERIES, setOf(seriesId)), pageRequest)
+      readListId != null -> referentialRepository.findAuthors(SearchContext(principal.user), search, role, FilterBy(FilterByEntity.READLIST, setOf(readListId)), pageRequest)
+      else -> referentialRepository.findAuthors(SearchContext(principal.user), search, role, null, pageRequest)
     }.map { it.toDto() }
   }
 }

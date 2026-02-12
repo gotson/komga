@@ -1,6 +1,8 @@
 package org.gotson.komga.domain.persistence
 
 import org.gotson.komga.domain.model.Author
+import org.gotson.komga.domain.model.FilterBy
+import org.gotson.komga.domain.model.SearchContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.time.LocalDate
@@ -36,42 +38,11 @@ interface ReferentialRepository {
 
   fun findAllAuthorsRoles(filterOnLibraryIds: Collection<String>?): List<String>
 
-  fun findAllAuthorsByName(
+  fun findAuthors(
+    context: SearchContext,
     search: String?,
     role: String?,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author>
-
-  fun findAllAuthorsByNameAndLibraries(
-    search: String?,
-    role: String?,
-    libraryIds: Set<String>,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author>
-
-  fun findAllAuthorsByNameAndCollection(
-    search: String?,
-    role: String?,
-    collectionId: String,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author>
-
-  fun findAllAuthorsByNameAndSeries(
-    search: String?,
-    role: String?,
-    seriesId: String,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author>
-
-  fun findAllAuthorsByNameAndReadList(
-    search: String?,
-    role: String?,
-    readListId: String,
-    filterOnLibraryIds: Collection<String>?,
+    filterBy: FilterBy?,
     pageable: Pageable,
   ): Page<Author>
 

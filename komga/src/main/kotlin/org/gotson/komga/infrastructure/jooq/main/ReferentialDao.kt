@@ -1,9 +1,12 @@
 package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.Author
+import org.gotson.komga.domain.model.FilterBy
+import org.gotson.komga.domain.model.FilterByEntity
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.unicode1
+import org.gotson.komga.infrastructure.jooq.udfStripAccents
 import org.gotson.komga.infrastructure.jooq.unicode3
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAggregationAuthorRecord
@@ -106,87 +109,36 @@ class ReferentialDao(
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
-  override fun findAllAuthorsByName(
+  override fun findAuthors(
+    context: SearchContext,
     search: String?,
     role: String?,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, null)
-
-  override fun findAllAuthorsByNameAndLibraries(
-    search: String?,
-    role: String?,
-    libraryIds: Set<String>,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.LIBRARY, libraryIds))
-
-  override fun findAllAuthorsByNameAndCollection(
-    search: String?,
-    role: String?,
-    collectionId: String,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.COLLECTION, setOf(collectionId)))
-
-  override fun findAllAuthorsByNameAndSeries(
-    search: String?,
-    role: String?,
-    seriesId: String,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.SERIES, setOf(seriesId)))
-
-  override fun findAllAuthorsByNameAndReadList(
-    search: String?,
-    role: String?,
-    readListId: String,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
-  ): Page<Author> = findAuthorsByName(search, role, filterOnLibraryIds, pageable, FilterBy(FilterByType.READLIST, setOf(readListId)))
-
-  private enum class FilterByType {
-    LIBRARY,
-    COLLECTION,
-    SERIES,
-    READLIST,
-  }
-
-  private data class FilterBy(
-    val type: FilterByType,
-    val ids: Set<String>,
-  )
-
-  private fun findAuthorsByName(
-    search: String?,
-    role: String?,
-    filterOnLibraryIds: Collection<String>?,
-    pageable: Pageable,
     filterBy: FilterBy?,
+    pageable: Pageable,
   ): Page<Author> {
     val query =
       dslRO
         .selectDistinct(bmaa.NAME, bmaa.ROLE)
         .from(bmaa)
-        .apply { if (filterOnLibraryIds != null || filterBy?.type == FilterByType.LIBRARY) leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) }
-        .apply { if (filterBy?.type == FilterByType.COLLECTION) leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID)) }
+        .apply { if (!context.libraryIds.isNullOrEmpty() || filterBy?.type == FilterByEntity.LIBRARY) leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) }
+        .apply { if (filterBy?.type == FilterByEntity.COLLECTION) leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID)) }
         .apply {
-          if (filterBy?.type == FilterByType.READLIST)
+          if (filterBy?.type == FilterByEntity.READLIST)
             leftJoin(b)
               .on(bmaa.SERIES_ID.eq(b.SERIES_ID))
               .leftJoin(rb)
               .on(b.ID.eq(rb.BOOK_ID))
         }.where(noCondition())
-        .apply { search?.let { and(bmaa.NAME.unicode1().contains(search)) } }
+        .apply { search?.let { and(bmaa.NAME.udfStripAccents().contains(search.stripAccents())) } }
         .apply { role?.let { and(bmaa.ROLE.eq(role)) } }
-        .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+        .apply { context.libraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
         .apply {
           filterBy?.let {
             when (it.type) {
-              FilterByType.LIBRARY -> and(s.LIBRARY_ID.`in`(it.ids))
-              FilterByType.COLLECTION -> and(cs.COLLECTION_ID.`in`(it.ids))
-              FilterByType.SERIES -> and(bmaa.SERIES_ID.`in`(it.ids))
-              FilterByType.READLIST -> and(rb.READLIST_ID.`in`(it.ids))
+              FilterByEntity.LIBRARY -> and(s.LIBRARY_ID.`in`(it.ids))
+              FilterByEntity.COLLECTION -> and(cs.COLLECTION_ID.`in`(it.ids))
+              FilterByEntity.SERIES -> and(bmaa.SERIES_ID.`in`(it.ids))
+              FilterByEntity.READLIST -> and(rb.READLIST_ID.`in`(it.ids))
             }
           }
         }
@@ -201,7 +153,7 @@ class ReferentialDao(
         .fetchInto(a)
         .map { it.toDomain() }
 
-    val pageSort = Sort.by("relevance")
+    val pageSort = pageable.sort
     return PageImpl(
       items,
       if (pageable.isPaged)
