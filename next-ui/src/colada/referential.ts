@@ -63,16 +63,3 @@ export const authorsQuery = defineQueryOptions(
     }
   },
 )
-
-export const authorRolesQuery = defineQueryOptions(() => {
-  return {
-    key: ['authors', 'roles'],
-    query: () =>
-      komgaClient
-        .GET('/api/v1/authors/roles')
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
-    placeholderData: (previousData: any) => previousData, // eslint-disable-line @typescript-eslint/no-explicit-any
-    staleTime: 60 * 60 * 1000, // 1 hour
-  }
-})

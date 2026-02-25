@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ExpansionPanel from './ExpansionPanel.vue'
 import { VExpansionPanels } from 'vuetify/components'
-import { expect, fn, waitFor } from 'storybook/test'
+import { expect, fn } from 'storybook/test'
 
 const meta = {
   component: ExpansionPanel,
