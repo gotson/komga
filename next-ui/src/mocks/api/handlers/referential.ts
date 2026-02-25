@@ -50,4 +50,40 @@ export const referentialHandlers = [
       ),
     )
   }),
+  httpTyped.get('/api/v2/authors/names', ({ query, response }) => {
+    const search = query.get('search')
+    const role = query.get('role')
+    const selected = search
+      ? mockAuthors.filter((it) => !!it.name.match(new RegExp(search, 'i')))
+      : mockAuthors
+    const byRole = role ? selected.filter((it) => it.role === role) : selected
+    const names = [...new Set(byRole.map((it) => it.name))]
+
+    return response(200).json(
+      mockPage(
+        names,
+        new PageRequest(
+          Number(query.get('page')),
+          Number(query.get('size')),
+          undefined,
+          Boolean(query.get('unpaged')),
+        ),
+      ),
+    )
+  }),
+  httpTyped.get('/api/v2/authors/roles', ({ query, response }) => {
+    const roles = [...new Set(mockAuthors.map((it) => it.role))]
+
+    return response(200).json(
+      mockPage(
+        roles,
+        new PageRequest(
+          Number(query.get('page')),
+          Number(query.get('size')),
+          undefined,
+          Boolean(query.get('unpaged')),
+        ),
+      ),
+    )
+  }),
 ]
