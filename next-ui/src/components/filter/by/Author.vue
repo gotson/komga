@@ -58,7 +58,7 @@ const { data: infiniteData, loadNextPage } = useInfiniteQuery({
   initialPageParam: new PageRequest(0, 50),
   query: ({ pageParam }) =>
     komgaClient
-      .GET('/api/v2/authors', {
+      .GET('/api/v2/authors/names', {
         params: {
           query: {
             ...apiQuery,
@@ -72,11 +72,9 @@ const { data: infiniteData, loadNextPage } = useInfiniteQuery({
     !lastPage?.last ? new PageRequest((lastPage?.number ?? 0) + 1, lastPage?.size) : null,
 })
 const infiniteItems = computed(() => {
-  const itemTypes = Array.from(
-    new Set(
-      infiniteData.value?.pages.flatMap((it) => it?.content?.map((it) => it.name) ?? []) ?? [],
-    ),
-  ).map((it) => toItemType(it))
+  const itemTypes = (infiniteData.value?.pages.flatMap((it) => it?.content ?? []) ?? []).map((it) =>
+    toItemType(it),
+  )
   return [
     {
       title: intl.formatMessage(filterMessages.any!),
