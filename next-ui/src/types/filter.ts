@@ -12,9 +12,9 @@ export const filterMessages: Record<string, MessageDescriptor> = {
 export const filterKeys = {
   context: Symbol() as InjectionKey<{
     library_id?: string[]
-    collection_id?: string
-    series_id?: string
-    readlist_id?: string
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
   }>,
 }
 

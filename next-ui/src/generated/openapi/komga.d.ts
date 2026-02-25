@@ -52,9 +52,10 @@ export interface paths {
         };
         /**
          * List age ratings
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/genres instead. Deprecated since 1.x.0
          */
-        get: operations["getAgeRatings"];
+        get: operations["getAgeRatings_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -115,8 +116,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List authors' names */
-        get: operations["getAuthorsNames"];
+        /**
+         * List authors' names
+         * @deprecated
+         * @description Use GET /v2/authors/names instead. Deprecated since 1.x.0
+         */
+        get: operations["getAuthorsNames_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -132,8 +137,12 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List authors' roles */
-        get: operations["getAuthorsRoles"];
+        /**
+         * List authors' roles
+         * @deprecated
+         * @description Use GET /v2/authors/roles instead. Deprecated since 1.x.0
+         */
+        get: operations["getAuthorsRoles_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1141,9 +1150,10 @@ export interface paths {
         };
         /**
          * List genres
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/genres instead. Deprecated since 1.x.0
          */
-        get: operations["getGenres"];
+        get: operations["getGenres_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1181,9 +1191,10 @@ export interface paths {
         };
         /**
          * List languages
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/languages instead. Deprecated since 1.x.0
          */
-        get: operations["getLanguages"];
+        get: operations["getLanguages_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1520,9 +1531,10 @@ export interface paths {
         };
         /**
          * List publishers
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/genres instead. Deprecated since 1.x.0
          */
-        get: operations["getPublishers"];
+        get: operations["getPublishers_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1921,9 +1933,10 @@ export interface paths {
         };
         /**
          * List series release dates
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/genres instead. Deprecated since 1.x.0
          */
-        get: operations["getSeriesReleaseDates"];
+        get: operations["getSeriesReleaseDates_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2233,9 +2246,10 @@ export interface paths {
         };
         /**
          * List sharing labels
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/sharing-labels instead. Deprecated since 1.x.0
          */
-        get: operations["getSharingLabels"];
+        get: operations["getSharingLabels_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2273,9 +2287,10 @@ export interface paths {
         };
         /**
          * List tags
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/sharing-labels instead. Deprecated since 1.x.0
          */
-        get: operations["getTags"];
+        get: operations["getTags_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2293,7 +2308,8 @@ export interface paths {
         };
         /**
          * List book tags
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/sharing-labels instead. Deprecated since 1.x.0
          */
         get: operations["getBookTags"];
         put?: never;
@@ -2313,7 +2329,8 @@ export interface paths {
         };
         /**
          * List series tags
-         * @description Can be filtered by various criteria
+         * @deprecated
+         * @description Use GET /v2/sharing-labels instead. Deprecated since 1.x.0
          */
         get: operations["getSeriesTags"];
         put?: never;
@@ -2408,6 +2425,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v2/age-ratings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List age ratings
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getAgeRatings"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v2/authors": {
         parameters: {
             query?: never;
@@ -2420,6 +2457,126 @@ export interface paths {
          * @description Can be filtered by various criteria
          */
         get: operations["getAuthors"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v2/authors/names": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List authors names
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getAuthorsNames"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v2/authors/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List authors roles
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getAuthorsRoles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v2/genres": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List genres
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getGenres"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v2/languages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List languages
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getLanguages"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v2/publishers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List publishers
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getPublishers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v2/series/release-dates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List series release dates
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getSeriesReleaseDates"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2445,6 +2602,46 @@ export interface paths {
          * @description Mihon specific, due to how read progress is handled in Mihon.
          */
         put: operations["updateMihonReadProgressBySeriesId"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v2/sharing-labels": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List sharing labels
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getSharingLabels"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v2/tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List tags
+         * @description Can be filtered by various criteria
+         */
+        get: operations["getTags"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -3063,7 +3260,8 @@ export interface components {
              */
             url?: string;
         };
-        /** @example {
+        /**
+         * @example {
          *       "version": "https://jsonfeed.org/version/1",
          *       "title": "Announcements",
          *       "home_page_url": "https://komga.org/blog",
@@ -3108,7 +3306,8 @@ export interface components {
          *           }
          *         }
          *       ]
-         *     } */
+         *     }
+         */
         JsonFeedDto: {
             /**
              * @description Provides more detail on what the feed is about
@@ -3446,6 +3645,24 @@ export interface components {
             /** Format: int32 */
             totalPages?: number;
         };
+        PageInteger: {
+            content?: number[];
+            empty?: boolean;
+            first?: boolean;
+            last?: boolean;
+            /** Format: int32 */
+            number?: number;
+            /** Format: int32 */
+            numberOfElements?: number;
+            pageable?: components["schemas"]["PageableObject"];
+            /** Format: int32 */
+            size?: number;
+            sort?: components["schemas"]["SortObject"];
+            /** Format: int64 */
+            totalElements?: number;
+            /** Format: int32 */
+            totalPages?: number;
+        };
         PagePageHashKnownDto: {
             content?: components["schemas"]["PageHashKnownDto"][];
             empty?: boolean;
@@ -3520,6 +3737,24 @@ export interface components {
         };
         PageSeriesDto: {
             content?: components["schemas"]["SeriesDto"][];
+            empty?: boolean;
+            first?: boolean;
+            last?: boolean;
+            /** Format: int32 */
+            number?: number;
+            /** Format: int32 */
+            numberOfElements?: number;
+            pageable?: components["schemas"]["PageableObject"];
+            /** Format: int32 */
+            size?: number;
+            sort?: components["schemas"]["SortObject"];
+            /** Format: int64 */
+            totalElements?: number;
+            /** Format: int32 */
+            totalPages?: number;
+        };
+        PageString: {
+            content?: string[];
             empty?: boolean;
             first?: boolean;
             last?: boolean;
@@ -4151,7 +4386,7 @@ export interface operations {
             };
         };
     };
-    getAgeRatings: {
+    getAgeRatings_1: {
         parameters: {
             query?: {
                 library_id?: string[];
@@ -4277,7 +4512,7 @@ export interface operations {
             };
         };
     };
-    getAuthorsNames: {
+    getAuthorsNames_1: {
         parameters: {
             query?: {
                 search?: string;
@@ -4308,7 +4543,7 @@ export interface operations {
             };
         };
     };
-    getAuthorsRoles: {
+    getAuthorsRoles_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5661,10 +5896,12 @@ export interface operations {
         };
         requestBody: {
             content: {
-                /** @example [
+                /**
+                 * @example [
                  *       "application.key1",
                  *       "application.key2"
-                 *     ] */
+                 *     ]
+                 */
                 "application/json": string[];
             };
         };
@@ -5696,7 +5933,8 @@ export interface operations {
         };
         requestBody: {
             content: {
-                /** @example {
+                /**
+                 * @example {
                  *       "application.key1": {
                  *         "value": "a string value",
                  *         "allowUnauthorized": true
@@ -5705,7 +5943,8 @@ export interface operations {
                  *         "value": "{\"json\":\"object\"}",
                  *         "allowUnauthorized": false
                  *       }
-                 *     } */
+                 *     }
+                 */
                 "application/json": {
                     [key: string]: components["schemas"]["ClientSettingGlobalUpdateDto"];
                 };
@@ -5770,10 +6009,12 @@ export interface operations {
         };
         requestBody: {
             content: {
-                /** @example [
+                /**
+                 * @example [
                  *       "application.key1",
                  *       "application.key2"
-                 *     ] */
+                 *     ]
+                 */
                 "application/json": string[];
             };
         };
@@ -5805,14 +6046,16 @@ export interface operations {
         };
         requestBody: {
             content: {
-                /** @example {
+                /**
+                 * @example {
                  *       "application.key1": {
                  *         "value": "a string value"
                  *       },
                  *       "application.key2": {
                  *         "value": "{\"json\":\"object\"}"
                  *       }
-                 *     } */
+                 *     }
+                 */
                 "application/json": {
                     [key: string]: components["schemas"]["ClientSettingUserUpdateDto"];
                 };
@@ -6403,7 +6646,7 @@ export interface operations {
             };
         };
     };
-    getGenres: {
+    getGenres_1: {
         parameters: {
             query?: {
                 library_id?: string[];
@@ -6471,7 +6714,7 @@ export interface operations {
             };
         };
     };
-    getLanguages: {
+    getLanguages_1: {
         parameters: {
             query?: {
                 library_id?: string[];
@@ -7135,7 +7378,7 @@ export interface operations {
             };
         };
     };
-    getPublishers: {
+    getPublishers_1: {
         parameters: {
             query?: {
                 library_id?: string[];
@@ -8050,7 +8293,7 @@ export interface operations {
             };
         };
     };
-    getSeriesReleaseDates: {
+    getSeriesReleaseDates_1: {
         parameters: {
             query?: {
                 library_id?: string[];
@@ -8700,7 +8943,7 @@ export interface operations {
             };
         };
     };
-    getSharingLabels: {
+    getSharingLabels_1: {
         parameters: {
             query?: {
                 library_id?: string[];
@@ -8761,7 +9004,7 @@ export interface operations {
             };
         };
     };
-    getTags: {
+    getTags_1: {
         parameters: {
             query?: {
                 library_id?: string[];
@@ -8984,15 +9227,52 @@ export interface operations {
             };
         };
     };
+    getAgeRatings: {
+        parameters: {
+            query?: {
+                library_id?: string[];
+                collection_id?: string[];
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageInteger"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
     getAuthors: {
         parameters: {
             query?: {
                 search?: string;
                 role?: string;
                 library_id?: string[];
-                collection_id?: string;
-                series_id?: string;
-                readlist_id?: string;
+                collection_id?: string[];
+                series_id?: string[];
+                readlist_id?: string[];
                 unpaged?: boolean;
                 /** @description Zero-based page index (0..N) */
                 page?: number;
@@ -9012,6 +9292,237 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PageAuthorDto"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
+    getAuthorsNames: {
+        parameters: {
+            query?: {
+                search?: string;
+                role?: string;
+                library_id?: string[];
+                collection_id?: string[];
+                series_id?: string[];
+                readlist_id?: string[];
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageString"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
+    getAuthorsRoles: {
+        parameters: {
+            query?: {
+                library_id?: string[];
+                collection_id?: string[];
+                series_id?: string[];
+                readlist_id?: string[];
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageString"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
+    getGenres: {
+        parameters: {
+            query?: {
+                search?: string;
+                library_id?: string[];
+                collection_id?: string[];
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageString"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
+    getLanguages: {
+        parameters: {
+            query?: {
+                search?: string;
+                library_id?: string[];
+                collection_id?: string[];
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageString"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
+    getPublishers: {
+        parameters: {
+            query?: {
+                search?: string;
+                library_id?: string[];
+                collection_id?: string[];
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageString"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
+    getSeriesReleaseDates: {
+        parameters: {
+            query?: {
+                library_id?: string[];
+                collection_id?: string[];
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageString"];
                 };
             };
             /** @description Bad Request */
@@ -9077,6 +9588,85 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
+    getSharingLabels: {
+        parameters: {
+            query?: {
+                search?: string;
+                library_id?: string[];
+                collection_id?: string[];
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageString"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ValidationErrorResponse"];
+                };
+            };
+        };
+    };
+    getTags: {
+        parameters: {
+            query?: {
+                search?: string;
+                library_id?: string[];
+                collection_id?: string[];
+                series_id?: string;
+                readlist_id?: string;
+                include?: "SERIES" | "BOOK" | "BOTH";
+                unpaged?: boolean;
+                /** @description Zero-based page index (0..N) */
+                page?: number;
+                /** @description The size of the page to be returned */
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageString"];
+                };
             };
             /** @description Bad Request */
             400: {

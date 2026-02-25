@@ -31,9 +31,9 @@ export const authorsQuery = defineQueryOptions(
     search?: string
     role?: string
     library_id?: string[]
-    collection_id?: string
-    series_id?: string
-    readlist_id?: string
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
     pageRequest?: PageRequest
     pause?: boolean
     placeholder?: boolean
