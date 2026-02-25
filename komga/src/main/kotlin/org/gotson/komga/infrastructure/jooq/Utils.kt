@@ -10,6 +10,9 @@ import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.SortField
 import org.jooq.impl.DSL
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import java.io.ByteArrayOutputStream
 import java.util.zip.GZIPInputStream
@@ -136,3 +139,18 @@ fun ObjectMapper.deserializeMediaExtension(
 fun rlbAlias(readListId: String) = Tables.READLIST_BOOK.`as`("RLB_$readListId")
 
 fun csAlias(collectionId: String) = Tables.COLLECTION_SERIES.`as`("CS_$collectionId")
+
+fun <T> buildPage(
+  items: List<T>,
+  pageable: Pageable,
+  count: Int,
+  sort: Sort?,
+): PageImpl<T> =
+  PageImpl(
+    items,
+    if (pageable.isPaged)
+      PageRequest.of(pageable.pageNumber, pageable.pageSize, sort ?: pageable.sort)
+    else
+      PageRequest.of(0, maxOf(count, 20), sort ?: pageable.sort),
+    count.toLong(),
+  )

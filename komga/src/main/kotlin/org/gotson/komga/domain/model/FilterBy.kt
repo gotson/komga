@@ -11,3 +11,9 @@ data class FilterBy(
   val type: FilterByEntity,
   val ids: Set<String>,
 )
+
+enum class FilterTags {
+  SERIES,
+  BOOK,
+  BOTH,
+}

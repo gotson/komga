@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger {}
  */
 class SeriesSearchHelper(
   val context: SearchContext,
-) : ContentRestrictionsSearchHelper() {
+) {
   fun toCondition(searchCondition: SearchCondition.Series?): Pair<Condition, Set<RequiredJoin>> {
     val base = toCondition()
     val search = toConditionInternal(searchCondition)
@@ -25,7 +25,7 @@ class SeriesSearchHelper(
   }
 
   fun toCondition(): Pair<Condition, Set<RequiredJoin>> {
-    val restrictions = toConditionInternal(context.restrictions)
+    val restrictions = ContentRestrictionsSearchHelper(context.restrictions).toCondition()
     val authorizedLibraries = toConditionInternal(context.libraryIds)
     return restrictions.first.and(authorizedLibraries.first) to (restrictions.second + authorizedLibraries.second)
   }

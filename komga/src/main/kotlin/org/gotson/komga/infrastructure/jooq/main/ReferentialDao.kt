@@ -3,24 +3,35 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.FilterBy
 import org.gotson.komga.domain.model.FilterByEntity
+import org.gotson.komga.domain.model.FilterTags
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.ReferentialRepository
+import org.gotson.komga.infrastructure.jooq.ContentRestrictionsSearchHelper
+import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
+import org.gotson.komga.infrastructure.jooq.buildPage
 import org.gotson.komga.infrastructure.jooq.udfStripAccents
 import org.gotson.komga.infrastructure.jooq.unicode3
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAggregationAuthorRecord
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAuthorRecord
 import org.gotson.komga.language.stripAccents
+import org.jooq.Condition
 import org.jooq.DSLContext
-import org.jooq.impl.DSL.noCondition
+import org.jooq.OrderField
+import org.jooq.SelectFieldOrAsterisk
+import org.jooq.TableField
+import org.jooq.impl.DSL
 import org.jooq.impl.DSL.select
+import org.jooq.impl.TableImpl
+import org.jooq.impl.TableRecordImpl
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Sort.Order
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
@@ -43,7 +54,9 @@ class ReferentialDao(
   private val cs = Tables.COLLECTION_SERIES
   private val rb = Tables.READLIST_BOOK
   private val sl = Tables.SERIES_METADATA_SHARING
+  private val at = Tables.SERIES_AND_BOOK_TAG
 
+  @Deprecated("Use findAuthors instead")
   override fun findAllAuthorsByName(
     search: String,
     filterOnLibraryIds: Collection<String>?,
@@ -58,6 +71,7 @@ class ReferentialDao(
       .fetchInto(a)
       .map { it.toDomain() }
 
+  @Deprecated("Use findAuthors instead")
   override fun findAllAuthorsByNameAndLibrary(
     search: String,
     libraryId: String,
@@ -75,6 +89,7 @@ class ReferentialDao(
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
+  @Deprecated("Use findAuthors instead")
   override fun findAllAuthorsByNameAndCollection(
     search: String,
     collectionId: String,
@@ -93,6 +108,7 @@ class ReferentialDao(
       .fetchInto(bmaa)
       .map { it.toDomain() }
 
+  @Deprecated("Use findAuthors instead")
   override fun findAllAuthorsByNameAndSeries(
     search: String,
     seriesId: String,
@@ -115,55 +131,23 @@ class ReferentialDao(
     role: String?,
     filterBy: FilterBy?,
     pageable: Pageable,
-  ): Page<Author> {
-    val query =
-      dslRO
-        .selectDistinct(bmaa.NAME, bmaa.ROLE)
-        .from(bmaa)
-        .apply { if (!context.libraryIds.isNullOrEmpty() || filterBy?.type == FilterByEntity.LIBRARY) leftJoin(s).on(bmaa.SERIES_ID.eq(s.ID)) }
-        .apply { if (filterBy?.type == FilterByEntity.COLLECTION) leftJoin(cs).on(bmaa.SERIES_ID.eq(cs.SERIES_ID)) }
-        .apply {
-          if (filterBy?.type == FilterByEntity.READLIST)
-            leftJoin(b)
-              .on(bmaa.SERIES_ID.eq(b.SERIES_ID))
-              .leftJoin(rb)
-              .on(b.ID.eq(rb.BOOK_ID))
-        }.where(noCondition())
-        .apply { search?.let { and(bmaa.NAME.udfStripAccents().contains(search.stripAccents())) } }
-        .apply { role?.let { and(bmaa.ROLE.eq(role)) } }
-        .apply { context.libraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
-        .apply {
-          filterBy?.let {
-            when (it.type) {
-              FilterByEntity.LIBRARY -> and(s.LIBRARY_ID.`in`(it.ids))
-              FilterByEntity.COLLECTION -> and(cs.COLLECTION_ID.`in`(it.ids))
-              FilterByEntity.SERIES -> and(bmaa.SERIES_ID.`in`(it.ids))
-              FilterByEntity.READLIST -> and(rb.READLIST_ID.`in`(it.ids))
-            }
-          }
-        }
+  ): Page<Author> = findGeneric(context, search, filterBy, pageable, bmaa, bmaa.NAME, bmaa.SERIES_ID, { it?.toDomain() }, Sort.by("name"), listOf(bmaa.ROLE), role?.let { bmaa.ROLE.eq(role) })
 
-    val count = dslRO.fetchCount(query)
-    val sort = bmaa.NAME.unicode3()
+  override fun findAuthorsRoles(
+    context: SearchContext,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): Page<String> = findGeneric(context, null, filterBy, pageable, bmaa, null, bmaa.SERIES_ID, { it?.role }, Sort.by("role"), listOf(bmaa.ROLE), sortField = bmaa.ROLE)
 
-    val items =
-      query
-        .orderBy(sort)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchInto(a)
-        .map { it.toDomain() }
+  override fun findAuthorsNames(
+    context: SearchContext,
+    search: String?,
+    role: String?,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): Page<String> = findGeneric(context, search, filterBy, pageable, bmaa, bmaa.NAME, bmaa.SERIES_ID, { it?.name }, Sort.by("name"), listOf(bmaa.ROLE), role?.let { bmaa.ROLE.eq(role) })
 
-    val pageSort = pageable.sort
-    return PageImpl(
-      items,
-      if (pageable.isPaged)
-        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else
-        PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong(),
-    )
-  }
-
+  @Deprecated("Use findAuthorsNames instead")
   override fun findAllAuthorsNamesByName(
     search: String,
     filterOnLibraryIds: Collection<String>?,
@@ -177,6 +161,7 @@ class ReferentialDao(
       .orderBy(a.NAME.unicode3())
       .fetch(a.NAME)
 
+  @Deprecated("Use findAuthorsRoles instead")
   override fun findAllAuthorsRoles(filterOnLibraryIds: Collection<String>?): List<String> =
     dslRO
       .selectDistinct(a.ROLE)
@@ -190,6 +175,7 @@ class ReferentialDao(
       }.orderBy(a.ROLE)
       .fetch(a.ROLE)
 
+  @Deprecated("Use findGenres instead")
   override fun findAllGenres(filterOnLibraryIds: Collection<String>?): Set<String> =
     dslRO
       .selectDistinct(g.GENRE)
@@ -203,6 +189,7 @@ class ReferentialDao(
       }.orderBy(g.GENRE.unicode3())
       .fetchSet(g.GENRE)
 
+  @Deprecated("Use findGenres instead")
   override fun findAllGenresByLibraries(
     libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
@@ -217,6 +204,7 @@ class ReferentialDao(
       .orderBy(g.GENRE.unicode3())
       .fetchSet(g.GENRE)
 
+  @Deprecated("Use findGenres instead")
   override fun findAllGenresByCollection(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -232,6 +220,18 @@ class ReferentialDao(
       .orderBy(g.GENRE.unicode3())
       .fetchSet(g.GENRE)
 
+  override fun findGenres(
+    context: SearchContext,
+    search: String?,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): Page<String> {
+    filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
+
+    return findGeneric(context, search, filterBy, pageable, g, g.GENRE, g.SERIES_ID, { it?.genre }, Sort.by("genre"))
+  }
+
+  @Deprecated("Use findTags instead")
   override fun findAllSeriesAndBookTags(filterOnLibraryIds: Collection<String>?): Set<String> =
     dslRO
       .select(bt.TAG.`as`("tag"))
@@ -245,6 +245,7 @@ class ReferentialDao(
       .sortedBy { it.stripAccents().lowercase() }
       .toSet()
 
+  @Deprecated("Use findTags instead")
   override fun findAllSeriesAndBookTagsByLibraries(
     libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
@@ -267,6 +268,7 @@ class ReferentialDao(
       .sortedBy { it.stripAccents().lowercase() }
       .toSet()
 
+  @Deprecated("Use findTags instead")
   override fun findAllSeriesAndBookTagsByCollection(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -293,6 +295,7 @@ class ReferentialDao(
       .sortedBy { it.stripAccents().lowercase() }
       .toSet()
 
+  @Deprecated("Use findTags instead")
   override fun findAllSeriesTags(filterOnLibraryIds: Collection<String>?): Set<String> =
     dslRO
       .select(st.TAG)
@@ -306,6 +309,7 @@ class ReferentialDao(
       }.orderBy(st.TAG.unicode3())
       .fetchSet(st.TAG)
 
+  @Deprecated("Use findTags instead")
   override fun findAllSeriesTagsByLibrary(
     libraryId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -320,6 +324,7 @@ class ReferentialDao(
       .orderBy(st.TAG.unicode3())
       .fetchSet(st.TAG)
 
+  @Deprecated("Use findTags instead")
   override fun findAllBookTagsBySeries(
     seriesId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -334,6 +339,7 @@ class ReferentialDao(
       .orderBy(bt.TAG.unicode3())
       .fetchSet(bt.TAG)
 
+  @Deprecated("Use findTags instead")
   override fun findAllBookTagsByReadList(
     readListId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -350,6 +356,20 @@ class ReferentialDao(
       .orderBy(bt.TAG.unicode3())
       .fetchSet(bt.TAG)
 
+  override fun findTags(
+    context: SearchContext,
+    search: String?,
+    filterBy: FilterBy?,
+    filterTags: FilterTags,
+    pageable: Pageable,
+  ): Page<String> =
+    when (filterTags) {
+      FilterTags.SERIES -> findGeneric(context, search, filterBy, pageable, st, st.TAG, st.SERIES_ID, { it?.tag }, Sort.by("tag"))
+      FilterTags.BOOK -> findGeneric(context, search, filterBy, pageable, bmat, bmat.TAG, bmat.SERIES_ID, { it?.tag }, Sort.by("tag"))
+      FilterTags.BOTH -> findGeneric(context, search, filterBy, pageable, at, at.TAG, at.SERIES_ID, { it?.tag }, Sort.by("tag"))
+    }
+
+  @Deprecated("Use findTags instead")
   override fun findAllSeriesTagsByCollection(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -365,6 +385,7 @@ class ReferentialDao(
       .orderBy(st.TAG.unicode3())
       .fetchSet(st.TAG)
 
+  @Deprecated("Use findTags instead")
   override fun findAllBookTags(filterOnLibraryIds: Collection<String>?): Set<String> =
     dslRO
       .select(bt.TAG)
@@ -378,6 +399,7 @@ class ReferentialDao(
       }.orderBy(bt.TAG.unicode3())
       .fetchSet(bt.TAG)
 
+  @Deprecated("Use findLanguages instead")
   override fun findAllLanguages(filterOnLibraryIds: Collection<String>?): Set<String> =
     dslRO
       .selectDistinct(sd.LANGUAGE)
@@ -388,6 +410,7 @@ class ReferentialDao(
       .orderBy(sd.LANGUAGE)
       .fetchSet(sd.LANGUAGE)
 
+  @Deprecated("Use findLanguages instead")
   override fun findAllLanguagesByLibraries(
     libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
@@ -403,6 +426,7 @@ class ReferentialDao(
       .orderBy(sd.LANGUAGE)
       .fetchSet(sd.LANGUAGE)
 
+  @Deprecated("Use findLanguages instead")
   override fun findAllLanguagesByCollection(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -419,6 +443,18 @@ class ReferentialDao(
       .orderBy(sd.LANGUAGE)
       .fetchSet(sd.LANGUAGE)
 
+  override fun findLanguages(
+    context: SearchContext,
+    search: String?,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): Page<String> {
+    filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
+
+    return findGeneric(context, search, filterBy, pageable, sd, sd.LANGUAGE, sd.SERIES_ID, { it?.language }, Sort.by("language"), extraCondition = sd.LANGUAGE.ne(""))
+  }
+
+  @Deprecated("Use findPublishers instead")
   override fun findAllPublishers(filterOnLibraryIds: Collection<String>?): Set<String> =
     dslRO
       .selectDistinct(sd.PUBLISHER)
@@ -429,6 +465,7 @@ class ReferentialDao(
       .orderBy(sd.PUBLISHER.unicode3())
       .fetchSet(sd.PUBLISHER)
 
+  @Deprecated("Use findPublishers instead")
   override fun findAllPublishers(
     filterOnLibraryIds: Collection<String>?,
     pageable: Pageable,
@@ -461,6 +498,7 @@ class ReferentialDao(
     )
   }
 
+  @Deprecated("Use findPublishers instead")
   override fun findAllPublishersByLibraries(
     libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
@@ -476,6 +514,7 @@ class ReferentialDao(
       .orderBy(sd.PUBLISHER.unicode3())
       .fetchSet(sd.PUBLISHER)
 
+  @Deprecated("Use findPublishers instead")
   override fun findAllPublishersByCollection(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -492,6 +531,18 @@ class ReferentialDao(
       .orderBy(sd.PUBLISHER.unicode3())
       .fetchSet(sd.PUBLISHER)
 
+  override fun findPublishers(
+    context: SearchContext,
+    search: String?,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): Page<String> {
+    filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
+
+    return findGeneric(context, search, filterBy, pageable, sd, sd.PUBLISHER, sd.SERIES_ID, { it?.publisher }, Sort.by("publisher"), extraCondition = sd.PUBLISHER.ne(""))
+  }
+
+  @Deprecated("Use findAgeRatings instead")
   override fun findAllAgeRatings(filterOnLibraryIds: Collection<String>?): Set<Int?> =
     dslRO
       .selectDistinct(sd.AGE_RATING)
@@ -505,6 +556,7 @@ class ReferentialDao(
       }.orderBy(sd.AGE_RATING)
       .fetchSet(sd.AGE_RATING)
 
+  @Deprecated("Use findAgeRatings instead")
   override fun findAllAgeRatingsByLibraries(
     libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
@@ -519,6 +571,7 @@ class ReferentialDao(
       .orderBy(sd.AGE_RATING)
       .fetchSet(sd.AGE_RATING)
 
+  @Deprecated("Use findAgeRatings instead")
   override fun findAllAgeRatingsByCollection(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -534,6 +587,17 @@ class ReferentialDao(
       .orderBy(sd.AGE_RATING)
       .fetchSet(sd.AGE_RATING)
 
+  override fun findAgeRatings(
+    context: SearchContext,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): Page<Int> {
+    filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
+
+    return findGeneric(context, null, filterBy, pageable, sd, null, sd.SERIES_ID, { it?.ageRating }, Sort.by("ageRating"), listOf(sd.AGE_RATING), sortField = sd.AGE_RATING)
+  }
+
+  @Deprecated("Use findSeriesReleaseDates instead")
   override fun findAllSeriesReleaseDates(filterOnLibraryIds: Collection<String>?): Set<LocalDate> =
     dslRO
       .selectDistinct(bma.RELEASE_DATE)
@@ -544,6 +608,7 @@ class ReferentialDao(
       .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
 
+  @Deprecated("Use findSeriesReleaseDates instead")
   override fun findAllSeriesReleaseDatesByLibraries(
     libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
@@ -559,6 +624,7 @@ class ReferentialDao(
       .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
 
+  @Deprecated("Use findSeriesReleaseDates instead")
   override fun findAllSeriesReleaseDatesByCollection(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -575,6 +641,17 @@ class ReferentialDao(
       .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
 
+  override fun findSeriesReleaseDates(
+    context: SearchContext,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): Page<String> {
+    filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
+
+    return findGeneric(context, null, filterBy, pageable, bma, null, bma.SERIES_ID, { it?.releaseDate?.year?.toString() }, Sort.by(Order.desc("year")), listOf(bma.RELEASE_DATE), sortField = bma.RELEASE_DATE.desc())
+  }
+
+  @Deprecated("Use findSharingLabels instead")
   override fun findAllSharingLabels(filterOnLibraryIds: Collection<String>?): Set<String> =
     dslRO
       .selectDistinct(sl.LABEL)
@@ -588,6 +665,7 @@ class ReferentialDao(
       }.orderBy(sl.LABEL.unicode3())
       .fetchSet(sl.LABEL)
 
+  @Deprecated("Use findSharingLabels instead")
   override fun findAllSharingLabelsByLibraries(
     libraryIds: Set<String>,
     filterOnLibraryIds: Collection<String>?,
@@ -602,6 +680,7 @@ class ReferentialDao(
       .orderBy(sl.LABEL.unicode3())
       .fetchSet(sl.LABEL)
 
+  @Deprecated("Use findSharingLabels instead")
   override fun findAllSharingLabelsByCollection(
     collectionId: String,
     filterOnLibraryIds: Collection<String>?,
@@ -616,6 +695,89 @@ class ReferentialDao(
       .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
       .orderBy(sl.LABEL.unicode3())
       .fetchSet(sl.LABEL)
+
+  override fun findSharingLabels(
+    context: SearchContext,
+    search: String?,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): Page<String> {
+    filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
+
+    return findGeneric(context, search, filterBy, pageable, sl, sl.LABEL, sl.SERIES_ID, { it?.label }, Sort.by("label"))
+  }
+
+  private fun <R : TableRecordImpl<*>, T : TableImpl<R>, O : Any> findGeneric(
+    context: SearchContext,
+    search: String?,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+    table: T,
+    searchableField: TableField<R, String>?,
+    seriesIdField: TableField<*, String>,
+    mapper: (R?) -> O?,
+    sort: Sort,
+    extraFields: List<SelectFieldOrAsterisk> = emptyList(),
+    extraCondition: Condition? = DSL.noCondition(),
+    sortField: OrderField<*>? = null,
+  ): Page<O> {
+    val restrictionCondition = ContentRestrictionsSearchHelper(context.restrictions).toCondition()
+
+    val query =
+      dslRO
+        .selectDistinct(*(listOfNotNull(searchableField) + extraFields).toTypedArray())
+        .from(table)
+        .apply {
+          restrictionCondition.second.forEach { join ->
+            when (join) {
+              RequiredJoin.SeriesMetadata -> if (table != sd) innerJoin(sd).on(seriesIdField.eq(sd.SERIES_ID))
+              // shouldn't be required
+              RequiredJoin.BookMetadata -> Unit
+              RequiredJoin.BookMetadataAggregation -> Unit
+              is RequiredJoin.Collection -> Unit
+              RequiredJoin.Media -> Unit
+              is RequiredJoin.ReadList -> Unit
+              is RequiredJoin.ReadProgress -> Unit
+            }
+          }
+        }.apply { if (!context.libraryIds.isNullOrEmpty() || filterBy?.type == FilterByEntity.LIBRARY) leftJoin(s).on(seriesIdField.eq(s.ID)) }
+        .apply { if (filterBy?.type == FilterByEntity.COLLECTION) leftJoin(cs).on(seriesIdField.eq(cs.SERIES_ID)) }
+        .apply {
+          if (filterBy?.type == FilterByEntity.READLIST)
+            leftJoin(b)
+              .on(seriesIdField.eq(b.SERIES_ID))
+              .leftJoin(rb)
+              .on(b.ID.eq(rb.BOOK_ID))
+        }.where(restrictionCondition.first)
+        .apply { extraCondition?.let { and(it) } }
+        .apply { if (search != null && searchableField != null) and(searchableField.udfStripAccents().contains(search.stripAccents())) }
+        .apply { context.libraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
+        .apply {
+          filterBy?.let {
+            when (it.type) {
+              FilterByEntity.LIBRARY -> and(s.LIBRARY_ID.`in`(it.ids))
+              FilterByEntity.COLLECTION -> and(cs.COLLECTION_ID.`in`(it.ids))
+              FilterByEntity.SERIES -> and(seriesIdField.`in`(it.ids))
+              FilterByEntity.READLIST -> and(rb.READLIST_ID.`in`(it.ids))
+            }
+          }
+        }
+
+    val count = dslRO.fetchCount(query)
+
+    val items =
+      query
+        .apply {
+          if (sortField != null)
+            orderBy(sortField)
+          else if (searchableField != null)
+            orderBy(searchableField.unicode3())
+        }.apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchInto(table)
+        .mapNotNull { mapper(it) }
+
+    return buildPage(items, pageable, count, sort)
+  }
 
   private fun BookMetadataAuthorRecord.toDomain(): Author =
     Author(
