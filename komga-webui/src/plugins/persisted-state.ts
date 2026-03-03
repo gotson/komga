@@ -45,6 +45,11 @@ export const persistedModule: Module<any, any> = {
     importPath: '',
     duplicatesNewPageSize: 10,
     rememberMe: false,
+    seriesBooks: {
+      filter: {} as FiltersActive,
+      filterMode: {} as FiltersActiveMode,
+      sort: {} as SortActive,
+    },
   },
   getters: {
     getLocaleFirstDay: (state) => () => {
@@ -91,6 +96,15 @@ export const persistedModule: Module<any, any> = {
     },
     getLibraryRoute: (state) => (id: string) => {
       return state.library.route[id]
+    },
+    getSeriesBooksFilter: (state) => {
+      return state.seriesBooks.filter
+    },
+    getSeriesBooksFilterMode: (state) => {
+      return state.seriesBooks.filterMode
+    },
+    getSeriesBooksSort: (state) => {
+      return state.seriesBooks.sort
     },
   },
   mutations: {
@@ -174,6 +188,15 @@ export const persistedModule: Module<any, any> = {
     },
     setRememberMe(state, val) {
       state.rememberMe = val
+    },
+    setSeriesBooksFilter(state, filter) {
+      state.seriesBooks.filter = filter
+    },
+    setSeriesBooksFilterMode(state, filterMode) {
+      state.seriesBooks.filterMode = filterMode
+    },
+    setSeriesBooksSort(state, sort) {
+      state.seriesBooks.sort = sort
     },
   },
 }

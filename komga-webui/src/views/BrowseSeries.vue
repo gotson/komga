@@ -896,6 +896,8 @@ export default Vue.extend({
         authorRoles.forEach((role: string) => {
           activeFilters[role] = route.query[role] || []
         })
+      } else {
+        activeFilters = this.$store.getters.getSeriesBooksFilter
       }
       this.filters = this.validateFilters(activeFilters)
 
@@ -903,6 +905,8 @@ export default Vue.extend({
       let activeFiltersMode = {} as FiltersActiveMode
       if (route.query.filterMode) {
         activeFiltersMode = route.query.filterMode
+      } else {
+        activeFiltersMode = this.$store.getters.getSeriesBooksFilterMode
       }
       this.filtersMode = this.validateFiltersMode(activeFiltersMode)
     },
@@ -926,9 +930,18 @@ export default Vue.extend({
       return validFilterMode
     },
     setWatches() {
-      this.sortUnwatch = this.$watch('sortActive', this.updateRouteAndReload)
-      this.filterUnwatch = this.$watch('filters', this.updateRouteAndReload)
-      this.filterModeUnwatch = this.$watch('filtersMode', this.updateRouteAndReload)
+      this.sortUnwatch = this.$watch('sortActive', (val) => {
+        this.$store.commit('setSeriesBooksSort', val)
+        this.updateRouteAndReload()
+      })
+      this.filterUnwatch = this.$watch('filters', (val) => {
+        this.$store.commit('setSeriesBooksFilter', val)
+        this.updateRouteAndReload()
+      })
+      this.filterModeUnwatch = this.$watch('filtersMode', (val) => {
+        this.$store.commit('setSeriesBooksFilterMode', val)
+        this.updateRouteAndReload()
+      })
       this.pageSizeUnwatch = this.$watch('pageSize', (val) => {
         this.$store.commit('setBrowsingPageSize', val)
         this.updateRouteAndReload()
@@ -1016,7 +1029,8 @@ export default Vue.extend({
       await this.loadPage(seriesId, this.page, this.sortActive)
     },
     parseQuerySortOrDefault(querySort: any): SortActive {
-      return parseQuerySort(querySort, this.sortOptions) || this.$_.clone(this.sortDefault)
+      return parseQuerySort(querySort, this.sortOptions) ||
+        (this.$store.getters.getSeriesBooksSort?.key ? this.$store.getters.getSeriesBooksSort : this.$_.clone(this.sortDefault))
     },
     parseQueryFilterStatus(queryStatus: any): string[] {
       return queryStatus ? queryStatus.toString().split(',').filter((x: string) => Object.keys(ReadStatus).includes(x)) : []
