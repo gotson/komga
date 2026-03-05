@@ -52,7 +52,7 @@
     "letterer": "Setzer",
     "penciller": "Zeichner",
     "translator": "Übersetzer",
-    "writer": "Schriftsteller"
+    "writer": "Autoren"
   },
   "book_card": {
     "error": "Fehler",
@@ -104,9 +104,9 @@
     "move_next": "Klicken oder drücken Sie „Weiter“, um zum nächsten Buch zu gelangen.",
     "move_next_exit": "Klicken oder drücken Sie „Weiter“ erneut, um den Lesemodus zu beenden.",
     "move_previous": "Klicken oder drücken Sie erneut auf „Vorherige Seite“, um zum letzten Buch zu wechseln.",
-    "notification_poster_set_book": "Die aktuelle Seite ist nun als Bücherplakat gesetzt.",
-    "notification_poster_set_readlist": "Die aktuelle Seite ist als Leselistenposter gesetzt.",
-    "notification_poster_set_series": "Die aktuelle Seite ist jetzt als Serienplakat gesetzt.",
+    "notification_poster_set_book": "Die aktuelle Seite ist jetzt als Titelbild definiert.",
+    "notification_poster_set_readlist": "Die aktuelle Seite wurde als Titelbild für die Lesteliste festgelegt.",
+    "notification_poster_set_series": "Die aktuelle Seite wurde als Titelbild der Serie festgelegt.",
     "paged_reader_layout": {
       "double": "Doppelseite",
       "double_no_cover": "Doppelseitig ohne Titelbild",
@@ -122,9 +122,9 @@
       "width": "An Breite ausrichten",
       "width_shrink_only": "An Breite ausrichten (nur verkleinern)"
     },
-    "set_current_page_as_book_poster": "Seite als Plakat für das Buch gesetzt",
-    "set_current_page_as_readlist_poster": "Setze die aktuelle Seite als Plakat für die Leseliste",
-    "set_current_page_as_series_poster": "Seite zu Serienposter",
+    "set_current_page_as_book_poster": "Diese Seite als Titelbild für das Buch festlegen",
+    "set_current_page_as_readlist_poster": "Diese Seite als Titelbild für die Leseliste festlegen",
+    "set_current_page_as_series_poster": "Diese Seite als Titelbild für die Serie festlegen",
     "settings": {
       "always_fullscreen": "Dauerhaftes Vollbild",
       "animate_page_transitions": "Fließender Seitenübergangseffekt",
@@ -202,7 +202,7 @@
     "earliest_year_from_release_dates": "Dies ist das früheste Erscheinungsjahr von allen Büchern in der Serie",
     "remove_from_collection": "Entferne Serie aus der Sammlung",
     "series_no_summary": "Diese Serie hat keine Kurzbeschreibung, es wurde eine aus der Serie per Zufall ausgewählt!",
-    "summary_from_book": "Inhaltsangabe des Buches {number}:"
+    "summary_from_book": "Inhaltsangabe von Buch {number}:"
   },
   "collections_expansion_panel": {
     "manage_collection": "Sammlungverwaltung",
@@ -413,7 +413,7 @@
       "warning_html": "Der Benutzer <b>{name}</b> wird gelöscht. Dies kann <b>NICHT</b> rückgängig gemacht werden. Fortfahren?"
     },
     "edit_books": {
-      "add_author_role_error_duplicate": "Author existiert bereits",
+      "add_author_role_error_duplicate": "Autor existiert bereits",
       "authors_notice_multiple_edit": "Sie verändern mehrere Bücher. Dies wird die existierenden Einträge der Autoren jedes einzelnen Buches durch den neuen Eintrag ersetzen.",
       "button_cancel": "Abbrechen",
       "button_confirm": "Änderungen speichern",
@@ -440,7 +440,7 @@
       "tab_authors": "Autoren",
       "tab_general": "Allgemein",
       "tab_links": "Links",
-      "tab_poster": "Poster",
+      "tab_poster": "Titelbild",
       "tab_tags": "Stichwörter",
       "tags_notice_multiple_edit": "Sie verändern die Stichwörter von mehreren Büchern. Dies wird die existierenden Einträge der Stichwörter jedes einzelnen Buches durch den neuen Eintrag ersetzen."
     },
@@ -451,7 +451,7 @@
       "field_manual_ordering": "Manuelle Sortierung",
       "label_ordering": "Sammlungen werden standardmäßig nach Namen sortiert. Sie können die manuelle Sortierung aktivieren und eine eigene Sortierfolge festlegen.",
       "tab_general": "Allgemein",
-      "tab_poster": "Poster"
+      "tab_poster": "Titelbild"
     },
     "edit_library": {
       "button_browse": "Durchsuchen",
@@ -514,7 +514,7 @@
       "field_summary": "Zusammenfassung",
       "label_ordering": "Standardmäßig werden die Bücher in einer Leseliste manuell sortiert. Sie können die manuelle Sortierung deaktivieren, um die Bücher nach Erscheinungsdatum zu sortieren.",
       "tab_general": "Allgemein",
-      "tab_poster": "Poster"
+      "tab_poster": "Titelbild"
     },
     "edit_recommended": {
       "button_confirm": "Änderungen speichern",
@@ -543,7 +543,7 @@
       "field_total_book_count_error": "Anzahl der Bücher einer Serie muß größer eins sein",
       "mixed": "Vermischtes",
       "tab_general": "Allgemein",
-      "tab_poster": "Poster",
+      "tab_poster": "Titelbild",
       "tab_sharing": "Teilen",
       "tab_tags": "Stichwörter",
       "tab_titles": "Alternative Titel",
@@ -896,7 +896,7 @@
   },
   "menu": {
     "add_to_collection": "Zu Sammlung hinzufügen",
-    "add_to_readlist": "Füge zur Leseliste hinzu",
+    "add_to_readlist": "Zur Leseliste hinzufügen",
     "analyze": "Analysieren",
     "bulk_edit_metadata": "Massenverarbeitung Metadaten",
     "delete": "Löschen",
@@ -909,7 +909,7 @@
     "mark_read": "Als gelesen markieren",
     "mark_unread": "Als ungelesen markieren",
     "pin": "Anpinnen",
-    "refresh_metadata": "Erneuere Metadaten",
+    "refresh_metadata": "Metadaten aktualisieren",
     "scan_library_files": "Überprüfe (Scan) Bibliotheksdateien",
     "scan_library_files_deep": "(Tiefen) Scan der Bibliotheksdateien",
     "select_all": "Alle auswählen",
@@ -925,7 +925,7 @@
     "title": "Statistik"
   },
   "missing_posters": {
-    "title": "Fehlende Poster"
+    "title": "Fehlende Titelbilder"
   },
   "navigation": {
     "home": "Übersicht",
@@ -990,7 +990,7 @@
       "title": "Vorschaubilder neu generieren"
     },
     "hint_kobo_port": "Nur zu setzen wenn es Sync Probleme mit Covers und Downloads gibt",
-    "label_delete_empty_collections": "Lösche leere Kollectionen nach der Prüfung (Scan)",
+    "label_delete_empty_collections": "Lösche leere Kollektionen nach der Prüfung (Scan)",
     "label_delete_empty_readlists": "Lösche leere Leselisten nach der Überprüfung (Scan)",
     "label_kepubify_path": "Dateipfad zu kepubify",
     "label_kobo_port": "Kobo Sync externer Port",
@@ -1009,7 +1009,7 @@
     "edit_user": "Benutzerdaten bearbeiten",
     "latest_activity": "Letzte Aktivität: {date}",
     "no_recent_activity": "Keine letzten Aktivitäten",
-    "role_administrator": "Systemverwalter",
+    "role_administrator": "Administrator",
     "role_user": "Benutzer"
   },
   "sort": {
@@ -1023,7 +1023,7 @@
     "name": "Nach Name sortiert",
     "number": "Nummer",
     "page_count": "Anzahl Seiten",
-    "random": "Zufallsortierung",
+    "random": "Zufällige Sortierung",
     "release_date": "Veröffentlichungsdatum",
     "series": "Serie"
   },
@@ -1050,7 +1050,7 @@
   "ui_settings": {
     "general": "Allgemein",
     "label_oauth2_auto_login": "Automatische Anmeldung über OAuth2",
-    "label_oauth2_hide_login": "Verstecke die Anmeldefelder, wenn OAuth2 aktiviert ist",
+    "label_oauth2_hide_login": "Anmeldefelder ausblenden, wenn OAuth2 aktiviert ist",
     "label_poster_blur_unread": "Unscharfe Titelbilder bei ungelesene Bücher und Serien",
     "label_poster_stretch": "Titelbilder an die Kachelgröße anpassen",
     "label_series_groups": "Seriengruppierung",
@@ -1067,7 +1067,7 @@
   },
   "user_roles": {
     "ADMIN": "Systemverwalter",
-    "FILE_DOWNLOAD": "Datei-Herunterladen",
+    "FILE_DOWNLOAD": "Dateien herunterladen",
     "KOBO_SYNC": "Kobo Syncronisation",
     "KOREADER_SYNC": "KOReader Synchronisation",
     "PAGE_STREAMING": "Online lesen",
