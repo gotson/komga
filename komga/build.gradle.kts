@@ -1,6 +1,5 @@
 import nu.studer.gradle.jooq.JooqGenerate
 import org.apache.tools.ant.taskdefs.condition.Os
-import org.flywaydb.gradle.task.FlywayMigrateTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.util.prefixIfNot
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
@@ -11,11 +10,11 @@ plugins {
   kotlin("kapt")
   id("org.springframework.boot") version libs.versions.springboot.get()
   alias(libs.plugins.gradleGitProperties)
-  id("nu.studer.jooq") version "10.1"
-  id("org.flywaydb.flyway") version "11.7.2"
+  id("nu.studer.jooq") version "10.2"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
   id("com.google.devtools.ksp") version "2.2.0-2.0.2"
+  id("org.graalvm.buildtools.native") version "0.10.6"
   jacoco
 }
 
@@ -131,7 +130,7 @@ dependencies {
 
 kotlin {
   compilerOptions {
-    jvmTarget = JvmTarget.JVM_17
+    jvmTarget = JvmTarget.JVM_24 // Kotlin max; runs on GraalVM JDK 25
     freeCompilerArgs =
       listOf(
         "-Xjsr305=strict",
@@ -145,14 +144,16 @@ kotlin {
 val webui = "$rootDir/komga-webui"
 tasks {
   withType<JavaCompile> {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
+    sourceCompatibility = "24"
+    targetCompatibility = "24"
   }
 
   withType<Test> {
     useJUnitPlatform()
     systemProperty("spring.profiles.active", "test")
     maxHeapSize = "1G"
+    // GraalVM AOT not compatible with SpringMockK
+    jvmArgs("-Dspring.aot.enabled=false")
   }
 
   withType<Jar> {
@@ -263,18 +264,11 @@ val sqliteMigrationDirs =
       ),
   )
 
-tasks.register("flywayMigrateMain", FlywayMigrateTask::class) {
+// Flyway Gradle plugin removed — incompatible with Gradle 9 (JavaPluginConvention removed).
+// flyway-core + sqlite-jdbc on buildscript classpath; tasks call API directly.
+tasks.register("flywayMigrateMain") {
   val id = "main"
-  url = sqliteUrls[id]
-  locations = arrayOf("classpath:db/migration/sqlite")
-  placeholders =
-    mapOf(
-      "library-file-hashing" to "true",
-      "library-scan-startup" to "false",
-      "delete-empty-collections" to "true",
-      "delete-empty-read-lists" to "true",
-    )
-  // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
+  group = "flyway"
   dependsOn("flywayClasses")
   sqliteMigrationDirs[id]?.forEach { inputs.dir(it) }
   outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
@@ -282,14 +276,32 @@ tasks.register("flywayMigrateMain", FlywayMigrateTask::class) {
     delete(outputs.files)
     mkdir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
   }
-  mixed = true
+  doLast {
+    // Include compiled Kotlin/Java migrations via classloader
+    // Add flyway source set to classloader so Kotlin/Java migrations are found
+    val urls = sourceSets["flyway"].runtimeClasspath.files.map { it.toURI().toURL() }
+    val urlArray = urls.toTypedArray()
+    val clazz = Class.forName("java.net.URLClassLoader")
+    val cl = clazz.getConstructor(urlArray::class.java, ClassLoader::class.java)
+      .newInstance(urlArray, Thread.currentThread().contextClassLoader) as ClassLoader
+    org.flywaydb.core.Flyway.configure(cl)
+      .dataSource(sqliteUrls[id], null, null)
+      .locations("classpath:db/migration/sqlite")
+      .mixed(true)
+      .placeholders(mapOf(
+        "library-file-hashing" to "true",
+        "library-scan-startup" to "false",
+        "delete-empty-collections" to "true",
+        "delete-empty-read-lists" to "true",
+      ))
+      .load()
+      .migrate()
+  }
 }
 
-tasks.register("flywayMigrateTasks", FlywayMigrateTask::class) {
+tasks.register("flywayMigrateTasks") {
   val id = "tasks"
-  url = sqliteUrls[id]
-  locations = arrayOf("classpath:tasks/migration/sqlite")
-  // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
+  group = "flyway"
   dependsOn("flywayClasses")
   sqliteMigrationDirs[id]?.forEach { inputs.dir(it) }
   outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
@@ -297,10 +309,28 @@ tasks.register("flywayMigrateTasks", FlywayMigrateTask::class) {
     delete(outputs.files)
     mkdir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
   }
-  mixed = true
+  doLast {
+    // Add flyway source set to classloader so Kotlin/Java migrations are found
+    val urls = sourceSets["flyway"].runtimeClasspath.files.map { it.toURI().toURL() }
+    val urlArray = urls.toTypedArray()
+    val clazz = Class.forName("java.net.URLClassLoader")
+    val cl = clazz.getConstructor(urlArray::class.java, ClassLoader::class.java)
+      .newInstance(urlArray, Thread.currentThread().contextClassLoader) as ClassLoader
+    org.flywaydb.core.Flyway.configure(cl)
+      .dataSource(sqliteUrls[id], null, null)
+      .locations("classpath:tasks/migration/sqlite")
+      .mixed(true)
+      .load()
+      .migrate()
+  }
 }
 
 buildscript {
+  repositories { mavenCentral() }
+  dependencies {
+    classpath("org.flywaydb:flyway-core:11.7.2")
+    classpath("org.xerial:sqlite-jdbc:${libs.versions.sqliteJdbc.get()}")
+  }
   configurations["classpath"].resolutionStrategy.eachDependency {
     if (requested.group.startsWith("org.jooq") && requested.name.startsWith("jooq")) {
       useVersion(libs.versions.jooq.get())
@@ -395,6 +425,9 @@ openApi {
     args.add("--server.port=8080")
   }
 }
+
+// Disable GraalVM AOT for tests — SpringMockK not AOT-compatible
+tasks.named("processTestAot") { enabled = false }
 
 tasks.jacocoTestReport {
   dependsOn(tasks.test)
