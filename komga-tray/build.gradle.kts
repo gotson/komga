@@ -8,7 +8,7 @@ plugins {
   alias(libs.plugins.gradleGitProperties)
   id("org.jetbrains.compose") version "1.8.2"
   id("org.jetbrains.kotlin.plugin.compose") version "2.2.0"
-  id("dev.hydraulic.conveyor") version "1.12"
+  id("dev.hydraulic.conveyor") version "1.13"
   application
 }
 
@@ -21,14 +21,14 @@ repositories {
 
 kotlin {
   compilerOptions {
-    jvmTarget = JvmTarget.JVM_17
+    jvmTarget = JvmTarget.JVM_24
   }
 }
 
 tasks {
   withType<JavaCompile> {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
+    sourceCompatibility = "24"
+    targetCompatibility = "24"
   }
 }
 
@@ -48,8 +48,8 @@ application {
   mainClass = "org.gotson.komga.DesktopApplicationKt"
 }
 
-// Work around temporary Compose bugs
-configurations.all {
+// Work around temporary Compose bugs — only on resolvable configs (Gradle 9+)
+configurations.matching { it.isCanBeResolved }.all {
   attributes {
     attribute(Attribute.of("ui", String::class.java), "awt")
   }
