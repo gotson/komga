@@ -6,8 +6,8 @@ import Components from 'unplugin-vue-components/vite'
 import ViteFonts from 'unplugin-fonts/vite'
 import Layouts from 'vite-plugin-vue-layouts-next'
 import Vue from '@vitejs/plugin-vue'
-import VueRouter from 'unplugin-vue-router/vite'
-import { VueRouterAutoImports } from 'unplugin-vue-router'
+import VueRouter from 'vue-router/vite'
+import { VueRouterAutoImports } from 'vue-router/unplugin'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import dir2json from 'vite-plugin-dir2json'
 import UnoCSS from 'unocss/vite'
@@ -26,7 +26,7 @@ const dirname =
 export default defineConfig(({ mode }) => ({
   plugins: [
     VueRouter({
-      dts: 'src/typed-router.d.ts',
+      dts: 'src/route-map.d.ts',
     }),
     Layouts(),
     AutoImport({

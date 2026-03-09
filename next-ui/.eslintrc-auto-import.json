@@ -23,6 +23,7 @@
     "customRef": true,
     "defineAsyncComponent": true,
     "defineComponent": true,
+    "definePage": true,
     "effectScope": true,
     "getCurrentInstance": true,
     "getCurrentScope": true,

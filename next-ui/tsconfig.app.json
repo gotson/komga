@@ -20,7 +20,6 @@
       "@/*": ["./src/*"]
     },
     "types": [
-      "unplugin-vue-router/client", // Komga: https://uvr.esm.is/introduction.html#setup
       "vite-plugin-vue-layouts-next/client" // Komga: https://github.com/loicduong/vite-plugin-vue-layouts-next#client-types
     ],
     "skipLibCheck": true,
