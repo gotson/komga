@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import CreateEdit from './CreateEdit.vue'
 import { UserRoles } from '@/types/UserRoles'
+import { httpTyped } from '@/mocks/api/httpTyped'
+import { mockPage } from '@/mocks/api/pageable'
+import { PageRequest } from '@/types/PageRequest'
 
 const meta = {
   component: CreateEdit,
@@ -18,6 +21,13 @@ const meta = {
       description: {
         component: '',
       },
+    },
+    msw: {
+      handlers: [
+        httpTyped.get('/api/v2/sharing-labels', ({ response }) =>
+          response(200).json(mockPage(['kids', 'teens'], PageRequest.Unpaged())),
+        ),
+      ],
     },
   },
   args: {},

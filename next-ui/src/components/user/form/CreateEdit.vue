@@ -211,7 +211,7 @@
           closable-chips
           multiple
           hide-details
-          :items="sharingLabels"
+          :items="sharingLabels?.content"
         >
           <template #prepend-item>
             <v-list-item>
@@ -240,7 +240,7 @@
           closable-chips
           multiple
           hide-details
-          :items="sharingLabels"
+          :items="sharingLabels?.content"
         >
           <template #prepend-item>
             <v-list-item>
@@ -259,9 +259,11 @@
 import { UserRoles, userRolesMessages } from '@/types/UserRoles'
 import type { components } from '@/generated/openapi/komga'
 import { useLibraries } from '@/colada/libraries'
-import { useSharingLabels } from '@/colada/referential'
+import { sharingLabelsQuery } from '@/colada/referential'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { useQuery } from '@pinia/colada'
+import { PageRequest } from '@/types/PageRequest'
 
 const intl = useIntl()
 
@@ -278,7 +280,9 @@ const user = defineModel<UserCreation | UserUpdate>({ required: true })
 const showPassword = ref<boolean>(false)
 
 const { data: libraries } = useLibraries()
-const { data: sharingLabels } = useSharingLabels()
+const { data: sharingLabels } = useQuery(sharingLabelsQuery, () => ({
+  pageRequest: PageRequest.Unpaged(),
+}))
 
 function selectAllLibraries() {
   user.value.sharedLibraries!.all = !user.value.sharedLibraries?.all
