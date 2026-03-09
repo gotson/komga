@@ -1,4 +1,9 @@
-import { SchemaAnyNone, SchemaFilterAuthors, type SchemaFilterSeriesStatus } from '@/types/filter'
+import {
+  SchemaAnyNone,
+  SchemaFilterAuthors,
+  type SchemaFilterSeriesStatus,
+  SchemaFilterStrings,
+} from '@/types/filter'
 import type { InferOutput } from 'valibot'
 import * as v from 'valibot'
 
@@ -39,6 +44,37 @@ export function schemaFilterAuthorsToConditions(
             name: it.v,
             role: role,
           },
+        },
+      }
+    }
+  })
+
+  if (filter.m === 'allOf')
+    return {
+      allOf: list,
+    }
+  else
+    return {
+      anyOf: list,
+    }
+}
+
+export function schemaFilterNullableStringToConditions(
+  filter: InferOutput<typeof SchemaFilterStrings>,
+  key: string,
+) {
+  const list = filter.v.map((it) => {
+    if (v.is(SchemaAnyNone, it)) {
+      return {
+        [key]: {
+          operator: it.a === 'any' ? 'isNotNull' : 'isNull',
+        },
+      }
+    } else {
+      return {
+        [key]: {
+          operator: it.i === 'e' ? 'isNot' : 'is',
+          value: it.v,
         },
       }
     }

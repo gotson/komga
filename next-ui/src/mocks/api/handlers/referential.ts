@@ -25,11 +25,79 @@ function doMockAuthors(count: number) {
     } as components['schemas']['AuthorDto']
   })
 }
-
 const mockAuthors = doMockAuthors(10000)
+
+function doMockStrings(count: number, prefix: string) {
+  return [...Array(count).keys()].map((index) => {
+    return `${prefix} ${index}`
+  })
+}
+const mockGenres = doMockStrings(10000, 'Genre')
+const mockTags = doMockStrings(10000, 'Tag')
+const mockPublishers = doMockStrings(10000, 'Publisher')
+const mockSharingLabels = doMockStrings(150, 'SharingLabel')
+
+function filterAndPage(
+  search: string | null,
+  data: string[],
+  page: string | null,
+  size: string | null,
+  unpaged: string | null,
+) {
+  const selected = search ? data.filter((it) => !!it.match(new RegExp(search, 'i'))) : data
+
+  return mockPage(
+    selected,
+    new PageRequest(Number(page), Number(size), undefined, Boolean(unpaged)),
+  )
+}
 
 export const referentialHandlers = [
   httpTyped.get('/api/v1/sharing-labels', ({ response }) => response(200).json(sharingLabels)),
+  httpTyped.get('/api/v2/genres', ({ query, response }) =>
+    response(200).json(
+      filterAndPage(
+        query.get('search'),
+        mockGenres,
+        query.get('page'),
+        query.get('size'),
+        query.get('unpaged'),
+      ),
+    ),
+  ),
+  httpTyped.get('/api/v2/tags', ({ query, response }) =>
+    response(200).json(
+      filterAndPage(
+        query.get('search'),
+        mockTags,
+        query.get('page'),
+        query.get('size'),
+        query.get('unpaged'),
+      ),
+    ),
+  ),
+  httpTyped.get('/api/v2/publishers', ({ query, response }) =>
+    response(200).json(
+      filterAndPage(
+        query.get('search'),
+        mockPublishers,
+        query.get('page'),
+        query.get('size'),
+        query.get('unpaged'),
+      ),
+    ),
+  ),
+  httpTyped.get('/api/v2/sharing-labels', ({ query, response }) =>
+    response(200).json(
+      filterAndPage(
+        query.get('search'),
+        mockSharingLabels,
+        query.get('page'),
+        query.get('size'),
+        query.get('unpaged'),
+      ),
+    ),
+  ),
   httpTyped.get('/api/v2/authors', ({ query, response }) => {
     const search = query.get('search')
     const role = query.get('role')

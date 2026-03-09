@@ -59,6 +59,50 @@
           >
             <FilterBySeriesStatus v-model="filterSeriesStatus.v" />
           </FilterExpansionPanel>
+
+          <FilterExpansionPanel
+            title="Genre"
+            :count="filterGenre.v.length"
+            @clear="clearFilter(filterGenre)"
+          >
+            <FilterByGenre
+              v-model="filterGenre.v"
+              v-model:mode="filterGenre.m"
+            />
+          </FilterExpansionPanel>
+
+          <FilterExpansionPanel
+            title="Tag"
+            :count="filterTag.v.length"
+            @clear="clearFilter(filterTag)"
+          >
+            <FilterByTag
+              v-model="filterTag.v"
+              v-model:mode="filterTag.m"
+            />
+          </FilterExpansionPanel>
+
+          <FilterExpansionPanel
+            title="Publisher"
+            :count="filterPublisher.v.length"
+            @clear="clearFilter(filterPublisher)"
+          >
+            <FilterByPublisher
+              v-model="filterPublisher.v"
+              v-model:mode="filterPublisher.m"
+            />
+          </FilterExpansionPanel>
+
+          <FilterExpansionPanel
+            title="Sharing label"
+            :count="filterSharingLabel.v.length"
+            @clear="clearFilter(filterSharingLabel)"
+          >
+            <FilterBySharingLabel
+              v-model="filterSharingLabel.v"
+              v-model:mode="filterSharingLabel.m"
+            />
+          </FilterExpansionPanel>
         </v-expansion-panels>
 
         <v-divider />
@@ -90,12 +134,6 @@
     </v-navigation-drawer>
   </Teleport>
 
-  <div>FILTER AUTHORS</div>
-  <p>{{ filterAuthors }}</p>
-  <div>AUTHOR ROLES</div>
-  <p>{{ authorRoles }}</p>
-  <div>FILTER</div>
-  <div>{{ filterSeriesStatus }}</div>
   <div>CONDITION</div>
   <div>{{ conds }}</div>
 
@@ -175,10 +213,16 @@ import { useSelectionStore } from '@/stores/selection'
 import { useDisplay } from 'vuetify'
 import {
   schemaFilterAuthorsToConditions,
+  schemaFilterNullableStringToConditions,
   schemaFilterSeriesStatusToConditions,
 } from '@/functions/filter'
 import * as v from 'valibot'
-import { type FilterType, SchemaFilterAuthors, SchemaFilterSeriesStatus } from '@/types/filter'
+import {
+  type FilterType,
+  SchemaFilterAuthors,
+  SchemaFilterSeriesStatus,
+  SchemaFilterStrings,
+} from '@/types/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import { authorRoles } from '@/types/referential'
 import { useIntl } from 'vue-intl'
@@ -232,11 +276,19 @@ function clearFilter(filter: FilterType) {
 }
 
 const { data: filterSeriesStatus } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
+const { data: filterGenre } = useRouteQuerySchema('genre', SchemaFilterStrings)
+const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
+const { data: filterPublisher } = useRouteQuerySchema('publisher', SchemaFilterStrings)
+const { data: filterSharingLabel } = useRouteQuerySchema('sharingLabel', SchemaFilterStrings)
 
 const conds = computed(() => ({
   allOf: [
     librariesCondition.value as components['schemas']['AnyOfSeries'],
     schemaFilterSeriesStatusToConditions(filterSeriesStatus.value),
+    schemaFilterNullableStringToConditions(filterGenre.value, 'genre'),
+    schemaFilterNullableStringToConditions(filterTag.value, 'tag'),
+    schemaFilterNullableStringToConditions(filterPublisher.value, 'publisher'),
+    schemaFilterNullableStringToConditions(filterSharingLabel.value, 'sharingLabel'),
     ...Object.entries(filterAuthors).map(([, filter]) =>
       schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
     ),

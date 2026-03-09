@@ -9644,8 +9644,8 @@ export interface operations {
                 search?: string;
                 library_id?: string[];
                 collection_id?: string[];
-                series_id?: string;
-                readlist_id?: string;
+                series_id?: string[];
+                readlist_id?: string[];
                 include?: "SERIES" | "BOOK" | "BOTH";
                 unpaged?: boolean;
                 /** @description Zero-based page index (0..N) */
