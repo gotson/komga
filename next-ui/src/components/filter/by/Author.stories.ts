@@ -54,3 +54,9 @@ export const InitialValue: Story = {
     ],
   },
 }
+
+export const InitialValueOutsideShown: Story = {
+  args: {
+    modelValue: [{ i: 'i', v: 'Author 100 (letterer)' }],
+  },
+}
