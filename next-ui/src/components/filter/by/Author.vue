@@ -44,12 +44,13 @@ const apiQuery = {
   role: role,
 }
 
-const { data: searchItems, isLoading: searchLoading } = useQuery(authorsQuery, () => ({
-  pageRequest: PageRequest.Unpaged(),
-  search: searchDebounced.value,
-  pause: !searchDebounced.value,
-  placeholder: false,
-  ...apiQuery,
+const { data: searchItems, isLoading: searchLoading } = useQuery(() => ({
+  ...authorsQuery({
+    pageRequest: PageRequest.Unpaged(),
+    search: searchDebounced.value,
+    ...apiQuery,
+  }),
+  enabled: searchDebounced.value,
 }))
 const searchResults = computed(() => searchItems.value?.content?.map((it) => toItemType(it.name)))
 

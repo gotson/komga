@@ -13,6 +13,6 @@ export const historyQuery = defineQueryOptions(
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
-    placeholderData: (previousData: any) => previousData, // eslint-disable-line @typescript-eslint/no-explicit-any
+    placeholderData: (previousData) => previousData,
   }),
 )

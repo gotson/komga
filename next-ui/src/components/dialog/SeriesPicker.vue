@@ -147,22 +147,20 @@ const {
   data: series,
   isLoading,
   error,
-} = useQuery(seriesListQuery, () => {
-  const search: components['schemas']['SeriesSearch'] = {
-    fullTextSearch: searchStringDebounced.value,
-    ...(!includeOneShots && {
-      condition: {
-        oneShot: { operator: 'IsFalse' },
-      },
-    }),
-  }
-
-  return {
-    search: search,
-    pause: !searchStringDebounced.value,
+} = useQuery(() => ({
+  ...seriesListQuery({
+    search: {
+      fullTextSearch: searchStringDebounced.value,
+      ...(!includeOneShots && {
+        condition: {
+          oneShot: { operator: 'IsFalse' },
+        },
+      }),
+    },
     pageRequest: PageRequest.Unpaged(),
-  }
-})
+  }),
+  enabled: !searchStringDebounced.value,
+}))
 
 const { data: libraries } = useLibraries()
 

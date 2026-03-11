@@ -143,7 +143,7 @@ const headers = [
 
 const pageRequest = ref<PageRequest>(new PageRequest())
 
-const { data, isLoading, error } = useQuery(historyQuery, () => ({ ...pageRequest.value }))
+const { data, isLoading, error } = useQuery(() => historyQuery({ ...pageRequest.value }))
 
 function updateOptions({
   page,
@@ -204,14 +204,14 @@ const seriesCache = reactive<Record<string, string | undefined>>({})
 const booksCache = reactive<Record<string, string | undefined>>({})
 
 const getSeriesTitle = useMemoize(async (seriesId: string) =>
-  useQuery(seriesDetailQuery, () => ({ seriesId: seriesId }))
+  useQuery(() => seriesDetailQuery({ seriesId: seriesId }))
     .refresh(true)
     .then(({ data }) => data?.metadata.title)
     .catch(() => undefined),
 )
 
 const getBookTitle = useMemoize(async (bookId: string) =>
-  useQuery(bookDetailQuery, () => ({ bookId: bookId }))
+  useQuery(() => bookDetailQuery({ bookId: bookId }))
     .refresh(true)
     .then(({ data }) => data?.metadata.title)
     .catch(() => undefined),

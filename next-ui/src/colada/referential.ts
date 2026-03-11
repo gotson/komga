@@ -11,8 +11,6 @@ export const authorsQuery = defineQueryOptions(
     series_id,
     readlist_id,
     pageRequest,
-    pause = false,
-    placeholder = true,
   }: {
     search?: string
     role?: string
@@ -21,8 +19,6 @@ export const authorsQuery = defineQueryOptions(
     series_id?: string[]
     readlist_id?: string[]
     pageRequest?: PageRequest
-    pause?: boolean
-    placeholder?: boolean
   }) => {
     const queryParams = {
       search: search,
@@ -44,8 +40,6 @@ export const authorsQuery = defineQueryOptions(
           })
           // unwrap the openapi-fetch structure on success
           .then((res) => res.data),
-      enabled: !pause,
-      placeholderData: placeholder ? (previousData: any) => previousData : undefined, // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   },
 )
@@ -56,15 +50,11 @@ export const genresQuery = defineQueryOptions(
     library_id,
     collection_id,
     pageRequest,
-    pause = false,
-    placeholder = true,
   }: {
     search?: string
     library_id?: string[]
     collection_id?: string[]
     pageRequest?: PageRequest
-    pause?: boolean
-    placeholder?: boolean
   }) => {
     const queryParams = {
       search: search,
@@ -83,8 +73,6 @@ export const genresQuery = defineQueryOptions(
           })
           // unwrap the openapi-fetch structure on success
           .then((res) => res.data),
-      enabled: !pause,
-      placeholderData: placeholder ? (previousData: any) => previousData : undefined, // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   },
 )
@@ -98,8 +86,6 @@ export const tagsQuery = defineQueryOptions(
     readlist_id,
     include,
     pageRequest,
-    pause = false,
-    placeholder = true,
   }: {
     search?: string
     library_id?: string[]
@@ -108,8 +94,6 @@ export const tagsQuery = defineQueryOptions(
     readlist_id?: string[]
     include?: 'SERIES' | 'BOOK' | 'BOTH'
     pageRequest?: PageRequest
-    pause?: boolean
-    placeholder?: boolean
   }) => {
     const queryParams = {
       search: search,
@@ -131,8 +115,6 @@ export const tagsQuery = defineQueryOptions(
           })
           // unwrap the openapi-fetch structure on success
           .then((res) => res.data),
-      enabled: !pause,
-      placeholderData: placeholder ? (previousData: any) => previousData : undefined, // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   },
 )
@@ -143,15 +125,11 @@ export const publishersQuery = defineQueryOptions(
     library_id,
     collection_id,
     pageRequest,
-    pause = false,
-    placeholder = true,
   }: {
     search?: string
     library_id?: string[]
     collection_id?: string[]
     pageRequest?: PageRequest
-    pause?: boolean
-    placeholder?: boolean
   }) => {
     const queryParams = {
       search: search,
@@ -170,8 +148,6 @@ export const publishersQuery = defineQueryOptions(
           })
           // unwrap the openapi-fetch structure on success
           .then((res) => res.data),
-      enabled: !pause,
-      placeholderData: placeholder ? (previousData: any) => previousData : undefined, // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   },
 )
@@ -182,15 +158,11 @@ export const sharingLabelsQuery = defineQueryOptions(
     library_id,
     collection_id,
     pageRequest,
-    pause = false,
-    placeholder = true,
   }: {
     search?: string
     library_id?: string[]
     collection_id?: string[]
     pageRequest?: PageRequest
-    pause?: boolean
-    placeholder?: boolean
   }) => {
     const queryParams = {
       search: search,
@@ -209,8 +181,6 @@ export const sharingLabelsQuery = defineQueryOptions(
           })
           // unwrap the openapi-fetch structure on success
           .then((res) => res.data),
-      enabled: !pause,
-      placeholderData: placeholder ? (previousData: any) => previousData : undefined, // eslint-disable-line @typescript-eslint/no-explicit-any
     }
   },
 )

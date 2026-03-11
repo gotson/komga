@@ -25,9 +25,11 @@ const {
   data: transientBooks,
   isLoading,
   refetch,
-} = useQuery(transientBooksScan, () => ({
-  path: scanDirectory.value,
-}))
+} = useQuery(() =>
+  transientBooksScan({
+    path: scanDirectory.value,
+  }),
+)
 
 function doScan(directory: string) {
   scanDirectory.value = directory

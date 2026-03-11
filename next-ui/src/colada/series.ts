@@ -13,11 +13,9 @@ export const QUERY_KEYS_SERIES = {
 export const seriesListQuery = defineQueryOptions(
   ({
     search,
-    pause = false,
     pageRequest,
   }: {
     search: components['schemas']['SeriesSearch']
-    pause?: boolean
     pageRequest?: PageRequest
   }) => ({
     key: QUERY_KEYS_SERIES.bySearch({ search: search, pageRequest: pageRequest }),
@@ -33,8 +31,7 @@ export const seriesListQuery = defineQueryOptions(
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
-    enabled: !pause,
-    placeholderData: (previousData: any) => previousData, // eslint-disable-line @typescript-eslint/no-explicit-any
+    placeholderData: (previousData) => previousData,
   }),
 )
 

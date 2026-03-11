@@ -12,11 +12,9 @@ export const QUERY_KEYS_BOOKS = {
 export const bookListQuery = defineQueryOptions(
   ({
     search,
-    pause = false,
     pageRequest,
   }: {
     search: components['schemas']['BookSearch']
-    pause?: boolean
     pageRequest?: PageRequest
   }) => ({
     key: QUERY_KEYS_BOOKS.bySearch({ search: search, pageRequest: pageRequest }),
@@ -32,8 +30,7 @@ export const bookListQuery = defineQueryOptions(
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
-    enabled: !pause,
-    placeholderData: (previousData: any) => previousData, // eslint-disable-line @typescript-eslint/no-explicit-any
+    placeholderData: (previousData) => previousData,
   }),
 )
 

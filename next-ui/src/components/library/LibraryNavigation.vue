@@ -28,15 +28,19 @@ const { libraryId } = defineProps<{
 const display = useDisplay()
 
 const { libraries } = useGetLibrariesById(libraryId)
-const { data: collections } = useQuery(collectionsListQuery, () => ({
-  libraryIds: libraries.value?.map((it) => it.id),
-  pageRequest: PageRequest.Zero(),
-  pause: libraries.value === undefined,
+const { data: collections } = useQuery(() => ({
+  ...collectionsListQuery({
+    libraryIds: libraries.value?.map((it) => it.id),
+    pageRequest: PageRequest.Zero(),
+  }),
+  enabled: libraries.value !== undefined,
 }))
-const { data: readlists } = useQuery(readListsListQuery, () => ({
-  libraryIds: libraries.value?.map((it) => it.id),
-  pageRequest: PageRequest.Zero(),
-  pause: libraries.value === undefined,
+const { data: readlists } = useQuery(() => ({
+  ...readListsListQuery({
+    libraryIds: libraries.value?.map((it) => it.id),
+    pageRequest: PageRequest.Zero(),
+  }),
+  enabled: libraries.value !== undefined,
 }))
 
 const routesBase = [

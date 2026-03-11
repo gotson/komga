@@ -295,16 +295,14 @@ const conds = computed(() => ({
   ],
 }))
 
-const { data: series } = useQuery(seriesListQuery, () => {
-  const search: components['schemas']['SeriesSearch'] = {
-    condition: conds.value as components['schemas']['AllOfSeries'],
-  }
-
-  return {
-    search: search,
+const { data: series } = useQuery(() =>
+  seriesListQuery({
+    search: {
+      condition: conds.value as components['schemas']['AllOfSeries'],
+    },
     pageRequest: PageRequest.FromPageSize(appStore.browsingPageSize, page0.value),
-  }
-})
+  }),
+)
 
 watch(series, (newSeries) => {
   if (newSeries) pageCount.value = newSeries.totalPages ?? 0

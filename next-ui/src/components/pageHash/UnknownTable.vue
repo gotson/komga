@@ -278,9 +278,11 @@ const headers = [
 
 const pageRequest = ref<PageRequest>(new PageRequest())
 
-const { data, isLoading, error } = useQuery(pageHashesUnknownQuery, () => ({
-  ...pageRequest.value,
-}))
+const { data, isLoading, error } = useQuery(() =>
+  pageHashesUnknownQuery({
+    ...pageRequest.value,
+  }),
+)
 
 function updateOptions({
   page,

@@ -151,9 +151,10 @@ const headers = computed(() => {
 
 const pageRequest = ref<PageRequest>(new PageRequest())
 
-const { data, isLoading, error } = useQuery(
-  forMe ? myAuthenticationActivityQuery : authenticationActivityQuery,
-  () => ({ ...pageRequest.value }),
+const { data, isLoading, error } = useQuery(() =>
+  forMe
+    ? myAuthenticationActivityQuery({ ...pageRequest.value })
+    : authenticationActivityQuery({ ...pageRequest.value }),
 )
 
 function updateOptions({

@@ -129,10 +129,12 @@ const headers = [
 const sortBy = ref<SortItem[]>([])
 const pageRequest = ref<PageRequest>(new PageRequest())
 
-const { data, isLoading, error } = useQuery(pageHashMatchesQuery, () => ({
-  pageHash: pageHash.value,
-  ...pageRequest.value,
-}))
+const { data, isLoading, error } = useQuery(() =>
+  pageHashMatchesQuery({
+    pageHash: pageHash.value,
+    ...pageRequest.value,
+  }),
+)
 
 function updateOptions({
   page,

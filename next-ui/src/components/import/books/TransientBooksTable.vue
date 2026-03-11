@@ -521,9 +521,11 @@ function fileNamePicked(name: string) {
 //endregion
 
 function analyzeBook(book: BookImport) {
-  void useQuery(transientBookAnalyze, () => ({
-    transientBookId: book.transientBook.id,
-  }))
+  void useQuery(() =>
+    transientBookAnalyze({
+      transientBookId: book.transientBook.id,
+    }),
+  )
     .refresh()
     .then(({ data }) => {
       if (data) {
@@ -535,9 +537,11 @@ function analyzeBook(book: BookImport) {
 }
 
 function fetchSeries(book: BookImport) {
-  void useQuery(seriesDetailQuery, () => ({
-    seriesId: book.transientBook.seriesId!,
-  }))
+  void useQuery(() =>
+    seriesDetailQuery({
+      seriesId: book.transientBook.seriesId!,
+    }),
+  )
     .refresh()
     .then(({ data }) => {
       if (data) assignSeries(book, data)
@@ -545,14 +549,16 @@ function fetchSeries(book: BookImport) {
 }
 
 function fetchBooks(book: BookImport) {
-  void useQuery(bookListQuery, () => ({
-    search: {
-      condition: {
-        seriesId: { operator: 'Is', value: book.series!.id },
-      },
-    } as components['schemas']['BookSearch'],
-    pageRequest: PageRequest.Unpaged(),
-  }))
+  void useQuery(() =>
+    bookListQuery({
+      search: {
+        condition: {
+          seriesId: { operator: 'Is', value: book.series!.id },
+        },
+      } as components['schemas']['BookSearch'],
+      pageRequest: PageRequest.Unpaged(),
+    }),
+  )
     .refresh()
     .then(({ data }) => {
       if (data) {

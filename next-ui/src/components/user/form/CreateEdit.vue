@@ -280,9 +280,11 @@ const user = defineModel<UserCreation | UserUpdate>({ required: true })
 const showPassword = ref<boolean>(false)
 
 const { data: libraries } = useLibraries()
-const { data: sharingLabels } = useQuery(sharingLabelsQuery, () => ({
-  pageRequest: PageRequest.Unpaged(),
-}))
+const { data: sharingLabels } = useQuery(() =>
+  sharingLabelsQuery({
+    pageRequest: PageRequest.Unpaged(),
+  }),
+)
 
 function selectAllLibraries() {
   user.value.sharedLibraries!.all = !user.value.sharedLibraries?.all

@@ -12,12 +12,10 @@ export const readListsListQuery = defineQueryOptions(
   ({
     search,
     libraryIds,
-    pause = false,
     pageRequest,
   }: {
     search?: string
     libraryIds?: string[]
-    pause?: boolean
     pageRequest?: PageRequest
   }) => ({
     key: QUERY_KEYS_READLIST.bySearch({
@@ -38,8 +36,7 @@ export const readListsListQuery = defineQueryOptions(
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
-    enabled: !pause,
-    placeholderData: (previousData: any) => previousData, // eslint-disable-line @typescript-eslint/no-explicit-any
+    placeholderData: (previousData) => previousData,
   }),
 )
 

@@ -331,10 +331,12 @@ const filterOptions = [
 
 const pageRequest = ref<PageRequest>(new PageRequest())
 
-const { data, isLoading, error } = useQuery(pageHashesKnownQuery, () => ({
-  ...pageRequest.value,
-  actions: filterSelect.value,
-}))
+const { data, isLoading, error } = useQuery(() =>
+  pageHashesKnownQuery({
+    ...pageRequest.value,
+    actions: filterSelect.value,
+  }),
+)
 
 function updateOptions({
   page,

@@ -487,13 +487,15 @@ function bookPicked(book: components['schemas']['BookDto']) {
 //endregion
 
 const getSeriesBooks = useMemoize(async (seriesId: string) =>
-  useQuery(bookListQuery, () => ({
-    search: {
-      condition: {
-        seriesId: { operator: 'Is', value: seriesId },
-      },
-    } as components['schemas']['BookSearch'],
-  }))
+  useQuery(() =>
+    bookListQuery({
+      search: {
+        condition: {
+          seriesId: { operator: 'Is', value: seriesId },
+        },
+      } as components['schemas']['BookSearch'],
+    }),
+  )
     .refresh()
     .then(({ data }) => data),
 )
