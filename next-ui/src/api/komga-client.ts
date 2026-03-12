@@ -1,7 +1,7 @@
 import type { Middleware } from 'openapi-fetch'
 import createClient from 'openapi-fetch'
 import type { paths } from '@/generated/openapi/komga'
-import { API_BASE_URL } from '@/api/base'
+import { ApiBaseUrl } from '@/api/base'
 
 // Middleware that throws on error, so it works with Pinia Colada
 const coladaMiddleware: Middleware = {
@@ -28,7 +28,7 @@ const coladaMiddleware: Middleware = {
 }
 
 const client = createClient<paths>({
-  baseUrl: API_BASE_URL,
+  baseUrl: ApiBaseUrl.noSlash,
   // required to pass the session cookie on all requests
   credentials: 'include',
   // required to avoid browser basic-auth popups
