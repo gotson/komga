@@ -19,6 +19,8 @@ export const transientBooksScan = defineQueryOptions(({ path }: { path: string }
       })
       // unwrap the openapi-fetch structure on success
       .then((res) => res.data),
+  // 1 hour
+  staleTime: 60 * 60 * 1000,
 }))
 
 export const transientBookAnalyze = defineQueryOptions(
@@ -35,5 +37,7 @@ export const transientBookAnalyze = defineQueryOptions(
         })
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
+    // 1 hour
+    staleTime: 60 * 60 * 1000,
   }),
 )
