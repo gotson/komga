@@ -50,7 +50,7 @@ const { data: searchItems, isLoading: searchLoading } = useQuery(() => ({
     search: searchDebounced.value,
     ...apiQuery,
   }),
-  enabled: searchDebounced.value,
+  enabled: !!searchDebounced.value,
 }))
 const searchResults = computed(() => searchItems.value?.content?.map((it) => toItemType(it)))
 

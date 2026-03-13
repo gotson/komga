@@ -159,7 +159,7 @@ const {
     },
     pageRequest: PageRequest.Unpaged(),
   }),
-  enabled: !searchStringDebounced.value,
+  enabled: !!searchStringDebounced.value,
 }))
 
 const { data: libraries } = useLibraries()
