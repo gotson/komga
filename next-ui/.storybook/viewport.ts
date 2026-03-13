@@ -9,28 +9,28 @@ export const vuetifyViewports = {
   sm: {
     name: 'sm',
     styles: {
-      width: '950px',
+      width: '830px',
       height: '963px',
     },
   },
   md: {
     name: 'md',
     styles: {
-      width: '1200px',
+      width: '1100px',
       height: '963px',
     },
   },
   lg: {
     name: 'lg',
     styles: {
-      width: '1900px',
+      width: '1500px',
       height: '963px',
     },
   },
   xl: {
     name: 'xl',
     styles: {
-      width: '2550px',
+      width: '2100px',
       height: '963px',
     },
   },
