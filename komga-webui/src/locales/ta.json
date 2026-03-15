@@ -425,7 +425,7 @@
       "field_isbn_error": "செல்லுபடியாகும் ISBN 13 ஆக இருக்க வேண்டும்",
       "field_link_label": "சிட்டை",
       "field_link_url": "முகவரி",
-      "field_link_url_error_protocol": "HTTP அல்லது HTTPS ஆக இருக்க வேண்டும்",
+      "field_link_url_error_protocol": "http அல்லது https ஆக இருக்க வேண்டும்",
       "field_link_url_error_url": "செல்லுபடியாகும் முகவரி ஆக இருக்க வேண்டும்",
       "field_number": "எண்",
       "field_number_sort": "வரிசை எண்",
