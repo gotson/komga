@@ -253,7 +253,7 @@
     "nothing_to_show": "Nema ničega za pokazati",
     "ok": "U redu",
     "oneshot": "Izdanje bez nastavka",
-    "outdated": "Neaktualno",
+    "outdated": "Zastarjelo",
     "page": "Stranica",
     "page_number": "Broj stranice",
     "pages": "stranice",
@@ -495,8 +495,8 @@
       "label_import_local": "Uvezi lokalne medije",
       "label_import_mylar": "Uvezi metapodatke generirane pomoću Mylar-a",
       "label_scan_directory_exclusions": "Isključivanja mapa",
-      "label_scan_types": "Traži ove vrste datoteka",
-      "label_scanner": "Tražilica",
+      "label_scan_types": "Pretraži ove vrste datoteka",
+      "label_scanner": "Pretraživanje",
       "label_series_cover": "Naslovnica serije",
       "tab_general": "Općenito",
       "tab_metadata": "Metapodaci",
@@ -526,8 +526,8 @@
       "button_confirm": "Spremi promjene",
       "dialog_title_multiple": "Uredi {count} seriju | Uredi {count} serije",
       "dialog_title_single": "Uredi {series}",
-      "field_age_rating": "Dobna kategorija",
-      "field_age_rating_error": "Dobna kategorija mora biti 0 ili više",
+      "field_age_rating": "Dobna klasifikacija",
+      "field_age_rating_error": "Dobna klasifikacija mora biti 0 ili više",
       "field_genres": "Žanrovi",
       "field_labels": "Etikete",
       "field_language": "Jezik",
@@ -721,7 +721,7 @@
     },
     "media_status": {
       "ERROR": "Greška",
-      "OUTDATED": "Neaktualno",
+      "OUTDATED": "Zastarjelo",
       "READY": "Spremno",
       "UNKNOWN": "Nepoznato",
       "UNSUPPORTED": "Nepodržano"
@@ -835,7 +835,7 @@
     "ERR_1039": "Greška prilikom dohvaćanja pozicija EPUB-a"
   },
   "filter": {
-    "age_rating": "dobna kategorija",
+    "age_rating": "dobna klasifikacija",
     "age_rating_none": "Bez",
     "any": "Bilo koji",
     "complete": "Dovršeno",
@@ -973,9 +973,9 @@
       "button_scan_libraries": "Pretraži sve biblioteke",
       "button_scan_libraries_deep": "Pretraži sve biblioteke (duboko)",
       "button_shutdown": "Isključi",
-      "download_log": "Preuzmi datoteku zapisa",
+      "download_log": "Preuzmi log-datoteku",
       "notification_tasks_cancelled": "Nema zadataka za prekidanje | Jedan zadatak prekinut | {count} zadatka prekinuta",
-      "section_title": "Upravljanje serverom"
+      "section_title": "Upravljanje serverima"
     },
     "tab_title": "Server",
     "updates": "Aktualiziranja"
