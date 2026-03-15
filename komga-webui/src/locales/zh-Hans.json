@@ -26,7 +26,7 @@
       "no_keys": "尚未创建 API 密钥"
     },
     "change_password": "更改密码",
-    "details": "详情",
+    "details": "详细信息",
     "my_account": "我的账户"
   },
   "announcements": {
@@ -636,7 +636,7 @@
         "size": "文件大小",
         "width": "宽"
       },
-      "title": "书籍详情",
+      "title": "书籍详细信息",
       "title_comparison": "书籍比较"
     },
     "transient_book_viewer": {
@@ -862,7 +862,7 @@
     "header": {
       "book": "书籍",
       "date": "日期",
-      "details": "详情",
+      "details": "详细信息",
       "series": "系列",
       "type": "类型"
     },
@@ -1051,7 +1051,7 @@
     "general": "常规",
     "label_oauth2_auto_login": "自动 OAuth2 登录",
     "label_oauth2_hide_login": "如果启用了 OAuth2，则隐藏登录字段",
-    "label_poster_blur_unread": "未读书籍和系列的模糊海报",
+    "label_poster_blur_unread": "为未读书籍和系列模糊海报",
     "label_poster_stretch": "拉伸海报以适合卡片",
     "label_series_groups": "系列分组",
     "section_oauth2": "OAuth2",
