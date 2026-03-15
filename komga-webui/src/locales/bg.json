@@ -19,7 +19,15 @@
   },
   "account_settings": {
     "account_settings": "Настройки на акаунта",
-    "change_password": "смени парола"
+    "api_key": {
+      "created_date": "Създадено на: {date}",
+      "force_kobo_sync": "Принудително синхронизиране на Kobo",
+      "generate_api_key": "Генерирай API ключ",
+      "no_keys": "Все още няма създадени API ключове"
+    },
+    "change_password": "смени парола",
+    "details": "Детайли",
+    "my_account": "Моят акаунт"
   },
   "announcements": {
     "mark_all_read": "Отбележи всички като прочетени",
@@ -27,6 +35,7 @@
     "tab_title": "Обявления"
   },
   "authentication_activity": {
+    "api_key": "API ключ",
     "datetime": "Дата Време",
     "email": "Имейл",
     "error": "Грешка",
@@ -86,6 +95,7 @@
     "beginning_of_book": "Вие сте в началото на книгата.",
     "changing_reading_direction": "Смяна на посока на четене към",
     "cycling_page_layout": "Циклиране на Подредба на Страница",
+    "cycling_page_margin": "Циклични Отстояния на Станици",
     "cycling_scale": "Циклиране на Мащаб",
     "cycling_side_padding": "Циклиране на Странична Подложка",
     "download_current_page": "Свали текущата страница",
@@ -128,6 +138,7 @@
       "general": "Основни",
       "gestures": "Жестове",
       "page_layout": "Подреждане на страница",
+      "page_margin": "Отстояния на Страници",
       "paged": "Опций на Странициран Четец",
       "reading_mode": "Режим на четене",
       "scale_type": "Тип мащабиране",
@@ -161,6 +172,8 @@
   },
   "browse_book": {
     "comment": "КОМЕНТАР",
+    "date_created": "СЪЗДАДЕНО",
+    "date_modified": "ПОСЛЕДНО ПРОМЕНЯНО",
     "download_file": "Свали файл",
     "file": "ФАЙЛ",
     "format": "ФОРМАТ",
@@ -170,6 +183,8 @@
     "outdated_tooltip": "Файла за тази книга е променен, книгата трябва да бъде анализирана отново",
     "read_book": "Чети книга",
     "read_incognito": "Чети инкогнито",
+    "remove_from_collection": "Премахни книга от колекция",
+    "remove_from_readlist": "Премахни книга от списък за четене",
     "size": "РАЗМЕР"
   },
   "browse_collection": {
@@ -184,6 +199,7 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "Това е най-ранната година на издаване за всички книги в поредицата",
+    "remove_from_collection": "Премахни поредица от колекция",
     "series_no_summary": "Тази поредица няма резюме, затова избрахме за Вас!",
     "summary_from_book": "Резюме от книга {number}:"
   },
@@ -194,14 +210,18 @@
   "common": {
     "age": "Възраст",
     "all_libraries": "Всички Библиотеки",
+    "all_of": "Всички",
+    "any_of": "Които и да е",
     "book": "Книга",
     "books": "Книги",
     "books_n": "Няма книги | 1 книга | {count} книги",
     "books_total": "{count} / {total} книги",
     "cancel": "Отмени",
+    "cbx": "Комикси Архив",
     "choose_image": "Изберете изображение",
     "close": "Затвори",
     "collections": "Колекции",
+    "copied": "Копирано!",
     "create": "Създай",
     "delete": "Изтрий",
     "dimension": "ш: {width}, в: {height}",
@@ -210,8 +230,10 @@
     "dismiss": "Отхвърли",
     "download": "Свали",
     "drag_drop": "теглене и пускане",
+    "duplicate": "Дубликирай",
     "email": "Имейл",
     "epub": "Epub",
+    "error": "Грешка",
     "filename": "Име на файл",
     "filter_no_matches": "Активният филтър няма съвпадения",
     "genre": "Жанр",
@@ -219,12 +241,16 @@
     "go_to_library": "Към библиотеката",
     "go_to_readlist": "Към списъка за четене",
     "go_to_series": "Към поредицата",
+    "i_understand": "Разбирам",
     "library": "Библиотека",
     "locale_name": "Български",
     "locale_rtl": "false",
     "lock_all": "Заключи всички",
+    "media": "Медия",
+    "more": "Още",
     "n_selected": "{count} избрани",
     "nothing_to_show": "Нищо за показване",
+    "ok": "ОК",
     "oneshot": "Единично",
     "outdated": "Остарял",
     "page": "Страница",
@@ -235,19 +261,23 @@
     "password": "Парола",
     "pdf": "PDF",
     "pending_tasks": "Няма чакащи задачи | 1 чакаща задача | {count} чакащи задачи",
+    "pinned_libraries": "Закачени Библиотеки",
     "publisher": "Издател",
     "read": "Чети",
     "read_on": "Четено на {date}",
     "readlist": "Списък за четене",
     "readlists": "Списък на прочетени",
     "remember-me": "Запомни ме",
+    "reorder": "Пренареди",
     "required": "Задължително",
     "reset_filters": "Нулиране на филтри",
     "roles": "Роли",
     "save_changes": "Запазите промените",
     "series": "Поредица | Поредици",
+    "settings": "Настройки",
     "sidecars": "Странични файлове",
     "tags": "Тагове",
+    "ui": "Потребителски Интерфейс",
     "unavailable": "Недостъпен",
     "unlock_all": "Отключи всички",
     "url": "URL",
@@ -271,6 +301,7 @@
     "comicrack_preambule_html": "Можете да вмъкнете съществуващи списъци за четене на ComicRack във формат <code>.cbl</code>.<br>Komga ще се опита да съпостави предоставената поредица и номер на книга с поредици и книги във вашите библиотеки.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} книги са несравними",
+      "body2": "{duplicates} / {total} книги се дублират",
       "create": "Създайте все пак",
       "title": "Някои книги не съответстват"
     },
@@ -286,6 +317,14 @@
     "tab_title": "Вмъкване на данни"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Генерирай",
+      "context": "API Ключовете могат да се ползват за да се аутентикират чрез Kobo Sync протокола.",
+      "dialog_title": "Генерирай нов API ключ",
+      "field_comment": "Коментар",
+      "field_comment_hint": "За какво е този API ключ?",
+      "info_copy": "Подсигури, че си копирал твоят API ключ сега. Повече няма да може да го видиш!"
+    },
     "add_to_collection": {
       "button_create": "Създай",
       "card_collection_subtitle": "Няма серия | 1 серия | {count} серии",
@@ -318,6 +357,12 @@
     "book_picker": {
       "filter": "Филтриране по номер на книгата, заглавие или дата на издаване",
       "title": "Изберете книга"
+    },
+    "delete_apikey": {
+      "button_confirm": "Изтрий",
+      "confirm_delete": "Разбирам, изтрий API ключа \"{name}\"",
+      "dialog_title": "Изтрий API ключ",
+      "warning_html": "Всички приложения или скриптове ползващи този API ключ няма да могат да достигнат Komga API-то. Това действие не може да бъде отменено."
     },
     "delete_book": {
       "button_confirm": "Изтрий",
@@ -417,6 +462,7 @@
       "dialot_title_edit": "Редактиране на библиотеката",
       "field_analysis_analyze_dimensions": "Анализирайте размерите на страниците",
       "field_analysis_hash_files": "Изчисляване на хеш за файлове",
+      "field_analysis_hash_koreader": "Изчисли хеш за файлове за KOReader",
       "field_analysis_hash_pages": "Изчисляване на хеш за страници",
       "field_convert_to_cbz": "Автоматично конвертиране в CBZ",
       "field_import_barcode_isbn": "ISBN баркод",
@@ -468,6 +514,11 @@
       "label_ordering": "По подразбиране книгите в списъка за четене се подреждат ръчно. Можете да деактивирате ръчното подреждане, за да сортирате книгите по дата на издаване.",
       "tab_general": "Основни",
       "tab_poster": "Плакат"
+    },
+    "edit_recommended": {
+      "button_confirm": "Запази промени",
+      "button_reset": "Възтанови в начални",
+      "dialog_title": "Редактирай предложеният изглед"
     },
     "edit_series": {
       "button_cancel": "Отмени",
@@ -537,6 +588,10 @@
       },
       "title": "Име на Целевия Файл"
     },
+    "force_kobo_sync": {
+      "dialog_title": "Принудително синхронизиране на Kobo",
+      "warning_html": "Това ще изтрие цялата история на синхронизация за този API ключ. Тоят Kobo ще синхронизира всичко на следващата синхронизациая."
+    },
     "password_change": {
       "button_cancel": "Отмени",
       "button_confirm": "Промяна на паролата",
@@ -604,8 +659,11 @@
     "delete_to_save": "Изтрийте, за да запазите {size}",
     "deleted_count": "Изтрит {count} пъти",
     "empty_title": "Не са намерани дублирани страници",
+    "empty_title_known": "Няма известни дубликати",
     "filter": {
       "count": "Брой",
+      "date_added": "Дата на добавяне",
+      "date_modified": "Дата на промяна",
       "delete_count": "Брой изтрити",
       "delete_size": "Спестено място",
       "match_count": "Брой съвпадения",
@@ -617,7 +675,7 @@
     "matches_n": "Няма съвпадения | 1 съвпадение | {count} съвпадения",
     "new": "Нови",
     "saved_size": "Спестено {size}",
-    "title": "Дублирани страници",
+    "title": "Дублирани Страници",
     "unknown_size": "Неизвестен размер"
   },
   "duplicates": {
@@ -633,7 +691,19 @@
     },
     "epubreader": {
       "appearances": {
-        "day": "Ден"
+        "day": "Ден",
+        "night": "Нощ",
+        "sepia": "Сепия"
+      },
+      "column_count": {
+        "auto": "Авто",
+        "one": "Едно",
+        "two": "Две"
+      },
+      "reading_direction": {
+        "auto": "Автоматично",
+        "ltr": "От ляво на дясно",
+        "rtl": "От дясно на ляво"
       }
     },
     "historical_event_type": {
@@ -642,6 +712,11 @@
       "BookImported": "Внесена книга",
       "DuplicatePageDeleted": "Дублираната страница е изтрита",
       "SeriesFolderDeleted": "Папката на поредицата е изтрита"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
     },
     "media_status": {
       "ERROR": "Грешка",
@@ -661,6 +736,14 @@
       "VERTICAL": "Вертикално",
       "WEBTOON": "Уебтун"
     },
+    "scan_interval": {
+      "DAILY": "Дневно",
+      "DISABLED": "Спряно",
+      "EVERY_12H": "На всеки 12 часа",
+      "EVERY_6H": "На всеки 6 часа",
+      "HOURLY": "На час",
+      "WEEKLY": "Седмично"
+    },
     "series_cover": {
       "FIRST": "Първа",
       "FIRST_UNREAD_OR_FIRST": "Първа непрочетена иначе първа",
@@ -672,11 +755,21 @@
       "ENDED": "Приключила",
       "HIATUS": "Хиатус",
       "ONGOING": "Продължава"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "По подразбиране (300px)",
+      "LARGE": "Голямо (900px)",
+      "MEDIUM": "Средно (600px)",
+      "XLARGE": "Много Голямо (1200px)"
     }
   },
   "epubreader": {
+    "current_chapter": "Текуща глава",
+    "page_of": "Станица {page} от {count}",
+    "publisher_font": "Издателство",
     "settings": {
       "column_count": "Брой колони",
+      "font_family": "Шрифт",
       "layout": "Оформление",
       "layout_paginated": "Страницирано",
       "layout_scroll": "Позициониране",
@@ -698,7 +791,7 @@
       "next": "Напред",
       "previous": "Назад",
       "reader_navigation": "Навигация на четец",
-      "scroll": "Промени оформление към позициониране",
+      "scroll": "Превключи на непрекъснато превъртане",
       "settings": "Настройки",
       "show_hide_toc": "Покажи/скрий съдържание"
     }
@@ -731,17 +824,27 @@
     "ERR_1029": "ComicRack CBL не съдържа никакъв елемент Book",
     "ERR_1030": "ComicRack CBL няма елемент Name",
     "ERR_1031": "ComicRack CBL в Book липсва серия или номер",
-    "ERR_1032": "EPUB файл е с грешен тип медия"
+    "ERR_1032": "EPUB файл е с грешен тип медия",
+    "ERR_1033": "Някои записи липсват",
+    "ERR_1034": "API ключ с този коментар вече съществува",
+    "ERR_1035": "Грешка при четене на EPUB Съдържание",
+    "ERR_1036": "Грешка при четене на EPUB ориентирите",
+    "ERR_1037": "Грешка при четене на EPUB списък на страници",
+    "ERR_1038": "Грешка при четене на EPUB divina страници",
+    "ERR_1039": "Грешка при четене на EPUB позиций"
   },
   "filter": {
     "age_rating": "възрастова оценка",
     "age_rating_none": "Без",
+    "any": "Всички",
     "complete": "Завършени",
     "genre": "жанр",
     "in_progress": "В Обръщение",
     "language": "език",
     "library": "библиотека",
-    "oneshot": "Единично",
+    "media_profile": "Профил на медия",
+    "media_status": "Статус на медиа",
+    "oneshot": "Самостоятелно издание",
     "publisher": "издателство",
     "read": "Прочетени",
     "release_date": "дата на издаване",
@@ -770,6 +873,8 @@
   },
   "library_navigation": {
     "browse": "Преглед",
+    "browse_books": "Книги",
+    "browse_series": "Поредици",
     "collections": "Колекции",
     "readlists": "Списъци за Четене",
     "recommended": "Препоръчани"
@@ -781,7 +886,7 @@
   },
   "media_analysis": {
     "comment": "Коментар",
-    "media_analysis": "Медиен анализ",
+    "media_analysis": "Медиен Анализ",
     "media_type": "Тип на Медията",
     "name": "Име",
     "size": "Размер",
@@ -802,10 +907,12 @@
     "empty_trash": "Изпразване на кошчето",
     "mark_read": "Отбележи като прочетено",
     "mark_unread": "Отбележи като непрочетено",
+    "pin": "Закачи",
     "refresh_metadata": "Опресняване на метаданните",
     "scan_library_files": "Сканирайте библиотечните файлове",
     "scan_library_files_deep": "Сканирай библиотека за файлове (дълбоко)",
-    "select_all": "Изберете всички"
+    "select_all": "Изберете всички",
+    "unpin": "Разкачи"
   },
   "metrics": {
     "library_books": "Книги на библиотека",
@@ -816,10 +923,17 @@
     "tasks_total_time": "Общо време на задачите",
     "title": "Показатели"
   },
+  "missing_posters": {
+    "title": "Липсващ Постер"
+  },
   "navigation": {
     "home": "Начало",
     "libraries": "Библиотеки",
     "logout": "Изход"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Може да закачиш библиотеки от менюто с 3 точки",
+    "title": "Няма закачени библиотеки"
   },
   "page_not_found": {
     "go_back_to_home_page": "Връщане към началната страница",
@@ -858,10 +972,12 @@
       "button_scan_libraries": "Сканиране на всички библиотеки",
       "button_scan_libraries_deep": "Сканирай всички библиотеки (дълбоко)",
       "button_shutdown": "Изключване",
+      "download_log": "Изтегли лог файл",
       "notification_tasks_cancelled": "Няма задачи за отмяна | Една отменена задача | {count} отменени задачи",
       "section_title": "Управление на сървъра"
     },
-    "tab_title": "Сървър"
+    "tab_title": "Сървър",
+    "updates": "Обновления"
   },
   "server_settings": {
     "config_precedence": "Има предимство пред конфигурационния файл",
@@ -872,8 +988,12 @@
       "btn_confirm": "Да, но само за по-големите",
       "title": "Регенерирай тъмбнейловете"
     },
+    "hint_kobo_port": "Задайте само в случай на проблеми със синхронизирането на кориците и изтеглянията",
     "label_delete_empty_collections": "Изтрий празни колекций след сканиране",
     "label_delete_empty_readlists": "Изтрий празни листове след сканиране",
+    "label_kepubify_path": "Път към kepubify",
+    "label_kobo_port": "Kobo Sync външен порт",
+    "label_kobo_proxy": "Прокси Kobo Sync заявки към Kobo Store",
     "label_rememberme_duration": "Запомни ме за период (в дни)",
     "label_server_context_path": "Базов URL",
     "label_server_port": "Прот на сървъра",
@@ -894,13 +1014,17 @@
   "sort": {
     "books_count": "Брой книги",
     "date_added": "Дата на добавяне",
+    "date_read": "Дата на четене",
     "date_updated": "Дата на актуализация",
     "file_name": "Име на файл",
     "file_size": "Размер на файла",
     "folder_name": "Име на папка",
     "name": "Име",
     "number": "Номер",
-    "release_date": "Дата на издаване"
+    "page_count": "Брой страници",
+    "random": "Случайно",
+    "release_date": "Дата на издаване",
+    "series": "Поредица"
   },
   "theme": {
     "dark": "Тъмна",
@@ -922,13 +1046,34 @@
     "less": "По-малко заглавия",
     "more": "Още заглавия"
   },
+  "ui_settings": {
+    "general": "Основни",
+    "label_oauth2_auto_login": "Автоматичнен OAuth2 login",
+    "label_oauth2_hide_login": "Скрий логин полетата ако OAuth2 е включено",
+    "label_poster_blur_unread": "Замажи постери за непречетени книги и поредици",
+    "label_poster_stretch": "Разтегли постези за да изпълнят картата",
+    "label_series_groups": "Групиране на поредици",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "Азбучно",
+      "japanese": "Gojūon (Японски)"
+    },
+    "tooltip_oauth2_auto_login": "Изисква единен OAuth2 източник, и 'скрити логин полета' включени"
+  },
+  "updates": {
+    "available": "Има налични обновления",
+    "latest_installed": "Последната версия на Komga е инсталирана"
+  },
   "user_roles": {
     "ADMIN": "Администратор",
     "FILE_DOWNLOAD": "Изтегляне на файлове",
+    "KOBO_SYNC": "Kobo Sync",
+    "KOREADER_SYNC": "KOReader Sync",
     "PAGE_STREAMING": "Стриймване на страници",
     "USER": "Потребител"
   },
   "users": {
+    "api_keys": "API ключове",
     "authentication_activity": "Дейност по удостоверяване",
     "users": "Потребители"
   },
