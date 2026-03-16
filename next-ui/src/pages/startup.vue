@@ -1,6 +1,6 @@
 <template>
   <v-container max-width="550px">
-    <v-row justify="center">
+    <v-row class="justify-center">
       <v-col>
         <v-img
           src="@/assets/logo.svg"

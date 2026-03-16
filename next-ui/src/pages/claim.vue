@@ -5,7 +5,7 @@
     @submit.prevent="submitForm()"
   >
     <v-container max-width="400px">
-      <v-row justify="center">
+      <v-row class="justify-center">
         <v-col
           cols="7"
           sm="10"
@@ -118,7 +118,7 @@
 
       <v-divider class="my-4" />
 
-      <v-row justify="center">
+      <v-row class="justify-center">
         <v-col cols="auto">
           <div class="d-flex ga-4">
             <LocaleSelector />

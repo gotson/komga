@@ -13,6 +13,45 @@
       <div class="py-4" />
 
       <v-row>
+        <div class="d-flex flex-column flex ga-4">
+          <v-btn
+            prepend-icon="mdi-delete"
+            text="Button"
+            color=""
+            disabled
+            size="x-small"
+          />
+          <v-btn
+            prepend-icon="mdi-delete"
+            text="Button"
+            color=""
+            disabled
+            size="small"
+          />
+          <v-btn
+            prepend-icon="mdi-delete"
+            text="Button"
+            color=""
+            disabled
+          />
+          <v-btn
+            prepend-icon="mdi-delete"
+            text="Button"
+            color=""
+            disabled
+            size="large"
+          />
+          <v-btn
+            prepend-icon="mdi-delete"
+            text="Button"
+            color=""
+            disabled
+            size="x-large"
+          />
+        </div>
+      </v-row>
+
+      <v-row>
         <v-col cols="12">
           <v-card
             class="py-4"

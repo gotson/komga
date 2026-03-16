@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar elevation="2">
+  <v-app-bar elevation="1">
     <template #prepend>
       <v-app-bar-nav-icon @click="appStore.drawer = !appStore.drawer">
         <template #default>

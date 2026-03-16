@@ -11,7 +11,7 @@
       >
         <v-row>
           <v-col>
-            <div class="text-subtitle-2">
+            <div class="text-label-large">
               {{
                 $formatMessage({
                   description: 'Server settings: section header for posters',
@@ -42,7 +42,7 @@
 
         <v-row>
           <v-col>
-            <div class="text-subtitle-2">
+            <div class="text-label-large">
               {{
                 $formatMessage({
                   description: 'Server settings: section header for scan behaviour',
@@ -80,7 +80,7 @@
 
         <v-row>
           <v-col>
-            <div class="text-subtitle-2">
+            <div class="text-label-large">
               {{
                 $formatMessage({
                   description: 'Server settings: section header for tasks',
@@ -112,7 +112,7 @@
 
         <v-row>
           <v-col>
-            <div class="text-subtitle-2">
+            <div class="text-label-large">
               {{
                 $formatMessage({
                   description: 'Server settings: section header for remember me',
@@ -121,7 +121,7 @@
                 })
               }}
             </div>
-            <div class="text-caption">{{ messageRequiresRestart }}</div>
+            <div class="text-body-small">{{ messageRequiresRestart }}</div>
           </v-col>
         </v-row>
         <v-row>
@@ -156,7 +156,7 @@
 
         <v-row>
           <v-col>
-            <div class="text-subtitle-2">
+            <div class="text-label-large">
               {{
                 $formatMessage({
                   description: 'Server settings: section header for HTTP server',
@@ -165,7 +165,7 @@
                 })
               }}
             </div>
-            <div class="text-caption">{{ messageRequiresRestart }}</div>
+            <div class="text-body-small">{{ messageRequiresRestart }}</div>
           </v-col>
         </v-row>
 
@@ -243,7 +243,7 @@
 
         <v-row>
           <v-col>
-            <div class="text-subtitle-2">
+            <div class="text-label-large">
               {{
                 $formatMessage({
                   description: 'Server settings: section header for Kobo Sync',

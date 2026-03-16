@@ -4,7 +4,7 @@
   <template v-else>
     <v-list
       :disabled="isLoading"
-      elevation="2"
+      elevation="1"
     >
       <v-progress-linear
         v-if="isLoading"

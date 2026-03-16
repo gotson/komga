@@ -44,7 +44,7 @@
           v-if="!user.id"
           class="mb-4"
         />
-        <div class="text-subtitle-2">Permissions</div>
+        <div class="text-label-large">Permissions</div>
       </v-col>
     </v-row>
     <!-- Roles  -->
@@ -103,12 +103,12 @@
             />
           </template>
 
-          <template #selection="{ item }">
+          <template #selection="{ internalItem }">
             <!--  Show the selection only if 'all' is false  -->
             <v-chip
               v-if="!user.sharedLibraries?.all"
               size="small"
-              :text="item.title"
+              :text="internalItem.title"
             />
           </template>
 
@@ -148,7 +148,7 @@
     <v-row>
       <v-col>
         <v-divider class="mb-4" />
-        <div class="text-subtitle-2">Age restriction</div>
+        <div class="text-label-large">Age restriction</div>
       </v-col>
     </v-row>
     <v-row>
@@ -192,7 +192,7 @@
     <v-row>
       <v-col>
         <v-divider class="mb-4" />
-        <div class="text-subtitle-2">Label restrictions</div>
+        <div class="text-label-large">Label restrictions</div>
       </v-col>
     </v-row>
     <!-- Allow labels -->

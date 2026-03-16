@@ -4,7 +4,7 @@
       <a
         :href="item.url"
         target="_blank"
-        class="text-h3 font-weight-medium link-underline"
+        class="text-display-small font-weight-medium link-underline"
         >{{ item.title }}</a
       >
     </template>
@@ -14,10 +14,7 @@
 
     <template #text>
       <!-- eslint-disable vue/no-v-html -->
-      <div
-        class="announcement"
-        v-html="item.content_html"
-      />
+      <div v-html="item.content_html" />
       <!-- eslint-enable vue/no-v-html -->
     </template>
 
@@ -48,17 +45,3 @@ const emit = defineEmits<{
   markRead: [id: string]
 }>()
 </script>
-
-<style lang="scss">
-.announcement p {
-  margin-bottom: 16px;
-}
-
-.announcement ul {
-  padding-left: 24px;
-}
-
-.announcement a {
-  color: var(--v-anchor-base);
-}
-</style>

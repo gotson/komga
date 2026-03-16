@@ -63,7 +63,7 @@
 
     <v-row>
       <v-col>
-        <div class="text-subtitle-1">
+        <div class="text-body-large">
           {{
             $formatMessage({
               description: 'Form add/edit library: Scanner - file types selection header',

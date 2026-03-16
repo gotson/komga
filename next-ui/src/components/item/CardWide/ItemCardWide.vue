@@ -6,7 +6,7 @@
     <v-card
       v-on-long-press.prevent="onCardLongPress"
       v-bind="props"
-      :elevation="isHovering ? 3 : 1"
+      :elevation="isHovering ? 2 : 1"
       :class="isPreSelect || selected ? 'cursor-pointer' : 'cursor-default'"
       @click="
         (event: Event) => (isPreSelect || selected ? emit('selection', !selected, event) : {})
@@ -55,7 +55,7 @@
               <!--  Top-right icon  -->
               <div
                 v-if="topRightIcon || topRight"
-                class="top-0 right-0 position-absolute translucent text-white px-2 py-1 font-weight-bold text-caption"
+                class="top-0 right-0 position-absolute translucent text-white px-2 py-1 font-weight-bold text-body-small"
                 style="border-bottom-left-radius: 4px"
               >
                 <v-icon
@@ -79,13 +79,13 @@
 
           <div>
             <div
-              class="text-h6 force-line-count text-wrap"
+              class="text-headline-small force-line-count text-wrap"
               :style="[{ '--lines': 1 }, { '--line-height': 1.6 }]"
             >
               {{ title }}
             </div>
             <div
-              class="text-subtitle-1 force-line-count text-pre-wrap mt-2"
+              class="text-body-large force-line-count text-pre-wrap mt-2"
               :style="[{ '--lines': display.xs.value ? 1 : 3 }, { '--line-height': 1.6 }]"
             >
               {{ text }}

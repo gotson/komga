@@ -17,7 +17,7 @@
       </v-col>
     </v-row>
 
-    <v-row align="center">
+    <v-row class="align-center">
       <v-col>
         <v-text-field
           v-model="model.root"

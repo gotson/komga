@@ -2,7 +2,7 @@
   <v-container class="px-0">
     <v-row>
       <v-col cols="auto">
-        <div class="text-subtitle-2 d-flex ga-2 align-center">
+        <div class="text-label-large d-flex ga-2 align-center">
           <div>
             {{
               $formatMessage({
@@ -128,7 +128,7 @@
 
     <v-row>
       <v-col>
-        <div class="text-subtitle-2">
+        <div class="text-label-large">
           {{
             $formatMessage({
               description: 'Form add/edit library: Options - section header for file management',
@@ -167,7 +167,7 @@
 
     <v-row>
       <v-col>
-        <div class="text-subtitle-2">
+        <div class="text-label-large">
           {{
             $formatMessage({
               description: 'Form add/edit library: Options - section header for series cover',

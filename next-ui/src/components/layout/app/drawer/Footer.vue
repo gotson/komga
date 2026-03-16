@@ -1,13 +1,13 @@
 <template>
   <v-divider />
-  <div class="d-flex align-center text-caption text-medium-emphasis pa-2">
+  <div class="d-flex align-center text-body-small text-medium-emphasis pa-2">
     <div class="d-flex ms-auto">
       <v-btn
         prepend-icon="i-mdi:help-circle-outline"
         variant="text"
         color="grey"
         size="small"
-        class="text-caption"
+        class="text-body-small"
         href="https://komga.org"
         target="_blank"
         :text="
@@ -22,7 +22,7 @@
   </div>
   <div
     v-if="isAdmin"
-    class="d-flex align-center text-caption text-medium-emphasis pa-2"
+    class="d-flex align-center text-body-small text-medium-emphasis pa-2"
   >
     <div class="d-flex ms-auto">
       <BuildCommit class="me-2" />

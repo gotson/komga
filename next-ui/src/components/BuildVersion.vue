@@ -10,7 +10,7 @@
       variant="text"
       color="grey"
       size="small"
-      class="text-caption"
+      class="text-body-small"
       to="/server/updates"
     >
       {{ buildVersion || $formatMessage(commonMessages.error) }}

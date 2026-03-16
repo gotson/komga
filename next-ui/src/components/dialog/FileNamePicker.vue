@@ -22,7 +22,7 @@
           <v-container fluid>
             <v-row>
               <v-col>
-                <div class="text-subtitle-2">
+                <div class="text-label-large">
                   {{
                     $formatMessage({
                       description: 'File name picker dialog: source file name field label',
@@ -37,7 +37,7 @@
               </v-col>
             </v-row>
 
-            <v-row align="center">
+            <v-row class="align-center">
               <v-col>
                 <v-text-field
                   v-model="newName"

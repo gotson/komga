@@ -5,7 +5,7 @@
         <a
           :href="release.url"
           target="_blank"
-          class="text-h4 font-weight-medium link-underline"
+          class="text-headline-large font-weight-medium link-underline"
           >{{ release.version }}</a
         >
         <v-chip
@@ -45,10 +45,7 @@
 
     <template #text>
       <!-- eslint-disable vue/no-v-html -->
-      <div
-        class="release"
-        v-html="marked(release.description)"
-      />
+      <div v-html="marked(release.description)" />
       <!-- eslint-enable vue/no-v-html -->
     </template>
   </v-card>
@@ -68,17 +65,3 @@ const {
   current?: boolean
 }>()
 </script>
-
-<style lang="scss">
-.release p {
-  margin-bottom: 16px;
-}
-
-.release ul {
-  padding-left: 24px;
-}
-
-.release a {
-  color: var(--v-anchor-base);
-}
-</style>

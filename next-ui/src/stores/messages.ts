@@ -5,7 +5,7 @@ type Message =
   | {
       text: string
       color?: string
-      timer?: string | boolean
+      timer?: boolean | 'top' | 'bottom'
       timeout?: string | number
     }
   | string

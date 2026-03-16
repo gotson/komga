@@ -5,7 +5,7 @@
     variant="text"
     color="grey"
     size="small"
-    class="text-caption"
+    class="text-body-small"
     :href="'https://github.com/gotson/komga/commits/' + commitId"
     target="_blank"
   >

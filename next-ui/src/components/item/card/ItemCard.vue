@@ -38,7 +38,7 @@
           <!--  Top-right icon  -->
           <div
             v-if="topRightIcon || topRight"
-            class="top-0 right-0 position-absolute translucent text-white px-2 py-1 font-weight-bold text-caption"
+            class="top-0 right-0 position-absolute translucent text-white px-2 py-1 font-weight-bold text-body-small"
             style="border-bottom-left-radius: 4px"
           >
             <v-icon
@@ -134,7 +134,7 @@
     </v-hover>
 
     <v-card-title
-      :class="['text-subtitle-2 px-2 pb-0 mb-2', { 'force-line-count text-wrap': title.lines }]"
+      :class="['text-label-large px-2 pb-0 mb-2', { 'force-line-count text-wrap': title.lines }]"
       :style="[{ '--lines': title.lines }, { '--line-height': 1.6 }]"
       >{{ title.text }}</v-card-title
     >

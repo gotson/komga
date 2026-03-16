@@ -2,7 +2,7 @@
   <v-container class="px-0">
     <v-row>
       <v-col cols="auto">
-        <div class="text-subtitle-2 d-flex ga-2 align-center">
+        <div class="text-label-large d-flex ga-2 align-center">
           <div>
             {{
               $formatMessage({
@@ -111,7 +111,7 @@
 
     <v-row>
       <v-col>
-        <div class="text-subtitle-2">
+        <div class="text-label-large">
           {{
             $formatMessage({
               description: 'Form add/edit library: Metadata - section header for epub',
@@ -150,7 +150,7 @@
 
     <v-row>
       <v-col>
-        <div class="text-subtitle-2">
+        <div class="text-label-large">
           {{
             $formatMessage({
               description: 'Form add/edit library: Metadata - section header for mylar series.json',
@@ -178,7 +178,7 @@
 
     <v-row>
       <v-col>
-        <div class="text-subtitle-2">
+        <div class="text-label-large">
           {{
             $formatMessage({
               description:
@@ -207,7 +207,7 @@
 
     <v-row>
       <v-col>
-        <div class="text-subtitle-2 d-flex ga-2 align-center">
+        <div class="text-label-large d-flex ga-2 align-center">
           {{
             $formatMessage({
               description: 'Form add/edit library: Metadata - section header for ISBN barcode',

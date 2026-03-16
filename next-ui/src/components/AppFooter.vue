@@ -21,7 +21,7 @@
         variant="text"
         color="grey"
         size="small"
-        class="text-caption"
+        class="text-body-small"
         href="https://komga.org"
         target="_blank"
         :text="

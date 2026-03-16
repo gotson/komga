@@ -4,7 +4,9 @@
       <v-avatar
         color="primary"
         size="x-large"
-        ><span class="text-h5 text-uppercase">{{ user.email.charAt(0) }}</span></v-avatar
+        ><span class="text-headline-medium text-uppercase">{{
+          user.email.charAt(0)
+        }}</span></v-avatar
       >
     </template>
 

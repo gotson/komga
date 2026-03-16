@@ -1,6 +1,6 @@
 <template>
   <v-app-bar
-    elevation="2"
+    elevation="1"
     color="surface-light"
   >
     <template #prepend>

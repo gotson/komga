@@ -5,7 +5,7 @@
     @submit.prevent="submitForm()"
   >
     <v-container max-width="400px">
-      <v-row justify="center">
+      <v-row class="justify-center">
         <v-col
           cols="7"
           sm="10"
@@ -92,12 +92,12 @@
         </v-col>
       </v-row>
 
-      <v-row justify="center">
+      <v-row class="justify-center">
         <v-col cols="auto">
           <a
             href="https://komga.org/docs/faq#i-forgot-my-password"
             target="_blank"
-            class="link-underline text-body-2"
+            class="link-underline text-body-medium"
           >
             {{
               $formatMessage({
@@ -112,7 +112,7 @@
 
       <v-divider class="my-4" />
 
-      <v-row justify="center">
+      <v-row class="justify-center">
         <v-col cols="auto">
           <div class="d-flex ga-4">
             <LocaleSelector />

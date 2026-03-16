@@ -142,10 +142,7 @@
 
     <!--region Creation Form-->
     <v-container fluid>
-      <v-row
-        justify="space-between"
-        align="end"
-      >
+      <v-row class="align-end justify-space-between">
         <v-col
           cols="12"
           sm=""

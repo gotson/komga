@@ -35,15 +35,19 @@ export const Default: Story = {
 
 export const Created: Story = {
   play: async ({ userEvent }) => {
+    const user = userEvent.setup({
+      pointerEventsCheck: 0,
+    })
+
     const canvas = within(screen.getByRole('dialog'))
 
     await waitFor(() => expect(canvas.getByText(/kobo sync protocol/i)).toBeVisible())
     const comment = canvas.getByLabelText(/comment/i, {
       selector: 'input',
     })
-    await userEvent.type(comment, 'new key')
+    await user.type(comment, 'new key')
 
-    await userEvent.click(canvas.getByRole('button', { name: /generate/i }))
+    await user.click(canvas.getByRole('button', { name: /generate/i }))
   },
 }
 
@@ -54,15 +58,19 @@ export const Loading: Story = {
     },
   },
   play: async ({ userEvent }) => {
+    const user = userEvent.setup({
+      pointerEventsCheck: 0,
+    })
+
     const canvas = within(screen.getByRole('dialog'))
 
     await waitFor(() => expect(canvas.getByText(/kobo sync protocol/i)).toBeVisible())
     const comment = canvas.getByLabelText(/comment/i, {
       selector: 'input',
     })
-    await userEvent.type(comment, 'long loading')
+    await user.type(comment, 'long loading')
 
-    await userEvent.click(canvas.getByRole('button', { name: /generate/i }))
+    await user.click(canvas.getByRole('button', { name: /generate/i }))
   },
 }
 
@@ -77,14 +85,18 @@ export const DuplicateError: Story = {
     },
   },
   play: async ({ userEvent }) => {
+    const user = userEvent.setup({
+      pointerEventsCheck: 0,
+    })
+
     const canvas = within(screen.getByRole('dialog'))
 
     await waitFor(() => expect(canvas.getByText(/kobo sync protocol/i)).toBeVisible())
     const comment = canvas.getByLabelText(/comment/i, {
       selector: 'input',
     })
-    await userEvent.type(comment, 'duplicate')
+    await user.type(comment, 'duplicate')
 
-    await userEvent.click(canvas.getByRole('button', { name: /generate/i }))
+    await user.click(canvas.getByRole('button', { name: /generate/i }))
   },
 }

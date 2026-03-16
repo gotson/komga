@@ -6,7 +6,7 @@
 
 // Styles
 import 'vuetify/styles'
-import { aliases } from 'vuetify/iconsets/mdi'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-unocss'
 
 // Composables
 import { createVuetify } from 'vuetify'
@@ -40,13 +40,11 @@ export const vuetify = createVuetify({
     messages,
   },
   icons: {
-    // 'class' is a built-in set that just applies the icon value as classes on the v-icon
-    defaultSet: 'class',
-    // customize the provided mdi aliases to fit the unocss class names
-    aliases: Object.keys(aliases).reduce((obj: Record<string, string>, key) => {
-      obj[key] = `i-mdi:${aliases[key]!.toString().substring(4)}`
-      return obj
-    }, {}),
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
   },
   theme: {
     defaultTheme: 'light',
