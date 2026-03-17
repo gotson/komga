@@ -21,7 +21,7 @@ export default {
 @import '../src/styles/global.scss';
 
 .v-application__wrap {
-  min-height: unset !important;
-  height: auto !important;
+  min-height: unset;
+  height: auto;
 }
 </style>
