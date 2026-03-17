@@ -1,6 +1,5 @@
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'
-import { withVuetifyTheme } from './withVuetifyTheme.decorator'
 
 import { initialize, mswLoader } from 'msw-storybook-addon'
 import { handlers } from '@/mocks/api/handlers'
@@ -15,6 +14,7 @@ import { localeDecorator } from './locale.decorator'
 import { vuetifyViewports } from './viewport'
 import { allModes } from './modes'
 import { PiniaColadaDelay } from '@pinia/colada-plugin-delay'
+import { withVuetifyTheme } from './withVuetifyTheme.decorator'
 
 initialize(
   {
