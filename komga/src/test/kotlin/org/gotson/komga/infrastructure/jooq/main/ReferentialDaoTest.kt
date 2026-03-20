@@ -98,7 +98,7 @@ class ReferentialDaoTest(
     makeBook("1", libraryId = library1.id, seriesId = series1.id).let { book ->
       seriesLifecycle.addBooks(series1, listOf(book))
       bookMetadataRepository.findById(book.id).let {
-        bookMetadataRepository.update(it.copy(authors = listOf(Author("item1", "writer")), releaseDate = LocalDate.of(2001, 1, 1), tags = setOf("bt1")))
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("item1", "writer")), releaseDate = LocalDate.of(2002, 1, 1), tags = setOf("bt1")))
       }
       seriesMetadataRepository.findById(series1.id).let {
         seriesMetadataRepository.update(it.copy(genres = setOf("item1"), sharingLabels = setOf("item1"), language = "fr", publisher = "item1", ageRating = 18, tags = setOf("st1")))
@@ -109,7 +109,7 @@ class ReferentialDaoTest(
     makeBook("2", libraryId = library2.id, seriesId = series2.id).let { book ->
       seriesLifecycle.addBooks(series2, listOf(book))
       bookMetadataRepository.findById(book.id).let {
-        bookMetadataRepository.update(it.copy(authors = listOf(Author("item2", "inker")), releaseDate = LocalDate.of(2002, 1, 1), tags = setOf("bt2")))
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("item2", "inker")), releaseDate = LocalDate.of(2002, 2, 1), tags = setOf("bt2")))
       }
       seriesMetadataRepository.findById(series2.id).let {
         seriesMetadataRepository.update(it.copy(genres = setOf("item2"), sharingLabels = setOf("item2"), language = "en", publisher = "item2", ageRating = 19, tags = setOf("st2")))
@@ -729,11 +729,11 @@ class ReferentialDaoTest(
   }
 
   @Nested
-  inner class SeriesReleaseDate {
+  inner class SeriesReleaseYear {
     @Test
     fun `given filter by library when getting series release dates then only matching series release dates are returned`() {
       val context = SearchContext(userAll)
-      val items = referentialDao.findSeriesReleaseDates(context, FilterBy(FilterByEntity.LIBRARY, setOf(library2.id)), Pageable.unpaged()).content
+      val items = referentialDao.findSeriesReleaseYears(context, FilterBy(FilterByEntity.LIBRARY, setOf(library2.id)), Pageable.unpaged()).content
 
       assertThat(items).containsExactly("2002")
     }
@@ -741,23 +741,23 @@ class ReferentialDaoTest(
     @Test
     fun `given user without restrictions when getting series release dates then all series release dates are returned`() {
       val context = SearchContext(userAll)
-      val items = referentialDao.findSeriesReleaseDates(context, null, Pageable.unpaged()).content
+      val items = referentialDao.findSeriesReleaseYears(context, null, Pageable.unpaged()).content
 
-      assertThat(items).containsExactly("2004", "2003", "2002", "2001")
+      assertThat(items).containsExactly("2004", "2003", "2002")
     }
 
     @Test
     fun `given user with restricted library access when getting series release dates then only allowed series release dates are returned`() {
       val context = SearchContext(userLib1)
-      val items = referentialDao.findSeriesReleaseDates(context, null, Pageable.unpaged()).content
+      val items = referentialDao.findSeriesReleaseYears(context, null, Pageable.unpaged()).content
 
-      assertThat(items).containsExactly("2004", "2003", "2001")
+      assertThat(items).containsExactly("2004", "2003", "2002")
     }
 
     @Test
     fun `given user with restricted label access when getting series release dates then only allowed series release dates are returned`() {
       val context = SearchContext(userLabelAllow)
-      val items = referentialDao.findSeriesReleaseDates(context, null, Pageable.unpaged()).content
+      val items = referentialDao.findSeriesReleaseYears(context, null, Pageable.unpaged()).content
 
       assertThat(items).containsExactly("2003")
     }
@@ -765,7 +765,7 @@ class ReferentialDaoTest(
     @Test
     fun `given user with restricted age access when getting series release dates then only allowed series release dates are returned`() {
       val context = SearchContext(userAge10)
-      val items = referentialDao.findSeriesReleaseDates(context, null, Pageable.unpaged()).content
+      val items = referentialDao.findSeriesReleaseYears(context, null, Pageable.unpaged()).content
 
       assertThat(items).containsExactly("2004")
     }

@@ -228,7 +228,7 @@ interface ReferentialRepository {
     filterOnLibraryIds: Collection<String>?,
   ): Set<LocalDate>
 
-  fun findSeriesReleaseDates(
+  fun findSeriesReleaseYears(
     context: SearchContext,
     filterBy: FilterBy?,
     pageable: Pageable,

@@ -292,9 +292,9 @@ class ReferentialV2Controller(
   }
 
   @PageableWithoutSortAsQueryParam
-  @GetMapping("series/release-dates")
-  @Operation(summary = "List series release dates", description = "Can be filtered by various criteria")
-  fun getSeriesReleaseDates(
+  @GetMapping("series/release-years")
+  @Operation(summary = "List series release years", description = "Can be filtered by various criteria")
+  fun getSeriesReleaseYears(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
     @RequestParam(name = "collection_id", required = false) collectionIds: Set<String> = emptySet(),
@@ -318,7 +318,7 @@ class ReferentialV2Controller(
         else -> null
       }
 
-    return referentialRepository.findSeriesReleaseDates(SearchContext(principal.user), filterBy, pageRequest)
+    return referentialRepository.findSeriesReleaseYears(SearchContext(principal.user), filterBy, pageRequest)
   }
 
   @PageableWithoutSortAsQueryParam

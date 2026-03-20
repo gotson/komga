@@ -88,7 +88,7 @@ class ReferentialV1Controller(
   @GetMapping("tags")
   @Deprecated("Use GET /v2/tags instead")
   // TODO: add deprecation release
-  @Operation(summary = "List tags", description = "Use GET /v2/sharing-labels instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
+  @Operation(summary = "List tags", description = "Use GET /v2/tags instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
   fun getTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
@@ -103,7 +103,7 @@ class ReferentialV1Controller(
   @GetMapping("tags/book")
   @Deprecated("Use GET /v2/tags instead")
   // TODO: add deprecation release
-  @Operation(summary = "List book tags", description = "Use GET /v2/sharing-labels instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
+  @Operation(summary = "List book tags", description = "Use GET /v2/tags instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
   fun getBookTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "series_id", required = false) seriesId: String?,
@@ -120,7 +120,7 @@ class ReferentialV1Controller(
   @GetMapping("tags/series")
   @Deprecated("Use GET /v2/tags instead")
   // TODO: add deprecation release
-  @Operation(summary = "List series tags", description = "Use GET /v2/sharing-labels instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
+  @Operation(summary = "List series tags", description = "Use GET /v2/tags instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
   fun getSeriesTags(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryId: String?,
@@ -150,7 +150,7 @@ class ReferentialV1Controller(
   @GetMapping("publishers")
   @Deprecated("Use GET /v2/publishers instead")
   // TODO: add deprecation release
-  @Operation(summary = "List publishers", description = "Use GET /v2/genres instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
+  @Operation(summary = "List publishers", description = "Use GET /v2/publishers instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
   fun getPublishers(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
@@ -165,7 +165,7 @@ class ReferentialV1Controller(
   @GetMapping("age-ratings")
   @Deprecated("Use GET /v2/age-ratings instead")
   // TODO: add deprecation release
-  @Operation(summary = "List age ratings", description = "Use GET /v2/genres instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
+  @Operation(summary = "List age ratings", description = "Use GET /v2/age-ratings instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
   fun getAgeRatings(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),
@@ -178,9 +178,9 @@ class ReferentialV1Controller(
     }.map { it?.toString() ?: "None" }.toSet()
 
   @GetMapping("series/release-dates")
-  @Deprecated("Use GET /v2/age-ratings instead")
+  @Deprecated("Use GET /v2/series/release-years instead")
   // TODO: add deprecation release
-  @Operation(summary = "List series release dates", description = "Use GET /v2/genres instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
+  @Operation(summary = "List series release dates", description = "Use GET /v2/series/release-years instead. Deprecated since 1.x.0", tags = [OpenApiConfiguration.TagNames.DEPRECATED])
   fun getSeriesReleaseDates(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @RequestParam(name = "library_id", required = false) libraryIds: Set<String> = emptySet(),

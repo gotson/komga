@@ -641,14 +641,60 @@ class ReferentialDao(
       .orderBy(bma.RELEASE_DATE.desc())
       .fetchSet(bma.RELEASE_DATE)
 
-  override fun findSeriesReleaseDates(
+  override fun findSeriesReleaseYears(
     context: SearchContext,
     filterBy: FilterBy?,
     pageable: Pageable,
   ): Page<String> {
     filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
 
-    return findGeneric(context, null, filterBy, pageable, bma, null, bma.SERIES_ID, { it?.releaseDate?.year?.toString() }, Sort.by(Order.desc("year")), listOf(bma.RELEASE_DATE), sortField = bma.RELEASE_DATE.desc())
+    val sortField = bma.RELEASE_DATE.desc()
+    val restrictionCondition = ContentRestrictionsSearchHelper(context.restrictions).toCondition()
+    val query =
+      dslRO
+        .selectDistinct(DSL.year(bma.RELEASE_DATE))
+        .from(bma)
+        .apply {
+          restrictionCondition.second.forEach { join ->
+            when (join) {
+              RequiredJoin.SeriesMetadata -> innerJoin(sd).on(bma.SERIES_ID.eq(sd.SERIES_ID))
+              // shouldn't be required
+              RequiredJoin.BookMetadata -> Unit
+              RequiredJoin.BookMetadataAggregation -> Unit
+              is RequiredJoin.Collection -> Unit
+              RequiredJoin.Media -> Unit
+              is RequiredJoin.ReadList -> Unit
+              is RequiredJoin.ReadProgress -> Unit
+            }
+          }
+        }.apply { if (!context.libraryIds.isNullOrEmpty() || filterBy?.type == FilterByEntity.LIBRARY) leftJoin(s).on(bma.SERIES_ID.eq(s.ID)) }
+        .apply { if (filterBy?.type == FilterByEntity.COLLECTION) leftJoin(cs).on(bma.SERIES_ID.eq(cs.SERIES_ID)) }
+        .apply {
+          if (filterBy?.type == FilterByEntity.READLIST)
+            leftJoin(b)
+              .on(bma.SERIES_ID.eq(b.SERIES_ID))
+              .leftJoin(rb)
+              .on(b.ID.eq(rb.BOOK_ID))
+        }.where(restrictionCondition.first)
+        .apply { context.libraryIds?.let { this.and(s.LIBRARY_ID.`in`(it)) } }
+        .apply {
+          filterBy?.let {
+            when (it.type) {
+              FilterByEntity.LIBRARY -> this.and(s.LIBRARY_ID.`in`(it.ids))
+              FilterByEntity.COLLECTION -> this.and(cs.COLLECTION_ID.`in`(it.ids))
+              FilterByEntity.SERIES -> this.and(bma.SERIES_ID.`in`(it.ids))
+              FilterByEntity.READLIST -> this.and(rb.READLIST_ID.`in`(it.ids))
+            }
+          }
+        }
+    val count = dslRO.fetchCount(query)
+    val items =
+      query
+        .orderBy(sortField)
+        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+        .fetchArray(0)
+        .mapNotNull { it?.toString() }
+    return buildPage(items, pageable, count, Sort.by(Order.desc("year")))
   }
 
   @Deprecated("Use findSharingLabels instead")

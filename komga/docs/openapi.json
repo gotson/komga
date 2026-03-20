@@ -234,7 +234,7 @@
     "/api/v1/age-ratings": {
       "get": {
         "deprecated": true,
-        "description": "Use GET /v2/genres instead. Deprecated since 1.x.0",
+        "description": "Use GET /v2/age-ratings instead. Deprecated since 1.x.0",
         "operationId": "getAgeRatings_1",
         "parameters": [
           {
@@ -4760,7 +4760,7 @@
     "/api/v1/publishers": {
       "get": {
         "deprecated": true,
-        "description": "Use GET /v2/genres instead. Deprecated since 1.x.0",
+        "description": "Use GET /v2/publishers instead. Deprecated since 1.x.0",
         "operationId": "getPublishers_1",
         "parameters": [
           {
@@ -6575,8 +6575,8 @@
     "/api/v1/series/release-dates": {
       "get": {
         "deprecated": true,
-        "description": "Use GET /v2/genres instead. Deprecated since 1.x.0",
-        "operationId": "getSeriesReleaseDates_1",
+        "description": "Use GET /v2/series/release-years instead. Deprecated since 1.x.0",
+        "operationId": "getSeriesReleaseDates",
         "parameters": [
           {
             "in": "query",
@@ -7675,7 +7675,7 @@
     "/api/v1/tags": {
       "get": {
         "deprecated": true,
-        "description": "Use GET /v2/sharing-labels instead. Deprecated since 1.x.0",
+        "description": "Use GET /v2/tags instead. Deprecated since 1.x.0",
         "operationId": "getTags_1",
         "parameters": [
           {
@@ -7735,7 +7735,7 @@
     "/api/v1/tags/book": {
       "get": {
         "deprecated": true,
-        "description": "Use GET /v2/sharing-labels instead. Deprecated since 1.x.0",
+        "description": "Use GET /v2/tags instead. Deprecated since 1.x.0",
         "operationId": "getBookTags",
         "parameters": [
           {
@@ -7803,7 +7803,7 @@
     "/api/v1/tags/series": {
       "get": {
         "deprecated": true,
-        "description": "Use GET /v2/sharing-labels instead. Deprecated since 1.x.0",
+        "description": "Use GET /v2/tags instead. Deprecated since 1.x.0",
         "operationId": "getSeriesTags",
         "parameters": [
           {
@@ -8736,10 +8736,10 @@
         ]
       }
     },
-    "/api/v2/series/release-dates": {
+    "/api/v2/series/release-years": {
       "get": {
         "description": "Can be filtered by various criteria",
-        "operationId": "getSeriesReleaseDates",
+        "operationId": "getSeriesReleaseYears",
         "parameters": [
           {
             "in": "query",
@@ -8812,7 +8812,7 @@
             "description": "Bad Request"
           }
         },
-        "summary": "List series release dates",
+        "summary": "List series release years",
         "tags": [
           "Referential metadata"
         ]
