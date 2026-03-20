@@ -94,14 +94,11 @@
           </FilterExpansionPanel>
 
           <FilterExpansionPanel
-            title="Sharing label"
-            :count="filterSharingLabel.v.length"
-            @clear="clearFilter(filterSharingLabel)"
+            title="Release year"
+            :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
+            @clear="clearFilterYear()"
           >
-            <FilterBySharingLabel
-              v-model="filterSharingLabel.v"
-              v-model:mode="filterSharingLabel.m"
-            />
+            <FilterByReleaseYear v-model="filterReleaseYear" />
           </FilterExpansionPanel>
 
           <FilterExpansionPanel
@@ -116,11 +113,14 @@
           </FilterExpansionPanel>
 
           <FilterExpansionPanel
-            title="Release year"
-            :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
-            @clear="clearFilterYear()"
+            title="Sharing label"
+            :count="filterSharingLabel.v.length"
+            @clear="clearFilter(filterSharingLabel)"
           >
-            <FilterByReleaseYear v-model="filterReleaseYear" />
+            <FilterBySharingLabel
+              v-model="filterSharingLabel.v"
+              v-model:mode="filterSharingLabel.m"
+            />
           </FilterExpansionPanel>
         </v-expansion-panels>
 
