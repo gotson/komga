@@ -102,7 +102,7 @@
       >
         <LibraryFormStepMetadata v-model="model" />
 
-        <template #next=""></template>
+        <template #next="{}"></template>
 
         <template #prev="{ prev }">
           <v-btn

@@ -40,7 +40,7 @@
       <v-icon icon="i-mdi:file-check-outline" />
     </template>
 
-    <template #[`item.analysisStatus`]="{ item }: { item: BookImport }">
+    <template #[`item.analysisStatus`]="{ item }">
       <v-progress-circular
         v-if="item.transientBook.status === MediaStatus.UNKNOWN.valueOf()"
         indeterminate
