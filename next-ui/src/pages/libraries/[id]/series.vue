@@ -114,6 +114,14 @@
               v-model:mode="filterLanguage.m"
             />
           </FilterExpansionPanel>
+
+          <FilterExpansionPanel
+            title="Release year"
+            :count="(!!filterReleaseYear.is ? 1 : 0) + (!!filterReleaseYear.min ? 1 : 0)"
+            @clear="clearFilterYear()"
+          >
+            <FilterByReleaseYear v-model="filterReleaseYear" />
+          </FilterExpansionPanel>
         </v-expansion-panels>
 
         <v-divider />
@@ -226,6 +234,7 @@ import {
   schemaFilterAuthorsToConditions,
   schemaFilterStringToConditions,
   schemaFilterSeriesStatusToConditions,
+  schemaFilterReleaseYearToConditions,
 } from '@/functions/filter'
 import * as v from 'valibot'
 import {
@@ -233,6 +242,7 @@ import {
   SchemaFilterAuthors,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
+  SchemaSeriesReleaseYears,
 } from '@/types/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import { authorRoles } from '@/types/referential'
@@ -286,12 +296,19 @@ function clearFilter(filter: FilterType) {
   if ('m' in filter) filter.m = 'anyOf'
 }
 
+function clearFilterYear() {
+  filterReleaseYear.value.is = undefined
+  filterReleaseYear.value.min = undefined
+  filterReleaseYear.value.max = undefined
+}
+
 const { data: filterSeriesStatus } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
 const { data: filterGenre } = useRouteQuerySchema('genre', SchemaFilterStrings)
 const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
 const { data: filterPublisher } = useRouteQuerySchema('publisher', SchemaFilterStrings)
 const { data: filterSharingLabel } = useRouteQuerySchema('sharingLabel', SchemaFilterStrings)
 const { data: filterLanguage } = useRouteQuerySchema('language', SchemaFilterStrings)
+const { data: filterReleaseYear } = useRouteQuerySchema('year', SchemaSeriesReleaseYears)
 
 const conds = computed(() => ({
   allOf: [
@@ -302,6 +319,7 @@ const conds = computed(() => ({
     schemaFilterStringToConditions(filterPublisher.value, 'publisher', false),
     schemaFilterStringToConditions(filterSharingLabel.value, 'sharingLabel', true),
     schemaFilterStringToConditions(filterLanguage.value, 'language', false),
+    schemaFilterReleaseYearToConditions(filterReleaseYear.value),
     ...Object.entries(filterAuthors).map(([, filter]) =>
       schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
     ),

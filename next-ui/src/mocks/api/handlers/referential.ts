@@ -3,8 +3,6 @@ import type { components } from '@/generated/openapi/komga'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
 
-const sharingLabels = ['kids', 'teens']
-
 const authorRoles = [
   'writer',
   'penciller',
@@ -37,6 +35,7 @@ const mockTags = doMockStrings(10000, 'Tag')
 const mockPublishers = doMockStrings(10000, 'Publisher')
 const mockSharingLabels = doMockStrings(150, 'SharingLabel')
 const mockLanguages = ['de', 'en', 'en-US', 'es', 'fr', 'fr-CA', 'ja', 'it']
+const mockReleaseYears = ['2022', '2021', '2020', '2019', '2018', '2016', '1988', '1970']
 
 function filterAndPage(
   search: string | null,
@@ -54,7 +53,6 @@ function filterAndPage(
 }
 
 export const referentialHandlers = [
-  httpTyped.get('/api/v1/sharing-labels', ({ response }) => response(200).json(sharingLabels)),
   httpTyped.get('/api/v2/genres', ({ query, response }) =>
     response(200).json(
       filterAndPage(
@@ -104,6 +102,17 @@ export const referentialHandlers = [
       filterAndPage(
         query.get('search'),
         mockLanguages,
+        query.get('page'),
+        query.get('size'),
+        query.get('unpaged'),
+      ),
+    ),
+  ),
+  httpTyped.get('/api/v2/series/release-years', ({ query, response }) =>
+    response(200).json(
+      filterAndPage(
+        null,
+        mockReleaseYears,
         query.get('page'),
         query.get('size'),
         query.get('unpaged'),

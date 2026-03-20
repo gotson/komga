@@ -53,7 +53,7 @@ export interface paths {
         /**
          * List age ratings
          * @deprecated
-         * @description Use GET /v2/genres instead. Deprecated since 1.x.0
+         * @description Use GET /v2/age-ratings instead. Deprecated since 1.x.0
          */
         get: operations["getAgeRatings_1"];
         put?: never;
@@ -1532,7 +1532,7 @@ export interface paths {
         /**
          * List publishers
          * @deprecated
-         * @description Use GET /v2/genres instead. Deprecated since 1.x.0
+         * @description Use GET /v2/publishers instead. Deprecated since 1.x.0
          */
         get: operations["getPublishers_1"];
         put?: never;
@@ -1934,9 +1934,9 @@ export interface paths {
         /**
          * List series release dates
          * @deprecated
-         * @description Use GET /v2/genres instead. Deprecated since 1.x.0
+         * @description Use GET /v2/series/release-years instead. Deprecated since 1.x.0
          */
-        get: operations["getSeriesReleaseDates_1"];
+        get: operations["getSeriesReleaseDates"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2288,7 +2288,7 @@ export interface paths {
         /**
          * List tags
          * @deprecated
-         * @description Use GET /v2/sharing-labels instead. Deprecated since 1.x.0
+         * @description Use GET /v2/tags instead. Deprecated since 1.x.0
          */
         get: operations["getTags_1"];
         put?: never;
@@ -2309,7 +2309,7 @@ export interface paths {
         /**
          * List book tags
          * @deprecated
-         * @description Use GET /v2/sharing-labels instead. Deprecated since 1.x.0
+         * @description Use GET /v2/tags instead. Deprecated since 1.x.0
          */
         get: operations["getBookTags"];
         put?: never;
@@ -2330,7 +2330,7 @@ export interface paths {
         /**
          * List series tags
          * @deprecated
-         * @description Use GET /v2/sharing-labels instead. Deprecated since 1.x.0
+         * @description Use GET /v2/tags instead. Deprecated since 1.x.0
          */
         get: operations["getSeriesTags"];
         put?: never;
@@ -2565,7 +2565,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v2/series/release-dates": {
+    "/api/v2/series/release-years": {
         parameters: {
             query?: never;
             header?: never;
@@ -2573,10 +2573,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List series release dates
+         * List series release years
          * @description Can be filtered by various criteria
          */
-        get: operations["getSeriesReleaseDates"];
+        get: operations["getSeriesReleaseYears"];
         put?: never;
         post?: never;
         delete?: never;
@@ -8293,7 +8293,7 @@ export interface operations {
             };
         };
     };
-    getSeriesReleaseDates_1: {
+    getSeriesReleaseDates: {
         parameters: {
             query?: {
                 library_id?: string[];
@@ -9499,7 +9499,7 @@ export interface operations {
             };
         };
     };
-    getSeriesReleaseDates: {
+    getSeriesReleaseYears: {
         parameters: {
             query?: {
                 library_id?: string[];

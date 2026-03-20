@@ -5,6 +5,7 @@ import {
   SchemaFilterAuthors,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
+  SchemaSeriesReleaseYears,
   SchemaSeriesStatus,
 } from '@/types/filter'
 
@@ -59,6 +60,35 @@ describe('schema series status', () => {
   })
 })
 
+describe('schema series release years', () => {
+  test('correct value exact', () => {
+    const input = { is: '1985' }
+    const result = v.parse(SchemaSeriesReleaseYears, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('correct value min', () => {
+    const input = { min: '1985' }
+    const result = v.parse(SchemaSeriesReleaseYears, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('correct value max', () => {
+    const input = { max: '1985' }
+    const result = v.parse(SchemaSeriesReleaseYears, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('other value throws error', () => {
+    const input = { is: '20254' }
+
+    expect(() => v.parse(SchemaSeriesReleaseYears, input)).toThrowError()
+  })
+})
+
 describe('filter schemas have a default value', () => {
   test('SchemaFilterSeriesStatus', () => {
     const expected = { v: [] }
@@ -77,6 +107,13 @@ describe('filter schemas have a default value', () => {
   test('SchemaFilterAuthors', () => {
     const expected = { m: 'anyOf', v: [] }
     const defaults = v.getDefaults(SchemaFilterAuthors)
+
+    expect(defaults).toStrictEqual(expected)
+  })
+
+  test('SchemaSeriesReleaseYears', () => {
+    const expected = { is: undefined, min: undefined, max: undefined }
+    const defaults = v.getDefaults(SchemaSeriesReleaseYears)
 
     expect(defaults).toStrictEqual(expected)
   })

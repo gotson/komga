@@ -98,3 +98,30 @@ export function schemaFilterStringToConditions(
       anyOf: list,
     }
 }
+
+export function schemaFilterReleaseYearToConditions(
+  filter: InferOutput<typeof SchemaSeriesReleaseYears>,
+) {
+  const conds = []
+  if (!!filter.is || !!filter.min) {
+    const year = Number(filter.is || filter.min)
+    conds.push({
+      releaseDate: {
+        operator: 'after',
+        dateTime: `${(year - 1).toString().padStart(4, '0')}-12-31T12:00:00Z`,
+      },
+    })
+  }
+  if (!!filter.is || !!filter.max) {
+    const year = Number(filter.is || filter.max)
+    conds.push({
+      releaseDate: {
+        operator: 'before',
+        dateTime: `${(year + 1).toString().padStart(4, '0')}-01-01T12:00:00Z`,
+      },
+    })
+  }
+  return {
+    allOf: conds,
+  }
+}

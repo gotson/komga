@@ -217,3 +217,33 @@ export const languagesQuery = defineQueryOptions(
     }
   },
 )
+
+export const releaseYearsQuery = defineQueryOptions(
+  ({
+    library_id,
+    collection_id,
+    pageRequest,
+  }: {
+    library_id?: string[]
+    collection_id?: string[]
+    pageRequest?: PageRequest
+  }) => {
+    const queryParams = {
+      library_id: library_id,
+      collection_id: collection_id,
+      ...pageRequest,
+    }
+    return {
+      key: ['release-years', queryParams],
+      query: () =>
+        komgaClient
+          .GET('/api/v2/series/release-years', {
+            params: {
+              query: queryParams,
+            },
+          })
+          // unwrap the openapi-fetch structure on success
+          .then((res) => res.data),
+    }
+  },
+)

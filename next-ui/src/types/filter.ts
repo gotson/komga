@@ -65,6 +65,8 @@ export const SchemaAnyNone = v.strictObject({
 
 export const SchemaAuthor = v.union([SchemaString, SchemaAnyNone])
 
+const SchemaYear = v.pipe(v.string(), v.regex(/^\d{4}$/, 'Must be exactly 4 digits'))
+
 ////////////////////////////////////////////////////
 // All schema filters need to have a default value
 ////////////////////////////////////////////////////
@@ -92,6 +94,15 @@ function createSchemaFilterArray<T extends v.GenericSchema>(schema: T) {
  * Schema for Series Status.
  */
 export const SchemaFilterSeriesStatus = createSchemaFilterArray(SchemaSeriesStatus)
+
+/**
+ * Schema for Series Release Years
+ */
+export const SchemaSeriesReleaseYears = v.strictObject({
+  is: v.optional(SchemaYear),
+  min: v.optional(SchemaYear),
+  max: v.optional(SchemaYear),
+})
 
 /**
  * Schema for a list of string.
