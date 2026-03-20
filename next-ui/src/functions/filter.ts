@@ -3,6 +3,7 @@ import {
   SchemaFilterAuthors,
   type SchemaFilterSeriesStatus,
   SchemaFilterStrings,
+  SchemaSeriesAgeRatings,
   SchemaSeriesReleaseYears,
 } from '@/types/filter'
 import type { InferOutput } from 'valibot'
@@ -132,6 +133,47 @@ export function schemaFilterReleaseYearToConditions(
         releaseDate: {
           operator: 'before',
           dateTime: `${(year + 1).toString().padStart(4, '0')}-01-01T12:00:00Z`,
+        },
+      })
+    }
+  }
+  return {
+    allOf: conds,
+  }
+}
+
+export function schemaFilterAgeRatingToConditions(
+  filter: InferOutput<typeof SchemaSeriesAgeRatings>,
+) {
+  const conds = []
+  if (filter.is === 'any') {
+    conds.push({
+      ageRating: {
+        operator: 'isNotNull',
+      },
+    })
+  } else if (filter.is === 'none') {
+    conds.push({
+      ageRating: {
+        operator: 'isNull',
+      },
+    })
+  } else {
+    if (!!filter.is || !!filter.min) {
+      const v = Number(filter.is || filter.min)
+      conds.push({
+        ageRating: {
+          operator: 'greaterThan',
+          value: v,
+        },
+      })
+    }
+    if (!!filter.is || !!filter.max) {
+      const v = Number(filter.is || filter.max)
+      conds.push({
+        ageRating: {
+          operator: 'lessThan',
+          value: v,
         },
       })
     }

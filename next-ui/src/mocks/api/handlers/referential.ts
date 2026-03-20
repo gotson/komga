@@ -36,6 +36,7 @@ const mockPublishers = doMockStrings(10000, 'Publisher')
 const mockSharingLabels = doMockStrings(150, 'SharingLabel')
 const mockLanguages = ['de', 'en', 'en-US', 'es', 'fr', 'fr-CA', 'ja', 'it']
 const mockReleaseYears = ['2022', '2021', '2020', '2019', '2018', '2016', '1988', '1970']
+const mockAgeRatings = [5, 6, 7, 8, 12, 14, 16, 18]
 
 function filterAndPage(
   search: string | null,
@@ -116,6 +117,19 @@ export const referentialHandlers = [
         query.get('page'),
         query.get('size'),
         query.get('unpaged'),
+      ),
+    ),
+  ),
+  httpTyped.get('/api/v2/age-ratings', ({ query, response }) =>
+    response(200).json(
+      mockPage(
+        mockAgeRatings,
+        new PageRequest(
+          Number(query.get('page')),
+          Number(query.get('size')),
+          undefined,
+          Boolean(query.get('unpaged')),
+        ),
       ),
     ),
   ),

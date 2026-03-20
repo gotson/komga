@@ -5,6 +5,7 @@ import {
   SchemaFilterAuthors,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
+  SchemaSeriesAgeRatings,
   SchemaSeriesReleaseYears,
   SchemaSeriesStatus,
 } from '@/types/filter'
@@ -103,6 +104,49 @@ describe('schema series release years', () => {
   })
 })
 
+describe('schema series age ratings', () => {
+  test('correct value exact', () => {
+    const input = { is: 10 }
+    const result = v.parse(SchemaSeriesAgeRatings, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('correct value min', () => {
+    const input = { min: 12 }
+    const result = v.parse(SchemaSeriesAgeRatings, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('correct value max', () => {
+    const input = { max: 15 }
+    const result = v.parse(SchemaSeriesAgeRatings, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('correct value is: any', () => {
+    const input = { is: 'any' }
+    const result = v.parse(SchemaSeriesAgeRatings, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('correct value is: none', () => {
+    const input = { is: 'none' }
+    const result = v.parse(SchemaSeriesAgeRatings, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('other value throws error', () => {
+    const input = { is: '22' }
+
+    expect(() => v.parse(SchemaSeriesAgeRatings, input)).toThrowError()
+  })
+})
+
 describe('filter schemas have a default value', () => {
   test('SchemaFilterSeriesStatus', () => {
     const expected = { v: [] }
@@ -128,6 +172,13 @@ describe('filter schemas have a default value', () => {
   test('SchemaSeriesReleaseYears', () => {
     const expected = { is: undefined, min: undefined, max: undefined }
     const defaults = v.getDefaults(SchemaSeriesReleaseYears)
+
+    expect(defaults).toStrictEqual(expected)
+  })
+
+  test('SchemaSeriesAgeRatings', () => {
+    const expected = { is: undefined, min: undefined, max: undefined }
+    const defaults = v.getDefaults(SchemaSeriesAgeRatings)
 
     expect(defaults).toStrictEqual(expected)
   })

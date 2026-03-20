@@ -95,6 +95,14 @@ function createSchemaFilterArray<T extends v.GenericSchema>(schema: T) {
   })
 }
 
+function createSchemaFilterSelectRange<T extends v.GenericSchema>(schema: T) {
+  return v.strictObject({
+    is: v.optional(v.union([v.picklist(['any', 'none']), schema])),
+    min: v.optional(schema),
+    max: v.optional(schema),
+  })
+}
+
 /**
  * Schema for Series Status.
  */
@@ -103,11 +111,12 @@ export const SchemaFilterSeriesStatus = createSchemaFilterArray(SchemaSeriesStat
 /**
  * Schema for Series Release Years
  */
-export const SchemaSeriesReleaseYears = v.strictObject({
-  is: v.optional(v.union([v.picklist(['any', 'none']), SchemaYear])),
-  min: v.optional(SchemaYear),
-  max: v.optional(SchemaYear),
-})
+export const SchemaSeriesReleaseYears = createSchemaFilterSelectRange(SchemaYear)
+
+/**
+ * Schema for Series Age Ratings
+ */
+export const SchemaSeriesAgeRatings = createSchemaFilterSelectRange(v.number())
 
 /**
  * Schema for a list of string.
@@ -125,5 +134,10 @@ export type FilterTypeAnyAll = v.InferOutput<typeof SchemaFilterAnyAll>
 
 export const SchemaFilterArray = createSchemaFilterArray(v.unknown())
 export type FilterTypeSimpleList = v.InferOutput<typeof SchemaFilterArray>
+
+export const SchemaFilterSelectRange = createSchemaFilterSelectRange(
+  v.union([v.string(), v.number()]),
+)
+export type FilterTypeSelectRange = v.InferOutput<typeof SchemaFilterSelectRange>
 
 export type FilterType = FilterTypeAnyAll | FilterTypeSimpleList

@@ -1,29 +1,28 @@
 <template>
   <FilterSelectRange
     v-model="model"
-    label-select="Year"
-    label-range="Year range"
+    label-select="Age rating"
+    label-range="Age range"
     :select-items="selectItems"
     :min="min"
     :max="max"
     :disabled="disabled"
-    :range-mapper="(number) => number.toString()"
   />
 </template>
 
 <script setup lang="ts">
 import * as v from 'valibot'
-import { filterKeys, filterMessages, SchemaSeriesReleaseYears } from '@/types/filter'
+import { filterKeys, filterMessages, SchemaSeriesAgeRatings } from '@/types/filter'
 import { useQuery } from '@pinia/colada'
-import { releaseYearsQuery } from '@/colada/referential'
+import { ageRatingsQuery } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
 import { useIntl } from 'vue-intl'
 
 const intl = useIntl()
 
-type ReleaseYears = v.InferOutput<typeof SchemaSeriesReleaseYears>
+type AgeRatings = v.InferOutput<typeof SchemaSeriesAgeRatings>
 
-const model = defineModel<ReleaseYears>({ required: true })
+const model = defineModel<AgeRatings>({ required: true })
 
 const filterContext = inject(filterKeys.context, {})
 
@@ -32,7 +31,7 @@ const apiQuery = {
 }
 
 const { data: items } = useQuery(() => ({
-  ...releaseYearsQuery({
+  ...ageRatingsQuery({
     pageRequest: PageRequest.Unpaged(),
     ...apiQuery,
   }),
@@ -51,8 +50,8 @@ const selectItems = computed(() => [
   ...(items.value?.content?.map((it) => ({ title: it, value: it })) || []),
 ])
 
-const min = computed(() => items.value?.content?.map((it) => Number(it))?.at(-1))
-const max = computed(() => items.value?.content?.map((it) => Number(it))?.at(0))
+const min = computed(() => items.value?.content?.map((it) => Number(it))?.at(0))
+const max = computed(() => items.value?.content?.map((it) => Number(it))?.at(-1))
 </script>
 
 <script lang="ts"></script>

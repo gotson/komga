@@ -96,9 +96,17 @@
           <FilterExpansionPanel
             title="Release year"
             :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
-            @clear="clearFilterYear()"
+            @clear="clearFilterSelectRange(filterReleaseYear)"
           >
             <FilterByReleaseYear v-model="filterReleaseYear" />
+          </FilterExpansionPanel>
+
+          <FilterExpansionPanel
+            title="Age rating"
+            :count="!!filterAgeRating.is ? 1 : !!filterAgeRating.min ? 1 : 0"
+            @clear="clearFilterSelectRange(filterAgeRating)"
+          >
+            <FilterByAgeRating v-model="filterAgeRating" />
           </FilterExpansionPanel>
 
           <FilterExpansionPanel
@@ -235,13 +243,16 @@ import {
   schemaFilterStringToConditions,
   schemaFilterSeriesStatusToConditions,
   schemaFilterReleaseYearToConditions,
+  schemaFilterAgeRatingToConditions,
 } from '@/functions/filter'
 import * as v from 'valibot'
 import {
   type FilterType,
+  type FilterTypeSelectRange,
   SchemaFilterAuthors,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
+  SchemaSeriesAgeRatings,
   SchemaSeriesReleaseYears,
 } from '@/types/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
@@ -296,10 +307,10 @@ function clearFilter(filter: FilterType) {
   if ('m' in filter) filter.m = 'anyOf'
 }
 
-function clearFilterYear() {
-  filterReleaseYear.value.is = undefined
-  filterReleaseYear.value.min = undefined
-  filterReleaseYear.value.max = undefined
+function clearFilterSelectRange(filter: FilterTypeSelectRange) {
+  filter.is = undefined
+  filter.min = undefined
+  filter.max = undefined
 }
 
 const { data: filterSeriesStatus } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
@@ -309,6 +320,7 @@ const { data: filterPublisher } = useRouteQuerySchema('publisher', SchemaFilterS
 const { data: filterSharingLabel } = useRouteQuerySchema('sharingLabel', SchemaFilterStrings)
 const { data: filterLanguage } = useRouteQuerySchema('language', SchemaFilterStrings)
 const { data: filterReleaseYear } = useRouteQuerySchema('year', SchemaSeriesReleaseYears)
+const { data: filterAgeRating } = useRouteQuerySchema('age', SchemaSeriesAgeRatings)
 
 const conds = computed(() => ({
   allOf: [
@@ -320,6 +332,7 @@ const conds = computed(() => ({
     schemaFilterStringToConditions(filterSharingLabel.value, 'sharingLabel', true),
     schemaFilterStringToConditions(filterLanguage.value, 'language', false),
     schemaFilterReleaseYearToConditions(filterReleaseYear.value),
+    schemaFilterAgeRatingToConditions(filterAgeRating.value),
     ...Object.entries(filterAuthors).map(([, filter]) =>
       schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
     ),
