@@ -3,7 +3,8 @@
     v-model="model.is"
     label="Year"
     clearable
-    :items="items?.content"
+    :items="selectItems"
+    @click:clear="model.is = undefined"
   />
   <div class="d-flex justify-space-between align-center pb-2">
     <span
@@ -13,6 +14,7 @@
     >
     <v-chip
       v-if="!!model.min && !!model.max"
+      :disabled="isSingle"
       closable
       color="primary"
       rounded
@@ -26,7 +28,7 @@
   <v-range-slider
     v-model="modelRange"
     strict
-    :disabled="disabled"
+    :disabled="disabled || isSingle"
     :step="1"
     :min="min"
     :max="max"
@@ -36,10 +38,13 @@
 
 <script setup lang="ts">
 import * as v from 'valibot'
-import { filterKeys, SchemaSeriesReleaseYears } from '@/types/filter'
+import { filterKeys, filterMessages, SchemaSeriesReleaseYears } from '@/types/filter'
 import { useQuery } from '@pinia/colada'
 import { releaseYearsQuery } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
+import { useIntl } from 'vue-intl'
+
+const intl = useIntl()
 
 type ReleaseYears = v.InferOutput<typeof SchemaSeriesReleaseYears>
 
@@ -58,6 +63,20 @@ const { data: items } = useQuery(() => ({
   }),
 }))
 const disabled = computed(() => (items.value?.totalElements || 0) === 0)
+const isSingle = computed(() => model.value.is !== undefined)
+
+const selectItems = computed(() => [
+  {
+    title: intl.formatMessage(filterMessages.any!),
+    value: 'any',
+  },
+  {
+    title: intl.formatMessage(filterMessages.none!),
+    value: 'none',
+  },
+  ...(items.value?.content?.map((it) => ({ title: it, value: it })) || []),
+])
+
 const min = computed(() => items.value?.content?.map((it) => Number(it))?.at(-1))
 const max = computed(() => items.value?.content?.map((it) => Number(it))?.at(0))
 

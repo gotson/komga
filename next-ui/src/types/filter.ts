@@ -7,6 +7,11 @@ export const filterMessages: Record<string, MessageDescriptor> = {
     defaultMessage: 'Any',
     id: 'bDNv5+',
   }),
+  none: defineMessage({
+    description: 'Filter values: none',
+    defaultMessage: 'None',
+    id: '87q6WX',
+  }),
 }
 
 export const filterKeys = {
@@ -99,7 +104,7 @@ export const SchemaFilterSeriesStatus = createSchemaFilterArray(SchemaSeriesStat
  * Schema for Series Release Years
  */
 export const SchemaSeriesReleaseYears = v.strictObject({
-  is: v.optional(SchemaYear),
+  is: v.optional(v.union([v.picklist(['any', 'none']), SchemaYear])),
   min: v.optional(SchemaYear),
   max: v.optional(SchemaYear),
 })

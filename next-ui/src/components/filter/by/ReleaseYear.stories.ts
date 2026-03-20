@@ -39,6 +39,18 @@ export const InitialValue: Story = {
   },
 }
 
+export const InitialValueAny: Story = {
+  args: {
+    modelValue: { is: 'any' },
+  },
+}
+
+export const InitialValueNone: Story = {
+  args: {
+    modelValue: { is: 'none' },
+  },
+}
+
 export const InitialRange: Story = {
   args: {
     modelValue: { min: '2018', max: '2020' },

@@ -117,7 +117,7 @@
 
           <FilterExpansionPanel
             title="Release year"
-            :count="(!!filterReleaseYear.is ? 1 : 0) + (!!filterReleaseYear.min ? 1 : 0)"
+            :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
             @clear="clearFilterYear()"
           >
             <FilterByReleaseYear v-model="filterReleaseYear" />

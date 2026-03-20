@@ -82,6 +82,20 @@ describe('schema series release years', () => {
     expect(result).toStrictEqual(input)
   })
 
+  test('correct value is: any', () => {
+    const input = { is: 'any' }
+    const result = v.parse(SchemaSeriesReleaseYears, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
+  test('correct value is: none', () => {
+    const input = { is: 'none' }
+    const result = v.parse(SchemaSeriesReleaseYears, input)
+
+    expect(result).toStrictEqual(input)
+  })
+
   test('other value throws error', () => {
     const input = { is: '20254' }
 

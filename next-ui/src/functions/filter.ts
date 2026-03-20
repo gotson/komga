@@ -3,6 +3,7 @@ import {
   SchemaFilterAuthors,
   type SchemaFilterSeriesStatus,
   SchemaFilterStrings,
+  SchemaSeriesReleaseYears,
 } from '@/types/filter'
 import type { InferOutput } from 'valibot'
 import * as v from 'valibot'
@@ -103,23 +104,37 @@ export function schemaFilterReleaseYearToConditions(
   filter: InferOutput<typeof SchemaSeriesReleaseYears>,
 ) {
   const conds = []
-  if (!!filter.is || !!filter.min) {
-    const year = Number(filter.is || filter.min)
+  if (filter.is === 'any') {
     conds.push({
       releaseDate: {
-        operator: 'after',
-        dateTime: `${(year - 1).toString().padStart(4, '0')}-12-31T12:00:00Z`,
+        operator: 'isNotNull',
       },
     })
-  }
-  if (!!filter.is || !!filter.max) {
-    const year = Number(filter.is || filter.max)
+  } else if (filter.is === 'none') {
     conds.push({
       releaseDate: {
-        operator: 'before',
-        dateTime: `${(year + 1).toString().padStart(4, '0')}-01-01T12:00:00Z`,
+        operator: 'isNull',
       },
     })
+  } else {
+    if (!!filter.is || !!filter.min) {
+      const year = Number(filter.is || filter.min)
+      conds.push({
+        releaseDate: {
+          operator: 'after',
+          dateTime: `${(year - 1).toString().padStart(4, '0')}-12-31T12:00:00Z`,
+        },
+      })
+    }
+    if (!!filter.is || !!filter.max) {
+      const year = Number(filter.is || filter.max)
+      conds.push({
+        releaseDate: {
+          operator: 'before',
+          dateTime: `${(year + 1).toString().padStart(4, '0')}-01-01T12:00:00Z`,
+        },
+      })
+    }
   }
   return {
     allOf: conds,
