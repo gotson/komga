@@ -37,6 +37,7 @@ declare module 'vue' {
     FilterAnyAll: typeof import('./components/filter/AnyAll.vue')['default']
     FilterByAuthor: typeof import('./components/filter/by/Author.vue')['default']
     FilterByGenre: typeof import('./components/filter/by/Genre.vue')['default']
+    FilterByLanguage: typeof import('./components/filter/by/Language.vue')['default']
     FilterByPublisher: typeof import('./components/filter/by/Publisher.vue')['default']
     FilterBySeriesStatus: typeof import('./components/filter/by/SeriesStatus.vue')['default']
     FilterBySharingLabel: typeof import('./components/filter/by/SharingLabel.vue')['default']

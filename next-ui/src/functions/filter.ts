@@ -59,17 +59,26 @@ export function schemaFilterAuthorsToConditions(
     }
 }
 
-export function schemaFilterNullableStringToConditions(
+export function schemaFilterStringToConditions(
   filter: InferOutput<typeof SchemaFilterStrings>,
   key: string,
+  nullable: boolean,
 ) {
   const list = filter.v.map((it) => {
     if (v.is(SchemaAnyNone, it)) {
-      return {
-        [key]: {
-          operator: it.a === 'any' ? 'isNotNull' : 'isNull',
-        },
-      }
+      if (nullable)
+        return {
+          [key]: {
+            operator: it.a === 'any' ? 'isNotNull' : 'isNull',
+          },
+        }
+      else
+        return {
+          [key]: {
+            operator: it.a === 'any' ? 'isNot' : 'is',
+            value: '',
+          },
+        }
     } else {
       return {
         [key]: {

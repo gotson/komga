@@ -36,6 +36,7 @@ const mockGenres = doMockStrings(10000, 'Genre')
 const mockTags = doMockStrings(10000, 'Tag')
 const mockPublishers = doMockStrings(10000, 'Publisher')
 const mockSharingLabels = doMockStrings(150, 'SharingLabel')
+const mockLanguages = ['de', 'en', 'en-US', 'es', 'fr', 'fr-CA', 'ja', 'it']
 
 function filterAndPage(
   search: string | null,
@@ -92,6 +93,17 @@ export const referentialHandlers = [
       filterAndPage(
         query.get('search'),
         mockSharingLabels,
+        query.get('page'),
+        query.get('size'),
+        query.get('unpaged'),
+      ),
+    ),
+  ),
+  httpTyped.get('/api/v2/languages', ({ query, response }) =>
+    response(200).json(
+      filterAndPage(
+        query.get('search'),
+        mockLanguages,
         query.get('page'),
         query.get('size'),
         query.get('unpaged'),

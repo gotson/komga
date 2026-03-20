@@ -103,6 +103,17 @@
               v-model:mode="filterSharingLabel.m"
             />
           </FilterExpansionPanel>
+
+          <FilterExpansionPanel
+            title="Language"
+            :count="filterLanguage.v.length"
+            @clear="clearFilter(filterLanguage)"
+          >
+            <FilterByLanguage
+              v-model="filterLanguage.v"
+              v-model:mode="filterLanguage.m"
+            />
+          </FilterExpansionPanel>
         </v-expansion-panels>
 
         <v-divider />
@@ -213,7 +224,7 @@ import { useSelectionStore } from '@/stores/selection'
 import { useDisplay } from 'vuetify'
 import {
   schemaFilterAuthorsToConditions,
-  schemaFilterNullableStringToConditions,
+  schemaFilterStringToConditions,
   schemaFilterSeriesStatusToConditions,
 } from '@/functions/filter'
 import * as v from 'valibot'
@@ -280,15 +291,17 @@ const { data: filterGenre } = useRouteQuerySchema('genre', SchemaFilterStrings)
 const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
 const { data: filterPublisher } = useRouteQuerySchema('publisher', SchemaFilterStrings)
 const { data: filterSharingLabel } = useRouteQuerySchema('sharingLabel', SchemaFilterStrings)
+const { data: filterLanguage } = useRouteQuerySchema('language', SchemaFilterStrings)
 
 const conds = computed(() => ({
   allOf: [
     librariesCondition.value as components['schemas']['AnyOfSeries'],
     schemaFilterSeriesStatusToConditions(filterSeriesStatus.value),
-    schemaFilterNullableStringToConditions(filterGenre.value, 'genre'),
-    schemaFilterNullableStringToConditions(filterTag.value, 'tag'),
-    schemaFilterNullableStringToConditions(filterPublisher.value, 'publisher'),
-    schemaFilterNullableStringToConditions(filterSharingLabel.value, 'sharingLabel'),
+    schemaFilterStringToConditions(filterGenre.value, 'genre', true),
+    schemaFilterStringToConditions(filterTag.value, 'tag', true),
+    schemaFilterStringToConditions(filterPublisher.value, 'publisher', false),
+    schemaFilterStringToConditions(filterSharingLabel.value, 'sharingLabel', true),
+    schemaFilterStringToConditions(filterLanguage.value, 'language', false),
     ...Object.entries(filterAuthors).map(([, filter]) =>
       schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
     ),

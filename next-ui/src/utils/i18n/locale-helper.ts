@@ -55,6 +55,7 @@ export function getLocale(): string {
 }
 
 export const currentLocale = getLocale()
+export const languageDisplayNames = new Intl.DisplayNames(currentLocale, { type: 'language' })
 
 /**
  * Save the locale to localStorage and reloads the window if it has changed.

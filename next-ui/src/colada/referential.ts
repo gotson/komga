@@ -184,3 +184,36 @@ export const sharingLabelsQuery = defineQueryOptions(
     }
   },
 )
+
+export const languagesQuery = defineQueryOptions(
+  ({
+    search,
+    library_id,
+    collection_id,
+    pageRequest,
+  }: {
+    search?: string
+    library_id?: string[]
+    collection_id?: string[]
+    pageRequest?: PageRequest
+  }) => {
+    const queryParams = {
+      search: search,
+      library_id: library_id,
+      collection_id: collection_id,
+      ...pageRequest,
+    }
+    return {
+      key: ['languages', queryParams],
+      query: () =>
+        komgaClient
+          .GET('/api/v2/languages', {
+            params: {
+              query: queryParams,
+            },
+          })
+          // unwrap the openapi-fetch structure on success
+          .then((res) => res.data),
+    }
+  },
+)
