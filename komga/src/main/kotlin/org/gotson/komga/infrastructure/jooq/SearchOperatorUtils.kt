@@ -55,8 +55,8 @@ fun SearchOperator.NumericNullable<Int>.toCondition(field: Field<Int>) =
   when (this) {
     is SearchOperator.Is<*> -> field.eq(value as Int)
     is SearchOperator.IsNot<*> -> field.ne(value as Int).or(field.isNull)
-    is SearchOperator.GreaterThan -> field.gt(value)
-    is SearchOperator.LessThan -> field.lt(value)
+    is SearchOperator.GreaterThan -> field.greaterOrEqual(value)
+    is SearchOperator.LessThan -> field.lessOrEqual(value)
     is SearchOperator.IsNullT -> field.isNull
     is SearchOperator.IsNotNullT -> field.isNotNull
   }
@@ -65,8 +65,8 @@ fun SearchOperator.Numeric<Float>.toCondition(field: Field<Float>) =
   when (this) {
     is SearchOperator.Is<*> -> field.eq(value as Float)
     is SearchOperator.IsNot<*> -> field.ne(value as Float)
-    is SearchOperator.GreaterThan -> field.gt(value)
-    is SearchOperator.LessThan -> field.lt(value)
+    is SearchOperator.GreaterThan -> field.greaterOrEqual(value)
+    is SearchOperator.LessThan -> field.lessOrEqual(value)
   }
 
 fun SearchOperator.Boolean.toCondition(field: Field<Boolean>) =
