@@ -6,6 +6,7 @@
     :items="infiniteItems"
     :search-items="searchResults"
     :search-loading="searchLoading"
+    :hide-search="hideSearch"
     show-mode-selector
     @load-more="loadNextPage()"
   >
@@ -85,6 +86,8 @@ const infiniteItems = computed(() => {
     ...itemTypes,
   ]
 })
+
+const hideSearch = computed(() => (infiniteData.value?.pages?.[0]?.totalElements || 100) < 10)
 
 function toItemType(authorName: string): ItemType<Author> {
   return {

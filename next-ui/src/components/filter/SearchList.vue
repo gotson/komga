@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+    v-if="!hideSearch"
     v-model="search"
     clearable
     hide-details
@@ -49,11 +50,13 @@ const {
   searchItems = [],
   searchLoading = false,
   showModeSelector = false,
+  hideSearch = false,
 } = defineProps<{
   items?: ItemType<unknown>[]
   searchItems?: ItemType<unknown>[]
   searchLoading?: boolean
   showModeSelector?: boolean
+  hideSearch?: boolean
 }>()
 
 const emit = defineEmits<{

@@ -5,6 +5,7 @@
     v-model:search="search"
     :items="allItems"
     :search-items="searchResults"
+    :hide-search="allItems.length < 10"
     show-mode-selector
   >
   </FilterSearchList>
