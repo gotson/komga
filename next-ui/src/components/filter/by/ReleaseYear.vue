@@ -3,37 +3,41 @@
     v-model="model.is"
     label="Year"
     clearable
+    hide-details
     :items="selectItems"
     @click:clear="model.is = undefined"
   />
-  <div class="d-flex justify-space-between align-center pb-2">
-    <span
-      class="text-body-large"
-      style="min-height: 26px"
-      >Year range</span
-    >
-    <v-chip
-      v-if="!!model.min && !!model.max"
-      :disabled="isSingle"
-      closable
-      color="primary"
-      rounded
-      size="small"
-      variant="elevated"
-      @click:close="clearRange()"
-      >{{ model.min }} - {{ model.max }}
-    </v-chip>
-  </div>
+  <div class="px-2 pt-2">
+    <div class="d-flex justify-space-between align-center mb-2">
+      <span
+        class="text-body-large"
+        style="min-height: 26px"
+        >Year range</span
+      >
+      <v-chip
+        v-if="!!model.min && !!model.max"
+        :disabled="isSingle"
+        closable
+        color="primary"
+        rounded
+        size="small"
+        variant="elevated"
+        @click:close="clearRange()"
+        >{{ model.min }} - {{ model.max }}
+      </v-chip>
+    </div>
 
-  <v-range-slider
-    v-model="modelRange"
-    strict
-    :disabled="disabled || isSingle"
-    :step="1"
-    :min="min"
-    :max="max"
-    thumb-label="hover"
-  />
+    <v-range-slider
+      v-model="modelRange"
+      strict
+      hide-details
+      :disabled="disabled || isSingle"
+      :step="1"
+      :min="min"
+      :max="max"
+      thumb-label="hover"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
