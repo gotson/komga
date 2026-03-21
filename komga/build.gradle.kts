@@ -427,7 +427,7 @@ openApi {
 }
 
 // Disable GraalVM AOT for tests — SpringMockK not AOT-compatible
-tasks.named("processTestAot") { enabled = false }
+tasks.matching { it.name.contains("TestAot") || it.name.contains("testAot") }.configureEach { enabled = false }
 
 tasks.jacocoTestReport {
   dependsOn(tasks.test)
