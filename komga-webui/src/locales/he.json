@@ -1,10 +1,10 @@
 {
   "$vuetify": {
     "dataFooter": {
-      "pageText": "{0}-{1} מ- {2}"
+      "pageText": "{0}-{1} מתוך {2}"
     },
     "dataIterator": {
-      "loadingText": "מטעין פריטים...",
+      "loadingText": "טוען פריטים...",
       "noResultsText": "לא נמצאו תוצאות תואמות"
     },
     "dataTable": {
@@ -19,15 +19,30 @@
   },
   "account_settings": {
     "account_settings": "הגדרות חשבון",
-    "change_password": "שנה סיסמא"
+    "api_key": {
+      "created_date": "תאריך יצירה: {date}",
+      "force_kobo_sync": "כפה סנכרון Kobo",
+      "generate_api_key": "צור מפתח API",
+      "no_keys": "לא נוצרו מפתחות API עדיין"
+    },
+    "change_password": "שנה סיסמה",
+    "details": "פרטים",
+    "my_account": "החשבון שלי"
+  },
+  "announcements": {
+    "mark_all_read": "סמן הכל כנקרא",
+    "mark_read": "סמן כנקרא",
+    "tab_title": "הודעות"
   },
   "authentication_activity": {
-    "datetime": "תאריך שעה",
-    "email": "כתובת דוא\"ל",
+    "api_key": "מפתח API",
+    "datetime": "תאריך ושעה",
+    "email": "דוא\"ל",
     "error": "שגיאה",
-    "ip": "כתובת אינטרנט",
+    "ip": "IP",
     "source": "מקור",
-    "success": "הצלחה"
+    "success": "הצלחה",
+    "user_agent": "סוכן משתמש"
   },
   "author_roles": {
     "colorist": "אומני צבע",
@@ -42,55 +57,56 @@
   "book_card": {
     "error": "שגיאה",
     "no_release_date": "אין תאריך הוצאה",
-    "unknown": "לנתח",
+    "unknown": "ממתין לניתוח",
     "unread": "לא נקרא",
-    "unsupported": "אינו נתמך"
+    "unsupported": "לא נתמך"
   },
   "book_import": {
-    "button_browse": "לדפדף",
-    "button_import": "ליבא",
-    "button_scan": "לסרוק",
+    "button_browse": "עיון",
+    "button_import": "ייבוא",
+    "button_scan": "סריקה",
     "button_select_series": "בחר סדרה",
-    "field_import_path": "יבא מתיקיה",
-    "info_part1": "מסך זה מאפשר לך לייבא קבצים מחוץ לספריות הקיימות שלך. אתה יכול לייבא רק קבצים לסדרה קיימת, ובמקרה זה Komga תעביר או תעתיק את הקבצים לספרייה של הסדרה שנבחרה.",
-    "info_part2": "אם תבחר מספר לספר, וכבר קיים ספר עם מספר זה, אז תוכל להשוות בין 2 הספרים. אם תחליט לייבא את הספר, קומגה תשדרג את הספר הקיים עם הספר החדש, ולמעשה תחליף את הקובץ הישן בחדש.",
+    "field_import_path": "ייבוא מתיקייה",
+    "info_part1": "מסך זה מאפשר לך לייבא קבצים מחוץ לספריות הקיימות שלך. ניתן לייבא קבצים רק לסדרה קיימת, ובמקרה זה Komga תעביר או תעתיק את הקבצים לתיקייה של הסדרה שנבחרה.",
+    "info_part2": "אם תבחר מספר לספר, וכבר קיים ספר עם מספר זה, תוכל להשוות בין שני הספרים. אם תחליט לייבא את הספר, Komga תשדרג את הספר הקיים עם החדש, ולמעשה תחליף את הקובץ הישן בחדש.",
     "no_files_found": "לא נמצאו קבצים",
     "notification": {
-      "go_to_book": "לך לספר",
+      "go_to_book": "עבור לספר",
       "import_failure": "ייבוא הספר נכשל: {file}",
       "import_successful": "הספר יובא בהצלחה: {book}",
       "source_file": "קובץ מקור: {file}"
     },
     "row": {
-      "error_analyze_first": "תחילה יש לאבחו את הספר",
-      "error_choose_series": "בחר סדרה אחת",
-      "error_only_import_no_errors": "נתן לייבא רק ספרים ללא שגיאות",
+      "error_analyze_first": "יש לנתח את הספר תחילה",
+      "error_choose_series": "בחר סדרה",
+      "error_only_import_no_errors": "ניתן לייבא רק ספרים ללא שגיאות",
       "warning_upgrade": "הספר הקיים ישודרג"
     },
     "table": {
-      "destination_name": "שם היעד",
+      "destination_name": "שם יעד",
       "file_name": "שם קובץ",
       "number": "מספר",
       "series": "סדרה"
     },
-    "title": "יבוא",
+    "title": "ייבוא",
     "try_another_directory": "נסה לחפש בתיקייה אחרת"
   },
   "bookreader": {
     "beginning_of_book": "אתה בתחילת הספר.",
     "changing_reading_direction": "שינוי כיוון הקריאה ל",
-    "cycling_page_layout": "דיפדוף אפשריות פריסת דף",
-    "cycling_scale": "דיפדוף סרגלי מידה",
-    "cycling_side_padding": "דיפדוף מרווח צדדי",
-    "download_current_page": "הורד את הדף הנוכחי",
+    "cycling_page_layout": "מחזור פריסת עמוד",
+    "cycling_page_margin": "מחזור שולי עמוד",
+    "cycling_scale": "מחזור קנה מידה",
+    "cycling_side_padding": "מחזור ריפוד צדדי",
+    "download_current_page": "הורד את העמוד הנוכחי",
     "end_of_book": "הגעת לסוף הספר.",
-    "from_series_metadata": "ממטא נתונים של הסדרה",
-    "move_next": "בחר או לחץ על \"הבא\" כדי לעבור לספר הבא.",
-    "move_next_exit": "בחר או לחץ על \"הבא\" כדי לצאת מהקורא.",
-    "move_previous": "בחר או לחץ על \"הקודם\" כדי לעבור לספר הקודם.",
-    "notification_poster_set_book": "פוסטר הספר מוגדר כעת לעמוד הנוכחי.",
-    "notification_poster_set_readlist": "פוסטר רשימת קריאה מוגדר כעת לעמוד הנוכחי.",
-    "notification_poster_set_series": "פוסטר הסדרה מוגדר כעת לעמוד הנוכחי.",
+    "from_series_metadata": "ממטא-נתונים של הסדרה",
+    "move_next": "לחץ או הקש \"הבא\" שוב כדי לעבור לספר הבא.",
+    "move_next_exit": "לחץ או הקש \"הבא\" שוב כדי לצאת מהקורא.",
+    "move_previous": "לחץ או הקש \"הקודם\" שוב כדי לעבור לספר הקודם.",
+    "notification_poster_set_book": "כרזת הספר הוגדרה לעמוד הנוכחי.",
+    "notification_poster_set_readlist": "כרזת רשימת הקריאה הוגדרה לעמוד הנוכחי.",
+    "notification_poster_set_series": "כרזת הסדרה הוגדרה לעמוד הנוכחי.",
     "paged_reader_layout": {
       "double": "עמודים כפולים",
       "double_no_cover": "עמודים כפולים (ללא כריכה)",
@@ -98,17 +114,17 @@
     },
     "reader_settings": "הגדרות קורא",
     "scale_type": {
-      "continuous_original": "המקור",
+      "continuous_original": "מקורי",
       "continuous_width": "התאמה לרוחב",
       "height": "התאמה לגובה",
-      "original": "המקור",
+      "original": "מקורי",
       "screen": "מסך",
       "width": "התאמה לרוחב",
       "width_shrink_only": "התאמה לרוחב (כיווץ בלבד)"
     },
     "set_current_page_as_book_poster": "הגדר עמוד ככרזה לספר",
     "set_current_page_as_readlist_poster": "הגדר עמוד ככרזה לרשימת קריאה",
-    "set_current_page_as_series_poster": "הגדר דף ככרזה לסדרה",
+    "set_current_page_as_series_poster": "הגדר עמוד ככרזה לסדרה",
     "settings": {
       "always_fullscreen": "תמיד מסך מלא",
       "animate_page_transitions": "הנפש מעברי עמודים",
@@ -121,19 +137,21 @@
       "display": "תצוגה",
       "general": "כללי",
       "gestures": "מחוות",
-      "page_layout": "מערך דף",
-      "paged": "אפשרויות דיפדוף לקורא",
+      "page_layout": "פריסת עמוד",
+      "page_margin": "שולי עמוד",
+      "paged": "אפשרויות קורא עמודים",
       "reading_mode": "מצב קריאה",
       "scale_type": "סוג קנה מידה",
-      "side_padding": "מרווחי צד",
+      "side_padding": "ריפוד צדדי",
       "side_padding_none": "ללא",
-      "webtoon": "אפשרויות קורא ל-Webtoon"
+      "webtoon": "אפשרויות קורא Webtoon"
     },
     "shortcuts": {
       "close": "סגור",
-      "cycle_page_layout": "דיפדוף אפשרויות של מערכי עמוד",
-      "cycle_scale": "דיפדוף אפשרויות של קנה מידה",
-      "cycle_side_padding": "דיפדוף אפשרויות של מרווחי צד",
+      "cycle_page_layout": "מחזור פריסת עמוד",
+      "cycle_scale": "מחזור קנה מידה",
+      "cycle_page_margin": "מחזור שולי עמוד",
+      "cycle_side_padding": "מחזור ריפוד צדדי",
       "first_page": "עמוד ראשון",
       "fullscreen": "כניסה/יציאה ממסך מלא",
       "last_page": "עמוד אחרון",
@@ -141,19 +159,934 @@
       "menus": "תפריטים",
       "next_page": "עמוד הבא",
       "previous_page": "עמוד קודם",
-      "reader_navigation": "ניווט הקורא",
+      "reader_navigation": "ניווט בקורא",
       "right_to_left": "מימין לשמאל",
       "settings": "הגדרות",
-      "show_hide_help": "הצג/הסתיר עזרה",
+      "show_hide_help": "הצג/הסתר עזרה",
       "show_hide_settings": "הצג/הסתר תפריט הגדרות",
       "show_hide_thumbnails": "הצג/הסתר סייר תמונות ממוזערות",
       "show_hide_toolbars": "הצג/הסתר סרגלי כלים",
       "vertical": "אנכי",
-      "webtoon": "וואבטון"
+      "webtoon": "Webtoon"
     },
     "tooltip_incognito": "התקדמות הקריאה לא תישמר"
   },
+  "browse_book": {
+    "comment": "הערה",
+    "date_created": "תאריך יצירה",
+    "date_modified": "שינוי אחרון",
+    "download_file": "הורד קובץ",
+    "file": "קובץ",
+    "format": "פורמט",
+    "isbn": "ISBN",
+    "links": "קישורים",
+    "navigation_within_readlist": "ניווט בתוך רשימת הקריאה: {name}",
+    "outdated_tooltip": "הקובץ של ספר זה השתנה, יש לנתח אותו מחדש",
+    "read_book": "קרא ספר",
+    "read_incognito": "קרא בסתר",
+    "remove_from_collection": "הסר ספר מהאוסף",
+    "remove_from_readlist": "הסר ספר מרשימת הקריאה",
+    "size": "גודל"
+  },
+  "browse_collection": {
+    "edit_collection": "ערוך אוסף",
+    "edit_elements": "ערוך פריטים",
+    "manual_ordering": "סידור ידני"
+  },
+  "browse_readlist": {
+    "edit_elements": "ערוך פריטים",
+    "edit_readlist": "ערוך רשימת קריאה",
+    "manual_ordering": "סידור ידני"
+  },
+  "browse_series": {
+    "earliest_year_from_release_dates": "זוהי השנה המוקדמת ביותר מתוך תאריכי ההוצאה של כל הספרים בסדרה",
+    "remove_from_collection": "הסר סדרה מהאוסף",
+    "series_no_summary": "לסדרה זו אין תקציר, אז בחרנו אחד עבורך!",
+    "summary_from_book": "תקציר מספר {number}:"
+  },
+  "collections_expansion_panel": {
+    "manage_collection": "נהל אוסף",
+    "title": "אוסף {name}"
+  },
   "common": {
-    "locale_name": "עברית"
+    "age": "גיל",
+    "all_libraries": "כל הספריות",
+    "all_of": "כל",
+    "any_of": "אחד מ",
+    "book": "ספר",
+    "books": "ספרים",
+    "books_n": "אין ספרים | ספר אחד | {count} ספרים",
+    "books_total": "{count} / {total} ספרים",
+    "cancel": "ביטול",
+    "cbx": "ארכיוני קומיקס",
+    "choose_image": "בחר תמונה",
+    "close": "סגור",
+    "collections": "אוספים",
+    "copied": "הועתק!",
+    "create": "צור",
+    "delete": "מחיקה",
+    "dimension": "ר: {width}, ג: {height}",
+    "discard": "בטל שינויים",
+    "disk_space": "שטח אחסון",
+    "dismiss": "סגור",
+    "download": "הורדה",
+    "drag_drop": "גרור ושחרר",
+    "duplicate": "כפילות",
+    "email": "דוא\"ל",
+    "epub": "Epub",
+    "error": "שגיאה",
+    "filename": "שם קובץ",
+    "filter_no_matches": "לסינון הפעיל אין תוצאות",
+    "genre": "ז'אנר",
+    "go_to_collection": "עבור לאוסף",
+    "go_to_library": "עבור לספרייה",
+    "go_to_readlist": "עבור לרשימת קריאה",
+    "go_to_series": "עבור לסדרה",
+    "i_understand": "אני מבין",
+    "library": "ספרייה",
+    "locale_name": "עברית",
+    "locale_rtl": "true",
+    "lock_all": "נעל הכל",
+    "media": "מדיה",
+    "more": "עוד",
+    "n_selected": "{count} נבחרו",
+    "nothing_to_show": "אין מה להציג",
+    "ok": "אישור",
+    "oneshot": "כרך בודד",
+    "outdated": "לא עדכני",
+    "page": "עמוד",
+    "page_number": "מספר עמוד",
+    "pages": "עמודים",
+    "pages_left": "לא נותרו עמודים | נותר עמוד אחד | נותרו {count} עמודים",
+    "pages_n": "אין עמודים | עמוד אחד | {count} עמודים",
+    "password": "סיסמה",
+    "pdf": "PDF",
+    "pending_tasks": "אין משימות ממתינות | משימה ממתינה אחת | {count} משימות ממתינות",
+    "pinned_libraries": "ספריות מוצמדות",
+    "publisher": "מו\"ל",
+    "read": "נקרא",
+    "read_on": "נקרא ב-{date}",
+    "readlist": "רשימת קריאה",
+    "readlists": "רשימות קריאה",
+    "remember-me": "זכור אותי",
+    "reorder": "סדר מחדש",
+    "required": "שדה חובה",
+    "reset_filters": "אפס סינונים",
+    "roles": "תפקידים",
+    "save_changes": "שמור שינויים",
+    "series": "סדרה | סדרות",
+    "settings": "הגדרות",
+    "sidecars": "קבצי ליווי",
+    "tags": "תגיות",
+    "ui": "ממשק משתמש",
+    "unavailable": "לא זמין",
+    "unlock_all": "בטל נעילה לכולם",
+    "url": "URL",
+    "use_filter_panel_to_change_filter": "השתמש בלוח הסינון כדי לשנות את הסינון הפעיל",
+    "year": "שנה"
+  },
+  "dashboard": {
+    "keep_reading": "המשך לקרוא",
+    "on_deck": "ממתינים לקריאה",
+    "recently_added_books": "ספרים שנוספו לאחרונה",
+    "recently_added_series": "סדרות שנוספו לאחרונה",
+    "recently_read_books": "ספרים שנקראו לאחרונה",
+    "recently_released_books": "ספרים שיצאו לאחרונה",
+    "recently_updated_series": "סדרות שעודכנו לאחרונה"
+  },
+  "data_import": {
+    "book_number": "מספר ספר: {name}",
+    "book_series": "סדרה: {name}",
+    "button_import": "ייבוא",
+    "button_match": "התאמה",
+    "comicrack_preambule_html": "ניתן לייבא רשימות קריאה קיימות מ-ComicRack בפורמט <code>.cbl</code>.<br/>Komga תנסה להתאים את הסדרה ומספר הספר שסופקו לסדרות ולספרים בספריות שלך.",
+    "dialog_confirmation": {
+      "body": "{unmatched} / {total} ספרים לא הותאמו",
+      "body2": "{duplicates} / {total} ספרים כפולים",
+      "create": "צור בכל זאת",
+      "title": "חלק מהספרים לא הותאמו"
+    },
+    "field_file_label": "רשימת קריאה של ComicRack (.cbl)‏",
+    "field_files_label": "רשימות קריאה של ComicRack (.cbl)‏",
+    "import_read_lists": "ייבוא רשימות קריאה",
+    "imported_as": "יובא בשם {name}",
+    "readlist_created": "רשימת קריאה נוצרה: {name}",
+    "requested_number": "מספר מבוקש",
+    "requested_series": "סדרה מבוקשת",
+    "results_preambule": "תוצאות הייבוא מוצגות למטה. ניתן גם לבדוק את הספרים שלא הותאמו עבור כל קובץ.",
+    "size_limit": "הגודל צריך להיות קטן מ-{size} MB",
+    "tab_title": "ייבוא נתונים"
+  },
+  "dialog": {
+    "add_api_key": {
+      "button_confirm": "צור",
+      "context": "ניתן להשתמש במפתחות API לאימות דרך פרוטוקול סנכרון Kobo.",
+      "dialog_title": "צור מפתח API חדש",
+      "field_comment": "הערה",
+      "field_comment_hint": "למה מיועד מפתח ה-API הזה?",
+      "info_copy": "הקפד להעתיק את מפתח ה-API שלך עכשיו. לא תוכל לראות אותו שוב!"
+    },
+    "add_to_collection": {
+      "button_create": "צור",
+      "card_collection_subtitle": "אין סדרות | סדרה אחת | {count} סדרות",
+      "dialog_title": "הוסף לאוסף",
+      "field_search_create": "חפש או צור אוסף",
+      "field_search_create_error": "אוסף בשם זה כבר קיים",
+      "label_no_matching_collection": "לא נמצא אוסף תואם"
+    },
+    "add_to_readlist": {
+      "button_create": "צור",
+      "card_readlist_subtitle": "אין ספרים | ספר אחד | {count} ספרים",
+      "dialog_title": "הוסף לרשימת קריאה",
+      "field_search_create": "חפש או צור רשימת קריאה",
+      "field_search_create_error": "רשימת קריאה בשם זה כבר קיימת",
+      "label_no_matching_readlist": "לא נמצאה רשימת קריאה תואמת"
+    },
+    "add_user": {
+      "button_cancel": "ביטול",
+      "button_confirm": "הוספה",
+      "dialog_title": "הוסף משתמש",
+      "field_email": "דוא\"ל",
+      "field_email_error": "חייב להיות כתובת דוא\"ל תקינה",
+      "field_password": "סיסמה"
+    },
+    "analyze_library": {
+      "body": "מנתח את כל קבצי המדיה בספרייה. הניתוח אוסף מידע על המדיה. בהתאם לגודל הספרייה שלך, פעולה זו עשויה לקחת זמן רב.",
+      "button_confirm": "נתח",
+      "title": "נתח ספרייה"
+    },
+    "book_picker": {
+      "filter": "סנן לפי מספר ספר, כותרת או תאריך הוצאה",
+      "title": "בחר ספר"
+    },
+    "delete_apikey": {
+      "button_confirm": "מחיקה",
+      "confirm_delete": "אני מבין, מחק את מפתח ה-API \"{name}\"",
+      "dialog_title": "מחק מפתח API",
+      "warning_html": "כל יישום או סקריפט שמשתמש במפתח API זה לא יוכל יותר לגשת ל-API של Komga. לא ניתן לבטל פעולה זו."
+    },
+    "delete_book": {
+      "button_confirm": "מחיקה",
+      "confirm_delete": "כן, מחק את הספר \"{name}\" ואת הקבצים שלו",
+      "confirm_delete_multiple": "כן, מחק {count} ספרים ואת הקבצים שלהם",
+      "dialog_title": "מחק ספר",
+      "dialog_title_multiple": "מחק ספרים",
+      "warning_html": "הספר <b>{name}</b> יוסר מהשרת הזה יחד עם קבצי המדיה השמורים. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?",
+      "warning_multiple_html": "{count} ספרים יוסרו מהשרת הזה יחד עם קבצי המדיה השמורים. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?"
+    },
+    "delete_collection": {
+      "button_confirm": "מחיקה",
+      "confirm_delete": "כן, מחק את האוסף \"{name}\"",
+      "confirm_delete_multiple": "כן, מחק {count} אוספים",
+      "dialog_title": "מחק אוסף",
+      "dialog_title_multiple": "מחק אוספים",
+      "warning_html": "האוסף <b>{name}</b> יוסר מהשרת הזה. קבצי המדיה שלך לא יושפעו. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?",
+      "warning_multiple_html": "{count} אוספים יוסרו מהשרת הזה. קבצי המדיה שלך לא יושפעו. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?"
+    },
+    "delete_library": {
+      "button_confirm": "מחיקה",
+      "confirm_delete": "כן, מחק את הספרייה \"{name}\"",
+      "title": "מחק ספרייה",
+      "warning_html": "הספרייה <b>{name}</b> תוסר מהשרת הזה. קבצי המדיה שלך לא יושפעו. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?"
+    },
+    "delete_readlist": {
+      "button_confirm": "מחיקה",
+      "confirm_delete": "כן, מחק את רשימת הקריאה \"{name}\"",
+      "confirm_delete_multiple": "כן, מחק {count} רשימות קריאה",
+      "dialog_title": "מחק רשימת קריאה",
+      "dialog_title_multiple": "מחק רשימות קריאה",
+      "warning_html": "רשימת הקריאה <b>{name}</b> תוסר מהשרת הזה. קבצי המדיה שלך לא יושפעו. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?",
+      "warning_multiple_html": "{count} רשימות קריאה יוסרו מהשרת הזה. קבצי המדיה שלך לא יושפעו. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?"
+    },
+    "delete_series": {
+      "button_confirm": "מחיקה",
+      "confirm_delete": "כן, מחק את הסדרה \"{name}\" ואת הקבצים שלה",
+      "confirm_delete_multiple": "כן, מחק {count} סדרות ואת הקבצים שלהן",
+      "dialog_title": "מחק סדרה",
+      "warning_html": "הסדרה <b>{name}</b> תוסר מהשרת הזה יחד עם קבצי המדיה השמורים. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?",
+      "warning_multiple_html": "{count} סדרות יוסרו מהשרת הזה יחד עם קבצי המדיה השמורים. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?"
+    },
+    "delete_user": {
+      "button_confirm": "מחיקה",
+      "confirm_delete": "כן, מחק את המשתמש \"{name}\"",
+      "dialog_title": "מחק משתמש",
+      "warning_html": "המשתמש <b>{name}</b> יימחק מהשרת הזה. פעולה זו <b>לא ניתנת</b> לביטול. להמשיך?"
+    },
+    "edit_books": {
+      "add_author_role_error_duplicate": "כבר קיים",
+      "authors_notice_multiple_edit": "אתה עורך סופרים עבור מספר ספרים. פעולה זו תדרוס את הסופרים הקיימים של כל ספר.",
+      "button_cancel": "ביטול",
+      "button_confirm": "שמור שינויים",
+      "copy_from": "העתק מ-{field}",
+      "dialog_title_multiple": "ערוך ספר {count} | ערוך {count} ספרים",
+      "dialog_title_single": "ערוך את {book}",
+      "field_alternate_title": "כותרת חלופית",
+      "field_isbn": "ISBN",
+      "field_isbn_error": "חייב להיות ISBN 13 תקין",
+      "field_link_label": "תווית",
+      "field_link_url": "URL",
+      "field_link_url_error_protocol": "חייב להיות http או https",
+      "field_link_url_error_url": "חייב להיות URL תקין",
+      "field_number": "מספר",
+      "field_number_sort": "מספר מיון",
+      "field_number_sort_hint": "ניתן להשתמש במספרים עשרוניים",
+      "field_release_date": "תאריך הוצאה",
+      "field_release_date_error": "חייב להיות תאריך תקין בפורמט YYYY-MM-DD",
+      "field_summary": "תקציר",
+      "field_tags": "תגיות",
+      "field_title": "כותרת",
+      "number_sort_decrement": "הורד את כולם ב-1",
+      "number_sort_increment": "העלה את כולם ב-1",
+      "tab_authors": "סופרים",
+      "tab_general": "כללי",
+      "tab_links": "קישורים",
+      "tab_poster": "כרזה",
+      "tab_tags": "תגיות",
+      "tags_notice_multiple_edit": "אתה עורך תגיות עבור מספר ספרים. פעולה זו תדרוס את התגיות הקיימות של כל ספר."
+    },
+    "edit_collection": {
+      "button_cancel": "ביטול",
+      "button_confirm": "שמור שינויים",
+      "dialog_title": "ערוך אוסף",
+      "field_manual_ordering": "סידור ידני",
+      "label_ordering": "כברירת מחדל, סדרות באוסף ממוינות לפי שם. ניתן להפעיל סידור ידני כדי להגדיר סדר משלך.",
+      "tab_general": "כללי",
+      "tab_poster": "כרזה"
+    },
+    "edit_library": {
+      "button_browse": "עיון",
+      "button_cancel": "ביטול",
+      "button_confirm_add": "הוספה",
+      "button_confirm_edit": "עריכה",
+      "button_next": "הבא",
+      "dialog_title_add": "הוסף ספרייה",
+      "dialot_title_edit": "ערוך ספרייה",
+      "field_analysis_analyze_dimensions": "נתח מידות עמודים",
+      "field_analysis_hash_files": "חשב גיבוב (hash) לקבצים",
+      "field_analysis_hash_koreader": "חשב גיבוב (hash) לקבצים עבור KOReader",
+      "field_analysis_hash_pages": "חשב גיבוב (hash) לעמודים",
+      "field_convert_to_cbz": "המר אוטומטית ל-CBZ",
+      "field_import_barcode_isbn": "ברקוד ISBN",
+      "field_import_comicinfo_book": "מטא-נתונים של ספר",
+      "field_import_comicinfo_collections": "אוספים",
+      "field_import_comicinfo_readlists": "רשימות קריאה",
+      "field_import_comicinfo_series": "מטא-נתונים של סדרה",
+      "field_import_comicinfo_series_append_volume": "הוסף כרך לכותרת הסדרה",
+      "field_import_epub_book": "מטא-נתונים של ספר",
+      "field_import_epub_series": "מטא-נתונים של סדרה",
+      "field_import_local_artwork": "גרפיקה מקומית",
+      "field_import_mylar_series": "מטא-נתונים של סדרה",
+      "field_name": "שם",
+      "field_oneshotsdirectory": "תיקיית כרכים בודדים",
+      "field_repair_extensions": "תקן אוטומטית סיומות קבצים שגויות",
+      "field_root_folder": "תיקיית שורש",
+      "field_scan_interval": "תדירות סריקה",
+      "field_scanner_empty_trash_after_scan": "רוקן אשפה אוטומטית אחרי כל סריקה",
+      "field_scanner_force_directory_modified_time": "כפה זמן שינוי תיקייה",
+      "field_scanner_scan_startup": "סרוק בהפעלה",
+      "field_series_cover": "כריכת סדרה",
+      "file_browser_dialog_button_confirm": "בחר",
+      "file_browser_dialog_title": "תיקיית שורש של הספרייה",
+      "label_analysis": "ניתוח",
+      "label_file_management": "ניהול קבצים",
+      "label_import_barcode_isbn": "ייבא ISBN מתוך ברקוד",
+      "label_import_comicinfo": "ייבא מטא-נתונים מ-CBR/CBZ שמכילים קובץ ComicInfo.xml",
+      "label_import_epub": "ייבא מטא-נתונים מקבצי EPUB",
+      "label_import_local": "ייבא נכסי מדיה מקומיים",
+      "label_import_mylar": "ייבא מטא-נתונים שנוצרו על ידי Mylar",
+      "label_scan_directory_exclusions": "החרגות תיקיות",
+      "label_scan_types": "סרוק סוגי קבצים אלה",
+      "label_scanner": "סורק",
+      "label_series_cover": "כריכת סדרה",
+      "tab_general": "כללי",
+      "tab_metadata": "מטא-נתונים",
+      "tab_options": "אפשרויות",
+      "tooltip_oneshotsdirectory": "השאר ריק כדי לבטל",
+      "tooltip_scanner_force_modified_time": "הפעל אם הספרייה נמצאת ב-Google Drive",
+      "tooltip_use_resources": "עלול לצרוך משאבים רבים בספריות גדולות או חומרה איטית"
+    },
+    "edit_readlist": {
+      "button_cancel": "ביטול",
+      "button_confirm": "שמור שינויים",
+      "dialog_title": "ערוך רשימת קריאה",
+      "field_manual_ordering": "סידור ידני",
+      "field_name": "שם",
+      "field_summary": "תקציר",
+      "label_ordering": "כברירת מחדל, ספרים ברשימת קריאה ממוינים ידנית. ניתן לבטל סידור ידני כדי למיין ספרים לפי תאריך הוצאה.",
+      "tab_general": "כללי",
+      "tab_poster": "כרזה"
+    },
+    "edit_recommended": {
+      "button_confirm": "שמור שינויים",
+      "button_reset": "אפס לברירת מחדל",
+      "dialog_title": "ערוך תצוגה מומלצת"
+    },
+    "edit_series": {
+      "button_cancel": "ביטול",
+      "button_confirm": "שמור שינויים",
+      "dialog_title_multiple": "ערוך סדרה {count} | ערוך {count} סדרות",
+      "dialog_title_single": "ערוך את {series}",
+      "field_age_rating": "דירוג גיל",
+      "field_age_rating_error": "דירוג הגיל חייב להיות 0 או יותר",
+      "field_genres": "ז'אנרים",
+      "field_labels": "תוויות",
+      "field_language": "שפה",
+      "field_language_hint": "תג שפה IETF BCP 47",
+      "field_publisher": "מו\"ל",
+      "field_reading_direction": "כיוון קריאה",
+      "field_sort_title": "כותרת למיון",
+      "field_status": "סטטוס",
+      "field_summary": "תקציר",
+      "field_tags": "תגיות",
+      "field_title": "כותרת",
+      "field_total_book_count": "סך כל הספרים",
+      "field_total_book_count_error": "סך כל הספרים חייב להיות 1 או יותר",
+      "mixed": "מעורב",
+      "tab_general": "כללי",
+      "tab_poster": "כרזה",
+      "tab_sharing": "שיתוף",
+      "tab_tags": "תגיות",
+      "tab_titles": "כותרות חלופיות",
+      "tags_notice_multiple_edit": "אתה עורך תגיות עבור מספר סדרות. פעולה זו תדרוס את התגיות הקיימות של כל סדרה."
+    },
+    "edit_user": {
+      "button_cancel": "ביטול",
+      "button_confirm": "שמור שינויים",
+      "dialog_title": "ערוך משתמש",
+      "label_roles_for": "תפקידים עבור {name}"
+    },
+    "edit_user_restrictions": {
+      "age_restriction": {
+        "allow_under": "אפשר רק מתחת ל",
+        "exclude_over": "הוצא מעל",
+        "none": "ללא הגבלה"
+      },
+      "edit_restrictions_for": "ערוך הגבלות עבור {name}",
+      "label_age_restriction": "הגבלת גיל",
+      "label_allow_only_labels": "אפשר רק תוויות",
+      "label_exclude_labels": "הוצא תוויות",
+      "tab_content_restrictions": "הגבלות תוכן",
+      "tab_shared_libraries": "ספריות משותפות"
+    },
+    "empty_trash": {
+      "body": "כברירת מחדל, שרת המדיה לא מסיר מידע על מדיה מיד. זה עוזר אם כונן מנותק זמנית. כשמרוקנים את האשפה של ספרייה, כל המידע על מדיה חסרה נמחק.",
+      "button_confirm": "רוקן",
+      "title": "רוקן אשפה של הספרייה"
+    },
+    "file_browser": {
+      "button_cancel": "ביטול",
+      "button_confirm_default": "בחר",
+      "dialog_title_default": "סייר קבצים",
+      "parent_directory": "תיקייה עליונה"
+    },
+    "filename_chooser": {
+      "button_choose": "בחר",
+      "field_destination_filename": "שם קובץ יעד",
+      "label_source_filename": "שם קובץ מקור",
+      "table": {
+        "existing_file": "קובץ קיים",
+        "order": "סדר"
+      },
+      "title": "שם קובץ יעד"
+    },
+    "force_kobo_sync": {
+      "dialog_title": "כפה סנכרון Kobo",
+      "warning_html": "פעולה זו תמחק את כל היסטוריית הסנכרון עבור מפתח API זה. ה-Kobo שלך יסנכרן הכל בסנכרון הבא."
+    },
+    "password_change": {
+      "button_cancel": "ביטול",
+      "button_confirm": "שנה סיסמה",
+      "dialog_title": "שנה סיסמה",
+      "field_new_password": "סיסמה חדשה",
+      "field_new_password_error": "סיסמה חדשה נדרשת.",
+      "field_repeat_password": "חזור על הסיסמה החדשה",
+      "field_repeat_password_error": "הסיסמאות חייבות להיות זהות."
+    },
+    "refresh_library_metadata": {
+      "body": "מרענן מטא-נתונים עבור כל קבצי המדיה בספרייה. בהתאם לגודל הספרייה שלך, פעולה זו עשויה לקחת זמן רב.",
+      "button_confirm": "רענן",
+      "title": "רענן מטא-נתונים של הספרייה"
+    },
+    "series_picker": {
+      "label_search_series": "חפש סדרה",
+      "no_results": "לא נמצאו סדרות",
+      "title": "בחר סדרה"
+    },
+    "server_stop": {
+      "button_confirm": "עצור",
+      "confirmation_message": "האם אתה בטוח שברצונך לעצור את Komga?",
+      "dialog_title": "כיבוי השרת"
+    },
+    "shortcut_help": {
+      "label_description": "תיאור",
+      "label_key": "מקש"
+    },
+    "transient_book_details": {
+      "label_candidate": "מועמד",
+      "label_existing": "קיים",
+      "label_format": "פורמט",
+      "label_name": "שם",
+      "label_pages": "עמודים",
+      "label_size": "גודל",
+      "pages_table": {
+        "filename": "שם קובץ",
+        "height": "גובה",
+        "index": "אינדקס",
+        "media_type": "סוג מדיה",
+        "size": "גודל",
+        "width": "רוחב"
+      },
+      "title": "פרטי ספר",
+      "title_comparison": "השוואת ספרים"
+    },
+    "transient_book_viewer": {
+      "label_candidate": "מועמד",
+      "label_existing": "קיים",
+      "page_of_pages": "{page} / {pages}",
+      "title": "בדוק ספר",
+      "title_comparison": "השוואת ספרים"
+    }
+  },
+  "duplicate_pages": {
+    "action_auto_delete_remaining": "מחק אוטומטית את הנותרים ({count})",
+    "action_delete_auto": "מחיקה אוטומטית",
+    "action_delete_manual": "מחיקה ידנית",
+    "action_delete_matches": "מחק התאמות",
+    "action_ignore": "התעלם",
+    "action_ignore_remaining": "התעלם מהנותרים ({count})",
+    "action_manual_delete_remaining": "מחק ידנית את הנותרים ({count})",
+    "confirm_auto_delete_remaining": "כל גיבובי העמודים הנותרים בדף זה ({count}) יסומנו למחיקה אוטומטית.",
+    "confirm_manual_delete_remaining": "כל גיבובי העמודים הנותרים בדף זה ({count}) יסומנו למחיקה ידנית.",
+    "delete_to_save": "מחק כדי לחסוך {size}",
+    "deleted_count": "נמחק {count} פעמים",
+    "empty_title": "לא נמצאו עמודים כפולים",
+    "empty_title_known": "אין כפילויות ידועות",
+    "filter": {
+      "count": "כמות",
+      "date_added": "תאריך הוספה",
+      "date_modified": "תאריך שינוי",
+      "delete_count": "מספר מחיקות",
+      "delete_size": "שטח שנחסך",
+      "match_count": "מספר התאמות",
+      "size": "גודל",
+      "total_size": "גודל כולל"
+    },
+    "info": "מחיקת עמודים כפולים תשנה את הקבצים שלך. גבה את הקבצים והשתמש במחיקה ידנית לפני שימוש במחיקה אוטומטית.",
+    "known": "ידוע",
+    "matches_n": "אין התאמות | התאמה אחת | {count} התאמות",
+    "new": "חדש",
+    "saved_size": "נחסכו {size}",
+    "title": "עמודים כפולים",
+    "unknown_size": "גודל לא ידוע"
+  },
+  "duplicates": {
+    "file_hash": "גיבוב קובץ",
+    "size": "גודל",
+    "title": "קבצים כפולים",
+    "url": "URL"
+  },
+  "enums": {
+    "copy_mode": {
+      "HARDLINK": "קישור קשיח/העתקת קבצים",
+      "MOVE": "העברת קבצים"
+    },
+    "epubreader": {
+      "appearances": {
+        "day": "יום",
+        "night": "לילה",
+        "sepia": "ספיה"
+      },
+      "column_count": {
+        "auto": "אוטומטי",
+        "one": "אחת",
+        "two": "שתיים"
+      },
+      "reading_direction": {
+        "auto": "אוטומטי",
+        "ltr": "משמאל לימין",
+        "rtl": "מימין לשמאל"
+      }
+    },
+    "historical_event_type": {
+      "BookConverted": "ספר הומר",
+      "BookFileDeleted": "קובץ ספר נמחק",
+      "BookImported": "ספר יובא",
+      "DuplicatePageDeleted": "עמוד כפול נמחק",
+      "SeriesFolderDeleted": "תיקיית סדרה נמחקה"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
+    },
+    "media_status": {
+      "ERROR": "שגיאה",
+      "OUTDATED": "לא עדכני",
+      "READY": "מוכן",
+      "UNKNOWN": "לא ידוע",
+      "UNSUPPORTED": "לא נתמך"
+    },
+    "page_hash_action": {
+      "DELETE_AUTO": "מחיקה אוטומטית",
+      "DELETE_MANUAL": "מחיקה ידנית",
+      "IGNORE": "התעלם"
+    },
+    "reading_direction": {
+      "LEFT_TO_RIGHT": "משמאל לימין",
+      "RIGHT_TO_LEFT": "מימין לשמאל",
+      "VERTICAL": "אנכי",
+      "WEBTOON": "Webtoon"
+    },
+    "scan_interval": {
+      "DAILY": "יומי",
+      "DISABLED": "מושבת",
+      "EVERY_12H": "כל 12 שעות",
+      "EVERY_6H": "כל 6 שעות",
+      "HOURLY": "כל שעה",
+      "WEEKLY": "שבועי"
+    },
+    "series_cover": {
+      "FIRST": "ראשון",
+      "FIRST_UNREAD_OR_FIRST": "ראשון שלא נקרא, אחרת ראשון",
+      "FIRST_UNREAD_OR_LAST": "ראשון שלא נקרא, אחרת אחרון",
+      "LAST": "אחרון"
+    },
+    "series_status": {
+      "ABANDONED": "ננטש",
+      "ENDED": "הסתיים",
+      "HIATUS": "בהפסקה",
+      "ONGOING": "מתמשך"
+    },
+    "thumbnail_size": {
+      "DEFAULT": "ברירת מחדל (300px)‏",
+      "LARGE": "גדול (900px)‏",
+      "MEDIUM": "בינוני (600px)‏",
+      "XLARGE": "גדול מאוד (1200px)‏"
+    }
+  },
+  "epubreader": {
+    "current_chapter": "פרק נוכחי",
+    "page_of": "עמוד {page} מתוך {count}",
+    "publisher_font": "מו\"ל",
+    "settings": {
+      "column_count": "מספר עמודות",
+      "font_family": "גופן",
+      "layout": "פריסה",
+      "layout_paginated": "עמודים",
+      "layout_scroll": "גלילה",
+      "navigation_mode": "מצב ניווט",
+      "navigation_options": {
+        "both": "שניהם",
+        "buttons": "כפתורים",
+        "click": "לחיצה / הקשה"
+      },
+      "page_margins": "שולי עמוד",
+      "viewing_theme": "ערכת נושא לתצוגה"
+    },
+    "shortcuts": {
+      "cycle_pagination": "מחזור מספר עמודות",
+      "cycle_viewing_theme": "מחזור ערכת נושא לתצוגה",
+      "font_size_decrease": "הקטן גודל גופן",
+      "font_size_increase": "הגדל גודל גופן",
+      "menus": "תפריטים",
+      "next": "קדימה",
+      "previous": "אחורה",
+      "reader_navigation": "ניווט בקורא",
+      "scroll": "שנה פריסה לגלילה",
+      "settings": "הגדרות",
+      "show_hide_toc": "הצג/הסתר תוכן עניינים"
+    }
+  },
+  "error_codes": {
+    "ERR_1000": "לא ניתן לגשת לקובץ במהלך הניתוח",
+    "ERR_1001": "סוג המדיה אינו נתמך",
+    "ERR_1002": "ארכיוני RAR מוצפנים אינם נתמכים",
+    "ERR_1003": "ארכיוני RAR מוצקים אינם נתמכים",
+    "ERR_1004": "ארכיוני RAR מרובי כרכים אינם נתמכים",
+    "ERR_1005": "שגיאה לא ידועה בעת ניתוח הספר",
+    "ERR_1006": "הספר אינו מכיל אף עמוד",
+    "ERR_1007": "חלק מהרשומות לא ניתנו לניתוח",
+    "ERR_1008": "שגיאה לא ידועה בעת קבלת רשומות הספר",
+    "ERR_1009": "רשימת קריאה בשם זה כבר קיימת",
+    "ERR_1015": "שגיאה בפענוח קובץ ComicRack CBL",
+    "ERR_1016": "התיקייה אינה נגישה או שאינה תיקייה",
+    "ERR_1017": "לא ניתן לסרוק תיקייה שהיא חלק מספרייה קיימת",
+    "ERR_1018": "הקובץ לא נמצא",
+    "ERR_1019": "לא ניתן לייבא קובץ שהוא חלק מספרייה קיימת",
+    "ERR_1020": "הספר לשדרוג אינו שייך לסדרה שסופקה",
+    "ERR_1021": "קובץ היעד כבר קיים",
+    "ERR_1022": "לא ניתן היה לסרוק את הספר שיובא",
+    "ERR_1023": "הספר כבר קיים ברשימת הקריאה",
+    "ERR_1024": "שגיאת התחברות OAuth2: אין מאפיין דוא\"ל",
+    "ERR_1025": "שגיאת התחברות OAuth2: אין משתמש מקומי עם דוא\"ל זה",
+    "ERR_1026": "שגיאת התחברות OpenID Connect: הדוא\"ל לא אומת",
+    "ERR_1027": "שגיאת התחברות OpenID Connect: אין מאפיין email_verified",
+    "ERR_1028": "שגיאת התחברות OpenID Connect: אין מאפיין דוא\"ל",
+    "ERR_1029": "קובץ ComicRack CBL אינו מכיל אלמנטים של ספרים",
+    "ERR_1030": "לקובץ ComicRack CBL אין אלמנט שם",
+    "ERR_1031": "חסרים סדרה או מספר בספר ComicRack CBL",
+    "ERR_1032": "לקובץ EPUB סוג מדיה שגוי",
+    "ERR_1033": "חלק מהרשומות חסרות",
+    "ERR_1034": "מפתח API עם הערה זו כבר קיים",
+    "ERR_1035": "שגיאה בקבלת תוכן עניינים של EPUB",
+    "ERR_1036": "שגיאה בקבלת ציוני דרך של EPUB",
+    "ERR_1037": "שגיאה בקבלת רשימת עמודים של EPUB",
+    "ERR_1038": "שגיאה בקבלת עמודי DIVINA של EPUB",
+    "ERR_1039": "שגיאה בקבלת מיקומים של EPUB"
+  },
+  "filter": {
+    "age_rating": "דירוג גיל",
+    "age_rating_none": "ללא",
+    "any": "כלשהו",
+    "complete": "שלם",
+    "genre": "ז'אנר",
+    "in_progress": "בתהליך קריאה",
+    "language": "שפה",
+    "library": "ספרייה",
+    "media_profile": "פרופיל מדיה",
+    "media_status": "סטטוס מדיה",
+    "oneshot": "כרך בודד",
+    "publisher": "מו\"ל",
+    "read": "נקרא",
+    "release_date": "תאריך הוצאה",
+    "sharing_label": "תווית שיתוף",
+    "status": "סטטוס",
+    "tag": "תגית",
+    "unread": "לא נקרא"
+  },
+  "filter_drawer": {
+    "filter": "סינון",
+    "sort": "מיון"
+  },
+  "history": {
+    "header": {
+      "book": "ספר",
+      "date": "תאריך",
+      "details": "פרטים",
+      "series": "סדרה",
+      "type": "סוג"
+    },
+    "title": "היסטוריה"
+  },
+  "home": {
+    "theme": "ערכת נושא",
+    "translation": "תרגום"
+  },
+  "library_navigation": {
+    "browse": "עיון",
+    "browse_books": "ספרים",
+    "browse_series": "סדרות",
+    "collections": "אוספים",
+    "readlists": "רשימות קריאה",
+    "recommended": "מומלצים"
+  },
+  "login": {
+    "create_user_account": "צור חשבון משתמש",
+    "login": "התחבר",
+    "unclaimed_html": "שרת Komga זה עדיין לא פעיל, עליך ליצור חשבון משתמש כדי לגשת אליו.<br/><br/>בחר <strong>דוא\"ל</strong> ו<strong>סיסמה</strong> ולחץ על <strong>צור חשבון משתמש</strong>."
+  },
+  "media_analysis": {
+    "comment": "הערה",
+    "media_analysis": "ניתוח מדיה",
+    "media_type": "סוג מדיה",
+    "name": "שם",
+    "size": "גודל",
+    "status": "סטטוס",
+    "url": "URL"
+  },
+  "menu": {
+    "add_to_collection": "הוסף לאוסף",
+    "add_to_readlist": "הוסף לרשימת קריאה",
+    "analyze": "נתח",
+    "bulk_edit_metadata": "עריכה המונית של מטא-נתונים",
+    "delete": "מחיקה",
+    "deselect_all": "בטל בחירה לכולם",
+    "download_readlist": "הורד רשימת קריאה",
+    "download_series": "הורד סדרה",
+    "edit": "עריכה",
+    "edit_metadata": "ערוך מטא-נתונים",
+    "empty_trash": "רוקן אשפה",
+    "mark_read": "סמן כנקרא",
+    "mark_unread": "סמן כלא נקרא",
+    "pin": "הצמד",
+    "refresh_metadata": "רענן מטא-נתונים",
+    "scan_library_files": "סרוק קבצי ספרייה",
+    "scan_library_files_deep": "סרוק קבצי ספרייה (מעמיק)",
+    "select_all": "בחר הכל",
+    "unpin": "בטל הצמדה"
+  },
+  "metrics": {
+    "library_books": "ספרים לפי ספרייה",
+    "library_disk_space": "שטח אחסון לפי ספרייה",
+    "library_series": "סדרות לפי ספרייה",
+    "library_sidecars": "קבצי ליווי לפי ספרייה",
+    "tasks_executed": "משימות שבוצעו",
+    "tasks_total_time": "זמן כולל של משימות",
+    "title": "מדדים"
+  },
+  "missing_posters": {
+    "title": "כרזות חסרות"
+  },
+  "navigation": {
+    "home": "דף הבית",
+    "libraries": "ספריות",
+    "logout": "התנתק"
+  },
+  "no_libraries_pinned": {
+    "title": "אין ספריות מוצמדות",
+    "subtitle": "ניתן להצמיד ספרייה מתפריט שלוש הנקודות"
+  },
+  "page_not_found": {
+    "go_back_to_home_page": "חזור לדף הבית",
+    "page_does_not_exist": "הדף שאתה מחפש אינו קיים.",
+    "page_not_found": "הדף לא נמצא"
+  },
+  "read_more": {
+    "less": "קרא פחות",
+    "more": "קרא עוד"
+  },
+  "readlist_import": {
+    "row": {
+      "duplicate_book": "ספר כפול",
+      "error_choose_book": "בחר ספר"
+    }
+  },
+  "readlists_expansion_panel": {
+    "manage_readlist": "נהל רשימת קריאה",
+    "title": "רשימת קריאה {name}"
+  },
+  "search": {
+    "no_results": "החיפוש לא מצא תוצאות",
+    "search": "חיפוש",
+    "search_for_something_else": "נסה לחפש משהו אחר",
+    "search_results_for": "תוצאות חיפוש עבור \"{name}\""
+  },
+  "searchbox": {
+    "in_library": "בספרייה {library}",
+    "no_results": "אין תוצאות",
+    "search_all": "חפש הכל..."
+  },
+  "server": {
+    "server_management": {
+      "button_cancel_all_tasks": "בטל כל המשימות",
+      "button_empty_trash": "רוקן אשפה לכל הספריות",
+      "button_scan_libraries": "סרוק את כל הספריות",
+      "button_scan_libraries_deep": "סרוק את כל הספריות (מעמיק)",
+      "button_shutdown": "כבה",
+      "download_log": "הורד קובץ יומן",
+      "notification_tasks_cancelled": "אין משימות לביטול | משימה אחת בוטלה | {count} משימות בוטלו",
+      "section_title": "ניהול שרת"
+    },
+    "tab_title": "שרת",
+    "updates": "עדכונים"
+  },
+  "server_settings": {
+    "config_precedence": "גובר על קובץ התצורה",
+    "dialog_regenerate_thumbnails": {
+      "body": "גודל התמונות הממוזערות השתנה. האם ברצונך ליצור מחדש תמונות ממוזערות לספרים?",
+      "btn_alternate": "כן, לכל הספרים",
+      "btn_cancel": "לא",
+      "btn_confirm": "כן, אבל רק אם גדולות יותר",
+      "title": "צור מחדש תמונות ממוזערות"
+    },
+    "hint_kobo_port": "הגדר רק במקרה של בעיות סנכרון עם כריכות והורדות",
+    "label_delete_empty_collections": "מחק אוספים ריקים אחרי סריקה",
+    "label_delete_empty_readlists": "מחק רשימות קריאה ריקות אחרי סריקה",
+    "label_kepubify_path": "נתיב ל-kepubify",
+    "label_kobo_port": "פורט חיצוני לסנכרון Kobo",
+    "label_kobo_proxy": "העבר בקשות סנכרון Kobo לחנות Kobo",
+    "label_rememberme_duration": "משך \"זכור אותי\" (בימים)",
+    "label_server_context_path": "כתובת בסיס",
+    "label_server_port": "פורט שרת",
+    "label_task_pool_size": "תהליכונים למשימות",
+    "label_thumbnail_size": "גודל תמונות ממוזערות",
+    "requires_restart": "דורש הפעלה מחדש כדי להיכנס לתוקף",
+    "server_settings": "הגדרות שרת"
+  },
+  "settings_user": {
+    "change_password": "שנה סיסמה",
+    "edit_restrictions": "ערוך הגבלות",
+    "edit_user": "ערוך משתמש",
+    "latest_activity": "פעילות אחרונה: {date}",
+    "no_recent_activity": "אין פעילות אחרונה",
+    "role_administrator": "מנהל מערכת",
+    "role_user": "משתמש"
+  },
+  "sort": {
+    "books_count": "מספר ספרים",
+    "date_added": "תאריך הוספה",
+    "date_read": "תאריך קריאה",
+    "date_updated": "תאריך עדכון",
+    "file_name": "שם קובץ",
+    "file_size": "גודל קובץ",
+    "folder_name": "שם תיקייה",
+    "name": "שם",
+    "number": "מספר",
+    "page_count": "מספר עמודים",
+    "random": "אקראי",
+    "release_date": "תאריך הוצאה",
+    "series": "סדרה"
+  },
+  "theme": {
+    "dark": "כהה",
+    "light": "בהיר",
+    "system": "מערכת"
+  },
+  "thumbnail_card": {
+    "tooltip_delete": "מחיקה",
+    "tooltip_generated": "גרפיקה שנוצרה",
+    "tooltip_mark_as_selected": "סמן כנבחר",
+    "tooltip_selected": "נבחר",
+    "tooltip_sidecar": "גרפיקה מקומית",
+    "tooltip_to_be_deleted": "מיועד למחיקה",
+    "tooltip_to_be_uploaded": "מיועד להעלאה",
+    "tooltip_too_big": "הקובץ גדול מדי!",
+    "tooltip_user_uploaded": "הועלה על ידי משתמש"
+  },
+  "titles_more": {
+    "less": "פחות כותרות",
+    "more": "עוד כותרות"
+  },
+  "ui_settings": {
+    "general": "כללי",
+    "label_oauth2_auto_login": "התחברות אוטומטית עם OAuth2",
+    "label_oauth2_hide_login": "הסתר שדות התחברות אם OAuth2 מופעל",
+    "label_poster_blur_unread": "טשטש כרזה לספרים וסדרות שלא נקראו",
+    "label_poster_stretch": "מתח כרזה כדי להתאים לכרטיס",
+    "label_series_groups": "קיבוץ סדרות",
+    "section_oauth2": "OAuth2",
+    "series_groups": {
+      "alpha": "אלפביתי",
+      "japanese": "גוג'ואון (יפנית)"
+    },
+    "tooltip_oauth2_auto_login": "דורש ספק OAuth2 יחיד, ו'הסתר שדות התחברות' מופעל"
+  },
+  "updates": {
+    "available": "יש עדכונים זמינים",
+    "latest_installed": "הגרסה האחרונה של Komga כבר מותקנת"
+  },
+  "user_roles": {
+    "ADMIN": "מנהל מערכת",
+    "FILE_DOWNLOAD": "הורדת קבצים",
+    "KOBO_SYNC": "סנכרון Kobo",
+    "KOREADER_SYNC": "סנכרון KOReader",
+    "PAGE_STREAMING": "הזרמת עמודים",
+    "USER": "משתמש"
+  },
+  "users": {
+    "api_keys": "מפתחות API",
+    "authentication_activity": "פעילות אימות",
+    "users": "משתמשים"
+  },
+  "validation": {
+    "context_path": "חייב להתחיל ב-'/', לא להסתיים ב-'/-_', ולהכיל רק '/-_a-z0-9'",
+    "one_or_more": "חייב להיות 1 או יותר",
+    "tcp_port": "חייב להיות בין 1 ל-65535",
+    "zero_or_more": "חייב להיות 0 או יותר"
+  },
+  "welcome": {
+    "add_library": "הוסף ספרייה",
+    "no_libraries_yet": "עדיין לא נוספו ספריות!",
+    "welcome_message": "ברוכים הבאים ל-Komga"
   }
 }
