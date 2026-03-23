@@ -46,7 +46,7 @@
     <v-list>
       <v-list-subheader>
         <div class="d-flex ga-2 align-center mb-1">
-          <span>FILTERS</span>
+          <span>{{ $formatMessage(commonMessages.filterPanelHeader) }}</span>
           <v-chip
             v-if="filterCount > 0"
             color="primary"
@@ -69,14 +69,14 @@
         tile
       >
         <FilterExpansionPanel
-          title="Read status"
+          :title="$formatMessage(commonMessages.filterPanelReadStatus)"
           :count="filterReadStatus.v.length"
           @clear="clearFilter(filterReadStatus)"
         >
           <FilterByReadStatus v-model="filterReadStatus.v" />
         </FilterExpansionPanel>
         <FilterExpansionPanel
-          title="Status"
+          :title="$formatMessage(commonMessages.filterPanelSeriesStatus)"
           :count="filterSeriesStatus.v.length"
           @clear="clearFilter(filterSeriesStatus)"
         >
@@ -84,7 +84,7 @@
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
-          title="Genre"
+          :title="$formatMessage(commonMessages.filterPanelGenre)"
           :count="filterGenre.v.length"
           @clear="clearFilter(filterGenre)"
         >
@@ -95,7 +95,7 @@
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
-          title="Tag"
+          :title="$formatMessage(commonMessages.filterPanelTag)"
           :count="filterTag.v.length"
           @clear="clearFilter(filterTag)"
         >
@@ -106,7 +106,7 @@
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
-          title="Publisher"
+          :title="$formatMessage(commonMessages.filterPanelPublisher)"
           :count="filterPublisher.v.length"
           @clear="clearFilter(filterPublisher)"
         >
@@ -117,7 +117,7 @@
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
-          title="Release year"
+          :title="$formatMessage(commonMessages.filterPanelReleaseYear)"
           :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
           @clear="clearFilterSelectRange(filterReleaseYear)"
         >
@@ -125,7 +125,7 @@
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
-          title="Age rating"
+          :title="$formatMessage(commonMessages.filterPanelAgeRating)"
           :count="!!filterAgeRating.is ? 1 : !!filterAgeRating.min ? 1 : 0"
           @clear="clearFilterSelectRange(filterAgeRating)"
         >
@@ -133,7 +133,7 @@
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
-          title="Language"
+          :title="$formatMessage(commonMessages.filterPanelLanguage)"
           :count="filterLanguage.v.length"
           @clear="clearFilter(filterLanguage)"
         >
@@ -144,7 +144,7 @@
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
-          title="Sharing label"
+          :title="$formatMessage(commonMessages.filterPanelSharingLabel)"
           :count="filterSharingLabel.v.length"
           @clear="clearFilter(filterSharingLabel)"
         >
@@ -155,7 +155,11 @@
         </FilterExpansionPanel>
       </v-expansion-panels>
 
-      <v-divider><span class="text-body-medium text-medium-emphasis">Creators</span></v-divider>
+      <v-divider
+        ><span class="text-body-medium text-medium-emphasis">{{
+          $formatMessage(commonMessages.filterPanelCreators)
+        }}</span></v-divider
+      >
 
       <v-expansion-panels
         v-model="filterExpansionPanels"
@@ -181,11 +185,9 @@
 
       <v-divider />
 
-      <v-list-subheader>SORT</v-list-subheader>
+      <v-list-subheader>{{ $formatMessage(commonMessages.filterPanelSort) }}</v-list-subheader>
     </v-list>
   </TempDrawer>
-  <div>CONDITION</div>
-  <div>{{ conds }}</div>
 
   <template v-if="series">
     <v-data-iterator
@@ -283,6 +285,7 @@ import {
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import { authorRoles } from '@/types/referential'
 import { useIntl } from 'vue-intl'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -394,6 +397,9 @@ const conds = computed(() => ({
     ),
   ],
 }))
+
+// clear selection if filter changes
+watch(conds, () => selectionStore.clear())
 
 const { data: series } = useQuery(() =>
   seriesListQuery({

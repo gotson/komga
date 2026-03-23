@@ -1,8 +1,20 @@
 <template>
   <FilterSelectRange
     v-model="model"
-    label-select="Age rating"
-    label-range="Age range"
+    :label-select="
+      $formatMessage({
+        description: 'Filter by age rating: select placeholder',
+        defaultMessage: 'Age rating',
+        id: 'KBLD9U',
+      })
+    "
+    :label-range="
+      $formatMessage({
+        description: 'Filter by age rating: range label',
+        defaultMessage: 'Age range',
+        id: '5zPpyT',
+      })
+    "
     :select-items="selectItems"
     :min="min"
     :max="max"

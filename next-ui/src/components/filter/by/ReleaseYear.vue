@@ -1,8 +1,20 @@
 <template>
   <FilterSelectRange
     v-model="model"
-    label-select="Year"
-    label-range="Year range"
+    :label-select="
+      $formatMessage({
+        description: 'Filter by release year: select placeholder',
+        defaultMessage: 'Year',
+        id: 'tn7uib',
+      })
+    "
+    :label-range="
+      $formatMessage({
+        description: 'Filter by release year: select placeholder',
+        defaultMessage: 'Year rating',
+        id: 'S39lnB',
+      })
+    "
     :select-items="selectItems"
     :min="min"
     :max="max"

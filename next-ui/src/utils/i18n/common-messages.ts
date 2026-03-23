@@ -52,4 +52,64 @@ export const commonMessages = {
       "By default the media server doesn't remove information for media right away. This helps if a drive is temporarily disconnected. When you empty the trash for a library, all information about missing media is deleted.",
     id: 'kDc7YL',
   }),
+  filterPanelHeader: defineMessage({
+    description: 'Filter panel header',
+    defaultMessage: 'FILTERS',
+    id: '0sIkhg',
+  }),
+  filterPanelCreators: defineMessage({
+    description: 'Filter panel sub-section: Creators',
+    defaultMessage: 'Creators',
+    id: 'WT63aY',
+  }),
+  filterPanelSort: defineMessage({
+    description: 'Filter panel sub-section: Sort',
+    defaultMessage: 'SORT',
+    id: 'I9L5Ag',
+  }),
+  filterPanelReadStatus: defineMessage({
+    description: 'Filter panel: Read status',
+    defaultMessage: 'Read status',
+    id: 'XRbUyd',
+  }),
+  filterPanelSeriesStatus: defineMessage({
+    description: 'Filter panel: Series status',
+    defaultMessage: 'Status',
+    id: 'Pp3+1S',
+  }),
+  filterPanelGenre: defineMessage({
+    description: 'Filter panel: Genre',
+    defaultMessage: 'Genre',
+    id: 'hBanlz',
+  }),
+  filterPanelTag: defineMessage({
+    description: 'Filter panel: Tag',
+    defaultMessage: 'Tag',
+    id: 'NwK2Kv',
+  }),
+  filterPanelPublisher: defineMessage({
+    description: 'Filter panel: Publisher',
+    defaultMessage: 'Publisher',
+    id: 'NruW40',
+  }),
+  filterPanelReleaseYear: defineMessage({
+    description: 'Filter panel: Release year',
+    defaultMessage: 'Release year',
+    id: 'xpBvz8',
+  }),
+  filterPanelAgeRating: defineMessage({
+    description: 'Filter panel: Age rating',
+    defaultMessage: 'Age rating',
+    id: '8P7Yn+',
+  }),
+  filterPanelLanguage: defineMessage({
+    description: 'Filter panel: Language',
+    defaultMessage: 'Language',
+    id: '3qQjnw',
+  }),
+  filterPanelSharingLabel: defineMessage({
+    description: 'Filter panel: Sharing label',
+    defaultMessage: 'Sharing label',
+    id: 'hGFogR',
+  }),
 }
