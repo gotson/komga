@@ -151,7 +151,7 @@ jobs:
             build/jreleaser/output.properties
 
       - name: Release commit and push
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v10
         if: needs.version.outputs.should_release #only redo if the version changed
         with:
           message: 'chore(release): ${{ needs.version.outputs.version_next }} [skip ci]'
