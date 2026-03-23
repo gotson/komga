@@ -1,11 +1,23 @@
-// from Vuetify
 import type { PageSize } from '@/types/page'
 
-export type SortItem = { key: string; order?: boolean | 'asc' | 'desc' }
+// from Vuetify
+export type VSortItem = { key: string; order?: boolean | 'asc' | 'desc' }
 
-function vSortItemToSort(sortItem: SortItem): string {
+export type Sort = {
+  key: string
+  order?: 'asc' | 'desc'
+}
+
+function vSortItemToSort(sortItem: VSortItem): Sort {
+  return {
+    key: sortItem.key,
+    order: typeof sortItem.order === 'string' ? sortItem.order : undefined,
+  }
+}
+
+function sortToString(sortItem: Sort): string {
   let sort = sortItem.key
-  if (sortItem.order && typeof sortItem.order === 'string') sort += `,${sortItem.order}`
+  if (sortItem.order) sort += `,${sortItem.order}`
   return sort
 }
 
@@ -13,9 +25,13 @@ export class PageRequest {
   readonly unpaged?: boolean
   readonly page?: number
   readonly size?: number
-  readonly sort?: string[]
+  private readonly _sort?: Sort[]
 
-  static FromPageSize(pageSize: PageSize, page?: number, sort?: string[]) {
+  get sort(): string[] | undefined {
+    return this._sort?.map((it) => sortToString(it))
+  }
+
+  static FromPageSize(pageSize: PageSize, page?: number, sort?: Sort[]) {
     return new PageRequest(
       page,
       pageSize === 'unpaged' ? undefined : pageSize,
@@ -39,7 +55,7 @@ export class PageRequest {
    * @param sortItems
    * @constructor
    */
-  static FromVuetify(page?: number, size?: number, sortItems?: SortItem[]): PageRequest {
+  static FromVuetify(page?: number, size?: number, sortItems?: VSortItem[]): PageRequest {
     if (size && size < 0)
       return new PageRequest(
         undefined,
@@ -55,13 +71,13 @@ export class PageRequest {
     )
   }
 
-  constructor(page?: number, size?: number, sort?: string[], unpaged?: boolean) {
+  constructor(page?: number, size?: number, sort?: Sort[], unpaged?: boolean) {
     if (page && page < 0) throw new Error('page cannot be negative')
     if (size && size < 0) throw new Error('size cannot be negative')
 
     this.page = page
     this.size = size
-    this.sort = sort
+    this._sort = sort
     this.unpaged = unpaged
   }
 }

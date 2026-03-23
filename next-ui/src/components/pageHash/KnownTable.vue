@@ -206,7 +206,7 @@
 
 <script setup lang="ts">
 import { useIntl } from 'vue-intl'
-import { PageRequest, type SortItem } from '@/types/PageRequest'
+import { PageRequest, type VSortItem } from '@/types/PageRequest'
 import { useMutation, useQuery } from '@pinia/colada'
 import { pageHashesKnownQuery } from '@/colada/page-hashes'
 import type { components } from '@/generated/openapi/komga'
@@ -231,7 +231,7 @@ const display = useDisplay()
 const messagesStore = useMessagesStore()
 const { simple: dialogSimple } = storeToRefs(useDialogsStore())
 
-const sortBy = ref<SortItem[]>([{ key: 'deleteSize', order: 'desc' }])
+const sortBy = ref<VSortItem[]>([{ key: 'deleteSize', order: 'desc' }])
 
 //region headers
 const headers = [
@@ -345,7 +345,7 @@ function updateOptions({
 }: {
   page: number
   itemsPerPage: number
-  sortBy: SortItem[]
+  sortBy: VSortItem[]
 }) {
   pageRequest.value = PageRequest.FromVuetify(page - 1, itemsPerPage, sortBy)
 }

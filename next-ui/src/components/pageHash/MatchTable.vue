@@ -76,7 +76,7 @@
 
 <script setup lang="ts">
 import { useIntl } from 'vue-intl'
-import { PageRequest, type SortItem } from '@/types/PageRequest'
+import { PageRequest, type VSortItem } from '@/types/PageRequest'
 import { useQuery } from '@pinia/colada'
 import { pageHashMatchesQuery } from '@/colada/page-hashes'
 import { bookPageThumbnailUrl } from '@/api/images'
@@ -126,7 +126,7 @@ const headers = [
 //endregion
 
 //region Data loading
-const sortBy = ref<SortItem[]>([])
+const sortBy = ref<VSortItem[]>([])
 const pageRequest = ref<PageRequest>(new PageRequest())
 
 const { data, isLoading, error } = useQuery(() =>
@@ -143,7 +143,7 @@ function updateOptions({
 }: {
   page: number
   itemsPerPage: number
-  sortBy: SortItem[]
+  sortBy: VSortItem[]
 }) {
   pageRequest.value = PageRequest.FromVuetify(page - 1, itemsPerPage, sortBy)
 }

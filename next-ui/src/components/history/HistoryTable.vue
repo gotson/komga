@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { type MessageDescriptor, useIntl } from 'vue-intl'
-import { PageRequest, type SortItem } from '@/types/PageRequest'
+import { PageRequest, type VSortItem } from '@/types/PageRequest'
 import { useQuery } from '@pinia/colada'
 import { historyQuery } from '@/colada/history'
 import HistoryExpandBookFileDeleted from '@/components/history/expand/BookFileDeleted.vue'
@@ -104,7 +104,7 @@ import { useMemoize } from '@vueuse/core'
 
 const intl = useIntl()
 
-const sortBy = ref<SortItem[]>([{ key: 'timestamp', order: 'desc' }])
+const sortBy = ref<VSortItem[]>([{ key: 'timestamp', order: 'desc' }])
 
 const headers = [
   {
@@ -152,7 +152,7 @@ function updateOptions({
 }: {
   page: number
   itemsPerPage: number
-  sortBy: SortItem[]
+  sortBy: VSortItem[]
 }) {
   pageRequest.value = PageRequest.FromVuetify(page - 1, itemsPerPage, sortBy)
 }

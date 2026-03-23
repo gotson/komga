@@ -206,7 +206,7 @@
 
 <script setup lang="ts">
 import { useIntl } from 'vue-intl'
-import { PageRequest, type SortItem } from '@/types/PageRequest'
+import { PageRequest, type VSortItem } from '@/types/PageRequest'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { pageHashesUnknownQuery, QUERY_KEYS_PAGE_HASHES } from '@/colada/page-hashes'
 import type { components } from '@/generated/openapi/komga'
@@ -232,7 +232,7 @@ const messagesStore = useMessagesStore()
 const { simple: dialogSimple } = storeToRefs(useDialogsStore())
 
 const selectedHashes = ref<components['schemas']['PageHashUnknownDto'][]>([])
-const sortBy = ref<SortItem[]>([{ key: 'matchCount', order: 'desc' }])
+const sortBy = ref<VSortItem[]>([{ key: 'matchCount', order: 'desc' }])
 
 //region headers
 const headers = [
@@ -291,7 +291,7 @@ function updateOptions({
 }: {
   page: number
   itemsPerPage: number
-  sortBy: SortItem[]
+  sortBy: VSortItem[]
 }) {
   pageRequest.value = PageRequest.FromVuetify(page - 1, itemsPerPage, sortBy)
 }
