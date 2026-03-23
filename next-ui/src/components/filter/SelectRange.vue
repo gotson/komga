@@ -31,6 +31,7 @@
       v-model="modelRange"
       strict
       hide-details
+      color="primary"
       :disabled="disabled || isSingle"
       :step="1"
       :min="min"

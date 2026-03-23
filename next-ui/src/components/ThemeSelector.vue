@@ -1,5 +1,5 @@
 <template>
-  <v-btn
+  <v-icon-btn
     :icon="themeIcon"
     :aria-label="
       $formatMessage({

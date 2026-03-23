@@ -1,7 +1,7 @@
 <template>
   <v-menu>
     <template #activator="{ props }">
-      <v-btn
+      <v-icon-btn
         v-bind="props"
         icon="i-mdi:translate"
         :aria-label="

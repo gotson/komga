@@ -3,6 +3,7 @@ import * as v from 'valibot'
 import {
   SchemaAnyAll,
   SchemaFilterAuthors,
+  SchemaFilterReadStatus,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
   SchemaSeriesAgeRatings,
@@ -151,6 +152,13 @@ describe('filter schemas have a default value', () => {
   test('SchemaFilterSeriesStatus', () => {
     const expected = { v: [] }
     const defaults = v.getDefaults(SchemaFilterSeriesStatus)
+
+    expect(defaults).toStrictEqual(expected)
+  })
+
+  test('SchemaFilterReadStatus', () => {
+    const expected = { v: [] }
+    const defaults = v.getDefaults(SchemaFilterReadStatus)
 
     expect(defaults).toStrictEqual(expected)
   })

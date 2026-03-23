@@ -1,5 +1,5 @@
 <template>
-  <v-btn
+  <v-icon-btn
     :id="id"
     v-tooltip:bottom="allModes[currentMode].title"
     :icon="allModes[currentMode].icon"

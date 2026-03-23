@@ -8,7 +8,6 @@
         rounded
         closable
         class="ms-2"
-        variant="elevated"
         size="small"
         @click:close="emit('clear')"
       >

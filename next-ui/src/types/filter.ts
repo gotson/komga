@@ -56,13 +56,11 @@ export const SchemaSeriesStatus = v.pipe(
   v.picklist(['ENDED', 'ONGOING', 'ABANDONED', 'HIATUS']),
 )
 
-export const SchemaString = v.strictObject({
-  ...SchemaIncludeExclude.entries,
-  /**
-   * Shorthand for `value`.
-   */
-  v: v.string(),
-})
+export const SchemaReadStatus = createSchemaIncludeExclude(
+  v.pipe(v.string(), v.toUpperCase(), v.picklist(['UNREAD', 'IN_PROGRESS', 'READ'])),
+)
+
+export const SchemaString = createSchemaIncludeExclude(v.string())
 
 export const SchemaAnyNone = v.strictObject({
   a: v.optional(v.picklist(['any', 'none'])),
@@ -75,6 +73,16 @@ const SchemaYear = v.pipe(v.string(), v.regex(/^\d{4}$/, 'Must be exactly 4 digi
 ////////////////////////////////////////////////////
 // All schema filters need to have a default value
 ////////////////////////////////////////////////////
+
+function createSchemaIncludeExclude<T extends v.GenericSchema>(schema: T) {
+  return v.strictObject({
+    ...SchemaIncludeExclude.entries,
+    /**
+     * Shorthand for `value`.
+     */
+    v: schema,
+  })
+}
 
 function createSchemaFilterAnyAll<T extends v.GenericSchema>(schema: T) {
   return v.strictObject({
@@ -104,9 +112,14 @@ function createSchemaFilterSelectRange<T extends v.GenericSchema>(schema: T) {
 }
 
 /**
- * Schema for Series Status.
+ * Schema for Series Status
  */
 export const SchemaFilterSeriesStatus = createSchemaFilterArray(SchemaSeriesStatus)
+
+/**
+ * Schema for Read Status
+ */
+export const SchemaFilterReadStatus = createSchemaFilterArray(SchemaReadStatus)
 
 /**
  * Schema for Series Release Years

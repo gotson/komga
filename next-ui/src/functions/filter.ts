@@ -1,6 +1,7 @@
 import {
   SchemaAnyNone,
   SchemaFilterAuthors,
+  SchemaFilterReadStatus,
   type SchemaFilterSeriesStatus,
   SchemaFilterStrings,
   SchemaSeriesAgeRatings,
@@ -59,6 +60,22 @@ export function schemaFilterAuthorsToConditions(
     return {
       anyOf: list,
     }
+}
+
+export function schemaFilterReadStatusToConditions(
+  filter: InferOutput<typeof SchemaFilterReadStatus>,
+) {
+  const list = filter.v.map((it) => {
+    return {
+      readStatus: {
+        operator: it.i === 'e' ? 'isNot' : 'is',
+        value: it.v,
+      },
+    }
+  })
+  return {
+    anyOf: list,
+  }
 }
 
 export function schemaFilterStringToConditions(
@@ -158,22 +175,27 @@ export function schemaFilterAgeRatingToConditions(
         operator: 'isNull',
       },
     })
+  } else if (!!filter.is) {
+    conds.push({
+      ageRating: {
+        operator: 'is',
+        value: filter.is,
+      },
+    })
   } else {
-    if (!!filter.is || !!filter.min) {
-      const v = Number(filter.is || filter.min)
+    if (!!filter.min) {
       conds.push({
         ageRating: {
           operator: 'greaterThan',
-          value: v,
+          value: filter.min,
         },
       })
     }
-    if (!!filter.is || !!filter.max) {
-      const v = Number(filter.is || filter.max)
+    if (!!filter.max) {
       conds.push({
         ageRating: {
           operator: 'lessThan',
-          value: v,
+          value: filter.max,
         },
       })
     }

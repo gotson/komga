@@ -26,141 +26,164 @@
       :sizes="[1, 10, 20]"
     />
 
-    <v-icon-btn
-      icon="i-mdi:filter-variant"
-      @click="filterDrawer = true"
-    />
+    <v-badge
+      location="top right"
+      color="primary"
+      :content="filterCount"
+      :model-value="filterCount > 0"
+      class="pe-4"
+      offset-x="7"
+      offset-y="7"
+    >
+      <v-icon-btn
+        icon="i-mdi:filter-variant"
+        @click="filterDrawer = true"
+      />
+    </v-badge>
   </v-app-bar>
 
-  <!-- TODO: Move into its own component -->
-  <!--  Teleport is needed so that the scrim covers the whole screen  -->
-  <Teleport to="#app">
-    <!--  order=-1 is needed for the drawer to open full height  -->
-    <!--  disable-route-watcher is needed, else the drawer closes when the route query params are updated when the filters change -->
-    <v-navigation-drawer
-      v-model="filterDrawer"
-      location="end"
-      temporary
-      order="-1"
-      disable-route-watcher
-    >
-      <v-list>
-        <v-expansion-panels
-          v-model="filterExpansionPanels"
-          variant="accordion"
-          class="no-padding"
-          flat
-          tile
+  <TempDrawer v-model="filterDrawer">
+    <v-list>
+      <v-list-subheader>
+        <div class="d-flex ga-2 align-center mb-1">
+          <span>FILTERS</span>
+          <v-chip
+            v-if="filterCount > 0"
+            color="primary"
+            rounded
+            closable
+            variant="elevated"
+            size="small"
+            @click:close="clearFilters()"
+          >
+            {{ filterCount }}
+          </v-chip>
+        </div>
+      </v-list-subheader>
+
+      <v-expansion-panels
+        v-model="filterExpansionPanels"
+        variant="accordion"
+        class="no-padding"
+        flat
+        tile
+      >
+        <FilterExpansionPanel
+          title="Read status"
+          :count="filterReadStatus.v.length"
+          @clear="clearFilter(filterReadStatus)"
         >
-          <FilterExpansionPanel
-            title="Status"
-            :count="filterSeriesStatus.v.length"
-            @clear="clearFilter(filterSeriesStatus)"
-          >
-            <FilterBySeriesStatus v-model="filterSeriesStatus.v" />
-          </FilterExpansionPanel>
-
-          <FilterExpansionPanel
-            title="Genre"
-            :count="filterGenre.v.length"
-            @clear="clearFilter(filterGenre)"
-          >
-            <FilterByGenre
-              v-model="filterGenre.v"
-              v-model:mode="filterGenre.m"
-            />
-          </FilterExpansionPanel>
-
-          <FilterExpansionPanel
-            title="Tag"
-            :count="filterTag.v.length"
-            @clear="clearFilter(filterTag)"
-          >
-            <FilterByTag
-              v-model="filterTag.v"
-              v-model:mode="filterTag.m"
-            />
-          </FilterExpansionPanel>
-
-          <FilterExpansionPanel
-            title="Publisher"
-            :count="filterPublisher.v.length"
-            @clear="clearFilter(filterPublisher)"
-          >
-            <FilterByPublisher
-              v-model="filterPublisher.v"
-              v-model:mode="filterPublisher.m"
-            />
-          </FilterExpansionPanel>
-
-          <FilterExpansionPanel
-            title="Release year"
-            :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
-            @clear="clearFilterSelectRange(filterReleaseYear)"
-          >
-            <FilterByReleaseYear v-model="filterReleaseYear" />
-          </FilterExpansionPanel>
-
-          <FilterExpansionPanel
-            title="Age rating"
-            :count="!!filterAgeRating.is ? 1 : !!filterAgeRating.min ? 1 : 0"
-            @clear="clearFilterSelectRange(filterAgeRating)"
-          >
-            <FilterByAgeRating v-model="filterAgeRating" />
-          </FilterExpansionPanel>
-
-          <FilterExpansionPanel
-            title="Language"
-            :count="filterLanguage.v.length"
-            @clear="clearFilter(filterLanguage)"
-          >
-            <FilterByLanguage
-              v-model="filterLanguage.v"
-              v-model:mode="filterLanguage.m"
-            />
-          </FilterExpansionPanel>
-
-          <FilterExpansionPanel
-            title="Sharing label"
-            :count="filterSharingLabel.v.length"
-            @clear="clearFilter(filterSharingLabel)"
-          >
-            <FilterBySharingLabel
-              v-model="filterSharingLabel.v"
-              v-model:mode="filterSharingLabel.m"
-            />
-          </FilterExpansionPanel>
-        </v-expansion-panels>
-
-        <v-divider />
-
-        <v-list-subheader>CREATORS</v-list-subheader>
-
-        <v-expansion-panels
-          v-model="filterExpansionPanels"
-          variant="accordion"
-          class="no-padding"
-          flat
-          tile
+          <FilterByReadStatus v-model="filterReadStatus.v" />
+        </FilterExpansionPanel>
+        <FilterExpansionPanel
+          title="Status"
+          :count="filterSeriesStatus.v.length"
+          @clear="clearFilter(filterSeriesStatus)"
         >
-          <FilterExpansionPanel
-            v-for="(filterAuthor, role) in filterAuthors"
-            :key="role"
-            :title="filterAuthor.text"
-            :count="filterAuthor.filter.v.length"
-            @clear="clearFilter(filterAuthor.filter)"
-          >
-            <FilterByAuthor
-              v-model="filterAuthor.filter.v"
-              v-model:mode="filterAuthor.filter.m"
-              :role="filterAuthor.role"
-            />
-          </FilterExpansionPanel>
-        </v-expansion-panels>
-      </v-list>
-    </v-navigation-drawer>
-  </Teleport>
+          <FilterBySeriesStatus v-model="filterSeriesStatus.v" />
+        </FilterExpansionPanel>
 
+        <FilterExpansionPanel
+          title="Genre"
+          :count="filterGenre.v.length"
+          @clear="clearFilter(filterGenre)"
+        >
+          <FilterByGenre
+            v-model="filterGenre.v"
+            v-model:mode="filterGenre.m"
+          />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          title="Tag"
+          :count="filterTag.v.length"
+          @clear="clearFilter(filterTag)"
+        >
+          <FilterByTag
+            v-model="filterTag.v"
+            v-model:mode="filterTag.m"
+          />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          title="Publisher"
+          :count="filterPublisher.v.length"
+          @clear="clearFilter(filterPublisher)"
+        >
+          <FilterByPublisher
+            v-model="filterPublisher.v"
+            v-model:mode="filterPublisher.m"
+          />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          title="Release year"
+          :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
+          @clear="clearFilterSelectRange(filterReleaseYear)"
+        >
+          <FilterByReleaseYear v-model="filterReleaseYear" />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          title="Age rating"
+          :count="!!filterAgeRating.is ? 1 : !!filterAgeRating.min ? 1 : 0"
+          @clear="clearFilterSelectRange(filterAgeRating)"
+        >
+          <FilterByAgeRating v-model="filterAgeRating" />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          title="Language"
+          :count="filterLanguage.v.length"
+          @clear="clearFilter(filterLanguage)"
+        >
+          <FilterByLanguage
+            v-model="filterLanguage.v"
+            v-model:mode="filterLanguage.m"
+          />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          title="Sharing label"
+          :count="filterSharingLabel.v.length"
+          @clear="clearFilter(filterSharingLabel)"
+        >
+          <FilterBySharingLabel
+            v-model="filterSharingLabel.v"
+            v-model:mode="filterSharingLabel.m"
+          />
+        </FilterExpansionPanel>
+      </v-expansion-panels>
+
+      <v-divider><span class="text-body-medium text-medium-emphasis">Creators</span></v-divider>
+
+      <v-expansion-panels
+        v-model="filterExpansionPanels"
+        variant="accordion"
+        class="no-padding"
+        flat
+        tile
+      >
+        <FilterExpansionPanel
+          v-for="(filterAuthor, role) in filterAuthors"
+          :key="role"
+          :title="filterAuthor.text"
+          :count="filterAuthor.filter.v.length"
+          @clear="clearFilter(filterAuthor.filter)"
+        >
+          <FilterByAuthor
+            v-model="filterAuthor.filter.v"
+            v-model:mode="filterAuthor.filter.m"
+            :role="filterAuthor.role"
+          />
+        </FilterExpansionPanel>
+      </v-expansion-panels>
+
+      <v-divider />
+
+      <v-list-subheader>SORT</v-list-subheader>
+    </v-list>
+  </TempDrawer>
   <div>CONDITION</div>
   <div>{{ conds }}</div>
 
@@ -244,12 +267,14 @@ import {
   schemaFilterSeriesStatusToConditions,
   schemaFilterReleaseYearToConditions,
   schemaFilterAgeRatingToConditions,
+  schemaFilterReadStatusToConditions,
 } from '@/functions/filter'
 import * as v from 'valibot'
 import {
   type FilterType,
   type FilterTypeSelectRange,
   SchemaFilterAuthors,
+  SchemaFilterReadStatus,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
   SchemaSeriesAgeRatings,
@@ -313,7 +338,37 @@ function clearFilterSelectRange(filter: FilterTypeSelectRange) {
   filter.max = undefined
 }
 
+function clearFilters() {
+  clearFilter(filterSeriesStatus.value)
+  clearFilter(filterReadStatus.value)
+  clearFilter(filterGenre.value)
+  clearFilter(filterTag.value)
+  clearFilter(filterPublisher.value)
+  clearFilter(filterSharingLabel.value)
+  clearFilter(filterLanguage.value)
+  clearFilterSelectRange(filterReleaseYear.value)
+  clearFilterSelectRange(filterAgeRating.value)
+  Object.entries(filterAuthors).map(([, filter]) => clearFilter(filter.filter))
+}
+
+const filterCount = computed(
+  () =>
+    filterReadStatus.value.v.length +
+    filterSeriesStatus.value.v.length +
+    filterGenre.value.v.length +
+    filterTag.value.v.length +
+    filterPublisher.value.v.length +
+    (!!filterReleaseYear.value.is ? 1 : !!filterReleaseYear.value.min ? 1 : 0) +
+    (!!filterAgeRating.value.is ? 1 : !!filterAgeRating.value.min ? 1 : 0) +
+    filterLanguage.value.v.length +
+    filterSharingLabel.value.v.length +
+    Object.entries(filterAuthors)
+      .map(([, filter]) => filter.filter.v.length)
+      .reduce((sum, item) => sum + item, 0),
+)
+
 const { data: filterSeriesStatus } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
+const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
 const { data: filterGenre } = useRouteQuerySchema('genre', SchemaFilterStrings)
 const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
 const { data: filterPublisher } = useRouteQuerySchema('publisher', SchemaFilterStrings)
@@ -326,6 +381,7 @@ const conds = computed(() => ({
   allOf: [
     librariesCondition.value as components['schemas']['AnyOfSeries'],
     schemaFilterSeriesStatusToConditions(filterSeriesStatus.value),
+    schemaFilterReadStatusToConditions(filterReadStatus.value),
     schemaFilterStringToConditions(filterGenre.value, 'genre', true),
     schemaFilterStringToConditions(filterTag.value, 'tag', true),
     schemaFilterStringToConditions(filterPublisher.value, 'publisher', false),
