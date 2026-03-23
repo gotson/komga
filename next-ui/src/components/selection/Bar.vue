@@ -1,7 +1,7 @@
 <template>
   <v-app-bar
     elevation="1"
-    color="surface-light"
+    color="primary"
   >
     <template #prepend>
       <v-app-bar-nav-icon
