@@ -108,6 +108,8 @@ declare module 'vue' {
     SeriesMenuBottomSheet: typeof import('./components/series/menu/SeriesMenuBottomSheet.vue')['default']
     ServerSettings: typeof import('./components/server/Settings.vue')['default']
     SnackQueue: typeof import('./components/SnackQueue.vue')['default']
+    SortList: typeof import('./components/sort/List.vue')['default']
+    SortTriState: typeof import('./components/sort/TriState.vue')['default']
     TempDrawer: typeof import('./components/TempDrawer.vue')['default']
     ThemeSelector: typeof import('./components/ThemeSelector.vue')['default']
     UserAuthenticationActivityTable: typeof import('./components/user/AuthenticationActivityTable.vue')['default']

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { useDisplay } from 'vuetify'
 import type { PresentationMode } from '@/types/libraries'
 import type { PageSize } from '@/types/page'
+import type { Sort } from '@/types/PageRequest'
 
 export const useAppStore = defineStore('app', {
   state: () => ({
@@ -17,6 +18,11 @@ export const useAppStore = defineStore('app', {
      * Use the getter to ensure a default value is always set.
      */
     presentationMode: {} as Record<string, PresentationMode>,
+    /**
+     * Store the sort order per view.
+     * Use the getter to ensure a default value is always set.
+     */
+    sortActive: {} as Record<string, Sort[]>,
     gridCardWidth: 150,
     // transient
     reorderLibraries: false,
@@ -27,6 +33,14 @@ export const useAppStore = defineStore('app', {
         get: () => state.presentationMode[key] ?? (state.presentationMode[key] = defaultValue),
         set: (value) => {
           state.presentationMode[key] = value
+        },
+      })
+    },
+    getSortActive: (state) => (key: string, defaultValue: Sort[]) => {
+      return computed({
+        get: () => state.sortActive[key] ?? (state.sortActive[key] = defaultValue),
+        set: (value) => {
+          state.sortActive[key] = value
         },
       })
     },

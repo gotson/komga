@@ -186,6 +186,13 @@
       <v-divider />
 
       <v-list-subheader>{{ $formatMessage(commonMessages.filterPanelSort) }}</v-list-subheader>
+
+      <SortList
+        v-model="sortActive"
+        :items="sortOptions"
+        color="primary"
+        mandatory
+      />
     </v-list>
   </TempDrawer>
 
@@ -286,6 +293,8 @@ import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import { authorRoles } from '@/types/referential'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { useIntlFormatter } from '@/composables/intlFormatter'
+import { sortSeries } from '@/types/sort'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -296,7 +305,8 @@ const intl = useIntl()
 const display = useDisplay()
 const appStore = useAppStore()
 const { browsingPageSize } = storeToRefs(appStore)
-const presentationMode = appStore.getPresentationMode(`${libraryId}_series`, 'grid')
+const viewName = computed(() => `${libraryId}_series`)
+const presentationMode = appStore.getPresentationMode(viewName.value, 'grid')
 const presentationModeEffective = computed(() =>
   display.xs.value ? 'grid' : presentationMode.value,
 )
@@ -380,6 +390,12 @@ const { data: filterLanguage } = useRouteQuerySchema('language', SchemaFilterStr
 const { data: filterReleaseYear } = useRouteQuerySchema('year', SchemaSeriesReleaseYears)
 const { data: filterAgeRating } = useRouteQuerySchema('age', SchemaSeriesAgeRatings)
 
+const { convertSortOptionDescriptor } = useIntlFormatter()
+const sortActive = appStore.getSortActive(viewName.value, [
+  { key: 'metadata.titleSort', order: 'asc' },
+])
+const sortOptions = sortSeries.map((it) => convertSortOptionDescriptor(it))
+
 const conds = computed(() => ({
   allOf: [
     librariesCondition.value as components['schemas']['AnyOfSeries'],
@@ -406,7 +422,7 @@ const { data: series } = useQuery(() =>
     search: {
       condition: conds.value as components['schemas']['AllOfSeries'],
     },
-    pageRequest: PageRequest.FromPageSize(appStore.browsingPageSize, page0.value),
+    pageRequest: PageRequest.FromPageSize(appStore.browsingPageSize, page0.value, sortActive.value),
   }),
 )
 
