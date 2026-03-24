@@ -87,7 +87,7 @@ const infiniteItems = computed(() => {
   ]
 })
 
-const hideSearch = computed(() => (infiniteData.value?.pages?.[0]?.totalElements || 100) < 10)
+const hideSearch = computed(() => (infiniteData.value?.pages?.[0]?.totalElements || 0) < 10)
 
 function toItemType(authorName: string): ItemType<Author> {
   return {
