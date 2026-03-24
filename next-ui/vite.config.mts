@@ -124,7 +124,6 @@ export default defineConfig(({ mode }) => ({
             provider: playwright(),
             instances: [{ browser: 'chromium' }],
           },
-          setupFiles: ['.storybook/vitest.setup.ts'],
           globals: true,
           server: {
             deps: {
