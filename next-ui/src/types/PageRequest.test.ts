@@ -2,6 +2,16 @@ import { describe, expect, test } from 'vitest'
 import { PageRequest } from '@/types/PageRequest'
 
 describe('PageRequest destructuring', () => {
+  test('spread', () => {
+    const input = new PageRequest(5, 10, [{ key: 'title', order: 'asc' }], false)
+    const p = { ...input }
+
+    expect(p.page).toStrictEqual(5)
+    expect(p.size).toStrictEqual(10)
+    expect(p.sort).toStrictEqual(['title,asc'])
+    expect(p.unpaged).toStrictEqual(false)
+  })
+
   test('default constructor', () => {
     const input = new PageRequest(5, 10, [{ key: 'title', order: 'asc' }], false)
     const { page, size, sort, unpaged } = input

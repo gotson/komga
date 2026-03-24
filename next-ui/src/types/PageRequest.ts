@@ -15,7 +15,9 @@ function vSortItemToSort(sortItem: VSortItem): Sort {
   }
 }
 
-function sortToString(sortItem: Sort): string {
+function sortToString(sortItem: Sort | string): string {
+  if (typeof sortItem === 'string') return sortItem
+
   let sort = sortItem.key
   if (sortItem.order) sort += `,${sortItem.order}`
   return sort
@@ -25,11 +27,7 @@ export class PageRequest {
   readonly unpaged?: boolean
   readonly page?: number
   readonly size?: number
-  private readonly _sort?: Sort[]
-
-  get sort(): string[] | undefined {
-    return this._sort?.map((it) => sortToString(it))
-  }
+  readonly sort?: string[]
 
   static FromPageSize(pageSize: PageSize, page?: number, sort?: Sort[]) {
     return new PageRequest(
@@ -71,13 +69,13 @@ export class PageRequest {
     )
   }
 
-  constructor(page?: number, size?: number, sort?: Sort[], unpaged?: boolean) {
+  constructor(page?: number, size?: number, sort?: Sort[] | string[], unpaged?: boolean) {
     if (page && page < 0) throw new Error('page cannot be negative')
     if (size && size < 0) throw new Error('size cannot be negative')
 
     this.page = page
     this.size = size
-    this._sort = sort
+    this.sort = sort?.map((it) => sortToString(it))
     this.unpaged = unpaged
   }
 }
