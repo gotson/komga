@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import CreateEdit from './CreateEdit.vue'
 import { ScanInterval } from '@/types/ScanInterval'
 import { SeriesCover } from '@/types/SeriesCover'
-import { getLibraryDefaults } from '@/modules/libraries'
+import { getLibraryDefaults } from '@/functions/libraries'
 
 const meta = {
   component: CreateEdit,
