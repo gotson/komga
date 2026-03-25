@@ -53,7 +53,7 @@
             />
             <v-checkbox
               v-if="mode === 'checkbox'"
-              :rules="['required']"
+              :rules="[rules.required()]"
               hide-details
               :color="colorEffective"
               :label="
@@ -105,8 +105,10 @@
 <script setup lang="ts">
 import { defineMessage, useIntl } from 'vue-intl'
 import type { DialogConfirmProps } from '@/types/dialog'
+import { useRules } from 'vuetify/labs/rules'
 
 const intl = useIntl()
+const rules = useRules()
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const emit = defineEmits<{

@@ -103,7 +103,7 @@
                 })
               "
               :min="1"
-              :rules="['required']"
+              :rules="[rules.required()]"
             ></v-number-input>
           </v-col>
         </v-row>
@@ -136,7 +136,7 @@
                 })
               "
               :min="1"
-              :rules="['required']"
+              :rules="[rules.required()]"
             ></v-number-input>
             <v-checkbox
               v-model="proxyModel.value.renewRememberMeKey"
@@ -215,8 +215,7 @@
               :persistent-placeholder="!!settings?.serverContextPath.configurationSource"
               clearable
               :rules="[
-                [
-                  'pattern',
+                rules.pattern(
                   /^\/[-a-zA-Z0-9_\/]*[a-zA-Z0-9]$/,
                   $formatMessage({
                     description:
@@ -225,7 +224,7 @@
                       'Must start with \'/\', not end with \'/-_\', and contain only \'/-_a-z0-9\'',
                     id: 'Lto2Lg',
                   }),
-                ],
+                ),
               ]"
               ><template
                 v-if="!!settings?.serverContextPath.configurationSource"
@@ -329,8 +328,10 @@ import { ThumbnailSize, thumbnailSizeMessages } from '@/types/ThumbnailSize'
 import { useIntl } from 'vue-intl'
 import type { components } from '@/generated/openapi/komga'
 import { watchImmediate } from '@vueuse/core'
+import { useRules } from 'vuetify/labs/rules'
 
 const intl = useIntl()
+const rules = useRules()
 
 const { settings, loading = false } = defineProps<{
   settings?: components['schemas']['SettingsDto']

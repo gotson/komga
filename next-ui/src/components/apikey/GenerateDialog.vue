@@ -49,7 +49,7 @@
                     id: 'oWsqnh',
                   })
                 "
-                :rules="['required']"
+                :rules="[rules.required()]"
                 :error-messages="creationError"
                 :disabled="isLoading || !!createdKey"
                 autofocus
@@ -143,8 +143,10 @@ import { useMessagesStore } from '@/stores/messages'
 import type { components } from '@/generated/openapi/komga'
 import { useClipboard } from '@vueuse/core'
 import type { VDialog } from 'vuetify/components'
+import { useRules } from 'vuetify/labs/rules'
 
 const intl = useIntl()
+const rules = useRules()
 const messagesStore = useMessagesStore()
 const { isSupported: clipboardSupported, copy, copied } = useClipboard({ copiedDuring: 3000 })
 

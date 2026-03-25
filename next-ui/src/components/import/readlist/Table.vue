@@ -151,7 +151,7 @@
             <v-col>
               <v-text-field
                 v-model="readListName"
-                :rules="['required']"
+                :rules="[rules.required()]"
                 :disabled="finishedState"
                 clearable
                 :label="
@@ -238,6 +238,7 @@ import { useMessagesStore } from '@/stores/messages'
 import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { PageRequest } from '@/types/PageRequest'
+import { useRules } from 'vuetify/labs/rules'
 
 class ReadListEntry {
   index: number
@@ -282,6 +283,7 @@ class ReadListEntry {
 
 const display = useDisplay()
 const intl = useIntl()
+const rules = useRules()
 const messagesStore = useMessagesStore()
 
 const { match, loading = false } = defineProps<{

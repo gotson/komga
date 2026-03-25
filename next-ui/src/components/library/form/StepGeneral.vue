@@ -4,7 +4,7 @@
       <v-col>
         <v-text-field
           v-model="model.name"
-          :rules="['required']"
+          :rules="[rules.required()]"
           :label="
             $formatMessage({
               description: 'Form add/edit library: General - library name',
@@ -21,7 +21,7 @@
       <v-col>
         <v-text-field
           v-model="model.root"
-          :rules="['required']"
+          :rules="[rules.required()]"
           :label="
             $formatMessage({
               description: 'Form add/edit library: General - root directory',
@@ -73,8 +73,10 @@
 import type { components } from '@/generated/openapi/komga'
 import RemoteFileList from '@/components/RemoteFileList.vue'
 import { useDisplay } from 'vuetify'
+import { useRules } from 'vuetify/labs/rules'
 
 const display = useDisplay()
+const rules = useRules()
 
 const id = useId()
 

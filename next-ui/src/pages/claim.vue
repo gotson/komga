@@ -45,7 +45,7 @@
               })
             "
             autofocus
-            :rules="['required', 'email']"
+            :rules="[rules.required(), rules.email()]"
           />
         </v-col>
       </v-row>
@@ -61,7 +61,7 @@
                 id: 'U3Uo3q',
               })
             "
-            :rules="['required']"
+            :rules="[rules.required()]"
             autocomplete="off"
             :type="showPassword ? 'text' : 'password'"
             :append-inner-icon="showPassword ? 'i-mdi:eye' : 'i-mdi:eye-off'"
@@ -137,9 +137,11 @@ import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useClaimServer, useClaimStatus } from '@/colada/claim'
 import { useLogin } from '@/colada/users'
+import { useRules } from 'vuetify/labs/rules'
 
 const messagesStore = useMessagesStore()
 const intl = useIntl()
+const rules = useRules()
 
 const form = ref()
 const username = ref('')

@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     v-model="newPassword"
-    :rules="['required']"
+    :rules="[rules.required()]"
     :label="
       $formatMessage({
         description: 'User password change dialog: New Password field label',
@@ -44,6 +44,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRules } from 'vuetify/labs/rules'
+
+const rules = useRules()
+
 const newPassword = defineModel<string>()
 
 const confirmPassword = ref<string>()

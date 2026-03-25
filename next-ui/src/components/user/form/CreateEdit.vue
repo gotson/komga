@@ -6,7 +6,7 @@
           <v-text-field
             v-model="user!.email"
             autofocus
-            :rules="['required', 'email']"
+            :rules="[rules.required(), rules.email()]"
             :label="
               $formatMessage({
                 description: 'User creation dialog: Email field',
@@ -21,7 +21,7 @@
         <v-col>
           <v-text-field
             v-model="user.password"
-            :rules="['required']"
+            :rules="[rules.required()]"
             :label="
               $formatMessage({
                 description: 'User creation dialog: Password field',
@@ -184,7 +184,7 @@
             })
           "
           :min="0"
-          :rules="['required']"
+          :rules="[rules.required()]"
         />
       </v-col>
     </v-row>
@@ -264,8 +264,10 @@ import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useQuery } from '@pinia/colada'
 import { PageRequest } from '@/types/PageRequest'
+import { useRules } from 'vuetify/labs/rules'
 
 const intl = useIntl()
+const rules = useRules()
 
 type UserExtend = {
   id?: string
