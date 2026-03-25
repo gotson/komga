@@ -451,7 +451,9 @@ const {
         body: apiQuery.value,
         params: {
           query: {
-            ...pageParam,
+            page: pageParam.page,
+            size: pageParam.size,
+            sort: sortActive.value.map((it) => sortToString(it)),
           },
         },
       })

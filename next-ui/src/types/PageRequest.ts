@@ -15,7 +15,7 @@ function vSortItemToSort(sortItem: VSortItem): Sort {
   }
 }
 
-function sortToString(sortItem: Sort | string): string {
+export function sortToString(sortItem: Sort | string): string {
   if (typeof sortItem === 'string') return sortItem
 
   let sort = sortItem.key
