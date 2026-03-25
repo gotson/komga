@@ -46,7 +46,7 @@
     "vue": "^3.5.30",
     "vue-intl": "^7.2.1",
     "vuedraggable": "^4.1.0",
-    "vuetify": "^4.0.3"
+    "vuetify": "^4.0.4"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.2",
@@ -75,7 +75,7 @@
     "eslint-plugin-formatjs": "^6.4.3",
     "eslint-plugin-storybook": "^10.3.3",
     "eslint-plugin-vue": "^10.8.0",
-    "happy-dom": "^20.8.7",
+    "happy-dom": "^20.8.8",
     "msw": "^2.12.14",
     "msw-storybook-addon": "^2.0.6",
     "npm-run-all2": "^8.0.4",
