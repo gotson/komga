@@ -31,7 +31,6 @@
     v-model="model"
     v-model:mode="modelMode"
     :items="shownItems"
-    color="primary"
     :show-mode-selector="showModeSelector"
     @load-more="emit('loadMore')"
   ></FilterList>

@@ -1,12 +1,18 @@
 <template>
   <v-list-item
-    :title="label"
+    density="compact"
     @click="cycle()"
-    ><template #prepend
-      ><v-icon
+  >
+    <template #prepend>
+      <v-icon
         :icon="icon"
-        :color="!!model ? color : undefined" /></template
-  ></v-list-item>
+        :color="!!model ? color : undefined"
+    /></template>
+
+    <template #title
+      ><span class="text-body-medium">{{ label }}</span></template
+    >
+  </v-list-item>
 </template>
 
 <script setup lang="ts">
@@ -23,7 +29,7 @@ const emit = defineEmits<{
 const {
   label,
   triState = true,
-  color,
+  color = 'primary',
 } = defineProps<{
   /**
    * Label shown next to the checkbox.
@@ -34,7 +40,7 @@ const {
    */
   triState?: boolean
   /**
-   * Base color. Applies to the checkbox when the value is not `undefined`.
+   * Base color. Applies to the checkbox when the value is not `undefined`. Defaults to 'primary'.
    */
   color?: string
 }>()

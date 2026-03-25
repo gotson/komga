@@ -2,7 +2,6 @@
   <FilterList
     v-model="model"
     :items="items"
-    color="primary"
   />
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <v-list-item
-    :title="sortOption.label"
+    density="compact"
     @click="cycle()"
   >
     <template #prepend>
@@ -16,6 +16,10 @@
         :class="!!model && !!number ? '' : 'opacity-0'"
       />
     </template>
+
+    <template #title
+      ><span class="text-body-medium">{{ sortOption.label }}</span></template
+    >
   </v-list-item>
 </template>
 
@@ -38,7 +42,7 @@ const emit = defineEmits<{
 const {
   sortOption,
   number,
-  color,
+  color = 'primary',
   mandatory = false,
 } = defineProps<{
   sortOption: SortOption
@@ -47,7 +51,7 @@ const {
    */
   number?: number
   /**
-   * Base color. Applies to the icon when the value is not `undefined`.
+   * Base color. Applies to the icon when the value is not `undefined`. Defaults to 'primary'.
    */
   color?: string
   mandatory?: boolean

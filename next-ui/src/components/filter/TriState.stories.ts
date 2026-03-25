@@ -36,7 +36,7 @@ export const Default: Story = {
 
 export const Color: Story = {
   args: {
-    color: 'primary',
+    color: 'red',
     modelValue: 'include',
   },
 }
