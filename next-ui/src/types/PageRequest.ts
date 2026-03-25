@@ -69,6 +69,15 @@ export class PageRequest {
     )
   }
 
+  public next(): PageRequest {
+    return new PageRequest(
+      this.page != undefined ? this.page + 1 : 0,
+      this.size,
+      this.sort,
+      this.unpaged,
+    )
+  }
+
   constructor(page?: number, size?: number, sort?: Sort[] | string[], unpaged?: boolean) {
     if (page && page < 0) throw new Error('page cannot be negative')
     if (size && size < 0) throw new Error('size cannot be negative')

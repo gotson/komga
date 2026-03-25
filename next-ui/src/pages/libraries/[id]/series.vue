@@ -2,16 +2,7 @@
   <v-app-bar>
     <v-spacer />
 
-    <v-slider
-      v-if="display.smAndUp.value"
-      v-model="appStore.gridCardWidth"
-      :min="130"
-      :max="200"
-      color="surface-darken"
-      hide-details
-      thumb-size="15"
-      max-width="80"
-    />
+    <PosterSizeSlider />
 
     <PresentationSelector
       v-if="display.smAndUp.value"
@@ -21,11 +12,18 @@
     />
 
     <PageSizeSelector
+      v-if="appStore.isBrowsingPaged"
       v-model="appStore.browsingPageSize"
       allow-unpaged
       :sizes="[1, 10, 20]"
     />
 
+    <PagingSelector
+      v-model="appStore.browsingPaging"
+      class="px-2"
+    />
+
+    <!-- We use padding end so that the badge is displayed properly, else it goes off screen -->
     <v-badge
       location="top right"
       color="primary"
@@ -196,70 +194,75 @@
     </v-list>
   </TempDrawer>
 
-  <template v-if="series">
-    <v-data-iterator
-      v-model="selectedItems"
-      return-object
-      :items="series.content"
-      :items-per-page="itemsPerPage"
-      :page="page1"
-      show-select
-    >
-      <template #default="{ items, toggleSelect, isSelected }">
-        <v-container
-          v-if="presentationModeEffective === 'grid'"
-          fluid
-        >
-          <v-row>
-            <v-col
-              v-for="(item, idx) in items"
-              :key="item.raw.id"
-              cols="auto"
-            >
-              <SeriesCard
-                stretch-poster
-                :series="item.raw"
-                :selected="isSelected(item)"
-                :pre-select="preSelect"
-                :width="display.xs.value ? undefined : appStore.gridCardWidth"
-                @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
-              />
-            </v-col>
-          </v-row>
-        </v-container>
-
-        <v-container
-          v-if="presentationModeEffective === 'list'"
-          fluid
-        >
-          <v-row
+  <v-data-iterator
+    v-model="selectedItems"
+    return-object
+    :items="seriesItems"
+    :items-per-page="appStore.browsingPaging === 'paged' ? itemsPerPage : -1"
+    :page="appStore.browsingPaging === 'paged' ? page1 : 1"
+    show-select
+  >
+    <template #default="{ items, toggleSelect, isSelected }">
+      <v-container
+        v-if="presentationModeEffective === 'grid'"
+        fluid
+      >
+        <v-row>
+          <v-col
             v-for="(item, idx) in items"
             :key="item.raw.id"
+            cols="auto"
           >
-            <v-col>
-              <SeriesCardWide
-                stretch-poster
-                :series="item.raw"
-                :selected="isSelected(item)"
-                :pre-select="preSelect"
-                :width="appStore.gridCardWidth"
-                @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
-              />
-            </v-col>
-          </v-row>
-        </v-container>
-      </template>
-    </v-data-iterator>
+            <SeriesCard
+              stretch-poster
+              :series="item.raw"
+              :selected="isSelected(item)"
+              :pre-select="preSelect"
+              :width="display.xs.value ? undefined : appStore.gridCardWidth"
+              @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
 
-    <v-pagination
-      v-model="page1"
-      :length="pageCount"
-    ></v-pagination>
-  </template>
+      <v-container
+        v-if="presentationModeEffective === 'list'"
+        fluid
+      >
+        <v-row
+          v-for="(item, idx) in items"
+          :key="item.raw.id"
+        >
+          <v-col>
+            <SeriesCardWide
+              stretch-poster
+              :series="item.raw"
+              :selected="isSelected(item)"
+              :pre-select="preSelect"
+              :width="appStore.gridCardWidth"
+              @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+    </template>
+  </v-data-iterator>
+
+  <v-pagination
+    v-if="appStore.isBrowsingPaged"
+    v-model="page1"
+    :length="pageCount"
+  />
+
+  <div
+    v-if="appStore.isBrowsingScroll && hasNextPage"
+    v-intersect="(isIntersecting: boolean) => (isIntersecting ? loadMore() : undefined)"
+    style="min-height: 40px"
+  ></div>
 </template>
 
 <script lang="ts" setup>
-import { useQuery } from '@pinia/colada'
+import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesListQuery } from '@/colada/series'
 import type { components } from '@/generated/openapi/komga'
 import { PageRequest } from '@/types/PageRequest'
@@ -295,6 +298,8 @@ import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortSeries } from '@/types/sort'
+import { komgaClient } from '@/api/komga-client'
+import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -414,21 +419,56 @@ const conds = computed(() => ({
   ],
 }))
 
-// clear selection if filter changes
-watch(conds, () => selectionStore.clear())
+// clear selection if filter or paging changes
+watch([conds, () => appStore.browsingPaging], () => selectionStore.clear())
 
-const { data: series } = useQuery(() =>
-  seriesListQuery({
-    search: {
-      condition: conds.value as components['schemas']['AllOfSeries'],
-    },
+const apiQuery = computed(() => ({
+  condition: conds.value as components['schemas']['AllOfSeries'],
+}))
+
+const { data: series } = useQuery(() => ({
+  ...seriesListQuery({
+    search: { ...apiQuery.value },
     pageRequest: PageRequest.FromPageSize(appStore.browsingPageSize, page0.value, sortActive.value),
   }),
-)
+  enabled: appStore.isBrowsingPaged,
+}))
 
 watch(series, (newSeries) => {
   if (newSeries) pageCount.value = newSeries.totalPages ?? 0
 })
+
+const {
+  data: infiniteData,
+  loadNextPage,
+  hasNextPage,
+} = useInfiniteQuery({
+  key: () => ['infinite_series', apiQuery.value, sortActive.value],
+  initialPageParam: new PageRequest(0, 50, sortActive.value),
+  query: ({ pageParam }) =>
+    komgaClient
+      .POST('/api/v1/series/list', {
+        body: apiQuery.value,
+        params: {
+          query: {
+            ...pageParam,
+          },
+        },
+      })
+      // unwrap the openapi-fetch structure on success
+      .then((res) => res.data),
+  getNextPageParam: (lastPage, _, lastPageParam) => (!lastPage?.last ? lastPageParam.next() : null),
+  enabled: appStore.isBrowsingScroll,
+})
+const infiniteSeries = computed(() => infiniteData.value?.pages.flatMap((it) => it?.content ?? []))
+
+const seriesItems = computed(() =>
+  appStore.isBrowsingPaged ? series.value?.content : infiniteSeries.value,
+)
+
+function loadMore() {
+  void loadNextPage()
+}
 
 const filterDrawer = ref(false)
 

@@ -70,8 +70,7 @@ const { data: infiniteData, loadNextPage } = useInfiniteQuery({
       })
       // unwrap the openapi-fetch structure on success
       .then((res) => res.data),
-  getNextPageParam: (lastPage) =>
-    !lastPage?.last ? new PageRequest((lastPage?.number ?? 0) + 1, lastPage?.size) : null,
+  getNextPageParam: (lastPage, _, lastPageParam) => (!lastPage?.last ? lastPageParam.next() : null),
 })
 const infiniteItems = computed(() => {
   const itemTypes = (infiniteData.value?.pages.flatMap((it) => it?.content ?? []) ?? []).map((it) =>

@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { useDisplay } from 'vuetify'
 import type { PresentationMode } from '@/types/libraries'
-import type { PageSize } from '@/types/page'
+import type { PageSize, Paging } from '@/types/page'
 import type { Sort } from '@/types/PageRequest'
 
 export const useAppStore = defineStore('app', {
@@ -13,6 +13,7 @@ export const useAppStore = defineStore('app', {
     rememberMe: false,
     importBooksPath: '',
     browsingPageSize: 20 as PageSize,
+    browsingPaging: 'scroll' as Paging,
     /**
      * Store the presentation mode per view.
      * Use the getter to ensure a default value is always set.
@@ -28,6 +29,12 @@ export const useAppStore = defineStore('app', {
     reorderLibraries: false,
   }),
   getters: {
+    isBrowsingPaged(state) {
+      return state.browsingPaging === 'paged'
+    },
+    isBrowsingScroll(state) {
+      return state.browsingPaging === 'scroll'
+    },
     getPresentationMode: (state) => (key: string, defaultValue: PresentationMode) => {
       return computed({
         get: () => state.presentationMode[key] ?? (state.presentationMode[key] = defaultValue),
@@ -54,7 +61,9 @@ export const useAppStore = defineStore('app', {
       'rememberMe',
       'importBooksPath',
       'browsingPageSize',
+      'browsingPaging',
       'presentationMode',
+      'sortActive',
       'gridCardWidth',
     ],
   },
