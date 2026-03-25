@@ -1,6 +1,6 @@
 import { defineQuery, useQuery } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
-import type { ActuatorInfo } from '@/types/Actuator'
+import type { ActuatorInfo } from '@/types/actuator'
 
 export const useActuatorInfo = defineQuery(() => {
   const { data, ...rest } = useQuery({
