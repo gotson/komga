@@ -416,7 +416,7 @@ const conds = computed(() => ({
     ...Object.entries(filterAuthors).map(([, filter]) =>
       schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
     ),
-  ],
+  ].filter(Boolean),
 }))
 
 // clear selection if filter or paging changes

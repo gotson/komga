@@ -13,6 +13,7 @@ import * as v from 'valibot'
 export function schemaFilterSeriesStatusToConditions(
   filter: InferOutput<typeof SchemaFilterSeriesStatus>,
 ) {
+  if (filter.v.length === 0) return null
   const list = filter.v.map((it) => ({
     seriesStatus: {
       operator: 'is',
@@ -29,6 +30,7 @@ export function schemaFilterAuthorsToConditions(
   filter: InferOutput<typeof SchemaFilterAuthors>,
   role?: string,
 ) {
+  if (filter.v.length === 0) return null
   const list = filter.v.map((it) => {
     if (v.is(SchemaAnyNone, it)) {
       return {
@@ -65,6 +67,7 @@ export function schemaFilterAuthorsToConditions(
 export function schemaFilterReadStatusToConditions(
   filter: InferOutput<typeof SchemaFilterReadStatus>,
 ) {
+  if (filter.v.length === 0) return null
   const list = filter.v.map((it) => {
     return {
       readStatus: {
@@ -83,6 +86,7 @@ export function schemaFilterStringToConditions(
   key: string,
   nullable: boolean,
 ) {
+  if (filter.v.length === 0) return null
   const list = filter.v.map((it) => {
     if (v.is(SchemaAnyNone, it)) {
       if (nullable)
@@ -154,6 +158,7 @@ export function schemaFilterReleaseYearToConditions(
       })
     }
   }
+  if (conds.length === 0) return null
   return {
     allOf: conds,
   }
@@ -200,6 +205,7 @@ export function schemaFilterAgeRatingToConditions(
       })
     }
   }
+  if (conds.length === 0) return null
   return {
     allOf: conds,
   }
