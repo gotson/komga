@@ -59,6 +59,17 @@
         </div>
       </v-list-subheader>
 
+      <FilterByReadStatus
+        v-model="filterReadStatus.v"
+        class="py-0"
+      />
+
+      <v-list class="py-0">
+        <FilterByOneShot v-model="filterOneShot" />
+        <FilterByComplete v-model="filterComplete" />
+        <FilterByUnavailable v-model="filterUnavailable" />
+      </v-list>
+
       <v-expansion-panels
         v-model="filterExpansionPanels"
         variant="accordion"
@@ -66,13 +77,6 @@
         flat
         tile
       >
-        <FilterExpansionPanel
-          :title="$formatMessage(commonMessages.filterPanelReadStatus)"
-          :count="filterReadStatus.v.length"
-          @clear="clearFilter(filterReadStatus)"
-        >
-          <FilterByReadStatus v-model="filterReadStatus.v" />
-        </FilterExpansionPanel>
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelSeriesStatus)"
           :count="filterSeriesStatus.v.length"
@@ -188,7 +192,6 @@
       <SortList
         v-model="sortActive"
         :items="sortOptions"
-        color="primary"
         mandatory
       />
     </v-list>
@@ -265,7 +268,7 @@
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesListQuery } from '@/colada/series'
 import type { components } from '@/generated/openapi/komga'
-import { PageRequest } from '@/types/PageRequest'
+import { PageRequest, sortToString } from '@/types/PageRequest'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { useItemsPerPage, usePagination } from '@/composables/pagination'
@@ -280,15 +283,18 @@ import {
   schemaFilterReleaseYearToConditions,
   schemaFilterAgeRatingToConditions,
   schemaFilterReadStatusToConditions,
+  schemaFilterIncludeExcludeToConditions,
 } from '@/functions/filter'
 import * as v from 'valibot'
 import {
+  type FilterIncludeExclude,
   type FilterType,
   type FilterTypeSelectRange,
   SchemaFilterAuthors,
   SchemaFilterReadStatus,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
+  SchemaIncludeExclude,
   SchemaSeriesAgeRatings,
   SchemaSeriesReleaseYears,
 } from '@/types/filter'
@@ -356,6 +362,10 @@ function clearFilterSelectRange(filter: FilterTypeSelectRange) {
   filter.max = undefined
 }
 
+function clearFilterSolo(filter: FilterIncludeExclude) {
+  filter.i = undefined
+}
+
 function clearFilters() {
   clearFilter(filterSeriesStatus.value)
   clearFilter(filterReadStatus.value)
@@ -364,6 +374,9 @@ function clearFilters() {
   clearFilter(filterPublisher.value)
   clearFilter(filterSharingLabel.value)
   clearFilter(filterLanguage.value)
+  clearFilterSolo(filterComplete.value)
+  clearFilterSolo(filterUnavailable.value)
+  clearFilterSolo(filterOneShot.value)
   clearFilterSelectRange(filterReleaseYear.value)
   clearFilterSelectRange(filterAgeRating.value)
   Object.entries(filterAuthors).map(([, filter]) => clearFilter(filter.filter))
@@ -371,6 +384,9 @@ function clearFilters() {
 
 const filterCount = computed(
   () =>
+    (!!filterComplete.value.i ? 1 : 0) +
+    (!!filterUnavailable.value.i ? 1 : 0) +
+    (!!filterOneShot.value.i ? 1 : 0) +
     filterReadStatus.value.v.length +
     filterSeriesStatus.value.v.length +
     filterGenre.value.v.length +
@@ -394,6 +410,9 @@ const { data: filterSharingLabel } = useRouteQuerySchema('sharingLabel', SchemaF
 const { data: filterLanguage } = useRouteQuerySchema('language', SchemaFilterStrings)
 const { data: filterReleaseYear } = useRouteQuerySchema('year', SchemaSeriesReleaseYears)
 const { data: filterAgeRating } = useRouteQuerySchema('age', SchemaSeriesAgeRatings)
+const { data: filterComplete } = useRouteQuerySchema('complete', SchemaIncludeExclude)
+const { data: filterUnavailable } = useRouteQuerySchema('unavailable', SchemaIncludeExclude)
+const { data: filterOneShot } = useRouteQuerySchema('oneshot', SchemaIncludeExclude)
 
 const { convertSortOptionDescriptor } = useIntlFormatter()
 const sortActive = appStore.getSortActive(viewName.value, [
@@ -404,6 +423,9 @@ const sortOptions = sortSeries.map((it) => convertSortOptionDescriptor(it))
 const conds = computed(() => ({
   allOf: [
     librariesCondition.value as components['schemas']['AnyOfSeries'],
+    schemaFilterIncludeExcludeToConditions(filterComplete.value, 'complete'),
+    schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
+    schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
     schemaFilterSeriesStatusToConditions(filterSeriesStatus.value),
     schemaFilterReadStatusToConditions(filterReadStatus.value),
     schemaFilterStringToConditions(filterGenre.value, 'genre', true),

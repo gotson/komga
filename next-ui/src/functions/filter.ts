@@ -1,4 +1,5 @@
 import {
+  type FilterIncludeExclude,
   SchemaAnyNone,
   SchemaFilterAuthors,
   SchemaFilterReadStatus,
@@ -78,6 +79,15 @@ export function schemaFilterReadStatusToConditions(
   })
   return {
     anyOf: list,
+  }
+}
+
+export function schemaFilterIncludeExcludeToConditions(filter: FilterIncludeExclude, key: string) {
+  if (!filter.i) return null
+  return {
+    [key]: {
+      operator: filter.i === 'i' ? 'isTrue' : 'isFalse',
+    },
   }
 }
 

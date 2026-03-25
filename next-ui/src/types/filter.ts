@@ -41,7 +41,7 @@ export const SchemaAnyAll = v.strictObject({
   m: v.optional(v.picklist(['anyOf', 'allOf']), 'anyOf'),
 })
 
-const SchemaIncludeExclude = v.strictObject({
+export const SchemaIncludeExclude = v.strictObject({
   /**
    * Shorthand for `include`.
    *
@@ -152,5 +152,7 @@ export const SchemaFilterSelectRange = createSchemaFilterSelectRange(
   v.union([v.string(), v.number()]),
 )
 export type FilterTypeSelectRange = v.InferOutput<typeof SchemaFilterSelectRange>
+
+export type FilterIncludeExclude = v.InferOutput<typeof SchemaIncludeExclude>
 
 export type FilterType = FilterTypeAnyAll | FilterTypeSimpleList
