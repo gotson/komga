@@ -381,9 +381,7 @@ class LibraryContentLifecycle(
           logger.info { "Match found, restore $match into $bookToAdd" }
           transactionTemplate.executeWithoutResult {
             // copy media
-            mediaRepository.findById(match.id).let { deleted ->
-              mediaRepository.update(deleted.copy(bookId = bookToAdd.id))
-            }
+            mediaRepository.copy(match.id, bookToAdd.id)
 
             // copy generated and user uploaded thumbnails
             thumbnailBookRepository.findAllByBookIdAndType(match.id, setOf(ThumbnailBook.Type.GENERATED, ThumbnailBook.Type.USER_UPLOADED)).forEach { deleted ->

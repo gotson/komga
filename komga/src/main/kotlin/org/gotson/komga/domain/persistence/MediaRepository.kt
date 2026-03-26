@@ -24,6 +24,14 @@ interface MediaRepository {
 
   fun update(media: Media)
 
+  /**
+   * Performs a full copy of a Media, including MediaExtension, pages, and files.
+   */
+  fun copy(
+    fromBookId: String,
+    toBookId: String,
+  )
+
   fun delete(bookId: String)
 
   fun delete(bookIds: Collection<String>)

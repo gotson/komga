@@ -1,6 +1,7 @@
 package org.gotson.komga.infrastructure.jooq.main
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.Media
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.time.ZoneId
+
+private val logger = KotlinLogging.logger {}
 
 @Component
 class MediaDao(
@@ -158,7 +161,14 @@ class MediaDao(
                 media.pageCount,
                 media.epubDivinaCompatible,
                 media.epubIsKepub,
-                media.extension?.let { if (it is ProxyExtension) null else it::class.qualifiedName },
+                media.extension?.let {
+                  if (it is ProxyExtension) {
+                    logger.error { "Found ProxyExtension while trying to insert Media: this is not expected and should be reported." }
+                    null
+                  } else {
+                    it::class.qualifiedName
+                  }
+                },
                 media.extension?.let { if (it is ProxyExtension) null else mapper.serializeJsonGz(it) },
               )
             }
@@ -249,9 +259,13 @@ class MediaDao(
       .set(m.EPUB_DIVINA_COMPATIBLE, media.epubDivinaCompatible)
       .set(m.EPUB_IS_KEPUB, media.epubIsKepub)
       .apply {
-        if (media.extension != null && media.extension !is ProxyExtension) {
-          set(m.EXTENSION_CLASS, media.extension::class.qualifiedName)
-          set(m.EXTENSION_VALUE_BLOB, mapper.serializeJsonGz(media.extension))
+        if (media.extension != null) {
+          if (media.extension !is ProxyExtension) {
+            set(m.EXTENSION_CLASS, media.extension::class.qualifiedName)
+            set(m.EXTENSION_VALUE_BLOB, mapper.serializeJsonGz(media.extension))
+          } else {
+            logger.error { "Found ProxyExtension while trying to update Media: this is not expected and should be reported." }
+          }
         }
       }.set(m.LAST_MODIFIED_DATE, LocalDateTime.now(ZoneId.of("Z")))
       .where(m.BOOK_ID.eq(media.bookId))
@@ -269,6 +283,18 @@ class MediaDao(
 
     dslRW.insertPages(listOf(media))
     dslRW.insertFiles(listOf(media))
+  }
+
+  @Transactional
+  override fun copy(
+    fromBookId: String,
+    toBookId: String,
+  ) {
+    val source = findById(fromBookId)
+    val sourceExtension = findExtensionByIdOrNull(fromBookId)
+
+    val copy = source.copy(bookId = toBookId, extension = sourceExtension)
+    update(copy)
   }
 
   @Transactional
