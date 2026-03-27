@@ -1,3 +1,12 @@
+# [1.24.3](https://github.com/gotson/komga/compare/1.24.2...1.24.3) (2026-03-27)
+## 🐛 Fixes
+**webui**
+- epub reader would not load ([b8ea79e](https://github.com/gotson/komga/commits/b8ea79e))
+
+## ⚙️ Dependencies
+**webui**
+- bump node-forge from 1.3.2 to 1.4.0 in /komga-webui ([40dadcb](https://github.com/gotson/komga/commits/40dadcb))
+
 # [1.24.2](https://github.com/gotson/komga/compare/1.24.1...1.24.2) (2026-03-26)
 ## 🐛 Fixes
 **docker**
