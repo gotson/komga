@@ -1,23 +1,21 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 import { loadLocale, fallbackLocale, setLocale, getLocale, availableLocales } from './locale-helper'
 
-describe('locale', () => {
-  beforeEach(() => {
-    // mock the available locales, as locales are checked against what's available
-    vi.mock('@/i18n?dir2json&ext=.json&1', () => {
-      return {
-        default: {
-          en: {
-            sample: 'sample',
-          },
-          fr: {
-            sample: 'échantillon',
-          },
-        } as Record<string, Record<string, string>>,
-      }
-    })
-  })
+// mock the available locales, as locales are checked against what's available
+vi.mock('@/i18n?dir2json&ext=.json&1', () => {
+  return {
+    default: {
+      en: {
+        sample: 'sample',
+      },
+      fr: {
+        sample: 'échantillon',
+      },
+    } as Record<string, Record<string, string>>,
+  }
+})
 
+describe('locale', () => {
   afterEach(() => {
     localStorage.clear()
   })
