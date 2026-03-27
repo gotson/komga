@@ -751,7 +751,7 @@ export default Vue.extend({
 
       const fontFamiliesInjectables = this.fontFamiliesAdditional.map(x => ({
         type: 'style',
-        url: new URL(`${urls.origin}api/v1/fonts/resource/${x}/css`, import.meta.url).toString(),
+        url: new URL(`${urls.origin}api/v1/fonts/resource/${x}/css`).toString(),
         fontFamily: x,
       }))
 
