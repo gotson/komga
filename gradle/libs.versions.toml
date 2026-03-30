@@ -7,4 +7,4 @@ lucene = "9.9.1" # v10 requires JDK 21
 jooq = "3.19.24" # should be aligned with the version provided by Spring Boot
 
 [plugins]
-gradleGitProperties = {id = "com.gorylenko.gradle-git-properties", version = "2.5.2"}
+gradleGitProperties = {id = "com.gorylenko.gradle-git-properties", version = "2.5.7"}
