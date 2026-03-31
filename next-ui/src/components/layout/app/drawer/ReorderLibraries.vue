@@ -10,15 +10,10 @@
       }}</v-list-item-title>
       <template #append>
         <v-icon-btn
+          v-tooltip:bottom="closeMessage"
           icon="i-mdi:close"
           variant="text"
-          :aria-label="
-            $formatMessage({
-              description: 'Reorder library drawer: aria label',
-              defaultMessage: 'close',
-              id: 'Ept33T',
-            })
-          "
+          :aria-label="closeMessage"
           @click="appStore.reorderLibraries = false"
         />
       </template>
@@ -107,7 +102,9 @@ import type { components } from '@/generated/openapi/komga'
 import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import { useUpdateClientSettingsUser } from '@/colada/client-settings'
 import { useAppStore } from '@/stores/app'
+import { useIntl } from 'vue-intl'
 
+const intl = useIntl()
 const appStore = useAppStore()
 
 const { unpinned, pinned, refresh } = useLibraries()
@@ -139,6 +136,12 @@ const draggableConfig = {
   chosenClass: 'chosen',
   animation: 150,
 }
+
+const closeMessage = intl.formatMessage({
+  description: 'Reorder library drawer: close button',
+  defaultMessage: 'Close',
+  id: 'lPZ5hy',
+})
 </script>
 
 <style lang="scss">

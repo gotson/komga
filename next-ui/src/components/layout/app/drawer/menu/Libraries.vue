@@ -13,6 +13,13 @@
     <template #append>
       <v-icon-btn
         v-if="isAdmin"
+        v-tooltip:bottom="
+          $formatMessage({
+            description: 'Add library button: tooltip',
+            defaultMessage: 'Create library',
+            id: '70/wK4',
+          })
+        "
         icon="i-mdi:plus"
         variant="text"
         :aria-label="

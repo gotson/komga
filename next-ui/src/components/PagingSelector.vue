@@ -7,10 +7,24 @@
     color="primary"
   >
     <v-btn
+      v-tooltip:bottom="
+        $formatMessage({
+          description: 'View mode scroll button tooltip',
+          defaultMessage: 'Scroll',
+          id: '3DBPuv',
+        })
+      "
       icon="i-mdi:infinity"
       value="scroll"
     />
     <v-btn
+      v-tooltip:bottom="
+        $formatMessage({
+          description: 'View mode paginated button tooltip',
+          defaultMessage: 'Paginated',
+          id: 'bCFD9B',
+        })
+      "
       icon="i-mdi:view-grid"
       value="paged"
     />

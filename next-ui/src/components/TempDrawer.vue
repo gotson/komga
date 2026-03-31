@@ -11,7 +11,9 @@
       disable-route-watcher
     >
       <v-icon-btn
+        v-tooltip:bottom="closeMessage"
         icon="i-mdi:close"
+        :aria-label="closeMessage"
         variant="text"
         class="position-absolute top-0 right-0 me-2 mt-1"
         style="z-index: 2"
@@ -23,8 +25,18 @@
 </template>
 
 <script setup lang="ts">
+import { useIntl } from 'vue-intl'
+
+const intl = useIntl()
+
 const model = defineModel<boolean>({ default: false })
 const { location = 'end' } = defineProps<{
   location?: 'top' | 'end' | 'bottom' | 'start' | 'left' | 'right'
 }>()
+
+const closeMessage = intl.formatMessage({
+  description: 'Temp drawer: close button',
+  defaultMessage: 'Close',
+  id: '/mhcNO',
+})
 </script>

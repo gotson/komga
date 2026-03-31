@@ -93,6 +93,13 @@
                         />
                         <v-icon
                           v-else
+                          v-tooltip:bottom="
+                            $formatMessage({
+                              description: 'Generate API key dialog: copy button tooltip',
+                              defaultMessage: 'Copy to clipboard',
+                              id: 'oOtDhj',
+                            })
+                          "
                           icon="i-mdi:content-copy"
                           @click="copy(createdKey.key)"
                         />

@@ -2,15 +2,10 @@
   <v-menu>
     <template #activator="{ props }">
       <v-icon-btn
+        v-tooltip:bottom="message"
         v-bind="props"
         icon="i-mdi:view-grid-plus"
-        :aria-label="
-          $formatMessage({
-            description: 'Page size selector button: aria-label',
-            defaultMessage: 'page size selector',
-            id: '2EMvSm',
-          })
-        "
+        :aria-label="message"
       />
     </template>
 
@@ -44,6 +39,9 @@
 
 <script setup lang="ts">
 import type { PageSize } from '@/types/page'
+import { useIntl } from 'vue-intl'
+
+const intl = useIntl()
 
 const pageSize = defineModel<PageSize>({ required: true })
 
@@ -51,6 +49,12 @@ const { sizes = [20, 50, 100, 200, 500], allowUnpaged = false } = defineProps<{
   sizes?: number[]
   allowUnpaged?: boolean
 }>()
+
+const message = intl.formatMessage({
+  description: 'Page size selector button',
+  defaultMessage: 'Page size',
+  id: 'XXr6pI',
+})
 </script>
 
 <script lang="ts"></script>

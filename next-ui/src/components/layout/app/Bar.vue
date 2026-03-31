@@ -1,7 +1,10 @@
 <template>
   <v-app-bar elevation="1">
     <template #prepend>
-      <v-app-bar-nav-icon @click="appStore.drawer = !appStore.drawer">
+      <v-app-bar-nav-icon
+        v-tooltip:bottom="tooltipMessage"
+        @click="appStore.drawer = !appStore.drawer"
+      >
         <template #default>
           <v-badge
             :model-value="unreadCount > 0 && !appStore.drawer"
@@ -34,9 +37,24 @@
 <script setup lang="ts">
 import { useAppStore } from '@/stores/app'
 import { useAnnouncements } from '@/colada/announcements'
+import { useIntl } from 'vue-intl'
+
+const intl = useIntl()
 
 const appStore = useAppStore()
 const { unreadCount } = useAnnouncements()
+
+const expandMessage = intl.formatMessage({
+  description: 'Locale selector button: tooltip expand',
+  defaultMessage: 'Expand menu',
+  id: 'wGVZsf',
+})
+const collapseMessage = intl.formatMessage({
+  description: 'Locale selector button: tooltip collapse',
+  defaultMessage: 'Collapse menu',
+  id: 'UgQ5iO',
+})
+const tooltipMessage = computed(() => (appStore.drawer ? collapseMessage : expandMessage))
 </script>
 
 <script lang="ts"></script>

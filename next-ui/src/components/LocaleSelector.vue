@@ -2,6 +2,13 @@
   <v-menu>
     <template #activator="{ props }">
       <v-icon-btn
+        v-tooltip:bottom="
+          $formatMessage({
+            description: 'Locale selector button: tooltip',
+            defaultMessage: 'Language',
+            id: 'XR+P68',
+          })
+        "
         v-bind="props"
         icon="i-mdi:translate"
         :aria-label="

@@ -1,5 +1,12 @@
 <template>
   <v-icon-btn
+    v-tooltip:bottom="
+      $formatMessage({
+        description: 'Theme selector button: tooltip',
+        defaultMessage: 'Theme',
+        id: 'e8DJzj',
+      })
+    "
     :icon="themeIcon"
     :aria-label="
       $formatMessage({

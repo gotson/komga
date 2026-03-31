@@ -34,6 +34,13 @@
       offset-y="7"
     >
       <v-icon-btn
+        v-tooltip:bottom="
+          $formatMessage({
+            description: 'Filter button: tooltip',
+            defaultMessage: 'Show filters',
+            id: 'kFQatO',
+          })
+        "
         icon="i-mdi:filter-variant"
         @click="filterDrawer = true"
       />
