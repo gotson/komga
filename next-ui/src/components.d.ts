@@ -35,6 +35,7 @@ declare module 'vue' {
     EmptyStateConstruction: typeof import('./components/EmptyStateConstruction.vue')['default']
     EmptyStateNetworkError: typeof import('./components/EmptyStateNetworkError.vue')['default']
     FilterAnyAll: typeof import('./components/filter/AnyAll.vue')['default']
+    FilterButton: typeof import('./components/FilterButton.vue')['default']
     FilterByAgeRating: typeof import('./components/filter/by/AgeRating.vue')['default']
     FilterByAuthor: typeof import('./components/filter/by/Author.vue')['default']
     FilterByComplete: typeof import('./components/filter/by/Complete.vue')['default']

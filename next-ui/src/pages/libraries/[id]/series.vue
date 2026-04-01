@@ -23,28 +23,10 @@
       class="px-2"
     />
 
-    <!-- We use padding end so that the badge is displayed properly, else it goes off screen -->
-    <v-badge
-      location="top right"
-      color="primary"
-      :content="filterCount"
-      :model-value="filterCount > 0"
-      class="pe-4"
-      offset-x="7"
-      offset-y="7"
-    >
-      <v-icon-btn
-        v-tooltip:bottom="
-          $formatMessage({
-            description: 'Filter button: tooltip',
-            defaultMessage: 'Show filters',
-            id: 'kFQatO',
-          })
-        "
-        icon="i-mdi:filter-variant"
-        @click="filterDrawer = true"
-      />
-    </v-badge>
+    <FilterButton
+      :count="filterCount"
+      @click="filterDrawer = true"
+    />
   </v-app-bar>
 
   <TempDrawer v-model="filterDrawer">
@@ -313,6 +295,7 @@ import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortSeries } from '@/types/sort'
 import { komgaClient } from '@/api/komga-client'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
+import FilterButton from '@/components/FilterButton.vue'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
