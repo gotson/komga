@@ -46,7 +46,11 @@ const emit = defineEmits<ItemCardEmits>()
 
 const bottomSheet = ref(false)
 
-const title = computed<ItemCardTitle>(() => ({ text: collection.name, lines: 2 }))
+const title = computed<ItemCardTitle>(() => ({
+  text: collection.name,
+  lines: 2,
+  routerLink: `/collection/${collection.id}`,
+}))
 
 const lines = computed<ItemCardLine[]>(() => [
   {

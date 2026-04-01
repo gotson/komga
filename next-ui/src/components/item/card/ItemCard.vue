@@ -136,8 +136,15 @@
     <v-card-title
       :class="['text-label-large px-2 pb-0 mb-2', { 'force-line-count text-wrap': title.lines }]"
       :style="[{ '--lines': title.lines }, { '--line-height': 1.6 }]"
-      >{{ title.text }}</v-card-title
     >
+      <RouterLink
+        v-if="title.routerLink"
+        :to="title.routerLink"
+        class="link-underline"
+        >{{ title.text }}</RouterLink
+      >
+      <span v-else>{{ title.text }}</span>
+    </v-card-title>
 
     <template
       v-for="(line, i) in lines"
@@ -152,7 +159,14 @@
           { 'force-line-count text-wrap': line.lines },
         ]"
         :style="[{ '--lines': line.lines }, { '--line-height': 1.4 }]"
-        >{{ line.text }}
+      >
+        <RouterLink
+          v-if="line.routerLink"
+          :to="line.routerLink"
+          class="link-underline"
+          >{{ line.text }}</RouterLink
+        >
+        <span v-else>{{ line.text }}</span>
       </v-card-subtitle>
     </template>
   </v-card>

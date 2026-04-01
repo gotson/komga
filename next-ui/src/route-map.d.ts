@@ -69,11 +69,25 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/book/[id]': RouteRecordInfo<
+      '/book/[id]',
+      '/book/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
     '/claim': RouteRecordInfo<
       '/claim',
       '/claim',
       Record<never, never>,
       Record<never, never>,
+      | never
+    >,
+    '/collection/[id]': RouteRecordInfo<
+      '/collection/[id]',
+      '/collection/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
       | never
     >,
     '/error': RouteRecordInfo<
@@ -192,6 +206,20 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/readlist/[id]': RouteRecordInfo<
+      '/readlist/[id]',
+      '/readlist/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/series/[id]': RouteRecordInfo<
+      '/series/[id]',
+      '/series/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
     '/server/activity': RouteRecordInfo<
       '/server/activity',
       '/server/activity',
@@ -297,9 +325,21 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'src/pages/book/[id].vue': {
+      routes:
+        | '/book/[id]'
+      views:
+        | never
+    }
     'src/pages/claim.vue': {
       routes:
         | '/claim'
+      views:
+        | never
+    }
+    'src/pages/collection/[id].vue': {
+      routes:
+        | '/collection/[id]'
       views:
         | never
     }
@@ -401,6 +441,18 @@ declare module 'vue-router/auto-routes' {
     'src/pages/media/missing-posters.vue': {
       routes:
         | '/media/missing-posters'
+      views:
+        | never
+    }
+    'src/pages/readlist/[id].vue': {
+      routes:
+        | '/readlist/[id]'
+      views:
+        | never
+    }
+    'src/pages/series/[id].vue': {
+      routes:
+        | '/series/[id]'
       views:
         | never
     }

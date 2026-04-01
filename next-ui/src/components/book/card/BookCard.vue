@@ -41,14 +41,10 @@ const intl = useIntl()
 
 const id = useId()
 
-const {
-  book,
-  showSeries = true,
-  ...props
-} = defineProps<
+const { book, showSeries, ...props } = defineProps<
   {
     book: components['schemas']['BookDto']
-    showSeries?: boolean
+    showSeries: boolean
   } & ItemCardProps
 >()
 const emit = defineEmits<ItemCardEmits>()
@@ -98,17 +94,21 @@ const titleAndLines = computed<{ title: ItemCardTitle; lines: ItemCardLine[] }>(
 
   if (book.oneshot) {
     return {
-      title: { text: book.metadata.title, lines: 2 },
+      title: { text: book.metadata.title, lines: 2, routerLink: `/book/${book.id}` },
       lines: [footer],
     }
   } else {
     const numberedTitle = `${book.metadata.number} - ${book.metadata.title}`
     if (showSeries)
       return {
-        title: { text: book.seriesTitle, lines: 1 },
-        lines: [{ text: numberedTitle, lines: 1 }, footer],
+        title: { text: book.seriesTitle, lines: 1, routerLink: `/series/${book.seriesId}` },
+        lines: [{ text: numberedTitle, lines: 1, routerLink: `/book/${book.id}` }, footer],
       }
-    else return { title: { text: numberedTitle, lines: 2 }, lines: [footer] }
+    else
+      return {
+        title: { text: numberedTitle, lines: 2, routerLink: `/book/${book.id}` },
+        lines: [footer],
+      }
   }
 })
 

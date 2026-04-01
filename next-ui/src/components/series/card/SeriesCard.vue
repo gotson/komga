@@ -53,7 +53,11 @@ const unreadCount = computed(() =>
   series.oneshot ? undefined : series.booksUnreadCount + series.booksInProgressCount,
 )
 
-const title = computed<ItemCardTitle>(() => ({ text: series.metadata.title, lines: 2 }))
+const title = computed<ItemCardTitle>(() => ({
+  text: series.metadata.title,
+  lines: 2,
+  routerLink: `/series/${series.id}`,
+}))
 
 const lines = computed<ItemCardLine[]>(() => {
   if (series.deleted)

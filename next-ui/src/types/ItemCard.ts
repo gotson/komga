@@ -38,6 +38,10 @@ export type ItemCardTitle = {
    * Number of lines.
    */
   lines?: number
+  /**
+   * Link.
+   */
+  routerLink?: string | object
 }
 
 export type ItemCardLine = {
@@ -57,4 +61,8 @@ export type ItemCardLine = {
    * Whether the container will be shown even if `text` is empty.
    */
   allowEmpty?: boolean
+  /**
+   * Link.
+   */
+  routerLink?: string | object
 }
