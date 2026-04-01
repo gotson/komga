@@ -195,17 +195,15 @@
     show-select
   >
     <template #default="{ items, toggleSelect, isSelected }">
-      <v-container
-        v-if="presentationModeEffective === 'grid'"
-        fluid
-      >
+      <v-container fluid>
         <v-row>
           <v-col
             v-for="(item, idx) in items"
             :key="item.raw.id"
-            cols="auto"
+            :cols="presentationModeEffective === 'grid' ? 'auto' : 12"
           >
             <SeriesCard
+              v-if="presentationModeEffective === 'grid'"
               stretch-poster
               :series="item.raw"
               :selected="isSelected(item)"
@@ -213,20 +211,9 @@
               :width="display.xs.value ? undefined : appStore.gridCardWidth"
               @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
             />
-          </v-col>
-        </v-row>
-      </v-container>
 
-      <v-container
-        v-if="presentationModeEffective === 'list'"
-        fluid
-      >
-        <v-row
-          v-for="(item, idx) in items"
-          :key="item.raw.id"
-        >
-          <v-col>
             <SeriesCardWide
+              v-if="presentationModeEffective === 'list'"
               stretch-poster
               :series="item.raw"
               :selected="isSelected(item)"
@@ -296,6 +283,7 @@ import { sortSeries } from '@/types/sort'
 import { komgaClient } from '@/api/komga-client'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import FilterButton from '@/components/FilterButton.vue'
+import { usePresentationMode } from '@/composables/presentationMode'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -305,12 +293,10 @@ const { librariesCondition } = useSearchConditionLibraries(libraries)
 const intl = useIntl()
 const display = useDisplay()
 const appStore = useAppStore()
+
 const { browsingPageSize } = storeToRefs(appStore)
 const viewName = computed(() => `${libraryId}_series`)
-const presentationMode = appStore.getPresentationMode(viewName.value, 'grid')
-const presentationModeEffective = computed(() =>
-  display.xs.value ? 'grid' : presentationMode.value,
-)
+const { presentationMode, presentationModeEffective } = usePresentationMode(viewName)
 
 const { itemsPerPage } = useItemsPerPage(browsingPageSize)
 const { page0, page1, pageCount } = usePagination()
