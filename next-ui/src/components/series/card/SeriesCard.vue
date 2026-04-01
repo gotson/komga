@@ -3,7 +3,7 @@
     :id="id"
     :title="title"
     :lines="lines"
-    :poster-url="seriesThumbnailUrl(series.id)"
+    :poster-url="seriesPosterUrl(series.id)"
     :top-right="unreadCount"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     fab-icon="i-mdi:play"
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { seriesThumbnailUrl } from '@/api/images'
+import { seriesPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
@@ -85,8 +85,11 @@ const lines = computed<ItemCardLine[]>(() => {
       text: intl.formatMessage(
         {
           description: 'Series card subtitle: count of books',
-          defaultMessage: '{count} books',
-          id: 'bJsa/f',
+          defaultMessage: `{count, plural,
+one {# book}
+other {# books}
+}`,
+          id: 'cGOJnB',
         },
         { count: series.booksCount },
       ),

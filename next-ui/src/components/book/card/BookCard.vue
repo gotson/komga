@@ -3,7 +3,7 @@
     :id="id"
     :title="titleAndLines.title"
     :lines="titleAndLines.lines"
-    :poster-url="bookThumbnailUrl(book.id)"
+    :poster-url="bookPosterUrl(book.id)"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     :progress-percent="isRead ? undefined : progressPercent"
     fab-icon="i-mdi:play"
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { bookThumbnailUrl } from '@/api/images'
+import { bookPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'

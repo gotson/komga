@@ -1,22 +1,27 @@
 import { ApiBaseUrl } from '@/api/base'
 
-export function seriesThumbnailUrl(seriesId?: string): string | undefined {
+export function seriesPosterUrl(seriesId?: string): string | undefined {
   if (seriesId) return `${ApiBaseUrl.noSlash}/api/v1/series/${seriesId}/thumbnail`
   return undefined
 }
 
-export function bookThumbnailUrl(bookId?: string): string | undefined {
+export function bookPosterUrl(bookId?: string): string | undefined {
   if (bookId) return `${ApiBaseUrl.noSlash}/api/v1/books/${bookId}/thumbnail`
+  return undefined
+}
+
+export function collectionPosterUrl(collectionId?: string): string | undefined {
+  if (collectionId) return `${ApiBaseUrl.noSlash}/api/v1/collections/${collectionId}/thumbnail`
+  return undefined
+}
+
+export function readListPosterUrl(readList?: string): string | undefined {
+  if (readList) return `${ApiBaseUrl.noSlash}/api/v1/readlists/${readList}/thumbnail`
   return undefined
 }
 
 export function bookPageThumbnailUrl(bookId?: string, page?: number): string | undefined {
   if (bookId && page) return `${ApiBaseUrl.noSlash}/api/v1/books/${bookId}/pages/${page}/thumbnail`
-  return undefined
-}
-
-export function collectionThumbnailUrl(collectionId?: string): string | undefined {
-  if (collectionId) return `${ApiBaseUrl.noSlash}/api/v1/collections/${collectionId}/thumbnail`
   return undefined
 }
 

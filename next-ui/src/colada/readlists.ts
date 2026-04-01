@@ -48,3 +48,41 @@ export const useCreateReadList = defineMutation(() => {
       }),
   })
 })
+
+export const useUpdateReadList = defineMutation(() => {
+  // const queryCache = useQueryCache()
+  return useMutation({
+    mutation: ({
+      readListId,
+      data,
+    }: {
+      readListId: string
+      data: components['schemas']['ReadListUpdateDto']
+    }) =>
+      komgaClient.PATCH('/api/v1/readlists/{id}', {
+        params: {
+          path: {
+            id: readListId,
+          },
+        },
+        body: data,
+      }),
+    onSuccess: () => {
+      //TODO: check how to invalidate cache
+      // void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+    },
+  })
+})
+
+export const useDeleteReadList = defineMutation(() =>
+  useMutation({
+    mutation: (readListId: string) =>
+      komgaClient.DELETE('/api/v1/readlists/{id}', {
+        params: {
+          path: {
+            id: readListId,
+          },
+        },
+      }),
+  }),
+)

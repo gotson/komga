@@ -3,7 +3,7 @@
     :id="id"
     :title="title"
     :lines="lines"
-    :poster-url="collectionPosterUrl(collection.id)"
+    :poster-url="readListPosterUrl(readList.id)"
     :quick-action-icon="quickActionIcon"
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
@@ -13,53 +13,53 @@
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
   />
-  <CollectionMenu
-    :collection="collection"
+  <ReadlistMenu
+    :read-list="readList"
     :activator="menuActivator"
   />
-  <CollectionMenuBottomSheet
+  <ReadlistMenuBottomSheet
     v-model="bottomSheet"
-    :collection="collection"
+    :read-list="readList"
   />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { collectionPosterUrl } from '@/api/images'
+import { readListPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
-import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
-import CollectionMenu from '@/components/collection/menu/CollectionMenu.vue'
-import CollectionMenuBottomSheet from '@/components/collection/menu/CollectionMenuBottomSheet.vue'
+import ReadlistMenu from '@/components/readlist/menu/ReadlistMenu.vue'
+import ReadlistMenuBottomSheet from '@/components/readlist/menu/ReadlistMenuBottomSheet.vue'
+import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 
 const intl = useIntl()
 
 const id = useId()
 
-const { collection, ...props } = defineProps<
+const { readList, ...props } = defineProps<
   {
-    collection: components['schemas']['CollectionDto']
+    readList: components['schemas']['ReadListDto']
   } & ItemCardProps
 >()
 const emit = defineEmits<ItemCardEmits>()
 
 const bottomSheet = ref(false)
 
-const title = computed<ItemCardTitle>(() => ({ text: collection.name, lines: 2 }))
+const title = computed<ItemCardTitle>(() => ({ text: readList.name, lines: 2 }))
 
 const lines = computed<ItemCardLine[]>(() => [
   {
     text: intl.formatMessage(
       {
-        description: 'Collection card subtitle: count of series',
+        description: 'Readlist card subtitle: count of books',
         defaultMessage: `{count, plural,
-one {# series}
-other {# series}
+one {# book}
+other {# books}
 }`,
-        id: '0J3Gvp',
+        id: 'WLfi1+',
       },
-      { count: collection.seriesIds.length },
+      { count: readList.bookIds.length },
     ),
   },
 ])
@@ -76,14 +76,14 @@ const menuProps = computed(() => ({
 }))
 
 const {
-  prepareDialog: prepareEditCollectionDialog,
-  showDialog: showEditCollectionDialog,
+  prepareDialog: prepareEditDialog,
+  showDialog: showEditDialog,
   activator: editActivator,
-} = useEditCollectionDialog()
+} = useEditReadListDialog()
 
 function showEditMetadataDialog() {
-  prepareEditCollectionDialog(collection)
-  showEditCollectionDialog()
+  prepareEditDialog(readList)
+  showEditDialog()
 }
 
 const menuActivator = ref()

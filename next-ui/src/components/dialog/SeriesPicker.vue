@@ -59,7 +59,7 @@
                       width="52"
                       height="75"
                       contain
-                      :src="seriesThumbnailUrl(s.id)"
+                      :src="seriesPosterUrl(s.id)"
                       lazy-src="@/assets/cover.svg"
                       class="me-2"
                     />
@@ -109,7 +109,7 @@
 import { useQuery } from '@pinia/colada'
 import { seriesListQuery } from '@/colada/series'
 import type { components } from '@/generated/openapi/komga'
-import { seriesThumbnailUrl } from '@/api/images'
+import { seriesPosterUrl } from '@/api/images'
 import { refDebounced } from '@vueuse/core'
 import { useLibraries } from '@/colada/libraries'
 import { PageRequest } from '@/types/PageRequest'

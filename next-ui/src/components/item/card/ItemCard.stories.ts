@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ItemCard from './ItemCard.vue'
-import { seriesThumbnailUrl } from '@/api/images'
+import { seriesPosterUrl } from '@/api/images'
 import { delay, http } from 'msw'
 import { fn } from 'storybook/test'
 
@@ -24,7 +24,7 @@ const meta = {
   },
   args: {
     title: { text: 'Card title' },
-    posterUrl: seriesThumbnailUrl('id'),
+    posterUrl: seriesPosterUrl('id'),
     width: 150,
     onSelection: fn(),
     onClickFab: fn(),
@@ -35,7 +35,7 @@ const meta = {
   },
   argTypes: {
     posterUrl: {
-      options: [seriesThumbnailUrl('id'), seriesThumbnailUrl('idL')],
+      options: [seriesPosterUrl('id'), seriesPosterUrl('idL')],
       control: { type: 'radio' },
     },
   },
@@ -95,7 +95,7 @@ export const TopRightIcon: Story = {
 export const LandscapeStretched: Story = {
   args: {
     topRightIcon: 'i-mdi:check',
-    posterUrl: seriesThumbnailUrl('idL'),
+    posterUrl: seriesPosterUrl('idL'),
     stretchPoster: true,
   },
 }
@@ -103,7 +103,7 @@ export const LandscapeStretched: Story = {
 export const LandscapeNotStretched: Story = {
   args: {
     topRightIcon: 'i-mdi:check',
-    posterUrl: seriesThumbnailUrl('idL'),
+    posterUrl: seriesPosterUrl('idL'),
     stretchPoster: false,
   },
 }

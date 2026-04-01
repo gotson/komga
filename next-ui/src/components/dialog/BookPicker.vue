@@ -70,7 +70,7 @@
                     width="52"
                     height="75"
                     contain
-                    :src="bookThumbnailUrl(item.id)"
+                    :src="bookPosterUrl(item.id)"
                     lazy-src="@/assets/cover.svg"
                     class="me-2"
                   />
@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { bookThumbnailUrl } from '@/api/images'
+import { bookPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 
 const intl = useIntl()

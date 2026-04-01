@@ -2,7 +2,7 @@
   <ItemCardWide
     :title="series.metadata.title"
     :text="series.metadata.summary"
-    :poster-url="seriesThumbnailUrl(series.id)"
+    :poster-url="seriesPosterUrl(series.id)"
     :top-right="unreadCount"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     :quick-action-icon="quickActionIcon"
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { seriesThumbnailUrl } from '@/api/images'
+import { seriesPosterUrl } from '@/api/images'
 import type { ItemCardEmits, ItemCardProps } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
 

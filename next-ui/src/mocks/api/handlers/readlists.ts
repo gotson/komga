@@ -1,6 +1,8 @@
 import { httpTyped } from '@/mocks/api/httpTyped'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import { http, HttpResponse } from 'msw'
+import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 
 export const matchCbl = {
   readListMatch: { name: "Jupiter's Legacy", errorCode: '' },
@@ -146,7 +148,7 @@ export const garbledCbl = {
   message: 'ERR_1015',
 }
 
-const rl1 = {
+export const mockReadList1 = {
   id: '02AQZYKBS00J8',
   name: 'Readlist example',
   summary: 'An example read list to show off how it works in Komga.',
@@ -157,7 +159,7 @@ const rl1 = {
   filtered: false,
 }
 
-const rl2 = {
+const mockReadList2 = {
   id: '02AQZYKBS00J8',
   name: 'Elfes',
   summary: 'Elfes readlist',
@@ -168,7 +170,7 @@ const rl2 = {
   filtered: false,
 }
 
-const readlists = [rl1, rl2]
+const readlists = [mockReadList1, mockReadList2]
 
 export const readListsHandlers = [
   httpTyped.get('/api/v1/readlists', ({ query, response }) => {
@@ -200,5 +202,15 @@ export const readListsHandlers = [
   }),
   httpTyped.post('/api/v1/readlists/match/comicrack', ({ response }) => {
     return response(200).json(matchCbl)
+  }),
+  http.get('*/api/v1/readlists/*/thumbnail', async () => {
+    // Get an ArrayBuffer from reading the file from disk or fetching it.
+    const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
+
+    return HttpResponse.arrayBuffer(buffer, {
+      headers: {
+        'content-type': 'image/jpg',
+      },
+    })
   }),
 ]

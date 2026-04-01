@@ -7,23 +7,23 @@ import type { components } from '@/generated/openapi/komga'
 import EditMetadata from '@/components/series/form/EditMetadata.vue'
 import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useUpdateCollection } from '@/colada/collections'
+import { useUpdateReadList } from '@/colada/readlists'
 
-export function useEditCollectionDialog() {
+export function useEditReadListDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
   const intl = useIntl()
   const display = useDisplay()
   const messagesStore = useMessagesStore()
-  const { mutateAsync: mutateUpdateCollection } = useUpdateCollection()
+  const { mutateAsync: mutateUpdate } = useUpdateReadList()
 
-  const prepareDialog = (collection: components['schemas']['CollectionDto']) => {
+  const prepareDialog = (readList: components['schemas']['ReadListDto']) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
-        description: 'Edit collection dialog title',
-        defaultMessage: 'Edit collection',
-        id: 'YVQ49g',
+        description: 'Edit readlist dialog title',
+        defaultMessage: 'Edit read list',
+        id: 'bDNZqj',
       }),
-      subtitle: collection.name,
+      subtitle: readList.name,
       maxWidth: 600,
       okText: 'Save',
       cardTextClass: 'px-0',
@@ -34,7 +34,7 @@ export function useEditCollectionDialog() {
     dialogConfirmEdit.value.slot = {
       component: markRaw(EditMetadata),
     }
-    dialogConfirmEdit.value.record = collection
+    dialogConfirmEdit.value.record = readList
     dialogConfirmEdit.value.callback = (
       hideDialog: () => void,
       setLoading: (isLoading: boolean) => void,
@@ -42,20 +42,20 @@ export function useEditCollectionDialog() {
       setLoading(true)
 
       const updatedData = dialogConfirmEdit.value
-        .record as components['schemas']['CollectionUpdateDto']
+        .record as components['schemas']['ReadListUpdateDto']
 
-      mutateUpdateCollection({ collectionId: collection.id, data: updatedData })
+      mutateUpdate({ readListId: readList.id, data: updatedData })
         .then(() => {
           hideDialog()
           messagesStore.messages.push({
             text: intl.formatMessage(
               {
-                description: 'Snackbar notification shown upon successful collection update',
-                defaultMessage: 'Collection updated: {collection}',
-                id: 'E0cw62',
+                description: 'Snackbar notification shown upon successful readlist update',
+                defaultMessage: 'Read list updated: {readlist}',
+                id: 'IIqDdQ',
               },
               {
-                collection: updatedData.name,
+                readlist: updatedData.name,
               },
             ),
           })
