@@ -1,5 +1,7 @@
 import {
   type FilterIncludeExclude,
+  type FilterType,
+  type FilterTypeSelectRange,
   SchemaAnyNone,
   SchemaFilterAuthors,
   SchemaFilterReadStatus,
@@ -10,6 +12,15 @@ import {
 } from '@/types/filter'
 import type { InferOutput } from 'valibot'
 import * as v from 'valibot'
+
+export function clearFilter(filter: FilterType | FilterTypeSelectRange | FilterIncludeExclude) {
+  if ('v' in filter) filter.v = []
+  if ('m' in filter) filter.m = 'anyOf'
+  if ('is' in filter) filter.is = undefined
+  if ('min' in filter) filter.min = undefined
+  if ('max' in filter) filter.max = undefined
+  if ('i' in filter) filter.i = undefined
+}
 
 export function schemaFilterSeriesStatusToConditions(
   filter: InferOutput<typeof SchemaFilterSeriesStatus>,

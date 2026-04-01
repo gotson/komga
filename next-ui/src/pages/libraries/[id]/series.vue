@@ -1,5 +1,7 @@
 <template>
   <v-app-bar>
+    <ChipCount :count="totalElements" />
+
     <v-spacer />
 
     <PosterSizeSlider />
@@ -12,7 +14,7 @@
     />
 
     <PageSizeSelector
-      v-if="appStore.isBrowsingPaged"
+      v-if="isBrowsingPaged"
       v-model="appStore.browsingPageSize"
       allow-unpaged
       :sizes="[1, 10, 20]"
@@ -34,17 +36,10 @@
       <v-list-subheader>
         <div class="d-flex ga-2 align-center mb-1">
           <span>{{ $formatMessage(commonMessages.filterPanelHeader) }}</span>
-          <v-chip
-            v-if="filterCount > 0"
-            color="primary"
-            rounded
-            closable
-            variant="elevated"
-            size="small"
-            @click:close="clearFilters()"
-          >
-            {{ filterCount }}
-          </v-chip>
+          <FilterChipCount
+            :count="filterCount"
+            @clear="clearFilters()"
+          />
         </div>
       </v-list-subheader>
 
@@ -62,7 +57,6 @@
       <v-expansion-panels
         v-model="filterExpansionPanels"
         variant="accordion"
-        class="no-padding"
         flat
         tile
       >
@@ -110,7 +104,7 @@
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelReleaseYear)"
           :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
-          @clear="clearFilterSelectRange(filterReleaseYear)"
+          @clear="clearFilter(filterReleaseYear)"
         >
           <FilterByReleaseYear v-model="filterReleaseYear" />
         </FilterExpansionPanel>
@@ -118,7 +112,7 @@
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelAgeRating)"
           :count="!!filterAgeRating.is ? 1 : !!filterAgeRating.min ? 1 : 0"
-          @clear="clearFilterSelectRange(filterAgeRating)"
+          @clear="clearFilter(filterAgeRating)"
         >
           <FilterByAgeRating v-model="filterAgeRating" />
         </FilterExpansionPanel>
@@ -186,58 +180,36 @@
     </v-list>
   </TempDrawer>
 
-  <v-data-iterator
-    v-model="selectedItems"
-    return-object
-    :items="seriesItems"
-    :items-per-page="appStore.browsingPaging === 'paged' ? itemsPerPage : -1"
-    :page="appStore.browsingPaging === 'paged' ? page1 : 1"
-    show-select
+  <ItemBrowser
+    v-model:page1="page1"
+    :items="dataItems"
+    :presentation-mode="presentationModeEffective"
+    :has-next-page="hasNextPage"
+    :page-count="pageCount"
+    @load-next-page="loadNextPage()"
   >
-    <template #default="{ items, toggleSelect, isSelected }">
-      <v-container fluid>
-        <v-row>
-          <v-col
-            v-for="(item, idx) in items"
-            :key="item.raw.id"
-            :cols="presentationModeEffective === 'grid' ? 'auto' : 12"
-          >
-            <SeriesCard
-              v-if="presentationModeEffective === 'grid'"
-              stretch-poster
-              :series="item.raw"
-              :selected="isSelected(item)"
-              :pre-select="preSelect"
-              :width="display.xs.value ? undefined : appStore.gridCardWidth"
-              @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
-            />
+    <template #default="{ item, isSelected, preSelect, toggleSelect }">
+      <SeriesCard
+        v-if="presentationModeEffective === 'grid'"
+        stretch-poster
+        :series="item"
+        :selected="isSelected"
+        :pre-select="preSelect"
+        :width="display.xs.value ? undefined : appStore.gridCardWidth"
+        @selection="(_val, event) => toggleSelect(event as MouseEvent)"
+      />
 
-            <SeriesCardWide
-              v-if="presentationModeEffective === 'list'"
-              stretch-poster
-              :series="item.raw"
-              :selected="isSelected(item)"
-              :pre-select="preSelect"
-              :width="appStore.gridCardWidth"
-              @selection="(_val, event) => toggleSelect(item, idx, event as MouseEvent)"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <SeriesCardWide
+        v-if="presentationModeEffective === 'list'"
+        stretch-poster
+        :series="item"
+        :selected="isSelected"
+        :pre-select="preSelect"
+        :width="appStore.gridCardWidth"
+        @selection="(_val, event) => toggleSelect(event as MouseEvent)"
+      />
     </template>
-  </v-data-iterator>
-
-  <v-pagination
-    v-if="appStore.isBrowsingPaged"
-    v-model="page1"
-    :length="pageCount"
-  />
-
-  <div
-    v-if="appStore.isBrowsingScroll && hasNextPage"
-    v-intersect="(isIntersecting: boolean) => (isIntersecting ? loadMore() : undefined)"
-    style="min-height: 40px"
-  ></div>
+  </ItemBrowser>
 </template>
 
 <script lang="ts" setup>
@@ -247,9 +219,8 @@ import type { components } from '@/generated/openapi/komga'
 import { PageRequest, sortToString } from '@/types/PageRequest'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
-import { useItemsPerPage, usePagination } from '@/composables/pagination'
+import { usePagination } from '@/composables/pagination'
 import { useSearchConditionLibraries } from '@/composables/search'
-import { storeToRefs } from 'pinia'
 import { useSelectionStore } from '@/stores/selection'
 import { useDisplay } from 'vuetify'
 import {
@@ -260,13 +231,9 @@ import {
   schemaFilterAgeRatingToConditions,
   schemaFilterReadStatusToConditions,
   schemaFilterIncludeExcludeToConditions,
+  clearFilter,
 } from '@/functions/filter'
-import * as v from 'valibot'
 import {
-  type FilterIncludeExclude,
-  type FilterType,
-  type FilterTypeSelectRange,
-  SchemaFilterAuthors,
   SchemaFilterReadStatus,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
@@ -275,72 +242,32 @@ import {
   SchemaSeriesReleaseYears,
 } from '@/types/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
-import { authorRoles } from '@/types/referential'
-import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortSeries } from '@/types/sort'
 import { komgaClient } from '@/api/komga-client'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
-import FilterButton from '@/components/FilterButton.vue'
+import FilterButton from '@/components/filter/FilterButton.vue'
 import { usePresentationMode } from '@/composables/presentationMode'
+import { storeToRefs } from 'pinia'
+import { useFilterAuthors } from '@/composables/filters'
+import ChipCount from '@/components/ChipCount.vue'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
 const { libraries } = useGetLibrariesById(libraryId)
 const { librariesCondition } = useSearchConditionLibraries(libraries)
 
-const intl = useIntl()
 const display = useDisplay()
 const appStore = useAppStore()
+const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 
-const { browsingPageSize } = storeToRefs(appStore)
 const viewName = computed(() => `${libraryId}_series`)
 const { presentationMode, presentationModeEffective } = usePresentationMode(viewName)
 
-const { itemsPerPage } = useItemsPerPage(browsingPageSize)
 const { page0, page1, pageCount } = usePagination()
 
 const selectionStore = useSelectionStore()
-const { selection: selectedItems } = storeToRefs(selectionStore)
-const preSelect = computed(() => selectedItems.value.length > 0)
-
-type AuthorQuery = v.InferOutput<typeof SchemaFilterAuthors>
-const filterAuthors = reactive<
-  Record<string, { filter: AuthorQuery; text: string; role?: string }>
->({})
-
-filterAuthors['anyrole'] = {
-  filter: useRouteQuerySchema('anyrole', SchemaFilterAuthors).data.value,
-  text: intl.formatMessage({
-    description: 'Author filter: any role',
-    defaultMessage: 'All creators',
-    id: 'RmNasP',
-  }),
-}
-// TODO: get roles dynamically
-Object.entries(authorRoles).forEach(([role, value]) => {
-  filterAuthors[role] = {
-    filter: useRouteQuerySchema(role, SchemaFilterAuthors).data.value,
-    text: intl.formatMessage(value),
-    role: role,
-  }
-})
-
-function clearFilter(filter: FilterType) {
-  filter.v = []
-  if ('m' in filter) filter.m = 'anyOf'
-}
-
-function clearFilterSelectRange(filter: FilterTypeSelectRange) {
-  filter.is = undefined
-  filter.min = undefined
-  filter.max = undefined
-}
-
-function clearFilterSolo(filter: FilterIncludeExclude) {
-  filter.i = undefined
-}
 
 function clearFilters() {
   clearFilter(filterSeriesStatus.value)
@@ -350,11 +277,11 @@ function clearFilters() {
   clearFilter(filterPublisher.value)
   clearFilter(filterSharingLabel.value)
   clearFilter(filterLanguage.value)
-  clearFilterSolo(filterComplete.value)
-  clearFilterSolo(filterUnavailable.value)
-  clearFilterSolo(filterOneShot.value)
-  clearFilterSelectRange(filterReleaseYear.value)
-  clearFilterSelectRange(filterAgeRating.value)
+  clearFilter(filterComplete.value)
+  clearFilter(filterUnavailable.value)
+  clearFilter(filterOneShot.value)
+  clearFilter(filterReleaseYear.value)
+  clearFilter(filterAgeRating.value)
   Object.entries(filterAuthors).map(([, filter]) => clearFilter(filter.filter))
 }
 
@@ -377,6 +304,7 @@ const filterCount = computed(
       .reduce((sum, item) => sum + item, 0),
 )
 
+const { filterAuthors } = useFilterAuthors()
 const { data: filterSeriesStatus } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
 const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
 const { data: filterGenre } = useRouteQuerySchema('genre', SchemaFilterStrings)
@@ -398,7 +326,7 @@ const sortOptions = sortSeries.map((it) => convertSortOptionDescriptor(it))
 
 const conds = computed(() => ({
   allOf: [
-    librariesCondition.value as components['schemas']['AnyOfSeries'],
+    librariesCondition.value,
     schemaFilterIncludeExcludeToConditions(filterComplete.value, 'complete'),
     schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
     schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
@@ -424,20 +352,20 @@ const apiQuery = computed(() => ({
   condition: conds.value as components['schemas']['AllOfSeries'],
 }))
 
-const { data: series } = useQuery(() => ({
+const { data: dataPaged } = useQuery(() => ({
   ...seriesListQuery({
     search: { ...apiQuery.value },
     pageRequest: PageRequest.FromPageSize(appStore.browsingPageSize, page0.value, sortActive.value),
   }),
-  enabled: appStore.isBrowsingPaged,
+  enabled: isBrowsingPaged.value,
 }))
 
-watch(series, (newSeries) => {
-  if (newSeries) pageCount.value = newSeries.totalPages ?? 0
+watch(dataPaged, (newDataPaged) => {
+  if (newDataPaged) pageCount.value = newDataPaged.totalPages ?? 0
 })
 
 const {
-  data: infiniteData,
+  data: dataInfinite,
   loadNextPage,
   hasNextPage,
 } = useInfiniteQuery({
@@ -458,17 +386,20 @@ const {
       // unwrap the openapi-fetch structure on success
       .then((res) => res.data),
   getNextPageParam: (lastPage, _, lastPageParam) => (!lastPage?.last ? lastPageParam.next() : null),
-  enabled: appStore.isBrowsingScroll,
+  enabled: isBrowsingScroll,
 })
-const infiniteSeries = computed(() => infiniteData.value?.pages.flatMap((it) => it?.content ?? []))
-
-const seriesItems = computed(() =>
-  appStore.isBrowsingPaged ? series.value?.content : infiniteSeries.value,
+const dataInfiniteFlat = computed(() =>
+  dataInfinite.value?.pages.flatMap((it) => it?.content ?? []),
 )
 
-function loadMore() {
-  void loadNextPage()
-}
+const dataItems = computed(() =>
+  isBrowsingPaged.value ? dataPaged.value?.content : dataInfiniteFlat.value,
+)
+const totalElements = computed(() =>
+  isBrowsingPaged.value
+    ? dataPaged.value?.totalElements
+    : dataInfinite.value?.pages?.[0]?.totalElements,
+)
 
 const filterDrawer = ref(false)
 
@@ -476,11 +407,7 @@ const filterDrawer = ref(false)
 const filterExpansionPanels = ref()
 </script>
 
-<style lang="scss">
-.no-padding .v-expansion-panel-text__wrapper {
-  padding: 0 4px;
-}
-</style>
+<style lang="scss"></style>
 
 <route lang="yaml">
 meta:

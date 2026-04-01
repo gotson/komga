@@ -13,9 +13,10 @@ export const useSelectionStore = defineStore('selection', () => {
   )
 
   const isEmpty = computed(() => selection.value.length === 0)
+  const isNotEmpty = computed(() => selection.value.length > 0)
   const count = computed(() => selection.value.length)
 
   const clear = () => (selection.value = [])
 
-  return { selection, count, isEmpty, clear }
+  return { selection, count, isEmpty, isNotEmpty, clear }
 })
