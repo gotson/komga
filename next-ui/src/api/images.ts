@@ -15,6 +15,11 @@ export function bookPageThumbnailUrl(bookId?: string, page?: number): string | u
   return undefined
 }
 
+export function collectionThumbnailUrl(collectionId?: string): string | undefined {
+  if (collectionId) return `${ApiBaseUrl.noSlash}/api/v1/collections/${collectionId}/thumbnail`
+  return undefined
+}
+
 export function pageHashKnownThumbnailUrl(hash?: string): string | undefined {
   if (hash) return `${ApiBaseUrl.noSlash}/api/v1/page-hashes/${hash}/thumbnail`
   return undefined

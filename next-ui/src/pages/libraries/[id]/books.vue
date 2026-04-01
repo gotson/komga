@@ -126,7 +126,7 @@
         :book="item"
         :selected="isSelected"
         :pre-select="preSelect"
-        :width="display.xs.value ? undefined : appStore.gridCardWidth"
+        :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
         @selection="(_val, event) => toggleSelect(event as MouseEvent)"
       />
     </template>

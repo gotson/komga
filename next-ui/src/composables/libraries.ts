@@ -31,7 +31,10 @@ export function useGetLibrariesById(libraryId: MaybeRefOrGetter<LibraryId>) {
     return libs
   })
 
+  const libIds = computed(() => libs.value?.map((it) => it.id))
+
   return {
     libraries: libs,
+    libraryIds: libIds,
   }
 }

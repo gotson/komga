@@ -1,8 +1,10 @@
 import { httpTyped } from '@/mocks/api/httpTyped'
 import { PageRequest } from '@/types/PageRequest'
 import { mockPage } from '@/mocks/api/pageable'
+import { http, HttpResponse } from 'msw'
+import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 
-const collection1 = {
+export const mockCollection = {
   id: '026801S4HWRZA',
   name: 'Golden Age',
   ordered: true,
@@ -12,7 +14,7 @@ const collection1 = {
   filtered: false,
 }
 
-const collections = [collection1]
+const collections = [mockCollection]
 
 export const collectionsHandlers = [
   httpTyped.get('/api/v1/collections', ({ query, response }) => {
@@ -28,20 +30,14 @@ export const collectionsHandlers = [
       mockPage(selected, new PageRequest(Number(query.get('page')), Number(query.get('size')))),
     )
   }),
-  // httpTyped.get('/api/v1/series/{seriesId}', ({ params, response }) => {
-  //   if (params.seriesId === '404') return response(404).empty()
-  //   return response(200).json(
-  //     Object.assign({}, series1, { metadata: { title: `Series ${params.seriesId}` } }),
-  //   )
-  // }),
-  // http.get('*/api/v1/series/*/thumbnail', async () => {
-  //   // Get an ArrayBuffer from reading the file from disk or fetching it.
-  //   const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
-  //
-  //   return HttpResponse.arrayBuffer(buffer, {
-  //     headers: {
-  //       'content-type': 'image/jpg',
-  //     },
-  //   })
-  // }),
+  http.get('*/api/v1/collections/*/thumbnail', async () => {
+    // Get an ArrayBuffer from reading the file from disk or fetching it.
+    const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
+
+    return HttpResponse.arrayBuffer(buffer, {
+      headers: {
+        'content-type': 'image/jpg',
+      },
+    })
+  }),
 ]

@@ -13,7 +13,7 @@
           <v-col
             v-for="(item, idx) in internalItems"
             :key="idx"
-            :cols="presentationMode === 'grid' ? 'auto' : 12"
+            :cols="presentationMode === 'grid' ? (display.xs.value ? 6 : 'auto') : 12"
           >
             <slot
               :item="item.raw"
@@ -45,8 +45,10 @@ import { useAppStore } from '@/stores/app'
 import { useSelectionStore } from '@/stores/selection'
 import type { PresentationMode } from '@/types/libraries'
 import { useItemsPerPage } from '@/composables/pagination'
+import { useDisplay } from 'vuetify'
 
 const appStore = useAppStore()
+const display = useDisplay()
 
 const page1 = defineModel<number>('page1', { required: true })
 

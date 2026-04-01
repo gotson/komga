@@ -4,7 +4,7 @@ export type ItemCardProps = {
    *
    * Defaults to `150`.
    */
-  width?: number
+  width?: number | 'auto'
   /**
    * Disable card selection.
    */
