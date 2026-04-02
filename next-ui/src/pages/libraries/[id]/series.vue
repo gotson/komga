@@ -57,6 +57,7 @@
       <v-expansion-panels
         v-model="filterExpansionPanels"
         variant="accordion"
+        class="no-padding"
         flat
         tile
       >
@@ -220,7 +221,6 @@ import { PageRequest, sortToString } from '@/types/PageRequest'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { usePagination } from '@/composables/pagination'
-import { useSearchConditionLibraries } from '@/composables/search'
 import { useSelectionStore } from '@/stores/selection'
 import { useDisplay } from 'vuetify'
 import {
@@ -232,6 +232,7 @@ import {
   schemaFilterReadStatusToConditions,
   schemaFilterIncludeExcludeToConditions,
   clearFilter,
+  valuesToConditions,
 } from '@/functions/filter'
 import {
   SchemaFilterReadStatus,
@@ -250,13 +251,12 @@ import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
 import { usePresentationMode } from '@/composables/presentationMode'
 import { storeToRefs } from 'pinia'
-import { useFilterAuthors } from '@/composables/filters'
+import { useFilterAuthors } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
-const { libraries } = useGetLibrariesById(libraryId)
-const { librariesCondition } = useSearchConditionLibraries(libraries)
+const { libraryIds } = useGetLibrariesById(libraryId)
 
 const display = useDisplay()
 const appStore = useAppStore()
@@ -326,7 +326,7 @@ const sortOptions = sortSeries.map((it) => convertSortOptionDescriptor(it))
 
 const conds = computed(() => ({
   allOf: [
-    librariesCondition.value,
+    valuesToConditions(libraryIds.value, 'libraryId'),
     schemaFilterIncludeExcludeToConditions(filterComplete.value, 'complete'),
     schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
     schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
@@ -407,7 +407,11 @@ const filterDrawer = ref(false)
 const filterExpansionPanels = ref()
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.no-padding .v-expansion-panel-text__wrapper {
+  padding: 0 4px;
+}
+</style>
 
 <route lang="yaml">
 meta:

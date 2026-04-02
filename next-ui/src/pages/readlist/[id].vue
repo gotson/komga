@@ -8,4 +8,5 @@ const readListId = computed(() => route.params.id)
 <route lang="yaml">
 meta:
   requiresRole: USER
+  scrollable: true
 </route>

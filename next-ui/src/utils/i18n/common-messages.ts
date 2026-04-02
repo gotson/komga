@@ -77,6 +77,11 @@ export const commonMessages = {
     defaultMessage: 'Status',
     id: 'Pp3+1S',
   }),
+  filterPanelLibrary: defineMessage({
+    description: 'Filter panel: Library',
+    defaultMessage: 'Library',
+    id: 'phzvRy',
+  }),
   filterPanelGenre: defineMessage({
     description: 'Filter panel: Genre',
     defaultMessage: 'Genre',

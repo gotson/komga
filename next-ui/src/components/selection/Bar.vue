@@ -15,8 +15,11 @@
         $formatMessage(
           {
             description: 'Selection bar: count of items',
-            defaultMessage: '{count} selected',
-            id: 'lqyIjk',
+            defaultMessage: `{count, plural,
+one {# selected}
+other {# selected}
+}`,
+            id: 'tCm6kO',
           },
           {
             count: selectionStore.count,

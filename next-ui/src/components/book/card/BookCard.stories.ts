@@ -27,6 +27,7 @@ const meta = {
   },
   args: {
     book: mockBook,
+    showSeries: true,
     onSelection: fn(),
   },
 } satisfies Meta<typeof BookCard>

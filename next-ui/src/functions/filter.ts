@@ -22,6 +22,20 @@ export function clearFilter(filter: FilterType | FilterTypeSelectRange | FilterI
   if ('i' in filter) filter.i = undefined
 }
 
+export function valuesToConditions(value: string[] | undefined, key: string) {
+  if (!value || value.length === 0) return null
+  const list = value.map((it) => ({
+    [key]: {
+      operator: 'is',
+      value: it,
+    },
+  }))
+
+  return {
+    anyOf: list,
+  }
+}
+
 export function schemaFilterSeriesStatusToConditions(
   filter: InferOutput<typeof SchemaFilterSeriesStatus>,
 ) {

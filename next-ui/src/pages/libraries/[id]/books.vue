@@ -56,6 +56,7 @@
       <v-expansion-panels
         v-model="filterExpansionPanels"
         variant="accordion"
+        class="no-padding"
         flat
         tile
       >
@@ -140,7 +141,6 @@ import FilterButton from '@/components/filter/FilterButton.vue'
 import { useDisplay } from 'vuetify'
 import { usePresentationMode } from '@/composables/presentationMode'
 import { useGetLibrariesById } from '@/composables/libraries'
-import { useSearchConditionLibraries } from '@/composables/search'
 import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
 import { usePagination } from '@/composables/pagination'
@@ -156,19 +156,19 @@ import {
   schemaFilterIncludeExcludeToConditions,
   schemaFilterReadStatusToConditions,
   schemaFilterStringToConditions,
+  valuesToConditions,
 } from '@/functions/filter'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { PageRequest, sortToString } from '@/types/PageRequest'
 import { komgaClient } from '@/api/komga-client'
 import { bookListQuery } from '@/colada/books'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useFilterAuthors } from '@/composables/filters'
+import { useFilterAuthors } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
 
 const route = useRoute('/libraries/[id]/books')
 const libraryId = route.params.id
-const { libraries } = useGetLibrariesById(libraryId)
-const { librariesCondition } = useSearchConditionLibraries(libraries)
+const { libraryIds } = useGetLibrariesById(libraryId)
 
 const display = useDisplay()
 const appStore = useAppStore()
@@ -215,7 +215,7 @@ const sortOptions = sortBooks.map((it) => convertSortOptionDescriptor(it))
 
 const conds = computed(() => ({
   allOf: [
-    librariesCondition.value,
+    valuesToConditions(libraryIds.value, 'libraryId'),
     schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
     schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
     schemaFilterReadStatusToConditions(filterReadStatus.value),
@@ -287,6 +287,12 @@ const filterDrawer = ref(false)
 // shared model for all the expansion-panels, so only 1 is opened at the same time
 const filterExpansionPanels = ref()
 </script>
+
+<style lang="scss">
+.no-padding .v-expansion-panel-text__wrapper {
+  padding: 0 4px;
+}
+</style>
 
 <route lang="yaml">
 meta:

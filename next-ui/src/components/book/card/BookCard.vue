@@ -85,8 +85,11 @@ const titleAndLines = computed<{ title: ItemCardTitle; lines: ItemCardLine[] }>(
       text: intl.formatMessage(
         {
           description: 'Book card subtitle: count of pages',
-          defaultMessage: '{count} pages',
-          id: 'BSFC7R',
+          defaultMessage: `{count, plural,
+one {# page}
+other {# pages}
+}`,
+          id: 'Ai7bBV',
         },
         { count: book.media.pagesCount },
       ),
