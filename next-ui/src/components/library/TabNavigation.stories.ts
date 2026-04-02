@@ -20,7 +20,9 @@ const meta = {
       },
     },
   },
-  args: {},
+  args: {
+    libraryId: 'all',
+  },
 } satisfies Meta<typeof TabNavigation>
 
 export default meta

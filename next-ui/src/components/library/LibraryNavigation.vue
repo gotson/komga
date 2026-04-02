@@ -7,6 +7,7 @@
   <LibraryTabNavigation
     v-else
     :routes="routes"
+    :library-id="libraryId"
   />
 
   <RouterView />
