@@ -1,5 +1,12 @@
 <template>
   <v-app-bar>
+    <span class="ms-4 text-title-large">{{ collection?.name }}</span>
+    <CollectionMenuButton
+      v-if="collection"
+      :collection="collection"
+      class="mx-2"
+    />
+
     <ChipCount :count="totalElements" />
 
     <v-spacer />
@@ -249,8 +256,10 @@ import { seriesListQuery } from '@/colada/series'
 import { PageRequest, sortToString, type Sort } from '@/types/PageRequest'
 import { komgaClient } from '@/api/komga-client'
 import { collectionDetailQuery } from '@/colada/collections'
+import CollectionMenuButton from '@/components/collection/menu/CollectionMenuButton.vue'
 
 const route = useRoute('/collection/[id]')
+const router = useRouter()
 const collectionId = computed(() => route.params.id)
 
 const display = useDisplay()
@@ -260,11 +269,13 @@ const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 const viewName = computed(() => `collection_${collectionId.value}`)
 const { presentationMode, presentationModeEffective } = usePresentationMode(viewName)
 
-const { data: collection } = useQuery(() => ({
+const { data: collection, error } = useQuery(() => ({
   ...collectionDetailQuery({
     collectionId: collectionId.value,
   }),
 }))
+// redirect to home if the entity is deleted
+watch(error, () => router.push('/'))
 
 const { page0, page1, pageCount } = usePagination()
 

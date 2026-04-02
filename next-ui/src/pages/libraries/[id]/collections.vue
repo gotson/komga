@@ -1,6 +1,9 @@
 <template>
   <v-app-bar>
-    <ChipCount :count="totalElements" />
+    <ChipCount
+      class="ms-4"
+      :count="totalElements"
+    />
 
     <v-spacer />
 

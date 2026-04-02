@@ -28,6 +28,7 @@ declare module 'vue' {
     CollectionDeletionWarning: typeof import('./components/collection/DeletionWarning.vue')['default']
     CollectionMenu: typeof import('./components/collection/menu/CollectionMenu.vue')['default']
     CollectionMenuBottomSheet: typeof import('./components/collection/menu/CollectionMenuBottomSheet.vue')['default']
+    CollectionMenuButton: typeof import('./components/collection/menu/CollectionMenuButton.vue')['default']
     DialogBookPicker: typeof import('./components/dialog/BookPicker.vue')['default']
     DialogConfirm: typeof import('./components/dialog/Confirm.vue')['default']
     DialogConfirmEdit: typeof import('./components/dialog/ConfirmEdit.vue')['default']

@@ -1,4 +1,4 @@
-import { defineMutation, defineQueryOptions, useMutation } from '@pinia/colada'
+import { defineMutation, defineQueryOptions, useMutation, useQueryCache } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import type { PageRequest } from '@/types/PageRequest'
 import type { components } from '@/generated/openapi/komga'
@@ -55,7 +55,7 @@ export const collectionDetailQuery = defineQueryOptions(
 )
 
 export const useUpdateCollection = defineMutation(() => {
-  // const queryCache = useQueryCache()
+  const queryCache = useQueryCache()
   return useMutation({
     mutation: ({
       collectionId,
@@ -73,14 +73,14 @@ export const useUpdateCollection = defineMutation(() => {
         body: data,
       }),
     onSuccess: () => {
-      //TODO: check how to invalidate cache
-      // void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_COLLECTIONS.root }, 'all')
     },
   })
 })
 
-export const useDeleteCollection = defineMutation(() =>
-  useMutation({
+export const useDeleteCollection = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
     mutation: (collectionId: string) =>
       komgaClient.DELETE('/api/v1/collections/{id}', {
         params: {
@@ -89,5 +89,8 @@ export const useDeleteCollection = defineMutation(() =>
           },
         },
       }),
-  }),
-)
+    onSuccess: () => {
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_COLLECTIONS.root }, 'all')
+    },
+  })
+})
