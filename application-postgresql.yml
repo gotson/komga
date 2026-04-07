@@ -1,0 +1,31 @@
+application.version: 1.0
+
+komga:
+  database:
+    type: postgresql
+    url: jdbc:postgresql://localhost:5433/komga
+    username: komga
+    password: komga123
+  config-dir: /tmp/komga-postgres
+  tasks-db:
+    file: /tmp/komga-postgres/tasks.sqlite
+
+spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/{vendor}
+    mixed: true
+    placeholders:
+      library-file-hashing: true
+      library-scan-startup: false
+      delete-empty-collections: true
+      delete-empty-read-lists: true
+
+server:
+  port: 25601
+
+logging:
+  level:
+    org.gotson.komga: INFO
+    org.flywaydb: DEBUG
+    org.springframework.jdbc: DEBUG
