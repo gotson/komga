@@ -14,7 +14,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U komga"]
+      test: [ "CMD-SHELL", "pg_isready -U komga" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,10 +34,9 @@ services:
       KOMGA_DATABASE_USERNAME: komga
       KOMGA_DATABASE_PASSWORD: komga123
       KOMGA_CONFIG_DIR: /config
-      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 5
-      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 60000
-      SPRING_DATASOURCE_HIKARI_VALIDATION_TIMEOUT: 5000
-      SPRING_FLYWAY_ENABLED: "false"
+      KOMGA_DATABASE_POOL_SIZE: 10
+      KOMGA_DATABASE_MAX_POOL_SIZE: 10
+      SPRING_FLYWAY_ENABLED: "true"
     ports:
       - "25600:25600"
     volumes:

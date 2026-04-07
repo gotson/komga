@@ -1,17 +1,14 @@
-FROM node:18-alpine AS node-builder
+FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 
-# Copy frontend source
-COPY komga-webui/package.json komga-webui/package-lock.json ./
-RUN npm ci
+# Install Node.js 18 (matching .nvmrc)
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY komga-webui/ ./
-RUN npm run build
-
-FROM eclipse-temurin:21-jdk-alpine AS build
-
-WORKDIR /app
 
 # Copy gradle files
 COPY gradle ./gradle
@@ -20,14 +17,15 @@ COPY gradle.properties ./
 COPY settings.gradle ./
 COPY build.gradle.kts ./
 
-# Copy source code
+# Copy all subproject sources (komga, komga-tray, komga-webui)
 COPY komga ./komga
+COPY komga-tray ./komga-tray
+COPY komga-webui ./komga-webui
 
-# Copy built frontend from node-builder
-COPY --from=node-builder /app/dist komga-webui/dist
-
-# Build the application including frontend
-RUN ./gradlew prepareThymeLeaf bootJar -x test
+# Build the application - same as release.yml step
+# Gradle's prepareThymeLeaf handles: npmInstall -> npmBuild -> copyWebDist -> prepareThymeLeaf
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+RUN ./gradlew :komga:prepareThymeLeaf :komga:bootJar -x test -x generateGitProperties
 
 # Runtime stage
 FROM eclipse-temurin:21-jre-alpine
@@ -43,4 +41,4 @@ USER komga
 
 EXPOSE 25600
 
-ENTRYPOINT ["java", "-jar", "komga.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.include=docker", "--enable-native-access=ALL-UNNAMED", "-jar", "komga.jar"]
