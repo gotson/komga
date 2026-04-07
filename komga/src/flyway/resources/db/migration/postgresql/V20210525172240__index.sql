@@ -1,0 +1,1 @@
+CREATE INDEX idx__book_metadata_aggregation_author__series_id on BOOK_METADATA_AGGREGATION_AUTHOR (SERIES_ID);

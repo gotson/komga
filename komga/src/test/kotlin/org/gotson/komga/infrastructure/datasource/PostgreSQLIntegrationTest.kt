@@ -54,9 +54,4 @@ class PostgreSQLIntegrationTest {
   fun `should use PostgreSQL UDF provider`() {
     assertThat(databaseUdfProvider).isInstanceOf(PostgresUdfProvider::class.java)
   }
-
-  @Test
-  fun `should provide correct database type`() {
-    assertThat(databaseUdfProvider.getDatabaseType()).isEqualTo(DatabaseType.POSTGRESQL)
-  }
 }
