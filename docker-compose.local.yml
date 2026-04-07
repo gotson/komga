@@ -22,7 +22,7 @@ services:
   komga:
     build:
       context: .
-      dockerfile: Dockerfile.simple-local
+      dockerfile: Dockerfile.local
     container_name: komga-backend
     depends_on:
       postgres:

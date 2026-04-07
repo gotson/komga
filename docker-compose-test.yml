@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres-test:
-    image: postgres:16-alpine
+    image: postgres:15-alpine
     container_name: komga-postgres-test
     environment:
       POSTGRES_DB: komga_test
@@ -21,9 +21,7 @@ services:
     command: ["postgres", "-c", "log_statement=all"]  # Log all SQL for debugging
 
   komga-test:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
+    image: gotson/komga:latest
     container_name: komga-test-backend
     depends_on:
       postgres-test:
@@ -39,7 +37,6 @@ services:
       - "25601:25600"
     volumes:
       - ./data:/data:ro
-    command: ["./gradlew", ":komga:bootRun", "--args='--spring.profiles.active=test'"]
     restart: "no"
 
 volumes:
