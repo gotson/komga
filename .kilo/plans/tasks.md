@@ -167,31 +167,33 @@ Tracking progress against plan: `.kilo/plans/1775535760568-brave-panda.md`
 
 ## Summary
 
-### Sprint 1 Progress: 70% Complete
+### Sprint 1 Progress: 85% Complete
 - ✅ Infrastructure and configuration mostly done
 - ✅ DAO migration completed
 - ✅ Docker setup created
-- ⚠️ PostgreSQL connection issue needs fixing
+- ⚠️ PostgreSQL connection issue partially fixed
 - ⚠️ PostgresUdfProvider needs implementation
 - ❌ Python API test script not created
 
-### Sprint 2 Progress: 10% Complete
+### Sprint 2 Progress: 90% Complete
 - ✅ Directory structure created
-- ❌ Migration conversion not started (major task)
-- ❌ JOOQ generation not updated
-- ✅ Tasks database decision made
+- ✅ All 85 SQL migrations converted to PostgreSQL
+- ✅ 5 Kotlin migrations converted to PostgreSQL
+- ✅ JOOQ generation configuration added
+- ✅ Testcontainers setup for PostgreSQL testing
+- ⚠️ PostgreSQL integration test has configuration issues
 
 ### Sprint 3 Progress: 60% Complete
 - ✅ DAO updates completed
-- ⚠️ REGEXP handling partially done
+- ⚠️ REGEXP handling partially done (PostgresUdfProvider stubbed)
 - ✅ Documentation created
 - ❌ Testing needs completion
 
-## Next Priority Tasks
-1. Fix PostgreSQL connection timeout issue
-2. Complete PostgresUdfProvider implementations
-3. Run integration tests with Testcontainers
-4. Start migration conversion (Sprint 2)
+## Next Priority Tasks (Sprint 3)
+1. Complete PostgresUdfProvider implementations (REGEXP, strip accents, collation)
+2. Fix PostgreSQL integration test configuration issues
+3. Test full application with PostgreSQL
+4. Create data migration tool (optional)
 
 ## Files Created/Modified Summary
 
@@ -227,4 +229,43 @@ Tracking progress against plan: `.kilo/plans/1775535760568-brave-panda.md`
 - `komga/src/test/kotlin/org/gotson/komga/infrastructure/datasource/PostgreSQLIntegrationTest.kt`
 - `komga/src/test/resources/application-postgresql-test.yml` (fixed template issues)
 
-Last updated: 2026-04-07T14:05:54+07:00
+## Sprint 2 Accomplishments (2026-04-07)
+
+### ✅ Completed:
+1. **Migration Conversion**: Converted all 85 SQLite SQL migrations to PostgreSQL
+2. **Kotlin Migrations**: Created PostgreSQL versions of 5 Kotlin migrations
+3. **Build Configuration**: Updated build.gradle.kts with PostgreSQL JOOQ generation
+4. **Test Infrastructure**: Added Testcontainers dependencies and PostgreSQL test configuration
+5. **Automation Scripts**: Created Python scripts for migration conversion
+6. **Integration Test**: Created PostgreSQL integration test (needs fixing)
+
+### 🔧 Technical Details:
+- **Migration Conversion Rules**: `datetime` → `timestamp`, `blob` → `bytea`, `DEFAULT 0/1` → `DEFAULT false/true`, `int8` → `bigint`
+- **JOOQ Configuration**: Added `mainPostgres` configuration for PostgreSQL code generation
+- **Flyway Tasks**: Added `flywayMigrateMainPostgres` task for PostgreSQL migrations
+- **Testcontainers**: Added dependencies for PostgreSQL testing
+
+### ⚠️ Known Issues:
+1. PostgreSQL integration test has configuration binding issues
+2. PostgresUdfProvider implementations are still stubbed
+3. Need to verify all converted migrations work correctly
+
+## Files Created/Modified in Sprint 2
+
+### Created:
+- `convert_migrations.py` - SQL migration conversion script
+- `convert_kotlin_migrations.py` - Kotlin migration conversion script
+- `komga/src/flyway/resources/db/migration/postgresql/*.sql` - 85 PostgreSQL SQL migrations
+- `komga/src/flyway/kotlin/db/migration/postgresql/*.kt` - 5 PostgreSQL Kotlin migrations
+
+### Modified:
+- `komga/build.gradle.kts` - Added PostgreSQL JOOQ configuration, Testcontainers dependencies
+- `komga/src/test/kotlin/org/gotson/komga/infrastructure/datasource/PostgreSQLIntegrationTest.kt` - Fixed test compilation
+
+## Next Steps (Sprint 3)
+1. Complete PostgresUdfProvider implementations
+2. Fix PostgreSQL integration test
+3. Test full application with PostgreSQL
+4. Create documentation for PostgreSQL deployment
+
+Last updated: 2026-04-07T15:30:00+07:00
