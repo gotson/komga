@@ -6,7 +6,6 @@ import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SeriesMetadata
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.Condition
 import org.jooq.impl.DSL
@@ -18,6 +17,7 @@ private val logger = KotlinLogging.logger {}
  */
 class SeriesSearchHelper(
   val context: SearchContext,
+  private val jooqUdfHelper: JooqUdfHelper,
 ) : ContentRestrictionsSearchHelper() {
   fun toCondition(searchCondition: SearchCondition.Series?): Pair<Condition, Set<RequiredJoin>> {
     val base = toCondition()

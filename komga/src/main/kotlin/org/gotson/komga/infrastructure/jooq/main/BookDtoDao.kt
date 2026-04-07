@@ -110,7 +110,7 @@ class BookDtoDao(
   ): Page<BookDto> {
     requireNotNull(context.userId) { "Missing userId in search context" }
 
-    val (conditions, joins) = BookSearchHelper(context).toCondition(search.condition)
+    val (conditions, joins) = BookSearchHelper(context, jooqUdfHelper).toCondition(search.condition)
     return findAll(conditions, context.userId, pageable, search.fullTextSearch, joins)
   }
 

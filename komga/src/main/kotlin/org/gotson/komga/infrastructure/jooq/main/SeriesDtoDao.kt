@@ -110,7 +110,7 @@ class SeriesDtoDao(
   ): Page<SeriesDto> {
     requireNotNull(context.userId) { "Missing userId in search context" }
 
-    val (conditions, joins) = SeriesSearchHelper(context).toCondition(search.condition)
+    val (conditions, joins) = SeriesSearchHelper(context, jooqUdfHelper).toCondition(search.condition)
     val conditionsRefined = conditions.and(search.regexSearch?.let { it.second.toColumn().likeRegex(it.first) } ?: DSL.noCondition())
 
     return findAll(conditionsRefined, context.userId, pageable, joins, search.fullTextSearch)
@@ -123,7 +123,7 @@ class SeriesDtoDao(
   ): Page<SeriesDto> {
     requireNotNull(context.userId) { "Missing userId in search context" }
 
-    val (conditions, joins) = SeriesSearchHelper(context).toCondition(search.condition)
+    val (conditions, joins) = SeriesSearchHelper(context, jooqUdfHelper).toCondition(search.condition)
     val conditionsRefined = conditions.and(s.CREATED_DATE.notEqual(s.LAST_MODIFIED_DATE))
 
     return findAll(conditionsRefined, context.userId, pageable, joins, search.fullTextSearch)
@@ -135,7 +135,7 @@ class SeriesDtoDao(
   ): List<GroupCountDto> {
     requireNotNull(context.userId) { "Missing userId in search context" }
 
-    val (conditions, joins) = SeriesSearchHelper(context).toCondition(search.condition)
+    val (conditions, joins) = SeriesSearchHelper(context, jooqUdfHelper).toCondition(search.condition)
     val conditionsRefined = conditions.and(search.regexSearch?.let { it.second.toColumn().likeRegex(it.first) } ?: DSL.noCondition())
 
     val seriesIds = luceneHelper.searchEntitiesIds(search.fullTextSearch, LuceneEntity.Series)

@@ -7,7 +7,6 @@ import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchOperator
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.jooq.RequiredJoin.ReadProgress
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.Condition
@@ -20,6 +19,7 @@ private val logger = KotlinLogging.logger {}
  */
 class BookSearchHelper(
   val context: SearchContext,
+  private val jooqUdfHelper: JooqUdfHelper,
 ) : ContentRestrictionsSearchHelper() {
   fun toCondition(searchCondition: SearchCondition.Book?): Pair<Condition, Set<RequiredJoin>> {
     val base = toCondition()
