@@ -1,11 +1,14 @@
-application.version: 1.0
+application.version: TESTING
 
 komga:
   database:
-    file: /tmp/komga/database.sqlite
-  config-dir: /tmp/komga
+    type: postgresql
+    url: jdbc:postgresql://localhost:5433/komga_test
+    username: postgres
+    password: postgres
   tasks-db:
-    file: /tmp/komga/tasks.sqlite
+    file: /tmp/tasks-test.sqlite
+    journal-mode: WAL
 
 spring:
   flyway:
@@ -18,9 +21,6 @@ spring:
       delete-empty-collections: true
       delete-empty-read-lists: true
 
-server:
-  port: 25600
-
 logging:
   level:
-    org.gotson.komga: INFO
+    org.gotson.komga: DEBUG

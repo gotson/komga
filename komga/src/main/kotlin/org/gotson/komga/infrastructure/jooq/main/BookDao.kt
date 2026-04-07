@@ -5,6 +5,7 @@ import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
+import org.gotson.komga.infrastructure.jooq.JooqUdfHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
@@ -33,6 +34,7 @@ import java.time.ZoneId
 class BookDao(
   dslRW: DSLContext,
   @Qualifier("dslContextRO") dslRO: DSLContext,
+  private val jooqUdfHelper: JooqUdfHelper,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SplitDslDaoBase(dslRW, dslRO),
   BookRepository {
@@ -122,7 +124,7 @@ class BookDao(
     searchContext: SearchContext,
     pageable: Pageable,
   ): Page<Book> {
-    val bookCondition = BookSearchHelper(searchContext).toCondition(searchCondition)
+    val bookCondition = BookSearchHelper(searchContext, jooqUdfHelper).toCondition(searchCondition)
 
     val count =
       dslRO

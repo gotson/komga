@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: komga-postgres-test
+    environment:
+      POSTGRES_DB: komga_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: ["postgres", "-c", "log_statement=all"]  # Log all SQL for debugging
+
+  komga-test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: komga-test-backend
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      KOMGA_DATABASE_TYPE: postgresql
+      KOMGA_DATABASE_URL: jdbc:postgresql://postgres-test:5432/komga_test
+      KOMGA_DATABASE_USERNAME: postgres
+      KOMGA_DATABASE_PASSWORD: postgres
+      KOMGA_CONFIG_DIR: /tmp/komga-test
+    ports:
+      - "25601:25600"
+    volumes:
+      - ./data:/data:ro
+    command: ["./gradlew", ":komga:bootRun", "--args='--spring.profiles.active=test'"]
+    restart: "no"
+
+volumes:
+  postgres_test_data:

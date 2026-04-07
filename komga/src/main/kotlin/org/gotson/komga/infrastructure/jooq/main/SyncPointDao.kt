@@ -7,6 +7,7 @@ import org.gotson.komga.domain.model.SyncPoint
 import org.gotson.komga.domain.model.SyncPoint.ReadList.Companion.ON_DECK_ID
 import org.gotson.komga.domain.persistence.SyncPointRepository
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
+import org.gotson.komga.infrastructure.jooq.JooqUdfHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.jooq.main.Tables
@@ -32,6 +33,7 @@ class SyncPointDao(
   dslRW: DSLContext,
   @Qualifier("dslContextRO") dslRO: DSLContext,
   private val bookCommonDao: BookCommonDao,
+  private val jooqUdfHelper: JooqUdfHelper,
 ) : SplitDslDaoBase(dslRW, dslRO),
   SyncPointRepository {
   private val b = Tables.BOOK
@@ -55,7 +57,7 @@ class SyncPointDao(
   ): SyncPoint {
     requireNotNull(context.userId) { "userId is required to create a SyncPoint" }
 
-    val (condition, joins) = BookSearchHelper(context).toCondition(search.condition)
+    val (condition, joins) = BookSearchHelper(context, jooqUdfHelper).toCondition(search.condition)
 
     val syncPointId = TsidCreator.getTsid256().toString()
     val createdAt = LocalDateTime.now(ZoneId.of("Z"))

@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.persistence.SeriesRepository
+import org.gotson.komga.infrastructure.jooq.JooqUdfHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
@@ -31,6 +32,7 @@ import java.time.ZoneId
 class SeriesDao(
   dslRW: DSLContext,
   @Qualifier("dslContextRO") dslRO: DSLContext,
+  private val jooqUdfHelper: JooqUdfHelper,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SplitDslDaoBase(dslRW, dslRO),
   SeriesRepository {
@@ -117,7 +119,7 @@ class SeriesDao(
     searchContext: SearchContext,
     pageable: Pageable,
   ): Page<Series> {
-    val (conditions, joins) = SeriesSearchHelper(searchContext).toCondition(searchCondition)
+    val (conditions, joins) = SeriesSearchHelper(searchContext, jooqUdfHelper).toCondition(searchCondition)
 
     val query =
       dslRO

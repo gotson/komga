@@ -52,12 +52,11 @@ class DataSourcesConfiguration(
   private fun buildDataSource(
     poolName: String,
     databaseProps: KomgaProperties.Database,
-  ): HikariDataSource {
-    return when (databaseProps.type) {
+  ): HikariDataSource =
+    when (databaseProps.type) {
       DatabaseType.SQLITE -> buildSqliteDataSource(poolName, databaseProps)
       DatabaseType.POSTGRESQL -> buildPostgresDataSource(poolName, databaseProps)
     }
-  }
 
   private fun buildSqliteDataSource(
     poolName: String,
@@ -109,11 +108,12 @@ class DataSourcesConfiguration(
     poolName: String,
     databaseProps: KomgaProperties.Database,
   ): HikariDataSource {
-    val dataSource = PGSimpleDataSource().apply {
-      databaseProps.url?.let { setURL(it) }
-      databaseProps.username?.let { user = it }
-      databaseProps.password?.let { password = it }
-    }
+    val dataSource =
+      PGSimpleDataSource().apply {
+        databaseProps.url?.let { setURL(it) }
+        databaseProps.username?.let { user = it }
+        databaseProps.password?.let { password = it }
+      }
 
     val poolSize =
       if (databaseProps.poolSize != null)
@@ -136,7 +136,7 @@ class DataSourcesConfiguration(
 
   fun KomgaProperties.Database.isMemory() = file.contains(":memory:") || file.contains("mode=memory")
 
-  fun KomgaProperties.Database.shouldSeparateReadFromWrites(): Boolean = 
+  fun KomgaProperties.Database.shouldSeparateReadFromWrites(): Boolean =
     when (type) {
       DatabaseType.SQLITE -> !isMemory() && journalMode == SQLiteConfig.JournalMode.WAL
       DatabaseType.POSTGRESQL -> false // PostgreSQL doesn't need separate read/write pools

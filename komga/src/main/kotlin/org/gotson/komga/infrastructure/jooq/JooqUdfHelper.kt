@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class JooqUdfHelper(
-    private val databaseUdfProvider: DatabaseUdfProvider
+  private val databaseUdfProvider: DatabaseUdfProvider,
 ) {
-    fun Field<String>.udfStripAccents(): Field<String> = databaseUdfProvider.run { this@udfStripAccents.udfStripAccents() }
-    
-    fun Field<String>.collateUnicode3(): Field<String> = databaseUdfProvider.run { this@collateUnicode3.collateUnicode3() }
+  fun Field<String>.udfStripAccents(): Field<String> = databaseUdfProvider.run { this@udfStripAccents.udfStripAccents() }
+
+  fun Field<String>.collateUnicode3(): Field<String> = databaseUdfProvider.run { this@collateUnicode3.collateUnicode3() }
 }

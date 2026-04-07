@@ -21,7 +21,7 @@ import javax.sql.DataSource
 // as advised in https://docs.spring.io/spring-boot/docs/3.1.4/reference/htmlsingle/#howto.data-access.configure-jooq-with-multiple-datasources
 @Configuration
 class KomgaJooqConfiguration(
-  private val komgaProperties: KomgaProperties
+  private val komgaProperties: KomgaProperties,
 ) {
   @Bean("dslContextRW")
   @Primary
@@ -59,10 +59,12 @@ class KomgaJooqConfiguration(
     databaseType: DatabaseType,
   ) = DefaultDSLContext(
     DefaultConfiguration().also { configuration ->
-      configuration.set(when (databaseType) {
-        DatabaseType.SQLITE -> SQLDialect.SQLITE
-        DatabaseType.POSTGRESQL -> SQLDialect.POSTGRES
-      })
+      configuration.set(
+        when (databaseType) {
+          DatabaseType.SQLITE -> SQLDialect.SQLITE
+          DatabaseType.POSTGRESQL -> SQLDialect.POSTGRES
+        },
+      )
       configuration.set(DataSourceConnectionProvider(TransactionAwareDataSourceProxy(dataSource)))
       transactionProvider.ifAvailable { newTransactionProvider: TransactionProvider? -> configuration.set(newTransactionProvider) }
       configuration.set(*executeListenerProviders.orderedStream().toList().toTypedArray())

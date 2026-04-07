@@ -3,7 +3,7 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
+import org.gotson.komga.infrastructure.jooq.JooqUdfHelper
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
@@ -36,6 +36,7 @@ class ReadListDao(
   dslRW: DSLContext,
   @Qualifier("dslContextRO") dslRO: DSLContext,
   private val luceneHelper: LuceneHelper,
+  private val jooqUdfHelper: JooqUdfHelper,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
 ) : SplitDslDaoBase(dslRW, dslRO),
   ReadListRepository {
@@ -46,7 +47,7 @@ class ReadListDao(
 
   private val sorts =
     mapOf(
-      "name" to rl.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "name" to jooqUdfHelper.run { rl.NAME.collateUnicode3() },
       "createdDate" to rl.CREATED_DATE,
       "lastModifiedDate" to rl.LAST_MODIFIED_DATE,
     )
