@@ -1,0 +1,14 @@
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+
+# Copy the built JAR file (assuming it's built locally)
+COPY komga/build/libs/komga-*.jar komga.jar
+
+# Create non-root user
+RUN addgroup -S komga && adduser -S komga -G komga
+USER komga
+
+EXPOSE 25600
+
+ENTRYPOINT ["java", "-jar", "komga.jar"]

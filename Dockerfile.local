@@ -1,0 +1,46 @@
+FROM node:18-alpine AS node-builder
+
+WORKDIR /app
+
+# Copy frontend source
+COPY komga-webui/package.json komga-webui/package-lock.json ./
+RUN npm ci
+
+COPY komga-webui/ ./
+RUN npm run build
+
+FROM eclipse-temurin:21-jdk-alpine AS build
+
+WORKDIR /app
+
+# Copy gradle files
+COPY gradle ./gradle
+COPY gradlew ./
+COPY gradle.properties ./
+COPY settings.gradle ./
+COPY build.gradle.kts ./
+
+# Copy source code
+COPY komga ./komga
+
+# Copy built frontend from node-builder
+COPY --from=node-builder /app/dist komga-webui/dist
+
+# Build the application including frontend
+RUN ./gradlew prepareThymeLeaf bootJar -x test
+
+# Runtime stage
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+
+# Copy built artifact from build stage
+COPY --from=build /app/komga/build/libs/komga-*.jar komga.jar
+
+# Create non-root user
+RUN addgroup -S komga && adduser -S komga -G komga
+USER komga
+
+EXPOSE 25600
+
+ENTRYPOINT ["java", "-jar", "komga.jar"]
