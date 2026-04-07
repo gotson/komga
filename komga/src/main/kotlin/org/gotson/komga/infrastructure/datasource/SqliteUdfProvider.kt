@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.datasource
 import com.ibm.icu.text.Collator
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.language.stripAccents
+import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.impl.DSL
 import org.sqlite.Collation
@@ -19,6 +20,11 @@ class SqliteUdfProvider : DatabaseUdfProvider {
   override fun Field<String>.udfStripAccents(): Field<String> = DSL.function(udfStripAccentsName, String::class.java, this)
 
   override fun Field<String>.collateUnicode3(): Field<String> = this.collate(collationUnicode3Name)
+
+  override fun regexp(field: Field<String>, pattern: String, caseSensitive: Boolean): Condition {
+    // SQLite uses REGEXP operator with custom function
+    return DSL.condition("{0} REGEXP {1}", field, DSL.inline(pattern))
+  }
 
   override fun initializeConnection(connection: Any) {
     val sqliteConnection = connection as SQLiteConnection

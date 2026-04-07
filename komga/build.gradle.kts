@@ -56,6 +56,7 @@ dependencies {
 
   implementation("org.flywaydb:flyway-core")
   implementation("org.flywaydb:flyway-database-postgresql")
+  implementation("org.postgresql:postgresql")
 
   api("io.github.oshai:kotlin-logging-jvm:7.0.7")
 
@@ -123,7 +124,7 @@ dependencies {
   testImplementation("com.google.jimfs:jimfs:1.3.1")
 
   testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
-  
+
   testImplementation("org.testcontainers:testcontainers:1.20.4")
   testImplementation("org.testcontainers:junit-jupiter:1.20.4")
   testImplementation("org.testcontainers:postgresql:1.20.4")
@@ -258,7 +259,7 @@ val sqliteUrls =
   )
 val postgresUrls =
   mapOf(
-    "main" to "jdbc:postgresql://localhost:5432/komga_test",
+    "main" to "jdbc:postgresql://localhost:5433/komga",
   )
 val sqliteMigrationDirs =
   mapOf(
@@ -375,8 +376,8 @@ jooq {
         jdbc.apply {
           driver = "org.postgresql.Driver"
           url = postgresUrls["main"]
-          user = "komga"
-          password = "komga"
+           user = "komga"
+          password = "komga123"
         }
         generator.apply {
           database.apply {
