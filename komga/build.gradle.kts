@@ -105,7 +105,9 @@ dependencies {
   implementation("com.github.ben-manes.caffeine:caffeine")
 
   implementation("org.xerial:sqlite-jdbc:${libs.versions.sqliteJdbc.get()}")
+  implementation("org.postgresql:postgresql:${libs.versions.postgresql.get()}")
   jooqGenerator("org.xerial:sqlite-jdbc:${libs.versions.sqliteJdbc.get()}")
+  jooqGenerator("org.postgresql:postgresql:${libs.versions.postgresql.get()}")
 
   if (version.toString().endsWith(".0.0")) {
     ksp("com.github.gotson.bestbefore:bestbefore-processor-kotlin:0.2.0")

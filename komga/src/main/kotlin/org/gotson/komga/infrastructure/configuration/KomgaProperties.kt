@@ -75,6 +75,12 @@ class KomgaProperties {
     var pragmas: Map<String, String> = emptyMap()
 
     var checkLocalFilesystem: Boolean = true
+
+    var type: org.gotson.komga.infrastructure.datasource.DatabaseType = org.gotson.komga.infrastructure.datasource.DatabaseType.SQLITE
+
+    var url: String? = null
+    var username: String? = null
+    var password: String? = null
   }
 
   class Fonts {

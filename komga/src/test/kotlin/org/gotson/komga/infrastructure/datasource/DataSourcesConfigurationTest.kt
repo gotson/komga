@@ -14,7 +14,7 @@ class DataSourcesConfigurationTest {
   @Nested
   inner class WalMode(
     @Autowired private val dataSourceRW: DataSource,
-    @Autowired @Qualifier("sqliteDataSourceRO") private val dataSourceRO: DataSource,
+    @Autowired @Qualifier("mainDataSourceRO") private val dataSourceRO: DataSource,
     @Autowired @Qualifier("tasksDataSourceRW") private val tasksDataSourceRW: DataSource,
     @Autowired @Qualifier("tasksDataSourceRO") private val tasksDataSourceRO: DataSource,
   ) {
@@ -30,7 +30,7 @@ class DataSourcesConfigurationTest {
   @Nested
   inner class MemoryMode(
     @Autowired private val dataSourceRW: DataSource,
-    @Autowired @Qualifier("sqliteDataSourceRO") private val dataSourceRO: DataSource,
+    @Autowired @Qualifier("mainDataSourceRO") private val dataSourceRO: DataSource,
     @Autowired @Qualifier("tasksDataSourceRW") private val tasksDataSourceRW: DataSource,
     @Autowired @Qualifier("tasksDataSourceRO") private val tasksDataSourceRO: DataSource,
   ) {

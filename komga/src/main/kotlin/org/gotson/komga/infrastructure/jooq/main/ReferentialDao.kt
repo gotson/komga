@@ -2,9 +2,8 @@ package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.persistence.ReferentialRepository
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
+import org.gotson.komga.infrastructure.jooq.JooqUdfHelper
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.udfStripAccents
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAggregationAuthorRecord
 import org.gotson.komga.jooq.main.tables.records.BookMetadataAuthorRecord
@@ -25,6 +24,7 @@ import java.time.LocalDate
 class ReferentialDao(
   dslRW: DSLContext,
   @Qualifier("dslContextRO") dslRO: DSLContext,
+  private val jooqUdfHelper: JooqUdfHelper,
 ) : SplitDslDaoBase(dslRW, dslRO),
   ReferentialRepository {
   private val a = Tables.BOOK_METADATA_AUTHOR

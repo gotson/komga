@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchField
 import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
+import org.gotson.komga.infrastructure.jooq.JooqUdfHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase

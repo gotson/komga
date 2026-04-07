@@ -51,9 +51,9 @@ spring:
       accept-case-insensitive-values: true
   config:
     import:
-      - "optional:file:\${komga.config-dir}/application.yml"
-      - "optional:file:\${komga.config-dir}/application.yaml"
-      - "optional:file:\${komga.config-dir}/application.properties"
+      - "optional:file:${komga.config-dir}/application.yml"
+      - "optional:file:${komga.config-dir}/application.yaml"
+      - "optional:file:${komga.config-dir}/application.properties"
   http:
     codecs:
       max-in-memory-size: 10MB

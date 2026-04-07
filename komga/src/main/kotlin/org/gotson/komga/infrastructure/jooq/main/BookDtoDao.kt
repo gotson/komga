@@ -4,8 +4,8 @@ import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.SearchContext
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
+import org.gotson.komga.infrastructure.jooq.JooqUdfHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable
@@ -55,6 +55,7 @@ class BookDtoDao(
   dslRW: DSLContext,
   @Qualifier("dslContextRO") dslRO: DSLContext,
   private val luceneHelper: LuceneHelper,
+  private val jooqUdfHelper: JooqUdfHelper,
   @param:Value("#{@komgaProperties.database.batchChunkSize}") private val batchSize: Int,
   private val bookCommonDao: BookCommonDao,
 ) : SplitDslDaoBase(dslRW, dslRO),
@@ -73,8 +74,8 @@ class BookDtoDao(
 
   private val sorts =
     mapOf(
-      "name" to b.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
-      "series" to sd.TITLE_SORT.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "name" to jooqUdfHelper.run { b.NAME.collateUnicode3() },
+      "series" to jooqUdfHelper.run { sd.TITLE_SORT.collateUnicode3() },
       "created" to b.CREATED_DATE,
       "createdDate" to b.CREATED_DATE,
       "lastModified" to b.LAST_MODIFIED_DATE,
@@ -87,7 +88,7 @@ class BookDtoDao(
       "media.comment" to m.COMMENT.noCase(),
       "media.mediaType" to m.MEDIA_TYPE.noCase(),
       "media.pagesCount" to m.PAGE_COUNT,
-      "metadata.title" to d.TITLE.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "metadata.title" to jooqUdfHelper.run { d.TITLE.collateUnicode3() },
       "metadata.numberSort" to d.NUMBER_SORT,
       "metadata.releaseDate" to d.RELEASE_DATE,
       "readProgress.lastModified" to r.LAST_MODIFIED_DATE,
