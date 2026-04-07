@@ -7,32 +7,31 @@ CREATE TABLE USER_ROLE
 );
 
 insert into USER_ROLE
-select id, "ADMIN"
-from user
-where ROLE_ADMIN = 1;
+select id, 'ADMIN'
+from "USER"
+where ROLE_ADMIN = true;
 
 insert into USER_ROLE
-select id, "KOREADER_SYNC"
-from user
-where ROLE_ADMIN = 1;
+select id, 'KOREADER_SYNC'
+from "USER"
+where ROLE_ADMIN = true;
 
 insert into USER_ROLE
-select id, "FILE_DOWNLOAD"
-from user
-where ROLE_FILE_DOWNLOAD = 1;
+select id, 'FILE_DOWNLOAD'
+from "USER"
+where ROLE_FILE_DOWNLOAD = true;
 
 insert into USER_ROLE
-select id, "PAGE_STREAMING"
-from user
-where ROLE_PAGE_STREAMING = 1;
+select id, 'PAGE_STREAMING'
+from "USER"
+where ROLE_PAGE_STREAMING = true;
 
 insert into USER_ROLE
-select id, "KOBO_SYNC"
-from user
-where ROLE_KOBO_SYNC = 1;
+select id, 'KOBO_SYNC'
+from "USER"
+where ROLE_KOBO_SYNC = true;
 
 -- Remove columns ROLE_ADMIN, ROLE_FILE_DOWNLOAD, ROLE_PAGE_STREAMING, ROLE_KOBO_SYNC from "USER"
-PRAGMA foreign_keys= OFF;
 
 create table USER_dg_tmp
 (
@@ -60,9 +59,7 @@ select ID,
        AGE_RESTRICTION_ALLOW_ONLY
 from "USER";
 
-drop table "USER";
+drop table "USER" CASCADE;
 
 alter table USER_dg_tmp
     rename to "USER";
-
-PRAGMA foreign_keys= ON;

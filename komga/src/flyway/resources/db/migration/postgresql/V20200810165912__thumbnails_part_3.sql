@@ -2,7 +2,6 @@
 CREATE INDEX idx__thumbnail_book__book_id on THUMBNAIL_BOOK (BOOK_ID);
 
 -- Remove column THUMBNAIL from table MEDIA
-PRAGMA foreign_keys= OFF;
 
 ALTER TABLE MEDIA
     RENAME TO _MEDIA_OLD;
@@ -15,7 +14,7 @@ CREATE TABLE MEDIA
     LAST_MODIFIED_DATE timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     COMMENT            varchar  NULL,
     BOOK_ID            varchar  NOT NULL PRIMARY KEY,
-    PAGE_COUNT         int      NOT NULL DEFAULT false,
+    PAGE_COUNT         integer   NOT NULL DEFAULT 0,
     FOREIGN KEY (BOOK_ID) REFERENCES BOOK (ID)
 );
 
@@ -25,4 +24,3 @@ FROM _MEDIA_OLD;
 
 DROP TABLE _MEDIA_OLD;
 
-PRAGMA foreign_keys= ON;
