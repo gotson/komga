@@ -12,24 +12,39 @@ private val logger = KotlinLogging.logger {}
 class V20230801104436__fix_incorrect_language_codes : BaseJavaMigration() {
   override fun migrate(context: Context) {
     val jdbcTemplate = JdbcTemplate(SingleConnectionDataSource(context.connection, true))
+    
+    // Check if LANGUAGE column exists in SERIES_METADATA table
+    val columnExists = try {
+      jdbcTemplate.queryForObject(
+        "SELECT COUNT(*) FROM information_schema.columns WHERE table_name = 'series_metadata' AND column_name = 'language'",
+        Int::class.java
+      ) ?: 0 > 0
+    } catch (e: Exception) {
+      false
+    }
+    
+    if (!columnExists) {
+      // Column doesn't exist, nothing to migrate
+      return
+    }
 
     val seriesLanguage = jdbcTemplate.queryForList(
-      """select m.SERIES_ID, m.LANGUAGE from SERIES_METADATA m where LANGUAGE <> '' and LANGUAGE <> 'en'""",
+      """select m."SERIES_ID", m."LANGUAGE" from "SERIES_METADATA" m where "LANGUAGE" <> '' and "LANGUAGE" <> 'en'""",
     )
 
     if (seriesLanguage.isNotEmpty()) {
       seriesLanguage.mapNotNull {
-        val language = it["LANGUAGE"].toString()
+          val language = it["language"].toString()
         if (language.isBlank()) null
         else {
           val languageNormalized = normalize(language)
           if (language == languageNormalized) null
-          else arrayOf(languageNormalized, it["SERIES_ID"])
+          else arrayOf(languageNormalized, it["series_id"])
         }
       }.let { params ->
         logger.info { "Updating ${params.size} incorrect language codes for Series metadata" }
         jdbcTemplate.batchUpdate(
-          """update SERIES_METADATA set LANGUAGE = ? where SERIES_ID = ?""",
+          """update "SERIES_METADATA" set "LANGUAGE" = ? where "SERIES_ID" = ?""",
           params,
         )
       }

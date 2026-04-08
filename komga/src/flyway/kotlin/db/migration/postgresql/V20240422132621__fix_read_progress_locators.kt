@@ -17,9 +17,24 @@ private val logger = KotlinLogging.logger {}
 class V20240422132621__fix_read_progress_locators : BaseJavaMigration() {
   override fun migrate(context: Context) {
     val jdbcTemplate = JdbcTemplate(SingleConnectionDataSource(context.connection, true))
+    
+    // Check if locator column exists in READ_PROGRESS table
+    val columnExists = try {
+      jdbcTemplate.queryForObject(
+        "SELECT COUNT(*) FROM information_schema.columns WHERE table_name = 'read_progress' AND column_name = 'locator'",
+        Int::class.java
+      ) ?: 0 > 0
+    } catch (e: Exception) {
+      false
+    }
+    
+    if (!columnExists) {
+      // Column doesn't exist, nothing to migrate
+      return
+    }
 
     val readProgressList = jdbcTemplate.queryForList(
-      """select r.BOOK_ID, r.USER_ID, r.locator from READ_PROGRESS r where locator is not null""",
+      """select r."BOOK_ID", r."USER_ID", r."locator" from "READ_PROGRESS" r where "locator" is not null""",
     )
 
     if (readProgressList.isNotEmpty()) {
@@ -27,7 +42,7 @@ class V20240422132621__fix_read_progress_locators : BaseJavaMigration() {
 
       readProgressList.mapNotNull {
         try {
-          val locator = GZIPInputStream((it["LOCATOR"] as ByteArray).inputStream()).use { gz -> mapper.readTree(gz) }
+          val locator = GZIPInputStream((it["locator"] as ByteArray).inputStream()).use { gz -> mapper.readTree(gz) }
           val href = locator["href"]?.asText()
           if (href == null) null
           else {
@@ -39,7 +54,7 @@ class V20240422132621__fix_read_progress_locators : BaseJavaMigration() {
                 baos.toByteArray()
               }
             }
-            arrayOf(gzLocator, it["BOOK_ID"], it["USER_ID"])
+             arrayOf(gzLocator, it["book_id"], it["user_id"])
           }
         } catch (e: Exception) {
           null
@@ -47,7 +62,7 @@ class V20240422132621__fix_read_progress_locators : BaseJavaMigration() {
       }.let { params ->
         logger.info { "Updating ${params.size} incorrect read progress locators" }
         jdbcTemplate.batchUpdate(
-          """update READ_PROGRESS set locator = ? where BOOK_ID = ? and USER_ID = ?""",
+          """update "READ_PROGRESS" set "locator" = ? where "BOOK_ID" = ? and "USER_ID" = ?""",
           params,
         )
       }

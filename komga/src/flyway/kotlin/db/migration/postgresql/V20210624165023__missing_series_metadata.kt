@@ -14,7 +14,7 @@ class V20210624165023__missing_series_metadata : BaseJavaMigration() {
     val jdbcTemplate = JdbcTemplate(SingleConnectionDataSource(context.connection, true))
 
     val seriesWithoutMetada = jdbcTemplate.queryForList(
-      """select s.ID, s.NAME from SERIES s where s.ID not in (select sm.SERIES_ID from SERIES_METADATA sm)""",
+      """select s."ID", s."NAME" from "SERIES" s where s."ID" not in (select sm."SERIES_ID" from "SERIES_METADATA" sm)""",
     )
 
     if (seriesWithoutMetada.isNotEmpty()) {
@@ -23,10 +23,10 @@ class V20210624165023__missing_series_metadata : BaseJavaMigration() {
       seriesWithoutMetada
         .map {
           // fields for SERIES_METADATA: SERIES_ID, STATUS=ONGOING, TITLE, TITLE_SORT, READING_DIRECTION=null, AGE_RATING=null
-          arrayOf(it["ID"], "ONGOING", it["NAME"], StringUtils.stripAccents(it["NAME"].toString()), null, null)
+           arrayOf(it["id"], "ONGOING", it["name"], StringUtils.stripAccents(it["name"].toString()), null, null)
         }.let { parameters ->
-          jdbcTemplate.batchUpdate(
-            "INSERT INTO SERIES_METADATA(SERIES_ID, STATUS, TITLE, TITLE_SORT, READING_DIRECTION, AGE_RATING) VALUES (?,?,?,?,?,?)",
+           jdbcTemplate.batchUpdate(
+            """INSERT INTO "SERIES_METADATA"("SERIES_ID", "STATUS", "TITLE", "TITLE_SORT", "READING_DIRECTION", "AGE_RATING") VALUES (?,?,?,?,?,?)""",
             parameters,
           )
         }
@@ -34,10 +34,10 @@ class V20210624165023__missing_series_metadata : BaseJavaMigration() {
       seriesWithoutMetada
         .map {
           // fields for BOOK_METADATA_AGGREGATION: SERIES_ID, RELEASE_DATE=null
-          arrayOf(it["ID"], null)
+           arrayOf(it["id"], null)
         }.let { parameters ->
-          jdbcTemplate.batchUpdate(
-            "INSERT INTO BOOK_METADATA_AGGREGATION(SERIES_ID, RELEASE_DATE) VALUES (?,?)",
+           jdbcTemplate.batchUpdate(
+            """INSERT INTO "BOOK_METADATA_AGGREGATION"("SERIES_ID", "RELEASE_DATE") VALUES (?,?)""",
             parameters,
           )
         }
