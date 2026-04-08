@@ -5,7 +5,7 @@ Docker Compose setup để chạy Komga với PostgreSQL cho development và tes
 
 ## File Structure
 
-### 1. docker-compose.yml
+### 1. docker-compose.yml (Production/Standard)
 ```yaml
 version: '3.8'
 
@@ -55,7 +55,67 @@ volumes:
   komga_config:
 ```
 
-### 2. docker-compose-test.yml (cho testing)
+### 2. docker-compose.local.yml (Local Development với Build)
+```yaml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: komga-postgres
+    environment:
+      POSTGRES_DB: komga
+      POSTGRES_USER: komga
+      POSTGRES_PASSWORD: komga123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U komga" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  komga:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    container_name: komga-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      KOMGA_DATABASE_TYPE: postgresql
+      KOMGA_DATABASE_URL: jdbc:postgresql://postgres:5432/komga
+      KOMGA_DATABASE_USERNAME: komga
+      KOMGA_DATABASE_PASSWORD: komga123
+      KOMGA_CONFIG_DIR: /config
+      KOMGA_DATABASE_POOL_SIZE: 10
+      KOMGA_DATABASE_MAX_POOL_SIZE: 10
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+      SPRING_FLYWAY_BASELINE_VERSION: "20250730173126"
+    ports:
+      - "25600:25600"
+    volumes:
+      - komga_config:/config
+      - ./data:/data:ro
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  komga_config:
+```
+
+**Lưu ý về Dockerfile.local:**
+- Build từ source với `./gradlew :komga:prepareThymeLeaf :komga:bootJar`
+- Có thể timeout do download Gradle distribution
+- Migration fixes đã được áp dụng trong source code
+
+### 3. docker-compose-test.yml (cho testing)
 ```yaml
 version: '3.8'
 

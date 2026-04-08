@@ -150,10 +150,48 @@ class JooqUdfHelper(
 ✅ **Backend khởi động** và chạy Flyway migrations  
 ✅ **PostgreSQL infrastructure** đã sẵn sàng  
 ✅ **Docker setup** hoàn chỉnh  
+✅ **Migration case sensitivity fixes** đã áp dụng  
 ⏳ **Integration tests** cần chạy với Testcontainers
+
+## Migration Case Sensitivity Fixes (2026-04-08)
+
+### Vấn đề
+PostgreSQL migrations có case sensitivity issues:
+- V001 tạo tables với quoted identifiers (`"TABLE_NAME"`) - case-sensitive
+- Older migrations reference tables without quotes (`TABLE_NAME`) - case-insensitive
+- PostgreSQL treats `"TABLE_NAME"` và `TABLE_NAME` (becomes `table_name`) là khác nhau
+
+### Giải pháp đã áp dụng
+
+#### 1. Fixed Java/Kotlin Migrations (5 files):
+- `V20200810154730__thumbnails_part_2.kt`: Added column check, fixed quotes
+- `V20200820150923__metadata_fields_part_2.kt`: Added column check, fixed quotes  
+- `V20210624165023__missing_series_metadata.kt`: Fixed quotes
+- `V20230801104436__fix_incorrect_language_codes.kt`: Added column check, fixed quotes
+- `V20240422132621__fix_read_progress_locators.kt`: Added column check, fixed quotes
+
+**Changes made:**
+- Sử dụng quoted identifiers (`"TABLE_NAME"`, `"COLUMN_NAME"`)
+- Thêm column existence checks cho migrations reference columns không có trong V001
+- Fixed result set column name access (lowercase khi dùng quoted identifiers)
+
+#### 2. Created PostgreSQL SQL Migrations (2 files):
+- `V20200730135746__image_dimension.sql`: New PostgreSQL version với quoted identifiers
+- `V20220106143755__page_file_size.sql`: New PostgreSQL version với quoted identifiers
+
+#### 3. V001 giữ nguyên với quoted identifiers:
+- Cần thiết cho reserved keyword `USER`
+- Tất cả tables được tạo với `"TABLE_NAME"` format
+
+### Kết quả
+✅ **All 8 PostgreSQL migrations apply successfully**  
+✅ **Application starts on port 25600**  
+✅ **Database schema created correctly**  
+✅ **Services run with docker-compose.local.yml**
 
 ## Lưu ý quan trọng
 - **Backward compatibility**: SQLite vẫn là default database
 - **Tasks database**: Vẫn dùng SQLite cho đơn giản
 - **Flyway**: Tự động detect vendor và sử dụng migration directory phù hợp
 - **JOOQ**: Runtime dialect dynamic, code generation vẫn dùng SQLite (Sprint 2 sẽ update)
+- **Case sensitivity**: Tất cả PostgreSQL migrations giờ sử dụng quoted identifiers nhất quán với V001
