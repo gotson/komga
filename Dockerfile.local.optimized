@@ -1,0 +1,71 @@
+# Multi-stage optimized Docker build for Komga
+# Frontend and backend are built in separate stages for better caching
+
+# Stage 1: Frontend builder
+FROM node:18-alpine AS frontend-builder
+
+WORKDIR /app
+
+# Copy package files first for better layer caching
+COPY komga-webui/package*.json ./
+
+# Install dependencies (use npm ci for reproducible builds)
+RUN npm ci
+
+# Copy the rest of the frontend source
+COPY komga-webui/ ./
+
+# Build the frontend
+RUN npm run build
+
+# Inject ThymeLeaf th: tags into index.html (mimics Gradle's prepareThymeLeaf task)
+# This regex matches src="/path", href="/path", content="/path" and adds th: attributes
+RUN sed -i -E 's/(src|href|content)="(\/[^"]*)"/\1="\2" th:\1="@{\2}"/g' dist/index.html
+
+
+# Stage 2: Backend builder
+FROM eclipse-temurin:21-jdk AS backend-builder
+
+WORKDIR /app
+
+# Install Node.js 18 (required for Gradle's npm tasks, though we won't run them)
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copy Gradle files
+COPY gradle ./gradle
+COPY gradlew ./
+COPY gradle.properties ./
+COPY settings.gradle ./
+COPY build.gradle.kts ./
+
+# Copy backend source (excluding webui which is already built)
+COPY komga ./komga
+COPY komga-tray ./komga-tray
+
+# Copy built frontend from frontend-builder stage
+COPY --from=frontend-builder /app/dist/ komga/src/main/resources/public/
+
+# Build the backend JAR (skip prepareThymeLeaf since frontend is already built)
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+RUN ./gradlew :komga:bootJar -x test -x generateGitProperties -x prepareThymeLeaf
+
+
+# Stage 3: Runtime
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+
+# Copy built artifact from backend-builder stage
+COPY --from=backend-builder /app/komga/build/libs/komga-*.jar komga.jar
+
+# Create non-root user
+RUN addgroup -S komga && adduser -S komga -G komga
+USER komga
+
+EXPOSE 25600
+
+ENTRYPOINT ["java", "-Dspring.profiles.include=docker", "--enable-native-access=ALL-UNNAMED", "-jar", "komga.jar"]

@@ -19,7 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.TimeUnit
 
-private const val GITHUB_API = "https://api.github.com/repos/gotson/komga/releases"
+private const val GITHUB_API = "https://api.github.com/repos/simplesoft-duongdt3/komga/releases"
 
 @RestController
 @PreAuthorize("hasRole('ADMIN')")

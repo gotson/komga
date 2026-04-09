@@ -1,0 +1,5 @@
+FROM node:18-alpine AS frontend-builder
+WORKDIR /app
+COPY komga-webui/package*.json ./
+RUN echo "Package files copied successfully"
+RUN npm ci 2>&1 | tail -20

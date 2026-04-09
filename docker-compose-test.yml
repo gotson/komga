@@ -21,7 +21,7 @@ services:
     command: ["postgres", "-c", "log_statement=all"]  # Log all SQL for debugging
 
   komga-test:
-    image: gotson/komga:latest
+    image: ghcr.io/simplesoft-duongdt3/komga:latest
     container_name: komga-test-backend
     depends_on:
       postgres-test:

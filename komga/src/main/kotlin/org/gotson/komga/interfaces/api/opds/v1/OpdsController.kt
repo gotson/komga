@@ -116,7 +116,7 @@ class OpdsController(
   @Qualifier("pdfImageType")
   private val pdfImageType: ImageType,
 ) {
-  private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/gotson/komga"))
+  private val komgaAuthor = OpdsAuthor("Komga", URI("https://github.com/simplesoft-duongdt3/komga"))
 
   private val decimalFormat = DecimalFormat("0.#")
 

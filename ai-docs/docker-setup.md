@@ -3,6 +3,8 @@
 ## Overview
 Docker Compose setup để chạy Komga với PostgreSQL cho development và testing.
 
+**Optimized Build**: Để build nhanh hơn với caching tốt hơn, sử dụng `Dockerfile.local.optimized` và `docker-compose.local.optimized.yml`.
+
 ## File Structure
 
 ### 1. docker-compose.yml (Production/Standard)
@@ -115,7 +117,69 @@ volumes:
 - Có thể timeout do download Gradle distribution
 - Migration fixes đã được áp dụng trong source code
 
-### 3. docker-compose-test.yml (cho testing)
+### 2a. docker-compose.local.optimized.yml (Local Development với Build Optimized)
+```yaml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: komga-postgres
+    environment:
+      POSTGRES_DB: komga
+      POSTGRES_USER: komga
+      POSTGRES_PASSWORD: komga123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U komga" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  komga:
+    build:
+      context: .
+      dockerfile: Dockerfile.local.optimized
+    container_name: komga-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      KOMGA_DATABASE_TYPE: postgresql
+      KOMGA_DATABASE_URL: jdbc:postgresql://postgres:5432/komga?connectTimeout=30000&socketTimeout=60000
+      KOMGA_DATABASE_USERNAME: komga
+      KOMGA_DATABASE_PASSWORD: komga123
+      KOMGA_CONFIG_DIR: /config
+      KOMGA_DATABASE_POOL_SIZE: 10
+      KOMGA_DATABASE_MAX_POOL_SIZE: 10
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+      SPRING_FLYWAY_BASELINE_VERSION: "20250730173126"
+    ports:
+      - "25600:25600"
+    volumes:
+      - komga_config:/config
+      - ./data:/data:ro
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  komga_config:
+```
+
+**Lưu ý về Dockerfile.local.optimized:**
+- Multi-stage build tách biệt frontend và backend để tối ưu caching
+- Frontend (`npm install`, `npm run build`) được cache độc lập
+- Thay đổi backend không trigger rebuild frontend
+- Build nhanh hơn đáng kể cho incremental builds
+- Sử dụng: `docker-compose -f docker-compose.local.optimized.yml up -d`
+
+### 4. docker-compose-test.yml (cho testing)
 ```yaml
 version: '3.8'
 
@@ -143,7 +207,7 @@ volumes:
   postgres_test_data:
 ```
 
-### 3. docker/postgres/init.sql
+### 5. docker/postgres/init.sql
 ```sql
 -- PostgreSQL initialization script for Komga
 -- Creates necessary extensions and sets up database

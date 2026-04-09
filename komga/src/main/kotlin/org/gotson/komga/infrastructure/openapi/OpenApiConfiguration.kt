@@ -90,7 +90,7 @@ class OpenApiConfiguration(
             Check the API reference:
             - on the [Komga website](https://komga.org/docs/openapi/komga-api)
             - on any running Komga instance at `/swagger-ui.html`
-            - on [GitHub](https://raw.githubusercontent.com/gotson/komga/refs/heads/master/komga/docs/openapi.json)
+            - on [GitHub](https://raw.githubusercontent.com/simplesoft-duongdt3/komga/refs/heads/master/komga/docs/openapi.json)
 
             ## Authentication
 
@@ -119,7 +119,7 @@ class OpenApiConfiguration(
 
             API endpoints marked as deprecated will be removed in the next major version.
             """.trimIndent(),
-          ).license(License().name("MIT").url("https://github.com/gotson/komga/blob/master/LICENSE")),
+          ).license(License().name("MIT").url("https://github.com/simplesoft-duongdt3/komga/blob/master/LICENSE")),
       ).externalDocs(
         ExternalDocumentation()
           .description("Komga documentation")

@@ -12,15 +12,17 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U komga"]
+      test: [ "CMD-SHELL", "pg_isready -U komga" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
   komga:
-    image: komga-local:1.24.3
+    build:
+      context: .
+      dockerfile: Dockerfile.local.optimized
     container_name: komga-backend
     depends_on:
       postgres:

@@ -1,0 +1,2 @@
+FROM alpine:latest
+RUN echo "Test build successful"
