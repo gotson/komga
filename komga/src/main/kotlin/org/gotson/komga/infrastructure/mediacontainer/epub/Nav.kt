@@ -4,6 +4,7 @@ import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.infrastructure.util.getEntryBytes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.parser.Parser
 import java.net.URLDecoder
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -20,7 +21,7 @@ fun processNav(
   document: ResourceContent,
   navElement: Epub3Nav,
 ): List<EpubTocEntry> {
-  val doc = Jsoup.parse(document.content)
+  val doc = Jsoup.parse(document.content, "", Parser.xmlParser())
   val nav =
     doc
       .select("nav")

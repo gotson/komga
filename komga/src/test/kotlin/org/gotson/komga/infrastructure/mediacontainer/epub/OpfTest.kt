@@ -3,6 +3,7 @@ package org.gotson.komga.infrastructure.mediacontainer.epub
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.EpubTocEntry
 import org.jsoup.Jsoup
+import org.jsoup.parser.Parser
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.core.io.ClassPathResource
@@ -15,7 +16,7 @@ class OpfTest {
     // given
     val opfResource = ClassPathResource("epub/clash.opf")
     val opfString = opfResource.inputStream.readAllBytes().decodeToString()
-    val opfDoc = Jsoup.parse(opfString)
+    val opfDoc = Jsoup.parse(opfString, "", Parser.xmlParser())
 
     // when
     val opfLandmarks = processOpfGuide(opfDoc, if (prefix.isBlank()) null else Path.of(prefix))
