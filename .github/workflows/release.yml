@@ -48,7 +48,7 @@ jobs:
           fetch-depth: 0
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
       - name: Install svu
         run: brew install --cask caarlos0/tap/svu
       - name: Compute next version for release
