@@ -92,7 +92,7 @@ class OpdsGenerator(
       links =
         listOf(
           WPLinkDto(rel = "help", href = "https://komga.org"),
-          WPLinkDto(rel = "logo", href = ServletUriComponentsBuilder.fromCurrentContextPath().path("android-chrome-512x512.png").toUriString()),
+          WPLinkDto(rel = "logo", href = ServletUriComponentsBuilder.fromCurrentContextPath().pathSegment("android-chrome-512x512.png").toUriString()),
         ),
       authentication =
         listOf(
