@@ -435,7 +435,7 @@ class Opds2Controller(
           PageRequest.of(page.pageNumber, page.pageSize, Sort.by(Sort.Order.desc("lastModified"))),
         ).map { it.toWPLinkDto() }
 
-    val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/books/latest")
+    val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/series/latest")
 
     return FeedDto(
       metadata =
