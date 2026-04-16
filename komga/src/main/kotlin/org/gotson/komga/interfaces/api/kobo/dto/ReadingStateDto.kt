@@ -1,5 +1,7 @@
 package org.gotson.komga.interfaces.api.kobo.dto
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 import org.gotson.komga.domain.model.ReadProgress
@@ -7,14 +9,18 @@ import org.gotson.komga.language.toUTCZoned
 import java.time.ZonedDateTime
 
 @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy::class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ReadingStateDto(
+  @JsonFormat(shape = JsonFormat.Shape.STRING)
   val created: ZonedDateTime? = null,
   val currentBookmark: BookmarkDto,
   val entitlementId: String,
+  @JsonFormat(shape = JsonFormat.Shape.STRING)
   val lastModified: ZonedDateTime,
   /**
    * From CW: apparently always equals to lastModified
    */
+  @JsonFormat(shape = JsonFormat.Shape.STRING)
   val priorityTimestamp: ZonedDateTime? = null,
   val statistics: StatisticsDto,
   val statusInfo: StatusInfoDto,
@@ -38,12 +44,14 @@ fun ReadProgress.toDto() =
           this.locator
             ?.locations
             ?.totalProgression
-            ?.times(100),
+            ?.times(100)
+            ?.toInt(),
         contentSourceProgressPercent =
           this.locator
             ?.locations
             ?.progression
-            ?.times(100),
+            ?.times(100)
+            ?.toInt(),
         location = this.locator?.let { LocationDto(source = it.href, value = it.koboSpan) },
       ),
     statistics =
