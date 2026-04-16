@@ -113,7 +113,7 @@ class KoboProxy(
             }
           }
           logger.debug { "Headers out: $headersOut" }
-        }.apply { if (body != null) body(body) }
+        }.apply { if (body != null) body(objectMapper.writeValueAsBytes(body)) }
         .retrieve()
         .onStatus(HttpStatusCode::isError) { _, response ->
           logger.debug { "Kobo response: ${response.statusCode}: ${response.body.bufferedReader().use { it.readText() }}" }
