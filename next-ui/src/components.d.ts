@@ -46,7 +46,6 @@ declare module 'vue' {
     FilterByAuthor: typeof import('./components/filter/by/Author.vue')['default']
     FilterByComplete: typeof import('./components/filter/by/Complete.vue')['default']
     FilterByGenre: typeof import('./components/filter/by/Genre.vue')['default']
-    FilterByIncludeExclude: typeof import('./components/filter/by/IncludeExclude.vue')['default']
     FilterByLanguage: typeof import('./components/filter/by/Language.vue')['default']
     FilterByLibrary: typeof import('./components/filter/by/Library.vue')['default']
     FilterByOneShot: typeof import('./components/filter/by/OneShot.vue')['default']
