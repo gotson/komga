@@ -74,7 +74,7 @@ class KoboProxy(
    * raw Kobo sync token returned, and added to the response headers.
    */
   fun proxyCurrentRequest(
-    body: Any? = null,
+    body: ByteArray? = null,
     includeSyncToken: Boolean = false,
   ): ResponseEntity<JsonNode> {
     if (!komgaSettingsProvider.koboProxy) throw IllegalStateException("kobo proxying is disabled")
