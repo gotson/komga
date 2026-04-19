@@ -32,6 +32,7 @@ import org.gotson.komga.interfaces.api.persistence.BookDtoRepository
 import org.springframework.core.io.FileSystemResource
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpRange
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -41,6 +42,7 @@ import org.springframework.util.MimeTypeUtils
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -328,37 +330,93 @@ class CommonBookController(
   fun downloadBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
-  ): ResponseEntity<StreamingResponseBody> = getBookFileInternal(principal, bookId)
+    @RequestHeader(HttpHeaders.RANGE, required = false) rangeHeader: String?,
+  ): ResponseEntity<StreamingResponseBody> = getBookFileInternal(principal, bookId, rangeHeader)
 
   fun getBookFileInternal(
     principal: KomgaPrincipal,
     bookId: String,
+    rangeHeader: String? = null,
   ): ResponseEntity<StreamingResponseBody> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
       contentRestrictionChecker.checkContentRestriction(principal.user, book)
       try {
         val media = mediaRepository.findById(book.id)
-        with(FileSystemResource(book.path)) {
-          if (!exists()) throw FileNotFoundException(path)
+        val resource = FileSystemResource(book.path)
+        if (!resource.exists()) throw FileNotFoundException(resource.path)
+        val fileLength = resource.contentLength()
+
+        val baseHeaders =
+          HttpHeaders().apply {
+            contentDisposition =
+              ContentDisposition
+                .builder("attachment")
+                .filename(book.path.name, StandardCharsets.UTF_8)
+                .build()
+            set(HttpHeaders.ACCEPT_RANGES, "bytes")
+          }
+
+        // Parse range — only honour a single range; fall back to full response for multi-range
+        val parsedRanges =
+          if (rangeHeader != null) {
+            try {
+              HttpRange.parseRanges(rangeHeader)
+            } catch (ex: IllegalArgumentException) {
+              return@let ResponseEntity
+                .status(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE)
+                .headers(baseHeaders.apply { set(HttpHeaders.CONTENT_RANGE, "bytes */$fileLength") })
+                .build()
+            }
+          } else {
+            null
+          }
+
+        if (parsedRanges != null && parsedRanges.size == 1) {
+          val (start, end) =
+            try {
+              parsedRanges[0].getRangeStart(fileLength) to parsedRanges[0].getRangeEnd(fileLength)
+            } catch (ex: IllegalArgumentException) {
+              return@let ResponseEntity
+                .status(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE)
+                .headers(baseHeaders.apply { set(HttpHeaders.CONTENT_RANGE, "bytes */$fileLength") })
+                .build()
+            }
+          val rangeLength = end - start + 1
           val stream =
             StreamingResponseBody { os: OutputStream ->
-              this.inputStream.use {
+              java.io.RandomAccessFile(resource.file, "r").use { raf ->
+                raf.seek(start)
+                val buffer = ByteArray(8192)
+                var remaining = rangeLength
+                while (remaining > 0) {
+                  val toRead = minOf(buffer.size.toLong(), remaining).toInt()
+                  val read = raf.read(buffer, 0, toRead)
+                  if (read == -1) break
+                  os.write(buffer, 0, read)
+                  remaining -= read
+                }
+              }
+            }
+          ResponseEntity
+            .status(HttpStatus.PARTIAL_CONTENT)
+            .headers(baseHeaders.apply { set(HttpHeaders.CONTENT_RANGE, "bytes $start-$end/$fileLength") })
+            .contentType(getMediaTypeOrDefault(media.mediaType))
+            .contentLength(rangeLength)
+            .body(stream)
+        } else {
+          // No range header or multi-range: stream the full file
+          val stream =
+            StreamingResponseBody { os: OutputStream ->
+              resource.inputStream.use {
                 IOUtils.copyLarge(it, os, ByteArray(8192))
                 os.close()
               }
             }
           ResponseEntity
             .ok()
-            .headers(
-              HttpHeaders().apply {
-                contentDisposition =
-                  ContentDisposition
-                    .builder("attachment")
-                    .filename(book.path.name, StandardCharsets.UTF_8)
-                    .build()
-              },
-            ).contentType(getMediaTypeOrDefault(media.mediaType))
-            .contentLength(this.contentLength())
+            .headers(baseHeaders)
+            .contentType(getMediaTypeOrDefault(media.mediaType))
+            .contentLength(fileLength)
             .body(stream)
         }
       } catch (ex: FileNotFoundException) {
