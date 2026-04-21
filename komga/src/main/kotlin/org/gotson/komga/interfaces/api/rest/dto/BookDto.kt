@@ -47,6 +47,8 @@ data class MediaDto(
 data class BookMetadataDto(
   val title: String,
   val titleLock: Boolean,
+  val titleSort: String,
+  val titleSortLock: Boolean,
   val summary: String,
   val summaryLock: Boolean,
   val number: String,
