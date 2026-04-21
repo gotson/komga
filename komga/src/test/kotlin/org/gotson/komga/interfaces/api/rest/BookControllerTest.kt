@@ -985,6 +985,8 @@ class BookControllerTest(
         {
           "title":"newTitle",
           "titleLock":true,
+          "titleSort":"newTitleSort",
+          "titleSortLock":true,
           "summary":"newSummary",
           "summaryLock":true,
           "number":"newNumber",
@@ -1022,6 +1024,7 @@ class BookControllerTest(
       val metadata = bookMetadataRepository.findById(bookId)
       with(metadata) {
         assertThat(title).isEqualTo("newTitle")
+        assertThat(titleSort).isEqualTo("newTitleSort")
         assertThat(summary).isEqualTo("newSummary")
         assertThat(number).isEqualTo("newNumber")
         assertThat(numberSort).isEqualTo(1F)
@@ -1037,6 +1040,7 @@ class BookControllerTest(
         assertThat(isbn).isEqualTo("9781617290459")
 
         assertThat(titleLock).isEqualTo(true)
+        assertThat(titleSortLock).isEqualTo(true)
         assertThat(summaryLock).isEqualTo(true)
         assertThat(numberLock).isEqualTo(true)
         assertThat(numberSortLock).isEqualTo(true)
@@ -1178,6 +1182,7 @@ class BookControllerTest(
             numberSort = 2F,
             numberSortLock = true,
             title = "title",
+            titleSort = "sortTitle",
             isbn = "9781617290459",
           )
 
@@ -1207,6 +1212,7 @@ class BookControllerTest(
         assertThat(number).isEqualTo("number")
         assertThat(numberSort).isEqualTo(2F)
         assertThat(title).isEqualTo("title")
+        assertThat(titleSort).isEqualTo("sortTitle")
         assertThat(isbn).isEqualTo("9781617290459")
       }
     }
