@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 
 class BookMetadata(
   title: String,
+  titleSort: String = "",
   summary: String = "",
   number: String,
   val numberSort: Float,
@@ -15,6 +16,7 @@ class BookMetadata(
   val isbn: String = "",
   val links: List<WebLink> = emptyList(),
   val titleLock: Boolean = false,
+  val titleSortLock: Boolean = false,
   val summaryLock: Boolean = false,
   val numberLock: Boolean = false,
   val numberSortLock: Boolean = false,
@@ -28,12 +30,14 @@ class BookMetadata(
   override val lastModifiedDate: LocalDateTime = createdDate,
 ) : Auditable {
   val title = title.trim()
+  val titleSort = titleSort.trim()
   val summary = summary.trim()
   val number = number.trim()
   val tags = tags.lowerNotBlank().toSet()
 
   fun copy(
     title: String = this.title,
+    titleSort: String = this.titleSort,
     summary: String = this.summary,
     number: String = this.number,
     numberSort: Float = this.numberSort,
@@ -43,6 +47,7 @@ class BookMetadata(
     isbn: String = this.isbn,
     links: List<WebLink> = this.links,
     titleLock: Boolean = this.titleLock,
+    titleSortLock: Boolean = this.titleSortLock
     summaryLock: Boolean = this.summaryLock,
     numberLock: Boolean = this.numberLock,
     numberSortLock: Boolean = this.numberSortLock,
@@ -56,6 +61,7 @@ class BookMetadata(
     lastModifiedDate: LocalDateTime = this.lastModifiedDate,
   ) = BookMetadata(
     title = title,
+    titleSort = titleSort,
     summary = summary,
     number = number,
     numberSort = numberSort,
@@ -65,6 +71,7 @@ class BookMetadata(
     isbn = isbn,
     links = links,
     titleLock = titleLock,
+    titleSortLock = titleSortLock,
     summaryLock = summaryLock,
     numberLock = numberLock,
     numberSortLock = numberSortLock,
