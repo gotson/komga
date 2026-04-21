@@ -14,6 +14,7 @@ import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.api.kosync.dto.DocumentProgressDto
 import org.gotson.komga.interfaces.api.kosync.dto.UserAuthenticationDto
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,7 +30,7 @@ import java.time.ZonedDateTime
 private val logger = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("/koreader", produces = ["application/vnd.koreader.v1+json"])
+@RequestMapping("/koreader", produces = [MediaType.APPLICATION_JSON_VALUE, "application/vnd.koreader.v1+json"])
 class KoreaderSyncController(
   private val bookRepository: BookRepository,
   private val mediaRepository: MediaRepository,
