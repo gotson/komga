@@ -21,7 +21,12 @@ class BookMetadataUpdateDto {
   var title: String? = null
 
   var titleLock: Boolean? = null
-
+  
+  @get:NullOrNotBlank
+  var titleSort: String? = null
+  
+  var titleSortLock: Boolean? = null
+  
   var summary: String?
     by Delegates.observable(null) { prop, _, _ ->
       isSet[prop.name] = true
@@ -98,6 +103,8 @@ fun BookMetadata.patch(patch: BookMetadataUpdateDto) =
     this.copy(
       title = patch.title ?: this.title,
       titleLock = patch.titleLock ?: this.titleLock,
+      titleSort = patch.titleSort ?: this.titleSort,
+      titleSortLock = patch.titleSortLock ?: this.titleSortLock,
       summary = if (patch.isSet("summary")) patch.summary ?: "" else this.summary,
       summaryLock = patch.summaryLock ?: this.summaryLock,
       number = patch.number ?: this.number,
