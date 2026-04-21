@@ -521,6 +521,8 @@ class BookDtoDao(
   ) = BookMetadataDto(
     title = title,
     titleLock = titleLock,
+    titleSort = titleSort,
+    titleSortLock = titleSortLock,
     summary = summary,
     summaryLock = summaryLock,
     number = number,
