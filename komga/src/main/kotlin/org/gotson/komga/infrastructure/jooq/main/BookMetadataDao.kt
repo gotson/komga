@@ -87,6 +87,8 @@ class BookMetadataDao(
                 d.BOOK_ID,
                 d.TITLE,
                 d.TITLE_LOCK,
+                d.TITLE_SORT,
+                d.TITLE_SORT_LOCK,
                 d.SUMMARY,
                 d.SUMMARY_LOCK,
                 d.NUMBER,
@@ -100,13 +102,15 @@ class BookMetadataDao(
                 d.ISBN,
                 d.ISBN_LOCK,
                 d.LINKS_LOCK,
-              ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
+              ).values(null as String?, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
           ).also { step ->
             chunk.forEach {
               step.bind(
                 it.bookId,
                 it.title,
                 it.titleLock,
+                it.titleSort,
+                it.titleSortLock,
                 it.summary,
                 it.summaryLock,
                 it.number,
@@ -146,6 +150,8 @@ class BookMetadataDao(
       .update(d)
       .set(d.TITLE, metadata.title)
       .set(d.TITLE_LOCK, metadata.titleLock)
+      .set(d.TITLE_SORT, metadata.titleSort)
+      .set(d.TITLE_SORT_LOCK, metadata.titleSortLock)
       .set(d.SUMMARY, metadata.summary)
       .set(d.SUMMARY_LOCK, metadata.summaryLock)
       .set(d.NUMBER, metadata.number)
@@ -264,6 +270,7 @@ class BookMetadataDao(
     links: List<WebLink>,
   ) = BookMetadata(
     title = title,
+    titleSort = titleSort,
     summary = summary,
     number = number,
     numberSort = numberSort,
@@ -276,6 +283,7 @@ class BookMetadataDao(
     createdDate = createdDate.toCurrentTimeZone(),
     lastModifiedDate = lastModifiedDate.toCurrentTimeZone(),
     titleLock = titleLock,
+    titleSortLock = titleSortLock,
     summaryLock = summaryLock,
     numberLock = numberLock,
     numberSortLock = numberSortLock,
