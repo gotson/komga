@@ -47,7 +47,7 @@ class BookMetadata(
     isbn: String = this.isbn,
     links: List<WebLink> = this.links,
     titleLock: Boolean = this.titleLock,
-    titleSortLock: Boolean = this.titleSortLock
+    titleSortLock: Boolean = this.titleSortLock,
     summaryLock: Boolean = this.summaryLock,
     numberLock: Boolean = this.numberLock,
     numberSortLock: Boolean = this.numberSortLock,
