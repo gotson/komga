@@ -113,7 +113,7 @@ class UserControllerTest(
           jsonPath("$.sharedLibrariesId") { doesNotExist() }
           jsonPath("$.labelsAllow") { isEmpty() }
           jsonPath("$.labelsExclude") { isEmpty() }
-          jsonPath("$.ageRestriction") { isEmpty() }
+          jsonPath("$.ageRestriction") { doesNotExist() }
         }
     }
   }

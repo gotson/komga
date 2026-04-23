@@ -1,10 +1,12 @@
 package org.gotson.komga.interfaces.api.rest.dto
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.AllowExclude
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class UserDto(
   val id: String,
   val email: String,
