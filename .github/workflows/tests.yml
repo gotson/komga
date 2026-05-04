@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - 'komga-webui/src/locales/*'
       - 'komga-tray/src/main/resources/org/gotson/komga/*'
+      - 'next-ui/i18n/*'
   push:
     branches-ignore:
       - 'dependabot/**'
