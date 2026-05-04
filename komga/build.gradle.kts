@@ -1,6 +1,7 @@
 import nu.studer.gradle.jooq.JooqGenerate
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.flywaydb.gradle.task.FlywayMigrateTask
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.util.prefixIfNot
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
@@ -12,11 +13,17 @@ plugins {
   id("org.springframework.boot") version libs.versions.springboot.get()
   alias(libs.plugins.gradleGitProperties)
   id("nu.studer.jooq") version "10.1"
-  id("org.flywaydb.flyway") version "11.7.2"
+  id("org.flywaydb.flyway") version "11.20.3"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
-  id("com.google.devtools.ksp") version "2.2.0-2.0.2"
+  id("com.google.devtools.ksp") version "2.3.0"
   jacoco
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(25)
+  }
 }
 
 val benchmarkSourceSet =
@@ -130,8 +137,9 @@ dependencies {
 }
 
 kotlin {
+  jvmToolchain(25)
   compilerOptions {
-    jvmTarget = JvmTarget.JVM_17
+    jvmTarget = JvmTarget.JVM_25
     freeCompilerArgs =
       listOf(
         "-Xjsr305=strict",
@@ -143,16 +151,18 @@ kotlin {
 }
 
 val webui = "$rootDir/komga-webui"
+val enableNativeAccess = "--enable-native-access=ALL-UNNAMED"
 tasks {
   withType<JavaCompile> {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
+    sourceCompatibility = "25"
+    targetCompatibility = "25"
   }
 
   withType<Test> {
     useJUnitPlatform()
     systemProperty("spring.profiles.active", "test")
     maxHeapSize = "1G"
+    jvmArgs(enableNativeAccess)
   }
 
   withType<Jar> {
@@ -265,6 +275,7 @@ val sqliteMigrationDirs =
 
 tasks.register("flywayMigrateMain", FlywayMigrateTask::class) {
   val id = "main"
+  val outputDir = layout.buildDirectory.dir("generated/flyway/$id")
   url = sqliteUrls[id]
   locations = arrayOf("classpath:db/migration/sqlite")
   placeholders =
@@ -277,25 +288,30 @@ tasks.register("flywayMigrateMain", FlywayMigrateTask::class) {
   // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
   dependsOn("flywayClasses")
   sqliteMigrationDirs[id]?.forEach { inputs.dir(it) }
-  outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
+  outputs.dir(outputDir)
   doFirst {
-    delete(outputs.files)
-    mkdir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
+    outputDir.get().asFile.apply {
+      deleteRecursively()
+      mkdirs()
+    }
   }
   mixed = true
 }
 
 tasks.register("flywayMigrateTasks", FlywayMigrateTask::class) {
   val id = "tasks"
+  val outputDir = layout.buildDirectory.dir("generated/flyway/$id")
   url = sqliteUrls[id]
   locations = arrayOf("classpath:tasks/migration/sqlite")
   // in order to include the Java migrations, flywayClasses must be run before flywayMigrate
   dependsOn("flywayClasses")
   sqliteMigrationDirs[id]?.forEach { inputs.dir(it) }
-  outputs.dir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
+  outputs.dir(outputDir)
   doFirst {
-    delete(outputs.files)
-    mkdir("${project.layout.buildDirectory.get()}/generated/flyway/$id")
+    outputDir.get().asFile.apply {
+      deleteRecursively()
+      mkdirs()
+    }
   }
   mixed = true
 }
@@ -351,11 +367,17 @@ tasks.named<JooqGenerate>("generateJooq") {
   sqliteMigrationDirs["main"]?.forEach { inputs.dir(it) }
   allInputsDeclared = true
   dependsOn("flywayMigrateMain")
+  setJavaExecSpec {
+    jvmArgs(enableNativeAccess)
+  }
 }
 tasks.named<JooqGenerate>("generateTasksJooq") {
   sqliteMigrationDirs["tasks"]?.forEach { inputs.dir(it) }
   allInputsDeclared = true
   dependsOn("flywayMigrateTasks")
+  setJavaExecSpec {
+    jvmArgs(enableNativeAccess)
+  }
 }
 
 tasks.whenTaskAdded {

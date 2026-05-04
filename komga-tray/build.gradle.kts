@@ -1,3 +1,4 @@
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -7,8 +8,8 @@ plugins {
   }
   alias(libs.plugins.gradleGitProperties)
   id("org.jetbrains.compose") version "1.8.2"
-  id("org.jetbrains.kotlin.plugin.compose") version "2.2.0"
-  id("dev.hydraulic.conveyor") version "1.12"
+  id("org.jetbrains.kotlin.plugin.compose") version "2.3.0"
+  id("dev.hydraulic.conveyor") version "1.13"
   application
 }
 
@@ -19,16 +20,23 @@ repositories {
   google()
 }
 
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(25)
+  }
+}
+
 kotlin {
+  jvmToolchain(25)
   compilerOptions {
-    jvmTarget = JvmTarget.JVM_17
+    jvmTarget = JvmTarget.JVM_25
   }
 }
 
 tasks {
   withType<JavaCompile> {
-    sourceCompatibility = "17"
-    targetCompatibility = "17"
+    sourceCompatibility = "25"
+    targetCompatibility = "25"
   }
 }
 
@@ -49,8 +57,10 @@ application {
 }
 
 // Work around temporary Compose bugs
-configurations.all {
-  attributes {
-    attribute(Attribute.of("ui", String::class.java), "awt")
+configurations.configureEach {
+  if (name != "archives" && (isCanBeConsumed || isCanBeResolved)) {
+    attributes {
+      attribute(Attribute.of("ui", String::class.java), "awt")
+    }
   }
 }

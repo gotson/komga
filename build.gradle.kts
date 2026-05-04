@@ -7,7 +7,7 @@ import kotlin.io.path.exists
 
 plugins {
   run {
-    val kotlinVersion = "2.2.0"
+    val kotlinVersion = "2.3.0"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("kapt") version kotlinVersion
@@ -53,7 +53,7 @@ allprojects {
 }
 
 tasks.wrapper {
-  gradleVersion = "8.14.3"
+  gradleVersion = "9.5.0"
   distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -184,7 +184,6 @@ jreleaser {
         platforms =
           listOf(
             "linux/amd64",
-            "linux/arm/v7",
             "linux/arm64/v8",
           )
       }
