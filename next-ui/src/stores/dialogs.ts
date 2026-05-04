@@ -2,12 +2,18 @@
 import { defineStore } from 'pinia'
 import type { DialogConfirmEditProps, DialogConfirmProps, DialogSimpleProps } from '@/types/dialog'
 
+interface DialogsState {
+  confirmEdit: DialogConfirmEditActivation
+  confirm: DialogConfirmActivation
+  simple: DialogSimpleActivation
+}
+
 /**
  * Reusable dialogs.
  * The single instances of the dialogs are created under App, and can be triggered by using this store.
  */
 export const useDialogsStore = defineStore('dialogs', {
-  state: () => ({
+  state: (): DialogsState => ({
     confirmEdit: {
       dialogProps: {},
       slot: {
@@ -17,7 +23,7 @@ export const useDialogsStore = defineStore('dialogs', {
       },
       record: undefined,
       callback: () => {},
-    } as DialogConfirmEditActivation,
+    },
     confirm: {
       dialogProps: {},
       slotWarning: {
@@ -26,7 +32,7 @@ export const useDialogsStore = defineStore('dialogs', {
         handlers: {},
       },
       callback: () => {},
-    } as DialogConfirmActivation,
+    },
     simple: {
       dialogProps: {},
       slot: {
@@ -35,7 +41,7 @@ export const useDialogsStore = defineStore('dialogs', {
         handlers: {},
       },
       callback: () => {},
-    } as DialogSimpleActivation,
+    },
   }),
 })
 

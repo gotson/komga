@@ -107,7 +107,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           age: 0,
           restriction: 'NONE',
         },
-      } as components['schemas']['UserCreationDto']
+      }
       dialogConfirmEdit.value.callback = handleDialogConfirmation
       break
     case ACTION.EDIT:
@@ -141,7 +141,7 @@ function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
           age: 0,
           restriction: 'NONE',
         },
-      } as components['schemas']['UserUpdateDto']
+      }
       dialogConfirmEdit.value.callback = handleDialogConfirmation
       break
     case ACTION.DELETE:

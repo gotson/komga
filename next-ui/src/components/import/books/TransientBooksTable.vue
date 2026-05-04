@@ -553,7 +553,7 @@ function fetchBooks(book: BookImport) {
         condition: {
           seriesId: { operator: 'Is', value: book.series!.id },
         },
-      } as components['schemas']['BookSearch'],
+      },
       pageRequest: PageRequest.Unpaged(),
     }),
   )

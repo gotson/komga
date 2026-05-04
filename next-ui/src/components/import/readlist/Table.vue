@@ -492,7 +492,7 @@ const getSeriesBooks = useMemoize(async (seriesId: string) =>
         condition: {
           seriesId: { operator: 'Is', value: seriesId },
         },
-      } as components['schemas']['BookSearch'],
+      },
     }),
   )
     .refresh()

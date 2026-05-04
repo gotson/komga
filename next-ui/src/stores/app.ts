@@ -5,25 +5,38 @@ import type { PresentationMode } from '@/types/libraries'
 import type { PageSize, Paging } from '@/types/page'
 import type { Sort } from '@/types/PageRequest'
 
+interface AppState {
+  drawer: boolean
+  theme: string
+  rememberMe: boolean
+  importBooksPath: string
+  browsingPageSize: PageSize
+  browsingPaging: Paging
+  presentationMode: Record<string, PresentationMode>
+  sortActive: Record<string, Sort[]>
+  gridCardWidth: number
+  reorderLibraries: boolean
+}
+
 export const useAppStore = defineStore('app', {
-  state: () => ({
+  state: (): AppState => ({
     // persisted
     drawer: !useDisplay().mobile.value.valueOf(),
     theme: 'system',
     rememberMe: false,
     importBooksPath: '',
-    browsingPageSize: 20 as PageSize,
-    browsingPaging: 'scroll' as Paging,
+    browsingPageSize: 20,
+    browsingPaging: 'scroll',
     /**
      * Store the presentation mode per view.
      * Use the getter to ensure a default value is always set.
      */
-    presentationMode: {} as Record<string, PresentationMode>,
+    presentationMode: {},
     /**
      * Store the sort order per view.
      * Use the getter to ensure a default value is always set.
      */
-    sortActive: {} as Record<string, Sort[]>,
+    sortActive: {},
     gridCardWidth: 150,
     // transient
     reorderLibraries: false,
