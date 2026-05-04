@@ -252,9 +252,8 @@ import {
 } from '@/types/filter'
 import type { components } from '@/generated/openapi/komga'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
-import { seriesListQuery } from '@/colada/series'
-import { PageRequest, sortToString, type Sort } from '@/types/PageRequest'
-import { komgaClient } from '@/api/komga-client'
+import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
+import { PageRequest, type Sort } from '@/types/PageRequest'
 import { collectionDetailQuery } from '@/colada/collections'
 import CollectionMenuButton from '@/components/collection/menu/CollectionMenuButton.vue'
 
@@ -383,26 +382,10 @@ const {
   data: dataInfinite,
   loadNextPage,
   hasNextPage,
-} = useInfiniteQuery({
-  key: () => ['infinite_series', apiQuery.value, sortActive.value],
-  initialPageParam: new PageRequest(0, 50, sortActive.value),
-  query: ({ pageParam }) =>
-    komgaClient
-      .POST('/api/v1/series/list', {
-        body: apiQuery.value,
-        params: {
-          query: {
-            page: pageParam.page,
-            size: pageParam.size,
-            sort: sortActive.value.map((it) => sortToString(it)),
-          },
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data),
-  getNextPageParam: (lastPage, _, lastPageParam) => (!lastPage?.last ? lastPageParam.next() : null),
-  enabled: isBrowsingScroll,
-})
+} = useInfiniteQuery(() => ({
+  ...seriesListQueryInfinite({ search: { ...apiQuery.value }, sort: sortActive.value }),
+  enabled: isBrowsingScroll.value,
+}))
 const dataInfiniteFlat = computed(() =>
   dataInfinite.value?.pages.flatMap((it) => it?.content ?? []),
 )

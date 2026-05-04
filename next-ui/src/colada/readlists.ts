@@ -1,7 +1,12 @@
-import { defineMutation, defineQueryOptions, useMutation } from '@pinia/colada'
+import {
+  defineInfiniteQueryOptions,
+  defineMutation,
+  defineQueryOptions,
+  useMutation,
+} from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
-import type { PageRequest } from '@/types/PageRequest'
+import { PageRequest } from '@/types/PageRequest'
 
 export const QUERY_KEYS_READLIST = {
   root: ['readlists'] as const,
@@ -37,6 +42,31 @@ export const readListsListQuery = defineQueryOptions(
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
     placeholderData: (previousData) => previousData,
+  }),
+)
+
+export const readListsListQueryInfinite = defineInfiniteQueryOptions(
+  ({ libraryIds }: { libraryIds?: string[] }) => ({
+    key: QUERY_KEYS_READLIST.bySearch({
+      libraryIds: libraryIds,
+      infinite: true,
+    }),
+    initialPageParam: new PageRequest(0, 50),
+    query: ({ pageParam }) =>
+      komgaClient
+        .GET('/api/v1/readlists', {
+          params: {
+            query: {
+              page: pageParam.page,
+              size: pageParam.size,
+              libraryIds: libraryIds,
+            },
+          },
+        })
+        // unwrap the openapi-fetch structure on success
+        .then((res) => res.data),
+    getNextPageParam: (lastPage, _, lastPageParam) =>
+      !lastPage?.last ? lastPageParam.next() : null,
   }),
 )
 

@@ -15,9 +15,8 @@
 
 <script setup lang="ts">
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
-import { sharingLabelsQuery } from '@/colada/referential'
+import { sharingLabelsQuery, sharingLabelsQueryInfinite } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
-import { komgaClient } from '@/api/komga-client'
 import * as v from 'valibot'
 import { type AnyAll, filterKeys, filterMessages, SchemaString } from '@/types/filter'
 import type { ItemType } from '@/components/filter/List.vue'
@@ -50,23 +49,9 @@ const { data: searchItems, isLoading: searchLoading } = useQuery(() => ({
 }))
 const searchResults = computed(() => searchItems.value?.content?.map((it) => toItemType(it)))
 
-const { data: infiniteData, loadNextPage } = useInfiniteQuery({
-  key: () => ['infinite_sharing-labels', apiQuery],
-  initialPageParam: new PageRequest(0, 50),
-  query: ({ pageParam }) =>
-    komgaClient
-      .GET('/api/v2/sharing-labels', {
-        params: {
-          query: {
-            ...apiQuery,
-            ...pageParam,
-          },
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data),
-  getNextPageParam: (lastPage, _, lastPageParam) => (!lastPage?.last ? lastPageParam.next() : null),
-})
+const { data: infiniteData, loadNextPage } = useInfiniteQuery(() =>
+  sharingLabelsQueryInfinite(apiQuery),
+)
 const infiniteItems = computed(() => {
   const itemTypes = (infiniteData.value?.pages.flatMap((it) => it?.content ?? []) ?? []).map((it) =>
     toItemType(it),

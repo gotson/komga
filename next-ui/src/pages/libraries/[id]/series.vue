@@ -218,9 +218,9 @@
 
 <script lang="ts" setup>
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
-import { seriesListQuery } from '@/colada/series'
+import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
 import type { components } from '@/generated/openapi/komga'
-import { PageRequest, sortToString } from '@/types/PageRequest'
+import { PageRequest } from '@/types/PageRequest'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { usePagination } from '@/composables/pagination'
@@ -249,7 +249,6 @@ import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortSeries } from '@/types/sort'
-import { komgaClient } from '@/api/komga-client'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
 import { usePresentationMode } from '@/composables/presentationMode'
@@ -371,26 +370,10 @@ const {
   data: dataInfinite,
   loadNextPage,
   hasNextPage,
-} = useInfiniteQuery({
-  key: () => ['infinite_series', apiQuery.value, sortActive.value],
-  initialPageParam: new PageRequest(0, 50, sortActive.value),
-  query: ({ pageParam }) =>
-    komgaClient
-      .POST('/api/v1/series/list', {
-        body: apiQuery.value,
-        params: {
-          query: {
-            page: pageParam.page,
-            size: pageParam.size,
-            sort: sortActive.value.map((it) => sortToString(it)),
-          },
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data),
-  getNextPageParam: (lastPage, _, lastPageParam) => (!lastPage?.last ? lastPageParam.next() : null),
-  enabled: isBrowsingScroll,
-})
+} = useInfiniteQuery(() => ({
+  ...seriesListQueryInfinite({ search: { ...apiQuery.value }, sort: sortActive.value }),
+  enabled: isBrowsingScroll.value,
+}))
 const dataInfiniteFlat = computed(() =>
   dataInfinite.value?.pages.flatMap((it) => it?.content ?? []),
 )

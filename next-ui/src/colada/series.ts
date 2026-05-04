@@ -1,7 +1,12 @@
-import { defineMutation, defineQueryOptions, useMutation } from '@pinia/colada'
+import {
+  defineInfiniteQueryOptions,
+  defineMutation,
+  defineQueryOptions,
+  useMutation,
+} from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
-import type { PageRequest } from '@/types/PageRequest'
+import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
 import { seriesMetadataToDto } from '@/functions/series'
 
 export const QUERY_KEYS_SERIES = {
@@ -32,6 +37,29 @@ export const seriesListQuery = defineQueryOptions(
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
     placeholderData: (previousData) => previousData,
+  }),
+)
+
+export const seriesListQueryInfinite = defineInfiniteQueryOptions(
+  ({ search, sort }: { search: components['schemas']['SeriesSearch']; sort?: Sort[] }) => ({
+    key: QUERY_KEYS_SERIES.bySearch({ search: search, sort: sort, infinite: true }),
+    initialPageParam: new PageRequest(0, 50, sort),
+    query: ({ pageParam }) =>
+      komgaClient
+        .POST('/api/v1/series/list', {
+          body: search,
+          params: {
+            query: {
+              page: pageParam.page,
+              size: pageParam.size,
+              sort: sort?.map((it) => sortToString(it)),
+            },
+          },
+        })
+        // unwrap the openapi-fetch structure on success
+        .then((res) => res.data),
+    getNextPageParam: (lastPage, _, lastPageParam) =>
+      !lastPage?.last ? lastPageParam.next() : null,
   }),
 )
 

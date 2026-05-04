@@ -51,11 +51,10 @@ import { useAppStore } from '@/stores/app'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
 import { useDisplay } from 'vuetify'
-import { komgaClient } from '@/api/komga-client'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import { storeToRefs } from 'pinia'
 import ChipCount from '@/components/ChipCount.vue'
-import { collectionsListQuery } from '@/colada/collections'
+import { collectionsListQuery, collectionsListQueryInfinite } from '@/colada/collections'
 
 const route = useRoute('/libraries/[id]/collections')
 const libraryId = route.params.id
@@ -91,25 +90,10 @@ const {
   data: dataInfinite,
   loadNextPage,
   hasNextPage,
-} = useInfiniteQuery({
-  key: () => ['infinite_collections', { libraryIds: libraryIds.value }],
-  initialPageParam: new PageRequest(0, 50),
-  query: ({ pageParam }) =>
-    komgaClient
-      .GET('/api/v1/collections', {
-        params: {
-          query: {
-            page: pageParam.page,
-            size: pageParam.size,
-            libraryIds: libraryIds.value,
-          },
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data),
-  getNextPageParam: (lastPage, _, lastPageParam) => (!lastPage?.last ? lastPageParam.next() : null),
-  enabled: isBrowsingScroll,
-})
+} = useInfiniteQuery(() => ({
+  ...collectionsListQueryInfinite({ libraryIds: libraryIds.value }),
+  enabled: isBrowsingScroll.value,
+}))
 const dataInfiniteFlat = computed(() =>
   dataInfinite.value?.pages.flatMap((it) => it?.content ?? []),
 )

@@ -1,6 +1,6 @@
-import { defineQueryOptions } from '@pinia/colada'
+import { defineInfiniteQueryOptions, defineQueryOptions } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
-import type { PageRequest } from '@/types/PageRequest'
+import { PageRequest } from '@/types/PageRequest'
 
 export const authorsQuery = defineQueryOptions(
   ({
@@ -44,6 +44,45 @@ export const authorsQuery = defineQueryOptions(
   },
 )
 
+export const authorsNamesQueryInfinite = defineInfiniteQueryOptions(
+  ({
+    role,
+    library_id,
+    collection_id,
+    series_id,
+    readlist_id,
+  }: {
+    role?: string
+    library_id?: string[]
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
+  }) => {
+    const queryParams = {
+      role: role,
+      library_id: library_id,
+      collection_id: collection_id,
+      series_id: series_id,
+      readlist_id: readlist_id,
+    }
+    return {
+      key: ['authors', queryParams, { infinite: true }],
+      initialPageParam: new PageRequest(0, 50),
+      query: ({ pageParam }) =>
+        komgaClient
+          .GET('/api/v2/authors/names', {
+            params: {
+              query: { ...queryParams, ...pageParam },
+            },
+          })
+          // unwrap the openapi-fetch structure on success
+          .then((res) => res.data),
+      getNextPageParam: (lastPage, _, lastPageParam) =>
+        !lastPage?.last ? lastPageParam.next() : null,
+    }
+  },
+)
+
 export const genresQuery = defineQueryOptions(
   ({
     search,
@@ -73,6 +112,30 @@ export const genresQuery = defineQueryOptions(
           })
           // unwrap the openapi-fetch structure on success
           .then((res) => res.data),
+    }
+  },
+)
+
+export const genresQueryInfinite = defineInfiniteQueryOptions(
+  ({ library_id, collection_id }: { library_id?: string[]; collection_id?: string[] }) => {
+    const queryParams = {
+      library_id: library_id,
+      collection_id: collection_id,
+    }
+    return {
+      key: ['genres', queryParams, { infinite: true }],
+      initialPageParam: new PageRequest(0, 50),
+      query: ({ pageParam }) =>
+        komgaClient
+          .GET('/api/v2/genres', {
+            params: {
+              query: { ...queryParams, ...pageParam },
+            },
+          })
+          // unwrap the openapi-fetch structure on success
+          .then((res) => res.data),
+      getNextPageParam: (lastPage, _, lastPageParam) =>
+        !lastPage?.last ? lastPageParam.next() : null,
     }
   },
 )
@@ -119,6 +182,45 @@ export const tagsQuery = defineQueryOptions(
   },
 )
 
+export const tagsQueryInfinite = defineInfiniteQueryOptions(
+  ({
+    library_id,
+    collection_id,
+    series_id,
+    readlist_id,
+    include,
+  }: {
+    library_id?: string[]
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
+    include?: 'SERIES' | 'BOOK' | 'BOTH'
+  }) => {
+    const queryParams = {
+      library_id: library_id,
+      collection_id: collection_id,
+      series_id: series_id,
+      readlist_id: readlist_id,
+      include: include,
+    }
+    return {
+      key: ['tags', queryParams, { infinite: true }],
+      initialPageParam: new PageRequest(0, 50),
+      query: ({ pageParam }) =>
+        komgaClient
+          .GET('/api/v2/tags', {
+            params: {
+              query: { ...queryParams, ...pageParam },
+            },
+          })
+          // unwrap the openapi-fetch structure on success
+          .then((res) => res.data),
+      getNextPageParam: (lastPage, _, lastPageParam) =>
+        !lastPage?.last ? lastPageParam.next() : null,
+    }
+  },
+)
+
 export const publishersQuery = defineQueryOptions(
   ({
     search,
@@ -152,6 +254,33 @@ export const publishersQuery = defineQueryOptions(
   },
 )
 
+export const publishersQueryInfinite = defineInfiniteQueryOptions(
+  ({ library_id, collection_id }: { library_id?: string[]; collection_id?: string[] }) => {
+    const queryParams = {
+      library_id: library_id,
+      collection_id: collection_id,
+    }
+    return {
+      key: ['publishers', queryParams, { infinite: true }],
+      initialPageParam: new PageRequest(0, 50),
+      query: ({ pageParam }) =>
+        komgaClient
+          .GET('/api/v2/publishers', {
+            params: {
+              query: {
+                ...queryParams,
+                ...pageParam,
+              },
+            },
+          })
+          // unwrap the openapi-fetch structure on success
+          .then((res) => res.data),
+      getNextPageParam: (lastPage, _, lastPageParam) =>
+        !lastPage?.last ? lastPageParam.next() : null,
+    }
+  },
+)
+
 export const sharingLabelsQuery = defineQueryOptions(
   ({
     search,
@@ -181,6 +310,30 @@ export const sharingLabelsQuery = defineQueryOptions(
           })
           // unwrap the openapi-fetch structure on success
           .then((res) => res.data),
+    }
+  },
+)
+
+export const sharingLabelsQueryInfinite = defineInfiniteQueryOptions(
+  ({ library_id, collection_id }: { library_id?: string[]; collection_id?: string[] }) => {
+    const queryParams = {
+      library_id: library_id,
+      collection_id: collection_id,
+    }
+    return {
+      key: ['sharing-labels', queryParams, { infinite: true }],
+      initialPageParam: new PageRequest(0, 50),
+      query: ({ pageParam }) =>
+        komgaClient
+          .GET('/api/v2/sharing-labels', {
+            params: {
+              query: { ...queryParams, ...pageParam },
+            },
+          })
+          // unwrap the openapi-fetch structure on success
+          .then((res) => res.data),
+      getNextPageParam: (lastPage, _, lastPageParam) =>
+        !lastPage?.last ? lastPageParam.next() : null,
     }
   },
 )
@@ -277,3 +430,4 @@ export const ageRatingsQuery = defineQueryOptions(
     }
   },
 )
+export class authorsQueryInfinite {}

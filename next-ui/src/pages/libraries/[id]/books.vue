@@ -162,9 +162,8 @@ import {
   valuesToConditions,
 } from '@/functions/filter'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
-import { PageRequest, sortToString } from '@/types/PageRequest'
-import { komgaClient } from '@/api/komga-client'
-import { bookListQuery } from '@/colada/books'
+import { PageRequest } from '@/types/PageRequest'
+import { bookListQuery, bookListQueryInfinite } from '@/colada/books'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useFilterAuthors } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
@@ -252,26 +251,10 @@ const {
   data: dataInfinite,
   loadNextPage,
   hasNextPage,
-} = useInfiniteQuery({
-  key: () => ['infinite_books', apiQuery.value, sortActive.value],
-  initialPageParam: new PageRequest(0, 50, sortActive.value),
-  query: ({ pageParam }) =>
-    komgaClient
-      .POST('/api/v1/books/list', {
-        body: apiQuery.value,
-        params: {
-          query: {
-            page: pageParam.page,
-            size: pageParam.size,
-            sort: sortActive.value.map((it) => sortToString(it)),
-          },
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data),
-  getNextPageParam: (lastPage, _, lastPageParam) => (!lastPage?.last ? lastPageParam.next() : null),
-  enabled: isBrowsingScroll,
-})
+} = useInfiniteQuery(() => ({
+  ...bookListQueryInfinite({ search: { ...apiQuery.value }, sort: sortActive.value }),
+  enabled: isBrowsingScroll.value,
+}))
 const dataInfiniteFlat = computed(() =>
   dataInfinite.value?.pages.flatMap((it) => it?.content ?? []),
 )
