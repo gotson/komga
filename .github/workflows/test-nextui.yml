@@ -1,0 +1,62 @@
+name: Test NextUI
+
+on:
+  pull_request:
+    paths:
+      - 'next-ui/**'
+      - '!next-ui/i18n/*'
+  push:
+    paths:
+      - 'next-ui/**'
+      - '!next-ui/i18n/*'
+    branches-ignore:
+      - 'dependabot/**'
+  workflow_dispatch:
+
+jobs:
+  next-ui:
+    runs-on: ubuntu-latest
+    name: Test next-ui
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: next-ui/package-lock.json
+
+      - name: npm install
+        working-directory: next-ui
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+        with:
+          working-directory: next-ui
+
+      - name: test:unit
+        working-directory: next-ui
+        run: npm run test:unit
+
+      - name: test:storybook
+        working-directory: next-ui
+        run: npm run test:storybook
+        env:
+          LANG: en_US # fix for https://github.com/microsoft/playwright/issues/34046
+
+      - name: lint
+        working-directory: next-ui
+        run: npm run lint
+
+      - name: prettier
+        working-directory: next-ui
+        run: npm run prettier
+
+      - name: type-check
+        working-directory: next-ui
+        run: npm run type-check
+
+      - name: build
+        working-directory: next-ui
+        run: npm run build-only
