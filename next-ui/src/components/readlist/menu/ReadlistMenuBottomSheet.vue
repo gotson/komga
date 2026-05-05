@@ -5,6 +5,14 @@
   >
     <v-list>
       <v-list-item
+        v-for="(action, i) in actions"
+        :key="i"
+        v-bind="action"
+      />
+
+      <v-divider v-if="actions.length > 0 && manageActions.length > 0" />
+
+      <v-list-item
         v-for="(action, i) in manageActions"
         :key="i"
         v-bind="action"
@@ -26,7 +34,7 @@ const { readList } = defineProps<{
 function afterClick() {
   isShown.value = false
 }
-const { manageActions } = useReadListActions(readList, afterClick)
+const { actions, manageActions } = useReadListActions(readList, afterClick)
 </script>
 
 <script lang="ts"></script>

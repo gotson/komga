@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isAdmin">
+  <div v-if="isAdmin || hasRole(UserRoles.FILE_DOWNLOAD)">
     <v-icon-btn
       :id="id"
       icon="i-mdi:dots-vertical"
@@ -23,12 +23,13 @@
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/users'
+import { UserRoles } from '@/types/UserRoles'
 
 const { readList } = defineProps<{
   readList: components['schemas']['ReadListDto']
 }>()
 
-const { isAdmin } = useCurrentUser()
+const { isAdmin, hasRole } = useCurrentUser()
 
 const id = useId()
 </script>

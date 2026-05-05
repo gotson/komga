@@ -11,7 +11,9 @@
     v-bind="props"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
-    @card-long-press="bottomSheet = true"
+    @card-long-press="
+      isAdmin || hasRole(UserRoles.FILE_DOWNLOAD) ? (bottomSheet = true) : undefined
+    "
   />
   <ReadlistMenu
     :read-list="readList"
@@ -32,6 +34,7 @@ import { useCurrentUser } from '@/colada/users'
 import ReadlistMenu from '@/components/readlist/menu/ReadlistMenu.vue'
 import ReadlistMenuBottomSheet from '@/components/readlist/menu/ReadlistMenuBottomSheet.vue'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
+import { UserRoles } from '@/types/UserRoles'
 
 const intl = useIntl()
 
@@ -68,13 +71,15 @@ other {# books}
   },
 ])
 
-const { isAdmin } = useCurrentUser()
+const { isAdmin, hasRole } = useCurrentUser()
 const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))
 const quickActionProps = computed(() => ({
   id: `${id}_quick`,
   onmouseenter: () => (editActivator.value = `#${id}_quick`),
 }))
-const menuIcon = computed(() => (isAdmin.value ? 'i-mdi:dots-vertical' : undefined))
+const menuIcon = computed(() =>
+  isAdmin.value || hasRole(UserRoles.FILE_DOWNLOAD) ? 'i-mdi:dots-vertical' : undefined,
+)
 const menuProps = computed(() => ({
   onmouseenter: (event: Event) => (menuActivator.value = event.currentTarget as Element),
 }))

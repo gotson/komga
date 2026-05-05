@@ -17,12 +17,14 @@ import {
   useRefreshMetadataBook,
 } from '@/colada/books'
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
+import { UserRoles } from '@/types/UserRoles'
+import { bookFileUrl } from '@/api/files'
 
 export function useBookActions(
   book: components['schemas']['BookDto'],
   callback: (action: BookAction) => void = () => {},
 ) {
-  const { isAdmin } = useCurrentUser()
+  const { isAdmin, hasRole } = useCurrentUser()
   const intl = useIntl()
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
   const messagesStore = useMessagesStore()
@@ -89,6 +91,22 @@ export function useBookActions(
             onClick: () => {
               markUnread()
               callback(BookAction.MARK_UNREAD)
+            },
+          },
+        ]
+      : []),
+    ...(hasRole(UserRoles.FILE_DOWNLOAD)
+      ? [
+          {
+            title: intl.formatMessage({
+              description: 'Book menu: download',
+              defaultMessage: 'Download',
+              id: 'R1n0du',
+            }),
+            action: BookAction.DOWNLOAD,
+            href: bookFileUrl(book.id),
+            onClick: () => {
+              callback(BookAction.DOWNLOAD)
             },
           },
         ]

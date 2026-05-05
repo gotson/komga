@@ -15,8 +15,8 @@ export function collectionPosterUrl(collectionId?: string): string | undefined {
   return undefined
 }
 
-export function readListPosterUrl(readList?: string): string | undefined {
-  if (readList) return `${ApiBaseUrl.noSlash}/api/v1/readlists/${readList}/thumbnail`
+export function readListPosterUrl(readListId?: string): string | undefined {
+  if (readListId) return `${ApiBaseUrl.noSlash}/api/v1/readlists/${readListId}/thumbnail`
   return undefined
 }
 

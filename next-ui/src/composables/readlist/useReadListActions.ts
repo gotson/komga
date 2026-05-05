@@ -11,16 +11,37 @@ import ReadListDeletionWarning from '@/components/readlist/DeletionWarning.vue'
 import { ReadListAction } from '@/types/readlist'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 import { useDeleteReadList } from '@/colada/readlists'
+import { UserRoles } from '@/types/UserRoles'
+import { readListFileUrl } from '@/api/files'
 
 export function useReadListActions(
   readList: components['schemas']['ReadListDto'],
   callback: (action: ReadListAction) => void = () => {},
 ) {
-  const { isAdmin } = useCurrentUser()
+  const { isAdmin, hasRole } = useCurrentUser()
   const intl = useIntl()
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
   const messagesStore = useMessagesStore()
   const display = useDisplay()
+
+  const actions = computed(() => [
+    ...(hasRole(UserRoles.FILE_DOWNLOAD)
+      ? [
+          {
+            title: intl.formatMessage({
+              description: 'Readlist menu: download',
+              defaultMessage: 'Download',
+              id: 'piQuKd',
+            }),
+            action: ReadListAction.DOWNLOAD,
+            href: readListFileUrl(readList.id),
+            onClick: () => {
+              callback(ReadListAction.DOWNLOAD)
+            },
+          },
+        ]
+      : []),
+  ])
 
   const manageActions = computed(() => [
     ...(isAdmin.value
@@ -122,7 +143,7 @@ export function useReadListActions(
   //endregion
 
   return {
-    // actions: actions,
+    actions: actions,
     manageActions: manageActions,
   }
 }

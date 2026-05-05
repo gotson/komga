@@ -17,12 +17,14 @@ import { useCurrentUser } from '@/colada/users'
 import { SeriesAction } from '@/types/series'
 import SeriesDeletionWarning from '@/components/series/DeletionWarning.vue'
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
+import { UserRoles } from '@/types/UserRoles'
+import { seriesFileUrl } from '@/api/files'
 
 export function useSeriesActions(
   series: components['schemas']['SeriesDto'],
   callback: (action: SeriesAction) => void = () => {},
 ) {
-  const { isAdmin } = useCurrentUser()
+  const { isAdmin, hasRole } = useCurrentUser()
   const intl = useIntl()
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
   const messagesStore = useMessagesStore()
@@ -93,6 +95,22 @@ export function useSeriesActions(
             },
           },
         ]),
+    ...(hasRole(UserRoles.FILE_DOWNLOAD)
+      ? [
+          {
+            title: intl.formatMessage({
+              description: 'Series menu: download',
+              defaultMessage: 'Download',
+              id: 'jn8Lib',
+            }),
+            action: SeriesAction.DOWNLOAD,
+            href: seriesFileUrl(series.id),
+            onClick: () => {
+              callback(SeriesAction.DOWNLOAD)
+            },
+          },
+        ]
+      : []),
   ])
 
   const manageActions = computed(() => [
