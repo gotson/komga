@@ -131,13 +131,13 @@ class ReferentialDao(
     role: String?,
     filterBy: FilterBy?,
     pageable: Pageable,
-  ): Page<Author> = findGeneric(context, search, filterBy, pageable, bmaa, bmaa.NAME, bmaa.SERIES_ID, { it?.toDomain() }, Sort.by("name"), listOf(bmaa.ROLE), role?.let { bmaa.ROLE.eq(role) })
+  ): Page<Author> = findGeneric(context, search, filterBy, pageable, a, a.NAME, null, a.BOOK_ID, { it?.toDomain() }, Sort.by("name"), listOf(a.ROLE), role?.let { a.ROLE.eq(role) })
 
   override fun findAuthorsRoles(
     context: SearchContext,
     filterBy: FilterBy?,
     pageable: Pageable,
-  ): Page<String> = findGeneric(context, null, filterBy, pageable, bmaa, null, bmaa.SERIES_ID, { it?.role }, Sort.by("role"), listOf(bmaa.ROLE), sortField = bmaa.ROLE)
+  ): Page<String> = findGeneric(context, null, filterBy, pageable, a, null, null, a.BOOK_ID, { it?.role }, Sort.by("role"), listOf(a.ROLE), sortField = a.ROLE)
 
   override fun findAuthorsNames(
     context: SearchContext,
@@ -145,7 +145,7 @@ class ReferentialDao(
     role: String?,
     filterBy: FilterBy?,
     pageable: Pageable,
-  ): Page<String> = findGeneric(context, search, filterBy, pageable, bmaa, bmaa.NAME, bmaa.SERIES_ID, { it?.name }, Sort.by("name"), listOf(bmaa.ROLE), role?.let { bmaa.ROLE.eq(role) })
+  ): Page<String> = findGeneric(context, search, filterBy, pageable, a, a.NAME, null, a.BOOK_ID, { it?.name }, Sort.by("name"), listOf(a.ROLE), role?.let { a.ROLE.eq(role) })
 
   @Deprecated("Use findAuthorsNames instead")
   override fun findAllAuthorsNamesByName(
@@ -228,7 +228,7 @@ class ReferentialDao(
   ): Page<String> {
     filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
 
-    return findGeneric(context, search, filterBy, pageable, g, g.GENRE, g.SERIES_ID, { it?.genre }, Sort.by("genre"))
+    return findGeneric(context, search, filterBy, pageable, g, g.GENRE, g.SERIES_ID, null, { it?.genre }, Sort.by("genre"))
   }
 
   @Deprecated("Use findTags instead")
@@ -364,9 +364,9 @@ class ReferentialDao(
     pageable: Pageable,
   ): Page<String> =
     when (filterTags) {
-      FilterTags.SERIES -> findGeneric(context, search, filterBy, pageable, st, st.TAG, st.SERIES_ID, { it?.tag }, Sort.by("tag"))
-      FilterTags.BOOK -> findGeneric(context, search, filterBy, pageable, bmat, bmat.TAG, bmat.SERIES_ID, { it?.tag }, Sort.by("tag"))
-      FilterTags.BOTH -> findGeneric(context, search, filterBy, pageable, at, at.TAG, at.SERIES_ID, { it?.tag }, Sort.by("tag"))
+      FilterTags.SERIES -> findGeneric(context, search, filterBy, pageable, st, st.TAG, st.SERIES_ID, null, { it?.tag }, Sort.by("tag"))
+      FilterTags.BOOK -> findGeneric(context, search, filterBy, pageable, bt, bt.TAG, null, bt.BOOK_ID, { it?.tag }, Sort.by("tag"))
+      FilterTags.BOTH -> findGeneric(context, search, filterBy, pageable, at, at.TAG, at.SERIES_ID, null, { it?.tag }, Sort.by("tag"))
     }
 
   @Deprecated("Use findTags instead")
@@ -451,7 +451,7 @@ class ReferentialDao(
   ): Page<String> {
     filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
 
-    return findGeneric(context, search, filterBy, pageable, sd, sd.LANGUAGE, sd.SERIES_ID, { it?.language }, Sort.by("language"), extraCondition = sd.LANGUAGE.ne(""))
+    return findGeneric(context, search, filterBy, pageable, sd, sd.LANGUAGE, sd.SERIES_ID, null, { it?.language }, Sort.by("language"), extraCondition = sd.LANGUAGE.ne(""))
   }
 
   @Deprecated("Use findPublishers instead")
@@ -539,7 +539,7 @@ class ReferentialDao(
   ): Page<String> {
     filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
 
-    return findGeneric(context, search, filterBy, pageable, sd, sd.PUBLISHER, sd.SERIES_ID, { it?.publisher }, Sort.by("publisher"), extraCondition = sd.PUBLISHER.ne(""))
+    return findGeneric(context, search, filterBy, pageable, sd, sd.PUBLISHER, sd.SERIES_ID, null, { it?.publisher }, Sort.by("publisher"), extraCondition = sd.PUBLISHER.ne(""))
   }
 
   @Deprecated("Use findAgeRatings instead")
@@ -594,7 +594,7 @@ class ReferentialDao(
   ): Page<Int> {
     filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
 
-    return findGeneric(context, null, filterBy, pageable, sd, null, sd.SERIES_ID, { it?.ageRating }, Sort.by("ageRating"), listOf(sd.AGE_RATING), sortField = sd.AGE_RATING)
+    return findGeneric(context, null, filterBy, pageable, sd, null, sd.SERIES_ID, null, { it?.ageRating }, Sort.by("ageRating"), listOf(sd.AGE_RATING), sortField = sd.AGE_RATING)
   }
 
   @Deprecated("Use findSeriesReleaseDates instead")
@@ -750,7 +750,7 @@ class ReferentialDao(
   ): Page<String> {
     filterBy?.let { require(it.type in setOf(FilterByEntity.LIBRARY, FilterByEntity.COLLECTION)) }
 
-    return findGeneric(context, search, filterBy, pageable, sl, sl.LABEL, sl.SERIES_ID, { it?.label }, Sort.by("label"))
+    return findGeneric(context, search, filterBy, pageable, sl, sl.LABEL, sl.SERIES_ID, null, { it?.label }, Sort.by("label"))
   }
 
   private fun <R : TableRecordImpl<*>, T : TableImpl<R>, O : Any> findGeneric(
@@ -760,23 +760,35 @@ class ReferentialDao(
     pageable: Pageable,
     table: T,
     searchableField: TableField<R, String>?,
-    seriesIdField: TableField<*, String>,
+    seriesIdField: TableField<*, String>?,
+    bookIdField: TableField<*, String>?,
     mapper: (R?) -> O?,
     sort: Sort,
     extraFields: List<SelectFieldOrAsterisk> = emptyList(),
     extraCondition: Condition? = DSL.noCondition(),
     sortField: OrderField<*>? = null,
   ): Page<O> {
+    // depending on what is being searched, we may need to filter by series, or book, or both
+    // we need to have at least 1 of those 2 fields, and the other can be found by joining as necessary through the Book table
+    require(seriesIdField != null || bookIdField != null)
+
     val restrictionCondition = ContentRestrictionsSearchHelper(context.restrictions).toCondition()
+
+    val seriesIdRequired = filterBy?.type in listOf(FilterByEntity.SERIES, FilterByEntity.COLLECTION, FilterByEntity.LIBRARY) || restrictionCondition.second == RequiredJoin.SeriesMetadata || !context.libraryIds.isNullOrEmpty()
+    val bookIdRequired = filterBy?.type == FilterByEntity.READLIST
+    val effectiveSeriesIdField = seriesIdField ?: b.SERIES_ID
+    val effectiveBookIdField = bookIdField ?: b.ID
 
     val query =
       dslRO
         .selectDistinct(*(listOfNotNull(searchableField) + extraFields).toTypedArray())
         .from(table)
+        .apply { if (seriesIdRequired && seriesIdField == null) innerJoin(b).on(bookIdField!!.eq(b.ID)) }
+        .apply { if (bookIdRequired && bookIdField == null) innerJoin(b).on(seriesIdField!!.eq(b.SERIES_ID)) }
         .apply {
           restrictionCondition.second.forEach { join ->
             when (join) {
-              RequiredJoin.SeriesMetadata -> if (table != sd) innerJoin(sd).on(seriesIdField.eq(sd.SERIES_ID))
+              RequiredJoin.SeriesMetadata -> if (table != sd) innerJoin(sd).on(effectiveSeriesIdField.eq(sd.SERIES_ID))
               // shouldn't be required
               RequiredJoin.BookMetadata -> Unit
               RequiredJoin.BookMetadataAggregation -> Unit
@@ -786,14 +798,12 @@ class ReferentialDao(
               is RequiredJoin.ReadProgress -> Unit
             }
           }
-        }.apply { if (!context.libraryIds.isNullOrEmpty() || filterBy?.type == FilterByEntity.LIBRARY) leftJoin(s).on(seriesIdField.eq(s.ID)) }
-        .apply { if (filterBy?.type == FilterByEntity.COLLECTION) leftJoin(cs).on(seriesIdField.eq(cs.SERIES_ID)) }
+        }.apply { if (!context.libraryIds.isNullOrEmpty() || filterBy?.type == FilterByEntity.LIBRARY) leftJoin(s).on(effectiveSeriesIdField.eq(s.ID)) }
+        .apply { if (filterBy?.type == FilterByEntity.COLLECTION) leftJoin(cs).on(effectiveSeriesIdField.eq(cs.SERIES_ID)) }
         .apply {
           if (filterBy?.type == FilterByEntity.READLIST)
-            leftJoin(b)
-              .on(seriesIdField.eq(b.SERIES_ID))
-              .leftJoin(rb)
-              .on(b.ID.eq(rb.BOOK_ID))
+            leftJoin(rb)
+              .on(effectiveBookIdField.eq(rb.BOOK_ID))
         }.where(restrictionCondition.first)
         .apply { extraCondition?.let { and(it) } }
         .apply { if (search != null && searchableField != null) and(searchableField.udfStripAccents().contains(search.stripAccents())) }
@@ -803,7 +813,7 @@ class ReferentialDao(
             when (it.type) {
               FilterByEntity.LIBRARY -> and(s.LIBRARY_ID.`in`(it.ids))
               FilterByEntity.COLLECTION -> and(cs.COLLECTION_ID.`in`(it.ids))
-              FilterByEntity.SERIES -> and(seriesIdField.`in`(it.ids))
+              FilterByEntity.SERIES -> and(effectiveSeriesIdField.`in`(it.ids))
               FilterByEntity.READLIST -> and(rb.READLIST_ID.`in`(it.ids))
             }
           }
