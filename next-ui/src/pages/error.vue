@@ -15,10 +15,24 @@
         id: 'PTr5Wc',
       })
     "
+    :action-text="
+      $formatMessage({
+        description: 'Server unreachable error view: button',
+        defaultMessage: 'Retry',
+        id: '5tbu8Y',
+      })
+    "
+    @click:action="goHome()"
   />
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const router = useRouter()
+
+function goHome() {
+  void router.push('/')
+}
+</script>
 
 <route lang="yaml">
 meta:
