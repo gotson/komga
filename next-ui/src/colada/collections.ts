@@ -12,7 +12,7 @@ import type { components } from '@/generated/openapi/komga'
 export const QUERY_KEYS_COLLECTIONS = {
   root: ['collections'] as const,
   bySearch: (request: object) => [...QUERY_KEYS_COLLECTIONS.root, JSON.stringify(request)] as const,
-  byId: (seriesId: string) => [...QUERY_KEYS_COLLECTIONS.root, seriesId] as const,
+  byId: (id: string) => [...QUERY_KEYS_COLLECTIONS.root, id] as const,
 }
 
 export const collectionsListQuery = defineQueryOptions(
