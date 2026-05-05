@@ -52,7 +52,7 @@ const emit = defineEmits<ItemCardEmits>()
 const bottomSheet = ref(false)
 
 const isRead = computed(() => book.readProgress?.completed)
-const progressPercent = useBookReadProgress(book)
+const progressPercent = computed(() => useBookReadProgress(book))
 
 const titleAndLines = computed<{ title: ItemCardTitle; lines: ItemCardLine[] }>(() => {
   let footer: ItemCardLine
