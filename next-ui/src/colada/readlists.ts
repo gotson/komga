@@ -11,6 +11,7 @@ import { PageRequest } from '@/types/PageRequest'
 export const QUERY_KEYS_READLIST = {
   root: ['readlists'] as const,
   bySearch: (request: object) => [...QUERY_KEYS_READLIST.root, JSON.stringify(request)] as const,
+  byId: (id: string) => [...QUERY_KEYS_READLIST.root, id] as const,
 }
 
 export const readListsListQuery = defineQueryOptions(
@@ -69,6 +70,21 @@ export const readListsListQueryInfinite = defineInfiniteQueryOptions(
       !lastPage?.last ? lastPageParam.next() : null,
   }),
 )
+
+export const readListDetailQuery = defineQueryOptions(({ readListId }: { readListId: string }) => ({
+  key: QUERY_KEYS_READLIST.byId(readListId),
+  query: () =>
+    komgaClient
+      .GET('/api/v1/readlists/{id}', {
+        params: {
+          path: {
+            id: readListId,
+          },
+        },
+      })
+      // unwrap the openapi-fetch structure on success
+      .then((res) => res.data),
+}))
 
 export const useCreateReadList = defineMutation(() => {
   return useMutation({

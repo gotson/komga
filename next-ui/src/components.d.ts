@@ -116,6 +116,7 @@ declare module 'vue' {
     ReadlistDeletionWarning: typeof import('./components/readlist/DeletionWarning.vue')['default']
     ReadlistMenu: typeof import('./components/readlist/menu/ReadlistMenu.vue')['default']
     ReadlistMenuBottomSheet: typeof import('./components/readlist/menu/ReadlistMenuBottomSheet.vue')['default']
+    ReadlistMenuButton: typeof import('./components/readlist/menu/ReadlistMenuButton.vue')['default']
     ReleaseCard: typeof import('./components/release/Card.vue')['default']
     RemoteFileList: typeof import('./components/RemoteFileList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
