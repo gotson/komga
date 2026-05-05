@@ -39,6 +39,7 @@ declare module 'vue' {
     DialogSimple: typeof import('./components/dialog/DialogSimple.vue')['default']
     DialogSimpleInstance: typeof import('./components/dialog/DialogSimpleInstance.vue')['default']
     EmptyStateConstruction: typeof import('./components/EmptyStateConstruction.vue')['default']
+    EmptyStateFilterNoResults: typeof import('./components/EmptyStateFilterNoResults.vue')['default']
     EmptyStateNetworkError: typeof import('./components/EmptyStateNetworkError.vue')['default']
     FilterAnyAll: typeof import('./components/filter/AnyAll.vue')['default']
     FilterButton: typeof import('./components/filter/FilterButton.vue')['default']

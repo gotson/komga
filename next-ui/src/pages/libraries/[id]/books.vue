@@ -116,7 +116,13 @@
     </v-list>
   </TempDrawer>
 
+  <EmptyStateFilterNoResults
+    v-if="totalElements === 0 && filterCount > 0"
+    @reset="clearFilters()"
+  />
+
   <ItemBrowser
+    v-else
     v-model:page1="page1"
     :items="dataItems"
     :presentation-mode="presentationModeEffective"
