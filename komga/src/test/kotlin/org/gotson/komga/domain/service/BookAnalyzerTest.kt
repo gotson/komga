@@ -1,9 +1,13 @@
 package org.gotson.komga.domain.service
 
+import com.chpark.crypto.CryptoEngine
 import com.ninjasquad.springmockk.SpykBean
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.verify
+import org.apache.pdfbox.Loader
+import org.apache.pdfbox.pdmodel.encryption.AccessPermission
+import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
@@ -16,6 +20,7 @@ import org.gotson.komga.infrastructure.mediacontainer.epub.EpubExtractor
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.ValueSource
@@ -24,10 +29,14 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import java.nio.file.Path
 import java.time.LocalDateTime
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
+import java.util.zip.ZipOutputStream
 import kotlin.io.path.extension
 import kotlin.io.path.inputStream
 import kotlin.io.path.listDirectoryEntries
 import kotlin.io.path.name
+import kotlin.io.path.outputStream
 import kotlin.io.path.toPath
 
 @SpringBootTest
@@ -43,6 +52,8 @@ class BookAnalyzerTest(
   @AfterEach
   fun afterEach() {
     clearAllMocks()
+    komgaProperties.mediaFileDecryption.password = null
+    komgaProperties.configDir = null
   }
 
   @Nested
@@ -136,6 +147,23 @@ class BookAnalyzerTest(
     }
 
     @Test
+    fun `given password encrypted cbz archive when analyzing with password then media status is READY`(
+      @TempDir tempDir: Path,
+    ) {
+      val password = "secret"
+      komgaProperties.mediaFileDecryption.password = password
+      val encrypted = tempDir.resolve("encrypted.cbz")
+      encryptZipImageEntries(ClassPathResource("archives/zip.zip").file.toPath(), encrypted, password)
+      val book = Book("book", encrypted.toUri().toURL(), LocalDateTime.now())
+
+      val media = bookAnalyzer.analyze(book, false)
+
+      assertThat(media.mediaType).isEqualTo("application/zip")
+      assertThat(media.status).isEqualTo(Media.Status.READY)
+      assertThat(media.pages).hasSize(1)
+    }
+
+    @Test
     fun `given epub archive when analyzing then media status is READY`() {
       val file = ClassPathResource("archives/epub3.epub")
       val book = Book("book", file.url, LocalDateTime.now())
@@ -144,6 +172,39 @@ class BookAnalyzerTest(
 
       assertThat(media.mediaType).isEqualTo("application/epub+zip")
       assertThat(media.status).isEqualTo(Media.Status.READY)
+    }
+
+    @Test
+    fun `given epub with encrypted html resources when analyzing with password then media status is READY`(
+      @TempDir tempDir: Path,
+    ) {
+      val password = "secret"
+      komgaProperties.mediaFileDecryption.password = password
+      val encrypted = tempDir.resolve("encrypted.epub")
+      encryptEpubHtmlEntries(ClassPathResource("epub/The Incomplete Theft - Ralph Burke.epub").file.toPath(), encrypted, password)
+      val book = Book("book", encrypted.toUri().toURL(), LocalDateTime.now())
+
+      val media = bookAnalyzer.analyze(book, false)
+
+      assertThat(media.mediaType).isEqualTo("application/epub+zip")
+      assertThat(media.status).isEqualTo(Media.Status.READY)
+    }
+
+    @Test
+    fun `given password encrypted pdf when analyzing with password then media status is READY`(
+      @TempDir tempDir: Path,
+    ) {
+      val password = "secret"
+      komgaProperties.mediaFileDecryption.password = password
+      val encrypted = tempDir.resolve("encrypted.pdf")
+      encryptPdf(ClassPathResource("pdf/komga.pdf").file.toPath(), encrypted, password)
+      val book = Book("book", encrypted.toUri().toURL(), LocalDateTime.now())
+
+      val media = bookAnalyzer.analyze(book, false)
+
+      assertThat(media.mediaType).isEqualTo("application/pdf")
+      assertThat(media.status).isEqualTo(Media.Status.READY)
+      assertThat(media.pages).isNotEmpty()
     }
   }
 
@@ -335,4 +396,82 @@ class BookAnalyzerTest(
 
     private fun provideDirectoriesForPageHashing() = ClassPathResource("hashpage").uri.toPath().listDirectoryEntries()
   }
+
+  private fun encryptPdf(
+    input: Path,
+    output: Path,
+    password: String,
+  ) {
+    Loader.loadPDF(input.toFile()).use { pdf ->
+      val accessPermission =
+        AccessPermission().apply {
+          setCanAssembleDocument(false)
+          setCanExtractContent(false)
+          setCanExtractForAccessibility(false)
+          setCanFillInForm(false)
+          setCanModify(false)
+          setCanModifyAnnotations(false)
+          setCanPrint(false)
+          setCanPrintFaithful(false)
+        }
+      val policy =
+        StandardProtectionPolicy(password, password, accessPermission).apply {
+          encryptionKeyLength = 256
+          setPreferAES(true)
+        }
+      pdf.protect(policy)
+      pdf.save(output.toFile())
+    }
+  }
+
+  private fun encryptEpubHtmlEntries(
+    input: Path,
+    output: Path,
+    password: String,
+  ) {
+    val cryptoEngine = CryptoEngine()
+    ZipInputStream(input.inputStream()).use { zipIn ->
+      ZipOutputStream(output.outputStream()).use { zipOut ->
+        while (true) {
+          val entry = zipIn.nextEntry ?: break
+          zipOut.putNextEntry(ZipEntry(entry.name))
+          if (!entry.isDirectory) {
+            val bytes = zipIn.readBytes()
+            zipOut.write(if (entry.name.isEpubHtmlEntry()) cryptoEngine.encrypt(password, bytes) else bytes)
+          }
+          zipOut.closeEntry()
+          zipIn.closeEntry()
+        }
+      }
+    }
+  }
+
+  private fun encryptZipImageEntries(
+    input: Path,
+    output: Path,
+    password: String,
+  ) {
+    val cryptoEngine = CryptoEngine()
+    ZipInputStream(input.inputStream()).use { zipIn ->
+      ZipOutputStream(output.outputStream()).use { zipOut ->
+        while (true) {
+          val entry = zipIn.nextEntry ?: break
+          zipOut.putNextEntry(ZipEntry(entry.name))
+          if (!entry.isDirectory) {
+            val bytes = zipIn.readBytes()
+            zipOut.write(if (entry.name.isZipImageEntry()) cryptoEngine.encrypt(password, bytes) else bytes)
+          }
+          zipOut.closeEntry()
+          zipIn.closeEntry()
+        }
+      }
+    }
+  }
+
+  private fun String.isEpubHtmlEntry(): Boolean {
+    val lower = lowercase()
+    return lower.endsWith(".xhtml") || lower.endsWith(".html")
+  }
+
+  private fun String.isZipImageEntry(): Boolean = substringAfterLast('.', "").lowercase() in setOf("avif", "bmp", "gif", "jpe", "jpeg", "jpg", "jxl", "png", "tif", "tiff", "webp")
 }

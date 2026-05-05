@@ -10,8 +10,7 @@ import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
 import org.gotson.komga.infrastructure.kobo.KepubConverter
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
-import org.gotson.komga.infrastructure.util.getEntryBytes
-import org.gotson.komga.infrastructure.util.getEntryInputStream
+import org.gotson.komga.infrastructure.mediacontainer.MediaFileDecryptionService
 import org.gotson.komga.infrastructure.util.getZipEntryBytes
 import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
@@ -33,15 +32,21 @@ class EpubExtractor(
   private val contentDetector: ContentDetector,
   private val imageAnalyzer: ImageAnalyzer,
   private val kepubConverter: KepubConverter,
+  private val mediaFileDecryptionService: MediaFileDecryptionService,
   @param:Value("#{@komgaProperties.epubDivinaLetterCountThreshold}") private val letterCountThreshold: Int,
 ) {
+  fun <T> openEpub(
+    path: Path,
+    block: (EpubPackage) -> T,
+  ): T = path.epub(mediaFileDecryptionService::decryptEpubEntry, block)
+
   /**
    * Retrieves a specific entry by name from the zip archive
    */
   fun getEntryStream(
     path: Path,
     entryName: String,
-  ): ByteArray = getZipEntryBytes(path, entryName)
+  ): ByteArray = mediaFileDecryptionService.getEpubEntryBytes(path, entryName)
 
   fun isEpub(path: Path): Boolean =
     try {
@@ -54,23 +59,23 @@ class EpubExtractor(
    * Retrieves the book cover along with its mediaType from the epub 2/3 manifest
    */
   fun getCover(path: Path): TypedBytes? =
-    path.epub { (zip, opfDoc, opfDir, manifest) ->
+    openEpub(path) { epub ->
       val coverManifestItem =
         // EPUB 3 - try to get cover from manifest properties 'cover-image'
-        manifest.values.firstOrNull { it.properties.contains("cover-image") }
+        epub.manifest.values.firstOrNull { it.properties.contains("cover-image") }
           ?: // EPUB 2 - get cover from meta element with name="cover"
-          opfDoc
+          epub.opfDoc
             .selectFirst("*|metadata > *|meta[name=cover]")
             ?.attr("content")
             ?.ifBlank { null }
-            ?.let { manifest[it] }
+            ?.let { epub.manifest[it] }
           ?: // try id="cover-image"
-          manifest.values.firstOrNull { it.id == "cover-image" }
+          epub.manifest.values.firstOrNull { it.id == "cover-image" }
       if (coverManifestItem != null) {
         val href = URLDecoder.decode(coverManifestItem.href, Charsets.UTF_8)
         val mediaType = coverManifestItem.mediaType
-        val coverPath = normalizeHref(opfDir, href)
-        zip.getEntryBytes(coverPath)?.let { coverBytes ->
+        val coverPath = normalizeHref(epub.opfDir, href)
+        epub.getEntryBytes(coverPath)?.let { coverBytes ->
           TypedBytes(
             coverBytes,
             mediaType,
@@ -80,6 +85,8 @@ class EpubExtractor(
         null
       }
     }
+
+  fun getPackageFileContent(path: Path): String? = readPackageFileContent(path)
 
   fun getResources(epub: EpubPackage): List<MediaFile> {
     val spine =
@@ -141,7 +148,7 @@ class EpubExtractor(
             // image in spine
             listOf(Path(pagePath).normalize().invariantSeparatorsPathString)
           } else {
-            val doc = epub.zip.getEntryInputStream(pagePath)?.use { Jsoup.parse(it, null, "") } ?: return@map emptyList()
+            val doc = epub.getEntryInputStream(pagePath)?.use { Jsoup.parse(it, null, "") } ?: return@map emptyList()
 
             // if a page has text over the threshold then the book is not divina compatible
             if (doc.body().text().length > letterCountThreshold) return emptyList()
@@ -204,7 +211,7 @@ class EpubExtractor(
       val readingOrder = resources.filter { it.subType == MediaFile.SubType.EPUB_PAGE }
 
       readingOrder.forEach { mediaFile ->
-        val doc = epub.zip.getEntryInputStream(mediaFile.fileName)?.use { Jsoup.parse(it, null, "") }
+        val doc = epub.getEntryInputStream(mediaFile.fileName)?.use { Jsoup.parse(it, null, "") }
         if (!doc?.getElementsByClass("koboSpan").isNullOrEmpty()) return true
       }
     } catch (e: Exception) {
@@ -248,7 +255,7 @@ class EpubExtractor(
     val koboPositions =
       when {
         isFixedLayout -> emptyMap()
-        isKepub -> computePositionsFromKoboSpan(readingOrder) { filename -> epub.zip.getEntryInputStream(filename).use { it?.readBytes()?.decodeToString() } }
+        isKepub -> computePositionsFromKoboSpan(readingOrder) { filename -> epub.getEntryInputStream(filename).use { it?.readBytes()?.decodeToString() } }
         kepubConverter.isAvailable -> {
           try {
             val kepub =
@@ -257,7 +264,10 @@ class EpubExtractor(
                 ?.also { it.toFile().deleteOnExit() }
                 // if the conversion failed, throw an exception that will be caught in the catch block
                 ?: throw IllegalStateException()
-            val positions = computePositionsFromKoboSpan(readingOrder) { filename -> getZipEntryBytes(kepub, filename).decodeToString() }
+            val positions =
+              computePositionsFromKoboSpan(readingOrder) { filename ->
+                getZipEntryBytes(kepub, filename).decodeToString()
+              }
             kepub.deleteIfExists()
             positions
           } catch (_: Exception) {

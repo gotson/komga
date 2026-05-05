@@ -1,12 +1,13 @@
 package org.gotson.komga.infrastructure.mediacontainer.pdf
 
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.image.ImageType
 import org.junit.jupiter.api.Test
 import org.springframework.core.io.ClassPathResource
 
 class PdfExtractorTest {
-  private val pdfExtractor = PdfExtractor(ImageType.JPEG, 1000F)
+  private val pdfExtractor = PdfExtractor(ImageType.JPEG, 1000F, KomgaProperties())
 
   @Test
   fun `given pdf file when getting pages then pages are returned`() {

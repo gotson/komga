@@ -48,6 +48,8 @@ class KomgaProperties {
 
   var kobo = Kobo()
 
+  var mediaFileDecryption = MediaFileDecryption()
+
   val fonts = Fonts()
 
   class Cors {
@@ -107,5 +109,9 @@ class KomgaProperties {
     var syncItemLimit: Int = 100
 
     var kepubifyPath: String? = null
+  }
+
+  class MediaFileDecryption {
+    var password: String? = null
   }
 }

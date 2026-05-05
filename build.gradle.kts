@@ -30,6 +30,7 @@ group = "org.gotson"
 allprojects {
   repositories {
     mavenCentral()
+    maven("https://jitpack.io")
   }
   apply(plugin = "org.jlleitschuh.gradle.ktlint")
   apply(plugin = "com.github.ben-manes.versions")
