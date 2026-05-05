@@ -71,6 +71,7 @@
           <FilterByTag
             v-model="filterTag.v"
             v-model:mode="filterTag.m"
+            include="BOOK"
           />
         </FilterExpansionPanel>
       </v-expansion-panels>
