@@ -249,6 +249,7 @@ import { useSelectionStore } from '@/stores/selection'
 import { useFilterAuthors } from '@/composables/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import {
+  filterKeys,
   SchemaFilterReadStatus,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
@@ -266,6 +267,8 @@ import CollectionMenuButton from '@/components/collection/menu/CollectionMenuBut
 const route = useRoute('/collection/[id]')
 const router = useRouter()
 const collectionId = computed(() => route.params.id)
+
+provide(filterKeys.context, { collection_id: [collectionId.value] })
 
 const display = useDisplay()
 const appStore = useAppStore()
