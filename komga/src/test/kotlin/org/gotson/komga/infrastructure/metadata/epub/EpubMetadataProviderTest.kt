@@ -10,7 +10,7 @@ import org.gotson.komga.domain.model.BookWithMedia
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.makeBook
-import org.gotson.komga.infrastructure.mediacontainer.epub.getPackageFileContent
+import org.gotson.komga.infrastructure.mediacontainer.epub.readPackageFileContent
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -34,7 +34,7 @@ class EpubMetadataProviderTest {
 
   @AfterEach
   fun cleanup() {
-    unmockkStatic(::getPackageFileContent)
+    unmockkStatic(::readPackageFileContent)
   }
 
   @Nested
@@ -48,8 +48,8 @@ class EpubMetadataProviderTest {
     )
     fun `given epub 3 opf when getting book metadata then metadata patch is valid`(opfFile: String) {
       val opf = ClassPathResource(opfFile)
-      mockkStatic(::getPackageFileContent)
-      every { getPackageFileContent(any()) } returns opf.file.readText()
+      mockkStatic(::readPackageFileContent)
+      every { readPackageFileContent(any()) } returns opf.file.readText()
 
       val patch = epubMetadataProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
@@ -70,8 +70,8 @@ class EpubMetadataProviderTest {
     @Test
     fun `given another epub 3 opf when getting book metadata then metadata patch is valid`() {
       val opf = ClassPathResource("epub/Die Drei 3.opf")
-      mockkStatic(::getPackageFileContent)
-      every { getPackageFileContent(any()) } returns opf.file.readText()
+      mockkStatic(::readPackageFileContent)
+      every { readPackageFileContent(any()) } returns opf.file.readText()
 
       val patch = epubMetadataProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
@@ -114,8 +114,8 @@ class EpubMetadataProviderTest {
     @Test
     fun `given epub 2 opf when getting book metadata then metadata patch is valid`() {
       val opf = ClassPathResource("epub/1979.opf")
-      mockkStatic(::getPackageFileContent)
-      every { getPackageFileContent(any()) } returns opf.file.readText()
+      mockkStatic(::readPackageFileContent)
+      every { readPackageFileContent(any()) } returns opf.file.readText()
 
       val patch = epubMetadataProvider.getBookMetadataFromBook(BookWithMedia(book, media))
 
@@ -145,8 +145,8 @@ class EpubMetadataProviderTest {
     )
     fun `given epub 3 opf when getting series metadata then metadata patch is valid`(opfFile: String) {
       val opf = ClassPathResource(opfFile)
-      mockkStatic(::getPackageFileContent)
-      every { getPackageFileContent(any()) } returns opf.file.readText()
+      mockkStatic(::readPackageFileContent)
+      every { readPackageFileContent(any()) } returns opf.file.readText()
 
       val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), true)
 
@@ -163,8 +163,8 @@ class EpubMetadataProviderTest {
     @Test
     fun `given another epub 3 opf when getting series metadata then metadata patch is valid`() {
       val opf = ClassPathResource("epub/Die Drei 3.opf")
-      mockkStatic(::getPackageFileContent)
-      every { getPackageFileContent(any()) } returns opf.file.readText()
+      mockkStatic(::readPackageFileContent)
+      every { readPackageFileContent(any()) } returns opf.file.readText()
 
       val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), true)
 
@@ -181,8 +181,8 @@ class EpubMetadataProviderTest {
     @Test
     fun `given epub 2 opf when getting series metadata then metadata patch is valid`() {
       val opf = ClassPathResource("epub/1979.opf")
-      mockkStatic(::getPackageFileContent)
-      every { getPackageFileContent(any()) } returns opf.file.readText()
+      mockkStatic(::readPackageFileContent)
+      every { readPackageFileContent(any()) } returns opf.file.readText()
 
       val patch = epubMetadataProvider.getSeriesMetadataFromBook(BookWithMedia(book, media), true)
 

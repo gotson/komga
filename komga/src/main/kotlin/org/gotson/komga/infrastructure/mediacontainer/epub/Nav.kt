@@ -1,7 +1,6 @@
 package org.gotson.komga.infrastructure.mediacontainer.epub
 
 import org.gotson.komga.domain.model.EpubTocEntry
-import org.gotson.komga.infrastructure.util.getEntryBytes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.parser.Parser
@@ -12,7 +11,7 @@ import kotlin.io.path.Path
 fun EpubPackage.getNavResource(): ResourceContent? =
   manifest.values.firstOrNull { it.properties.contains("nav") }?.let { nav ->
     val href = normalizeHref(opfDir, nav.href)
-    zip.getEntryBytes(href)?.decodeToString()?.let { navContent ->
+    getEntryBytes(href)?.decodeToString()?.let { navContent ->
       ResourceContent(Path(href), navContent)
     }
   }

@@ -3,12 +3,14 @@ package org.gotson.komga.infrastructure.mediacontainer.pdf
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.multipdf.PageExtractor
 import org.apache.pdfbox.pdmodel.PDPage
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException
 import org.apache.pdfbox.rendering.ImageType.RGB
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.MediaContainerEntry
 import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.TypedBytes
+import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.image.ImageType
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
@@ -23,12 +25,13 @@ class PdfExtractor(
   private val imageType: ImageType,
   @Qualifier("pdfResolution")
   private val resolution: Float,
+  private val komgaProperties: KomgaProperties,
 ) {
   fun getPages(
     path: Path,
     analyzeDimensions: Boolean,
   ): List<MediaContainerEntry> =
-    Loader.loadPDF(path.toFile()).use { pdf ->
+    loadPdf(path).use { pdf ->
       (0 until pdf.numberOfPages).map { index ->
         val page = pdf.getPage(index)
         val dimension = if (analyzeDimensions) Dimension(page.cropBox.width.roundToInt(), page.cropBox.height.roundToInt()) else null
@@ -40,7 +43,7 @@ class PdfExtractor(
     path: Path,
     pageNumber: Int,
   ): TypedBytes {
-    Loader.loadPDF(path.toFile()).use { pdf ->
+    loadPdf(path).use { pdf ->
       val page = pdf.getPage(pageNumber - 1)
       val image = PDFRenderer(pdf).renderImage(pageNumber - 1, page.getScale(), RGB)
       val bytes =
@@ -56,7 +59,7 @@ class PdfExtractor(
     path: Path,
     pageNumber: Int,
   ): TypedBytes {
-    Loader.loadPDF(path.toFile()).use { pdf ->
+    loadPdf(path).use { pdf ->
       val bytes =
         ByteArrayOutputStream().use { out ->
           PageExtractor(pdf, pageNumber, pageNumber).extract().save(out)
@@ -77,4 +80,15 @@ class PdfExtractor(
     val scale = getScale(dimension.width.toFloat(), dimension.height.toFloat())
     return Dimension((dimension.width * scale).roundToInt(), (dimension.height * scale).roundToInt())
   }
+
+  private fun loadPdf(path: Path) =
+    try {
+      Loader.loadPDF(path.toFile())
+    } catch (e: InvalidPasswordException) {
+      val password =
+        komgaProperties.mediaFileDecryption.password
+          ?.takeIf { it.isNotBlank() }
+          ?: throw e
+      Loader.loadPDF(path.toFile(), password)
+    }
 }

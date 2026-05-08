@@ -12,6 +12,11 @@ spring:
   flyway:
     enabled: true
 
+management:
+  httpexchanges:
+    recording:
+      enabled: false
+
 logging:
   level:
     org.gotson.komga: DEBUG

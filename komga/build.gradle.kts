@@ -73,6 +73,7 @@ dependencies {
   implementation("commons-io:commons-io:2.19.0")
   implementation("org.apache.commons:commons-lang3:3.18.0")
   implementation("commons-validator:commons-validator:1.10.0")
+  implementation("com.github.whitenight209:crypto-kit:v0.0.2")
 
   implementation("org.apache.lucene:lucene-core:${libs.versions.lucene.get()}")
   implementation("org.apache.lucene:lucene-analysis-common:${libs.versions.lucene.get()}")

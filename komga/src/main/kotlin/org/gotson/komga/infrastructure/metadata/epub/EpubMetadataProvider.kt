@@ -11,7 +11,8 @@ import org.gotson.komga.domain.model.MediaType
 import org.gotson.komga.domain.model.MetadataPatchTarget
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
-import org.gotson.komga.infrastructure.mediacontainer.epub.getPackageFileContent
+import org.gotson.komga.infrastructure.mediacontainer.epub.EpubExtractor
+import org.gotson.komga.infrastructure.mediacontainer.epub.readPackageFileContent
 import org.gotson.komga.infrastructure.metadata.BookMetadataProvider
 import org.gotson.komga.infrastructure.metadata.SeriesMetadataFromBookProvider
 import org.jsoup.Jsoup
@@ -24,6 +25,7 @@ import java.time.format.DateTimeFormatter
 @Service
 class EpubMetadataProvider(
   private val isbnValidator: ISBNValidator,
+  private val epubExtractor: EpubExtractor? = null,
 ) : BookMetadataProvider,
   SeriesMetadataFromBookProvider {
   private val relators =
@@ -48,7 +50,7 @@ class EpubMetadataProvider(
 
   override fun getBookMetadataFromBook(book: BookWithMedia): BookMetadataPatch? {
     if (book.media.mediaType != MediaType.EPUB.type) return null
-    getPackageFileContent(book.book.path)?.let { packageFile ->
+    getReadablePackageFileContent(book)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val title = opf.selectFirst("*|metadata > *|title")?.text()?.ifBlank { null }
@@ -113,7 +115,7 @@ class EpubMetadataProvider(
     appendVolumeToTitle: Boolean,
   ): SeriesMetadataPatch? {
     if (book.media.mediaType != MediaType.EPUB.type) return null
-    getPackageFileContent(book.book.path)?.let { packageFile ->
+    getReadablePackageFileContent(book)?.let { packageFile ->
       val opf = Jsoup.parse(packageFile, "", Parser.xmlParser())
 
       val series = opf.selectFirst("*|metadata > *|meta[property=belongs-to-collection]")?.text()?.ifBlank { null }
@@ -161,6 +163,10 @@ class EpubMetadataProvider(
       MetadataPatchTarget.SERIES -> library.importEpubSeries
       else -> false
     }
+
+  private fun getReadablePackageFileContent(book: BookWithMedia): String? =
+    epubExtractor?.getPackageFileContent(book.book.path)
+      ?: readPackageFileContent(book.book.path)
 
   private fun parseDate(date: String): LocalDate? =
     try {

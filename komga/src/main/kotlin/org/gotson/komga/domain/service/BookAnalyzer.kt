@@ -23,7 +23,6 @@ import org.gotson.komga.infrastructure.image.ImageType
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.mediacontainer.divina.DivinaExtractor
 import org.gotson.komga.infrastructure.mediacontainer.epub.EpubExtractor
-import org.gotson.komga.infrastructure.mediacontainer.epub.epub
 import org.gotson.komga.infrastructure.mediacontainer.pdf.PdfExtractor
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -143,8 +142,8 @@ class BookAnalyzer(
   private fun analyzeEpub(
     book: Book,
     analyzeDimensions: Boolean,
-  ): Media {
-    book.path.epub { epub ->
+  ): Media =
+    epubExtractor.openEpub(book.path) { epub ->
       val (resources, missingResources) = epubExtractor.getResources(epub).partition { it.fileSize != null }
       val isKepub = epubExtractor.isKepub(epub, resources)
 
@@ -190,7 +189,7 @@ class BookAnalyzer(
 
       val positions =
         try {
-          epubExtractor.computePositions(epub, book.path, resources, isFixedLayout, isKepub)
+          epubExtractor.computePositions(epub, epub.path, resources, isFixedLayout, isKepub)
         } catch (e: Exception) {
           logger.error(e) { "Error while getting EPUB positions" }
           errors.add("ERR_1039")
@@ -209,7 +208,7 @@ class BookAnalyzer(
           .joinToString(" ")
           .ifBlank { null }
 
-      return Media(
+      Media(
         status = Media.Status.READY,
         pages = divinaPages,
         files = resources,
@@ -227,7 +226,6 @@ class BookAnalyzer(
         comment = allErrors,
       )
     }
-  }
 
   private fun analyzePdf(
     book: Book,
