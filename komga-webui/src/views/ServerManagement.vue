@@ -6,6 +6,7 @@
     <v-row>
       <v-col cols="auto">
         <v-btn @click="downloadLogFile"
+               disabled
         >{{ $t('server.server_management.download_log') }}
         </v-btn>
       </v-col>

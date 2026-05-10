@@ -14,7 +14,7 @@ const vuexModule: Module<any, any> = {
   },
   getters: {
     meAdmin: state => state.me.hasOwnProperty('roles') && state.me.roles.includes(UserRoles.ADMIN),
-    meFileDownload: state => state.me.hasOwnProperty('roles') && state.me.roles.includes(UserRoles.FILE_DOWNLOAD),
+    meFileDownload: () => false,
     mePageStreaming: state => state.me.hasOwnProperty('roles') && state.me.roles.includes(UserRoles.PAGE_STREAMING),
     authenticated: state => state.me.hasOwnProperty('id'),
   },

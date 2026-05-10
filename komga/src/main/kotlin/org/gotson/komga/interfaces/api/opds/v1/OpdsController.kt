@@ -38,7 +38,6 @@ import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsFeedAcquisition
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsFeedNavigation
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLink
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkFeedNavigation
-import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkFileAcquisition
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkImage
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkImageThumbnail
 import org.gotson.komga.interfaces.api.opds.v1.dto.OpdsLinkPageStreaming
@@ -778,7 +777,7 @@ class OpdsController(
         listOfNotNull(
           OpdsLinkImageThumbnail("image/jpeg", uriBuilder("books/$id/thumbnail/small").toUriString()),
           OpdsLinkImage(thumbnailMediaType, uriBuilder("books/$id/thumbnail").toUriString()),
-          OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),
+          // OpdsLinkFileAcquisition(media.mediaType, uriBuilder("books/$id/file/${sanitize(FilenameUtils.getName(url))}").toUriString()),
           opdsLinkPageStreaming,
         ),
     )

@@ -60,7 +60,7 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item @click="downloadCurrentPage">
+              <v-list-item @click="downloadCurrentPage" disabled>
                 <v-list-item-title>{{ $t('bookreader.download_current_page') }}</v-list-item-title>
               </v-list-item>
               <v-list-item @click="setCurrentPageAsPoster(ItemTypes.BOOK)">

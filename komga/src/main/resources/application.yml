@@ -19,6 +19,8 @@ komga:
     file: \${komga.config-dir}/database.sqlite
   lucene:
     data-directory: \${komga.config-dir}/lucene
+  # media-file-decryption:
+  #   password: "your-password"
   fonts:
     data-directory: \${komga.config-dir}/fonts
   config-dir: \${user.home}/.komga

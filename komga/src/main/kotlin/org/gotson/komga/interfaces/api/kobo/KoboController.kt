@@ -48,8 +48,6 @@ import org.gotson.komga.interfaces.api.kobo.dto.ChangedProductMetadataDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedReadingStateDto
 import org.gotson.komga.interfaces.api.kobo.dto.ChangedTagDto
 import org.gotson.komga.interfaces.api.kobo.dto.DeletedTagDto
-import org.gotson.komga.interfaces.api.kobo.dto.DownloadUrlDto
-import org.gotson.komga.interfaces.api.kobo.dto.FormatDto
 import org.gotson.komga.interfaces.api.kobo.dto.KoboBookMetadataDto
 import org.gotson.komga.interfaces.api.kobo.dto.NewEntitlementDto
 import org.gotson.komga.interfaces.api.kobo.dto.NewTagDto
@@ -638,11 +636,11 @@ class KoboController(
     return ResponseEntity.ok(response)
   }
 
-  @GetMapping(
-    value = ["v1/books/{bookId}/file/epub"],
-    produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
-  )
-  @PreAuthorize("hasRole('FILE_DOWNLOAD')")
+  // @GetMapping(
+  //   value = ["v1/books/{bookId}/file/epub"],
+  //   produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
+  // )
+  // @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun getBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
@@ -754,25 +752,26 @@ class KoboController(
 
   private fun KoboBookMetadataDto.withDownloadUrls(downloadUriBuilder: UriBuilder) =
     this.copy(
-      downloadUrls =
-        buildList {
-          val (format, convert) =
-            when {
-              // for fixed layout we always send EPUB3FL, so the Kobo can display in full screen
-              // no conversion to Kepub is necessary, as there is already 1 chapter per page, which is sufficient for progress tracking
-              isPrePaginated -> FormatDto.EPUB3FL to false
-              // provide Kepub if available, or convert if possible
-              isKepub || kepubConverter.isAvailable -> FormatDto.KEPUB to !isKepub
-              else -> FormatDto.EPUB3 to false
-            }
-          add(
-            DownloadUrlDto(
-              format = format,
-              size = fileSize,
-              url = downloadUriBuilder.build(entitlementId, convert).toURL().toString(),
-            ),
-          )
-        },
+      // downloadUrls =
+      //   buildList {
+      //     val (format, convert) =
+      //       when {
+      //         // for fixed layout we always send EPUB3FL, so the Kobo can display in full screen
+      //         // no conversion to Kepub is necessary, as there is already 1 chapter per page, which is sufficient for progress tracking
+      //         isPrePaginated -> FormatDto.EPUB3FL to false
+      //         // provide Kepub if available, or convert if possible
+      //         isKepub || kepubConverter.isAvailable -> FormatDto.KEPUB to !isKepub
+      //         else -> FormatDto.EPUB3 to false
+      //       }
+      //     add(
+      //       DownloadUrlDto(
+      //         format = format,
+      //         size = fileSize,
+      //         url = downloadUriBuilder.build(entitlementId, convert).toURL().toString(),
+      //       ),
+      //     )
+      //   },
+      downloadUrls = emptyList(),
     )
 
   /**
