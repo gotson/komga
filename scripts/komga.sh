@@ -30,7 +30,7 @@ read_pid() {
 
 make_secret_config() {
   local password="$1"
-  local temp_dir secret_config escaped_password
+  local temp_dir temp_config secret_config escaped_password
 
   if [[ -d /dev/shm && -w /dev/shm ]]; then
     temp_dir="/dev/shm"
@@ -39,7 +39,9 @@ make_secret_config() {
   fi
 
   umask 077
-  secret_config="$(mktemp "${temp_dir%/}/$APP_NAME-secret.XXXXXX")"
+  temp_config="$(mktemp "${temp_dir%/}/$APP_NAME-secret.XXXXXX")"
+  secret_config="$temp_config.yml"
+  mv "$temp_config" "$secret_config"
   escaped_password="${password//\\/\\\\}"
   escaped_password="${escaped_password//\"/\\\"}"
 
