@@ -797,9 +797,9 @@ class SeriesController(
       }
   }
 
-  @Operation(summary = "Download series", description = "Download the whole series as a ZIP file.", tags = [OpenApiConfiguration.TagNames.SERIES])
-  @GetMapping("v1/series/{seriesId}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
-  @PreAuthorize("hasRole('FILE_DOWNLOAD')")
+  // @Operation(summary = "Download series", description = "Download the whole series as a ZIP file.", tags = [OpenApiConfiguration.TagNames.SERIES])
+  // @GetMapping("v1/series/{seriesId}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+  // @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun downloadSeriesAsZip(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable seriesId: String,

@@ -434,9 +434,9 @@ class ReadListController(
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
-  @Operation(summary = "Download readlist", description = "Download the whole readlist as a ZIP file.", tags = [OpenApiConfiguration.TagNames.READLISTS])
-  @GetMapping("{id}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
-  @PreAuthorize("hasRole('FILE_DOWNLOAD')")
+  // @Operation(summary = "Download readlist", description = "Download the whole readlist as a ZIP file.", tags = [OpenApiConfiguration.TagNames.READLISTS])
+  // @GetMapping("{id}/file", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+  // @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun downloadReadListAsZip(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,

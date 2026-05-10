@@ -313,18 +313,18 @@ class CommonBookController(
       .body(bytes)
   }
 
-  @Operation(summary = "Download book file", description = "Download the book file.", tags = [OpenApiConfiguration.TagNames.BOOKS])
-  @GetMapping(
-    value = [
-      "api/v1/books/{bookId}/file",
-      "api/v1/books/{bookId}/file/*",
-      "opds/v1.2/books/{bookId}/file/*",
-      "opds/v2/books/{bookId}/file",
-      "opds/v2/books/{bookId}/file/*",
-    ],
-    produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
-  )
-  @PreAuthorize("hasRole('FILE_DOWNLOAD')")
+  // @Operation(summary = "Download book file", description = "Download the book file.", tags = [OpenApiConfiguration.TagNames.BOOKS])
+  // @GetMapping(
+  //   value = [
+  //     "api/v1/books/{bookId}/file",
+  //     "api/v1/books/{bookId}/file/*",
+  //     "opds/v1.2/books/{bookId}/file/*",
+  //     "opds/v2/books/{bookId}/file",
+  //     "opds/v2/books/{bookId}/file/*",
+  //   ],
+  //   produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
+  // )
+  // @PreAuthorize("hasRole('FILE_DOWNLOAD')")
   fun downloadBookFile(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,

@@ -29,6 +29,7 @@ import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -485,6 +486,7 @@ class BookControllerTest(
     }
 
     @Test
+    @Disabled("File download API is disabled")
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
     fun `given user with no access to any library when getting specific book file then returns forbidden`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
@@ -556,6 +558,7 @@ class BookControllerTest(
     }
 
     @Test
+    @Disabled("File download API is disabled")
     @WithMockCustomUser(roles = [])
     fun `given user without file download role when getting specific book file then returns unauthorized`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
@@ -593,6 +596,7 @@ class BookControllerTest(
     }
 
     @Test
+    @Disabled("File download API is disabled")
     @WithMockCustomUser
     fun `given book without file when getting book file then returns not found`() {
       makeSeries(name = "series", libraryId = library.id).let { series ->
@@ -1436,6 +1440,7 @@ class BookControllerTest(
   }
 
   @Test
+  @Disabled("File download API is disabled")
   @WithMockCustomUser
   fun `given book with Unicode name when getting book file then attachment name is correct`() {
     val bookName = "アキラ"

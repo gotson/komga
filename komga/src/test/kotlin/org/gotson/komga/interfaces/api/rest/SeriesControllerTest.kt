@@ -32,6 +32,7 @@ import org.hamcrest.core.IsNull
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -630,6 +631,7 @@ class SeriesControllerTest(
     }
 
     @Test
+    @Disabled("File download API is disabled")
     @WithMockCustomUser(sharedAllLibraries = false, sharedLibraries = [])
     fun `given user with no access to any library when getting specific series file then returns forbidden`() {
       val createdSeries =
@@ -649,6 +651,7 @@ class SeriesControllerTest(
   @Nested
   inner class RestrictedUserByRole {
     @Test
+    @Disabled("File download API is disabled")
     @WithMockCustomUser(roles = [])
     fun `given user without file download role when getting specific series file then returns forbidden`() {
       val createdSeries =
@@ -1177,6 +1180,7 @@ class SeriesControllerTest(
   }
 
   @Nested
+  @Disabled("File download API is disabled")
   inner class FileDownload {
     @Test
     @WithMockCustomUser
