@@ -26,6 +26,7 @@ import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useDisplay } from 'vuetify/framework'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { useCurrentUser } from '@/colada/users'
 
 const { activatorId } = defineProps<{
   activatorId: string
@@ -33,6 +34,7 @@ const { activatorId } = defineProps<{
 
 const intl = useIntl()
 const appStore = useAppStore()
+const { isAdmin } = useCurrentUser()
 
 const actions = [
   {
@@ -43,25 +45,33 @@ const actions = [
     }),
     onClick: () => (appStore.reorderLibraries = true),
   },
-  { divider: true },
-  {
-    title: intl.formatMessage({
-      description: 'Libraries menu: scan',
-      defaultMessage: 'Scan all libraries',
-      id: 'CY8sfH',
-    }),
-    onClick: () => scanAll(),
-  },
-  {
-    title: intl.formatMessage({
-      description: 'Libraries menu: empty trash',
-      defaultMessage: 'Empty trash for all libraries',
-      id: 'CwteMk',
-    }),
-    onMouseenter: (event: Event) =>
-      (dialogConfirm.value.activator = event.currentTarget as Element),
-    onClick: () => emptyTrashAll(),
-  },
+  ...(isAdmin.value ? [{ divider: true }] : []),
+  ...(isAdmin.value
+    ? [
+        {
+          title: intl.formatMessage({
+            description: 'Libraries menu: scan',
+            defaultMessage: 'Scan all libraries',
+            id: 'CY8sfH',
+          }),
+          onClick: () => scanAll(),
+        },
+      ]
+    : []),
+  ...(isAdmin.value
+    ? [
+        {
+          title: intl.formatMessage({
+            description: 'Libraries menu: empty trash',
+            defaultMessage: 'Empty trash for all libraries',
+            id: 'CwteMk',
+          }),
+          onMouseenter: (event: Event) =>
+            (dialogConfirm.value.activator = event.currentTarget as Element),
+          onClick: () => emptyTrashAll(),
+        },
+      ]
+    : []),
 ]
 
 const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
