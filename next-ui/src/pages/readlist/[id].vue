@@ -123,7 +123,9 @@
     fluid
   >
     <v-row>
-      <v-col cols="12">{{ readList.summary }}</v-col></v-row
+      <v-col cols="12">
+        <div style="white-space: pre-wrap">{{ readList.summary }}</div></v-col
+      ></v-row
     >
     <v-divider class="mt-4" />
   </v-container>
