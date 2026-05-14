@@ -9,6 +9,7 @@
 import { watchImmediate } from '@vueuse/core'
 import { filterKeys } from '@/types/filter'
 import { useGetLibrariesById } from '@/composables/libraries'
+import { useLibraries } from '@/colada/libraries'
 
 const route = useRoute('/libraries/[id]')
 const router = useRouter()
@@ -24,6 +25,15 @@ watchImmediate(libraryId, () => {
     params: { id: libraryId.value },
     query: route.query,
   })
+})
+
+const { anyPinned, anyUnpinned } = useLibraries()
+
+watch([libraryId, anyPinned, anyUnpinned], ([id, hasPinned, hasUnpinned]) => {
+  if (id === 'pinned' && !hasPinned)
+    void router.push({ name: '/libraries/[id]', params: { id: 'all' } })
+  if (id === 'unpinned' && !hasUnpinned)
+    void router.push({ name: '/libraries/[id]', params: { id: 'all' } })
 })
 </script>
 

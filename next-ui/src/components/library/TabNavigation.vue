@@ -45,6 +45,7 @@ import type { Route } from '@/types/route'
 import type { LibraryId } from '@/types/libraries'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { useIntl } from 'vue-intl'
+import { useLibraries } from '@/colada/libraries'
 
 const { routes, libraryId } = defineProps<{
   routes: Route[]
@@ -54,27 +55,24 @@ const { routes, libraryId } = defineProps<{
 const intl = useIntl()
 const router = useRouter()
 
+const { anyPinned, anyUnpinned } = useLibraries()
 const { isSingle, libraries } = useGetLibrariesById(libraryId)
 
 const title = computed(() => (isSingle.value ? libraries.value?.[0]?.name : undefined))
 
-const selectItems = [
-  {
-    title: intl.formatMessage({
-      description: 'Library tab navigation: library selection: pinned',
-      defaultMessage: 'Pinned',
-      id: '1qIfds',
-    }),
-    value: 'pinned',
-  },
-  {
-    title: intl.formatMessage({
-      description: 'Library tab navigation: library selection: unpinned',
-      defaultMessage: 'Unpinned',
-      id: '9oA9gw',
-    }),
-    value: 'unpinned',
-  },
+const selectItems = computed(() => [
+  ...(anyPinned.value
+    ? [
+        {
+          title: intl.formatMessage({
+            description: 'Library tab navigation: library selection: pinned',
+            defaultMessage: 'Pinned',
+            id: '1qIfds',
+          }),
+          value: 'pinned',
+        },
+      ]
+    : []),
   {
     title: intl.formatMessage({
       description: 'Library tab navigation: library selection: all',
@@ -83,7 +81,19 @@ const selectItems = [
     }),
     value: 'all',
   },
-]
+  ...(anyUnpinned.value
+    ? [
+        {
+          title: intl.formatMessage({
+            description: 'Library tab navigation: library selection: unpinned',
+            defaultMessage: 'Unpinned',
+            id: '9oA9gw',
+          }),
+          value: 'unpinned',
+        },
+      ]
+    : []),
+])
 
 function navigate(id: string) {
   void router.push({

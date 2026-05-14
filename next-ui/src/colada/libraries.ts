@@ -48,12 +48,16 @@ export const useLibraries = defineQuery(() => {
   const pinned = computed(
     () => ordered.value?.filter((it) => !userLibraries.value?.[it.id]?.unpinned) || [],
   )
+  const anyPinned = computed(() => pinned.value.length > 0)
+  const anyUnpinned = computed(() => unpinned.value.length > 0)
 
   return {
     data,
     ordered,
     unpinned,
     pinned,
+    anyPinned,
+    anyUnpinned,
     refresh,
     refetch,
     ...rest,
