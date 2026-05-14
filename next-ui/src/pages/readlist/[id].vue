@@ -118,6 +118,16 @@
     </v-list>
   </TempDrawer>
 
+  <v-container
+    v-if="readList?.summary"
+    fluid
+  >
+    <v-row>
+      <v-col cols="12">{{ readList.summary }}</v-col></v-row
+    >
+    <v-divider class="mt-4" />
+  </v-container>
+
   <EmptyStateFilterNoResults
     v-if="totalElements === 0 && filterCount > 0"
     @reset="clearFilters()"
