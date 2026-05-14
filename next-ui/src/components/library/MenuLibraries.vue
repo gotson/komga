@@ -37,9 +37,9 @@ const appStore = useAppStore()
 const actions = [
   {
     title: intl.formatMessage({
-      description: 'Libraries menu: reorder',
-      defaultMessage: 'Reorder',
-      id: 'EcIbyl',
+      description: 'Libraries menu: reorder or pin',
+      defaultMessage: 'Reorder or pin',
+      id: 'zuhGGz',
     }),
     onClick: () => (appStore.reorderLibraries = true),
   },
