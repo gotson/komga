@@ -30,10 +30,11 @@ watchImmediate(libraryId, () => {
 const { anyPinned, anyUnpinned } = useLibraries()
 
 watch([libraryId, anyPinned, anyUnpinned], ([id, hasPinned, hasUnpinned]) => {
-  if (id === 'pinned' && !hasPinned)
-    void router.push({ name: '/libraries/[id]', params: { id: 'all' } })
-  if (id === 'unpinned' && !hasUnpinned)
-    void router.push({ name: '/libraries/[id]', params: { id: 'all' } })
+  if ((id === 'pinned' && !hasPinned) || (id === 'unpinned' && !hasUnpinned))
+    void router.replace({
+      params: { ...route.params, id: 'all' },
+      query: { ...route.query },
+    })
 })
 </script>
 
