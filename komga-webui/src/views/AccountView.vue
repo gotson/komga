@@ -30,6 +30,25 @@
       </v-col>
     </v-row>
 
+    <v-row align="center">
+      <v-col cols="12" md="8" lg="6" xl="4">
+        <span>{{ $t('account_settings.preload_max_size') }}</span>
+        <v-select
+          :items="preloadSizeOptions"
+          v-model="preloadMaxMb"
+          dense
+          filled
+          hide-details
+        />
+        <div class="text-caption text--secondary mt-2">
+          {{ $t('account_settings.preload_hint') }}
+        </div>
+        <div v-if="!$store.getters.meFileDownload" class="text-caption text--secondary mt-1">
+          {{ $t('account_settings.preload_requires_file_download') }}
+        </div>
+      </v-col>
+    </v-row>
+
     <password-change-dialog v-model="modalPasswordChange"
                             :user="me"
     />
@@ -54,6 +73,25 @@ export default Vue.extend({
   computed: {
     me(): UserDto {
       return this.$store.state.komgaUsers.me
+    },
+    preloadMaxMb: {
+      get(): number {
+        return this.$store.state.persistedState.webreader.wholeArchivePreloadMaxMb ?? 0
+      },
+      set(val: number): void {
+        this.$store.commit('setWebreaderPreloadMaxMb', val)
+      },
+    },
+    preloadSizeOptions(): { text: string, value: number }[] {
+      return [
+        {text: this.$t('account_settings.preload_disabled').toString(), value: 0},
+        {text: '10 MB', value: 10},
+        {text: '20 MB', value: 20},
+        {text: '50 MB', value: 50},
+        {text: '100 MB', value: 100},
+        {text: '200 MB', value: 200},
+        {text: '500 MB', value: 500},
+      ]
     },
   },
 })

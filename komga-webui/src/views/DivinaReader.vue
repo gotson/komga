@@ -250,18 +250,6 @@
               </v-list-item>
             </template>
 
-            <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.advanced') }}</v-subheader>
-            <v-list-item>
-              <settings-select
-                :items="preloadSizeOptions"
-                v-model="preloadMaxMb"
-                :label="$t('bookreader.settings.preload_max_size')"
-              />
-            </v-list-item>
-            <v-list-item v-if="!$store.getters.meFileDownload" class="text-caption text--secondary">
-              {{ $t('bookreader.settings.preload_requires_file_download') }}
-            </v-list-item>
-
           </v-list>
         </v-card-text>
       </v-card>
@@ -637,25 +625,6 @@ export default Vue.extend({
         }
       },
     },
-    preloadMaxMb: {
-      get: function (): number {
-        return this.$store.state.persistedState.webreader.wholeArchivePreloadMaxMb ?? 0
-      },
-      set: function (val: number): void {
-        this.$store.commit('setWebreaderPreloadMaxMb', val)
-      },
-    },
-    preloadSizeOptions(): { text: string, value: number }[] {
-      return [
-        {text: this.$t('bookreader.settings.preload_disabled').toString(), value: 0},
-        {text: '10 MB', value: 10},
-        {text: '20 MB', value: 20},
-        {text: '50 MB', value: 50},
-        {text: '100 MB', value: 100},
-        {text: '200 MB', value: 200},
-        {text: '500 MB', value: 500},
-      ]
-    },
     readingDirection: {
       get: function (): ReadingDirection {
         return this.settings.readingDirection
@@ -792,7 +761,7 @@ export default Vue.extend({
       this.preloader?.dispose()
       this.preloader = null
 
-      const maxMb = this.preloadMaxMb
+      const maxMb = this.$store.state.persistedState.webreader.wholeArchivePreloadMaxMb ?? 0
       if (maxMb <= 0) return
       if (!this.$store.getters.meFileDownload) return
       if (this.book.media.mediaType !== 'application/zip') return
