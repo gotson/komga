@@ -250,6 +250,17 @@
               </v-list-item>
             </template>
 
+            <v-subheader class="font-weight-black text-h6">{{ $t('bookreader.settings.advanced') }}</v-subheader>
+            <v-list-item>
+              <settings-select
+                :items="preloadSizeOptions"
+                v-model="preloadMaxMb"
+                :label="$t('bookreader.settings.preload_max_size')"
+              />
+            </v-list-item>
+            <v-list-item v-if="!$store.getters.meFileDownload" class="text-caption text--secondary">
+              {{ $t('bookreader.settings.preload_requires_file_download') }}
+            </v-list-item>
 
           </v-list>
         </v-card-text>
@@ -324,6 +335,7 @@ import ShortcutHelpDialog from '@/components/dialogs/ShortcutHelpDialog.vue'
 import {getBookTitleCompact} from '@/functions/book-title'
 import {checkImageSupport, ImageFeature} from '@/functions/check-image'
 import {bookPageUrl} from '@/functions/urls'
+import {WholeArchivePreloader} from '@/functions/whole-archive-preload'
 import {getFileFromUrl} from '@/functions/file'
 import {resizeImageFile} from '@/functions/resize-image'
 import {ReadingDirection} from '@/types/enum-books'
@@ -380,6 +392,7 @@ export default Vue.extend({
       },
       pages: [] as PageDtoWithUrl[],
       page: undefined as unknown as number,
+      preloader: null as WholeArchivePreloader | null,
       supportedMediaTypes: ['image/jpeg', 'image/png', 'image/gif'],
       convertTo: 'jpeg',
       showExplorer: false,
@@ -471,6 +484,9 @@ export default Vue.extend({
   },
   destroyed() {
     document.documentElement.classList.remove('html-reader')
+
+    this.preloader?.dispose()
+    this.preloader = null
 
     this.$vuetify.rtl = (this.$t('common.locale_rtl') === 'true')
     window.removeEventListener('keydown', this.keyPressed)
@@ -621,6 +637,25 @@ export default Vue.extend({
         }
       },
     },
+    preloadMaxMb: {
+      get: function (): number {
+        return this.$store.state.persistedState.webreader.wholeArchivePreloadMaxMb ?? 0
+      },
+      set: function (val: number): void {
+        this.$store.commit('setWebreaderPreloadMaxMb', val)
+      },
+    },
+    preloadSizeOptions(): { text: string, value: number }[] {
+      return [
+        {text: this.$t('bookreader.settings.preload_disabled').toString(), value: 0},
+        {text: '10 MB', value: 10},
+        {text: '20 MB', value: 20},
+        {text: '50 MB', value: 50},
+        {text: '100 MB', value: 100},
+        {text: '200 MB', value: 200},
+        {text: '500 MB', value: 500},
+      ]
+    },
     readingDirection: {
       get: function (): ReadingDirection {
         return this.settings.readingDirection
@@ -707,6 +742,7 @@ export default Vue.extend({
       const pageDtos = (await this.$komgaBooks.getBookPages(bookId))
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
       this.pages = pageDtos as PageDtoWithUrl[]
+      this.maybeStartPreload()
 
       this.$debug('[setup]', `pages count:${this.pagesCount}`, 'read progress:', this.book.readProgress)
       if (page && page >= 1 && page <= this.pagesCount) {
@@ -751,6 +787,29 @@ export default Vue.extend({
       } else {
         return bookPageUrl(this.bookId, page.number)
       }
+    },
+    maybeStartPreload() {
+      this.preloader?.dispose()
+      this.preloader = null
+
+      const maxMb = this.preloadMaxMb
+      if (maxMb <= 0) return
+      if (!this.$store.getters.meFileDownload) return
+      if (this.book.media.mediaType !== 'application/zip') return
+      if ((this.book.media.mediaProfile || '').toUpperCase() !== 'DIVINA') return
+      if (this.book.sizeBytes / 1024 / 1024 > maxMb) return
+      if (this.pagesCount - this.page < 5) return
+
+      this.preloader = new WholeArchivePreloader({
+        bookId: this.bookId,
+        supportedMediaTypes: this.supportedMediaTypes,
+        pages: this.pages,
+        getCurrentPage: () => this.page,
+        applyUrl: (idx, url) => this.$set(this.pages[idx], 'url', url),
+        $debug: this.$debug,
+      })
+      // 让首屏 /pages 请求先打出去再发 /file
+      this.$nextTick(() => { this.preloader?.run() })
     },
     jumpToPrevious() {
       if (this.jumpToPreviousBook) {

@@ -126,6 +126,7 @@
     "set_current_page_as_readlist_poster": "Set page as poster for read list",
     "set_current_page_as_series_poster": "Set page as poster for series",
     "settings": {
+      "advanced": "Advanced",
       "always_fullscreen": "Always Full Screen",
       "animate_page_transitions": "Animate page transitions",
       "background_color": "Background color",
@@ -140,6 +141,9 @@
       "page_layout": "Page layout",
       "page_margin": "Page margin",
       "paged": "Paginated Reader Options",
+      "preload_disabled": "Disabled",
+      "preload_max_size": "Preload whole archive (max size)",
+      "preload_requires_file_download": "Preload requires File Download permission",
       "reading_mode": "Reading mode",
       "scale_type": "Scale type",
       "side_padding": "Side padding",

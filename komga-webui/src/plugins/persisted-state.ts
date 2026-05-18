@@ -20,6 +20,7 @@ export const persistedModule: Module<any, any> = {
       alwaysFullscreen: false,
       animations: true,
       background: '',
+      wholeArchivePreloadMaxMb: 0,
     },
     epubreader: {},
     browsingPageSize: undefined as unknown as number,
@@ -129,6 +130,9 @@ export const persistedModule: Module<any, any> = {
     },
     setWebreaderBackground(state, val) {
       state.webreader.background = val
+    },
+    setWebreaderPreloadMaxMb(state, val) {
+      state.webreader.wholeArchivePreloadMaxMb = val
     },
     setEpubreaderSettings(state, val) {
       state.epubreader = val
