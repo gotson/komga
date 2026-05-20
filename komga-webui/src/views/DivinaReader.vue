@@ -711,7 +711,6 @@ export default Vue.extend({
       const pageDtos = (await this.$komgaBooks.getBookPages(bookId))
       pageDtos.forEach((p: any) => p['url'] = this.getPageUrl(p))
       this.pages = pageDtos as PageDtoWithUrl[]
-      this.maybeStartPreload()
 
       this.$debug('[setup]', `pages count:${this.pagesCount}`, 'read progress:', this.book.readProgress)
       if (page && page >= 1 && page <= this.pagesCount) {
@@ -721,6 +720,7 @@ export default Vue.extend({
       } else {
         this.goToFirst()
       }
+      this.maybeStartPreload()
 
       // set non-persistent reading direction if exists in metadata
       if (this.series.metadata.readingDirection in ReadingDirection && this.readingDirection !== this.series.metadata.readingDirection) {

@@ -11,6 +11,22 @@ export interface WholeArchivePreloaderOpts {
   $debug?: (...args: any[]) => void
 }
 
+/**
+ * Returns 0-based page indices in decode priority order: current page first,
+ * then forward to the end, then wrapping to the start of the book.
+ *
+ * Defensive against non-finite currentPageOneBased (treated as page 1).
+ */
+export function computePreloadOrder(currentPageOneBased: number, pageCount: number): number[] {
+  if (pageCount <= 0) return []
+  const safeCurrent = Number.isFinite(currentPageOneBased) ? currentPageOneBased : 1
+  const cur = Math.min(Math.max(0, safeCurrent - 1), pageCount - 1)
+  const order: number[] = []
+  for (let i = cur; i < pageCount; i++) order.push(i)
+  for (let i = 0; i < cur; i++) order.push(i)
+  return order
+}
+
 export class WholeArchivePreloader {
   private controller = new AbortController()
   private blobUrls: string[] = []
@@ -34,10 +50,7 @@ export class WholeArchivePreloader {
       const zip = await JSZip.loadAsync(buf)
       if (this.aborted()) return
 
-      const cur = Math.max(0, getCurrentPage() - 1)
-      const order: number[] = []
-      for (let i = cur; i < pages.length; i++) order.push(i)
-      for (let i = 0; i < cur; i++) order.push(i)
+      const order = computePreloadOrder(getCurrentPage(), pages.length)
 
       for (const idx of order) {
         if (this.aborted()) return
