@@ -45,7 +45,7 @@ export default defineConfigWithVueTs(
       ],
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' },
+        { caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore', ignoreRestSiblings: true },
       ],
       'no-empty': ['error', { allowEmptyCatch: true }],
       'vue/multi-word-component-names': 'off',
