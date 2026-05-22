@@ -1,9 +1,33 @@
 import type { components } from '@/generated/openapi/komga'
 
-export function useBookReadProgress(book: components['schemas']['BookDto']) {
-  if (book.readProgress?.completed) return 100
-  if (book.readProgress?.completed === false) {
-    return (book.readProgress?.page / book.media.pagesCount) * 100
+export function useBookReadProgress(book: MaybeRefOrGetter<components['schemas']['BookDto']>) {
+  const isRead = computed(() => toValue(book).readProgress?.completed || false)
+  const inProgress = computed(() => (toValue(book).readProgress && !isRead.value) || false)
+
+  /**
+   * Progress percentage if the book is in progress, else undefined
+   */
+  const progressPercent = computed(() => {
+    const b = toValue(book)
+    if (b.readProgress?.completed === false) {
+      return (b.readProgress?.page / b.media.pagesCount) * 100
+    }
+  })
+
+  /**
+   * Pages left if the book is in progress, else undefined
+   */
+  const pagesLeft = computed(() => {
+    const b = toValue(book)
+    if (b.readProgress?.completed === false) {
+      return b.media.pagesCount - b.readProgress?.page
+    }
+  })
+
+  return {
+    isRead,
+    inProgress,
+    progressPercent,
+    pagesLeft,
   }
-  return 0
 }

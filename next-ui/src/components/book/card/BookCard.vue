@@ -5,13 +5,13 @@
     :lines="titleAndLines.lines"
     :poster-url="bookPosterUrl(book.id)"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
-    :progress-percent="isRead ? undefined : progressPercent"
+    :progress-percent="progressPercent"
     fab-icon="i-mdi:play"
     :quick-action-icon="quickActionIcon"
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
     :menu-props="menuProps"
-    v-bind="props"
+    v-bind="propsLeft"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
@@ -41,7 +41,7 @@ const intl = useIntl()
 
 const id = useId()
 
-const { book, showSeries, ...props } = defineProps<
+const props = defineProps<
   {
     book: components['schemas']['BookDto']
     showSeries: boolean
@@ -51,13 +51,17 @@ const emit = defineEmits<ItemCardEmits>()
 
 const bottomSheet = ref(false)
 
-const isRead = computed(() => book.readProgress?.completed)
-const progressPercent = computed(() => useBookReadProgress(book))
+const book = toRef(props, 'book')
+const propsLeft = computed(() => {
+  const { book, showSeries, ...rest } = props
+  return rest
+})
+const { isRead, progressPercent } = useBookReadProgress(book)
 
 const titleAndLines = computed<{ title: ItemCardTitle; lines: ItemCardLine[] }>(() => {
   let footer: ItemCardLine
 
-  if (book.deleted)
+  if (book.value.deleted)
     footer = {
       text: intl.formatMessage({
         description: 'Book card subtitle: unavailable',
@@ -66,17 +70,17 @@ const titleAndLines = computed<{ title: ItemCardTitle; lines: ItemCardLine[] }>(
       }),
       classes: 'text-error',
     }
-  else if (book.media.status === MediaStatus.ERROR.valueOf())
+  else if (book.value.media.status === MediaStatus.ERROR.valueOf())
     footer = {
       text: intl.formatMessage(mediaStatusMessages[MediaStatus.ERROR]),
       classes: 'text-error',
     }
-  else if (book.media.status === MediaStatus.UNSUPPORTED.valueOf())
+  else if (book.value.media.status === MediaStatus.UNSUPPORTED.valueOf())
     footer = {
       text: intl.formatMessage(mediaStatusMessages[MediaStatus.UNSUPPORTED]),
       classes: 'text-warning',
     }
-  else if (book.media.status === MediaStatus.UNKNOWN.valueOf())
+  else if (book.value.media.status === MediaStatus.UNKNOWN.valueOf())
     footer = {
       text: intl.formatMessage(mediaStatusMessages[MediaStatus.UNKNOWN]),
     }
@@ -91,25 +95,29 @@ other {# pages}
 }`,
           id: 'Ai7bBV',
         },
-        { count: book.media.pagesCount },
+        { count: book.value.media.pagesCount },
       ),
     }
 
-  if (book.oneshot) {
+  if (book.value.oneshot) {
     return {
-      title: { text: book.metadata.title, lines: 2, routerLink: `/book/${book.id}` },
+      title: { text: book.value.metadata.title, lines: 2, routerLink: `/book/${book.value.id}` },
       lines: [footer],
     }
   } else {
-    const numberedTitle = `${book.metadata.number} - ${book.metadata.title}`
-    if (showSeries)
+    const numberedTitle = `${book.value.metadata.number} - ${book.value.metadata.title}`
+    if (props.showSeries)
       return {
-        title: { text: book.seriesTitle, lines: 1, routerLink: `/series/${book.seriesId}` },
-        lines: [{ text: numberedTitle, lines: 1, routerLink: `/book/${book.id}` }, footer],
+        title: {
+          text: book.value.seriesTitle,
+          lines: 1,
+          routerLink: `/series/${book.value.seriesId}`,
+        },
+        lines: [{ text: numberedTitle, lines: 1, routerLink: `/book/${book.value.id}` }, footer],
       }
     else
       return {
-        title: { text: numberedTitle, lines: 2, routerLink: `/book/${book.id}` },
+        title: { text: numberedTitle, lines: 2, routerLink: `/book/${book.value.id}` },
         lines: [footer],
       }
   }
@@ -133,7 +141,7 @@ const {
 } = useEditBookMetadataDialog()
 
 function showEditMetadataDialog() {
-  prepareEditBookMetadataDialog(book)
+  prepareEditBookMetadataDialog(book.value)
   showEditBookMetadataDialog()
 }
 
