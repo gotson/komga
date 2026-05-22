@@ -3,6 +3,7 @@ import {
   defineMutation,
   defineQueryOptions,
   useMutation,
+  useQueryCache,
 } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
@@ -103,8 +104,9 @@ export const useAnalyzeBook = defineMutation(() =>
   }),
 )
 
-export const useMarkBookRead = defineMutation(() =>
-  useMutation({
+export const useMarkBookRead = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
     mutation: (bookId: string) =>
       komgaClient.PATCH('/api/v1/books/{bookId}/read-progress', {
         params: {
@@ -114,11 +116,15 @@ export const useMarkBookRead = defineMutation(() =>
         },
         body: { completed: true },
       }),
-  }),
-)
+    onSuccess: () => {
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_BOOKS.root })
+    },
+  })
+})
 
-export const useMarkBookUnread = defineMutation(() =>
-  useMutation({
+export const useMarkBookUnread = defineMutation(() => {
+  const queryCache = useQueryCache()
+  return useMutation({
     mutation: (bookId: string) =>
       komgaClient.DELETE('/api/v1/books/{bookId}/read-progress', {
         params: {
@@ -127,8 +133,11 @@ export const useMarkBookUnread = defineMutation(() =>
           },
         },
       }),
-  }),
-)
+    onSuccess: () => {
+      void queryCache.invalidateQueries({ key: QUERY_KEYS_BOOKS.root })
+    },
+  })
+})
 
 export const useDeleteBook = defineMutation(() =>
   useMutation({
