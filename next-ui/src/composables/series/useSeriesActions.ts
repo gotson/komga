@@ -19,9 +19,10 @@ import SeriesDeletionWarning from '@/components/series/DeletionWarning.vue'
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import { UserRoles } from '@/types/UserRoles'
 import { seriesFileUrl } from '@/api/files'
+import type { Action } from '@/types/action'
 
 export function useSeriesActions(
-  series: components['schemas']['SeriesDto'],
+  series: MaybeRefOrGetter<components['schemas']['SeriesDto']>,
   callback: (action: SeriesAction) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
@@ -30,7 +31,7 @@ export function useSeriesActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const actions = computed(() => [
+  const actions = computed<Action[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -63,7 +64,7 @@ export function useSeriesActions(
           },
         ]
       : []),
-    ...(series.booksReadCount === series.booksCount
+    ...(toValue(series).booksReadCount === toValue(series).booksCount
       ? []
       : [
           {
@@ -79,7 +80,7 @@ export function useSeriesActions(
             },
           },
         ]),
-    ...(series.booksUnreadCount === series.booksCount
+    ...(toValue(series).booksUnreadCount === toValue(series).booksCount
       ? []
       : [
           {
@@ -104,7 +105,7 @@ export function useSeriesActions(
               id: 'jn8Lib',
             }),
             action: SeriesAction.DOWNLOAD,
-            href: seriesFileUrl(series.id),
+            href: seriesFileUrl(toValue(series).id),
             onClick: () => {
               callback(SeriesAction.DOWNLOAD)
             },
@@ -113,7 +114,7 @@ export function useSeriesActions(
       : []),
   ])
 
-  const manageActions = computed(() => [
+  const manageActions = computed<Action[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -189,7 +190,7 @@ export function useSeriesActions(
     useEditSeriesMetadataDialog()
 
   function updateSeriesMetadata() {
-    showEditSeriesMetadataDialog(series)
+    showEditSeriesMetadataDialog(toValue(series))
   }
   //endregion
 
@@ -197,7 +198,7 @@ export function useSeriesActions(
   const { mutate: mutateRefreshMetadata } = useRefreshMetadataSeries()
 
   function refreshMetadata() {
-    mutateRefreshMetadata(series.id)
+    mutateRefreshMetadata(toValue(series).id)
   }
   //endregion
 
@@ -205,7 +206,7 @@ export function useSeriesActions(
   const { mutate: mutateAnalyze } = useAnalyzeSeries()
 
   function analyzeSeries() {
-    mutateAnalyze(series.id)
+    mutateAnalyze(toValue(series).id)
   }
   //endregion
 
@@ -215,7 +216,7 @@ export function useSeriesActions(
   const { mutate: mutateMarkRead } = useMarkSeriesRead()
 
   function markRead() {
-    mutateMarkRead(series.id)
+    mutateMarkRead(toValue(series).id)
   }
   //endregion
 
@@ -223,7 +224,7 @@ export function useSeriesActions(
   const { mutate: mutateMarkUnread } = useMarkSeriesUnread()
 
   function markUnread() {
-    mutateMarkUnread(series.id)
+    mutateMarkUnread(toValue(series).id)
   }
   //endregion
 
@@ -237,7 +238,7 @@ export function useSeriesActions(
         defaultMessage: 'Delete series files',
         id: 'Xxu514',
       }),
-      subtitle: series.metadata.title,
+      subtitle: toValue(series).metadata.title,
       maxWidth: 600,
       mode: 'checkbox',
       color: 'error',
@@ -254,7 +255,7 @@ export function useSeriesActions(
       props: {},
     }
     dialogConfirm.value.callback = () => {
-      mutateDelete(series.id)
+      mutateDelete(toValue(series).id)
         .then(() => {
           messagesStore.messages.push({
             text: intl.formatMessage(
@@ -264,7 +265,7 @@ export function useSeriesActions(
                 id: 'aSDxrt',
               },
               {
-                series: series.metadata.title,
+                series: toValue(series).metadata.title,
               },
             ),
           })

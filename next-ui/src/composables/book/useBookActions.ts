@@ -19,9 +19,10 @@ import {
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 import { UserRoles } from '@/types/UserRoles'
 import { bookFileUrl } from '@/api/files'
+import type { Action } from '@/types/action'
 
 export function useBookActions(
-  book: components['schemas']['BookDto'],
+  book: MaybeRefOrGetter<components['schemas']['BookDto']>,
   callback: (action: BookAction) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
@@ -30,8 +31,8 @@ export function useBookActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const actions = computed(() => [
-    ...(isAdmin.value && book.oneshot
+  const actions = computed<Action[]>(() => [
+    ...(isAdmin.value && toValue(book).oneshot
       ? [
           {
             title: intl.formatMessage({
@@ -63,7 +64,7 @@ export function useBookActions(
           },
         ]
       : []),
-    ...(!book.readProgress?.completed
+    ...(!toValue(book).readProgress?.completed
       ? [
           {
             title: intl.formatMessage({
@@ -79,7 +80,7 @@ export function useBookActions(
           },
         ]
       : []),
-    ...(!!book.readProgress
+    ...(!!toValue(book).readProgress
       ? [
           {
             title: intl.formatMessage({
@@ -104,7 +105,7 @@ export function useBookActions(
               id: 'R1n0du',
             }),
             action: BookAction.DOWNLOAD,
-            href: bookFileUrl(book.id),
+            href: bookFileUrl(toValue(book).id),
             onClick: () => {
               callback(BookAction.DOWNLOAD)
             },
@@ -113,7 +114,7 @@ export function useBookActions(
       : []),
   ])
 
-  const manageActions = computed(() => [
+  const manageActions = computed<Action[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -184,12 +185,19 @@ export function useBookActions(
       : []),
   ])
 
+  function getAction(action: BookAction) {
+    return (
+      actions.value.find((it) => it.action === action) ||
+      manageActions.value.find((it) => it.action === action)
+    )
+  }
+
   //region Update Series metadata
   const { prepareDialog: showEditBookMetadataDialog, activator: editMetadataActivator } =
     useEditBookMetadataDialog()
 
   function updateBookMetadata() {
-    showEditBookMetadataDialog(book)
+    showEditBookMetadataDialog(toValue(book))
   }
   //endregion
 
@@ -197,7 +205,7 @@ export function useBookActions(
   const { mutate: mutateRefreshMetadata } = useRefreshMetadataBook()
 
   function refreshMetadata() {
-    mutateRefreshMetadata(book.id)
+    mutateRefreshMetadata(toValue(book).id)
   }
   //endregion
 
@@ -205,7 +213,7 @@ export function useBookActions(
   const { mutate: mutateAnalyze } = useAnalyzeBook()
 
   function analyzeBook() {
-    mutateAnalyze(book.id)
+    mutateAnalyze(toValue(book).id)
   }
   //endregion
 
@@ -215,7 +223,7 @@ export function useBookActions(
   const { mutate: mutateMarkRead } = useMarkBookRead()
 
   function markRead() {
-    mutateMarkRead(book.id)
+    mutateMarkRead(toValue(book).id)
   }
   //endregion
 
@@ -223,7 +231,7 @@ export function useBookActions(
   const { mutate: mutateMarkUnread } = useMarkBookUnread()
 
   function markUnread() {
-    mutateMarkUnread(book.id)
+    mutateMarkUnread(toValue(book).id)
   }
   //endregion
 
@@ -237,7 +245,7 @@ export function useBookActions(
         defaultMessage: 'Delete book files',
         id: 'NhIart',
       }),
-      subtitle: book.metadata.title,
+      subtitle: toValue(book).metadata.title,
       maxWidth: 600,
       mode: 'checkbox',
       color: 'error',
@@ -254,7 +262,7 @@ export function useBookActions(
       props: {},
     }
     dialogConfirm.value.callback = () => {
-      mutateDelete(book.id)
+      mutateDelete(toValue(book).id)
         .then(() => {
           messagesStore.messages.push({
             text: intl.formatMessage(
@@ -264,7 +272,7 @@ export function useBookActions(
                 id: 'ccDES8',
               },
               {
-                book: book.metadata.title,
+                book: toValue(book).metadata.title,
               },
             ),
           })
@@ -283,5 +291,6 @@ export function useBookActions(
   return {
     actions: actions,
     manageActions: manageActions,
+    getAction,
   }
 }

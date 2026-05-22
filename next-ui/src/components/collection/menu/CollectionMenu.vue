@@ -14,12 +14,12 @@
 import type { components } from '@/generated/openapi/komga'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
 
-const { activator, collection } = defineProps<{
+const props = defineProps<{
   activator: string | Element
   collection: components['schemas']['CollectionDto']
 }>()
 
-const { manageActions } = useCollectionActions(collection)
+const { manageActions } = useCollectionActions(() => props.collection)
 </script>
 
 <script lang="ts"></script>

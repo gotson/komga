@@ -42,12 +42,12 @@
 import type { components } from '@/generated/openapi/komga'
 import { useSeriesActions } from '@/composables/series/useSeriesActions'
 
-const { activator, series } = defineProps<{
+const props = defineProps<{
   activator: string | Element
   series: components['schemas']['SeriesDto']
 }>()
 
-const { actions, manageActions } = useSeriesActions(series)
+const { actions, manageActions } = useSeriesActions(() => props.series)
 </script>
 
 <script lang="ts"></script>

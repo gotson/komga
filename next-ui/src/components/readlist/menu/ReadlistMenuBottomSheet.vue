@@ -27,14 +27,14 @@ import { useReadListActions } from '@/composables/readlist/useReadListActions'
 
 const isShown = defineModel<boolean>({ default: false })
 
-const { readList } = defineProps<{
+const props = defineProps<{
   readList: components['schemas']['ReadListDto']
 }>()
 
 function afterClick() {
   isShown.value = false
 }
-const { actions, manageActions } = useReadListActions(readList, afterClick)
+const { actions, manageActions } = useReadListActions(() => props.readList, afterClick)
 </script>
 
 <script lang="ts"></script>

@@ -42,12 +42,12 @@
 import type { components } from '@/generated/openapi/komga'
 import { useReadListActions } from '@/composables/readlist/useReadListActions'
 
-const { activator, readList } = defineProps<{
+const props = defineProps<{
   activator: string | Element
   readList: components['schemas']['ReadListDto']
 }>()
 
-const { actions, manageActions } = useReadListActions(readList)
+const { actions, manageActions } = useReadListActions(() => props.readList)
 </script>
 
 <script lang="ts"></script>

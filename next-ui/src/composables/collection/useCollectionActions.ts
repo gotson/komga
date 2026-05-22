@@ -11,9 +11,10 @@ import CollectionDeletionWarning from '@/components/collection/DeletionWarning.v
 import { CollectionAction } from '@/types/collection'
 import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
 import { useDeleteCollection } from '@/colada/collections'
+import type { Action } from '@/types/action'
 
 export function useCollectionActions(
-  collection: components['schemas']['CollectionDto'],
+  collection: MaybeRefOrGetter<components['schemas']['CollectionDto']>,
   callback: (action: CollectionAction) => void = () => {},
 ) {
   const { isAdmin } = useCurrentUser()
@@ -22,7 +23,7 @@ export function useCollectionActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const manageActions = computed(() => [
+  const manageActions = computed<Action[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -65,7 +66,7 @@ export function useCollectionActions(
     useEditCollectionDialog()
 
   function edit() {
-    showEditCollectionDialog(collection)
+    showEditCollectionDialog(toValue(collection))
   }
   //endregion
 
@@ -79,7 +80,7 @@ export function useCollectionActions(
         defaultMessage: 'Delete collection',
         id: 'k6BCzW',
       }),
-      subtitle: collection.name,
+      subtitle: toValue(collection).name,
       maxWidth: 600,
       mode: 'checkbox',
       color: 'error',
@@ -96,7 +97,7 @@ export function useCollectionActions(
       props: {},
     }
     dialogConfirm.value.callback = () => {
-      mutateDelete(collection.id)
+      mutateDelete(toValue(collection).id)
         .then(() => {
           messagesStore.messages.push({
             text: intl.formatMessage(
@@ -106,7 +107,7 @@ export function useCollectionActions(
                 id: 'HdsnFp',
               },
               {
-                collection: collection.name,
+                collection: toValue(collection).name,
               },
             ),
           })

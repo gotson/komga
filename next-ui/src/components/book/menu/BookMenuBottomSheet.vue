@@ -27,14 +27,14 @@ import { useBookActions } from '@/composables/book/useBookActions'
 
 const isShown = defineModel<boolean>({ default: false })
 
-const { book } = defineProps<{
+const props = defineProps<{
   book: components['schemas']['BookDto']
 }>()
 
 function afterClick() {
   isShown.value = false
 }
-const { actions, manageActions } = useBookActions(book, afterClick)
+const { actions, manageActions } = useBookActions(() => props.book, afterClick)
 </script>
 
 <script lang="ts"></script>

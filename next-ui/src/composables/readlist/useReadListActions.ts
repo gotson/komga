@@ -13,9 +13,10 @@ import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDia
 import { useDeleteReadList } from '@/colada/readlists'
 import { UserRoles } from '@/types/UserRoles'
 import { readListFileUrl } from '@/api/files'
+import type { Action } from '@/types/action'
 
 export function useReadListActions(
-  readList: components['schemas']['ReadListDto'],
+  readList: MaybeRefOrGetter<components['schemas']['ReadListDto']>,
   callback: (action: ReadListAction) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
@@ -24,7 +25,7 @@ export function useReadListActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const actions = computed(() => [
+  const actions = computed<Action[]>(() => [
     ...(hasRole(UserRoles.FILE_DOWNLOAD)
       ? [
           {
@@ -34,7 +35,7 @@ export function useReadListActions(
               id: 'piQuKd',
             }),
             action: ReadListAction.DOWNLOAD,
-            href: readListFileUrl(readList.id),
+            href: readListFileUrl(toValue(readList).id),
             onClick: () => {
               callback(ReadListAction.DOWNLOAD)
             },
@@ -43,7 +44,7 @@ export function useReadListActions(
       : []),
   ])
 
-  const manageActions = computed(() => [
+  const manageActions = computed<Action[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -85,7 +86,7 @@ export function useReadListActions(
   const { prepareDialog: showEditDialog, activator: editActivator } = useEditReadListDialog()
 
   function edit() {
-    showEditDialog(readList)
+    showEditDialog(toValue(readList))
   }
   //endregion
 
@@ -99,7 +100,7 @@ export function useReadListActions(
         defaultMessage: 'Delete read list',
         id: 'a5jT6x',
       }),
-      subtitle: readList.name,
+      subtitle: toValue(readList).name,
       maxWidth: 600,
       mode: 'checkbox',
       color: 'error',
@@ -116,7 +117,7 @@ export function useReadListActions(
       props: {},
     }
     dialogConfirm.value.callback = () => {
-      mutateDelete(readList.id)
+      mutateDelete(toValue(readList).id)
         .then(() => {
           messagesStore.messages.push({
             text: intl.formatMessage(
@@ -126,7 +127,7 @@ export function useReadListActions(
                 id: 'Oj3xqB',
               },
               {
-                readlist: readList.name,
+                readlist: toValue(readList).name,
               },
             ),
           })

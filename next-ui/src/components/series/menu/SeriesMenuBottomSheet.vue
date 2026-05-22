@@ -27,14 +27,14 @@ import { useSeriesActions } from '@/composables/series/useSeriesActions'
 
 const isShown = defineModel<boolean>({ default: false })
 
-const { series } = defineProps<{
+const props = defineProps<{
   series: components['schemas']['SeriesDto']
 }>()
 
 function afterClick() {
   isShown.value = false
 }
-const { actions, manageActions } = useSeriesActions(series, afterClick)
+const { actions, manageActions } = useSeriesActions(() => props.series, afterClick)
 </script>
 
 <script lang="ts"></script>

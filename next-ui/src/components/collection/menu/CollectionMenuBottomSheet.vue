@@ -19,14 +19,14 @@ import { useCollectionActions } from '@/composables/collection/useCollectionActi
 
 const isShown = defineModel<boolean>({ default: false })
 
-const { collection } = defineProps<{
+const props = defineProps<{
   collection: components['schemas']['CollectionDto']
 }>()
 
 function afterClick() {
   isShown.value = false
 }
-const { manageActions } = useCollectionActions(collection, afterClick)
+const { manageActions } = useCollectionActions(() => props.collection, afterClick)
 </script>
 
 <script lang="ts"></script>

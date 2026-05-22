@@ -42,12 +42,12 @@
 import type { components } from '@/generated/openapi/komga'
 import { useBookActions } from '@/composables/book/useBookActions'
 
-const { activator, book } = defineProps<{
+const props = defineProps<{
   activator: string | Element
   book: components['schemas']['BookDto']
 }>()
 
-const { actions, manageActions } = useBookActions(book)
+const { actions, manageActions } = useBookActions(() => props.book)
 </script>
 
 <script lang="ts"></script>
