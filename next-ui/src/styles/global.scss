@@ -7,8 +7,18 @@
     color: var(--v-anchor-base);
 }
 
-.link-underline:hover {
-    text-decoration: underline;
+// Mobile/Touch Devices: Underline is always visible
+@media (pointer: coarse) {
+    .link-underline {
+        text-decoration: underline;
+    }
+}
+
+// Desktop/Mouse Devices: Underline appears only on hover
+@media (pointer: fine) {
+    .link-underline:hover {
+        text-decoration: underline;
+    }
 }
 
 // This requires the following CSS variables to be set:
