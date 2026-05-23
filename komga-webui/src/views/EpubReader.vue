@@ -164,12 +164,15 @@
                  v-if="!verticalScroll"
     >
       <v-row>
-        <v-col cols="10" class="text-truncate">
+        <v-col cols="10" class="text-truncate" v-if="progressMarkers">
           {{ $t('epubreader.page_of', {page: progressionPage, count: progressionPageCount}) }}
-          ({{ progressionTitle || $t('epubreader.current_chapter') }})
+          ({{ progressionTitle || $t('epubreader.current_chapter')}})
+        </v-col>
+        <v-col cols="10" class="text-truncate" v-else-if="progressionTitle">
+          {{ progressionTitle || $t('epubreader.current_chapter') }}
         </v-col>
         <v-spacer/>
-        <v-col cols="auto">{{ progressionTotalPercentage }}</v-col>
+        <v-col cols="auto" v-if="progressMarkers">{{ progressionTotalPercentage }}</v-col>
       </v-row>
     </v-container>
 
@@ -249,6 +252,9 @@
               <v-btn-toggle mandatory v-model="columnCount" class="py-3">
                 <v-btn v-for="(c, i) in columnCounts" :key="i" :value="c.value">{{ c.text }}</v-btn>
               </v-btn-toggle>
+            </v-list-item>
+            <v-list-item>
+              <settings-switch v-model="progressMarkers" :label="$t('epubreader.settings.progress_markers')"/>
             </v-list-item>
 
             <v-list-item class="justify-center">
@@ -412,6 +418,7 @@ export default Vue.extend({
         alwaysFullscreen: false,
         navigationClick: true,
         navigationButtons: true,
+        progressMarkers: true,
       },
       navigationOptions: [
         {text: this.$t('epubreader.settings.navigation_options.buttons').toString(), value: 'button'},
@@ -615,6 +622,15 @@ export default Vue.extend({
         this.$store.commit('setWebreaderAlwaysFullscreen', alwaysFullscreen)
         if (alwaysFullscreen) this.enterFullscreen()
         else screenfull.isEnabled && screenfull.exit()
+      },
+    },
+    progressMarkers: {
+      get: function (): boolean {
+        return this.settings.progressMarkers
+      },
+      set: function (value: boolean): void {
+        this.settings.progressMarkers = value
+        this.$store.commit('setEpubreaderSettings', this.settings)
       },
     },
     navigationMode: {
