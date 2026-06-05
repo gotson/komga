@@ -8,6 +8,11 @@ export enum MediaStatus {
   OUTDATED = 'OUTDATED',
 }
 
+export function getMediaStatusFromString(value: string): MediaStatus | undefined {
+  if (Object.values(MediaStatus).includes(value as MediaStatus)) return value as MediaStatus
+  return undefined
+}
+
 export const mediaStatusMessages = defineMessages({
   [MediaStatus.UNKNOWN]: {
     description: 'Media status: unknown',

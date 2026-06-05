@@ -20,8 +20,9 @@ import type {
 
 declare module 'vue-router' {
   interface TypesConfig {
-    ParamParsers:
-      | never
+    _ParamParsers: {}
+    RouteNamedMap: import('vue-router/auto-routes').RouteNamedMap
+    _RouteFileInfoMap: import('vue-router/auto-routes')._RouteFileInfoMap
   }
 }
 
@@ -297,17 +298,23 @@ declare module 'vue-router/auto-routes' {
         | '/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/[...path].vue': {
       routes:
         | '/[...path]'
       views:
         | never
+      pathParamNames:
+        | 'path'
     }
     'src/pages/account/activity.vue': {
       routes:
         | '/account/activity'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/account/api-keys.vue': {
@@ -315,11 +322,15 @@ declare module 'vue-router/auto-routes' {
         | '/account/api-keys'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/account/details.vue': {
       routes:
         | '/account/details'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/account/ui.vue': {
@@ -327,17 +338,23 @@ declare module 'vue-router/auto-routes' {
         | '/account/ui'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/book/[id].vue': {
       routes:
         | '/book/[id]'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/claim.vue': {
       routes:
         | '/claim'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/collection/[id].vue': {
@@ -345,11 +362,15 @@ declare module 'vue-router/auto-routes' {
         | '/collection/[id]'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/error.vue': {
       routes:
         | '/error'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/history.vue': {
@@ -357,17 +378,23 @@ declare module 'vue-router/auto-routes' {
         | '/history'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/import/books.vue': {
       routes:
         | '/import/books'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/import/readlist.vue': {
       routes:
         | '/import/readlist'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/libraries/[id].vue': {
@@ -380,11 +407,15 @@ declare module 'vue-router/auto-routes' {
         | '/libraries/[id]/series'
       views:
         | 'default'
+      pathParamNames:
+        | 'id'
     }
     'src/pages/libraries/[id]/books.vue': {
       routes:
         | '/libraries/[id]/books'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/libraries/[id]/collections.vue': {
@@ -392,11 +423,15 @@ declare module 'vue-router/auto-routes' {
         | '/libraries/[id]/collections'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/libraries/[id]/readlists.vue': {
       routes:
         | '/libraries/[id]/readlists'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/libraries/[id]/recommended.vue': {
@@ -404,11 +439,15 @@ declare module 'vue-router/auto-routes' {
         | '/libraries/[id]/recommended'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/libraries/[id]/series.vue': {
       routes:
         | '/libraries/[id]/series'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/login.vue': {
@@ -416,11 +455,15 @@ declare module 'vue-router/auto-routes' {
         | '/login'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/media/analysis.vue': {
       routes:
         | '/media/analysis'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/media/duplicate-files.vue': {
@@ -428,11 +471,15 @@ declare module 'vue-router/auto-routes' {
         | '/media/duplicate-files'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/media/duplicate-pages/known.vue': {
       routes:
         | '/media/duplicate-pages/known'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/media/duplicate-pages/unknown.vue': {
@@ -440,11 +487,15 @@ declare module 'vue-router/auto-routes' {
         | '/media/duplicate-pages/unknown'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/media/missing-posters.vue': {
       routes:
         | '/media/missing-posters'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/readlist/[id].vue': {
@@ -452,17 +503,23 @@ declare module 'vue-router/auto-routes' {
         | '/readlist/[id]'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/series/[id].vue': {
       routes:
         | '/series/[id]'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/server/activity.vue': {
       routes:
         | '/server/activity'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/server/announcements.vue': {
@@ -470,11 +527,15 @@ declare module 'vue-router/auto-routes' {
         | '/server/announcements'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/server/metrics.vue': {
       routes:
         | '/server/metrics'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/server/settings.vue': {
@@ -482,11 +543,15 @@ declare module 'vue-router/auto-routes' {
         | '/server/settings'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/server/ui.vue': {
       routes:
         | '/server/ui'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/server/updates.vue': {
@@ -494,17 +559,23 @@ declare module 'vue-router/auto-routes' {
         | '/server/updates'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/server/users.vue': {
       routes:
         | '/server/users'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/startup.vue': {
       routes:
         | '/startup'
       views:
+        | never
+      pathParamNames:
         | never
     }
   }

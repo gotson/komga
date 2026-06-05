@@ -117,4 +117,14 @@ export const commonMessages = {
     defaultMessage: 'Sharing label',
     id: 'hGFogR',
   }),
+  showLess: defineMessage({
+    description: 'Expendable text: show less',
+    defaultMessage: 'Less',
+    id: 'ExWxE3',
+  }),
+  showMore: defineMessage({
+    description: 'Expendable text: show more',
+    defaultMessage: 'More',
+    id: 'P7WVCB',
+  }),
 }
