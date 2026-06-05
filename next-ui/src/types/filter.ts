@@ -56,6 +56,18 @@ export const SchemaSeriesStatus = v.pipe(
   v.picklist(['ENDED', 'ONGOING', 'ABANDONED', 'HIATUS']),
 )
 
+export const SchemaMediaStatus = v.pipe(
+  v.string(),
+  v.toUpperCase(),
+  v.picklist(['READY', 'UNKNOWN', 'ERROR', 'UNSUPPORTED', 'OUTDATED']),
+)
+
+export const SchemaMediaProfile = v.pipe(
+  v.string(),
+  v.toUpperCase(),
+  v.picklist(['DIVINA', 'EPUB', 'PDF']),
+)
+
 export const SchemaReadStatus = createSchemaIncludeExclude(
   v.pipe(v.string(), v.toUpperCase(), v.picklist(['UNREAD', 'IN_PROGRESS', 'READ'])),
 )
@@ -115,6 +127,16 @@ function createSchemaFilterSelectRange<T extends v.GenericSchema>(schema: T) {
  * Schema for Series Status
  */
 export const SchemaFilterSeriesStatus = createSchemaFilterArray(SchemaSeriesStatus)
+
+/**
+ * Schema for Media Status
+ */
+export const SchemaFilterMediaStatus = createSchemaFilterArray(SchemaMediaStatus)
+
+/**
+ * Schema for Media Profile
+ */
+export const SchemaFilterMediaProfile = createSchemaFilterArray(SchemaMediaProfile)
 
 /**
  * Schema for Read Status

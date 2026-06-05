@@ -5,7 +5,6 @@ import {
   SchemaAnyNone,
   SchemaFilterAuthors,
   SchemaFilterReadStatus,
-  type SchemaFilterSeriesStatus,
   SchemaFilterStrings,
   SchemaSeriesAgeRatings,
   SchemaSeriesReleaseYears,
@@ -26,22 +25,6 @@ export function valuesToConditions(value: string[] | undefined, key: string) {
   if (!value || value.length === 0) return null
   const list = value.map((it) => ({
     [key]: {
-      operator: 'is',
-      value: it,
-    },
-  }))
-
-  return {
-    anyOf: list,
-  }
-}
-
-export function schemaFilterSeriesStatusToConditions(
-  filter: InferOutput<typeof SchemaFilterSeriesStatus>,
-) {
-  if (filter.v.length === 0) return null
-  const list = filter.v.map((it) => ({
-    seriesStatus: {
       operator: 'is',
       value: it,
     },

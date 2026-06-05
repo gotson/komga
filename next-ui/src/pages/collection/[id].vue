@@ -236,7 +236,6 @@ import {
   schemaFilterIncludeExcludeToConditions,
   schemaFilterReadStatusToConditions,
   schemaFilterReleaseYearToConditions,
-  schemaFilterSeriesStatusToConditions,
   schemaFilterStringToConditions,
   valuesToConditions,
 } from '@/functions/filter'
@@ -353,7 +352,7 @@ const conds = computed(() => ({
     schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
     schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
     schemaFilterStringToConditions(filterLibrary.value, 'libraryId', false),
-    schemaFilterSeriesStatusToConditions(filterSeriesStatus.value),
+    valuesToConditions(filterSeriesStatus.value.v, 'seriesStatus'),
     schemaFilterReadStatusToConditions(filterReadStatus.value),
     schemaFilterStringToConditions(filterGenre.value, 'genre', true),
     schemaFilterStringToConditions(filterTag.value, 'tag', true),

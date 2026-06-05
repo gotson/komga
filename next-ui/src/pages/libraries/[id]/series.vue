@@ -235,7 +235,6 @@ import { useDisplay } from 'vuetify'
 import {
   schemaFilterAuthorsToConditions,
   schemaFilterStringToConditions,
-  schemaFilterSeriesStatusToConditions,
   schemaFilterReleaseYearToConditions,
   schemaFilterAgeRatingToConditions,
   schemaFilterReadStatusToConditions,
@@ -338,7 +337,7 @@ const conds = computed(() => ({
     schemaFilterIncludeExcludeToConditions(filterComplete.value, 'complete'),
     schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
     schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
-    schemaFilterSeriesStatusToConditions(filterSeriesStatus.value),
+    valuesToConditions(filterSeriesStatus.value.v, 'seriesStatus'),
     schemaFilterReadStatusToConditions(filterReadStatus.value),
     schemaFilterStringToConditions(filterGenre.value, 'genre', true),
     schemaFilterStringToConditions(filterTag.value, 'tag', true),

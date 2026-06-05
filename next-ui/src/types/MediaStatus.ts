@@ -1,9 +1,9 @@
 import { defineMessages } from 'vue-intl'
 
 export enum MediaStatus {
+  READY = 'READY',
   UNKNOWN = 'UNKNOWN',
   ERROR = 'ERROR',
-  READY = 'READY',
   UNSUPPORTED = 'UNSUPPORTED',
   OUTDATED = 'OUTDATED',
 }

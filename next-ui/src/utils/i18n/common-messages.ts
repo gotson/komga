@@ -77,6 +77,16 @@ export const commonMessages = {
     defaultMessage: 'Status',
     id: 'Pp3+1S',
   }),
+  filterPanelMediaStatus: defineMessage({
+    description: 'Filter panel: Media status',
+    defaultMessage: 'Media status',
+    id: 'fl2YLT',
+  }),
+  filterPanelMediaProfile: defineMessage({
+    description: 'Filter panel: Media profile',
+    defaultMessage: 'Media profile',
+    id: 'uY7N6Z',
+  }),
   filterPanelLibrary: defineMessage({
     description: 'Filter panel: Library',
     defaultMessage: 'Library',

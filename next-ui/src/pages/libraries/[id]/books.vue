@@ -64,6 +64,22 @@
         tile
       >
         <FilterExpansionPanel
+          :title="$formatMessage(commonMessages.filterPanelMediaProfile)"
+          :count="filterMediaProfile.v.length"
+          @clear="clearFilter(filterMediaProfile)"
+        >
+          <FilterByMediaProfile v-model="filterMediaProfile.v" />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          :title="$formatMessage(commonMessages.filterPanelMediaStatus)"
+          :count="filterMediaStatus.v.length"
+          @clear="clearFilter(filterMediaStatus)"
+        >
+          <FilterByMediaStatus v-model="filterMediaStatus.v" />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelTag)"
           :count="filterTag.v.length"
           @clear="clearFilter(filterTag)"
@@ -155,7 +171,13 @@ import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
-import { SchemaFilterReadStatus, SchemaFilterStrings, SchemaIncludeExclude } from '@/types/filter'
+import {
+  SchemaFilterMediaProfile,
+  SchemaFilterMediaStatus,
+  SchemaFilterReadStatus,
+  SchemaFilterStrings,
+  SchemaIncludeExclude,
+} from '@/types/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortBooks } from '@/types/sort'
@@ -191,6 +213,8 @@ const { page0, page1, pageCount } = usePagination()
 const selectionStore = useSelectionStore()
 
 function clearFilters() {
+  clearFilter(filterMediaStatus.value)
+  clearFilter(filterMediaProfile.value)
   clearFilter(filterReadStatus.value)
   clearFilter(filterTag.value)
   clearFilter(filterUnavailable.value)
@@ -203,6 +227,8 @@ const filterCount = computed(
     (!!filterUnavailable.value.i ? 1 : 0) +
     (!!filterOneShot.value.i ? 1 : 0) +
     filterReadStatus.value.v.length +
+    filterMediaStatus.value.v.length +
+    filterMediaProfile.value.v.length +
     filterTag.value.v.length +
     Object.entries(filterAuthors)
       .map(([, filter]) => filter.filter.v.length)
@@ -210,6 +236,8 @@ const filterCount = computed(
 )
 
 const { filterAuthors } = useFilterAuthors()
+const { data: filterMediaStatus } = useRouteQuerySchema('status', SchemaFilterMediaStatus)
+const { data: filterMediaProfile } = useRouteQuerySchema('profile', SchemaFilterMediaProfile)
 const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
 const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
 const { data: filterUnavailable } = useRouteQuerySchema('unavailable', SchemaIncludeExclude)
@@ -228,6 +256,8 @@ const conds = computed(() => ({
     schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
     schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
     schemaFilterReadStatusToConditions(filterReadStatus.value),
+    valuesToConditions(filterMediaStatus.value.v, 'mediaStatus'),
+    valuesToConditions(filterMediaProfile.value.v, 'mediaProfile'),
     schemaFilterStringToConditions(filterTag.value, 'tag', true),
     ...Object.entries(filterAuthors).map(([, filter]) =>
       schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
