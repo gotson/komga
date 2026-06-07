@@ -31,12 +31,20 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest
+import org.springframework.security.oauth2.client.endpoint.RestClientAuthorizationCodeTokenResponseClient
+import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher
+import org.gotson.komga.infrastructure.security.oauth2.LenientContentTypeInterceptor
+import org.springframework.http.converter.FormHttpMessageConverter
+import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter
+import org.springframework.web.client.RestClient
 
 @Configuration
 @EnableWebSecurity
@@ -131,6 +139,9 @@ class SecurityConfiguration(
         oauth2.userInfoEndpoint {
           it.userService(oauth2UserService)
           it.oidcUserService(oidcUserService)
+        }
+        oauth2.tokenEndpoint {
+          it.accessTokenResponseClient(accessTokenResponseClient())
         }
         oauth2.authenticationDetailsSource(userAgentWebAuthenticationDetailsSource)
         oauth2
@@ -260,5 +271,20 @@ class SecurityConfiguration(
   fun apiKeyAuthenticationProvider(): AuthenticationManager =
     ProviderManager(apiKeyAuthenticationProvider).apply {
       setAuthenticationEventPublisher(authenticationEventPublisher)
+    }
+
+  private fun accessTokenResponseClient(): OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> =
+    RestClientAuthorizationCodeTokenResponseClient().apply {
+      setRestClient(
+        RestClient.builder()
+          .requestInterceptor(LenientContentTypeInterceptor())
+          .messageConverters { converters ->
+            converters.clear()
+            converters.add(FormHttpMessageConverter())
+            converters.add(OAuth2AccessTokenResponseHttpMessageConverter())
+          }
+          .defaultStatusHandler(OAuth2ErrorResponseErrorHandler())
+          .build(),
+      )
     }
 }

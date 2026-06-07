@@ -9,6 +9,7 @@ import org.gotson.komga.infrastructure.configuration.KomgaProperties
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
+import org.springframework.web.client.RestTemplate
 
 private val logger = KotlinLogging.logger {}
 
@@ -28,8 +30,9 @@ class KomgaOAuth2UserServiceConfiguration(
 ) {
   @Bean
   fun oauth2UserService(): OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-    val defaultDelegate = DefaultOAuth2UserService()
-    val githubDelegate = GithubOAuth2UserService()
+    val restOperations = lenientRestTemplate()
+    val defaultDelegate = DefaultOAuth2UserService().apply { setRestOperations(restOperations) }
+    val githubDelegate = GithubOAuth2UserService().apply { setRestOperations(restOperations) }
 
     return OAuth2UserService { userRequest: OAuth2UserRequest ->
       val delegate =
@@ -54,7 +57,10 @@ class KomgaOAuth2UserServiceConfiguration(
 
   @Bean
   fun oidcUserService(): OAuth2UserService<OidcUserRequest, OidcUser> {
-    val delegate = OidcUserService()
+    val delegate =
+      OidcUserService().apply {
+        setOauth2UserService(DefaultOAuth2UserService().apply { setRestOperations(lenientRestTemplate()) })
+      }
     return OAuth2UserService { userRequest: OidcUserRequest ->
       val oidcUser = delegate.loadUser(userRequest)
 
@@ -76,5 +82,11 @@ class KomgaOAuth2UserServiceConfiguration(
       userLifecycle.createUser(KomgaUser(email, RandomStringUtils.secure().nextAlphanumeric(12)))
     } else {
       throw OAuth2AuthenticationException("ERR_1025")
+    }
+
+  private fun lenientRestTemplate(): RestTemplate =
+    RestTemplate().apply {
+      interceptors.add(LenientContentTypeInterceptor())
+      errorHandler = OAuth2ErrorResponseErrorHandler()
     }
 }
