@@ -1,15 +1,20 @@
 <template>
-  <div style="display: grid; grid-template-columns: max-content 1fr">
+  <div
+    style="display: grid; grid-template-columns: max-content 1fr"
+    class="align-baseline"
+  >
     <template
       v-for="(row, i) in rows"
       :key="i"
     >
-      <div class="pa-1 text-body-medium first-col">{{ row.header }}</div>
+      <div class="pa-1 text-body-small text-uppercase first-col">
+        {{ row.header }}
+      </div>
       <div class="pa-1">
         <div
           v-if="typeof row.data === 'string'"
           v-bind="row.dataProps"
-          class="text-body-medium"
+          class="text-body-small mb-1"
         >
           {{ row.data }}
         </div>
@@ -88,6 +93,6 @@ export type TableValue = {
 
 <style scoped>
 .first-col {
-  padding-right: clamp(4px, 4vw, 32px);
+  padding-right: clamp(4px, 4vw, 50px);
 }
 </style>
