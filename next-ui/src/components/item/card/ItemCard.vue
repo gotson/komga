@@ -141,6 +141,7 @@
         v-if="title.routerLink"
         :to="title.routerLink"
         class="link-underline"
+        @click.stop
         >{{ title.text }}</RouterLink
       >
       <span v-else>{{ title.text }}</span>
@@ -164,6 +165,7 @@
           v-if="line.routerLink"
           :to="line.routerLink"
           class="link-underline"
+          @click.stop
           >{{ line.text }}</RouterLink
         >
         <span v-else>{{ line.text }}</span>
