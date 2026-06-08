@@ -6,7 +6,7 @@
     :poster-url="seriesPosterUrl(series.id)"
     :top-right="unreadCount"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
-    fab-icon="i-mdi:play"
+    :fab-icon="series.deleted ? undefined : 'i-mdi:play'"
     :quick-action-icon="quickActionIcon"
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
@@ -16,6 +16,7 @@
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
+    @click-fab="openReader"
   />
   <SeriesMenu
     :series="series"
@@ -35,6 +36,7 @@ import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '
 import { useCurrentUser } from '@/colada/users'
 
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
+import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
 
 const intl = useIntl()
 
@@ -125,4 +127,9 @@ function showEditMetadataDialog() {
 }
 
 const menuActivator = ref()
+
+const { readFirstBook } = useSeriesBooks(series.id)
+function openReader() {
+  void readFirstBook()
+}
 </script>

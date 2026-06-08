@@ -6,7 +6,7 @@
     :poster-url="bookPosterUrl(book.id)"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     :progress-percent="progressPercent"
-    fab-icon="i-mdi:play"
+    :fab-icon="canRead ? 'i-mdi:play' : undefined"
     :quick-action-icon="quickActionIcon"
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
@@ -16,6 +16,7 @@
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
+    @click-fab="openReader"
   />
   <BookMenu
     :book="book"
@@ -37,6 +38,8 @@ import { MediaStatus, mediaStatusMessages } from '@/types/MediaStatus'
 
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
+import { useBook } from '@/composables/book/useBook'
+import { bookReaderUrl } from '@/api/links'
 
 const intl = useIntl()
 
@@ -125,6 +128,7 @@ other {# pages}
 })
 
 const { isAdmin } = useCurrentUser()
+const { canRead, isEpubReader } = useBook(book)
 const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))
 const quickActionProps = computed(() => ({
   id: `${id}_quick`,
@@ -147,4 +151,8 @@ function showEditMetadataDialog() {
 }
 
 const menuActivator = ref()
+
+function openReader() {
+  window.open(bookReaderUrl(book.value.id, isEpubReader.value), '_blank')
+}
 </script>
