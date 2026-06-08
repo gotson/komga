@@ -267,7 +267,10 @@ const route = useRoute('/collection/[id]')
 const router = useRouter()
 const collectionId = computed(() => route.params.id)
 
-provide(filterKeys.context, { collection_id: [collectionId.value] })
+provide(
+  filterKeys.context,
+  computed(() => ({ collection_id: [collectionId.value] })),
+)
 
 const display = useDisplay()
 const appStore = useAppStore()

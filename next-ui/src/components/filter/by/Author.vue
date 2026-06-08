@@ -39,23 +39,23 @@ const { role } = defineProps<{
 
 const filterContext = inject(filterKeys.context, {})
 
-const apiQuery = {
-  ...filterContext,
+const apiQuery = computed(() => ({
+  ...toValue(filterContext),
   role: role,
-}
+}))
 
 const { data: searchItems, isLoading: searchLoading } = useQuery(() => ({
   ...authorsQuery({
     pageRequest: PageRequest.Unpaged(),
     search: searchDebounced.value,
-    ...apiQuery,
+    ...apiQuery.value,
   }),
   enabled: !!searchDebounced.value,
 }))
 const searchResults = computed(() => searchItems.value?.content?.map((it) => toItemType(it.name)))
 
 const { data: infiniteData, loadNextPage } = useInfiniteQuery(() =>
-  authorsNamesQueryInfinite(apiQuery),
+  authorsNamesQueryInfinite(apiQuery.value),
 )
 const infiniteItems = computed(() => {
   const itemTypes = (infiniteData.value?.pages.flatMap((it) => it?.content ?? []) ?? []).map((it) =>

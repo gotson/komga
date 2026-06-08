@@ -14,9 +14,12 @@ import { useLibraries } from '@/colada/libraries'
 const route = useRoute('/libraries/[id]')
 const router = useRouter()
 const libraryId = computed(() => route.params.id)
-const { libraries } = useGetLibrariesById(libraryId)
+const { libraryIds } = useGetLibrariesById(libraryId)
 
-provide(filterKeys.context, { library_id: libraries.value?.map((it) => it.id) })
+provide(
+  filterKeys.context,
+  computed(() => ({ library_id: libraryIds.value })),
+)
 
 //TODO: for now we always redirect to 'recommended', this should be persisted per libraryId
 watchImmediate(libraryId, () => {

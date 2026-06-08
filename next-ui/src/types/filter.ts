@@ -1,5 +1,6 @@
 import * as v from 'valibot'
 import { defineMessage, type MessageDescriptor } from 'vue-intl'
+import type { MaybeRefOrGetter } from 'vue'
 
 export const filterMessages: Record<string, MessageDescriptor> = {
   any: defineMessage({
@@ -15,12 +16,14 @@ export const filterMessages: Record<string, MessageDescriptor> = {
 }
 
 export const filterKeys = {
-  context: Symbol() as InjectionKey<{
-    library_id?: string[]
-    collection_id?: string[]
-    series_id?: string[]
-    readlist_id?: string[]
-  }>,
+  context: Symbol() as InjectionKey<
+    MaybeRefOrGetter<{
+      library_id?: string[]
+      collection_id?: string[]
+      series_id?: string[]
+      readlist_id?: string[]
+    }>
+  >,
 }
 
 export type AnyAll = 'anyOf' | 'allOf'

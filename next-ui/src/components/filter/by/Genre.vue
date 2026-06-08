@@ -35,21 +35,23 @@ const searchDebounced = refDebounced(search, 500)
 
 const filterContext = inject(filterKeys.context, {})
 
-const apiQuery = {
-  ...filterContext,
-}
+const apiQuery = computed(() => ({
+  ...toValue(filterContext),
+}))
 
 const { data: searchItems, isLoading: searchLoading } = useQuery(() => ({
   ...genresQuery({
     pageRequest: PageRequest.Unpaged(),
     search: searchDebounced.value,
-    ...apiQuery,
+    ...apiQuery.value,
   }),
   enabled: !!searchDebounced.value,
 }))
 const searchResults = computed(() => searchItems.value?.content?.map((it) => toItemType(it)))
 
-const { data: infiniteData, loadNextPage } = useInfiniteQuery(() => genresQueryInfinite(apiQuery))
+const { data: infiniteData, loadNextPage } = useInfiniteQuery(() =>
+  genresQueryInfinite(apiQuery.value),
+)
 const infiniteItems = computed(() => {
   const itemTypes = (infiniteData.value?.pages.flatMap((it) => it?.content ?? []) ?? []).map((it) =>
     toItemType(it),

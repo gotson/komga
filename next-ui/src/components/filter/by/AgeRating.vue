@@ -38,14 +38,14 @@ const model = defineModel<AgeRatings>({ required: true })
 
 const filterContext = inject(filterKeys.context, {})
 
-const apiQuery = {
-  ...filterContext,
-}
+const apiQuery = computed(() => ({
+  ...toValue(filterContext),
+}))
 
 const { data: items } = useQuery(() => ({
   ...ageRatingsQuery({
     pageRequest: PageRequest.Unpaged(),
-    ...apiQuery,
+    ...apiQuery.value,
   }),
 }))
 const disabled = computed(() => (items.value?.totalElements || 0) === 0)

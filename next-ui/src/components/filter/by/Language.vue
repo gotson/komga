@@ -32,14 +32,14 @@ const search = ref()
 
 const filterContext = inject(filterKeys.context, {})
 
-const apiQuery = {
-  ...filterContext,
-}
+const apiQuery = computed(() => ({
+  ...toValue(filterContext),
+}))
 
 const { data: items } = useQuery(() => ({
   ...languagesQuery({
     pageRequest: PageRequest.Unpaged(),
-    ...apiQuery,
+    ...apiQuery.value,
   }),
 }))
 const searchResults = computed(() =>

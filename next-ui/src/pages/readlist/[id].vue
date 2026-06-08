@@ -196,7 +196,10 @@ const route = useRoute('/readlist/[id]')
 const router = useRouter()
 const readListId = computed(() => route.params.id)
 
-provide(filterKeys.context, { readlist_id: [readListId.value] })
+provide(
+  filterKeys.context,
+  computed(() => ({ readlist_id: [readListId.value] })),
+)
 
 const display = useDisplay()
 const appStore = useAppStore()

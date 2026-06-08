@@ -39,22 +39,24 @@ const { include = 'BOTH' } = defineProps<{
 
 const filterContext = inject(filterKeys.context, {})
 
-const apiQuery = {
-  ...filterContext,
+const apiQuery = computed(() => ({
+  ...toValue(filterContext),
   include: include,
-}
+}))
 
 const { data: searchItems, isLoading: searchLoading } = useQuery(() => ({
   ...tagsQuery({
     pageRequest: PageRequest.Unpaged(),
     search: searchDebounced.value,
-    ...apiQuery,
+    ...apiQuery.value,
   }),
   enabled: !!searchDebounced.value,
 }))
 const searchResults = computed(() => searchItems.value?.content?.map((it) => toItemType(it)))
 
-const { data: infiniteData, loadNextPage } = useInfiniteQuery(() => tagsQueryInfinite(apiQuery))
+const { data: infiniteData, loadNextPage } = useInfiniteQuery(() =>
+  tagsQueryInfinite(apiQuery.value),
+)
 const infiniteItems = computed(() => {
   const itemTypes = (infiniteData.value?.pages.flatMap((it) => it?.content ?? []) ?? []).map((it) =>
     toItemType(it),
