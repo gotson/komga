@@ -774,7 +774,7 @@ class ReferentialDao(
 
     val restrictionCondition = ContentRestrictionsSearchHelper(context.restrictions).toCondition()
 
-    val seriesIdRequired = filterBy?.type in listOf(FilterByEntity.SERIES, FilterByEntity.COLLECTION, FilterByEntity.LIBRARY) || restrictionCondition.second == RequiredJoin.SeriesMetadata || !context.libraryIds.isNullOrEmpty()
+    val seriesIdRequired = filterBy?.type in listOf(FilterByEntity.SERIES, FilterByEntity.COLLECTION, FilterByEntity.LIBRARY) || restrictionCondition.second.contains(RequiredJoin.SeriesMetadata) || !context.libraryIds.isNullOrEmpty()
     val bookIdRequired = filterBy?.type == FilterByEntity.READLIST
     val effectiveSeriesIdField = seriesIdField ?: b.SERIES_ID
     val effectiveBookIdField = bookIdField ?: b.ID

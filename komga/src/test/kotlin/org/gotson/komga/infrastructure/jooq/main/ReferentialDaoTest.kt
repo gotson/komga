@@ -18,18 +18,14 @@ import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.BookMetadataRepository
-import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
-import org.gotson.komga.domain.persistence.SeriesRepository
-import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -44,11 +40,8 @@ import java.time.LocalDate
 class ReferentialDaoTest(
   @Autowired private val referentialDao: ReferentialDao,
   @Autowired private val userRepository: KomgaUserRepository,
-  @Autowired private val bookRepository: BookRepository,
-  @Autowired private val seriesRepository: SeriesRepository,
   @Autowired private val seriesMetadataLifecycle: SeriesMetadataLifecycle,
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
-  @Autowired private val bookLifecycle: BookLifecycle,
   @Autowired private val userLifecycle: KomgaUserLifecycle,
   @Autowired private val seriesLifecycle: SeriesLifecycle,
   @Autowired private val libraryRepository: LibraryRepository,
@@ -148,12 +141,6 @@ class ReferentialDaoTest(
   @BeforeEach
   fun resetMocks() {
     every { mockEventPublisher.publishEvent(any()) } just Runs
-  }
-
-  @AfterEach
-  fun deleteBooks() {
-    bookLifecycle.deleteMany(bookRepository.findAll())
-    assertThat(bookRepository.count()).isEqualTo(0)
   }
 
   @AfterAll
