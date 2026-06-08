@@ -259,6 +259,7 @@ import SimpleDataTable, { type TableRow } from '@/components/SimpleDataTable.vue
 import { authorRoles } from '@/types/referential'
 import { getFileSize } from '@/utils/utils'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
+import { createOrderCompareFn } from '@/functions/sort'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -277,14 +278,14 @@ const tableRows = computed(() => {
   const rows: TableRow[] = []
 
   if (props.book.metadata.authors.length > 0)
-    Object.entries(Object.groupBy(props.book.metadata.authors, (it) => it.role)).forEach(
-      ([role, creator]) => {
+    Object.entries(Object.groupBy(props.book.metadata.authors, (it) => it.role))
+      .toSorted(createOrderCompareFn(Object.keys(authorRoles), ([role]) => role))
+      .forEach(([role, creator]) => {
         rows.push({
           header: authorRoles?.[role] ? intl.formatMessage(authorRoles?.[role]) : role,
           data: creator!.map((it) => ({ text: it.name })),
         })
-      },
-    )
+      })
 
   if (props.book.metadata.tags.length > 0)
     rows.push({
