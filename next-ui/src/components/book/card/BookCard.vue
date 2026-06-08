@@ -11,6 +11,7 @@
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
     :menu-props="menuProps"
+    :card-to="`/book/${book.id}`"
     v-bind="propsLeft"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"

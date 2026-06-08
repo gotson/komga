@@ -8,6 +8,7 @@
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
     :menu-props="menuProps"
+    :card-to="`/readlist/${readList.id}`"
     v-bind="props"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"

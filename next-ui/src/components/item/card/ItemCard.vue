@@ -2,6 +2,8 @@
   <v-card
     v-on-long-press.prevent="onCardLongPress"
     :width="width"
+    :link="!!cardTo"
+    @click="onCardClick"
   >
     <v-hover
       v-slot="{ props }"
@@ -11,9 +13,7 @@
       <div
         :class="['position-relative', { 'cursor-pointer': isPreSelect || selected }]"
         v-bind="props"
-        @click="
-          (event: Event) => (isPreSelect || selected ? emit('selection', !selected, event) : {})
-        "
+        @click="(event: Event) => (isPreSelect || selected ? onOverlayClick(event) : {})"
       >
         <v-img
           :cover="stretchPoster"
@@ -177,8 +177,10 @@ import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '
 import { vOnLongPress } from '@vueuse/components'
 import { usePrimaryInput } from '@/composables/device'
 import { reactiveOmit, reactivePick } from '@vueuse/core'
+import type { RouteLocation } from 'vue-router'
 
 const { isTouchPrimary } = usePrimaryInput()
+const router = useRouter()
 
 function onCardLongPress() {
   if (isTouchPrimary.value) emit('cardLongPress')
@@ -194,6 +196,7 @@ const {
   quickActionIcon,
   quickActionProps = {},
   menuIcon,
+  cardTo,
 } = defineProps<
   ItemCardProps & {
     /**
@@ -237,6 +240,7 @@ const {
      */
     menuProps?: object
     progressPercent?: number
+    cardTo?: RouteLocation | string
   }
 >()
 
@@ -271,6 +275,15 @@ const hideMenu = computed(() => selected || isPreSelect.value || isTouchPrimary.
 // we use an underlay with the same positioning, but a negative z-index, and we map the `id` to the underlay
 const quickActionPropsOverlay = reactiveOmit(reactive(quickActionProps), 'id')
 const quickActionPropsUnderlay = reactivePick(reactive(quickActionProps), 'id')
+
+function onOverlayClick(event: Event) {
+  emit('selection', !selected, event)
+  event.stopPropagation()
+}
+
+function onCardClick() {
+  if (cardTo) void router.push(cardTo)
+}
 </script>
 
 <style lang="scss">
