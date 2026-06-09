@@ -27,11 +27,38 @@
     </template>
   </v-data-iterator>
 
-  <v-pagination
-    v-if="appStore.isBrowsingPaged"
-    v-model="page1"
-    :length="pageCount"
-  />
+  <v-container v-if="appStore.isBrowsingPaged && pageCount > 1">
+    <v-row class="align-center justify-center">
+      <v-col
+        cols="12"
+        sm="9"
+      >
+        <v-pagination
+          v-model="page1"
+          :length="pageCount"
+        />
+      </v-col>
+      <v-col
+        cols="12"
+        sm="3"
+      >
+        <AutocompleteMandatory
+          :label="
+            $formatMessage({
+              description: 'Pagination jump: label',
+              defaultMessage: 'Jump to',
+              id: '+opDqu',
+            })
+          "
+          placeholder="..."
+          persistent-placeholder
+          :items="jumpOptions"
+          class="mx-auto mx-sm-0"
+          @selected="page1 = $event"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
 
   <div
     v-if="appStore.isBrowsingScroll && hasNextPage"
@@ -65,4 +92,6 @@ const emit = defineEmits<{
 
 const selectionStore = useSelectionStore()
 const { itemsPerPage } = useItemsPerPage(appStore.browsingPageSize)
+
+const jumpOptions = computed(() => Array.from({ length: pageCount }).map((_, i) => i + 1))
 </script>
