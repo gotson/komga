@@ -256,7 +256,7 @@ import { useBook } from '@/composables/book/useBook'
 import { MediaStatus } from '@/types/MediaStatus'
 import { useDisplay } from 'vuetify'
 import SimpleDataTable, { type TableRow } from '@/components/SimpleDataTable.vue'
-import { authorRoles } from '@/types/referential'
+import { creatorRolesMessages } from '@/types/referential'
 import { getFileSize } from '@/utils/utils'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { createOrderCompareFn } from '@/functions/sort'
@@ -279,10 +279,12 @@ const tableRows = computed(() => {
 
   if (props.book.metadata.authors.length > 0)
     Object.entries(Object.groupBy(props.book.metadata.authors, (it) => it.role))
-      .toSorted(createOrderCompareFn(Object.keys(authorRoles), ([role]) => role))
+      .toSorted(createOrderCompareFn(Object.keys(creatorRolesMessages), ([role]) => role))
       .forEach(([role, creator]) => {
         rows.push({
-          header: authorRoles?.[role] ? intl.formatMessage(authorRoles?.[role]) : role,
+          header: creatorRolesMessages?.[role]
+            ? intl.formatMessage(creatorRolesMessages?.[role])
+            : role,
           data: creator!.map((it) => ({ text: it.name })),
         })
       })

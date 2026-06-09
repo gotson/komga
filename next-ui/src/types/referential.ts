@@ -1,6 +1,11 @@
 import { defineMessage, type MessageDescriptor } from 'vue-intl'
 
-export const authorRoles: Record<string, MessageDescriptor> = {
+export const creatorRolesMessages: Record<string, MessageDescriptor> = {
+  anyrole: defineMessage({
+    description: 'Author filter: any role',
+    defaultMessage: 'All creators',
+    id: 'RmNasP',
+  }),
   writer: defineMessage({
     description: 'Author role: writer',
     defaultMessage: 'Writer',

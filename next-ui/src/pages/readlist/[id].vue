@@ -69,7 +69,7 @@
       >
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelLibrary)"
-          :count="filterLibrary.v.length"
+          :count="countFilter(filterLibrary)"
           @clear="clearFilter(filterLibrary)"
         >
           <FilterByLibrary v-model="filterLibrary.v" />
@@ -77,7 +77,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelTag)"
-          :count="filterTag.v.length"
+          :count="countFilter(filterTag)"
           @clear="clearFilter(filterTag)"
         >
           <FilterByTag
@@ -102,16 +102,18 @@
         tile
       >
         <FilterExpansionPanel
-          v-for="(filterAuthor, role) in filterAuthors"
+          v-for="(filterAuthor, role) in filterCreators"
           :key="role"
-          :title="filterAuthor.text"
-          :count="filterAuthor.filter.v.length"
-          @clear="clearFilter(filterAuthor.filter)"
+          :title="
+            creatorRolesMessages?.[role] ? $formatMessage(creatorRolesMessages?.[role]) : role
+          "
+          :count="countFilter(filterAuthor)"
+          @clear="filterCreatorsClear(role)"
         >
           <FilterByAuthor
-            v-model="filterAuthor.filter.v"
-            v-model:mode="filterAuthor.filter.m"
-            :role="filterAuthor.role"
+            v-model="filterAuthor.v"
+            v-model:mode="filterAuthor.m"
+            :role="role"
           />
         </FilterExpansionPanel>
       </v-expansion-panels>
@@ -170,6 +172,7 @@ import { useSelectionStore } from '@/stores/selection'
 import { PageRequest, type Sort } from '@/types/PageRequest'
 import {
   clearFilter,
+  countFilter,
   schemaFilterAuthorsToConditions,
   schemaFilterIncludeExcludeToConditions,
   schemaFilterReadStatusToConditions,
@@ -182,7 +185,7 @@ import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import ChipCount from '@/components/ChipCount.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
 import ReadlistMenuButton from '@/components/readlist/menu/ReadlistMenuButton.vue'
-import { useFilterAuthors } from '@/composables/filter'
+import { useFilterCreators } from '@/composables/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import {
   filterKeys,
@@ -191,6 +194,7 @@ import {
   SchemaIncludeExclude,
 } from '@/types/filter'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { creatorRolesMessages } from '@/types/referential'
 
 const route = useRoute('/readlist/[id]')
 const router = useRouter()
@@ -226,19 +230,17 @@ function clearFilters() {
   clearFilter(filterTag.value)
   clearFilter(filterUnavailable.value)
   clearFilter(filterOneShot.value)
-  Object.entries(filterAuthors).map(([, filter]) => clearFilter(filter.filter))
+  filterCreatorsClearAll()
 }
 
 const filterCount = computed(
   () =>
-    (!!filterUnavailable.value.i ? 1 : 0) +
-    (!!filterOneShot.value.i ? 1 : 0) +
-    filterReadStatus.value.v.length +
-    filterLibrary.value.v.length +
-    filterTag.value.v.length +
-    Object.entries(filterAuthors)
-      .map(([, filter]) => filter.filter.v.length)
-      .reduce((sum, item) => sum + item, 0),
+    countFilter(filterLibrary.value) +
+    countFilter(filterReadStatus.value) +
+    countFilter(filterTag.value) +
+    countFilter(filterUnavailable.value) +
+    countFilter(filterOneShot.value) +
+    filterCreatorsCount.value,
 )
 
 const sortActive = computed<Sort[]>(() => {
@@ -246,7 +248,12 @@ const sortActive = computed<Sort[]>(() => {
   else return [{ key: 'metadata.releaseDate', order: 'asc' }]
 })
 
-const { filterAuthors } = useFilterAuthors()
+const {
+  filter: filterCreators,
+  countAll: filterCreatorsCount,
+  clearAll: filterCreatorsClearAll,
+  clear: filterCreatorsClear,
+} = useFilterCreators()
 const { data: filterLibrary } = useRouteQuerySchema('library', SchemaFilterStrings)
 const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
 const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
@@ -261,8 +268,8 @@ const conds = computed(() => ({
     schemaFilterStringToConditions(filterLibrary.value, 'libraryId', false),
     schemaFilterReadStatusToConditions(filterReadStatus.value),
     schemaFilterStringToConditions(filterTag.value, 'tag', true),
-    ...Object.entries(filterAuthors).map(([, filter]) =>
-      schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
+    ...Object.entries(filterCreators.value).map(([role, filter]) =>
+      schemaFilterAuthorsToConditions(filter, role),
     ),
   ].filter(Boolean),
 }))

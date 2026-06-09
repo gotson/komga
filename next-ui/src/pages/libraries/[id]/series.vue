@@ -66,7 +66,7 @@
       >
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelSeriesStatus)"
-          :count="filterSeriesStatus.v.length"
+          :count="countFilter(filterSeriesStatus)"
           @clear="clearFilter(filterSeriesStatus)"
         >
           <FilterBySeriesStatus v-model="filterSeriesStatus.v" />
@@ -74,7 +74,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelGenre)"
-          :count="filterGenre.v.length"
+          :count="countFilter(filterGenre)"
           @clear="clearFilter(filterGenre)"
         >
           <FilterByGenre
@@ -85,7 +85,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelTag)"
-          :count="filterTag.v.length"
+          :count="countFilter(filterTag)"
           @clear="clearFilter(filterTag)"
         >
           <FilterByTag
@@ -96,7 +96,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelPublisher)"
-          :count="filterPublisher.v.length"
+          :count="countFilter(filterPublisher)"
           @clear="clearFilter(filterPublisher)"
         >
           <FilterByPublisher
@@ -107,7 +107,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelReleaseYear)"
-          :count="!!filterReleaseYear.is ? 1 : !!filterReleaseYear.min ? 1 : 0"
+          :count="countFilter(filterReleaseYear)"
           @clear="clearFilter(filterReleaseYear)"
         >
           <FilterByReleaseYear v-model="filterReleaseYear" />
@@ -115,7 +115,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelAgeRating)"
-          :count="!!filterAgeRating.is ? 1 : !!filterAgeRating.min ? 1 : 0"
+          :count="countFilter(filterAgeRating)"
           @clear="clearFilter(filterAgeRating)"
         >
           <FilterByAgeRating v-model="filterAgeRating" />
@@ -123,7 +123,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelLanguage)"
-          :count="filterLanguage.v.length"
+          :count="countFilter(filterLanguage)"
           @clear="clearFilter(filterLanguage)"
         >
           <FilterByLanguage
@@ -134,7 +134,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelSharingLabel)"
-          :count="filterSharingLabel.v.length"
+          :count="countFilter(filterSharingLabel)"
           @clear="clearFilter(filterSharingLabel)"
         >
           <FilterBySharingLabel
@@ -158,16 +158,18 @@
         tile
       >
         <FilterExpansionPanel
-          v-for="(filterAuthor, role) in filterAuthors"
+          v-for="(filterAuthor, role) in filterCreators"
           :key="role"
-          :title="filterAuthor.text"
-          :count="filterAuthor.filter.v.length"
-          @clear="clearFilter(filterAuthor.filter)"
+          :title="
+            creatorRolesMessages?.[role] ? $formatMessage(creatorRolesMessages?.[role]) : role
+          "
+          :count="countFilter(filterAuthor)"
+          @clear="filterCreatorsClear(role)"
         >
           <FilterByAuthor
-            v-model="filterAuthor.filter.v"
-            v-model:mode="filterAuthor.filter.m"
-            :role="filterAuthor.role"
+            v-model="filterAuthor.v"
+            v-model:mode="filterAuthor.m"
+            :role="role"
           />
         </FilterExpansionPanel>
       </v-expansion-panels>
@@ -241,6 +243,7 @@ import {
   schemaFilterIncludeExcludeToConditions,
   clearFilter,
   valuesToConditions,
+  countFilter,
 } from '@/functions/filter'
 import {
   SchemaFilterReadStatus,
@@ -258,8 +261,9 @@ import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
 import { usePresentationMode } from '@/composables/presentationMode'
 import { storeToRefs } from 'pinia'
-import { useFilterAuthors } from '@/composables/filter'
+import { useFilterCreators } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
+import { creatorRolesMessages } from '@/types/referential'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -289,29 +293,32 @@ function clearFilters() {
   clearFilter(filterOneShot.value)
   clearFilter(filterReleaseYear.value)
   clearFilter(filterAgeRating.value)
-  Object.entries(filterAuthors).map(([, filter]) => clearFilter(filter.filter))
+  filterCreatorsClearAll()
 }
 
 const filterCount = computed(
   () =>
-    (!!filterComplete.value.i ? 1 : 0) +
-    (!!filterUnavailable.value.i ? 1 : 0) +
-    (!!filterOneShot.value.i ? 1 : 0) +
-    filterReadStatus.value.v.length +
-    filterSeriesStatus.value.v.length +
-    filterGenre.value.v.length +
-    filterTag.value.v.length +
-    filterPublisher.value.v.length +
-    (!!filterReleaseYear.value.is ? 1 : !!filterReleaseYear.value.min ? 1 : 0) +
-    (!!filterAgeRating.value.is ? 1 : !!filterAgeRating.value.min ? 1 : 0) +
-    filterLanguage.value.v.length +
-    filterSharingLabel.value.v.length +
-    Object.entries(filterAuthors)
-      .map(([, filter]) => filter.filter.v.length)
-      .reduce((sum, item) => sum + item, 0),
+    countFilter(filterSeriesStatus.value) +
+    countFilter(filterReadStatus.value) +
+    countFilter(filterGenre.value) +
+    countFilter(filterTag.value) +
+    countFilter(filterPublisher.value) +
+    countFilter(filterSharingLabel.value) +
+    countFilter(filterLanguage.value) +
+    countFilter(filterReleaseYear.value) +
+    countFilter(filterAgeRating.value) +
+    countFilter(filterComplete.value) +
+    countFilter(filterUnavailable.value) +
+    countFilter(filterOneShot.value) +
+    filterCreatorsCount.value,
 )
 
-const { filterAuthors } = useFilterAuthors()
+const {
+  filter: filterCreators,
+  countAll: filterCreatorsCount,
+  clearAll: filterCreatorsClearAll,
+  clear: filterCreatorsClear,
+} = useFilterCreators()
 const { data: filterSeriesStatus } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
 const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
 const { data: filterGenre } = useRouteQuerySchema('genre', SchemaFilterStrings)
@@ -346,8 +353,8 @@ const conds = computed(() => ({
     schemaFilterStringToConditions(filterLanguage.value, 'language', false),
     schemaFilterReleaseYearToConditions(filterReleaseYear.value),
     schemaFilterAgeRatingToConditions(filterAgeRating.value),
-    ...Object.entries(filterAuthors).map(([, filter]) =>
-      schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
+    ...Object.entries(filterCreators.value).map(([role, filter]) =>
+      schemaFilterAuthorsToConditions(filter, role),
     ),
   ].filter(Boolean),
 }))

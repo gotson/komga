@@ -65,7 +65,7 @@
       >
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelMediaProfile)"
-          :count="filterMediaProfile.v.length"
+          :count="countFilter(filterMediaProfile)"
           @clear="clearFilter(filterMediaProfile)"
         >
           <FilterByMediaProfile v-model="filterMediaProfile.v" />
@@ -73,7 +73,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelMediaStatus)"
-          :count="filterMediaStatus.v.length"
+          :count="countFilter(filterMediaStatus)"
           @clear="clearFilter(filterMediaStatus)"
         >
           <FilterByMediaStatus v-model="filterMediaStatus.v" />
@@ -81,7 +81,7 @@
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelTag)"
-          :count="filterTag.v.length"
+          :count="countFilter(filterTag)"
           @clear="clearFilter(filterTag)"
         >
           <FilterByTag
@@ -106,16 +106,18 @@
         tile
       >
         <FilterExpansionPanel
-          v-for="(filterAuthor, role) in filterAuthors"
+          v-for="(filterAuthor, role) in filterCreators"
           :key="role"
-          :title="filterAuthor.text"
-          :count="filterAuthor.filter.v.length"
-          @clear="clearFilter(filterAuthor.filter)"
+          :title="
+            creatorRolesMessages?.[role] ? $formatMessage(creatorRolesMessages?.[role]) : role
+          "
+          :count="countFilter(filterAuthor)"
+          @clear="filterCreatorsClear(role)"
         >
           <FilterByAuthor
-            v-model="filterAuthor.filter.v"
-            v-model:mode="filterAuthor.filter.m"
-            :role="filterAuthor.role"
+            v-model="filterAuthor.v"
+            v-model:mode="filterAuthor.m"
+            :role="role"
           />
         </FilterExpansionPanel>
       </v-expansion-panels>
@@ -184,6 +186,7 @@ import { sortBooks } from '@/types/sort'
 import type { components } from '@/generated/openapi/komga'
 import {
   clearFilter,
+  countFilter,
   schemaFilterAuthorsToConditions,
   schemaFilterIncludeExcludeToConditions,
   schemaFilterReadStatusToConditions,
@@ -194,8 +197,9 @@ import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { PageRequest } from '@/types/PageRequest'
 import { bookListQuery, bookListQueryInfinite } from '@/colada/books'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useFilterAuthors } from '@/composables/filter'
+import { useFilterCreators } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
+import { creatorRolesMessages } from '@/types/referential'
 
 const route = useRoute('/libraries/[id]/books')
 const libraryId = route.params.id
@@ -219,23 +223,26 @@ function clearFilters() {
   clearFilter(filterTag.value)
   clearFilter(filterUnavailable.value)
   clearFilter(filterOneShot.value)
-  Object.entries(filterAuthors).map(([, filter]) => clearFilter(filter.filter))
+  filterCreatorsClearAll()
 }
 
 const filterCount = computed(
   () =>
-    (!!filterUnavailable.value.i ? 1 : 0) +
-    (!!filterOneShot.value.i ? 1 : 0) +
-    filterReadStatus.value.v.length +
-    filterMediaStatus.value.v.length +
-    filterMediaProfile.value.v.length +
-    filterTag.value.v.length +
-    Object.entries(filterAuthors)
-      .map(([, filter]) => filter.filter.v.length)
-      .reduce((sum, item) => sum + item, 0),
+    countFilter(filterMediaStatus.value) +
+    countFilter(filterMediaProfile.value) +
+    countFilter(filterReadStatus.value) +
+    countFilter(filterTag.value) +
+    countFilter(filterUnavailable.value) +
+    countFilter(filterOneShot.value) +
+    filterCreatorsCount.value,
 )
 
-const { filterAuthors } = useFilterAuthors()
+const {
+  filter: filterCreators,
+  countAll: filterCreatorsCount,
+  clearAll: filterCreatorsClearAll,
+  clear: filterCreatorsClear,
+} = useFilterCreators()
 const { data: filterMediaStatus } = useRouteQuerySchema('status', SchemaFilterMediaStatus)
 const { data: filterMediaProfile } = useRouteQuerySchema('profile', SchemaFilterMediaProfile)
 const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
@@ -259,8 +266,8 @@ const conds = computed(() => ({
     valuesToConditions(filterMediaStatus.value.v, 'mediaStatus'),
     valuesToConditions(filterMediaProfile.value.v, 'mediaProfile'),
     schemaFilterStringToConditions(filterTag.value, 'tag', true),
-    ...Object.entries(filterAuthors).map(([, filter]) =>
-      schemaFilterAuthorsToConditions(toValue(filter.filter), toValue(filter.role)),
+    ...Object.entries(filterCreators.value).map(([role, filter]) =>
+      schemaFilterAuthorsToConditions(filter, role),
     ),
   ].filter(Boolean),
 }))

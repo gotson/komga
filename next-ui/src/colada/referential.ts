@@ -44,6 +44,42 @@ export const authorsQuery = defineQueryOptions(
   },
 )
 
+export const authorsRolesQuery = defineQueryOptions(
+  ({
+    library_id,
+    collection_id,
+    series_id,
+    readlist_id,
+    pageRequest,
+  }: {
+    library_id?: string[]
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
+    pageRequest?: PageRequest
+  }) => {
+    const queryParams = {
+      library_id: library_id,
+      collection_id: collection_id,
+      series_id: series_id,
+      readlist_id: readlist_id,
+      ...pageRequest,
+    }
+    return {
+      key: ['authors', 'roles', queryParams],
+      query: () =>
+        komgaClient
+          .GET('/api/v2/authors/roles', {
+            params: {
+              query: queryParams,
+            },
+          })
+          // unwrap the openapi-fetch structure on success
+          .then((res) => res.data),
+    }
+  },
+)
+
 export const authorsNamesQueryInfinite = defineInfiniteQueryOptions(
   ({
     role,
@@ -66,7 +102,7 @@ export const authorsNamesQueryInfinite = defineInfiniteQueryOptions(
       readlist_id: readlist_id,
     }
     return {
-      key: ['authors', queryParams, { infinite: true }],
+      key: ['authors', 'names', queryParams, { infinite: true }],
       initialPageParam: new PageRequest(0, 50),
       query: ({ pageParam }) =>
         komgaClient

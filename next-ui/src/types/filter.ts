@@ -165,7 +165,11 @@ export const SchemaFilterStrings = createSchemaFilterAnyAll(SchemaString)
 /**
  * Schema for authors.
  */
-export const SchemaFilterAuthors = createSchemaFilterAnyAll(SchemaAuthor)
+export const SchemaFilterCreators = createSchemaFilterAnyAll(SchemaAuthor)
+export const SchemaFilterCreatorsRecord = v.optional(
+  v.record(v.string(), v.optional(SchemaFilterCreators, v.getDefaults(SchemaFilterCreators))),
+  {},
+)
 
 export const SchemaFilterAnyAll = createSchemaFilterAnyAll(v.unknown())
 export type FilterTypeAnyAll = v.InferOutput<typeof SchemaFilterAnyAll>
@@ -180,4 +184,8 @@ export type FilterTypeSelectRange = v.InferOutput<typeof SchemaFilterSelectRange
 
 export type FilterIncludeExclude = v.InferOutput<typeof SchemaIncludeExclude>
 
-export type FilterType = FilterTypeAnyAll | FilterTypeSimpleList
+export type FilterType =
+  | FilterTypeAnyAll
+  | FilterTypeSimpleList
+  | FilterIncludeExclude
+  | FilterTypeSelectRange

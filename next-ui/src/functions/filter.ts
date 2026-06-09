@@ -1,9 +1,8 @@
 import {
   type FilterIncludeExclude,
   type FilterType,
-  type FilterTypeSelectRange,
   SchemaAnyNone,
-  SchemaFilterAuthors,
+  SchemaFilterCreators,
   SchemaFilterReadStatus,
   SchemaFilterStrings,
   SchemaSeriesAgeRatings,
@@ -12,13 +11,25 @@ import {
 import type { InferOutput } from 'valibot'
 import * as v from 'valibot'
 
-export function clearFilter(filter: FilterType | FilterTypeSelectRange | FilterIncludeExclude) {
+export function clearFilter(filter: FilterType) {
   if ('v' in filter) filter.v = []
   if ('m' in filter) filter.m = 'anyOf'
   if ('is' in filter) filter.is = undefined
   if ('min' in filter) filter.min = undefined
   if ('max' in filter) filter.max = undefined
   if ('i' in filter) filter.i = undefined
+}
+
+export function countFilter(filter: FilterType): number {
+  if ('v' in filter) return filter.v.length
+  if (
+    ('is' in filter && !!filter.is) ||
+    ('min' in filter && !!filter.min) ||
+    ('max' in filter && !!filter.max)
+  )
+    return 1
+  if ('i' in filter && !!filter.i) return 1
+  return 0
 }
 
 export function valuesToConditions(value: string[] | undefined, key: string) {
@@ -36,7 +47,7 @@ export function valuesToConditions(value: string[] | undefined, key: string) {
 }
 
 export function schemaFilterAuthorsToConditions(
-  filter: InferOutput<typeof SchemaFilterAuthors>,
+  filter: InferOutput<typeof SchemaFilterCreators>,
   role?: string,
 ) {
   if (filter.v.length === 0) return null

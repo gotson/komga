@@ -8,8 +8,13 @@ import { syncRef } from '@vueuse/core'
  *
  * @param queryName the query parameter name
  * @param schema valibot schema to validate against
+ * @param updateQueryFn custom function to update the query param. The default function compares the JSON.stringify'ed value against the schema's defaults.
  */
-export function useRouteQuerySchema<T extends v.GenericSchema>(queryName: string, schema: T) {
+export function useRouteQuerySchema<T extends v.GenericSchema>(
+  queryName: string,
+  schema: T,
+  updateQueryFn?: (data: v.InferOutput<T>) => string | undefined,
+) {
   const queryString = useRouteQuery(queryName, '{}')
 
   const defaults = v.getDefaults(schema)
@@ -24,14 +29,18 @@ export function useRouteQuerySchema<T extends v.GenericSchema>(queryName: string
 
   const data = ref(getInitialValue(String(queryString.value)))
 
+  function defaultUpdateQueryFn(data: v.InferOutput<T>): string | undefined {
+    if (JSON.stringify(data) !== JSON.stringify(defaults)) return JSON.stringify(data)
+    return undefined
+  }
+
+  const updateFn = updateQueryFn ?? defaultUpdateQueryFn
+
   syncRef(data, queryString, {
     direction: 'ltr',
     deep: true,
     transform: {
-      ltr: (left) => {
-        if (JSON.stringify(left) !== JSON.stringify(defaults)) return JSON.stringify(left)
-        return undefined
-      },
+      ltr: (left) => updateFn(left),
     },
   })
 
