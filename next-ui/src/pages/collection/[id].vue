@@ -158,7 +158,7 @@
 
       <v-divider
         ><span class="text-body-medium text-medium-emphasis">{{
-          $formatMessage(commonMessages.filterPanelCreators)
+          $formatMessage(commonMessages.filterPanelContributors)
         }}</span></v-divider
       >
 
@@ -170,13 +170,15 @@
         tile
       >
         <FilterExpansionPanel
-          v-for="(filterAuthor, role) in filterCreators"
+          v-for="(filterAuthor, role) in filterContributors"
           :key="role"
           :title="
-            creatorRolesMessages?.[role] ? $formatMessage(creatorRolesMessages?.[role]) : role
+            contributorsRolesMessages?.[role]
+              ? $formatMessage(contributorsRolesMessages?.[role])
+              : role
           "
           :count="countFilter(filterAuthor)"
-          @clear="filterCreatorsClear(role)"
+          @clear="filterContributorsClear(role)"
         >
           <FilterByAuthor
             v-model="filterAuthor.v"
@@ -248,7 +250,7 @@ import { storeToRefs } from 'pinia'
 import { usePresentationMode } from '@/composables/presentationMode'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
-import { useFilterCreators } from '@/composables/filter'
+import { useFilterContributors } from '@/composables/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import {
   filterKeys,
@@ -265,7 +267,7 @@ import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
 import { PageRequest, type Sort } from '@/types/PageRequest'
 import { collectionDetailQuery } from '@/colada/collections'
 import CollectionMenuButton from '@/components/collection/menu/CollectionMenuButton.vue'
-import { creatorRolesMessages } from '@/types/referential'
+import { contributorsRolesMessages } from '@/types/referential'
 
 const route = useRoute('/collection/[id]')
 const router = useRouter()
@@ -309,7 +311,7 @@ function clearFilters() {
   clearFilter(filterOneShot.value)
   clearFilter(filterReleaseYear.value)
   clearFilter(filterAgeRating.value)
-  filterCreatorsClearAll()
+  filterContributorsClearAll()
 }
 
 const filterCount = computed(
@@ -327,15 +329,15 @@ const filterCount = computed(
     countFilter(filterComplete.value) +
     countFilter(filterUnavailable.value) +
     countFilter(filterOneShot.value) +
-    filterCreatorsCount.value,
+    filterContributorsCount.value,
 )
 
 const {
-  filter: filterCreators,
-  countAll: filterCreatorsCount,
-  clearAll: filterCreatorsClearAll,
-  clear: filterCreatorsClear,
-} = useFilterCreators()
+  filter: filterContributors,
+  countAll: filterContributorsCount,
+  clearAll: filterContributorsClearAll,
+  clear: filterContributorsClear,
+} = useFilterContributors()
 const { data: filterLibrary } = useRouteQuerySchema('library', SchemaFilterStrings)
 const { data: filterSeriesStatus } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
 const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
@@ -371,7 +373,7 @@ const conds = computed(() => ({
     schemaFilterStringToConditions(filterLanguage.value, 'language', false),
     schemaFilterReleaseYearToConditions(filterReleaseYear.value),
     schemaFilterAgeRatingToConditions(filterAgeRating.value),
-    ...Object.entries(filterCreators.value).map(([role, filter]) =>
+    ...Object.entries(filterContributors.value).map(([role, filter]) =>
       schemaFilterAuthorsToConditions(filter, role),
     ),
   ].filter(Boolean),

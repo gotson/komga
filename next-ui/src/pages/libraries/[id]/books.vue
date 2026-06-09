@@ -94,7 +94,7 @@
 
       <v-divider
         ><span class="text-body-medium text-medium-emphasis">{{
-          $formatMessage(commonMessages.filterPanelCreators)
+          $formatMessage(commonMessages.filterPanelContributors)
         }}</span></v-divider
       >
 
@@ -106,13 +106,15 @@
         tile
       >
         <FilterExpansionPanel
-          v-for="(filterAuthor, role) in filterCreators"
+          v-for="(filterAuthor, role) in filterContributors"
           :key="role"
           :title="
-            creatorRolesMessages?.[role] ? $formatMessage(creatorRolesMessages?.[role]) : role
+            contributorsRolesMessages?.[role]
+              ? $formatMessage(contributorsRolesMessages?.[role])
+              : role
           "
           :count="countFilter(filterAuthor)"
-          @clear="filterCreatorsClear(role)"
+          @clear="filterContributorsClear(role)"
         >
           <FilterByAuthor
             v-model="filterAuthor.v"
@@ -197,9 +199,9 @@ import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { PageRequest } from '@/types/PageRequest'
 import { bookListQuery, bookListQueryInfinite } from '@/colada/books'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useFilterCreators } from '@/composables/filter'
+import { useFilterContributors } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
-import { creatorRolesMessages } from '@/types/referential'
+import { contributorsRolesMessages } from '@/types/referential'
 
 const route = useRoute('/libraries/[id]/books')
 const libraryId = route.params.id
@@ -223,7 +225,7 @@ function clearFilters() {
   clearFilter(filterTag.value)
   clearFilter(filterUnavailable.value)
   clearFilter(filterOneShot.value)
-  filterCreatorsClearAll()
+  filterContributorsClearAll()
 }
 
 const filterCount = computed(
@@ -234,15 +236,15 @@ const filterCount = computed(
     countFilter(filterTag.value) +
     countFilter(filterUnavailable.value) +
     countFilter(filterOneShot.value) +
-    filterCreatorsCount.value,
+    filterContributorsCount.value,
 )
 
 const {
-  filter: filterCreators,
-  countAll: filterCreatorsCount,
-  clearAll: filterCreatorsClearAll,
-  clear: filterCreatorsClear,
-} = useFilterCreators()
+  filter: filterContributors,
+  countAll: filterContributorsCount,
+  clearAll: filterContributorsClearAll,
+  clear: filterContributorsClear,
+} = useFilterContributors()
 const { data: filterMediaStatus } = useRouteQuerySchema('status', SchemaFilterMediaStatus)
 const { data: filterMediaProfile } = useRouteQuerySchema('profile', SchemaFilterMediaProfile)
 const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
@@ -266,7 +268,7 @@ const conds = computed(() => ({
     valuesToConditions(filterMediaStatus.value.v, 'mediaStatus'),
     valuesToConditions(filterMediaProfile.value.v, 'mediaProfile'),
     schemaFilterStringToConditions(filterTag.value, 'tag', true),
-    ...Object.entries(filterCreators.value).map(([role, filter]) =>
+    ...Object.entries(filterContributors.value).map(([role, filter]) =>
       schemaFilterAuthorsToConditions(filter, role),
     ),
   ].filter(Boolean),

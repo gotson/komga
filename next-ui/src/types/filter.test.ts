@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest'
 import * as v from 'valibot'
 import {
   SchemaAnyAll,
-  SchemaFilterCreators,
-  SchemaFilterCreatorsRecord,
+  SchemaFilterContributors,
+  SchemaFilterContributorsRecord,
   SchemaFilterReadStatus,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
@@ -44,7 +44,7 @@ describe('schema any all', () => {
 describe('schema SchemaFilterAuthorsV2', () => {
   test('one role', () => {
     const input = { writer: { m: 'anyOf', v: [{ i: 'i', v: 'Mark+Lutz' }] } }
-    const result = v.parse(SchemaFilterCreatorsRecord, input)
+    const result = v.parse(SchemaFilterContributorsRecord, input)
 
     expect(result).toStrictEqual(input)
   })
@@ -55,7 +55,7 @@ describe('schema SchemaFilterAuthorsV2', () => {
       writer: { m: 'anyOf', v: [{ i: 'i', v: 'Lewis+Carroll' }] },
       letterer: { m: 'anyOf', v: [{ i: 'i', v: 'Clem+Robins' }] },
     }
-    const result = v.parse(SchemaFilterCreatorsRecord, input)
+    const result = v.parse(SchemaFilterContributorsRecord, input)
 
     expect(result).toStrictEqual(input)
   })
@@ -193,14 +193,14 @@ describe('filter schemas have a default value', () => {
 
   test('SchemaFilterAuthors', () => {
     const expected = { m: 'anyOf', v: [] }
-    const defaults = v.getDefaults(SchemaFilterCreators)
+    const defaults = v.getDefaults(SchemaFilterContributors)
 
     expect(defaults).toStrictEqual(expected)
   })
 
   test('SchemaFilterAuthorsV2', () => {
     const expected = {}
-    const defaults = v.getDefaults(SchemaFilterCreatorsRecord)
+    const defaults = v.getDefaults(SchemaFilterContributorsRecord)
 
     expect(defaults).toStrictEqual(expected)
   })

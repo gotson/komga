@@ -165,9 +165,12 @@ export const SchemaFilterStrings = createSchemaFilterAnyAll(SchemaString)
 /**
  * Schema for authors.
  */
-export const SchemaFilterCreators = createSchemaFilterAnyAll(SchemaAuthor)
-export const SchemaFilterCreatorsRecord = v.optional(
-  v.record(v.string(), v.optional(SchemaFilterCreators, v.getDefaults(SchemaFilterCreators))),
+export const SchemaFilterContributors = createSchemaFilterAnyAll(SchemaAuthor)
+export const SchemaFilterContributorsRecord = v.optional(
+  v.record(
+    v.string(),
+    v.optional(SchemaFilterContributors, v.getDefaults(SchemaFilterContributors)),
+  ),
   {},
 )
 

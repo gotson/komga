@@ -2,7 +2,7 @@ import {
   type FilterIncludeExclude,
   type FilterType,
   SchemaAnyNone,
-  SchemaFilterCreators,
+  SchemaFilterContributors,
   SchemaFilterReadStatus,
   SchemaFilterStrings,
   SchemaSeriesAgeRatings,
@@ -47,7 +47,7 @@ export function valuesToConditions(value: string[] | undefined, key: string) {
 }
 
 export function schemaFilterAuthorsToConditions(
-  filter: InferOutput<typeof SchemaFilterCreators>,
+  filter: InferOutput<typeof SchemaFilterContributors>,
   role?: string,
 ) {
   if (filter.v.length === 0) return null

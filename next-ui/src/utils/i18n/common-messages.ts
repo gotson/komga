@@ -57,10 +57,10 @@ export const commonMessages = {
     defaultMessage: 'FILTERS',
     id: '0sIkhg',
   }),
-  filterPanelCreators: defineMessage({
-    description: 'Filter panel sub-section: Creators',
-    defaultMessage: 'Creators',
-    id: 'WT63aY',
+  filterPanelContributors: defineMessage({
+    description: 'Filter panel sub-section: Contributors',
+    defaultMessage: 'Contributors',
+    id: 'rkpCD1',
   }),
   filterPanelSort: defineMessage({
     description: 'Filter panel sub-section: Sort',
