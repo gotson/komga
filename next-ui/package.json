@@ -54,6 +54,7 @@
     "@eslint/js": "^10.0.1",
     "@formatjs/cli": "^6.16.6",
     "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/tabler": "^1.2.35",
     "@pinia/colada-devtools": "^1.0.0",
     "@storybook/addon-a11y": "^10.4.1",
     "@storybook/addon-docs": "^10.4.1",

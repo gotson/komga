@@ -1,21 +1,32 @@
 <template>
   <v-app-bar elevation="1">
     <template #prepend>
-      <v-app-bar-nav-icon
-        v-tooltip:bottom="tooltipMessage"
-        @click="appStore.drawer = !appStore.drawer"
-      >
-        <template #default>
-          <v-badge
-            :model-value="unreadCount > 0 && !appStore.drawer"
-            dot
-            floating
-            color="info"
-          >
-            <v-icon icon="i-mdi:menu"></v-icon>
-          </v-badge>
-        </template>
-      </v-app-bar-nav-icon>
+      <v-hover v-slot="{ isHovering, props }">
+        <v-app-bar-nav-icon
+          v-tooltip:bottom="tooltipMessage"
+          v-bind="props"
+          @click="appStore.drawer = !appStore.drawer"
+        >
+          <template #default>
+            <v-badge
+              :model-value="unreadCount > 0 && !appStore.drawer"
+              dot
+              floating
+              color="info"
+            >
+              <v-icon
+                :icon="
+                  isHovering
+                    ? appStore.drawer
+                      ? 'i-tabler:layout-sidebar-left-collapse'
+                      : 'i-tabler:layout-sidebar-left-expand'
+                    : 'i-tabler:layout-sidebar'
+                "
+              />
+            </v-badge>
+          </template>
+        </v-app-bar-nav-icon>
+      </v-hover>
     </template>
 
     <v-app-bar-title>
@@ -45,14 +56,14 @@ const appStore = useAppStore()
 const { unreadCount } = useAnnouncements()
 
 const expandMessage = intl.formatMessage({
-  description: 'Locale selector button: tooltip expand',
-  defaultMessage: 'Expand menu',
-  id: 'wGVZsf',
+  description: 'Sidebar button: tooltip expand',
+  defaultMessage: 'Expand sidebar',
+  id: 'RTNaxB',
 })
 const collapseMessage = intl.formatMessage({
-  description: 'Locale selector button: tooltip collapse',
-  defaultMessage: 'Collapse menu',
-  id: 'UgQ5iO',
+  description: 'Sidebar button: tooltip collapse',
+  defaultMessage: 'Collapse sidebar',
+  id: '0JF9f5',
 })
 const tooltipMessage = computed(() => (appStore.drawer ? collapseMessage : expandMessage))
 </script>
