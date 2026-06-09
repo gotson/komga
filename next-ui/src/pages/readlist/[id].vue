@@ -51,13 +51,13 @@
       </v-list-subheader>
 
       <FilterByReadStatus
-        v-model="filterReadStatus.v"
+        v-model="filters.read.filter.v"
         class="py-0"
       />
 
       <v-list class="py-0">
-        <FilterByOneShot v-model="filterOneShot" />
-        <FilterByUnavailable v-model="filterUnavailable" />
+        <FilterByOneShot v-model="filters.oneshot.filter" />
+        <FilterByUnavailable v-model="filters.unavailable.filter" />
       </v-list>
 
       <v-expansion-panels
@@ -69,20 +69,36 @@
       >
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelLibrary)"
-          :count="countFilter(filterLibrary)"
-          @clear="clearFilter(filterLibrary)"
+          :count="filters.library.count"
+          @clear="filters.library.clear()"
         >
-          <FilterByLibrary v-model="filterLibrary.v" />
+          <FilterByLibrary v-model="filters.library.filter.v" />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          :title="$formatMessage(commonMessages.filterPanelMediaProfile)"
+          :count="filters.profile.count"
+          @clear="filters.profile.clear()"
+        >
+          <FilterByMediaProfile v-model="filters.profile.filter.v" />
+        </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          :title="$formatMessage(commonMessages.filterPanelMediaStatus)"
+          :count="filters.mediaStatus.count"
+          @clear="filters.mediaStatus.clear()"
+        >
+          <FilterByMediaStatus v-model="filters.mediaStatus.filter.v" />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelTag)"
-          :count="countFilter(filterTag)"
-          @clear="clearFilter(filterTag)"
+          :count="filters.tag.count"
+          @clear="filters.tag.clear()"
         >
           <FilterByTag
-            v-model="filterTag.v"
-            v-model:mode="filterTag.m"
+            v-model="filters.tag.filter.v"
+            v-model:mode="filters.tag.filter.m"
             include="BOOK"
           />
         </FilterExpansionPanel>
@@ -173,7 +189,6 @@ import { readListDetailQuery } from '@/colada/readlists'
 import { useSelectionStore } from '@/stores/selection'
 import { PageRequest, type Sort } from '@/types/PageRequest'
 import {
-  clearFilter,
   countFilter,
   schemaFilterAuthorsToConditions,
   schemaFilterIncludeExcludeToConditions,
@@ -187,14 +202,8 @@ import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import ChipCount from '@/components/ChipCount.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
 import ReadlistMenuButton from '@/components/readlist/menu/ReadlistMenuButton.vue'
-import { useFilterContributors } from '@/composables/filter'
-import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
-import {
-  filterKeys,
-  SchemaFilterReadStatus,
-  SchemaFilterStrings,
-  SchemaIncludeExclude,
-} from '@/types/filter'
+import { useFilterContributors, useFilters } from '@/composables/filter'
+import { filterKeys } from '@/types/filter'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
 
@@ -227,23 +236,11 @@ const { page0, page1, pageCount } = usePagination()
 const selectionStore = useSelectionStore()
 
 function clearFilters() {
-  clearFilter(filterLibrary.value)
-  clearFilter(filterReadStatus.value)
-  clearFilter(filterTag.value)
-  clearFilter(filterUnavailable.value)
-  clearFilter(filterOneShot.value)
   filterContributorsClearAll()
+  filtersClearAll()
 }
 
-const filterCount = computed(
-  () =>
-    countFilter(filterLibrary.value) +
-    countFilter(filterReadStatus.value) +
-    countFilter(filterTag.value) +
-    countFilter(filterUnavailable.value) +
-    countFilter(filterOneShot.value) +
-    filterContributorsCount.value,
-)
+const filterCount = computed(() => filterContributorsCount.value + filtersCountAll.value)
 
 const sortActive = computed<Sort[]>(() => {
   if (readList.value?.ordered) return [{ key: 'readList.number', order: 'asc' }]
@@ -256,20 +253,22 @@ const {
   clearAll: filterContributorsClearAll,
   clear: filterContributorsClear,
 } = useFilterContributors()
-const { data: filterLibrary } = useRouteQuerySchema('library', SchemaFilterStrings)
-const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
-const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
-const { data: filterUnavailable } = useRouteQuerySchema('unavailable', SchemaIncludeExclude)
-const { data: filterOneShot } = useRouteQuerySchema('oneshot', SchemaIncludeExclude)
+const {
+  filters,
+  clearAll: filtersClearAll,
+  countAll: filtersCountAll,
+} = useFilters(['library', 'mediaStatus', 'profile', 'read', 'tag', 'unavailable', 'oneshot'])
 
 const conds = computed(() => ({
   allOf: [
     valuesToConditions([readListId.value], 'readListId'),
-    schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
-    schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
-    schemaFilterStringToConditions(filterLibrary.value, 'libraryId', false),
-    schemaFilterReadStatusToConditions(filterReadStatus.value),
-    schemaFilterStringToConditions(filterTag.value, 'tag', true),
+    schemaFilterStringToConditions(filters.value.library.filter, 'libraryId', false),
+    schemaFilterIncludeExcludeToConditions(filters.value.unavailable.filter, 'deleted'),
+    schemaFilterIncludeExcludeToConditions(filters.value.oneshot.filter, 'oneShot'),
+    schemaFilterReadStatusToConditions(filters.value.read.filter),
+    valuesToConditions(filters.value.mediaStatus.filter.v, 'mediaStatus'),
+    valuesToConditions(filters.value.profile.filter.v, 'mediaProfile'),
+    schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),
     ...Object.entries(filterContributors.value).map(([role, filter]) =>
       schemaFilterAuthorsToConditions(filter, role),
     ),

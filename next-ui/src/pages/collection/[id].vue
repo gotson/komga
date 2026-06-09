@@ -51,14 +51,14 @@
       </v-list-subheader>
 
       <FilterByReadStatus
-        v-model="filterReadStatus.v"
+        v-model="filters.read.filter.v"
         class="py-0"
       />
 
       <v-list class="py-0">
-        <FilterByOneShot v-model="filterOneShot" />
-        <FilterByComplete v-model="filterComplete" />
-        <FilterByUnavailable v-model="filterUnavailable" />
+        <FilterByOneShot v-model="filters.oneshot.filter" />
+        <FilterByComplete v-model="filters.complete.filter" />
+        <FilterByUnavailable v-model="filters.unavailable.filter" />
       </v-list>
 
       <v-expansion-panels
@@ -70,88 +70,88 @@
       >
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelLibrary)"
-          :count="countFilter(filterLibrary)"
-          @clear="clearFilter(filterLibrary)"
+          :count="filters.library.count"
+          @clear="filters.library.clear()"
         >
-          <FilterByLibrary v-model="filterLibrary.v" />
+          <FilterByLibrary v-model="filters.library.filter.v" />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelSeriesStatus)"
-          :count="countFilter(filterSeriesStatus)"
-          @clear="clearFilter(filterSeriesStatus)"
+          :count="filters.seriesStatus.count"
+          @clear="filters.seriesStatus.clear()"
         >
-          <FilterBySeriesStatus v-model="filterSeriesStatus.v" />
+          <FilterBySeriesStatus v-model="filters.seriesStatus.filter.v" />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelGenre)"
-          :count="countFilter(filterGenre)"
-          @clear="clearFilter(filterGenre)"
+          :count="filters.genre.count"
+          @clear="filters.genre.clear()"
         >
           <FilterByGenre
-            v-model="filterGenre.v"
-            v-model:mode="filterGenre.m"
+            v-model="filters.genre.filter.v"
+            v-model:mode="filters.genre.filter.m"
           />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelTag)"
-          :count="countFilter(filterTag)"
-          @clear="clearFilter(filterTag)"
+          :count="filters.tag.count"
+          @clear="filters.tag.clear()"
         >
           <FilterByTag
-            v-model="filterTag.v"
-            v-model:mode="filterTag.m"
+            v-model="filters.tag.filter.v"
+            v-model:mode="filters.tag.filter.m"
           />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelPublisher)"
-          :count="countFilter(filterPublisher)"
-          @clear="clearFilter(filterPublisher)"
+          :count="filters.publisher.count"
+          @clear="filters.publisher.clear()"
         >
           <FilterByPublisher
-            v-model="filterPublisher.v"
-            v-model:mode="filterPublisher.m"
+            v-model="filters.publisher.filter.v"
+            v-model:mode="filters.publisher.filter.m"
           />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelReleaseYear)"
-          :count="countFilter(filterReleaseYear)"
-          @clear="clearFilter(filterReleaseYear)"
+          :count="filters.year.count"
+          @clear="filters.year.clear()"
         >
-          <FilterByReleaseYear v-model="filterReleaseYear" />
+          <FilterByReleaseYear v-model="filters.year.filter" />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelAgeRating)"
-          :count="countFilter(filterAgeRating)"
-          @clear="clearFilter(filterAgeRating)"
+          :count="filters.age.count"
+          @clear="filters.age.clear()"
         >
-          <FilterByAgeRating v-model="filterAgeRating" />
+          <FilterByAgeRating v-model="filters.age.filter" />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelLanguage)"
-          :count="countFilter(filterLanguage)"
-          @clear="clearFilter(filterLanguage)"
+          :count="filters.language.count"
+          @clear="filters.language.clear()"
         >
           <FilterByLanguage
-            v-model="filterLanguage.v"
-            v-model:mode="filterLanguage.m"
+            v-model="filters.language.filter.v"
+            v-model:mode="filters.language.filter.m"
           />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelSharingLabel)"
-          :count="countFilter(filterSharingLabel)"
-          @clear="clearFilter(filterSharingLabel)"
+          :count="filters.sharingLabel.count"
+          @clear="filters.sharingLabel.clear()"
         >
           <FilterBySharingLabel
-            v-model="filterSharingLabel.v"
-            v-model:mode="filterSharingLabel.m"
+            v-model="filters.sharingLabel.filter.v"
+            v-model:mode="filters.sharingLabel.filter.m"
           />
         </FilterExpansionPanel>
       </v-expansion-panels>
@@ -234,7 +234,6 @@ import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import {
-  clearFilter,
   countFilter,
   schemaFilterAgeRatingToConditions,
   schemaFilterAuthorsToConditions,
@@ -250,17 +249,8 @@ import { storeToRefs } from 'pinia'
 import { usePresentationMode } from '@/composables/presentationMode'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
-import { useFilterContributors } from '@/composables/filter'
-import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
-import {
-  filterKeys,
-  SchemaFilterReadStatus,
-  SchemaFilterSeriesStatus,
-  SchemaFilterStrings,
-  SchemaIncludeExclude,
-  SchemaSeriesAgeRatings,
-  SchemaSeriesReleaseYears,
-} from '@/types/filter'
+import { useFilterContributors, useFilters } from '@/composables/filter'
+import { filterKeys } from '@/types/filter'
 import type { components } from '@/generated/openapi/komga'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
@@ -298,39 +288,11 @@ const { page0, page1, pageCount } = usePagination()
 const selectionStore = useSelectionStore()
 
 function clearFilters() {
-  clearFilter(filterSeriesStatus.value)
-  clearFilter(filterLibrary.value)
-  clearFilter(filterReadStatus.value)
-  clearFilter(filterGenre.value)
-  clearFilter(filterTag.value)
-  clearFilter(filterPublisher.value)
-  clearFilter(filterSharingLabel.value)
-  clearFilter(filterLanguage.value)
-  clearFilter(filterComplete.value)
-  clearFilter(filterUnavailable.value)
-  clearFilter(filterOneShot.value)
-  clearFilter(filterReleaseYear.value)
-  clearFilter(filterAgeRating.value)
   filterContributorsClearAll()
+  filtersClearAll()
 }
 
-const filterCount = computed(
-  () =>
-    countFilter(filterLibrary.value) +
-    countFilter(filterSeriesStatus.value) +
-    countFilter(filterReadStatus.value) +
-    countFilter(filterGenre.value) +
-    countFilter(filterTag.value) +
-    countFilter(filterPublisher.value) +
-    countFilter(filterSharingLabel.value) +
-    countFilter(filterLanguage.value) +
-    countFilter(filterReleaseYear.value) +
-    countFilter(filterAgeRating.value) +
-    countFilter(filterComplete.value) +
-    countFilter(filterUnavailable.value) +
-    countFilter(filterOneShot.value) +
-    filterContributorsCount.value,
-)
+const filterCount = computed(() => filterContributorsCount.value + filtersCountAll.value)
 
 const {
   filter: filterContributors,
@@ -338,19 +300,25 @@ const {
   clearAll: filterContributorsClearAll,
   clear: filterContributorsClear,
 } = useFilterContributors()
-const { data: filterLibrary } = useRouteQuerySchema('library', SchemaFilterStrings)
-const { data: filterSeriesStatus } = useRouteQuerySchema('status', SchemaFilterSeriesStatus)
-const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
-const { data: filterGenre } = useRouteQuerySchema('genre', SchemaFilterStrings)
-const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
-const { data: filterPublisher } = useRouteQuerySchema('publisher', SchemaFilterStrings)
-const { data: filterSharingLabel } = useRouteQuerySchema('sharingLabel', SchemaFilterStrings)
-const { data: filterLanguage } = useRouteQuerySchema('language', SchemaFilterStrings)
-const { data: filterReleaseYear } = useRouteQuerySchema('year', SchemaSeriesReleaseYears)
-const { data: filterAgeRating } = useRouteQuerySchema('age', SchemaSeriesAgeRatings)
-const { data: filterComplete } = useRouteQuerySchema('complete', SchemaIncludeExclude)
-const { data: filterUnavailable } = useRouteQuerySchema('unavailable', SchemaIncludeExclude)
-const { data: filterOneShot } = useRouteQuerySchema('oneshot', SchemaIncludeExclude)
+const {
+  filters,
+  clearAll: filtersClearAll,
+  countAll: filtersCountAll,
+} = useFilters([
+  'library',
+  'seriesStatus',
+  'read',
+  'genre',
+  'tag',
+  'publisher',
+  'sharingLabel',
+  'language',
+  'year',
+  'age',
+  'complete',
+  'unavailable',
+  'oneshot',
+])
 
 const sortActive = computed<Sort[]>(() => {
   if (collection.value?.ordered) return [{ key: 'collection.number', order: 'asc' }]
@@ -360,19 +328,19 @@ const sortActive = computed<Sort[]>(() => {
 const conds = computed(() => ({
   allOf: [
     valuesToConditions([collectionId.value], 'collectionId'),
-    schemaFilterIncludeExcludeToConditions(filterComplete.value, 'complete'),
-    schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
-    schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
-    schemaFilterStringToConditions(filterLibrary.value, 'libraryId', false),
-    valuesToConditions(filterSeriesStatus.value.v, 'seriesStatus'),
-    schemaFilterReadStatusToConditions(filterReadStatus.value),
-    schemaFilterStringToConditions(filterGenre.value, 'genre', true),
-    schemaFilterStringToConditions(filterTag.value, 'tag', true),
-    schemaFilterStringToConditions(filterPublisher.value, 'publisher', false),
-    schemaFilterStringToConditions(filterSharingLabel.value, 'sharingLabel', true),
-    schemaFilterStringToConditions(filterLanguage.value, 'language', false),
-    schemaFilterReleaseYearToConditions(filterReleaseYear.value),
-    schemaFilterAgeRatingToConditions(filterAgeRating.value),
+    schemaFilterStringToConditions(filters.value.library.filter, 'libraryId', false),
+    schemaFilterIncludeExcludeToConditions(filters.value.complete.filter, 'complete'),
+    schemaFilterIncludeExcludeToConditions(filters.value.unavailable.filter, 'deleted'),
+    schemaFilterIncludeExcludeToConditions(filters.value.oneshot.filter, 'oneShot'),
+    valuesToConditions(filters.value.seriesStatus.filter.v, 'seriesStatus'),
+    schemaFilterReadStatusToConditions(filters.value.read.filter),
+    schemaFilterStringToConditions(filters.value.genre.filter, 'genre', true),
+    schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),
+    schemaFilterStringToConditions(filters.value.publisher.filter, 'publisher', false),
+    schemaFilterStringToConditions(filters.value.sharingLabel.filter, 'sharingLabel', true),
+    schemaFilterStringToConditions(filters.value.language.filter, 'language', false),
+    schemaFilterReleaseYearToConditions(filters.value.year.filter),
+    schemaFilterAgeRatingToConditions(filters.value.age.filter),
     ...Object.entries(filterContributors.value).map(([role, filter]) =>
       schemaFilterAuthorsToConditions(filter, role),
     ),

@@ -47,13 +47,13 @@
       </v-list-subheader>
 
       <FilterByReadStatus
-        v-model="filterReadStatus.v"
+        v-model="filters.read.filter.v"
         class="py-0"
       />
 
       <v-list class="py-0">
-        <FilterByOneShot v-model="filterOneShot" />
-        <FilterByUnavailable v-model="filterUnavailable" />
+        <FilterByOneShot v-model="filters.oneshot.filter" />
+        <FilterByUnavailable v-model="filters.unavailable.filter" />
       </v-list>
 
       <v-expansion-panels
@@ -65,28 +65,28 @@
       >
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelMediaProfile)"
-          :count="countFilter(filterMediaProfile)"
-          @clear="clearFilter(filterMediaProfile)"
+          :count="filters.profile.count"
+          @clear="filters.profile.clear()"
         >
-          <FilterByMediaProfile v-model="filterMediaProfile.v" />
+          <FilterByMediaProfile v-model="filters.profile.filter.v" />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelMediaStatus)"
-          :count="countFilter(filterMediaStatus)"
-          @clear="clearFilter(filterMediaStatus)"
+          :count="filters.mediaStatus.count"
+          @clear="filters.mediaStatus.clear()"
         >
-          <FilterByMediaStatus v-model="filterMediaStatus.v" />
+          <FilterByMediaStatus v-model="filters.mediaStatus.filter.v" />
         </FilterExpansionPanel>
 
         <FilterExpansionPanel
           :title="$formatMessage(commonMessages.filterPanelTag)"
-          :count="countFilter(filterTag)"
-          @clear="clearFilter(filterTag)"
+          :count="filters.tag.count"
+          @clear="filters.tag.clear()"
         >
           <FilterByTag
-            v-model="filterTag.v"
-            v-model:mode="filterTag.m"
+            v-model="filters.tag.filter.v"
+            v-model:mode="filters.tag.filter.m"
             include="BOOK"
           />
         </FilterExpansionPanel>
@@ -175,19 +175,10 @@ import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
-import {
-  SchemaFilterMediaProfile,
-  SchemaFilterMediaStatus,
-  SchemaFilterReadStatus,
-  SchemaFilterStrings,
-  SchemaIncludeExclude,
-} from '@/types/filter'
-import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortBooks } from '@/types/sort'
 import type { components } from '@/generated/openapi/komga'
 import {
-  clearFilter,
   countFilter,
   schemaFilterAuthorsToConditions,
   schemaFilterIncludeExcludeToConditions,
@@ -199,7 +190,7 @@ import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { PageRequest } from '@/types/PageRequest'
 import { bookListQuery, bookListQueryInfinite } from '@/colada/books'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useFilterContributors } from '@/composables/filter'
+import { useFilterContributors, useFilters } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
 import { contributorsRolesMessages } from '@/types/referential'
 
@@ -219,25 +210,11 @@ const { page0, page1, pageCount } = usePagination()
 const selectionStore = useSelectionStore()
 
 function clearFilters() {
-  clearFilter(filterMediaStatus.value)
-  clearFilter(filterMediaProfile.value)
-  clearFilter(filterReadStatus.value)
-  clearFilter(filterTag.value)
-  clearFilter(filterUnavailable.value)
-  clearFilter(filterOneShot.value)
   filterContributorsClearAll()
+  filtersClearAll()
 }
 
-const filterCount = computed(
-  () =>
-    countFilter(filterMediaStatus.value) +
-    countFilter(filterMediaProfile.value) +
-    countFilter(filterReadStatus.value) +
-    countFilter(filterTag.value) +
-    countFilter(filterUnavailable.value) +
-    countFilter(filterOneShot.value) +
-    filterContributorsCount.value,
-)
+const filterCount = computed(() => filterContributorsCount.value + filtersCountAll.value)
 
 const {
   filter: filterContributors,
@@ -245,12 +222,11 @@ const {
   clearAll: filterContributorsClearAll,
   clear: filterContributorsClear,
 } = useFilterContributors()
-const { data: filterMediaStatus } = useRouteQuerySchema('status', SchemaFilterMediaStatus)
-const { data: filterMediaProfile } = useRouteQuerySchema('profile', SchemaFilterMediaProfile)
-const { data: filterReadStatus } = useRouteQuerySchema('read', SchemaFilterReadStatus)
-const { data: filterTag } = useRouteQuerySchema('tag', SchemaFilterStrings)
-const { data: filterUnavailable } = useRouteQuerySchema('unavailable', SchemaIncludeExclude)
-const { data: filterOneShot } = useRouteQuerySchema('oneshot', SchemaIncludeExclude)
+const {
+  filters,
+  clearAll: filtersClearAll,
+  countAll: filtersCountAll,
+} = useFilters(['mediaStatus', 'profile', 'read', 'tag', 'unavailable', 'oneshot'])
 
 const { convertSortOptionDescriptor } = useIntlFormatter()
 const sortActive = appStore.getSortActive(viewName.value, [
@@ -262,12 +238,12 @@ const sortOptions = sortBooks.map((it) => convertSortOptionDescriptor(it))
 const conds = computed(() => ({
   allOf: [
     valuesToConditions(libraryIds.value, 'libraryId'),
-    schemaFilterIncludeExcludeToConditions(filterUnavailable.value, 'deleted'),
-    schemaFilterIncludeExcludeToConditions(filterOneShot.value, 'oneShot'),
-    schemaFilterReadStatusToConditions(filterReadStatus.value),
-    valuesToConditions(filterMediaStatus.value.v, 'mediaStatus'),
-    valuesToConditions(filterMediaProfile.value.v, 'mediaProfile'),
-    schemaFilterStringToConditions(filterTag.value, 'tag', true),
+    schemaFilterIncludeExcludeToConditions(filters.value.unavailable.filter, 'deleted'),
+    schemaFilterIncludeExcludeToConditions(filters.value.oneshot.filter, 'oneShot'),
+    schemaFilterReadStatusToConditions(filters.value.read.filter),
+    valuesToConditions(filters.value.mediaStatus.filter.v, 'mediaStatus'),
+    valuesToConditions(filters.value.profile.filter.v, 'mediaProfile'),
+    schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),
     ...Object.entries(filterContributors.value).map(([role, filter]) =>
       schemaFilterAuthorsToConditions(filter, role),
     ),
