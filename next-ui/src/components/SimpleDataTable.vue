@@ -29,6 +29,7 @@
               variant="tonal"
               size="small"
               rounded
+              color="primary"
               class="me-1 mb-1"
               :append-icon="item.href ? 'i-mdi:open-in-new' : undefined"
               :href="item.href"
