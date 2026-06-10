@@ -13,6 +13,9 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
+import { initLogger } from '@/services/logtape'
+
+await initLogger()
 
 const app = createApp(App)
 
