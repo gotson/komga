@@ -1,11 +1,5 @@
 <template>
-  <LibraryBottomNavigation
-    v-if="display.xs.value"
-    :routes="routes"
-  />
-
   <LibraryTabNavigation
-    v-else
     :routes="routes"
     :library-id="libraryId"
   />
@@ -20,15 +14,12 @@ import { useQuery } from '@pinia/colada'
 import { collectionsListQuery } from '@/colada/collections'
 import { PageRequest } from '@/types/PageRequest'
 import { readListsListQuery } from '@/colada/readlists'
-import { useDisplay } from 'vuetify'
 
-const { libraryId } = defineProps<{
+const props = defineProps<{
   libraryId: LibraryId
 }>()
 
-const display = useDisplay()
-
-const { libraries } = useGetLibrariesById(libraryId)
+const { libraries } = useGetLibrariesById(props.libraryId)
 const { data: collections } = useQuery(() => ({
   ...collectionsListQuery({
     libraryIds: libraries.value?.map((it) => it.id),
@@ -45,9 +36,9 @@ const { data: readlists } = useQuery(() => ({
 }))
 
 const routesBase = [
-  { title: 'Recommended', icon: 'i-mdi:star', to: `/libraries/${libraryId}/recommended` },
-  { title: 'Series', icon: 'i-mdi:bookshelf', to: `/libraries/${libraryId}/series` },
-  { title: 'Books', icon: 'i-mdi:book-multiple', to: `/libraries/${libraryId}/books` },
+  { title: 'Recommended', icon: 'i-mdi:star', to: `/libraries/${props.libraryId}/recommended` },
+  { title: 'Series', icon: 'i-mdi:bookshelf', to: `/libraries/${props.libraryId}/series` },
+  { title: 'Books', icon: 'i-mdi:book-multiple', to: `/libraries/${props.libraryId}/books` },
 ]
 
 const routes = computed(() => {
@@ -56,13 +47,13 @@ const routes = computed(() => {
     extra.push({
       title: 'Collections',
       icon: 'i-mdi:layers-triple',
-      to: `/libraries/${libraryId}/collections`,
+      to: `/libraries/${props.libraryId}/collections`,
     })
   if ((readlists.value?.totalElements ?? 0) > 0)
     extra.push({
       title: 'Read Lists',
       icon: 'i-mdi:bookmark-multiple',
-      to: `/libraries/${libraryId}/readlists`,
+      to: `/libraries/${props.libraryId}/readlists`,
     })
   return [...routesBase, ...extra]
 })

@@ -202,7 +202,6 @@ import { useFilterContributors, useFilters } from '@/composables/filter'
 import { filterKeys } from '@/types/filter'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
-import CollectionMenuButton from '@/components/collection/menu/CollectionMenuButton.vue'
 
 const route = useRoute('/readlist/[id]')
 const router = useRouter()

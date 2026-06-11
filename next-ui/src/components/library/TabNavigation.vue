@@ -7,21 +7,34 @@
         >{{ title }}</span
       >
 
-      <v-select
-        v-else
-        :model-value="libraryId"
-        :items="selectItems"
-        variant="plain"
-        class="ms-4"
-        @update:model-value="navigate"
-      >
-        <template #selection="{ item }">
-          <span class="text-title-large">{{ item.title }}</span>
+      <v-menu v-if="!isSingle">
+        <template #activator="{ props: activatorProps }">
+          <v-btn
+            class="text-title-large"
+            height="100%"
+            rounded="0"
+            variant="text"
+            v-bind="activatorProps"
+            append-icon="i-mdi:menu-down"
+            :text="selectedLibType?.title"
+          />
         </template>
-      </v-select>
+
+        <v-list>
+          <v-list-item
+            v-for="route in libTypes"
+            :key="route.value"
+            :title="route.title"
+            :to="route.to"
+          />
+        </v-list>
+      </v-menu>
     </template>
 
-    <template #default>
+    <template
+      v-if="display.smAndUp.value"
+      #default
+    >
       <v-tabs
         :items="routes"
         center-active
@@ -35,8 +48,31 @@
       </v-tabs>
     </template>
 
-    <!-- Occupies space, effectively centering the tabs   -->
-    <template #append></template>
+    <template #append>
+      <!-- Empty slot effectively centers the tabs   -->
+      <v-menu v-if="display.xs.value">
+        <template #activator="{ props: activatorProps }">
+          <v-btn
+            class="text-title-large"
+            height="100%"
+            rounded="0"
+            variant="text"
+            v-bind="activatorProps"
+            append-icon="i-mdi:menu-down"
+            :text="selectedRoute?.title"
+          />
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="route in routes"
+            :key="route.title"
+            :title="route.title"
+            :to="route.to"
+          />
+        </v-list>
+      </v-menu>
+    </template>
   </v-app-bar>
 </template>
 
@@ -46,21 +82,23 @@ import type { LibraryId } from '@/types/libraries'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { useIntl } from 'vue-intl'
 import { useLibraries } from '@/colada/libraries'
+import { useDisplay } from 'vuetify/framework'
 
-const { routes, libraryId } = defineProps<{
+const props = defineProps<{
   routes: Route[]
   libraryId: LibraryId
 }>()
 
 const intl = useIntl()
-const router = useRouter()
+const display = useDisplay()
+const currentRoute = useRoute()
 
 const { anyPinned, anyUnpinned } = useLibraries()
-const { isSingle, libraries } = useGetLibrariesById(libraryId)
+const { isSingle, libraries } = useGetLibrariesById(props.libraryId)
 
 const title = computed(() => (isSingle.value ? libraries.value?.[0]?.name : undefined))
 
-const selectItems = computed(() => [
+const libTypes = computed(() => [
   ...(anyPinned.value
     ? [
         {
@@ -70,6 +108,7 @@ const selectItems = computed(() => [
             id: '1qIfds',
           }),
           value: 'pinned',
+          to: `/libraries/pinned`,
         },
       ]
     : []),
@@ -80,6 +119,7 @@ const selectItems = computed(() => [
       id: '8/BXfN',
     }),
     value: 'all',
+    to: `/libraries/all`,
   },
   ...(anyUnpinned.value
     ? [
@@ -90,17 +130,14 @@ const selectItems = computed(() => [
             id: '9oA9gw',
           }),
           value: 'unpinned',
+          to: `/libraries/unpinned`,
         },
       ]
     : []),
 ])
+const selectedLibType = computed(() => libTypes.value.find((it) => it.value === props.libraryId))
 
-function navigate(id: string) {
-  void router.push({
-    name: '/libraries/[id]',
-    params: { id: id },
-  })
-}
+const selectedRoute = computed(() => props.routes.find((it) => it.to === currentRoute.path))
 </script>
 
 <style scoped></style>

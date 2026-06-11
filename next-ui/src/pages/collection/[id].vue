@@ -263,7 +263,6 @@ import { PageRequest, type Sort } from '@/types/PageRequest'
 import { collectionDetailQuery } from '@/colada/collections'
 import CollectionMenuButton from '@/components/collection/menu/CollectionMenuButton.vue'
 import { contributorsRolesMessages } from '@/types/referential'
-import ReadlistMenuButton from '@/components/readlist/menu/ReadlistMenuButton.vue'
 
 const route = useRoute('/collection/[id]')
 const router = useRouter()
