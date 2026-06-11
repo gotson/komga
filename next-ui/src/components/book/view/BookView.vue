@@ -74,7 +74,7 @@
         cols="6"
         sm="9"
       >
-        <v-container>
+        <v-container class="pa-0">
           <v-row v-if="!book.oneshot">
             <v-col>
               <RouterLink
@@ -154,7 +154,7 @@
     :to="`#${display.xs.value ? 'xs' : 'sm'}-${id}`"
     defer
   >
-    <v-container>
+    <v-container class="px-0">
       <v-row>
         <v-col>
           <BookViewActions :book="book" />

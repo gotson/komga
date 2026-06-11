@@ -1,6 +1,6 @@
 <template>
   <div
-    style="display: grid; grid-template-columns: max-content 1fr"
+    style="display: grid; grid-template-columns: max-content minmax(0, 1fr)"
     class="align-baseline"
   >
     <template
@@ -15,6 +15,7 @@
           v-if="typeof row.data === 'string'"
           v-bind="row.dataProps"
           class="text-body-small mb-1"
+          style="overflow-wrap: anywhere"
         >
           {{ row.data }}
         </div>

@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid>
+  <v-container
+    fluid
+    class="pa-0 pa-sm-4"
+  >
     <div v-if="isPending">
       <v-row>
         <v-col cols="3">
