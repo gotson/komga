@@ -3,11 +3,16 @@
     <template #prepend>
       <v-hover v-slot="{ isHovering, props }">
         <v-app-bar-nav-icon
-          v-tooltip:bottom="tooltipMessage"
           v-bind="props"
           @click="appStore.drawer = !appStore.drawer"
         >
           <template #default>
+            <v-tooltip
+              activator="parent"
+              location="end"
+              :text="tooltipMessage"
+            />
+
             <v-badge
               :model-value="unreadCount > 0 && !appStore.drawer"
               dot
