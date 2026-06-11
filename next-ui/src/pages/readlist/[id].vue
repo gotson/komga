@@ -1,13 +1,9 @@
 <template>
   <v-app-bar>
-    <span class="ms-4 text-title-large">{{ readList?.name }}</span>
-    <ReadlistMenuButton
-      v-if="readList"
-      :read-list="readList"
-      class="mx-2"
+    <ChipCount
+      :count="totalElements"
+      class="ms-4"
     />
-
-    <ChipCount :count="totalElements" />
 
     <v-spacer />
 
@@ -138,17 +134,17 @@
     </v-list>
   </TempDrawer>
 
-  <v-container
-    v-if="readList?.summary"
-    fluid
+  <div
+    v-if="readList"
+    class="px-4 pt-2"
   >
-    <v-row>
-      <v-col cols="12">
-        <ReadMore :text="readList.summary" />
-      </v-col>
-    </v-row>
+    <div class="d-flex align-center pb-2 ga-2">
+      <div class="text-title-large text-truncate">{{ readList.name }}</div>
+      <ReadlistMenuButton :read-list="readList" />
+    </div>
+    <ReadMore :text="readList.summary" />
     <v-divider class="mt-4" />
-  </v-container>
+  </div>
 
   <EmptyStateFilterNoResults
     v-if="totalElements === 0 && filterCount > 0"
@@ -206,6 +202,7 @@ import { useFilterContributors, useFilters } from '@/composables/filter'
 import { filterKeys } from '@/types/filter'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
+import CollectionMenuButton from '@/components/collection/menu/CollectionMenuButton.vue'
 
 const route = useRoute('/readlist/[id]')
 const router = useRouter()

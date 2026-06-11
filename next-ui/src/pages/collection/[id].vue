@@ -1,13 +1,9 @@
 <template>
   <v-app-bar>
-    <span class="ms-4 text-title-large">{{ collection?.name }}</span>
-    <CollectionMenuButton
-      v-if="collection"
-      :collection="collection"
-      class="mx-2"
+    <ChipCount
+      :count="totalElements"
+      class="ms-4"
     />
-
-    <ChipCount :count="totalElements" />
 
     <v-spacer />
 
@@ -190,6 +186,15 @@
     </v-list>
   </TempDrawer>
 
+  <div
+    v-if="collection"
+    class="d-flex align-center px-4 pt-2 ga-2"
+  >
+    <div class="text-title-large text-truncate">{{ collection.name }}</div>
+    <CollectionMenuButton :collection="collection" />
+  </div>
+  <v-divider class="mt-4" />
+
   <EmptyStateFilterNoResults
     v-if="totalElements === 0 && filterCount > 0"
     @reset="clearFilters()"
@@ -258,6 +263,7 @@ import { PageRequest, type Sort } from '@/types/PageRequest'
 import { collectionDetailQuery } from '@/colada/collections'
 import CollectionMenuButton from '@/components/collection/menu/CollectionMenuButton.vue'
 import { contributorsRolesMessages } from '@/types/referential'
+import ReadlistMenuButton from '@/components/readlist/menu/ReadlistMenuButton.vue'
 
 const route = useRoute('/collection/[id]')
 const router = useRouter()
