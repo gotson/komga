@@ -17,7 +17,39 @@
       </v-col>
     </v-row>
 
-    <v-row class="align-center">
+    <v-row>
+      <v-col>
+        <v-alert
+          type="info"
+          variant="tonal"
+        >
+          <template #text>
+            <FormattedMessage
+              :message-descriptor="{
+                description: 'Form add/edit library: General - root directory guideline',
+                defaultMessage:
+                  'When configuring your library on a removable drive or shared network mount (like NFS), do not point the root directory directly to the root of the drive (e.g., <code>E:\\</code> or <code>/mnt/media/</code>).<br></br><br></br>To prevent data loss, please create a dedicated subdirectory for your files (e.g., <code>E:\\ebooks\\</code> or <code>/mnt/media/ebooks/</code>) and select that as your library root.',
+                id: 'QWjkQT',
+              }"
+            >
+              <template #code="Content">
+                <code class="bg-grey-lighten-3 px-1 rounded">
+                  <component :is="Content" />
+                </code>
+              </template>
+              <template #br>
+                <br />
+              </template>
+            </FormattedMessage>
+          </template>
+        </v-alert>
+      </v-col>
+    </v-row>
+
+    <v-row
+      class="align-center"
+      density="compact"
+    >
       <v-col>
         <v-text-field
           v-model="model.root"
