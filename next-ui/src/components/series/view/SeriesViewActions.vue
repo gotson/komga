@@ -1,96 +1,72 @@
 <template>
   <div class="d-flex ga-2">
     <v-btn
-      prepend-icon="i-mdi:play"
-      :text="
-        inProgress
-          ? intl.formatMessage({
-              description: 'Series view: resume reading button',
-              defaultMessage: 'Resume',
-              id: '/rV68E',
-            })
-          : intl.formatMessage({
-              description: 'Series view: read button',
-              defaultMessage: 'Read',
-              id: 'EBsaDz',
-            })
-      "
-      :disabled="!canRead"
-      @click="readFirstBook()"
+      v-if="readAction"
+      :prepend-icon="readAction.icon"
+      :text="readAction.title"
+      :disabled="readAction.disabled"
+      @click="readAction.onClick?.()"
     />
 
     <v-icon-btn
-      v-tooltip:bottom="
-        intl.formatMessage({
-          description: 'Series view: read incognito button: tooltip',
-          defaultMessage: 'Private reading session',
-          id: 'DLUIbm',
-        })
-      "
-      icon="i-mdi:incognito"
-      :disabled="!canRead"
-      @click="readFirstBook(true)"
+      v-for="action in prominentActions"
+      :key="action.action"
+      v-tooltip:bottom="action.title"
+      v-bind="action"
     />
 
     <v-icon-btn
-      v-if="isRead"
-      v-tooltip:bottom="
-        intl.formatMessage({
-          description: 'Series view: mark unread button: tooltip',
-          defaultMessage: 'Mark as unread',
-          id: 'RUN9vs',
-        })
-      "
-      icon="i-mdi:check-circle"
-      v-bind="getAction(SeriesAction.MARK_UNREAD)"
-    />
-
-    <v-icon-btn
-      v-if="!isRead"
-      v-tooltip:bottom="
-        intl.formatMessage({
-          description: 'Series view: mark read button: tooltip',
-          defaultMessage: 'Mark as read',
-          id: 'nc+4RD',
-        })
-      "
-      icon="i-mdi:check-circle-outline"
-      v-bind="getAction(SeriesAction.MARK_READ)"
-    />
-
-    <v-icon-btn
-      v-if="isAdmin"
-      v-tooltip:bottom="
-        intl.formatMessage({
-          description: 'Series view: edit button: tooltip',
-          defaultMessage: 'Edit',
-          id: 'FNryZW',
-        })
-      "
-      icon="i-mdi:pencil"
-      v-bind="getAction(SeriesAction.EDIT_METADATA)"
+      v-if="hasExtra"
+      :id="id"
+      v-tooltip:bottom="$formatMessage(commonMessages.buttonMore)"
+      icon="i-mdi:dots-horizontal"
+      @click="showExtraActions()"
     />
   </div>
+  <SeriesMenu
+    v-if="display.smAndUp.value"
+    :series="series"
+    :activator="`#${id}`"
+    :exclude-actions="excludeActions"
+  />
+  <SeriesMenuBottomSheet
+    v-if="display.xs.value"
+    v-model="bottomSheet"
+    :series="series"
+    :exclude-actions="excludeActions"
+  />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { useIntl } from 'vue-intl'
-import { useCurrentUser } from '@/colada/users'
 import { useSeriesActions } from '@/composables/series/useSeriesActions'
-import { useSeries } from '@/composables/series/useSeries'
-import { SeriesAction } from '@/types/series'
-import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
-
-const intl = useIntl()
+import { SeriesAction, seriesActionGroups } from '@/types/series'
+import { createOrderCompareFn } from '@/functions/sort'
+import { useDisplay } from 'vuetify'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const props = defineProps<{
   series: components['schemas']['SeriesDto']
 }>()
 
-const { isAdmin } = useCurrentUser()
-// const { isRead, inProgress } = useBookReadProgress(() => props.book)
-const { getAction } = useSeriesActions(() => props.series)
-const { canRead, isRead, inProgress } = useSeries(() => props.series)
-const { readFirstBook } = useSeriesBooks(props.series.id)
+const id = useId()
+const display = useDisplay()
+const { actions } = useSeriesActions(() => props.series)
+
+const bottomSheet = ref(false)
+
+const prominentActions = computed(() =>
+  actions.value
+    .filter((it) => seriesActionGroups.seriesView.includes(it.action))
+    .toSorted(createOrderCompareFn(seriesActionGroups.seriesView, (it) => it.action.toString())),
+)
+const readAction = computed(() =>
+  actions.value.find((it) => it.action === SeriesAction.OPEN_READER),
+)
+const excludeActions = [...seriesActionGroups.seriesView, SeriesAction.OPEN_READER]
+const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
+
+function showExtraActions() {
+  if (display.xs.value) bottomSheet.value = true
+}
 </script>

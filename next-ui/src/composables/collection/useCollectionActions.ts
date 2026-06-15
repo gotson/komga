@@ -23,7 +23,7 @@ export function useCollectionActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const manageActions = computed<Action[]>(() => [
+  const manageActions = computed<Action<CollectionAction>[]>(() => [
     ...(isAdmin.value
       ? [
           {

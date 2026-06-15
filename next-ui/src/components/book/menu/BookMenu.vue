@@ -2,13 +2,13 @@
   <v-menu :activator="activator">
     <v-list density="compact">
       <v-list-item
-        v-for="(action, i) in actions"
+        v-for="(action, i) in actionsDefault"
         :key="i"
         v-bind="action"
       />
 
       <v-list-item
-        v-if="manageActions.length > 0"
+        v-if="actionsManagement.length > 0"
         :title="
           $formatMessage({
             description: 'Book menu: manage',
@@ -27,7 +27,7 @@
         >
           <v-list density="compact">
             <v-list-item
-              v-for="(action, i) in manageActions"
+              v-for="(action, i) in actionsManagement"
               :key="i"
               v-bind="action"
             />
@@ -41,13 +41,35 @@
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useBookActions } from '@/composables/book/useBookActions'
+import { createOrderCompareFn } from '@/functions/sort'
+import { BookAction, bookActionGroups } from '@/types/book'
 
-const props = defineProps<{
+const {
+  activator,
+  book,
+  excludeActions = [],
+} = defineProps<{
   activator: string | Element
   book: components['schemas']['BookDto']
+  excludeActions?: BookAction[]
 }>()
 
-const { actions, manageActions } = useBookActions(() => props.book)
+const { actions } = useBookActions(() => book)
+const actionsDefault = computed(() =>
+  actions.value
+    .filter(
+      (it) => bookActionGroups.default.includes(it.action) && !excludeActions.includes(it.action),
+    )
+    .toSorted(createOrderCompareFn(bookActionGroups.default, (it) => it.action.toString())),
+)
+const actionsManagement = computed(() =>
+  actions.value
+    .filter(
+      (it) =>
+        bookActionGroups.management.includes(it.action) && !excludeActions.includes(it.action),
+    )
+    .toSorted(createOrderCompareFn(bookActionGroups.management, (it) => it.action.toString())),
+)
 </script>
 
 <script lang="ts"></script>

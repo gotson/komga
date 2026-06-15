@@ -1,99 +1,70 @@
 <template>
   <div class="d-flex ga-2">
     <v-btn
-      prepend-icon="i-mdi:play"
-      :text="
-        inProgress
-          ? intl.formatMessage({
-              description: 'Book view: resume reading button',
-              defaultMessage: 'Resume',
-              id: 'uVMm+G',
-            })
-          : intl.formatMessage({
-              description: 'Book view: read button',
-              defaultMessage: 'Read',
-              id: 'Cy2QFR',
-            })
-      "
-      :href="bookReaderUrl(book.id, isEpubReader)"
-      target="_blank"
-      :disabled="!canRead"
+      v-if="readAction"
+      :prepend-icon="readAction.icon"
+      :text="readAction.title"
+      :disabled="readAction.disabled"
+      @click="readAction.onClick?.()"
     />
 
     <v-icon-btn
-      v-tooltip:bottom="
-        intl.formatMessage({
-          description: 'Book view: read incognito button: tooltip',
-          defaultMessage: 'Private reading session',
-          id: 'HKQLfY',
-        })
-      "
-      icon="i-mdi:incognito"
-      :href="bookReaderUrl(book.id, isEpubReader, true)"
-      target="_blank"
-      tag="a"
-      :disabled="!canRead"
+      v-for="action in prominentActions"
+      :key="action.action"
+      v-tooltip:bottom="action.title"
+      v-bind="action"
     />
 
     <v-icon-btn
-      v-if="isRead"
-      v-tooltip:bottom="
-        intl.formatMessage({
-          description: 'Book view: mark unread button: tooltip',
-          defaultMessage: 'Mark as unread',
-          id: '8IWnN0',
-        })
-      "
-      icon="i-mdi:check-circle"
-      v-bind="getAction(BookAction.MARK_UNREAD)"
-    />
-
-    <v-icon-btn
-      v-if="!isRead"
-      v-tooltip:bottom="
-        intl.formatMessage({
-          description: 'Book view: mark read button: tooltip',
-          defaultMessage: 'Mark as read',
-          id: '4G8yIh',
-        })
-      "
-      icon="i-mdi:check-circle-outline"
-      v-bind="getAction(BookAction.MARK_READ)"
-    />
-
-    <v-icon-btn
-      v-if="isAdmin"
-      v-tooltip:bottom="
-        intl.formatMessage({
-          description: 'Book view: edit button: tooltip',
-          defaultMessage: 'Edit',
-          id: '+rrGSa',
-        })
-      "
-      icon="i-mdi:pencil"
-      v-bind="getAction(BookAction.EDIT_METADATA)"
+      v-if="hasExtra"
+      :id="id"
+      v-tooltip:bottom="$formatMessage(commonMessages.buttonMore)"
+      icon="i-mdi:dots-horizontal"
+      @click="showExtraActions()"
     />
   </div>
+  <BookMenu
+    v-if="display.smAndUp.value"
+    :book="book"
+    :activator="`#${id}`"
+    :exclude-actions="excludeActions"
+  />
+  <BookMenuBottomSheet
+    v-if="display.xs.value"
+    v-model="bottomSheet"
+    :book="book"
+    :exclude-actions="excludeActions"
+  />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
-import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
-import { useIntl } from 'vue-intl'
 import { useBookActions } from '@/composables/book/useBookActions'
-import { BookAction } from '@/types/book'
-import { bookReaderUrl } from '@/api/links'
-import { useCurrentUser } from '@/colada/users'
-import { useBook } from '@/composables/book/useBook'
-
-const intl = useIntl()
+import { BookAction, bookActionGroups } from '@/types/book'
+import { createOrderCompareFn } from '@/functions/sort'
+import { useDisplay } from 'vuetify/framework'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const props = defineProps<{
   book: components['schemas']['BookDto']
 }>()
 
-const { isAdmin } = useCurrentUser()
-const { isRead, inProgress } = useBookReadProgress(() => props.book)
-const { getAction } = useBookActions(() => props.book)
-const { canRead, isEpubReader } = useBook(() => props.book)
+const id = useId()
+const display = useDisplay()
+const { actions } = useBookActions(() => props.book)
+
+const bottomSheet = ref(false)
+
+const prominentActions = computed(() =>
+  actions.value
+    .filter((it) => bookActionGroups.bookView.includes(it.action))
+    .toSorted(createOrderCompareFn(bookActionGroups.bookView, (it) => it.action.toString())),
+)
+const readAction = computed(() => actions.value.find((it) => it.action === BookAction.OPEN_READER))
+const excludeActions = [...bookActionGroups.bookView, BookAction.OPEN_READER]
+const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
+
+function showExtraActions() {
+  if (display.xs.value) bottomSheet.value = true
+}
 </script>

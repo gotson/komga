@@ -166,7 +166,7 @@
     <template v-else-if="series">
       <SeriesView :series="series" />
 
-      <v-divider class="mt-4" />
+      <v-divider />
 
       <EmptyStateFilterNoResults
         v-if="totalElements === 0 && filterCount > 0"

@@ -39,6 +39,31 @@
             <template v-else>{{ unreadCount }}</template>
           </div>
         </v-img>
+
+        <v-alert
+          v-if="isRead || bookOnDeck"
+          :icon="isRead ? 'i-mdi:check' : undefined"
+          class="mt-1 text-center text-body-small"
+          :max-width="posterMaxWidth"
+        >
+          <template v-if="bookOnDeck">{{
+            $formatMessage(
+              {
+                description: 'Series view: book on deck',
+                defaultMessage: 'On deck — #{number}',
+                id: '5cbjLE',
+              },
+              { number: bookOnDeck.metadata.number },
+            )
+          }}</template>
+          <template v-if="isRead">{{
+            $formatMessage({
+              description: 'Series view: read indicator',
+              defaultMessage: 'Read',
+              id: 'l7mpQK',
+            })
+          }}</template>
+        </v-alert>
       </v-col>
 
       <v-col
@@ -214,6 +239,18 @@ other {# books}
           <SimpleDataTable :rows="tableRows" />
         </v-col>
       </v-row>
+
+      <v-row density="compact">
+        <v-col cols="auto">
+          <v-btn
+            variant="text"
+            size="small"
+            text="Show all"
+            @mouseenter="dialogSimple.activator = $event.currentTarget"
+            @click="showDialogExtra()"
+          />
+        </v-col>
+      </v-row>
     </v-container>
   </Teleport>
 </template>
@@ -230,6 +267,9 @@ import { useSeries } from '@/composables/series/useSeries'
 import { readingDirectionMessages } from '@/types/ReadingDirection'
 import { languageDisplayNames } from '@/utils/i18n/locale-helper'
 import { seriesStatusMessages } from '@/types/SeriesStatus'
+import { storeToRefs } from 'pinia'
+import { useDialogsStore } from '@/stores/dialogs'
+import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -241,6 +281,10 @@ const props = defineProps<{
 }>()
 
 const { unreadCount, isRead, readingDirection, seriesStatus } = useSeries(props.series)
+const { getFirstBookInSeries } = useSeriesBooks(props.series.id)
+
+const bookOnDeck = ref<components['schemas']['BookDto'] | undefined>(undefined)
+void getFirstBookInSeries(true).then((data) => (bookOnDeck.value = data))
 
 const alternateTitles = computed(() =>
   props.series.metadata.alternateTitles.map((it) => ({
@@ -249,94 +293,117 @@ const alternateTitles = computed(() =>
   })),
 )
 
-const tableRows = computed(() => {
-  const rows: TableRow[] = []
+const allRows = computed(() => {
+  const rows = {} as Record<string, TableRow>
 
   if (props.series.booksMetadata.authors.length > 0)
     Object.entries(Object.groupBy(props.series.booksMetadata.authors, (it) => it.role))
       .toSorted(createOrderCompareFn(Object.keys(contributorsRolesMessages), ([role]) => role))
       .forEach(([role, contributor]) => {
-        rows.push({
+        rows[role] = {
           header: contributorsRolesMessages?.[role]
             ? intl.formatMessage(contributorsRolesMessages?.[role])
             : role,
           data: contributor!.map((it) => ({ text: it.name })),
-        })
+        }
       })
 
   if (props.series.metadata.publisher)
-    rows.push({
+    rows['publisher'] = {
       header: intl.formatMessage({
         description: 'Series view table: publisher header',
         defaultMessage: 'Publisher',
         id: 'OLqBQc',
       }),
       data: [{ text: props.series.metadata.publisher }],
-    })
+    }
 
   if (props.series.metadata.genres.length > 0)
-    rows.push({
+    rows['genres'] = {
       header: intl.formatMessage({
         description: 'Series view table: genre header',
         defaultMessage: 'Genre',
         id: 'r5O+/d',
       }),
       data: props.series.metadata.genres.map((it) => ({ text: it })),
-    })
+    }
 
   if (props.series.metadata.tags.length > 0)
-    rows.push({
+    rows['tags'] = {
       header: intl.formatMessage({
         description: 'Series view table: tags header',
         defaultMessage: 'Tags',
         id: '6UXlVe',
       }),
       data: props.series.metadata.tags.map((it) => ({ text: it })),
-    })
+    }
   if (props.series.booksMetadata.tags.length > 0)
-    rows.push({
+    rows['bookTags'] = {
       header: intl.formatMessage({
         description: 'Series view table: book tags header',
         defaultMessage: 'Book tags',
         id: 'Thjcar',
       }),
       data: props.series.booksMetadata.tags.map((it) => ({ text: it })),
-    })
+    }
 
   if (props.series.metadata.links.length > 0)
-    rows.push({
+    rows['links'] = {
       header: intl.formatMessage({
         description: 'Series view table: links header',
         defaultMessage: 'Links',
         id: 'fbEqBB',
       }),
       data: props.series.metadata.links.map((it) => ({ text: it.label, href: it.url })),
-    })
-  rows.push({
+    }
+  rows['filePath'] = {
     header: intl.formatMessage({
       description: 'Series view table: file path header',
       defaultMessage: 'File path',
       id: '+mJGIg',
     }),
     data: props.series.url,
-  })
-  rows.push({
+  }
+  rows['created'] = {
     header: intl.formatMessage({
       description: 'Series view table: date created header',
       defaultMessage: 'Created',
       id: 'dx9s7S',
     }),
     data: intl.formatDate(props.series.created, { dateStyle: 'medium', timeStyle: 'short' }),
-  })
-  rows.push({
+  }
+  rows['modified'] = {
     header: intl.formatMessage({
       description: 'Series view table: date last modified header',
       defaultMessage: 'Last modified',
       id: 'Y4xJBN',
     }),
     data: intl.formatDate(props.series.lastModified, { dateStyle: 'medium', timeStyle: 'short' }),
-  })
+  }
 
   return rows
 })
+
+const displayDefault = ['writer', 'penciller', 'publisher', 'genre', 'tags', 'links']
+const tableRows = computed(() =>
+  Object.entries(allRows.value)
+    .filter(([key]) => displayDefault.includes(key))
+    .map(([, value]) => value),
+)
+
+const { simple: dialogSimple } = storeToRefs(useDialogsStore())
+
+function showDialogExtra() {
+  dialogSimple.value.dialogProps = {
+    fullscreen: display.xs.value,
+    scrollable: true,
+    maxWidth: 900,
+  }
+  dialogSimple.value.slot = {
+    component: markRaw(SimpleDataTable),
+    props: {
+      rows: Object.values(allRows.value),
+    },
+  }
+}
 </script>

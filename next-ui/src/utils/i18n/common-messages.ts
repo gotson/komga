@@ -137,4 +137,9 @@ export const commonMessages = {
     defaultMessage: 'More',
     id: 'P7WVCB',
   }),
+  buttonMore: defineMessage({
+    description: 'Button text: more',
+    defaultMessage: 'More',
+    id: 'DVjVeX',
+  }),
 }

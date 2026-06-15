@@ -20,6 +20,9 @@ import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadat
 import { UserRoles } from '@/types/UserRoles'
 import { bookFileUrl } from '@/api/files'
 import type { Action } from '@/types/action'
+import { useBook } from '@/composables/book/useBook'
+import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
+import { bookReaderUrl } from '@/api/links'
 
 export function useBookActions(
   book: MaybeRefOrGetter<components['schemas']['BookDto']>,
@@ -30,8 +33,10 @@ export function useBookActions(
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
   const messagesStore = useMessagesStore()
   const display = useDisplay()
+  const { canRead, isEpubReader } = useBook(book)
+  const { inProgress } = useBookReadProgress(book)
 
-  const actions = computed<Action[]>(() => [
+  const actions = computed<Action<BookAction>[]>(() => [
     ...(isAdmin.value && toValue(book).oneshot
       ? [
           {
@@ -72,6 +77,7 @@ export function useBookActions(
               defaultMessage: 'Mark as read',
               id: 'lFGLru',
             }),
+            icon: 'i-mdi:book-check-outline',
             action: BookAction.MARK_READ,
             onClick: () => {
               markRead()
@@ -88,6 +94,7 @@ export function useBookActions(
               defaultMessage: 'Mark as unread',
               id: 'a+9yUi',
             }),
+            icon: 'i-mdi:book-remove-outline',
             action: BookAction.MARK_UNREAD,
             onClick: () => {
               markUnread()
@@ -112,9 +119,6 @@ export function useBookActions(
           },
         ]
       : []),
-  ])
-
-  const manageActions = computed<Action[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -123,6 +127,7 @@ export function useBookActions(
               defaultMessage: 'Edit metadata',
               id: 'M5GJZQ',
             }),
+            icon: 'i-mdi:pencil',
             action: BookAction.EDIT_METADATA,
             onMouseenter: (event: Event) =>
               (editMetadataActivator.value = event.currentTarget as Element),
@@ -183,14 +188,41 @@ export function useBookActions(
           },
         ]
       : []),
+    {
+      title: inProgress.value
+        ? intl.formatMessage({
+            description: 'Book menu: resume reading button',
+            defaultMessage: 'Resume',
+            id: 'cIM3eJ',
+          })
+        : intl.formatMessage({
+            description: 'Book menu: read button',
+            defaultMessage: 'Read',
+            id: 'Y8SsFO',
+          }),
+      icon: 'i-mdi:play',
+      action: BookAction.OPEN_READER,
+      disabled: !canRead.value,
+      onClick: () => {
+        window.open(bookReaderUrl(toValue(book).id, isEpubReader.value), '_blank')
+        callback(BookAction.OPEN_READER)
+      },
+    },
+    {
+      title: intl.formatMessage({
+        description: 'Series view: read incognito button: tooltip',
+        defaultMessage: 'Private reading session',
+        id: 'DLUIbm',
+      }),
+      icon: 'i-mdi:incognito',
+      action: BookAction.OPEN_READER_INCOGNITO,
+      disabled: !canRead.value,
+      onClick: () => {
+        window.open(bookReaderUrl(toValue(book).id, isEpubReader.value, true), '_blank')
+        callback(BookAction.OPEN_READER_INCOGNITO)
+      },
+    },
   ])
-
-  function getAction(action: BookAction) {
-    return (
-      actions.value.find((it) => it.action === action) ||
-      manageActions.value.find((it) => it.action === action)
-    )
-  }
 
   //region Update Series metadata
   const { prepareDialog: showEditBookMetadataDialog, activator: editMetadataActivator } =
@@ -290,7 +322,5 @@ export function useBookActions(
 
   return {
     actions: actions,
-    manageActions: manageActions,
-    getAction,
   }
 }

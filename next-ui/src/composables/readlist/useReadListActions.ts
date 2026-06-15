@@ -25,7 +25,7 @@ export function useReadListActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const actions = computed<Action[]>(() => [
+  const actions = computed<Action<ReadListAction>[]>(() => [
     ...(hasRole(UserRoles.FILE_DOWNLOAD)
       ? [
           {
@@ -44,7 +44,7 @@ export function useReadListActions(
       : []),
   ])
 
-  const manageActions = computed<Action[]>(() => [
+  const manageActions = computed<Action<ReadListAction>[]>(() => [
     ...(isAdmin.value
       ? [
           {

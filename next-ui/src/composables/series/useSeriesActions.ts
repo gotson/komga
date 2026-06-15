@@ -20,6 +20,8 @@ import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesM
 import { UserRoles } from '@/types/UserRoles'
 import { seriesFileUrl } from '@/api/files'
 import type { Action } from '@/types/action'
+import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
+import { useSeries } from '@/composables/series/useSeries'
 
 export function useSeriesActions(
   series: MaybeRefOrGetter<components['schemas']['SeriesDto']>,
@@ -30,8 +32,10 @@ export function useSeriesActions(
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
   const messagesStore = useMessagesStore()
   const display = useDisplay()
+  const { readFirstBook } = useSeriesBooks(() => toValue(series).id)
+  const { canRead, inProgress } = useSeries(series)
 
-  const actions = computed<Action[]>(() => [
+  const actions = computed<Action<SeriesAction>[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -73,6 +77,7 @@ export function useSeriesActions(
               defaultMessage: 'Mark as read',
               id: 'SZWIZ7',
             }),
+            icon: 'i-mdi:book-check-outline',
             action: SeriesAction.MARK_READ,
             onClick: () => {
               markRead()
@@ -89,6 +94,7 @@ export function useSeriesActions(
               defaultMessage: 'Mark as unread',
               id: 'JL33DG',
             }),
+            icon: 'i-mdi:book-remove-outline',
             action: SeriesAction.MARK_UNREAD,
             onClick: () => {
               markUnread()
@@ -112,9 +118,6 @@ export function useSeriesActions(
           },
         ]
       : []),
-  ])
-
-  const manageActions = computed<Action[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -123,6 +126,7 @@ export function useSeriesActions(
               defaultMessage: 'Edit metadata',
               id: 'O839kY',
             }),
+            icon: 'i-mdi:pencil',
             action: SeriesAction.EDIT_METADATA,
             onMouseenter: (event: Event) =>
               (editMetadataActivator.value = event.currentTarget as Element),
@@ -183,15 +187,41 @@ export function useSeriesActions(
           },
         ]
       : []),
+    {
+      title: inProgress.value
+        ? intl.formatMessage({
+            description: 'Series menu: resume reading button',
+            defaultMessage: 'Resume',
+            id: 'wXGljO',
+          })
+        : intl.formatMessage({
+            description: 'Series menu: read button',
+            defaultMessage: 'Read',
+            id: 'Y7Y2T0',
+          }),
+      icon: 'i-mdi:play',
+      action: SeriesAction.OPEN_READER,
+      disabled: !canRead.value,
+      onClick: () => {
+        void readFirstBook()
+        callback(SeriesAction.OPEN_READER)
+      },
+    },
+    {
+      title: intl.formatMessage({
+        description: 'Series view: read incognito button: tooltip',
+        defaultMessage: 'Private reading session',
+        id: 'DLUIbm',
+      }),
+      icon: 'i-mdi:incognito',
+      action: SeriesAction.OPEN_READER_INCOGNITO,
+      disabled: !canRead.value,
+      onClick: () => {
+        void readFirstBook(true)
+        callback(SeriesAction.OPEN_READER_INCOGNITO)
+      },
+    },
   ])
-
-  function getAction(action: SeriesAction) {
-    return (
-      actions.value.find((it) => it.action === action) ||
-      manageActions.value.find((it) => it.action === action)
-    )
-  }
-
   //region Update Series metadata
   const { prepareDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
     useEditSeriesMetadataDialog()
@@ -290,7 +320,5 @@ export function useSeriesActions(
 
   return {
     actions: actions,
-    manageActions: manageActions,
-    getAction,
   }
 }
