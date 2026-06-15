@@ -51,7 +51,7 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
     return undefined
   }
 
-  async function readFirstBook() {
+  async function readFirstBook(incognito: boolean = false) {
     let book = await getFirstBookInSeries(true)
     if (book === undefined) {
       console.log('no unread book, get first book instead')
@@ -60,7 +60,7 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
     if (book) {
       const { canRead, isEpubReader } = useBook(book)
       if (canRead.value) {
-        window.open(bookReaderUrl(book.id, isEpubReader.value), '_blank')
+        window.open(bookReaderUrl(book.id, isEpubReader.value, incognito), '_blank')
       } else {
         messagesStore.messages.push({
           text: intl.formatMessage({

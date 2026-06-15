@@ -1,0 +1,45 @@
+import type { components } from '@/generated/openapi/komga'
+import { useCurrentUser } from '@/colada/users'
+import { useGetLibrariesById } from '@/composables/libraries'
+import { UserRoles } from '@/types/UserRoles'
+import { getEnumValueFromString } from '@/functions/enum'
+import { ReadingDirection } from '@/types/ReadingDirection'
+import { SeriesStatus } from '@/types/SeriesStatus'
+
+export function useSeries(series: MaybeRefOrGetter<components['schemas']['SeriesDto']>) {
+  const isRead = computed(() => toValue(series).booksCount === toValue(series).booksReadCount)
+  const unreadCount = computed(() =>
+    toValue(series).oneshot
+      ? undefined
+      : toValue(series).booksUnreadCount + toValue(series).booksInProgressCount,
+  )
+  const inProgress = computed(
+    () =>
+      (!isRead.value && toValue(series).booksReadCount > 0) ||
+      toValue(series).booksInProgressCount > 0,
+  )
+
+  const { hasRole } = useCurrentUser()
+  const { libraries } = useGetLibrariesById(() => toValue(series).libraryId)
+
+  const isUnavailable = computed(() => toValue(series).deleted || libraries.value?.[0]?.unavailable)
+
+  const canRead = computed(() => hasRole(UserRoles.PAGE_STREAMING) && !isUnavailable.value)
+
+  const readingDirection = computed(() =>
+    getEnumValueFromString(ReadingDirection, toValue(series).metadata.readingDirection),
+  )
+  const seriesStatus = computed(() =>
+    getEnumValueFromString(SeriesStatus, toValue(series).metadata.status),
+  )
+
+  return {
+    isRead,
+    unreadCount,
+    inProgress,
+    isUnavailable,
+    canRead,
+    readingDirection,
+    seriesStatus,
+  }
+}

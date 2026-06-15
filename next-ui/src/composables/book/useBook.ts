@@ -1,8 +1,9 @@
 import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/users'
 import { useGetLibrariesById } from '@/composables/libraries'
-import { getMediaStatusFromString, MediaStatus } from '@/types/MediaStatus'
+import { MediaStatus } from '@/types/MediaStatus'
 import { UserRoles } from '@/types/UserRoles'
+import { getEnumValueFromString } from '@/functions/enum'
 
 export function useBook(book: MaybeRefOrGetter<components['schemas']['BookDto']>) {
   const { hasRole } = useCurrentUser()
@@ -13,7 +14,9 @@ export function useBook(book: MaybeRefOrGetter<components['schemas']['BookDto']>
 
   const isNotReady = computed(() => toValue(book).media.status !== MediaStatus.READY.valueOf())
 
-  const mediaStatus = computed(() => getMediaStatusFromString(toValue(book).media.status))
+  const mediaStatus = computed(() =>
+    getEnumValueFromString(MediaStatus, toValue(book).media.status),
+  )
 
   const canRead = computed(
     () =>

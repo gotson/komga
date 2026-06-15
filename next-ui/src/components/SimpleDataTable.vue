@@ -7,10 +7,10 @@
       v-for="(row, i) in rows"
       :key="i"
     >
-      <div class="pa-1 text-body-small text-uppercase first-col">
+      <div class="py-1 text-body-small text-uppercase first-col">
         {{ row.header }}
       </div>
-      <div class="pa-1">
+      <div class="py-1">
         <div
           v-if="typeof row.data === 'string'"
           v-bind="row.dataProps"

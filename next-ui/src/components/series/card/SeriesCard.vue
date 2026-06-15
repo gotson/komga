@@ -6,13 +6,13 @@
     :poster-url="seriesPosterUrl(series.id)"
     :top-right="unreadCount"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
-    :fab-icon="series.deleted ? undefined : 'i-mdi:play'"
+    :fab-icon="canRead ? 'i-mdi:play' : undefined"
     :quick-action-icon="quickActionIcon"
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
     :menu-props="menuProps"
     :card-to="`/series/${series.id}`"
-    v-bind="props"
+    v-bind="propsLeft"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
@@ -37,12 +37,13 @@ import { useCurrentUser } from '@/colada/users'
 
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
+import { useSeries } from '@/composables/series/useSeries'
 
 const intl = useIntl()
 
 const id = useId()
 
-const { series, ...props } = defineProps<
+const props = defineProps<
   {
     series: components['schemas']['SeriesDto']
   } & ItemCardProps
@@ -51,19 +52,22 @@ const emit = defineEmits<ItemCardEmits>()
 
 const bottomSheet = ref(false)
 
-const isRead = computed(() => series.booksCount === series.booksReadCount)
-const unreadCount = computed(() =>
-  series.oneshot ? undefined : series.booksUnreadCount + series.booksInProgressCount,
-)
+const series = toRef(props, 'series')
+const propsLeft = computed(() => {
+  const { series, ...rest } = props
+  return rest
+})
+
+const { isRead, unreadCount, canRead } = useSeries(series)
 
 const title = computed<ItemCardTitle>(() => ({
-  text: series.metadata.title,
+  text: series.value.metadata.title,
   lines: 2,
-  routerLink: `/series/${series.id}`,
+  routerLink: `/series/${series.value.id}`,
 }))
 
 const lines = computed<ItemCardLine[]>(() => {
-  if (series.deleted)
+  if (series.value.deleted)
     return [
       {
         text: intl.formatMessage({
@@ -75,7 +79,7 @@ const lines = computed<ItemCardLine[]>(() => {
       },
     ]
 
-  if (series.oneshot) {
+  if (series.value.oneshot) {
     return [
       {
         text: intl.formatMessage({
@@ -98,7 +102,7 @@ other {# books}
 }`,
           id: 'cGOJnB',
         },
-        { count: series.booksCount },
+        { count: series.value.booksCount },
       ),
     },
   ]
@@ -122,13 +126,13 @@ const {
 } = useEditSeriesMetadataDialog()
 
 function showEditMetadataDialog() {
-  prepareEditSeriesMetadataDialog(series)
+  prepareEditSeriesMetadataDialog(series.value)
   showEditSeriesMetadataDialog()
 }
 
 const menuActivator = ref()
 
-const { readFirstBook } = useSeriesBooks(series.id)
+const { readFirstBook } = useSeriesBooks(series.value.id)
 function openReader() {
   void readFirstBook()
 }

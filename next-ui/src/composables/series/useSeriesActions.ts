@@ -185,6 +185,13 @@ export function useSeriesActions(
       : []),
   ])
 
+  function getAction(action: SeriesAction) {
+    return (
+      actions.value.find((it) => it.action === action) ||
+      manageActions.value.find((it) => it.action === action)
+    )
+  }
+
   //region Update Series metadata
   const { prepareDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
     useEditSeriesMetadataDialog()
@@ -284,5 +291,6 @@ export function useSeriesActions(
   return {
     actions: actions,
     manageActions: manageActions,
+    getAction,
   }
 }

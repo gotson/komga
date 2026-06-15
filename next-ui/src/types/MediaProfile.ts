@@ -6,11 +6,6 @@ export enum MediaProfile {
   PDF = 'PDF',
 }
 
-export function getMediaStatusFromString(value: string): MediaProfile | undefined {
-  if (Object.values(MediaProfile).includes(value as MediaProfile)) return value as MediaProfile
-  return undefined
-}
-
 export const mediaProfileMessages = defineMessages({
   [MediaProfile.DIVINA]: {
     description: 'Media profile: divina',
