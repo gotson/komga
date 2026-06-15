@@ -1,4 +1,12 @@
 <template>
+  <v-app-bar>
+    <LibraryHeader
+      class="ms-4"
+      :library-id="book?.libraryId"
+      link
+    />
+  </v-app-bar>
+
   <v-container
     fluid
     class="pa-0 pa-sm-4"

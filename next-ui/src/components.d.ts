@@ -105,6 +105,7 @@ declare module 'vue' {
     LibraryFormStepMetadata: typeof import('./components/library/form/StepMetadata.vue')['default']
     LibraryFormStepOptions: typeof import('./components/library/form/StepOptions.vue')['default']
     LibraryFormStepScanner: typeof import('./components/library/form/StepScanner.vue')['default']
+    LibraryHeader: typeof import('./components/library/Header.vue')['default']
     LibraryMenuLibraries: typeof import('./components/library/MenuLibraries.vue')['default']
     LibraryMenuLibrary: typeof import('./components/library/MenuLibrary.vue')['default']
     LibraryNavigation: typeof import('./components/library/LibraryNavigation.vue')['default']

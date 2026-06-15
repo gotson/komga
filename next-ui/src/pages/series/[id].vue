@@ -1,8 +1,14 @@
 <template>
   <v-app-bar>
-    <ChipCount
-      :count="totalElements"
+    <LibraryHeader
       class="ms-4"
+      :library-id="series?.libraryId"
+      link
+    />
+
+    <ChipCount
+      class="ms-2"
+      :count="totalElements"
     />
 
     <v-spacer />

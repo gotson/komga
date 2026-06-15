@@ -38,8 +38,11 @@ export function useGetLibrariesById(libraryId: MaybeRefOrGetter<LibraryId>) {
   const isAll = computed(() => toValue(libraryId) === 'all')
   const isSingle = computed(() => !isPinned.value && !isUnpinned.value && !isAll.value)
 
+  const library = computed(() => (isSingle.value ? libs.value?.[0] : undefined))
+
   return {
     libraries: libs,
+    library,
     libraryIds: libIds,
     isPinned,
     isUnpinned,

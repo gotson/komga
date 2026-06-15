@@ -1,11 +1,11 @@
 <template>
   <v-app-bar>
     <template #prepend>
-      <span
+      <LibraryHeader
         v-if="isSingle"
-        class="ms-4 text-title-large"
-        >{{ title }}</span
-      >
+        :library="librarySingle!"
+        class="ms-4"
+      />
 
       <v-menu v-if="!isSingle">
         <template #activator="{ props: activatorProps }">
@@ -94,9 +94,7 @@ const display = useDisplay()
 const currentRoute = useRoute()
 
 const { anyPinned, anyUnpinned } = useLibraries()
-const { isSingle, libraries } = useGetLibrariesById(props.libraryId)
-
-const title = computed(() => (isSingle.value ? libraries.value?.[0]?.name : undefined))
+const { isSingle, library: librarySingle } = useGetLibrariesById(props.libraryId)
 
 const libTypes = computed(() => [
   ...(anyPinned.value
