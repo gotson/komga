@@ -1,5 +1,6 @@
 <template>
-  <ItemMenu
+  <ItemMenuSheet
+    v-model="isShown"
     :actions="actionsDefault"
     :manage-actions="actionsManagement"
     :activator="activator"
@@ -11,6 +12,7 @@ import type { components } from '@/generated/openapi/komga'
 import { useBookActions } from '@/composables/book/useBookActions'
 import { createOrderCompareFn } from '@/functions/sort'
 import { BookAction, bookActionGroups } from '@/types/book'
+const isShown = defineModel<boolean>({ default: false })
 
 const { book, excludeActions = [] } = defineProps<{
   activator: string | Element
@@ -18,7 +20,10 @@ const { book, excludeActions = [] } = defineProps<{
   excludeActions?: BookAction[]
 }>()
 
-const { actions } = useBookActions(() => book)
+function afterClick() {
+  isShown.value = false
+}
+const { actions } = useBookActions(() => book, afterClick)
 const actionsDefault = computed(() =>
   actions.value
     .filter(

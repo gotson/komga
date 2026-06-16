@@ -20,19 +20,13 @@
       :id="id"
       v-tooltip:bottom="$formatMessage(commonMessages.buttonMore)"
       icon="i-mdi:dots-horizontal"
-      @click="showExtraActions()"
+      @click="bottomSheet = true"
     />
   </div>
-  <SeriesMenu
-    v-if="display.smAndUp.value"
-    :series="series"
-    :activator="`#${id}`"
-    :exclude-actions="excludeActions"
-  />
-  <SeriesMenuBottomSheet
-    v-if="display.xs.value"
+  <SeriesMenuSheet
     v-model="bottomSheet"
     :series="series"
+    :activator="`#${id}`"
     :exclude-actions="excludeActions"
   />
 </template>
@@ -42,7 +36,6 @@ import type { components } from '@/generated/openapi/komga'
 import { useSeriesActions } from '@/composables/series/useSeriesActions'
 import { SeriesAction, seriesActionGroups } from '@/types/series'
 import { createOrderCompareFn } from '@/functions/sort'
-import { useDisplay } from 'vuetify'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const props = defineProps<{
@@ -50,7 +43,6 @@ const props = defineProps<{
 }>()
 
 const id = useId()
-const display = useDisplay()
 const { actions } = useSeriesActions(() => props.series)
 
 const bottomSheet = ref(false)
@@ -65,8 +57,4 @@ const readAction = computed(() =>
 )
 const excludeActions = [...seriesActionGroups.seriesView, SeriesAction.OPEN_READER]
 const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
-
-function showExtraActions() {
-  if (display.xs.value) bottomSheet.value = true
-}
 </script>

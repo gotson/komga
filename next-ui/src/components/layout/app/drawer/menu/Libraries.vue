@@ -45,15 +45,11 @@
             id: 'hJEc5M',
           })
         "
-        @click.prevent="display.xs.value ? (bottomSheet = true) : undefined"
+        @click.prevent="bottomSheet = true"
       />
       <LibraryMenuLibraries
-        v-if="display.smAndUp.value"
-        :activator="`#${id}`"
-      />
-      <LibraryMenuLibrariesBottomSheet
-        v-if="display.xs.value"
         v-model="bottomSheet"
+        :activator="`#${id}`"
       />
     </template>
   </v-list-item>

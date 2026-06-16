@@ -135,7 +135,7 @@ const libTypes = computed(() => [
 ])
 const selectedLibType = computed(() => libTypes.value.find((it) => it.value === props.libraryId))
 
-const selectedRoute = computed(() => props.routes.find((it) => it.to === currentRoute.path))
+const selectedRoute = computed(() => props.routes.find((it) => it.to === currentRoute?.path))
 </script>
 
 <style scoped></style>

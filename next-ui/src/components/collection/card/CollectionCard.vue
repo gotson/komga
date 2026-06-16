@@ -14,13 +14,10 @@
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
   />
-  <CollectionMenu
-    :collection="collection"
-    :activator="menuActivator"
-  />
-  <CollectionMenuBottomSheet
+  <CollectionMenuSheet
     v-model="bottomSheet"
     :collection="collection"
+    :activator="menuActivator"
   />
 </template>
 
@@ -31,8 +28,6 @@ import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
 import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
-import CollectionMenu from '@/components/collection/menu/CollectionMenu.vue'
-import CollectionMenuBottomSheet from '@/components/collection/menu/CollectionMenuBottomSheet.vue'
 
 const intl = useIntl()
 

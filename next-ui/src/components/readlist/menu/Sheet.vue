@@ -1,8 +1,9 @@
 <template>
-  <ItemMenuBottomSheet
+  <ItemMenuSheet
     v-model="isShown"
     :actions="actionsDefault"
     :manage-actions="actionsManagement"
+    :activator="activator"
   />
 </template>
 
@@ -15,6 +16,7 @@ import { createOrderCompareFn } from '@/functions/sort'
 const isShown = defineModel<boolean>({ default: false })
 
 const { readList, excludeActions = [] } = defineProps<{
+  activator: string | Element
   readList: components['schemas']['ReadListDto']
   excludeActions?: ReadListAction[]
 }>()

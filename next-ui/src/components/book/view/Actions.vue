@@ -20,19 +20,13 @@
       :id="id"
       v-tooltip:bottom="$formatMessage(commonMessages.buttonMore)"
       icon="i-mdi:dots-horizontal"
-      @click="showExtraActions()"
+      @click="bottomSheet = true"
     />
   </div>
-  <BookMenu
-    v-if="display.smAndUp.value"
-    :book="book"
-    :activator="`#${id}`"
-    :exclude-actions="excludeActions"
-  />
-  <BookMenuBottomSheet
-    v-if="display.xs.value"
+  <BookMenuSheet
     v-model="bottomSheet"
     :book="book"
+    :activator="`#${id}`"
     :exclude-actions="excludeActions"
   />
 </template>
@@ -42,7 +36,6 @@ import type { components } from '@/generated/openapi/komga'
 import { useBookActions } from '@/composables/book/useBookActions'
 import { BookAction, bookActionGroups } from '@/types/book'
 import { createOrderCompareFn } from '@/functions/sort'
-import { useDisplay } from 'vuetify/framework'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const props = defineProps<{
@@ -50,7 +43,6 @@ const props = defineProps<{
 }>()
 
 const id = useId()
-const display = useDisplay()
 const { actions } = useBookActions(() => props.book)
 
 const bottomSheet = ref(false)
@@ -63,8 +55,4 @@ const prominentActions = computed(() =>
 const readAction = computed(() => actions.value.find((it) => it.action === BookAction.OPEN_READER))
 const excludeActions = [...bookActionGroups.bookView, BookAction.OPEN_READER]
 const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
-
-function showExtraActions() {
-  if (display.xs.value) bottomSheet.value = true
-}
 </script>

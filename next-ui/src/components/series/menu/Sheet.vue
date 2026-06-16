@@ -1,5 +1,6 @@
 <template>
-  <ItemMenu
+  <ItemMenuSheet
+    v-model="isShown"
     :actions="actionsDefault"
     :manage-actions="actionsManagement"
     :activator="activator"
@@ -12,6 +13,8 @@ import { useSeriesActions } from '@/composables/series/useSeriesActions'
 import { SeriesAction, seriesActionGroups } from '@/types/series'
 import { createOrderCompareFn } from '@/functions/sort'
 
+const isShown = defineModel<boolean>({ default: false })
+
 const {
   activator,
   series,
@@ -22,7 +25,10 @@ const {
   excludeActions?: SeriesAction[]
 }>()
 
-const { actions } = useSeriesActions(() => series)
+function afterClick() {
+  isShown.value = false
+}
+const { actions } = useSeriesActions(() => series, afterClick)
 const actionsDefault = computed(() =>
   actions.value
     .filter(

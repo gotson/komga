@@ -1,7 +1,8 @@
 <template>
-  <ItemMenuBottomSheet
+  <ItemMenuSheet
     v-model="isShown"
-    :manage-actions="actionsManagement"
+    :actions="actionsManagement"
+    :activator="activator"
   />
 </template>
 
@@ -10,10 +11,10 @@ import type { components } from '@/generated/openapi/komga'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
 import { type CollectionAction, collectionActionGroups } from '@/types/collection'
 import { createOrderCompareFn } from '@/functions/sort'
-
 const isShown = defineModel<boolean>({ default: false })
 
 const { collection, excludeActions = [] } = defineProps<{
+  activator: string | Element
   collection: components['schemas']['CollectionDto']
   excludeActions?: CollectionAction[]
 }>()
@@ -21,6 +22,7 @@ const { collection, excludeActions = [] } = defineProps<{
 function afterClick() {
   isShown.value = false
 }
+
 const { actions } = useCollectionActions(() => collection, afterClick)
 
 const actionsManagement = computed(() =>

@@ -18,13 +18,10 @@
     @card-long-press="bottomSheet = true"
     @click-fab="openReader"
   />
-  <SeriesMenu
-    :series="series"
-    :activator="menuActivator"
-  />
-  <SeriesMenuBottomSheet
+  <SeriesMenuSheet
     v-model="bottomSheet"
     :series="series"
+    :activator="menuActivator"
   />
 </template>
 

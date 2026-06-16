@@ -18,13 +18,10 @@
     @card-long-press="bottomSheet = true"
     @click-fab="openReader"
   />
-  <BookMenu
-    :book="book"
-    :activator="menuActivator"
-  />
-  <BookMenuBottomSheet
+  <BookMenuSheet
     v-model="bottomSheet"
     :book="book"
+    :activator="menuActivator"
   />
 </template>
 
@@ -35,7 +32,6 @@ import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
 import { MediaStatus, mediaStatusMessages } from '@/types/MediaStatus'
-
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 import { useBook } from '@/composables/book/useBook'

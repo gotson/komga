@@ -16,13 +16,10 @@
       isAdmin || hasRole(UserRoles.FILE_DOWNLOAD) ? (bottomSheet = true) : undefined
     "
   />
-  <ReadlistMenu
-    :read-list="readList"
-    :activator="menuActivator"
-  />
-  <ReadlistMenuBottomSheet
+  <ReadlistMenuSheet
     v-model="bottomSheet"
     :read-list="readList"
+    :activator="menuActivator"
   />
 </template>
 
@@ -32,8 +29,6 @@ import { readListPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
-import ReadlistMenu from '@/components/readlist/menu/ReadlistMenu.vue'
-import ReadlistMenuBottomSheet from '@/components/readlist/menu/ReadlistMenuBottomSheet.vue'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 import { UserRoles } from '@/types/UserRoles'
 

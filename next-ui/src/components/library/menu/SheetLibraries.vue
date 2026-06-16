@@ -1,8 +1,9 @@
 <template>
-  <ItemMenuBottomSheet
+  <ItemMenuSheet
     v-model="isShown"
     :actions="actionsDefault"
     :manage-actions="actionsManagement"
+    :activator="activator"
   />
 </template>
 
@@ -10,9 +11,11 @@
 import { createOrderCompareFn } from '@/functions/sort'
 import { librariesActionGroups } from '@/types/action'
 import { useLibrariesActions } from '@/composables/library/useLibrariesActions'
-
 const isShown = defineModel<boolean>({ default: false })
 
+defineProps<{
+  activator: string | Element
+}>()
 function afterClick() {
   isShown.value = false
 }

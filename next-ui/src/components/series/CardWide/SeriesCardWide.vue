@@ -14,13 +14,10 @@
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="bottomSheet = true"
   />
-  <SeriesMenu
-    :series="series"
-    :activator="menuActivator"
-  />
-  <SeriesMenuBottomSheet
+  <SeriesMenuSheet
     v-model="bottomSheet"
     :series="series"
+    :activator="menuActivator"
   />
 </template>
 
