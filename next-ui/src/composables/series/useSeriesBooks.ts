@@ -54,7 +54,6 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
   async function readFirstBook(incognito: boolean = false) {
     let book = await getFirstBookInSeries(true)
     if (book === undefined) {
-      console.log('no unread book, get first book instead')
       book = await getFirstBookInSeries(false)
     }
     if (book) {

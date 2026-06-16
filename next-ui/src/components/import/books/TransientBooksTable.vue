@@ -386,7 +386,6 @@ const importBatch = computed(
 
 // only analyze books that are shown
 function onDisplayedItems(items: { key: string }[]) {
-  console.log('onDisplayedItems', items)
   importBooks.value
     .filter((b) => items.map((it) => it.key).includes(b.transientBook.id))
     .forEach((b) => {
