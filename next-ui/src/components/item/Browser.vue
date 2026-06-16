@@ -4,7 +4,7 @@
     return-object
     :items="items"
     :items-per-page="appStore.browsingPaging === 'paged' ? itemsPerPage : -1"
-    :page="appStore.browsingPaging === 'paged' ? page1 : 1"
+    :page="1"
     show-select
   >
     <template #default="{ items: internalItems, toggleSelect, isSelected }">
