@@ -30,10 +30,16 @@
             id: '3gimvl',
           })
         "
-        @click.prevent
+        @click.prevent="display.xs.value ? (bottomSheet = true) : undefined"
       />
-      <LibraryMenuLibrary
-        :activator-id="`#${id}${library.id}`"
+      <LibraryMenu
+        v-if="display.smAndUp.value"
+        :activator="`#${id}${library.id}`"
+        :library="library"
+      />
+      <LibraryMenuBottomSheet
+        v-if="display.xs.value"
+        v-model="bottomSheet"
         :library="library"
       />
     </template>
@@ -43,12 +49,16 @@
 <script setup lang="ts">
 import { useCurrentUser } from '@/colada/users'
 import type { components } from '@/generated/openapi/komga'
+import { useDisplay } from 'vuetify/framework'
+import LibraryMenuBottomSheet from '@/components/library/menu/LibraryMenuBottomSheet.vue'
 
 defineProps<{
   library: components['schemas']['LibraryDto']
 }>()
 
 const { isAdmin } = useCurrentUser()
-
 const id = useId()
+const display = useDisplay()
+
+const bottomSheet = ref(false)
 </script>

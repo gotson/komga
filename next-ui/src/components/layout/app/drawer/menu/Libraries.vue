@@ -45,9 +45,16 @@
             id: 'hJEc5M',
           })
         "
-        @click.prevent
+        @click.prevent="display.xs.value ? (bottomSheet = true) : undefined"
       />
-      <LibraryMenuLibraries :activator-id="`#${id}`" />
+      <LibraryMenuLibraries
+        v-if="display.smAndUp.value"
+        :activator="`#${id}`"
+      />
+      <LibraryMenuLibrariesBottomSheet
+        v-if="display.xs.value"
+        v-model="bottomSheet"
+      />
     </template>
   </v-list-item>
 
@@ -103,6 +110,7 @@ const { unpinned, pinned, refresh } = useLibraries()
 const { isAdmin } = useCurrentUser()
 
 const id = useId()
+const bottomSheet = ref(false)
 
 // ensure freshness, especially if libraries have been reordered
 void refresh()

@@ -224,8 +224,6 @@ const display = useDisplay()
 const appStore = useAppStore()
 const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 
-const viewName = computed(() => `readlist_${readListId.value}`)
-
 const {
   data: readList,
   error,
