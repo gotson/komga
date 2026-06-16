@@ -79,7 +79,7 @@ const display = useDisplay()
 
 const page1 = defineModel<number>('page1', { required: true })
 
-const { items, presentationMode, hasNextPage, pageCount } = defineProps<{
+const props = defineProps<{
   items?: T[]
   presentationMode: PresentationMode
   hasNextPage: boolean
@@ -93,5 +93,5 @@ const emit = defineEmits<{
 const selectionStore = useSelectionStore()
 const { itemsPerPage } = useItemsPerPage(appStore.browsingPageSize)
 
-const jumpOptions = computed(() => Array.from({ length: pageCount }).map((_, i) => i + 1))
+const jumpOptions = computed(() => Array.from({ length: props.pageCount }).map((_, i) => i + 1))
 </script>
