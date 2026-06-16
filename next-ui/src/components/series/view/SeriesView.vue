@@ -5,40 +5,12 @@
         cols="6"
         sm="3"
       >
-        <v-img
-          cover
-          position="top"
-          :src="seriesPosterUrl(series.id)"
-          lazy-src="@/assets/cover.svg"
-          aspect-ratio="0.7071"
-          rounded
+        <ItemPoster
+          :poster-url="seriesPosterUrl(series.id)"
+          :top-right-icon="isRead ? 'i-mdi:check' : undefined"
+          :top-right="unreadCount"
           :max-width="posterMaxWidth"
-        >
-          <template #placeholder>
-            <div class="d-flex align-center justify-center fill-height">
-              <v-progress-circular
-                color="grey"
-                indeterminate
-              />
-            </div>
-          </template>
-
-          <!--  This will just show lazy-src without the v-progress  -->
-          <template #error></template>
-
-          <!--  Top-right icon  -->
-          <div
-            v-if="isRead || unreadCount"
-            class="top-0 right-0 position-absolute translucent text-white px-2 py-1 font-weight-bold text-body-small"
-            style="border-bottom-left-radius: 4px"
-          >
-            <v-icon
-              v-if="isRead"
-              icon="i-mdi:check"
-            />
-            <template v-else>{{ unreadCount }}</template>
-          </div>
-        </v-img>
+        />
 
         <v-alert
           v-if="isRead || bookOnDeck"
@@ -196,10 +168,12 @@ other {# books}
         </v-col>
       </v-row>
 
-      <v-row density="compact">
+      <v-row
+        v-if="series.deleted"
+        density="compact"
+      >
         <v-col>
           <v-alert
-            v-if="series.deleted"
             type="error"
             variant="tonal"
             :text="
@@ -213,7 +187,7 @@ other {# books}
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row v-if="series.metadata.summary || series.booksMetadata.summary">
         <v-col>
           <div
             v-if="!series.metadata.summary && series.booksMetadata.summary"
@@ -234,7 +208,7 @@ other {# books}
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row v-if="tableRows.length > 0">
         <v-col>
           <SimpleDataTable :rows="tableRows" />
         </v-col>
@@ -245,7 +219,13 @@ other {# books}
           <v-btn
             variant="text"
             size="small"
-            text="Show all"
+            :text="
+              $formatMessage({
+                description: 'Series view: button to display all series information',
+                defaultMessage: 'Show info',
+                id: 'C1bGrS',
+              })
+            "
             @mouseenter="dialogSimple.activator = $event.currentTarget"
             @click="showDialogExtra()"
           />
@@ -280,7 +260,7 @@ const props = defineProps<{
   series: components['schemas']['SeriesDto']
 }>()
 
-const { unreadCount, isRead, readingDirection, seriesStatus } = useSeries(props.series)
+const { unreadCount, isRead, readingDirection, seriesStatus } = useSeries(() => props.series)
 const { getFirstBookInSeries } = useSeriesBooks(props.series.id)
 
 const bookOnDeck = ref<components['schemas']['BookDto'] | undefined>(undefined)

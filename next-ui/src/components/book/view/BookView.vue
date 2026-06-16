@@ -5,37 +5,11 @@
         cols="6"
         sm="3"
       >
-        <v-img
-          cover
-          position="top"
-          :src="bookPosterUrl(book.id)"
-          lazy-src="@/assets/cover.svg"
-          aspect-ratio="0.7071"
-          rounded
+        <ItemPoster
+          :poster-url="bookPosterUrl(book.id)"
+          :progress-percent="progressPercent"
           :max-width="posterMaxWidth"
-        >
-          <template #placeholder>
-            <div class="d-flex align-center justify-center fill-height">
-              <v-progress-circular
-                color="grey"
-                indeterminate
-              />
-            </div>
-          </template>
-
-          <!--  This will just show lazy-src without the v-progress  -->
-          <template #error></template>
-
-          <!--  Progress bar  -->
-          <v-progress-linear
-            v-if="inProgress"
-            :model-value="progressPercent"
-            color="primary"
-            height="10"
-            class="position-absolute bottom-0"
-            style="top: unset"
-          />
-        </v-img>
+        />
 
         <v-alert
           v-if="isRead || pagesLeft"
@@ -161,7 +135,10 @@
         </v-col>
       </v-row>
 
-      <v-row density="compact">
+      <v-row
+        v-if="mediaStatus !== MediaStatus.READY || isDeleted"
+        density="compact"
+      >
         <v-col>
           <v-alert
             v-if="isDeleted"
@@ -232,7 +209,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row v-if="book.metadata.summary">
         <v-col>
           <ReadMore :text="book.metadata.summary" />
         </v-col>

@@ -84,6 +84,7 @@ declare module 'vue' {
     ItemBrowser: typeof import('./components/item/Browser.vue')['default']
     ItemCard: typeof import('./components/item/card/ItemCard.vue')['default']
     ItemCardWide: typeof import('./components/item/CardWide/ItemCardWide.vue')['default']
+    ItemPoster: typeof import('./components/item/Poster.vue')['default']
     LayoutAppBar: typeof import('./components/layout/app/Bar.vue')['default']
     LayoutAppBarHolder: typeof import('./components/layout/app/BarHolder.vue')['default']
     LayoutAppDrawer: typeof import('./components/layout/app/drawer/Drawer.vue')['default']
