@@ -9,13 +9,6 @@
 
     <PosterSizeSlider />
 
-    <PresentationSelector
-      v-if="display.smAndUp.value"
-      v-model="presentationMode"
-      :modes="['grid', 'list']"
-      toggle
-    />
-
     <PageSizeSelector
       v-if="appStore.isBrowsingPaged"
       v-model="appStore.browsingPageSize"
@@ -145,7 +138,7 @@
     v-else
     v-model:page1="page1"
     :items="dataItems"
-    :presentation-mode="presentationModeEffective"
+    presentation-mode="grid"
     :has-next-page="hasNextPage"
     :page-count="pageCount"
     @load-next-page="loadNextPage()"
@@ -168,7 +161,6 @@
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
 import { useDisplay } from 'vuetify'
-import { usePresentationMode } from '@/composables/presentationMode'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
@@ -202,7 +194,6 @@ const appStore = useAppStore()
 const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 
 const viewName = computed(() => `${libraryId}_books`)
-const { presentationMode, presentationModeEffective } = usePresentationMode(viewName)
 
 const { page0, page1, pageCount } = usePagination()
 

@@ -9,13 +9,6 @@
 
     <PosterSizeSlider />
 
-    <PresentationSelector
-      v-if="display.smAndUp.value"
-      v-model="presentationMode"
-      :modes="['grid', 'list']"
-      toggle
-    />
-
     <PageSizeSelector
       v-if="isBrowsingPaged"
       v-model="appStore.browsingPageSize"
@@ -169,7 +162,7 @@
         v-else
         v-model:page1="page1"
         :items="dataItems"
-        :presentation-mode="presentationModeEffective"
+        presentation-mode="grid"
         :has-next-page="hasNextPage"
         :page-count="pageCount"
         @load-next-page="loadNextPage()"
@@ -194,7 +187,6 @@
 import { useDisplay } from 'vuetify/framework'
 import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
-import { usePresentationMode } from '@/composables/presentationMode'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { usePagination } from '@/composables/pagination'
 import { readListDetailQuery } from '@/colada/readlists'
@@ -233,7 +225,6 @@ const appStore = useAppStore()
 const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 
 const viewName = computed(() => `readlist_${readListId.value}`)
-const { presentationMode, presentationModeEffective } = usePresentationMode(viewName)
 
 const {
   data: readList,
