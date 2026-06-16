@@ -13,7 +13,6 @@
       v-if="isBrowsingPaged"
       v-model="appStore.browsingPageSize"
       allow-unpaged
-      :sizes="[1, 10, 20]"
     />
 
     <PagingSelector
