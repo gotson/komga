@@ -48,7 +48,7 @@
 
     <v-row
       class="align-center"
-      density="compact"
+      density="comfortable"
     >
       <v-col>
         <v-text-field
