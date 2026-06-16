@@ -47,7 +47,7 @@
         "
         @click.prevent="bottomSheet = true"
       />
-      <LibraryMenuLibraries
+      <LibraryMenuSheetLibraries
         v-model="bottomSheet"
         :activator="`#${id}`"
       />
