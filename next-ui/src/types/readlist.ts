@@ -3,3 +3,9 @@ export enum ReadListAction {
   EDIT,
   DELETE,
 }
+
+// convenience groups for action filtering and ordering
+export const readListActionGroups = {
+  default: [ReadListAction.DOWNLOAD],
+  management: [ReadListAction.EDIT, ReadListAction.DELETE],
+}

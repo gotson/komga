@@ -186,51 +186,71 @@
     </v-list>
   </TempDrawer>
 
-  <div
-    v-if="collection"
-    class="d-flex align-center px-4 pt-2 ga-2"
+  <v-container
+    fluid
+    class="pa-0 pa-sm-4"
   >
-    <div class="text-title-large text-truncate">{{ collection.name }}</div>
-    <CollectionMenuButton :collection="collection" />
-  </div>
-  <v-divider class="mt-4" />
+    <div v-if="isPending">
+      <v-row>
+        <v-col cols="3">
+          <v-skeleton-loader type="image" />
+        </v-col>
+        <v-col>
+          <v-skeleton-loader type="article" />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-skeleton-loader type="table-heading@5" />
+        </v-col>
+      </v-row>
+    </div>
 
-  <EmptyStateFilterNoResults
-    v-if="totalElements === 0 && filterCount > 0"
-    @reset="clearFilters()"
-  />
+    <EmptyStateNetworkError v-else-if="error" />
 
-  <ItemBrowser
-    v-else
-    v-model:page1="page1"
-    :items="dataItems"
-    :presentation-mode="presentationModeEffective"
-    :has-next-page="hasNextPage"
-    :page-count="pageCount"
-    @load-next-page="loadNextPage()"
-  >
-    <template #default="{ item, isSelected, preSelect, toggleSelect }">
-      <SeriesCard
-        v-if="presentationModeEffective === 'grid'"
-        stretch-poster
-        :series="item"
-        :selected="isSelected"
-        :pre-select="preSelect"
-        :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
-        @selection="(_val, event) => toggleSelect(event as MouseEvent)"
+    <template v-else-if="collection">
+      <CollectionView :collection="collection" />
+
+      <v-divider />
+
+      <EmptyStateFilterNoResults
+        v-if="totalElements === 0 && filterCount > 0"
+        @reset="clearFilters()"
       />
 
-      <SeriesCardWide
-        v-if="presentationModeEffective === 'list'"
-        stretch-poster
-        :series="item"
-        :selected="isSelected"
-        :pre-select="preSelect"
-        :width="appStore.gridCardWidth"
-        @selection="(_val, event) => toggleSelect(event as MouseEvent)"
-      />
+      <ItemBrowser
+        v-else
+        v-model:page1="page1"
+        :items="dataItems"
+        :presentation-mode="presentationModeEffective"
+        :has-next-page="hasNextPage"
+        :page-count="pageCount"
+        @load-next-page="loadNextPage()"
+      >
+        <template #default="{ item, isSelected, preSelect, toggleSelect }">
+          <SeriesCard
+            v-if="presentationModeEffective === 'grid'"
+            stretch-poster
+            :series="item"
+            :selected="isSelected"
+            :pre-select="preSelect"
+            :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
+            @selection="(_val, event) => toggleSelect(event as MouseEvent)"
+          />
+
+          <SeriesCardWide
+            v-if="presentationModeEffective === 'list'"
+            stretch-poster
+            :series="item"
+            :selected="isSelected"
+            :pre-select="preSelect"
+            :width="appStore.gridCardWidth"
+            @selection="(_val, event) => toggleSelect(event as MouseEvent)"
+          />
+        </template>
+      </ItemBrowser>
     </template>
-  </ItemBrowser>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
@@ -261,8 +281,8 @@ import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
 import { PageRequest, type Sort } from '@/types/PageRequest'
 import { collectionDetailQuery } from '@/colada/collections'
-import CollectionMenuButton from '@/components/collection/menu/CollectionMenuButton.vue'
 import { contributorsRolesMessages } from '@/types/referential'
+import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 
 const route = useRoute('/collection/[id]')
 const router = useRouter()
@@ -280,7 +300,11 @@ const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 const viewName = computed(() => `collection_${collectionId.value}`)
 const { presentationMode, presentationModeEffective } = usePresentationMode(viewName)
 
-const { data: collection, error } = useQuery(() => ({
+const {
+  data: collection,
+  error,
+  isPending,
+} = useQuery(() => ({
   ...collectionDetailQuery({
     collectionId: collectionId.value,
   }),

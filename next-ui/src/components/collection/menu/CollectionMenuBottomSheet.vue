@@ -1,32 +1,39 @@
 <template>
-  <v-bottom-sheet
+  <ItemMenuBottomSheet
     v-model="isShown"
-    inset
-  >
-    <v-list>
-      <v-list-item
-        v-for="(action, i) in manageActions"
-        :key="i"
-        v-bind="action"
-      />
-    </v-list>
-  </v-bottom-sheet>
+    :manage-actions="actionsManagement"
+  />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
+import { type CollectionAction, collectionActionGroups } from '@/types/collection'
+import { createOrderCompareFn } from '@/functions/sort'
 
 const isShown = defineModel<boolean>({ default: false })
 
-const props = defineProps<{
+const { collection, excludeActions = [] } = defineProps<{
   collection: components['schemas']['CollectionDto']
+  excludeActions?: CollectionAction[]
 }>()
 
 function afterClick() {
   isShown.value = false
 }
-const { manageActions } = useCollectionActions(() => props.collection, afterClick)
+const { actions } = useCollectionActions(() => collection, afterClick)
+
+const actionsManagement = computed(() =>
+  actions.value
+    .filter(
+      (it) =>
+        collectionActionGroups.management.includes(it.action) &&
+        !excludeActions.includes(it.action),
+    )
+    .toSorted(
+      createOrderCompareFn(collectionActionGroups.management, (it) => it.action.toString()),
+    ),
+)
 </script>
 
 <script lang="ts"></script>

@@ -1,40 +1,44 @@
 <template>
-  <v-bottom-sheet
+  <ItemMenuBottomSheet
     v-model="isShown"
-    inset
-  >
-    <v-list>
-      <v-list-item
-        v-for="(action, i) in actions"
-        :key="i"
-        v-bind="action"
-      />
-
-      <v-divider v-if="actions.length > 0 && manageActions.length > 0" />
-
-      <v-list-item
-        v-for="(action, i) in manageActions"
-        :key="i"
-        v-bind="action"
-      />
-    </v-list>
-  </v-bottom-sheet>
+    :actions="actionsDefault"
+    :manage-actions="actionsManagement"
+  />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useReadListActions } from '@/composables/readlist/useReadListActions'
+import { type ReadListAction, readListActionGroups } from '@/types/readlist'
+import { createOrderCompareFn } from '@/functions/sort'
 
 const isShown = defineModel<boolean>({ default: false })
 
-const props = defineProps<{
+const { readList, excludeActions = [] } = defineProps<{
   readList: components['schemas']['ReadListDto']
+  excludeActions?: ReadListAction[]
 }>()
 
 function afterClick() {
   isShown.value = false
 }
-const { actions, manageActions } = useReadListActions(() => props.readList, afterClick)
+const { actions } = useReadListActions(() => readList, afterClick)
+const actionsDefault = computed(() =>
+  actions.value
+    .filter(
+      (it) =>
+        readListActionGroups.default.includes(it.action) && !excludeActions.includes(it.action),
+    )
+    .toSorted(createOrderCompareFn(readListActionGroups.default, (it) => it.action.toString())),
+)
+const actionsManagement = computed(() =>
+  actions.value
+    .filter(
+      (it) =>
+        readListActionGroups.management.includes(it.action) && !excludeActions.includes(it.action),
+    )
+    .toSorted(createOrderCompareFn(readListActionGroups.management, (it) => it.action.toString())),
+)
 </script>
 
 <script lang="ts"></script>

@@ -42,9 +42,6 @@ export function useReadListActions(
           },
         ]
       : []),
-  ])
-
-  const manageActions = computed<Action<ReadListAction>[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -53,6 +50,7 @@ export function useReadListActions(
               defaultMessage: 'Edit',
               id: 'ITAI2D',
             }),
+            icon: 'i-mdi:pencil',
             action: ReadListAction.EDIT,
             onMouseenter: (event: Event) => (editActivator.value = event.currentTarget as Element),
             onClick: () => {
@@ -145,6 +143,5 @@ export function useReadListActions(
 
   return {
     actions: actions,
-    manageActions: manageActions,
   }
 }

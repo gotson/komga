@@ -248,7 +248,7 @@ const props = defineProps<{
   book: components['schemas']['BookDto']
 }>()
 
-const { isRead, inProgress, progressPercent, pagesLeft } = useBookReadProgress(() => props.book)
+const { isRead, progressPercent, pagesLeft } = useBookReadProgress(() => props.book)
 const { mediaStatus, isDeleted, format } = useBook(() => props.book)
 
 const tableRows = computed(() => {

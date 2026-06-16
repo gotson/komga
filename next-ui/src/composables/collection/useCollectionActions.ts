@@ -23,7 +23,7 @@ export function useCollectionActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const manageActions = computed<Action<CollectionAction>[]>(() => [
+  const actions = computed<Action<CollectionAction>[]>(() => [
     ...(isAdmin.value
       ? [
           {
@@ -32,6 +32,7 @@ export function useCollectionActions(
               defaultMessage: 'Edit',
               id: '39afQA',
             }),
+            icon: 'i-mdi:pencil',
             action: CollectionAction.EDIT,
             onMouseenter: (event: Event) => (editActivator.value = event.currentTarget as Element),
             onClick: () => {
@@ -124,7 +125,6 @@ export function useCollectionActions(
   //endregion
 
   return {
-    // actions: actions,
-    manageActions: manageActions,
+    actions,
   }
 }

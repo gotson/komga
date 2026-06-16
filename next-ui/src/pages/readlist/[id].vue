@@ -134,44 +134,61 @@
     </v-list>
   </TempDrawer>
 
-  <div
-    v-if="readList"
-    class="px-4 pt-2"
+  <v-container
+    fluid
+    class="pa-0 pa-sm-4"
   >
-    <div class="d-flex align-center pb-2 ga-2">
-      <div class="text-title-large text-truncate">{{ readList.name }}</div>
-      <ReadlistMenuButton :read-list="readList" />
+    <div v-if="isPending">
+      <v-row>
+        <v-col cols="3">
+          <v-skeleton-loader type="image" />
+        </v-col>
+        <v-col>
+          <v-skeleton-loader type="article" />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-skeleton-loader type="table-heading@5" />
+        </v-col>
+      </v-row>
     </div>
-    <ReadMore :text="readList.summary" />
-    <v-divider class="mt-4" />
-  </div>
 
-  <EmptyStateFilterNoResults
-    v-if="totalElements === 0 && filterCount > 0"
-    @reset="clearFilters()"
-  />
+    <EmptyStateNetworkError v-else-if="error" />
 
-  <ItemBrowser
-    v-else
-    v-model:page1="page1"
-    :items="dataItems"
-    :presentation-mode="presentationModeEffective"
-    :has-next-page="hasNextPage"
-    :page-count="pageCount"
-    @load-next-page="loadNextPage()"
-  >
-    <template #default="{ item, isSelected, preSelect, toggleSelect }">
-      <BookCard
-        stretch-poster
-        show-series
-        :book="item"
-        :selected="isSelected"
-        :pre-select="preSelect"
-        :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
-        @selection="(_val, event) => toggleSelect(event as MouseEvent)"
+    <template v-else-if="readList">
+      <ReadlistView :read-list="readList" />
+
+      <v-divider />
+
+      <EmptyStateFilterNoResults
+        v-if="totalElements === 0 && filterCount > 0"
+        @reset="clearFilters()"
       />
+
+      <ItemBrowser
+        v-else
+        v-model:page1="page1"
+        :items="dataItems"
+        :presentation-mode="presentationModeEffective"
+        :has-next-page="hasNextPage"
+        :page-count="pageCount"
+        @load-next-page="loadNextPage()"
+      >
+        <template #default="{ item, isSelected, preSelect, toggleSelect }">
+          <BookCard
+            stretch-poster
+            show-series
+            :book="item"
+            :selected="isSelected"
+            :pre-select="preSelect"
+            :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
+            @selection="(_val, event) => toggleSelect(event as MouseEvent)"
+          />
+        </template>
+      </ItemBrowser>
     </template>
-  </ItemBrowser>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
@@ -197,11 +214,11 @@ import { bookListQuery, bookListQueryInfinite } from '@/colada/books'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import ChipCount from '@/components/ChipCount.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
-import ReadlistMenuButton from '@/components/readlist/menu/ReadlistMenuButton.vue'
 import { useFilterContributors, useFilters } from '@/composables/filter'
 import { filterKeys } from '@/types/filter'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
+import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 
 const route = useRoute('/readlist/[id]')
 const router = useRouter()
@@ -219,7 +236,11 @@ const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 const viewName = computed(() => `readlist_${readListId.value}`)
 const { presentationMode, presentationModeEffective } = usePresentationMode(viewName)
 
-const { data: readList, error } = useQuery(() => ({
+const {
+  data: readList,
+  error,
+  isPending,
+} = useQuery(() => ({
   ...readListDetailQuery({
     readListId: readListId.value,
   }),

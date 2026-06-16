@@ -1,24 +1,9 @@
 <template>
-  <v-bottom-sheet
+  <ItemMenuBottomSheet
     v-model="isShown"
-    inset
-  >
-    <v-list>
-      <v-list-item
-        v-for="(action, i) in actionsDefault"
-        :key="i"
-        v-bind="action"
-      />
-
-      <v-divider v-if="actionsManagement.length > 0" />
-
-      <v-list-item
-        v-for="(action, i) in actionsManagement"
-        :key="i"
-        v-bind="action"
-      />
-    </v-list>
-  </v-bottom-sheet>
+    :actions="actionsDefault"
+    :manage-actions="actionsManagement"
+  />
 </template>
 
 <script setup lang="ts">

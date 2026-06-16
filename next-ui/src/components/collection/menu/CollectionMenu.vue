@@ -1,25 +1,35 @@
 <template>
-  <v-menu :activator="activator">
-    <v-list density="compact">
-      <v-list-item
-        v-for="(action, i) in manageActions"
-        :key="i"
-        v-bind="action"
-      />
-    </v-list>
-  </v-menu>
+  <ItemMenu
+    :actions="actionsManagement"
+    :activator="activator"
+  />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
+import { type CollectionAction, collectionActionGroups } from '@/types/collection'
+import { createOrderCompareFn } from '@/functions/sort'
 
-const props = defineProps<{
+const { collection, excludeActions = [] } = defineProps<{
   activator: string | Element
   collection: components['schemas']['CollectionDto']
+  excludeActions?: CollectionAction[]
 }>()
 
-const { manageActions } = useCollectionActions(() => props.collection)
+const { actions } = useCollectionActions(() => collection)
+
+const actionsManagement = computed(() =>
+  actions.value
+    .filter(
+      (it) =>
+        collectionActionGroups.management.includes(it.action) &&
+        !excludeActions.includes(it.action),
+    )
+    .toSorted(
+      createOrderCompareFn(collectionActionGroups.management, (it) => it.action.toString()),
+    ),
+)
 </script>
 
 <script lang="ts"></script>
