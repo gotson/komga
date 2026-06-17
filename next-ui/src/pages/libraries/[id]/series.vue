@@ -332,7 +332,9 @@ const conds = computed(() => ({
 }))
 
 // clear selection if filter or paging changes
-watch([conds, () => appStore.browsingPaging], () => selectionStore.clear())
+watch([() => JSON.stringify(conds.value), () => appStore.browsingPaging], () =>
+  selectionStore.clear(),
+)
 
 const apiQuery = computed(() => ({
   condition: conds.value as components['schemas']['AllOfSeries'],
