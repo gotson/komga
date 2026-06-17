@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Action } from '@/types/action'
+import type { Action } from '@/types/action/action'
 
 const { actions = [], manageActions = [] } = defineProps<{
   activator: string | Element

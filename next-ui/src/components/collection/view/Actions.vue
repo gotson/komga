@@ -29,7 +29,7 @@
 import type { components } from '@/generated/openapi/komga'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
-import { CollectionAction } from '@/types/collection'
+import { CollectionAction } from '@/types/action/collection'
 
 const props = defineProps<{
   collection: components['schemas']['CollectionDto']

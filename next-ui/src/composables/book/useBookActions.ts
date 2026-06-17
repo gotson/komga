@@ -8,7 +8,7 @@ import { useDisplay } from 'vuetify/framework'
 import BookDeletionWarning from '@/components/book/DeletionWarning.vue'
 import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { BookAction } from '@/types/book'
+import { BookAction } from '@/types/action/book'
 import {
   useAnalyzeBook,
   useDeleteBook,
@@ -19,7 +19,7 @@ import {
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 import { UserRoles } from '@/types/UserRoles'
 import { bookFileUrl } from '@/api/files'
-import type { Action } from '@/types/action'
+import type { Action } from '@/types/action/action'
 import { useBook } from '@/composables/book/useBook'
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { bookReaderUrl } from '@/api/links'

@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useSeriesActions } from '@/composables/series/useSeriesActions'
-import { SeriesAction, seriesActionGroups } from '@/types/series'
+import { SeriesAction, seriesActionGroups } from '@/types/action/series'
 import { createOrderCompareFn } from '@/functions/sort'
 import { commonMessages } from '@/utils/i18n/common-messages'
 

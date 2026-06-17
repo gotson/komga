@@ -11,7 +11,8 @@
 import type { components } from '@/generated/openapi/komga'
 import { useLibraryActions } from '@/composables/library/useLibraryActions'
 import { createOrderCompareFn } from '@/functions/sort'
-import { libraryActionGroups } from '@/types/action'
+
+import { libraryActionGroups } from '@/types/action/library'
 const isShown = defineModel<boolean>({ default: false })
 
 const { library } = defineProps<{

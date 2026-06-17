@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
-import { type CollectionAction, collectionActionGroups } from '@/types/collection'
+import { type CollectionAction, collectionActionGroups } from '@/types/action/collection'
 import { createOrderCompareFn } from '@/functions/sort'
 const isShown = defineModel<boolean>({ default: false })
 

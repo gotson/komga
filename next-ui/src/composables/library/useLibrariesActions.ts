@@ -4,9 +4,10 @@ import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useDisplay } from 'vuetify/framework'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { type Action, LibrariesAction } from '@/types/action'
+import { type Action } from '@/types/action/action'
 import { useEmptyTrashLibrary, useLibraries, useScanLibrary } from '@/colada/libraries'
 import { useAppStore } from '@/stores/app'
+import { LibrariesAction } from '@/types/action/libraries'
 
 export function useLibrariesActions(callback: (action: LibrariesAction) => void = () => {}) {
   const { isAdmin } = useCurrentUser()

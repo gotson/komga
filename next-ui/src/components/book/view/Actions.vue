@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useBookActions } from '@/composables/book/useBookActions'
-import { BookAction, bookActionGroups } from '@/types/book'
+import { BookAction, bookActionGroups } from '@/types/action/book'
 import { createOrderCompareFn } from '@/functions/sort'
 import { commonMessages } from '@/utils/i18n/common-messages'
 

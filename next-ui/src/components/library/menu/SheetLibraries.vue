@@ -9,8 +9,8 @@
 
 <script setup lang="ts">
 import { createOrderCompareFn } from '@/functions/sort'
-import { librariesActionGroups } from '@/types/action'
 import { useLibrariesActions } from '@/composables/library/useLibrariesActions'
+import { librariesActionGroups } from '@/types/action/libraries'
 const isShown = defineModel<boolean>({ default: false })
 
 defineProps<{

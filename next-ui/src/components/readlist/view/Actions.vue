@@ -29,7 +29,7 @@
 import type { components } from '@/generated/openapi/komga'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useReadListActions } from '@/composables/readlist/useReadListActions'
-import { ReadListAction } from '@/types/readlist'
+import { ReadListAction } from '@/types/action/readlist'
 
 const props = defineProps<{
   readList: components['schemas']['ReadListDto']

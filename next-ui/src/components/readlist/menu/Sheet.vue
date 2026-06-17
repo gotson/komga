@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useReadListActions } from '@/composables/readlist/useReadListActions'
-import { type ReadListAction, readListActionGroups } from '@/types/readlist'
+import { type ReadListAction, readListActionGroups } from '@/types/action/readlist'
 import { createOrderCompareFn } from '@/functions/sort'
 
 const isShown = defineModel<boolean>({ default: false })

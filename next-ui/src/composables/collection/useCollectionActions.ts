@@ -8,10 +8,10 @@ import { useDisplay } from 'vuetify'
 import { useMessagesStore } from '@/stores/messages'
 import { useCurrentUser } from '@/colada/users'
 import CollectionDeletionWarning from '@/components/collection/DeletionWarning.vue'
-import { CollectionAction } from '@/types/collection'
+import { CollectionAction } from '@/types/action/collection'
 import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
 import { useDeleteCollection } from '@/colada/collections'
-import type { Action } from '@/types/action'
+import type { Action } from '@/types/action/action'
 
 export function useCollectionActions(
   collection: MaybeRefOrGetter<components['schemas']['CollectionDto']>,

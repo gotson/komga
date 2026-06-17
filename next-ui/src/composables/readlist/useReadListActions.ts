@@ -8,12 +8,12 @@ import { useDisplay } from 'vuetify'
 import { useMessagesStore } from '@/stores/messages'
 import { useCurrentUser } from '@/colada/users'
 import ReadListDeletionWarning from '@/components/readlist/DeletionWarning.vue'
-import { ReadListAction } from '@/types/readlist'
+import { ReadListAction } from '@/types/action/readlist'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 import { useDeleteReadList } from '@/colada/readlists'
 import { UserRoles } from '@/types/UserRoles'
 import { readListFileUrl } from '@/api/files'
-import type { Action } from '@/types/action'
+import type { Action } from '@/types/action/action'
 
 export function useReadListActions(
   readList: MaybeRefOrGetter<components['schemas']['ReadListDto']>,

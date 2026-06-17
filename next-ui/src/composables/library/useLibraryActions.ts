@@ -7,7 +7,7 @@ import { useMessagesStore } from '@/stores/messages'
 import { useDisplay } from 'vuetify/framework'
 import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { type Action, LibraryAction } from '@/types/action'
+import { type Action } from '@/types/action/action'
 import LibraryDeletionWarning from '@/components/library/DeletionWarning.vue'
 import CreateEdit from '@/components/library/form/CreateEdit.vue'
 import {
@@ -18,6 +18,7 @@ import {
   useScanLibrary,
   useUpdateLibrary,
 } from '@/colada/libraries'
+import { LibraryAction } from '@/types/action/library'
 
 export function useLibraryActions(
   library: MaybeRefOrGetter<components['schemas']['LibraryDto']>,
