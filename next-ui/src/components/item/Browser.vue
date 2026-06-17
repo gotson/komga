@@ -3,7 +3,7 @@
     v-model="selectionStore.selection"
     return-object
     :items="items"
-    :items-per-page="appStore.browsingPaging === 'paged' ? itemsPerPage : -1"
+    :items-per-page="-1"
     :page="1"
     show-select
   >
@@ -71,7 +71,6 @@
 import { useAppStore } from '@/stores/app'
 import { useSelectionStore } from '@/stores/selection'
 import type { PresentationMode } from '@/types/libraries'
-import { useItemsPerPage } from '@/composables/pagination'
 import { useDisplay } from 'vuetify'
 
 const appStore = useAppStore()
@@ -91,7 +90,6 @@ const emit = defineEmits<{
 }>()
 
 const selectionStore = useSelectionStore()
-const { itemsPerPage } = useItemsPerPage(appStore.browsingPageSize)
 
 const jumpOptions = computed(() => Array.from({ length: props.pageCount }).map((_, i) => i + 1))
 </script>

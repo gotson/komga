@@ -1,5 +1,5 @@
 import { syncRef } from '@vueuse/core'
-import { type PageSize, SchemaStrictlyPositive } from '@/types/page'
+import { SchemaStrictlyPositive } from '@/types/page'
 import { useRouteQuery } from '@vueuse/router'
 import * as v from 'valibot'
 
@@ -46,19 +46,5 @@ export function usePagination() {
      * The total page count. Should be updated by the consumer.
      */
     pageCount: pageCount,
-  }
-}
-
-/**
- * Reactive itemsPerPage in Vuetify format, where unpaged is converted to `-1`
- * @param pageSize
- */
-export function useItemsPerPage(pageSize: MaybeRefOrGetter<PageSize>) {
-  const itemsPerPage = computed(() =>
-    toValue(pageSize) === 'unpaged' ? -1 : (toValue(pageSize) as number),
-  )
-
-  return {
-    itemsPerPage: itemsPerPage,
   }
 }
