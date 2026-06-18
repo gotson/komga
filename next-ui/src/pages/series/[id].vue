@@ -202,7 +202,6 @@
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesDetailQuery } from '@/colada/series'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
-import { watchImmediate } from '@vueuse/core'
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
 import { filterKeys } from '@/types/filter'
 import { usePagination } from '@/composables/pagination'
@@ -231,8 +230,34 @@ import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
 import { useSelectionContextualActions } from '@/composables/selection'
+import { logger } from '@/services/logtape'
 
-const router = useRouter()
+// oneshot redirection
+definePage({
+  beforeEnter: async (to) => {
+    logger.debug('navigation guard: check if series is oneshot')
+    const params = to.params as { id: string }
+
+    const { data, refresh } = useQuery(seriesDetailQuery({ seriesId: params.id }))
+    await refresh()
+
+    if (data.value?.oneshot) {
+      logger.debug('navigation guard: series is oneshot, fetch book for redirection')
+      const { getFirstBookInSeries } = useSeriesBooks(params.id)
+      const book = await getFirstBookInSeries(false)
+      if (book) {
+        logger.debug('navigation guard: book found, redirect to book page')
+        return {
+          name: '/book/[id]',
+          params: { id: book.id },
+          query: to.query,
+          replace: true,
+        }
+      }
+    }
+  },
+})
+
 const route = useRoute('/series/[id]')
 const seriesId = computed(() => route.params.id)
 
@@ -246,22 +271,6 @@ const {
   error,
   isPending,
 } = useQuery(() => seriesDetailQuery({ seriesId: seriesId.value }))
-
-// oneshot redirection
-const { getFirstBookInSeries } = useSeriesBooks(seriesId)
-
-watchImmediate(series, (newSeries) => {
-  if (newSeries && newSeries.oneshot) {
-    void getFirstBookInSeries(false).then((book) => {
-      if (book)
-        void router.replace({
-          name: '/book/[id]',
-          params: { id: book.id },
-          query: route.query,
-        })
-    })
-  }
-})
 
 // books list
 const display = useDisplay()
