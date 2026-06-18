@@ -9,11 +9,11 @@
   >
     <template #default="{ items: internalItems, toggleSelect, isSelected }">
       <v-container fluid>
-        <v-row>
+        <v-row density="comfortable">
           <v-col
             v-for="(item, idx) in internalItems"
             :key="idx"
-            :cols="presentationMode === 'grid' ? (display.xs.value ? 6 : 'auto') : 12"
+            :cols="presentationMode === 'grid' ? (display.xs.value ? 4 : 'auto') : 12"
           >
             <slot
               :item="item.raw"
