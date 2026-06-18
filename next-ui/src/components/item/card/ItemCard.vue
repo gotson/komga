@@ -68,18 +68,37 @@
           content-class="fill-height w-100"
         >
           <!--  Top left selection  -->
-          <v-icon-btn
+          <v-btn
             v-if="!hideSelection"
-            :icon="
-              selected || (isPreSelect && isHovering)
-                ? 'i-mdi:checkbox-marked-circle'
-                : 'i-mdi:checkbox-blank-circle-outline'
-            "
+            icon
             :variant="selected || preSelect ? 'text' : 'plain'"
-            :color="selected ? 'primary' : 'white'"
             class="top-0 left-0 position-absolute"
             @click.stop="(event: Event) => emit('selection', !selected, event)"
-          />
+          >
+            <template v-if="selected">
+              <!--  The plain circle is under the icon, so that there is white background in the check -->
+              <v-icon
+                color="white"
+                icon="i-mdi:circle"
+                class="position-absolute"
+              />
+              <v-icon
+                color="primary"
+                icon="i-mdi:checkbox-marked-circle"
+                class="position-relative"
+              />
+            </template>
+
+            <v-icon
+              v-if="!selected"
+              color="white"
+              :icon="
+                isPreSelect && isHovering
+                  ? 'i-mdi:checkbox-marked-circle'
+                  : 'i-mdi:checkbox-blank-circle-outline'
+              "
+            />
+          </v-btn>
 
           <!--  Center FAB  -->
           <v-hover
