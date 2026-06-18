@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import BarHolder from './BarHolder.vue'
 import { useSelectionStore } from '@/stores/selection'
+import { mockBook } from '@/mocks/api/handlers/books'
 
 const meta = {
   component: BarHolder,
@@ -33,6 +34,6 @@ export const Default: Story = {
   args: {},
   play: () => {
     const selectionStore = useSelectionStore()
-    selectionStore.selection = ['a', 'b']
+    selectionStore.selection = [mockBook]
   },
 }
