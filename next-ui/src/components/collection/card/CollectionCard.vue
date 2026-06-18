@@ -10,9 +10,10 @@
     :menu-props="menuProps"
     :card-to="`/collection/${collection.id}`"
     v-bind="props"
+    :disable-selection="!isAdmin"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
-    @card-long-press="bottomSheet = true"
+    @card-long-press="isAdmin ? (bottomSheet = true) : undefined"
   />
   <CollectionMenuSheet
     v-model="bottomSheet"
