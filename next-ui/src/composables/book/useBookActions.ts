@@ -8,7 +8,6 @@ import { useDisplay } from 'vuetify/framework'
 import BookDeletionWarning from '@/components/book/DeletionWarning.vue'
 import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { BookAction } from '@/types/action/book'
 import {
   useAnalyzeBook,
   useDeleteBook,
@@ -19,14 +18,14 @@ import {
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 import { UserRoles } from '@/types/UserRoles'
 import { bookFileUrl } from '@/api/files'
-import type { Action } from '@/types/action/action'
+import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useBook } from '@/composables/book/useBook'
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { bookReaderUrl } from '@/api/links'
 
 export function useBookActions(
   book: MaybeRefOrGetter<components['schemas']['BookDto']>,
-  callback: (action: BookAction) => void = () => {},
+  callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
   const intl = useIntl()
@@ -36,19 +35,16 @@ export function useBookActions(
   const { canRead, isEpubReader } = useBook(book)
   const { inProgress } = useBookReadProgress(book)
 
-  const actions = computed<Action<BookAction>[]>(() => [
+  const actions = computed<Action<ActionName>[]>(() => [
     ...(isAdmin.value && toValue(book).oneshot
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Book menu: add to collection',
-              defaultMessage: 'Add to collection',
-              id: 'yNNH8a',
-            }),
-            action: BookAction.ADD_TO_COLLECTION,
+            title: intl.formatMessage(actionDetails[ActionName.ADD_TO_COLLECTION].message),
+            disabled: true, //TODO: implement
+            action: ActionName.ADD_TO_COLLECTION,
             onClick: () => {
               todo()
-              callback(BookAction.ADD_TO_COLLECTION)
+              callback(ActionName.ADD_TO_COLLECTION)
             },
           },
         ]
@@ -56,15 +52,12 @@ export function useBookActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Book menu: add to read list',
-              defaultMessage: 'Add to read list',
-              id: 'Q6H+z7',
-            }),
-            action: BookAction.ADD_TO_READLIST,
+            title: intl.formatMessage(actionDetails[ActionName.ADD_TO_READLIST].message),
+            disabled: true, //TODO: implement
+            action: ActionName.ADD_TO_READLIST,
             onClick: () => {
               todo()
-              callback(BookAction.ADD_TO_READLIST)
+              callback(ActionName.ADD_TO_READLIST)
             },
           },
         ]
@@ -72,16 +65,11 @@ export function useBookActions(
     ...(!toValue(book).readProgress?.completed
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Book menu: mark as read',
-              defaultMessage: 'Mark as read',
-              id: 'lFGLru',
-            }),
-            icon: 'i-mdi:book-check-outline',
-            action: BookAction.MARK_READ,
+            title: intl.formatMessage(actionDetails[ActionName.MARK_READ].message),
+            icon: actionDetails[ActionName.MARK_READ].icon,
+            action: ActionName.MARK_READ,
             onClick: () => {
               markRead()
-              callback(BookAction.MARK_READ)
             },
           },
         ]
@@ -89,16 +77,11 @@ export function useBookActions(
     ...(!!toValue(book).readProgress
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Book menu: mark as unread',
-              defaultMessage: 'Mark as unread',
-              id: 'a+9yUi',
-            }),
-            icon: 'i-mdi:book-remove-outline',
-            action: BookAction.MARK_UNREAD,
+            title: intl.formatMessage(actionDetails[ActionName.MARK_UNREAD].message),
+            icon: actionDetails[ActionName.MARK_UNREAD].icon,
+            action: ActionName.MARK_UNREAD,
             onClick: () => {
               markUnread()
-              callback(BookAction.MARK_UNREAD)
             },
           },
         ]
@@ -106,15 +89,11 @@ export function useBookActions(
     ...(hasRole(UserRoles.FILE_DOWNLOAD)
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Book menu: download',
-              defaultMessage: 'Download',
-              id: 'R1n0du',
-            }),
-            action: BookAction.DOWNLOAD,
+            title: intl.formatMessage(actionDetails[ActionName.DOWNLOAD].message),
+            action: ActionName.DOWNLOAD,
             href: bookFileUrl(toValue(book).id),
             onClick: () => {
-              callback(BookAction.DOWNLOAD)
+              callback(ActionName.DOWNLOAD)
             },
           },
         ]
@@ -122,18 +101,14 @@ export function useBookActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Book menu: manage > edit metadata',
-              defaultMessage: 'Edit metadata',
-              id: 'M5GJZQ',
-            }),
-            icon: 'i-mdi:pencil',
-            action: BookAction.EDIT_METADATA,
+            title: intl.formatMessage(actionDetails[ActionName.EDIT_BOOK].message),
+            icon: actionDetails[ActionName.EDIT_BOOK].icon,
+            action: ActionName.EDIT_BOOK,
             onMouseenter: (event: Event) =>
               (editMetadataActivator.value = event.currentTarget as Element),
             onClick: () => {
               updateBookMetadata()
-              callback(BookAction.EDIT_METADATA)
+              callback(ActionName.EDIT_BOOK) //TODO: move callback after dialog validation
             },
           },
         ]
@@ -141,15 +116,10 @@ export function useBookActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Book menu: manage > refresh metadata',
-              defaultMessage: 'Refresh metadata',
-              id: 'BdFv4r',
-            }),
-            action: BookAction.REFRESH_METADATA,
+            title: intl.formatMessage(actionDetails[ActionName.REFRESH_METADATA].message),
+            action: ActionName.REFRESH_METADATA,
             onClick: () => {
               refreshMetadata()
-              callback(BookAction.REFRESH_METADATA)
             },
           },
         ]
@@ -157,15 +127,11 @@ export function useBookActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Book menu: manage > analyze',
-              defaultMessage: 'Analyze',
-              id: 'J0TxGf',
-            }),
-            action: BookAction.ANALYZE,
+            title: intl.formatMessage(actionDetails[ActionName.ANALYZE].message),
+
+            action: ActionName.ANALYZE,
             onClick: () => {
               analyzeBook()
-              callback(BookAction.ANALYZE)
             },
           },
         ]
@@ -178,12 +144,11 @@ export function useBookActions(
               defaultMessage: 'Delete file',
               id: 'vXhkpo',
             }),
-            action: BookAction.DELETE_FILES,
+            action: ActionName.DELETE,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               deleteBook()
-              callback(BookAction.DELETE_FILES)
             },
           },
         ]
@@ -200,26 +165,22 @@ export function useBookActions(
             defaultMessage: 'Read',
             id: 'Y8SsFO',
           }),
-      icon: 'i-mdi:play',
-      action: BookAction.OPEN_READER,
+      icon: actionDetails[ActionName.OPEN_READER].icon,
+      action: ActionName.OPEN_READER,
       disabled: !canRead.value,
       onClick: () => {
         window.open(bookReaderUrl(toValue(book).id, isEpubReader.value), '_blank')
-        callback(BookAction.OPEN_READER)
+        callback(ActionName.OPEN_READER)
       },
     },
     {
-      title: intl.formatMessage({
-        description: 'Series view: read incognito button: tooltip',
-        defaultMessage: 'Private reading session',
-        id: 'DLUIbm',
-      }),
-      icon: 'i-mdi:incognito',
-      action: BookAction.OPEN_READER_INCOGNITO,
+      title: intl.formatMessage(actionDetails[ActionName.OPEN_READER_INCOGNITO].message),
+      icon: actionDetails[ActionName.OPEN_READER_INCOGNITO].icon,
+      action: ActionName.OPEN_READER_INCOGNITO,
       disabled: !canRead.value,
       onClick: () => {
         window.open(bookReaderUrl(toValue(book).id, isEpubReader.value, true), '_blank')
-        callback(BookAction.OPEN_READER_INCOGNITO)
+        callback(ActionName.OPEN_READER_INCOGNITO)
       },
     },
   ])
@@ -238,6 +199,7 @@ export function useBookActions(
 
   function refreshMetadata() {
     mutateRefreshMetadata(toValue(book).id)
+    callback(ActionName.REFRESH_METADATA)
   }
   //endregion
 
@@ -246,6 +208,7 @@ export function useBookActions(
 
   function analyzeBook() {
     mutateAnalyze(toValue(book).id)
+    callback(ActionName.ANALYZE)
   }
   //endregion
 
@@ -257,6 +220,7 @@ export function useBookActions(
 
   function markRead() {
     mutateMarkRead(toValue(book).id)
+    callback(ActionName.MARK_READ)
   }
   //endregion
 
@@ -265,6 +229,7 @@ export function useBookActions(
 
   function markUnread() {
     mutateMarkUnread(toValue(book).id)
+    callback(ActionName.MARK_UNREAD)
   }
   //endregion
 
@@ -317,6 +282,7 @@ export function useBookActions(
               intl.formatMessage(commonMessages.networkError),
           })
         })
+      callback(ActionName.DELETE)
     }
   }
   //endregion

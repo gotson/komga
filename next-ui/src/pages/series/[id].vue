@@ -230,6 +230,7 @@ import ChipCount from '@/components/ChipCount.vue'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
+import { useSelectionContextualActions } from '@/composables/selection'
 
 const router = useRouter()
 const route = useRoute('/series/[id]')
@@ -358,6 +359,11 @@ const totalElements = computed(() =>
 )
 
 const filterDrawer = ref(false)
+
+useSelectionContextualActions(
+  dataItems,
+  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
+)
 
 // shared model for all the expansion-panels, so only 1 is opened at the same time
 const filterExpansionPanels = ref()

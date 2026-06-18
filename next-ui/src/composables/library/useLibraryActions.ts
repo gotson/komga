@@ -43,7 +43,6 @@ export function useLibraryActions(
             action: LibraryAction.SCAN,
             onClick: () => {
               scanLibrary()
-              callback(LibraryAction.SCAN)
             },
           },
           {
@@ -57,7 +56,6 @@ export function useLibraryActions(
               (dialogConfirmEdit.value.activator = event.currentTarget as Element),
             onClick: () => {
               updateLibrary()
-              callback(LibraryAction.EDIT)
             },
           },
           {
@@ -71,7 +69,6 @@ export function useLibraryActions(
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               scanDeep()
-              callback(LibraryAction.SCAN_DEEP)
             },
           },
           {
@@ -85,7 +82,6 @@ export function useLibraryActions(
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               refreshMetadata()
-              callback(LibraryAction.REFRESH_METADATA)
             },
           },
           {
@@ -99,7 +95,6 @@ export function useLibraryActions(
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               emptyTrash()
-              callback(LibraryAction.EMPTY_TRASH)
             },
           },
           {
@@ -113,7 +108,6 @@ export function useLibraryActions(
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               analyzeLibrary()
-              callback(LibraryAction.ANALYZE)
             },
           },
           {
@@ -127,7 +121,6 @@ export function useLibraryActions(
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               deleteLibrary()
-              callback(LibraryAction.DELETE)
             },
           },
         ],
@@ -187,6 +180,7 @@ export function useLibraryActions(
           })
           setLoading(false)
         })
+      callback(LibraryAction.EDIT)
     }
   }
   //endregion
@@ -227,7 +221,10 @@ export function useLibraryActions(
       ),
       props: {},
     }
-    dialogConfirm.value.callback = () => mutateRefreshMetadata(toValue(library).id)
+    dialogConfirm.value.callback = () => {
+      mutateRefreshMetadata(toValue(library).id)
+      callback(LibraryAction.REFRESH_METADATA)
+    }
   }
   //endregion
 
@@ -249,7 +246,10 @@ export function useLibraryActions(
       component: markRaw(h('div', intl.formatMessage(commonMessages.dialogEmptyTrashNotice))),
       props: {},
     }
-    dialogConfirm.value.callback = () => mutateEmptyTrash(toValue(library).id)
+    dialogConfirm.value.callback = () => {
+      mutateEmptyTrash(toValue(library).id)
+      callback(LibraryAction.EMPTY_TRASH)
+    }
   }
   //endregion
 
@@ -289,7 +289,10 @@ export function useLibraryActions(
       ),
       props: {},
     }
-    dialogConfirm.value.callback = () => mutateAnalyze(toValue(library).id)
+    dialogConfirm.value.callback = () => {
+      mutateAnalyze(toValue(library).id)
+      callback(LibraryAction.ANALYZE)
+    }
   }
   //endregion
 
@@ -298,6 +301,7 @@ export function useLibraryActions(
 
   function scanLibrary() {
     mutateScan({ libraryId: toValue(library).id })
+    callback(LibraryAction.SCAN)
   }
 
   function scanDeep() {
@@ -333,7 +337,10 @@ export function useLibraryActions(
       ),
       props: {},
     }
-    dialogConfirm.value.callback = () => mutateScan({ libraryId: toValue(library).id, deep: true })
+    dialogConfirm.value.callback = () => {
+      mutateScan({ libraryId: toValue(library).id, deep: true })
+      callback(LibraryAction.SCAN_DEEP)
+    }
   }
   //endregion
 
@@ -387,6 +394,7 @@ export function useLibraryActions(
               intl.formatMessage(commonMessages.networkError),
           })
         })
+      callback(LibraryAction.DELETE)
     }
   }
   //endregion

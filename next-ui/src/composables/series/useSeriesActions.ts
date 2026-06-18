@@ -14,18 +14,17 @@ import {
   useRefreshMetadataSeries,
 } from '@/colada/series'
 import { useCurrentUser } from '@/colada/users'
-import { SeriesAction } from '@/types/action/series'
 import SeriesDeletionWarning from '@/components/series/DeletionWarning.vue'
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import { UserRoles } from '@/types/UserRoles'
 import { seriesFileUrl } from '@/api/files'
-import type { Action } from '@/types/action/action'
+import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
 import { useSeries } from '@/composables/series/useSeries'
 
 export function useSeriesActions(
   series: MaybeRefOrGetter<components['schemas']['SeriesDto']>,
-  callback: (action: SeriesAction) => void = () => {},
+  callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
   const intl = useIntl()
@@ -35,19 +34,16 @@ export function useSeriesActions(
   const { readFirstBook } = useSeriesBooks(() => toValue(series).id)
   const { canRead, inProgress } = useSeries(series)
 
-  const actions = computed<Action<SeriesAction>[]>(() => [
+  const actions = computed<Action<ActionName>[]>(() => [
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Series menu: add to collection',
-              defaultMessage: 'Add to collection',
-              id: 'BAKokv',
-            }),
-            action: SeriesAction.ADD_TO_COLLECTION,
+            title: intl.formatMessage(actionDetails[ActionName.ADD_TO_COLLECTION].message),
+            disabled: true, //TODO: implement
+            action: ActionName.ADD_TO_COLLECTION,
             onClick: () => {
               todo()
-              callback(SeriesAction.ADD_TO_COLLECTION)
+              callback(ActionName.ADD_TO_COLLECTION)
             },
           },
         ]
@@ -55,15 +51,12 @@ export function useSeriesActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Series menu: add to read list',
-              defaultMessage: 'Add to read list',
-              id: '9eEylZ',
-            }),
-            action: SeriesAction.ADD_TO_READLIST,
+            title: intl.formatMessage(actionDetails[ActionName.ADD_TO_READLIST].message),
+            disabled: true, //TODO: implement
+            action: ActionName.ADD_TO_READLIST,
             onClick: () => {
               todo()
-              callback(SeriesAction.ADD_TO_READLIST)
+              callback(ActionName.ADD_TO_READLIST)
             },
           },
         ]
@@ -72,16 +65,11 @@ export function useSeriesActions(
       ? []
       : [
           {
-            title: intl.formatMessage({
-              description: 'Series menu: mark as read',
-              defaultMessage: 'Mark as read',
-              id: 'SZWIZ7',
-            }),
-            icon: 'i-mdi:book-check-outline',
-            action: SeriesAction.MARK_READ,
+            title: intl.formatMessage(actionDetails[ActionName.MARK_READ].message),
+            icon: actionDetails[ActionName.MARK_READ].icon,
+            action: ActionName.MARK_READ,
             onClick: () => {
               markRead()
-              callback(SeriesAction.MARK_READ)
             },
           },
         ]),
@@ -89,31 +77,22 @@ export function useSeriesActions(
       ? []
       : [
           {
-            title: intl.formatMessage({
-              description: 'Series menu: mark as unread',
-              defaultMessage: 'Mark as unread',
-              id: 'JL33DG',
-            }),
-            icon: 'i-mdi:book-remove-outline',
-            action: SeriesAction.MARK_UNREAD,
+            title: intl.formatMessage(actionDetails[ActionName.MARK_UNREAD].message),
+            icon: actionDetails[ActionName.MARK_UNREAD].icon,
+            action: ActionName.MARK_UNREAD,
             onClick: () => {
               markUnread()
-              callback(SeriesAction.MARK_UNREAD)
             },
           },
         ]),
     ...(hasRole(UserRoles.FILE_DOWNLOAD)
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Series menu: download',
-              defaultMessage: 'Download',
-              id: 'jn8Lib',
-            }),
-            action: SeriesAction.DOWNLOAD,
+            title: intl.formatMessage(actionDetails[ActionName.DOWNLOAD].message),
+            action: ActionName.DOWNLOAD,
             href: seriesFileUrl(toValue(series).id),
             onClick: () => {
-              callback(SeriesAction.DOWNLOAD)
+              callback(ActionName.DOWNLOAD)
             },
           },
         ]
@@ -121,18 +100,14 @@ export function useSeriesActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Series menu: manage > edit metadata',
-              defaultMessage: 'Edit metadata',
-              id: 'O839kY',
-            }),
-            icon: 'i-mdi:pencil',
-            action: SeriesAction.EDIT_METADATA,
+            title: intl.formatMessage(actionDetails[ActionName.EDIT_SERIES].message),
+            icon: actionDetails[ActionName.EDIT_SERIES].icon,
+            action: ActionName.EDIT_SERIES,
             onMouseenter: (event: Event) =>
               (editMetadataActivator.value = event.currentTarget as Element),
             onClick: () => {
               updateSeriesMetadata()
-              callback(SeriesAction.EDIT_METADATA)
+              callback(ActionName.EDIT_SERIES) //TODO: move callback after validation
             },
           },
         ]
@@ -140,15 +115,10 @@ export function useSeriesActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Series menu: manage > refresh metadata',
-              defaultMessage: 'Refresh metadata',
-              id: 'JFtKtC',
-            }),
-            action: SeriesAction.REFRESH_METADATA,
+            title: intl.formatMessage(actionDetails[ActionName.REFRESH_METADATA].message),
+            action: ActionName.REFRESH_METADATA,
             onClick: () => {
               refreshMetadata()
-              callback(SeriesAction.REFRESH_METADATA)
             },
           },
         ]
@@ -156,15 +126,10 @@ export function useSeriesActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Series menu: manage > analyze',
-              defaultMessage: 'Analyze',
-              id: 'AI60X8',
-            }),
-            action: SeriesAction.ANALYZE,
+            title: intl.formatMessage(actionDetails[ActionName.ANALYZE].message),
+            action: ActionName.ANALYZE,
             onClick: () => {
               analyzeSeries()
-              callback(SeriesAction.ANALYZE)
             },
           },
         ]
@@ -177,12 +142,11 @@ export function useSeriesActions(
               defaultMessage: 'Delete files',
               id: 'J+H9cC',
             }),
-            action: SeriesAction.DELETE_FILES,
+            action: ActionName.DELETE,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               deleteSeries()
-              callback(SeriesAction.DELETE_FILES)
             },
           },
         ]
@@ -199,26 +163,22 @@ export function useSeriesActions(
             defaultMessage: 'Read',
             id: 'Y7Y2T0',
           }),
-      icon: 'i-mdi:play',
-      action: SeriesAction.OPEN_READER,
+      icon: actionDetails[ActionName.OPEN_READER].icon,
+      action: ActionName.OPEN_READER,
       disabled: !canRead.value,
       onClick: () => {
         void readFirstBook()
-        callback(SeriesAction.OPEN_READER)
+        callback(ActionName.OPEN_READER)
       },
     },
     {
-      title: intl.formatMessage({
-        description: 'Series view: read incognito button: tooltip',
-        defaultMessage: 'Private reading session',
-        id: 'DLUIbm',
-      }),
-      icon: 'i-mdi:incognito',
-      action: SeriesAction.OPEN_READER_INCOGNITO,
+      title: intl.formatMessage(actionDetails[ActionName.OPEN_READER_INCOGNITO].message),
+      icon: actionDetails[ActionName.OPEN_READER_INCOGNITO].icon,
+      action: ActionName.OPEN_READER_INCOGNITO,
       disabled: !canRead.value,
       onClick: () => {
         void readFirstBook(true)
-        callback(SeriesAction.OPEN_READER_INCOGNITO)
+        callback(ActionName.OPEN_READER_INCOGNITO)
       },
     },
   ])
@@ -236,6 +196,7 @@ export function useSeriesActions(
 
   function refreshMetadata() {
     mutateRefreshMetadata(toValue(series).id)
+    callback(ActionName.REFRESH_METADATA)
   }
   //endregion
 
@@ -244,6 +205,7 @@ export function useSeriesActions(
 
   function analyzeSeries() {
     mutateAnalyze(toValue(series).id)
+    callback(ActionName.ANALYZE)
   }
   //endregion
 
@@ -255,6 +217,7 @@ export function useSeriesActions(
 
   function markRead() {
     mutateMarkRead(toValue(series).id)
+    callback(ActionName.MARK_READ)
   }
   //endregion
 
@@ -263,6 +226,7 @@ export function useSeriesActions(
 
   function markUnread() {
     mutateMarkUnread(toValue(series).id)
+    callback(ActionName.MARK_UNREAD)
   }
   //endregion
 
@@ -315,6 +279,7 @@ export function useSeriesActions(
               intl.formatMessage(commonMessages.networkError),
           })
         })
+      callback(ActionName.DELETE)
     }
   }
   //endregion

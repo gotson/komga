@@ -29,7 +29,7 @@
 import type { components } from '@/generated/openapi/komga'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
-import { CollectionAction } from '@/types/action/collection'
+import { ActionName } from '@/types/action/action'
 
 const props = defineProps<{
   collection: components['schemas']['CollectionDto']
@@ -40,7 +40,9 @@ const { actions } = useCollectionActions(() => props.collection)
 
 const bottomSheet = ref(false)
 
-const editAction = computed(() => actions.value.find((it) => it.action === CollectionAction.EDIT))
-const excludeActions = [CollectionAction.EDIT]
+const editAction = computed(() =>
+  actions.value.find((it) => it.action === ActionName.EDIT_COLLECTION),
+)
+const excludeActions = [ActionName.EDIT_COLLECTION]
 const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
 </script>

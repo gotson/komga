@@ -8,16 +8,15 @@ import { useDisplay } from 'vuetify'
 import { useMessagesStore } from '@/stores/messages'
 import { useCurrentUser } from '@/colada/users'
 import ReadListDeletionWarning from '@/components/readlist/DeletionWarning.vue'
-import { ReadListAction } from '@/types/action/readlist'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 import { useDeleteReadList } from '@/colada/readlists'
 import { UserRoles } from '@/types/UserRoles'
 import { readListFileUrl } from '@/api/files'
-import type { Action } from '@/types/action/action'
+import { type Action, actionDetails, ActionName } from '@/types/action/action'
 
 export function useReadListActions(
   readList: MaybeRefOrGetter<components['schemas']['ReadListDto']>,
-  callback: (action: ReadListAction) => void = () => {},
+  callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
   const intl = useIntl()
@@ -25,19 +24,15 @@ export function useReadListActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const actions = computed<Action<ReadListAction>[]>(() => [
+  const actions = computed<Action<ActionName>[]>(() => [
     ...(hasRole(UserRoles.FILE_DOWNLOAD)
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Readlist menu: download',
-              defaultMessage: 'Download',
-              id: 'piQuKd',
-            }),
-            action: ReadListAction.DOWNLOAD,
+            title: intl.formatMessage(actionDetails[ActionName.DOWNLOAD].message),
+            action: ActionName.DOWNLOAD,
             href: readListFileUrl(toValue(readList).id),
             onClick: () => {
-              callback(ReadListAction.DOWNLOAD)
+              callback(ActionName.DOWNLOAD)
             },
           },
         ]
@@ -45,17 +40,13 @@ export function useReadListActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Readlist menu: manage > edit',
-              defaultMessage: 'Edit',
-              id: 'ITAI2D',
-            }),
-            icon: 'i-mdi:pencil',
-            action: ReadListAction.EDIT,
+            title: intl.formatMessage(actionDetails[ActionName.EDIT_READLIST].message),
+            icon: actionDetails[ActionName.EDIT_READLIST].icon,
+            action: ActionName.EDIT_READLIST,
             onMouseenter: (event: Event) => (editActivator.value = event.currentTarget as Element),
             onClick: () => {
               edit()
-              callback(ReadListAction.EDIT)
+              callback(ActionName.EDIT_READLIST) //TODO: move callback after dialog validation
             },
           },
         ]
@@ -63,17 +54,12 @@ export function useReadListActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Readlist menu: manage > delete',
-              defaultMessage: 'Delete',
-              id: 'YP5tSl',
-            }),
-            action: ReadListAction.DELETE,
+            title: intl.formatMessage(actionDetails[ActionName.DELETE].message),
+            action: ActionName.DELETE,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               deleteReadList()
-              callback(ReadListAction.DELETE)
             },
           },
         ]
@@ -137,6 +123,7 @@ export function useReadListActions(
               intl.formatMessage(commonMessages.networkError),
           })
         })
+      callback(ActionName.DELETE)
     }
   }
   //endregion

@@ -27,16 +27,16 @@
     v-model="bottomSheet"
     :series="series"
     :activator="`#${id}`"
-    :exclude-actions="excludeActions"
+    :exclude-actions="exclude"
   />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useSeriesActions } from '@/composables/series/useSeriesActions'
-import { SeriesAction, seriesActionGroups } from '@/types/action/series'
 import { createOrderCompareFn } from '@/functions/sort'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { ActionName } from '@/types/action/action'
 
 const props = defineProps<{
   series: components['schemas']['SeriesDto']
@@ -45,16 +45,27 @@ const props = defineProps<{
 const id = useId()
 const { actions } = useSeriesActions(() => props.series)
 
+const bothReadUnread = computed(
+  () =>
+    actions.value.some((it) => it.action === ActionName.MARK_READ) &&
+    actions.value.some((it) => it.action === ActionName.MARK_UNREAD),
+)
+
 const bottomSheet = ref(false)
+const prominent = computed(() => [
+  ActionName.OPEN_READER_INCOGNITO,
+  ActionName.MARK_READ,
+  ...(bothReadUnread.value ? [] : [ActionName.MARK_UNREAD]),
+  ActionName.EDIT_SERIES,
+])
+
+const exclude = [...prominent.value, ActionName.OPEN_READER]
 
 const prominentActions = computed(() =>
   actions.value
-    .filter((it) => seriesActionGroups.seriesView.includes(it.action))
-    .toSorted(createOrderCompareFn(seriesActionGroups.seriesView, (it) => it.action.toString())),
+    .filter((it) => prominent.value.includes(it.action))
+    .toSorted(createOrderCompareFn(prominent.value, (it) => it.action.toString())),
 )
-const readAction = computed(() =>
-  actions.value.find((it) => it.action === SeriesAction.OPEN_READER),
-)
-const excludeActions = [...seriesActionGroups.seriesView, SeriesAction.OPEN_READER]
-const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
+const readAction = computed(() => actions.value.find((it) => it.action === ActionName.OPEN_READER))
+const hasExtra = computed(() => actions.value.some((it) => !exclude.includes(it.action)))
 </script>

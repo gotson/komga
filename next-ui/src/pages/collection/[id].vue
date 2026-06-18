@@ -282,6 +282,7 @@ import { PageRequest, type Sort } from '@/types/PageRequest'
 import { collectionDetailQuery } from '@/colada/collections'
 import { contributorsRolesMessages } from '@/types/referential'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
+import { useSelectionContextualActions } from '@/composables/selection'
 
 const route = useRoute('/collection/[id]')
 const router = useRouter()
@@ -418,6 +419,11 @@ const totalElements = computed(() =>
 )
 
 const filterDrawer = ref(false)
+
+useSelectionContextualActions(
+  dataItems,
+  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
+)
 
 // shared model for all the expansion-panels, so only 1 is opened at the same time
 const filterExpansionPanels = ref()

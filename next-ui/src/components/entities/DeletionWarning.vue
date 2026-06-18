@@ -28,9 +28,8 @@
 import { defineMessage } from 'vue-intl'
 
 const message = defineMessage({
-  description: 'Book files deletion warning notice',
-  defaultMessage:
-    'The book files will be deleted<ul><li>Book media file will be deleted from disk.</li><li>Book sidecar files will be deleted from disk.</li><li>Book will de deleted, along with its metadata and read progress.</li></ul><b>This action cannot be undone.</b>',
-  id: 'WPxleH',
+  description: 'Multiple entities deletion warning notice',
+  defaultMessage: 'Multiple items will be deleted.<b>This action cannot be undone.</b>',
+  id: 'BpzKDW',
 })
 </script>

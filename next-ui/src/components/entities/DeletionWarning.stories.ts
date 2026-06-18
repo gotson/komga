@@ -1,36 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
-import Bar from './Bar.vue'
-import { useSelectionStore } from '@/stores/selection'
-import { mockBook } from '@/mocks/api/handlers/books'
+import DeletionWarning from './DeletionWarning.vue'
 
 const meta = {
-  component: Bar,
+  component: DeletionWarning,
   render: (args: object) => ({
-    components: { Bar },
+    components: { DeletionWarning },
     setup() {
       return { args }
     },
-    template: '<Bar v-bind="args"/>',
+    template: '<DeletionWarning />',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     docs: {
       description: {
-        component: '',
+        component: 'Warning shown within a confirmation dialog before deleting multiple entities.',
       },
     },
   },
   args: {},
-} satisfies Meta<typeof Bar>
+} satisfies Meta<typeof DeletionWarning>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {},
-  play: () => {
-    const selectionStore = useSelectionStore()
-    selectionStore.selection = [mockBook]
-  },
 }

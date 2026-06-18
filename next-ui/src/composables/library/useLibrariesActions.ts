@@ -41,7 +41,6 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
             action: LibrariesAction.SCAN_ALL,
             onClick: () => {
               scanAll()
-              callback(LibrariesAction.SCAN_ALL)
             },
           },
         ]
@@ -59,7 +58,6 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               emptyTrashAll()
-              callback(LibrariesAction.EMPTY_TRASH_ALL)
             },
           },
         ]
@@ -71,6 +69,7 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
 
   function scanAll() {
     libraries.value?.forEach((it) => mutateScan({ libraryId: it.id }))
+    callback(LibrariesAction.SCAN_ALL)
   }
   //endregion
 
@@ -93,6 +92,7 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
     }
     dialogConfirm.value.callback = () => {
       libraries.value?.forEach((it) => mutateEmptyTrash(it.id))
+      callback(LibrariesAction.EMPTY_TRASH_ALL)
     }
   }
   //endregion

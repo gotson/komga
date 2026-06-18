@@ -27,16 +27,16 @@
     v-model="bottomSheet"
     :book="book"
     :activator="`#${id}`"
-    :exclude-actions="excludeActions"
+    :exclude-actions="exclude"
   />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useBookActions } from '@/composables/book/useBookActions'
-import { BookAction, bookActionGroups } from '@/types/action/book'
 import { createOrderCompareFn } from '@/functions/sort'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { ActionName } from '@/types/action/action'
 
 const props = defineProps<{
   book: components['schemas']['BookDto']
@@ -47,12 +47,19 @@ const { actions } = useBookActions(() => props.book)
 
 const bottomSheet = ref(false)
 
+const prominent = [
+  ActionName.OPEN_READER_INCOGNITO,
+  ActionName.MARK_READ,
+  ActionName.MARK_UNREAD,
+  ActionName.EDIT_BOOK,
+]
+const exclude = [...prominent, ActionName.OPEN_READER]
+
+const readAction = computed(() => actions.value.find((it) => it.action === ActionName.OPEN_READER))
 const prominentActions = computed(() =>
   actions.value
-    .filter((it) => bookActionGroups.bookView.includes(it.action))
-    .toSorted(createOrderCompareFn(bookActionGroups.bookView, (it) => it.action.toString())),
+    .filter((it) => prominent.includes(it.action))
+    .toSorted(createOrderCompareFn(prominent, (it) => it.action.toString())),
 )
-const readAction = computed(() => actions.value.find((it) => it.action === BookAction.OPEN_READER))
-const excludeActions = [...bookActionGroups.bookView, BookAction.OPEN_READER]
-const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
+const hasExtra = computed(() => actions.value.some((it) => !exclude.includes(it.action)))
 </script>

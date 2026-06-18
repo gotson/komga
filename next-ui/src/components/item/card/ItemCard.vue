@@ -184,10 +184,6 @@ import type { RouteLocation } from 'vue-router'
 const { isTouchPrimary } = usePrimaryInput()
 const router = useRouter()
 
-function onCardLongPress() {
-  if (isTouchPrimary.value) emit('cardLongPress')
-}
-
 const {
   stretchPoster,
   width = 150,
@@ -260,6 +256,7 @@ const isHovering = ref(false)
 const overlayDisabled = computed(() => {
   return disableSelection && !fabIcon && !quickActionIcon && !menuIcon
 })
+
 const isPreSelect = computed(() => preSelect && !selected && !disableSelection)
 const overlayTransparent = computed(
   () => isTouchPrimary.value || ((selected || isPreSelect.value) && !isHovering.value),
@@ -277,14 +274,18 @@ const hideMenu = computed(() => selected || isPreSelect.value || isTouchPrimary.
 // we use an underlay with the same positioning, but a negative z-index, and we map the `id` to the underlay
 const quickActionPropsOverlay = reactiveOmit(reactive(quickActionProps), 'id')
 const quickActionPropsUnderlay = reactivePick(reactive(quickActionProps), 'id')
-
 function onOverlayClick(event: Event) {
   emit('selection', !selected, event)
   event.stopPropagation()
 }
 
-function onCardClick() {
-  if (cardTo) void router.push(cardTo)
+function onCardClick(event: Event) {
+  if (isPreSelect.value || selected) emit('selection', !selected, event)
+  else if (cardTo) void router.push(cardTo)
+}
+
+function onCardLongPress() {
+  if (isTouchPrimary.value && !isPreSelect.value) emit('cardLongPress')
 }
 </script>
 

@@ -10,6 +10,7 @@
     :menu-props="menuProps"
     :card-to="`/readlist/${readList.id}`"
     v-bind="props"
+    :disable-selection="!isAdmin"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="

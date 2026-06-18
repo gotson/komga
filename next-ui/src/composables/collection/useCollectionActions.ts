@@ -8,14 +8,13 @@ import { useDisplay } from 'vuetify'
 import { useMessagesStore } from '@/stores/messages'
 import { useCurrentUser } from '@/colada/users'
 import CollectionDeletionWarning from '@/components/collection/DeletionWarning.vue'
-import { CollectionAction } from '@/types/action/collection'
 import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
 import { useDeleteCollection } from '@/colada/collections'
-import type { Action } from '@/types/action/action'
+import { type Action, actionDetails, ActionName } from '@/types/action/action'
 
 export function useCollectionActions(
   collection: MaybeRefOrGetter<components['schemas']['CollectionDto']>,
-  callback: (action: CollectionAction) => void = () => {},
+  callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin } = useCurrentUser()
   const intl = useIntl()
@@ -23,21 +22,17 @@ export function useCollectionActions(
   const messagesStore = useMessagesStore()
   const display = useDisplay()
 
-  const actions = computed<Action<CollectionAction>[]>(() => [
+  const actions = computed<Action<ActionName>[]>(() => [
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Collection menu: manage > edit',
-              defaultMessage: 'Edit',
-              id: '39afQA',
-            }),
-            icon: 'i-mdi:pencil',
-            action: CollectionAction.EDIT,
+            title: intl.formatMessage(actionDetails[ActionName.EDIT_COLLECTION].message),
+            icon: actionDetails[ActionName.EDIT_COLLECTION].icon,
+            action: ActionName.EDIT_COLLECTION,
             onMouseenter: (event: Event) => (editActivator.value = event.currentTarget as Element),
             onClick: () => {
               edit()
-              callback(CollectionAction.EDIT)
+              callback(ActionName.EDIT_COLLECTION) //TODO: move callback after dialog validation
             },
           },
         ]
@@ -45,17 +40,12 @@ export function useCollectionActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage({
-              description: 'Collection menu: manage > delete',
-              defaultMessage: 'Delete',
-              id: 'Ekh3wO',
-            }),
-            action: CollectionAction.DELETE,
+            title: intl.formatMessage(actionDetails[ActionName.DELETE].message),
+            action: ActionName.DELETE,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
               deleteCollection()
-              callback(CollectionAction.DELETE)
             },
           },
         ]
@@ -120,6 +110,7 @@ export function useCollectionActions(
               intl.formatMessage(commonMessages.networkError),
           })
         })
+      callback(ActionName.DELETE)
     }
   }
   //endregion

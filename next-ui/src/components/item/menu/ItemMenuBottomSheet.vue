@@ -4,6 +4,10 @@
     inset
   >
     <v-list>
+      <template v-if="title">
+        <v-list-item :title="title" />
+        <v-divider />
+      </template>
       <v-list-item
         v-for="(action, i) in actions"
         :key="i"
@@ -29,6 +33,7 @@ const isShown = defineModel<boolean>({ default: false })
 const { actions = [], manageActions = [] } = defineProps<{
   actions?: Action<unknown>[]
   manageActions?: Action<unknown>[]
+  title?: string
 }>()
 </script>
 

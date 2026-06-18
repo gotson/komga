@@ -4,14 +4,18 @@
     :actions="actionsDefault"
     :manage-actions="actionsManagement"
     :activator="activator"
+    :sheet-title="series.metadata.title"
   />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useSeriesActions } from '@/composables/series/useSeriesActions'
-import { SeriesAction, seriesActionGroups } from '@/types/action/series'
 import { createOrderCompareFn } from '@/functions/sort'
+import { ActionName } from '@/types/action/action'
+import { useSelectionStore } from '@/stores/selection'
+import { useSelectAction } from '@/composables/selection'
+import { usePrimaryInput } from '@/composables/device'
 
 const isShown = defineModel<boolean>({ default: false })
 
@@ -22,27 +26,44 @@ const {
 } = defineProps<{
   activator: string | Element
   series: components['schemas']['SeriesDto']
-  excludeActions?: SeriesAction[]
+  excludeActions?: ActionName[]
 }>()
+
+const main = [
+  ActionName.OPEN_READER,
+  ActionName.OPEN_READER_INCOGNITO,
+  ActionName.MARK_READ,
+  ActionName.MARK_UNREAD,
+  ActionName.ADD_TO_COLLECTION,
+  ActionName.ADD_TO_READLIST,
+  ActionName.DOWNLOAD,
+]
+const management = [
+  ActionName.EDIT_SERIES,
+  ActionName.REFRESH_METADATA,
+  ActionName.ANALYZE,
+  ActionName.DELETE,
+]
 
 function afterClick() {
   isShown.value = false
 }
+
+const selectionStore = useSelectionStore()
+const { isTouchPrimary } = usePrimaryInput()
+const { selectAction } = useSelectAction(() => series, afterClick)
+
 const { actions } = useSeriesActions(() => series, afterClick)
-const actionsDefault = computed(() =>
-  actions.value
-    .filter(
-      (it) => seriesActionGroups.default.includes(it.action) && !excludeActions.includes(it.action),
-    )
-    .toSorted(createOrderCompareFn(seriesActionGroups.default, (it) => it.action.toString())),
-)
+const actionsDefault = computed(() => [
+  ...(selectionStore.isEmpty && isTouchPrimary.value ? [selectAction.value] : []),
+  ...actions.value
+    .filter((it) => main.includes(it.action) && !excludeActions.includes(it.action))
+    .toSorted(createOrderCompareFn(main, (it) => it.action.toString())),
+])
 const actionsManagement = computed(() =>
   actions.value
-    .filter(
-      (it) =>
-        seriesActionGroups.management.includes(it.action) && !excludeActions.includes(it.action),
-    )
-    .toSorted(createOrderCompareFn(seriesActionGroups.management, (it) => it.action.toString())),
+    .filter((it) => management.includes(it.action) && !excludeActions.includes(it.action))
+    .toSorted(createOrderCompareFn(management, (it) => it.action.toString())),
 )
 </script>
 

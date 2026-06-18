@@ -1,14 +1,31 @@
 import { defineStore } from 'pinia'
+import { logger } from '@/services/logtape'
+import type { components } from '@/generated/openapi/komga'
+
+type SelectionAction = {
+  text: string
+  icon: string
+  callback: () => void
+}
 
 export const useSelectionStore = defineStore('selection', () => {
   const route = useRoute()
 
-  const selection = ref<unknown[]>([])
+  const selection = ref<
+    (
+      | components['schemas']['BookDto']
+      | components['schemas']['SeriesDto']
+      | components['schemas']['CollectionDto']
+      | components['schemas']['ReadListDto']
+    )[]
+  >([])
 
   watch(
     () => route?.path,
     () => {
+      logger.debug('route has changed, clear selection and contextual actions')
       selection.value = []
+      contextualActions.value = []
     },
   )
 
@@ -18,5 +35,14 @@ export const useSelectionStore = defineStore('selection', () => {
 
   const clear = () => (selection.value = [])
 
-  return { selection, count, isEmpty, isNotEmpty, clear }
+  const contextualActions = ref<SelectionAction[]>([])
+
+  return {
+    selection,
+    contextualActions,
+    count,
+    isEmpty,
+    isNotEmpty,
+    clear,
+  }
 })

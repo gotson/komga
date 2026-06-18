@@ -184,6 +184,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { useFilterContributors, useFilters } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
 import { contributorsRolesMessages } from '@/types/referential'
+import { useSelectionContextualActions } from '@/composables/selection'
 
 const route = useRoute('/libraries/[id]/books')
 const libraryId = route.params.id
@@ -283,6 +284,11 @@ const totalElements = computed(() =>
 )
 
 const filterDrawer = ref(false)
+
+useSelectionContextualActions(
+  dataItems,
+  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
+)
 
 // shared model for all the expansion-panels, so only 1 is opened at the same time
 const filterExpansionPanels = ref()

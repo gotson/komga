@@ -255,6 +255,7 @@ import { storeToRefs } from 'pinia'
 import { useFilterContributors, useFilters } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
 import { contributorsRolesMessages } from '@/types/referential'
+import { useSelectionContextualActions } from '@/composables/selection'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -371,6 +372,11 @@ const totalElements = computed(() =>
   isBrowsingPaged.value
     ? dataPaged.value?.totalElements
     : dataInfinite.value?.pages?.[0]?.totalElements,
+)
+
+useSelectionContextualActions(
+  dataItems,
+  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
 )
 
 const filterDrawer = ref(false)

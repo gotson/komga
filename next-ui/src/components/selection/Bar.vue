@@ -8,6 +8,13 @@
         icon="i-mdi:close"
         @click="selectionStore.clear()"
       />
+      <v-btn
+        v-for="action in selectionStore.contextualActions"
+        :key="action.text"
+        v-tooltip:bottom="action.text"
+        :icon="action.icon"
+        @click="action.callback()"
+      />
     </template>
 
     <v-app-bar-title>
@@ -27,6 +34,10 @@ other {# selected}
         )
       }}
     </v-app-bar-title>
+
+    <template #append>
+      <SelectionBarActions />
+    </template>
   </v-app-bar>
 </template>
 

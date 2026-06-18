@@ -54,6 +54,7 @@ import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import { storeToRefs } from 'pinia'
 import ChipCount from '@/components/ChipCount.vue'
 import { readListsListQuery, readListsListQueryInfinite } from '@/colada/readlists'
+import { useSelectionContextualActions } from '@/composables/selection'
 
 const route = useRoute('/libraries/[id]/readlists')
 const libraryId = route.params.id
@@ -104,6 +105,11 @@ const totalElements = computed(() =>
   isBrowsingPaged.value
     ? dataPaged.value?.totalElements
     : dataInfinite.value?.pages?.[0]?.totalElements,
+)
+
+useSelectionContextualActions(
+  dataItems,
+  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
 )
 </script>
 

@@ -4,42 +4,49 @@
     :actions="actionsDefault"
     :manage-actions="actionsManagement"
     :activator="activator"
+    :sheet-title="readList.name"
   />
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/generated/openapi/komga'
 import { useReadListActions } from '@/composables/readlist/useReadListActions'
-import { type ReadListAction, readListActionGroups } from '@/types/action/readlist'
 import { createOrderCompareFn } from '@/functions/sort'
+import { ActionName } from '@/types/action/action'
+import { useSelectionStore } from '@/stores/selection'
+import { usePrimaryInput } from '@/composables/device'
+import { useSelectAction } from '@/composables/selection'
 
 const isShown = defineModel<boolean>({ default: false })
 
 const { readList, excludeActions = [] } = defineProps<{
   activator: string | Element
   readList: components['schemas']['ReadListDto']
-  excludeActions?: ReadListAction[]
+  excludeActions?: ActionName[]
 }>()
+
+const main = [ActionName.DOWNLOAD]
+const management = [ActionName.EDIT_READLIST, ActionName.DELETE]
 
 function afterClick() {
   isShown.value = false
 }
+
+const selectionStore = useSelectionStore()
+const { isTouchPrimary } = usePrimaryInput()
+const { selectAction } = useSelectAction(() => readList, afterClick)
+
 const { actions } = useReadListActions(() => readList, afterClick)
-const actionsDefault = computed(() =>
-  actions.value
-    .filter(
-      (it) =>
-        readListActionGroups.default.includes(it.action) && !excludeActions.includes(it.action),
-    )
-    .toSorted(createOrderCompareFn(readListActionGroups.default, (it) => it.action.toString())),
-)
+const actionsDefault = computed(() => [
+  ...(selectionStore.isEmpty && isTouchPrimary.value ? [selectAction.value] : []),
+  ...actions.value
+    .filter((it) => main.includes(it.action) && !excludeActions.includes(it.action))
+    .toSorted(createOrderCompareFn(main, (it) => it.action.toString())),
+])
 const actionsManagement = computed(() =>
   actions.value
-    .filter(
-      (it) =>
-        readListActionGroups.management.includes(it.action) && !excludeActions.includes(it.action),
-    )
-    .toSorted(createOrderCompareFn(readListActionGroups.management, (it) => it.action.toString())),
+    .filter((it) => management.includes(it.action) && !excludeActions.includes(it.action))
+    .toSorted(createOrderCompareFn(management, (it) => it.action.toString())),
 )
 </script>
 
