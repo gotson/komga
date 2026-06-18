@@ -263,7 +263,7 @@ export function useBookActions(
       mutateDelete(toValue(book).id)
         .then(() => {
           messagesStore.messages.push({
-            text: intl.formatMessage(
+            message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful book files deletion',
                 defaultMessage: 'Book files deleted: {book}',
@@ -276,11 +276,9 @@ export function useBookActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push({
-            text:
-              (error?.cause as ErrorCause)?.message ||
-              intl.formatMessage(commonMessages.networkError),
-          })
+          messagesStore.messages.push(
+            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+          )
         })
       callback(ActionName.DELETE)
     }

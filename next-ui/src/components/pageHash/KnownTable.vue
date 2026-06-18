@@ -411,10 +411,9 @@ function deletePageHashMatches(hash: string) {
         success: false,
         isLoading: false,
       }
-      messagesStore.messages.push({
-        text:
-          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
-      })
+      messagesStore.messages.push(
+        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+      )
     })
 }
 //endregion
@@ -442,10 +441,9 @@ function updateHashAction(
     .mutateAsync()
     .then(() => (updateRequests.value[pageHash.hash] = newAction))
     .catch((error) =>
-      messagesStore.messages.push({
-        text:
-          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
-      }),
+      messagesStore.messages.push(
+        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+      ),
     )
 }
 //endregion

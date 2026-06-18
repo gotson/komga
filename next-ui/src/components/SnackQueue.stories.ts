@@ -30,7 +30,7 @@ export const Default: Story = {
   args: {},
   play: () => {
     const messagesStore = useMessagesStore()
-    messagesStore.messages = [{ text: 'Default notification', timer: false }]
+    messagesStore.messages = [{ message: 'Default notification', timer: false }]
   },
 }
 
@@ -40,7 +40,7 @@ export const NoTimeout: Story = {
     const messagesStore = useMessagesStore()
     messagesStore.messages = [
       {
-        text: 'I will not timeout, click me to make me go away',
+        message: 'I will not timeout, click me to make me go away',
         timeout: -1,
         timer: false,
       },
@@ -54,7 +54,7 @@ export const Success: Story = {
     const messagesStore = useMessagesStore()
     messagesStore.messages = [
       {
-        text: 'Success',
+        message: 'Success',
         color: 'success',
         timer: false,
       },
@@ -68,7 +68,7 @@ export const Warning: Story = {
     const messagesStore = useMessagesStore()
     messagesStore.messages = [
       {
-        text: 'Warning',
+        message: 'Warning',
         color: 'warning',
         timer: false,
       },
@@ -82,7 +82,7 @@ export const Error: Story = {
     const messagesStore = useMessagesStore()
     messagesStore.messages = [
       {
-        text: 'Error',
+        message: 'Error',
         color: 'error',
         timer: false,
       },
@@ -96,7 +96,7 @@ export const Info: Story = {
     const messagesStore = useMessagesStore()
     messagesStore.messages = [
       {
-        text: 'Info',
+        message: 'Info',
         color: 'info',
         timer: false,
       },

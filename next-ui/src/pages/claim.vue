@@ -133,14 +133,12 @@
 <script lang="ts" setup>
 import { type ErrorCause } from '@/api/komga-client'
 import { useMessagesStore } from '@/stores/messages'
-import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useClaimServer, useClaimStatus } from '@/colada/claim'
 import { useLogin } from '@/colada/users'
 import { useRules } from 'vuetify/labs/rules'
 
 const messagesStore = useMessagesStore()
-const intl = useIntl()
 const rules = useRules()
 
 const form = ref()
@@ -172,11 +170,9 @@ async function submitForm() {
         })
       })
       .catch((error) => {
-        messagesStore.messages.push({
-          text:
-            (error?.cause as ErrorCause)?.message ||
-            intl.formatMessage(commonMessages.networkError),
-        })
+        messagesStore.messages.push(
+          (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+        )
       })
   }
 }

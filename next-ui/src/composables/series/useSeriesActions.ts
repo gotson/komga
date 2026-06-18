@@ -260,7 +260,7 @@ export function useSeriesActions(
       mutateDelete(toValue(series).id)
         .then(() => {
           messagesStore.messages.push({
-            text: intl.formatMessage(
+            message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful series files deletion',
                 defaultMessage: 'Series files deleted: {series}',
@@ -273,11 +273,9 @@ export function useSeriesActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push({
-            text:
-              (error?.cause as ErrorCause)?.message ||
-              intl.formatMessage(commonMessages.networkError),
-          })
+          messagesStore.messages.push(
+            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+          )
         })
       callback(ActionName.DELETE)
     }

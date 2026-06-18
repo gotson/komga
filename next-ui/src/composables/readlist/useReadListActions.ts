@@ -104,7 +104,7 @@ export function useReadListActions(
       mutateDelete(toValue(readList).id)
         .then(() => {
           messagesStore.messages.push({
-            text: intl.formatMessage(
+            message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful readlist deletion',
                 defaultMessage: 'Read list deleted: {readlist}',
@@ -117,11 +117,9 @@ export function useReadListActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push({
-            text:
-              (error?.cause as ErrorCause)?.message ||
-              intl.formatMessage(commonMessages.networkError),
-          })
+          messagesStore.messages.push(
+            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+          )
         })
       callback(ActionName.DELETE)
     }

@@ -48,7 +48,7 @@ export function useEditSeriesMetadataDialog() {
         .then(() => {
           hideDialog()
           messagesStore.messages.push({
-            text: intl.formatMessage(
+            message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful series metadata update',
                 defaultMessage: 'Series metadata updated: {series}',
@@ -61,11 +61,9 @@ export function useEditSeriesMetadataDialog() {
           })
         })
         .catch((error) => {
-          messagesStore.messages.push({
-            text:
-              (error?.cause as ErrorCause)?.message ||
-              intl.formatMessage(commonMessages.networkError),
-          })
+          messagesStore.messages.push(
+            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+          )
           setLoading(false)
         })
     }

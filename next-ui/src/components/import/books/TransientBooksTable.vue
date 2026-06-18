@@ -597,10 +597,9 @@ function doImportBooks() {
       })
     })
     .catch((error) => {
-      messagesStore.messages.push({
-        text:
-          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
-      })
+      messagesStore.messages.push(
+        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+      )
     })
 }
 </script>

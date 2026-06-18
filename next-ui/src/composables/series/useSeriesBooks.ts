@@ -5,11 +5,9 @@ import { PageRequest } from '@/types/PageRequest'
 import { useBook } from '@/composables/book/useBook'
 import { bookReaderUrl } from '@/api/links'
 import { useMessagesStore } from '@/stores/messages'
-import { useIntl } from 'vue-intl'
 
 export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
   const messagesStore = useMessagesStore()
-  const intl = useIntl()
 
   async function getFirstBookInSeries(
     unreadOnly: boolean,
@@ -62,11 +60,11 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
         window.open(bookReaderUrl(book.id, isEpubReader.value, incognito), '_blank')
       } else {
         messagesStore.messages.push({
-          text: intl.formatMessage({
+          message: {
             description: 'Notification: no readable book found for series',
             defaultMessage: 'Series does not have any readable book',
             id: 'p+98v0',
-          }),
+          },
         })
       }
     }

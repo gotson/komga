@@ -66,11 +66,9 @@ const {
       // unwrap the openapi-fetch structure on success
       .then((res) => res.data)
       .catch((error) => {
-        messagesStore.messages.push({
-          text:
-            convertErrorCodes((error?.cause as ErrorCause)?.message) ||
-            intl.formatMessage(commonMessages.networkError),
-        })
+        messagesStore.messages.push(
+          convertErrorCodes((error?.cause as ErrorCause)?.message) ?? commonMessages.networkError,
+        )
       }),
 })
 

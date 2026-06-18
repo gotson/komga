@@ -514,6 +514,7 @@ const createPayload = computed(
 
 const { mutateAsync: postReadList, isLoading: creating } = useCreateReadList()
 
+//TODO: formatjs
 function doCreateReadList() {
   if (selectedBooks.value.length == 0) {
     messagesStore.messages.push('Select some books')
@@ -532,15 +533,13 @@ function doCreateReadList() {
     .then(({ data }) => {
       readListCreated.value = data
       //TODO: add link to created readlist
-      messagesStore.messages.push({
-        text: 'Readlist created',
-      })
+      //TODO: formatjs
+      messagesStore.messages.push('Readlist created')
     })
     .catch((error) => {
-      messagesStore.messages.push({
-        text:
-          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
-      })
+      messagesStore.messages.push(
+        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+      )
     })
 }
 </script>

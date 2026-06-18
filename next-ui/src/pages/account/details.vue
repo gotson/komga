@@ -76,19 +76,16 @@ function handleDialogConfirmation(
     ?.then(() => {
       hideDialog()
       messagesStore.messages.push({
-        text: intl.formatMessage({
-          description:
-            "Snackbar notification shown upon successful current user's password modification",
-          defaultMessage: 'Password changed',
-          id: '0FEy0X',
-        }),
+        description:
+          "Snackbar notification shown upon successful current user's password modification",
+        defaultMessage: 'Password changed',
+        id: '0FEy0X',
       })
     })
     .catch((error) => {
-      messagesStore.messages.push({
-        text:
-          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
-      })
+      messagesStore.messages.push(
+        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+      )
       setLoading(false)
     })
 }

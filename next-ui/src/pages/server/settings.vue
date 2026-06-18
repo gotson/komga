@@ -30,9 +30,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import type { components } from '@/generated/openapi/komga'
 import { useMessagesStore } from '@/stores/messages'
 import type { ErrorCause } from '@/api/komga-client'
-import { useIntl } from 'vue-intl'
 
-const intl = useIntl()
 const messagesStore = useMessagesStore()
 
 const loading = ref<boolean>(false)
@@ -45,18 +43,15 @@ function saveSettings(settings: components['schemas']['SettingsUpdateDto']) {
   mutateAsync(settings)
     .then(() =>
       messagesStore.messages.push({
-        text: intl.formatMessage({
-          description: 'Snackbar notification shown upon successful server settings update',
-          defaultMessage: 'Settings updated',
-          id: 'TL5bVZ',
-        }),
+        description: 'Snackbar notification shown upon successful server settings update',
+        defaultMessage: 'Settings updated',
+        id: 'TL5bVZ',
       }),
     )
     .catch((error) => {
-      messagesStore.messages.push({
-        text:
-          (error?.cause as ErrorCause)?.message || intl.formatMessage(commonMessages.networkError),
-      })
+      messagesStore.messages.push(
+        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+      )
     })
     .finally(() => {
       loading.value = false

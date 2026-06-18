@@ -48,7 +48,7 @@ export function useEditReadListDialog() {
         .then(() => {
           hideDialog()
           messagesStore.messages.push({
-            text: intl.formatMessage(
+            message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful readlist update',
                 defaultMessage: 'Read list updated: {readlist}',
@@ -61,11 +61,9 @@ export function useEditReadListDialog() {
           })
         })
         .catch((error) => {
-          messagesStore.messages.push({
-            text:
-              (error?.cause as ErrorCause)?.message ||
-              intl.formatMessage(commonMessages.networkError),
-          })
+          messagesStore.messages.push(
+            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+          )
           setLoading(false)
         })
     }

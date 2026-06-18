@@ -91,7 +91,7 @@ export function useCollectionActions(
       mutateDelete(toValue(collection).id)
         .then(() => {
           messagesStore.messages.push({
-            text: intl.formatMessage(
+            message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful collection deletion',
                 defaultMessage: 'Collection deleted: {collection}',
@@ -104,11 +104,9 @@ export function useCollectionActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push({
-            text:
-              (error?.cause as ErrorCause)?.message ||
-              intl.formatMessage(commonMessages.networkError),
-          })
+          messagesStore.messages.push(
+            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+          )
         })
       callback(ActionName.DELETE)
     }

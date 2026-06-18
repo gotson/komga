@@ -160,7 +160,7 @@ export function useLibraryActions(
         .then(() => {
           hideDialog()
           messagesStore.messages.push({
-            text: intl.formatMessage(
+            message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful library update',
                 defaultMessage: 'Library updated: {library}',
@@ -173,11 +173,9 @@ export function useLibraryActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push({
-            text:
-              (error?.cause as ErrorCause)?.message ||
-              intl.formatMessage(commonMessages.networkError),
-          })
+          messagesStore.messages.push(
+            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+          )
           setLoading(false)
         })
       callback(LibraryAction.EDIT)
@@ -375,7 +373,7 @@ export function useLibraryActions(
       mutateDelete(toValue(library).id)
         .then(() => {
           messagesStore.messages.push({
-            text: intl.formatMessage(
+            message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful library deletion',
                 defaultMessage: 'Library deleted: {library}',
@@ -388,11 +386,9 @@ export function useLibraryActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push({
-            text:
-              (error?.cause as ErrorCause)?.message ||
-              intl.formatMessage(commonMessages.networkError),
-          })
+          messagesStore.messages.push(
+            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+          )
         })
       callback(LibraryAction.DELETE)
     }

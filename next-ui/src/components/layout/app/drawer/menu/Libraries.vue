@@ -146,7 +146,7 @@ function createLibrary() {
       .then(() => {
         hideDialog()
         messagesStore.messages.push({
-          text: intl.formatMessage(
+          message: intl.formatMessage(
             {
               description: 'Snackbar notification shown upon successful library creation',
               defaultMessage: 'Library created: {library}',
@@ -159,11 +159,9 @@ function createLibrary() {
         })
       })
       .catch((error) => {
-        messagesStore.messages.push({
-          text:
-            (error?.cause as ErrorCause)?.message ||
-            intl.formatMessage(commonMessages.networkError),
-        })
+        messagesStore.messages.push(
+          (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
+        )
         setLoading(false)
       })
   }
