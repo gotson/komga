@@ -261,10 +261,10 @@ const props = defineProps<{
 }>()
 
 const { unreadCount, isRead, readingDirection, seriesStatus } = useSeries(() => props.series)
-const { getFirstBookInSeries } = useSeriesBooks(props.series.id)
+const { getFirstBookInSeriesQuery } = useSeriesBooks(props.series.id)
 
-const bookOnDeck = ref<components['schemas']['BookDto'] | undefined>(undefined)
-void getFirstBookInSeries(true).then((data) => (bookOnDeck.value = data))
+const { data: booksOnDeck } = getFirstBookInSeriesQuery(true)
+const bookOnDeck = computed(() => booksOnDeck.value?.content?.[0])
 
 const alternateTitles = computed(() =>
   props.series.metadata.alternateTitles.map((it) => ({

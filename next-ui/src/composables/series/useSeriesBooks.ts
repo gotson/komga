@@ -9,9 +9,12 @@ import { useMessagesStore } from '@/stores/messages'
 export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
   const messagesStore = useMessagesStore()
 
-  async function getFirstBookInSeries(
-    unreadOnly: boolean,
-  ): Promise<components['schemas']['BookDto'] | undefined> {
+  /**
+   * Returns the Pinia Colada query to fetch the first book in the series.
+   *
+   * @param unreadOnly to only fetch unread books
+   */
+  function getFirstBookInSeriesQuery(unreadOnly: boolean) {
     const conditions = {
       allOf: [
         {
@@ -33,14 +36,25 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
       ],
     }
 
-    const { data } = await useQuery(() =>
+    return useQuery(() =>
       bookListQuery({
         search: {
           condition: conditions as components['schemas']['AllOfBook'],
         },
         pageRequest: new PageRequest(0, 1, [{ key: 'metadata.numberSort', order: 'asc' }]),
       }),
-    ).refresh()
+    )
+  }
+
+  /**
+   * Returns the first book in the series. This is not reactive.
+   *
+   * @param unreadOnly to only fetch unread books
+   */
+  async function getFirstBookInSeries(
+    unreadOnly: boolean,
+  ): Promise<components['schemas']['BookDto'] | undefined> {
+    const { data } = await getFirstBookInSeriesQuery(unreadOnly).refresh()
 
     if (data && data.totalElements && data.totalElements > 0) {
       return data.content?.[0]
@@ -71,6 +85,7 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
   }
 
   return {
+    getFirstBookInSeriesQuery,
     getFirstBookInSeries,
     readFirstBook,
   }
