@@ -22,7 +22,6 @@ import {
   useMarkSeriesUnread,
   useRefreshMetadataSeries,
 } from '@/colada/series'
-import { logger } from '@/services/logtape'
 
 export function useEntitiesActions(
   entities: MaybeRefOrGetter<
