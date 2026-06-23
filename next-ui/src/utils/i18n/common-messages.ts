@@ -129,17 +129,17 @@ export const commonMessages = {
   }),
   showLess: defineMessage({
     description: 'Expendable text: show less',
-    defaultMessage: 'Less',
-    id: 'ExWxE3',
+    defaultMessage: 'Show less',
+    id: 'ZnjyI3',
   }),
   showMore: defineMessage({
-    description: 'Expendable text: show more',
-    defaultMessage: 'More',
-    id: 'P7WVCB',
+    description: 'Expendable text: show all',
+    defaultMessage: 'Show all',
+    id: 'G93mS3',
   }),
   buttonMore: defineMessage({
-    description: 'Button text: more',
+    description: 'Button to show extra actions: tooltip',
     defaultMessage: 'More',
-    id: 'DVjVeX',
+    id: '1VkZao',
   }),
 }
