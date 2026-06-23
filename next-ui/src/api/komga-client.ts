@@ -2,6 +2,7 @@ import type { Middleware } from 'openapi-fetch'
 import createClient from 'openapi-fetch'
 import type { paths } from '@/generated/openapi/komga'
 import { ApiBaseUrl } from '@/api/base'
+import * as v from 'valibot'
 
 // Middleware that throws on error, so it works with Pinia Colada
 const coladaMiddleware: Middleware = {
@@ -44,6 +45,21 @@ export type ErrorCause = {
   body?: unknown
   status?: number
   message?: string
+}
+
+const ErrorSchema = v.looseObject({
+  message: v.optional(v.string()),
+  cause: v.optional(
+    v.object({
+      body: v.looseObject({}),
+      status: v.number(),
+      message: v.optional(v.string()),
+    }),
+  ),
+})
+
+export function isError(item: unknown): item is v.InferOutput<typeof ErrorSchema> {
+  return v.is(ErrorSchema, item)
 }
 
 export const komgaClient = client
