@@ -6,7 +6,7 @@ export function useThemeWatcher() {
   const theme = useTheme()
 
   function updateTheme(selectedTheme: string) {
-    theme.change(selectedTheme)
+    void theme.change(selectedTheme)
   }
 
   watch(
