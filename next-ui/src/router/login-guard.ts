@@ -9,9 +9,8 @@ import { useCurrentUser } from '@/colada/users'
 export function useLoginGuard(router: Router) {
   router.beforeEach((to) => {
     if (!to.meta.noAuth) {
-      const { data } = useCurrentUser()
-      const authenticated = data.value
-      if (!authenticated) {
+      const { isAuthenticated } = useCurrentUser()
+      if (!isAuthenticated.value) {
         const query = Object.assign(
           {},
           to.query,

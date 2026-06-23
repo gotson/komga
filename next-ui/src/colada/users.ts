@@ -29,7 +29,7 @@ export const useUsers = defineQuery(() => {
 })
 
 export const useCurrentUser = defineQuery(() => {
-  const { data, ...rest } = useQuery({
+  const { data, error, ...rest } = useQuery({
     key: () => QUERY_KEYS_USERS.currentUser,
     query: () =>
       komgaClient
@@ -40,16 +40,22 @@ export const useCurrentUser = defineQuery(() => {
     staleTime: 10 * 60 * 1000,
     gcTime: false,
     autoRefetch: true,
+    meta: {
+      no401handling: true,
+    },
   })
 
+  const isAuthenticated = computed(() => !!data.value && !error.value)
   const hasRole = (role: UserRoles) => data.value?.roles.includes(role)
   const isAdmin = computed(() => hasRole(UserRoles.ADMIN))
 
   return {
     data,
+    error,
     ...rest,
     hasRole,
     isAdmin,
+    isAuthenticated,
   }
 })
 
