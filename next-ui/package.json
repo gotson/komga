@@ -49,7 +49,7 @@
     "vue-clamp": "^1.5.1",
     "vue-intl": "^7.2.10",
     "vuedraggable": "^4.1.0",
-    "vuetify": "^4.0.8"
+    "vuetify": "^4.1.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.2.1",

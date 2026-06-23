@@ -12,13 +12,8 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-unocss'
 import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
 
-// Labs
-import { VFileUpload } from 'vuetify/labs/VFileUpload'
-import { VIconBtn } from 'vuetify/labs/VIconBtn'
-import { VStepperVertical, VStepperVerticalItem } from 'vuetify/labs/VStepperVertical'
-import { createRulesPlugin } from 'vuetify/labs/rules'
-
 import { availableLocales, currentLocale, fallbackLocale } from '@/utils/i18n/locale-helper'
+import { createRulesPlugin } from 'vuetify/labs/rules'
 
 // load vuetify locales only for the available locales in i18n
 async function loadVuetifyLocale(locale: string) {
@@ -68,12 +63,6 @@ export const vuetify = createVuetify({
     },
   },
   blueprint: md3,
-  components: {
-    VFileUpload,
-    VIconBtn,
-    VStepperVertical,
-    VStepperVerticalItem,
-  },
 })
 
 export const vuetifyRulesPlugin = createRulesPlugin(

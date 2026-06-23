@@ -6,7 +6,8 @@
     <v-card
       v-on-long-press.prevent="onCardLongPress"
       v-bind="props"
-      :elevation="isHovering ? 2 : 1"
+      elevation="1"
+      hover-elevation="2"
       :class="isPreSelect || selected ? 'cursor-pointer' : 'cursor-default'"
       @click="
         (event: Event) => (isPreSelect || selected ? emit('selection', !selected, event) : {})
