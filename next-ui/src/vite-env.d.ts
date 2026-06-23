@@ -8,6 +8,7 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly VITE_KOMGA_API_URL: string
+  readonly VITE_LOG_LEVEL: string
 }
 
 interface ImportMeta {
