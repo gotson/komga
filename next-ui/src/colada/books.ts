@@ -3,11 +3,12 @@ import {
   defineMutation,
   defineQueryOptions,
   useMutation,
-  useQueryCache,
 } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
 import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
+import { entityChanged } from '@/colada/cache'
+import { useAppStore } from '@/stores/app'
 
 export const QUERY_KEYS_BOOKS = {
   root: ['books'] as const,
@@ -105,7 +106,7 @@ export const useAnalyzeBook = defineMutation(() =>
 )
 
 export const useMarkBookRead = defineMutation(() => {
-  const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: (bookId: string) =>
       komgaClient.PATCH('/api/v1/books/{bookId}/read-progress', {
@@ -116,14 +117,14 @@ export const useMarkBookRead = defineMutation(() => {
         },
         body: { completed: true },
       }),
-    onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_BOOKS.root })
+    onSuccess: (data, bookId) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_BOOKS.root, bookId)
     },
   })
 })
 
 export const useMarkBookUnread = defineMutation(() => {
-  const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: (bookId: string) =>
       komgaClient.DELETE('/api/v1/books/{bookId}/read-progress', {
@@ -133,14 +134,15 @@ export const useMarkBookUnread = defineMutation(() => {
           },
         },
       }),
-    onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_BOOKS.root })
+    onSuccess: (data, bookId) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_BOOKS.root, bookId)
     },
   })
 })
 
-export const useDeleteBook = defineMutation(() =>
-  useMutation({
+export const useDeleteBook = defineMutation(() => {
+  const appStore = useAppStore()
+  return useMutation({
     mutation: (bookId: string) =>
       komgaClient.DELETE('/api/v1/books/{bookId}/file', {
         params: {
@@ -149,11 +151,14 @@ export const useDeleteBook = defineMutation(() =>
           },
         },
       }),
-  }),
-)
+    onSuccess: (data, bookId) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_BOOKS.root, bookId)
+    },
+  })
+})
 
 export const useUpdateBookMetadata = defineMutation(() => {
-  // const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: ({
       bookId,
@@ -170,9 +175,8 @@ export const useUpdateBookMetadata = defineMutation(() => {
         },
         body: metadata,
       }),
-    onSuccess: () => {
-      //TODO: check how to invalidate cache
-      // void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+    onSuccess: (data, { bookId }) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_BOOKS.root, bookId)
     },
   })
 })

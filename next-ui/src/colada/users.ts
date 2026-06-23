@@ -10,6 +10,8 @@ import { komgaClient } from '@/api/komga-client'
 import { UserRoles } from '@/types/UserRoles'
 import type { components } from '@/generated/openapi/komga'
 import { QUERY_KEYS_CLIENT_SETTINGS } from '@/colada/client-settings'
+import { useAppStore } from '@/stores/app'
+import { invalidateAll } from '@/colada/cache'
 
 export const QUERY_KEYS_USERS = {
   root: ['users'] as const,
@@ -17,16 +19,16 @@ export const QUERY_KEYS_USERS = {
   apiKeys: ['current-user', 'api-keys'] as const,
 }
 
-export const useUsers = defineQuery(() => {
-  return useQuery({
+export const useUsers = defineQuery(() =>
+  useQuery({
     key: () => QUERY_KEYS_USERS.root,
     query: () =>
       komgaClient
         .GET('/api/v2/users')
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
-  })
-})
+  }),
+)
 
 export const useCurrentUser = defineQuery(() => {
   const { data, error, ...rest } = useQuery({
@@ -91,47 +93,42 @@ export const useLogin = defineMutation(() => {
   })
 })
 
-export const useLogout = defineMutation(() => {
-  const queryCache = useQueryCache()
-  return useMutation({
+export const useLogout = defineMutation(() =>
+  useMutation({
     mutation: () => komgaClient.POST('/api/logout'),
     onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.currentUser })
-
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_CLIENT_SETTINGS.root })
+      userLoggedOut()
     },
-  })
-})
+  }),
+)
 
-export const useCreateUser = defineMutation(() => {
-  const queryCache = useQueryCache()
-  return useMutation({
+export const useCreateUser = defineMutation(() =>
+  useMutation({
     mutation: (user: components['schemas']['UserCreationDto']) =>
       komgaClient.POST('/api/v2/users', {
         body: user,
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.root })
+      userChanged()
     },
-  })
-})
+  }),
+)
 
-export const useUpdateUser = defineMutation(() => {
-  const queryCache = useQueryCache()
-  return useMutation({
+export const useUpdateUser = defineMutation(() =>
+  useMutation({
     mutation: (user: components['schemas']['UserDto']) =>
       komgaClient.PATCH('/api/v2/users/{id}', {
         params: { path: { id: user.id } },
         body: user,
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.root })
+      userChanged()
     },
-  })
-})
+  }),
+)
 
-export const useUpdateUserPassword = defineMutation(() => {
-  return useMutation({
+export const useUpdateUserPassword = defineMutation(() =>
+  useMutation({
     mutation: ({ userId, newPassword }: { userId: string; newPassword: string }) =>
       komgaClient.PATCH('/api/v2/users/{id}/password', {
         params: { path: { id: userId } },
@@ -139,36 +136,35 @@ export const useUpdateUserPassword = defineMutation(() => {
           password: newPassword,
         },
       }),
-  })
-})
+  }),
+)
 
-export const useDeleteUser = defineMutation(() => {
-  const queryCache = useQueryCache()
-  return useMutation({
+export const useDeleteUser = defineMutation(() =>
+  useMutation({
     mutation: (userId: string) =>
       komgaClient.DELETE('/api/v2/users/{id}', {
         params: { path: { id: userId } },
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.root })
+      userChanged()
     },
-  })
-})
+  }),
+)
 
 ///////////
 // API KEYS
 ///////////
 
-export const useApiKeys = defineQuery(() => {
-  return useQuery({
+export const useApiKeys = defineQuery(() =>
+  useQuery({
     key: () => QUERY_KEYS_USERS.apiKeys,
     query: () =>
       komgaClient
         .GET('/api/v2/users/me/api-keys')
         // unwrap the openapi-fetch structure on success
         .then((res) => res.data),
-  })
-})
+  }),
+)
 
 export const useCreateApiKey = defineMutation(() => {
   const queryCache = useQueryCache()
@@ -258,3 +254,15 @@ export const myAuthenticationActivityQuery = defineQueryOptions(
     placeholderData: (previousData) => previousData,
   }),
 )
+
+function userChanged() {
+  const appStore = useAppStore()
+  if (appStore.sseUnavailable) {
+    const queryCache = useQueryCache()
+    void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.root })
+  }
+}
+
+export function userLoggedOut() {
+  invalidateAll()
+}

@@ -8,6 +8,8 @@ import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
 import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
 import { seriesMetadataToDto } from '@/functions/series'
+import { entityChanged } from '@/colada/cache'
+import { useAppStore } from '@/stores/app'
 
 export const QUERY_KEYS_SERIES = {
   root: ['series'] as const,
@@ -104,8 +106,9 @@ export const useAnalyzeSeries = defineMutation(() =>
   }),
 )
 
-export const useDeleteSeries = defineMutation(() =>
-  useMutation({
+export const useDeleteSeries = defineMutation(() => {
+  const appStore = useAppStore()
+  return useMutation({
     mutation: (seriesId: string) =>
       komgaClient.DELETE('/api/v1/series/{seriesId}/file', {
         params: {
@@ -114,11 +117,15 @@ export const useDeleteSeries = defineMutation(() =>
           },
         },
       }),
-  }),
-)
+    onSuccess: (data, seriesId) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)
+    },
+  })
+})
 
-export const useMarkSeriesRead = defineMutation(() =>
-  useMutation({
+export const useMarkSeriesRead = defineMutation(() => {
+  const appStore = useAppStore()
+  return useMutation({
     mutation: (seriesId: string) =>
       komgaClient.POST('/api/v1/series/{seriesId}/read-progress', {
         params: {
@@ -127,11 +134,15 @@ export const useMarkSeriesRead = defineMutation(() =>
           },
         },
       }),
-  }),
-)
+    onSuccess: (data, seriesId) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)
+    },
+  })
+})
 
-export const useMarkSeriesUnread = defineMutation(() =>
-  useMutation({
+export const useMarkSeriesUnread = defineMutation(() => {
+  const appStore = useAppStore()
+  return useMutation({
     mutation: (seriesId: string) =>
       komgaClient.DELETE('/api/v1/series/{seriesId}/read-progress', {
         params: {
@@ -140,11 +151,14 @@ export const useMarkSeriesUnread = defineMutation(() =>
           },
         },
       }),
-  }),
-)
+    onSuccess: (data, seriesId) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)
+    },
+  })
+})
 
 export const useUpdateSeriesMetadata = defineMutation(() => {
-  // const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: ({
       seriesId,
@@ -161,9 +175,8 @@ export const useUpdateSeriesMetadata = defineMutation(() => {
         },
         body: seriesMetadataToDto(metadata),
       }),
-    onSuccess: () => {
-      //TODO: check how to invalidate cache
-      // void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+    onSuccess: (data, { seriesId }) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)
     },
   })
 })

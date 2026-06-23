@@ -16,6 +16,7 @@ interface AppState {
   sortActive: Record<string, Sort[]>
   gridCardWidth: number
   reorderLibraries: boolean
+  sseUnavailable: boolean
 }
 
 export const useAppStore = defineStore('app', {
@@ -40,6 +41,7 @@ export const useAppStore = defineStore('app', {
     gridCardWidth: 150,
     // transient
     reorderLibraries: false,
+    sseUnavailable: false,
   }),
   getters: {
     isBrowsingPaged(state) {

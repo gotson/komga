@@ -123,7 +123,6 @@ export function useEntitiesActions(
 
   //region Mark read
   function markRead() {
-    logger.debug(`mark as read for ${toValue(entities).length} entities`)
     toValue(entities).forEach((item) => {
       if (isBook(item)) useMarkBookRead().mutate(item.id)
       if (isSeries(item)) useMarkSeriesRead().mutate(item.id)

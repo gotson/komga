@@ -3,11 +3,12 @@ import {
   defineMutation,
   defineQueryOptions,
   useMutation,
-  useQueryCache,
 } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import { PageRequest } from '@/types/PageRequest'
 import type { components } from '@/generated/openapi/komga'
+import { entityChanged } from '@/colada/cache'
+import { useAppStore } from '@/stores/app'
 
 export const QUERY_KEYS_COLLECTIONS = {
   root: ['collections'] as const,
@@ -83,7 +84,7 @@ export const collectionDetailQuery = defineQueryOptions(
 )
 
 export const useUpdateCollection = defineMutation(() => {
-  const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: ({
       collectionId,
@@ -100,14 +101,14 @@ export const useUpdateCollection = defineMutation(() => {
         },
         body: data,
       }),
-    onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_COLLECTIONS.root }, 'all')
+    onSuccess: (data, { collectionId }) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_COLLECTIONS.root, collectionId)
     },
   })
 })
 
 export const useDeleteCollection = defineMutation(() => {
-  const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: (collectionId: string) =>
       komgaClient.DELETE('/api/v1/collections/{id}', {
@@ -117,8 +118,8 @@ export const useDeleteCollection = defineMutation(() => {
           },
         },
       }),
-    onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_COLLECTIONS.root }, 'all')
+    onSuccess: (data, collectionId) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_COLLECTIONS.root, collectionId)
     },
   })
 })

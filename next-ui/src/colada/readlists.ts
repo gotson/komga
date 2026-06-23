@@ -7,6 +7,8 @@ import {
 import { komgaClient } from '@/api/komga-client'
 import type { components } from '@/generated/openapi/komga'
 import { PageRequest } from '@/types/PageRequest'
+import { entitiesChanged, entityChanged } from '@/colada/cache'
+import { useAppStore } from '@/stores/app'
 
 export const QUERY_KEYS_READLIST = {
   root: ['readlists'] as const,
@@ -87,16 +89,20 @@ export const readListDetailQuery = defineQueryOptions(({ readListId }: { readLis
 }))
 
 export const useCreateReadList = defineMutation(() => {
+  const appStore = useAppStore()
   return useMutation({
     mutation: (readList: components['schemas']['ReadListCreationDto']) =>
       komgaClient.POST('/api/v1/readlists', {
         body: readList,
       }),
+    onSuccess: () => {
+      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_READLIST.root)
+    },
   })
 })
 
 export const useUpdateReadList = defineMutation(() => {
-  // const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: ({
       readListId,
@@ -113,15 +119,15 @@ export const useUpdateReadList = defineMutation(() => {
         },
         body: data,
       }),
-    onSuccess: () => {
-      //TODO: check how to invalidate cache
-      // void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+    onSuccess: (data, { readListId }) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_READLIST.root, readListId)
     },
   })
 })
 
-export const useDeleteReadList = defineMutation(() =>
-  useMutation({
+export const useDeleteReadList = defineMutation(() => {
+  const appStore = useAppStore()
+  return useMutation({
     mutation: (readListId: string) =>
       komgaClient.DELETE('/api/v1/readlists/{id}', {
         params: {
@@ -130,5 +136,8 @@ export const useDeleteReadList = defineMutation(() =>
           },
         },
       }),
-  }),
-)
+    onSuccess: (data, readListId) => {
+      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_READLIST.root, readListId)
+    },
+  })
+})

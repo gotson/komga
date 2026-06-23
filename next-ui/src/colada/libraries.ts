@@ -1,8 +1,10 @@
-import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
+import { defineMutation, defineQuery, useMutation, useQuery } from '@pinia/colada'
 import { komgaClient } from '@/api/komga-client'
 import { useClientSettingsUser } from '@/colada/client-settings'
 import { combinePromises } from '@/colada/utils'
 import type { components } from '@/generated/openapi/komga'
+import { entitiesChanged } from '@/colada/cache'
+import { useAppStore } from '@/stores/app'
 
 export const QUERY_KEYS_LIBRARIES = {
   root: ['libraries'] as const,
@@ -65,20 +67,20 @@ export const useLibraries = defineQuery(() => {
 })
 
 export const useCreateLibrary = defineMutation(() => {
-  const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: (library: components['schemas']['LibraryCreationDto']) =>
       komgaClient.POST('/api/v1/libraries', {
         body: library,
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_LIBRARIES.root)
     },
   })
 })
 
 export const useUpdateLibrary = defineMutation(() => {
-  const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: (library: components['schemas']['LibraryDto']) =>
       komgaClient.PATCH('/api/v1/libraries/{libraryId}', {
@@ -90,13 +92,13 @@ export const useUpdateLibrary = defineMutation(() => {
         body: library,
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_LIBRARIES.root)
     },
   })
 })
 
 export const useDeleteLibrary = defineMutation(() => {
-  const queryCache = useQueryCache()
+  const appStore = useAppStore()
   return useMutation({
     mutation: (libraryId: string) =>
       komgaClient.DELETE('/api/v1/libraries/{libraryId}', {
@@ -107,7 +109,7 @@ export const useDeleteLibrary = defineMutation(() => {
         },
       }),
     onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_LIBRARIES.root })
+      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_LIBRARIES.root)
     },
   })
 })
