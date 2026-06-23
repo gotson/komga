@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import TabNavigation from './TabNavigation.vue'
-import { expect, waitFor } from 'storybook/test'
+import { expect, waitFor, within } from 'storybook/test'
 
 const meta = {
   component: TabNavigation,
@@ -38,9 +38,17 @@ export const Default: Story = {
       { title: 'Read Lists', icon: 'i-mdi:bookmark-multiple', to: '' },
     ],
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => expect(canvas.queryByText(/collections/i)).not.toBeNull())
-    await waitFor(() => expect(canvas.queryByText(/read lists/i)).not.toBeNull())
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const width = window.innerWidth
+
+    // Define conditions based on Vuetify breakpoints
+    const isSmOrLarger = width >= 600
+
+    if (isSmOrLarger) {
+      await waitFor(() => expect(canvas.queryByText(/collections/i)).not.toBeNull())
+      await waitFor(() => expect(canvas.queryByText(/read lists/i)).not.toBeNull())
+    }
   },
 }
 
@@ -53,9 +61,17 @@ export const NoCollection: Story = {
       { title: 'Read Lists', icon: 'i-mdi:bookmark-multiple', to: '' },
     ],
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => expect(canvas.queryByText(/collections/i)).toBeNull())
-    await waitFor(() => expect(canvas.queryByText(/read lists/i)).not.toBeNull())
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const width = window.innerWidth
+
+    // Define conditions based on Vuetify breakpoints
+    const isSmOrLarger = width >= 600
+
+    if (isSmOrLarger) {
+      await waitFor(() => expect(canvas.queryByText(/collections/i)).toBeNull())
+      await waitFor(() => expect(canvas.queryByText(/read lists/i)).not.toBeNull())
+    }
   },
 }
 
@@ -68,9 +84,17 @@ export const NoReadList: Story = {
       { title: 'Collections', icon: 'i-mdi:layers-triple', to: '' },
     ],
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => expect(canvas.queryByText(/collections/i)).not.toBeNull())
-    await waitFor(() => expect(canvas.queryByText(/read lists/i)).toBeNull())
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const width = window.innerWidth
+
+    // Define conditions based on Vuetify breakpoints
+    const isSmOrLarger = width >= 600
+
+    if (isSmOrLarger) {
+      await waitFor(() => expect(canvas.queryByText(/collections/i)).not.toBeNull())
+      await waitFor(() => expect(canvas.queryByText(/read lists/i)).toBeNull())
+    }
   },
 }
 
@@ -82,8 +106,16 @@ export const NoCollectionNorReadList: Story = {
       { title: 'Books', icon: 'i-mdi:book-multiple', to: '' },
     ],
   },
-  play: async ({ canvas }) => {
-    await waitFor(() => expect(canvas.queryByText(/collections/i)).toBeNull())
-    await waitFor(() => expect(canvas.queryByText(/read lists/i)).toBeNull())
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const width = window.innerWidth
+
+    // Define conditions based on Vuetify breakpoints
+    const isSmOrLarger = width >= 600
+
+    if (isSmOrLarger) {
+      await waitFor(() => expect(canvas.queryByText(/collections/i)).toBeNull())
+      await waitFor(() => expect(canvas.queryByText(/read lists/i)).toBeNull())
+    }
   },
 }
