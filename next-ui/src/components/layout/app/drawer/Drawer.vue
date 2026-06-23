@@ -4,6 +4,10 @@
       <ReorderLibraries v-if="appStore.reorderLibraries" />
     </v-slide-x-transition>
 
+    <template #prepend>
+      <LayoutAppDrawerHeader />
+    </template>
+
     <LayoutAppDrawerMenu v-if="!appStore.reorderLibraries" />
 
     <template #append>

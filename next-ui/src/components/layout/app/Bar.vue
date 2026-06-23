@@ -34,7 +34,7 @@
       </v-hover>
     </template>
 
-    <v-app-bar-title>
+    <v-app-bar-title v-if="display.smAndUp.value">
       <RouterLink to="/">
         <v-avatar start>
           <v-img src="@/assets/logo.svg" />
@@ -54,8 +54,10 @@
 import { useAppStore } from '@/stores/app'
 import { useAnnouncements } from '@/colada/announcements'
 import { useIntl } from 'vue-intl'
+import { useDisplay } from 'vuetify'
 
 const intl = useIntl()
+const display = useDisplay()
 
 const appStore = useAppStore()
 const { unreadCount } = useAnnouncements()
