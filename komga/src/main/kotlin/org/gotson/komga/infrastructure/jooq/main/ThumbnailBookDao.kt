@@ -22,6 +22,7 @@ class ThumbnailBookDao(
 ) : SplitDslDaoBase(dslRW, dslRO),
   ThumbnailBookRepository {
   private val tb = Tables.THUMBNAIL_BOOK
+  private val b = Tables.BOOK
 
   override fun findAllByBookId(bookId: String): Collection<ThumbnailBook> =
     dslRO
@@ -71,6 +72,24 @@ class ThumbnailBookDao(
       .fetch(tb.BOOK_ID)
 
   override fun existsById(thumbnailId: String): Boolean = dslRO.fetchExists(tb, tb.ID.eq(thumbnailId))
+
+  override fun getLibraryIdOrNull(thumbnailId: String): String? =
+    dslRO
+      .select(b.LIBRARY_ID)
+      .from(tb)
+      .leftJoin(b)
+      .on(tb.BOOK_ID.eq(b.ID))
+      .where(tb.ID.eq(thumbnailId))
+      .fetchOne(b.LIBRARY_ID)
+
+  override fun getSeriesIdOrNull(thumbnailId: String): String? =
+    dslRO
+      .select(b.SERIES_ID)
+      .from(tb)
+      .leftJoin(b)
+      .on(tb.BOOK_ID.eq(b.ID))
+      .where(tb.ID.eq(thumbnailId))
+      .fetchOne(b.SERIES_ID)
 
   override fun insert(thumbnail: ThumbnailBook) {
     dslRW
