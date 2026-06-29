@@ -125,7 +125,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type ErrorCause } from '@/api/komga-client'
+import { isApiErrorWithCause } from '@/api/komga-client'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
@@ -162,16 +162,13 @@ async function submitForm() {
         else void router.push('/')
       })
       .catch((error) => {
-        if ((error?.cause as ErrorCause)?.status === 401)
+        if (isApiErrorWithCause(error) && error.cause.status === 401)
           loginError.value = intl.formatMessage({
             description: 'Login screen: error message displayed when login failed',
             defaultMessage: 'Invalid login or password',
             id: 'AjWlka',
           })
-        else
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+        else messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
       })
 }
 

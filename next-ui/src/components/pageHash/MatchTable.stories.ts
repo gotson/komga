@@ -2,10 +2,11 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import MatchTable from './MatchTable.vue'
 import { delay, http } from 'msw'
-import { response401Unauthorized } from '@/mocks/api/handlers'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import { handleGetPageHashMatches } from '@/generated/openapi/msw.gen'
+import { response200OK, response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: MatchTable,
@@ -37,11 +38,7 @@ export const Default: Story = {}
 export const NoData: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v1/page-hashes/{pageHash}', ({ response }) =>
-          response(200).json(mockPage([], new PageRequest())),
-        ),
-      ],
+      handlers: [handleGetPageHashMatches(() => response200OK(mockPage([], new PageRequest())))],
     },
   },
 }

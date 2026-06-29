@@ -1,4 +1,3 @@
-import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/users'
 import { useIntl } from 'vue-intl'
 import { storeToRefs } from 'pinia'
@@ -22,16 +21,10 @@ import {
   useMarkSeriesUnread,
   useRefreshMetadataSeries,
 } from '@/colada/series'
+import type { BookDto, CollectionDto, ReadListDto, SeriesDto } from '@/generated/openapi'
 
 export function useEntitiesActions(
-  entities: MaybeRefOrGetter<
-    (
-      | components['schemas']['BookDto']
-      | components['schemas']['SeriesDto']
-      | components['schemas']['CollectionDto']
-      | components['schemas']['ReadListDto']
-    )[]
-  >,
+  entities: MaybeRefOrGetter<(BookDto | SeriesDto | CollectionDto | ReadListDto)[]>,
   callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin } = useCurrentUser()

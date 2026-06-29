@@ -237,7 +237,7 @@ other {# books}
 
 <script setup lang="ts">
 import { seriesPosterUrl } from '@/api/images'
-import type { components } from '@/generated/openapi/komga'
+
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
 import SimpleDataTable, { type TableRow } from '@/components/SimpleDataTable.vue'
@@ -250,6 +250,7 @@ import { seriesStatusMessages } from '@/types/SeriesStatus'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
+import type { SeriesDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -257,7 +258,7 @@ const id = useId()
 const posterMaxWidth = 220
 
 const props = defineProps<{
-  series: components['schemas']['SeriesDto']
+  series: SeriesDto
 }>()
 
 const { unreadCount, isRead, readingDirection, seriesStatus } = useSeries(() => props.series)

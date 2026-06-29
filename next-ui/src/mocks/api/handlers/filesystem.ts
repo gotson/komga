@@ -1,5 +1,5 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
-import { response400BadRequest } from '@/mocks/api/handlers'
+import { handleGetDirectoryListing } from '@/generated/openapi/msw.gen'
+import { response200OK, response400BadRequest } from '@/mocks/api/utils'
 
 const emptyPath = { directories: [{ type: 'directory', name: '/', path: '/' }], files: [] }
 
@@ -41,21 +41,21 @@ const comics = {
 const empty = { parent: '/', directories: [], files: [] }
 
 export const filesystemHandlers = [
-  httpTyped.post('/api/v1/filesystem', async ({ request, response }) => {
+  handleGetDirectoryListing(async ({ request }) => {
     const data = await request.json()
 
     if (data?.path === '') {
-      return response(200).json(emptyPath)
+      return response200OK(emptyPath)
     } else if (data?.path === '/') {
-      return response(200).json(rootSlash)
+      return response200OK(rootSlash)
     } else if (data?.path === '/comics') {
-      return response(200).json(comics)
+      return response200OK(comics)
     } else if (
       [...rootSlash.directories, ...comics.directories].some((it) => it.path === data?.path)
     ) {
-      return response(200).json(empty)
+      return response200OK(empty)
     }
 
-    return response.untyped(response400BadRequest())
+    return response400BadRequest()
   }),
 ]

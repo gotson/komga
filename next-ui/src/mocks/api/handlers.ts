@@ -1,7 +1,6 @@
 import { actuatorHandlers } from '@/mocks/api/handlers/actuator'
 import { announcementHandlers } from '@/mocks/api/handlers/announcements'
 import { releasesHandlers } from '@/mocks/api/handlers/releases'
-import { HttpResponse, type JsonBodyType } from 'msw'
 import { librariesHandlers } from '@/mocks/api/handlers/libraries'
 import { referentialHandlers } from '@/mocks/api/handlers/referential'
 import { usersHandlers } from '@/mocks/api/handlers/users'
@@ -16,6 +15,9 @@ import { readListsHandlers } from '@/mocks/api/handlers/readlists'
 import { pageHashesHandlers } from '@/mocks/api/handlers/page-hashes'
 import { clientSettingsHandlers } from '@/mocks/api/handlers/client-settings'
 import { collectionsHandlers } from '@/mocks/api/handlers/collections'
+import { createMswHandlers } from '@/generated/openapi/msw.gen'
+
+const mswHandlers = createMswHandlers()
 
 export const handlers = [
   ...actuatorHandlers,
@@ -35,17 +37,5 @@ export const handlers = [
   ...settingsHandlers,
   ...transientBooksHandlers,
   ...usersHandlers,
+  ...mswHandlers.all(),
 ]
-
-export const response400BadRequest = () =>
-  HttpResponse.json({ error: 'Bad Request' }, { status: 400 })
-
-export const response400 = (body: JsonBodyType) => HttpResponse.json(body, { status: 400 })
-
-export const response404NotFound = () => HttpResponse.json({ error: 'NotFound' }, { status: 404 })
-
-export const response401Unauthorized = () =>
-  HttpResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-export const response502BadGateway = () =>
-  HttpResponse.json({ error: 'Bad gateway' }, { status: 502 })

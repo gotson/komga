@@ -1,8 +1,10 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
 import { PageRequest } from '@/types/PageRequest'
 import { mockPage } from '@/mocks/api/pageable'
 import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
+import { handleGetCollections } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 export const mockCollection = {
   id: '026801S4HWRZA',
@@ -17,7 +19,8 @@ export const mockCollection = {
 const collections = [mockCollection]
 
 export const collectionsHandlers = [
-  httpTyped.get('/api/v1/collections', ({ query, response }) => {
+  handleGetCollections(({ request }) => {
+    const query = new URL(request.url).searchParams
     const search = query.get('search')
 
     const selected = collections.filter((it) => {
@@ -26,7 +29,7 @@ export const collectionsHandlers = [
       return include
     })
 
-    return response(200).json(
+    return response200OK(
       mockPage(selected, new PageRequest(Number(query.get('page')), Number(query.get('size')))),
     )
   }),

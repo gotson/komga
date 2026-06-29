@@ -26,7 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { bookPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
@@ -36,6 +35,7 @@ import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 import { useBook } from '@/composables/book/useBook'
 import { bookReaderUrl } from '@/api/links'
+import type { BookDto } from '@/generated/openapi'
 
 const intl = useIntl()
 
@@ -43,7 +43,7 @@ const id = useId()
 
 const props = defineProps<
   {
-    book: components['schemas']['BookDto']
+    book: BookDto
     showSeries: boolean
   } & ItemCardProps
 >()

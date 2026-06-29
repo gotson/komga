@@ -1,8 +1,9 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
 import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
+import { handleGetBookById, handleGetBooks } from '@/generated/openapi/msw.gen'
+import { response200OK, response404NotFound } from '@/mocks/api/utils'
 
 export const mockBook = {
   id: '05RKH8CC8B4RW',
@@ -36,7 +37,7 @@ export const mockBook = {
     numberLock: false,
     numberSort: 1.0,
     numberSortLock: false,
-    releaseDate: '1985-10-12',
+    releaseDate: new Date('1985-10-12'),
     releaseDateLock: false,
     authors: [
       { name: 'Frank Tieri', role: 'writer' },
@@ -81,7 +82,7 @@ export function mockBooks(count: number) {
         number: `${index + 1}`,
         numberSort: index + 1,
         ...(index % 2 === 0 && {
-          releaseDate: `19${String(index).slice(-2).padStart(2, '0')}-05-10`,
+          releaseDate: new Date(`19${String(index).slice(-2).padStart(2, '0')}-05-10`),
         }),
       },
     }),
@@ -89,22 +90,20 @@ export function mockBooks(count: number) {
 }
 
 export const booksHandlers = [
-  httpTyped.post('/api/v1/books/list', ({ query, response }) => {
-    return response(200).json(
+  handleGetBooks(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       mockPage(
         mockBooks(50),
         new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
       ),
     )
   }),
-  httpTyped.get('/api/v1/books/{bookId}', ({ params, response }) => {
-    if (params.bookId === '404') return response(404).empty()
-    return response(200).json(
+  handleGetBookById(({ params }) => {
+    if (params.bookId === '404') return response404NotFound()
+    return response200OK(
       Object.assign({}, mockBook, { metadata: { title: `Book ${params.bookId}` } }),
     )
-  }),
-  httpTyped.post('/api/v1/books/import', ({ response }) => {
-    return response(202).empty()
   }),
   http.get('*/api/v1/books/*/thumbnail', async () => {
     // Get an ArrayBuffer from reading the file from disk or fetching it.
@@ -116,12 +115,4 @@ export const booksHandlers = [
       },
     })
   }),
-  httpTyped.patch('/api/v1/books/{bookId}/metadata', ({ response }) => response(204).empty()),
-  httpTyped.post('/api/v1/books/{bookId}/analyze', ({ response }) => response(202).empty()),
-  httpTyped.post('/api/v1/books/{bookId}/metadata/refresh', ({ response }) =>
-    response(202).empty(),
-  ),
-  httpTyped.delete('/api/v1/books/{bookId}/file', ({ response }) => response(202).empty()),
-  httpTyped.patch('/api/v1/books/{bookId}/read-progress', ({ response }) => response(204).empty()),
-  httpTyped.delete('/api/v1/books/{bookId}/read-progress', ({ response }) => response(204).empty()),
 ]

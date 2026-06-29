@@ -95,10 +95,10 @@ import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
 import CreateEdit from '@/components/library/form/CreateEdit.vue'
 import { getLibraryDefaults } from '@/functions/libraries'
-import type { components } from '@/generated/openapi/komga'
+
 import { useMessagesStore } from '@/stores/messages'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import type { LibraryCreationDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -140,7 +140,7 @@ function createLibrary() {
   ) => {
     setLoading(true)
 
-    const newLib = dialogConfirmEdit.value.record as components['schemas']['LibraryCreationDto']
+    const newLib = dialogConfirmEdit.value.record as LibraryCreationDto
 
     mutateCreateLibrary(newLib)
       .then(() => {
@@ -159,9 +159,7 @@ function createLibrary() {
         })
       })
       .catch((error) => {
-        messagesStore.messages.push(
-          (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-        )
+        messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         setLoading(false)
       })
   }

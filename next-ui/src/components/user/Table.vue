@@ -106,18 +106,17 @@
 </template>
 
 <script lang="ts" setup>
-import { komgaClient } from '@/api/komga-client'
-import type { components } from '@/generated/openapi/komga'
 import { UserRoles, userRolesMessages } from '@/types/UserRoles'
 import { defineMessage, useIntl } from 'vue-intl'
 
 import { useCurrentUser } from '@/colada/users'
 import { watchImmediate } from '@vueuse/core'
+import { komgaGetLatestAuthenticationActivityByUserId, type UserDto } from '@/generated/openapi'
 
 const intl = useIntl()
 
 const { users = [], loading = false } = defineProps<{
-  users?: components['schemas']['UserDto'][]
+  users?: UserDto[]
   loading?: boolean
 }>()
 
@@ -127,9 +126,9 @@ const emit = defineEmits<{
   enterEditUser: [target: Element]
   enterDeleteUser: [target: Element]
   enterChangePassword: [target: Element]
-  changePassword: [user: components['schemas']['UserDto']]
-  editUser: [user: components['schemas']['UserDto']]
-  deleteUser: [user: components['schemas']['UserDto']]
+  changePassword: [user: UserDto]
+  editUser: [user: UserDto]
+  deleteUser: [user: UserDto]
 }>()
 
 // API data
@@ -153,7 +152,7 @@ const headers = [
       id: 'y1P/K4',
     }),
     key: 'activity',
-    value: (item: components['schemas']['UserDto']) => latestActivity[item.id],
+    value: (item: UserDto) => latestActivity[item.id],
   },
   {
     title: intl.formatMessage({
@@ -185,14 +184,10 @@ function getRoleColor(role: UserRoles) {
 const latestActivity: Record<string, Date | undefined> = reactive({})
 
 function getLatestActivity(userId: string) {
-  komgaClient
-    .GET('/api/v2/users/{id}/authentication-activity/latest', {
-      params: {
-        path: { id: userId },
-      },
-    })
-    // unwrap the openapi-fetch structure on success
-    .then((res) => (latestActivity[userId] = res.data?.dateTime))
+  komgaGetLatestAuthenticationActivityByUserId({
+    path: { id: userId },
+  })
+    .then((data) => (latestActivity[userId] = data?.dateTime))
     .catch(() => {})
 }
 

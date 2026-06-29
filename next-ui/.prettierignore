@@ -3,5 +3,6 @@ src/auto-imports.d.ts
 src/components.d.ts
 src/route-map.d.ts
 src/generated/openapi/komga.d.ts
+src/generated/
 public-msw/mockServiceWorker.js
 filters.md

@@ -275,7 +275,7 @@ import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
 import { useFilterContributors, useFilters } from '@/composables/filter'
 import { filterKeys } from '@/types/filter'
-import type { components } from '@/generated/openapi/komga'
+
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
 import { PageRequest, type Sort } from '@/types/PageRequest'
@@ -283,6 +283,7 @@ import { collectionDetailQuery } from '@/colada/collections'
 import { contributorsRolesMessages } from '@/types/referential'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { useSelectionContextualActions } from '@/composables/selection'
+import type { AllOfSeries } from '@/generated/openapi'
 
 const route = useRoute('/collection/[id]')
 const router = useRouter()
@@ -382,7 +383,7 @@ watch([() => JSON.stringify(conds.value), () => appStore.browsingPaging], () =>
 )
 
 const apiQuery = computed(() => ({
-  condition: conds.value as components['schemas']['AllOfSeries'],
+  condition: conds.value as AllOfSeries,
 }))
 
 const { data: dataPaged } = useQuery(() => ({

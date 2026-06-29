@@ -209,7 +209,7 @@ import { useIntl } from 'vue-intl'
 import { PageRequest, type VSortItem } from '@/types/PageRequest'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { pageHashesUnknownQuery, QUERY_KEYS_PAGE_HASHES } from '@/colada/page-hashes'
-import type { components } from '@/generated/openapi/komga'
+
 import { getFileSize } from '@/utils/utils'
 import { pageHashUnknownThumbnailUrl } from '@/api/images'
 import { storeToRefs } from 'pinia'
@@ -217,7 +217,6 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useDisplay } from 'vuetify'
 import { VImg } from 'vuetify/components'
 import MatchTable from '@/components/pageHash/MatchTable.vue'
-import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import {
   type PageHashAction,
   PageHashActionEnum,
@@ -225,13 +224,14 @@ import {
 } from '@/types/PageHashAction'
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { komgaCreateOrUpdateKnownPageHash, type PageHashUnknownDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const display = useDisplay()
 const messagesStore = useMessagesStore()
 const { simple: dialogSimple } = storeToRefs(useDialogsStore())
 
-const selectedHashes = ref<components['schemas']['PageHashUnknownDto'][]>([])
+const selectedHashes = ref<PageHashUnknownDto[]>([])
 const sortBy = ref<VSortItem[]>([{ key: 'matchCount', order: 'desc' }])
 
 //region headers
@@ -252,7 +252,7 @@ const headers = [
       id: 'gxZjIe',
     }),
     key: 'action',
-    value: (item: components['schemas']['PageHashUnknownDto']) => {
+    value: (item: PageHashUnknownDto) => {
       return getPageHashAction(item)
     },
     sortable: false,
@@ -332,14 +332,12 @@ function showDialogMatches(hash: string) {
 //region Update action
 const updateRequests = ref<Record<string, PageHashAction>>({})
 
-function getPageHashAction(
-  pageHash: components['schemas']['PageHashUnknownDto'],
-): PageHashAction | undefined {
+function getPageHashAction(pageHash: PageHashUnknownDto): PageHashAction | undefined {
   return updateRequests.value[pageHash.hash]
 }
 
 async function updateHashAction(
-  pageHash: components['schemas']['PageHashUnknownDto'],
+  pageHash: PageHashUnknownDto,
   newAction: PageHashAction,
   invalidateCache: boolean = true,
 ) {
@@ -347,7 +345,7 @@ async function updateHashAction(
 
   return useMutation({
     mutation: () =>
-      komgaClient.PUT('/api/v1/page-hashes', {
+      komgaCreateOrUpdateKnownPageHash({
         body: {
           ...pageHash,
           action: newAction,
@@ -362,16 +360,11 @@ async function updateHashAction(
         void useQueryCache().invalidateQueries({ key: [QUERY_KEYS_PAGE_HASHES.unknown] })
     })
     .catch((error) =>
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      ),
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError),
     )
 }
 
-async function updateHashActions(
-  pageHashes: components['schemas']['PageHashUnknownDto'][],
-  newAction: PageHashAction,
-) {
+async function updateHashActions(pageHashes: PageHashUnknownDto[], newAction: PageHashAction) {
   const updates = pageHashes.map((it) => updateHashAction(it, newAction, false))
   await Promise.allSettled(updates)
 

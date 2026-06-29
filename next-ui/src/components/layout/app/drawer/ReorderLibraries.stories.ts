@@ -1,10 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ReorderLibraries from './ReorderLibraries.vue'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
-import type { components } from '@/generated/openapi/komga'
+
 import { mockLibraries } from '@/mocks/api/handlers/libraries'
+import type { ClientSettingUserUpdateDto, LibraryDto } from '@/generated/openapi'
+import { handleGetLibraries, handleGetUserSettings } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 const meta = {
   component: ReorderLibraries,
@@ -29,24 +33,24 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const libHandler = httpTyped.get('/api/v1/libraries', ({ response }) => {
+const libHandler = handleGetLibraries(() => {
   const bds = {
     ...mockLibraries[0],
     id: '3',
     name: 'BDs',
-  } as components['schemas']['LibraryDto']
+  } as LibraryDto
   const magazines = {
     ...mockLibraries[0],
     id: '4',
     name: 'Magazines',
-  } as components['schemas']['LibraryDto']
+  } as LibraryDto
   const manga = {
     ...mockLibraries[0],
     id: '5',
     name: 'Mangas',
-  } as components['schemas']['LibraryDto']
+  } as LibraryDto
   const libs = [...mockLibraries, bds, magazines, manga]
-  return response(200).json(libs)
+  return response200OK(libs)
 })
 
 export const AllPinned: Story = {
@@ -64,7 +68,7 @@ export const SomeUnpinned: Story = {
     msw: {
       handlers: [
         libHandler,
-        httpTyped.get('/api/v1/client-settings/user/list', ({ response }) => {
+        handleGetUserSettings(() => {
           const userLibraries: Record<string, ClientSettingUserLibrary> = {
             '2': {
               unpinned: true,
@@ -73,12 +77,12 @@ export const SomeUnpinned: Story = {
               unpinned: true,
             },
           }
-          const settings: Record<string, components['schemas']['ClientSettingUserUpdateDto']> = {
+          const settings: Record<string, ClientSettingUserUpdateDto> = {
             [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
               value: JSON.stringify(userLibraries),
             },
           }
-          return response(200).json(settings)
+          return response200OK(settings)
         }),
       ],
     },
@@ -90,7 +94,7 @@ export const AllUnpinned: Story = {
   parameters: {
     msw: {
       handlers: [
-        httpTyped.get('/api/v1/client-settings/user/list', ({ response }) => {
+        handleGetUserSettings(() => {
           const userLibraries: Record<string, ClientSettingUserLibrary> = {
             '1': {
               unpinned: true,
@@ -99,12 +103,12 @@ export const AllUnpinned: Story = {
               unpinned: true,
             },
           }
-          const settings: Record<string, components['schemas']['ClientSettingUserUpdateDto']> = {
+          const settings: Record<string, ClientSettingUserUpdateDto> = {
             [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
               value: JSON.stringify(userLibraries),
             },
           }
-          return response(200).json(settings)
+          return response200OK(settings)
         }),
       ],
     },

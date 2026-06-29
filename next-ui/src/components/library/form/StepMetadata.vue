@@ -241,10 +241,10 @@
 
 <script setup lang="ts">
 import { commonMessages } from '@/utils/i18n/common-messages'
-import type { components } from '@/generated/openapi/komga'
+import type { LibraryCreationDto } from '@/generated/openapi'
 
 type LibraryCreationMetadata = Pick<
-  components['schemas']['LibraryCreationDto'],
+  LibraryCreationDto,
   | 'importComicInfoBook'
   | 'importComicInfoSeries'
   | 'importComicInfoSeriesAppendVolume'

@@ -1,4 +1,6 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
+import { handleGetAnnouncements } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 export const announcementsMixedRead = {
   version: 'https://jsonfeed.org/version/1',
@@ -83,8 +85,5 @@ export const announcementsAllRead = {
 }
 
 export const announcementHandlers = [
-  httpTyped.get('/api/v1/announcements', ({ response }) =>
-    response(200).json(announcementsMixedRead),
-  ),
-  httpTyped.put('/api/v1/announcements', ({ response }) => response(204).empty()),
+  handleGetAnnouncements(() => response200OK(announcementsMixedRead)),
 ]

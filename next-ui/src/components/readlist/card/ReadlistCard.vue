@@ -25,13 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { readListPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 import { UserRoles } from '@/types/UserRoles'
+import type { ReadListDto } from '@/generated/openapi'
 
 const intl = useIntl()
 
@@ -39,7 +39,7 @@ const id = useId()
 
 const { readList, ...props } = defineProps<
   {
-    readList: components['schemas']['ReadListDto']
+    readList: ReadListDto
   } & ItemCardProps
 >()
 const emit = defineEmits<ItemCardEmits>()

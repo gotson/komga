@@ -326,23 +326,24 @@
 <script setup lang="ts">
 import { ThumbnailSize, thumbnailSizeMessages } from '@/types/ThumbnailSize'
 import { useIntl } from 'vue-intl'
-import type { components } from '@/generated/openapi/komga'
+
 import { watchImmediate } from '@vueuse/core'
 import { useRules } from 'vuetify/labs/rules'
+import type { SettingsDto, SettingsUpdateDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const rules = useRules()
 
 const { settings, loading = false } = defineProps<{
-  settings?: components['schemas']['SettingsDto']
+  settings?: SettingsDto
   loading?: boolean
 }>()
 
 const emit = defineEmits<{
-  updateSettings: [settings: components['schemas']['SettingsUpdateDto']]
+  updateSettings: [settings: SettingsUpdateDto]
 }>()
 
-const settingsUpdate = ref<components['schemas']['SettingsUpdateDto']>({
+const settingsUpdate = ref<SettingsUpdateDto>({
   thumbnailSize: ThumbnailSize.DEFAULT,
   deleteEmptyCollections: false,
   deleteEmptyReadLists: false,

@@ -23,8 +23,6 @@
 </template>
 
 <script lang="ts" setup>
-import { type ErrorCause } from '@/api/komga-client'
-import type { components } from '@/generated/openapi/komga'
 import { UserRoles } from '@/types/UserRoles'
 import { useLibraries } from '@/colada/libraries'
 import { commonMessages } from '@/utils/i18n/common-messages'
@@ -43,6 +41,7 @@ import {
   useUpdateUserPassword,
   useUsers,
 } from '@/colada/users'
+import type { UserCreationDto, UserDto } from '@/generated/openapi'
 
 const intl = useIntl()
 
@@ -53,7 +52,7 @@ onMounted(() => refetchUsers())
 
 // Dialogs handling
 // stores the user being actioned upon
-const userRecord = ref<components['schemas']['UserDto']>()
+const userRecord = ref<UserDto>()
 // stores the ongoing action, so we can handle the action when the dialog is closed with changes
 const currentAction = ref<ACTION>()
 
@@ -75,7 +74,7 @@ enum ACTION {
   PASSWORD,
 }
 
-function showDialog(action: ACTION, user?: components['schemas']['UserDto']) {
+function showDialog(action: ACTION, user?: UserDto) {
   currentAction.value = action
   switch (action) {
     case ACTION.ADD:
@@ -199,7 +198,7 @@ function handleDialogConfirmation(
 
   switch (currentAction.value) {
     case ACTION.ADD:
-      const newUser = dialogConfirmEdit.value.record as components['schemas']['UserCreationDto']
+      const newUser = dialogConfirmEdit.value.record as UserCreationDto
       mutation = mutateCreateUser(newUser)
       successMessage = intl.formatMessage(
         {
@@ -213,7 +212,7 @@ function handleDialogConfirmation(
       )
       break
     case ACTION.EDIT:
-      const editUser = dialogConfirmEdit.value.record as components['schemas']['UserDto']
+      const editUser = dialogConfirmEdit.value.record as UserDto
       mutation = mutateUser(editUser)
       successMessage = intl.formatMessage(
         {
@@ -263,9 +262,7 @@ function handleDialogConfirmation(
       if (successMessage) messagesStore.messages.push(successMessage)
     })
     .catch((error) => {
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      )
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
       setLoading(false)
     })
 }

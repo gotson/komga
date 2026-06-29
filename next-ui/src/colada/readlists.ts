@@ -4,11 +4,18 @@ import {
   defineQueryOptions,
   useMutation,
 } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
-import type { components } from '@/generated/openapi/komga'
 import { PageRequest } from '@/types/PageRequest'
 import { entitiesChanged, entityChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
+import {
+  komgaCreateReadList,
+  komgaDeleteReadListById,
+  komgaGetReadListById,
+  komgaGetReadLists,
+  komgaUpdateReadListById,
+  type ReadListCreationDto,
+  type ReadListUpdateDto,
+} from '@/generated/openapi'
 
 export const QUERY_KEYS_READLIST = {
   root: ['readlists'] as const,
@@ -32,18 +39,13 @@ export const readListsListQuery = defineQueryOptions(
       pageRequest: pageRequest,
     }),
     query: () =>
-      komgaClient
-        .GET('/api/v1/readlists', {
-          params: {
-            query: {
-              search: search,
-              library_id: libraryIds,
-              ...pageRequest,
-            },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetReadLists({
+        query: {
+          search: search,
+          library_id: libraryIds,
+          ...pageRequest,
+        },
+      }),
     placeholderData: (previousData) => previousData,
   }),
 )
@@ -56,18 +58,13 @@ export const readListsListQueryInfinite = defineInfiniteQueryOptions(
     }),
     initialPageParam: new PageRequest(0, 50),
     query: ({ pageParam }) =>
-      komgaClient
-        .GET('/api/v1/readlists', {
-          params: {
-            query: {
-              page: pageParam.page,
-              size: pageParam.size,
-              libraryIds: libraryIds,
-            },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetReadLists({
+        query: {
+          page: pageParam.page,
+          size: pageParam.size,
+          library_id: libraryIds,
+        },
+      }),
     getNextPageParam: (lastPage, _, lastPageParam) =>
       !lastPage?.last ? lastPageParam.next() : null,
   }),
@@ -76,23 +73,18 @@ export const readListsListQueryInfinite = defineInfiniteQueryOptions(
 export const readListDetailQuery = defineQueryOptions(({ readListId }: { readListId: string }) => ({
   key: QUERY_KEYS_READLIST.byId(readListId),
   query: () =>
-    komgaClient
-      .GET('/api/v1/readlists/{id}', {
-        params: {
-          path: {
-            id: readListId,
-          },
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data),
+    komgaGetReadListById({
+      path: {
+        id: readListId,
+      },
+    }),
 }))
 
 export const useCreateReadList = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
-    mutation: (readList: components['schemas']['ReadListCreationDto']) =>
-      komgaClient.POST('/api/v1/readlists', {
+    mutation: (readList: ReadListCreationDto) =>
+      komgaCreateReadList({
         body: readList,
       }),
     onSuccess: () => {
@@ -104,22 +96,14 @@ export const useCreateReadList = defineMutation(() => {
 export const useUpdateReadList = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
-    mutation: ({
-      readListId,
-      data,
-    }: {
-      readListId: string
-      data: components['schemas']['ReadListUpdateDto']
-    }) =>
-      komgaClient.PATCH('/api/v1/readlists/{id}', {
-        params: {
-          path: {
-            id: readListId,
-          },
+    mutation: ({ readListId, data }: { readListId: string; data: ReadListUpdateDto }) =>
+      komgaUpdateReadListById({
+        path: {
+          id: readListId,
         },
         body: data,
       }),
-    onSuccess: (data, { readListId }) => {
+    onSuccess: (_data, { readListId }) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_READLIST.root, readListId)
     },
   })
@@ -129,14 +113,12 @@ export const useDeleteReadList = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
     mutation: (readListId: string) =>
-      komgaClient.DELETE('/api/v1/readlists/{id}', {
-        params: {
-          path: {
-            id: readListId,
-          },
+      komgaDeleteReadListById({
+        path: {
+          id: readListId,
         },
       }),
-    onSuccess: (data, readListId) => {
+    onSuccess: (_data, readListId) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_READLIST.root, readListId)
     },
   })

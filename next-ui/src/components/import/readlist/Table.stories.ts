@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import { http, delay } from 'msw'
 import Table from './Table.vue'
-import { response400BadRequest } from '@/mocks/api/handlers'
 import SnackQueue from '@/components/SnackQueue.vue'
 import { matchCbl } from '@/mocks/api/handlers/readlists'
 import { expect, waitFor } from 'storybook/test'
+import { response400BadRequest } from '@/mocks/api/utils'
 
 const meta = {
   component: Table,
@@ -47,7 +47,7 @@ const singleMatch = {
           series: {
             seriesId: '63',
             title: 'Space Adventures',
-            releaseDate: '2018-07-10',
+            releaseDate: new Date('2018-07-10'),
           },
           books: [{ bookId: '0F99E5W723ENS', number: '1', title: 'Volume 1' }],
         },

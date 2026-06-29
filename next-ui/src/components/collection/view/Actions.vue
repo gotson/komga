@@ -26,13 +26,13 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
 import { ActionName } from '@/types/action/action'
+import type { CollectionDto } from '@/generated/openapi'
 
 const props = defineProps<{
-  collection: components['schemas']['CollectionDto']
+  collection: CollectionDto
 }>()
 
 const id = useId()

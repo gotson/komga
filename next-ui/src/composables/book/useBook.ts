@@ -1,11 +1,11 @@
-import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/users'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { MediaStatus } from '@/types/MediaStatus'
 import { UserRoles } from '@/types/UserRoles'
 import { getEnumValueFromString } from '@/functions/enum'
+import type { BookDto } from '@/generated/openapi'
 
-export function useBook(book: MaybeRefOrGetter<components['schemas']['BookDto']>) {
+export function useBook(book: MaybeRefOrGetter<BookDto>) {
   const { hasRole } = useCurrentUser()
   const { libraries } = useGetLibrariesById(() => toValue(book).libraryId)
 

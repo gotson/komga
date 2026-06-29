@@ -25,8 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-import { type ErrorCause } from '@/api/komga-client'
-import type { components } from '@/generated/openapi/komga'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
@@ -38,6 +36,7 @@ import { useApiKeys, useDeleteApiKey } from '@/colada/users'
 import { useDeleteSyncPoints } from '@/colada/syncpoints'
 import { useDisplay } from 'vuetify'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
+import type { ApiKeyDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -49,7 +48,7 @@ onMounted(() => refetchApiKeys())
 
 // Dialogs handling
 // stores the API Key being actioned upon
-const apiKeyRecord = ref<components['schemas']['ApiKeyDto']>()
+const apiKeyRecord = ref<ApiKeyDto>()
 // stores the ongoing action, so we can handle the action when the dialog is closed with changes
 const currentAction = ref<ACTION>()
 const dialogGenerateActivator = ref<Element | undefined>(undefined)
@@ -66,7 +65,7 @@ enum ACTION {
   FORCE_SYNC,
 }
 
-function showDialog(action: ACTION, apiKey?: components['schemas']['ApiKeyDto']) {
+function showDialog(action: ACTION, apiKey?: ApiKeyDto) {
   currentAction.value = action
   switch (action) {
     case ACTION.DELETE:
@@ -166,9 +165,7 @@ function handleDialogConfirmation(
       if (successMessage) messagesStore.messages.push(successMessage)
     })
     .catch((error) => {
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      )
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
       setLoading(false)
     })
 }

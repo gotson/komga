@@ -1,7 +1,20 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
-import type { components } from '@/generated/openapi/komga'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import type { AuthorDto } from '@/generated/openapi'
+import {
+  handleGetAgeRatings,
+  handleGetAuthors,
+  handleGetAuthorsNames,
+  handleGetAuthorsRoles,
+  handleGetGenres,
+  handleGetLanguages,
+  handleGetPublishers,
+  handleGetSeriesReleaseYears,
+  handleGetSharingLabels,
+  handleGetTags,
+} from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 const authorRoles = [
   'writer',
@@ -20,7 +33,7 @@ function doMockAuthors(count: number) {
     return {
       role: role,
       name: `Author ${index} (${role})`,
-    } as components['schemas']['AuthorDto']
+    } as AuthorDto
   })
 }
 const mockAuthors = doMockAuthors(10000)
@@ -54,8 +67,9 @@ function filterAndPage(
 }
 
 export const referentialHandlers = [
-  httpTyped.get('/api/v2/genres', ({ query, response }) =>
-    response(200).json(
+  handleGetGenres(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       filterAndPage(
         query.get('search'),
         mockGenres,
@@ -63,10 +77,11 @@ export const referentialHandlers = [
         query.get('size'),
         query.get('unpaged'),
       ),
-    ),
-  ),
-  httpTyped.get('/api/v2/tags', ({ query, response }) =>
-    response(200).json(
+    )
+  }),
+  handleGetTags(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       filterAndPage(
         query.get('search'),
         mockTags,
@@ -74,10 +89,11 @@ export const referentialHandlers = [
         query.get('size'),
         query.get('unpaged'),
       ),
-    ),
-  ),
-  httpTyped.get('/api/v2/publishers', ({ query, response }) =>
-    response(200).json(
+    )
+  }),
+  handleGetPublishers(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       filterAndPage(
         query.get('search'),
         mockPublishers,
@@ -85,10 +101,11 @@ export const referentialHandlers = [
         query.get('size'),
         query.get('unpaged'),
       ),
-    ),
-  ),
-  httpTyped.get('/api/v2/sharing-labels', ({ query, response }) =>
-    response(200).json(
+    )
+  }),
+  handleGetSharingLabels(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       filterAndPage(
         query.get('search'),
         mockSharingLabels,
@@ -96,10 +113,11 @@ export const referentialHandlers = [
         query.get('size'),
         query.get('unpaged'),
       ),
-    ),
-  ),
-  httpTyped.get('/api/v2/languages', ({ query, response }) =>
-    response(200).json(
+    )
+  }),
+  handleGetLanguages(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       filterAndPage(
         query.get('search'),
         mockLanguages,
@@ -107,10 +125,11 @@ export const referentialHandlers = [
         query.get('size'),
         query.get('unpaged'),
       ),
-    ),
-  ),
-  httpTyped.get('/api/v2/series/release-years', ({ query, response }) =>
-    response(200).json(
+    )
+  }),
+  handleGetSeriesReleaseYears(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       filterAndPage(
         null,
         mockReleaseYears,
@@ -118,10 +137,11 @@ export const referentialHandlers = [
         query.get('size'),
         query.get('unpaged'),
       ),
-    ),
-  ),
-  httpTyped.get('/api/v2/age-ratings', ({ query, response }) =>
-    response(200).json(
+    )
+  }),
+  handleGetAgeRatings(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       mockPage(
         mockAgeRatings,
         new PageRequest(
@@ -131,9 +151,10 @@ export const referentialHandlers = [
           Boolean(query.get('unpaged')),
         ),
       ),
-    ),
-  ),
-  httpTyped.get('/api/v2/authors', ({ query, response }) => {
+    )
+  }),
+  handleGetAuthors(({ request }) => {
+    const query = new URL(request.url).searchParams
     const search = query.get('search')
     const role = query.get('role')
     const selected = search
@@ -141,7 +162,7 @@ export const referentialHandlers = [
       : mockAuthors
     const byRole = role ? selected.filter((it) => it.role === role) : selected
 
-    return response(200).json(
+    return response200OK(
       mockPage(
         byRole,
         new PageRequest(
@@ -153,7 +174,8 @@ export const referentialHandlers = [
       ),
     )
   }),
-  httpTyped.get('/api/v2/authors/names', ({ query, response }) => {
+  handleGetAuthorsNames(({ request }) => {
+    const query = new URL(request.url).searchParams
     const search = query.get('search')
     const role = query.get('role')
     const selected = search
@@ -162,7 +184,7 @@ export const referentialHandlers = [
     const byRole = role ? selected.filter((it) => it.role === role) : selected
     const names = [...new Set(byRole.map((it) => it.name))]
 
-    return response(200).json(
+    return response200OK(
       mockPage(
         names,
         new PageRequest(
@@ -174,10 +196,11 @@ export const referentialHandlers = [
       ),
     )
   }),
-  httpTyped.get('/api/v2/authors/roles', ({ query, response }) => {
+  handleGetAuthorsRoles(({ request }) => {
+    const query = new URL(request.url).searchParams
     const roles = [...new Set(mockAuthors.map((it) => it.role))]
 
-    return response(200).json(
+    return response200OK(
       mockPage(
         roles,
         new PageRequest(

@@ -3,10 +3,10 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import claim from './claim.vue'
 import { http, delay } from 'msw'
 
-import { response502BadGateway } from '@/mocks/api/handlers'
 import { expect, waitFor } from 'storybook/test'
 import { useMessagesStore } from '@/stores/messages'
-import { httpTyped } from '@/mocks/api/httpTyped'
+import { handleGetClaimStatus } from '@/generated/openapi/msw.gen'
+import { response200OK, response502BadGateway } from '@/mocks/api/utils'
 
 const meta = {
   component: claim,
@@ -20,9 +20,7 @@ const meta = {
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     msw: {
-      handlers: [
-        httpTyped.get('/api/v1/claim', ({ response }) => response(200).json({ isClaimed: false })),
-      ],
+      handlers: [handleGetClaimStatus(() => response200OK({ isClaimed: false }))],
     },
   },
   args: {},

@@ -61,13 +61,14 @@
 
 <script setup lang="ts">
 import { collectionPosterUrl } from '@/api/images'
-import type { components } from '@/generated/openapi/komga'
+
 import { useDisplay } from 'vuetify'
+import type { CollectionDto } from '@/generated/openapi'
 
 const display = useDisplay()
 const id = useId()
 
 defineProps<{
-  collection: components['schemas']['CollectionDto']
+  collection: CollectionDto
 }>()
 </script>

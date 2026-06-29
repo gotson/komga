@@ -1,12 +1,12 @@
-import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/users'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { UserRoles } from '@/types/UserRoles'
 import { getEnumValueFromString } from '@/functions/enum'
 import { ReadingDirection } from '@/types/ReadingDirection'
 import { SeriesStatus } from '@/types/SeriesStatus'
+import type { SeriesDto } from '@/generated/openapi'
 
-export function useSeries(series: MaybeRefOrGetter<components['schemas']['SeriesDto']>) {
+export function useSeries(series: MaybeRefOrGetter<SeriesDto>) {
   const isRead = computed(() => toValue(series).booksCount === toValue(series).booksReadCount)
   const unreadCount = computed(() =>
     toValue(series).oneshot

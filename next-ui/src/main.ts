@@ -14,8 +14,11 @@ import App from './App.vue'
 // Composables
 import { createApp } from 'vue'
 import { initLogger } from '@/services/logtape'
+import { setupOpenapiClient } from '@/api/komga-client'
 
 await initLogger()
+
+setupOpenapiClient()
 
 const app = createApp(App)
 

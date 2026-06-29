@@ -50,7 +50,7 @@ export const WithBooksData: Story = {
           },
         ],
         tags: ['bookTag', 'AnotherBookTag'],
-        releaseDate: '2014-12-31',
+        releaseDate: new Date('2014-12-31'),
         summary:
           "All leaders are constrained by geography. Their choices are limited by mountains, rivers, seas and concrete. Yes, to follow world events you need to understand people, ideas and movements - but if you don't know geography, you'll never have the full picture.  If you've ever wondered why Putin is so obsessed with Crimea, why the USA was destined to become a global superpower, or why China's power base continues to expand ever outwards, the answers are all here.  In ten chapters and ten maps, Prisoners of Geography **looks at the past, present and future to offer an essential insight into one of the major factors that determines world history.  It's time to put the 'geo' back into geopolitics.",
         summaryNumber: '1',

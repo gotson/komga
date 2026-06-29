@@ -1,6 +1,16 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import {
+  handleCreateApiKeyForCurrentUser,
+  handleGetApiKeysForCurrentUser,
+  handleGetAuthenticationActivity,
+  handleGetAuthenticationActivityForCurrentUser,
+  handleGetCurrentUser,
+  handleGetLatestAuthenticationActivityByUserId,
+  handleGetUsers,
+} from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 export const userAdmin = {
   id: '0JEDA00AV4Z7G',
@@ -324,27 +334,27 @@ export const authenticationActivity = [
 ]
 
 export const usersHandlers = [
-  httpTyped.get('/api/v2/users/me', ({ response }) => response(200).json(userAdmin)),
-  httpTyped.get('/api/v2/users', ({ response }) => response(200).json(users)),
-  httpTyped.get('/api/v2/users/{id}/authentication-activity/latest', ({ response }) =>
-    response(200).json(latestActivity),
-  ),
-  httpTyped.get('/api/v2/users/me/api-keys', ({ response }) => response(200).json(apiKeys)),
-  httpTyped.post('/api/v2/users/me/api-keys', ({ response }) => response(200).json(newApiKey)),
-  httpTyped.get('/api/v2/users/authentication-activity', ({ query, response }) =>
-    response(200).json(
+  handleGetCurrentUser(() => response200OK(userAdmin)),
+  handleGetUsers(() => response200OK(users)),
+  handleGetLatestAuthenticationActivityByUserId(() => response200OK(latestActivity)),
+  handleGetApiKeysForCurrentUser(() => response200OK(apiKeys)),
+  handleCreateApiKeyForCurrentUser(() => response200OK(newApiKey)),
+  handleGetAuthenticationActivity(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       mockPage(
         authenticationActivity,
         new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
       ),
-    ),
-  ),
-  httpTyped.get('/api/v2/users/me/authentication-activity', ({ query, response }) =>
-    response(200).json(
+    )
+  }),
+  handleGetAuthenticationActivityForCurrentUser(({ request }) => {
+    const query = new URL(request.url).searchParams
+    return response200OK(
       mockPage(
         authenticationActivity.filter((x) => x.email === 'jacky@example.org'),
         new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
       ),
-    ),
-  ),
+    )
+  }),
 ]

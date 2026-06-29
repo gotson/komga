@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 import { useQuery } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
+import { komgaGetDirectoryListing } from '@/generated/openapi'
 
 const selectedPath = defineModel<string>({ required: false, default: '' })
 
@@ -65,15 +65,12 @@ const {
 } = useQuery({
   key: () => ['filesystem', selectedPath.value],
   query: () =>
-    komgaClient
-      .POST('/api/v1/filesystem', {
-        body: {
-          path: selectedPath.value,
-          showFiles: false,
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data),
+    komgaGetDirectoryListing({
+      body: {
+        path: selectedPath.value,
+        showFiles: false,
+      },
+    }),
   placeholderData: (previousData) => previousData,
 })
 </script>

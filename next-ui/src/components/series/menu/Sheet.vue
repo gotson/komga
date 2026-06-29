@@ -9,13 +9,13 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useSeriesActions } from '@/composables/series/useSeriesActions'
 import { createOrderCompareFn } from '@/functions/sort'
 import { ActionName } from '@/types/action/action'
 import { useSelectionStore } from '@/stores/selection'
 import { useSelectAction } from '@/composables/selection'
 import { usePrimaryInput } from '@/composables/device'
+import type { SeriesDto } from '@/generated/openapi'
 
 const isShown = defineModel<boolean>({ default: false })
 
@@ -25,7 +25,7 @@ const {
   excludeActions = [],
 } = defineProps<{
   activator: string | Element
-  series: components['schemas']['SeriesDto']
+  series: SeriesDto
   excludeActions?: ActionName[]
 }>()
 

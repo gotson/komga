@@ -1,8 +1,6 @@
-import type { components } from '@/generated/openapi/komga'
+import type { SeriesMetadataDto, SeriesMetadataUpdateDto } from '@/generated/openapi'
 
-export function seriesMetadataToDto(
-  metadata: components['schemas']['SeriesMetadataDto'],
-): components['schemas']['SeriesMetadataUpdateDto'] {
+export function seriesMetadataToDto(metadata: SeriesMetadataDto): SeriesMetadataUpdateDto {
   return Object.assign({}, metadata, {
     readingDirection: metadata.readingDirection as
       | 'LEFT_TO_RIGHT'

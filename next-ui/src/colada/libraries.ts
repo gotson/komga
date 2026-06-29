@@ -1,10 +1,20 @@
 import { defineMutation, defineQuery, useMutation, useQuery } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
 import { useClientSettingsUser } from '@/colada/client-settings'
 import { combinePromises } from '@/colada/utils'
-import type { components } from '@/generated/openapi/komga'
 import { entitiesChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
+import {
+  komgaAddLibrary,
+  komgaDeleteLibraryById,
+  komgaGetLibraries,
+  komgaLibraryAnalyze,
+  komgaLibraryEmptyTrash,
+  komgaLibraryRefreshMetadata,
+  komgaLibraryScan,
+  komgaUpdateLibraryById,
+  type LibraryCreationDto,
+  type LibraryDto,
+} from '@/generated/openapi'
 
 export const QUERY_KEYS_LIBRARIES = {
   root: ['libraries'] as const,
@@ -18,11 +28,7 @@ export const useLibraries = defineQuery(() => {
     ...rest
   } = useQuery({
     key: () => QUERY_KEYS_LIBRARIES.root,
-    query: () =>
-      komgaClient
-        .GET('/api/v1/libraries')
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+    query: () => komgaGetLibraries(),
     // 1 hour
     staleTime: 60 * 60 * 1000,
     gcTime: false,
@@ -69,8 +75,8 @@ export const useLibraries = defineQuery(() => {
 export const useCreateLibrary = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
-    mutation: (library: components['schemas']['LibraryCreationDto']) =>
-      komgaClient.POST('/api/v1/libraries', {
+    mutation: (library: LibraryCreationDto) =>
+      komgaAddLibrary({
         body: library,
       }),
     onSuccess: () => {
@@ -82,14 +88,10 @@ export const useCreateLibrary = defineMutation(() => {
 export const useUpdateLibrary = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
-    mutation: (library: components['schemas']['LibraryDto']) =>
-      komgaClient.PATCH('/api/v1/libraries/{libraryId}', {
-        params: {
-          path: {
-            libraryId: library.id,
-          },
-        },
+    mutation: (library: LibraryDto) =>
+      komgaUpdateLibraryById({
         body: library,
+        path: { libraryId: library.id },
       }),
     onSuccess: () => {
       if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_LIBRARIES.root)
@@ -101,11 +103,9 @@ export const useDeleteLibrary = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
     mutation: (libraryId: string) =>
-      komgaClient.DELETE('/api/v1/libraries/{libraryId}', {
-        params: {
-          path: {
-            libraryId: libraryId,
-          },
+      komgaDeleteLibraryById({
+        path: {
+          libraryId: libraryId,
         },
       }),
     onSuccess: () => {
@@ -117,11 +117,9 @@ export const useDeleteLibrary = defineMutation(() => {
 export const useRefreshMetadataLibrary = defineMutation(() =>
   useMutation({
     mutation: (libraryId: string) =>
-      komgaClient.POST('/api/v1/libraries/{libraryId}/metadata/refresh', {
-        params: {
-          path: {
-            libraryId: libraryId,
-          },
+      komgaLibraryRefreshMetadata({
+        path: {
+          libraryId: libraryId,
         },
       }),
   }),
@@ -130,11 +128,9 @@ export const useRefreshMetadataLibrary = defineMutation(() =>
 export const useEmptyTrashLibrary = defineMutation(() =>
   useMutation({
     mutation: (libraryId: string) =>
-      komgaClient.POST('/api/v1/libraries/{libraryId}/empty-trash', {
-        params: {
-          path: {
-            libraryId: libraryId,
-          },
+      komgaLibraryEmptyTrash({
+        path: {
+          libraryId: libraryId,
         },
       }),
   }),
@@ -143,14 +139,12 @@ export const useEmptyTrashLibrary = defineMutation(() =>
 export const useScanLibrary = defineMutation(() =>
   useMutation({
     mutation: ({ libraryId, deep = false }: { libraryId: string; deep?: boolean }) =>
-      komgaClient.POST('/api/v1/libraries/{libraryId}/scan', {
-        params: {
-          path: {
-            libraryId: libraryId,
-          },
-          query: {
-            deep: deep,
-          },
+      komgaLibraryScan({
+        path: {
+          libraryId: libraryId,
+        },
+        query: {
+          deep: deep,
         },
       }),
   }),
@@ -159,11 +153,9 @@ export const useScanLibrary = defineMutation(() =>
 export const useAnalyzeLibrary = defineMutation(() =>
   useMutation({
     mutation: (libraryId: string) =>
-      komgaClient.POST('/api/v1/libraries/{libraryId}/analyze', {
-        params: {
-          path: {
-            libraryId: libraryId,
-          },
+      komgaLibraryAnalyze({
+        path: {
+          libraryId: libraryId,
         },
       }),
   }),

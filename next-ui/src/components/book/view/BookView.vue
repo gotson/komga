@@ -227,7 +227,7 @@
 <script setup lang="ts">
 import { bookPosterUrl } from '@/api/images'
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
-import type { components } from '@/generated/openapi/komga'
+
 import { useIntl } from 'vue-intl'
 import { useBook } from '@/composables/book/useBook'
 import { MediaStatus } from '@/types/MediaStatus'
@@ -237,6 +237,7 @@ import { contributorsRolesMessages } from '@/types/referential'
 import { getFileSize } from '@/utils/utils'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { createOrderCompareFn } from '@/functions/sort'
+import type { BookDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -245,7 +246,7 @@ const id = useId()
 const posterMaxWidth = 220
 
 const props = defineProps<{
-  book: components['schemas']['BookDto']
+  book: BookDto
 }>()
 
 const { isRead, progressPercent, pagesLeft } = useBookReadProgress(() => props.book)

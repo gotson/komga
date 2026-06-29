@@ -1,5 +1,7 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
 import { ThumbnailSize } from '@/types/ThumbnailSize'
+import { handleGetServerSettings } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 export const settings = {
   deleteEmptyCollections: true,
@@ -16,7 +18,4 @@ export const settings = {
   },
 }
 
-export const settingsHandlers = [
-  httpTyped.get('/api/v1/settings', ({ response }) => response(200).json(settings)),
-  httpTyped.patch('/api/v1/settings', ({ response }) => response(204).empty()),
-]
+export const settingsHandlers = [handleGetServerSettings(() => response200OK(settings))]

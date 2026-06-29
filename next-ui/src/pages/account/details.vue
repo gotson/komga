@@ -31,7 +31,6 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import UserFormChangePassword from '@/components/user/form/ChangePassword.vue'
-import type { ErrorCause } from '@/api/komga-client'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
@@ -83,9 +82,7 @@ function handleDialogConfirmation(
       })
     })
     .catch((error) => {
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      )
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
       setLoading(false)
     })
 }

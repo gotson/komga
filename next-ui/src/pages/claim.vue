@@ -131,7 +131,6 @@
 </template>
 
 <script lang="ts" setup>
-import { type ErrorCause } from '@/api/komga-client'
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useClaimServer, useClaimStatus } from '@/colada/claim'
@@ -170,9 +169,7 @@ async function submitForm() {
         })
       })
       .catch((error) => {
-        messagesStore.messages.push(
-          (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-        )
+        messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
       })
   }
 }

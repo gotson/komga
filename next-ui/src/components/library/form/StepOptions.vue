@@ -193,10 +193,10 @@
 import { useIntl } from 'vue-intl'
 import { SeriesCover, seriesCoverMessages } from '@/types/SeriesCover'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import type { components } from '@/generated/openapi/komga'
+import type { LibraryCreationDto } from '@/generated/openapi'
 
 type LibraryCreationOptions = Pick<
-  components['schemas']['LibraryCreationDto'],
+  LibraryCreationDto,
   | 'hashFiles'
   | 'hashPages'
   | 'hashKoreader'

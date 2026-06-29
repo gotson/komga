@@ -98,11 +98,12 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 import { useLibraries } from '@/colada/libraries'
-import type { components } from '@/generated/openapi/komga'
+
 import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import { useUpdateClientSettingsUser } from '@/colada/client-settings'
 import { useAppStore } from '@/stores/app'
 import { useIntl } from 'vue-intl'
+import type { LibraryDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const appStore = useAppStore()
@@ -110,8 +111,8 @@ const appStore = useAppStore()
 const { unpinned, pinned, refresh } = useLibraries()
 const { mutate } = useUpdateClientSettingsUser()
 
-const localPinned = ref<components['schemas']['LibraryDto'][]>([])
-const localUnpinned = ref<components['schemas']['LibraryDto'][]>([])
+const localPinned = ref<LibraryDto[]>([])
+const localUnpinned = ref<LibraryDto[]>([])
 
 // one time copy to local refs
 void refresh().then(() => {

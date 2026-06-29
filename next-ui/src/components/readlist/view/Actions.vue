@@ -26,13 +26,13 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useReadListActions } from '@/composables/readlist/useReadListActions'
 import { ActionName } from '@/types/action/action'
+import type { ReadListDto } from '@/generated/openapi'
 
 const props = defineProps<{
-  readList: components['schemas']['ReadListDto']
+  readList: ReadListDto
 }>()
 
 const id = useId()

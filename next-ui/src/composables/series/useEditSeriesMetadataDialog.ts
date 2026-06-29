@@ -4,10 +4,10 @@ import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
 import { useUpdateSeriesMetadata } from '@/colada/series'
-import type { components } from '@/generated/openapi/komga'
+
 import EditMetadata from '@/components/series/form/EditMetadata.vue'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import type { SeriesDto, SeriesMetadataDto } from '@/generated/openapi'
 
 export function useEditSeriesMetadataDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
@@ -16,7 +16,7 @@ export function useEditSeriesMetadataDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateSeriesMetadata } = useUpdateSeriesMetadata()
 
-  const prepareDialog = (series: components['schemas']['SeriesDto']) => {
+  const prepareDialog = (series: SeriesDto) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit series metadata dialog title',
@@ -41,8 +41,7 @@ export function useEditSeriesMetadataDialog() {
     ) => {
       setLoading(true)
 
-      const updatedMetadata = dialogConfirmEdit.value
-        .record as components['schemas']['SeriesMetadataDto']
+      const updatedMetadata = dialogConfirmEdit.value.record as SeriesMetadataDto
 
       mutateUpdateSeriesMetadata({ seriesId: series.id, metadata: updatedMetadata })
         .then(() => {
@@ -61,9 +60,7 @@ export function useEditSeriesMetadataDialog() {
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
     }

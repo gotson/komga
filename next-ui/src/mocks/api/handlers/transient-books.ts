@@ -1,5 +1,5 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
-import { response404NotFound } from '@/mocks/api/handlers'
+import { handleAnalyzeTransientBook, handleScanTransientBooks } from '@/generated/openapi/msw.gen'
+import { response200OK, response404NotFound } from '@/mocks/api/utils'
 
 export const scanned = [
   {
@@ -1091,15 +1091,15 @@ const analyzed4 = {
 export const analyzed = [analyzed1, analyzed2, analyzed3, analyzed4]
 
 export const transientBooksHandlers = [
-  httpTyped.post('/api/v1/transient-books', async ({ request, response }) => {
+  handleScanTransientBooks(async ({ request }) => {
     const path = (await request.json()).path
-    if (path === '/comics') return response(200).json(scanned)
-    return response(200).json([])
+    if (path === '/comics') return response200OK(scanned)
+    return response200OK([])
   }),
-  httpTyped.post('/api/v1/transient-books/{id}/analyze', ({ params, response }) => {
+  handleAnalyzeTransientBook(({ params }) => {
     const data = analyzed.find((it) => it.id === params.id)
-    if (data) return response(200).json(data)
+    if (data) return response200OK(data)
 
-    return response.untyped(response404NotFound())
+    return response404NotFound()
   }),
 ]

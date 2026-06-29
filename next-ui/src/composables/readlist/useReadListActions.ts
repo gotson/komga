@@ -1,5 +1,3 @@
-import type { components } from '@/generated/openapi/komga'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
@@ -13,9 +11,10 @@ import { useDeleteReadList } from '@/colada/readlists'
 import { UserRoles } from '@/types/UserRoles'
 import { readListFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
+import type { ReadListDto } from '@/generated/openapi'
 
 export function useReadListActions(
-  readList: MaybeRefOrGetter<components['schemas']['ReadListDto']>,
+  readList: MaybeRefOrGetter<ReadListDto>,
   callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
@@ -117,9 +116,7 @@ export function useReadListActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
       callback(ActionName.DELETE)
     }

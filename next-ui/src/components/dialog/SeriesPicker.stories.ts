@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import { http, delay } from 'msw'
 import SeriesPicker from './SeriesPicker.vue'
-import { response401Unauthorized } from '@/mocks/api/handlers'
 import { fn } from 'storybook/test'
+import { response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: SeriesPicker,

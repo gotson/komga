@@ -36,10 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
+import type { ItemDto } from '@/generated/openapi'
 
 const { item } = defineProps<{
-  item: components['schemas']['ItemDto']
+  item: ItemDto
 }>()
 const emit = defineEmits<{
   markRead: [id: string]

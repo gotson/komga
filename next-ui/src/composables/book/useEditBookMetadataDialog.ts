@@ -3,11 +3,11 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
-import type { components } from '@/generated/openapi/komga'
+
 import EditMetadata from '@/components/series/form/EditMetadata.vue'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useUpdateBookMetadata } from '@/colada/books'
+import type { BookDto, BookMetadataDto } from '@/generated/openapi'
 
 export function useEditBookMetadataDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
@@ -16,7 +16,7 @@ export function useEditBookMetadataDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateSeriesMetadata } = useUpdateBookMetadata()
 
-  const prepareDialog = (book: components['schemas']['BookDto']) => {
+  const prepareDialog = (book: BookDto) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit book metadata dialog title',
@@ -41,8 +41,7 @@ export function useEditBookMetadataDialog() {
     ) => {
       setLoading(true)
 
-      const updatedMetadata = dialogConfirmEdit.value
-        .record as components['schemas']['BookMetadataDto']
+      const updatedMetadata = dialogConfirmEdit.value.record as BookMetadataDto
 
       mutateUpdateSeriesMetadata({ bookId: book.id, metadata: updatedMetadata })
         .then(() => {
@@ -61,9 +60,7 @@ export function useEditBookMetadataDialog() {
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
     }

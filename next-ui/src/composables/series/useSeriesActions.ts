@@ -1,5 +1,3 @@
-import type { components } from '@/generated/openapi/komga'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
@@ -21,9 +19,10 @@ import { seriesFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
 import { useSeries } from '@/composables/series/useSeries'
+import type { SeriesDto } from '@/generated/openapi'
 
 export function useSeriesActions(
-  series: MaybeRefOrGetter<components['schemas']['SeriesDto']>,
+  series: MaybeRefOrGetter<SeriesDto>,
   callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
@@ -273,9 +272,7 @@ export function useSeriesActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
       callback(ActionName.DELETE)
     }

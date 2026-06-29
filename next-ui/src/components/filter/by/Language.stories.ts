@@ -2,9 +2,12 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import Language from './Language.vue'
 import { fn } from 'storybook/test'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import { handleGetLanguages } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 const meta = {
   component: Language,
@@ -39,11 +42,7 @@ export const Default: Story = {
 export const NoData: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v2/languages', ({ response }) =>
-          response(200).json(mockPage([], new PageRequest())),
-        ),
-      ],
+      handlers: [handleGetLanguages(() => response200OK(mockPage([], new PageRequest())))],
     },
   },
 }

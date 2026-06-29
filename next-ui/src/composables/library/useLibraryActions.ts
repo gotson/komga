@@ -1,11 +1,9 @@
-import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/users'
 import { useIntl } from 'vue-intl'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useMessagesStore } from '@/stores/messages'
 import { useDisplay } from 'vuetify/framework'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { type Action } from '@/types/action/action'
 import LibraryDeletionWarning from '@/components/library/DeletionWarning.vue'
@@ -19,9 +17,10 @@ import {
   useUpdateLibrary,
 } from '@/colada/libraries'
 import { LibraryAction } from '@/types/action/library'
+import type { LibraryDto } from '@/generated/openapi'
 
 export function useLibraryActions(
-  library: MaybeRefOrGetter<components['schemas']['LibraryDto']>,
+  library: MaybeRefOrGetter<LibraryDto>,
   callback: (action: LibraryAction) => void = () => {},
 ) {
   const { isAdmin } = useCurrentUser()
@@ -154,7 +153,7 @@ export function useLibraryActions(
     ) => {
       setLoading(true)
 
-      const updatedLib = dialogConfirmEdit.value.record as components['schemas']['LibraryDto']
+      const updatedLib = dialogConfirmEdit.value.record as LibraryDto
 
       mutateUpdateLibrary(updatedLib)
         .then(() => {
@@ -173,9 +172,7 @@ export function useLibraryActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
       callback(LibraryAction.EDIT)
@@ -386,9 +383,7 @@ export function useLibraryActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
       callback(LibraryAction.DELETE)
     }

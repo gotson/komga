@@ -1,6 +1,16 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
-import type { components } from '@/generated/openapi/komga'
-import { response400BadRequest, response404NotFound } from '@/mocks/api/handlers'
+import type { LibraryDto } from '@/generated/openapi'
+import {
+  handleAddLibrary,
+  handleDeleteLibraryById,
+  handleGetLibraries,
+  handleUpdateLibraryById,
+} from '@/generated/openapi/msw.gen'
+import {
+  response200OK,
+  response204Empty,
+  response400BadRequest,
+  response404NotFound,
+} from '@/mocks/api/utils'
 
 export const mockLibraries = [
   {
@@ -34,7 +44,7 @@ export const mockLibraries = [
     analyzeDimensions: false,
     oneshotsDirectory: '_oneshots',
     unavailable: false,
-  } as components['schemas']['LibraryDto'],
+  } as LibraryDto,
   {
     id: '2',
     name: 'Comics',
@@ -65,56 +75,48 @@ export const mockLibraries = [
     hashKoreader: false,
     analyzeDimensions: true,
     unavailable: false,
-  } as components['schemas']['LibraryDto'],
+  } as LibraryDto,
 ]
 
 export const librariesHandlers = [
-  httpTyped.get('/api/v1/libraries', ({ response }) => response(200).json(mockLibraries)),
-  httpTyped.post('/api/v1/libraries', async ({ request, response }) => {
+  handleGetLibraries(() => response200OK(mockLibraries)),
+  handleAddLibrary(async ({ request }) => {
     const body = await request.json()
 
     if (mockLibraries.some((it) => it.id === body.name)) {
-      return response.untyped(response400BadRequest())
+      return response400BadRequest()
     }
 
     const lib = Object.assign({}, body, { unavailable: false, id: body.name })
     mockLibraries.push(lib)
 
-    return response(200).json(lib)
+    return response200OK(lib)
   }),
-  httpTyped.patch('/api/v1/libraries/{libraryId}', async ({ request, params, response }) => {
+  handleUpdateLibraryById(async ({ request, params }) => {
     const body = await request.json()
     const libraryId = params['libraryId']
 
     const existing = mockLibraries.find((it) => it.id === libraryId)
 
     if (!existing) {
-      return response.untyped(response404NotFound())
+      return response404NotFound()
     }
 
     mockLibraries[mockLibraries.indexOf(existing)] = Object.assign({}, existing, body)
 
-    return response(204).empty()
+    return response204Empty()
   }),
-  httpTyped.delete('/api/v1/libraries/{libraryId}', ({ params, response }) => {
+  handleDeleteLibraryById(({ params }) => {
     const libraryId = params['libraryId']
 
     const existing = mockLibraries.find((it) => it.id === libraryId)
 
     if (!existing) {
-      return response.untyped(response404NotFound())
+      return response404NotFound()
     }
 
     mockLibraries.splice(mockLibraries.indexOf(existing), 1)
 
-    return response(204).empty()
+    return response204Empty()
   }),
-  httpTyped.post('/api/v1/libraries/{libraryId}/metadata/refresh', ({ response }) =>
-    response(202).empty(),
-  ),
-  httpTyped.post('/api/v1/libraries/{libraryId}/analyze', ({ response }) => response(202).empty()),
-  httpTyped.post('/api/v1/libraries/{libraryId}/empty-trash', ({ response }) =>
-    response(202).empty(),
-  ),
-  httpTyped.post('/api/v1/libraries/{libraryId}/scan', ({ response }) => response(202).empty()),
 ]

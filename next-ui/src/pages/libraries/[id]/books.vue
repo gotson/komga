@@ -168,7 +168,7 @@ import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
 import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortBooks } from '@/types/sort'
-import type { components } from '@/generated/openapi/komga'
+
 import {
   countFilter,
   schemaFilterAuthorsToConditions,
@@ -185,6 +185,7 @@ import { useFilterContributors, useFilters } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
 import { contributorsRolesMessages } from '@/types/referential'
 import { useSelectionContextualActions } from '@/composables/selection'
+import type { AllOfBook } from '@/generated/openapi'
 
 const route = useRoute('/libraries/[id]/books')
 const libraryId = route.params.id
@@ -247,7 +248,7 @@ watch([() => JSON.stringify(conds.value), () => appStore.browsingPaging], () =>
 )
 
 const apiQuery = computed(() => ({
-  condition: conds.value as components['schemas']['AllOfBook'],
+  condition: conds.value as AllOfBook,
 }))
 
 const { data: dataPaged } = useQuery(() => ({

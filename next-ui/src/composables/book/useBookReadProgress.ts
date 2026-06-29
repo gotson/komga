@@ -1,6 +1,6 @@
-import type { components } from '@/generated/openapi/komga'
+import type { BookDto } from '@/generated/openapi'
 
-export function useBookReadProgress(book: MaybeRefOrGetter<components['schemas']['BookDto']>) {
+export function useBookReadProgress(book: MaybeRefOrGetter<BookDto>) {
   const isRead = computed(() => toValue(book).readProgress?.completed || false)
   const inProgress = computed(() => (toValue(book).readProgress && !isRead.value) || false)
 

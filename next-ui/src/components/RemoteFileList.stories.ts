@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import { http, delay } from 'msw'
 import RemoteFileList from './RemoteFileList.vue'
-import { response401Unauthorized } from '@/mocks/api/handlers'
+
+import { response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: RemoteFileList,

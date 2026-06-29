@@ -31,10 +31,10 @@
 <script lang="ts" setup>
 import { useMessagesStore } from '@/stores/messages'
 import { useMutation } from '@pinia/colada'
-import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useIntl } from 'vue-intl'
+import { komgaMatchComicRackList } from '@/generated/openapi'
 
 const intl = useIntl()
 const messagesStore = useMessagesStore()
@@ -52,24 +52,20 @@ const {
   isLoading,
 } = useMutation({
   mutation: (file: File) =>
-    komgaClient
-      .POST('/api/v1/readlists/match/comicrack', {
-        body: {
-          file: file,
-        },
-        bodySerializer() {
-          const fd = new FormData()
-          fd.append('file', file)
-          return fd
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data)
-      .catch((error) => {
-        messagesStore.messages.push(
-          convertErrorCodes((error?.cause as ErrorCause)?.message) ?? commonMessages.networkError,
-        )
-      }),
+    komgaMatchComicRackList({
+      body: {
+        file: file,
+      },
+      bodySerializer() {
+        const fd = new FormData()
+        fd.append('file', file)
+        return fd
+      },
+    }).catch((error) => {
+      messagesStore.messages.push(
+        convertErrorCodes(error?.cause?.message) ?? commonMessages.networkError,
+      )
+    }),
 })
 
 watch(fileToUpload, (file) => {

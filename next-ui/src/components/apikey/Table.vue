@@ -96,15 +96,14 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { defineMessage, useIntl } from 'vue-intl'
-import { komgaClient } from '@/api/komga-client'
 import { watchImmediate } from '@vueuse/core'
+import { type ApiKeyDto, komgaGetLatestAuthenticationActivityByUserId } from '@/generated/openapi'
 
 const intl = useIntl()
 
 const { apiKeys = [], loading = false } = defineProps<{
-  apiKeys?: components['schemas']['ApiKeyDto'][]
+  apiKeys?: ApiKeyDto[]
   loading?: boolean
 }>()
 
@@ -113,8 +112,8 @@ const emit = defineEmits<{
   enterAddApiKey: [target: Element]
   enterForceSyncApiKey: [target: Element]
   enterDeleteApiKey: [target: Element]
-  forceSyncApiKey: [apiKey: components['schemas']['ApiKeyDto']]
-  deleteApiKey: [apiKey: components['schemas']['ApiKeyDto']]
+  forceSyncApiKey: [apiKey: ApiKeyDto]
+  deleteApiKey: [apiKey: ApiKeyDto]
 }>()
 
 const hideFooter = computed(() => apiKeys.length < 11)
@@ -142,7 +141,7 @@ const headers = [
       id: 'hgiBeR',
     }),
     key: 'activity',
-    value: (item: components['schemas']['ApiKeyDto']) => latestActivity[item.id],
+    value: (item: ApiKeyDto) => latestActivity[item.id],
   },
   {
     title: intl.formatMessage({
@@ -160,16 +159,12 @@ const headers = [
 // when the 'apiKeys' change, we call the API for each key
 const latestActivity: Record<string, Date | undefined> = reactive({})
 
-function getLatestActivity(key: components['schemas']['ApiKeyDto']) {
-  komgaClient
-    .GET('/api/v2/users/{id}/authentication-activity/latest', {
-      params: {
-        path: { id: key.userId },
-        query: { apikey_id: key.id },
-      },
-    })
-    // unwrap the openapi-fetch structure on success
-    .then((res) => (latestActivity[key.id] = res.data?.dateTime))
+function getLatestActivity(key: ApiKeyDto) {
+  komgaGetLatestAuthenticationActivityByUserId({
+    path: { id: key.userId },
+    query: { apikey_id: key.id },
+  })
+    .then((data) => (latestActivity[key.id] = data?.dateTime))
     .catch(() => {})
 }
 

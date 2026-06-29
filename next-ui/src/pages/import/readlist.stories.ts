@@ -5,7 +5,8 @@ import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.v
 import { delay, http } from 'msw'
 import SnackQueue from '@/components/SnackQueue.vue'
 import { emptyCbl, garbledCbl } from '@/mocks/api/handlers/readlists'
-import { response400 } from '@/mocks/api/handlers'
+
+import { response400 } from '@/mocks/api/utils'
 
 const meta = {
   component: ImportReadList,

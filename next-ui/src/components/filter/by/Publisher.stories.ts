@@ -2,9 +2,12 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import Publisher from './Publisher.vue'
 import { fn } from 'storybook/test'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import { handleGetPublishers } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 const meta = {
   component: Publisher,
@@ -39,11 +42,7 @@ export const Default: Story = {
 export const NoData: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v2/publishers', ({ response }) =>
-          response(200).json(mockPage([], new PageRequest())),
-        ),
-      ],
+      handlers: [handleGetPublishers(() => response200OK(mockPage([], new PageRequest())))],
     },
   },
 }

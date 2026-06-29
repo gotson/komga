@@ -108,12 +108,13 @@
 <script setup lang="ts">
 import { useQuery } from '@pinia/colada'
 import { seriesListQuery } from '@/colada/series'
-import type { components } from '@/generated/openapi/komga'
+
 import { seriesPosterUrl } from '@/api/images'
 import { refDebounced } from '@vueuse/core'
 import { useLibraries } from '@/colada/libraries'
 import { PageRequest } from '@/types/PageRequest'
 import { useIntl } from 'vue-intl'
+import type { SeriesDto } from '@/generated/openapi'
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const intl = useIntl()
@@ -131,7 +132,7 @@ const {
 }>()
 
 const emit = defineEmits<{
-  selectedSeries: [series: components['schemas']['SeriesDto']]
+  selectedSeries: [series: SeriesDto]
 }>()
 
 const searchStringRef = ref<string>(searchString)
@@ -164,7 +165,7 @@ const {
 
 const { data: libraries } = useLibraries()
 
-function pick(selectedSeries: components['schemas']['SeriesDto']) {
+function pick(selectedSeries: SeriesDto) {
   emit('selectedSeries', selectedSeries)
   showDialog.value = false
 }

@@ -1,6 +1,6 @@
 import { useLibraries } from '@/colada/libraries'
 import type { LibraryId } from '@/types/libraries'
-import type { components } from '@/generated/openapi/komga'
+import type { LibraryDto } from '@/generated/openapi'
 
 /**
  * A composable that returns libraries filtered by a LibraryId.
@@ -12,7 +12,7 @@ export function useGetLibrariesById(libraryId: MaybeRefOrGetter<LibraryId>) {
   const libs = computed(() => {
     if (status.value !== 'success') return undefined
 
-    let libs: components['schemas']['LibraryDto'][] = []
+    let libs: LibraryDto[] = []
     switch (toValue(libraryId)) {
       case 'all':
         libs = all.value || []

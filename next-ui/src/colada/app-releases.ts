@@ -1,7 +1,7 @@
 import { defineQuery, useQuery } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
 import { useActuatorInfo } from '@/colada/actuator-info'
 import { combinePromises } from '@/colada/utils'
+import { komgaGetReleases } from '@/generated/openapi'
 
 export const useAppReleases = defineQuery(() => {
   const {
@@ -11,11 +11,7 @@ export const useAppReleases = defineQuery(() => {
     ...rest
   } = useQuery({
     key: () => ['app-releases'],
-    query: () =>
-      komgaClient
-        .GET('/api/v1/releases')
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+    query: () => komgaGetReleases(),
     // 1 hour
     staleTime: 60 * 60 * 1000,
     gcTime: false,

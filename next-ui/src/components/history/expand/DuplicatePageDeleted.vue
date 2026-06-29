@@ -71,10 +71,10 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { pageHashKnownThumbnailUrl } from '@/api/images'
+import type { HistoricalEventDto } from '@/generated/openapi'
 
 const { event } = defineProps<{
-  event: components['schemas']['HistoricalEventDto']
+  event: HistoricalEventDto
 }>()
 </script>

@@ -1,6 +1,9 @@
 import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
-import type { components } from '@/generated/openapi/komga'
+import {
+  komgaGetServerSettings,
+  komgaUpdateServerSettings,
+  type SettingsUpdateDto,
+} from '@/generated/openapi'
 
 export const QUERY_KEYS_SETTINGS = {
   root: ['settings'] as const,
@@ -9,11 +12,7 @@ export const QUERY_KEYS_SETTINGS = {
 export const useSettings = defineQuery(() => {
   return useQuery({
     key: () => QUERY_KEYS_SETTINGS.root,
-    query: () =>
-      komgaClient
-        .GET('/api/v1/settings')
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+    query: () => komgaGetServerSettings(),
     // 1 hour
     staleTime: 60 * 60 * 1000,
     gcTime: false,
@@ -23,8 +22,8 @@ export const useSettings = defineQuery(() => {
 export const useUpdateSettings = defineMutation(() => {
   const queryCache = useQueryCache()
   return useMutation({
-    mutation: (settings: components['schemas']['SettingsUpdateDto']) =>
-      komgaClient.PATCH('/api/v1/settings', {
+    mutation: (settings: SettingsUpdateDto) =>
+      komgaUpdateServerSettings({
         body: settings,
       }),
     onSuccess: () => {

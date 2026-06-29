@@ -22,16 +22,16 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { seriesPosterUrl } from '@/api/images'
 import type { ItemCardEmits, ItemCardProps } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
 
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
+import type { SeriesDto } from '@/generated/openapi'
 
 const { series, ...props } = defineProps<
   {
-    series: components['schemas']['SeriesDto']
+    series: SeriesDto
   } & ItemCardProps
 >()
 const emit = defineEmits<ItemCardEmits>()

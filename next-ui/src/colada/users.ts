@@ -6,38 +6,45 @@ import {
   useQuery,
   useQueryCache,
 } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
 import { UserRoles } from '@/types/UserRoles'
-import type { components } from '@/generated/openapi/komga'
 import { QUERY_KEYS_CLIENT_SETTINGS } from '@/colada/client-settings'
 import { useAppStore } from '@/stores/app'
 import { invalidateAll } from '@/colada/cache'
+import {
+  type ApiKeyRequestDto,
+  komgaAddUser,
+  komgaCreateApiKeyForCurrentUser,
+  komgaDeleteApiKeyByKeyId,
+  komgaDeleteUserById,
+  komgaGetApiKeysForCurrentUser,
+  komgaGetAuthenticationActivity,
+  komgaGetAuthenticationActivityForCurrentUser,
+  komgaGetCurrentUser,
+  komgaGetUsers,
+  komgaPostLogout1,
+  komgaUpdatePasswordByUserId,
+  komgaUpdateUserById,
+  type UserCreationDto,
+  type UserDto,
+} from '@/generated/openapi'
 
 export const QUERY_KEYS_USERS = {
   root: ['users'] as const,
-  currentUser: ['current-user'] as const,
-  apiKeys: ['current-user', 'api-keys'] as const,
+  currentUser: () => [...QUERY_KEYS_USERS.root, 'current-user'] as const,
+  apiKeys: () => [...QUERY_KEYS_USERS.currentUser(), 'api-keys'] as const,
 }
 
 export const useUsers = defineQuery(() =>
   useQuery({
     key: () => QUERY_KEYS_USERS.root,
-    query: () =>
-      komgaClient
-        .GET('/api/v2/users')
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+    query: () => komgaGetUsers(),
   }),
 )
 
 export const useCurrentUser = defineQuery(() => {
   const { data, error, ...rest } = useQuery({
-    key: () => QUERY_KEYS_USERS.currentUser,
-    query: () =>
-      komgaClient
-        .GET('/api/v2/users/me')
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+    key: QUERY_KEYS_USERS.currentUser,
+    query: () => komgaGetCurrentUser(),
     // 10 minutes
     staleTime: 10 * 60 * 1000,
     gcTime: false,
@@ -73,20 +80,18 @@ export const useLogin = defineMutation(() => {
       password: string
       rememberMe?: boolean
     }) =>
-      komgaClient.GET('/api/v2/users/me', {
+      komgaGetCurrentUser({
         headers: {
           authorization: 'Basic ' + btoa(username + ':' + password),
           'X-Requested-With': 'XMLHttpRequest',
         },
-        params: {
-          query: {
-            'remember-me': rememberMe,
-          },
+        query: {
+          'remember-me': rememberMe,
         },
       }),
-    onSuccess: ({ data }) => {
-      queryCache.setQueryData(QUERY_KEYS_USERS.currentUser, data)
-      queryCache.cancelQueries({ key: QUERY_KEYS_USERS.currentUser })
+    onSuccess: (data) => {
+      queryCache.setQueryData(QUERY_KEYS_USERS.currentUser(), data)
+      queryCache.cancelQueries({ key: QUERY_KEYS_USERS.currentUser() })
 
       void queryCache.invalidateQueries({ key: QUERY_KEYS_CLIENT_SETTINGS.root })
     },
@@ -95,7 +100,7 @@ export const useLogin = defineMutation(() => {
 
 export const useLogout = defineMutation(() =>
   useMutation({
-    mutation: () => komgaClient.POST('/api/logout'),
+    mutation: () => komgaPostLogout1(),
     onSuccess: () => {
       userLoggedOut()
     },
@@ -104,34 +109,30 @@ export const useLogout = defineMutation(() =>
 
 export const useCreateUser = defineMutation(() =>
   useMutation({
-    mutation: (user: components['schemas']['UserCreationDto']) =>
-      komgaClient.POST('/api/v2/users', {
+    mutation: (user: UserCreationDto) =>
+      komgaAddUser({
         body: user,
       }),
-    onSuccess: () => {
-      userChanged()
-    },
+    onSuccess: () => userChanged(),
   }),
 )
 
 export const useUpdateUser = defineMutation(() =>
   useMutation({
-    mutation: (user: components['schemas']['UserDto']) =>
-      komgaClient.PATCH('/api/v2/users/{id}', {
-        params: { path: { id: user.id } },
+    mutation: (user: UserDto) =>
+      komgaUpdateUserById({
+        path: { id: user.id },
         body: user,
       }),
-    onSuccess: () => {
-      userChanged()
-    },
+    onSuccess: () => userChanged(),
   }),
 )
 
 export const useUpdateUserPassword = defineMutation(() =>
   useMutation({
     mutation: ({ userId, newPassword }: { userId: string; newPassword: string }) =>
-      komgaClient.PATCH('/api/v2/users/{id}/password', {
-        params: { path: { id: userId } },
+      komgaUpdatePasswordByUserId({
+        path: { id: userId },
         body: {
           password: newPassword,
         },
@@ -142,12 +143,10 @@ export const useUpdateUserPassword = defineMutation(() =>
 export const useDeleteUser = defineMutation(() =>
   useMutation({
     mutation: (userId: string) =>
-      komgaClient.DELETE('/api/v2/users/{id}', {
-        params: { path: { id: userId } },
+      komgaDeleteUserById({
+        path: { id: userId },
       }),
-    onSuccess: () => {
-      userChanged()
-    },
+    onSuccess: () => userChanged(),
   }),
 )
 
@@ -157,28 +156,19 @@ export const useDeleteUser = defineMutation(() =>
 
 export const useApiKeys = defineQuery(() =>
   useQuery({
-    key: () => QUERY_KEYS_USERS.apiKeys,
-    query: () =>
-      komgaClient
-        .GET('/api/v2/users/me/api-keys')
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+    key: QUERY_KEYS_USERS.apiKeys,
+    query: () => komgaGetApiKeysForCurrentUser(),
   }),
 )
 
 export const useCreateApiKey = defineMutation(() => {
   const queryCache = useQueryCache()
   return useMutation({
-    mutation: (apiKey: components['schemas']['ApiKeyRequestDto']) =>
-      komgaClient
-        .POST('/api/v2/users/me/api-keys', {
-          body: apiKey,
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
-    onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.apiKeys })
-    },
+    mutation: (apiKey: ApiKeyRequestDto) =>
+      komgaCreateApiKeyForCurrentUser({
+        body: apiKey,
+      }),
+    onSuccess: () => void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.apiKeys() }),
   })
 })
 
@@ -186,12 +176,10 @@ export const useDeleteApiKey = defineMutation(() => {
   const queryCache = useQueryCache()
   return useMutation({
     mutation: (keyId: string) =>
-      komgaClient.DELETE('/api/v2/users/me/api-keys/{keyId}', {
-        params: { path: { keyId: keyId } },
+      komgaDeleteApiKeyByKeyId({
+        path: { keyId: keyId },
       }),
-    onSuccess: () => {
-      void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.apiKeys })
-    },
+    onSuccess: () => void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.apiKeys() }),
   })
 })
 
@@ -211,16 +199,15 @@ export const authenticationActivityQuery = defineQueryOptions(
     sort?: string[]
     unpaged?: boolean
   }) => ({
-    key: ['authentication-activity', { page: page, size: size, sort: sort, unpaged: unpaged }],
+    key: [
+      ...QUERY_KEYS_USERS.root,
+      'authentication-activity',
+      { page: page, size: size, sort: sort, unpaged: unpaged },
+    ],
     query: () =>
-      komgaClient
-        .GET('/api/v2/users/authentication-activity', {
-          params: {
-            query: { page: page, size: size, sort: sort, unpaged: unpaged },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetAuthenticationActivity({
+        query: { page: page, size: size, sort: sort, unpaged: unpaged },
+      }),
     placeholderData: (previousData) => previousData,
   }),
 )
@@ -238,19 +225,14 @@ export const myAuthenticationActivityQuery = defineQueryOptions(
     unpaged?: boolean
   }) => ({
     key: [
-      ...QUERY_KEYS_USERS.currentUser,
+      ...QUERY_KEYS_USERS.currentUser(),
       'authentication-activity',
       { page: page, size: size, sort: sort, unpaged: unpaged },
     ],
     query: () =>
-      komgaClient
-        .GET('/api/v2/users/me/authentication-activity', {
-          params: {
-            query: { page: page, size: size, sort: sort, unpaged: unpaged },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetAuthenticationActivityForCurrentUser({
+        query: { page: page, size: size, sort: sort, unpaged: unpaged },
+      }),
     placeholderData: (previousData) => previousData,
   }),
 )

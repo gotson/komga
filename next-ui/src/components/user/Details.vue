@@ -32,12 +32,12 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { UserRoles, userRolesMessages } from '@/types/UserRoles'
+import type { UserDto } from '@/generated/openapi'
 
 const slots = useSlots()
 
 const { user } = defineProps<{
-  user: components['schemas']['UserDto']
+  user: UserDto
 }>()
 </script>

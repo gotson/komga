@@ -1,10 +1,10 @@
-import type { components } from '@/generated/openapi/komga'
 import { useQuery } from '@pinia/colada'
 import { bookListQuery } from '@/colada/books'
 import { PageRequest } from '@/types/PageRequest'
 import { useBook } from '@/composables/book/useBook'
 import { bookReaderUrl } from '@/api/links'
 import { useMessagesStore } from '@/stores/messages'
+import type { AllOfBook, BookDto } from '@/generated/openapi'
 
 export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
   const messagesStore = useMessagesStore()
@@ -39,7 +39,7 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
     return useQuery(() =>
       bookListQuery({
         search: {
-          condition: conditions as components['schemas']['AllOfBook'],
+          condition: conditions as AllOfBook,
         },
         pageRequest: new PageRequest(0, 1, [{ key: 'metadata.numberSort', order: 'asc' }]),
       }),
@@ -51,9 +51,7 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
    *
    * @param unreadOnly to only fetch unread books
    */
-  async function getFirstBookInSeries(
-    unreadOnly: boolean,
-  ): Promise<components['schemas']['BookDto'] | undefined> {
+  async function getFirstBookInSeries(unreadOnly: boolean): Promise<BookDto | undefined> {
     const { data } = await getFirstBookInSeriesQuery(unreadOnly).refresh()
 
     if (data && data.totalElements && data.totalElements > 0) {

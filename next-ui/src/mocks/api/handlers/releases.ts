@@ -1,4 +1,6 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
+import { handleGetReleases } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 export const releasesResponseOk = [
   {
@@ -38,6 +40,4 @@ export const releasesResponseOkNotLatest = [
   },
 ]
 
-export const releasesHandlers = [
-  httpTyped.get('/api/v1/releases', ({ response }) => response(200).json(releasesResponseOk)),
-]
+export const releasesHandlers = [handleGetReleases(() => response200OK(releasesResponseOk))]

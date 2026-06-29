@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
+import type { LibraryCreationDto } from '@/generated/openapi'
 
 const { createMode } = defineProps<{
   createMode: boolean
@@ -124,5 +124,5 @@ const { createMode } = defineProps<{
 
 const editMode = computed(() => !createMode)
 
-const model = defineModel<components['schemas']['LibraryCreationDto']>({ required: true })
+const model = defineModel<LibraryCreationDto>({ required: true })
 </script>

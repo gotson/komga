@@ -9,19 +9,19 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useReadListActions } from '@/composables/readlist/useReadListActions'
 import { createOrderCompareFn } from '@/functions/sort'
 import { ActionName } from '@/types/action/action'
 import { useSelectionStore } from '@/stores/selection'
 import { usePrimaryInput } from '@/composables/device'
 import { useSelectAction } from '@/composables/selection'
+import type { ReadListDto } from '@/generated/openapi'
 
 const isShown = defineModel<boolean>({ default: false })
 
 const { readList, excludeActions = [] } = defineProps<{
   activator: string | Element
-  readList: components['schemas']['ReadListDto']
+  readList: ReadListDto
   excludeActions?: ActionName[]
 }>()
 

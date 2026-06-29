@@ -4,26 +4,11 @@ import { useSelectionStore } from '@/stores/selection'
 import { pushIfAbsent } from '@/functions/array'
 import { useIntl } from 'vue-intl'
 import { actionDetails, ActionName } from '@/types/action/action'
-import type { components } from '@/generated/openapi/komga'
+import type { BookDto, CollectionDto, ReadListDto, SeriesDto } from '@/generated/openapi'
 
 export function useSelectionContextualActions(
-  dataItems: MaybeRefOrGetter<
-    | (
-        | components['schemas']['BookDto']
-        | components['schemas']['SeriesDto']
-        | components['schemas']['CollectionDto']
-        | components['schemas']['ReadListDto']
-      )[]
-    | undefined
-  >,
-  isSame: (
-    existing: unknown,
-    toAdd:
-      | components['schemas']['BookDto']
-      | components['schemas']['SeriesDto']
-      | components['schemas']['CollectionDto']
-      | components['schemas']['ReadListDto'],
-  ) => boolean,
+  dataItems: MaybeRefOrGetter<(BookDto | SeriesDto | CollectionDto | ReadListDto)[] | undefined>,
+  isSame: (existing: unknown, toAdd: BookDto | SeriesDto | CollectionDto | ReadListDto) => boolean,
 ) {
   const intl = useIntl()
   const appStore = useAppStore()
@@ -71,12 +56,7 @@ export function useSelectionContextualActions(
  * @param callback
  */
 export function useSelectAction(
-  item: MaybeRefOrGetter<
-    | components['schemas']['BookDto']
-    | components['schemas']['SeriesDto']
-    | components['schemas']['CollectionDto']
-    | components['schemas']['ReadListDto']
-  >,
+  item: MaybeRefOrGetter<BookDto | SeriesDto | CollectionDto | ReadListDto>,
   callback: (action: ActionName) => void = () => {},
 ) {
   const intl = useIntl()

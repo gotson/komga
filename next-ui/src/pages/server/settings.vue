@@ -27,9 +27,9 @@
 <script lang="ts" setup>
 import { useSettings, useUpdateSettings } from '@/colada/settings'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import type { components } from '@/generated/openapi/komga'
+
 import { useMessagesStore } from '@/stores/messages'
-import type { ErrorCause } from '@/api/komga-client'
+import type { SettingsUpdateDto } from '@/generated/openapi'
 
 const messagesStore = useMessagesStore()
 
@@ -38,7 +38,7 @@ const loading = ref<boolean>(false)
 const { data: settings, error, isPending, refetch } = useSettings()
 const { mutateAsync } = useUpdateSettings()
 
-function saveSettings(settings: components['schemas']['SettingsUpdateDto']) {
+function saveSettings(settings: SettingsUpdateDto) {
   loading.value = true
   mutateAsync(settings)
     .then(() =>
@@ -49,9 +49,7 @@ function saveSettings(settings: components['schemas']['SettingsUpdateDto']) {
       }),
     )
     .catch((error) => {
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      )
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
     })
     .finally(() => {
       loading.value = false

@@ -1,4 +1,3 @@
-import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/users'
 import { useIntl } from 'vue-intl'
 import { storeToRefs } from 'pinia'
@@ -6,7 +5,6 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useMessagesStore } from '@/stores/messages'
 import { useDisplay } from 'vuetify/framework'
 import BookDeletionWarning from '@/components/book/DeletionWarning.vue'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import {
   useAnalyzeBook,
@@ -22,9 +20,10 @@ import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useBook } from '@/composables/book/useBook'
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { bookReaderUrl } from '@/api/links'
+import type { BookDto } from '@/generated/openapi'
 
 export function useBookActions(
-  book: MaybeRefOrGetter<components['schemas']['BookDto']>,
+  book: MaybeRefOrGetter<BookDto>,
   callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin, hasRole } = useCurrentUser()
@@ -276,9 +275,7 @@ export function useBookActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
       callback(ActionName.DELETE)
     }

@@ -1,15 +1,11 @@
 import { defineQuery, useQuery } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
 import type { ActuatorInfo } from '@/types/actuator'
+import { komgaGetActuatorInfo } from '@/generated/openapi'
 
 export const useActuatorInfo = defineQuery(() => {
   const { data, ...rest } = useQuery({
     key: () => ['actuator-info'],
-    query: () =>
-      komgaClient
-        .GET('/actuator/info')
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data as unknown as ActuatorInfo),
+    query: () => komgaGetActuatorInfo().then((data) => data as ActuatorInfo),
     // 1 hour
     staleTime: 60 * 60 * 1000,
     gcTime: false,

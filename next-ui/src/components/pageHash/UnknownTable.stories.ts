@@ -2,12 +2,13 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import UnknownTable from './UnknownTable.vue'
 import { delay, http } from 'msw'
-import { response401Unauthorized } from '@/mocks/api/handlers'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
 import DialogSimpleInstance from '@/components/dialog/DialogSimpleInstance.vue'
 import SnackQueue from '@/components/SnackQueue.vue'
+import { handleGetKnownPageHashes } from '@/generated/openapi/msw.gen'
+import { response200OK, response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: UnknownTable,
@@ -40,11 +41,7 @@ export const Default: Story = {
 export const NoData: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v1/page-hashes/unknown', ({ response }) =>
-          response(200).json(mockPage([], new PageRequest())),
-        ),
-      ],
+      handlers: [handleGetKnownPageHashes(() => response200OK(mockPage([], new PageRequest())))],
     },
   },
 }

@@ -35,16 +35,16 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useCurrentUser } from '@/colada/users'
 import { useGetLibrariesById } from '@/composables/libraries'
+import type { LibraryDto } from '@/generated/openapi'
 
 const {
   library,
   libraryId,
   link = false,
 } = defineProps<{
-  library?: components['schemas']['LibraryDto']
+  library?: LibraryDto
   libraryId?: string
   link?: boolean
 }>()

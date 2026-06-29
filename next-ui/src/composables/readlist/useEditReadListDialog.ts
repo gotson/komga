@@ -3,11 +3,11 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
-import type { components } from '@/generated/openapi/komga'
+
 import EditMetadata from '@/components/series/form/EditMetadata.vue'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useUpdateReadList } from '@/colada/readlists'
+import type { ReadListDto, ReadListUpdateDto } from '@/generated/openapi'
 
 export function useEditReadListDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
@@ -16,7 +16,7 @@ export function useEditReadListDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdate } = useUpdateReadList()
 
-  const prepareDialog = (readList: components['schemas']['ReadListDto']) => {
+  const prepareDialog = (readList: ReadListDto) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit readlist dialog title',
@@ -41,8 +41,7 @@ export function useEditReadListDialog() {
     ) => {
       setLoading(true)
 
-      const updatedData = dialogConfirmEdit.value
-        .record as components['schemas']['ReadListUpdateDto']
+      const updatedData = dialogConfirmEdit.value.record as ReadListUpdateDto
 
       mutateUpdate({ readListId: readList.id, data: updatedData })
         .then(() => {
@@ -61,9 +60,7 @@ export function useEditReadListDialog() {
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
     }

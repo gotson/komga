@@ -1,4 +1,6 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
+import { handleGetActuatorInfo } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 export const actuatorInfo = {
   git: {
@@ -37,6 +39,4 @@ export const actuatorInfo = {
   },
 }
 
-export const actuatorHandlers = [
-  httpTyped.get('/actuator/info', ({ response }) => response(200).json(actuatorInfo)),
-]
+export const actuatorHandlers = [handleGetActuatorInfo(() => response200OK(actuatorInfo))]

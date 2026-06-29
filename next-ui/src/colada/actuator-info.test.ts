@@ -3,9 +3,9 @@ import { server } from '@/mocks/api/node'
 import { useActuatorInfo } from '@/colada/actuator-info'
 import { createMockColada } from '@/mocks/pinia-colada'
 import { enableAutoUnmount } from '@vue/test-utils'
-import type { ErrorCause } from '@/api/komga-client'
-import { response401Unauthorized } from '@/mocks/api/handlers'
+import { isApiErrorWithCause } from '@/api/komga-client'
 import { http } from 'msw'
+import { response401Unauthorized } from '@/mocks/api/utils'
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
@@ -32,6 +32,7 @@ describe('colada actuator', () => {
     await refresh()
     expect(buildVersion.value).toBeUndefined()
     expect(commitId.value).toBeUndefined()
-    expect((error.value?.cause as ErrorCause).status).toBe(401)
+    expect(isApiErrorWithCause(error.value)).toBe(true)
+    if (isApiErrorWithCause(error.value)) expect(error.value.cause.status).toBe(401)
   })
 })

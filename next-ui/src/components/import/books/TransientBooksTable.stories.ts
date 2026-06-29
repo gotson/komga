@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import { http, delay } from 'msw'
 import TransientBooksTable from './TransientBooksTable.vue'
-import { response400BadRequest } from '@/mocks/api/handlers'
 import { scanned } from '@/mocks/api/handlers/transient-books'
 import SnackQueue from '@/components/SnackQueue.vue'
+import { response400BadRequest } from '@/mocks/api/utils'
 
 const meta = {
   component: TransientBooksTable,

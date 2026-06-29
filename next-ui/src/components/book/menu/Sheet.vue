@@ -9,18 +9,18 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useBookActions } from '@/composables/book/useBookActions'
 import { createOrderCompareFn } from '@/functions/sort'
 import { ActionName } from '@/types/action/action'
 import { useSelectionStore } from '@/stores/selection'
 import { usePrimaryInput } from '@/composables/device'
 import { useSelectAction } from '@/composables/selection'
+import type { BookDto } from '@/generated/openapi'
 const isShown = defineModel<boolean>({ default: false })
 
 const { book, excludeActions = [] } = defineProps<{
   activator: string | Element
-  book: components['schemas']['BookDto']
+  book: BookDto
   excludeActions?: ActionName[]
 }>()
 

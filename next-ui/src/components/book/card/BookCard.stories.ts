@@ -2,11 +2,14 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import BookCard from './BookCard.vue'
 import { fn } from 'storybook/test'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { userRegular } from '@/mocks/api/handlers/users'
 import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
 import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
 import { mockBook } from '@/mocks/api/handlers/books'
+import { handleGetCurrentUser } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 const meta = {
   component: BookCard,
@@ -131,9 +134,7 @@ export const HoverNonAdmin: Story = {
   args: {},
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v2/users/me', ({ response }) => response(200).json(userRegular)),
-      ],
+      handlers: [handleGetCurrentUser(() => response200OK(userRegular))],
     },
   },
   play: ({ canvas, userEvent }) => {

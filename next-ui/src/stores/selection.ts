@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { logger } from '@/services/logtape'
-import type { components } from '@/generated/openapi/komga'
+import type { BookDto, ReadListDto, SeriesDto, CollectionDto } from '@/generated/openapi'
 
 type SelectionAction = {
   text: string
@@ -11,14 +11,7 @@ type SelectionAction = {
 export const useSelectionStore = defineStore('selection', () => {
   const route = useRoute()
 
-  const selection = ref<
-    (
-      | components['schemas']['BookDto']
-      | components['schemas']['SeriesDto']
-      | components['schemas']['CollectionDto']
-      | components['schemas']['ReadListDto']
-    )[]
-  >([])
+  const selection = ref<(BookDto | SeriesDto | CollectionDto | ReadListDto)[]>([])
 
   watch(
     () => route?.path,

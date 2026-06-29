@@ -8,18 +8,18 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useCollectionActions } from '@/composables/collection/useCollectionActions'
 import { createOrderCompareFn } from '@/functions/sort'
 import { ActionName } from '@/types/action/action'
 import { useSelectionStore } from '@/stores/selection'
 import { usePrimaryInput } from '@/composables/device'
 import { useSelectAction } from '@/composables/selection'
+import type { CollectionDto } from '@/generated/openapi'
 const isShown = defineModel<boolean>({ default: false })
 
 const { collection, excludeActions = [] } = defineProps<{
   activator: string | Element
-  collection: components['schemas']['CollectionDto']
+  collection: CollectionDto
   excludeActions?: ActionName[]
 }>()
 

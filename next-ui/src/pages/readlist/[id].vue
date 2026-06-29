@@ -200,7 +200,7 @@ import {
   schemaFilterStringToConditions,
   valuesToConditions,
 } from '@/functions/filter'
-import type { components } from '@/generated/openapi/komga'
+
 import { bookListQuery, bookListQueryInfinite } from '@/colada/books'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import ChipCount from '@/components/ChipCount.vue'
@@ -211,6 +211,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { useSelectionContextualActions } from '@/composables/selection'
+import type { AllOfBook } from '@/generated/openapi'
 
 const route = useRoute('/readlist/[id]')
 const router = useRouter()
@@ -287,7 +288,7 @@ watch([() => JSON.stringify(conds.value), () => appStore.browsingPaging], () =>
 )
 
 const apiQuery = computed(() => ({
-  condition: conds.value as components['schemas']['AllOfBook'],
+  condition: conds.value as AllOfBook,
 }))
 
 const { data: dataPaged } = useQuery(() => ({

@@ -125,8 +125,8 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useIntl } from 'vue-intl'
+import type { BookDto } from '@/generated/openapi'
 
 const intl = useIntl()
 
@@ -141,7 +141,7 @@ const {
   fullscreen?: boolean
   activator?: Element | string
   existingName?: string
-  seriesBooks?: components['schemas']['BookDto'][]
+  seriesBooks?: BookDto[]
 }>()
 
 const emit = defineEmits<{
@@ -190,4 +190,3 @@ const bookTableHeaders = [
   },
 ]
 </script>
-<script setup lang="ts"></script>

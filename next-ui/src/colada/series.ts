@@ -4,12 +4,22 @@ import {
   defineQueryOptions,
   useMutation,
 } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
-import type { components } from '@/generated/openapi/komga'
 import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
 import { seriesMetadataToDto } from '@/functions/series'
 import { entityChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
+import {
+  komgaDeleteSeriesFile,
+  komgaGetSeries,
+  komgaGetSeriesById,
+  komgaMarkSeriesAsRead,
+  komgaMarkSeriesAsUnread,
+  komgaSeriesAnalyze,
+  komgaSeriesRefreshMetadata,
+  komgaUpdateSeriesMetadata,
+  type SeriesMetadataDto,
+  type SeriesSearch,
+} from '@/generated/openapi'
 
 export const QUERY_KEYS_SERIES = {
   root: ['series'] as const,
@@ -18,48 +28,32 @@ export const QUERY_KEYS_SERIES = {
 }
 
 export const seriesListQuery = defineQueryOptions(
-  ({
-    search,
-    pageRequest,
-  }: {
-    search: components['schemas']['SeriesSearch']
-    pageRequest?: PageRequest
-  }) => ({
+  ({ search, pageRequest }: { search: SeriesSearch; pageRequest?: PageRequest }) => ({
     key: QUERY_KEYS_SERIES.bySearch({ search: search, pageRequest: pageRequest }),
     query: () =>
-      komgaClient
-        .POST('/api/v1/series/list', {
-          body: search,
-          params: {
-            query: {
-              ...pageRequest,
-            },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetSeries({
+        body: search,
+        query: {
+          ...pageRequest,
+        },
+      }),
     placeholderData: (previousData) => previousData,
   }),
 )
 
 export const seriesListQueryInfinite = defineInfiniteQueryOptions(
-  ({ search, sort }: { search: components['schemas']['SeriesSearch']; sort?: Sort[] }) => ({
+  ({ search, sort }: { search: SeriesSearch; sort?: Sort[] }) => ({
     key: QUERY_KEYS_SERIES.bySearch({ search: search, sort: sort, infinite: true }),
     initialPageParam: new PageRequest(0, 50, sort),
     query: ({ pageParam }) =>
-      komgaClient
-        .POST('/api/v1/series/list', {
-          body: search,
-          params: {
-            query: {
-              page: pageParam.page,
-              size: pageParam.size,
-              sort: sort?.map((it) => sortToString(it)),
-            },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetSeries({
+        body: search,
+        query: {
+          page: pageParam.page,
+          size: pageParam.size,
+          sort: sort?.map((it) => sortToString(it)),
+        },
+      }),
     getNextPageParam: (lastPage, _, lastPageParam) =>
       !lastPage?.last ? lastPageParam.next() : null,
   }),
@@ -68,26 +62,19 @@ export const seriesListQueryInfinite = defineInfiniteQueryOptions(
 export const seriesDetailQuery = defineQueryOptions(({ seriesId }: { seriesId: string }) => ({
   key: QUERY_KEYS_SERIES.byId(seriesId),
   query: () =>
-    komgaClient
-      .GET('/api/v1/series/{seriesId}', {
-        params: {
-          path: {
-            seriesId: seriesId,
-          },
-        },
-      })
-      // unwrap the openapi-fetch structure on success
-      .then((res) => res.data),
+    komgaGetSeriesById({
+      path: {
+        seriesId: seriesId,
+      },
+    }),
 }))
 
 export const useRefreshMetadataSeries = defineMutation(() =>
   useMutation({
     mutation: (seriesId: string) =>
-      komgaClient.POST('/api/v1/series/{seriesId}/metadata/refresh', {
-        params: {
-          path: {
-            seriesId: seriesId,
-          },
+      komgaSeriesRefreshMetadata({
+        path: {
+          seriesId: seriesId,
         },
       }),
   }),
@@ -96,11 +83,9 @@ export const useRefreshMetadataSeries = defineMutation(() =>
 export const useAnalyzeSeries = defineMutation(() =>
   useMutation({
     mutation: (seriesId: string) =>
-      komgaClient.POST('/api/v1/series/{seriesId}/analyze', {
-        params: {
-          path: {
-            seriesId: seriesId,
-          },
+      komgaSeriesAnalyze({
+        path: {
+          seriesId: seriesId,
         },
       }),
   }),
@@ -110,14 +95,12 @@ export const useDeleteSeries = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
     mutation: (seriesId: string) =>
-      komgaClient.DELETE('/api/v1/series/{seriesId}/file', {
-        params: {
-          path: {
-            seriesId: seriesId,
-          },
+      komgaDeleteSeriesFile({
+        path: {
+          seriesId: seriesId,
         },
       }),
-    onSuccess: (data, seriesId) => {
+    onSuccess: (_data, seriesId) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)
     },
   })
@@ -127,14 +110,12 @@ export const useMarkSeriesRead = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
     mutation: (seriesId: string) =>
-      komgaClient.POST('/api/v1/series/{seriesId}/read-progress', {
-        params: {
-          path: {
-            seriesId: seriesId,
-          },
+      komgaMarkSeriesAsRead({
+        path: {
+          seriesId: seriesId,
         },
       }),
-    onSuccess: (data, seriesId) => {
+    onSuccess: (_data, seriesId) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)
     },
   })
@@ -144,14 +125,12 @@ export const useMarkSeriesUnread = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
     mutation: (seriesId: string) =>
-      komgaClient.DELETE('/api/v1/series/{seriesId}/read-progress', {
-        params: {
-          path: {
-            seriesId: seriesId,
-          },
+      komgaMarkSeriesAsUnread({
+        path: {
+          seriesId: seriesId,
         },
       }),
-    onSuccess: (data, seriesId) => {
+    onSuccess: (_data, seriesId) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)
     },
   })
@@ -160,22 +139,14 @@ export const useMarkSeriesUnread = defineMutation(() => {
 export const useUpdateSeriesMetadata = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
-    mutation: ({
-      seriesId,
-      metadata,
-    }: {
-      seriesId: string
-      metadata: components['schemas']['SeriesMetadataDto']
-    }) =>
-      komgaClient.PATCH('/api/v1/series/{seriesId}/metadata', {
-        params: {
-          path: {
-            seriesId: seriesId,
-          },
+    mutation: ({ seriesId, metadata }: { seriesId: string; metadata: SeriesMetadataDto }) =>
+      komgaUpdateSeriesMetadata({
+        path: {
+          seriesId: seriesId,
         },
         body: seriesMetadataToDto(metadata),
       }),
-    onSuccess: (data, { seriesId }) => {
+    onSuccess: (_data, { seriesId }) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)
     },
   })

@@ -112,6 +112,7 @@ export default defineConfig(({ mode }) => ({
           name: 'unit',
           environment: 'happy-dom',
           restoreMocks: true,
+          setupFiles: ['./vitest.setup.ts'],
         },
       },
       {
@@ -130,6 +131,7 @@ export default defineConfig(({ mode }) => ({
               inline: ['vuetify'],
             },
           },
+          setupFiles: ['./vitest.setup.ts'],
         },
         plugins: [
           // The plugin will run tests for the stories defined in your Storybook config

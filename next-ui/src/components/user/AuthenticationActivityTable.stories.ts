@@ -2,10 +2,11 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import AuthenticationActivityTable from './AuthenticationActivityTable.vue'
 import { delay, http } from 'msw'
-import { response401Unauthorized } from '@/mocks/api/handlers'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import { handleGetAuthenticationActivity } from '@/generated/openapi/msw.gen'
+import { response200OK, response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: AuthenticationActivityTable,
@@ -54,9 +55,7 @@ export const NoData: Story = {
   parameters: {
     msw: {
       handlers: [
-        httpTyped.get('/api/v2/users/authentication-activity', ({ response }) =>
-          response(200).json(mockPage([], new PageRequest())),
-        ),
+        handleGetAuthenticationActivity(() => response200OK(mockPage([], new PageRequest()))),
       ],
     },
   },

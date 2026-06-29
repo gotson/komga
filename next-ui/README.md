@@ -1,8 +1,8 @@
 ## OpenAPI
 
-[OpenAPI-fetch](https://openapi-ts.dev/openapi-fetch/) is used to generate a fully typed client from the Komga OpenAPI documentation.
+[Hey API](https://heyapi.dev/) is used to generate a fully typed client from the Komga OpenAPI documentation.
 
-The `openapi-generate` tasks will generate bindings, and should be run when the OpenAPI definition has changed.
+The `openapi-ts` task will generate bindings, and should be run when the OpenAPI definition has changed.
 
 ## Pinia Colada
 

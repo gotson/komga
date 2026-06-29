@@ -1,8 +1,14 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
 import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
+import {
+  handleCreateReadList,
+  handleGetReadLists,
+  handleMatchComicRackList,
+} from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 export const matchCbl = {
   readListMatch: { name: "Jupiter's Legacy", errorCode: '' },
@@ -14,7 +20,7 @@ export const matchCbl = {
           series: {
             seriesId: '63',
             title: 'Space Adventures',
-            releaseDate: '2018-07-10',
+            releaseDate: new Date('2018-07-10'),
           },
           books: [{ bookId: '0F99E5W723ENS', number: '1', title: 'Volume 1' }],
         },
@@ -27,7 +33,7 @@ export const matchCbl = {
           series: {
             seriesId: '63',
             title: 'Space Adventures',
-            releaseDate: '2018-07-10',
+            releaseDate: new Date('2018-07-10'),
           },
           books: [{ bookId: '0F99E5W723ENS', number: '1', title: 'Volume 1' }],
         },
@@ -40,7 +46,7 @@ export const matchCbl = {
           series: {
             seriesId: '63',
             title: "Jupiter's Legacy",
-            releaseDate: '2018-07-10',
+            releaseDate: new Date('2018-07-10'),
           },
           books: [{ bookId: '0F99E5W763ECC', number: '3', title: 'Volume 3' }],
         },
@@ -53,7 +59,7 @@ export const matchCbl = {
           series: {
             seriesId: '63',
             title: "Jupiter's Legacy",
-            releaseDate: '2018-07-10',
+            releaseDate: new Date('2018-07-10'),
           },
           books: [{ bookId: '0F99E5W723ENT', number: '4', title: 'Volume 4' }],
         },
@@ -66,7 +72,7 @@ export const matchCbl = {
           series: {
             seriesId: '63',
             title: "Jupiter's Legacy",
-            releaseDate: '2018-07-10',
+            releaseDate: new Date('2018-07-10'),
           },
           books: [{ bookId: '0F99E5W723ENR', number: '5', title: 'Volume 5' }],
         },
@@ -173,12 +179,13 @@ const mockReadList2 = {
 const readlists = [mockReadList1, mockReadList2]
 
 export const readListsHandlers = [
-  httpTyped.get('/api/v1/readlists', ({ query, response }) => {
+  handleGetReadLists(({ request }) => {
+    const query = new URL(request.url).searchParams
     const selectedReadLists = query.get('search')
-      ? readlists.filter((it) => !!it.name.match(new RegExp(query.get('search')!, 'i')))
+      ? readlists.filter((it) => !!it.name.match(new RegExp(query.get('search') as string, 'i')))
       : readlists
 
-    return response(200).json(
+    return response200OK(
       mockPage(
         selectedReadLists,
         new PageRequest(
@@ -190,9 +197,9 @@ export const readListsHandlers = [
       ),
     )
   }),
-  httpTyped.post('/api/v1/readlists', async ({ request, response }) => {
+  handleCreateReadList(async ({ request }) => {
     const body = await request.json()
-    return response(200).json({
+    return response200OK({
       ...body,
       createdDate: new Date(),
       lastModifiedDate: new Date(),
@@ -200,9 +207,7 @@ export const readListsHandlers = [
       filtered: false,
     })
   }),
-  httpTyped.post('/api/v1/readlists/match/comicrack', ({ response }) => {
-    return response(200).json(matchCbl)
-  }),
+  handleMatchComicRackList(() => response200OK(matchCbl)),
   http.get('*/api/v1/readlists/*/thumbnail', async () => {
     // Get an ArrayBuffer from reading the file from disk or fetching it.
     const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())

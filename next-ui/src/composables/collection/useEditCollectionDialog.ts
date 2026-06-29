@@ -3,11 +3,11 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
-import type { components } from '@/generated/openapi/komga'
+
 import EditMetadata from '@/components/series/form/EditMetadata.vue'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useUpdateCollection } from '@/colada/collections'
+import type { CollectionDto, CollectionUpdateDto } from '@/generated/openapi'
 
 export function useEditCollectionDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
@@ -16,7 +16,7 @@ export function useEditCollectionDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateCollection } = useUpdateCollection()
 
-  const prepareDialog = (collection: components['schemas']['CollectionDto']) => {
+  const prepareDialog = (collection: CollectionDto) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit collection dialog title',
@@ -41,8 +41,7 @@ export function useEditCollectionDialog() {
     ) => {
       setLoading(true)
 
-      const updatedData = dialogConfirmEdit.value
-        .record as components['schemas']['CollectionUpdateDto']
+      const updatedData = dialogConfirmEdit.value.record as CollectionUpdateDto
 
       mutateUpdateCollection({ collectionId: collection.id, data: updatedData })
         .then(() => {
@@ -61,9 +60,7 @@ export function useEditCollectionDialog() {
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
     }

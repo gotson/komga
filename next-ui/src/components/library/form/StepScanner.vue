@@ -149,10 +149,10 @@
 <script setup lang="ts">
 import { ScanInterval, scanIntervalMessages } from '@/types/ScanInterval'
 import { useIntl } from 'vue-intl'
-import type { components } from '@/generated/openapi/komga'
+import type { LibraryCreationDto } from '@/generated/openapi'
 
 type LibraryCreationScanner = Pick<
-  components['schemas']['LibraryCreationDto'],
+  LibraryCreationDto,
   | 'scanInterval'
   | 'oneshotsDirectory'
   | 'scanDirectoryExclusions'

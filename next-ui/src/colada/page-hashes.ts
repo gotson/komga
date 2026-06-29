@@ -1,9 +1,15 @@
 import { defineQueryOptions } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
 import type { PageHashAction } from '@/types/PageHashAction'
+import {
+  komgaGetKnownPageHashes,
+  komgaGetPageHashMatches,
+  komgaGetUnknownPageHashes,
+} from '@/generated/openapi'
 
 export const QUERY_KEYS_PAGE_HASHES = {
-  unknown: ['page-hashes-unknown'] as const,
+  root: ['page-hashes'] as const,
+  known: () => [...QUERY_KEYS_PAGE_HASHES.root, 'known'] as const,
+  unknown: () => [...QUERY_KEYS_PAGE_HASHES.root, 'unknown'] as const,
 }
 
 export const pageHashesKnownQuery = defineQueryOptions(
@@ -18,41 +24,34 @@ export const pageHashesKnownQuery = defineQueryOptions(
     size?: number
     sort?: string[]
   }) => ({
-    key: ['page-hashes-known', { actions: actions, page: page, size: size, sort: sort }],
+    key: [
+      ...QUERY_KEYS_PAGE_HASHES.known(),
+      { actions: actions, page: page, size: size, sort: sort },
+    ],
     query: () =>
-      komgaClient
-        .GET('/api/v1/page-hashes', {
-          params: {
-            query: {
-              page: page,
-              size: size,
-              sort: sort,
-              action: actions as PageHashAction[],
-            },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetKnownPageHashes({
+        query: {
+          page: page,
+          size: size,
+          sort: sort,
+          action: actions as PageHashAction[],
+        },
+      }),
     placeholderData: (previousData) => previousData,
   }),
 )
 
 export const pageHashesUnknownQuery = defineQueryOptions(
   ({ page, size, sort }: { page?: number; size?: number; sort?: string[] }) => ({
-    key: [QUERY_KEYS_PAGE_HASHES.unknown, { page: page, size: size, sort: sort }],
+    key: [...QUERY_KEYS_PAGE_HASHES.unknown(), { page: page, size: size, sort: sort }],
     query: () =>
-      komgaClient
-        .GET('/api/v1/page-hashes/unknown', {
-          params: {
-            query: {
-              page: page,
-              size: size,
-              sort: sort,
-            },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetUnknownPageHashes({
+        query: {
+          page: page,
+          size: size,
+          sort: sort,
+        },
+      }),
     placeholderData: (previousData) => previousData,
   }),
 )
@@ -69,23 +68,18 @@ export const pageHashMatchesQuery = defineQueryOptions(
     size?: number
     sort?: string[]
   }) => ({
-    key: ['page-hash-matches', pageHash, { page: page, size: size, sort: sort }],
+    key: [...QUERY_KEYS_PAGE_HASHES.known(), pageHash, { page: page, size: size, sort: sort }],
     query: () =>
-      komgaClient
-        .GET('/api/v1/page-hashes/{pageHash}', {
-          params: {
-            path: {
-              pageHash: pageHash,
-            },
-            query: {
-              page: page,
-              size: size,
-              sort: sort,
-            },
-          },
-        })
-        // unwrap the openapi-fetch structure on success
-        .then((res) => res.data),
+      komgaGetPageHashMatches({
+        path: {
+          pageHash: pageHash,
+        },
+        query: {
+          page: page,
+          size: size,
+          sort: sort,
+        },
+      }),
     placeholderData: (previousData) => previousData,
   }),
 )

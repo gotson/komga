@@ -144,13 +144,14 @@
 <script setup lang="ts">
 import { useIntl } from 'vue-intl'
 import { useCreateApiKey } from '@/colada/users'
-import type { ErrorCause } from '@/api/komga-client'
+import { isApiErrorWithCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useMessagesStore } from '@/stores/messages'
-import type { components } from '@/generated/openapi/komga'
+
 import { useClipboard } from '@vueuse/core'
 import type { VDialog } from 'vuetify/components'
 import { useRules } from 'vuetify/labs/rules'
+import type { ApiKeyDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const rules = useRules()
@@ -166,7 +167,7 @@ const { fullscreen = undefined, activator = undefined } = defineProps<{
 
 const comment = ref<string>('')
 const creationError = ref<string>('')
-const createdKey = ref<components['schemas']['ApiKeyDto'] | undefined>(undefined)
+const createdKey = ref<ApiKeyDto | undefined>(undefined)
 
 const { mutateAsync, isLoading } = useCreateApiKey()
 
@@ -175,17 +176,14 @@ function generateApiKey() {
     .then((key) => (createdKey.value = key))
     .catch((error) => {
       console.dir(error)
-      if ((error?.cause as ErrorCause)?.message?.includes('ERR_1034')) {
+      if (isApiErrorWithCause(error) && error.cause.message?.includes('ERR_1034')) {
         creationError.value = intl.formatMessage({
           description:
             'API Key generate dialog: error message displayed when an API key with the same comment already exists',
           defaultMessage: 'An API key with that comment already exists',
           id: 'zphiTI',
         })
-      } else
-        messagesStore.messages.push(
-          (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-        )
+      } else messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
     })
 }
 

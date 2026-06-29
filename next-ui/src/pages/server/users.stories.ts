@@ -4,7 +4,8 @@ import users from './users.vue'
 import { http, delay } from 'msw'
 import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
 import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
-import { response401Unauthorized } from '@/mocks/api/handlers'
+
+import { response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: users,

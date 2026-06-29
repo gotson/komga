@@ -92,9 +92,9 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { bookPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
+import type { BookDto } from '@/generated/openapi'
 
 const intl = useIntl()
 
@@ -107,13 +107,13 @@ const {
   activator = undefined,
 } = defineProps<{
   filter?: string
-  books?: components['schemas']['BookDto'][]
+  books?: BookDto[]
   fullscreen?: boolean
   activator?: Element | string
 }>()
 
 const emit = defineEmits<{
-  selectedBook: [book: components['schemas']['BookDto']]
+  selectedBook: [book: BookDto]
 }>()
 
 const filterRef = ref<string>(filter)
@@ -124,7 +124,7 @@ watch(
   (it) => (filterRef.value = it),
 )
 
-function pick(selectedBook: components['schemas']['BookDto']) {
+function pick(selectedBook: BookDto) {
   emit('selectedBook', selectedBook)
   showDialog.value = false
 }
@@ -142,12 +142,12 @@ const dialogTitle = intl.formatMessage({
 function filterFn(
   value: string,
   query: string,
-  item?: { raw: components['schemas']['BookDto'] },
+  item?: { raw: BookDto },
 ): boolean | number | [number, number] | [number, number][] {
   return (
     item?.raw.metadata.title.includes(query) ||
     item?.raw.metadata.number.includes(query) ||
-    item?.raw.metadata.releaseDate?.includes(query) ||
+    item?.raw.metadata.releaseDate?.toISOString()?.includes(query) ||
     false
   )
 }

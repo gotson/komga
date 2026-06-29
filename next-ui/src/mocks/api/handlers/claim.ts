@@ -1,5 +1,5 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
+import { handleGetClaimStatus } from '@/generated/openapi/msw.gen'
 
-export const claimHandlers = [
-  httpTyped.get('/api/v1/claim', ({ response }) => response(200).json({ isClaimed: true })),
-]
+import { response200OK } from '@/mocks/api/utils'
+
+export const claimHandlers = [handleGetClaimStatus(() => response200OK({ isClaimed: true }))]

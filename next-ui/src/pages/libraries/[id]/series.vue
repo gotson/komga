@@ -228,7 +228,7 @@
 <script lang="ts" setup>
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
-import type { components } from '@/generated/openapi/komga'
+
 import { PageRequest } from '@/types/PageRequest'
 import { useGetLibrariesById } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
@@ -256,6 +256,7 @@ import { useFilterContributors, useFilters } from '@/composables/filter'
 import ChipCount from '@/components/ChipCount.vue'
 import { contributorsRolesMessages } from '@/types/referential'
 import { useSelectionContextualActions } from '@/composables/selection'
+import type { AllOfSeries } from '@/generated/openapi'
 
 const route = useRoute('/libraries/[id]/series')
 const libraryId = route.params.id
@@ -338,7 +339,7 @@ watch([() => JSON.stringify(conds.value), () => appStore.browsingPaging], () =>
 )
 
 const apiQuery = computed(() => ({
-  condition: conds.value as components['schemas']['AllOfSeries'],
+  condition: conds.value as AllOfSeries,
 }))
 
 const { data: dataPaged } = useQuery(() => ({

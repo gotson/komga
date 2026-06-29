@@ -257,7 +257,7 @@
 
 <script setup lang="ts">
 import { UserRoles, userRolesMessages } from '@/types/UserRoles'
-import type { components } from '@/generated/openapi/komga'
+
 import { useLibraries } from '@/colada/libraries'
 import { sharingLabelsQuery } from '@/colada/referential'
 import { useIntl } from 'vue-intl'
@@ -265,6 +265,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { useQuery } from '@pinia/colada'
 import { PageRequest } from '@/types/PageRequest'
 import { useRules } from 'vuetify/labs/rules'
+import type { UserCreationDto, UserUpdateDto } from '@/generated/openapi'
 
 const intl = useIntl()
 const rules = useRules()
@@ -275,8 +276,8 @@ type UserExtend = {
   password?: string
 }
 
-type UserCreation = components['schemas']['UserCreationDto'] & UserExtend
-type UserUpdate = components['schemas']['UserUpdateDto'] & UserExtend
+type UserCreation = UserCreationDto & UserExtend
+type UserUpdate = UserUpdateDto & UserExtend
 const user = defineModel<UserCreation | UserUpdate>({ required: true })
 
 const showPassword = ref<boolean>(false)

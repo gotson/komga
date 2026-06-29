@@ -1,6 +1,8 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import { handleGetHistoricalEvents } from '@/generated/openapi/msw.gen'
+
+import { response200OK } from '@/mocks/api/utils'
 
 export const historyBookImported = {
   id: 'H1',
@@ -102,12 +104,14 @@ const history = [
 ]
 
 export const historyHandlers = [
-  httpTyped.get('/api/v1/history', ({ query, response }) =>
-    response(200).json(
+  handleGetHistoricalEvents(({ request }) => {
+    const query = new URL(request.url).searchParams
+
+    return response200OK(
       mockPage(
         history,
         new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
       ),
-    ),
-  ),
+    )
+  }),
 ]

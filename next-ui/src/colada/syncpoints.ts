@@ -1,11 +1,11 @@
 import { defineMutation, useMutation } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
+import { komgaDeleteSyncPointsForCurrentUser } from '@/generated/openapi'
 
 export const useDeleteSyncPoints = defineMutation(() => {
   return useMutation({
     mutation: (keyIds: string[]) =>
-      komgaClient.DELETE('/api/v1/syncpoints/me', {
-        params: { query: { key_id: keyIds } },
+      komgaDeleteSyncPointsForCurrentUser({
+        query: { key_id: keyIds },
       }),
   })
 })

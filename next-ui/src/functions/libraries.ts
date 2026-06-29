@@ -1,8 +1,8 @@
 import { ScanInterval } from '@/types/ScanInterval'
 import { SeriesCover } from '@/types/SeriesCover'
-import type { components } from '@/generated/openapi/komga'
+import type { LibraryCreationDto } from '@/generated/openapi'
 
-export function getLibraryDefaults(): components['schemas']['LibraryCreationDto'] {
+export function getLibraryDefaults(): LibraryCreationDto {
   return {
     analyzeDimensions: true,
     convertToCbz: false,

@@ -220,7 +220,6 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useIntl } from 'vue-intl'
 import {
   asyncComputed,
@@ -235,18 +234,27 @@ import { useQuery } from '@pinia/colada'
 import { bookListQuery } from '@/colada/books'
 import { useCreateReadList, readListsListQuery } from '@/colada/readlists'
 import { useMessagesStore } from '@/stores/messages'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { PageRequest } from '@/types/PageRequest'
 import { useRules } from 'vuetify/labs/rules'
+import type {
+  BookDto,
+  ReadListCreationDto,
+  ReadListDto,
+  ReadListRequestBookMatchBookDto,
+  ReadListRequestBookMatchesDto,
+  ReadListRequestBookMatchSeriesDto,
+  ReadListRequestMatchDto,
+  SeriesDto,
+} from '@/generated/openapi'
 
 class ReadListEntry {
   index: number
-  request: components['schemas']['ReadListRequestBookMatchesDto']
-  series?: components['schemas']['ReadListRequestBookMatchSeriesDto']
-  book?: components['schemas']['ReadListRequestBookMatchBookDto']
+  request: ReadListRequestBookMatchesDto
+  series?: ReadListRequestBookMatchSeriesDto
+  book?: ReadListRequestBookMatchBookDto
 
-  constructor(request: components['schemas']['ReadListRequestBookMatchesDto'], index: number) {
+  constructor(request: ReadListRequestBookMatchesDto, index: number) {
     this.index = index
     this.request = request
     const match = request.matches.find(Boolean)
@@ -287,7 +295,7 @@ const rules = useRules()
 const messagesStore = useMessagesStore()
 
 const { match, loading = false } = defineProps<{
-  match: components['schemas']['ReadListRequestMatchDto']
+  match: ReadListRequestMatchDto
   loading?: boolean
 }>()
 
@@ -322,7 +330,7 @@ const duplicateBookIds = useArrayFilter(
 
 const readListName = ref<string>(match.readListMatch.name)
 const readListSummary = ref<string>()
-const readListCreated = ref<components['schemas']['ReadListDto']>()
+const readListCreated = ref<ReadListDto>()
 // if the prop changes, reset some data
 watchImmediate(
   () => match,
@@ -448,7 +456,7 @@ function filterFn(
 //region Series Picker Dialog
 const dialogSeriesPickerActivator = ref<Element | undefined>(undefined)
 
-async function seriesPicked(series: components['schemas']['SeriesDto']) {
+async function seriesPicked(series: SeriesDto) {
   if (currentActionedItem.value) {
     currentActionedItem.value.series = {
       seriesId: series.id,
@@ -468,13 +476,14 @@ async function seriesPicked(series: components['schemas']['SeriesDto']) {
 
 //region Book Picker Dialog
 const dialogBookPickerActivator = ref<Element | undefined>(undefined)
+//TODO: fix deprecation
 const dialogBookPickerBooks = asyncComputed(async () =>
   currentActionedItem.value?.series
     ? (await getSeriesBooks(currentActionedItem.value.series.seriesId))?.content
     : undefined,
 )
 
-function bookPicked(book: components['schemas']['BookDto']) {
+function bookPicked(book: BookDto) {
   if (currentActionedItem.value) {
     currentActionedItem.value.book = {
       bookId: book.id,
@@ -509,7 +518,7 @@ const createPayload = computed(
       summary: readListSummary.value,
       ordered: true,
       bookIds: selectedBooks.value.map((it) => it.book?.bookId),
-    }) as components['schemas']['ReadListCreationDto'],
+    }) as ReadListCreationDto,
 )
 
 const { mutateAsync: postReadList, isLoading: creating } = useCreateReadList()
@@ -530,16 +539,14 @@ function doCreateReadList() {
   }
 
   postReadList(createPayload.value)
-    .then(({ data }) => {
+    .then((data) => {
       readListCreated.value = data
       //TODO: add link to created readlist
       //TODO: formatjs
       messagesStore.messages.push('Readlist created')
     })
     .catch((error) => {
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      )
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
     })
 }
 </script>

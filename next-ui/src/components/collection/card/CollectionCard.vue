@@ -23,12 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { collectionPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
 import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
+import type { CollectionDto } from '@/generated/openapi'
 
 const intl = useIntl()
 
@@ -36,7 +36,7 @@ const id = useId()
 
 const { collection, ...props } = defineProps<
   {
-    collection: components['schemas']['CollectionDto']
+    collection: CollectionDto
   } & ItemCardProps
 >()
 const emit = defineEmits<ItemCardEmits>()

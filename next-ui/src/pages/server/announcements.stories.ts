@@ -3,10 +3,10 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import announcements from './announcements.vue'
 import { http, delay } from 'msw'
 
-import { response401Unauthorized } from '@/mocks/api/handlers'
-import { httpTyped } from '@/mocks/api/httpTyped'
 import { announcementsAllRead } from '@/mocks/api/handlers/announcements'
 import { expect, waitFor } from 'storybook/test'
+import { handleGetAnnouncements } from '@/generated/openapi/msw.gen'
+import { response200OK, response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: announcements,
@@ -43,11 +43,7 @@ export const Unread: Story = {
 export const NoUnread: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v1/announcements', ({ response }) =>
-          response(200).json(announcementsAllRead),
-        ),
-      ],
+      handlers: [handleGetAnnouncements(() => response200OK(announcementsAllRead))],
     },
   },
   play: async ({ canvas }) => {

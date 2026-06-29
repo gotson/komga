@@ -3,9 +3,9 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import login from './login.vue'
 import { http, delay } from 'msw'
 
-import { response401Unauthorized, response502BadGateway } from '@/mocks/api/handlers'
 import { expect, waitFor } from 'storybook/test'
 import { useMessagesStore } from '@/stores/messages'
+import { response401Unauthorized, response502BadGateway } from '@/mocks/api/utils'
 
 const meta = {
   component: login,

@@ -43,10 +43,10 @@
 
 <script setup lang="ts">
 import { useCurrentUser } from '@/colada/users'
-import type { components } from '@/generated/openapi/komga'
+import type { LibraryDto } from '@/generated/openapi'
 
 defineProps<{
-  library: components['schemas']['LibraryDto']
+  library: LibraryDto
 }>()
 
 const { isAdmin } = useCurrentUser()

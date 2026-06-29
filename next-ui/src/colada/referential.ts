@@ -1,6 +1,17 @@
 import { defineInfiniteQueryOptions, defineQueryOptions } from '@pinia/colada'
-import { komgaClient } from '@/api/komga-client'
 import { PageRequest } from '@/types/PageRequest'
+import {
+  komgaGetAgeRatings,
+  komgaGetAuthors,
+  komgaGetAuthorsNames,
+  komgaGetAuthorsRoles,
+  komgaGetGenres,
+  komgaGetLanguages,
+  komgaGetPublishers,
+  komgaGetSeriesReleaseYears,
+  komgaGetSharingLabels,
+  komgaGetTags,
+} from '@/generated/openapi'
 
 export const authorsQuery = defineQueryOptions(
   ({
@@ -32,14 +43,9 @@ export const authorsQuery = defineQueryOptions(
     return {
       key: ['authors', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/authors', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetAuthors({
+          query: queryParams,
+        }),
     }
   },
 )
@@ -68,14 +74,9 @@ export const authorsRolesQuery = defineQueryOptions(
     return {
       key: ['authors', 'roles', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/authors/roles', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetAuthorsRoles({
+          query: queryParams,
+        }),
     }
   },
 )
@@ -105,14 +106,9 @@ export const authorsNamesQueryInfinite = defineInfiniteQueryOptions(
       key: ['authors', 'names', queryParams, { infinite: true }],
       initialPageParam: new PageRequest(0, 50),
       query: ({ pageParam }) =>
-        komgaClient
-          .GET('/api/v2/authors/names', {
-            params: {
-              query: { ...queryParams, ...pageParam },
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetAuthorsNames({
+          query: { ...queryParams, ...pageParam },
+        }),
       getNextPageParam: (lastPage, _, lastPageParam) =>
         !lastPage?.last ? lastPageParam.next() : null,
     }
@@ -140,14 +136,9 @@ export const genresQuery = defineQueryOptions(
     return {
       key: ['genres', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/genres', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetGenres({
+          query: queryParams,
+        }),
     }
   },
 )
@@ -162,14 +153,9 @@ export const genresQueryInfinite = defineInfiniteQueryOptions(
       key: ['genres', queryParams, { infinite: true }],
       initialPageParam: new PageRequest(0, 50),
       query: ({ pageParam }) =>
-        komgaClient
-          .GET('/api/v2/genres', {
-            params: {
-              query: { ...queryParams, ...pageParam },
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetGenres({
+          query: { ...queryParams, ...pageParam },
+        }),
       getNextPageParam: (lastPage, _, lastPageParam) =>
         !lastPage?.last ? lastPageParam.next() : null,
     }
@@ -206,14 +192,9 @@ export const tagsQuery = defineQueryOptions(
     return {
       key: ['tags', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/tags', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetTags({
+          query: queryParams,
+        }),
     }
   },
 )
@@ -243,14 +224,9 @@ export const tagsQueryInfinite = defineInfiniteQueryOptions(
       key: ['tags', queryParams, { infinite: true }],
       initialPageParam: new PageRequest(0, 50),
       query: ({ pageParam }) =>
-        komgaClient
-          .GET('/api/v2/tags', {
-            params: {
-              query: { ...queryParams, ...pageParam },
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetTags({
+          query: { ...queryParams, ...pageParam },
+        }),
       getNextPageParam: (lastPage, _, lastPageParam) =>
         !lastPage?.last ? lastPageParam.next() : null,
     }
@@ -278,14 +254,9 @@ export const publishersQuery = defineQueryOptions(
     return {
       key: ['publishers', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/publishers', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetPublishers({
+          query: queryParams,
+        }),
     }
   },
 )
@@ -300,17 +271,12 @@ export const publishersQueryInfinite = defineInfiniteQueryOptions(
       key: ['publishers', queryParams, { infinite: true }],
       initialPageParam: new PageRequest(0, 50),
       query: ({ pageParam }) =>
-        komgaClient
-          .GET('/api/v2/publishers', {
-            params: {
-              query: {
-                ...queryParams,
-                ...pageParam,
-              },
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetPublishers({
+          query: {
+            ...queryParams,
+            ...pageParam,
+          },
+        }),
       getNextPageParam: (lastPage, _, lastPageParam) =>
         !lastPage?.last ? lastPageParam.next() : null,
     }
@@ -338,14 +304,9 @@ export const sharingLabelsQuery = defineQueryOptions(
     return {
       key: ['sharing-labels', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/sharing-labels', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetSharingLabels({
+          query: queryParams,
+        }),
     }
   },
 )
@@ -360,14 +321,9 @@ export const sharingLabelsQueryInfinite = defineInfiniteQueryOptions(
       key: ['sharing-labels', queryParams, { infinite: true }],
       initialPageParam: new PageRequest(0, 50),
       query: ({ pageParam }) =>
-        komgaClient
-          .GET('/api/v2/sharing-labels', {
-            params: {
-              query: { ...queryParams, ...pageParam },
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetSharingLabels({
+          query: { ...queryParams, ...pageParam },
+        }),
       getNextPageParam: (lastPage, _, lastPageParam) =>
         !lastPage?.last ? lastPageParam.next() : null,
     }
@@ -395,14 +351,9 @@ export const languagesQuery = defineQueryOptions(
     return {
       key: ['languages', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/languages', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetLanguages({
+          query: queryParams,
+        }),
     }
   },
 )
@@ -425,14 +376,9 @@ export const releaseYearsQuery = defineQueryOptions(
     return {
       key: ['release-years', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/series/release-years', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetSeriesReleaseYears({
+          query: queryParams,
+        }),
     }
   },
 )
@@ -455,15 +401,9 @@ export const ageRatingsQuery = defineQueryOptions(
     return {
       key: ['age-ratings', queryParams],
       query: () =>
-        komgaClient
-          .GET('/api/v2/age-ratings', {
-            params: {
-              query: queryParams,
-            },
-          })
-          // unwrap the openapi-fetch structure on success
-          .then((res) => res.data),
+        komgaGetAgeRatings({
+          query: queryParams,
+        }),
     }
   },
 )
-export class authorsQueryInfinite {}

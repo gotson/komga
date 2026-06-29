@@ -4,7 +4,7 @@ import settings from './settings.vue'
 import SnackQueue from '@/components/SnackQueue.vue'
 import { http, delay } from 'msw'
 
-import { response401Unauthorized } from '@/mocks/api/handlers'
+import { response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: settings,

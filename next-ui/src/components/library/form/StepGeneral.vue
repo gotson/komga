@@ -102,17 +102,17 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import RemoteFileList from '@/components/RemoteFileList.vue'
 import { useDisplay } from 'vuetify'
 import { useRules } from 'vuetify/labs/rules'
+import type { LibraryCreationDto } from '@/generated/openapi'
 
 const display = useDisplay()
 const rules = useRules()
 
 const id = useId()
 
-type LibraryCreationGeneral = Pick<components['schemas']['LibraryCreationDto'], 'name' | 'root'>
+type LibraryCreationGeneral = Pick<LibraryCreationDto, 'name' | 'root'>
 
 const model = defineModel<LibraryCreationGeneral>({ required: true })
 </script>

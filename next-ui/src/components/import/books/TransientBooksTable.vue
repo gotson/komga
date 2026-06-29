@@ -250,7 +250,6 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useIntl } from 'vue-intl'
 import { MediaStatus } from '@/types/MediaStatus'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
@@ -260,20 +259,26 @@ import { useMutation, useQuery } from '@pinia/colada'
 import { seriesDetailQuery } from '@/colada/series'
 import { bookListQuery } from '@/colada/books'
 import { transientBookAnalyze } from '@/colada/transient-books'
-import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useMessagesStore } from '@/stores/messages'
 import { PageRequest } from '@/types/PageRequest'
+import {
+  type BookDto,
+  type BookImportBatchDto,
+  komgaImportBooks,
+  type SeriesDto,
+  type TransientBookDto,
+} from '@/generated/openapi'
 
 class BookImport {
-  transientBook: components['schemas']['TransientBookDto']
+  transientBook: TransientBookDto
   destinationName: string
-  series?: components['schemas']['SeriesDto']
-  seriesBooks?: components['schemas']['BookDto'][]
-  upgradeBook?: components['schemas']['BookDto']
+  series?: SeriesDto
+  seriesBooks?: BookDto[]
+  upgradeBook?: BookDto
   imported: boolean
 
-  constructor(transientBook: components['schemas']['TransientBookDto']) {
+  constructor(transientBook: TransientBookDto) {
     this.transientBook = transientBook
     this.destinationName = transientBook.name
     this.imported = false
@@ -344,7 +349,7 @@ const intl = useIntl()
 const { convertErrorCodes } = useErrorCodeFormatter()
 
 const { books = [], loading = false } = defineProps<{
-  books?: components['schemas']['TransientBookDto'][]
+  books?: TransientBookDto[]
   loading?: boolean
 }>()
 
@@ -381,7 +386,7 @@ const importBatch = computed(
         sourceFile: it.transientBook.url,
         upgradeBookId: it.upgradeBook?.id,
       })),
-    }) as components['schemas']['BookImportBatchDto'],
+    }) as BookImportBatchDto,
 )
 
 // only analyze books that are shown
@@ -480,7 +485,7 @@ const copyMode = ref<string>(copyOptions[0]!.value)
 const dialogSeriesPickerActivator = ref<Element | undefined>(undefined)
 const dialogSeriesIncludeOneShots = ref<boolean>(true)
 
-function seriesPicked(series: components['schemas']['SeriesDto']) {
+function seriesPicked(series: SeriesDto) {
   if (currentActionedItems.value) {
     currentActionedItems.value.forEach((it) => assignSeries(it, series))
   }
@@ -500,7 +505,7 @@ function selectSeriesForOne(item: BookImport) {
 //region Book Picker Dialog
 const dialogBookPickerActivator = ref<Element | undefined>(undefined)
 
-function bookPicked(book: components['schemas']['BookDto']) {
+function bookPicked(book: BookDto) {
   if (currentActionedItems.value) {
     currentActionedItems.value.forEach((it) => assignBookNumber(it, book.metadata.numberSort))
   }
@@ -566,7 +571,7 @@ function fetchBooks(book: BookImport) {
     })
 }
 
-function assignSeries(book: BookImport, series: components['schemas']['SeriesDto']) {
+function assignSeries(book: BookImport, series: SeriesDto) {
   book.series = series
   fetchBooks(book)
   // auto-select importable books
@@ -583,7 +588,7 @@ function unassignBook(book: BookImport) {
 }
 
 const { mutateAsync: postImportBooks, isLoading: importing } = useMutation({
-  mutation: () => komgaClient.POST('/api/v1/books/import', { body: importBatch.value }),
+  mutation: () => komgaImportBooks({ body: importBatch.value }),
 })
 
 function doImportBooks() {
@@ -597,9 +602,7 @@ function doImportBooks() {
       })
     })
     .catch((error) => {
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      )
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
     })
 }
 </script>

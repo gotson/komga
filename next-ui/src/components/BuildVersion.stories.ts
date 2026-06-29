@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { http, delay } from 'msw'
 import BuildVersion from './BuildVersion.vue'
 import { releasesResponseOkNotLatest } from '@/mocks/api/handlers/releases'
-import { response401Unauthorized } from '@/mocks/api/handlers'
-import { httpTyped } from '@/mocks/api/httpTyped'
+import { handleGetReleases } from '@/generated/openapi/msw.gen'
+import { response200OK, response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: BuildVersion,
@@ -36,11 +36,7 @@ export const Default: Story = {
 export const OutdatedVersion: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v1/releases', ({ response }) =>
-          response(200).json(releasesResponseOkNotLatest),
-        ),
-      ],
+      handlers: [handleGetReleases(() => response200OK(releasesResponseOkNotLatest))],
     },
   },
 }

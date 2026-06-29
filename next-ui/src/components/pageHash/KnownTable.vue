@@ -209,7 +209,7 @@ import { useIntl } from 'vue-intl'
 import { PageRequest, type VSortItem } from '@/types/PageRequest'
 import { useMutation, useQuery } from '@pinia/colada'
 import { pageHashesKnownQuery } from '@/colada/page-hashes'
-import type { components } from '@/generated/openapi/komga'
+
 import { getFileSize } from '@/utils/utils'
 import { pageHashKnownThumbnailUrl } from '@/api/images'
 import { storeToRefs } from 'pinia'
@@ -217,7 +217,6 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useDisplay } from 'vuetify'
 import { VImg } from 'vuetify/components'
 import MatchTable from '@/components/pageHash/MatchTable.vue'
-import { type ErrorCause, komgaClient } from '@/api/komga-client'
 import {
   type PageHashAction,
   PageHashActionEnum,
@@ -225,6 +224,11 @@ import {
 } from '@/types/PageHashAction'
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import {
+  komgaCreateOrUpdateKnownPageHash,
+  komgaDeleteDuplicatePagesByPageHash,
+  type PageHashKnownDto,
+} from '@/generated/openapi'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -251,7 +255,7 @@ const headers = [
       id: 'XM8VQH',
     }),
     key: 'action',
-    value: (item: components['schemas']['PageHashKnownDto']) => {
+    value: (item: PageHashKnownDto) => {
       return getPageHashAction(item)
     },
     sortable: false,
@@ -287,7 +291,7 @@ const headers = [
       id: 'WY7aQf',
     }),
     key: 'deleteSize',
-    value: (item: components['schemas']['PageHashKnownDto']) => (item.size || 0) * item.deleteCount,
+    value: (item: PageHashKnownDto) => (item.size || 0) * item.deleteCount,
   },
   {
     title: intl.formatMessage({
@@ -394,8 +398,8 @@ function deletePageHashMatches(hash: string) {
 
   useMutation({
     mutation: () =>
-      komgaClient.POST('/api/v1/page-hashes/{pageHash}/delete-all', {
-        params: { path: { pageHash: hash } },
+      komgaDeleteDuplicatePagesByPageHash({
+        path: { pageHash: hash },
       }),
   })
     .mutateAsync()
@@ -411,9 +415,7 @@ function deletePageHashMatches(hash: string) {
         success: false,
         isLoading: false,
       }
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      )
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
     })
 }
 //endregion
@@ -421,17 +423,14 @@ function deletePageHashMatches(hash: string) {
 //region Update action
 const updateRequests = ref<Record<string, PageHashAction>>({})
 
-function getPageHashAction(pageHash: components['schemas']['PageHashKnownDto']): PageHashAction {
+function getPageHashAction(pageHash: PageHashKnownDto): PageHashAction {
   return updateRequests.value[pageHash.hash] || pageHash.action
 }
 
-function updateHashAction(
-  pageHash: components['schemas']['PageHashKnownDto'],
-  newAction: PageHashAction,
-) {
+function updateHashAction(pageHash: PageHashKnownDto, newAction: PageHashAction) {
   useMutation({
     mutation: () =>
-      komgaClient.PUT('/api/v1/page-hashes', {
+      komgaCreateOrUpdateKnownPageHash({
         body: {
           ...pageHash,
           action: newAction,
@@ -441,9 +440,7 @@ function updateHashAction(
     .mutateAsync()
     .then(() => (updateRequests.value[pageHash.hash] = newAction))
     .catch((error) =>
-      messagesStore.messages.push(
-        (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-      ),
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError),
     )
 }
 //endregion

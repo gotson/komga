@@ -1,5 +1,3 @@
-import type { components } from '@/generated/openapi/komga'
-import type { ErrorCause } from '@/api/komga-client'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
@@ -11,9 +9,10 @@ import CollectionDeletionWarning from '@/components/collection/DeletionWarning.v
 import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
 import { useDeleteCollection } from '@/colada/collections'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
+import type { CollectionDto } from '@/generated/openapi'
 
 export function useCollectionActions(
-  collection: MaybeRefOrGetter<components['schemas']['CollectionDto']>,
+  collection: MaybeRefOrGetter<CollectionDto>,
   callback: (action: ActionName) => void = () => {},
 ) {
   const { isAdmin } = useCurrentUser()
@@ -104,9 +103,7 @@ export function useCollectionActions(
           })
         })
         .catch((error) => {
-          messagesStore.messages.push(
-            (error?.cause as ErrorCause)?.message ?? commonMessages.networkError,
-          )
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
       callback(ActionName.DELETE)
     }

@@ -32,14 +32,14 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useSeriesActions } from '@/composables/series/useSeriesActions'
 import { createOrderCompareFn } from '@/functions/sort'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { ActionName } from '@/types/action/action'
+import type { SeriesDto } from '@/generated/openapi'
 
 const props = defineProps<{
-  series: components['schemas']['SeriesDto']
+  series: SeriesDto
 }>()
 
 const id = useId()

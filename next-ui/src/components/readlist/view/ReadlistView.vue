@@ -67,13 +67,14 @@
 
 <script setup lang="ts">
 import { readListPosterUrl } from '@/api/images'
-import type { components } from '@/generated/openapi/komga'
+
 import { useDisplay } from 'vuetify'
+import type { ReadListDto } from '@/generated/openapi'
 
 const display = useDisplay()
 const id = useId()
 
 defineProps<{
-  readList: components['schemas']['ReadListDto']
+  readList: ReadListDto
 }>()
 </script>

@@ -1,12 +1,19 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
-import type { components } from '@/generated/openapi/komga'
-import { HttpResponse } from 'msw'
+
+import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 import mockThumbnailLandscapeUrl from '@/assets/mock-thumbnail-landscape.jpg'
+import type { PageHashKnownDto, PageHashMatchDto, PageHashUnknownDto } from '@/generated/openapi'
+import {
+  handleCreateOrUpdateKnownPageHash,
+  handleDeleteDuplicatePagesByPageHash,
+  handleGetKnownPageHashes,
+  handleGetUnknownPageHashes,
+} from '@/generated/openapi/msw.gen'
+import { response200OK, response202Empty } from '@/mocks/api/utils'
 
-export function mockPageHashesKnown(count: number): components['schemas']['PageHashKnownDto'][] {
+export function mockPageHashesKnown(count: number): PageHashKnownDto[] {
   return [...Array(count).keys()].map((index) => {
     const created = new Date(`19${String(index).slice(-2).padStart(2, '0')}-05-10`)
     return {
@@ -21,9 +28,7 @@ export function mockPageHashesKnown(count: number): components['schemas']['PageH
   })
 }
 
-export function mockPageHashesUnknown(
-  count: number,
-): components['schemas']['PageHashUnknownDto'][] {
+export function mockPageHashesUnknown(count: number): PageHashUnknownDto[] {
   return [...Array(count).keys()].map((index) => {
     return {
       hash: `UNKN${index}`,
@@ -33,7 +38,7 @@ export function mockPageHashesUnknown(
   })
 }
 
-export function mockPageHashMatches(count: number): components['schemas']['PageHashMatchDto'][] {
+export function mockPageHashMatches(count: number): PageHashMatchDto[] {
   return [...Array(count).keys()].map((index) => {
     return {
       bookId: `BOOK${index + 1}`,
@@ -49,47 +54,47 @@ export function mockPageHashMatches(count: number): components['schemas']['PageH
 const knownHashes: string[] = []
 
 export const pageHashesHandlers = [
-  httpTyped.get('/api/v1/page-hashes', ({ query, response }) => {
+  handleGetKnownPageHashes(({ request }) => {
+    const query = new URL(request.url).searchParams
     let data = mockPageHashesKnown(50)
     const actions = query.getAll('action')
     if (actions.length > 0) data = data.filter((it) => actions.includes(it.action))
-    return response(200).json(
+    return response200OK(
       mockPage(
         data,
         new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
       ),
     )
   }),
-  httpTyped.get('/api/v1/page-hashes/unknown', ({ query, response }) => {
+  handleGetUnknownPageHashes(({ request }) => {
+    const query = new URL(request.url).searchParams
     const data = mockPageHashesUnknown(50).filter((it) => !knownHashes.includes(it.hash))
-    return response(200).json(
+    return response200OK(
       mockPage(
         data,
         new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
       ),
     )
   }),
-  httpTyped.get('/api/v1/page-hashes/{pageHash}', ({ params, query, response }) => {
+  handleDeleteDuplicatePagesByPageHash(({ params, request }) => {
+    const query = new URL(request.url).searchParams
     const hash = params.pageHash
     const data = mockPageHashMatches(Number(hash.substring(4)) * 2)
-    return response(200).json(
+    return response200OK(
       mockPage(
         data,
         new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
       ),
     )
   }),
-  httpTyped.put('/api/v1/page-hashes', async ({ request, response }) => {
+  handleCreateOrUpdateKnownPageHash(async ({ request }) => {
     const body = await request.json()
     knownHashes.push(body.hash)
 
-    return response(202).empty()
+    return response202Empty()
   }),
-  httpTyped.post('/api/v1/page-hashes/{pageHash}/delete-all', ({ response }) => {
-    return response(202).empty()
-  }),
-  httpTyped.get('/api/v1/page-hashes/{pageHash}/thumbnail', async ({ params, response }) => {
-    const hash = params.pageHash
+  http.get('*/api/v1/page-hashes/{pageHash}/thumbnail', async ({ params }) => {
+    const hash = params.pageHash as string
 
     // use landscape image for some images
     const landscape = Number(hash.slice(-1)) % 2 === 0
@@ -99,36 +104,29 @@ export const pageHashesHandlers = [
       (response) => response.arrayBuffer(),
     )
 
-    return response.untyped(
-      HttpResponse.arrayBuffer(buffer, {
-        status: 200,
-        headers: {
-          'content-type': 'image/jpg',
-        },
-      }),
-    )
+    return HttpResponse.arrayBuffer(buffer, {
+      status: 200,
+      headers: {
+        'content-type': 'image/jpg',
+      },
+    })
   }),
-  httpTyped.get(
-    '/api/v1/page-hashes/unknown/{pageHash}/thumbnail',
-    async ({ params, response }) => {
-      const hash = params.pageHash
+  http.get('*/api/v1/page-hashes/unknown/{pageHash}/thumbnail', async ({ params }) => {
+    const hash = params.pageHash as string
 
-      // use landscape image for some images
-      const landscape = Number(hash.slice(-1)) % 2 === 0
+    // use landscape image for some images
+    const landscape = Number(hash.slice(-1)) % 2 === 0
 
-      // Get an ArrayBuffer from reading the file from disk or fetching it.
-      const buffer = await fetch(landscape ? mockThumbnailLandscapeUrl : mockThumbnailUrl).then(
-        (response) => response.arrayBuffer(),
-      )
+    // Get an ArrayBuffer from reading the file from disk or fetching it.
+    const buffer = await fetch(landscape ? mockThumbnailLandscapeUrl : mockThumbnailUrl).then(
+      (response) => response.arrayBuffer(),
+    )
 
-      return response.untyped(
-        HttpResponse.arrayBuffer(buffer, {
-          status: 200,
-          headers: {
-            'content-type': 'image/jpg',
-          },
-        }),
-      )
-    },
-  ),
+    return HttpResponse.arrayBuffer(buffer, {
+      status: 200,
+      headers: {
+        'content-type': 'image/jpg',
+      },
+    })
+  }),
 ]

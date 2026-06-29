@@ -32,14 +32,14 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { useBookActions } from '@/composables/book/useBookActions'
 import { createOrderCompareFn } from '@/functions/sort'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { ActionName } from '@/types/action/action'
+import type { BookDto } from '@/generated/openapi'
 
 const props = defineProps<{
-  book: components['schemas']['BookDto']
+  book: BookDto
 }>()
 
 const id = useId()

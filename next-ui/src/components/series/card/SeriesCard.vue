@@ -26,7 +26,6 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { seriesPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
@@ -35,6 +34,7 @@ import { useCurrentUser } from '@/colada/users'
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
 import { useSeries } from '@/composables/series/useSeries'
+import type { SeriesDto } from '@/generated/openapi'
 
 const intl = useIntl()
 
@@ -42,7 +42,7 @@ const id = useId()
 
 const props = defineProps<
   {
-    series: components['schemas']['SeriesDto']
+    series: SeriesDto
   } & ItemCardProps
 >()
 const emit = defineEmits<ItemCardEmits>()

@@ -52,15 +52,15 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/generated/openapi/komga'
 import { marked } from 'marked'
+import type { ReleaseDto } from '@/generated/openapi'
 
 const {
   release,
   latest = false,
   current = false,
 } = defineProps<{
-  release: components['schemas']['ReleaseDto']
+  release: ReleaseDto
   latest?: boolean
   current?: boolean
 }>()

@@ -1,18 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import Libraries from './Libraries.vue'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { userRegular } from '@/mocks/api/handlers/users'
 import { expect, waitFor } from 'storybook/test'
 import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
-import type { components } from '@/generated/openapi/komga'
+
 import { VList } from 'vuetify/components'
 import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
 import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
 import SnackQueue from '@/components/SnackQueue.vue'
 import { delay, http } from 'msw'
-import { response401Unauthorized } from '@/mocks/api/handlers'
 import { mockLibraries } from '@/mocks/api/handlers/libraries'
+import type { ClientSettingUserUpdateDto } from '@/generated/openapi'
+import {
+  handleGetCurrentUser,
+  handleGetLibraries,
+  handleGetUserSettings,
+} from '@/generated/openapi/msw.gen'
+import { response200OK, response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: Libraries,
@@ -52,21 +58,22 @@ export const Unavailable: Story = {
   parameters: {
     msw: {
       handlers: [
-        httpTyped.get('/api/v1/libraries', ({ response }) =>
-          response(200).json(mockLibraries.map((it) => ({ ...it, unavailable: true }))),
-        ),
-        httpTyped.get('/api/v1/client-settings/user/list', ({ response }) => {
+        handleGetLibraries({
+          status: 200,
+          body: mockLibraries.map((it) => ({ ...it, unavailable: true })),
+        }),
+        handleGetUserSettings(() => {
           const userLibraries: Record<string, ClientSettingUserLibrary> = {
             '2': {
               unpinned: true,
             },
           }
-          const settings: Record<string, components['schemas']['ClientSettingUserUpdateDto']> = {
+          const settings: Record<string, ClientSettingUserUpdateDto> = {
             [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
               value: JSON.stringify(userLibraries),
             },
           }
-          return response(200).json(settings)
+          return response200OK(settings)
         }),
       ],
     },
@@ -81,9 +88,7 @@ export const Unavailable: Story = {
 export const NonAdmin: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v2/users/me', ({ response }) => response(200).json(userRegular)),
-      ],
+      handlers: [handleGetCurrentUser(() => response200OK(userRegular))],
     },
   },
   play: async ({ canvas }) => {
@@ -97,18 +102,18 @@ export const Unpinned: Story = {
   parameters: {
     msw: {
       handlers: [
-        httpTyped.get('/api/v1/client-settings/user/list', ({ response }) => {
+        handleGetUserSettings(() => {
           const userLibraries: Record<string, ClientSettingUserLibrary> = {
             '2': {
               unpinned: true,
             },
           }
-          const settings: Record<string, components['schemas']['ClientSettingUserUpdateDto']> = {
+          const settings: Record<string, ClientSettingUserUpdateDto> = {
             [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
               value: JSON.stringify(userLibraries),
             },
           }
-          return response(200).json(settings)
+          return response200OK(settings)
         }),
       ],
     },
@@ -123,7 +128,7 @@ export const Ordered: Story = {
   parameters: {
     msw: {
       handlers: [
-        httpTyped.get('/api/v1/client-settings/user/list', ({ response }) => {
+        handleGetUserSettings(() => {
           const userLibraries: Record<string, ClientSettingUserLibrary> = {
             '1': {
               order: 2,
@@ -132,12 +137,12 @@ export const Ordered: Story = {
               order: 1,
             },
           }
-          const settings: Record<string, components['schemas']['ClientSettingUserUpdateDto']> = {
+          const settings: Record<string, ClientSettingUserUpdateDto> = {
             [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
               value: JSON.stringify(userLibraries),
             },
           }
-          return response(200).json(settings)
+          return response200OK(settings)
         }),
       ],
     },
@@ -155,11 +160,7 @@ export const Loading: Story = {
 export const CreationError: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.post('/api/v1/libraries', ({ response }) =>
-          response.untyped(response401Unauthorized()),
-        ),
-      ],
+      handlers: [handleGetLibraries(response401Unauthorized)],
     },
   },
 }

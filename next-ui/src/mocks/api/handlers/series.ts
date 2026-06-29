@@ -1,9 +1,10 @@
-import { httpTyped } from '@/mocks/api/httpTyped'
-import { HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 import mockThumbnailLandscapeUrl from '@/assets/mock-thumbnail-landscape.jpg'
 import { PageRequest } from '@/types/PageRequest'
 import { mockPage } from '@/mocks/api/pageable'
+import { handleGetSeries, handleGetSeriesById } from '@/generated/openapi/msw.gen'
+import { response200OK, response404NotFound } from '@/mocks/api/utils'
 
 export const mockSeries1 = {
   id: '57',
@@ -124,28 +125,29 @@ const series2 = {
 const series = [mockSeries1, series2]
 
 export const seriesHandlers = [
-  httpTyped.post('/api/v1/series/list', async ({ query, request, response }) => {
+  handleGetSeries(async ({ request }) => {
     const body = await request.json()
+    const query = new URL(request.url).searchParams
 
     const selectedSeries = body.fullTextSearch
       ? series.filter((it) => !!it.metadata.title.match(new RegExp(body.fullTextSearch!, 'i')))
       : series
 
-    return response(200).json(
+    return response200OK(
       mockPage(
         selectedSeries,
         new PageRequest(Number(query.get('page')), Number(query.get('size')), query.getAll('sort')),
       ),
     )
   }),
-  httpTyped.get('/api/v1/series/{seriesId}', ({ params, response }) => {
-    if (params.seriesId === '404') return response(404).empty()
-    return response(200).json(
+  handleGetSeriesById(({ params }) => {
+    if (params.seriesId === '404') return response404NotFound()
+    return response200OK(
       Object.assign({}, mockSeries1, { metadata: { title: `Series ${params.seriesId}` } }),
     )
   }),
-  httpTyped.get('/api/v1/series/{seriesId}/thumbnail', async ({ params, response }) => {
-    const seriesId = params.seriesId
+  http.get('*/api/v1/series/{seriesId}/thumbnail', async ({ params }) => {
+    const seriesId = params.seriesId as string
 
     // use landscape image for some images
     const landscape = seriesId.slice(-1) === 'L'
@@ -155,25 +157,11 @@ export const seriesHandlers = [
       (response) => response.arrayBuffer(),
     )
 
-    return response.untyped(
-      HttpResponse.arrayBuffer(buffer, {
-        status: 200,
-        headers: {
-          'content-type': 'image/jpg',
-        },
-      }),
-    )
+    return HttpResponse.arrayBuffer(buffer, {
+      status: 200,
+      headers: {
+        'content-type': 'image/jpg',
+      },
+    })
   }),
-  httpTyped.patch('/api/v1/series/{seriesId}/metadata', ({ response }) => response(204).empty()),
-  httpTyped.post('/api/v1/series/{seriesId}/analyze', ({ response }) => response(202).empty()),
-  httpTyped.post('/api/v1/series/{seriesId}/metadata/refresh', ({ response }) =>
-    response(202).empty(),
-  ),
-  httpTyped.delete('/api/v1/series/{seriesId}/file', ({ response }) => response(202).empty()),
-  httpTyped.post('/api/v1/series/{seriesId}/read-progress', ({ response }) =>
-    response(204).empty(),
-  ),
-  httpTyped.delete('/api/v1/series/{seriesId}/read-progress', ({ response }) =>
-    response(204).empty(),
-  ),
 ]

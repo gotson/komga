@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import BuildCommit from './BuildCommit.vue'
 import { http, delay } from 'msw'
 
-import { response401Unauthorized } from '@/mocks/api/handlers'
+import { response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: BuildCommit,

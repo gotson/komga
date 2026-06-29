@@ -1,10 +1,5 @@
 import * as v from 'valibot'
-import type { components } from '@/generated/openapi/komga'
-
-type BookDto = components['schemas']['BookDto']
-type SeriesDto = components['schemas']['SeriesDto']
-type CollectionDto = components['schemas']['CollectionDto']
-type ReadListDto = components['schemas']['ReadListDto']
+import type { BookDto, ReadListDto, SeriesDto, CollectionDto } from '@/generated/openapi'
 
 // Using looseObject ensures it doesn't fail due to the other fields in the DTO
 const BookDiscriminator = v.looseObject({

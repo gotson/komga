@@ -2,10 +2,11 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import HistoryTable from './HistoryTable.vue'
 import { delay, http } from 'msw'
-import { response401Unauthorized } from '@/mocks/api/handlers'
-import { httpTyped } from '@/mocks/api/httpTyped'
+
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
+import { handleGetHistoricalEvents } from '@/generated/openapi/msw.gen'
+import { response200OK, response401Unauthorized } from '@/mocks/api/utils'
 
 const meta = {
   component: HistoryTable,
@@ -45,11 +46,7 @@ export const Loading: Story = {
 export const NoData: Story = {
   parameters: {
     msw: {
-      handlers: [
-        httpTyped.get('/api/v1/history', ({ response }) =>
-          response(200).json(mockPage([], new PageRequest())),
-        ),
-      ],
+      handlers: [handleGetHistoricalEvents(() => response200OK(mockPage([], new PageRequest())))],
     },
   },
 }
