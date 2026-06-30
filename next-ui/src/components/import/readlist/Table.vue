@@ -220,9 +220,9 @@
 </template>
 
 <script setup lang="ts">
-import { useIntl } from 'vue-intl'
+import { defineMessage, useIntl } from 'vue-intl'
 import {
-  asyncComputed,
+  computedAsync,
   syncRefs,
   useArrayFilter,
   useArrayMap,
@@ -476,8 +476,7 @@ async function seriesPicked(series: SeriesDto) {
 
 //region Book Picker Dialog
 const dialogBookPickerActivator = ref<Element | undefined>(undefined)
-//TODO: fix deprecation
-const dialogBookPickerBooks = asyncComputed(async () =>
+const dialogBookPickerBooks = computedAsync(async () =>
   currentActionedItem.value?.series
     ? (await getSeriesBooks(currentActionedItem.value.series.seriesId))?.content
     : undefined,
@@ -523,27 +522,59 @@ const createPayload = computed(
 
 const { mutateAsync: postReadList, isLoading: creating } = useCreateReadList()
 
-//TODO: formatjs
 function doCreateReadList() {
   if (selectedBooks.value.length == 0) {
-    messagesStore.messages.push('Select some books')
+    messagesStore.messages.push(
+      defineMessage({
+        description:
+          'Create read list error: user need to select at least 1 book before creating a read list',
+        defaultMessage: 'Select some books',
+        id: 'aYalqk',
+      }),
+    )
     return
   }
   if (selectedBooks.value.some((it) => !it.importable)) {
-    messagesStore.messages.push('Some of the selected books are in error')
+    messagesStore.messages.push(
+      defineMessage({
+        description: 'Create read list error: some of the selected books are in error',
+        defaultMessage: 'Some of the selected books are in error',
+        id: 'oQ2wIE',
+      }),
+    )
     return
   }
   if (selectedBooks.value.some((it) => duplicateBookIds.value?.includes(it.book?.bookId))) {
-    messagesStore.messages.push('Some of the selected books are duplicates')
+    messagesStore.messages.push(
+      defineMessage({
+        description: 'Create read list error: some of the selected books are duplicates',
+        defaultMessage: 'Some of the selected books are duplicates',
+        id: '/YxHru',
+      }),
+    )
     return
   }
 
   postReadList(createPayload.value)
     .then((data) => {
-      readListCreated.value = data
-      //TODO: add link to created readlist
-      //TODO: formatjs
-      messagesStore.messages.push('Readlist created')
+      if (data) {
+        readListCreated.value = data
+        messagesStore.messages.push({
+          message: defineMessage({
+            description: 'Create read list notification: read list created',
+            defaultMessage: 'Read list created',
+            id: 'estf95',
+          }),
+          action: {
+            to: { name: '/readlist/[id]', params: { id: data.id } },
+            label: defineMessage({
+              description: 'Create read list notification: button text to navigate to read list',
+              defaultMessage: 'Open',
+              id: 'lyknmW',
+            }),
+          },
+        })
+      }
     })
     .catch((error) => {
       messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)

@@ -3,11 +3,26 @@
     v-model="messages"
     timer
     close-on-content-click
-  />
+  >
+    <template #actions="{ item, props }">
+      <v-btn
+        v-if="isMessageWithActionRouter(item)"
+        :to="item.action.to"
+        :text="
+          isMessageDescriptor(item.action.label)
+            ? $formatMessage(item.action.label)
+            : item.action.label
+        "
+        variant="text"
+        color="inherit"
+        @click.stop="props.onClick()"
+      />
+    </template>
+  </v-snackbar-queue>
 </template>
 
 <script setup lang="ts">
-import { isMessageDescriptor, useMessagesStore } from '@/stores/messages'
+import { isMessageDescriptor, isMessageWithActionRouter, useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 
 const messagesStore = useMessagesStore()

@@ -40,7 +40,7 @@
         </tbody>
       </v-table>
 
-      <!--   TODO: add link to known page hash   -->
+      <!--   TODO: add link to known page hash (that page does not exist yet)   -->
       <v-img
         width="200"
         height="200"

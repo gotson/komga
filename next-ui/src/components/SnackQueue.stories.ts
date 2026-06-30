@@ -103,3 +103,20 @@ export const Info: Story = {
     ]
   },
 }
+
+export const ActionRouter: Story = {
+  args: {},
+  play: () => {
+    const messagesStore = useMessagesStore()
+    messagesStore.messages = [
+      {
+        message: 'Router',
+        action: {
+          label: 'open link',
+          to: '/route',
+        },
+        timer: false,
+      },
+    ]
+  },
+}
