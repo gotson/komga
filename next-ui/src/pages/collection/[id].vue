@@ -283,7 +283,7 @@ import { collectionDetailQuery } from '@/colada/collections'
 import { contributorsRolesMessages } from '@/types/referential'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { useSelectionContextualActions } from '@/composables/selection'
-import type { AllOfSeries } from '@/generated/openapi'
+import type { SearchConditionSeries } from '@/generated/openapi'
 
 const route = useRoute('/collection/[id]')
 const router = useRouter()
@@ -374,7 +374,7 @@ const conds = computed(() => ({
     ...Object.entries(filterContributors.value).map(([role, filter]) =>
       schemaFilterAuthorsToConditions(filter, role),
     ),
-  ].filter(Boolean),
+  ].filter(Boolean) as SearchConditionSeries[],
 }))
 
 // clear selection if filter or paging changes
@@ -383,7 +383,7 @@ watch([() => JSON.stringify(conds.value), () => appStore.browsingPaging], () =>
 )
 
 const apiQuery = computed(() => ({
-  condition: conds.value as AllOfSeries,
+  condition: conds.value,
 }))
 
 const { data: dataPaged } = useQuery(() => ({

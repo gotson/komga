@@ -4,7 +4,7 @@ import { PageRequest } from '@/types/PageRequest'
 import { useBook } from '@/composables/book/useBook'
 import { bookReaderUrl } from '@/api/links'
 import { useMessagesStore } from '@/stores/messages'
-import type { AllOfBook, BookDto } from '@/generated/openapi'
+import type { BookDto } from '@/generated/openapi'
 
 export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
   const messagesStore = useMessagesStore()
@@ -39,7 +39,7 @@ export function useSeriesBooks(seriesId: MaybeRefOrGetter<string>) {
     return useQuery(() =>
       bookListQuery({
         search: {
-          condition: conditions as AllOfBook,
+          condition: conditions,
         },
         pageRequest: new PageRequest(0, 1, [{ key: 'metadata.numberSort', order: 'asc' }]),
       }),

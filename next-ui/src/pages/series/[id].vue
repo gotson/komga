@@ -231,7 +231,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
 import { useSelectionContextualActions } from '@/composables/selection'
 import { logger } from '@/services/logtape'
-import type { AllOfBook } from '@/generated/openapi'
+import type { SearchConditionBook, SearchConditionSeries } from '@/generated/openapi'
 
 // oneshot redirection
 definePage({
@@ -323,7 +323,7 @@ const conds = computed(() => ({
     ...Object.entries(filterContributors.value).map(([role, filter]) =>
       schemaFilterAuthorsToConditions(filter, role),
     ),
-  ].filter(Boolean),
+  ].filter(Boolean) as SearchConditionBook[],
 }))
 
 // clear selection if filter or paging changes
@@ -332,7 +332,7 @@ watch([() => JSON.stringify(conds.value), () => appStore.browsingPaging], () =>
 )
 
 const apiQuery = computed(() => ({
-  condition: conds.value as AllOfBook,
+  condition: conds.value,
 }))
 
 const { data: dataPaged } = useQuery(() => ({
