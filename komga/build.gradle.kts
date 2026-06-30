@@ -394,6 +394,7 @@ openApi {
     args.add("--spring.profiles.active=claim,generate-openapi")
     args.add("--server.port=8080")
   }
+  waitTimeInSeconds.set(60)
 }
 
 tasks.jacocoTestReport {
