@@ -231,7 +231,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { contributorsRolesMessages } from '@/types/referential'
 import { useSelectionContextualActions } from '@/composables/selection'
 import { logger } from '@/services/logtape'
-import type { SearchConditionBook, SearchConditionSeries } from '@/generated/openapi'
+import type { SearchConditionBook } from '@/generated/openapi'
 
 // oneshot redirection
 definePage({
