@@ -3,7 +3,7 @@
     :id="id"
     :title="titleAndLines.title"
     :lines="titleAndLines.lines"
-    :poster-url="bookPosterUrl(book.id)"
+    :poster-url="bookPosterUrl(book.id, cacheStore.getVersion(book.id))"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     :progress-percent="progressPercent"
     :fab-icon="canRead ? 'i-mdi:play' : undefined"
@@ -36,8 +36,10 @@ import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadat
 import { useBook } from '@/composables/book/useBook'
 import { bookReaderUrl } from '@/api/links'
 import type { BookDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const intl = useIntl()
+const cacheStore = useImageCacheStore()
 
 const id = useId()
 

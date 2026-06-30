@@ -1,22 +1,26 @@
 import { ApiBaseUrl } from '@/api/base'
 
-export function seriesPosterUrl(seriesId?: string): string | undefined {
-  if (seriesId) return `${ApiBaseUrl.noSlash}/api/v1/series/${seriesId}/thumbnail`
+export function seriesPosterUrl(seriesId?: string, version?: number): string | undefined {
+  if (seriesId)
+    return `${ApiBaseUrl.noSlash}/api/v1/series/${seriesId}/thumbnail${version ? '?t=' + version : ''}`
   return undefined
 }
 
-export function bookPosterUrl(bookId?: string): string | undefined {
-  if (bookId) return `${ApiBaseUrl.noSlash}/api/v1/books/${bookId}/thumbnail`
+export function bookPosterUrl(bookId?: string, version?: number): string | undefined {
+  if (bookId)
+    return `${ApiBaseUrl.noSlash}/api/v1/books/${bookId}/thumbnail${version ? '?t=' + version : ''}`
   return undefined
 }
 
-export function collectionPosterUrl(collectionId?: string): string | undefined {
-  if (collectionId) return `${ApiBaseUrl.noSlash}/api/v1/collections/${collectionId}/thumbnail`
+export function collectionPosterUrl(collectionId?: string, version?: number): string | undefined {
+  if (collectionId)
+    return `${ApiBaseUrl.noSlash}/api/v1/collections/${collectionId}/thumbnail${version ? '?t=' + version : ''}`
   return undefined
 }
 
-export function readListPosterUrl(readListId?: string): string | undefined {
-  if (readListId) return `${ApiBaseUrl.noSlash}/api/v1/readlists/${readListId}/thumbnail`
+export function readListPosterUrl(readListId?: string, version?: number): string | undefined {
+  if (readListId)
+    return `${ApiBaseUrl.noSlash}/api/v1/readlists/${readListId}/thumbnail${version ? '?t=' + version : ''}`
   return undefined
 }
 

@@ -3,7 +3,7 @@
     :id="id"
     :title="title"
     :lines="lines"
-    :poster-url="readListPosterUrl(readList.id)"
+    :poster-url="readListPosterUrl(readList.id, cacheStore.getVersion(readList.id))"
     :quick-action-icon="quickActionIcon"
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
@@ -32,8 +32,10 @@ import { useCurrentUser } from '@/colada/users'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 import { UserRoles } from '@/types/UserRoles'
 import type { ReadListDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const intl = useIntl()
+const cacheStore = useImageCacheStore()
 
 const id = useId()
 

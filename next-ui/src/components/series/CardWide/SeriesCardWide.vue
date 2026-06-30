@@ -2,7 +2,7 @@
   <ItemCardWide
     :title="series.metadata.title"
     :text="series.metadata.summary"
-    :poster-url="seriesPosterUrl(series.id)"
+    :poster-url="seriesPosterUrl(series.id, cacheStore.getVersion(series.id))"
     :top-right="unreadCount"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     :quick-action-icon="quickActionIcon"
@@ -28,6 +28,9 @@ import { useCurrentUser } from '@/colada/users'
 
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import type { SeriesDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
+
+const cacheStore = useImageCacheStore()
 
 const { series, ...props } = defineProps<
   {

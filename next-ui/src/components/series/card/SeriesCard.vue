@@ -3,7 +3,7 @@
     :id="id"
     :title="title"
     :lines="lines"
-    :poster-url="seriesPosterUrl(series.id)"
+    :poster-url="seriesPosterUrl(series.id, cacheStore.getVersion(series.id))"
     :top-right="unreadCount"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
     :fab-icon="canRead ? 'i-mdi:play' : undefined"
@@ -35,8 +35,10 @@ import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesM
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
 import { useSeries } from '@/composables/series/useSeries'
 import type { SeriesDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const intl = useIntl()
+const cacheStore = useImageCacheStore()
 
 const id = useId()
 

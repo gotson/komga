@@ -3,7 +3,7 @@
     :id="id"
     :title="title"
     :lines="lines"
-    :poster-url="collectionPosterUrl(collection.id)"
+    :poster-url="collectionPosterUrl(collection.id, cacheStore.getVersion(collection.id))"
     :quick-action-icon="quickActionIcon"
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
@@ -29,8 +29,10 @@ import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '
 import { useCurrentUser } from '@/colada/users'
 import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
 import type { CollectionDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const intl = useIntl()
+const cacheStore = useImageCacheStore()
 
 const id = useId()
 

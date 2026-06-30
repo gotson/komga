@@ -13,6 +13,7 @@ import { QUERY_KEYS_LIBRARIES } from '@/colada/libraries'
 import { useMessagesStore } from '@/stores/messages'
 import { defineMessage } from 'vue-intl'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
+import { useImageCacheStore } from '@/stores/image-cache'
 const namedEvents = [
   'LibraryAdded',
   'LibraryChanged',
@@ -127,7 +128,38 @@ const SSETaskQueueSchema = v.object({
   }),
 })
 
-//TODO: thumbnail events
+const SSEThumbnailBookSchema = v.object({
+  event: v.picklist(['ThumbnailBookAdded', 'ThumbnailBookDeleted']),
+  data: v.object({
+    bookId: v.string(),
+    seriesId: v.string(),
+    selected: v.boolean(),
+  }),
+})
+
+const SSEThumbnailSeriesSchema = v.object({
+  event: v.picklist(['ThumbnailSeriesAdded', 'ThumbnailSeriesDeleted']),
+  data: v.object({
+    seriesId: v.string(),
+    selected: v.boolean(),
+  }),
+})
+
+const SSEThumbnailReadListSchema = v.object({
+  event: v.picklist(['ThumbnailReadListAdded', 'ThumbnailReadListDeleted']),
+  data: v.object({
+    readListId: v.string(),
+    selected: v.boolean(),
+  }),
+})
+
+const SSEThumbnailCollectionSchema = v.object({
+  event: v.picklist(['ThumbnailSeriesCollectionAdded', 'ThumbnailSeriesCollectionDeleted']),
+  data: v.object({
+    collectionId: v.string(),
+    selected: v.boolean(),
+  }),
+})
 
 const SSEEventSchema = v.variant('event', [
   SSELibrarySchema,
@@ -140,6 +172,10 @@ const SSEEventSchema = v.variant('event', [
   SSEReadProgressSeriesSchema,
   SSESessionExpiredSchema,
   SSETaskQueueSchema,
+  SSEThumbnailBookSchema,
+  SSEThumbnailSeriesSchema,
+  SSEThumbnailReadListSchema,
+  SSEThumbnailCollectionSchema,
 ])
 
 /**
@@ -158,6 +194,7 @@ export const useSSE = createGlobalState(() => {
   const isLeader = ref(false)
   const appStore = useAppStore()
   const messagesStore = useMessagesStore()
+  const cacheStore = useImageCacheStore()
   const { convertErrorCodes } = useErrorCodeFormatter()
 
   const { isAuthenticated } = useCurrentUser()
@@ -370,6 +407,23 @@ export const useSSE = createGlobalState(() => {
         break
       case 'TaskQueueStatus':
         //TODO: handle
+        break
+      case 'ThumbnailBookAdded':
+      case 'ThumbnailBookDeleted':
+        if (event.data.selected) cacheStore.bustCache(event.data.bookId)
+        if (event.data.selected) cacheStore.bustCache(event.data.seriesId)
+        break
+      case 'ThumbnailSeriesAdded':
+      case 'ThumbnailSeriesDeleted':
+        if (event.data.selected) cacheStore.bustCache(event.data.seriesId)
+        break
+      case 'ThumbnailReadListAdded':
+      case 'ThumbnailReadListDeleted':
+        if (event.data.selected) cacheStore.bustCache(event.data.readListId)
+        break
+      case 'ThumbnailSeriesCollectionAdded':
+      case 'ThumbnailSeriesCollectionDeleted':
+        if (event.data.selected) cacheStore.bustCache(event.data.collectionId)
         break
     }
   })
