@@ -30,8 +30,7 @@ export function useCollectionActions(
             action: ActionName.EDIT_COLLECTION,
             onMouseenter: (event: Event) => (editActivator.value = event.currentTarget as Element),
             onClick: () => {
-              edit()
-              callback(ActionName.EDIT_COLLECTION) //TODO: move callback after dialog validation
+              edit(() => callback(ActionName.EDIT_COLLECTION))
             },
           },
         ]
@@ -55,8 +54,8 @@ export function useCollectionActions(
   const { prepareDialog: showEditCollectionDialog, activator: editActivator } =
     useEditCollectionDialog()
 
-  function edit() {
-    showEditCollectionDialog(toValue(collection))
+  function edit(callback: () => void) {
+    showEditCollectionDialog(toValue(collection), callback)
   }
   //endregion
 

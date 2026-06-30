@@ -106,8 +106,7 @@ export function useBookActions(
             onMouseenter: (event: Event) =>
               (editMetadataActivator.value = event.currentTarget as Element),
             onClick: () => {
-              updateBookMetadata()
-              callback(ActionName.EDIT_BOOK) //TODO: move callback after dialog validation
+              updateBookMetadata(() => callback(ActionName.EDIT_BOOK))
             },
           },
         ]
@@ -188,8 +187,8 @@ export function useBookActions(
   const { prepareDialog: showEditBookMetadataDialog, activator: editMetadataActivator } =
     useEditBookMetadataDialog()
 
-  function updateBookMetadata() {
-    showEditBookMetadataDialog(toValue(book))
+  function updateBookMetadata(callback: () => void) {
+    showEditBookMetadataDialog(toValue(book), callback)
   }
   //endregion
 

@@ -16,7 +16,7 @@ export function useEditReadListDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdate } = useUpdateReadList()
 
-  const prepareDialog = (readList: ReadListDto) => {
+  const prepareDialog = (readList: ReadListDto, callback: () => void = () => {}) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit readlist dialog title',
@@ -63,6 +63,7 @@ export function useEditReadListDialog() {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
+        .finally(() => callback())
     }
   }
 

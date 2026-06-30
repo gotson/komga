@@ -16,7 +16,7 @@ export function useEditBookMetadataDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateSeriesMetadata } = useUpdateBookMetadata()
 
-  const prepareDialog = (book: BookDto) => {
+  const prepareDialog = (book: BookDto, callback: () => void = () => {}) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit book metadata dialog title',
@@ -63,6 +63,7 @@ export function useEditBookMetadataDialog() {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
+        .finally(() => callback())
     }
   }
 

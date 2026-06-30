@@ -105,8 +105,7 @@ export function useSeriesActions(
             onMouseenter: (event: Event) =>
               (editMetadataActivator.value = event.currentTarget as Element),
             onClick: () => {
-              updateSeriesMetadata()
-              callback(ActionName.EDIT_SERIES) //TODO: move callback after validation
+              updateSeriesMetadata(() => callback(ActionName.EDIT_SERIES))
             },
           },
         ]
@@ -185,8 +184,8 @@ export function useSeriesActions(
   const { prepareDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
     useEditSeriesMetadataDialog()
 
-  function updateSeriesMetadata() {
-    showEditSeriesMetadataDialog(toValue(series))
+  function updateSeriesMetadata(callback: () => void) {
+    showEditSeriesMetadataDialog(toValue(series), callback)
   }
   //endregion
 

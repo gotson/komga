@@ -16,7 +16,7 @@ export function useEditCollectionDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateCollection } = useUpdateCollection()
 
-  const prepareDialog = (collection: CollectionDto) => {
+  const prepareDialog = (collection: CollectionDto, callback: () => void = () => {}) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit collection dialog title',
@@ -63,6 +63,7 @@ export function useEditCollectionDialog() {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
+        .finally(() => callback())
     }
   }
 

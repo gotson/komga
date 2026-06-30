@@ -34,8 +34,6 @@ export type AnyAll = 'anyOf' | 'allOf'
 // that's why the properties and values are kept to the shortest.
 ///////////////////////////////////////////////////////////////////////////
 
-//TODO: use v.fallback for defaults
-
 /**
  * Schema for criteria API with `anyOf` or `allOf` condition.
  */

@@ -16,7 +16,7 @@ export function useEditSeriesMetadataDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateSeriesMetadata } = useUpdateSeriesMetadata()
 
-  const prepareDialog = (series: SeriesDto) => {
+  const prepareDialog = (series: SeriesDto, callback: () => void = () => {}) => {
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit series metadata dialog title',
@@ -63,6 +63,7 @@ export function useEditSeriesMetadataDialog() {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
+        .finally(() => callback())
     }
   }
 

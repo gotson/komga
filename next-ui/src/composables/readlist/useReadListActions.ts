@@ -44,8 +44,7 @@ export function useReadListActions(
             action: ActionName.EDIT_READLIST,
             onMouseenter: (event: Event) => (editActivator.value = event.currentTarget as Element),
             onClick: () => {
-              edit()
-              callback(ActionName.EDIT_READLIST) //TODO: move callback after dialog validation
+              edit(() => callback(ActionName.EDIT_READLIST))
             },
           },
         ]
@@ -68,8 +67,8 @@ export function useReadListActions(
   //region Edit collection
   const { prepareDialog: showEditDialog, activator: editActivator } = useEditReadListDialog()
 
-  function edit() {
-    showEditDialog(toValue(readList))
+  function edit(callback: () => void) {
+    showEditDialog(toValue(readList), callback)
   }
   //endregion
 
