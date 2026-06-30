@@ -4,6 +4,13 @@
     timer
     close-on-content-click
   >
+    <template #text="{ item }">
+      <div style="white-space: pre-line">
+        <template v-if="typeof item === 'string'">{{ item }}</template>
+        <template v-else>{{ item.text }}</template>
+      </div>
+    </template>
+
     <template #actions="{ item, props }">
       <v-btn
         v-if="isMessageWithActionRouter(item)"
@@ -35,8 +42,14 @@ const messages = computed({
       if (typeof it === 'string') return it
       if (isMessageDescriptor(it)) return intl.formatMessage(it)
       const text = typeof it.message === 'string' ? it.message : intl.formatMessage(it.message)
+      const title = it.titleMessage
+        ? typeof it.titleMessage === 'string'
+          ? it.titleMessage
+          : intl.formatMessage(it.titleMessage)
+        : undefined
       return {
         text: text,
+        ...(title ? { title: title } : {}),
         ...it,
       }
     })

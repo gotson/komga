@@ -10,6 +10,9 @@ import { QUERY_KEYS_COLLECTIONS } from '@/colada/collections'
 import { QUERY_KEYS_READLIST } from '@/colada/readlists'
 import { useCurrentUser, userLoggedOut } from '@/colada/users'
 import { QUERY_KEYS_LIBRARIES } from '@/colada/libraries'
+import { useMessagesStore } from '@/stores/messages'
+import { defineMessage } from 'vue-intl'
+import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 const namedEvents = [
   'LibraryAdded',
   'LibraryChanged',
@@ -70,10 +73,10 @@ const SSEBookSchema = v.object({
 const SSEBookImportedSchema = v.object({
   event: v.picklist(['BookImported']),
   data: v.object({
-    bookId: v.string(),
+    bookId: v.nullable(v.string()),
     sourceFile: v.string(),
     success: v.boolean(),
-    message: v.optional(v.string()),
+    message: v.nullable(v.string()),
   }),
 })
 
@@ -154,6 +157,8 @@ export const useSSE = createGlobalState(() => {
   const localEvent = ref<{ event?: string; data?: object }>({})
   const isLeader = ref(false)
   const appStore = useAppStore()
+  const messagesStore = useMessagesStore()
+  const { convertErrorCodes } = useErrorCodeFormatter()
 
   const { isAuthenticated } = useCurrentUser()
 
@@ -314,7 +319,33 @@ export const useSSE = createGlobalState(() => {
         entityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
         break
       case 'BookImported':
-        //TODO: handle
+        if (event.data.success && event.data.bookId)
+          messagesStore.messages.push({
+            titleMessage: defineMessage({
+              description: 'Book imported notification: import success: title',
+              defaultMessage: 'Book imported',
+              id: 'sPScum',
+            }),
+            message: event.data.sourceFile,
+            action: {
+              to: { name: '/book/[id]', params: { id: event.data.bookId } },
+              label: defineMessage({
+                description: 'Book imported notification: button text to navigate to book',
+                defaultMessage: 'Open',
+                id: 'JwBlXP',
+              }),
+            },
+          })
+        else
+          messagesStore.messages.push({
+            titleMessage: defineMessage({
+              description: 'Book imported notification: import failure: title',
+              defaultMessage: 'Book import failed',
+              id: 'vkeTYG',
+            }),
+            message: `${convertErrorCodes(event.data.message)}\n${event.data.sourceFile}`,
+            color: 'error',
+          })
         break
       case 'ReadListAdded':
       case 'ReadListChanged':

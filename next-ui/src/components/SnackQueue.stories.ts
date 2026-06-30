@@ -57,6 +57,7 @@ export const Success: Story = {
         message: 'Success',
         color: 'success',
         timer: false,
+        timeout: -1,
       },
     ]
   },
@@ -71,6 +72,7 @@ export const Warning: Story = {
         message: 'Warning',
         color: 'warning',
         timer: false,
+        timeout: -1,
       },
     ]
   },
@@ -85,6 +87,7 @@ export const Error: Story = {
         message: 'Error',
         color: 'error',
         timer: false,
+        timeout: -1,
       },
     ]
   },
@@ -99,6 +102,7 @@ export const Info: Story = {
         message: 'Info',
         color: 'info',
         timer: false,
+        timeout: -1,
       },
     ]
   },
@@ -116,6 +120,22 @@ export const ActionRouter: Story = {
           to: '/route',
         },
         timer: false,
+        timeout: -1,
+      },
+    ]
+  },
+}
+
+export const MultiLineAndTitle: Story = {
+  args: {},
+  play: () => {
+    const messagesStore = useMessagesStore()
+    messagesStore.messages = [
+      {
+        message: 'text and more\n\ntext',
+        timer: false,
+        titleMessage: 'Book imported',
+        timeout: -1,
       },
     ]
   },

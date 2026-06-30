@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import type { MessageDescriptor } from 'vue-intl'
 import * as v from 'valibot'
-import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router'
+import type { RouteLocationRaw } from 'vue-router'
 
 const MessageDescriptorDiscriminator = v.looseObject({
   defaultMessage: v.string(),
@@ -14,6 +14,7 @@ export function isMessageDescriptor(item: unknown): item is MessageDescriptor {
 
 type Message =
   | {
+      titleMessage?: MessageDescriptor | string
       message: MessageDescriptor | string
       color?: string
       timer?: boolean | 'top' | 'bottom'
