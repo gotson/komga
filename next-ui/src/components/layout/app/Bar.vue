@@ -44,6 +44,7 @@
     </v-app-bar-title>
 
     <template #append>
+      <TaskIndicator />
       <LocaleSelector />
       <ThemeSelector />
     </template>

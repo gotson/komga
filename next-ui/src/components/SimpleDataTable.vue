@@ -7,7 +7,10 @@
       v-for="(row, i) in rows"
       :key="i"
     >
-      <div class="py-1 text-body-small text-uppercase first-col">
+      <div
+        class="py-1 text-body-small first-col"
+        :class="uppercaseHeaders ? 'text-uppercase' : undefined"
+      >
         {{ row.header }}
       </div>
       <div class="py-1">
@@ -72,8 +75,9 @@
 import { WrapClamp } from 'vue-clamp'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
-defineProps<{
+const { uppercaseHeaders = true } = defineProps<{
   rows: TableRow[]
+  uppercaseHeaders?: boolean
 }>()
 </script>
 

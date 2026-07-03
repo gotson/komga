@@ -14,6 +14,7 @@ import { useMessagesStore } from '@/stores/messages'
 import { defineMessage } from 'vue-intl'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { useTaskQueueStore } from '@/stores/task-queue'
 const namedEvents = [
   'LibraryAdded',
   'LibraryChanged',
@@ -195,6 +196,7 @@ export const useSSE = createGlobalState(() => {
   const appStore = useAppStore()
   const messagesStore = useMessagesStore()
   const cacheStore = useImageCacheStore()
+  const taskStore = useTaskQueueStore()
   const { convertErrorCodes } = useErrorCodeFormatter()
 
   const { isAuthenticated } = useCurrentUser()
@@ -406,7 +408,8 @@ export const useSSE = createGlobalState(() => {
         userLoggedOut()
         break
       case 'TaskQueueStatus':
-        //TODO: handle
+        taskStore.count = event.data.count
+        taskStore.countByType = event.data.countByType
         break
       case 'ThumbnailBookAdded':
       case 'ThumbnailBookDeleted':
