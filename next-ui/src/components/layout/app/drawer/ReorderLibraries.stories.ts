@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ReorderLibraries from './ReorderLibraries.vue'
 
-import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
+import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 
 import { mockLibraries } from '@/mocks/api/handlers/libraries'
 import type { ClientSettingUserUpdateDto, LibraryDto } from '@/generated/openapi'
@@ -78,7 +78,7 @@ export const SomeUnpinned: Story = {
             },
           }
           const settings: Record<string, ClientSettingUserUpdateDto> = {
-            [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
+            [ClientSettingUser.NextUILibraries]: {
               value: JSON.stringify(userLibraries),
             },
           }
@@ -104,7 +104,7 @@ export const AllUnpinned: Story = {
             },
           }
           const settings: Record<string, ClientSettingUserUpdateDto> = {
-            [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
+            [ClientSettingUser.NextUILibraries]: {
               value: JSON.stringify(userLibraries),
             },
           }

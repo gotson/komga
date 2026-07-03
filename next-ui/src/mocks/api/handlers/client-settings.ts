@@ -1,11 +1,11 @@
-import { CLIENT_SETTING_USER } from '@/types/ClientSettingsUser'
+import { ClientSettingUser } from '@/types/ClientSettingsUser'
 import type { ClientSettingUserUpdateDto } from '@/generated/openapi'
 import { handleGetUserSettings } from '@/generated/openapi/msw.gen'
 
 import { response200OK } from '@/mocks/api/utils'
 
 const settings: Record<string, ClientSettingUserUpdateDto> = {
-  [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
+  [ClientSettingUser.NextUILibraries]: {
     value: JSON.stringify({}),
   },
 }

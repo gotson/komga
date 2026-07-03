@@ -4,7 +4,7 @@ import Libraries from './Libraries.vue'
 
 import { userRegular } from '@/mocks/api/handlers/users'
 import { expect, waitFor } from 'storybook/test'
-import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
+import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 
 import { VList } from 'vuetify/components'
 import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
@@ -69,7 +69,7 @@ export const Unavailable: Story = {
             },
           }
           const settings: Record<string, ClientSettingUserUpdateDto> = {
-            [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
+            [ClientSettingUser.NextUILibraries]: {
               value: JSON.stringify(userLibraries),
             },
           }
@@ -109,7 +109,7 @@ export const Unpinned: Story = {
             },
           }
           const settings: Record<string, ClientSettingUserUpdateDto> = {
-            [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
+            [ClientSettingUser.NextUILibraries]: {
               value: JSON.stringify(userLibraries),
             },
           }
@@ -138,7 +138,7 @@ export const Ordered: Story = {
             },
           }
           const settings: Record<string, ClientSettingUserUpdateDto> = {
-            [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
+            [ClientSettingUser.NextUILibraries]: {
               value: JSON.stringify(userLibraries),
             },
           }

@@ -6,7 +6,7 @@ import { useGetLibrariesById } from '@/composables/libraries'
 
 import { mockLibraries } from '@/mocks/api/handlers/libraries'
 
-import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
+import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import { waitFor } from 'storybook/test'
 import type { LibraryId } from '@/types/libraries'
 import type { ClientSettingUserUpdateDto, LibraryDto } from '@/generated/openapi'
@@ -46,7 +46,7 @@ beforeEach(() =>
         },
       }
       const settings: Record<string, ClientSettingUserUpdateDto> = {
-        [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: {
+        [ClientSettingUser.NextUILibraries]: {
           value: JSON.stringify(userLibraries),
         },
       }

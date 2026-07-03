@@ -1,5 +1,5 @@
 import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
-import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
+import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import {
   type ClientSettingUserUpdateDto,
   komgaGetUserSettings,
@@ -22,7 +22,7 @@ export const useClientSettingsUser = defineQuery(() => {
   })
 
   const userLibraries = computed(() => {
-    const json = data.value?.[CLIENT_SETTING_USER.NEXTUI_LIBRARIES]?.value
+    const json = data.value?.[ClientSettingUser.NextUILibraries]?.value
     if (json) return JSON.parse(json) as Record<string, ClientSettingUserLibrary>
     return {}
   })
@@ -37,7 +37,7 @@ export const useClientSettingsUser = defineQuery(() => {
 export const useUpdateClientSettingsUser = defineMutation(() => {
   const queryCache = useQueryCache()
   return useMutation({
-    mutation: (settings: Record<CLIENT_SETTING_USER, ClientSettingUserUpdateDto>) =>
+    mutation: (settings: Record<ClientSettingUser, ClientSettingUserUpdateDto>) =>
       komgaSaveUserSetting({
         body: settings,
       }),

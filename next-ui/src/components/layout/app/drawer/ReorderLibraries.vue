@@ -99,7 +99,7 @@
 import draggable from 'vuedraggable'
 import { useLibraries } from '@/colada/libraries'
 
-import { CLIENT_SETTING_USER, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
+import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import { useUpdateClientSettingsUser } from '@/colada/client-settings'
 import { useAppStore } from '@/stores/app'
 import { useIntl } from 'vue-intl'
@@ -126,7 +126,7 @@ void refresh().then(() => {
     newUnpinned.forEach(
       (it, index) => (newSettings[it.id] = { order: newPinned.length + index, unpinned: true }),
     )
-    mutate({ [CLIENT_SETTING_USER.NEXTUI_LIBRARIES]: { value: JSON.stringify(newSettings) } })
+    mutate({ [ClientSettingUser.NextUILibraries]: { value: JSON.stringify(newSettings) } })
   })
 })
 
