@@ -13,47 +13,49 @@ export type Action<T> = {
 
 // Actions used for entities: Book, Series, Collection, ReadList
 // By using a single enum, we can find the common actions between different entities for the selection bulk actions
-export enum ActionName {
-  SELECT,
-  EDIT_SERIES,
-  EDIT_BOOK,
-  EDIT_COLLECTION,
-  EDIT_READLIST,
-  DELETE,
-  ADD_TO_COLLECTION,
-  ADD_TO_READLIST,
-  MARK_READ,
-  MARK_UNREAD,
-  DOWNLOAD,
-  REFRESH_METADATA,
-  ANALYZE,
-  OPEN_READER,
-  OPEN_READER_INCOGNITO,
-}
+export const ActionName = {
+  Select: 'SELECT',
+  EditSeries: 'EDIT_SERIES',
+  EditBook: 'EDIT_BOOK',
+  EditCollection: 'EDIT_COLLECTION',
+  EditReadList: 'EDIT_READLIST',
+  Delete: 'DELETE',
+  AddToCollection: 'ADD_TO_COLLECTION',
+  AddToReadList: 'ADD_TO_READLIST',
+  MarkRead: 'MARK_READ',
+  MarkUnread: 'MARK_UNREAD',
+  Download: 'DOWNLOAD',
+  RefreshMetadata: 'REFRESH_METADATA',
+  Analyze: 'ANALYZE',
+  OpenReader: 'OPEN_READER',
+  OpenReaderIncognito: 'OPEN_READER_INCOGNITO',
+} as const
+
+export type ActionName = (typeof ActionName)[keyof typeof ActionName]
 
 // available actions per entity kind for selection
 export const selectionActions: Record<EntityKind, ActionName[]> = {
   book: [
-    ActionName.MARK_READ,
-    ActionName.MARK_UNREAD,
-    ActionName.ADD_TO_READLIST,
-    ActionName.REFRESH_METADATA,
-    ActionName.ANALYZE,
-    ActionName.EDIT_BOOK,
-    ActionName.DELETE,
+    ActionName.MarkRead,
+    ActionName.MarkUnread,
+    ActionName.AddToReadList,
+    ActionName.RefreshMetadata,
+    ActionName.Analyze,
+    ActionName.EditBook,
+    ActionName.Delete,
   ],
   series: [
-    ActionName.MARK_READ,
-    ActionName.MARK_UNREAD,
-    ActionName.ADD_TO_READLIST,
-    ActionName.ADD_TO_COLLECTION,
-    ActionName.REFRESH_METADATA,
-    ActionName.ANALYZE,
-    ActionName.EDIT_SERIES,
-    ActionName.DELETE,
+    ActionName.MarkRead,
+    ActionName.MarkUnread,
+    ActionName.AddToReadList,
+    ActionName.AddToCollection,
+    ActionName.RefreshMetadata,
+    ActionName.Analyze,
+    ActionName.EditSeries,
+    ActionName.Delete,
   ],
-  collection: [ActionName.DELETE],
-  readlist: [ActionName.DELETE],
+  collection: [ActionName.Delete],
+  readlist: [ActionName.Delete],
 }
 
 const actionEdit = {
@@ -65,7 +67,7 @@ const actionEdit = {
   icon: 'i-mdi:pencil',
 }
 export const actionDetails: Record<ActionName, { message: MessageDescriptor; icon?: string }> = {
-  [ActionName.SELECT]: {
+  [ActionName.Select]: {
     message: {
       description: 'Generic action: add to selection',
       defaultMessage: 'Select',
@@ -73,11 +75,11 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:plus-box-outline',
   },
-  [ActionName.EDIT_SERIES]: actionEdit,
-  [ActionName.EDIT_BOOK]: actionEdit,
-  [ActionName.EDIT_COLLECTION]: actionEdit,
-  [ActionName.EDIT_READLIST]: actionEdit,
-  [ActionName.DELETE]: {
+  [ActionName.EditSeries]: actionEdit,
+  [ActionName.EditBook]: actionEdit,
+  [ActionName.EditCollection]: actionEdit,
+  [ActionName.EditReadList]: actionEdit,
+  [ActionName.Delete]: {
     message: {
       description: 'Generic action: delete',
       defaultMessage: 'Delete',
@@ -85,7 +87,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:delete',
   },
-  [ActionName.ADD_TO_COLLECTION]: {
+  [ActionName.AddToCollection]: {
     message: {
       description: 'Generic action: add to collection',
       defaultMessage: 'Add to collection',
@@ -93,7 +95,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:playlist-plus',
   },
-  [ActionName.ADD_TO_READLIST]: {
+  [ActionName.AddToReadList]: {
     message: {
       description: 'Generic action: add to read list',
       defaultMessage: 'Add to read list',
@@ -101,7 +103,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:book-plus-multiple',
   },
-  [ActionName.MARK_READ]: {
+  [ActionName.MarkRead]: {
     message: {
       description: 'Generic action: mark as read',
       defaultMessage: 'Mark as read',
@@ -109,7 +111,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:book-check-outline',
   },
-  [ActionName.MARK_UNREAD]: {
+  [ActionName.MarkUnread]: {
     message: {
       description: 'Generic action: mark as unread',
       defaultMessage: 'Mark as unread',
@@ -117,7 +119,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:book-remove-outline',
   },
-  [ActionName.DOWNLOAD]: {
+  [ActionName.Download]: {
     message: {
       description: 'Generic action: download',
       defaultMessage: 'Download',
@@ -125,7 +127,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: undefined,
   },
-  [ActionName.REFRESH_METADATA]: {
+  [ActionName.RefreshMetadata]: {
     message: {
       description: 'Generic action: refresh metadata',
       defaultMessage: 'Refresh metadata',
@@ -133,7 +135,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:table-refresh',
   },
-  [ActionName.ANALYZE]: {
+  [ActionName.Analyze]: {
     message: {
       description: 'Generic action: analyze',
       defaultMessage: 'Analyze',
@@ -141,7 +143,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:file-refresh',
   },
-  [ActionName.OPEN_READER]: {
+  [ActionName.OpenReader]: {
     message: {
       description: 'Generic action: read',
       defaultMessage: 'Read',
@@ -149,7 +151,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:play',
   },
-  [ActionName.OPEN_READER_INCOGNITO]: {
+  [ActionName.OpenReaderIncognito]: {
     message: {
       description: 'Generic action: read incognito',
       defaultMessage: 'Private reading session',

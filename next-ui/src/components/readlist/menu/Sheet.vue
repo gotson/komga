@@ -25,8 +25,8 @@ const { readList, excludeActions = [] } = defineProps<{
   excludeActions?: ActionName[]
 }>()
 
-const main = [ActionName.DOWNLOAD]
-const management = [ActionName.EDIT_READLIST, ActionName.DELETE]
+const main = [ActionName.Download] as ActionName[]
+const management = [ActionName.EditReadList, ActionName.Delete] as ActionName[]
 
 function afterClick() {
   isShown.value = false

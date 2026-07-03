@@ -37,31 +37,31 @@ export function useEntitiesActions(
 
   //TODO: implement remaining actions
   const actionsSpecifics: Partial<Record<ActionName, object>> = {
-    [ActionName.ADD_TO_COLLECTION]: {
+    [ActionName.AddToCollection]: {
       disabled: true,
     },
-    [ActionName.ADD_TO_READLIST]: {
+    [ActionName.AddToReadList]: {
       disabled: true,
     },
-    [ActionName.EDIT_BOOK]: {
+    [ActionName.EditBook]: {
       disabled: true,
     },
-    [ActionName.EDIT_SERIES]: {
+    [ActionName.EditSeries]: {
       disabled: true,
     },
-    [ActionName.MARK_READ]: {
+    [ActionName.MarkRead]: {
       onClick: () => markRead(),
     },
-    [ActionName.MARK_UNREAD]: {
+    [ActionName.MarkUnread]: {
       onClick: () => markUnread(),
     },
-    [ActionName.ANALYZE]: {
+    [ActionName.Analyze]: {
       onClick: () => analyze(),
     },
-    [ActionName.REFRESH_METADATA]: {
+    [ActionName.RefreshMetadata]: {
       onClick: () => refreshMetadata(),
     },
-    [ActionName.DELETE]: {
+    [ActionName.Delete]: {
       onMouseenter: (event: Event) =>
         (dialogConfirm.value.activator = event.currentTarget as Element),
       onClick: () => {
@@ -69,7 +69,7 @@ export function useEntitiesActions(
       },
     },
   }
-  const nonAdmin = [ActionName.MARK_READ, ActionName.MARK_UNREAD]
+  const nonAdmin = [ActionName.MarkRead, ActionName.MarkUnread] as ActionName[]
 
   const actions = computed<Action<ActionName>[]>(() =>
     commonActions.value
@@ -98,7 +98,7 @@ export function useEntitiesActions(
       if (isSeries(item)) useRefreshMetadataSeries().mutate(item.id)
     })
 
-    callback(ActionName.REFRESH_METADATA)
+    callback(ActionName.RefreshMetadata)
   }
   //endregion
 
@@ -109,7 +109,7 @@ export function useEntitiesActions(
       if (isSeries(item)) useAnalyzeSeries().mutate(item.id)
     })
 
-    callback(ActionName.ANALYZE)
+    callback(ActionName.Analyze)
   }
   //endregion
 
@@ -120,7 +120,7 @@ export function useEntitiesActions(
       if (isSeries(item)) useMarkSeriesRead().mutate(item.id)
     })
 
-    callback(ActionName.MARK_READ)
+    callback(ActionName.MarkRead)
   }
   //endregion
 
@@ -131,7 +131,7 @@ export function useEntitiesActions(
       if (isSeries(item)) useMarkSeriesUnread().mutate(item.id)
     })
 
-    callback(ActionName.MARK_UNREAD)
+    callback(ActionName.MarkUnread)
   }
   //endregion
 
@@ -172,7 +172,7 @@ export function useEntitiesActions(
         if (isSeries(item)) useDeleteSeries().mutate(item.id)
       })
 
-      callback(ActionName.DELETE)
+      callback(ActionName.Delete)
     }
   }
   //endregion

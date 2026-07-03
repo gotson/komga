@@ -47,25 +47,28 @@ const { actions } = useSeriesActions(() => props.series)
 
 const bothReadUnread = computed(
   () =>
-    actions.value.some((it) => it.action === ActionName.MARK_READ) &&
-    actions.value.some((it) => it.action === ActionName.MARK_UNREAD),
+    actions.value.some((it) => it.action === ActionName.MarkRead) &&
+    actions.value.some((it) => it.action === ActionName.MarkUnread),
 )
 
 const bottomSheet = ref(false)
-const prominent = computed(() => [
-  ActionName.OPEN_READER_INCOGNITO,
-  ActionName.MARK_READ,
-  ...(bothReadUnread.value ? [] : [ActionName.MARK_UNREAD]),
-  ActionName.EDIT_SERIES,
-])
+const prominent = computed(
+  () =>
+    [
+      ActionName.OpenReaderIncognito,
+      ActionName.MarkRead,
+      ...(bothReadUnread.value ? [] : [ActionName.MarkUnread]),
+      ActionName.EditSeries,
+    ] as ActionName[],
+)
 
-const exclude = [...prominent.value, ActionName.OPEN_READER]
+const exclude = [...prominent.value, ActionName.OpenReader]
 
 const prominentActions = computed(() =>
   actions.value
     .filter((it) => prominent.value.includes(it.action))
     .toSorted(createOrderCompareFn(prominent.value, (it) => it.action.toString())),
 )
-const readAction = computed(() => actions.value.find((it) => it.action === ActionName.OPEN_READER))
+const readAction = computed(() => actions.value.find((it) => it.action === ActionName.OpenReader))
 const hasExtra = computed(() => actions.value.some((it) => !exclude.includes(it.action)))
 </script>

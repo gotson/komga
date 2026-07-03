@@ -23,7 +23,7 @@ const { collection, excludeActions = [] } = defineProps<{
   excludeActions?: ActionName[]
 }>()
 
-const management = [ActionName.EDIT_COLLECTION, ActionName.DELETE]
+const management = [ActionName.EditCollection, ActionName.Delete] as ActionName[]
 
 function afterClick() {
   isShown.value = false

@@ -27,7 +27,7 @@ describe('selection actions', () => {
 
   test('book and collection', () => {
     const kinds: EntityKind[] = ['book', 'collection']
-    const expected: ActionName[] = [ActionName.DELETE]
+    const expected: ActionName[] = [ActionName.Delete]
 
     expect(getCommonActions(kinds)).toEqual(expected)
   })
@@ -35,12 +35,12 @@ describe('selection actions', () => {
   test('book and series', () => {
     const kinds: EntityKind[] = ['book', 'series']
     const expected: ActionName[] = [
-      ActionName.MARK_READ,
-      ActionName.MARK_UNREAD,
-      ActionName.ADD_TO_READLIST,
-      ActionName.REFRESH_METADATA,
-      ActionName.ANALYZE,
-      ActionName.DELETE,
+      ActionName.MarkRead,
+      ActionName.MarkUnread,
+      ActionName.AddToReadList,
+      ActionName.RefreshMetadata,
+      ActionName.Analyze,
+      ActionName.Delete,
     ]
 
     expect(getCommonActions(kinds)).toEqual(expected)
@@ -48,7 +48,7 @@ describe('selection actions', () => {
 
   test('all', () => {
     const kinds: EntityKind[] = ['book', 'series', 'collection', 'readlist']
-    const expected: ActionName[] = [ActionName.DELETE]
+    const expected: ActionName[] = [ActionName.Delete]
 
     expect(getCommonActions(kinds)).toEqual(expected)
   })

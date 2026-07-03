@@ -11,14 +11,15 @@
 import { createOrderCompareFn } from '@/functions/sort'
 import { useLibrariesActions } from '@/composables/library/useLibrariesActions'
 import { LibrariesAction } from '@/types/action/libraries'
+import { ActionName } from '@/types/action/action'
 const isShown = defineModel<boolean>({ default: false })
 
 defineProps<{
   activator: string | Element
 }>()
 
-const main = [LibrariesAction.REORDER]
-const management = [LibrariesAction.SCAN_ALL, LibrariesAction.EMPTY_TRASH_ALL]
+const main = [LibrariesAction.Reorder] as LibrariesAction[]
+const management = [LibrariesAction.ScanAll, LibrariesAction.EmptyTrashAll] as LibrariesAction[]
 
 function afterClick() {
   isShown.value = false

@@ -48,14 +48,14 @@ const { actions } = useBookActions(() => props.book)
 const bottomSheet = ref(false)
 
 const prominent = [
-  ActionName.OPEN_READER_INCOGNITO,
-  ActionName.MARK_READ,
-  ActionName.MARK_UNREAD,
-  ActionName.EDIT_BOOK,
-]
-const exclude = [...prominent, ActionName.OPEN_READER]
+  ActionName.OpenReaderIncognito,
+  ActionName.MarkRead,
+  ActionName.MarkUnread,
+  ActionName.EditBook,
+] as ActionName[]
+const exclude = [...prominent, ActionName.OpenReader]
 
-const readAction = computed(() => actions.value.find((it) => it.action === ActionName.OPEN_READER))
+const readAction = computed(() => actions.value.find((it) => it.action === ActionName.OpenReader))
 const prominentActions = computed(() =>
   actions.value
     .filter((it) => prominent.includes(it.action))

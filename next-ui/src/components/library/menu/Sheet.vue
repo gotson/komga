@@ -21,15 +21,15 @@ const { library } = defineProps<{
   library: LibraryDto
 }>()
 
-const main = [LibraryAction.SCAN]
+const main = [LibraryAction.Scan] as LibraryAction[]
 const management = [
-  LibraryAction.EDIT,
-  LibraryAction.SCAN_DEEP,
-  LibraryAction.REFRESH_METADATA,
-  LibraryAction.EMPTY_TRASH,
-  LibraryAction.ANALYZE,
-  LibraryAction.DELETE,
-]
+  LibraryAction.Edit,
+  LibraryAction.ScanDeep,
+  LibraryAction.RefreshMetadata,
+  LibraryAction.EmptyTrash,
+  LibraryAction.Analyze,
+  LibraryAction.Delete,
+] as LibraryAction[]
 
 function afterClick() {
   isShown.value = false

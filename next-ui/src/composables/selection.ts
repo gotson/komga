@@ -63,12 +63,12 @@ export function useSelectAction(
   const selectionStore = useSelectionStore()
 
   const selectAction = computed(() => ({
-    title: intl.formatMessage(actionDetails[ActionName.SELECT].message),
-    icon: actionDetails[ActionName.SELECT].icon,
-    action: ActionName.SELECT,
+    title: intl.formatMessage(actionDetails[ActionName.Select].message),
+    icon: actionDetails[ActionName.Select].icon,
+    action: ActionName.Select,
     onClick: () => {
       selectionStore.selection.push(toValue(item))
-      callback(ActionName.SELECT)
+      callback(ActionName.Select)
     },
   }))
 

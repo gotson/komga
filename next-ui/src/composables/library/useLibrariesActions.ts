@@ -24,10 +24,10 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
         defaultMessage: 'Reorder or pin',
         id: 'zuhGGz',
       }),
-      action: LibrariesAction.REORDER,
+      action: LibrariesAction.Reorder,
       onClick: () => {
         appStore.reorderLibraries = true
-        callback(LibrariesAction.REORDER)
+        callback(LibrariesAction.Reorder)
       },
     },
     ...(isAdmin.value
@@ -38,7 +38,7 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
               defaultMessage: 'Scan all libraries',
               id: 'CY8sfH',
             }),
-            action: LibrariesAction.SCAN_ALL,
+            action: LibrariesAction.ScanAll,
             onClick: () => {
               scanAll()
             },
@@ -53,7 +53,7 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
               defaultMessage: 'Empty trash for all libraries',
               id: 'CwteMk',
             }),
-            action: LibrariesAction.EMPTY_TRASH_ALL,
+            action: LibrariesAction.EmptyTrashAll,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -69,7 +69,7 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
 
   function scanAll() {
     libraries.value?.forEach((it) => mutateScan({ libraryId: it.id }))
-    callback(LibrariesAction.SCAN_ALL)
+    callback(LibrariesAction.ScanAll)
   }
   //endregion
 
@@ -92,7 +92,7 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
     }
     dialogConfirm.value.callback = () => {
       libraries.value?.forEach((it) => mutateEmptyTrash(it.id))
-      callback(LibrariesAction.EMPTY_TRASH_ALL)
+      callback(LibrariesAction.EmptyTrashAll)
     }
   }
   //endregion

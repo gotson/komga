@@ -41,8 +41,8 @@ const { actions } = useCollectionActions(() => props.collection)
 const bottomSheet = ref(false)
 
 const editAction = computed(() =>
-  actions.value.find((it) => it.action === ActionName.EDIT_COLLECTION),
+  actions.value.find((it) => it.action === ActionName.EditCollection),
 )
-const excludeActions = [ActionName.EDIT_COLLECTION]
+const excludeActions = [ActionName.EditCollection] as ActionName[]
 const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
 </script>

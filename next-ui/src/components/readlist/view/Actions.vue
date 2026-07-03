@@ -40,9 +40,7 @@ const { actions } = useReadListActions(() => props.readList)
 
 const bottomSheet = ref(false)
 
-const editAction = computed(() =>
-  actions.value.find((it) => it.action === ActionName.EDIT_READLIST),
-)
-const excludeActions = [ActionName.EDIT_READLIST]
+const editAction = computed(() => actions.value.find((it) => it.action === ActionName.EditReadList))
+const excludeActions = [ActionName.EditReadList] as ActionName[]
 const hasExtra = computed(() => actions.value.some((it) => !excludeActions.includes(it.action)))
 </script>

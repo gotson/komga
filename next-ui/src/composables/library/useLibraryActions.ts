@@ -39,7 +39,7 @@ export function useLibraryActions(
               defaultMessage: 'Scan library files',
               id: 'GCwZB2',
             }),
-            action: LibraryAction.SCAN,
+            action: LibraryAction.Scan,
             onClick: () => {
               scanLibrary()
             },
@@ -50,7 +50,7 @@ export function useLibraryActions(
               defaultMessage: 'Edit',
               id: 'n4w2CE',
             }),
-            action: LibraryAction.EDIT,
+            action: LibraryAction.Edit,
             onMouseenter: (event: Event) =>
               (dialogConfirmEdit.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -63,7 +63,7 @@ export function useLibraryActions(
               defaultMessage: 'Deep scan',
               id: 'foSDIW',
             }),
-            action: LibraryAction.SCAN_DEEP,
+            action: LibraryAction.ScanDeep,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -76,7 +76,7 @@ export function useLibraryActions(
               defaultMessage: 'Refresh all metadata',
               id: 'OUyleX',
             }),
-            action: LibraryAction.REFRESH_METADATA,
+            action: LibraryAction.RefreshMetadata,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -89,7 +89,7 @@ export function useLibraryActions(
               defaultMessage: 'Empty trash',
               id: 'sdNz1F',
             }),
-            action: LibraryAction.EMPTY_TRASH,
+            action: LibraryAction.EmptyTrash,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -102,7 +102,7 @@ export function useLibraryActions(
               defaultMessage: 'Analyze',
               id: 'E5ZMyt',
             }),
-            action: LibraryAction.ANALYZE,
+            action: LibraryAction.Analyze,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -115,7 +115,7 @@ export function useLibraryActions(
               defaultMessage: 'Delete',
               id: 'LFf8QB',
             }),
-            action: LibraryAction.DELETE,
+            action: LibraryAction.Delete,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -175,7 +175,7 @@ export function useLibraryActions(
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           setLoading(false)
         })
-      callback(LibraryAction.EDIT)
+      callback(LibraryAction.Edit)
     }
   }
   //endregion
@@ -218,7 +218,7 @@ export function useLibraryActions(
     }
     dialogConfirm.value.callback = () => {
       mutateRefreshMetadata(toValue(library).id)
-      callback(LibraryAction.REFRESH_METADATA)
+      callback(LibraryAction.RefreshMetadata)
     }
   }
   //endregion
@@ -243,7 +243,7 @@ export function useLibraryActions(
     }
     dialogConfirm.value.callback = () => {
       mutateEmptyTrash(toValue(library).id)
-      callback(LibraryAction.EMPTY_TRASH)
+      callback(LibraryAction.EmptyTrash)
     }
   }
   //endregion
@@ -286,7 +286,7 @@ export function useLibraryActions(
     }
     dialogConfirm.value.callback = () => {
       mutateAnalyze(toValue(library).id)
-      callback(LibraryAction.ANALYZE)
+      callback(LibraryAction.Analyze)
     }
   }
   //endregion
@@ -296,7 +296,7 @@ export function useLibraryActions(
 
   function scanLibrary() {
     mutateScan({ libraryId: toValue(library).id })
-    callback(LibraryAction.SCAN)
+    callback(LibraryAction.Scan)
   }
 
   function scanDeep() {
@@ -334,7 +334,7 @@ export function useLibraryActions(
     }
     dialogConfirm.value.callback = () => {
       mutateScan({ libraryId: toValue(library).id, deep: true })
-      callback(LibraryAction.SCAN_DEEP)
+      callback(LibraryAction.ScanDeep)
     }
   }
   //endregion
@@ -385,7 +385,7 @@ export function useLibraryActions(
         .catch((error) => {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
-      callback(LibraryAction.DELETE)
+      callback(LibraryAction.Delete)
     }
   }
   //endregion

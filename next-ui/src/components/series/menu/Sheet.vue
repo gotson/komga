@@ -30,20 +30,20 @@ const {
 }>()
 
 const main = [
-  ActionName.OPEN_READER,
-  ActionName.OPEN_READER_INCOGNITO,
-  ActionName.MARK_READ,
-  ActionName.MARK_UNREAD,
-  ActionName.ADD_TO_COLLECTION,
-  ActionName.ADD_TO_READLIST,
-  ActionName.DOWNLOAD,
-]
+  ActionName.OpenReader,
+  ActionName.OpenReaderIncognito,
+  ActionName.MarkRead,
+  ActionName.MarkUnread,
+  ActionName.AddToCollection,
+  ActionName.AddToReadList,
+  ActionName.Download,
+] as ActionName[]
 const management = [
-  ActionName.EDIT_SERIES,
-  ActionName.REFRESH_METADATA,
-  ActionName.ANALYZE,
-  ActionName.DELETE,
-]
+  ActionName.EditSeries,
+  ActionName.RefreshMetadata,
+  ActionName.Analyze,
+  ActionName.Delete,
+] as ActionName[]
 
 function afterClick() {
   isShown.value = false

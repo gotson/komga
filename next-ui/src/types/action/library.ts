@@ -1,9 +1,11 @@
-export enum LibraryAction {
-  SCAN,
-  SCAN_DEEP,
-  EDIT,
-  REFRESH_METADATA,
-  ANALYZE,
-  DELETE,
-  EMPTY_TRASH,
-}
+export const LibraryAction = {
+  Scan: 'SCAN',
+  ScanDeep: 'SCAN_DEEP',
+  Edit: 'EDIT',
+  RefreshMetadata: 'REFRESH_METADATA',
+  Analyze: 'ANALYZE',
+  Delete: 'DELETE',
+  EmptyTrash: 'EMPTY_TRASH',
+} as const
+
+export type LibraryAction = (typeof LibraryAction)[keyof typeof LibraryAction]

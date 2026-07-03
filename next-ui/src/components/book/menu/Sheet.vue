@@ -25,20 +25,20 @@ const { book, excludeActions = [] } = defineProps<{
 }>()
 
 const main = [
-  ActionName.OPEN_READER,
-  ActionName.OPEN_READER_INCOGNITO,
-  ActionName.ADD_TO_COLLECTION,
-  ActionName.ADD_TO_READLIST,
-  ActionName.MARK_READ,
-  ActionName.MARK_UNREAD,
-  ActionName.DOWNLOAD,
-]
+  ActionName.OpenReader,
+  ActionName.OpenReaderIncognito,
+  ActionName.AddToCollection,
+  ActionName.AddToReadList,
+  ActionName.MarkRead,
+  ActionName.MarkUnread,
+  ActionName.Download,
+] as ActionName[]
 const management = [
-  ActionName.EDIT_BOOK,
-  ActionName.REFRESH_METADATA,
-  ActionName.ANALYZE,
-  ActionName.DELETE,
-]
+  ActionName.EditBook,
+  ActionName.RefreshMetadata,
+  ActionName.Analyze,
+  ActionName.Delete,
+] as ActionName[]
 
 function afterClick() {
   isShown.value = false

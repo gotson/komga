@@ -26,11 +26,11 @@ export function useReadListActions(
     ...(hasRole('FILE_DOWNLOAD')
       ? [
           {
-            title: intl.formatMessage(actionDetails[ActionName.DOWNLOAD].message),
-            action: ActionName.DOWNLOAD,
+            title: intl.formatMessage(actionDetails[ActionName.Download].message),
+            action: ActionName.Download,
             href: readListFileUrl(toValue(readList).id),
             onClick: () => {
-              callback(ActionName.DOWNLOAD)
+              callback(ActionName.Download)
             },
           },
         ]
@@ -38,12 +38,12 @@ export function useReadListActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage(actionDetails[ActionName.EDIT_READLIST].message),
-            icon: actionDetails[ActionName.EDIT_READLIST].icon,
-            action: ActionName.EDIT_READLIST,
+            title: intl.formatMessage(actionDetails[ActionName.EditReadList].message),
+            icon: actionDetails[ActionName.EditReadList].icon,
+            action: ActionName.EditReadList,
             onMouseenter: (event: Event) => (editActivator.value = event.currentTarget as Element),
             onClick: () => {
-              edit(() => callback(ActionName.EDIT_READLIST))
+              edit(() => callback(ActionName.EditReadList))
             },
           },
         ]
@@ -51,8 +51,8 @@ export function useReadListActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage(actionDetails[ActionName.DELETE].message),
-            action: ActionName.DELETE,
+            title: intl.formatMessage(actionDetails[ActionName.Delete].message),
+            action: ActionName.Delete,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -116,7 +116,7 @@ export function useReadListActions(
         .catch((error) => {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
-      callback(ActionName.DELETE)
+      callback(ActionName.Delete)
     }
   }
   //endregion

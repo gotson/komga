@@ -25,12 +25,12 @@ export function useCollectionActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage(actionDetails[ActionName.EDIT_COLLECTION].message),
-            icon: actionDetails[ActionName.EDIT_COLLECTION].icon,
-            action: ActionName.EDIT_COLLECTION,
+            title: intl.formatMessage(actionDetails[ActionName.EditCollection].message),
+            icon: actionDetails[ActionName.EditCollection].icon,
+            action: ActionName.EditCollection,
             onMouseenter: (event: Event) => (editActivator.value = event.currentTarget as Element),
             onClick: () => {
-              edit(() => callback(ActionName.EDIT_COLLECTION))
+              edit(() => callback(ActionName.EditCollection))
             },
           },
         ]
@@ -38,8 +38,8 @@ export function useCollectionActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage(actionDetails[ActionName.DELETE].message),
-            action: ActionName.DELETE,
+            title: intl.formatMessage(actionDetails[ActionName.Delete].message),
+            action: ActionName.Delete,
             onMouseenter: (event: Event) =>
               (dialogConfirm.value.activator = event.currentTarget as Element),
             onClick: () => {
@@ -104,7 +104,7 @@ export function useCollectionActions(
         .catch((error) => {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
-      callback(ActionName.DELETE)
+      callback(ActionName.Delete)
     }
   }
   //endregion
