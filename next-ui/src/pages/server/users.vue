@@ -9,10 +9,10 @@
       <UserTable
         :users="users"
         :loading="isLoading"
-        @add-user="showDialog(ACTION.ADD)"
-        @change-password="(user) => showDialog(ACTION.PASSWORD, user)"
-        @edit-user="(user) => showDialog(ACTION.EDIT, user)"
-        @delete-user="(user) => showDialog(ACTION.DELETE, user)"
+        @add-user="showDialog('add')"
+        @change-password="(user) => showDialog('password', user)"
+        @edit-user="(user) => showDialog('edit', user)"
+        @delete-user="(user) => showDialog('delete', user)"
         @enter-add-user="(target) => (dialogConfirmEdit.activator = target)"
         @enter-edit-user="(target) => (dialogConfirmEdit.activator = target)"
         @enter-change-password="(target) => (dialogConfirmEdit.activator = target)"
@@ -54,7 +54,7 @@ onMounted(() => refetchUsers())
 // stores the user being actioned upon
 const userRecord = ref<UserDto>()
 // stores the ongoing action, so we can handle the action when the dialog is closed with changes
-const currentAction = ref<ACTION>()
+const currentAction = ref<DialogAction>()
 
 const { confirmEdit: dialogConfirmEdit, confirm: dialogConfirm } = storeToRefs(useDialogsStore())
 
@@ -67,17 +67,12 @@ const { data: libraries } = useLibraries()
 const messagesStore = useMessagesStore()
 const display = useDisplay()
 
-enum ACTION {
-  ADD,
-  EDIT,
-  DELETE,
-  PASSWORD,
-}
+type DialogAction = 'add' | 'edit' | 'delete' | 'password'
 
-function showDialog(action: ACTION, user?: UserDto) {
+function showDialog(action: DialogAction, user?: UserDto) {
   currentAction.value = action
   switch (action) {
-    case ACTION.ADD:
+    case 'add':
       dialogConfirmEdit.value.dialogProps = {
         title: intl.formatMessage({
           description: 'Add user dialog title',
@@ -109,7 +104,7 @@ function showDialog(action: ACTION, user?: UserDto) {
       }
       dialogConfirmEdit.value.callback = handleDialogConfirmation
       break
-    case ACTION.EDIT:
+    case 'edit':
       dialogConfirmEdit.value.dialogProps = {
         title: intl.formatMessage({
           description: 'Edit user dialog title',
@@ -143,7 +138,7 @@ function showDialog(action: ACTION, user?: UserDto) {
       }
       dialogConfirmEdit.value.callback = handleDialogConfirmation
       break
-    case ACTION.DELETE:
+    case 'delete':
       dialogConfirm.value.dialogProps = {
         title: intl.formatMessage({
           description: 'Delete user dialog title',
@@ -168,7 +163,7 @@ function showDialog(action: ACTION, user?: UserDto) {
       }
       dialogConfirm.value.callback = handleDialogConfirmation
       break
-    case ACTION.PASSWORD:
+    case 'password':
       dialogConfirmEdit.value.dialogProps = {
         title: intl.formatMessage(commonMessages.changePasswordDialogTitle),
         subtitle: user?.email,
@@ -197,7 +192,7 @@ function handleDialogConfirmation(
   setLoading(true)
 
   switch (currentAction.value) {
-    case ACTION.ADD:
+    case 'add':
       const newUser = dialogConfirmEdit.value.record as UserCreationDto
       mutation = mutateCreateUser(newUser)
       successMessage = intl.formatMessage(
@@ -211,7 +206,7 @@ function handleDialogConfirmation(
         },
       )
       break
-    case ACTION.EDIT:
+    case 'edit':
       const editUser = dialogConfirmEdit.value.record as UserDto
       mutation = mutateUser(editUser)
       successMessage = intl.formatMessage(
@@ -225,7 +220,7 @@ function handleDialogConfirmation(
         },
       )
       break
-    case ACTION.DELETE:
+    case 'delete':
       mutation = mutateDeleteUser(userRecord.value!.id)
       successMessage = intl.formatMessage(
         {
@@ -238,7 +233,7 @@ function handleDialogConfirmation(
         },
       )
       break
-    case ACTION.PASSWORD:
+    case 'password':
       mutation = mutateUserPassword({
         userId: userRecord.value!.id,
         newPassword: dialogConfirmEdit.value.record as string,

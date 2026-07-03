@@ -11,9 +11,9 @@
         :loading="isLoading"
         @enter-add-api-key="(target) => (dialogGenerateActivator = target)"
         @enter-force-sync-api-key="(target) => (dialogConfirm.activator = target)"
-        @force-sync-api-key="(apiKey) => showDialog(ACTION.FORCE_SYNC, apiKey)"
+        @force-sync-api-key="(apiKey) => showDialog('forceSync', apiKey)"
         @enter-delete-api-key="(target) => (dialogConfirm.activator = target)"
-        @delete-api-key="(apiKey) => showDialog(ACTION.DELETE, apiKey)"
+        @delete-api-key="(apiKey) => showDialog('delete', apiKey)"
       />
     </template>
 
@@ -50,7 +50,7 @@ onMounted(() => refetchApiKeys())
 // stores the API Key being actioned upon
 const apiKeyRecord = ref<ApiKeyDto>()
 // stores the ongoing action, so we can handle the action when the dialog is closed with changes
-const currentAction = ref<ACTION>()
+const currentAction = ref<DialogAction>()
 const dialogGenerateActivator = ref<Element | undefined>(undefined)
 
 const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
@@ -60,15 +60,12 @@ const { mutateAsync: mutateDeleteSyncPoints } = useDeleteSyncPoints()
 
 const messagesStore = useMessagesStore()
 
-enum ACTION {
-  DELETE,
-  FORCE_SYNC,
-}
+type DialogAction = 'delete' | 'forceSync'
 
-function showDialog(action: ACTION, apiKey?: ApiKeyDto) {
+function showDialog(action: DialogAction, apiKey?: ApiKeyDto) {
   currentAction.value = action
   switch (action) {
-    case ACTION.DELETE:
+    case 'delete':
       dialogConfirm.value.dialogProps = {
         title: intl.formatMessage({
           description: 'Delete API Key dialog title',
@@ -93,7 +90,7 @@ function showDialog(action: ACTION, apiKey?: ApiKeyDto) {
       }
       dialogConfirm.value.callback = handleDialogConfirmation
       break
-    case ACTION.FORCE_SYNC:
+    case 'forceSync':
       dialogConfirm.value.dialogProps = {
         title: intl.formatMessage({
           description: 'Force Sync API Key dialog title',
@@ -131,7 +128,7 @@ function handleDialogConfirmation(
   setLoading(true)
 
   switch (currentAction.value) {
-    case ACTION.DELETE:
+    case 'delete':
       mutation = mutateDeleteApiKey(apiKeyRecord.value!.id)
       successMessage = intl.formatMessage(
         {
@@ -144,7 +141,7 @@ function handleDialogConfirmation(
         },
       )
       break
-    case ACTION.FORCE_SYNC:
+    case 'forceSync':
       mutation = mutateDeleteSyncPoints([apiKeyRecord.value!.id])
       successMessage = intl.formatMessage(
         {
