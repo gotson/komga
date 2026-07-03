@@ -6,7 +6,7 @@ import {
   useQuery,
   useQueryCache,
 } from '@pinia/colada'
-import { UserRoles } from '@/types/UserRoles'
+import { type UserRole } from '@/types/UserRoles'
 import { QUERY_KEYS_CLIENT_SETTINGS } from '@/colada/client-settings'
 import { useAppStore } from '@/stores/app'
 import { invalidateAll } from '@/colada/cache'
@@ -55,8 +55,8 @@ export const useCurrentUser = defineQuery(() => {
   })
 
   const isAuthenticated = computed(() => !!data.value && !error.value)
-  const hasRole = (role: UserRoles) => data.value?.roles.includes(role)
-  const isAdmin = computed(() => hasRole(UserRoles.ADMIN))
+  const hasRole = (role: UserRole) => data.value?.roles.includes(role)
+  const isAdmin = computed(() => hasRole('ADMIN'))
 
   return {
     data,

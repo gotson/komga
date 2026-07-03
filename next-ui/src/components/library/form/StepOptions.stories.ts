@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import StepOptions from './StepOptions.vue'
-import { SeriesCover } from '@/types/SeriesCover'
 
 const meta = {
   component: StepOptions,
@@ -35,7 +34,7 @@ export const Default: Story = {
       hashKoreader: false,
       hashPages: false,
       repairExtensions: false,
-      seriesCover: SeriesCover.FIRST,
+      seriesCover: 'FIRST',
     },
   },
 }

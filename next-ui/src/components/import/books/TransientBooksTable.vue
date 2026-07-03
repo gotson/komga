@@ -42,7 +42,7 @@
 
     <template #[`item.analysisStatus`]="{ item }">
       <v-progress-circular
-        v-if="item.transientBook.status === MediaStatus.UNKNOWN.valueOf()"
+        v-if="item.transientBook.status === MediaStatus.Unknown"
         indeterminate
         color="primary"
         :size="20"
@@ -50,15 +50,15 @@
       />
       <v-icon
         v-if="
-          item.transientBook.status === MediaStatus.ERROR.valueOf() ||
-          item.transientBook.status === MediaStatus.UNSUPPORTED.valueOf()
+          item.transientBook.status === MediaStatus.Error ||
+          item.transientBook.status === MediaStatus.Unsupported
         "
         v-tooltip="convertErrorCodes(item.transientBook.comment)"
         icon="i-mdi:alert-circle"
         color="error"
       />
       <v-icon
-        v-if="item.transientBook.status === MediaStatus.READY.valueOf()"
+        v-if="item.transientBook.status === MediaStatus.Ready"
         icon="i-mdi:check-circle"
         color="success"
       />
@@ -251,7 +251,6 @@
 
 <script setup lang="ts">
 import { useIntl } from 'vue-intl'
-import { MediaStatus } from '@/types/MediaStatus'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { syncRefs, useArrayFilter, useArrayMap } from '@vueuse/core'
 import { useDisplay } from 'vuetify'
@@ -269,6 +268,7 @@ import {
   type SeriesDto,
   type TransientBookDto,
 } from '@/generated/openapi'
+import { MediaStatus } from '@/types/MediaStatus'
 
 class BookImport {
   transientBook: TransientBookDto
@@ -289,7 +289,7 @@ class BookImport {
    * Only books in READY status and not yet imported can be selected
    */
   public get selectable(): boolean {
-    return this.transientBook.status === MediaStatus.READY.valueOf() && !this.imported
+    return this.transientBook.status === MediaStatus.Ready && !this.imported
   }
 
   public get upgradable(): boolean {
@@ -302,19 +302,19 @@ class BookImport {
 
   public get statusMessage(): string {
     switch (this.transientBook.status) {
-      case MediaStatus.UNKNOWN.valueOf():
+      case MediaStatus.Unknown:
         return intl.formatMessage({
           description: 'Import books: status message: book needs to be analyzed first',
           defaultMessage: 'Book needs to be analyzed first',
           id: 'CPMLrI',
         })
-      case MediaStatus.UNSUPPORTED.valueOf():
+      case MediaStatus.Unsupported:
         return intl.formatMessage({
           description: 'Import books: status message: book format is not supported',
           defaultMessage: 'Book format is not supported',
           id: 'g2UW+6',
         })
-      case MediaStatus.ERROR.valueOf():
+      case MediaStatus.Error:
         return intl.formatMessage({
           description: 'Import books: status message: book could not be analyzed',
           defaultMessage: 'Book could not be analyzed',
@@ -394,7 +394,7 @@ function onDisplayedItems(items: { key: string }[]) {
   importBooks.value
     .filter((b) => items.map((it) => it.key).includes(b.transientBook.id))
     .forEach((b) => {
-      if (b.transientBook.status === MediaStatus.UNKNOWN.valueOf()) {
+      if (b.transientBook.status === MediaStatus.Unknown) {
         analyzeBook(b)
       }
     })

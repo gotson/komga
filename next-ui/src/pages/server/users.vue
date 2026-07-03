@@ -23,7 +23,6 @@
 </template>
 
 <script lang="ts" setup>
-import { UserRoles } from '@/types/UserRoles'
 import { useLibraries } from '@/colada/libraries'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
@@ -42,6 +41,7 @@ import {
   useUsers,
 } from '@/colada/users'
 import type { UserCreationDto, UserDto } from '@/generated/openapi'
+import { UserRole } from '@/types/UserRoles'
 
 const intl = useIntl()
 
@@ -96,7 +96,7 @@ function showDialog(action: ACTION, user?: UserDto) {
       dialogConfirmEdit.value.record = {
         email: '',
         password: '',
-        roles: [UserRoles.PAGE_STREAMING, UserRoles.FILE_DOWNLOAD],
+        roles: [UserRole.PageStreaming, UserRole.FileDownload],
         sharedLibraries: {
           all: true,
           // we fill the array with all libraries for a nicer display in the edit dialog

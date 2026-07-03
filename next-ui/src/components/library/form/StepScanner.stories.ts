@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import StepScanner from './StepScanner.vue'
-import { ScanInterval } from '@/types/ScanInterval'
 
 const meta = {
   component: StepScanner,
@@ -35,7 +34,7 @@ export const Default: Story = {
       scanDirectoryExclusions: ['#recycle', '@eaDir', '@Recycle'],
       scanEpub: true,
       scanForceModifiedTime: false,
-      scanInterval: ScanInterval.DAILY,
+      scanInterval: 'DAILY',
       scanOnStartup: false,
       scanPdf: true,
     },

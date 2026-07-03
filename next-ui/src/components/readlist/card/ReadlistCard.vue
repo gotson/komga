@@ -13,9 +13,7 @@
     :disable-selection="!isAdmin"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
-    @card-long-press="
-      isAdmin || hasRole(UserRoles.FILE_DOWNLOAD) ? (bottomSheet = true) : undefined
-    "
+    @card-long-press="isAdmin || hasRole('FILE_DOWNLOAD') ? (bottomSheet = true) : undefined"
   />
   <ReadlistMenuSheet
     v-model="bottomSheet"
@@ -30,7 +28,6 @@ import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
-import { UserRoles } from '@/types/UserRoles'
 import type { ReadListDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
 
@@ -77,7 +74,7 @@ const quickActionProps = computed(() => ({
   onmouseenter: () => (editActivator.value = `#${id}_quick`),
 }))
 const menuIcon = computed(() =>
-  isAdmin.value || hasRole(UserRoles.FILE_DOWNLOAD) ? 'i-mdi:dots-vertical' : undefined,
+  isAdmin.value || hasRole('FILE_DOWNLOAD') ? 'i-mdi:dots-vertical' : undefined,
 )
 const menuProps = computed(() => ({
   onmouseenter: (event: Event) => (menuActivator.value = event.currentTarget as Element),

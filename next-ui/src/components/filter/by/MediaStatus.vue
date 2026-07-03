@@ -6,12 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import * as v from 'valibot'
-import { SchemaMediaStatus } from '@/types/filter'
 import { useIntl } from 'vue-intl'
-import { MediaStatus, mediaStatusMessages } from '@/types/MediaStatus'
-
-type MediaStatus = v.InferOutput<typeof SchemaMediaStatus>
+import { MediaStatusValues, type MediaStatus, mediaStatusMessages } from '@/types/MediaStatus'
 
 const intl = useIntl()
 
@@ -20,7 +16,7 @@ const model = defineModel<MediaStatus[]>({ default: [] })
 const items: {
   title: string
   value: MediaStatus
-}[] = Object.values(MediaStatus).map((it) => ({
+}[] = MediaStatusValues.map((it) => ({
   title: intl.formatMessage(mediaStatusMessages[it]),
   value: it,
 }))

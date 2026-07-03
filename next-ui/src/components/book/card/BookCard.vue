@@ -72,19 +72,19 @@ const titleAndLines = computed<{ title: ItemCardTitle; lines: ItemCardLine[] }>(
       }),
       classes: 'text-error',
     }
-  else if (book.value.media.status === MediaStatus.ERROR.valueOf())
+  else if (book.value.media.status === MediaStatus.Error)
     footer = {
-      text: intl.formatMessage(mediaStatusMessages[MediaStatus.ERROR]),
+      text: intl.formatMessage(mediaStatusMessages[MediaStatus.Error]),
       classes: 'text-error',
     }
-  else if (book.value.media.status === MediaStatus.UNSUPPORTED.valueOf())
+  else if (book.value.media.status === MediaStatus.Unknown)
     footer = {
-      text: intl.formatMessage(mediaStatusMessages[MediaStatus.UNSUPPORTED]),
+      text: intl.formatMessage(mediaStatusMessages[MediaStatus.Unsupported]),
       classes: 'text-warning',
     }
-  else if (book.value.media.status === MediaStatus.UNKNOWN.valueOf())
+  else if (book.value.media.status === MediaStatus.Unknown)
     footer = {
-      text: intl.formatMessage(mediaStatusMessages[MediaStatus.UNKNOWN]),
+      text: intl.formatMessage(mediaStatusMessages[MediaStatus.Unknown]),
     }
   else
     footer = {

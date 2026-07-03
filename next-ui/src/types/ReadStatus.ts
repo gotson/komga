@@ -1,25 +1,23 @@
-import { defineMessages } from 'vue-intl'
+import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export enum ReadStatus {
-  UNREAD = 'UNREAD',
-  IN_PROGRESS = 'IN_PROGRESS',
-  READ = 'READ',
-}
+export const ReadStatusValues = ['UNREAD', 'IN_PROGRESS', 'READ'] as const
 
-export const readStatusMessages = defineMessages({
-  [ReadStatus.UNREAD]: {
+export type ReadStatus = (typeof ReadStatusValues)[number]
+
+export const readStatusMessages: Record<ReadStatus, MessageDescriptor> = defineMessages({
+  UNREAD: {
     description: 'Read status: UNREAD',
     defaultMessage: 'Unread',
-    id: 'XUgQvn',
+    id: 'enum.ReadStatus.UNREAD',
   },
-  [ReadStatus.IN_PROGRESS]: {
+  IN_PROGRESS: {
     description: 'Read status: IN_PROGRESS',
     defaultMessage: 'In progress',
-    id: '8DRgrr',
+    id: 'enum.ReadStatus.IN_PROGRESS',
   },
-  [ReadStatus.READ]: {
+  READ: {
     description: 'Read status: READ',
     defaultMessage: 'Read',
-    id: 'HhmZaG',
+    id: 'enum.ReadStatus.READ',
   },
 })

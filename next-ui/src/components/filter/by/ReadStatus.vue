@@ -6,10 +6,10 @@
 </template>
 
 <script setup lang="ts">
-import * as v from 'valibot'
-import { SchemaReadStatus } from '@/types/filter'
 import { useIntl } from 'vue-intl'
-import { ReadStatus, readStatusMessages } from '@/types/ReadStatus'
+import { ReadStatusValues, readStatusMessages } from '@/types/ReadStatus'
+import type { SchemaReadStatus } from '@/types/filter'
+import * as v from 'valibot'
 
 type SchReadStatus = v.InferOutput<typeof SchemaReadStatus>
 
@@ -17,7 +17,7 @@ const intl = useIntl()
 
 const model = defineModel<SchReadStatus[]>({ default: [] })
 
-const items = Object.values(ReadStatus).map((it) => ({
+const items = ReadStatusValues.map((it) => ({
   title: intl.formatMessage(readStatusMessages[it]),
   value: { i: 'i', v: it },
   valueExclude: { i: 'e', v: it },

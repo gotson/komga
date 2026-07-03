@@ -1,5 +1,3 @@
-import { ScanInterval } from '@/types/ScanInterval'
-import { SeriesCover } from '@/types/SeriesCover'
 import type { LibraryCreationDto } from '@/generated/openapi'
 
 export function getLibraryDefaults(): LibraryCreationDto {
@@ -28,9 +26,9 @@ export function getLibraryDefaults(): LibraryCreationDto {
     scanDirectoryExclusions: ['#recycle', '@eaDir', '@Recycle'],
     scanEpub: true,
     scanForceModifiedTime: false,
-    scanInterval: ScanInterval.EVERY_6H,
+    scanInterval: 'EVERY_6H',
     scanOnStartup: false,
     scanPdf: true,
-    seriesCover: SeriesCover.FIRST,
+    seriesCover: 'FIRST',
   }
 }

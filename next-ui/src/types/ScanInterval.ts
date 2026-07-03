@@ -1,43 +1,45 @@
-import { defineMessages } from 'vue-intl'
+import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export enum ScanInterval {
-  DISABLED = 'DISABLED',
-  HOURLY = 'HOURLY',
-  EVERY_6H = 'EVERY_6H',
-  EVERY_12H = 'EVERY_12H',
-  DAILY = 'DAILY',
-  WEEKLY = 'WEEKLY',
-}
+export const ScanIntervalValues = [
+  'DISABLED',
+  'HOURLY',
+  'EVERY_6H',
+  'EVERY_12H',
+  'DAILY',
+  'WEEKLY',
+] as const
 
-export const scanIntervalMessages = defineMessages({
-  [ScanInterval.DISABLED]: {
+export type ScanInterval = (typeof ScanIntervalValues)[number]
+
+export const scanIntervalMessages: Record<ScanInterval, MessageDescriptor> = defineMessages({
+  DISABLED: {
     description: 'Scan interval: DISABLED',
     defaultMessage: 'Disabled',
-    id: '8M9T3g',
+    id: 'enum.ScanInterval.DISABLED',
   },
-  [ScanInterval.HOURLY]: {
+  HOURLY: {
     description: 'Scan interval: HOURLY',
     defaultMessage: 'Hourly',
-    id: 'rBFh/c',
+    id: 'enum.ScanInterval.HOURLY',
   },
-  [ScanInterval.EVERY_6H]: {
+  EVERY_6H: {
     description: 'Scan interval: EVERY_6H',
     defaultMessage: 'Every 6 hours',
-    id: '4d2F5w',
+    id: 'enum.ScanInterval.EVERY_6H',
   },
-  [ScanInterval.EVERY_12H]: {
+  EVERY_12H: {
     description: 'Scan interval: EVERY_12H',
     defaultMessage: 'Every 12 hours',
-    id: '5yu0g9',
+    id: 'enum.ScanInterval.EVERY_12H',
   },
-  [ScanInterval.DAILY]: {
+  DAILY: {
     description: 'Scan interval: DAILY',
     defaultMessage: 'Daily',
-    id: 'qLk+cl',
+    id: 'enum.ScanInterval.DAILY',
   },
-  [ScanInterval.WEEKLY]: {
+  WEEKLY: {
     description: 'Scan interval: WEEKLY',
     defaultMessage: 'Weekly',
-    id: 'T6pXCK',
+    id: 'enum.ScanInterval.WEEKLY',
   },
 })

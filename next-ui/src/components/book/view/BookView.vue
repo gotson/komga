@@ -136,7 +136,7 @@
       </v-row>
 
       <v-row
-        v-if="mediaStatus !== MediaStatus.READY || isDeleted"
+        v-if="book.media.status !== MediaStatus.Ready || isDeleted"
         density="compact"
       >
         <v-col>
@@ -154,7 +154,7 @@
           />
 
           <v-alert
-            v-if="mediaStatus === MediaStatus.ERROR"
+            v-if="book.media.status === MediaStatus.Error"
             type="error"
             variant="tonal"
           >
@@ -169,7 +169,7 @@
           </v-alert>
 
           <v-alert
-            v-if="mediaStatus === MediaStatus.UNSUPPORTED"
+            v-if="book.media.status === MediaStatus.Unsupported"
             type="warning"
             variant="tonal"
             :text="
@@ -182,7 +182,7 @@
           />
 
           <v-alert
-            v-if="mediaStatus === MediaStatus.UNKNOWN"
+            v-if="book.media.status === MediaStatus.Unknown"
             type="info"
             variant="tonal"
             :text="
@@ -195,7 +195,7 @@
           />
 
           <v-alert
-            v-if="mediaStatus === MediaStatus.OUTDATED"
+            v-if="book.media.status === MediaStatus.Outdated"
             type="info"
             variant="tonal"
             :text="
@@ -230,7 +230,6 @@ import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 
 import { useIntl } from 'vue-intl'
 import { useBook } from '@/composables/book/useBook'
-import { MediaStatus } from '@/types/MediaStatus'
 import { useDisplay } from 'vuetify'
 import SimpleDataTable, { type TableRow } from '@/components/SimpleDataTable.vue'
 import { contributorsRolesMessages } from '@/types/referential'
@@ -238,6 +237,7 @@ import { getFileSize } from '@/utils/utils'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { createOrderCompareFn } from '@/functions/sort'
 import type { BookDto } from '@/generated/openapi'
+import { MediaStatus } from '@/types/MediaStatus'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -250,7 +250,7 @@ const props = defineProps<{
 }>()
 
 const { isRead, progressPercent, pagesLeft } = useBookReadProgress(() => props.book)
-const { mediaStatus, isDeleted, format } = useBook(() => props.book)
+const { isDeleted, format } = useBook(() => props.book)
 
 const tableRows = computed(() => {
   const rows: TableRow[] = []

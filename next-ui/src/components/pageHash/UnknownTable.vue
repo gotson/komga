@@ -133,33 +133,29 @@
         @update:model-value="(v) => updateHashAction(item, v)"
       >
         <v-btn
-          v-tooltip:bottom="
-            intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_AUTO])
-          "
+          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['DELETE_AUTO'])"
           size="small"
           icon="i-mdi:robot"
-          :value="PageHashActionEnum.DELETE_AUTO"
-          :loading="value === PageHashActionEnum.DELETE_AUTO"
+          value="DELETE_AUTO"
+          :loading="value === 'DELETE_AUTO'"
           color="success"
           @click.stop
         />
         <v-btn
-          v-tooltip:bottom="
-            intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_MANUAL])
-          "
+          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['DELETE_MANUAL'])"
           size="small"
           icon="i-mdi:hand-back-right"
-          :value="PageHashActionEnum.DELETE_MANUAL"
-          :loading="value === PageHashActionEnum.DELETE_MANUAL"
+          value="DELETE_MANUAL"
+          :loading="value === 'DELETE_MANUAL'"
           color="warning"
           @click.stop
         />
         <v-btn
-          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages[PageHashActionEnum.IGNORE])"
+          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['IGNORE'])"
           size="small"
           icon="i-mdi:cancel"
-          :value="PageHashActionEnum.IGNORE"
-          :loading="value === PageHashActionEnum.IGNORE"
+          value="IGNORE"
+          :loading="value === 'IGNORE'"
           color=""
           @click.stop
         />
@@ -217,11 +213,7 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useDisplay } from 'vuetify'
 import { VImg } from 'vuetify/components'
 import MatchTable from '@/components/pageHash/MatchTable.vue'
-import {
-  type PageHashAction,
-  PageHashActionEnum,
-  pageHashActionMessages,
-} from '@/types/PageHashAction'
+import { type PageHashAction, pageHashActionMessages } from '@/types/PageHashAction'
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { komgaCreateOrUpdateKnownPageHash, type PageHashUnknownDto } from '@/generated/openapi'
@@ -373,21 +365,20 @@ async function updateHashActions(pageHashes: PageHashUnknownDto[], newAction: Pa
 
 const actionOptions = [
   {
-    title: intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_AUTO]),
-    value: PageHashActionEnum.DELETE_AUTO,
+    title: intl.formatMessage(pageHashActionMessages['DELETE_AUTO']),
+    value: 'DELETE_AUTO' as PageHashAction,
     icon: 'i-mdi:robot',
   },
   {
-    title: intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_MANUAL]),
-    value: PageHashActionEnum.DELETE_MANUAL,
+    title: intl.formatMessage(pageHashActionMessages['DELETE_MANUAL']),
+    value: 'DELETE_MANUAL' as PageHashAction,
     icon: 'i-mdi:hand-back-right',
   },
   {
-    title: intl.formatMessage(pageHashActionMessages[PageHashActionEnum.IGNORE]),
-    value: PageHashActionEnum.IGNORE,
+    title: intl.formatMessage(pageHashActionMessages['IGNORE']),
+    value: 'IGNORE' as PageHashAction,
     icon: 'i-mdi:cancel',
   },
-]
+] as const
 //endregion
 </script>
-<script setup lang="ts"></script>

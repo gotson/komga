@@ -128,11 +128,11 @@ other {# books}
         <v-col>
           <div class="d-flex ga-2">
             <v-chip
-              v-if="seriesStatus"
+              v-if="series.metadata.status"
               size="small"
               rounded
               label
-              :text="$formatMessage(seriesStatusMessages[seriesStatus])"
+              :text="$formatMessage(seriesStatusMessages[series.metadata.status as SeriesStatus])"
             />
             <v-chip
               v-if="series.metadata.language"
@@ -158,11 +158,15 @@ other {# books}
               "
             />
             <v-chip
-              v-if="readingDirection"
+              v-if="series.metadata.readingDirection"
               size="small"
               rounded
               label
-              :text="$formatMessage(readingDirectionMessages[readingDirection])"
+              :text="
+                $formatMessage(
+                  readingDirectionMessages[series.metadata.readingDirection as ReadingDirection],
+                )
+              "
             />
           </div>
         </v-col>
@@ -244,9 +248,9 @@ import SimpleDataTable, { type TableRow } from '@/components/SimpleDataTable.vue
 import { contributorsRolesMessages } from '@/types/referential'
 import { createOrderCompareFn } from '@/functions/sort'
 import { useSeries } from '@/composables/series/useSeries'
-import { readingDirectionMessages } from '@/types/ReadingDirection'
+import { type ReadingDirection, readingDirectionMessages } from '@/types/ReadingDirection'
 import { languageDisplayNames } from '@/utils/i18n/locale-helper'
-import { seriesStatusMessages } from '@/types/SeriesStatus'
+import { type SeriesStatus, seriesStatusMessages } from '@/types/SeriesStatus'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
@@ -261,7 +265,7 @@ const props = defineProps<{
   series: SeriesDto
 }>()
 
-const { unreadCount, isRead, readingDirection, seriesStatus } = useSeries(() => props.series)
+const { unreadCount, isRead } = useSeries(() => props.series)
 const { getFirstBookInSeriesQuery } = useSeriesBooks(props.series.id)
 
 const { data: booksOnDeck } = getFirstBookInSeriesQuery(true)

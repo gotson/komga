@@ -1,31 +1,33 @@
-import { defineMessages } from 'vue-intl'
+import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export enum SeriesCover {
-  FIRST = 'FIRST',
-  FIRST_UNREAD_OR_FIRST = 'FIRST_UNREAD_OR_FIRST',
-  FIRST_UNREAD_OR_LAST = 'FIRST_UNREAD_OR_LAST',
-  LAST = 'LAST',
-}
+export const SeriesCoverValues = [
+  'FIRST',
+  'FIRST_UNREAD_OR_FIRST',
+  'FIRST_UNREAD_OR_LAST',
+  'LAST',
+] as const
 
-export const seriesCoverMessages = defineMessages({
-  [SeriesCover.FIRST]: {
+export type SeriesCover = (typeof SeriesCoverValues)[number]
+
+export const seriesCoverMessages: Record<SeriesCover, MessageDescriptor> = defineMessages({
+  FIRST: {
     description: 'Series cover: FIRST',
     defaultMessage: 'First',
-    id: 'j7cvLm',
+    id: 'enum.SeriesCover.FIRST',
   },
-  [SeriesCover.FIRST_UNREAD_OR_FIRST]: {
+  FIRST_UNREAD_OR_FIRST: {
     description: 'Series cover: FIRST_UNREAD_OR_FIRST',
     defaultMessage: 'First unread, else first',
-    id: 'woVEgl',
+    id: 'enum.SeriesCover.FIRST_UNREAD_OR_FIRST',
   },
-  [SeriesCover.FIRST_UNREAD_OR_LAST]: {
+  FIRST_UNREAD_OR_LAST: {
     description: 'Series cover: FIRST_UNREAD_OR_LAST',
     defaultMessage: 'First unread, else last',
-    id: 'kLu/vI',
+    id: 'enum.SeriesCover.FIRST_UNREAD_OR_LAST',
   },
-  [SeriesCover.LAST]: {
+  LAST: {
     description: 'Series cover: LAST',
     defaultMessage: 'Last',
-    id: 'pkqPAO',
+    id: 'enum.SeriesCover.LAST',
   },
 })

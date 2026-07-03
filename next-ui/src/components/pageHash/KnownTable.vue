@@ -127,28 +127,24 @@
         @update:model-value="(v) => updateHashAction(item, v)"
       >
         <v-btn
-          v-tooltip:bottom="
-            intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_AUTO])
-          "
+          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['DELETE_AUTO'])"
           size="small"
           icon="i-mdi:robot"
-          :value="PageHashActionEnum.DELETE_AUTO"
+          value="DELETE_AUTO"
           color="success"
         />
         <v-btn
-          v-tooltip:bottom="
-            intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_MANUAL])
-          "
+          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['DELETE_MANUAL'])"
           size="small"
           icon="i-mdi:hand-back-right"
-          :value="PageHashActionEnum.DELETE_MANUAL"
+          value="DELETE_MANUAL"
           color="warning"
         />
         <v-btn
-          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages[PageHashActionEnum.IGNORE])"
+          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['IGNORE'])"
           size="small"
           icon="i-mdi:cancel"
-          :value="PageHashActionEnum.IGNORE"
+          value="IGNORE"
           color=""
         />
       </v-btn-toggle>
@@ -183,7 +179,7 @@
           size="small"
           :disabled="
             value == 0 ||
-            getPageHashAction(item) !== PageHashActionEnum.DELETE_MANUAL ||
+            getPageHashAction(item) !== 'DELETE_MANUAL' ||
             deletionRequests[item.hash]?.success
           "
           :loading="deletionRequests[item.hash]?.isLoading"
@@ -217,11 +213,7 @@ import { useDialogsStore } from '@/stores/dialogs'
 import { useDisplay } from 'vuetify'
 import { VImg } from 'vuetify/components'
 import MatchTable from '@/components/pageHash/MatchTable.vue'
-import {
-  type PageHashAction,
-  PageHashActionEnum,
-  pageHashActionMessages,
-} from '@/types/PageHashAction'
+import { type PageHashAction, pageHashActionMessages } from '@/types/PageHashAction'
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import {
@@ -313,24 +305,21 @@ const headers = [
 //endregion
 
 //region Filtering
-const filterSelect = ref<string[]>([
-  PageHashActionEnum.DELETE_AUTO,
-  PageHashActionEnum.DELETE_MANUAL,
-])
+const filterSelect = ref<PageHashAction[]>(['DELETE_AUTO', 'DELETE_MANUAL'])
 const filterOptions = [
   {
-    title: intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_AUTO]),
-    value: PageHashActionEnum.DELETE_AUTO,
+    title: intl.formatMessage(pageHashActionMessages['DELETE_AUTO']),
+    value: 'DELETE_AUTO' as PageHashAction,
   },
   {
-    title: intl.formatMessage(pageHashActionMessages[PageHashActionEnum.DELETE_MANUAL]),
-    value: PageHashActionEnum.DELETE_MANUAL,
+    title: intl.formatMessage(pageHashActionMessages['DELETE_MANUAL']),
+    value: 'DELETE_MANUAL' as PageHashAction,
   },
   {
-    title: intl.formatMessage(pageHashActionMessages[PageHashActionEnum.IGNORE]),
-    value: PageHashActionEnum.IGNORE,
+    title: intl.formatMessage(pageHashActionMessages['IGNORE']),
+    value: 'IGNORE' as PageHashAction,
   },
-]
+] as const
 //endregion
 
 const pageRequest = ref<PageRequest>(new PageRequest())
@@ -445,4 +434,3 @@ function updateHashAction(pageHash: PageHashKnownDto, newAction: PageHashAction)
 }
 //endregion
 </script>
-<script setup lang="ts"></script>

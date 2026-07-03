@@ -52,7 +52,7 @@
           v-for="role in value"
           :key="role"
           :color="getRoleColor(role)"
-          :text="$formatMessage(userRolesMessages[role as UserRoles])"
+          :text="$formatMessage(userRolesMessages[role as UserRole])"
           size="x-small"
           rounded
         />
@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts" setup>
-import { UserRoles, userRolesMessages } from '@/types/UserRoles'
+import { type UserRole, userRolesMessages } from '@/types/UserRoles'
 import { defineMessage, useIntl } from 'vue-intl'
 
 import { useCurrentUser } from '@/colada/users'
@@ -175,8 +175,8 @@ const headers = [
   },
 ] as const // workaround for https://github.com/vuetifyjs/vuetify/issues/18901
 
-function getRoleColor(role: UserRoles) {
-  if (role === UserRoles.ADMIN) return 'error'
+function getRoleColor(role: UserRole) {
+  if (role === 'ADMIN') return 'error'
 }
 
 // store each user's latest activity in a map

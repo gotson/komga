@@ -8,7 +8,6 @@ import { useCurrentUser } from '@/colada/users'
 import ReadListDeletionWarning from '@/components/readlist/DeletionWarning.vue'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 import { useDeleteReadList } from '@/colada/readlists'
-import { UserRoles } from '@/types/UserRoles'
 import { readListFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import type { ReadListDto } from '@/generated/openapi'
@@ -24,7 +23,7 @@ export function useReadListActions(
   const display = useDisplay()
 
   const actions = computed<Action<ActionName>[]>(() => [
-    ...(hasRole(UserRoles.FILE_DOWNLOAD)
+    ...(hasRole('FILE_DOWNLOAD')
       ? [
           {
             title: intl.formatMessage(actionDetails[ActionName.DOWNLOAD].message),

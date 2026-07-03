@@ -14,7 +14,6 @@ import {
 import { useCurrentUser } from '@/colada/users'
 import SeriesDeletionWarning from '@/components/series/DeletionWarning.vue'
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
-import { UserRoles } from '@/types/UserRoles'
 import { seriesFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
@@ -84,7 +83,7 @@ export function useSeriesActions(
             },
           },
         ]),
-    ...(hasRole(UserRoles.FILE_DOWNLOAD)
+    ...(hasRole('FILE_DOWNLOAD')
       ? [
           {
             title: intl.formatMessage(actionDetails[ActionName.DOWNLOAD].message),

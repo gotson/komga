@@ -1,6 +1,10 @@
 import * as v from 'valibot'
 import { defineMessage, type MessageDescriptor } from 'vue-intl'
 import type { MaybeRefOrGetter } from 'vue'
+import { MediaProfileValues } from '@/types/MediaProfile'
+import { MediaStatusValues } from '@/types/MediaStatus'
+import { SeriesStatusValues } from '@/types/SeriesStatus'
+import { ReadStatusValues } from '@/types/ReadStatus'
 
 export const filterMessages: Record<string, MessageDescriptor> = {
   any: defineMessage({
@@ -56,23 +60,19 @@ export const SchemaIncludeExclude = v.strictObject({
 export const SchemaSeriesStatus = v.pipe(
   v.string(),
   v.toUpperCase(),
-  v.picklist(['ENDED', 'ONGOING', 'ABANDONED', 'HIATUS']),
+  v.picklist(SeriesStatusValues),
 )
 
-export const SchemaMediaStatus = v.pipe(
-  v.string(),
-  v.toUpperCase(),
-  v.picklist(['READY', 'UNKNOWN', 'ERROR', 'UNSUPPORTED', 'OUTDATED']),
-)
+export const SchemaMediaStatus = v.pipe(v.string(), v.toUpperCase(), v.picklist(MediaStatusValues))
 
 export const SchemaMediaProfile = v.pipe(
   v.string(),
   v.toUpperCase(),
-  v.picklist(['DIVINA', 'EPUB', 'PDF']),
+  v.picklist(MediaProfileValues),
 )
 
 export const SchemaReadStatus = createSchemaIncludeExclude(
-  v.pipe(v.string(), v.toUpperCase(), v.picklist(['UNREAD', 'IN_PROGRESS', 'READ'])),
+  v.pipe(v.string(), v.toUpperCase(), v.picklist(ReadStatusValues)),
 )
 
 export const SchemaString = createSchemaIncludeExclude(v.string())

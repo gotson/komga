@@ -14,7 +14,6 @@ import {
   useRefreshMetadataBook,
 } from '@/colada/books'
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
-import { UserRoles } from '@/types/UserRoles'
 import { bookFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useBook } from '@/composables/book/useBook'
@@ -85,7 +84,7 @@ export function useBookActions(
           },
         ]
       : []),
-    ...(hasRole(UserRoles.FILE_DOWNLOAD)
+    ...(hasRole('FILE_DOWNLOAD')
       ? [
           {
             title: intl.formatMessage(actionDetails[ActionName.DOWNLOAD].message),

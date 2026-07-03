@@ -1,43 +1,47 @@
-import { defineMessages } from 'vue-intl'
+import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export enum UserRoles {
-  ADMIN = 'ADMIN',
-  FILE_DOWNLOAD = 'FILE_DOWNLOAD',
-  PAGE_STREAMING = 'PAGE_STREAMING',
-  KOBO_SYNC = 'KOBO_SYNC',
-  KOREADER_SYNC = 'KOREADER_SYNC',
-  USER = 'USER',
-}
+export const UserRole = {
+  Admin: 'ADMIN',
+  FileDownload: 'FILE_DOWNLOAD',
+  PageStreaming: 'PAGE_STREAMING',
+  KoboSync: 'KOBO_SYNC',
+  KoreaderSync: 'KOREADER_SYNC',
+  User: 'USER',
+} as const
 
-export const userRolesMessages = defineMessages({
-  [UserRoles.ADMIN]: {
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+export const UserRoleValues = Object.values(UserRole)
+
+export const userRolesMessages: Record<UserRole, MessageDescriptor> = defineMessages({
+  ADMIN: {
     description: 'User role: admin',
     defaultMessage: 'Administrator',
-    id: '8N1oqm',
+    id: 'enum.UserRole.ADMIN',
   },
-  [UserRoles.FILE_DOWNLOAD]: {
+  FILE_DOWNLOAD: {
     description: 'User role: file_download',
     defaultMessage: 'File download',
-    id: 'c00+tT',
+    id: 'enum.UserRole.FILE_DOWNLOAD',
   },
-  [UserRoles.PAGE_STREAMING]: {
+  PAGE_STREAMING: {
     description: 'User role: page_streaming',
     defaultMessage: 'Page streaming',
-    id: 'aa6dBv',
+    id: 'enum.UserRole.PAGE_STREAMING',
   },
-  [UserRoles.KOBO_SYNC]: {
+  KOBO_SYNC: {
     description: 'User role: kobo_sync',
     defaultMessage: 'Kobo sync',
-    id: 'Jm5RAA',
+    id: 'enum.UserRole.KOBO_SYNC',
   },
-  [UserRoles.KOREADER_SYNC]: {
+  KOREADER_SYNC: {
     description: 'User role: koreader_sync',
     defaultMessage: 'KOReader sync',
-    id: 'BwX4xr',
+    id: 'enum.UserRole.KOREADER_SYNC',
   },
-  [UserRoles.USER]: {
+  USER: {
     description: 'User role: user',
     defaultMessage: 'User',
-    id: '2+oQ1g',
+    id: 'enum.UserRole.USER',
   },
 })

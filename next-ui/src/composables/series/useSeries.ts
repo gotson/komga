@@ -1,9 +1,5 @@
 import { useCurrentUser } from '@/colada/users'
 import { useGetLibrariesById } from '@/composables/libraries'
-import { UserRoles } from '@/types/UserRoles'
-import { getEnumValueFromString } from '@/functions/enum'
-import { ReadingDirection } from '@/types/ReadingDirection'
-import { SeriesStatus } from '@/types/SeriesStatus'
 import type { SeriesDto } from '@/generated/openapi'
 
 export function useSeries(series: MaybeRefOrGetter<SeriesDto>) {
@@ -24,14 +20,7 @@ export function useSeries(series: MaybeRefOrGetter<SeriesDto>) {
 
   const isUnavailable = computed(() => toValue(series).deleted || libraries.value?.[0]?.unavailable)
 
-  const canRead = computed(() => hasRole(UserRoles.PAGE_STREAMING) && !isUnavailable.value)
-
-  const readingDirection = computed(() =>
-    getEnumValueFromString(ReadingDirection, toValue(series).metadata.readingDirection),
-  )
-  const seriesStatus = computed(() =>
-    getEnumValueFromString(SeriesStatus, toValue(series).metadata.status),
-  )
+  const canRead = computed(() => hasRole('PAGE_STREAMING') && !isUnavailable.value)
 
   return {
     isRead,
@@ -39,7 +28,5 @@ export function useSeries(series: MaybeRefOrGetter<SeriesDto>) {
     inProgress,
     isUnavailable,
     canRead,
-    readingDirection,
-    seriesStatus,
   }
 }

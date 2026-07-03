@@ -324,7 +324,7 @@
 </template>
 
 <script setup lang="ts">
-import { ThumbnailSize, thumbnailSizeMessages } from '@/types/ThumbnailSize'
+import { ThumbnailSizeValues, thumbnailSizeMessages } from '@/types/ThumbnailSize'
 import { useIntl } from 'vue-intl'
 
 import { watchImmediate } from '@vueuse/core'
@@ -344,7 +344,7 @@ const emit = defineEmits<{
 }>()
 
 const settingsUpdate = ref<SettingsUpdateDto>({
-  thumbnailSize: ThumbnailSize.DEFAULT,
+  thumbnailSize: 'DEFAULT',
   deleteEmptyCollections: false,
   deleteEmptyReadLists: false,
   taskPoolSize: 1,
@@ -385,7 +385,7 @@ async function submitForm(callback: () => void) {
   }
 }
 
-const thumbnailSizes = Object.values(ThumbnailSize).map((x) => ({
+const thumbnailSizes = ThumbnailSizeValues.map((x) => ({
   title: intl.formatMessage(thumbnailSizeMessages[x]),
   value: x,
 }))

@@ -15,7 +15,7 @@
         <v-chip
           v-for="role in user.roles"
           :key="role"
-          :text="$formatMessage(userRolesMessages[role as UserRoles])"
+          :text="$formatMessage(userRolesMessages[role as UserRole])"
           size="small"
           rounded
         />
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { UserRoles, userRolesMessages } from '@/types/UserRoles'
+import { type UserRole, userRolesMessages } from '@/types/UserRoles'
 import type { UserDto } from '@/generated/openapi'
 
 const slots = useSlots()

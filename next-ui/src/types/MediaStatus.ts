@@ -1,37 +1,41 @@
-import { defineMessages } from 'vue-intl'
+import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export enum MediaStatus {
-  READY = 'READY',
-  UNKNOWN = 'UNKNOWN',
-  ERROR = 'ERROR',
-  UNSUPPORTED = 'UNSUPPORTED',
-  OUTDATED = 'OUTDATED',
-}
+export const MediaStatus = {
+  Ready: 'READY',
+  Unknown: 'UNKNOWN',
+  Error: 'ERROR',
+  Unsupported: 'UNSUPPORTED',
+  Outdated: 'OUTDATED',
+} as const
 
-export const mediaStatusMessages = defineMessages({
-  [MediaStatus.UNKNOWN]: {
+export type MediaStatus = (typeof MediaStatus)[keyof typeof MediaStatus]
+
+export const MediaStatusValues = Object.values(MediaStatus)
+
+export const mediaStatusMessages: Record<MediaStatus, MessageDescriptor> = defineMessages({
+  UNKNOWN: {
     description: 'Media status: unknown',
     defaultMessage: 'Unknown',
-    id: 'vBi53Y',
+    id: 'enum.MediaStatus.UNKNOWN',
   },
-  [MediaStatus.ERROR]: {
+  ERROR: {
     description: 'Media status: error',
     defaultMessage: 'Error',
-    id: 'G49aNP',
+    id: 'enum.MediaStatus.ERROR',
   },
-  [MediaStatus.READY]: {
+  READY: {
     description: 'Media status: ready',
     defaultMessage: 'Ready',
-    id: 'k0XIsB',
+    id: 'enum.MediaStatus.READY',
   },
-  [MediaStatus.UNSUPPORTED]: {
+  UNSUPPORTED: {
     description: 'Media status: unsupported',
     defaultMessage: 'Unsupported',
-    id: '7iAvhC',
+    id: 'enum.MediaStatus.UNSUPPORTED',
   },
-  [MediaStatus.OUTDATED]: {
+  OUTDATED: {
     description: 'Media status: outdated',
     defaultMessage: 'Outdated',
-    id: 'xba3Ob',
+    id: 'enum.MediaStatus.OUTDATED',
   },
 })

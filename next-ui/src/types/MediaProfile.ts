@@ -1,25 +1,23 @@
-import { defineMessages } from 'vue-intl'
+import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export enum MediaProfile {
-  DIVINA = 'DIVINA',
-  EPUB = 'EPUB',
-  PDF = 'PDF',
-}
+export const MediaProfileValues = ['DIVINA', 'EPUB', 'PDF'] as const
 
-export const mediaProfileMessages = defineMessages({
-  [MediaProfile.DIVINA]: {
+export type MediaProfile = (typeof MediaProfileValues)[number]
+
+export const mediaProfileMessages: Record<MediaProfile, MessageDescriptor> = defineMessages({
+  DIVINA: {
     description: 'Media profile: divina',
     defaultMessage: 'DiViNa',
-    id: 'T8f81v',
+    id: 'enum.MediaProfile.DIVINA',
   },
-  [MediaProfile.EPUB]: {
+  EPUB: {
     description: 'Media profile: epub',
     defaultMessage: 'Epub',
-    id: 'bfoSR4',
+    id: 'enum.MediaProfile.EPUB',
   },
-  [MediaProfile.PDF]: {
+  PDF: {
     description: 'Media profile: pdf',
     defaultMessage: 'Pdf',
-    id: 'EN0jJT',
+    id: 'enum.MediaProfile.PDF',
   },
 })

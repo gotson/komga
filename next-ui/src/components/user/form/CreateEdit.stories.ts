@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import CreateEdit from './CreateEdit.vue'
-import { UserRoles } from '@/types/UserRoles'
-
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
 import { handleGetSharingLabels } from '@/generated/openapi/msw.gen'
@@ -43,7 +41,7 @@ export const CreateUser: Story = {
     modelValue: {
       email: '',
       password: '',
-      roles: [UserRoles.PAGE_STREAMING, UserRoles.FILE_DOWNLOAD],
+      roles: ['PAGE_STREAMING', 'FILE_DOWNLOAD'],
       sharedLibraries: {
         all: true,
         libraryIds: ['1', '2'],
@@ -62,7 +60,7 @@ export const UpdateUser: Story = {
       id: '123',
       email: 'user@example.org',
       password: 'masked',
-      roles: [UserRoles.KOBO_SYNC, UserRoles.FILE_DOWNLOAD],
+      roles: ['KOBO_SYNC', 'FILE_DOWNLOAD'],
       sharedLibraries: {
         all: false,
         libraryIds: ['1'],

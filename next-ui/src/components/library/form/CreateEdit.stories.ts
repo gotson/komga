@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import CreateEdit from './CreateEdit.vue'
-import { ScanInterval } from '@/types/ScanInterval'
-import { SeriesCover } from '@/types/SeriesCover'
 import { getLibraryDefaults } from '@/functions/libraries'
 
 const meta = {
@@ -63,10 +61,10 @@ export const Edit: Story = {
       scanDirectoryExclusions: [],
       scanEpub: true,
       scanForceModifiedTime: false,
-      scanInterval: ScanInterval.DAILY,
+      scanInterval: 'DAILY',
       scanOnStartup: false,
       scanPdf: true,
-      seriesCover: SeriesCover.FIRST,
+      seriesCover: 'FIRST',
     },
   },
 }

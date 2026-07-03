@@ -1,31 +1,28 @@
-import { defineMessages } from 'vue-intl'
+import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export enum ThumbnailSize {
-  DEFAULT = 'DEFAULT',
-  MEDIUM = 'MEDIUM',
-  LARGE = 'LARGE',
-  XLARGE = 'XLARGE',
-}
+export const ThumbnailSizeValues = ['DEFAULT', 'MEDIUM', 'LARGE', 'XLARGE'] as const
 
-export const thumbnailSizeMessages = defineMessages({
-  [ThumbnailSize.DEFAULT]: {
+export type ThumbnailSize = (typeof ThumbnailSizeValues)[number]
+
+export const thumbnailSizeMessages: Record<ThumbnailSize, MessageDescriptor> = defineMessages({
+  DEFAULT: {
     description: 'Thumbnail size: default',
     defaultMessage: 'Default (300px)',
-    id: '0DGOZl',
+    id: 'enum.ThumbnailSize.DEFAULT',
   },
-  [ThumbnailSize.MEDIUM]: {
+  MEDIUM: {
     description: 'Thumbnail size: medium',
     defaultMessage: 'Medium (600px)',
-    id: 't1LnqS',
+    id: 'enum.ThumbnailSize.MEDIUM',
   },
-  [ThumbnailSize.LARGE]: {
+  LARGE: {
     description: 'Thumbnail size: large',
     defaultMessage: 'Large (900px)',
-    id: 'hxUnz6',
+    id: 'enum.ThumbnailSize.LARGE',
   },
-  [ThumbnailSize.XLARGE]: {
+  XLARGE: {
     description: 'Thumbnail size: x-large',
     defaultMessage: 'X-Large (1200px)',
-    id: 'C7iLlR',
+    id: 'enum.ThumbnailSize.XLARGE',
   },
 })

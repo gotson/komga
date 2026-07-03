@@ -1,9 +1,7 @@
 import { useCurrentUser } from '@/colada/users'
 import { useGetLibrariesById } from '@/composables/libraries'
-import { MediaStatus } from '@/types/MediaStatus'
-import { UserRoles } from '@/types/UserRoles'
-import { getEnumValueFromString } from '@/functions/enum'
 import type { BookDto } from '@/generated/openapi'
+import { MediaStatus } from '@/types/MediaStatus'
 
 export function useBook(book: MaybeRefOrGetter<BookDto>) {
   const { hasRole } = useCurrentUser()
@@ -12,16 +10,12 @@ export function useBook(book: MaybeRefOrGetter<BookDto>) {
   const isDeleted = computed(() => toValue(book).deleted)
   const isUnavailable = computed(() => isDeleted.value || libraries.value?.[0]?.unavailable)
 
-  const isNotReady = computed(() => toValue(book).media.status !== MediaStatus.READY.valueOf())
-
-  const mediaStatus = computed(() =>
-    getEnumValueFromString(MediaStatus, toValue(book).media.status),
-  )
+  const isNotReady = computed(() => toValue(book).media.status !== MediaStatus.Ready)
 
   const canRead = computed(
     () =>
-      toValue(book).media.status === MediaStatus.READY.valueOf() &&
-      hasRole(UserRoles.PAGE_STREAMING) &&
+      toValue(book).media.status === MediaStatus.Ready &&
+      hasRole('PAGE_STREAMING') &&
       !isUnavailable.value,
   )
 
@@ -40,7 +34,6 @@ export function useBook(book: MaybeRefOrGetter<BookDto>) {
   })
 
   return {
-    mediaStatus,
     isUnavailable,
     canRead,
     isEpubReader,

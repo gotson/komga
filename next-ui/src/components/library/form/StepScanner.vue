@@ -147,7 +147,7 @@
 </template>
 
 <script setup lang="ts">
-import { ScanInterval, scanIntervalMessages } from '@/types/ScanInterval'
+import { ScanIntervalValues, scanIntervalMessages } from '@/types/ScanInterval'
 import { useIntl } from 'vue-intl'
 import type { LibraryCreationDto } from '@/generated/openapi'
 
@@ -168,7 +168,7 @@ const model = defineModel<LibraryCreationScanner>({ required: true })
 
 const intl = useIntl()
 
-const scanIntervalOptions = Object.values(ScanInterval).map((x) => ({
+const scanIntervalOptions = ScanIntervalValues.map((x) => ({
   title: intl.formatMessage(scanIntervalMessages[x]),
   value: x,
 }))

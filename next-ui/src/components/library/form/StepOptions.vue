@@ -191,7 +191,7 @@
 
 <script setup lang="ts">
 import { useIntl } from 'vue-intl'
-import { SeriesCover, seriesCoverMessages } from '@/types/SeriesCover'
+import { SeriesCoverValues, seriesCoverMessages } from '@/types/SeriesCover'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import type { LibraryCreationDto } from '@/generated/openapi'
 
@@ -210,7 +210,7 @@ const model = defineModel<LibraryCreationOptions>({ required: true })
 
 const intl = useIntl()
 
-const seriesCoverOptions = Object.values(SeriesCover).map((x) => ({
+const seriesCoverOptions = SeriesCoverValues.map((x) => ({
   title: intl.formatMessage(seriesCoverMessages[x]),
   value: x,
 }))

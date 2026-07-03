@@ -6,12 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import * as v from 'valibot'
-import { SchemaMediaProfile } from '@/types/filter'
 import { useIntl } from 'vue-intl'
-import { MediaProfile, mediaProfileMessages } from '@/types/MediaProfile'
-
-type MediaProfile = v.InferOutput<typeof SchemaMediaProfile>
+import { MediaProfileValues, type MediaProfile, mediaProfileMessages } from '@/types/MediaProfile'
 
 const intl = useIntl()
 
@@ -20,7 +16,7 @@ const model = defineModel<MediaProfile[]>({ default: [] })
 const items: {
   title: string
   value: MediaProfile
-}[] = Object.values(MediaProfile).map((it) => ({
+}[] = MediaProfileValues.map((it) => ({
   title: intl.formatMessage(mediaProfileMessages[it]),
   value: it,
 }))

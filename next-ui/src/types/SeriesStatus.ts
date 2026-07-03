@@ -1,31 +1,35 @@
-import { defineMessages } from 'vue-intl'
+import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export enum SeriesStatus {
-  ENDED = 'ENDED',
-  ONGOING = 'ONGOING',
-  HIATUS = 'HIATUS',
-  ABANDONED = 'ABANDONED',
-}
+export const SeriesStatus = {
+  Ended: 'ENDED',
+  Ongoing: 'ONGOING',
+  Abandoned: 'ABANDONED',
+  Hiatus: 'HIATUS',
+} as const
 
-export const seriesStatusMessages = defineMessages({
-  [SeriesStatus.ENDED]: {
+export type SeriesStatus = (typeof SeriesStatus)[keyof typeof SeriesStatus]
+
+export const SeriesStatusValues = Object.values(SeriesStatus)
+
+export const seriesStatusMessages: Record<SeriesStatus, MessageDescriptor> = defineMessages({
+  ENDED: {
     description: 'Series status: ENDED',
     defaultMessage: 'Ended',
-    id: 'waBpAI',
+    id: 'enum.SeriesStatus.ENDED',
   },
-  [SeriesStatus.ONGOING]: {
+  ONGOING: {
     description: 'Series status: ONGOING',
     defaultMessage: 'Ongoing',
-    id: 'k0iQcZ',
+    id: 'enum.SeriesStatus.ONGOING',
   },
-  [SeriesStatus.HIATUS]: {
+  HIATUS: {
     description: 'Series status: HIATUS',
     defaultMessage: 'Hiatus',
-    id: '+hyKAd',
+    id: 'enum.SeriesStatus.HIATUS',
   },
-  [SeriesStatus.ABANDONED]: {
+  ABANDONED: {
     description: 'Series status: ABANDONED',
     defaultMessage: 'Abandoned',
-    id: 'NQctWq',
+    id: 'enum.SeriesStatus.ABANDONED',
   },
 })
