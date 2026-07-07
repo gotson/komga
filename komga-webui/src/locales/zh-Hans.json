@@ -917,7 +917,7 @@
   },
   "metrics": {
     "library_books": "每个库的书籍数量",
-    "library_disk_space": "每个库磁盘空间占用",
+    "library_disk_space": "每个库的磁盘空间占用",
     "library_series": "每个库的系列数量",
     "library_sidecars": "每个库的边车",
     "tasks_executed": "已执行的任务",
