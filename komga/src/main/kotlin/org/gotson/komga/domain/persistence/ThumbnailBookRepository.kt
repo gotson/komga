@@ -21,6 +21,10 @@ interface ThumbnailBookRepository {
 
   fun existsById(thumbnailId: String): Boolean
 
+  fun getLibraryIdOrNull(thumbnailId: String): String?
+
+  fun getSeriesIdOrNull(thumbnailId: String): String?
+
   fun insert(thumbnail: ThumbnailBook)
 
   fun update(thumbnail: ThumbnailBook)

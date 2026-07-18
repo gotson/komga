@@ -516,13 +516,17 @@ class KoboController(
    */
   @GetMapping("/v1/library/{bookId}/metadata")
   fun getBookMetadata(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable authToken: String,
     @PathVariable bookId: String,
   ): ResponseEntity<*> =
-    if (!bookRepository.existsById(bookId) && koboProxy.isEnabled())
+    if (!bookRepository.existsById(bookId) && koboProxy.isEnabled()) {
       koboProxy.proxyCurrentRequest()
-    else
+    } else {
+      contentRestrictionChecker.checkContentRestriction(principal.user, bookId)
+
       ResponseEntity.ok(koboDtoRepository.findBookMetadataByIds(listOf(bookId)).map { it.withDownloadUrls(getDownloadUrlBuilder(authToken)) })
+    }
 
   /**
    * @return an array of [ReadingStateDto]
@@ -538,6 +542,8 @@ class KoboController(
           return koboProxy.proxyCurrentRequest()
         else
           throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    contentRestrictionChecker.checkContentRestriction(principal.user, book)
 
     val response = readProgressRepository.findByBookIdAndUserIdOrNull(bookId, principal.user.id)?.toDto() ?: getEmptyReadProgressForBook(book)
     return ResponseEntity.ok(listOf(response))
@@ -561,6 +567,8 @@ class KoboController(
           return koboProxy.proxyCurrentRequest(rawBody)
         else
           throw ResponseStatusException(HttpStatus.NOT_FOUND)
+
+    contentRestrictionChecker.checkContentRestriction(principal.user, book)
 
     val koboUpdate = body.readingStates.firstOrNull() ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST)
     if (koboUpdate.currentBookmark.location == null || koboUpdate.currentBookmark.contentSourceProgressPercent == null) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
@@ -725,6 +733,8 @@ class KoboController(
         .location(UriComponentsBuilder.fromUriString(koboProxy.imageHostUrl).buildAndExpand(thumbnailId, width, height).toUri())
         .build()
     } else {
+      contentRestrictionChecker.checkContentRestrictionBookThumbnail(principal.user, thumbnailId)
+
       val poster = bookLifecycle.getThumbnailBytesByThumbnailId(thumbnailId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
       val posterBytes =
         if (poster.mediaType != ImageType.JPEG.mediaType)
