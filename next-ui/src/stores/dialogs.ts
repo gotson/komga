@@ -1,48 +1,47 @@
-// Utilities
 import { defineStore } from 'pinia'
 import type { DialogConfirmEditProps, DialogConfirmProps, DialogSimpleProps } from '@/types/dialog'
-
-interface DialogsState {
-  confirmEdit: DialogConfirmEditActivation
-  confirm: DialogConfirmActivation
-  simple: DialogSimpleActivation
-}
 
 /**
  * Reusable dialogs.
  * The single instances of the dialogs are created under App, and can be triggered by using this store.
  */
-export const useDialogsStore = defineStore('dialogs', {
-  state: (): DialogsState => ({
-    confirmEdit: {
-      dialogProps: {},
-      slot: {
-        component: undefined,
-        props: {},
-        handlers: {},
-      },
-      record: undefined,
-      callback: () => {},
+export const useDialogsStore = defineStore('dialogs', () => {
+  const confirmEdit = ref<DialogConfirmEditActivation>({
+    dialogProps: {},
+    slot: {
+      component: undefined,
+      props: {},
+      handlers: {},
     },
-    confirm: {
-      dialogProps: {},
-      slotWarning: {
-        component: undefined,
-        props: {},
-        handlers: {},
-      },
-      callback: () => {},
+    record: undefined,
+    callback: () => {},
+  })
+
+  const confirm = ref<DialogConfirmActivation>({
+    dialogProps: {},
+    slotWarning: {
+      component: undefined,
+      props: {},
+      handlers: {},
     },
-    simple: {
-      dialogProps: {},
-      slot: {
-        component: undefined,
-        props: {},
-        handlers: {},
-      },
-      callback: () => {},
+    callback: () => {},
+  })
+
+  const simple = ref<DialogSimpleActivation>({
+    dialogProps: {},
+    slot: {
+      component: undefined,
+      props: {},
+      handlers: {},
     },
-  }),
+    callback: () => {},
+  })
+
+  return {
+    confirmEdit,
+    confirm,
+    simple,
+  }
 })
 
 type DialogActivation<T> = {

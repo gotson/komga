@@ -41,8 +41,10 @@ export function isMessageWithActionRouter(
   return v.is(MessageActionRouterDiscriminator, item)
 }
 
-export const useMessagesStore = defineStore('messages', {
-  state: () => ({
-    messages: [] as Message[],
-  }),
+export const useMessagesStore = defineStore('messages', () => {
+  const messages = ref<Message[]>([])
+
+  return {
+    messages,
+  }
 })
