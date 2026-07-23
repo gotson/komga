@@ -425,7 +425,7 @@
 </template>
 
 <script lang="ts">
-import {groupAuthorsByRole} from '@/functions/authors'
+import {buildManyAuthorsByRole, groupAuthorsByRole} from '@/functions/authors'
 import {authorRoles} from '@/types/author-roles'
 import Vue from 'vue'
 import {helpers, requiredIf} from 'vuelidate/lib/validators'
@@ -482,6 +482,7 @@ export default Vue.extend({
       authorSearch: [],
       authorSearchResults: [] as string[],
       tagsAvailable: [] as string[],
+      isMultiBookAuthorDirty: false, // workaround for author consistency in bulk mode
     }
   },
   props: {
@@ -627,11 +628,27 @@ export default Vue.extend({
       if (Array.isArray(books) && books.length === 0) return
       else if (this.$_.isEmpty(books)) return
       if (Array.isArray(books) && books.length > 0) {
-        this.form.authors = {}
+        this.form.authors = buildManyAuthorsByRole(books)
         this.form.links = []
+        const currentRoles = this.$_.keys(this.form.authors)
+        // Use authorRoles from computed value, so we can extend if needed
+        const ignoreRoles = this.authorRoles.map(r => r.value)
+          .filter((r) => !this.customRoles.includes(r)) // remove old custom roles
+          .filter((r) => !authorRoles.includes(r)) // remove native roles
+        this.customRoles = currentRoles.filter((r) => !ignoreRoles.includes(r)) // add new custom roles
+
+        let forceAuthorLock = false
+        for (const book of books) {
+          const bookAuthor = groupAuthorsByRole(book.metadata.authors)
+          if (!this.$_.isEqual(bookAuthor, this.form.authors)) {
+            this.isMultiBookAuthorDirty = true
+            forceAuthorLock = true
+            break
+          }
+        }
 
         const authorsLock = this.$_.uniq(books.map(x => x.metadata.authorsLock))
-        this.form.authorsLock = authorsLock.length > 1 ? false : authorsLock[0]
+        this.form.authorsLock = authorsLock.length > 1 ? false : authorsLock[0] || forceAuthorLock
 
         this.form.tags = []
 
@@ -665,7 +682,7 @@ export default Vue.extend({
           tagsLock: this.form.tagsLock,
         }
 
-        if (this.$v.form?.authors?.$dirty) {
+        if (this.$v.form?.authors?.$dirty || this.isMultiBookAuthorDirty) {
           this.$_.merge(metadata, {
             authors: this.$_.keys(this.form.authors).flatMap((role: string) =>
               this.$_.get(this.form.authors, role).map((name: string) => ({name: name, role: role})),
