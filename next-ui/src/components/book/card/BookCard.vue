@@ -77,7 +77,7 @@ const titleAndLines = computed<{ title: ItemCardTitle; lines: ItemCardLine[] }>(
       text: intl.formatMessage(mediaStatusMessages[MediaStatus.Error]),
       classes: 'text-error',
     }
-  else if (book.value.media.status === MediaStatus.Unknown)
+  else if (book.value.media.status === MediaStatus.Unsupported)
     footer = {
       text: intl.formatMessage(mediaStatusMessages[MediaStatus.Unsupported]),
       classes: 'text-warning',
