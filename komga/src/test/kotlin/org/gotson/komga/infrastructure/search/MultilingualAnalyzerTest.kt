@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.search
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import java.text.Normalizer
 
 class MultilingualAnalyzerTest {
   private val analyzer = MultiLingualAnalyzer()
@@ -112,5 +113,22 @@ class MultilingualAnalyzerTest {
 
     // then
     assertThat(tokens).containsExactly("고교", "교생", "생을", "환불", "불해", "주세", "세요")
+  }
+
+  @Test
+  fun `korean decomposed NFD yields the same tokens as precomposed NFC`() {
+    // given - the same Korean title in precomposed (NFC) and decomposed (NFD) form,
+    // as produced by some filesystems (e.g. SMB shares on macOS)
+    val nfc = Normalizer.normalize("바스타드", Normalizer.Form.NFC)
+    val nfd = Normalizer.normalize("바스타드", Normalizer.Form.NFD)
+    assertThat(nfd).isNotEqualTo(nfc) // sanity check: the two Unicode forms really differ
+
+    // when
+    val tokensFromNfc = analyzer.getTokens(nfc)
+    val tokensFromNfd = analyzer.getTokens(nfd)
+
+    // then - both forms yield identical tokens, so an NFD-indexed title matches an NFC query and vice versa
+    assertThat(tokensFromNfd).isEqualTo(tokensFromNfc)
+    assertThat(tokensFromNfc).containsExactly("바스", "스타", "타드")
   }
 }
