@@ -68,7 +68,7 @@ export const Unavailable: Story = {
               unpinned: true,
             },
           }
-          const settings: Record<string, ClientSettingUserUpdateDto> = {
+          const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
             [ClientSettingUser.NextUILibraries]: {
               value: JSON.stringify(userLibraries),
             },
@@ -108,7 +108,7 @@ export const Unpinned: Story = {
               unpinned: true,
             },
           }
-          const settings: Record<string, ClientSettingUserUpdateDto> = {
+          const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
             [ClientSettingUser.NextUILibraries]: {
               value: JSON.stringify(userLibraries),
             },
@@ -137,7 +137,7 @@ export const Ordered: Story = {
               order: 1,
             },
           }
-          const settings: Record<string, ClientSettingUserUpdateDto> = {
+          const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
             [ClientSettingUser.NextUILibraries]: {
               value: JSON.stringify(userLibraries),
             },

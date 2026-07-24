@@ -4,7 +4,7 @@ import { handleGetUserSettings } from '@/generated/openapi/msw.gen'
 
 import { response200OK } from '@/mocks/api/utils'
 
-const settings: Record<string, ClientSettingUserUpdateDto> = {
+const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
   [ClientSettingUser.NextUILibraries]: {
     value: JSON.stringify({}),
   },

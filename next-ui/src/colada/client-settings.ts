@@ -1,14 +1,15 @@
 import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import {
-  type ClientSettingUserOverviewSection,
   ClientSettingUser,
-  type ClientSettingUserLibrary,
+  ClientSettingUserSchemas,
+  type ClientSettingUserSettings,
 } from '@/types/ClientSettingsUser'
 import {
   type ClientSettingUserUpdateDto,
   komgaGetUserSettings,
   komgaSaveUserSetting,
 } from '@/generated/openapi'
+import * as v from 'valibot'
 
 export const QUERY_KEYS_CLIENT_SETTINGS = {
   root: ['client-settings'] as const,
@@ -25,37 +26,44 @@ export const useClientSettingsUser = defineQuery(() => {
     gcTime: false,
   })
 
-  // a Record mapping a library ID to its settings
-  const userLibraries = computed(() => {
-    const json = data.value?.[ClientSettingUser.NextUILibraries]?.value
-    //TODO: should use valibot for parsing
-    if (json) return JSON.parse(json) as Record<string, ClientSettingUserLibrary>
-    return {}
-  })
+  const userSettings = computed(() => {
+    const raw = data.value
+    const result: Partial<Record<ClientSettingUser, unknown>> = {}
 
-  // a Record mapping a libraryId to its overview sections
-  const overviewSections = computed(() => {
-    const json = data.value?.[ClientSettingUser.NextUIOverviewSections]?.value
-    //TODO: should use valibot for parsing
-    if (json) return JSON.parse(json) as Record<string, ClientSettingUserOverviewSection[]>
-    return {}
+    // only expose settings declared in ClientSettingUser
+    for (const settingKey of Object.values(ClientSettingUser)) {
+      const schema = ClientSettingUserSchemas[settingKey]
+      if (!schema) continue
+
+      // validate raw json against defined schema, else fallback
+      const setting = raw?.[settingKey]
+      result[settingKey] = setting?.value
+        ? v.parse(schema, JSON.parse(setting.value))
+        : v.getDefaults(schema)
+    }
+
+    return result as ClientSettingUserSettings
   })
 
   return {
     data,
     ...rest,
-    userLibraries,
-    overviewSections,
+    userSettings,
   }
 })
 
 export const useUpdateClientSettingsUser = defineMutation(() => {
   const queryCache = useQueryCache()
   return useMutation({
-    mutation: (settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>>) =>
-      komgaSaveUserSetting({
-        body: settings,
-      }),
+    mutation: (settings: Partial<ClientSettingUserSettings>) => {
+      const body: Record<string, ClientSettingUserUpdateDto> = {}
+      for (const [key, value] of Object.entries(settings)) {
+        if (value !== undefined) {
+          body[key] = { value: JSON.stringify(value) }
+        }
+      }
+      return komgaSaveUserSetting({ body })
+    },
     onSuccess: () => {
       void queryCache.invalidateQueries({ key: QUERY_KEYS_CLIENT_SETTINGS.user() })
     },

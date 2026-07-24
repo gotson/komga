@@ -1,4 +1,5 @@
 import { defineMutation, defineQuery, useMutation, useQuery } from '@pinia/colada'
+import { ClientSettingUser } from '@/types/ClientSettingsUser'
 import { useClientSettingsUser } from '@/colada/client-settings'
 import { combinePromises } from '@/colada/utils'
 import { entitiesChanged } from '@/colada/cache'
@@ -35,10 +36,14 @@ export const useLibraries = defineQuery(() => {
   })
 
   const {
-    userLibraries,
+    userSettings,
     refresh: refreshSettings,
     refetch: refetchSettings,
   } = useClientSettingsUser()
+
+  const userLibraries = computed(() => {
+    return userSettings.value[ClientSettingUser.NextUILibraries]
+  })
 
   const refresh = combinePromises(refreshLibraries, [refreshSettings])
   const refetch = combinePromises(refetchLibraries, [refetchSettings])

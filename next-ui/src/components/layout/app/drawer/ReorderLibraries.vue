@@ -126,7 +126,7 @@ void refresh().then(() => {
     newUnpinned.forEach(
       (it, index) => (newSettings[it.id] = { order: newPinned.length + index, unpinned: true }),
     )
-    mutate({ [ClientSettingUser.NextUILibraries]: { value: JSON.stringify(newSettings) } })
+    mutate({ [ClientSettingUser.NextUILibraries]: newSettings })
   })
 })
 
