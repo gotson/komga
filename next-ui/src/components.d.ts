@@ -132,6 +132,7 @@ declare module 'vue' {
     ReadMore: typeof import('./components/ReadMore.vue')['default']
     ReleaseCard: typeof import('./components/release/Card.vue')['default']
     RemoteFileList: typeof import('./components/RemoteFileList.vue')['default']
+    ReorderOverviewSections: typeof import('./components/ReorderOverviewSections.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectionBar: typeof import('./components/selection/Bar.vue')['default']
