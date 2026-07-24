@@ -3,7 +3,9 @@
     v-if="items.length > 0"
     :items="items"
     :title="$formatMessage(overviewSectionMessages[section])"
+    :has-next-page="hasNextPage"
     class="with-gap"
+    @load-next-page="loadNextPage()"
   >
     <template #default="{ item, isSelected, toggleSelect, preSelect }">
       <div class="py-2 px-1">
@@ -145,7 +147,7 @@ function getQueryOptions() {
   }
 }
 
-const { data } = useInfiniteQuery(() => getQueryOptions() as never)
+const { data, hasNextPage, loadNextPage } = useInfiniteQuery(() => getQueryOptions() as never)
 
 const items = computed(() => {
   const pages = data.value?.pages as (PageBookDto | PageSeriesDto)[] | undefined

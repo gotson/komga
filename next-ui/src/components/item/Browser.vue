@@ -64,7 +64,7 @@
     v-if="appStore.isBrowsingScroll && hasNextPage"
     v-intersect="(isIntersecting: boolean) => (isIntersecting ? emit('loadNextPage') : undefined)"
     style="min-height: 40px"
-  ></div>
+  />
 </template>
 
 <script setup lang="ts" generic="T">

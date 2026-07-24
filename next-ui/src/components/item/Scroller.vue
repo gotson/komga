@@ -8,16 +8,17 @@
         {{ title }}
       </div>
 
-      <div class="d-flex align-center">
+      <div
+        v-if="showArrows"
+        class="d-flex align-center"
+      >
         <v-icon-btn
-          v-if="showArrows"
           icon="i-mdi:chevron-left"
           :disabled="!slideGroup?.hasPrev"
           variant="text"
           @click="slideGroup?.scrollTo('prev')"
         />
         <v-icon-btn
-          v-if="showArrows"
           icon="i-mdi:chevron-right"
           :disabled="!slideGroup?.hasNext"
           variant="text"
@@ -44,6 +45,14 @@
           :toggle-select="() => selectionStore.toggle(item)"
         />
       </v-slide-group-item>
+
+      <div
+        v-if="hasNextPage"
+        v-intersect="
+          (isIntersecting: boolean) => (isIntersecting ? emit('loadNextPage') : undefined)
+        "
+        style="min-width: 40px"
+      />
     </v-slide-group>
   </div>
 </template>
@@ -63,6 +72,11 @@ const showArrows = computed(
 defineProps<{
   items?: SelectionType[]
   title?: string
+  hasNextPage: boolean
+}>()
+
+const emit = defineEmits<{
+  loadNextPage: []
 }>()
 
 const selectionStore = useSelectionStore()

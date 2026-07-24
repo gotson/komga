@@ -21,13 +21,13 @@ provide(
   computed(() => ({ library_id: libraryIds.value })),
 )
 
-//TODO: for now we always redirect to 'recommended', this should be persisted per libraryId
+//TODO: for now we always redirect to 'overview', this should be persisted per viewId or pinned somehow
 watchImmediate(
   () => route?.name,
   (newRouteName) => {
     if (newRouteName === '/libraries/[id]')
       void router.replace({
-        name: '/libraries/[id]/series',
+        name: '/libraries/[id]/overview',
         params: { id: libraryId.value },
       })
   },
