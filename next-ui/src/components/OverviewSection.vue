@@ -15,6 +15,7 @@
           stretch-poster
           :selected="isSelected"
           :pre-select="preSelect"
+          :width="cardWidth"
           @selection="toggleSelect"
         />
         <BookCard
@@ -24,6 +25,7 @@
           show-series
           :selected="isSelected"
           :pre-select="preSelect"
+          :width="cardWidth"
           @selection="toggleSelect"
         />
       </div>
@@ -48,13 +50,19 @@ import type {
 import { seriesListQueryInfinite, seriesUpdatedQueryInfinite } from '@/colada/series'
 import { useInfiniteQuery } from '@pinia/colada'
 import { type OverviewSection, overviewSectionMessages } from '@/types/OverviewSection'
+import { useAppStore } from '@/stores/app'
+import { useDisplay } from 'vuetify'
 
 const props = defineProps<{
   section: OverviewSection
   libraryId: LibraryId
 }>()
 
+const display = useDisplay()
+const appStore = useAppStore()
 const { libraryIds } = useGetLibrariesById(props.libraryId)
+
+const cardWidth = computed(() => (display.smAndUp.value ? appStore.gridCardWidth : 130))
 
 const kind = computed(() => {
   switch (props.section) {
