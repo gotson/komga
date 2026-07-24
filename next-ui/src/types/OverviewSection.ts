@@ -1,4 +1,5 @@
 import { defineMessages, type MessageDescriptor } from 'vue-intl'
+import type { ClientSettingUserOverviewSection } from '@/types/ClientSettingsUser'
 
 export const OverviewSectionValues = [
   'keep_reading',
@@ -9,6 +10,11 @@ export const OverviewSectionValues = [
   'recently_updated_series',
   'recently_read_books',
 ] as const
+
+export const OverviewSectionsDefault: ClientSettingUserOverviewSection[] =
+  OverviewSectionValues.map((section) => ({
+    section: section,
+  }))
 
 export type OverviewSection = (typeof OverviewSectionValues)[number]
 

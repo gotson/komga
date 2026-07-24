@@ -2,7 +2,7 @@
   <ItemScroller
     v-if="items.length > 0"
     :items="items"
-    :title="$formatMessage(overviewSectionMessages[section])"
+    :title="$formatMessage(overviewSectionMessages[section.section])"
     :has-next-page="hasNextPage"
     class="with-gap"
     @load-next-page="loadNextPage()"
@@ -49,12 +49,13 @@ import type {
 } from '@/generated/openapi'
 import { seriesListQueryInfinite, seriesUpdatedQueryInfinite } from '@/colada/series'
 import { useInfiniteQuery } from '@pinia/colada'
-import { type OverviewSection, overviewSectionMessages } from '@/types/OverviewSection'
+import { overviewSectionMessages } from '@/types/OverviewSection'
 import { useAppStore } from '@/stores/app'
 import { useDisplay } from 'vuetify'
+import type { ClientSettingUserOverviewSection } from '@/types/ClientSettingsUser'
 
 const props = defineProps<{
-  section: OverviewSection
+  section: ClientSettingUserOverviewSection
   libraryViewId: LibraryViewId
 }>()
 
@@ -65,7 +66,7 @@ const { libraryIds } = useGetLibrariesByViewId(props.libraryViewId)
 const cardWidth = computed(() => (display.smAndUp.value ? appStore.gridCardWidth : 130))
 
 const kind = computed(() => {
-  switch (props.section) {
+  switch (props.section.section) {
     case 'keep_reading':
     case 'on_deck':
     case 'recently_released_books':
@@ -79,7 +80,7 @@ const kind = computed(() => {
 })
 
 function getQueryOptions() {
-  switch (props.section) {
+  switch (props.section.section) {
     case 'keep_reading':
       return bookListQueryInfinite({
         search: {
