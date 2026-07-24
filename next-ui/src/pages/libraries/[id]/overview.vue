@@ -10,7 +10,7 @@
       v-for="section in overviewSections"
       :key="section"
       :section="section"
-      :library-id="libraryId"
+      :library-view-id="libraryId"
     />
   </div>
 </template>

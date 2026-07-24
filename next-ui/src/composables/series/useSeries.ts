@@ -1,5 +1,5 @@
 import { useCurrentUser } from '@/colada/users'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import type { SeriesDto } from '@/generated/openapi'
 
 export function useSeries(series: MaybeRefOrGetter<SeriesDto>) {
@@ -16,7 +16,7 @@ export function useSeries(series: MaybeRefOrGetter<SeriesDto>) {
   )
 
   const { hasRole } = useCurrentUser()
-  const { libraries } = useGetLibrariesById(() => toValue(series).libraryId)
+  const { libraries } = useGetLibrariesByViewId(() => toValue(series).libraryId)
 
   const isUnavailable = computed(() => toValue(series).deleted || libraries.value?.[0]?.unavailable)
 

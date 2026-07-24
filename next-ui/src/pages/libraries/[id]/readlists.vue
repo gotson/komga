@@ -45,7 +45,7 @@
 <script lang="ts" setup>
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { PageRequest } from '@/types/PageRequest'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
@@ -58,8 +58,8 @@ import { useSelectionContextualActions } from '@/composables/selection'
 import { watchImmediate } from '@vueuse/core'
 
 const route = useRoute('/libraries/[id]/readlists')
-const libraryId = route.params.id
-const { libraryIds } = useGetLibrariesById(libraryId)
+const libraryViewId = route.params.id
+const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 
 const router = useRouter()
 const display = useDisplay()
@@ -112,7 +112,7 @@ const totalElements = computed(() =>
 watchImmediate(totalElements, async (newTotalElements) => {
   if (newTotalElements == 0) {
     await nextTick()
-    void router.replace({ name: '/libraries/[id]', params: { id: libraryId } })
+    void router.replace({ name: '/libraries/[id]', params: { id: libraryViewId } })
   }
 })
 

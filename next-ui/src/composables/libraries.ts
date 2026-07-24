@@ -1,19 +1,19 @@
 import { useLibraries } from '@/colada/libraries'
-import type { LibraryId } from '@/types/libraries'
+import type { LibraryViewId } from '@/types/libraries'
 import type { LibraryDto } from '@/generated/openapi'
 
 /**
- * A composable that returns libraries filtered by a LibraryId.
- * @param libraryId the library ID or group to get
+ * A composable that returns libraries filtered by a LibraryViewId.
+ * @param libraryViewId the library ID or group to get
  */
-export function useGetLibrariesById(libraryId: MaybeRefOrGetter<LibraryId>) {
+export function useGetLibrariesByViewId(libraryViewId: MaybeRefOrGetter<LibraryViewId>) {
   const { data: all, pinned, unpinned, status } = useLibraries()
 
   const libs = computed(() => {
     if (status.value !== 'success') return undefined
 
     let libs: LibraryDto[] = []
-    switch (toValue(libraryId)) {
+    switch (toValue(libraryViewId)) {
       case 'all':
         libs = all.value || []
         break
@@ -24,7 +24,7 @@ export function useGetLibrariesById(libraryId: MaybeRefOrGetter<LibraryId>) {
         libs = unpinned.value
         break
       default:
-        const lib = all.value?.find((it) => it.id === toValue(libraryId))
+        const lib = all.value?.find((it) => it.id === toValue(libraryViewId))
         if (lib) libs = [lib]
         break
     }
@@ -33,9 +33,9 @@ export function useGetLibrariesById(libraryId: MaybeRefOrGetter<LibraryId>) {
 
   const libIds = computed(() => libs.value?.map((it) => it.id))
 
-  const isPinned = computed(() => toValue(libraryId) === 'pinned')
-  const isUnpinned = computed(() => toValue(libraryId) === 'unpinned')
-  const isAll = computed(() => toValue(libraryId) === 'all')
+  const isPinned = computed(() => toValue(libraryViewId) === 'pinned')
+  const isUnpinned = computed(() => toValue(libraryViewId) === 'unpinned')
+  const isAll = computed(() => toValue(libraryViewId) === 'all')
   const isSingle = computed(() => !isPinned.value && !isUnpinned.value && !isAll.value)
 
   const library = computed(() => (isSingle.value ? libs.value?.[0] : undefined))

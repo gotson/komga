@@ -230,7 +230,7 @@ import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
 
 import { PageRequest } from '@/types/PageRequest'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
@@ -259,14 +259,14 @@ import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionSeries } from '@/generated/openapi'
 
 const route = useRoute('/libraries/[id]/series')
-const libraryId = route.params.id
-const { libraryIds } = useGetLibrariesById(libraryId)
+const libraryViewId = route.params.id
+const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 
 const display = useDisplay()
 const appStore = useAppStore()
 const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 
-const viewName = computed(() => `${libraryId}_series`)
+const viewName = computed(() => `${libraryViewId}_series`)
 const { presentationMode, presentationModeEffective } = usePresentationMode(viewName)
 
 const { page0, page1, pageCount } = usePagination()

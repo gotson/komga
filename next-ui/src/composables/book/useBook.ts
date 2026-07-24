@@ -1,11 +1,11 @@
 import { useCurrentUser } from '@/colada/users'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import type { BookDto } from '@/generated/openapi'
 import { MediaStatus } from '@/types/MediaStatus'
 
 export function useBook(book: MaybeRefOrGetter<BookDto>) {
   const { hasRole } = useCurrentUser()
-  const { libraries } = useGetLibrariesById(() => toValue(book).libraryId)
+  const { libraries } = useGetLibrariesByViewId(() => toValue(book).libraryId)
 
   const isDeleted = computed(() => toValue(book).deleted)
   const isUnavailable = computed(() => isDeleted.value || libraries.value?.[0]?.unavailable)

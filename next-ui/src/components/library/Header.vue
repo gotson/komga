@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { useCurrentUser } from '@/colada/users'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import type { LibraryDto } from '@/generated/openapi'
 
 const {
@@ -54,7 +54,7 @@ const id = useId()
 
 const bottomSheet = ref(false)
 
-const { library: librarySingle } = useGetLibrariesById(() => libraryId ?? 'unknown')
+const { library: librarySingle } = useGetLibrariesByViewId(() => libraryId ?? 'unknown')
 
 const effectiveLibrary = computed(() => library ?? librarySingle.value)
 </script>

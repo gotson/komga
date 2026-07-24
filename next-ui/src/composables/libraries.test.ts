@@ -2,13 +2,13 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } fr
 import { server } from '@/mocks/api/node'
 import { createMockColada } from '@/mocks/pinia-colada'
 import { enableAutoUnmount } from '@vue/test-utils'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 
 import { mockLibraries } from '@/mocks/api/handlers/libraries'
 
 import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import { waitFor } from 'storybook/test'
-import type { LibraryId } from '@/types/libraries'
+import type { LibraryViewId } from '@/types/libraries'
 import type { ClientSettingUserUpdateDto, LibraryDto } from '@/generated/openapi'
 import { handleGetLibraries, handleGetUserSettings } from '@/generated/openapi/msw.gen'
 
@@ -81,9 +81,9 @@ describe('libraries composable', () => {
   })
 })
 
-async function doTest(libraryId: LibraryId, expectedIds: string[]) {
-  createMockColada(() => useGetLibrariesById(libraryId))
-  const { libraries } = useGetLibrariesById(libraryId)
+async function doTest(libraryViewId: LibraryViewId, expectedIds: string[]) {
+  createMockColada(() => useGetLibrariesByViewId(libraryViewId))
+  const { libraries } = useGetLibrariesByViewId(libraryViewId)
 
   await waitFor(() => {
     if (libraries.value === undefined) throw new Error('data not fetched')

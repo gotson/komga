@@ -161,7 +161,7 @@
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
 import { useDisplay } from 'vuetify'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
 import { usePagination } from '@/composables/pagination'
@@ -188,14 +188,14 @@ import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionBook } from '@/generated/openapi'
 
 const route = useRoute('/libraries/[id]/books')
-const libraryId = route.params.id
-const { libraryIds } = useGetLibrariesById(libraryId)
+const libraryViewId = route.params.id
+const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 
 const display = useDisplay()
 const appStore = useAppStore()
 const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 
-const viewName = computed(() => `${libraryId}_books`)
+const viewName = computed(() => `${libraryViewId}_books`)
 
 const { page0, page1, pageCount } = usePagination()
 
@@ -280,7 +280,7 @@ const dataItems = computed(() =>
 )
 const totalElements = computed(() =>
   isBrowsingPaged.value
-    ? dataPaged.value?.totalElements2
+    ? dataPaged.value?.totalElements
     : dataInfinite.value?.pages?.[0]?.totalElements,
 )
 

@@ -34,10 +34,10 @@
 </template>
 
 <script setup lang="ts">
-import { type LibraryId } from '@/types/libraries'
+import { type LibraryViewId } from '@/types/libraries'
 import { bookListQueryInfinite, booksOnDeckQueryInfinite } from '@/colada/books'
 import { valuesToConditions } from '@/functions/filter'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { ReadStatus } from '@/types/ReadStatus'
 import type {
   BookDto,
@@ -55,12 +55,12 @@ import { useDisplay } from 'vuetify'
 
 const props = defineProps<{
   section: OverviewSection
-  libraryId: LibraryId
+  libraryViewId: LibraryViewId
 }>()
 
 const display = useDisplay()
 const appStore = useAppStore()
-const { libraryIds } = useGetLibrariesById(props.libraryId)
+const { libraryIds } = useGetLibrariesByViewId(props.libraryViewId)
 
 const cardWidth = computed(() => (display.smAndUp.value ? appStore.gridCardWidth : 130))
 

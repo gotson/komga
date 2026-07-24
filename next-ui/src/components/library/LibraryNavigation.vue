@@ -1,15 +1,15 @@
 <template>
   <LibraryTabNavigation
     :routes="routes"
-    :library-id="libraryId"
+    :library-view-id="libraryViewId"
   />
 
   <RouterView />
 </template>
 
 <script setup lang="ts">
-import type { LibraryId } from '@/types/libraries'
-import { useGetLibrariesById } from '@/composables/libraries'
+import type { LibraryViewId } from '@/types/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useQuery } from '@pinia/colada'
 import { collectionsListQuery } from '@/colada/collections'
 import { PageRequest } from '@/types/PageRequest'
@@ -20,10 +20,10 @@ import type { Route } from '@/types/route'
 const intl = useIntl()
 
 const props = defineProps<{
-  libraryId: LibraryId
+  libraryViewId: LibraryViewId
 }>()
 
-const { libraries } = useGetLibrariesById(props.libraryId)
+const { libraries } = useGetLibrariesByViewId(props.libraryViewId)
 const { data: collections } = useQuery(() => ({
   ...collectionsListQuery({
     libraryIds: libraries.value?.map((it) => it.id),
@@ -47,7 +47,7 @@ const routesBase = [
       id: 'MKs9N+',
     }),
     icon: 'i-mdi:star',
-    to: { name: '/libraries/[id]/overview', params: { id: props.libraryId } },
+    to: { name: '/libraries/[id]/overview', params: { id: props.libraryViewId } },
   } as Route,
   {
     title: intl.formatMessage({
@@ -56,7 +56,7 @@ const routesBase = [
       id: 'lt7Tru',
     }),
     icon: 'i-mdi:bookshelf',
-    to: { name: '/libraries/[id]/series', params: { id: props.libraryId } },
+    to: { name: '/libraries/[id]/series', params: { id: props.libraryViewId } },
   } as Route,
   {
     title: intl.formatMessage({
@@ -65,7 +65,7 @@ const routesBase = [
       id: 'pTsA/M',
     }),
     icon: 'i-mdi:book-multiple',
-    to: { name: '/libraries/[id]/books', params: { id: props.libraryId } },
+    to: { name: '/libraries/[id]/books', params: { id: props.libraryViewId } },
   } as Route,
 ]
 
@@ -79,7 +79,7 @@ const routes = computed(() => {
         id: 'cyQk6S',
       }),
       icon: 'i-mdi:layers-triple',
-      to: { name: '/libraries/[id]/collections', params: { id: props.libraryId } },
+      to: { name: '/libraries/[id]/collections', params: { id: props.libraryViewId } },
     })
   if ((readlists.value?.totalElements ?? 0) > 0)
     extra.push({
@@ -89,7 +89,7 @@ const routes = computed(() => {
         id: 'w2K5yu',
       }),
       icon: 'i-mdi:bookmark-multiple',
-      to: { name: '/libraries/[id]/readlists', params: { id: props.libraryId } },
+      to: { name: '/libraries/[id]/readlists', params: { id: props.libraryViewId } },
     })
   return [...routesBase, ...extra] as Route[]
 })

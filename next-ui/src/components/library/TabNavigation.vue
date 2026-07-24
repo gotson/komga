@@ -78,15 +78,15 @@
 
 <script setup lang="ts">
 import type { Route } from '@/types/route'
-import type { LibraryId } from '@/types/libraries'
-import { useGetLibrariesById } from '@/composables/libraries'
+import type { LibraryViewId } from '@/types/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useIntl } from 'vue-intl'
 import { useLibraries } from '@/colada/libraries'
 import { useDisplay } from 'vuetify/framework'
 
 const props = defineProps<{
   routes: Route[]
-  libraryId: LibraryId
+  libraryViewId: LibraryViewId
 }>()
 
 const intl = useIntl()
@@ -95,7 +95,7 @@ const currentRoute = useRoute()
 const router = useRouter()
 
 const { anyPinned, anyUnpinned } = useLibraries()
-const { isSingle, library: librarySingle } = useGetLibrariesById(props.libraryId)
+const { isSingle, library: librarySingle } = useGetLibrariesByViewId(props.libraryViewId)
 
 const libTypes = computed(() => [
   ...(anyPinned.value
@@ -134,7 +134,7 @@ const libTypes = computed(() => [
       ]
     : []),
 ])
-const selectedLibType = computed(() => libTypes.value.find((it) => it.value === props.libraryId))
+const selectedLibType = computed(() => libTypes.value.find((it) => it.value === props.libraryViewId))
 
 const selectedRoute = computed(() =>
   props.routes.find((it) => router.resolve(it.to).name === currentRoute?.name),

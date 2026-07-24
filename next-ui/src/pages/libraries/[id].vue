@@ -1,20 +1,20 @@
 <template>
   <LibraryNavigation
-    :key="libraryId"
-    :library-id="libraryId"
+    :key="libraryViewId"
+    :library-view-id="libraryViewId"
   />
 </template>
 
 <script lang="ts" setup>
 import { watchImmediate } from '@vueuse/core'
 import { filterKeys } from '@/types/filter'
-import { useGetLibrariesById } from '@/composables/libraries'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useLibraries } from '@/colada/libraries'
 
 const route = useRoute('/libraries/[id]')
 const router = useRouter()
-const libraryId = computed(() => route.params.id)
-const { libraryIds } = useGetLibrariesById(libraryId)
+const libraryViewId = computed(() => route.params.id)
+const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 
 provide(
   filterKeys.context,
@@ -28,14 +28,14 @@ watchImmediate(
     if (newRouteName === '/libraries/[id]')
       void router.replace({
         name: '/libraries/[id]/overview',
-        params: { id: libraryId.value },
+        params: { id: libraryViewId.value },
       })
   },
 )
 
 const { anyPinned, anyUnpinned } = useLibraries()
 
-watch([libraryId, anyPinned, anyUnpinned], ([id, hasPinned, hasUnpinned]) => {
+watch([libraryViewId, anyPinned, anyUnpinned], ([id, hasPinned, hasUnpinned]) => {
   if ((id === 'pinned' && !hasPinned) || (id === 'unpinned' && !hasUnpinned))
     void router.replace({
       params: { ...route.params, id: 'all' },
