@@ -22,13 +22,16 @@ provide(
 )
 
 //TODO: for now we always redirect to 'recommended', this should be persisted per libraryId
-watchImmediate(libraryId, () => {
-  void router.replace({
-    name: '/libraries/[id]/series',
-    params: { id: libraryId.value },
-    query: route.query,
-  })
-})
+watchImmediate(
+  () => route?.name,
+  (newRouteName) => {
+    if (newRouteName === '/libraries/[id]')
+      void router.replace({
+        name: '/libraries/[id]/series',
+        params: { id: libraryId.value },
+      })
+  },
+)
 
 const { anyPinned, anyUnpinned } = useLibraries()
 

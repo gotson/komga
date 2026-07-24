@@ -12,6 +12,7 @@ import {
   komgaDeleteSeriesFile,
   komgaGetSeries,
   komgaGetSeriesById,
+  komgaGetSeriesUpdated,
   komgaMarkSeriesAsRead,
   komgaMarkSeriesAsUnread,
   komgaSeriesAnalyze,
@@ -25,6 +26,8 @@ export const QUERY_KEYS_SERIES = {
   root: ['series'] as const,
   bySearch: (request: object) => [...QUERY_KEYS_SERIES.root, JSON.stringify(request)] as const,
   byId: (seriesId: string) => [...QUERY_KEYS_SERIES.root, seriesId] as const,
+  updated: (request: object) =>
+    [...QUERY_KEYS_SERIES.root, 'updated', JSON.stringify(request)] as const,
 }
 
 export const seriesListQuery = defineQueryOptions(
@@ -52,6 +55,24 @@ export const seriesListQueryInfinite = defineInfiniteQueryOptions(
           page: pageParam.page,
           size: pageParam.size,
           sort: sort?.map((it) => sortToString(it)),
+        },
+      }),
+    getNextPageParam: (lastPage, _, lastPageParam) =>
+      !lastPage?.last ? lastPageParam.next() : null,
+  }),
+)
+
+export const seriesUpdatedQueryInfinite = defineInfiniteQueryOptions(
+  ({ libraryIds }: { libraryIds?: string[] }) => ({
+    key: QUERY_KEYS_SERIES.updated({ libraryIds: libraryIds, infinite: true }),
+    initialPageParam: new PageRequest(0, 50),
+    query: ({ pageParam }) =>
+      komgaGetSeriesUpdated({
+        query: {
+          library_id: libraryIds,
+          oneshot: false,
+          page: pageParam.page,
+          size: pageParam.size,
         },
       }),
     getNextPageParam: (lastPage, _, lastPageParam) =>

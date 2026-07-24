@@ -1,4 +1,3 @@
-// Utilities
 import { defineStore } from 'pinia'
 import { useDisplay } from 'vuetify'
 import type { PresentationMode } from '@/types/libraries'
@@ -14,21 +13,15 @@ export const useAppStore = defineStore(
     const rememberMe = ref(false)
     const importBooksPath = ref('')
     const browsingPageSize = ref<PageSize>(20)
-    const browsingPaging = ref<Paging>('scroll')
-    const presentationMode = ref<Record<string, PresentationMode>>({})
-    /**
-     * Store the sort order per view.
-     * Use the getter to ensure a default value is always set.
-     */
-    const sortActive = ref<Record<string, Sort[]>>({})
-    const gridCardWidth = ref(150)
-    // transient
-    const reorderLibraries = ref(false)
-    const sseUnavailable = ref(false)
 
+    const browsingPaging = ref<Paging>('scroll')
     const isBrowsingPaged = computed(() => browsingPaging.value === 'paged')
     const isBrowsingScroll = computed(() => browsingPaging.value === 'scroll')
-
+    /**
+     * Store the presentation mode per view.
+     * Use the getter to ensure a default value is always set.
+     */
+    const presentationMode = ref<Record<string, PresentationMode>>({})
     const getPresentationMode = (key: string, defaultValue: PresentationMode) => {
       return computed({
         get: () => presentationMode.value[key] ?? (presentationMode.value[key] = defaultValue),
@@ -38,6 +31,11 @@ export const useAppStore = defineStore(
       })
     }
 
+    /**
+     * Store the sort order per view.
+     * Use the getter to ensure a default value is always set.
+     */
+    const sortActive = ref<Record<string, Sort[]>>({})
     const getSortActive = (key: string, defaultValue: Sort[]) => {
       return computed({
         get: () => sortActive.value[key] ?? (sortActive.value[key] = defaultValue),
@@ -46,6 +44,12 @@ export const useAppStore = defineStore(
         },
       })
     }
+
+    const gridCardWidth = ref(150)
+
+    // transient
+    const reorderLibraries = ref(false)
+    const sseUnavailable = ref(false)
 
     return {
       drawer,

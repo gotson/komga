@@ -13,13 +13,13 @@ import { useEntitiesActions } from '@/composables/useEntitiesActions'
 import { storeToRefs } from 'pinia'
 
 const selectionStore = useSelectionStore()
-const { selection } = storeToRefs(selectionStore)
+const { selectionAsArray } = storeToRefs(selectionStore)
 
 function afterClick() {
   selectionStore.clear()
 }
 
-const { actions } = useEntitiesActions(selection, afterClick)
+const { actions } = useEntitiesActions(selectionAsArray, afterClick)
 </script>
 
 <script lang="ts"></script>

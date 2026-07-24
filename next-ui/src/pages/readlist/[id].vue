@@ -328,7 +328,6 @@ const filterDrawer = ref(false)
 
 useSelectionContextualActions(
   dataItems,
-  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
 )
 
 // shared model for all the expansion-panels, so only 1 is opened at the same time

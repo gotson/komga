@@ -14,15 +14,3 @@ export function getIntersection<T>(...arrays: T[][]): T[] {
     return accumulator.filter((item) => currentSet.has(item))
   })
 }
-
-export function pushIfAbsent<T>(
-  destArray: unknown[],
-  newElements: T[] | undefined,
-  isSame: (existing: unknown, toAdd: T) => boolean = (existing, toAdd) =>
-    JSON.stringify(existing) === JSON.stringify(toAdd),
-) {
-  if (!newElements) return
-  newElements.forEach((newItem) => {
-    if (!destArray.some((existingItem) => isSame(existingItem, newItem))) destArray.push(newItem)
-  })
-}

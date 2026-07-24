@@ -377,7 +377,6 @@ const totalElements = computed(() =>
 
 useSelectionContextualActions(
   dataItems,
-  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
 )
 
 const filterDrawer = ref(false)

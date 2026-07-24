@@ -1,5 +1,9 @@
 import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
-import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
+import {
+  type ClientSettingUserOverviewSection,
+  ClientSettingUser,
+  type ClientSettingUserLibrary,
+} from '@/types/ClientSettingsUser'
 import {
   type ClientSettingUserUpdateDto,
   komgaGetUserSettings,
@@ -21,9 +25,19 @@ export const useClientSettingsUser = defineQuery(() => {
     gcTime: false,
   })
 
+  // a Record mapping a library ID to its settings
   const userLibraries = computed(() => {
     const json = data.value?.[ClientSettingUser.NextUILibraries]?.value
+    //TODO: should use valibot for parsing
     if (json) return JSON.parse(json) as Record<string, ClientSettingUserLibrary>
+    return {}
+  })
+
+  // a Record mapping a libraryId to its overview sections
+  const overviewSections = computed(() => {
+    const json = data.value?.[ClientSettingUser.NextUIOverviewSections]?.value
+    //TODO: should use valibot for parsing
+    if (json) return JSON.parse(json) as Record<string, ClientSettingUserOverviewSection[]>
     return {}
   })
 
@@ -31,13 +45,14 @@ export const useClientSettingsUser = defineQuery(() => {
     data,
     ...rest,
     userLibraries,
+    overviewSections,
   }
 })
 
 export const useUpdateClientSettingsUser = defineMutation(() => {
   const queryCache = useQueryCache()
   return useMutation({
-    mutation: (settings: Record<ClientSettingUser, ClientSettingUserUpdateDto>) =>
+    mutation: (settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>>) =>
       komgaSaveUserSetting({
         body: settings,
       }),

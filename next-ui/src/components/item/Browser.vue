@@ -1,6 +1,6 @@
 <template>
   <v-data-iterator
-    v-model="selectionStore.selection"
+    v-model="selectionStore.selectionAsArray"
     return-object
     :items="items"
     :items-per-page="-1"

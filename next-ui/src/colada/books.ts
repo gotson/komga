@@ -16,6 +16,7 @@ import {
   komgaDeleteBookReadProgress,
   komgaGetBookById,
   komgaGetBooks,
+  komgaGetBooksOnDeck,
   komgaMarkBookReadProgress,
   komgaUpdateBookMetadata,
 } from '@/generated/openapi'
@@ -24,6 +25,7 @@ export const QUERY_KEYS_BOOKS = {
   root: ['books'] as const,
   bySearch: (request: object) => [...QUERY_KEYS_BOOKS.root, JSON.stringify(request)] as const,
   byId: (bookId: string) => [...QUERY_KEYS_BOOKS.root, bookId] as const,
+  onDeck: (request: object) => [...QUERY_KEYS_BOOKS.root, 'deck', JSON.stringify(request)] as const,
 }
 
 export const bookListQuery = defineQueryOptions(
@@ -51,6 +53,23 @@ export const bookListQueryInfinite = defineInfiniteQueryOptions(
           page: pageParam.page,
           size: pageParam.size,
           sort: sort?.map((it) => sortToString(it)),
+        },
+      }),
+    getNextPageParam: (lastPage, _, lastPageParam) =>
+      !lastPage?.last ? lastPageParam.next() : null,
+  }),
+)
+
+export const booksOnDeckQueryInfinite = defineInfiniteQueryOptions(
+  ({ libraryIds }: { libraryIds?: string[] }) => ({
+    key: QUERY_KEYS_BOOKS.onDeck({ libraryIds: libraryIds, infinite: true }),
+    initialPageParam: new PageRequest(0, 50),
+    query: ({ pageParam }) =>
+      komgaGetBooksOnDeck({
+        query: {
+          library_id: libraryIds,
+          page: pageParam.page,
+          size: pageParam.size,
         },
       }),
     getNextPageParam: (lastPage, _, lastPageParam) =>

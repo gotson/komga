@@ -106,7 +106,7 @@ const libTypes = computed(() => [
             id: '1qIfds',
           }),
           value: 'pinned',
-          to: `/libraries/pinned`,
+          to: { name: currentRoute.name, params: { id: 'pinned' } },
         },
       ]
     : []),
@@ -117,7 +117,7 @@ const libTypes = computed(() => [
       id: '8/BXfN',
     }),
     value: 'all',
-    to: `/libraries/all`,
+    to: { name: currentRoute.name, params: { id: 'all' } },
   },
   ...(anyUnpinned.value
     ? [
@@ -128,7 +128,7 @@ const libTypes = computed(() => [
             id: '9oA9gw',
           }),
           value: 'unpinned',
-          to: `/libraries/unpinned`,
+          to: { name: currentRoute.name, params: { id: 'unpinned' } },
         },
       ]
     : []),

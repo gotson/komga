@@ -129,8 +129,8 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<false> },
       | '/libraries/[id]/books'
       | '/libraries/[id]/collections'
+      | '/libraries/[id]/overview'
       | '/libraries/[id]/readlists'
-      | '/libraries/[id]/recommended'
       | '/libraries/[id]/series'
     >,
     '/libraries/[id]/books': RouteRecordInfo<
@@ -147,16 +147,16 @@ declare module 'vue-router/auto-routes' {
       { id: ParamValue<false> },
       | never
     >,
-    '/libraries/[id]/readlists': RouteRecordInfo<
-      '/libraries/[id]/readlists',
-      '/libraries/:id/readlists',
+    '/libraries/[id]/overview': RouteRecordInfo<
+      '/libraries/[id]/overview',
+      '/libraries/:id/overview',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
       | never
     >,
-    '/libraries/[id]/recommended': RouteRecordInfo<
-      '/libraries/[id]/recommended',
-      '/libraries/:id/recommended',
+    '/libraries/[id]/readlists': RouteRecordInfo<
+      '/libraries/[id]/readlists',
+      '/libraries/:id/readlists',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
       | never
@@ -402,8 +402,8 @@ declare module 'vue-router/auto-routes' {
         | '/libraries/[id]'
         | '/libraries/[id]/books'
         | '/libraries/[id]/collections'
+        | '/libraries/[id]/overview'
         | '/libraries/[id]/readlists'
-        | '/libraries/[id]/recommended'
         | '/libraries/[id]/series'
       views:
         | 'default'
@@ -426,17 +426,17 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/libraries/[id]/readlists.vue': {
+    'src/pages/libraries/[id]/overview.vue': {
       routes:
-        | '/libraries/[id]/readlists'
+        | '/libraries/[id]/overview'
       views:
         | never
       pathParamNames:
         | never
     }
-    'src/pages/libraries/[id]/recommended.vue': {
+    'src/pages/libraries/[id]/readlists.vue': {
       routes:
-        | '/libraries/[id]/recommended'
+        | '/libraries/[id]/readlists'
       views:
         | never
       pathParamNames:

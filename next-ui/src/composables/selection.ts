@@ -1,14 +1,12 @@
 import { useAppStore } from '@/stores/app'
 import { watchImmediate } from '@vueuse/core'
 import { useSelectionStore } from '@/stores/selection'
-import { pushIfAbsent } from '@/functions/array'
 import { useIntl } from 'vue-intl'
 import { actionDetails, ActionName } from '@/types/action/action'
 import type { BookDto, CollectionDto, ReadListDto, SeriesDto } from '@/generated/openapi'
 
 export function useSelectionContextualActions(
   dataItems: MaybeRefOrGetter<(BookDto | SeriesDto | CollectionDto | ReadListDto)[] | undefined>,
-  isSame: (existing: unknown, toAdd: BookDto | SeriesDto | CollectionDto | ReadListDto) => boolean,
 ) {
   const intl = useIntl()
   const appStore = useAppStore()
@@ -28,7 +26,7 @@ export function useSelectionContextualActions(
                 }),
                 icon: 'i-mdi:select-all',
                 callback: () => {
-                  if (toValue(dataItems)) selectionStore.selection = toValue(dataItems)!
+                  if (toValue(dataItems)) selectionStore.addMultiple(toValue(dataItems)!)
                 },
               },
             ]
@@ -41,7 +39,7 @@ export function useSelectionContextualActions(
                 }),
                 icon: 'i-mdi:file-document-plus-outline',
                 callback: () => {
-                  pushIfAbsent(selectionStore.selection, toValue(dataItems), isSame)
+                  selectionStore.addMultiple(toValue(dataItems)!)
                 },
               },
             ]
@@ -67,7 +65,7 @@ export function useSelectAction(
     icon: actionDetails[ActionName.Select].icon,
     action: ActionName.Select,
     onClick: () => {
-      selectionStore.selection.push(toValue(item))
+      selectionStore.add(toValue(item))
       callback(ActionName.Select)
     },
   }))

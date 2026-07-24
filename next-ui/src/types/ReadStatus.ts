@@ -1,8 +1,14 @@
 import { defineMessages, type MessageDescriptor } from 'vue-intl'
 
-export const ReadStatusValues = ['UNREAD', 'IN_PROGRESS', 'READ'] as const
+export const ReadStatus = {
+  Unread: 'UNREAD',
+  InProgress: 'IN_PROGRESS',
+  Read: 'READ',
+} as const
 
-export type ReadStatus = (typeof ReadStatusValues)[number]
+export type ReadStatus = (typeof ReadStatus)[keyof typeof ReadStatus]
+
+export const ReadStatusValues = Object.values(ReadStatus)
 
 export const readStatusMessages: Record<ReadStatus, MessageDescriptor> = defineMessages({
   UNREAD: {

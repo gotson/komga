@@ -55,11 +55,13 @@ import { storeToRefs } from 'pinia'
 import ChipCount from '@/components/ChipCount.vue'
 import { readListsListQuery, readListsListQueryInfinite } from '@/colada/readlists'
 import { useSelectionContextualActions } from '@/composables/selection'
+import { watchImmediate } from '@vueuse/core'
 
 const route = useRoute('/libraries/[id]/readlists')
 const libraryId = route.params.id
 const { libraryIds } = useGetLibrariesById(libraryId)
 
+const router = useRouter()
 const display = useDisplay()
 const appStore = useAppStore()
 const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
@@ -107,9 +109,15 @@ const totalElements = computed(() =>
     : dataInfinite.value?.pages?.[0]?.totalElements,
 )
 
+watchImmediate(totalElements, async (newTotalElements) => {
+  if (newTotalElements == 0) {
+    await nextTick()
+    void router.replace({ name: '/libraries/[id]', params: { id: libraryId } })
+  }
+})
+
 useSelectionContextualActions(
   dataItems,
-  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
 )
 </script>
 

@@ -280,16 +280,13 @@ const dataItems = computed(() =>
 )
 const totalElements = computed(() =>
   isBrowsingPaged.value
-    ? dataPaged.value?.totalElements
+    ? dataPaged.value?.totalElements2
     : dataInfinite.value?.pages?.[0]?.totalElements,
 )
 
 const filterDrawer = ref(false)
 
-useSelectionContextualActions(
-  dataItems,
-  (existing, toAdd) => (existing as { id: string }).id === toAdd.id,
-)
+useSelectionContextualActions(dataItems)
 
 // shared model for all the expansion-panels, so only 1 is opened at the same time
 const filterExpansionPanels = ref()
