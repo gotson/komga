@@ -92,6 +92,7 @@ const props = defineProps<{
 const intl = useIntl()
 const display = useDisplay()
 const currentRoute = useRoute()
+const router = useRouter()
 
 const { anyPinned, anyUnpinned } = useLibraries()
 const { isSingle, library: librarySingle } = useGetLibrariesById(props.libraryId)
@@ -135,7 +136,9 @@ const libTypes = computed(() => [
 ])
 const selectedLibType = computed(() => libTypes.value.find((it) => it.value === props.libraryId))
 
-const selectedRoute = computed(() => props.routes.find((it) => it.to === currentRoute?.path))
+const selectedRoute = computed(() =>
+  props.routes.find((it) => router.resolve(it.to).name === currentRoute?.name),
+)
 </script>
 
 <style scoped></style>
