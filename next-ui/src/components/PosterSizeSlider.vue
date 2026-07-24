@@ -15,6 +15,7 @@
     hide-details
     thumb-size="15"
     max-width="80"
+    min-width="50"
   />
 </template>
 

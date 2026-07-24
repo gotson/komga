@@ -1,17 +1,17 @@
 <template>
-  <v-app-bar>
-    <v-spacer />
-
+  <Teleport
+    to="#navbar-append-teleport-target"
+    defer
+  >
     <PosterSizeSlider />
 
     <v-icon-btn
       v-tooltip:bottom="$formatMessage(editMessage)"
       icon="i-mdi:star-cog"
-      class="me-2"
       @mouseenter="(event: Event) => (dialogConfirmEdit.activator = event.currentTarget as Element)"
       @click="editSections()"
     />
-  </v-app-bar>
+  </Teleport>
 
   <div class="pa-4 d-flex flex-column ga-6">
     <OverviewSection

@@ -32,7 +32,7 @@
     </template>
 
     <template
-      v-if="display.smAndUp.value"
+      v-if="display.mdAndUp.value"
       #default
     >
       <v-tabs
@@ -50,7 +50,7 @@
 
     <template #append>
       <!-- Empty slot effectively centers the tabs   -->
-      <v-menu v-if="display.xs.value">
+      <v-menu v-if="display.smAndDown.value">
         <template #activator="{ props: activatorProps }">
           <v-btn
             class="text-title-large"
@@ -72,6 +72,12 @@
           />
         </v-list>
       </v-menu>
+
+      <div
+        id="navbar-append-teleport-target"
+        class="d-flex flex-shrink-0 ga-4 align-center justify-end"
+        :style="{ width: display.mdAndUp.value ? '120px' : 'auto' }"
+      />
     </template>
   </v-app-bar>
 </template>
