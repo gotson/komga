@@ -21,7 +21,7 @@ const meta = {
     },
   },
   args: {
-    libraryId: 'all',
+    libraryViewId: 'all',
   },
 } satisfies Meta<typeof TabNavigation>
 

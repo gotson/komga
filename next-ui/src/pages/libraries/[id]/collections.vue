@@ -117,9 +117,7 @@ watchImmediate(totalElements, async (newTotalElements) => {
   }
 })
 
-useSelectionContextualActions(
-  dataItems,
-)
+useSelectionContextualActions(dataItems)
 </script>
 
 <style lang="scss"></style>

@@ -375,9 +375,7 @@ const totalElements = computed(() =>
     : dataInfinite.value?.pages?.[0]?.totalElements,
 )
 
-useSelectionContextualActions(
-  dataItems,
-)
+useSelectionContextualActions(dataItems)
 
 const filterDrawer = ref(false)
 

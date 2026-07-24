@@ -1,4 +1,5 @@
 ## Coding Standards & Rules
+
 - use TypeScript
 - use Vuetify
 - use Valibot

@@ -31,6 +31,6 @@ export const Default: Story = {
   args: {},
   play: () => {
     const selectionStore = useSelectionStore()
-    selectionStore.selection = [mockBook]
+    selectionStore.selectionAsArray = [mockBook]
   },
 }

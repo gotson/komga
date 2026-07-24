@@ -107,7 +107,7 @@ const libTypes = computed(() => [
             id: '1qIfds',
           }),
           value: 'pinned',
-          to: { name: currentRoute.name, params: { id: 'pinned' } },
+          to: { name: currentRoute?.name, params: { id: 'pinned' } },
         },
       ]
     : []),
@@ -118,7 +118,7 @@ const libTypes = computed(() => [
       id: '8/BXfN',
     }),
     value: 'all',
-    to: { name: currentRoute.name, params: { id: 'all' } },
+    to: { name: currentRoute?.name, params: { id: 'all' } },
   },
   ...(anyUnpinned.value
     ? [
@@ -129,15 +129,17 @@ const libTypes = computed(() => [
             id: '9oA9gw',
           }),
           value: 'unpinned',
-          to: { name: currentRoute.name, params: { id: 'unpinned' } },
+          to: { name: currentRoute?.name, params: { id: 'unpinned' } },
         },
       ]
     : []),
 ])
-const selectedLibType = computed(() => libTypes.value.find((it) => it.value === props.libraryViewId))
+const selectedLibType = computed(() =>
+  libTypes.value.find((it) => it.value === props.libraryViewId),
+)
 
 const selectedRoute = computed(() =>
-  props.routes.find((it) => router.resolve(it.to).name === currentRoute?.name),
+  props.routes.find((it) => router?.resolve(it.to).name === currentRoute?.name),
 )
 </script>
 

@@ -421,9 +421,7 @@ const totalElements = computed(() =>
 
 const filterDrawer = ref(false)
 
-useSelectionContextualActions(
-  dataItems,
-)
+useSelectionContextualActions(dataItems)
 
 // shared model for all the expansion-panels, so only 1 is opened at the same time
 const filterExpansionPanels = ref()
