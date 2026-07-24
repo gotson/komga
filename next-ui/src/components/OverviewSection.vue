@@ -36,19 +36,9 @@
 
 <script setup lang="ts">
 import { type LibraryViewId } from '@/types/libraries'
-import { bookListQueryInfinite, booksOnDeckQueryInfinite } from '@/colada/books'
-import { valuesToConditions } from '@/functions/filter'
 import { useGetLibrariesByViewId } from '@/composables/libraries'
-import { ReadStatus } from '@/types/ReadStatus'
-import type {
-  BookDto,
-  PageBookDto,
-  PageSeriesDto,
-  SearchConditionBook,
-  SearchConditionSeries,
-  SeriesDto,
-} from '@/generated/openapi'
-import { seriesListQueryInfinite, seriesUpdatedQueryInfinite } from '@/colada/series'
+import { useOverviewSection } from '@/composables/section'
+import type { BookDto, PageBookDto, PageSeriesDto, SeriesDto } from '@/generated/openapi'
 import { useInfiniteQuery } from '@pinia/colada'
 import { overviewSectionMessages } from '@/types/OverviewSection'
 import { useAppStore } from '@/stores/app'
@@ -67,98 +57,9 @@ const { libraryIds } = useGetLibrariesByViewId(props.libraryViewId)
 
 const cardWidth = computed(() => (display.smAndUp.value ? appStore.gridCardWidth : 130))
 
-const kind = computed(() => {
-  switch (props.section.section) {
-    case 'keep_reading':
-    case 'on_deck':
-    case 'recently_released_books':
-    case 'recently_added_books':
-    case 'recently_read_books':
-      return 'book'
-    case 'recently_added_series':
-    case 'recently_updated_series':
-      return 'series'
-  }
-})
+const { queryOptions, kind } = useOverviewSection(props.section.section, libraryIds)
 
-function getQueryOptions() {
-  switch (props.section.section) {
-    case 'keep_reading':
-      return bookListQueryInfinite({
-        search: {
-          condition: {
-            allOf: [
-              valuesToConditions(libraryIds.value, 'libraryId'),
-              { readStatus: { operator: 'is', value: ReadStatus.InProgress } },
-            ].filter(Boolean) as SearchConditionBook[],
-          },
-        },
-        sort: [{ key: 'readProgress.readDate', order: 'desc' }],
-      })
-    case 'on_deck':
-      return booksOnDeckQueryInfinite({
-        libraryIds: libraryIds.value,
-      })
-    case 'recently_released_books':
-      return bookListQueryInfinite({
-        search: {
-          condition: {
-            allOf: [
-              valuesToConditions(libraryIds.value, 'libraryId'),
-              {
-                releaseDate: {
-                  operator: 'after',
-                  dateTime: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-                },
-              },
-            ].filter(Boolean) as SearchConditionBook[],
-          },
-        },
-        sort: [{ key: 'metadata.releaseDate', order: 'desc' }],
-      })
-    case 'recently_added_books':
-      return bookListQueryInfinite({
-        search: {
-          condition: {
-            allOf: [valuesToConditions(libraryIds.value, 'libraryId')].filter(
-              Boolean,
-            ) as SearchConditionBook[],
-          },
-        },
-        sort: [{ key: 'createdDate', order: 'desc' }],
-      })
-    case 'recently_read_books':
-      return bookListQueryInfinite({
-        search: {
-          condition: {
-            allOf: [
-              valuesToConditions(libraryIds.value, 'libraryId'),
-              { readStatus: { operator: 'is', value: ReadStatus.Read } },
-            ].filter(Boolean) as SearchConditionBook[],
-          },
-        },
-        sort: [{ key: 'readProgress.readDate', order: 'desc' }],
-      })
-    case 'recently_added_series':
-      return seriesListQueryInfinite({
-        search: {
-          condition: {
-            allOf: [
-              valuesToConditions(libraryIds.value, 'libraryId'),
-              { oneshot: { operator: 'isFalse' } },
-            ].filter(Boolean) as SearchConditionSeries[],
-          },
-        },
-        sort: [{ key: 'createdDate', order: 'desc' }],
-      })
-    case 'recently_updated_series':
-      return seriesUpdatedQueryInfinite({
-        libraryIds: libraryIds.value,
-      })
-  }
-}
-
-const { data, hasNextPage, loadNextPage } = useInfiniteQuery(() => getQueryOptions() as never)
+const { data, hasNextPage, loadNextPage } = useInfiniteQuery(() => queryOptions.value as never)
 
 const items = computed(() => {
   const pages = data.value?.pages as (PageBookDto | PageSeriesDto)[] | undefined

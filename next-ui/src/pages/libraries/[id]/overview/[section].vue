@@ -11,20 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { OverviewSectionsDefault, OverviewSectionValues } from '@/types/OverviewSection'
-import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
-import { useClientSettingsUser, useUpdateClientSettingsUser } from '@/colada/client-settings'
-import {
-  ClientSettingUser,
-  type ClientSettingUserOverviewSection,
-} from '@/types/ClientSettingsUser'
-import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
-import { commonMessages } from '@/utils/i18n/common-messages'
-import { defineMessage, useIntl } from 'vue-intl'
-import { useDisplay } from 'vuetify'
-import ReorderOverviewSections from '@/components/ReorderOverviewSections.vue'
-import { useMessagesStore } from '@/stores/messages'
+import { OverviewSectionValues } from '@/types/OverviewSection'
 import type { RouteLocationRaw } from 'vue-router'
 
 const route = useRoute('/libraries/[id]/overview/[section]')
