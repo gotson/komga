@@ -130,6 +130,7 @@ declare module 'vue-router/auto-routes' {
       | '/libraries/[id]/books'
       | '/libraries/[id]/collections'
       | '/libraries/[id]/overview'
+      | '/libraries/[id]/overview/[section]'
       | '/libraries/[id]/readlists'
       | '/libraries/[id]/series'
     >,
@@ -152,6 +153,13 @@ declare module 'vue-router/auto-routes' {
       '/libraries/:id/overview',
       { id: ParamValue<true> },
       { id: ParamValue<false> },
+      | '/libraries/[id]/overview/[section]'
+    >,
+    '/libraries/[id]/overview/[section]': RouteRecordInfo<
+      '/libraries/[id]/overview/[section]',
+      '/libraries/:id/overview/:section',
+      { id: ParamValue<true>, section: ParamValue<true> },
+      { id: ParamValue<false>, section: ParamValue<false> },
       | never
     >,
     '/libraries/[id]/readlists': RouteRecordInfo<
@@ -403,6 +411,7 @@ declare module 'vue-router/auto-routes' {
         | '/libraries/[id]/books'
         | '/libraries/[id]/collections'
         | '/libraries/[id]/overview'
+        | '/libraries/[id]/overview/[section]'
         | '/libraries/[id]/readlists'
         | '/libraries/[id]/series'
       views:
@@ -429,10 +438,19 @@ declare module 'vue-router/auto-routes' {
     'src/pages/libraries/[id]/overview.vue': {
       routes:
         | '/libraries/[id]/overview'
+        | '/libraries/[id]/overview/[section]'
+      views:
+        | 'default'
+      pathParamNames:
+        | never
+    }
+    'src/pages/libraries/[id]/overview/[section].vue': {
+      routes:
+        | '/libraries/[id]/overview/[section]'
       views:
         | never
       pathParamNames:
-        | never
+        | 'section'
     }
     'src/pages/libraries/[id]/readlists.vue': {
       routes:

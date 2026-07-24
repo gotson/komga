@@ -5,7 +5,13 @@
         v-if="title"
         class="text-title-large"
       >
-        {{ title }}
+        <RouterLink
+          v-if="titleTo"
+          :to="titleTo"
+          class="link-underline"
+          >{{ title }}</RouterLink
+        >
+        <div v-else>{{ title }}</div>
       </div>
 
       <div
@@ -61,6 +67,7 @@
 import { VSlideGroup } from 'vuetify/components'
 import { usePrimaryInput } from '@/composables/device'
 import { type SelectionType, useSelectionStore } from '@/stores/selection'
+import type { RouteLocationRaw } from 'vue-router'
 
 const { isTouchPrimary } = usePrimaryInput()
 
@@ -72,6 +79,7 @@ const showArrows = computed(
 defineProps<{
   items?: SelectionType[]
   title?: string
+  titleTo?: RouteLocationRaw
   hasNextPage: boolean
 }>()
 

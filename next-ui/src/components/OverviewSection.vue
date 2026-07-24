@@ -3,6 +3,7 @@
     v-if="items.length > 0"
     :items="items"
     :title="$formatMessage(overviewSectionMessages[section.section])"
+    :title-to="routeTo"
     :has-next-page="hasNextPage"
     class="with-gap"
     @load-next-page="loadNextPage()"
@@ -53,6 +54,7 @@ import { overviewSectionMessages } from '@/types/OverviewSection'
 import { useAppStore } from '@/stores/app'
 import { useDisplay } from 'vuetify'
 import type { ClientSettingUserOverviewSection } from '@/types/ClientSettingsUser'
+import type { RouteLocationRaw } from 'vue-router'
 
 const props = defineProps<{
   section: ClientSettingUserOverviewSection
@@ -162,6 +164,11 @@ const items = computed(() => {
   const pages = data.value?.pages as (PageBookDto | PageSeriesDto)[] | undefined
   return pages?.flatMap((it) => (it?.content as (BookDto | SeriesDto)[]) ?? []) ?? []
 })
+
+const routeTo = computed<RouteLocationRaw>(() => ({
+  name: '/libraries/[id]/overview/[section]',
+  params: { id: props.libraryViewId, section: props.section.section },
+}))
 </script>
 
 <style scoped>

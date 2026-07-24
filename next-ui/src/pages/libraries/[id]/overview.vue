@@ -13,7 +13,12 @@
     />
   </Teleport>
 
-  <div class="pa-4 d-flex flex-column ga-6">
+  <RouterView />
+
+  <div
+    v-if="isExactParentRoute"
+    class="pa-4 d-flex flex-column ga-6"
+  >
     <OverviewSection
       v-for="section in overviewSections"
       :key="section.section"
@@ -65,8 +70,10 @@ import { useMessagesStore } from '@/stores/messages'
 
 const intl = useIntl()
 const display = useDisplay()
-const route = useRoute('/libraries/[id]/readlists')
+const route = useRoute('/libraries/[id]/overview')
 const libraryViewId = route.params.id
+
+const isExactParentRoute = computed(() => route.name === '/libraries/[id]/overview')
 
 const { userSettings } = useClientSettingsUser()
 const overviewSections = computed(() => {
