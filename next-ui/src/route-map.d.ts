@@ -122,58 +122,58 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/libraries/[id]': RouteRecordInfo<
-      '/libraries/[id]',
-      '/libraries/:id',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
-      | '/libraries/[id]/books'
-      | '/libraries/[id]/collections'
-      | '/libraries/[id]/overview'
-      | '/libraries/[id]/overview/[section]'
-      | '/libraries/[id]/readlists'
-      | '/libraries/[id]/series'
+    '/libraries/[viewId]': RouteRecordInfo<
+      '/libraries/[viewId]',
+      '/libraries/:viewId',
+      { viewId: ParamValue<true> },
+      { viewId: ParamValue<false> },
+      | '/libraries/[viewId]/books'
+      | '/libraries/[viewId]/collections'
+      | '/libraries/[viewId]/overview'
+      | '/libraries/[viewId]/overview/[section]'
+      | '/libraries/[viewId]/readlists'
+      | '/libraries/[viewId]/series'
     >,
-    '/libraries/[id]/books': RouteRecordInfo<
-      '/libraries/[id]/books',
-      '/libraries/:id/books',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
+    '/libraries/[viewId]/books': RouteRecordInfo<
+      '/libraries/[viewId]/books',
+      '/libraries/:viewId/books',
+      { viewId: ParamValue<true> },
+      { viewId: ParamValue<false> },
       | never
     >,
-    '/libraries/[id]/collections': RouteRecordInfo<
-      '/libraries/[id]/collections',
-      '/libraries/:id/collections',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
+    '/libraries/[viewId]/collections': RouteRecordInfo<
+      '/libraries/[viewId]/collections',
+      '/libraries/:viewId/collections',
+      { viewId: ParamValue<true> },
+      { viewId: ParamValue<false> },
       | never
     >,
-    '/libraries/[id]/overview': RouteRecordInfo<
-      '/libraries/[id]/overview',
-      '/libraries/:id/overview',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
-      | '/libraries/[id]/overview/[section]'
+    '/libraries/[viewId]/overview': RouteRecordInfo<
+      '/libraries/[viewId]/overview',
+      '/libraries/:viewId/overview',
+      { viewId: ParamValue<true> },
+      { viewId: ParamValue<false> },
+      | '/libraries/[viewId]/overview/[section]'
     >,
-    '/libraries/[id]/overview/[section]': RouteRecordInfo<
-      '/libraries/[id]/overview/[section]',
-      '/libraries/:id/overview/:section',
-      { id: ParamValue<true>, section: ParamValue<true> },
-      { id: ParamValue<false>, section: ParamValue<false> },
+    '/libraries/[viewId]/overview/[section]': RouteRecordInfo<
+      '/libraries/[viewId]/overview/[section]',
+      '/libraries/:viewId/overview/:section',
+      { viewId: ParamValue<true>, section: ParamValue<true> },
+      { viewId: ParamValue<false>, section: ParamValue<false> },
       | never
     >,
-    '/libraries/[id]/readlists': RouteRecordInfo<
-      '/libraries/[id]/readlists',
-      '/libraries/:id/readlists',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
+    '/libraries/[viewId]/readlists': RouteRecordInfo<
+      '/libraries/[viewId]/readlists',
+      '/libraries/:viewId/readlists',
+      { viewId: ParamValue<true> },
+      { viewId: ParamValue<false> },
       | never
     >,
-    '/libraries/[id]/series': RouteRecordInfo<
-      '/libraries/[id]/series',
-      '/libraries/:id/series',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
+    '/libraries/[viewId]/series': RouteRecordInfo<
+      '/libraries/[viewId]/series',
+      '/libraries/:viewId/series',
+      { viewId: ParamValue<true> },
+      { viewId: ParamValue<false> },
       | never
     >,
     '/login': RouteRecordInfo<
@@ -405,64 +405,64 @@ declare module 'vue-router/auto-routes' {
       pathParamNames:
         | never
     }
-    'src/pages/libraries/[id].vue': {
+    'src/pages/libraries/[viewId].vue': {
       routes:
-        | '/libraries/[id]'
-        | '/libraries/[id]/books'
-        | '/libraries/[id]/collections'
-        | '/libraries/[id]/overview'
-        | '/libraries/[id]/overview/[section]'
-        | '/libraries/[id]/readlists'
-        | '/libraries/[id]/series'
+        | '/libraries/[viewId]'
+        | '/libraries/[viewId]/books'
+        | '/libraries/[viewId]/collections'
+        | '/libraries/[viewId]/overview'
+        | '/libraries/[viewId]/overview/[section]'
+        | '/libraries/[viewId]/readlists'
+        | '/libraries/[viewId]/series'
       views:
         | 'default'
       pathParamNames:
-        | 'id'
+        | 'viewId'
     }
-    'src/pages/libraries/[id]/books.vue': {
+    'src/pages/libraries/[viewId]/books.vue': {
       routes:
-        | '/libraries/[id]/books'
+        | '/libraries/[viewId]/books'
       views:
         | never
       pathParamNames:
         | never
     }
-    'src/pages/libraries/[id]/collections.vue': {
+    'src/pages/libraries/[viewId]/collections.vue': {
       routes:
-        | '/libraries/[id]/collections'
+        | '/libraries/[viewId]/collections'
       views:
         | never
       pathParamNames:
         | never
     }
-    'src/pages/libraries/[id]/overview.vue': {
+    'src/pages/libraries/[viewId]/overview.vue': {
       routes:
-        | '/libraries/[id]/overview'
-        | '/libraries/[id]/overview/[section]'
+        | '/libraries/[viewId]/overview'
+        | '/libraries/[viewId]/overview/[section]'
       views:
         | 'default'
       pathParamNames:
         | never
     }
-    'src/pages/libraries/[id]/overview/[section].vue': {
+    'src/pages/libraries/[viewId]/overview/[section].vue': {
       routes:
-        | '/libraries/[id]/overview/[section]'
+        | '/libraries/[viewId]/overview/[section]'
       views:
         | never
       pathParamNames:
         | 'section'
     }
-    'src/pages/libraries/[id]/readlists.vue': {
+    'src/pages/libraries/[viewId]/readlists.vue': {
       routes:
-        | '/libraries/[id]/readlists'
+        | '/libraries/[viewId]/readlists'
       views:
         | never
       pathParamNames:
         | never
     }
-    'src/pages/libraries/[id]/series.vue': {
+    'src/pages/libraries/[viewId]/series.vue': {
       routes:
-        | '/libraries/[id]/series'
+        | '/libraries/[viewId]/series'
       views:
         | never
       pathParamNames:

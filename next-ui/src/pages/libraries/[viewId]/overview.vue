@@ -70,10 +70,10 @@ import { useMessagesStore } from '@/stores/messages'
 
 const intl = useIntl()
 const display = useDisplay()
-const route = useRoute('/libraries/[id]/overview')
-const libraryViewId = route.params.id
+const route = useRoute('/libraries/[viewId]/overview')
+const libraryViewId = route.params.viewId
 
-const isExactParentRoute = computed(() => route.name === '/libraries/[id]/overview')
+const isExactParentRoute = computed(() => route.name === '/libraries/[viewId]/overview')
 
 const { userSettings } = useClientSettingsUser()
 const overviewSections = computed(() => {

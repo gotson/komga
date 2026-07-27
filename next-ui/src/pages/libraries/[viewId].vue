@@ -11,9 +11,9 @@ import { filterKeys } from '@/types/filter'
 import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useLibraries } from '@/colada/libraries'
 
-const route = useRoute('/libraries/[id]')
+const route = useRoute('/libraries/[viewId]')
 const router = useRouter()
-const libraryViewId = computed(() => route.params.id)
+const libraryViewId = computed(() => route.params.viewId)
 const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 
 provide(
@@ -25,10 +25,10 @@ provide(
 watchImmediate(
   () => route?.name,
   (newRouteName) => {
-    if (newRouteName === '/libraries/[id]')
+    if (newRouteName === '/libraries/[viewId]')
       void router.replace({
-        name: '/libraries/[id]/overview',
-        params: { id: libraryViewId.value },
+        name: '/libraries/[viewId]/overview',
+        params: { viewId: libraryViewId.value },
       })
   },
 )
@@ -38,7 +38,7 @@ const { anyPinned, anyUnpinned } = useLibraries()
 watch([libraryViewId, anyPinned, anyUnpinned], ([id, hasPinned, hasUnpinned]) => {
   if ((id === 'pinned' && !hasPinned) || (id === 'unpinned' && !hasUnpinned))
     void router.replace({
-      params: { ...route.params, id: 'all' },
+      params: { ...route.params, viewId: 'all' },
       query: { ...route.query },
     })
 })

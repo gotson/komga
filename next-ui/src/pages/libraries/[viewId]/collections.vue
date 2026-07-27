@@ -58,8 +58,8 @@ import { useSelectionContextualActions } from '@/composables/selection'
 import { watchImmediate } from '@vueuse/core'
 
 const router = useRouter()
-const route = useRoute('/libraries/[id]/collections')
-const libraryViewId = route.params.id
+const route = useRoute('/libraries/[viewId]/collections')
+const libraryViewId = route.params.viewId
 const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 
 const display = useDisplay()
@@ -113,7 +113,7 @@ watchImmediate(totalElements, async (newTotalElements) => {
   if (newTotalElements == 0) {
     // avoid router navigation failure
     await nextTick()
-    void router.replace({ name: '/libraries/[id]', params: { id: libraryViewId } })
+    void router.replace({ name: '/libraries/[viewId]', params: { viewId: libraryViewId } })
   }
 })
 

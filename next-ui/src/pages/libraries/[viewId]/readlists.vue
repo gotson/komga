@@ -57,8 +57,8 @@ import { readListsListQuery, readListsListQueryInfinite } from '@/colada/readlis
 import { useSelectionContextualActions } from '@/composables/selection'
 import { watchImmediate } from '@vueuse/core'
 
-const route = useRoute('/libraries/[id]/readlists')
-const libraryViewId = route.params.id
+const route = useRoute('/libraries/[viewId]/readlists')
+const libraryViewId = route.params.viewId
 const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 
 const router = useRouter()
@@ -112,7 +112,7 @@ const totalElements = computed(() =>
 watchImmediate(totalElements, async (newTotalElements) => {
   if (newTotalElements == 0) {
     await nextTick()
-    void router.replace({ name: '/libraries/[id]', params: { id: libraryViewId } })
+    void router.replace({ name: '/libraries/[viewId]', params: { viewId: libraryViewId } })
   }
 })
 

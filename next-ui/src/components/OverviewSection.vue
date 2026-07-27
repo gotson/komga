@@ -67,8 +67,8 @@ const items = computed(() => {
 })
 
 const routeTo = computed<RouteLocationRaw>(() => ({
-  name: '/libraries/[id]/overview/[section]',
-  params: { id: props.libraryViewId, section: props.section.section },
+  name: '/libraries/[viewId]/overview/[section]',
+  params: { viewId: props.libraryViewId, section: props.section.section },
 }))
 </script>
 

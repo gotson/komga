@@ -47,7 +47,7 @@ const routesBase = [
       id: 'MKs9N+',
     }),
     icon: 'i-mdi:star',
-    to: { name: '/libraries/[id]/overview', params: { id: props.libraryViewId } },
+    to: { name: '/libraries/[viewId]/overview', params: { viewId: props.libraryViewId } },
   } as Route,
   {
     title: intl.formatMessage({
@@ -56,7 +56,7 @@ const routesBase = [
       id: 'lt7Tru',
     }),
     icon: 'i-mdi:bookshelf',
-    to: { name: '/libraries/[id]/series', params: { id: props.libraryViewId } },
+    to: { name: '/libraries/[viewId]/series', params: { viewId: props.libraryViewId } },
   } as Route,
   {
     title: intl.formatMessage({
@@ -65,7 +65,7 @@ const routesBase = [
       id: 'pTsA/M',
     }),
     icon: 'i-mdi:book-multiple',
-    to: { name: '/libraries/[id]/books', params: { id: props.libraryViewId } },
+    to: { name: '/libraries/[viewId]/books', params: { viewId: props.libraryViewId } },
   } as Route,
 ]
 
@@ -79,7 +79,7 @@ const routes = computed(() => {
         id: 'cyQk6S',
       }),
       icon: 'i-mdi:layers-triple',
-      to: { name: '/libraries/[id]/collections', params: { id: props.libraryViewId } },
+      to: { name: '/libraries/[viewId]/collections', params: { viewId: props.libraryViewId } },
     })
   if ((readlists.value?.totalElements ?? 0) > 0)
     extra.push({
@@ -89,7 +89,7 @@ const routes = computed(() => {
         id: 'w2K5yu',
       }),
       icon: 'i-mdi:bookmark-multiple',
-      to: { name: '/libraries/[id]/readlists', params: { id: props.libraryViewId } },
+      to: { name: '/libraries/[viewId]/readlists', params: { viewId: props.libraryViewId } },
     })
   return [...routesBase, ...extra] as Route[]
 })

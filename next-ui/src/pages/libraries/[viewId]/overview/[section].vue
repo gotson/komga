@@ -14,24 +14,24 @@
 import { OverviewSectionValues } from '@/types/OverviewSection'
 import type { RouteLocationRaw } from 'vue-router'
 
-const route = useRoute('/libraries/[id]/overview/[section]')
-const libraryViewId = route.params.id
+const route = useRoute('/libraries/[viewId]/overview/[section]')
+const libraryViewId = route.params.viewId
 const section = route.params.section
 
 definePage({
   beforeEnter: (to) => {
-    const params = to.params as { id: string; section: string }
+    const params = to.params as { viewId: string; section: string }
     const section = params.section
 
     if (!(OverviewSectionValues as unknown as string[]).includes(section)) {
-      return { name: '/libraries/[id]/overview', params: { id: params.id } }
+      return { name: '/libraries/[viewId]/overview', params: { viewId: params.viewId } }
     }
   },
 })
 
 const parentRoute = computed<RouteLocationRaw>(() => ({
-  name: '/libraries/[id]/overview',
-  params: { id: libraryViewId },
+  name: '/libraries/[viewId]/overview',
+  params: { viewId: libraryViewId },
 }))
 </script>
 
