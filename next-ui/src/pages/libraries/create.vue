@@ -53,9 +53,19 @@
 <script lang="ts" setup>
 import { useCurrentUser } from '@/colada/users'
 import { useCreateLibraryDialog } from '@/composables/library/useCreateLibraryDialog'
+import { useLibraries } from '@/colada/libraries'
 
+const router = useRouter()
 const { isAdmin } = useCurrentUser()
 const { activator, prepareDialog: createLibrary } = useCreateLibraryDialog()
+const { noLibraries } = useLibraries()
+
+watch(noLibraries, async (newNoLibraries) => {
+  if (!newNoLibraries) {
+    await nextTick()
+    void router.push({ name: '/' })
+  }
+})
 </script>
 
 <route lang="yaml">
