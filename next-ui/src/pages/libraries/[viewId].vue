@@ -22,36 +22,38 @@ provide(
   computed(() => ({ library_id: libraryIds.value })),
 )
 
-watchImmediate([noLibraries, route.name], async ([newNoLibraries]) => {
-  if (newNoLibraries) {
-    await nextTick()
-    void router.push({ name: '/libraries/create' })
-  }
-})
-
-//TODO: for now we always redirect to 'overview', this should be persisted per viewId or pinned somehow
 watchImmediate(
-  () => route,
-  async (newRoute) => {
-    if (newRoute.name === '/libraries/[viewId]') {
+  [noLibraries, () => route, anyPinned, anyUnpinned],
+  async ([newNoLibraries, newRoute, hasPinned, hasUnpinned]) => {
+    if (newNoLibraries) {
       await nextTick()
-      void router.replace({
-        name: '/libraries/[viewId]/overview',
-        params: { viewId: libraryViewId.value },
-      })
+      void router.push({ name: '/libraries/create' })
+    } else {
+      let redirectToAll = false
+      let redirectToOverview = false
+
+      if (
+        (newRoute?.params.viewId === 'pinned' && !hasPinned) ||
+        (newRoute?.params.viewId === 'unpinned' && !hasUnpinned)
+      ) {
+        redirectToAll = true
+      }
+
+      if (newRoute.name === '/libraries/[viewId]') {
+        //TODO: for now we always redirect to 'overview', this should be persisted per viewId or pinned somehow
+        redirectToOverview = true
+      }
+
+      if (redirectToAll || redirectToOverview) {
+        await nextTick()
+        void router.replace({
+          name: redirectToOverview ? '/libraries/[viewId]/overview' : newRoute.name,
+          params: { viewId: redirectToAll ? 'all' : newRoute.params.viewId },
+        } as Parameters<typeof router.replace>[0])
+      }
     }
   },
 )
-
-watchImmediate([libraryViewId, anyPinned, anyUnpinned], async ([id, hasPinned, hasUnpinned]) => {
-  if ((id === 'pinned' && !hasPinned) || (id === 'unpinned' && !hasUnpinned)) {
-    await nextTick()
-    void router.replace({
-      params: { ...route.params, viewId: 'all' },
-      query: { ...route.query },
-    })
-  }
-})
 </script>
 
 <route lang="yaml">
