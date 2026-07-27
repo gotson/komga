@@ -63,6 +63,7 @@ export const useLibraries = defineQuery(() => {
   )
   const anyPinned = computed(() => pinned.value.length > 0)
   const anyUnpinned = computed(() => unpinned.value.length > 0)
+  const noLibraries = computed(() => data.value?.length === 0)
 
   return {
     data,
@@ -71,6 +72,7 @@ export const useLibraries = defineQuery(() => {
     pinned,
     anyPinned,
     anyUnpinned,
+    noLibraries,
     refresh,
     refetch,
     ...rest,

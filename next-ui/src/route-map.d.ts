@@ -176,6 +176,13 @@ declare module 'vue-router/auto-routes' {
       { viewId: ParamValue<false> },
       | never
     >,
+      '/libraries/create': RouteRecordInfo<
+      '/libraries/create',
+      '/libraries/create',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/login': RouteRecordInfo<
       '/login',
       '/login',
@@ -463,6 +470,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/libraries/[viewId]/series.vue': {
       routes:
         | '/libraries/[viewId]/series'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/libraries/create.vue': {
+      routes:
+        | '/libraries/create'
       views:
         | never
       pathParamNames:
