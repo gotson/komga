@@ -1,4 +1,4 @@
-import { createGlobalState, useEventSource, watchImmediate } from '@vueuse/core'
+import { createGlobalState, useEventSource, watchImmediate, useThrottleFn } from '@vueuse/core'
 import { ApiBaseUrl } from '@/api/base'
 import { logger } from '@/services/logtape'
 import { useAppStore } from '@/stores/app'
@@ -199,6 +199,10 @@ export const useSSE = createGlobalState(() => {
   const taskStore = useTaskQueueStore()
   const { convertErrorCodes } = useErrorCodeFormatter()
 
+  const DEBOUNCE_MS = 10_000
+  const debouncedEntitiesChanged = useThrottleFn(entitiesChanged, DEBOUNCE_MS, true)
+  const debouncedEntityChanged = useThrottleFn(entityChanged, DEBOUNCE_MS, true)
+
   const { isAuthenticated } = useCurrentUser()
 
   let releaseLock: (() => void) | null = null
@@ -345,21 +349,21 @@ export const useSSE = createGlobalState(() => {
       case 'LibraryAdded':
       case 'LibraryChanged':
       case 'LibraryDeleted':
-        entitiesChanged(QUERY_KEYS_LIBRARIES.root)
+        void debouncedEntitiesChanged(QUERY_KEYS_LIBRARIES.root)
         break
       case 'SeriesAdded':
-        entitiesChanged(QUERY_KEYS_SERIES.root)
+        void debouncedEntitiesChanged(QUERY_KEYS_SERIES.root)
         break
       case 'SeriesChanged':
       case 'SeriesDeleted':
-        entityChanged(QUERY_KEYS_SERIES.root, event.data.seriesId)
+        void debouncedEntityChanged(QUERY_KEYS_SERIES.root, event.data.seriesId)
         break
       case 'BookAdded':
-        entitiesChanged(QUERY_KEYS_BOOKS.root)
+        void debouncedEntitiesChanged(QUERY_KEYS_BOOKS.root)
         break
       case 'BookChanged':
       case 'BookDeleted':
-        entityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
+        void debouncedEntityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
         break
       case 'BookImported':
         if (event.data.success && event.data.bookId)
@@ -391,26 +395,26 @@ export const useSSE = createGlobalState(() => {
           })
         break
       case 'ReadListAdded':
-        entitiesChanged(QUERY_KEYS_READLIST.root)
+        void debouncedEntitiesChanged(QUERY_KEYS_READLIST.root)
         break
       case 'ReadListChanged':
       case 'ReadListDeleted':
-        entityChanged(QUERY_KEYS_READLIST.root, event.data.readListId)
+        void debouncedEntityChanged(QUERY_KEYS_READLIST.root, event.data.readListId)
         break
       case 'CollectionAdded':
-        entitiesChanged(QUERY_KEYS_COLLECTIONS.root)
+        void debouncedEntitiesChanged(QUERY_KEYS_COLLECTIONS.root)
         break
       case 'CollectionChanged':
       case 'CollectionDeleted':
-        entityChanged(QUERY_KEYS_COLLECTIONS.root, event.data.collectionId)
+        void debouncedEntityChanged(QUERY_KEYS_COLLECTIONS.root, event.data.collectionId)
         break
       case 'ReadProgressChanged':
       case 'ReadProgressDeleted':
-        entityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
+        void debouncedEntityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
         break
       case 'ReadProgressSeriesChanged':
       case 'ReadProgressSeriesDeleted':
-        entityChanged(QUERY_KEYS_SERIES.root, event.data.seriesId)
+        void debouncedEntityChanged(QUERY_KEYS_SERIES.root, event.data.seriesId)
         break
       case 'SessionExpired':
         userLoggedOut()
