@@ -11,7 +11,7 @@ import { useIntl } from 'vue-intl'
 
 const intl = useIntl()
 
-const model = defineModel<SeriesStatus[]>({ default: [] })
+const model = defineModel<SeriesStatus[]>({ default: () => [] })
 
 const items: {
   title: string

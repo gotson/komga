@@ -40,7 +40,7 @@
 import type { ItemType } from '@/components/filter/List.vue'
 import type { AnyAll } from '@/types/filter'
 
-const model = defineModel<unknown[]>({ default: [] })
+const model = defineModel<unknown[]>({ default: () => [] })
 const modelMode = defineModel<AnyAll>('mode', { default: 'anyOf' })
 const search = defineModel<string>('search', { default: '' })
 

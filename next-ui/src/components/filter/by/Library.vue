@@ -18,7 +18,7 @@ import type { LibraryDto } from '@/generated/openapi'
 
 type SchString = v.InferOutput<typeof SchemaString>
 
-const model = defineModel<SchString[]>({ default: [] })
+const model = defineModel<SchString[]>({ default: () => [] })
 const modelMode = defineModel<AnyAll>('mode', { default: 'anyOf' })
 
 const { ordered } = useLibraries()

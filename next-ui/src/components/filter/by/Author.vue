@@ -27,7 +27,7 @@ type Author = v.InferOutput<typeof SchemaAuthor>
 
 const intl = useIntl()
 
-const model = defineModel<Author[]>({ default: [] })
+const model = defineModel<Author[]>({ default: () => [] })
 const modelMode = defineModel<AnyAll>('mode', { default: 'anyOf' })
 
 const search = ref()

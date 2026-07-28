@@ -11,7 +11,7 @@ import { MediaProfileValues, type MediaProfile, mediaProfileMessages } from '@/t
 
 const intl = useIntl()
 
-const model = defineModel<MediaProfile[]>({ default: [] })
+const model = defineModel<MediaProfile[]>({ default: () => [] })
 
 const items: {
   title: string

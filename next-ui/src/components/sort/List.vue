@@ -17,7 +17,7 @@
 import type { Sort } from '@/types/PageRequest'
 import type { SortOption } from '@/types/sort'
 
-const model = defineModel<Sort[]>({ default: [] })
+const model = defineModel<Sort[]>({ default: () => [] })
 
 const {
   items = [],

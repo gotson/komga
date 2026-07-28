@@ -36,7 +36,7 @@ export type ItemType<T> = {
   valueExclude?: T
 }
 
-const model = defineModel<unknown[]>({ default: [] })
+const model = defineModel<unknown[]>({ default: () => [] })
 const modelMode = defineModel<AnyAll>('mode', { default: 'anyOf' })
 
 const {

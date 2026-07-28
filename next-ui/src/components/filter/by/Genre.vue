@@ -27,7 +27,7 @@ type SchString = v.InferOutput<typeof SchemaString>
 
 const intl = useIntl()
 
-const model = defineModel<SchString[]>({ default: [] })
+const model = defineModel<SchString[]>({ default: () => [] })
 const modelMode = defineModel<AnyAll>('mode', { default: 'anyOf' })
 
 const search = ref()

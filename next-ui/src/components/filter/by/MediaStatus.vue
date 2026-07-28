@@ -11,7 +11,7 @@ import { MediaStatusValues, type MediaStatus, mediaStatusMessages } from '@/type
 
 const intl = useIntl()
 
-const model = defineModel<MediaStatus[]>({ default: [] })
+const model = defineModel<MediaStatus[]>({ default: () => [] })
 
 const items: {
   title: string

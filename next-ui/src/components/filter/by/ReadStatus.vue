@@ -15,7 +15,7 @@ type SchReadStatus = v.InferOutput<typeof SchemaReadStatus>
 
 const intl = useIntl()
 
-const model = defineModel<SchReadStatus[]>({ default: [] })
+const model = defineModel<SchReadStatus[]>({ default: () => [] })
 
 const items = ReadStatusValues.map((it) => ({
   title: intl.formatMessage(readStatusMessages[it]),
