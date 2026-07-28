@@ -1,7 +1,23 @@
-## Coding Standards & Rules
+# Agent Instructions
 
-- use TypeScript
-- use Vuetify
-- use Valibot
-- use npm
-- check README.md for tools and commands
+## Tech Stack
+
+- Frameworks:
+    - VueJS
+    - Typescript
+    - Vuetify
+    - Vue Router
+    - Pinia Colada
+    - Valibot
+- Package manager: npm
+
+## Commands
+
+- test: `npm test:unit`
+- lint: `npm lint:fix`
+- format code: `npm prettier:fix`
+- type checking: `npm type-check`
+
+# Other
+
+- Also check README.md
