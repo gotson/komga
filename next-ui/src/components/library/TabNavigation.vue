@@ -43,6 +43,7 @@
           <v-tab
             :text="route.title"
             :to="route.to"
+            exact
           />
         </template>
       </v-tabs>
@@ -145,7 +146,10 @@ const selectedLibType = computed(() =>
 )
 
 const selectedRoute = computed(() =>
-  props.routes.find((it) => router?.resolve(it.to).name === currentRoute?.name),
+  props.routes.find((it) => {
+    const routeName = router?.resolve(it.to).name
+    return currentRoute?.matched.find((record) => record.name === routeName)
+  }),
 )
 </script>
 
