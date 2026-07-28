@@ -16,7 +16,6 @@
     "target": "ESNext",
     "moduleResolution": "bundler", // Komga: https://uvr.esm.is/introduction.html#setup
     "noUncheckedIndexedAccess": true, // Komga: https://openapi-ts.dev/introduction
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },

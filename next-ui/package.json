@@ -88,7 +88,7 @@
     "sass": "^1.102.0",
     "sass-embedded": "^1.100.0",
     "storybook": "^10.5.5",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "unocss": "^66.7.5",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-fonts": "^2.0.0",
