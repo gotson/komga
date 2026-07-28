@@ -35,11 +35,10 @@ export const Default: Story = {
 }
 
 export const Invalid: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.get('*/api/v2/users/me', response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.get('*/api/v2/users/me', response401Unauthorized))
   },
+
   play: async ({ canvas, userEvent }) => {
     const login = canvas.getByLabelText(/email/i, {
       selector: 'input',
@@ -58,11 +57,10 @@ export const Invalid: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', async () => await delay(5_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(5_000)))
   },
+
   play: async ({ canvas, userEvent }) => {
     const login = canvas.getByLabelText(/email/i, {
       selector: 'input',
@@ -79,11 +77,10 @@ export const Loading: Story = {
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.post('*/api/*', response502BadGateway)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.post('*/api/*', response502BadGateway))
   },
+
   play: async ({ canvas, userEvent }) => {
     const login = canvas.getByLabelText(/email/i, {
       selector: 'input',

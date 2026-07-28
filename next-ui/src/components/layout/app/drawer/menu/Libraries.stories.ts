@@ -55,29 +55,29 @@ export const Default: Story = {
 
 export const Unavailable: Story = {
   args: {},
-  parameters: {
-    msw: {
-      handlers: [
-        handleGetLibraries({
-          status: 200,
-          body: mockLibraries.map((it) => ({ ...it, unavailable: true })),
-        }),
-        handleGetUserSettings(() => {
-          const userLibraries: Record<string, ClientSettingUserLibrary> = {
-            '2': {
-              unpinned: true,
-            },
-          }
-          const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
-            [ClientSettingUser.NextUILibraries]: {
-              value: JSON.stringify(userLibraries),
-            },
-          }
-          return response200OK(settings)
-        }),
-      ],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetLibraries({
+        status: 200,
+        body: mockLibraries.map((it) => ({ ...it, unavailable: true })),
+      }),
+      handleGetUserSettings(() => {
+        const userLibraries: Record<string, ClientSettingUserLibrary> = {
+          '2': {
+            unpinned: true,
+          },
+        }
+        const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
+          [ClientSettingUser.NextUILibraries]: {
+            value: JSON.stringify(userLibraries),
+          },
+        }
+        return response200OK(settings)
+      }),
+    )
   },
+
   play: async ({ canvas, userEvent }) => {
     await waitFor(() => userEvent.click(canvas.getByText(/more/i)))
     await waitFor(() => expect(canvas.queryByText(/comics/i)).toBeVisible())
@@ -86,11 +86,10 @@ export const Unavailable: Story = {
 }
 
 export const NonAdmin: Story = {
-  parameters: {
-    msw: {
-      handlers: [handleGetCurrentUser(() => response200OK(userRegular))],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleGetCurrentUser(() => response200OK(userRegular)))
   },
+
   play: async ({ canvas }) => {
     await waitFor(() => expect(canvas.queryByLabelText(/add library/i)).toBeNull())
     await waitFor(() => expect(canvas.queryByLabelText(/libraries menu/i)).not.toBeNull())
@@ -99,25 +98,24 @@ export const NonAdmin: Story = {
 }
 
 export const Unpinned: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        handleGetUserSettings(() => {
-          const userLibraries: Record<string, ClientSettingUserLibrary> = {
-            '2': {
-              unpinned: true,
-            },
-          }
-          const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
-            [ClientSettingUser.NextUILibraries]: {
-              value: JSON.stringify(userLibraries),
-            },
-          }
-          return response200OK(settings)
-        }),
-      ],
-    },
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetUserSettings(() => {
+        const userLibraries: Record<string, ClientSettingUserLibrary> = {
+          '2': {
+            unpinned: true,
+          },
+        }
+        const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
+          [ClientSettingUser.NextUILibraries]: {
+            value: JSON.stringify(userLibraries),
+          },
+        }
+        return response200OK(settings)
+      }),
+    )
   },
+
   play: async ({ canvas, userEvent }) => {
     await waitFor(() => userEvent.click(canvas.getByText(/more/i)))
     await waitFor(() => expect(canvas.queryByText(/comics/i)).toBeVisible())
@@ -125,42 +123,36 @@ export const Unpinned: Story = {
 }
 
 export const Ordered: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        handleGetUserSettings(() => {
-          const userLibraries: Record<string, ClientSettingUserLibrary> = {
-            '1': {
-              order: 2,
-            },
-            '2': {
-              order: 1,
-            },
-          }
-          const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
-            [ClientSettingUser.NextUILibraries]: {
-              value: JSON.stringify(userLibraries),
-            },
-          }
-          return response200OK(settings)
-        }),
-      ],
-    },
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetUserSettings(() => {
+        const userLibraries: Record<string, ClientSettingUserLibrary> = {
+          '1': {
+            order: 2,
+          },
+          '2': {
+            order: 1,
+          },
+        }
+        const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
+          [ClientSettingUser.NextUILibraries]: {
+            value: JSON.stringify(userLibraries),
+          },
+        }
+        return response200OK(settings)
+      }),
+    )
   },
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', async () => await delay(5_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(5_000)))
   },
 }
 
 export const CreationError: Story = {
-  parameters: {
-    msw: {
-      handlers: [handleGetLibraries(response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleGetLibraries(response401Unauthorized))
   },
 }

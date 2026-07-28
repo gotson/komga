@@ -36,25 +36,20 @@ export const Default: Story = {
 
 export const SaveFail: Story = {
   args: {},
-  parameters: {
-    msw: {
-      handlers: [http.patch('*/api/v1/settings', response401Unauthorized)],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(http.patch('*/api/v1/settings', response401Unauthorized))
   },
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/settings', async () => await delay(5_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/settings', async () => await delay(5_000)))
   },
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/settings', response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/settings', response401Unauthorized))
   },
 }

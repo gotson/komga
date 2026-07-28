@@ -56,11 +56,11 @@ export const Hover: Story = {
 
 export const HoverNonAdmin: Story = {
   args: {},
-  parameters: {
-    msw: {
-      handlers: [handleGetCurrentUser(() => response200OK(userRegular))],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(handleGetCurrentUser(() => response200OK(userRegular)))
   },
+
   play: ({ canvas, userEvent }) => {
     userEvent.hover(canvas.getByRole('img'))
   },

@@ -90,10 +90,9 @@ export const Loading: Story = {
   args: {
     match: singleMatch,
   },
-  parameters: {
-    msw: {
-      handlers: [http.all('*/v1/readlists', async () => await delay(2_000))],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(http.all('*/v1/readlists', async () => await delay(2_000)))
   },
 }
 
@@ -101,9 +100,8 @@ export const ErrorOnCreation: Story = {
   args: {
     match: singleMatch,
   },
-  parameters: {
-    msw: {
-      handlers: [http.post('*/v1/readlists', response400BadRequest)],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(http.post('*/v1/readlists', response400BadRequest))
   },
 }

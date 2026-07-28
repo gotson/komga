@@ -1,7 +1,8 @@
+import { setupWorker } from 'msw/browser'
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'
 
-import { initialize, mswLoader } from 'msw-storybook-addon'
+import { mswLoader } from 'msw-storybook-addon/csf3'
 import { handlers } from '@/mocks/api/handlers'
 import { vuetify, vuetifyRulesPlugin } from '@/plugins/vuetify'
 import { createPinia } from 'pinia'
@@ -15,14 +16,7 @@ import { vuetifyViewports } from './viewport'
 import { allModes } from './modes'
 import { PiniaColadaDelay } from '@pinia/colada-plugin-delay'
 import { withVuetifyTheme } from './withVuetifyTheme.decorator'
-
-initialize(
-  {
-    onUnhandledRequest: 'bypass',
-    quiet: true,
-  },
-  handlers,
-)
+import { setupOpenapiClient } from '@/api/komga-client'
 
 const locales: object[] = []
 Object.entries(availableLocales).forEach(([code, name]) => {
@@ -31,6 +25,8 @@ Object.entries(availableLocales).forEach(([code, name]) => {
     title: name,
   })
 })
+
+setupOpenapiClient()
 
 const preview: Preview = {
   parameters: {
@@ -54,7 +50,18 @@ const preview: Preview = {
     },
   },
   tags: ['autodocs'],
-  loaders: [mswLoader],
+  loaders: [
+    mswLoader(async () => {
+      const worker = setupWorker(...handlers)
+
+      await worker.start({
+        onUnhandledRequest: 'bypass',
+        quiet: true,
+      })
+
+      return worker
+    }),
+  ],
   globalTypes: {
     locale: {
       name: 'Locale',

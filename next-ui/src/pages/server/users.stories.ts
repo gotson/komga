@@ -39,17 +39,13 @@ export const Default: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', async () => await delay(5_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(5_000)))
   },
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', response401Unauthorized))
   },
 }

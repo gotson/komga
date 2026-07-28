@@ -35,25 +35,19 @@ export const Latest: Story = {
 }
 
 export const Outdated: Story = {
-  parameters: {
-    msw: {
-      handlers: [handleGetReleases(() => response200OK(releasesResponseOkNotLatest))],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleGetReleases(() => response200OK(releasesResponseOkNotLatest)))
   },
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/releases', async () => await delay(5_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/releases', async () => await delay(5_000)))
   },
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/releases', response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/releases', response401Unauthorized))
   },
 }

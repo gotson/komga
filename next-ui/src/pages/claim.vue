@@ -176,9 +176,14 @@ async function submitForm() {
 
 void useClaimStatus()
   .refresh()
-  .then(({ data, error }) => {
-    if (error) void router.push('/error')
-    else if (data?.isClaimed) void router.push('/')
+  .then(async ({ data, error }) => {
+    if (error) {
+      await nextTick()
+      void router.push('/error')
+    } else if (data?.isClaimed) {
+      await nextTick()
+      void router.push('/')
+    }
   })
 </script>
 

@@ -7,6 +7,7 @@ import { handleGetSharingLabels } from '@/generated/openapi/msw.gen'
 
 const meta = {
   component: CreateEdit,
+
   render: (args: object) => ({
     components: { CreateEdit },
     setup() {
@@ -14,6 +15,16 @@ const meta = {
     },
     template: '<CreateEdit :model-value="args.modelValue" v-bind="args"/>',
   }),
+
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetSharingLabels({
+        status: 200,
+        body: mockPage(['kids', 'teens'], PageRequest.Unpaged()),
+      }),
+    )
+  },
+
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     docs: {
@@ -21,15 +32,8 @@ const meta = {
         component: '',
       },
     },
-    msw: {
-      handlers: [
-        handleGetSharingLabels({
-          status: 200,
-          body: mockPage(['kids', 'teens'], PageRequest.Unpaged()),
-        }),
-      ],
-    },
   },
+
   args: {},
 } satisfies Meta<typeof CreateEdit>
 

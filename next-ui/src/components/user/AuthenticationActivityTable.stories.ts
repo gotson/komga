@@ -42,29 +42,19 @@ export const ForMe: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        http.all('*/api/v2/users/authentication-activity', async () => await delay(5_000)),
-      ],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v2/users/authentication-activity', async () => await delay(5_000)))
   },
 }
 
 export const NoData: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        handleGetAuthenticationActivity(() => response200OK(mockPage([], new PageRequest()))),
-      ],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleGetAuthenticationActivity(() => response200OK(mockPage([], new PageRequest()))))
   },
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v2/users/authentication-activity', response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v2/users/authentication-activity', response401Unauthorized))
   },
 }

@@ -48,10 +48,8 @@ export const NoResults: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/series/list', async () => await delay(2_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/series/list', async () => await delay(2_000)))
   },
 }
 
@@ -59,9 +57,8 @@ export const Error: Story = {
   args: {
     searchString: 'd',
   },
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/series/list', response401Unauthorized)],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/series/list', response401Unauthorized))
   },
 }

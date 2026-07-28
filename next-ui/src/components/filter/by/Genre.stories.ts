@@ -40,10 +40,8 @@ export const Default: Story = {
 }
 
 export const NoData: Story = {
-  parameters: {
-    msw: {
-      handlers: [handleGetGenres(() => response200OK(mockPage([], new PageRequest())))],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleGetGenres(() => response200OK(mockPage([], new PageRequest()))))
   },
 }
 

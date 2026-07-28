@@ -55,62 +55,59 @@ const libHandler = handleGetLibraries(() => {
 
 export const AllPinned: Story = {
   args: {},
-  parameters: {
-    msw: {
-      handlers: [libHandler],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(libHandler)
   },
 }
 
 export const SomeUnpinned: Story = {
   args: {},
-  parameters: {
-    msw: {
-      handlers: [
-        libHandler,
-        handleGetUserSettings(() => {
-          const userLibraries: Record<string, ClientSettingUserLibrary> = {
-            '2': {
-              unpinned: true,
-            },
-            '4': {
-              unpinned: true,
-            },
-          }
-          const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
-            [ClientSettingUser.NextUILibraries]: {
-              value: JSON.stringify(userLibraries),
-            },
-          }
-          return response200OK(settings)
-        }),
-      ],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(
+      libHandler,
+      handleGetUserSettings(() => {
+        const userLibraries: Record<string, ClientSettingUserLibrary> = {
+          '2': {
+            unpinned: true,
+          },
+          '4': {
+            unpinned: true,
+          },
+        }
+        const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
+          [ClientSettingUser.NextUILibraries]: {
+            value: JSON.stringify(userLibraries),
+          },
+        }
+        return response200OK(settings)
+      }),
+    )
   },
 }
 
 export const AllUnpinned: Story = {
   args: {},
-  parameters: {
-    msw: {
-      handlers: [
-        handleGetUserSettings(() => {
-          const userLibraries: Record<string, ClientSettingUserLibrary> = {
-            '1': {
-              unpinned: true,
-            },
-            '2': {
-              unpinned: true,
-            },
-          }
-          const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
-            [ClientSettingUser.NextUILibraries]: {
-              value: JSON.stringify(userLibraries),
-            },
-          }
-          return response200OK(settings)
-        }),
-      ],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetUserSettings(() => {
+        const userLibraries: Record<string, ClientSettingUserLibrary> = {
+          '1': {
+            unpinned: true,
+          },
+          '2': {
+            unpinned: true,
+          },
+        }
+        const settings: Partial<Record<ClientSettingUser, ClientSettingUserUpdateDto>> = {
+          [ClientSettingUser.NextUILibraries]: {
+            value: JSON.stringify(userLibraries),
+          },
+        }
+        return response200OK(settings)
+      }),
+    )
   },
 }

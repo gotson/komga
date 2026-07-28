@@ -36,25 +36,19 @@ export const Default: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', async () => await delay(2_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(2_000)))
   },
 }
 
 export const ErrorNoBooks: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.post('*/api/v1/readlists/match/comicrack', () => response400(emptyCbl))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.post('*/api/v1/readlists/match/comicrack', () => response400(emptyCbl)))
   },
 }
 
 export const ErrorInvalidFile: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.post('*/api/v1/readlists/match/comicrack', () => response400(garbledCbl))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.post('*/api/v1/readlists/match/comicrack', () => response400(garbledCbl)))
   },
 }

@@ -44,10 +44,9 @@ export const Loading: Story = {
   args: {
     books: scanned,
   },
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', async () => await delay(2_000))],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(2_000)))
   },
 }
 
@@ -55,9 +54,8 @@ export const ErrorOnImport: Story = {
   args: {
     books: scanned,
   },
-  parameters: {
-    msw: {
-      handlers: [http.all('*/v1/books/import', response400BadRequest)],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(http.all('*/v1/books/import', response400BadRequest))
   },
 }

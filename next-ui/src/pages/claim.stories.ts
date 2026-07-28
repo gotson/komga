@@ -5,11 +5,12 @@ import { http, delay } from 'msw'
 
 import { expect, waitFor } from 'storybook/test'
 import { useMessagesStore } from '@/stores/messages'
-import { handleGetClaimStatus } from '@/generated/openapi/msw.gen'
+import { handleClaimServer, handleGetClaimStatus } from '@/generated/openapi/msw.gen'
 import { response200OK, response502BadGateway } from '@/mocks/api/utils'
 
 const meta = {
   component: claim,
+
   render: (args: object) => ({
     components: { claim },
     setup() {
@@ -17,12 +18,11 @@ const meta = {
     },
     template: '<claim />',
   }),
-  parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    msw: {
-      handlers: [handleGetClaimStatus(() => response200OK({ isClaimed: false }))],
-    },
+
+  beforeEach({ msw }) {
+    msw.use(handleGetClaimStatus(() => response200OK({ isClaimed: false })))
   },
+
   args: {},
 } satisfies Meta<typeof claim>
 
@@ -55,14 +55,10 @@ export const Invalid: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        ...meta.parameters.msw.handlers,
-        http.post('*/api/*', async () => await delay(5_000)),
-      ],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.post('*/api/*', async () => await delay(5_000)))
   },
+
   play: async ({ canvas, userEvent }) => {
     const login = canvas.getByLabelText(/email/i, {
       selector: 'input',
@@ -84,11 +80,10 @@ export const Loading: Story = {
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [...meta.parameters.msw.handlers, http.post('*/api/*', response502BadGateway)],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleClaimServer(() => response502BadGateway()))
   },
+
   play: async ({ canvas, userEvent }) => {
     const login = canvas.getByLabelText(/email/i, {
       selector: 'input',

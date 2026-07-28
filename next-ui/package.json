@@ -81,7 +81,7 @@
     "eslint-plugin-vue": "^10.10.0",
     "happy-dom": "^20.11.1",
     "msw": "^2.15.0",
-    "msw-storybook-addon": "^2.0.7",
+    "msw-storybook-addon": "^3.0.0",
     "npm-run-all2": "^9.0.2",
     "playwright": "^1.62.0",
     "prettier": "^3.9.6",

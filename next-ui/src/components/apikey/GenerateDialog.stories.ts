@@ -52,11 +52,10 @@ export const Created: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', async () => await delay(5_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(5_000)))
   },
+
   play: async ({ userEvent }) => {
     const user = userEvent.setup({
       pointerEventsCheck: 0,
@@ -75,15 +74,14 @@ export const Loading: Story = {
 }
 
 export const DuplicateError: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        http.post('*/api/v2/users/me/api-keys', () =>
-          HttpResponse.json({ message: 'ERR_1034' }, { status: 400 }),
-        ),
-      ],
-    },
+  beforeEach({ msw }) {
+    msw.use(
+      http.post('*/api/v2/users/me/api-keys', () =>
+        HttpResponse.json({ message: 'ERR_1034' }, { status: 400 }),
+      ),
+    )
   },
+
   play: async ({ userEvent }) => {
     const user = userEvent.setup({
       pointerEventsCheck: 0,

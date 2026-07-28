@@ -41,11 +41,10 @@ export const Unread: Story = {
 }
 
 export const NoUnread: Story = {
-  parameters: {
-    msw: {
-      handlers: [handleGetAnnouncements(() => response200OK(announcementsAllRead))],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleGetAnnouncements(() => response200OK(announcementsAllRead)))
   },
+
   play: async ({ canvas }) => {
     await waitFor(() => expect(canvas.getByText('eBook drop 2')).not.toBeNull())
 
@@ -54,17 +53,13 @@ export const NoUnread: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/announcements', async () => await delay(5_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/announcements', async () => await delay(5_000)))
   },
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/announcements', response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/announcements', response401Unauthorized))
   },
 }

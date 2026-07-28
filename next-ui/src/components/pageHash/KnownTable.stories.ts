@@ -42,33 +42,25 @@ export const Default: Story = {
 }
 
 export const NoData: Story = {
-  parameters: {
-    msw: {
-      handlers: [handleGetKnownPageHashes(() => response200OK(mockPage([], new PageRequest())))],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleGetKnownPageHashes(() => response200OK(mockPage([], new PageRequest()))))
   },
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', async () => await delay(2_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(2_000)))
   },
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/page-hashes', response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/page-hashes', response401Unauthorized))
   },
 }
 
 export const ErrorOnDeletion: Story = {
-  parameters: {
-    msw: {
-      handlers: [handleDeleteDuplicatePagesByPageHash(response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleDeleteDuplicatePagesByPageHash(response401Unauthorized))
   },
 }

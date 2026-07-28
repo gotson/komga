@@ -36,25 +36,19 @@ export const Default: Story = {
 }
 
 export const Loading: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/*', async () => await delay(5_000))],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(5_000)))
   },
 }
 
 export const NoData: Story = {
-  parameters: {
-    msw: {
-      handlers: [handleGetHistoricalEvents(() => response200OK(mockPage([], new PageRequest())))],
-    },
+  beforeEach({ msw }) {
+    msw.use(handleGetHistoricalEvents(() => response200OK(mockPage([], new PageRequest()))))
   },
 }
 
 export const Error: Story = {
-  parameters: {
-    msw: {
-      handlers: [http.all('*/api/v1/history', response401Unauthorized)],
-    },
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/history', response401Unauthorized))
   },
 }

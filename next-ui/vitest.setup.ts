@@ -1,3 +1,3 @@
-import { setupOpenapiClient } from './src/api/komga-client'
+import { setupOpenapiClient } from '@/api/komga-client'
 
 setupOpenapiClient()
