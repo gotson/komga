@@ -133,7 +133,7 @@
 <script lang="ts" setup>
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useClaimServer, useClaimStatus } from '@/colada/claim'
+import { useClaimServer } from '@/colada/claim'
 import { useLogin } from '@/colada/users'
 import { useRules } from 'vuetify/labs/rules'
 
@@ -173,18 +173,6 @@ async function submitForm() {
       })
   }
 }
-
-void useClaimStatus()
-  .refresh()
-  .then(async ({ data, error }) => {
-    if (error) {
-      await nextTick()
-      void router.push('/error')
-    } else if (data?.isClaimed) {
-      await nextTick()
-      void router.push('/')
-    }
-  })
 </script>
 
 <route lang="yaml">

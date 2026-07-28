@@ -20,6 +20,7 @@ import { useLoginGuard } from '@/router/login-guard'
 import { useRoleGuard } from '@/router/role-guard'
 import { useScroll } from '@/router/scroll'
 import { globalErrorHandler } from '@/colada/error-handling'
+import { useClaimGuard } from '@/router/claim-guard'
 
 export function registerPlugins(app: App) {
   app
@@ -42,6 +43,7 @@ export function registerPlugins(app: App) {
     })
 
   // register navigation guards
+  useClaimGuard(router)
   useLoginGuard(router)
   useRoleGuard(router)
   useScroll(router)

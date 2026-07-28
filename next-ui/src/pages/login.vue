@@ -131,7 +131,6 @@ import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useAppStore } from '@/stores/app'
 import { useLogin } from '@/colada/users'
-import { useClaimStatus } from '@/colada/claim'
 import { useRules } from 'vuetify/labs/rules'
 
 const messagesStore = useMessagesStore()
@@ -171,13 +170,6 @@ async function submitForm() {
         else messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
       })
 }
-
-void useClaimStatus()
-  .refresh()
-  .then(({ data, error }) => {
-    if (error) void router.push('/error')
-    else if (data?.isClaimed == false) void router.push('/')
-  })
 </script>
 
 <route lang="yaml">
