@@ -19,6 +19,7 @@
     v-if="isExactParentRoute"
     class="pa-4 d-flex flex-column ga-6"
   >
+    <!--  TODO: expose the count of items so that we can display something if none of the sections has item  -->
     <OverviewSection
       v-for="section in overviewSections"
       :key="section.section"
