@@ -36,14 +36,22 @@ async function checkAuthenticated() {
   await claimRefresh()
   // if we can't get the claim status, most likely the server is unreachable
   if (claimError.value) {
-    await router.push({ name: '/error' })
+    await nextTick()
+    void router.push({ name: '/error' })
   } else if (data.value) {
-    if (route.query.redirect) await router.push(route.query.redirect.toString())
-    else await router.push('/')
+    await nextTick()
+    if (route.query.redirect) {
+      void router.push(route.query.redirect.toString())
+    } else {
+      void router.push('/')
+    }
   } else if (error.value) {
-    if (claimData.value?.isClaimed)
-      await router.push({ name: '/login', query: { redirect: route.query.redirect } })
-    else await router.push({ name: '/claim', query: { redirect: route.query.redirect } })
+    await nextTick()
+    if (claimData.value?.isClaimed) {
+      void router.push({ name: '/login', query: { redirect: route.query.redirect } })
+    } else {
+      void router.push({ name: '/claim', query: { redirect: route.query.redirect } })
+    }
   }
 }
 

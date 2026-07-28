@@ -176,7 +176,7 @@ declare module 'vue-router/auto-routes' {
       { viewId: ParamValue<false> },
       | never
     >,
-      '/libraries/create': RouteRecordInfo<
+    '/libraries/create': RouteRecordInfo<
       '/libraries/create',
       '/libraries/create',
       Record<never, never>,

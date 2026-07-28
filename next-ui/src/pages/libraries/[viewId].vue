@@ -6,7 +6,6 @@
 </template>
 
 <script lang="ts" setup>
-import { watchImmediate } from '@vueuse/core'
 import { filterKeys } from '@/types/filter'
 import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useLibraries } from '@/colada/libraries'
@@ -22,7 +21,7 @@ provide(
   computed(() => ({ library_id: libraryIds.value })),
 )
 
-watchImmediate(
+watch(
   [noLibraries, () => route, anyPinned, anyUnpinned],
   async ([newNoLibraries, newRoute, hasPinned, hasUnpinned]) => {
     if (newNoLibraries) {
@@ -53,6 +52,7 @@ watchImmediate(
       }
     }
   },
+  { deep: true, immediate: true },
 )
 </script>
 
