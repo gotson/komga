@@ -22,7 +22,6 @@
 
 <script lang="ts" setup>
 import { useCurrentUser } from '@/colada/users'
-import { useClaimStatus } from '@/colada/claim'
 
 definePage({ alias: '/next' })
 
@@ -30,15 +29,9 @@ async function checkAuthenticated() {
   const router = useRouter()
   const route = useRoute()
   const { data, error, refresh } = useCurrentUser()
-  const { data: claimData, error: claimError, refresh: claimRefresh } = useClaimStatus()
 
   await refresh()
-  await claimRefresh()
-  // if we can't get the claim status, most likely the server is unreachable
-  if (claimError.value) {
-    await nextTick()
-    void router.push({ name: '/error' })
-  } else if (data.value) {
+  if (data.value) {
     await nextTick()
     if (route.query.redirect) {
       void router.push(route.query.redirect.toString())
@@ -47,11 +40,7 @@ async function checkAuthenticated() {
     }
   } else if (error.value) {
     await nextTick()
-    if (claimData.value?.isClaimed) {
-      void router.push({ name: '/login', query: { redirect: route.query.redirect } })
-    } else {
-      void router.push({ name: '/claim', query: { redirect: route.query.redirect } })
-    }
+    void router.push({ name: '/login', query: { redirect: route.query.redirect } })
   }
 }
 
