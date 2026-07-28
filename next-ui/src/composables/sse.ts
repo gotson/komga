@@ -348,11 +348,15 @@ export const useSSE = createGlobalState(() => {
         entitiesChanged(QUERY_KEYS_LIBRARIES.root)
         break
       case 'SeriesAdded':
+        entitiesChanged(QUERY_KEYS_SERIES.root)
+        break
       case 'SeriesChanged':
       case 'SeriesDeleted':
         entityChanged(QUERY_KEYS_SERIES.root, event.data.seriesId)
         break
       case 'BookAdded':
+        entitiesChanged(QUERY_KEYS_BOOKS.root)
+        break
       case 'BookChanged':
       case 'BookDeleted':
         entityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
@@ -387,11 +391,15 @@ export const useSSE = createGlobalState(() => {
           })
         break
       case 'ReadListAdded':
+        entitiesChanged(QUERY_KEYS_READLIST.root)
+        break
       case 'ReadListChanged':
       case 'ReadListDeleted':
         entityChanged(QUERY_KEYS_READLIST.root, event.data.readListId)
         break
       case 'CollectionAdded':
+        entitiesChanged(QUERY_KEYS_COLLECTIONS.root)
+        break
       case 'CollectionChanged':
       case 'CollectionDeleted':
         entityChanged(QUERY_KEYS_COLLECTIONS.root, event.data.collectionId)
