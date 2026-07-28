@@ -195,6 +195,7 @@
   <ItemBrowser
     v-else
     v-model:page1="page1"
+    :paging="appStore.browsingPaging"
     :items="dataItems"
     :presentation-mode="presentationModeEffective"
     :has-next-page="hasNextPage"

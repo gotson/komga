@@ -27,7 +27,7 @@
     </template>
   </v-data-iterator>
 
-  <v-container v-if="appStore.isBrowsingPaged && pageCount > 1">
+  <v-container v-if="paging === 'paged' && pageCount > 1">
     <v-row class="align-center justify-center">
       <v-col
         cols="12"
@@ -61,28 +61,28 @@
   </v-container>
 
   <div
-    v-if="appStore.isBrowsingScroll && hasNextPage"
+    v-if="paging === 'scroll' && hasNextPage"
     v-intersect="(isIntersecting: boolean) => (isIntersecting ? emit('loadNextPage') : undefined)"
     style="min-height: 40px"
   />
 </template>
 
 <script setup lang="ts" generic="T">
-import { useAppStore } from '@/stores/app'
 import { useSelectionStore } from '@/stores/selection'
 import type { PresentationMode } from '@/types/libraries'
 import { useDisplay } from 'vuetify'
+import type { Paging } from '@/types/page'
 
-const appStore = useAppStore()
 const display = useDisplay()
 
-const page1 = defineModel<number>('page1', { required: true })
+const page1 = defineModel<number>('page1')
 
-const props = defineProps<{
+const { pageCount = 1 } = defineProps<{
   items?: T[]
   presentationMode: PresentationMode
   hasNextPage: boolean
-  pageCount: number
+  pageCount?: number
+  paging: Paging
 }>()
 
 const emit = defineEmits<{
@@ -91,5 +91,5 @@ const emit = defineEmits<{
 
 const selectionStore = useSelectionStore()
 
-const jumpOptions = computed(() => Array.from({ length: props.pageCount }).map((_, i) => i + 1))
+const jumpOptions = computed(() => Array.from({ length: pageCount }).map((_, i) => i + 1))
 </script>
