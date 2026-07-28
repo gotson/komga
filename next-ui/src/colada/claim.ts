@@ -9,8 +9,7 @@ export const useClaimStatus = defineQuery(() => {
   return useQuery({
     key: () => QUERY_KEYS_CLAIM.root,
     query: () => komgaGetClaimStatus(),
-    // forever
-    staleTime: 0,
+    staleTime: Infinity,
     gcTime: false,
   })
 })
