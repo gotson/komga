@@ -39,7 +39,7 @@ const { data: readlists } = useQuery(() => ({
   enabled: libraries.value !== undefined,
 }))
 
-const routesBase = [
+const routesBase: Route[] = [
   {
     title: intl.formatMessage({
       description: 'Library navigation: overview',
@@ -48,7 +48,7 @@ const routesBase = [
     }),
     icon: 'i-mdi:star',
     to: { name: '/libraries/[viewId]/overview', params: { viewId: props.libraryViewId } },
-  } as Route,
+  },
   {
     title: intl.formatMessage({
       description: 'Library navigation: series',
@@ -57,7 +57,7 @@ const routesBase = [
     }),
     icon: 'i-mdi:bookshelf',
     to: { name: '/libraries/[viewId]/series', params: { viewId: props.libraryViewId } },
-  } as Route,
+  },
   {
     title: intl.formatMessage({
       description: 'Library navigation: books',
@@ -66,11 +66,11 @@ const routesBase = [
     }),
     icon: 'i-mdi:book-multiple',
     to: { name: '/libraries/[viewId]/books', params: { viewId: props.libraryViewId } },
-  } as Route,
+  },
 ]
 
 const routes = computed(() => {
-  const extra = []
+  const extra: Route[] = []
   if ((collections.value?.totalElements ?? 0) > 0)
     extra.push({
       title: intl.formatMessage({

@@ -188,7 +188,4 @@ export type FilterTypeSelectRange = v.InferOutput<typeof SchemaFilterSelectRange
 export type FilterIncludeExclude = v.InferOutput<typeof SchemaIncludeExclude>
 
 export type FilterType =
-  | FilterTypeAnyAll
-  | FilterTypeSimpleList
-  | FilterIncludeExclude
-  | FilterTypeSelectRange
+  FilterTypeAnyAll | FilterTypeSimpleList | FilterIncludeExclude | FilterTypeSelectRange
