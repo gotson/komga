@@ -23,9 +23,8 @@ provide(
 
 watch(
   [noLibraries, () => route, anyPinned, anyUnpinned],
-  async ([newNoLibraries, newRoute, hasPinned, hasUnpinned]) => {
+  ([newNoLibraries, newRoute, hasPinned, hasUnpinned]) => {
     if (newNoLibraries) {
-      await nextTick()
       void router.push({ name: '/libraries/create' })
     } else {
       let redirectToAll = false
@@ -44,7 +43,6 @@ watch(
       }
 
       if (redirectToAll || redirectToOverview) {
-        await nextTick()
         void router.replace({
           name: redirectToOverview ? '/libraries/[viewId]/overview' : newRoute.name,
           params: { viewId: redirectToAll ? 'all' : newRoute.params.viewId },
@@ -52,7 +50,7 @@ watch(
       }
     }
   },
-  { deep: true, immediate: true },
+  { deep: true, immediate: true, flush: 'post' },
 )
 </script>
 

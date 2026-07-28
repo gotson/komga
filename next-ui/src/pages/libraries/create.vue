@@ -60,9 +60,8 @@ const { isAdmin } = useCurrentUser()
 const { activator, prepareDialog: createLibrary } = useCreateLibraryDialog()
 const { noLibraries } = useLibraries()
 
-watch(noLibraries, async (newNoLibraries) => {
+watch(noLibraries, (newNoLibraries) => {
   if (!newNoLibraries) {
-    await nextTick()
     void router.push({ name: '/' })
   }
 })
