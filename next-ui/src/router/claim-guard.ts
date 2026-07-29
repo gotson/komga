@@ -6,21 +6,13 @@ import { useClaimStatus } from '@/colada/claim'
  */
 export function useClaimGuard(router: Router) {
   router.beforeEach(async (to) => {
-    if (to.name === '/error') return
+    if (to.name === '/claim' || to.name === '/login') {
+      const { data, error } = await useClaimStatus().refresh()
 
-    const { refresh } = useClaimStatus()
-    const { data, error } = await refresh()
+      if (error) return { name: '/error' }
 
-    if (error) return { name: '/error' }
-
-    const isClaimed = data?.isClaimed
-
-    if (!isClaimed && to.name !== '/claim') {
-      return { name: '/claim' }
-    }
-
-    if (isClaimed && to.name === '/claim') {
-      return { name: '/' }
+      if (!data?.isClaimed) return { name: '/claim' }
+      if (data?.isClaimed) return { name: '/login' }
     }
   })
 }
