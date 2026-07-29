@@ -93,7 +93,7 @@ export const pageHashesHandlers = [
 
     return response202Empty()
   }),
-  http.get('*/api/v1/page-hashes/{pageHash}/thumbnail', async ({ params }) => {
+  http.get('*/api/v1/page-hashes/:pageHash/thumbnail', async ({ params }) => {
     const hash = params.pageHash as string
 
     // use landscape image for some images
@@ -111,7 +111,7 @@ export const pageHashesHandlers = [
       },
     })
   }),
-  http.get('*/api/v1/page-hashes/unknown/{pageHash}/thumbnail', async ({ params }) => {
+  http.get('*/api/v1/page-hashes/unknown/:pageHash/thumbnail', async ({ params }) => {
     const hash = params.pageHash as string
 
     // use landscape image for some images

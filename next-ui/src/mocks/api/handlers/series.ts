@@ -146,7 +146,7 @@ export const seriesHandlers = [
       Object.assign({}, mockSeries1, { metadata: { title: `Series ${params.seriesId}` } }),
     )
   }),
-  http.get('*/api/v1/series/{seriesId}/thumbnail', async ({ params }) => {
+  http.get('*/api/v1/series/:seriesId/thumbnail', async ({ params }) => {
     const seriesId = params.seriesId as string
 
     // use landscape image for some images
