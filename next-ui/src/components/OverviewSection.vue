@@ -59,11 +59,25 @@ const cardWidth = computed(() => (display.smAndUp.value ? appStore.gridCardWidth
 
 const { queryOptions, kind } = useOverviewSection(props.section.section, libraryIds)
 
-const { data, hasNextPage, loadNextPage } = useInfiniteQuery(() => queryOptions.value as never)
+const { data, hasNextPage, loadNextPage, isPending } = useInfiniteQuery(
+  () => queryOptions.value as never,
+)
 
 const items = computed(() => {
   const pages = data.value?.pages as (PageBookDto | PageSeriesDto)[] | undefined
   return pages?.flatMap((it) => (it?.content as (BookDto | SeriesDto)[]) ?? []) ?? []
+})
+
+const hasNoData = computed(() => {
+  const pages = data.value?.pages as (PageBookDto | PageSeriesDto)[] | undefined
+  const totalElements = pages?.[0]?.totalElements
+  if (totalElements === undefined) return undefined
+  return totalElements === 0
+})
+
+defineExpose({
+  hasNoData,
+  isPending,
 })
 
 const routeTo = computed<RouteLocationRaw>(() => ({

@@ -15,41 +15,54 @@
 
   <RouterView />
 
-  <div
-    v-if="isExactParentRoute"
-    class="pa-4 d-flex flex-column ga-6"
-  >
-    <!--  TODO: expose the count of items so that we can display something if none of the sections has item  -->
-    <OverviewSection
-      v-for="section in overviewSections"
-      :key="section.section"
-      :section="section"
-      :library-view-id="libraryViewId"
-    />
+  <div v-if="isExactParentRoute">
+    <div class="pa-4 d-flex flex-column ga-6">
+      <OverviewSection
+        v-for="section in overviewSections"
+        :key="section.section"
+        ref="childRefs"
+        :section="section"
+        :library-view-id="libraryViewId"
+      />
 
-    <v-empty-state
-      v-if="overviewSections.length === 0"
-      :text="
-        $formatMessage({
-          description: 'Overview: empty state text when no sections are configured',
-          defaultMessage: 'No sections configured',
-          id: 'ZE3XpF',
-        })
-      "
-      icon="i-mdi:star-cog"
-      color="secondary"
-    >
-      <template #actions>
-        <v-btn
-          :text="$formatMessage(editMessage)"
-          color=""
-          @mouseenter="
-            (event: Event) => (dialogConfirmEdit.activator = event.currentTarget as Element)
-          "
-          @click="editSections()"
-        />
-      </template>
-    </v-empty-state>
+      <div
+        v-if="isPending"
+        class="d-flex justify-center"
+      >
+        <v-progress-circular indeterminate />
+      </div>
+
+      <v-empty-state
+        v-if="overviewSections.length === 0 || allNoData"
+        :title="
+          allNoData
+            ? $formatMessage({
+                description:
+                  'Overview: empty state text when sections are configured but no data is available',
+                defaultMessage: 'Nothing to show',
+                id: '+TldjW',
+              })
+            : $formatMessage({
+                description: 'Overview: empty state text when no sections are configured',
+                defaultMessage: 'No sections configured',
+                id: 'ZE3XpF',
+              })
+        "
+        :icon="allNoData ? 'i-mdi:text-box-search-outline' : 'i-mdi:star-cog'"
+        color="secondary"
+      >
+        <template #actions>
+          <v-btn
+            :text="$formatMessage(editMessage)"
+            color=""
+            @mouseenter="
+              (event: Event) => (dialogConfirmEdit.activator = event.currentTarget as Element)
+            "
+            @click="editSections()"
+          />
+        </template>
+      </v-empty-state>
+    </div>
   </div>
 </template>
 
@@ -68,6 +81,7 @@ import { defineMessage, useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
 import ReorderOverviewSections from '@/components/ReorderOverviewSections.vue'
 import { useMessagesStore } from '@/stores/messages'
+import type OverviewSection from '@/components/OverviewSection.vue'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -83,6 +97,12 @@ const overviewSections = computed(() => {
     OverviewSectionsDefault
   )
 })
+
+const childRefs = ref<InstanceType<typeof OverviewSection>[]>([])
+const allNoData = computed(
+  () => childRefs.value.every((it) => it.hasNoData === true) && overviewSections.value.length > 0,
+)
+const isPending = computed(() => childRefs.value.some((it) => it.isPending === true))
 
 const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
 const { mutateAsync } = useUpdateClientSettingsUser()
