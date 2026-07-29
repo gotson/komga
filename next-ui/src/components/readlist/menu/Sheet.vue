@@ -25,7 +25,11 @@ const { readList, excludeActions = [] } = defineProps<{
   excludeActions?: ActionName[]
 }>()
 
-const main = [ActionName.Download] as ActionName[]
+const main = [
+  ActionName.OpenReader,
+  ActionName.OpenReaderIncognito,
+  ActionName.Download,
+] as ActionName[]
 const management = [ActionName.EditReadList, ActionName.Delete] as ActionName[]
 
 function afterClick() {

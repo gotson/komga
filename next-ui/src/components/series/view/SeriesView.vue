@@ -253,7 +253,7 @@ import { languageDisplayNames } from '@/utils/i18n/locale-helper'
 import { type SeriesStatus, seriesStatusMessages } from '@/types/SeriesStatus'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
-import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
+import { useBooks } from '@/composables/book/useBooks'
 import type { SeriesDto } from '@/generated/openapi'
 
 const intl = useIntl()
@@ -266,9 +266,9 @@ const props = defineProps<{
 }>()
 
 const { unreadCount, isRead } = useSeries(() => props.series)
-const { getFirstBookInSeriesQuery } = useSeriesBooks(props.series.id)
+const { getFirstBookInParentQuery } = useBooks(() => props.series)
 
-const { data: booksOnDeck } = getFirstBookInSeriesQuery(true)
+const { data: booksOnDeck } = getFirstBookInParentQuery(true)
 const bookOnDeck = computed(() => booksOnDeck.value?.content?.[0])
 
 const alternateTitles = computed(() =>

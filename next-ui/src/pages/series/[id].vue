@@ -203,7 +203,7 @@
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesDetailQuery } from '@/colada/series'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
-import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
+import { useBooks } from '@/composables/book/useBooks'
 import { filterKeys } from '@/types/filter'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
@@ -245,8 +245,8 @@ definePage({
 
     if (data.value?.oneshot) {
       logger.debug('navigation guard: series is oneshot, fetch book for redirection')
-      const { getFirstBookInSeries } = useSeriesBooks(params.id)
-      const book = await getFirstBookInSeries(false)
+      const { getFirstBookInParent } = useBooks(params.id)
+      const book = await getFirstBookInParent(false)
       if (book) {
         logger.debug('navigation guard: book found, redirect to book page')
         return {

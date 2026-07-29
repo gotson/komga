@@ -16,7 +16,7 @@ import SeriesDeletionWarning from '@/components/series/DeletionWarning.vue'
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import { seriesFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
-import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
+import { useBooks } from '@/composables/book/useBooks'
 import { useSeries } from '@/composables/series/useSeries'
 import type { SeriesDto } from '@/generated/openapi'
 
@@ -29,7 +29,7 @@ export function useSeriesActions(
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
   const messagesStore = useMessagesStore()
   const display = useDisplay()
-  const { readFirstBook } = useSeriesBooks(() => toValue(series).id)
+  const { readFirstBook } = useBooks(series)
   const { canRead, inProgress } = useSeries(series)
 
   const actions = computed<Action<ActionName>[]>(() => [

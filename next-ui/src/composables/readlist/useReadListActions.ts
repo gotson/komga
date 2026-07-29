@@ -11,6 +11,7 @@ import { useDeleteReadList } from '@/colada/readlists'
 import { readListFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import type { ReadListDto } from '@/generated/openapi'
+import { useBooks } from '@/composables/book/useBooks'
 
 export function useReadListActions(
   readList: MaybeRefOrGetter<ReadListDto>,
@@ -21,6 +22,7 @@ export function useReadListActions(
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
   const messagesStore = useMessagesStore()
   const display = useDisplay()
+  const { readFirstBook } = useBooks(readList)
 
   const actions = computed<Action<ActionName>[]>(() => [
     ...(hasRole('FILE_DOWNLOAD')
@@ -61,6 +63,26 @@ export function useReadListActions(
           },
         ]
       : []),
+    {
+      title: intl.formatMessage(actionDetails[ActionName.OpenReader].message),
+      icon: actionDetails[ActionName.OpenReader].icon,
+      action: ActionName.OpenReader,
+      disabled: !hasRole('PAGE_STREAMING'),
+      onClick: () => {
+        void readFirstBook()
+        callback(ActionName.OpenReader)
+      },
+    },
+    {
+      title: intl.formatMessage(actionDetails[ActionName.OpenReaderIncognito].message),
+      icon: actionDetails[ActionName.OpenReaderIncognito].icon,
+      action: ActionName.OpenReaderIncognito,
+      disabled: !hasRole('PAGE_STREAMING'),
+      onClick: () => {
+        void readFirstBook(true)
+        callback(ActionName.OpenReaderIncognito)
+      },
+    },
   ])
 
   //region Edit collection

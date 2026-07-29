@@ -32,7 +32,7 @@ import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '
 import { useCurrentUser } from '@/colada/users'
 
 import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
-import { useSeriesBooks } from '@/composables/series/useSeriesBooks'
+import { useBooks } from '@/composables/book/useBooks'
 import { useSeries } from '@/composables/series/useSeries'
 import type { SeriesDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
@@ -131,7 +131,7 @@ function showEditMetadataDialog() {
 
 const menuActivator = ref()
 
-const { readFirstBook } = useSeriesBooks(series.value.id)
+const { readFirstBook } = useBooks(series)
 function openReader() {
   void readFirstBook()
 }

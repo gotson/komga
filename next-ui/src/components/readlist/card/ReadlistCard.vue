@@ -4,6 +4,7 @@
     :title="title"
     :lines="lines"
     :poster-url="readListPosterUrl(readList.id, cacheStore.getVersion(readList.id))"
+    :fab-icon="hasRole('PAGE_STREAMING') ? 'i-mdi:play' : undefined"
     :quick-action-icon="quickActionIcon"
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
@@ -14,6 +15,7 @@
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
     @card-long-press="isAdmin || hasRole('FILE_DOWNLOAD') ? (bottomSheet = true) : undefined"
+    @click-fab="openReader"
   />
   <ReadlistMenuSheet
     v-model="bottomSheet"
@@ -30,6 +32,7 @@ import { useCurrentUser } from '@/colada/users'
 import { useEditReadListDialog } from '@/composables/readlist/useEditReadListDialog'
 import type { ReadListDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { useBooks } from '@/composables/book/useBooks'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -92,4 +95,9 @@ function showEditMetadataDialog() {
 }
 
 const menuActivator = ref()
+
+const { readFirstBook } = useBooks(() => readList)
+function openReader() {
+  void readFirstBook()
+}
 </script>
