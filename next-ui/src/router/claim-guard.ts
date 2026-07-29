@@ -11,8 +11,8 @@ export function useClaimGuard(router: Router) {
 
       if (error) return { name: '/error' }
 
-      if (!data?.isClaimed) return { name: '/claim' }
-      if (data?.isClaimed) return { name: '/login' }
+      if (to.name === '/login' && !data?.isClaimed) return { name: '/claim' }
+      if (to.name === '/claim' && data?.isClaimed) return { name: '/login' }
     }
   })
 }
