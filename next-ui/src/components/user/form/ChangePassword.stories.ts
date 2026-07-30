@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ChangePassword from './ChangePassword.vue'
-import { expect, waitFor, waitForElementToBeRemoved } from 'storybook/test'
+import { expect, waitFor } from 'storybook/test'
 
 const meta = {
   component: ChangePassword,

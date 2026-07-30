@@ -9,7 +9,7 @@
         id: 'WhasCZ',
       })
     "
-    autocomplete="off"
+    autocomplete="new-password"
     autofocus
     :type="showPassword ? 'text' : 'password'"
     :append-inner-icon="showPassword ? 'i-mdi:eye' : 'i-mdi:eye-off'"
@@ -36,7 +36,7 @@
         id: 'nJiYF7',
       })
     "
-    autocomplete="off"
+    autocomplete="new-password"
     :type="showPassword ? 'text' : 'password'"
     :append-inner-icon="showPassword ? 'i-mdi:eye' : 'i-mdi:eye-off'"
     @click:append-inner="showPassword = !showPassword"
