@@ -21,37 +21,16 @@ provide(
   computed(() => ({ library_id: libraryIds.value })),
 )
 
-watch(
-  [noLibraries, () => route, anyPinned, anyUnpinned],
-  ([newNoLibraries, newRoute, hasPinned, hasUnpinned]) => {
-    if (newNoLibraries) {
-      void router.push({ name: '/libraries/create' })
-    } else {
-      let redirectToAll = false
-      let redirectToOverview = false
-
-      if (
-        (newRoute?.params.viewId === 'pinned' && !hasPinned) ||
-        (newRoute?.params.viewId === 'unpinned' && !hasUnpinned)
-      ) {
-        redirectToAll = true
-      }
-
-      if (newRoute.name === '/libraries/[viewId]') {
-        //TODO: for now we always redirect to 'overview', this should be persisted per viewId or pinned somehow
-        redirectToOverview = true
-      }
-
-      if (redirectToAll || redirectToOverview) {
-        void router.replace({
-          name: redirectToOverview ? '/libraries/[viewId]/overview' : newRoute.name,
-          params: { viewId: redirectToAll ? 'all' : newRoute.params.viewId },
-        } as Parameters<typeof router.replace>[0])
-      }
-    }
-  },
-  { deep: true, immediate: true, flush: 'post' },
-)
+watch([noLibraries, anyPinned, anyUnpinned], ([newNoLibraries, hasPinned, hasUnpinned]) => {
+  if (newNoLibraries) {
+    void router.push({ name: '/libraries/create' })
+  } else if (!hasPinned || !hasUnpinned) {
+    void router.replace({
+      name: '/libraries/[viewId]/overview',
+      params: { viewId: 'all' },
+    })
+  }
+})
 </script>
 
 <route lang="yaml">

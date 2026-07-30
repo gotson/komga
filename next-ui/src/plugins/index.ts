@@ -21,6 +21,7 @@ import { useRoleGuard } from '@/router/role-guard'
 import { useScroll } from '@/router/scroll'
 import { globalErrorHandler } from '@/colada/error-handling'
 import { useClaimGuard } from '@/router/claim-guard'
+import { useLibraryViewRedirectGuard } from '@/router/library-view-redirect-guard'
 
 export function registerPlugins(app: App) {
   app
@@ -46,5 +47,6 @@ export function registerPlugins(app: App) {
   useClaimGuard(router)
   useLoginGuard(router)
   useRoleGuard(router)
+  useLibraryViewRedirectGuard(router)
   useScroll(router)
 }
