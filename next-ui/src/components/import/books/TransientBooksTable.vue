@@ -243,6 +243,7 @@
   <DialogFileNamePicker
     :activator="dialogFileNamePickerActivator"
     :fullscreen="display.xs.value"
+    :original-name="currentActionedItems?.at(0)?.originalName"
     :existing-name="currentActionedItems?.at(0)?.destinationName"
     :series-books="currentActionedItems?.at(0)?.seriesBooks"
     @selected-name="(name) => fileNamePicked(name)"
@@ -273,6 +274,7 @@ import { MediaStatus } from '@/types/MediaStatus'
 class BookImport {
   transientBook: TransientBookDto
   destinationName: string
+  originalName: string
   series?: SeriesDto
   seriesBooks?: BookDto[]
   upgradeBook?: BookDto
@@ -280,6 +282,7 @@ class BookImport {
 
   constructor(transientBook: TransientBookDto) {
     this.transientBook = transientBook
+    this.originalName = transientBook.name
     this.destinationName = transientBook.name
     this.imported = false
   }

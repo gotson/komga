@@ -32,7 +32,7 @@
                   }}
                 </div>
                 <div>
-                  {{ existingName }}
+                  {{ originalName }}
                 </div>
               </v-col>
             </v-row>
@@ -52,7 +52,7 @@
                   variant="underlined"
                   append-inner-icon="i-mdi:restore"
                   hide-details
-                  @click:append-inner="newName = existingName"
+                  @click:append-inner="newName = originalName"
                   @keydown.enter="choose"
                 />
               </v-col>
@@ -135,11 +135,13 @@ const showDialog = defineModel<boolean>('dialog', { required: false })
 const {
   fullscreen = undefined,
   activator = undefined,
+  originalName = '',
   existingName = '',
   seriesBooks,
 } = defineProps<{
   fullscreen?: boolean
   activator?: Element | string
+  originalName?: string
   existingName?: string
   seriesBooks?: BookDto[]
 }>()
