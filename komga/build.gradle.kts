@@ -1,5 +1,4 @@
 import nu.studer.gradle.jooq.JooqGenerate
-import org.apache.tools.ant.taskdefs.condition.Os
 import org.flywaydb.gradle.task.FlywayMigrateTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.util.prefixIfNot
@@ -166,48 +165,15 @@ tasks {
     enabled = true
   }
 
-  register<Exec>("webuiNpmInstall") {
-    group = "web"
-    workingDir(webui)
-    inputs.file("$webui/package.json")
-    outputs.dir("$webui/node_modules")
-    commandLine(
-      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        "npm.cmd"
-      } else {
-        "npm"
-      },
-      "install",
-    )
-  }
-
-  register<Exec>("webuiNpmBuild") {
-    group = "web"
-    dependsOn("webuiNpmInstall")
-    workingDir(webui)
-    inputs.dir(webui)
-    outputs.dir("$webui/dist")
-    commandLine(
-      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        "npm.cmd"
-      } else {
-        "npm"
-      },
-      "run",
-      "build",
-    )
-  }
-
-  // copy the webui build into public
   register<Sync>("webuiCopyDist") {
+    description = "Copies the WebUI build into resources/public"
     group = "web"
-    dependsOn("webuiNpmBuild")
     from("$webui/dist/")
     into("$projectDir/src/main/resources/public/")
   }
 
-  // modifies index.html to inject ThymeLeaf th: tags
   register<Copy>("webuiCopyIndex") {
+    description = "Copies the WebUI index.html into resources/public and injects Thymeleaf tags"
     group = "web"
     dependsOn("webuiCopyDist")
     from("$webui/dist/index.html")
@@ -220,6 +186,7 @@ tasks {
   }
 
   register<Copy>("nextuiCopyDist") {
+    description = "Copies the nextUI build into resources/public"
     group = "web"
     from("$nextui/dist/")
     into("$projectDir/src/main/resources/public/")
@@ -229,6 +196,7 @@ tasks {
 
   // modifies index.html to inject ThymeLeaf th: tags
   register<Copy>("nextuiCopyIndex") {
+    description = "Copies the nextUI index.html into resources/public/index-next.html and injects Thymeleaf tags"
     group = "web"
     dependsOn("nextuiCopyDist")
     from("$nextui/dist/index.html")

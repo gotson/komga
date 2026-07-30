@@ -119,6 +119,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
+      - name: WebUI - npm install
+        working-directory: komga-webui
+        run: npm ci
+
+      - name: WebUI - build
+        working-directory: komga-webui
+        run: npm run build
+
       - name: NextUI - npm install
         working-directory: next-ui
         run: npm ci
