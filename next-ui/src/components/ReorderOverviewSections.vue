@@ -1,28 +1,39 @@
 <template>
   <v-list>
-    <draggable
+    <VueDraggable
       v-model="localSections"
-      v-bind="draggableConfig"
+      :animation="150"
+      ghost-class="ghost"
+      target=".sort-target"
+      @start="drag = true"
+      @end="nextTick(() => (drag = false))"
     >
-      <template #[`item`]="{ element: section }: { element: LocalSection }">
-        <v-list-item
-          :title="$formatMessage(overviewSectionMessages[section.section])"
-          prepend-icon="i-mdi:drag-horizontal"
-          class="cursor-grab"
+      <div class="sort-target">
+        <v-fade-transition
+          group
+          :disabled="drag"
         >
-          <template #append>
-            <v-switch
-              v-model="section.enabled"
-              true-icon="i-mdi:check"
-              false-icon="i-mdi:close"
-              color="primary"
-              inset="material"
-              hide-details
-            />
-          </template>
-        </v-list-item>
-      </template>
-    </draggable>
+          <v-list-item
+            v-for="section in localSections"
+            :key="section.section"
+            :title="$formatMessage(overviewSectionMessages[section.section])"
+            prepend-icon="i-mdi:drag-horizontal"
+            class="cursor-grab"
+          >
+            <template #append>
+              <v-switch
+                v-model="section.enabled"
+                true-icon="i-mdi:check"
+                false-icon="i-mdi:close"
+                color="primary"
+                inset="material"
+                hide-details
+              />
+            </template>
+          </v-list-item>
+        </v-fade-transition>
+      </div>
+    </VueDraggable>
 
     <v-list-item class="text-center">
       <v-btn
@@ -44,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import draggable from 'vuedraggable'
+import { VueDraggable } from 'vue-draggable-plus'
 import { type ClientSettingUserOverviewSection } from '@/types/ClientSettingsUser'
 import { overviewSectionMessages, OverviewSectionsDefault } from '@/types/OverviewSection'
 import { watchDeep } from '@vueuse/core'
@@ -78,13 +89,7 @@ const isDefault = computed(
   () => JSON.stringify(defaultSections) === JSON.stringify(localSections.value),
 )
 
-const draggableConfig = {
-  group: 'libs',
-  itemKey: 'id',
-  ghostClass: 'ghost',
-  chosenClass: 'chosen',
-  animation: 150,
-}
+const drag = ref(false)
 </script>
 
 <style lang="scss">

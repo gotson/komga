@@ -54,7 +54,7 @@ export default defineConfigWithVueTs(
         'PascalCase',
         {
           registeredComponentsOnly: false,
-          ignores: ['/^v-/', 'draggable'],
+          ignores: ['/^v-/'],
         },
       ],
     },

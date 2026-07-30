@@ -47,7 +47,7 @@
     "vue": "^3.5.40",
     "vue-clamp": "^1.5.1",
     "vue-intl": "^7.2.14",
-    "vuedraggable": "^4.1.0",
+    "vue-draggable-plus": "^0.6.1",
     "vuetify": "^4.1.6"
   },
   "devDependencies": {

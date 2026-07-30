@@ -29,31 +29,30 @@
       "
     />
 
-    <draggable
+    <VueDraggable
       v-model="localPinned"
       v-bind="draggableConfig"
+      draggable=".draggable-item"
     >
-      <template #[`header`]>
-        <v-list-item
-          v-if="localPinned.length == 0"
-          :title="
-            $formatMessage({
-              description: 'Reorder library drawer: placeholder if no libraries are pinned',
-              defaultMessage: 'Drag here to pin a library',
-              id: '0MePSx',
-            })
-          "
-          class="text-grey"
-        />
-      </template>
-      <template #[`item`]="{ element: library }">
-        <v-list-item
-          :title="library.name"
-          prepend-icon="i-mdi:drag-horizontal"
-          class="cursor-grab"
-        />
-      </template>
-    </draggable>
+      <v-list-item
+        v-if="localPinned.length === 0"
+        :title="
+          $formatMessage({
+            description: 'Reorder library drawer: placeholder if no libraries are pinned',
+            defaultMessage: 'Drag here to pin a library',
+            id: '0MePSx',
+          })
+        "
+        class="text-grey"
+      />
+      <v-list-item
+        v-for="library in localPinned"
+        :key="library.id"
+        class="draggable-item cursor-grab"
+        :title="library.name"
+        prepend-icon="i-mdi:drag-horizontal"
+      />
+    </VueDraggable>
 
     <v-divider />
 
@@ -67,36 +66,35 @@
       "
     />
 
-    <draggable
+    <VueDraggable
       v-model="localUnpinned"
       v-bind="draggableConfig"
+      draggable=".draggable-item"
     >
-      <template #[`header`]>
-        <v-list-item
-          v-if="localUnpinned.length == 0"
-          :title="
-            $formatMessage({
-              description: 'Reorder library drawer: placeholder if no libraries are unpinned',
-              defaultMessage: 'Drag here to unpin a library',
-              id: 'H+LXXE',
-            })
-          "
-          class="text-grey"
-        />
-      </template>
-      <template #[`item`]="{ element: library }">
-        <v-list-item
-          :title="library.name"
-          prepend-icon="i-mdi:drag-horizontal"
-          class="cursor-grab"
-        />
-      </template>
-    </draggable>
+      <v-list-item
+        v-if="localUnpinned.length === 0"
+        :title="
+          $formatMessage({
+            description: 'Reorder library drawer: placeholder if no libraries are unpinned',
+            defaultMessage: 'Drag here to unpin a library',
+            id: 'H+LXXE',
+          })
+        "
+        class="text-grey"
+      />
+      <v-list-item
+        v-for="library in localUnpinned"
+        :key="library.id"
+        class="draggable-item cursor-grab"
+        :title="library.name"
+        prepend-icon="i-mdi:drag-horizontal"
+      />
+    </VueDraggable>
   </v-list>
 </template>
 
 <script setup lang="ts">
-import draggable from 'vuedraggable'
+import { VueDraggable } from 'vue-draggable-plus'
 import { useLibraries } from '@/colada/libraries'
 
 import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
@@ -132,9 +130,7 @@ void refresh().then(() => {
 
 const draggableConfig = {
   group: 'libs',
-  itemKey: 'id',
   ghostClass: 'ghost',
-  chosenClass: 'chosen',
   animation: 150,
 }
 
