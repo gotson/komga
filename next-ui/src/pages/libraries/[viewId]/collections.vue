@@ -109,17 +109,20 @@ const totalElements = computed(() =>
     : dataInfinite.value?.pages?.[0]?.totalElements,
 )
 
-watch(
-  totalElements,
-  (newTotalElements) => {
-    if (newTotalElements == 0) {
-      void router.replace({ name: '/libraries/[viewId]', params: { viewId: libraryViewId } })
-    }
-  },
-  { immediate: true, flush: 'post' },
-)
-
 useSelectionContextualActions(dataItems)
+
+// after load, if there's no elements, redirect to parent
+onMounted(() => {
+  if (totalElements.value == 0)
+    void router.replace({ name: '/libraries/[viewId]', params: { viewId: libraryViewId } })
+})
+
+// ongoing watch, if elements become 0 following a deletion, redirect to parent
+watch(totalElements, (newTotalElements) => {
+  if (newTotalElements == 0) {
+    void router.replace({ name: '/libraries/[viewId]', params: { viewId: libraryViewId } })
+  }
+})
 </script>
 
 <style lang="scss"></style>
