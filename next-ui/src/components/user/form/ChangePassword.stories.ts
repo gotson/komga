@@ -36,11 +36,13 @@ export const MatchingPasswords: Story = {
     const password1 = canvas.getByLabelText(/new password/i, {
       selector: 'input',
     })
+    await userEvent.click(password1)
     await userEvent.type(password1, 'abc')
 
     const password2 = canvas.getByLabelText(/confirm password/i, {
       selector: 'input',
     })
+    await userEvent.click(password2)
     await userEvent.type(password2, 'abc')
 
     await waitFor(() => expect(canvas.queryByText(/must be identical/i)).not.toBeInTheDocument())
@@ -53,11 +55,13 @@ export const DifferentPasswords: Story = {
     const password1 = canvas.getByLabelText(/new password/i, {
       selector: 'input',
     })
+    await userEvent.click(password1)
     await userEvent.type(password1, 'abc')
 
     const password2 = canvas.getByLabelText(/confirm password/i, {
       selector: 'input',
     })
+    await userEvent.click(password2)
     await userEvent.type(password2, 'def')
 
     await waitFor(() => expect(canvas.getByText(/must be identical/i)).toBeVisible())
