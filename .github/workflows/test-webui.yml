@@ -19,19 +19,23 @@ jobs:
     name: Test webui
     steps:
       - uses: actions/checkout@v6
+
       - uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
           cache-dependency-path: komga-webui/package-lock.json
+
       - name: npm install
         working-directory: komga-webui
-        run: npm install
+        run: npm ci
+
       - name: npm build
         working-directory: komga-webui
         run: npm run build
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
+
       - name: npm test
         working-directory: komga-webui
         run: npm run test:unit
