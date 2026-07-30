@@ -45,7 +45,7 @@
       />
 
       <v-list-item
-        href="https://hosted.weblate.org/projects/komga/next-ui/"
+        href="https://hosted.weblate.org/projects/komga/nextui/"
         target="_blank"
       >
         <v-list-item-title class="font-weight-bold">
