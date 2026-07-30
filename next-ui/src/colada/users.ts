@@ -238,11 +238,8 @@ export const myAuthenticationActivityQuery = defineQueryOptions(
 )
 
 function userChanged() {
-  const appStore = useAppStore()
-  if (appStore.sseUnavailable) {
-    const queryCache = useQueryCache()
-    void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.root })
-  }
+  const queryCache = useQueryCache()
+  void queryCache.invalidateQueries({ key: QUERY_KEYS_USERS.root })
 }
 
 export function userLoggedOut() {
