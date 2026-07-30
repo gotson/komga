@@ -8,7 +8,6 @@ import {
 } from '@pinia/colada'
 import { type UserRole } from '@/types/UserRoles'
 import { QUERY_KEYS_CLIENT_SETTINGS } from '@/colada/client-settings'
-import { useAppStore } from '@/stores/app'
 import { invalidateAll } from '@/colada/cache'
 import {
   type ApiKeyRequestDto,

@@ -29,7 +29,9 @@ import { useSettings, useUpdateSettings } from '@/colada/settings'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 import { useMessagesStore } from '@/stores/messages'
-import type { SettingsUpdateDto } from '@/generated/openapi'
+import { komgaBooksRegenerateThumbnails } from '@/generated/openapi'
+import { useMutation } from '@pinia/colada'
+import type { SettingsUpdateDtoExtended, ThumbnailRegenerate } from '@/types/ThumbnailRegenerate'
 
 const messagesStore = useMessagesStore()
 
@@ -38,16 +40,18 @@ const loading = ref<boolean>(false)
 const { data: settings, error, isPending, refetch } = useSettings()
 const { mutateAsync } = useUpdateSettings()
 
-function saveSettings(settings: SettingsUpdateDto) {
+function saveSettings(settings: SettingsUpdateDtoExtended) {
   loading.value = true
   mutateAsync(settings)
-    .then(() =>
+    .then(() => {
       messagesStore.messages.push({
         description: 'Snackbar notification shown upon successful server settings update',
         defaultMessage: 'Settings updated',
         id: 'TL5bVZ',
-      }),
-    )
+      })
+
+      regenerateThumbnails(settings.thumbnailRegenerate)
+    })
     .catch((error) => {
       messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
     })
@@ -55,6 +59,19 @@ function saveSettings(settings: SettingsUpdateDto) {
       loading.value = false
       void refetch()
     })
+}
+
+function regenerateThumbnails(regenerate: ThumbnailRegenerate) {
+  if (regenerate === 'no') return
+  const { mutate } = useMutation({
+    mutation: () =>
+      komgaBooksRegenerateThumbnails({
+        query: {
+          for_bigger_result_only: regenerate === 'bigger',
+        },
+      }),
+  })
+  void mutate()
 }
 </script>
 

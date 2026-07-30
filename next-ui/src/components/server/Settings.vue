@@ -34,7 +34,31 @@
                 })
               "
               :items="thumbnailSizes"
+              hide-details
             />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-radio-group
+              v-model="proxyModel.value.thumbnailRegenerate"
+              inline
+              label="Regenerate thumbnails"
+              :disabled="proxyModel.value.thumbnailSize === settingsUpdate.thumbnailSize"
+            >
+              <v-radio
+                value="no"
+                label="No"
+              />
+              <v-radio
+                value="all"
+                label="Yes (all books)"
+              />
+              <v-radio
+                value="bigger"
+                label="Yes (only if bigger)"
+              />
+            </v-radio-group>
           </v-col>
         </v-row>
 
@@ -329,7 +353,8 @@ import { useIntl } from 'vue-intl'
 
 import { watchImmediate } from '@vueuse/core'
 import { useRules } from 'vuetify/labs/rules'
-import type { SettingsDto, SettingsUpdateDto } from '@/generated/openapi'
+import type { SettingsDto } from '@/generated/openapi'
+import type { SettingsUpdateDtoExtended } from '@/types/ThumbnailRegenerate'
 
 const intl = useIntl()
 const rules = useRules()
@@ -340,10 +365,10 @@ const { settings, loading = false } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  updateSettings: [settings: SettingsUpdateDto]
+  updateSettings: [settings: SettingsUpdateDtoExtended]
 }>()
 
-const settingsUpdate = ref<SettingsUpdateDto>({
+const settingsUpdate = ref<SettingsUpdateDtoExtended>({
   thumbnailSize: 'DEFAULT',
   deleteEmptyCollections: false,
   deleteEmptyReadLists: false,
@@ -354,6 +379,7 @@ const settingsUpdate = ref<SettingsUpdateDto>({
   serverContextPath: '',
   koboProxy: false,
   koboPort: undefined,
+  thumbnailRegenerate: 'bigger',
 })
 
 watchImmediate(
@@ -371,6 +397,7 @@ watchImmediate(
         serverContextPath: settings.serverContextPath.databaseSource,
         koboProxy: settings.koboProxy,
         koboPort: settings.koboPort,
+        thumbnailRegenerate: 'bigger',
       }
   },
 )
@@ -380,7 +407,12 @@ const form = ref()
 async function submitForm(callback: () => void) {
   const { valid } = await form.value.validate()
   if (valid) {
+    // comit the changes from the form to the model
     callback()
+    // if the thumbnail size did not change, force the regeneration value to 'no'
+    if (settings?.thumbnailSize === settingsUpdate.value.thumbnailSize) {
+      settingsUpdate.value.thumbnailRegenerate = 'no'
+    }
     emit('updateSettings', settingsUpdate.value)
   }
 }
