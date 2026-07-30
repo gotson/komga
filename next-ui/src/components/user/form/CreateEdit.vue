@@ -256,7 +256,7 @@
 </template>
 
 <script setup lang="ts">
-import { UserRoleValues, userRolesMessages } from '@/types/UserRoles'
+import { UserRoleValues, userRolesMessages, UserRole } from '@/types/UserRoles'
 
 import { useLibraries } from '@/colada/libraries'
 import { sharingLabelsQuery } from '@/colada/referential'
@@ -295,7 +295,7 @@ function selectAllLibraries() {
 }
 
 const userRoles = computed(() =>
-  UserRoleValues.map((x) => ({
+  UserRoleValues.filter((it) => it !== UserRole.User).map((x) => ({
     title: intl.formatMessage(userRolesMessages[x]),
     value: x,
   })),
