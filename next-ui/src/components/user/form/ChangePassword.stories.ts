@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import ChangePassword from './ChangePassword.vue'
-import { expect, waitFor } from 'storybook/test'
+import { expect, waitFor, waitForElementToBeRemoved } from 'storybook/test'
 
 const meta = {
   component: ChangePassword,
@@ -43,7 +43,7 @@ export const MatchingPasswords: Story = {
     })
     await userEvent.type(password2, 'abc')
 
-    await waitFor(() => expect(canvas.queryByText(/must be identical/i)).toBeNull())
+    await waitFor(() => expect(canvas.queryByText(/must be identical/i)).not.toBeInTheDocument())
   },
 }
 
