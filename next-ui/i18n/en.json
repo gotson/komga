@@ -323,10 +323,6 @@
     "defaultMessage": "History",
     "description": "History table global header"
   },
-  "8/5TBQ": {
-    "defaultMessage": "On Deck",
-    "description": "Overview section: on deck"
-  },
   "8/BXfN": {
     "defaultMessage": "All",
     "description": "Library tab navigation: library selection: all"
@@ -378,10 +374,6 @@
   "90yqRq": {
     "defaultMessage": "add library",
     "description": "Add library button: aria label"
-  },
-  "9K4zf3": {
-    "defaultMessage": "Recently Added Series",
-    "description": "Overview section: recently added series"
   },
   "9TJRkm": {
     "defaultMessage": "Import series metadata",
@@ -526,10 +518,6 @@
   "D/yypj": {
     "defaultMessage": "<ul><li>This will delete all sync history for this API key.</li><li>Your Kobo will sync everything on the next sync.</li></ul>",
     "description": "API Key for sync warning notice"
-  },
-  "D9vRM7": {
-    "defaultMessage": "Recently Released Books",
-    "description": "Overview section: recently released books"
   },
   "DK4PsD": {
     "defaultMessage": "Series books",
@@ -1659,14 +1647,6 @@
     "defaultMessage": "Create",
     "description": "Import reading list: bottom bar: create button"
   },
-  "djKYIx": {
-    "defaultMessage": "Recently Added Books",
-    "description": "Overview section: recently added books"
-  },
-  "dr+UOt": {
-    "defaultMessage": "Recently Updated Series",
-    "description": "Overview section: recently updated series"
-  },
   "dx9s7S": {
     "defaultMessage": "Created",
     "description": "Series view table: date created header"
@@ -1726,6 +1706,34 @@
   "enum.MediaStatus.UNSUPPORTED": {
     "defaultMessage": "Unsupported",
     "description": "Media status: unsupported"
+  },
+  "enum.OverviewSection.keep_reading": {
+    "defaultMessage": "Keep Reading",
+    "description": "Overview section: keep reading"
+  },
+  "enum.OverviewSection.on_deck": {
+    "defaultMessage": "On Deck",
+    "description": "Overview section: on deck"
+  },
+  "enum.OverviewSection.recently_added_books": {
+    "defaultMessage": "Recently Added Books",
+    "description": "Overview section: recently added books"
+  },
+  "enum.OverviewSection.recently_added_series": {
+    "defaultMessage": "Recently Added Series",
+    "description": "Overview section: recently added series"
+  },
+  "enum.OverviewSection.recently_read_books": {
+    "defaultMessage": "Recently Read Books",
+    "description": "Overview section: recently read books"
+  },
+  "enum.OverviewSection.recently_released_books": {
+    "defaultMessage": "Recently Released Books",
+    "description": "Overview section: recently released books"
+  },
+  "enum.OverviewSection.recently_updated_series": {
+    "defaultMessage": "Recently Updated Series",
+    "description": "Overview section: recently updated series"
   },
   "enum.ReadStatus.IN_PROGRESS": {
     "defaultMessage": "In progress",
@@ -2135,10 +2143,6 @@
     "defaultMessage": "Series",
     "description": "Library navigation: series"
   },
-  "lu0M/4": {
-    "defaultMessage": "Recently Read Books",
-    "description": "Overview section: recently read books"
-  },
   "lvCpSX": {
     "defaultMessage": "Actions",
     "description": "User table header: user actions"
@@ -2438,10 +2442,6 @@
   "toP54Z": {
     "defaultMessage": "Error",
     "description": "Import reading list table filter: Error"
-  },
-  "u8adLU": {
-    "defaultMessage": "Keep Reading",
-    "description": "Overview section: keep reading"
   },
   "uGC9fD": {
     "defaultMessage": "Options",
