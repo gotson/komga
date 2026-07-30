@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: 'next-ui/.nvmrc'
           cache: 'npm'
           cache-dependency-path: next-ui/package-lock.json
 
