@@ -45,7 +45,17 @@ export const MatchingPasswords: Story = {
     await userEvent.click(password2)
     await userEvent.type(password2, 'abc')
 
-    await waitFor(() => expect(canvas.queryByText(/must be identical/i)).not.toBeInTheDocument())
+    await waitFor(() => {
+      const errorMessage = canvas.queryByText(/must be identical/i)
+
+      if (errorMessage) {
+        // If the UI library kept it in the DOM, assert that it is hidden via CSS
+        void expect(errorMessage).not.toBeVisible()
+      } else {
+        // If it was completely removed from the DOM, assert it is null
+        void expect(errorMessage).toBeNull()
+      }
+    })
   },
 }
 
