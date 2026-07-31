@@ -22,8 +22,6 @@ import { createOrderCompareFn } from '@/functions/sort'
 import { clearFilter, countFilter } from '@/functions/filter'
 import type { UnwrapRef } from 'vue'
 
-export const CONTRIBUTOR_ANYROLE = 'anyrole' as const
-
 export function useFilterContributors() {
   // the update function for the query param
   function updateRouteFn(data: v.InferOutput<typeof SchemaFilterContributorsRecord>) {
@@ -41,8 +39,6 @@ export function useFilterContributors() {
     SchemaFilterContributorsRecord,
     updateRouteFn,
   ).data
-  // always add the special role for any role
-  filterContributors.value[CONTRIBUTOR_ANYROLE] = { m: 'anyOf', v: [] }
 
   // get the roles dynamically from the filter context
   const filterContext = inject(filterKeys.context, {})
@@ -56,11 +52,18 @@ export function useFilterContributors() {
   watchImmediate(data, (newData) => {
     if (!newData || !newData.content) return
 
-    newData.content
-      .toSorted(createOrderCompareFn(Object.keys(contributorsRolesMessages), (role) => role))
-      .forEach((role) => {
-        filterContributors.value[role] = { m: 'anyOf', v: [] }
-      })
+    const serverRoles = newData.content.toSorted(
+      createOrderCompareFn(Object.keys(contributorsRolesMessages), (role) => role),
+    )
+    // delete extra roles that are not returned by the API
+    Object.keys(filterContributors.value).forEach((role) => {
+      if (!serverRoles.includes(role)) delete filterContributors.value[role]
+    })
+
+    // add default empty filter for roles not yet in the filter
+    serverRoles.forEach((role) => {
+      if (!filterContributors.value[role]) filterContributors.value[role] = { m: 'anyOf', v: [] }
+    })
   })
 
   const countAll = computed(() =>

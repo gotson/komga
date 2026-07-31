@@ -22,7 +22,7 @@ import { type AnyAll, filterKeys, filterMessages, SchemaAuthor } from '@/types/f
 import type { ItemType } from '@/components/filter/List.vue'
 import { refDebounced } from '@vueuse/core'
 import { useIntl } from 'vue-intl'
-import { CONTRIBUTOR_ANYROLE } from '@/composables/filter'
+import { CONTRIBUTOR_ANYROLE } from '@/types/referential'
 
 type Author = v.InferOutput<typeof SchemaAuthor>
 

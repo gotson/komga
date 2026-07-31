@@ -10,7 +10,7 @@ import {
 } from '@/types/filter'
 import type { InferOutput } from 'valibot'
 import * as v from 'valibot'
-import { CONTRIBUTOR_ANYROLE } from '@/composables/filter'
+import { CONTRIBUTOR_ANYROLE } from '@/types/referential'
 
 export function clearFilter(filter: FilterType) {
   if ('v' in filter) filter.v = []
