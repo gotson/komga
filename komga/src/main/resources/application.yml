@@ -65,6 +65,12 @@ server:
   error:
     include-message: always
   port: 25600
+  tomcat:
+    relaxed-query-chars:
+      - '{'
+      - '}'
+      - '['
+      - ']'
 
 management:
   endpoints.web.exposure.include: "*"
