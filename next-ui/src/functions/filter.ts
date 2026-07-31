@@ -10,6 +10,7 @@ import {
 } from '@/types/filter'
 import type { InferOutput } from 'valibot'
 import * as v from 'valibot'
+import { CONTRIBUTOR_ANYROLE } from '@/composables/filter'
 
 export function clearFilter(filter: FilterType) {
   if ('v' in filter) filter.v = []
@@ -67,7 +68,7 @@ export function schemaFilterAuthorsToConditions(
           operator: it.i === 'e' ? 'isNot' : 'is',
           value: {
             name: it.v,
-            role: role,
+            ...(role === CONTRIBUTOR_ANYROLE ? {} : { role: role }),
           },
         },
       }

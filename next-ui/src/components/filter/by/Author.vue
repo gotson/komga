@@ -22,6 +22,7 @@ import { type AnyAll, filterKeys, filterMessages, SchemaAuthor } from '@/types/f
 import type { ItemType } from '@/components/filter/List.vue'
 import { refDebounced } from '@vueuse/core'
 import { useIntl } from 'vue-intl'
+import { CONTRIBUTOR_ANYROLE } from '@/composables/filter'
 
 type Author = v.InferOutput<typeof SchemaAuthor>
 
@@ -41,7 +42,7 @@ const filterContext = inject(filterKeys.context, {})
 
 const apiQuery = computed(() => ({
   ...toValue(filterContext),
-  role: role,
+  ...(role === CONTRIBUTOR_ANYROLE ? {} : { role: role }),
 }))
 
 const { data: searchItems, isLoading: searchLoading } = useQuery(() => ({
@@ -62,11 +63,15 @@ const infiniteItems = computed(() => {
     toItemType(it),
   )
   return [
-    {
-      title: intl.formatMessage(filterMessages.any!),
-      value: { a: 'any' },
-      valueExclude: { a: 'none' },
-    },
+    ...(role === CONTRIBUTOR_ANYROLE
+      ? []
+      : [
+          {
+            title: intl.formatMessage(filterMessages.any!),
+            value: { a: 'any' },
+            valueExclude: { a: 'none' },
+          },
+        ]),
     ...itemTypes,
   ]
 })

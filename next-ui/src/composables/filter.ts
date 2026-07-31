@@ -22,6 +22,8 @@ import { createOrderCompareFn } from '@/functions/sort'
 import { clearFilter, countFilter } from '@/functions/filter'
 import type { UnwrapRef } from 'vue'
 
+export const CONTRIBUTOR_ANYROLE = 'anyrole' as const
+
 export function useFilterContributors() {
   // the update function for the query param
   function updateRouteFn(data: v.InferOutput<typeof SchemaFilterContributorsRecord>) {
@@ -40,7 +42,7 @@ export function useFilterContributors() {
     updateRouteFn,
   ).data
   // always add the special role for any role
-  filterContributors.value['anyrole'] = { m: 'anyOf', v: [] }
+  filterContributors.value[CONTRIBUTOR_ANYROLE] = { m: 'anyOf', v: [] }
 
   // get the roles dynamically from the filter context
   const filterContext = inject(filterKeys.context, {})
