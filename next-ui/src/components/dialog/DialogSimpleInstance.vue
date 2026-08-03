@@ -30,9 +30,14 @@ const loading = ref<boolean>(false)
 
 const { simple } = storeToRefs(useDialogsStore())
 
-syncRefs(
-  toRef(() => simple.value.dialogProps.shown),
-  showDialog,
+watch(
+  () => simple.value.dialogProps.shown,
+  (newShow) => {
+    if (newShow != undefined) {
+      showDialog.value = newShow
+      simple.value.dialogProps.shown = undefined
+    }
+  },
 )
 </script>
 

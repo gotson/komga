@@ -79,12 +79,15 @@
     </template>
 
     <template #[`item.hash`]="{ value }">
-      <div>
+      <div
+        style="width: 200px; height: 200px; cursor: zoom-in"
+        @mouseenter="(event: Event) => (dialogSimple.activator = event.currentTarget as Element)"
+        @click.stop="showDialogImage(value)"
+      >
         <v-img
           width="200"
           height="200"
           contain
-          style="cursor: zoom-in"
           :src="pageHashKnownThumbnailUrl(value)"
           lazy-src="@/assets/cover.svg"
           class="my-1"
@@ -95,8 +98,6 @@
               id: 'P+WI/K',
             })
           "
-          @mouseenter="dialogSimple.activator = $event.currentTarget"
-          @click="showDialogImage(value)"
         >
           <template #placeholder>
             <div class="d-flex align-center justify-center fill-height">
