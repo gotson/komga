@@ -7,6 +7,7 @@ on:
       - '!komga-webui/src/locales/*'
   push:
     paths:
+      - '.github/workflows/test-webui.yml'
       - 'komga-webui/**'
       - '!komga-webui/src/locales/*'
     branches-ignore:
@@ -22,7 +23,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: 'komga-webui/.nvmrc'
           cache: 'npm'
           cache-dependency-path: komga-webui/package-lock.json
 

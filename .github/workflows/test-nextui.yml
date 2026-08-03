@@ -7,6 +7,7 @@ on:
       - '!next-ui/i18n/*'
   push:
     paths:
+      - '.github/workflows/test-nextui.yml'
       - 'next-ui/**'
       - '!next-ui/i18n/*'
     branches-ignore:
