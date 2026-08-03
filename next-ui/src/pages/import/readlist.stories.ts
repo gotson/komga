@@ -5,6 +5,7 @@ import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.v
 import { delay, http } from 'msw'
 import SnackQueue from '@/components/SnackQueue.vue'
 import { emptyCbl, garbledCbl } from '@/mocks/api/handlers/readlists'
+import { fireEvent, expect, waitFor } from 'storybook/test'
 
 import { response400 } from '@/mocks/api/utils'
 
@@ -33,11 +34,46 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {},
+  play: async ({ canvasElement, canvas }) => {
+    const mockFile = new File([''], 'test-cbl.cbl', { type: 'text/plain' })
+    const fileInput = canvasElement.querySelector('input[type="file"]')
+    if (!fileInput) {
+      throw new Error('Could not find an input element with type="file"')
+    }
+    await fireEvent.change(fileInput, {
+      target: { files: [mockFile] },
+    })
+    await waitFor(() => expect(canvas.getByText(/create/i)).toBeVisible())
+  },
 }
 
 export const Loading: Story = {
   beforeEach({ msw }) {
-    msw.use(http.all('*/api/*', async () => await delay(2_000)))
+    msw.use(http.all('*/api/*', async () => await delay(5_000)))
+  },
+  play: async ({ canvasElement }) => {
+    const mockFile = new File([''], 'test-cbl.cbl', { type: 'text/plain' })
+    const fileInput = canvasElement.querySelector('input[type="file"]')
+    if (!fileInput) {
+      throw new Error('Could not find an input element with type="file"')
+    }
+    await fireEvent.change(fileInput, {
+      target: { files: [mockFile] },
+    })
+  },
+}
+
+export const ErrorInvalidFileType: Story = {
+  play: async ({ canvasElement, canvas }) => {
+    const mockFile = new File([''], 'test-cbl.txt', { type: 'text/plain' })
+    const fileInput = canvasElement.querySelector('input[type="file"]')
+    if (!fileInput) {
+      throw new Error('Could not find an input element with type="file"')
+    }
+    await fireEvent.change(fileInput, {
+      target: { files: [mockFile] },
+    })
+    await waitFor(() => expect(canvas.getByText(/type not supported/i)).toBeVisible())
   },
 }
 
@@ -45,10 +81,32 @@ export const ErrorNoBooks: Story = {
   beforeEach({ msw }) {
     msw.use(http.post('*/api/v1/readlists/match/comicrack', () => response400(emptyCbl)))
   },
+  play: async ({ canvasElement, canvas }) => {
+    const mockFile = new File([''], 'test-cbl.cbl', { type: 'text/plain' })
+    const fileInput = canvasElement.querySelector('input[type="file"]')
+    if (!fileInput) {
+      throw new Error('Could not find an input element with type="file"')
+    }
+    await fireEvent.change(fileInput, {
+      target: { files: [mockFile] },
+    })
+    await waitFor(() => expect(canvas.getByText(/does not contain/i)).toBeVisible())
+  },
 }
 
 export const ErrorInvalidFile: Story = {
   beforeEach({ msw }) {
     msw.use(http.post('*/api/v1/readlists/match/comicrack', () => response400(garbledCbl)))
+  },
+  play: async ({ canvasElement, canvas }) => {
+    const mockFile = new File([''], 'test-cbl.cbl', { type: 'text/plain' })
+    const fileInput = canvasElement.querySelector('input[type="file"]')
+    if (!fileInput) {
+      throw new Error('Could not find an input element with type="file"')
+    }
+    await fireEvent.change(fileInput, {
+      target: { files: [mockFile] },
+    })
+    await waitFor(() => expect(canvas.getByText(/error while deserializing/i)).toBeVisible())
   },
 }

@@ -8,42 +8,39 @@
       :disabled="isLoading"
       density="compact"
       filter-by-type=".cbl"
+      :error-messages="errorMessage"
       @rejected="handleReject()"
     >
-      <template #item />
     </v-file-upload>
 
     <v-progress-linear
       v-if="isLoading"
       indeterminate
-      class="mt-2"
     />
 
     <ImportReadlistTable
       v-if="match"
       :match="match"
       :loading="isLoading"
-      class="mt-4"
     />
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import { useMessagesStore } from '@/stores/messages'
 import { useMutation } from '@pinia/colada'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useIntl } from 'vue-intl'
+import { defineMessage, useIntl } from 'vue-intl'
 import { komgaMatchComicRackList } from '@/generated/openapi'
 
 const intl = useIntl()
-const messagesStore = useMessagesStore()
 const { convertErrorCodes } = useErrorCodeFormatter()
 
 const fileToUpload = ref<File>()
+const errorMessage = ref('')
 
 function handleReject() {
-  messagesStore.messages.push(unsupportedFileTypeMessage)
+  errorMessage.value = intl.formatMessage(unsupportedFileTypeMessage)
 }
 
 const {
@@ -62,17 +59,19 @@ const {
         return fd
       },
     }).catch((error) => {
-      messagesStore.messages.push(
-        convertErrorCodes(error?.cause?.message) ?? commonMessages.networkError,
-      )
+      errorMessage.value =
+        convertErrorCodes(error?.cause?.message) ?? intl.formatMessage(commonMessages.networkError)
     }),
 })
 
 watch(fileToUpload, (file) => {
-  if (file) matchCbl(file)
+  if (file) {
+    errorMessage.value = ''
+    matchCbl(file)
+  }
 })
 
-const unsupportedFileTypeMessage = intl.formatMessage({
+const unsupportedFileTypeMessage = defineMessage({
   description: 'Import readlist view: error message when trying to upload an unsupported file type',
   defaultMessage: 'File type not supported',
   id: 'CxuwFR',
