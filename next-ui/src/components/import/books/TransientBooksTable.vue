@@ -405,7 +405,9 @@ function onDisplayedItems(items: { key: string }[]) {
 
 //region Table setup
 const itemsPerPage = ref<number>(display.smAndDown.value ? 1 : 10)
-const itemsPerPageOptions = computed(() => (display.smAndDown.value ? [1, 5] : [10, 25, 50]))
+const itemsPerPageOptions = computed(() =>
+  display.smAndDown.value ? [1, 5, 10, 20] : [10, 25, 50],
+)
 const hideFooter = computed(() => importBooks.value.length < (display.smAndDown.value ? 1 : 10))
 
 const headers = [
