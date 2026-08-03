@@ -1,14 +1,14 @@
 <template>
   <v-container fluid>
-    <v-row class="align-center">
+    <v-row class="align-baseline">
       <v-col
         cols="12"
         sm=""
       >
         <v-text-field
           v-model="appStore.importBooksPath"
-          hide-details
           clearable
+          :error-messages="errorMessages"
           :label="
             $formatMessage({
               description: 'Import books directory selection: directory text field label',
@@ -16,6 +16,7 @@
               id: 'z8b1Xe',
             })
           "
+          @update:model-value="errorMessages = ''"
         />
       </v-col>
 
@@ -64,6 +65,11 @@ const display = useDisplay()
 const appStore = useAppStore()
 
 const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
+
+const errorMessages = defineModel<string | string[]>('errorMessages', {
+  required: false,
+  default: '',
+})
 
 const { loading = false } = defineProps<{
   loading?: boolean

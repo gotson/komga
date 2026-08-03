@@ -4,6 +4,7 @@
     class="pa-0 pa-sm-4 h-100 h-sm-auto"
   >
     <ImportBooksDirectorySelection
+      v-model:error-messages="errorMessage"
       :loading="isLoading"
       @scan="(directory) => doScan(directory)"
     />
@@ -18,8 +19,15 @@
 <script lang="ts" setup>
 import { transientBooksScan } from '@/colada/transient-books'
 import { useQuery } from '@pinia/colada'
+import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
+import { commonMessages } from '@/utils/i18n/common-messages'
+import { useIntl } from 'vue-intl'
+
+const intl = useIntl()
+const { convertErrorCodes } = useErrorCodeFormatter()
 
 const scanDirectory = ref<string>('')
+const errorMessage = ref('')
 
 const {
   data: transientBooks,
@@ -32,8 +40,12 @@ const {
 )
 
 function doScan(directory: string) {
+  errorMessage.value = ''
   scanDirectory.value = directory
-  void refetch()
+  refetch(true).catch((error) => {
+    errorMessage.value =
+      convertErrorCodes(error?.cause?.message) ?? intl.formatMessage(commonMessages.networkError)
+  })
 }
 </script>
 

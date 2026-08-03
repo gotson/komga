@@ -55,6 +55,7 @@
 <script setup lang="ts">
 import { useQuery } from '@pinia/colada'
 import { komgaGetDirectoryListing } from '@/generated/openapi'
+import { isApiErrorWithCause } from '@/api/komga-client'
 
 const selectedPath = defineModel<string>({ required: false, default: '' })
 
@@ -70,6 +71,12 @@ const {
         path: selectedPath.value,
         showFiles: false,
       },
+    }).catch((error) => {
+      // if we hit an error, clear the input which may be erroneous
+      // the API will be retried automatically
+      if (isApiErrorWithCause(error) && error.cause.status === 400) {
+        selectedPath.value = ''
+      }
     }),
   placeholderData: (previousData) => previousData,
 })
