@@ -38,6 +38,7 @@
           <v-divider class="my-2" />
 
           <v-data-table
+            v-model:sort-by="sortBy"
             :items="books"
             :headers="bookTableHeaders"
             :search="filterRef"
@@ -95,6 +96,7 @@
 import { bookPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { BookDto } from '@/generated/openapi'
+import type { VSortItem } from '@/types/PageRequest'
 
 const intl = useIntl()
 
@@ -151,6 +153,8 @@ function filterFn(
     false
   )
 }
+
+const sortBy = ref<VSortItem[]>([{ key: 'metadata.number', order: 'desc' }])
 
 const bookTableHeaders = [
   {
