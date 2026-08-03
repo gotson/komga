@@ -29,7 +29,7 @@
         <tbody>
           <tr>
             <th>Page file size</th>
-            <td>{{ event.properties['page file size'] }}</td>
+            <td>{{ getFileSize(parseInt(event.properties['page file size'] || '')) }}</td>
           </tr>
         </tbody>
         <tbody>
@@ -73,6 +73,7 @@
 <script setup lang="ts">
 import { pageHashKnownThumbnailUrl } from '@/api/images'
 import type { HistoricalEventDto } from '@/generated/openapi'
+import { getFileSize } from '@/utils/utils'
 
 const { event } = defineProps<{
   event: HistoricalEventDto
