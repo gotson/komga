@@ -2,7 +2,7 @@
   <div>
     <v-data-table
       v-model="selectedIndices"
-      :loading="creating || loading"
+      :loading="isLoading"
       :items="readListEntries"
       item-value="index"
       :headers="headers"
@@ -142,60 +142,78 @@
 
     <!--region Creation Form-->
     <v-container fluid>
-      <v-row class="align-end justify-space-between">
-        <v-col
-          cols="12"
-          sm=""
-        >
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="readListName"
-                :rules="[rules.required()]"
-                :disabled="finishedState"
-                clearable
-                :label="
-                  $formatMessage({
-                    description: 'Import reading list: bottom bar: reading list name',
-                    defaultMessage: 'Name',
-                    id: 'rrF/Z2',
-                  })
-                "
-                :error-messages="readListNameAlreadyExists ? duplicateNameMessage : undefined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-textarea
-                v-model="readListSummary"
-                rows="2"
-                hide-details
-                :disabled="finishedState"
-                clearable
-                :label="
-                  $formatMessage({
-                    description: 'Import reading list: bottom bar: reading list summary',
-                    defaultMessage: 'Summary',
-                    id: 'uW+6XG',
-                  })
-                "
-              />
-            </v-col>
-          </v-row>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            :color="finishedState ? 'success' : 'primary'"
-            :text="
+      <v-row>
+        <v-col>
+          <v-text-field
+            v-model="readListName"
+            :rules="[rules.required()]"
+            :disabled="finishedState"
+            clearable
+            :label="
               $formatMessage({
-                description: 'Import reading list: bottom bar: create button',
-                defaultMessage: 'Create',
-                id: 'dipMGb',
+                description: 'Import reading list: bottom bar: reading list name',
+                defaultMessage: 'Name',
+                id: 'rrF/Z2',
               })
             "
-            :disabled="!isFormValid || creating || loading || finishedState"
+            :error-messages="readListNameErrorMessage"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col>
+          <v-textarea
+            v-model="readListSummary"
+            rows="2"
+            hide-details
+            :disabled="finishedState"
+            clearable
+            :label="
+              $formatMessage({
+                description: 'Import reading list: bottom bar: reading list summary',
+                defaultMessage: 'Summary',
+                id: 'uW+6XG',
+              })
+            "
+          />
+        </v-col>
+      </v-row>
+
+      <v-row class="align-center justify-end">
+        <v-col cols="auto">
+          <v-checkbox
+            v-model="readListOverwrite"
+            :disabled="readListDuplicate === undefined"
+            hide-details
+            :label="
+              $formatMessage({
+                description:
+                  'Import reading list: bottom bar: reading list overwrite checkbox label',
+                defaultMessage: 'Overwrite existing read list',
+                id: 'PguYSD',
+              })
+            "
+          />
+        </v-col>
+        <v-col cols="auto">
+          <v-btn
+            min-width="120px"
+            :color="finishedState ? 'success' : 'primary'"
+            :text="
+              shouldOverwrite
+                ? $formatMessage({
+                    description: 'Import reading list: bottom bar: overwrite button',
+                    defaultMessage: 'Overwrite',
+                    id: 'BtDfUf',
+                  })
+                : $formatMessage({
+                    description: 'Import reading list: bottom bar: create button',
+                    defaultMessage: 'Create',
+                    id: 'dipMGb',
+                  })
+            "
+            :disabled="!isFormValid || isLoading || finishedState"
             :prepend-icon="finishedState ? 'i-mdi:check' : undefined"
             @click="doCreateReadList"
           />
@@ -232,7 +250,7 @@ import {
 import { useDisplay } from 'vuetify'
 import { useQuery } from '@pinia/colada'
 import { bookListQuery } from '@/colada/books'
-import { useCreateReadList, readListsListQuery } from '@/colada/readlists'
+import { useCreateReadList, readListsListQuery, useUpdateReadList } from '@/colada/readlists'
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { PageRequest } from '@/types/PageRequest'
@@ -240,7 +258,6 @@ import { useRules } from 'vuetify/labs/rules'
 import type {
   BookDto,
   ReadListCreationDto,
-  ReadListDto,
   ReadListRequestBookMatchBookDto,
   ReadListRequestBookMatchesDto,
   ReadListRequestBookMatchSeriesDto,
@@ -329,22 +346,23 @@ const duplicateBookIds = useArrayFilter(
 )
 
 const readListName = ref<string>(match.readListMatch.name)
+const readListOverwrite = ref<boolean>(false)
 const readListSummary = ref<string>()
-const readListCreated = ref<ReadListDto>()
+const readListCreatedId = ref<string>()
 // if the prop changes, reset some data
 watchImmediate(
   () => match,
   (m) => {
     readListName.value = m.readListMatch.name
     readListSummary.value = ''
-    readListCreated.value = undefined
+    readListCreatedId.value = undefined
   },
 )
 
 //region Duplicate read list name check
 const { data: allReadLists } = useQuery(readListsListQuery({ pageRequest: PageRequest.Unpaged() }))
-const readListNameAlreadyExists = computed(() =>
-  allReadLists.value?.content?.some(
+const readListDuplicate = computed(() =>
+  allReadLists.value?.content?.find(
     (it) => it.name.localeCompare(readListName.value, undefined, { sensitivity: 'accent' }) == 0,
   ),
 )
@@ -353,9 +371,14 @@ const duplicateNameMessage = intl.formatMessage({
   defaultMessage: 'A read list with that name already exists',
   id: 'LjqS9+',
 })
+const readListNameErrorMessage = computed(() => {
+  if (readListDuplicate.value && !readListOverwrite.value) return duplicateNameMessage
+  return undefined
+})
+const shouldOverwrite = computed(() => !!readListDuplicate.value && readListOverwrite.value)
 //endregion
 
-const finishedState = computed<boolean>(() => !!readListCreated.value)
+const finishedState = computed<boolean>(() => !!readListCreatedId.value)
 
 //region Table setup
 const hideFooter = computed(() => readListEntries.value.length < 10)
@@ -507,9 +530,7 @@ const getSeriesBooks = useMemoize(async (seriesId: string) =>
     .then(({ data }) => data),
 )
 
-const isFormValid = computed<boolean>(
-  () => !!readListName.value && !readListNameAlreadyExists.value,
-)
+const isFormValid = computed<boolean>(() => !!readListName.value && !readListNameErrorMessage.value)
 const createPayload = computed(
   () =>
     ({
@@ -521,6 +542,8 @@ const createPayload = computed(
 )
 
 const { mutateAsync: postReadList, isLoading: creating } = useCreateReadList()
+const { mutateAsync: updateReadList, isLoading: updating } = useUpdateReadList()
+const isLoading = computed(() => creating.value || updating.value || loading)
 
 function doCreateReadList() {
   if (selectedBooks.value.length == 0) {
@@ -555,30 +578,40 @@ function doCreateReadList() {
     return
   }
 
-  postReadList(createPayload.value)
-    .then((data) => {
-      if (data) {
-        readListCreated.value = data
-        messagesStore.messages.push({
-          message: defineMessage({
-            description: 'Create read list notification: read list created',
-            defaultMessage: 'Read list created',
-            id: 'estf95',
-          }),
-          action: {
-            to: { name: '/readlist/[id]', params: { id: data.id } },
-            label: defineMessage({
-              description: 'Create read list notification: button text to navigate to read list',
-              defaultMessage: 'Open',
-              id: 'lyknmW',
-            }),
-          },
-        })
-      }
-    })
-    .catch((error) => {
-      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
-    })
+  if (shouldOverwrite.value) {
+    updateReadList({ readListId: readListDuplicate.value!.id, data: createPayload.value })
+      .then(() => success(readListDuplicate.value!.id))
+      .catch((error) =>
+        messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError),
+      )
+  } else {
+    postReadList(createPayload.value)
+      .then((data) => {
+        if (data) success(data.id)
+      })
+      .catch((error) =>
+        messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError),
+      )
+  }
+}
+
+function success(readListId: string) {
+  readListCreatedId.value = readListId
+  messagesStore.messages.push({
+    message: defineMessage({
+      description: 'Create read list notification: read list created',
+      defaultMessage: 'Read list created',
+      id: 'estf95',
+    }),
+    action: {
+      to: { name: '/readlist/[id]', params: { id: readListId } },
+      label: defineMessage({
+        description: 'Create read list notification: button text to navigate to read list',
+        defaultMessage: 'Open',
+        id: 'lyknmW',
+      }),
+    },
+  })
 }
 </script>
 
