@@ -174,7 +174,6 @@ function generateApiKey() {
   mutateAsync({ comment: comment.value })
     .then((key) => (createdKey.value = key))
     .catch((error) => {
-      console.dir(error)
       if (isApiErrorWithCause(error) && error.cause.message?.includes('ERR_1034')) {
         creationError.value = intl.formatMessage({
           description:
