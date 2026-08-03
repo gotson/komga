@@ -77,6 +77,7 @@
 
           <v-data-table
             v-if="seriesBooks"
+            v-model:sort-by="sortBy"
             :items="seriesBooks"
             :headers="bookTableHeaders"
             fixed-header
@@ -127,6 +128,7 @@
 <script setup lang="ts">
 import { useIntl } from 'vue-intl'
 import type { BookDto } from '@/generated/openapi'
+import type { VSortItem } from '@/types/PageRequest'
 
 const intl = useIntl()
 
@@ -172,6 +174,8 @@ const dialogTitle = intl.formatMessage({
   defaultMessage: 'Destination filename',
   id: '3Pm2PO',
 })
+
+const sortBy = ref<VSortItem[]>([{ key: 'number', order: 'desc' }])
 
 const bookTableHeaders = [
   {
