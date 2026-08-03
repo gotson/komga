@@ -15,10 +15,7 @@
     @update:options="updateOptions"
   >
     <template #top>
-      <v-toolbar
-        v-if="display.smAndUp.value"
-        flat
-      >
+      <v-toolbar flat>
         <v-toolbar-title>
           <v-icon
             color="medium-emphasis"
@@ -35,26 +32,28 @@
           }}
         </v-toolbar-title>
 
-        <v-spacer />
-        <v-chip-group
-          v-model="filterSelect"
-          multiple
-          class="ms-2"
-        >
-          <v-chip
-            v-for="f in filterOptions"
-            :key="f.value"
-            :value="f.value"
-            :text="f.title"
-            filter
-            rounded
-            color="primary"
-          />
-        </v-chip-group>
+        <div v-if="display.smAndUp.value">
+          <v-spacer />
+          <v-chip-group
+            v-model="filterSelect"
+            multiple
+            class="ms-2"
+          >
+            <v-chip
+              v-for="f in filterOptions"
+              :key="f.value"
+              :value="f.value"
+              :text="f.title"
+              filter
+              rounded
+              color="primary"
+            />
+          </v-chip-group>
+        </div>
       </v-toolbar>
 
       <v-select
-        v-else
+        v-if="display.xs.value"
         v-model="filterSelect"
         label="Filter"
         multiple
@@ -62,7 +61,7 @@
         chips
         closable-chips
         variant="underlined"
-        class="px-4"
+        class="px-4 pt-1"
       />
     </template>
 
