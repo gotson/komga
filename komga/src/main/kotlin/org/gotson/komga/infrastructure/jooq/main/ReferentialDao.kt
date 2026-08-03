@@ -145,7 +145,7 @@ class ReferentialDao(
     role: String?,
     filterBy: FilterBy?,
     pageable: Pageable,
-  ): Page<String> = findGeneric(context, search, filterBy, pageable, a, a.NAME, null, a.BOOK_ID, { it?.name }, Sort.by("name"), listOf(a.ROLE), role?.let { a.ROLE.eq(role) })
+  ): Page<String> = findGeneric(context, search, filterBy, pageable, a, a.NAME, null, a.BOOK_ID, { it?.name }, Sort.by("name"), emptyList(), role?.let { a.ROLE.eq(role) })
 
   @Deprecated("Use findAuthorsNames instead")
   override fun findAllAuthorsNamesByName(

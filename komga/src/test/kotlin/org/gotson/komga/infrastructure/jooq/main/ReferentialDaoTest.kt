@@ -102,7 +102,7 @@ class ReferentialDaoTest(
     makeBook("2", libraryId = library2.id, seriesId = series2.id).let { book ->
       seriesLifecycle.addBooks(series2, listOf(book))
       bookMetadataRepository.findById(book.id).let {
-        bookMetadataRepository.update(it.copy(authors = listOf(Author("item2", "inker")), releaseDate = LocalDate.of(2002, 2, 1), tags = setOf("bt2")))
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("item2", "inker"), Author("item2", "translator")), releaseDate = LocalDate.of(2002, 2, 1), tags = setOf("bt2")))
       }
       seriesMetadataRepository.findById(series2.id).let {
         seriesMetadataRepository.update(it.copy(genres = setOf("item2"), sharingLabels = setOf("item2"), language = "en", publisher = "item2", ageRating = 19, tags = setOf("st2")))
@@ -177,7 +177,7 @@ class ReferentialDaoTest(
       val context = SearchContext(userAll)
       val items = referentialDao.findAuthors(context, null, null, FilterBy(FilterByEntity.LIBRARY, setOf(library2.id)), Pageable.unpaged()).content
 
-      assertThat(items.map { it.name }).containsExactlyInAnyOrder("item2")
+      assertThat(items.map { it.name }.toSet()).containsExactlyInAnyOrder("item2")
     }
 
     @Test
@@ -185,7 +185,7 @@ class ReferentialDaoTest(
       val context = SearchContext(userAll)
       val items = referentialDao.findAuthors(context, null, null, null, Pageable.unpaged()).content
 
-      assertThat(items.map { it.name }).containsExactlyInAnyOrder("item1", "item2", "item_shared", "item_10")
+      assertThat(items.map { it.name }.toSet()).containsExactlyInAnyOrder("item1", "item2", "item_shared", "item_10")
     }
 
     @Test
@@ -279,7 +279,7 @@ class ReferentialDaoTest(
       val context = SearchContext(userAll)
       val items = referentialDao.findAuthorsRoles(context, FilterBy(FilterByEntity.LIBRARY, setOf(library2.id)), Pageable.unpaged()).content
 
-      assertThat(items).containsExactlyInAnyOrder("inker")
+      assertThat(items).containsExactlyInAnyOrder("inker", "translator")
     }
 
     @Test
@@ -287,7 +287,7 @@ class ReferentialDaoTest(
       val context = SearchContext(userAll)
       val items = referentialDao.findAuthorsRoles(context, null, Pageable.unpaged()).content
 
-      assertThat(items).containsExactlyInAnyOrder("writer", "inker", "penciller", "cover")
+      assertThat(items).containsExactlyInAnyOrder("writer", "inker", "penciller", "cover", "translator")
     }
 
     @Test
