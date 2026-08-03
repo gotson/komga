@@ -13,7 +13,7 @@ import {
   SchemaSeriesReleaseYears,
 } from '@/types/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
-import { contributorsRolesMessages } from '@/types/referential'
+import { CONTRIBUTOR_ANYROLE, contributorsRolesMessages } from '@/types/referential'
 import { useQuery } from '@pinia/colada'
 import { authorsRolesQuery } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
@@ -52,9 +52,13 @@ export function useFilterContributors() {
   watchImmediate(data, (newData) => {
     if (!newData || !newData.content) return
 
-    const serverRoles = newData.content.toSorted(
-      createOrderCompareFn(Object.keys(contributorsRolesMessages), (role) => role),
-    )
+    // server roles + the special role for any role
+    const serverRoles = [
+      CONTRIBUTOR_ANYROLE,
+      ...newData.content.toSorted(
+        createOrderCompareFn(Object.keys(contributorsRolesMessages), (role) => role),
+      ),
+    ]
     // delete extra roles that are not returned by the API
     Object.keys(filterContributors.value).forEach((role) => {
       if (!serverRoles.includes(role)) delete filterContributors.value[role]

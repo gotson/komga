@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
-import { authorsNamesQueryInfinite, authorsQuery } from '@/colada/referential'
+import { authorsNamesQuery, authorsNamesQueryInfinite } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
 import * as v from 'valibot'
 import { type AnyAll, filterKeys, filterMessages, SchemaAuthor } from '@/types/filter'
@@ -46,14 +46,14 @@ const apiQuery = computed(() => ({
 }))
 
 const { data: searchItems, isLoading: searchLoading } = useQuery(() => ({
-  ...authorsQuery({
+  ...authorsNamesQuery({
     pageRequest: PageRequest.Unpaged(),
     search: searchDebounced.value,
     ...apiQuery.value,
   }),
   enabled: !!searchDebounced.value,
 }))
-const searchResults = computed(() => searchItems.value?.content?.map((it) => toItemType(it.name)))
+const searchResults = computed(() => searchItems.value?.content?.map((it) => toItemType(it)))
 
 const { data: infiniteData, loadNextPage } = useInfiniteQuery(() =>
   authorsNamesQueryInfinite(apiQuery.value),

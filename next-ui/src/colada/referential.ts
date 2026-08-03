@@ -81,6 +81,43 @@ export const authorsRolesQuery = defineQueryOptions(
   },
 )
 
+export const authorsNamesQuery = defineQueryOptions(
+  ({
+    search,
+    role,
+    library_id,
+    collection_id,
+    series_id,
+    readlist_id,
+    pageRequest,
+  }: {
+    search?: string
+    role?: string
+    library_id?: string[]
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
+    pageRequest?: PageRequest
+  }) => {
+    const queryParams = {
+      search: search,
+      role: role,
+      library_id: library_id,
+      collection_id: collection_id,
+      series_id: series_id,
+      readlist_id: readlist_id,
+      ...pageRequest,
+    }
+    return {
+      key: ['authors', 'names', queryParams],
+      query: () =>
+        komgaGetAuthorsNames({
+          query: queryParams,
+        }),
+    }
+  },
+)
+
 export const authorsNamesQueryInfinite = defineInfiniteQueryOptions(
   ({
     role,
