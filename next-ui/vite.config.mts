@@ -20,9 +20,7 @@ import * as path from 'path'
 import { playwright } from '@vitest/browser-playwright'
 
 const dirname =
-  typeof import.meta.dirname !== 'undefined'
-    ? import.meta.dirname
-    : path.dirname(fileURLToPath(import.meta.url))
+  typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url))
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
