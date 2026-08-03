@@ -1,3 +1,13 @@
+## Requirements
+
+- Nodejs (check the `next-ui/.nvmrc` file)
+
+## Frontend development
+
+You can run a live development server with `npm run dev`. The dev server will override the URL to connect to `localhost:8080`, so you can also run `gradle bootRun` to have a backend running, serving the API requests. The frontend will be loaded from `localhost:3000`.
+
+Make sure you start the backend with the `dev` profile, else the frontend requests will be denied because of CORS.
+
 ## OpenAPI
 
 [Hey API](https://heyapi.dev/) is used to generate a fully typed client from the Komga OpenAPI documentation.
