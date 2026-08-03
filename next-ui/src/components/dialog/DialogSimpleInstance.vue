@@ -23,7 +23,6 @@
  */
 import { useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
-import { syncRefs } from '@vueuse/core'
 
 const showDialog = ref<boolean>(false)
 const loading = ref<boolean>(false)
