@@ -11,13 +11,13 @@
         <tbody>
           <tr>
             <th>Book file</th>
-            <td>{{ event.properties.name }}</td>
+            <td style="overflow-wrap: anywhere">{{ event.properties.name }}</td>
           </tr>
         </tbody>
         <tbody>
           <tr>
             <th>Page file name</th>
-            <td>{{ event.properties['page file name'] }}</td>
+            <td style="overflow-wrap: anywhere">{{ event.properties['page file name'] }}</td>
           </tr>
         </tbody>
         <tbody>

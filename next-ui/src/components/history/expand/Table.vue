@@ -10,7 +10,7 @@
       >
         <tr>
           <th>{{ row.header }}</th>
-          <td>{{ row.value }}</td>
+          <td style="overflow-wrap: anywhere">{{ row.value }}</td>
         </tr>
       </tbody>
     </v-table>
