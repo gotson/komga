@@ -60,7 +60,7 @@ jobs:
 
       - name: build
         working-directory: next-ui
-        run: npm run build-only
+        run: npm run build
 
       - name: check for missing i18n extract
         working-directory: next-ui

@@ -5,9 +5,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "run-s i18n:compile \"build-only {@}\" --",
+    "build": "vite build --mode prod",
+    "build-with-i18n": "run-s i18n:compile \"build {@}\" --",
     "preview": "vite preview",
-    "build-only": "vite build --mode prod",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:unit": "vitest run --project unit",

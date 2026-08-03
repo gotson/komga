@@ -140,7 +140,7 @@ jobs:
 
       - name: NextUI - build
         working-directory: next-ui
-        run: npm run build
+        run: npm run build-with-i18n
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
