@@ -5,9 +5,10 @@
  */
 
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type LocationQuery } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
+import { parse, stringify } from 'qs'
 
 import { scrollerQuery, scrollMap } from '@/router/scroll'
 
@@ -27,6 +28,8 @@ const router = createRouter({
       })
     }
   },
+  stringifyQuery: stringify,
+  parseQuery: (query: string) => parse(query) as unknown as LocationQuery,
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
