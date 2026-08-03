@@ -43,20 +43,44 @@
             <v-radio-group
               v-model="proxyModel.value.thumbnailRegenerate"
               inline
-              label="Regenerate thumbnails"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: regenerate poster label',
+                  defaultMessage: 'Regenerate posters',
+                  id: 'gsqrOd',
+                })
+              "
               :disabled="proxyModel.value.thumbnailSize === settingsUpdate.thumbnailSize"
             >
               <v-radio
                 value="no"
-                label="No"
+                :label="
+                  $formatMessage({
+                    description: 'Server settings: regenerate poster option - no',
+                    defaultMessage: 'No',
+                    id: '8Dun/Y',
+                  })
+                "
               />
               <v-radio
                 value="all"
-                label="Yes (all books)"
+                :label="
+                  $formatMessage({
+                    description: 'Server settings: regenerate poster option - all',
+                    defaultMessage: 'Yes (all books)',
+                    id: 'iylxeo',
+                  })
+                "
               />
               <v-radio
                 value="bigger"
-                label="Yes (only if bigger)"
+                :label="
+                  $formatMessage({
+                    description: 'Server settings: regenerate poster option - bigger',
+                    defaultMessage: 'Yes (upsize only)',
+                    id: 'n8mugB',
+                  })
+                "
               />
             </v-radio-group>
           </v-col>
