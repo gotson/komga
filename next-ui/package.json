@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --mode prod",
-    "build-with-i18n": "run-s i18n:compile \"build {@}\" --",
+    "build:mode-dev": "vite build --mode development",
+    "build:with-i18n": "run-s i18n:compile \"build {@}\" --",
     "preview": "vite preview",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
