@@ -1,5 +1,9 @@
 <template>
-  <v-navigation-drawer v-model="appStore.drawer">
+  <!--  disable-route-watcher is needed, else the drawer closes when the route query params are updated when the filters change -->
+  <v-navigation-drawer
+    v-model="appStore.drawer"
+    disable-route-watcher
+  >
     <v-slide-x-transition hide-on-leave>
       <ReorderLibraries v-if="appStore.reorderLibraries" />
     </v-slide-x-transition>
