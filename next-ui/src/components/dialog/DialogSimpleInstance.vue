@@ -10,7 +10,7 @@
         :is="simple.slot.component"
         v-bind="simple.slot.props"
         class="mt-1"
-        v-on="simple.slot.handlers"
+        v-on="simple.slot.handlers || {}"
       />
     </template>
   </DialogSimple>
