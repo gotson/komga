@@ -149,7 +149,6 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { useMessagesStore } from '@/stores/messages'
 
 import { useClipboard } from '@vueuse/core'
-import type { VDialog } from 'vuetify/components'
 import { useRules } from 'vuetify/labs/rules'
 import type { ApiKeyDto } from '@/generated/openapi'
 
