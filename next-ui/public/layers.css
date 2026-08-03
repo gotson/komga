@@ -1,0 +1,13 @@
+@layer vuetify-core;
+@layer vuetify-components;
+
+@layer uno-icons;
+
+@layer vuetify-overrides;
+@layer vuetify-utilities;
+
+@layer uno-typography;
+@layer uno-utilities;
+@layer uno-default;
+
+@layer vuetify-final;
