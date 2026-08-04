@@ -2,15 +2,24 @@ name: Test Komga
 
 on:
   pull_request:
-    paths-ignore:
-      - 'komga-webui/**'
-      - 'komga-tray/src/main/resources/org/gotson/komga/*'
-      - 'next-ui/**'
+    paths:
+      - 'komga/**'
+      - 'komga-tray/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+      - '!komga-tray/src/main/resources/org/gotson/komga/*'
   push:
-    paths-ignore:
-      - 'komga-webui/**'
-      - 'komga-tray/src/main/resources/org/gotson/komga/*'
-      - 'next-ui/**'
+    paths:
+      - '.github/workflows/test-komga.yml'
+      - 'komga/**'
+      - 'komga-tray/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+      - '!komga-tray/src/main/resources/org/gotson/komga/*'
     branches-ignore:
       - 'dependabot/**'
   workflow_dispatch:
