@@ -1,0 +1,21 @@
+name: "Setup NextUI"
+description: "Checkout, setup Node, and install dependencies for next-ui"
+inputs:
+  working-directory:
+    description: Specifies the working directory for the NextUI project.
+    default: .
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v6
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: "${{ inputs.working-directory }}/.nvmrc"
+        cache: "npm"
+        cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+
+    - name: npm install
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: npm ci

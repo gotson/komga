@@ -15,53 +15,85 @@ on:
   workflow_dispatch:
 
 jobs:
-  next-ui:
+  test-unit:
     runs-on: ubuntu-latest
-    name: Test next-ui
+    name: Test unit
     steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: 'next-ui/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: next-ui/package-lock.json
-
-      - name: npm install
-        working-directory: next-ui
-        run: npm ci
-
-      - name: Setup Playwright
-        uses: ./.github/actions/setup-playwright
+      - uses: ./.github/actions/setup-nextui
         with:
           working-directory: next-ui
-
       - name: test:unit
         working-directory: next-ui
         run: npm run test:unit
 
+  test-storybook:
+    runs-on: ubuntu-latest
+    name: Test storybook
+    steps:
+      - uses: ./.github/actions/setup-nextui
+        with:
+          working-directory: next-ui
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+        with:
+          working-directory: next-ui
       - name: test:storybook
         working-directory: next-ui
         run: npm run test:storybook
         env:
-          LANG: en_US # fix for https://github.com/microsoft/playwright/issues/34046
+          LANG: en_US
 
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - uses: ./.github/actions/setup-nextui
+        with:
+          working-directory: next-ui
       - name: lint
         working-directory: next-ui
         run: npm run lint
 
+  prettier:
+    runs-on: ubuntu-latest
+    name: Prettier
+    steps:
+      - uses: ./.github/actions/setup-nextui
+        with:
+          working-directory: next-ui
       - name: prettier
         working-directory: next-ui
         run: npm run prettier
 
+  type-check:
+    runs-on: ubuntu-latest
+    name: Type check
+    steps:
+      - uses: ./.github/actions/setup-nextui
+        with:
+          working-directory: next-ui
       - name: type-check
         working-directory: next-ui
         run: npm run type-check
 
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - uses: ./.github/actions/setup-nextui
+        with:
+          working-directory: next-ui
       - name: build
         working-directory: next-ui
         run: npm run build
 
+  check-i18n:
+    runs-on: ubuntu-latest
+    name: Check for missing i18n
+    steps:
+      - uses: ./.github/actions/setup-nextui
+        with:
+          working-directory: next-ui
       - name: check for missing i18n extract
         working-directory: next-ui
         run: |
