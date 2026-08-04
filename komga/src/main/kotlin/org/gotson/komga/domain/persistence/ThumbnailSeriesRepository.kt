@@ -14,6 +14,10 @@ interface ThumbnailSeriesRepository {
     type: ThumbnailSeries.Type,
   ): Collection<ThumbnailSeries>
 
+  fun getLibraryIdOrNull(thumbnailId: String): String?
+
+  fun getSeriesIdOrNull(thumbnailId: String): String?
+
   fun insert(thumbnail: ThumbnailSeries)
 
   fun update(thumbnail: ThumbnailSeries)

@@ -529,7 +529,7 @@ class OpdsController(
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let { series ->
-      contentRestrictionChecker.checkContentRestriction(principal.user, series)
+      contentRestrictionChecker.checkContentRestrictionSeries(principal.user, series)
 
       val bookSearch =
         BookSearch(
@@ -703,7 +703,7 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ByteArray {
-    contentRestrictionChecker.checkContentRestriction(principal.user, bookId)
+    contentRestrictionChecker.checkContentRestrictionBook(principal.user, bookId)
     val thumbnail = bookLifecycle.getThumbnail(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
     return bookLifecycle.getThumbnailBytes(bookId, if (thumbnail.type == ThumbnailBook.Type.GENERATED) null else komgaSettingsProvider.thumbnailSize.maxEdge)?.bytes

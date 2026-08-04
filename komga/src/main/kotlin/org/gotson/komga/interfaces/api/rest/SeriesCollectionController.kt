@@ -141,9 +141,11 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ): ByteArray {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
-      return collectionLifecycle.getThumbnailBytes(thumbnailId)
-        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
+      thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let { poster ->
+        if (poster.collectionId != collection.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        return poster.thumbnail
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -197,10 +199,11 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let {
-        collectionLifecycle.markSelectedThumbnail(it)
-        eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesCollectionAdded(it.copy(selected = true)))
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
+      thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let { poster ->
+        if (poster.collectionId != collection.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        collectionLifecycle.markSelectedThumbnail(poster)
+        eventPublisher.publishEvent(DomainEvent.ThumbnailSeriesCollectionAdded(poster.copy(selected = true)))
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -214,9 +217,10 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let {
-      thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let {
-        collectionLifecycle.deleteThumbnail(it)
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
+      thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let { poster ->
+        if (poster.collectionId != collection.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        collectionLifecycle.deleteThumbnail(poster)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }

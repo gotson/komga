@@ -167,8 +167,10 @@ class ReadListController(
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ): ByteArray {
     readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
-      return readListLifecycle.getThumbnailBytes(thumbnailId)
-        ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+      thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let { poster ->
+        if (poster.readListId != it.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        return poster.thumbnail
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
 
@@ -222,10 +224,11 @@ class ReadListController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
-      thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let {
-        readListLifecycle.markSelectedThumbnail(it)
-        eventPublisher.publishEvent(DomainEvent.ThumbnailReadListAdded(it.copy(selected = true)))
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { readList ->
+      thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let { poster ->
+        if (poster.readListId != readList.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        readListLifecycle.markSelectedThumbnail(poster)
+        eventPublisher.publishEvent(DomainEvent.ThumbnailReadListAdded(poster.copy(selected = true)))
       }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -239,9 +242,10 @@ class ReadListController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
-      thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let {
-        readListLifecycle.deleteThumbnail(it)
+    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { readList ->
+      thumbnailReadListRepository.findByIdOrNull(thumbnailId)?.let { poster ->
+        if (poster.readListId != readList.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        readListLifecycle.deleteThumbnail(poster)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }

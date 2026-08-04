@@ -4,7 +4,9 @@ import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.SeriesMetadataRepository
+import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
+import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.springframework.http.HttpStatus
@@ -16,6 +18,8 @@ class ContentRestrictionChecker(
   private val seriesMetadataRepository: SeriesMetadataRepository,
   private val bookRepository: BookRepository,
   private val thumbnailBookRepository: ThumbnailBookRepository,
+  private val seriesRepository: SeriesRepository,
+  private val thumbnailSeriesRepository: ThumbnailSeriesRepository,
 ) {
   /**
    * Convenience function to check for content restriction.
@@ -23,7 +27,7 @@ class ContentRestrictionChecker(
    *
    * @throws[ResponseStatusException] if the user cannot access the content
    */
-  fun checkContentRestriction(
+  fun checkContentRestrictionBook(
     komgaUser: KomgaUser,
     book: BookDto,
   ) {
@@ -40,7 +44,7 @@ class ContentRestrictionChecker(
    *
    * @throws[ResponseStatusException] if the user cannot access the content
    */
-  fun checkContentRestriction(
+  fun checkContentRestrictionBook(
     komgaUser: KomgaUser,
     book: Book,
   ) {
@@ -57,7 +61,7 @@ class ContentRestrictionChecker(
    *
    * @throws[ResponseStatusException] if the user cannot access the content
    */
-  fun checkContentRestriction(
+  fun checkContentRestrictionBook(
     komgaUser: KomgaUser,
     bookId: String,
   ) {
@@ -79,7 +83,29 @@ class ContentRestrictionChecker(
    *
    * @throws[ResponseStatusException] if the user cannot access the content
    */
-  fun checkContentRestriction(
+  fun checkContentRestrictionBookThumbnail(
+    komgaUser: KomgaUser,
+    thumbnailId: String,
+  ) {
+    if (!komgaUser.canAccessAllLibraries()) {
+      thumbnailBookRepository.getLibraryIdOrNull(thumbnailId)?.let {
+        if (!komgaUser.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    }
+    if (komgaUser.restrictions.isRestricted)
+      thumbnailBookRepository.getSeriesIdOrNull(thumbnailId)?.let { seriesId ->
+        seriesMetadataRepository.findById(seriesId).let {
+          if (!komgaUser.isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+        }
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+  }
+
+  /**
+   * Convenience function to check for content restriction.
+   *
+   * @throws[ResponseStatusException] if the user cannot access the content
+   */
+  fun checkContentRestrictionSeries(
     komgaUser: KomgaUser,
     series: SeriesDto,
   ) {
@@ -92,17 +118,37 @@ class ContentRestrictionChecker(
    *
    * @throws[ResponseStatusException] if the user cannot access the content
    */
-  fun checkContentRestrictionBookThumbnail(
+  fun checkContentRestrictionSeries(
     komgaUser: KomgaUser,
-    thumbnailId: String,
+    seriesId: String,
   ) {
     if (!komgaUser.canAccessAllLibraries()) {
-      thumbnailBookRepository.getLibraryIdOrNull(thumbnailId)?.let {
+      seriesRepository.getLibraryId(seriesId)?.let {
         if (!komgaUser.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
       } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     }
     if (komgaUser.restrictions.isRestricted)
-      thumbnailBookRepository.getSeriesIdOrNull(thumbnailId)?.let { seriesId ->
+      seriesMetadataRepository.findById(seriesId).let {
+        if (!komgaUser.isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      }
+  }
+
+  /**
+   * Convenience function to check for content restriction.
+   *
+   * @throws[ResponseStatusException] if the user cannot access the content
+   */
+  fun checkContentRestrictionSeriesThumbnail(
+    komgaUser: KomgaUser,
+    thumbnailId: String,
+  ) {
+    if (!komgaUser.canAccessAllLibraries()) {
+      thumbnailSeriesRepository.getLibraryIdOrNull(thumbnailId)?.let {
+        if (!komgaUser.canAccessLibrary(it)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
+      } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    }
+    if (komgaUser.restrictions.isRestricted)
+      thumbnailSeriesRepository.getSeriesIdOrNull(thumbnailId)?.let { seriesId ->
         seriesMetadataRepository.findById(seriesId).let {
           if (!komgaUser.isContentAllowed(it.ageRating, it.sharingLabels)) throw ResponseStatusException(HttpStatus.FORBIDDEN)
         }

@@ -523,7 +523,7 @@ class KoboController(
     if (!bookRepository.existsById(bookId) && koboProxy.isEnabled()) {
       koboProxy.proxyCurrentRequest()
     } else {
-      contentRestrictionChecker.checkContentRestriction(principal.user, bookId)
+      contentRestrictionChecker.checkContentRestrictionBook(principal.user, bookId)
 
       ResponseEntity.ok(koboDtoRepository.findBookMetadataByIds(listOf(bookId)).map { it.withDownloadUrls(getDownloadUrlBuilder(authToken)) })
     }
@@ -543,7 +543,7 @@ class KoboController(
         else
           throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    contentRestrictionChecker.checkContentRestriction(principal.user, book)
+    contentRestrictionChecker.checkContentRestrictionBook(principal.user, book)
 
     val response = readProgressRepository.findByBookIdAndUserIdOrNull(bookId, principal.user.id)?.toDto() ?: getEmptyReadProgressForBook(book)
     return ResponseEntity.ok(listOf(response))
@@ -568,7 +568,7 @@ class KoboController(
         else
           throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-    contentRestrictionChecker.checkContentRestriction(principal.user, book)
+    contentRestrictionChecker.checkContentRestrictionBook(principal.user, book)
 
     val koboUpdate = body.readingStates.firstOrNull() ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST)
     if (koboUpdate.currentBookmark.location == null || koboUpdate.currentBookmark.contentSourceProgressPercent == null) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
@@ -658,7 +658,7 @@ class KoboController(
   ): ResponseEntity<StreamingResponseBody> {
     if (convertToKepub) {
       bookRepository.findByIdOrNull(bookId)?.let { book ->
-        contentRestrictionChecker.checkContentRestriction(principal.user, book)
+        contentRestrictionChecker.checkContentRestrictionBook(principal.user, book)
 
         // check cache
         val cacheKey = book.computeCacheKey()

@@ -93,7 +93,7 @@ class CommonBookController(
     webPubGenerator: WebPubGenerator,
   ) = bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
     if (bookDto.media.mediaProfile != MediaProfile.EPUB.name) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
-    contentRestrictionChecker.checkContentRestriction(principal.user, bookDto)
+    contentRestrictionChecker.checkContentRestrictionBook(principal.user, bookDto)
     webPubGenerator.toManifestEpub(
       bookDto,
       mediaRepository.findById(bookId),
@@ -107,7 +107,7 @@ class CommonBookController(
     webPubGenerator: WebPubGenerator,
   ) = bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
     if (bookDto.media.mediaProfile != MediaProfile.PDF.name) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${bookDto.media.mediaType}' not compatible with requested profile")
-    contentRestrictionChecker.checkContentRestriction(principal.user, bookDto)
+    contentRestrictionChecker.checkContentRestrictionBook(principal.user, bookDto)
     webPubGenerator.toManifestPdf(
       bookDto,
       mediaRepository.findById(bookDto.id),
@@ -120,7 +120,7 @@ class CommonBookController(
     bookId: String,
     webPubGenerator: WebPubGenerator,
   ) = bookDtoRepository.findByIdOrNull(bookId, principal.user.id)?.let { bookDto ->
-    contentRestrictionChecker.checkContentRestriction(principal.user, bookDto)
+    contentRestrictionChecker.checkContentRestrictionBook(principal.user, bookDto)
     webPubGenerator.toManifestDivina(
       bookDto,
       mediaRepository.findById(bookDto.id),
@@ -144,7 +144,7 @@ class CommonBookController(
         .body(ByteArray(0))
     }
 
-    contentRestrictionChecker.checkContentRestriction(principal.user, book)
+    contentRestrictionChecker.checkContentRestrictionBook(principal.user, book)
 
     if (media.profile == MediaProfile.PDF && acceptHeaders != null && acceptHeaders.any { it.isCompatibleWith(MediaType.APPLICATION_PDF) }) {
       // keep only pdf and image
@@ -216,7 +216,7 @@ class CommonBookController(
           .body(ByteArray(0))
       }
 
-      contentRestrictionChecker.checkContentRestriction(principal.user, book)
+      contentRestrictionChecker.checkContentRestrictionBook(principal.user, book)
 
       getBookPageRawInternal(book, media, pageNumber)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -287,7 +287,7 @@ class CommonBookController(
     }
 
     if (media.profile != MediaProfile.EPUB) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Book media type '${media.mediaType}' not compatible with requested profile")
-    if (!isFont) contentRestrictionChecker.checkContentRestriction(principal!!.user, book)
+    if (!isFont) contentRestrictionChecker.checkContentRestrictionBook(principal!!.user, book)
 
     val res = media.files.firstOrNull { it.fileName == resourceName } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     val bytes =
@@ -335,7 +335,7 @@ class CommonBookController(
     bookId: String,
   ): ResponseEntity<StreamingResponseBody> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      contentRestrictionChecker.checkContentRestriction(principal.user, book)
+      contentRestrictionChecker.checkContentRestrictionBook(principal.user, book)
       try {
         val media = mediaRepository.findById(book.id)
         with(FileSystemResource(book.path)) {
@@ -380,7 +380,7 @@ class CommonBookController(
     @PathVariable bookId: String,
   ): ResponseEntity<R2Progression> =
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      contentRestrictionChecker.checkContentRestriction(principal.user, book)
+      contentRestrictionChecker.checkContentRestrictionBook(principal.user, book)
 
       readProgressRepository.findByBookIdAndUserIdOrNull(bookId, principal.user.id)?.let {
         ResponseEntity.ok(it.toR2Progression())
@@ -401,7 +401,7 @@ class CommonBookController(
     @RequestBody progression: R2Progression,
   ) {
     bookRepository.findByIdOrNull(bookId)?.let { book ->
-      contentRestrictionChecker.checkContentRestriction(principal.user, book)
+      contentRestrictionChecker.checkContentRestrictionBook(principal.user, book)
 
       try {
         bookLifecycle.markProgression(book, principal.user, progression)

@@ -710,7 +710,7 @@ class Opds2Controller(
     @Parameter(hidden = true) page: Pageable,
   ): FeedDto =
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let { series ->
-      contentRestrictionChecker.checkContentRestriction(principal.user, series)
+      contentRestrictionChecker.checkContentRestrictionSeries(principal.user, series)
 
       val bookSearch =
         BookSearch(

@@ -34,7 +34,7 @@ class OpdsCommonController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
   ): ByteArray {
-    contentRestrictionChecker.checkContentRestriction(principal.user, bookId)
+    contentRestrictionChecker.checkContentRestrictionBook(principal.user, bookId)
     val poster = bookLifecycle.getThumbnailBytesOriginal(bookId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     return if (poster.mediaType != ImageType.JPEG.mediaType)
       imageConverter.convertImage(poster.bytes, ImageType.JPEG.imageIOFormat)
