@@ -24,5 +24,5 @@ runs:
     - name: Install Playwright dependencies
       if: steps.playwright-cache.outputs.cache-hit != 'true'
       shell: bash
-      run: npx playwright install --with-deps --only-shell
+      run: npx playwright install --with-deps --only-shell chromium
       working-directory: ${{ inputs.working-directory }}
