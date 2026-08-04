@@ -78,7 +78,7 @@ export const Loading: Story = {
 
 export const Error: Story = {
   beforeEach({ msw }) {
-    msw.use(http.post('*/api/*', response502BadGateway))
+    msw.use(http.get('*/api/v2/users/me', response502BadGateway))
   },
 
   play: async ({ canvas, userEvent }) => {
