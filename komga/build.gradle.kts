@@ -94,7 +94,7 @@ dependencies {
   runtimeOnly("org.apache.pdfbox:jbig2-imageio:3.0.4")
 
   // barcode scanning
-  implementation("com.google.zxing:core:3.5.3")
+  implementation("com.google.zxing:core:3.5.4")
 
   implementation("com.jakewharton.byteunits:byteunits:0.9.1")
 
