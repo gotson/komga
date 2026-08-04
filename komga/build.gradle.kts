@@ -71,7 +71,7 @@ dependencies {
   implementation("org.apache.lucene:lucene-queryparser:${libs.versions.lucene.get()}")
   implementation("org.apache.lucene:lucene-backward-codecs:${libs.versions.lucene.get()}")
 
-  implementation("com.ibm.icu:icu4j:77.1")
+  implementation("com.ibm.icu:icu4j:78.3")
 
   implementation("com.appmattus.crypto:cryptohash:1.0.2")
 
