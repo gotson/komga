@@ -1,5 +1,4 @@
 import nu.studer.gradle.jooq.JooqGenerate
-import org.apache.tools.ant.taskdefs.condition.Os
 import org.flywaydb.gradle.task.FlywayMigrateTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.util.prefixIfNot
@@ -142,6 +141,7 @@ kotlin {
 }
 
 val webui = "$rootDir/komga-webui"
+val nextui = "$rootDir/next-ui"
 tasks {
   withType<JavaCompile> {
     sourceCompatibility = "17"
@@ -164,50 +164,17 @@ tasks {
     enabled = true
   }
 
-  register<Exec>("npmInstall") {
+  register<Sync>("webuiCopyDist") {
+    description = "Copies the WebUI build into resources/public"
     group = "web"
-    workingDir(webui)
-    inputs.file("$webui/package.json")
-    outputs.dir("$webui/node_modules")
-    commandLine(
-      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        "npm.cmd"
-      } else {
-        "npm"
-      },
-      "install",
-    )
-  }
-
-  register<Exec>("npmBuild") {
-    group = "web"
-    dependsOn("npmInstall")
-    workingDir(webui)
-    inputs.dir(webui)
-    outputs.dir("$webui/dist")
-    commandLine(
-      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        "npm.cmd"
-      } else {
-        "npm"
-      },
-      "run",
-      "build",
-    )
-  }
-
-  // copy the webui build into public
-  register<Sync>("copyWebDist") {
-    group = "web"
-    dependsOn("npmBuild")
     from("$webui/dist/")
     into("$projectDir/src/main/resources/public/")
   }
 
-  // modifies index.html to inject ThymeLeaf th: tags
-  register<Copy>("prepareThymeLeaf") {
+  register<Copy>("webuiCopyIndex") {
+    description = "Copies the WebUI index.html into resources/public and injects Thymeleaf tags"
     group = "web"
-    dependsOn("copyWebDist")
+    dependsOn("webuiCopyDist")
     from("$webui/dist/index.html")
     into("$projectDir/src/main/resources/public/")
     filter { line ->
@@ -217,11 +184,35 @@ tasks {
     }
   }
 
+  register<Copy>("nextuiCopyDist") {
+    description = "Copies the nextUI build into resources/public"
+    group = "web"
+    from("$nextui/dist/")
+    into("$projectDir/src/main/resources/public/")
+    excludes.add("index.html") // will be copied by 'nextuiCopyIndex'
+    mustRunAfter(getByName("webuiCopyDist"))
+  }
+
+  // modifies index.html to inject ThymeLeaf th: tags
+  register<Copy>("nextuiCopyIndex") {
+    description = "Copies the nextUI index.html into resources/public/index-next.html and injects Thymeleaf tags"
+    group = "web"
+    dependsOn("nextuiCopyDist")
+    from("$nextui/dist/index.html")
+    into("$projectDir/src/main/resources/public/")
+    filter { line ->
+      line.replace("((?:src|content|href)=\")([\\w]*/.*?)(\")".toRegex()) {
+        it.groups[0]?.value + " th:" + it.groups[1]?.value + "@{" + it.groups[2]?.value?.prefixIfNot("/") + "}" + it.groups[3]?.value
+      }
+    }
+    rename("index.html", "index-next.html")
+  }
+
   withType<ProcessResources> {
     filesMatching("application*.yml") {
       expand(project.properties)
     }
-    mustRunAfter(getByName("prepareThymeLeaf"))
+    mustRunAfter(getByName("webuiCopyIndex"), getByName("nextuiCopyIndex"))
   }
 
   register<Test>("benchmark") {
