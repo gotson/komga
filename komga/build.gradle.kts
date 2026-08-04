@@ -113,11 +113,11 @@ dependencies {
     exclude(module = "mockito-core")
   }
   testImplementation("org.springframework.security:spring-security-test")
-  testImplementation("com.ninja-squad:springmockk:4.0.2")
+  testImplementation("com.ninja-squad:springmockk:4.0.2") // v5 needs Spring Framework v7
   testImplementation("io.mockk:mockk:1.14.4")
   testImplementation("com.google.jimfs:jimfs:1.3.1")
 
-  testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
+  testImplementation("com.tngtech.archunit:archunit-junit5:1.5.0")
 
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.37")
