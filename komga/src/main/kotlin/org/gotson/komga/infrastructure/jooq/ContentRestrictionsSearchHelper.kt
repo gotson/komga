@@ -6,8 +6,10 @@ import org.gotson.komga.jooq.main.Tables
 import org.jooq.Condition
 import org.jooq.impl.DSL
 
-abstract class ContentRestrictionsSearchHelper {
-  protected fun toConditionInternal(restrictions: ContentRestrictions): Pair<Condition, Set<RequiredJoin>> {
+class ContentRestrictionsSearchHelper(
+  val restrictions: ContentRestrictions,
+) {
+  fun toCondition(): Pair<Condition, Set<RequiredJoin>> {
     val ageAllowed =
       if (restrictions.ageRestriction?.restriction == AllowExclude.ALLOW_ONLY) {
         Tables.SERIES_METADATA.AGE_RATING.isNotNull

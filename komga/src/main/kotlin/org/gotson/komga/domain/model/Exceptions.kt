@@ -64,3 +64,5 @@ class EntryNotFoundException(
 class ConfigurationException(
   message: String,
 ) : Exception(message)
+
+class EntityNotFoundException : Exception()

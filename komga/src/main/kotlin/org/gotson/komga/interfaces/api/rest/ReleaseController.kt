@@ -4,14 +4,12 @@ import com.github.benmanes.caffeine.cache.Caffeine
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
-import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.api.rest.dto.GithubReleaseDto
 import org.gotson.komga.interfaces.api.rest.dto.ReleaseDto
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -39,9 +37,7 @@ class ReleaseController(
   @GetMapping
   @PreAuthorize("hasRole('ADMIN')")
   @Operation(summary = "List releases")
-  fun getReleases(
-    @AuthenticationPrincipal principal: KomgaPrincipal,
-  ): List<ReleaseDto> =
+  fun getReleases(): List<ReleaseDto> =
     cache
       .get("releases") { fetchGitHubReleases() }
       ?.let { releases ->

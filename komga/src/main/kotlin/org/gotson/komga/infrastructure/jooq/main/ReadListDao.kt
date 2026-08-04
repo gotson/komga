@@ -10,6 +10,7 @@ import org.gotson.komga.infrastructure.jooq.inOrNoCondition
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toCondition
 import org.gotson.komga.infrastructure.jooq.toSortField
+import org.gotson.komga.infrastructure.jooq.unicode3
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.jooq.main.Tables
@@ -46,7 +47,7 @@ class ReadListDao(
 
   private val sorts =
     mapOf(
-      "name" to rl.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "name" to rl.NAME.unicode3(),
       "createdDate" to rl.CREATED_DATE,
       "lastModifiedDate" to rl.LAST_MODIFIED_DATE,
     )

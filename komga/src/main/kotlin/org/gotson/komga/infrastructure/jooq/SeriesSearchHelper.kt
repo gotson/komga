@@ -6,7 +6,6 @@ import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SeriesMetadata
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.Condition
 import org.jooq.impl.DSL
@@ -18,7 +17,7 @@ private val logger = KotlinLogging.logger {}
  */
 class SeriesSearchHelper(
   val context: SearchContext,
-) : ContentRestrictionsSearchHelper() {
+) {
   fun toCondition(searchCondition: SearchCondition.Series?): Pair<Condition, Set<RequiredJoin>> {
     val base = toCondition()
     val search = toConditionInternal(searchCondition)
@@ -26,7 +25,7 @@ class SeriesSearchHelper(
   }
 
   fun toCondition(): Pair<Condition, Set<RequiredJoin>> {
-    val restrictions = toConditionInternal(context.restrictions)
+    val restrictions = ContentRestrictionsSearchHelper(context.restrictions).toCondition()
     val authorizedLibraries = toConditionInternal(context.libraryIds)
     return restrictions.first.and(authorizedLibraries.first) to (restrictions.second + authorizedLibraries.second)
   }
@@ -103,16 +102,16 @@ class SeriesSearchHelper(
               .from(Tables.SERIES_METADATA_TAG)
               .where(
                 Tables.SERIES_METADATA_TAG.TAG
-                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
-                  .equalIgnoreCase(tag),
+                  .unicode1()
+                  .equal(tag),
               ).union(
                 DSL
                   .select(Tables.BOOK_METADATA_AGGREGATION_TAG.SERIES_ID)
                   .from(Tables.BOOK_METADATA_AGGREGATION_TAG)
                   .where(
                     Tables.BOOK_METADATA_AGGREGATION_TAG.TAG
-                      .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
-                      .equalIgnoreCase(tag),
+                      .unicode1()
+                      .equal(tag),
                   ),
               )
           }
@@ -148,17 +147,15 @@ class SeriesSearchHelper(
                 if (name != null)
                   and(
                     Tables.BOOK_METADATA_AGGREGATION_AUTHOR.NAME
-                      .collate(
-                        SqliteUdfDataSource.COLLATION_UNICODE_3,
-                      ).equalIgnoreCase(name),
+                      .unicode1()
+                      .equal(name),
                   )
               }.apply {
                 if (role != null)
                   and(
                     Tables.BOOK_METADATA_AGGREGATION_AUTHOR.ROLE
-                      .collate(
-                        SqliteUdfDataSource.COLLATION_UNICODE_3,
-                      ).equalIgnoreCase(role),
+                      .unicode1()
+                      .equal(role),
                   )
               }
           }
@@ -218,8 +215,8 @@ class SeriesSearchHelper(
               .from(Tables.SERIES_METADATA_GENRE)
               .where(
                 Tables.SERIES_METADATA_GENRE.GENRE
-                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
-                  .equalIgnoreCase(genre),
+                  .unicode1()
+                  .equal(genre),
               )
           }
           val innerAny = {
@@ -249,8 +246,8 @@ class SeriesSearchHelper(
               .from(Tables.SERIES_METADATA_SHARING)
               .where(
                 Tables.SERIES_METADATA_SHARING.LABEL
-                  .collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
-                  .equalIgnoreCase(label),
+                  .unicode1()
+                  .equal(label),
               )
           }
           val innerAny = {

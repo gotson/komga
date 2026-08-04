@@ -21,6 +21,7 @@ import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
+import org.gotson.komga.domain.model.EntityNotFoundException
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
@@ -462,6 +463,7 @@ class SeriesController(
 
   @Operation(summary = "Get series details", tags = [OpenApiConfiguration.TagNames.SERIES])
   @GetMapping("v1/series/{seriesId}")
+  @Throws(EntityNotFoundException::class)
   fun getSeriesById(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "seriesId") id: String,
@@ -469,7 +471,7 @@ class SeriesController(
     seriesDtoRepository.findByIdOrNull(id, principal.user.id)?.let {
       contentRestrictionChecker.checkContentRestriction(principal.user, it)
       it.restrictUrl(!principal.user.isAdmin)
-    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    } ?: throw EntityNotFoundException()
 
   @Operation(summary = "Get series' poster image", tags = [OpenApiConfiguration.TagNames.SERIES_POSTER])
   @ApiResponse(content = [Content(schema = Schema(type = "string", format = "binary"))])

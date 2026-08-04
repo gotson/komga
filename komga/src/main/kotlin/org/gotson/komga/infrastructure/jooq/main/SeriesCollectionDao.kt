@@ -10,6 +10,7 @@ import org.gotson.komga.infrastructure.jooq.inOrNoCondition
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toCondition
 import org.gotson.komga.infrastructure.jooq.toSortField
+import org.gotson.komga.infrastructure.jooq.unicode3
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.gotson.komga.jooq.main.Tables
@@ -45,7 +46,7 @@ class SeriesCollectionDao(
 
   private val sorts =
     mapOf(
-      "name" to c.NAME.collate(SqliteUdfDataSource.COLLATION_UNICODE_3),
+      "name" to c.NAME.unicode3(),
     )
 
   override fun findByIdOrNull(

@@ -10,12 +10,24 @@ import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.SortField
 import org.jooq.impl.DSL
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import java.io.ByteArrayOutputStream
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
 fun Field<String>.noCase() = this.collate("NOCASE")
+
+/**
+ * Warning: SQLite doesn't use collations with LIKE
+ */
+fun Field<String>.unicode1() = this.collate(SqliteUdfDataSource.COLLATION_UNICODE_1)
+
+fun Field<String>.unicode3() = this.collate(SqliteUdfDataSource.COLLATION_UNICODE_3)
+
+fun Field<String>.udfStripAccents() = DSL.function(SqliteUdfDataSource.UDF_STRIP_ACCENTS, String::class.java, this)
 
 fun Sort.toOrderBy(sorts: Map<String, Field<out Any>>): List<SortField<out Any>> =
   this.mapNotNull {
@@ -43,8 +55,6 @@ fun Field<String>.inOrNoCondition(list: Collection<String>?): Condition =
     list.isEmpty() -> DSL.falseCondition()
     else -> this.`in`(list)
   }
-
-fun Field<String>.udfStripAccents() = DSL.function(SqliteUdfDataSource.UDF_STRIP_ACCENTS, String::class.java, this)
 
 fun ContentRestrictions.toCondition(): Condition {
   val ageAllowed =
@@ -129,3 +139,18 @@ fun ObjectMapper.deserializeMediaExtension(
 fun rlbAlias(readListId: String) = Tables.READLIST_BOOK.`as`("RLB_$readListId")
 
 fun csAlias(collectionId: String) = Tables.COLLECTION_SERIES.`as`("CS_$collectionId")
+
+fun <T> buildPage(
+  items: List<T>,
+  pageable: Pageable,
+  count: Int,
+  sort: Sort?,
+): PageImpl<T> =
+  PageImpl(
+    items,
+    if (pageable.isPaged)
+      PageRequest.of(pageable.pageNumber, pageable.pageSize, sort ?: pageable.sort)
+    else
+      PageRequest.of(0, maxOf(count, 20), sort ?: pageable.sort),
+    count.toLong(),
+  )

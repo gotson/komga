@@ -6,15 +6,15 @@ data class SettingsDto(
   val rememberMeDurationDays: Long,
   val thumbnailSize: ThumbnailSizeDto,
   val taskPoolSize: Int,
-  val serverPort: SettingMultiSource<Int?>,
-  val serverContextPath: SettingMultiSource<String?>,
+  val serverPort: SettingMultiSource<Int>,
+  val serverContextPath: SettingMultiSource<String>,
   val koboProxy: Boolean,
   val koboPort: Int?,
-  val kepubifyPath: SettingMultiSource<String?>,
+  val kepubifyPath: SettingMultiSource<String>,
 )
 
 data class SettingMultiSource<T>(
-  val configurationSource: T,
-  val databaseSource: T,
-  val effectiveValue: T,
+  val configurationSource: T?,
+  val databaseSource: T?,
+  val effectiveValue: T?,
 )
