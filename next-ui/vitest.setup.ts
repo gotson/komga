@@ -7,6 +7,7 @@ console.warn = (...args) => {
   // Ignore the specific decodeEntities warning
   if (
     msg.includes('decodeEntities option is passed but will be ignored') ||
+    msg.includes('ResizeObserver loop completed with undelivered notifications') ||
     msg.includes('inject() can only be used inside setup()')
   ) {
     return
