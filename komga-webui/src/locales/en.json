@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Home",
     "libraries": "Libraries",
-    "logout": "Log Out"
+    "logout": "Log Out",
+    "try_new_ui": "Try the new UI"
   },
   "no_libraries_pinned": {
     "title": "No pinned libraries",
