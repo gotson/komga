@@ -17,6 +17,7 @@ import { allModes } from './modes'
 import { PiniaColadaDelay } from '@pinia/colada-plugin-delay'
 import { withVuetifyTheme } from './withVuetifyTheme.decorator'
 import { setupOpenapiClient } from '@/api/komga-client'
+import router from './router'
 
 const locales: object[] = []
 Object.entries(availableLocales).forEach(([code, name]) => {
@@ -84,6 +85,7 @@ setup((app) => {
   app.use(vuetify)
   app.use(vuetifyRulesPlugin)
   app.use(vueIntl)
+  app.use(router)
   app.use(createPinia())
   app.use(PiniaColada, {
     plugins: [
