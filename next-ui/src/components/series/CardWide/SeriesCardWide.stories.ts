@@ -15,6 +15,7 @@ const meta = {
   component: SeriesCardWide,
   render: (args: object) => ({
     components: { SeriesCardWide, DialogConfirmEditInstance, DialogConfirmInstance },
+    inheritAttrs: false,
     setup() {
       return { args }
     },

@@ -9,6 +9,7 @@ const meta = {
   component: DirectorySelection,
   render: (args: object) => ({
     components: { DirectorySelection, DialogConfirmEditInstance },
+    inheritAttrs: false,
     setup() {
       return { args }
     },

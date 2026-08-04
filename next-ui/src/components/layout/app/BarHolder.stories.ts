@@ -8,6 +8,7 @@ const meta = {
   component: BarHolder,
   render: (args: object) => ({
     components: { BarHolder },
+    inheritAttrs: false,
     setup() {
       const selectionStore = useSelectionStore()
       return { args, selectionStore }

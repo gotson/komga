@@ -15,6 +15,7 @@ const meta = {
   component: CollectionCard,
   render: (args: object) => ({
     components: { CollectionCard, DialogConfirmEditInstance, DialogConfirmInstance },
+    inheritAttrs: false,
     setup() {
       return { args }
     },

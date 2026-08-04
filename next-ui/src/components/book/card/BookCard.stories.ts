@@ -15,6 +15,7 @@ const meta = {
   component: BookCard,
   render: (args: object) => ({
     components: { BookCard, DialogConfirmEditInstance, DialogConfirmInstance },
+    inheritAttrs: false,
     setup() {
       return { args }
     },

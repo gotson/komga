@@ -12,6 +12,7 @@ const meta = {
   subcomponents: { SnackQueue },
   render: (args: object) => ({
     components: { Table, SnackQueue },
+    inheritAttrs: false,
     setup() {
       return { args }
     },

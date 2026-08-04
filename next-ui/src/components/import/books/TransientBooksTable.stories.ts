@@ -11,6 +11,7 @@ const meta = {
   subcomponents: { SnackQueue },
   render: (args: object) => ({
     components: { TransientBooksTable, SnackQueue },
+    inheritAttrs: false,
     setup() {
       return { args }
     },
