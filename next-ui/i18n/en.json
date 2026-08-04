@@ -339,6 +339,10 @@
     "defaultMessage": "Delete files",
     "description": "Book delete dialog: confirm button"
   },
+  "8Dun/Y": {
+    "defaultMessage": "No",
+    "description": "Server settings: regenerate poster option - no"
+  },
   "8NDqor": {
     "defaultMessage": "Letterer",
     "description": "Author role: letterer"
@@ -442,6 +446,10 @@
   "BpzKDW": {
     "defaultMessage": "Multiple items will be deleted.<b>This action cannot be undone.</b>",
     "description": "Multiple entities deletion warning notice"
+  },
+  "BtDfUf": {
+    "defaultMessage": "Overwrite",
+    "description": "Import reading list: bottom bar: overwrite button"
   },
   "ByRsV9": {
     "defaultMessage": "Required for the WebReader to detect landscape pages",
@@ -930,6 +938,10 @@
   "PTr5Wc": {
     "defaultMessage": "Check that your Komga server is running",
     "description": "Server unreachable error view: error message subtitle"
+  },
+  "PguYSD": {
+    "defaultMessage": "Overwrite existing read list",
+    "description": "Import reading list: bottom bar: reading list overwrite checkbox label"
   },
   "Pj29A+": {
     "defaultMessage": "Required for detecting duplicate pages",
@@ -1947,6 +1959,10 @@
     "defaultMessage": "No data found",
     "description": "Duplicate Page Hash Matches Table: shown when table has no data"
   },
+  "gsqrOd": {
+    "defaultMessage": "Regenerate posters",
+    "description": "Server settings: regenerate poster label"
+  },
   "gxZjIe": {
     "defaultMessage": "Action",
     "description": "Unknown Duplicate Page Table header: action"
@@ -2030,6 +2046,10 @@
   "ixQlWv": {
     "defaultMessage": "Something went wrong",
     "description": "Common message: an error happened while loading data"
+  },
+  "iylxeo": {
+    "defaultMessage": "Yes (all books)",
+    "description": "Server settings: regenerate poster option - all"
   },
   "j7CGMQ": {
     "defaultMessage": "confirm",
@@ -2190,6 +2210,10 @@
   "n4w2CE": {
     "defaultMessage": "Edit",
     "description": "Library menu: manage > edit"
+  },
+  "n8mugB": {
+    "defaultMessage": "Yes (upsize only)",
+    "description": "Server settings: regenerate poster option - bigger"
   },
   "nJiYF7": {
     "defaultMessage": "Confirm password",
