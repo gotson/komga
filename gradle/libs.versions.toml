@@ -1,5 +1,5 @@
 [versions]
-sqliteJdbc = "3.50.2.0"
+sqliteJdbc = "3.53.2.1"
 nightmonkeys = "1.1.0"
 twelvemonkeys = "3.14.0"
 springboot = "3.5.14"
