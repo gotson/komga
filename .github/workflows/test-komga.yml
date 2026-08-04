@@ -1,11 +1,25 @@
-name: Tests
+name: Test Komga
 
 on:
   pull_request:
-    paths-ignore:
-      - 'komga-webui/src/locales/*'
-      - 'komga-tray/src/main/resources/org/gotson/komga/*'
+    paths:
+      - 'komga/**'
+      - 'komga-tray/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+      - '!komga-tray/src/main/resources/org/gotson/komga/*'
   push:
+    paths:
+      - '.github/workflows/test-komga.yml'
+      - 'komga/**'
+      - 'komga-tray/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+      - '!komga-tray/src/main/resources/org/gotson/komga/*'
     branches-ignore:
       - 'dependabot/**'
   workflow_dispatch:
@@ -17,7 +31,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
       fail-fast: false
-    name: Test server - ${{ matrix.os }}
+    name: Test Komga - ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
       - name: Setup Java 21
@@ -73,25 +87,3 @@ jobs:
         with:
           name: conveyor-required-jdk-modules
           path: ./output/required-jdk-modules.txt
-
-  webui:
-    runs-on: ubuntu-latest
-    name: Test webui builds
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: komga-webui/package-lock.json
-      - name: npm install
-        working-directory: komga-webui
-        run: npm install
-      - name: npm build
-        working-directory: komga-webui
-        run: npm run build
-        env:
-          NODE_OPTIONS: "--max-old-space-size=4096"
-      - name: npm test
-        working-directory: komga-webui
-        run: npm run test:unit

@@ -1,0 +1,46 @@
+name: Chromatic
+
+on:
+  push:
+    paths:
+      - '.github/workflows/chromatic.yml'
+      - 'next-ui/**'
+      - '!next-ui/i18n/*'
+    branches:
+      - 'master'
+
+jobs:
+  chromatic:
+    name: Run Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: NextUI - Setup
+        uses: ./.github/actions/setup-web
+        with:
+          working-directory: next-ui
+
+      - name: i18n:compile
+        working-directory: next-ui
+        run: npm run i18n:compile
+
+      - name: Run Chromatic
+        id: chromatic
+        uses: chromaui/action@latest
+        with:
+          workingDir: next-ui
+          exitOnceUploaded: true
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          autoAcceptChanges: 'master'
+          onlyChanged: true
+          skip: 'dependabot/**'
+
+      - name: Summary
+        run: |
+          echo "Chromatic:" >> $GITHUB_STEP_SUMMARY
+          echo "- [Build](${{ steps.chromatic.outputs.buildUrl }})" >> $GITHUB_STEP_SUMMARY
+          echo "- [Storybook](${{ steps.chromatic.outputs.storybookUrl }})" >> $GITHUB_STEP_SUMMARY

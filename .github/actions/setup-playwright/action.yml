@@ -1,0 +1,28 @@
+# From https://github.com/microsoft/playwright/issues/7249#issuecomment-2806545369
+name: "Setup Playwright"
+description: "Setup Playwright with caching, using npm (should already be installed)"
+inputs:
+  working-directory:
+    description: Specifies the working directory for the Playwright installation.
+    default: .
+runs:
+  using: "composite"
+  steps:
+    - name: Extract Playwright version
+      id: playwright-version
+      shell: bash
+      run: echo "PLAYWRIGHT_VERSION=$(jq -r '.packages."".devDependencies.playwright' package-lock.json)" >> $GITHUB_ENV
+      working-directory: ${{ inputs.working-directory }}
+
+    - name: Cache Playwright
+      id: playwright-cache
+      uses: actions/cache@v5
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+
+    - name: Install Playwright dependencies
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: npx playwright install --with-deps --only-shell chromium
+      working-directory: ${{ inputs.working-directory }}
