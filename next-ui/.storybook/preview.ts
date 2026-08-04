@@ -1,0 +1,111 @@
+import { setupWorker } from 'msw/browser'
+import type { Preview } from '@storybook/vue3-vite'
+import { setup } from '@storybook/vue3'
+
+import { mswLoader } from 'msw-storybook-addon/csf3'
+import { handlers } from '@/mocks/api/handlers'
+import { vuetify, vuetifyRulesPlugin } from '@/plugins/vuetify'
+import { createPinia } from 'pinia'
+import { PiniaColada } from '@pinia/colada'
+import { PiniaColadaAutoRefetch } from '@pinia/colada-plugin-auto-refetch'
+import { vueIntl } from '@/plugins/vue-intl'
+import 'virtual:uno.css'
+import { availableLocales } from '@/utils/i18n/locale-helper'
+import { localeDecorator } from './locale.decorator'
+import { vuetifyViewports } from './viewport'
+import { allModes } from './modes'
+import { PiniaColadaDelay } from '@pinia/colada-plugin-delay'
+import { withVuetifyTheme } from './withVuetifyTheme.decorator'
+import { setupOpenapiClient } from '@/api/komga-client'
+import router from './router'
+
+const locales: object[] = []
+Object.entries(availableLocales).forEach(([code, name]) => {
+  locales.push({
+    value: code,
+    title: name,
+  })
+})
+
+setupOpenapiClient()
+
+const preview: Preview = {
+  parameters: {
+    chromatic: {
+      modes: allModes,
+    },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
+    viewport: {
+      options: { ...vuetifyViewports },
+    },
+    a11y: {
+      // 'todo' - show a11y violations in the test UI only
+      // 'error' - fail CI on a11y violations
+      // 'off' - skip a11y checks entirely
+      test: 'todo',
+    },
+  },
+  tags: ['autodocs'],
+  loaders: [
+    mswLoader(async () => {
+      const worker = setupWorker(...handlers)
+
+      await worker.start({
+        onUnhandledRequest: 'bypass',
+        quiet: true,
+      })
+
+      return worker
+    }),
+  ],
+  globalTypes: {
+    locale: {
+      name: 'Locale',
+      description: 'Internationalization locale',
+      toolbar: {
+        icon: 'globe',
+        items: locales,
+      },
+    },
+  },
+  initialGlobals: {
+    locale: 'en',
+  },
+}
+
+export default preview
+
+setup((app) => {
+  // Registers your app's plugins into Storybook
+  app.use(vuetify)
+  app.use(vuetifyRulesPlugin)
+  app.use(vueIntl)
+  app.use(router)
+  app.use(createPinia())
+  app.use(PiniaColada, {
+    plugins: [
+      PiniaColadaAutoRefetch(),
+      PiniaColadaDelay({
+        delay: 200, // default delay
+      }),
+    ],
+  })
+})
+
+export const decorators = [
+  withVuetifyTheme({
+    // These keys are the labels that will be displayed in the toolbar theme switcher
+    // The values must match the theme keys from your VuetifyOptions
+    themes: {
+      light: 'light',
+      dark: 'dark',
+    },
+    defaultTheme: 'light', // The key of your default theme
+  }),
+  localeDecorator(),
+]

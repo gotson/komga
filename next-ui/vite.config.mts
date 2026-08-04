@@ -1,0 +1,144 @@
+/// <reference types="vitest/config" />
+
+// Plugins
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import ViteFonts from 'unplugin-fonts/vite'
+import Layouts from 'vite-plugin-vue-layouts-next'
+import Vue from '@vitejs/plugin-vue'
+import VueRouter from 'vue-router/vite'
+import { VueRouterAutoImports } from 'vue-router/unplugin'
+import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import dir2json from 'vite-plugin-dir2json'
+import UnoCSS from 'unocss/vite'
+
+// Utilities
+import { defineConfig } from 'vite'
+import { fileURLToPath, URL } from 'node:url'
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
+import * as path from 'path'
+import { playwright } from '@vitest/browser-playwright'
+
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    VueRouter({
+      dts: 'src/route-map.d.ts',
+    }),
+    Layouts(),
+    AutoImport({
+      imports: ['vue', VueRouterAutoImports],
+      dts: 'src/auto-imports.d.ts',
+      eslintrc: {
+        enabled: true,
+      },
+      vueTemplate: true,
+    }),
+    Components({
+      dts: 'src/components.d.ts',
+      dirs: ['src/components'],
+      extensions: ['vue', 'ts'],
+      include: [/\.vue$/, /\.[tj]s$/],
+      excludeNames: [/\.stories/],
+      directoryAsNamespace: true,
+      collapseSamePrefixes: true,
+    }),
+    Vue({
+      template: { transformAssetUrls },
+    }),
+    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
+    Vuetify({
+      autoImport: true,
+      styles: {
+        configFile: 'src/styles/settings.scss',
+      },
+    }),
+    ViteFonts({
+      fontsource: {
+        families: [
+          {
+            name: 'Roboto',
+            weights: [100, 300, 400, 500, 700, 900],
+            styles: ['normal', 'italic'],
+          },
+        ],
+      },
+    }),
+    dir2json({
+      dts: true,
+    }),
+    UnoCSS(),
+  ],
+  define: { 'process.env': {} },
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
+  },
+  server: {
+    port: 3000,
+  },
+  base: '/',
+  // use 'prod' when building the app because storybook always use 'production' and cannot be configured.
+  // if renderBuiltUrl is used, Storybook doesn't work
+  ...(mode === 'prod' && {
+    // support for the runtime base url (depending on the server.servlet.context-path)
+    // window.buildUrl is a function defined in index.html that dynamically provides the path
+    // it only works within js files though
+    experimental: {
+      renderBuiltUrl(filename, { hostType }) {
+        if (hostType === 'js') return { runtime: `window.buildUrl(${JSON.stringify(filename)})` }
+        // else if (hostType === 'html') return `@{/${filename}}`
+        else return { relative: true }
+      },
+    },
+  }),
+  optimizeDeps: {
+    exclude: ['vuetify'],
+    include: ['@pinia/colada-devtools', 'pinia-plugin-persistedstate', 'qs'],
+  },
+  test: {
+    coverage: {
+      reporter: ['text', 'json-summary', 'json', 'html'],
+    },
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'unit',
+          environment: 'happy-dom',
+          restoreMocks: true,
+          setupFiles: ['./vitest.setup.ts'],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'storybook',
+          testTimeout: 30_000,
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright(),
+            instances: [{ browser: 'chromium' }],
+          },
+          globals: true,
+          server: {
+            deps: {
+              inline: ['vuetify'],
+            },
+          },
+          setupFiles: ['./vitest.setup.ts'],
+        },
+        plugins: [
+          // The plugin will run tests for the stories defined in your Storybook config
+          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+          storybookTest({
+            configDir: path.join(import.meta.dirname, '.storybook'),
+          }),
+        ],
+      },
+    ],
+  },
+}))

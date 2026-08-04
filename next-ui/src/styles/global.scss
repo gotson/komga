@@ -1,0 +1,33 @@
+.link-none {
+    text-decoration: none;
+}
+
+.link-underline {
+    text-decoration: none;
+    color: var(--v-anchor-base);
+}
+
+// Mobile/Touch Devices: Underline is always visible
+@media (pointer: coarse) {
+    .link-underline {
+        text-decoration: underline;
+    }
+}
+
+// Desktop/Mouse Devices: Underline appears only on hover
+@media (pointer: fine) {
+    .link-underline:hover {
+        text-decoration: underline;
+    }
+}
+
+// This requires the following CSS variables to be set:
+// --lines: the number of lines to display
+// --line-height: the line height
+.force-line-count {
+    display: -webkit-box;
+    -webkit-line-clamp: var(--lines, 2);
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: calc(var(--line-height) * var(--lines, 1) * 1rem);
+}

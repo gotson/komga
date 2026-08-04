@@ -1,0 +1,242 @@
+import {
+  type FilterIncludeExclude,
+  type FilterType,
+  SchemaAnyNone,
+  SchemaFilterContributors,
+  SchemaFilterReadStatus,
+  SchemaFilterStrings,
+  SchemaSeriesAgeRatings,
+  SchemaSeriesReleaseYears,
+} from '@/types/filter'
+import type { InferOutput } from 'valibot'
+import * as v from 'valibot'
+import { CONTRIBUTOR_ANYROLE } from '@/types/referential'
+
+export function clearFilter(filter: FilterType) {
+  if ('v' in filter) filter.v = []
+  if ('m' in filter) filter.m = 'anyOf'
+  if ('is' in filter) filter.is = undefined
+  if ('min' in filter) filter.min = undefined
+  if ('max' in filter) filter.max = undefined
+  if ('i' in filter) filter.i = undefined
+}
+
+export function countFilter(filter: FilterType): number {
+  if ('v' in filter) return filter.v.length
+  if (
+    ('is' in filter && !!filter.is) ||
+    ('min' in filter && !!filter.min) ||
+    ('max' in filter && !!filter.max)
+  )
+    return 1
+  if ('i' in filter && !!filter.i) return 1
+  return 0
+}
+
+export function valuesToConditions(value: string[] | undefined, key: string) {
+  if (!value || value.length === 0) return null
+  const list = value.map((it) => ({
+    [key]: {
+      operator: 'is',
+      value: it,
+    },
+  }))
+
+  return {
+    anyOf: list,
+  }
+}
+
+export function schemaFilterAuthorsToConditions(
+  filter: InferOutput<typeof SchemaFilterContributors>,
+  role?: string,
+) {
+  if (filter.v.length === 0) return null
+  const list = filter.v.map((it) => {
+    if (v.is(SchemaAnyNone, it)) {
+      return {
+        author: {
+          operator: it.a === 'any' ? 'is' : 'isNot',
+          value: {
+            role: role,
+          },
+        },
+      }
+    } else {
+      return {
+        author: {
+          operator: it.i === 'e' ? 'isNot' : 'is',
+          value: {
+            name: it.v,
+            ...(role === CONTRIBUTOR_ANYROLE ? {} : { role: role }),
+          },
+        },
+      }
+    }
+  })
+
+  if (filter.m === 'allOf')
+    return {
+      allOf: list,
+    }
+  else
+    return {
+      anyOf: list,
+    }
+}
+
+export function schemaFilterReadStatusToConditions(
+  filter: InferOutput<typeof SchemaFilterReadStatus>,
+) {
+  if (filter.v.length === 0) return null
+  const list = filter.v.map((it) => {
+    return {
+      readStatus: {
+        operator: it.i === 'e' ? 'isNot' : 'is',
+        value: it.v,
+      },
+    }
+  })
+  return {
+    anyOf: list,
+  }
+}
+
+export function schemaFilterIncludeExcludeToConditions(filter: FilterIncludeExclude, key: string) {
+  if (!filter.i) return null
+  return {
+    [key]: {
+      operator: filter.i === 'i' ? 'isTrue' : 'isFalse',
+    },
+  }
+}
+
+export function schemaFilterStringToConditions(
+  filter: InferOutput<typeof SchemaFilterStrings>,
+  key: string,
+  nullable: boolean,
+) {
+  if (filter.v.length === 0) return null
+  const list = filter.v.map((it) => {
+    if (v.is(SchemaAnyNone, it)) {
+      if (nullable)
+        return {
+          [key]: {
+            operator: it.a === 'any' ? 'isNotNull' : 'isNull',
+          },
+        }
+      else
+        return {
+          [key]: {
+            operator: it.a === 'any' ? 'isNot' : 'is',
+            value: '',
+          },
+        }
+    } else {
+      return {
+        [key]: {
+          operator: it.i === 'e' ? 'isNot' : 'is',
+          value: it.v,
+        },
+      }
+    }
+  })
+
+  if (filter.m === 'allOf')
+    return {
+      allOf: list,
+    }
+  else
+    return {
+      anyOf: list,
+    }
+}
+
+export function schemaFilterReleaseYearToConditions(
+  filter: InferOutput<typeof SchemaSeriesReleaseYears>,
+) {
+  const conds = []
+  if (filter.is === 'any') {
+    conds.push({
+      releaseDate: {
+        operator: 'isNotNull',
+      },
+    })
+  } else if (filter.is === 'none') {
+    conds.push({
+      releaseDate: {
+        operator: 'isNull',
+      },
+    })
+  } else {
+    if (!!filter.is || !!filter.min) {
+      const year = Number(filter.is || filter.min)
+      conds.push({
+        releaseDate: {
+          operator: 'after',
+          dateTime: `${(year - 1).toString().padStart(4, '0')}-12-31T12:00:00Z`,
+        },
+      })
+    }
+    if (!!filter.is || !!filter.max) {
+      const year = Number(filter.is || filter.max)
+      conds.push({
+        releaseDate: {
+          operator: 'before',
+          dateTime: `${(year + 1).toString().padStart(4, '0')}-01-01T12:00:00Z`,
+        },
+      })
+    }
+  }
+  if (conds.length === 0) return null
+  return {
+    allOf: conds,
+  }
+}
+
+export function schemaFilterAgeRatingToConditions(
+  filter: InferOutput<typeof SchemaSeriesAgeRatings>,
+) {
+  const conds = []
+  if (filter.is === 'any') {
+    conds.push({
+      ageRating: {
+        operator: 'isNotNull',
+      },
+    })
+  } else if (filter.is === 'none') {
+    conds.push({
+      ageRating: {
+        operator: 'isNull',
+      },
+    })
+  } else if (!!filter.is) {
+    conds.push({
+      ageRating: {
+        operator: 'is',
+        value: filter.is,
+      },
+    })
+  } else {
+    if (!!filter.min) {
+      conds.push({
+        ageRating: {
+          operator: 'greaterThan',
+          value: filter.min,
+        },
+      })
+    }
+    if (!!filter.max) {
+      conds.push({
+        ageRating: {
+          operator: 'lessThan',
+          value: filter.max,
+        },
+      })
+    }
+  }
+  if (conds.length === 0) return null
+  return {
+    allOf: conds,
+  }
+}

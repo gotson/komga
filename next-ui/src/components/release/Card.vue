@@ -1,0 +1,67 @@
+<template>
+  <v-card>
+    <template #title>
+      <span class="d-inline-flex ga-2 align-center">
+        <a
+          :href="release.url"
+          target="_blank"
+          class="text-headline-large font-weight-medium link-underline"
+          >{{ release.version }}</a
+        >
+        <v-chip
+          v-if="current"
+          size="small"
+          rounded
+          color="info"
+        >
+          {{
+            $formatMessage({
+              description:
+                'Updates view: badge showing next to the currently installed release number',
+              defaultMessage: 'Installed',
+              id: 'WADecv',
+            })
+          }}
+        </v-chip>
+        <v-chip
+          v-if="latest"
+          size="small"
+          rounded
+        >
+          {{
+            $formatMessage({
+              description: 'Updates view: badge showing next to the latest release number',
+              defaultMessage: 'Latest',
+              id: '2Bh8F2',
+            })
+          }}
+        </v-chip>
+      </span>
+    </template>
+
+    <template #subtitle>
+      {{ $formatDate(release.releaseDate, { dateStyle: 'long' }) }}
+    </template>
+
+    <template #text>
+      <!-- eslint-disable vue/no-v-html -->
+      <div v-html="marked(release.description)" />
+      <!-- eslint-enable vue/no-v-html -->
+    </template>
+  </v-card>
+</template>
+
+<script setup lang="ts">
+import { marked } from 'marked'
+import type { ReleaseDto } from '@/generated/openapi'
+
+const {
+  release,
+  latest = false,
+  current = false,
+} = defineProps<{
+  release: ReleaseDto
+  latest?: boolean
+  current?: boolean
+}>()
+</script>

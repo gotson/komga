@@ -1,0 +1,134 @@
+<template>
+  <v-app-bar>
+    <ChipCount
+      class="ms-4"
+      :count="totalElements"
+    />
+
+    <v-spacer />
+
+    <PosterSizeSlider />
+
+    <PageSizeSelector
+      v-if="isBrowsingPaged"
+      v-model="appStore.browsingPageSize"
+      allow-unpaged
+    />
+
+    <PagingSelector
+      v-model="appStore.browsingPaging"
+      class="px-2"
+    />
+  </v-app-bar>
+
+  <ItemBrowser
+    v-model:page1="page1"
+    :paging="appStore.browsingPaging"
+    :items="dataItems"
+    :presentation-mode="'grid'"
+    :has-next-page="hasNextPage"
+    :page-count="pageCount"
+    @load-next-page="loadNextPage()"
+  >
+    <template #default="{ item, isSelected, preSelect, toggleSelect }">
+      <ReadlistCard
+        stretch-poster
+        :read-list="item"
+        :selected="isSelected"
+        :pre-select="preSelect"
+        :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
+        @selection="(_val, event) => toggleSelect(event as MouseEvent)"
+      />
+    </template>
+  </ItemBrowser>
+</template>
+
+<script lang="ts" setup>
+import { useInfiniteQuery, useQuery } from '@pinia/colada'
+import { PageRequest } from '@/types/PageRequest'
+import { useGetLibrariesByViewId } from '@/composables/libraries'
+import { useAppStore } from '@/stores/app'
+import { usePagination } from '@/composables/pagination'
+import { useSelectionStore } from '@/stores/selection'
+import { useDisplay } from 'vuetify'
+import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
+import { storeToRefs } from 'pinia'
+import ChipCount from '@/components/ChipCount.vue'
+import { readListsListQuery, readListsListQueryInfinite } from '@/colada/readlists'
+import { useSelectionContextualActions } from '@/composables/selection'
+
+const route = useRoute('/libraries/[viewId]/readlists')
+const libraryViewId = route.params.viewId
+const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
+
+const router = useRouter()
+const display = useDisplay()
+const appStore = useAppStore()
+const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
+
+const { page0, page1, pageCount } = usePagination()
+
+const selectionStore = useSelectionStore()
+
+// clear selection if paging changes
+watch(
+  () => appStore.browsingPaging,
+  () => selectionStore.clear(),
+)
+
+const { data: dataPaged } = useQuery(() => ({
+  ...readListsListQuery({
+    libraryIds: libraryIds.value,
+    pageRequest: PageRequest.FromPageSize(appStore.browsingPageSize, page0.value),
+  }),
+  enabled: isBrowsingPaged.value,
+}))
+
+watch(dataPaged, (newDataPaged) => {
+  if (newDataPaged) pageCount.value = newDataPaged.totalPages ?? 0
+})
+
+const {
+  data: dataInfinite,
+  loadNextPage,
+  hasNextPage,
+} = useInfiniteQuery(() => ({
+  ...readListsListQueryInfinite({ libraryIds: libraryIds.value }),
+  enabled: isBrowsingScroll.value,
+}))
+const dataInfiniteFlat = computed(() =>
+  dataInfinite.value?.pages.flatMap((it) => it?.content ?? []),
+)
+
+const dataItems = computed(() =>
+  isBrowsingPaged.value ? dataPaged.value?.content : dataInfiniteFlat.value,
+)
+const totalElements = computed(() =>
+  isBrowsingPaged.value
+    ? dataPaged.value?.totalElements
+    : dataInfinite.value?.pages?.[0]?.totalElements,
+)
+
+useSelectionContextualActions(dataItems)
+
+// after load, if there's no elements, redirect to parent
+onMounted(() => {
+  if (totalElements.value == 0)
+    void router.replace({ name: '/libraries/[viewId]', params: { viewId: libraryViewId } })
+})
+
+// ongoing watch, if elements become 0 following a deletion, redirect to parent
+watch(totalElements, (newTotalElements) => {
+  if (newTotalElements == 0) {
+    void router.replace({ name: '/libraries/[viewId]', params: { viewId: libraryViewId } })
+  }
+})
+</script>
+
+<style lang="scss"></style>
+
+<route lang="yaml">
+meta:
+  requiresRole: USER
+  scrollable: true
+</route>

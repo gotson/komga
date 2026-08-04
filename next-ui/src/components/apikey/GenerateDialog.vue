@@ -1,0 +1,199 @@
+<template>
+  <v-dialog
+    v-model="showDialog"
+    :activator="activator"
+    :fullscreen="fullscreen"
+    :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
+    max-width="600px"
+    :aria-label="dialogTitle"
+    @after-leave="reset()"
+  >
+    <template #default="{ isActive }">
+      <v-form
+        class="fill-height"
+        @submit.prevent="generateApiKey()"
+      >
+        <v-card
+          :title="dialogTitle"
+          :loading="isLoading"
+        >
+          <v-card-text>
+            <div
+              v-if="!createdKey"
+              class="d-flex flex-column ga-6"
+            >
+              <div>
+                {{
+                  $formatMessage({
+                    description: 'Generate API key dialog: description',
+                    defaultMessage:
+                      'API Keys can be used to authenticate through the Kobo Sync protocol or the REST API.',
+                    id: 'iin6d2',
+                  })
+                }}
+              </div>
+
+              <v-text-field
+                v-model="comment"
+                :label="
+                  $formatMessage({
+                    description: 'Generate API key dialog: input field label',
+                    defaultMessage: 'Comment',
+                    id: 'C9LkYh',
+                  })
+                "
+                :hint="
+                  $formatMessage({
+                    description: 'Generate API key dialog: input field hint',
+                    defaultMessage: 'What\'s this API key for?',
+                    id: 'oWsqnh',
+                  })
+                "
+                :rules="[rules.required()]"
+                :error-messages="creationError"
+                :disabled="isLoading || !!createdKey"
+                autofocus
+                @update:model-value="creationError = ''"
+              />
+            </div>
+
+            <v-fade-transition>
+              <div
+                v-if="!!createdKey"
+                class="d-flex flex-column ga-6"
+              >
+                <div>
+                  <v-alert type="info"
+                    >{{
+                      $formatMessage({
+                        description: 'Generate API key dialog: message shown after key creation',
+                        defaultMessage:
+                          "Make sure to copy your API key now. You won't be able to see it again!",
+                        id: 'X/Z8x+',
+                      })
+                    }}
+                  </v-alert>
+                </div>
+
+                <div>
+                  <v-text-field
+                    v-model="createdKey.key"
+                    readonly
+                    :label="createdKey.comment"
+                  >
+                    <template
+                      v-if="clipboardSupported"
+                      #append-inner
+                    >
+                      <v-fab-transition>
+                        <v-icon
+                          v-if="copied"
+                          icon="i-mdi:check"
+                          color="success"
+                        />
+                        <v-icon
+                          v-else
+                          v-tooltip:bottom="
+                            $formatMessage({
+                              description: 'Generate API key dialog: copy button tooltip',
+                              defaultMessage: 'Copy to clipboard',
+                              id: 'oOtDhj',
+                            })
+                          "
+                          icon="i-mdi:content-copy"
+                          @click="copy(createdKey.key)"
+                        />
+                      </v-fab-transition>
+                    </template>
+                  </v-text-field>
+                </div>
+              </div>
+            </v-fade-transition>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn
+              :text="
+                $formatMessage({
+                  description: 'Generate API key dialog: close button',
+                  defaultMessage: 'Close',
+                  id: 'HZqgan',
+                })
+              "
+              @click="isActive.value = false"
+            />
+
+            <v-btn
+              :text="
+                $formatMessage({
+                  description: 'Generate API key dialog: generate button',
+                  defaultMessage: 'Generate',
+                  id: 'VP+GhR',
+                })
+              "
+              type="submit"
+              :disabled="isLoading || !!createdKey"
+            />
+          </v-card-actions>
+        </v-card>
+      </v-form>
+    </template>
+  </v-dialog>
+</template>
+
+<script setup lang="ts">
+import { useIntl } from 'vue-intl'
+import { useCreateApiKey } from '@/colada/users'
+import { isApiErrorWithCause } from '@/api/komga-client'
+import { commonMessages } from '@/utils/i18n/common-messages'
+import { useMessagesStore } from '@/stores/messages'
+
+import { useClipboard } from '@vueuse/core'
+import { useRules } from 'vuetify/labs/rules'
+import type { ApiKeyDto } from '@/generated/openapi'
+
+const intl = useIntl()
+const rules = useRules()
+const messagesStore = useMessagesStore()
+const { isSupported: clipboardSupported, copy, copied } = useClipboard({ copiedDuring: 3000 })
+
+const showDialog = defineModel<boolean>('dialog', { required: false })
+
+const { fullscreen = undefined, activator = undefined } = defineProps<{
+  fullscreen?: boolean
+  activator?: Element | string
+}>()
+
+const comment = ref<string>('')
+const creationError = ref<string>('')
+const createdKey = ref<ApiKeyDto | undefined>(undefined)
+
+const { mutateAsync, isLoading } = useCreateApiKey()
+
+function generateApiKey() {
+  mutateAsync({ comment: comment.value })
+    .then((key) => (createdKey.value = key))
+    .catch((error) => {
+      if (isApiErrorWithCause(error) && error.cause.message?.includes('ERR_1034')) {
+        creationError.value = intl.formatMessage({
+          description:
+            'API Key generate dialog: error message displayed when an API key with the same comment already exists',
+          defaultMessage: 'An API key with that comment already exists',
+          id: 'zphiTI',
+        })
+      } else messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+    })
+}
+
+function reset() {
+  createdKey.value = undefined
+  comment.value = ''
+  creationError.value = ''
+}
+
+const dialogTitle = intl.formatMessage({
+  description: 'Generate API key dialog: title',
+  defaultMessage: 'Generate new API key',
+  id: 'ycrpqO',
+})
+</script>

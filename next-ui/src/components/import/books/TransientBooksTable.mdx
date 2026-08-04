@@ -1,0 +1,15 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+
+import * as Stories from './TransientBooksTable.stories';
+
+<Meta of={Stories} />
+
+# ImportBooksTransientBooksTable
+
+Data table displaying books to import.
+- When books come into view, they will be analyzed.
+- Only `READY` books can be selected.
+- If a book has a `seriesId` returned by the server, it will be automatically selected.
+- If a book has a book number returned by the server, it will be automatically selected for upgrade.
+
+<Canvas of={Stories.Default} />

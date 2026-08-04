@@ -1,0 +1,169 @@
+<template>
+  <v-container
+    fluid
+    class="pa-0 pa-sm-4 h-100 h-sm-auto"
+  >
+    <EmptyStateNetworkError v-if="error" />
+
+    <template v-else>
+      <ApikeyTable
+        :api-keys="apiKeys"
+        :loading="isLoading"
+        @enter-add-api-key="(target) => (dialogGenerateActivator = target)"
+        @enter-force-sync-api-key="(target) => (dialogConfirm.activator = target)"
+        @force-sync-api-key="(apiKey) => showDialog('forceSync', apiKey)"
+        @enter-delete-api-key="(target) => (dialogConfirm.activator = target)"
+        @delete-api-key="(apiKey) => showDialog('delete', apiKey)"
+      />
+    </template>
+
+    <ApikeyGenerateDialog
+      :activator="dialogGenerateActivator"
+      :fullscreen="display.xs.value"
+    />
+  </v-container>
+</template>
+
+<script lang="ts" setup>
+import { commonMessages } from '@/utils/i18n/common-messages'
+import { storeToRefs } from 'pinia'
+import { useDialogsStore } from '@/stores/dialogs'
+import { useMessagesStore } from '@/stores/messages'
+import { useIntl } from 'vue-intl'
+import ApikeyDeletionWarning from '@/components/apikey/DeletionWarning.vue'
+import ForceSyncWarning from '@/components/apikey/ForceSyncWarning.vue'
+import { useApiKeys, useDeleteApiKey } from '@/colada/users'
+import { useDeleteSyncPoints } from '@/colada/syncpoints'
+import { useDisplay } from 'vuetify'
+import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
+import type { ApiKeyDto } from '@/generated/openapi'
+
+const intl = useIntl()
+const display = useDisplay()
+
+// API data
+const { data: apiKeys, error, isLoading, refetch: refetchApiKeys } = useApiKeys()
+
+onMounted(() => refetchApiKeys())
+
+// Dialogs handling
+// stores the API Key being actioned upon
+const apiKeyRecord = ref<ApiKeyDto>()
+// stores the ongoing action, so we can handle the action when the dialog is closed with changes
+const currentAction = ref<DialogAction>()
+const dialogGenerateActivator = ref<Element | undefined>(undefined)
+
+const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())
+
+const { mutateAsync: mutateDeleteApiKey } = useDeleteApiKey()
+const { mutateAsync: mutateDeleteSyncPoints } = useDeleteSyncPoints()
+
+const messagesStore = useMessagesStore()
+
+type DialogAction = 'delete' | 'forceSync'
+
+function showDialog(action: DialogAction, apiKey?: ApiKeyDto) {
+  currentAction.value = action
+  switch (action) {
+    case 'delete':
+      dialogConfirm.value.dialogProps = {
+        title: intl.formatMessage({
+          description: 'Delete API Key dialog title',
+          defaultMessage: 'Delete API Key',
+          id: '3beD4X',
+        }),
+        subtitle: apiKey?.comment,
+        maxWidth: 600,
+        validateText: apiKey?.comment,
+        mode: 'textinput',
+        okText: intl.formatMessage({
+          description: 'Delete API Key dialog: confirmation button text',
+          defaultMessage: 'Delete',
+          id: 'IE0XzE',
+        }),
+        closeOnSave: false,
+        fullscreen: display.xs.value,
+      }
+      dialogConfirm.value.slotWarning = {
+        component: markRaw(ApikeyDeletionWarning),
+        props: {},
+      }
+      dialogConfirm.value.callback = handleDialogConfirmation
+      break
+    case 'forceSync':
+      dialogConfirm.value.dialogProps = {
+        title: intl.formatMessage({
+          description: 'Force Sync API Key dialog title',
+          defaultMessage: 'Force Kobo sync',
+          id: '/lE31l',
+        }),
+        subtitle: apiKey?.comment,
+        maxWidth: 600,
+        validateText: apiKey?.comment,
+        mode: 'textinput',
+        okText: intl.formatMessage({
+          description: 'Force Sync API Key dialog: confirmation button text',
+          defaultMessage: 'I understand',
+          id: 'W3BUf7',
+        }),
+        closeOnSave: false,
+        fullscreen: display.xs.value,
+      }
+      dialogConfirm.value.slotWarning = {
+        component: markRaw(ForceSyncWarning),
+        props: {},
+      }
+      dialogConfirm.value.callback = handleDialogConfirmation
+  }
+  apiKeyRecord.value = apiKey
+}
+
+function handleDialogConfirmation(
+  hideDialog: () => void,
+  setLoading: (isLoading: boolean) => void,
+) {
+  let mutation: Promise<unknown> | undefined
+  let successMessage: string | undefined
+
+  setLoading(true)
+
+  switch (currentAction.value) {
+    case 'delete':
+      mutation = mutateDeleteApiKey(apiKeyRecord.value!.id)
+      successMessage = intl.formatMessage(
+        {
+          description: 'Snackbar notification shown upon successful API key deletion',
+          defaultMessage: 'API key deleted: {apiKeyComment}',
+          id: 'NArFTo',
+        },
+        {
+          apiKeyComment: apiKeyRecord.value!.comment,
+        },
+      )
+      break
+    case 'forceSync':
+      mutation = mutateDeleteSyncPoints([apiKeyRecord.value!.id])
+      successMessage = intl.formatMessage(
+        {
+          description: 'Snackbar notification shown upon successful API key force sync',
+          defaultMessage: 'Kobo sync forced: {apiKeyComment}',
+          id: 'NN7kAK',
+        },
+        {
+          apiKeyComment: apiKeyRecord.value!.comment,
+        },
+      )
+      break
+  }
+
+  mutation
+    ?.then(() => {
+      hideDialog()
+      if (successMessage) messagesStore.messages.push(successMessage)
+    })
+    .catch((error) => {
+      messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+      setLoading(false)
+    })
+}
+</script>

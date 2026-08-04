@@ -1,0 +1,118 @@
+<template>
+  <v-container class="px-0">
+    <v-row>
+      <v-col>
+        <v-text-field
+          v-model="model.name"
+          :rules="[rules.required()]"
+          :label="
+            $formatMessage({
+              description: 'Form add/edit library: General - library name',
+              defaultMessage: 'Library name',
+              id: 's1nzhU',
+            })
+          "
+          hide-details="auto"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <v-alert
+          type="info"
+          variant="tonal"
+        >
+          <template #text>
+            <FormattedMessage
+              :message-descriptor="{
+                description: 'Form add/edit library: General - root directory guideline',
+                defaultMessage:
+                  'When configuring your library on a removable drive or shared network mount (like NFS), do not point the root directory directly to the root of the drive (e.g., <code>E:\\</code> or <code>/mnt/media/</code>).<br></br><br></br>To prevent data loss, please create a dedicated subdirectory for your files (e.g., <code>E:\\ebooks\\</code> or <code>/mnt/media/ebooks/</code>) and select that as your library root.',
+                id: 'QWjkQT',
+              }"
+            >
+              <template #code="Content">
+                <code class="bg-grey-lighten-3 px-1 rounded">
+                  <component :is="Content" />
+                </code>
+              </template>
+              <template #br>
+                <br />
+              </template>
+            </FormattedMessage>
+          </template>
+        </v-alert>
+      </v-col>
+    </v-row>
+
+    <v-row
+      class="align-center"
+      density="comfortable"
+    >
+      <v-col>
+        <v-text-field
+          v-model="model.root"
+          :rules="[rules.required()]"
+          :label="
+            $formatMessage({
+              description: 'Form add/edit library: General - root directory',
+              defaultMessage: 'Root directory',
+              id: 'afXGQS',
+            })
+          "
+          hide-details="auto"
+        />
+      </v-col>
+      <v-col cols="auto">
+        <v-btn
+          :id="id"
+          :text="
+            $formatMessage({
+              description: 'Form add/edit library: General - root folder browse button',
+              defaultMessage: 'Browse',
+              id: 'E1kQun',
+            })
+          "
+        />
+      </v-col>
+    </v-row>
+  </v-container>
+
+  <DialogConfirmEdit
+    v-model:record="model.root"
+    :title="
+      $formatMessage({
+        description: 'Form add/edit library: General - root directory selection dialog title',
+        defaultMessage: 'Library root directory',
+        id: 'CJaS7j',
+      })
+    "
+    max-width="600"
+    close-on-save
+    scrollable
+    :fullscreen="display.xs.value"
+    :activator="`#${id}`"
+    @update:record="(val) => (model.root = val as string)"
+  >
+    <template #text="{ proxyModel }">
+      <RemoteFileList v-model="proxyModel.value as string" />
+    </template>
+  </DialogConfirmEdit>
+</template>
+
+<script setup lang="ts">
+import RemoteFileList from '@/components/RemoteFileList.vue'
+import { useDisplay } from 'vuetify'
+import { useRules } from 'vuetify/labs/rules'
+import type { LibraryCreationDto } from '@/generated/openapi'
+
+const display = useDisplay()
+const rules = useRules()
+
+const id = useId()
+
+type LibraryCreationGeneral = Pick<LibraryCreationDto, 'name' | 'root'>
+
+const model = defineModel<LibraryCreationGeneral>({ required: true })
+</script>

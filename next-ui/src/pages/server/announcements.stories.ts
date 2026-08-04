@@ -1,0 +1,65 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import announcements from './announcements.vue'
+import { http, delay } from 'msw'
+
+import { announcementsAllRead } from '@/mocks/api/handlers/announcements'
+import { expect, waitFor } from 'storybook/test'
+import { handleGetAnnouncements } from '@/generated/openapi/msw.gen'
+import { response200OK, response401Unauthorized } from '@/mocks/api/utils'
+
+const meta = {
+  component: announcements,
+  render: (args: object) => ({
+    components: { announcements },
+    setup() {
+      return { args }
+    },
+    template: '<announcements />',
+  }),
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: '',
+      },
+    },
+  },
+  args: {},
+} satisfies Meta<typeof announcements>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Unread: Story = {
+  args: {},
+  play: async ({ canvas }) => {
+    await waitFor(() => expect(canvas.getByText('eBook drop 2')).not.toBeNull())
+
+    await expect(canvas.getByRole('button', { name: /mark all as read/i })).toBeEnabled()
+  },
+}
+
+export const NoUnread: Story = {
+  beforeEach({ msw }) {
+    msw.use(handleGetAnnouncements(() => response200OK(announcementsAllRead)))
+  },
+
+  play: async ({ canvas }) => {
+    await waitFor(() => expect(canvas.getByText('eBook drop 2')).not.toBeNull())
+
+    await expect(canvas.queryByRole('button', { name: /mark all as read/i })).toBeNull()
+  },
+}
+
+export const Loading: Story = {
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/announcements', async () => await delay(5_000)))
+  },
+}
+
+export const Error: Story = {
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/v1/announcements', response401Unauthorized))
+  },
+}

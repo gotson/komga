@@ -1,0 +1,51 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
+
+import users from './users.vue'
+import { http, delay } from 'msw'
+import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
+import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
+
+import { response401Unauthorized } from '@/mocks/api/utils'
+
+const meta = {
+  component: users,
+  render: (args: object) => ({
+    components: {
+      users,
+      DialogConfirmInstance,
+      DialogConfirmEditInstance,
+    },
+    setup() {
+      return { args }
+    },
+    template: '<users /><DialogConfirmInstance/><DialogConfirmEditInstance/>',
+  }),
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+    docs: {
+      description: {
+        component: '',
+      },
+    },
+  },
+  args: {},
+} satisfies Meta<typeof users>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  args: {},
+}
+
+export const Loading: Story = {
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', async () => await delay(5_000)))
+  },
+}
+
+export const Error: Story = {
+  beforeEach({ msw }) {
+    msw.use(http.all('*/api/*', response401Unauthorized))
+  },
+}

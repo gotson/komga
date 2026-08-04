@@ -1,0 +1,191 @@
+import * as v from 'valibot'
+import { defineMessage, type MessageDescriptor } from 'vue-intl'
+import type { MaybeRefOrGetter } from 'vue'
+import { MediaProfileValues } from '@/types/MediaProfile'
+import { MediaStatusValues } from '@/types/MediaStatus'
+import { SeriesStatusValues } from '@/types/SeriesStatus'
+import { ReadStatusValues } from '@/types/ReadStatus'
+
+export const filterMessages: Record<string, MessageDescriptor> = {
+  any: defineMessage({
+    description: 'Filter values: any',
+    defaultMessage: 'Any',
+    id: 'bDNv5+',
+  }),
+  none: defineMessage({
+    description: 'Filter values: none',
+    defaultMessage: 'None',
+    id: '87q6WX',
+  }),
+}
+
+export const filterKeys = {
+  context: Symbol() as InjectionKey<
+    MaybeRefOrGetter<{
+      library_id?: string[]
+      collection_id?: string[]
+      series_id?: string[]
+      readlist_id?: string[]
+    }>
+  >,
+}
+
+export type AnyAll = 'anyOf' | 'allOf'
+
+///////////////////////////////////////////////////////////////////////////
+// This file contains all the valibot schemas for the Criteria API.
+// Those objects end up serialized in the address bar in the query params,
+// that's why the properties and values are kept to the shortest.
+///////////////////////////////////////////////////////////////////////////
+
+/**
+ * Schema for criteria API with `anyOf` or `allOf` condition.
+ */
+export const SchemaAnyAll = v.strictObject({
+  /**
+   * Shorthand for `mode`.
+   */
+  m: v.optional(v.picklist(['anyOf', 'allOf']), 'anyOf'),
+})
+
+export const SchemaIncludeExclude = v.strictObject({
+  /**
+   * Shorthand for `include`.
+   *
+   * Values can be: include (`i`) or exclude (`e`)
+   */
+  i: v.optional(v.picklist(['i', 'e'])),
+})
+
+export const SchemaSeriesStatus = v.pipe(
+  v.string(),
+  v.toUpperCase(),
+  v.picklist(SeriesStatusValues),
+)
+
+export const SchemaMediaStatus = v.pipe(v.string(), v.toUpperCase(), v.picklist(MediaStatusValues))
+
+export const SchemaMediaProfile = v.pipe(
+  v.string(),
+  v.toUpperCase(),
+  v.picklist(MediaProfileValues),
+)
+
+export const SchemaReadStatus = createSchemaIncludeExclude(
+  v.pipe(v.string(), v.toUpperCase(), v.picklist(ReadStatusValues)),
+)
+
+export const SchemaString = createSchemaIncludeExclude(v.string())
+
+export const SchemaAnyNone = v.strictObject({
+  a: v.optional(v.picklist(['any', 'none'])),
+})
+
+export const SchemaAuthor = v.union([SchemaString, SchemaAnyNone])
+
+const SchemaYear = v.pipe(v.string(), v.regex(/^\d{4}$/, 'Must be exactly 4 digits'))
+
+////////////////////////////////////////////////////
+// All schema filters need to have a default value
+////////////////////////////////////////////////////
+
+function createSchemaIncludeExclude<T extends v.GenericSchema>(schema: T) {
+  return v.strictObject({
+    ...SchemaIncludeExclude.entries,
+    /**
+     * Shorthand for `value`.
+     */
+    v: schema,
+  })
+}
+
+function createSchemaFilterAnyAll<T extends v.GenericSchema>(schema: T) {
+  return v.strictObject({
+    ...SchemaAnyAll.entries,
+    /**
+     * Shorthand for 'value'
+     */
+    v: v.optional(v.array(schema), []),
+  })
+}
+
+function createSchemaFilterArray<T extends v.GenericSchema>(schema: T) {
+  return v.strictObject({
+    /**
+     * Shorthand for 'value'
+     */
+    v: v.optional(v.array(schema), []),
+  })
+}
+
+function createSchemaFilterSelectRange<T extends v.GenericSchema>(schema: T) {
+  return v.strictObject({
+    is: v.optional(v.union([v.picklist(['any', 'none']), schema])),
+    min: v.optional(schema),
+    max: v.optional(schema),
+  })
+}
+
+/**
+ * Schema for Series Status
+ */
+export const SchemaFilterSeriesStatus = createSchemaFilterArray(SchemaSeriesStatus)
+
+/**
+ * Schema for Media Status
+ */
+export const SchemaFilterMediaStatus = createSchemaFilterArray(SchemaMediaStatus)
+
+/**
+ * Schema for Media Profile
+ */
+export const SchemaFilterMediaProfile = createSchemaFilterArray(SchemaMediaProfile)
+
+/**
+ * Schema for Read Status
+ */
+export const SchemaFilterReadStatus = createSchemaFilterArray(SchemaReadStatus)
+
+/**
+ * Schema for Series Release Years
+ */
+export const SchemaSeriesReleaseYears = createSchemaFilterSelectRange(SchemaYear)
+
+/**
+ * Schema for Series Age Ratings
+ */
+export const SchemaSeriesAgeRatings = createSchemaFilterSelectRange(v.number())
+
+/**
+ * Schema for a list of string.
+ * Can be used for tags, genre, sharing labels…
+ */
+export const SchemaFilterStrings = createSchemaFilterAnyAll(SchemaString)
+
+/**
+ * Schema for authors.
+ */
+export const SchemaFilterContributors = createSchemaFilterAnyAll(SchemaAuthor)
+export const SchemaFilterContributorsRecord = v.optional(
+  v.record(
+    v.string(),
+    v.optional(SchemaFilterContributors, v.getDefaults(SchemaFilterContributors)),
+  ),
+  {},
+)
+
+export const SchemaFilterAnyAll = createSchemaFilterAnyAll(v.unknown())
+export type FilterTypeAnyAll = v.InferOutput<typeof SchemaFilterAnyAll>
+
+export const SchemaFilterArray = createSchemaFilterArray(v.unknown())
+export type FilterTypeSimpleList = v.InferOutput<typeof SchemaFilterArray>
+
+export const SchemaFilterSelectRange = createSchemaFilterSelectRange(
+  v.union([v.string(), v.number()]),
+)
+export type FilterTypeSelectRange = v.InferOutput<typeof SchemaFilterSelectRange>
+
+export type FilterIncludeExclude = v.InferOutput<typeof SchemaIncludeExclude>
+
+export type FilterType =
+  FilterTypeAnyAll | FilterTypeSimpleList | FilterIncludeExclude | FilterTypeSelectRange
