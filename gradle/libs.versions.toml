@@ -5,6 +5,8 @@ twelvemonkeys = "3.14.0"
 springboot = "3.5.16"
 lucene = "9.9.1" # v10 requires JDK 21
 jooq = "3.19.35" # should be aligned with the version provided by Spring Boot
+compose = "1.11.1"
 
 [plugins]
-gradleGitProperties = {id = "com.gorylenko.gradle-git-properties", version = "4.0.1"}
+gradleGitProperties = { id = "com.gorylenko.gradle-git-properties", version = "4.0.1" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
