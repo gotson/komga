@@ -11,7 +11,7 @@ class SearchOperator {
   @Schema(
     name = "SearchOperatorEquality",
     discriminatorProperty = "operator",
-    oneOf = [ Is::class, IsNot::class],
+    oneOf = [Is::class, IsNot::class],
     discriminatorMapping = [
       DiscriminatorMapping("is", Is::class),
       DiscriminatorMapping("isNot", IsNot::class),
@@ -27,7 +27,7 @@ class SearchOperator {
   @Schema(
     name = "SearchOperatorEqualityNullable",
     discriminatorProperty = "operator",
-    oneOf = [ Is::class, IsNot::class, IsNullT::class, IsNotNullT::class],
+    oneOf = [Is::class, IsNot::class, IsNullT::class, IsNotNullT::class],
     discriminatorMapping = [
       DiscriminatorMapping("is", Is::class),
       DiscriminatorMapping("isNot", IsNot::class),

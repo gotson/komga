@@ -242,7 +242,7 @@ class KoboController(
 
     val body = objectMapper.readTree(rawBody)
 
-    /**
+    /*
      * Komga does not use the /v1/auth/device API call for authentication/authorization.
      * Return dummy data to keep the device happy.
      */
