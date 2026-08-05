@@ -10,7 +10,7 @@ plugins {
   kotlin("kapt")
   id("org.springframework.boot") version libs.versions.springboot.get()
   alias(libs.plugins.gradleGitProperties)
-  id("nu.studer.jooq") version "10.1"
+  id("nu.studer.jooq") version "10.2.1"
   id("org.flywaydb.flyway") version "11.7.2"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
