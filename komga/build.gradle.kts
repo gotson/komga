@@ -80,7 +80,7 @@ dependencies {
   implementation("com.github.junrar:junrar:8.1.0")
   implementation("org.apache.pdfbox:pdfbox:3.0.8")
   implementation("net.grey-panther:natural-comparator:1.1")
-  implementation("org.jsoup:jsoup:1.21.1")
+  implementation("org.jsoup:jsoup:1.23.1")
 
   implementation("net.coobird:thumbnailator:0.4.21")
   runtimeOnly("com.twelvemonkeys.imageio:imageio-jpeg:${libs.versions.twelvemonkeys.get()}")
