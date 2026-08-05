@@ -28,10 +28,11 @@ val benchmarkSourceSet =
 
 sourceSets {
   // add a flyway sourceSet
-  val flyway by creating {
-    compileClasspath += sourceSets.main.get().compileClasspath
-    runtimeClasspath += sourceSets.main.get().runtimeClasspath
-  }
+  val flyway =
+    create("flyway") {
+      compileClasspath += sourceSets.main.get().compileClasspath
+      runtimeClasspath += sourceSets.main.get().runtimeClasspath
+    }
   // main sourceSet depends on the output of flyway sourceSet, and generated jooq classes
   main {
     java {
@@ -41,12 +42,14 @@ sourceSets {
   }
 }
 
-val benchmarkImplementation by configurations.getting {
-  extendsFrom(configurations.testImplementation.get())
-}
-val kaptBenchmark by configurations.getting {
-  extendsFrom(configurations.kaptTest.get())
-}
+val benchmarkImplementation =
+  configurations.getByName("benchmarkImplementation") {
+    extendsFrom(configurations.testImplementation.get())
+  }
+val kaptBenchmark =
+  configurations.getByName("kaptBenchmark") {
+    extendsFrom(configurations.kaptTest.get())
+  }
 
 dependencies {
   implementation(kotlin("stdlib"))
@@ -224,7 +227,12 @@ tasks {
 
   withType<ProcessResources> {
     filesMatching("application*.yml") {
-      expand(project.properties)
+      expand(
+        mapOf(
+          "version" to project.version.toString(),
+          "rootDir" to project.rootDir.absolutePath,
+        ),
+      )
     }
     mustRunAfter(getByName("webuiCopyIndex"), getByName("nextuiCopyIndex"))
   }
@@ -367,7 +375,6 @@ tasks.whenTaskAdded {
     dependsOn("generateTasksJooq")
   }
 }
-
 
 tasks.runKtlintFormatOverMainSourceSet {
   dependsOn("generateTasksJooq")
