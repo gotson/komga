@@ -42,7 +42,7 @@ allprojects {
   apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
   configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    version = "1.7.1"
+    version = "1.8.0"
     filter {
       exclude("**/generated-src/**")
       exclude("**/generated/**")
