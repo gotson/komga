@@ -11,7 +11,7 @@ plugins {
   id("org.springframework.boot") version libs.versions.springboot.get()
   alias(libs.plugins.gradleGitProperties)
   id("nu.studer.jooq") version "10.2.1"
-  id("org.flywaydb.flyway") version "11.7.2"
+  id("org.flywaydb.flyway") version "13.1.0"
   id("com.github.johnrengelman.processes") version "0.5.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
   id("com.google.devtools.ksp") version "2.3.1"
@@ -25,6 +25,21 @@ val benchmarkSourceSet =
       runtimeClasspath += sourceSets.main.get().runtimeClasspath
     }
   }
+
+sourceSets {
+  // add a flyway sourceSet
+  val flyway by creating {
+    compileClasspath += sourceSets.main.get().compileClasspath
+    runtimeClasspath += sourceSets.main.get().runtimeClasspath
+  }
+  // main sourceSet depends on the output of flyway sourceSet, and generated jooq classes
+  main {
+    java {
+      output.dir(flyway.output)
+      srcDir("build/generated-src/jooq/tasks")
+    }
+  }
+}
 
 val benchmarkImplementation by configurations.getting {
   extendsFrom(configurations.testImplementation.get())
@@ -353,20 +368,7 @@ tasks.whenTaskAdded {
   }
 }
 
-sourceSets {
-  // add a flyway sourceSet
-  val flyway by creating {
-    compileClasspath += sourceSets.main.get().compileClasspath
-    runtimeClasspath += sourceSets.main.get().runtimeClasspath
-  }
-  // main sourceSet depends on the output of flyway sourceSet, and generated jooq classes
-  main {
-    java {
-      output.dir(flyway.output)
-      srcDir("build/generated-src/jooq/tasks")
-    }
-  }
-}
+
 tasks.runKtlintFormatOverMainSourceSet {
   dependsOn("generateTasksJooq")
 }
