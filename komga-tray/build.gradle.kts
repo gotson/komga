@@ -8,7 +8,7 @@ plugins {
   alias(libs.plugins.gradleGitProperties)
   alias(libs.plugins.compose)
   id("org.jetbrains.kotlin.plugin.compose") version "2.4.10"
-  id("dev.hydraulic.conveyor") version "1.12"
+  id("dev.hydraulic.conveyor") version "2.0"
   application
 }
 
