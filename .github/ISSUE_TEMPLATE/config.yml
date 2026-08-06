@@ -1,9 +1,9 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 🚀️New UI beta test
-    url: https://github.com/gotson/komga/discussions/new?category=new-ui-beta-test
-    about: Provide feedback or raise an issue about the new UI
-  - name: 💡️Feature idea
+  - name: 🚀️ NextUI beta test
+    url: https://github.com/gotson/komga/discussions/new?category=nextui-beta-test
+    about: Provide feedback or raise an issue about the NextUI
+  - name: 💡️ Feature idea
     url: https://github.com/gotson/komga/discussions/new?category=ideas
     about: Suggest a feature to improve Komga
   - name: 🖥️ Komga website
