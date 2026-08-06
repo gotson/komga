@@ -3,7 +3,6 @@ package org.gotson.komga.interfaces.scheduler
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.TaskEmitter
-import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.gotson.komga.infrastructure.search.LuceneHelper
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.annotation.Profile
@@ -29,10 +28,11 @@ class SearchIndexController(
       when {
         indexVersion < 6 -> {
           taskEmitter.upgradeIndex(HIGHEST_PRIORITY) // upgrade index to Lucene 9.x
-          taskEmitter.rebuildIndex(HIGHEST_PRIORITY, setOf(LuceneEntity.Series))
+          taskEmitter.rebuildIndex(HIGHEST_PRIORITY) // full rebuild to apply Unicode NFC normalization
         }
 
-        indexVersion < 8 -> taskEmitter.rebuildIndex(HIGHEST_PRIORITY, setOf(LuceneEntity.Series))
+        // NFC normalization (index version 9) affects every entity type, so a full rebuild is required
+        indexVersion < 9 -> taskEmitter.rebuildIndex(HIGHEST_PRIORITY)
       }
     }
   }
