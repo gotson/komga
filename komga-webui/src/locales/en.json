@@ -781,7 +781,8 @@
         "click": "Click / Tap"
       },
       "page_margins": "Page margins",
-      "viewing_theme": "Viewing theme"
+      "viewing_theme": "Viewing theme",
+      "progress_markers": "Progress markers"
     },
     "shortcuts": {
       "cycle_pagination": "Cycle column count",
