@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Koti",
     "libraries": "Kirjastot",
-    "logout": "Kirjaudu ulos"
+    "logout": "Kirjaudu ulos",
+    "try_new_ui": "Kokeile uutta käyttöliittymää"
   },
   "no_libraries_pinned": {
     "subtitle": "Voit kiinnittää kirjaston kolmen palluran valikosta",
