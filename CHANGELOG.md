@@ -1,3 +1,20 @@
+# [1.26.1](https://github.com/gotson/komga/compare/1.26.0...1.26.1) (2026-08-10)
+## 🐛 Fixes
+**komga**
+- missing nextui css layers when serving from tomcat ([ee79798](https://github.com/gotson/komga/commits/ee79798))
+
+## 🔄️ Changes
+
+- "refactor: fix configuration escapes" ([e0ff2da](https://github.com/gotson/komga/commits/e0ff2da)), closes [#2385](https://github.com/gotson/komga/issues/2385)
+
+## 🛠  Build
+
+- update svu install ([10a0a2c](https://github.com/gotson/komga/commits/10a0a2c))
+
+## 🌐 Translation
+**webui**
+- translated using Weblate (Korean) ([e2add13](https://github.com/gotson/komga/commits/e2add13))
+
 # [1.26.0](https://github.com/gotson/komga/compare/1.25.0...1.26.0) (2026-08-10)
 ## 🚀 Features
 **api**
