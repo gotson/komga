@@ -93,7 +93,7 @@
               v-if="!selected"
               color="white"
               :icon="
-                isPreSelect && isHovering
+                isPreSelect && isHovering && !isTouchPrimary
                   ? 'i-mdi:checkbox-marked-circle'
                   : 'i-mdi:checkbox-blank-circle-outline'
               "
