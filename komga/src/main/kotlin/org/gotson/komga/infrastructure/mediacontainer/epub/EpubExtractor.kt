@@ -141,7 +141,7 @@ class EpubExtractor(
             // image in spine
             listOf(Path(pagePath).normalize().invariantSeparatorsPathString)
           } else {
-            val doc = epub.zip.getEntryInputStream(pagePath)?.use { Jsoup.parse(it, null, "") } ?: return@map emptyList()
+            val doc = epub.zip.getEntryInputStream(pagePath)?.use { Jsoup.parse(it, null, "", Parser.xmlParser()) } ?: return@map emptyList()
 
             // if a page has text over the threshold then the book is not divina compatible
             if (doc.body().text().length > letterCountThreshold) return emptyList()
