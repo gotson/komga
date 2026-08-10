@@ -131,7 +131,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6.2.0
+        uses: gradle/actions/setup-gradle@v6.3.0
 
       - name: Build
         run: ./gradlew :komga:webuiCopyIndex :komga:nextuiCopyIndex :komga:bootJar :komga-tray:jar
