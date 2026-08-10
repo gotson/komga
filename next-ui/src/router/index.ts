@@ -4,7 +4,6 @@
  * Automatic routes for `./src/pages/*.vue`
  */
 
-// Composables
 import { createRouter, createWebHistory, type LocationQuery } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
@@ -17,16 +16,22 @@ const router = createRouter({
     import.meta.env.PROD ? window.resourceBaseUrl : import.meta.env.BASE_URL,
   ),
   routes: setupLayouts(routes),
-  scrollBehavior(to) {
-    if (scrollMap.has(to.path)) {
-      const scrollTo = scrollMap.get(to.path)
-      return new Promise((resolve) => {
-        void nextTick(() => {
-          document.querySelector(scrollerQuery)?.scrollTo(0, scrollTo ?? 0)
-          resolve(false)
-        })
-      })
+  scrollBehavior(to, from, savedPosition) {
+    // ignore redundant navigations (like useRouteQuery syncing URL parameters)
+    // this prevents the page from jumping when filters or tabs are clicked
+    if (to.path === from.path) {
+      return false
     }
+
+    // use savedPosition has an indicator that this is a popstate navigation
+    // scroll position is saved in scrollMap
+    const scrollTo = savedPosition ? (scrollMap.get(to.path) ?? 0) : 0
+    return new Promise((resolve) => {
+      void nextTick(() => {
+        document.querySelector(scrollerQuery)?.scrollTo(0, scrollTo)
+        resolve(false)
+      })
+    })
   },
   stringifyQuery: stringify,
   parseQuery: (query: string) => parse(query) as unknown as LocationQuery,
