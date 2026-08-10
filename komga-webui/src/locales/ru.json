@@ -5,7 +5,7 @@
     },
     "dataIterator": {
       "loadingText": "Загрузка элементов...",
-      "noResultsText": "Совпадений не найдено"
+      "noResultsText": "Подходящих записей не найдено"
     },
     "dataTable": {
       "itemsPerPageText": "Строк на странице:",
@@ -18,7 +18,7 @@
     "noDataText": "Данные отсутствуют"
   },
   "account_settings": {
-    "account_settings": "Настройки аккаунта",
+    "account_settings": "Настройки Аккаунта",
     "api_key": {
       "created_date": "Дата создания: {date}",
       "force_kobo_sync": "Принудительная синхронизация с Kobo",
@@ -211,6 +211,7 @@
   "common": {
     "age": "Возраст",
     "all_libraries": "Все библиотеки",
+    "all_of": "Все из",
     "any_of": "Любой из",
     "book": "Книга",
     "books": "Книги",
@@ -275,6 +276,7 @@
     "series": "Серии",
     "settings": "Настройки",
     "tags": "Теги",
+    "ui": "Интерфейс пользователя",
     "unavailable": "Недоступно",
     "unlock_all": "Разблокировать все",
     "url": "Ссылка",
@@ -296,14 +298,26 @@
     "button_import": "Импортировать",
     "button_match": "Сопоставить",
     "comicrack_preambule_html": "Вы можете импортировать существующие списки чтения из ComicRack в формате <code>.cbl</code>.<br>Komga попытается сопоставить предоставленные серии и номера книг с сериями и книгами в ваших библиотеках.",
+    "dialog_confirmation": {
+      "create": "Всё равно создать"
+    },
+    "field_file_label": "Список для чтения ComicRack (.cbl)",
     "field_files_label": "Списки чтения ComicRack (.cbl)",
     "import_read_lists": "Импорт Списков чтения",
     "imported_as": "Импортировано как {name}",
+    "readlist_created": "Список для чтения создан: {name}",
     "results_preambule": "Результат импорта показан ниже. Вы также можете проверить неотмеченные книги для каждого предоставленного файла.",
     "size_limit": "Размер не должен превышать {size} MB",
     "tab_title": "Импорт данных"
   },
   "dialog": {
+    "add_api_key": {
+      "button_confirm": "Сгенерировать",
+      "context": "API Ключи могут быть использованы для аутентификации через протокол синхронизации Kobo Sync.",
+      "dialog_title": "Сгенерировать новый API ключ",
+      "field_comment": "Комментарий",
+      "field_comment_hint": "Для чего нужен этот API ключ?"
+    },
     "add_to_collection": {
       "button_create": "Создать",
       "card_collection_subtitle": "Серий нет | 1 серия | {count} серий",
@@ -332,6 +346,12 @@
       "body": "Анализирует все медиафайлы в библиотеке. В ходе анализа фиксируется информация о медиафайлах. В зависимости от размера вашей библиотеки на это может потребоваться больше времени.",
       "button_confirm": "Анализировать",
       "title": "Анализ библиотеки"
+    },
+    "delete_apikey": {
+      "button_confirm": "Удалить",
+      "confirm_delete": "Я понимаю, удалить API ключ \"{name}\"",
+      "dialog_title": "Удалить API ключ",
+      "warning_html": "Любое приложение или скрипт использующее данный API ключ, потеряет доступ к API Komga. Вы не можете отменить это действие."
     },
     "delete_book": {
       "button_confirm": "Удалить",
@@ -602,8 +622,11 @@
     }
   },
   "duplicate_pages": {
+    "empty_title_known": "Нет известных дубликатов",
     "filter": {
       "count": "Количество",
+      "date_added": "Дата добавления",
+      "date_modified": "Дата изменения",
       "delete_count": "Количество удалений",
       "size": "Размер",
       "total_size": "Общий размер"
@@ -625,6 +648,11 @@
       "BookFileDeleted": "Файл книги удален",
       "BookImported": "Книга импортирована",
       "SeriesFolderDeleted": "Папка серии удалена"
+    },
+    "media_profile": {
+      "DIVINA": "DIVINA",
+      "EPUB": "EPUB",
+      "PDF": "PDF"
     },
     "media_status": {
       "ERROR": "Ошибка",
@@ -816,7 +844,8 @@
   "navigation": {
     "home": "Главная",
     "libraries": "Библиотеки",
-    "logout": "Выйти"
+    "logout": "Выйти",
+    "try_new_ui": "Попробуйте новый интерфейс"
   },
   "no_libraries_pinned": {
     "subtitle": "Вы можете закрепить библиотеку через меню с тремя точками",
