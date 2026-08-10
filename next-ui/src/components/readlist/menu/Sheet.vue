@@ -19,10 +19,15 @@ import type { ReadListDto } from '@/generated/openapi'
 
 const isShown = defineModel<boolean>({ default: false })
 
-const { readList, excludeActions = [] } = defineProps<{
+const {
+  readList,
+  excludeActions = [],
+  addSelectAction = false,
+} = defineProps<{
   activator: string | Element
   readList: ReadListDto
   excludeActions?: ActionName[]
+  addSelectAction?: boolean
 }>()
 
 const main = [
@@ -42,7 +47,9 @@ const { selectAction } = useSelectAction(() => readList, afterClick)
 
 const { actions } = useReadListActions(() => readList, afterClick)
 const actionsDefault = computed(() => [
-  ...(selectionStore.isEmpty && isTouchPrimary.value ? [selectAction.value] : []),
+  ...(addSelectAction && selectionStore.isEmpty && isTouchPrimary.value
+    ? [selectAction.value]
+    : []),
   ...actions.value
     .filter((it) => main.includes(it.action) && !excludeActions.includes(it.action))
     .toSorted(createOrderCompareFn(main, (it) => it.action.toString())),

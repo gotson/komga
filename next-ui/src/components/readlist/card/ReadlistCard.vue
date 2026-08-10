@@ -21,6 +21,7 @@
     v-model="bottomSheet"
     :read-list="readList"
     :activator="menuActivator"
+    add-select-action
   />
 </template>
 

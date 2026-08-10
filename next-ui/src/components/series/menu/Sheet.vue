@@ -23,10 +23,12 @@ const {
   activator,
   series,
   excludeActions = [],
+  addSelectAction = false,
 } = defineProps<{
   activator: string | Element
   series: SeriesDto
   excludeActions?: ActionName[]
+  addSelectAction?: boolean
 }>()
 
 const main = [
@@ -55,7 +57,9 @@ const { selectAction } = useSelectAction(() => series, afterClick)
 
 const { actions } = useSeriesActions(() => series, afterClick)
 const actionsDefault = computed(() => [
-  ...(selectionStore.isEmpty && isTouchPrimary.value ? [selectAction.value] : []),
+  ...(addSelectAction && selectionStore.isEmpty && isTouchPrimary.value
+    ? [selectAction.value]
+    : []),
   ...actions.value
     .filter((it) => main.includes(it.action) && !excludeActions.includes(it.action))
     .toSorted(createOrderCompareFn(main, (it) => it.action.toString())),

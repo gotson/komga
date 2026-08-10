@@ -17,10 +17,15 @@ import { useSelectAction } from '@/composables/selection'
 import type { CollectionDto } from '@/generated/openapi'
 const isShown = defineModel<boolean>({ default: false })
 
-const { collection, excludeActions = [] } = defineProps<{
+const {
+  collection,
+  excludeActions = [],
+  addSelectAction = false,
+} = defineProps<{
   activator: string | Element
   collection: CollectionDto
   excludeActions?: ActionName[]
+  addSelectAction?: boolean
 }>()
 
 const management = [ActionName.EditCollection, ActionName.Delete] as ActionName[]
@@ -36,7 +41,9 @@ const { selectAction } = useSelectAction(() => collection, afterClick)
 const { actions } = useCollectionActions(() => collection, afterClick)
 
 const actionsManagement = computed(() => [
-  ...(selectionStore.isEmpty && isTouchPrimary.value ? [selectAction.value] : []),
+  ...(addSelectAction && selectionStore.isEmpty && isTouchPrimary.value
+    ? [selectAction.value]
+    : []),
   ...actions.value
     .filter((it) => management.includes(it.action) && !excludeActions.includes(it.action))
     .toSorted(createOrderCompareFn(management, (it) => it.action.toString())),

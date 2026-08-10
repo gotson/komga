@@ -19,6 +19,7 @@
     v-model="bottomSheet"
     :collection="collection"
     :activator="menuActivator"
+    add-select-action
   />
 </template>
 

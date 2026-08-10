@@ -18,6 +18,7 @@
     v-model="bottomSheet"
     :series="series"
     :activator="menuActivator"
+    add-select-action
   />
 </template>
 

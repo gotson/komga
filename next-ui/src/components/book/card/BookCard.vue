@@ -22,6 +22,7 @@
     v-model="bottomSheet"
     :book="book"
     :activator="menuActivator"
+    add-select-action
   />
 </template>
 

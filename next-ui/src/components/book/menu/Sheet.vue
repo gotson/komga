@@ -18,10 +18,15 @@ import { useSelectAction } from '@/composables/selection'
 import type { BookDto } from '@/generated/openapi'
 const isShown = defineModel<boolean>({ default: false })
 
-const { book, excludeActions = [] } = defineProps<{
+const {
+  book,
+  excludeActions = [],
+  addSelectAction = false,
+} = defineProps<{
   activator: string | Element
   book: BookDto
   excludeActions?: ActionName[]
+  addSelectAction?: boolean
 }>()
 
 const main = [
@@ -50,7 +55,9 @@ const { selectAction } = useSelectAction(() => book, afterClick)
 
 const { actions } = useBookActions(() => book, afterClick)
 const actionsDefault = computed(() => [
-  ...(selectionStore.isEmpty && isTouchPrimary.value ? [selectAction.value] : []),
+  ...(addSelectAction && selectionStore.isEmpty && isTouchPrimary.value
+    ? [selectAction.value]
+    : []),
   ...actions.value
     .filter((it) => main.includes(it.action) && !excludeActions.includes(it.action))
     .toSorted(createOrderCompareFn(main, (it) => it.action.toString())),
