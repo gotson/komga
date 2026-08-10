@@ -2,8 +2,8 @@ import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
 import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
-import { handleGetBookById, handleGetBooks } from '@/generated/openapi/msw.gen'
-import { response200OK, response404NotFound } from '@/mocks/api/utils'
+import { handleGetBookById, handleGetBooks, handleImportBooks } from '@/generated/openapi/msw.gen'
+import { response200OK, response202Empty, response404NotFound } from '@/mocks/api/utils'
 
 export const mockBook = {
   id: '05RKH8CC8B4RW',
@@ -105,6 +105,7 @@ export const booksHandlers = [
       Object.assign({}, mockBook, { metadata: { title: `Book ${params.bookId}` } }),
     )
   }),
+  handleImportBooks(() => response202Empty()),
   http.get('*/api/v1/books/*/thumbnail', async () => {
     // Get an ArrayBuffer from reading the file from disk or fetching it.
     const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
