@@ -930,7 +930,8 @@
   "navigation": {
     "home": "홈",
     "libraries": "서재",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "try_new_ui": "신규 UI 체험"
   },
   "no_libraries_pinned": {
     "subtitle": "점 3개 메뉴에서 라이브러리를 고정 할 수 있습니다",
