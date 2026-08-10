@@ -5,3 +5,4 @@ src/route-map.d.ts
 src/generated/
 public-msw/mockServiceWorker.js
 filters.md
+i18n/
