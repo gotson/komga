@@ -201,8 +201,8 @@
   "browse_series": {
     "earliest_year_from_release_dates": "这是该系列所有书发行日期最早的一年",
     "remove_from_collection": "从收藏中移除系列",
-    "series_no_summary": "这个系列没有概要，所以我们为您挑选了一个！",
-    "summary_from_book": "书籍 {number} 的概要："
+    "series_no_summary": "这个系列没有简介，所以我们为您挑选了一个！",
+    "summary_from_book": "书籍 {number} 的简介："
   },
   "collections_expansion_panel": {
     "manage_collection": "管理收藏",
@@ -432,7 +432,7 @@
       "field_number_sort_hint": "您可以用十进制数",
       "field_release_date": "发布日期",
       "field_release_date_error": "必须是 YYYY-MM-DD 格式的有效日期",
-      "field_summary": "概要",
+      "field_summary": "简介",
       "field_tags": "标签",
       "field_title": "标题",
       "number_sort_decrement": "全部减 1",
@@ -511,7 +511,7 @@
       "dialog_title": "编辑阅读列表",
       "field_manual_ordering": "手动排序",
       "field_name": "名称",
-      "field_summary": "概要",
+      "field_summary": "简介",
       "label_ordering": "默认情况下，阅读列表中的书籍需要手动排序。您可以禁用手动排序来通过发行日期排序。",
       "tab_general": "常规",
       "tab_poster": "海报"
@@ -536,7 +536,7 @@
       "field_reading_direction": "阅读方向",
       "field_sort_title": "排序标题",
       "field_status": "状态",
-      "field_summary": "概要",
+      "field_summary": "简介",
       "field_tags": "标签",
       "field_title": "标题",
       "field_total_book_count": "书籍总数",
