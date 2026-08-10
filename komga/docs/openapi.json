@@ -7,7 +7,7 @@
       "url": "https://github.com/gotson/komga/blob/master/LICENSE"
     },
     "title": "Komga API",
-    "version": "1.25.0"
+    "version": "1.26.0"
   },
   "externalDocs": {
     "description": "Komga documentation",
@@ -186,6 +186,9 @@
                   "Example": {
                     "value": "{\n  \"git\": {\n    \"branch\": \"master\",\n    \"commit\": {\n      \"id\": \"9be980d\",\n      \"time\": \"2025-03-12T03:40:38Z\"\n    }\n  },\n  \"build\": {\n    \"artifact\": \"komga\",\n    \"name\": \"komga\",\n    \"version\": \"1.21.2\",\n    \"group\": \"komga\"\n  },\n  \"java\": {\n    \"version\": \"23.0.2\",\n    \"vendor\": {\n      \"name\": \"Eclipse Adoptium\",\n      \"version\": \"Temurin-23.0.2+7\"\n    },\n    \"runtime\": {\n      \"name\": \"OpenJDK Runtime Environment\",\n      \"version\": \"23.0.2+7\"\n    },\n    \"jvm\": {\n      \"name\": \"OpenJDK 64-Bit Server VM\",\n      \"vendor\": \"Eclipse Adoptium\",\n      \"version\": \"23.0.2+7\"\n    }\n  },\n  \"os\": {\n    \"name\": \"Linux\",\n    \"version\": \"6.8.0-57-generic\",\n    \"arch\": \"amd64\"\n  }\n}"
                   }
+                },
+                "schema": {
+                  "additionalProperties": true
                 }
               }
             },
@@ -230,8 +233,9 @@
     },
     "/api/v1/age-ratings": {
       "get": {
-        "description": "Can be filtered by various criteria",
-        "operationId": "getAgeRatings",
+        "deprecated": true,
+        "description": "Use GET /v2/age-ratings instead. Deprecated since 1.26.0",
+        "operationId": "getAgeRatings_1",
         "parameters": [
           {
             "in": "query",
@@ -282,6 +286,7 @@
         },
         "summary": "List age ratings",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
@@ -429,7 +434,9 @@
     },
     "/api/v1/authors/names": {
       "get": {
-        "operationId": "getAuthorsNames",
+        "deprecated": true,
+        "description": "Use GET /v2/authors/names instead. Deprecated since 1.26.0",
+        "operationId": "getAuthorsNames_1",
         "parameters": [
           {
             "in": "query",
@@ -468,13 +475,16 @@
         },
         "summary": "List authors\u0027 names",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
     },
     "/api/v1/authors/roles": {
       "get": {
-        "operationId": "getAuthorsRoles",
+        "deprecated": true,
+        "description": "Use GET /v2/authors/roles instead. Deprecated since 1.26.0",
+        "operationId": "getAuthorsRoles_1",
         "responses": {
           "200": {
             "content": {
@@ -502,6 +512,7 @@
         },
         "summary": "List authors\u0027 roles",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
@@ -1058,6 +1069,9 @@
               }
             },
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "summary": "Get book details",
@@ -3692,8 +3706,9 @@
     },
     "/api/v1/genres": {
       "get": {
-        "description": "Can be filtered by various criteria",
-        "operationId": "getGenres",
+        "deprecated": true,
+        "description": "Use GET /v2/genres instead. Deprecated since 1.26.0",
+        "operationId": "getGenres_1",
         "parameters": [
           {
             "in": "query",
@@ -3744,6 +3759,7 @@
         },
         "summary": "List genres",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
@@ -3811,8 +3827,9 @@
     },
     "/api/v1/languages": {
       "get": {
-        "description": "Can be filtered by various criteria",
-        "operationId": "getLanguages",
+        "deprecated": true,
+        "description": "Use GET /v2/languages instead. Deprecated since 1.26.0",
+        "operationId": "getLanguages_1",
         "parameters": [
           {
             "in": "query",
@@ -3863,6 +3880,7 @@
         },
         "summary": "List languages",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
@@ -4741,8 +4759,9 @@
     },
     "/api/v1/publishers": {
       "get": {
-        "description": "Can be filtered by various criteria",
-        "operationId": "getPublishers",
+        "deprecated": true,
+        "description": "Use GET /v2/publishers instead. Deprecated since 1.26.0",
+        "operationId": "getPublishers_1",
         "parameters": [
           {
             "in": "query",
@@ -4793,6 +4812,7 @@
         },
         "summary": "List publishers",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
@@ -6554,7 +6574,8 @@
     },
     "/api/v1/series/release-dates": {
       "get": {
-        "description": "Can be filtered by various criteria",
+        "deprecated": true,
+        "description": "Use GET /v2/series/release-years instead. Deprecated since 1.26.0",
         "operationId": "getSeriesReleaseDates",
         "parameters": [
           {
@@ -6606,6 +6627,7 @@
         },
         "summary": "List series release dates",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
@@ -6728,6 +6750,9 @@
               }
             },
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "summary": "Get series details",
@@ -7551,8 +7576,9 @@
     },
     "/api/v1/sharing-labels": {
       "get": {
-        "description": "Can be filtered by various criteria",
-        "operationId": "getSharingLabels",
+        "deprecated": true,
+        "description": "Use GET /v2/sharing-labels instead. Deprecated since 1.26.0",
+        "operationId": "getSharingLabels_1",
         "parameters": [
           {
             "in": "query",
@@ -7603,6 +7629,7 @@
         },
         "summary": "List sharing labels",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
@@ -7647,8 +7674,9 @@
     },
     "/api/v1/tags": {
       "get": {
-        "description": "Can be filtered by various criteria",
-        "operationId": "getTags",
+        "deprecated": true,
+        "description": "Use GET /v2/tags instead. Deprecated since 1.26.0",
+        "operationId": "getTags_1",
         "parameters": [
           {
             "in": "query",
@@ -7699,13 +7727,15 @@
         },
         "summary": "List tags",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
     },
     "/api/v1/tags/book": {
       "get": {
-        "description": "Can be filtered by various criteria",
+        "deprecated": true,
+        "description": "Use GET /v2/tags instead. Deprecated since 1.26.0",
         "operationId": "getBookTags",
         "parameters": [
           {
@@ -7765,13 +7795,15 @@
         },
         "summary": "List book tags",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
     },
     "/api/v1/tags/series": {
       "get": {
-        "description": "Can be filtered by various criteria",
+        "deprecated": true,
+        "description": "Use GET /v2/tags instead. Deprecated since 1.26.0",
         "operationId": "getSeriesTags",
         "parameters": [
           {
@@ -7819,6 +7851,7 @@
         },
         "summary": "List series tags",
         "tags": [
+          "Deprecated",
           "Referential metadata"
         ]
       }
@@ -8001,6 +8034,88 @@
         ]
       }
     },
+    "/api/v2/age-ratings": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getAgeRatings",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageInteger"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List age ratings",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
     "/api/v2/authors": {
       "get": {
         "description": "Can be filtered by various criteria",
@@ -8039,7 +8154,11 @@
             "name": "collection_id",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
             }
           },
           {
@@ -8047,7 +8166,11 @@
             "name": "series_id",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
             }
           },
           {
@@ -8055,7 +8178,11 @@
             "name": "readlist_id",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
             }
           },
           {
@@ -8106,6 +8233,586 @@
           }
         },
         "summary": "List authors",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v2/authors/names": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getAuthorsNames",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "series_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "readlist_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List authors names",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v2/authors/roles": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getAuthorsRoles",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "series_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "readlist_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List authors roles",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v2/genres": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getGenres",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List genres",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v2/languages": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getLanguages",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List languages",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v2/publishers": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getPublishers",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List publishers",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v2/series/release-years": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getSeriesReleaseYears",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List series release years",
         "tags": [
           "Referential metadata"
         ]
@@ -8193,6 +8900,223 @@
         "summary": "Update series read progress (Mihon)",
         "tags": [
           "Mihon"
+        ]
+      }
+    },
+    "/api/v2/sharing-labels": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getSharingLabels",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List sharing labels",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v2/tags": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getTags",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "series_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "readlist_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "include",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SERIES",
+                "BOOK",
+                "BOTH"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List tags",
+        "tags": [
+          "Referential metadata"
         ]
       }
     },
@@ -9536,40 +10460,74 @@
           "type"
         ]
       },
+      "ItemAuthorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Author\u0027s name",
+            "example": "gotson"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of a site owned by the author",
+            "example": "https://github.com/gotson"
+          }
+        }
+      },
       "ItemDto": {
         "type": "object",
         "properties": {
           "_komga": {
-            "$ref": "#/components/schemas/KomgaExtensionDto"
+            "$ref": "#/components/schemas/KomgaExtensionDto",
+            "description": "Additional fields for the item"
           },
           "author": {
-            "$ref": "#/components/schemas/AuthorDto"
+            "$ref": "#/components/schemas/ItemAuthorDto",
+            "description": "Author of the item"
           },
           "content_html": {
-            "type": "string"
+            "type": "string",
+            "description": "HTML of the item",
+            "example": "\u003cp\u003eA longer text…\u003c/p\u003e"
           },
           "date_modified": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "Modification date in RFC 3339 format",
+            "example": "2023-12-15T00:00:00Z"
           },
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique for that item for that feed over time",
+            "example": "https://komga.org/blog/ebook-drop2"
           },
           "summary": {
-            "type": "string"
+            "type": "string",
+            "description": "A plain text sentence or two describing the item",
+            "example": "Version 1.9.0 contains the second feature drop for Ebooks support."
           },
           "tags": {
             "type": "array",
+            "description": "Tags describing the item",
+            "examples": [
+              "upgrade",
+              "komga"
+            ],
             "items": {
               "type": "string"
             },
             "uniqueItems": true
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Plain text title",
+            "example": "eBook drop 2"
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "description": "URL of the resource described by the item",
+            "example": "https://komga.org/blog/ebook-drop2"
           }
         },
         "required": [
@@ -9579,12 +10537,62 @@
       },
       "JsonFeedDto": {
         "type": "object",
+        "example": {
+          "version": "https://jsonfeed.org/version/1",
+          "title": "Announcements",
+          "home_page_url": "https://komga.org/blog",
+          "description": "Latest Komga announcements",
+          "items": [
+            {
+              "id": "https://komga.org/blog/ebook-drop2",
+              "url": "https://komga.org/blog/ebook-drop2",
+              "title": "eBook drop 2",
+              "summary": "Version 1.9.0 contains the second feature drop for Ebooks support.",
+              "content_html": "\u003cp\u003eA longer text…\u003c/p\u003e",
+              "date_modified": "2023-12-15T00:00:00Z",
+              "author": {
+                "name": "gotson",
+                "url": "https://github.com/gotson"
+              },
+              "tags": [
+                "upgrade",
+                "komga"
+              ],
+              "_komga": {
+                "read": false
+              }
+            },
+            {
+              "id": "https://komga.org/blog/ebook-support",
+              "url": "https://komga.org/blog/ebook-support",
+              "title": "eBook support",
+              "summary": "Version 1.8.0 is bringing a long awaited feature: proper eBook support!",
+              "content_html": "\u003cp\u003eA longer text…\u003c/p\u003e",
+              "date_modified": "2023-11-29T00:00:00Z",
+              "author": {
+                "name": "gotson",
+                "url": "https://github.com/gotson"
+              },
+              "tags": [
+                "upgrade",
+                "komga"
+              ],
+              "_komga": {
+                "read": true
+              }
+            }
+          ]
+        },
         "properties": {
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Provides more detail on what the feed is about",
+            "example": "Latest Komga announcements"
           },
           "home_page_url": {
-            "type": "string"
+            "type": "string",
+            "description": "URL of the resource that the feed describes",
+            "example": "https://komga.org/blog"
           },
           "items": {
             "type": "array",
@@ -9593,10 +10601,14 @@
             }
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the feed",
+            "example": "Announcements"
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "URL of the version of the format the feed uses",
+            "example": "https://jsonfeed.org/version/1"
           }
         },
         "required": [
@@ -9609,7 +10621,9 @@
         "type": "object",
         "properties": {
           "read": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the current item has been marked read by the current user",
+            "example": false
           }
         },
         "required": [
@@ -10507,6 +11521,53 @@
           }
         }
       },
+      "PageInteger": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "PagePageHashKnownDto": {
         "type": "object",
         "properties": {
@@ -10698,6 +11759,52 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SeriesDto"
+            }
+          },
+          "empty": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PageString": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
           "empty": {
@@ -12510,12 +13617,7 @@
             "type": "integer",
             "format": "int32"
           }
-        },
-        "required": [
-          "configurationSource",
-          "databaseSource",
-          "effectiveValue"
-        ]
+        }
       },
       "SettingMultiSourceString": {
         "type": "object",
@@ -12529,12 +13631,7 @@
           "effectiveValue": {
             "type": "string"
           }
-        },
-        "required": [
-          "configurationSource",
-          "databaseSource",
-          "effectiveValue"
-        ]
+        }
       },
       "SettingsDto": {
         "type": "object",
