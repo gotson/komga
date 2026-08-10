@@ -16,7 +16,7 @@ jobs:
     steps:
       # from https://www.chromatic.com/docs/github-actions/#recommended-configuration-for-build-events
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
