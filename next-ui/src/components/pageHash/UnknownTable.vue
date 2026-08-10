@@ -126,7 +126,7 @@
         variant="outlined"
         divided
         rounded="lg"
-        :disabled="value"
+        :disabled="!!value"
         @update:model-value="(v) => updateHashAction(item, v)"
       >
         <v-btn
