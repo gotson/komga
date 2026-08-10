@@ -26,6 +26,7 @@
     app
     elevation="5"
     class="pa-1"
+    color="primary"
   >
     <v-slide-group>
       <v-slide-group-item
