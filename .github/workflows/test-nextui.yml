@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Test unit
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: NextUI - Setup
         uses: ./.github/actions/setup-web
         with:
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Test storybook
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: NextUI - Setup
         uses: ./.github/actions/setup-web
         with:
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Lint
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: NextUI - Setup
         uses: ./.github/actions/setup-web
         with:
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Prettier
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: NextUI - Setup
         uses: ./.github/actions/setup-web
         with:
@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Type check
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: NextUI - Setup
         uses: ./.github/actions/setup-web
         with:
@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: NextUI - Setup
         uses: ./.github/actions/setup-web
         with:
@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check for missing i18n
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: NextUI - Setup
         uses: ./.github/actions/setup-web
         with:
