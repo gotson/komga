@@ -134,7 +134,6 @@
           size="small"
           icon="i-mdi:robot"
           value="DELETE_AUTO"
-          :loading="value === 'DELETE_AUTO'"
           color="success"
           @click.stop
         />
@@ -143,7 +142,6 @@
           size="small"
           icon="i-mdi:hand-back-right"
           value="DELETE_MANUAL"
-          :loading="value === 'DELETE_MANUAL'"
           color="warning"
           @click.stop
         />
@@ -152,7 +150,6 @@
           size="small"
           icon="i-mdi:cancel"
           value="IGNORE"
-          :loading="value === 'IGNORE'"
           color=""
           @click.stop
         />
