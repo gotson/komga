@@ -14,6 +14,7 @@
     show-select
     return-object
     item-value="hash"
+    :item-selectable="canSelect"
     multi-sort
     mobile-breakpoint="md"
     @update:options="updateOptions"
@@ -271,6 +272,10 @@ const { data, isLoading, error } = useQuery(() =>
     ...pageRequest.value,
   }),
 )
+
+function canSelect(item: PageHashUnknownDto): boolean {
+  return !getPageHashAction(item)
+}
 
 function updateOptions({
   page,
