@@ -1,0 +1,128 @@
+{
+    "app.locale-name": {
+        "defaultMessage": "正體中文"
+    },
+    "+6YDzS": {
+        "defaultMessage": "沒有資料"
+    },
+    "+8++PW": {
+        "defaultMessage": "已新增以下書庫"
+    },
+    "+TldjW": {
+        "defaultMessage": "無資料顥示"
+    },
+    "+jaADC": {
+        "defaultMessage": "檔案名稱"
+    },
+    "+mJGIg": {
+        "defaultMessage": "檔案路徑"
+    },
+    "+opDqu": {
+        "defaultMessage": "跳至"
+    },
+    "+pyj1u": {
+        "defaultMessage": "無法提供"
+    },
+    "+r8FCS": {
+        "defaultMessage": "伺服器監聽埠號"
+    },
+    "/5Gb4y": {
+        "defaultMessage": "刪除"
+    },
+    "/8sSxS": {
+        "defaultMessage": "復原刪除及檢測重複檔案"
+    },
+    "/Acs82": {
+        "defaultMessage": "新增或添加書目至閱讀清單"
+    },
+    "/NAG9i": {
+        "defaultMessage": "沒有結果"
+    },
+    "/YxHru": {
+        "defaultMessage": "以上有重複書目"
+    },
+    "/bathK": {
+        "defaultMessage": "只允許以下條件"
+    },
+    "/mhcNO": {
+        "defaultMessage": "關閉"
+    },
+    "02SRax": {
+        "defaultMessage": "登入"
+    },
+    "0ILHru": {
+        "defaultMessage": "確定"
+    },
+    "/lE31l": {
+        "defaultMessage": "強制 Kobo 同步"
+    },
+    "0JF9f5": {
+        "defaultMessage": "摺疊工具列"
+    },
+    "0MePSx": {
+        "defaultMessage": "拖到此處以固定此書庫"
+    },
+    "0UFr4y": {
+        "defaultMessage": "以上全部"
+    },
+    "0XDhyR": {
+        "defaultMessage": "佈景主題"
+    },
+    "0YG9GQ": {
+        "defaultMessage": "儲存登入資訊"
+    },
+    "0eIJ3K": {
+        "defaultMessage": "手動排列"
+    },
+    "0iT7Vf": {
+        "defaultMessage": "詮釋資料"
+    },
+    "0qntYX": {
+        "defaultMessage": "計算此頁雜湊值"
+    },
+    "0sIkhg": {
+        "defaultMessage": "過濾控制台標頭"
+    },
+    "1+Ux6s": {
+        "defaultMessage": "開始你的第一個書庫"
+    },
+    "111Isd": {
+        "defaultMessage": "重組搜尋索引資料"
+    },
+    "14/Uh8": {
+        "defaultMessage": "匯入模式"
+    },
+    "18OKhZ": {
+        "defaultMessage": "尋找轉檔書目"
+    },
+    "1E0Duw": {
+        "defaultMessage": "檔案大小"
+    },
+    "1MAL38": {
+        "defaultMessage": "重複書目"
+    },
+    "1VkZao": {
+        "defaultMessage": "更多"
+    },
+    "1bxWGd": {
+        "defaultMessage": "修改系列詮釋資料"
+    },
+    "1qIfds": {
+        "defaultMessage": "己固定"
+    },
+    "2Bh8F2": {
+        "defaultMessage": "最後"
+    },
+    "2Sx0J4": {
+        "defaultMessage": "頁"
+    },
+    "2g7iOx": {
+        "defaultMessage": "指數"
+    },
+    "2p+JVw": {
+        "defaultMessage": "此Komga伺服器未啟動，請新增一個使用者以存取此Komga伺服器。"
+    },
+    "3DBPuv": {
+        "defaultMessage": "捲動"
+    }
+}
