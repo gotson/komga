@@ -1,7 +1,7 @@
 import { setupWorker } from 'msw/browser'
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'
-
+import { configure } from '@testing-library/vue'
 import { mswLoader } from 'msw-storybook-addon/csf3'
 import { handlers } from '@/mocks/api/handlers'
 import { vuetify, vuetifyRulesPlugin } from '@/plugins/vuetify'
@@ -28,6 +28,9 @@ Object.entries(availableLocales).forEach(([code, name]) => {
 })
 
 setupOpenapiClient()
+
+// Set the global timeout for waitFor, findBy, etc. to 5 seconds (5000ms)
+configure({ asyncUtilTimeout: 5000 })
 
 const preview: Preview = {
   parameters: {

@@ -96,7 +96,12 @@ export default defineConfig(({ mode }) => ({
   }),
   optimizeDeps: {
     exclude: ['vuetify'],
-    include: ['@pinia/colada-devtools', 'pinia-plugin-persistedstate', 'qs'],
+    include: [
+      '@pinia/colada-devtools',
+      'pinia-plugin-persistedstate',
+      'qs',
+      '@testing-library/vue',
+    ],
   },
   test: {
     coverage: {

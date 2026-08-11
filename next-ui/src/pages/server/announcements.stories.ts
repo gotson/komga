@@ -34,7 +34,7 @@ type Story = StoryObj<typeof meta>
 export const Unread: Story = {
   args: {},
   play: async ({ canvas }) => {
-    await waitFor(() => expect(canvas.getByText('eBook drop 2')).not.toBeNull())
+    await waitFor(() => expect(canvas.getByText(/eBook drop 2/i)).not.toBeNull())
 
     await waitFor(() =>
       expect(canvas.getByRole('button', { name: /mark all as read/i })).toBeEnabled(),
@@ -48,7 +48,7 @@ export const NoUnread: Story = {
   },
 
   play: async ({ canvas }) => {
-    await waitFor(() => expect(canvas.getByText('eBook drop 2')).not.toBeNull())
+    await waitFor(() => expect(canvas.getByText(/eBook drop 2/i)).not.toBeNull())
 
     await waitFor(() =>
       expect(canvas.queryByRole('button', { name: /mark all as read/i })).toBeNull(),
