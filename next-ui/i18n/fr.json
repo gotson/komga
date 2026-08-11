@@ -1,5 +1,20 @@
 {
     "app.locale-name": {
         "defaultMessage": "Français"
+    },
+    "+6YDzS": {
+        "defaultMessage": "Aucune donnée trouvée"
+    },
+    "+TldjW": {
+        "defaultMessage": "Rien à afficher"
+    },
+    "+jaADC": {
+        "defaultMessage": "Nom du fichier"
+    },
+    "+pyj1u": {
+        "defaultMessage": "Indisponible"
+    },
+    "/5Gb4y": {
+        "defaultMessage": "Supprimer"
     }
 }
