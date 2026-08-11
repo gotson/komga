@@ -175,4 +175,3 @@ const bookTableHeaders = [
   },
 ]
 </script>
-<script setup lang="ts"></script>
