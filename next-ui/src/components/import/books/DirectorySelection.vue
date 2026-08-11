@@ -87,6 +87,11 @@ function browse() {
       id: '8Om/o/',
     }),
     maxWidth: 600,
+    okText: intl.formatMessage({
+      description: 'Import books: directory selection dialog confirmation button label',
+      defaultMessage: 'Ok',
+      id: 'tm9g8D',
+    }),
     closeOnSave: true,
     scrollable: true,
     fullscreen: display.xs.value,

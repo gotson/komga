@@ -2159,6 +2159,10 @@
     "defaultMessage": "Source file name",
     "description": "File name picker dialog: source file name field label"
   },
+  "laWvMU": {
+    "defaultMessage": "Ok",
+    "description": "Form add/edit library: General - root directory selection dialog confirmation button label"
+  },
   "lt7Tru": {
     "defaultMessage": "Series",
     "description": "Library navigation: series"
@@ -2458,6 +2462,10 @@
   "ti4Pzo": {
     "defaultMessage": "Logout",
     "description": "Drawer menu for Logout"
+  },
+  "tm9g8D": {
+    "defaultMessage": "Ok",
+    "description": "Import books: directory selection dialog confirmation button label"
   },
   "tn7uib": {
     "defaultMessage": "Year",

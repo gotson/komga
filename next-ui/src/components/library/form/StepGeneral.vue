@@ -88,6 +88,14 @@
         id: 'CJaS7j',
       })
     "
+    :ok-text="
+      $formatMessage({
+        description:
+          'Form add/edit library: General - root directory selection dialog confirmation button label',
+        defaultMessage: 'Ok',
+        id: 'laWvMU',
+      })
+    "
     max-width="600"
     close-on-save
     scrollable
