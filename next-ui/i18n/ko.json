@@ -1,0 +1,101 @@
+{
+    "app.locale-name": {
+        "defaultMessage": "English"
+    },
+    "+8++PW": {
+        "defaultMessage": "{library} 라이브러리가 생성되었습니다"
+    },
+    "+TldjW": {
+        "defaultMessage": "없음"
+    },
+    "+6YDzS": {
+        "defaultMessage": "없음"
+    },
+    "+jaADC": {
+        "defaultMessage": "파일명"
+    },
+    "+mJGIg": {
+        "defaultMessage": "파일 경로"
+    },
+    "/5Gb4y": {
+        "defaultMessage": "삭제"
+    },
+    "/NAG9i": {
+        "defaultMessage": "없음"
+    },
+    "/lE31l": {
+        "defaultMessage": "Kobo Sync 강제하기"
+    },
+    "/mhcNO": {
+        "defaultMessage": "닫기"
+    },
+    "02SRax": {
+        "defaultMessage": "로그인"
+    },
+    "0JF9f5": {
+        "defaultMessage": "사이드바 닫기"
+    },
+    "0YG9GQ": {
+        "defaultMessage": "로그인 유지"
+    },
+    "0iT7Vf": {
+        "defaultMessage": "메타데이터"
+    },
+    "3DBPuv": {
+        "defaultMessage": "스크롤"
+    },
+    "3OgH93": {
+        "defaultMessage": "시리즈"
+    },
+    "3qQjnw": {
+        "defaultMessage": "언어"
+    },
+    "4PDVX2": {
+        "defaultMessage": "EPUB"
+    },
+    "4uqafX": {
+        "defaultMessage": "단편"
+    },
+    "5AAGkA": {
+        "defaultMessage": "비밀번호"
+    },
+    "5JGOUU": {
+        "defaultMessage": "라이브러리 분석"
+    },
+    "5WMvLb": {
+        "defaultMessage": "EPUB"
+    },
+    "6UXlVe": {
+        "defaultMessage": "태그"
+    },
+    "6WDISV": {
+        "defaultMessage": "페이지를 찾을 수 없음"
+    },
+    "700A3r": {
+        "defaultMessage": "책"
+    },
+    "7M1pUf": {
+        "defaultMessage": "쓰레기통 비우기"
+    },
+    "8Dun/Y": {
+        "defaultMessage": "아니오"
+    },
+    "8kylzj": {
+        "defaultMessage": "삭제"
+    },
+    "9XDmYO": {
+        "defaultMessage": "사용자 삭제"
+    },
+    "ALGXT9": {
+        "defaultMessage": "중복"
+    },
+    "AeA9Ka": {
+        "defaultMessage": "제한 없음"
+    },
+    "Bewgy6": {
+        "defaultMessage": "시리즈 표지"
+    },
+    "Bl30xt": {
+        "defaultMessage": "사용자 추가"
+    }
+}
