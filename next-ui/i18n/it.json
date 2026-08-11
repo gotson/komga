@@ -1,0 +1,185 @@
+{
+    "c+hx0g": {
+        "defaultMessage": "Utenti"
+    },
+    "+6YDzS": {
+        "defaultMessage": "Nessun dato trovato"
+    },
+    "+8++PW": {
+        "defaultMessage": "Libreria creata: {library}"
+    },
+    "+mJGIg": {
+        "defaultMessage": "Percorso del file"
+    },
+    "+opDqu": {
+        "defaultMessage": "Salta a"
+    },
+    "+r8FCS": {
+        "defaultMessage": "Porta in ascolto del server"
+    },
+    "/YxHru": {
+        "defaultMessage": "Alcuni dei libri selezionati sono duplicati"
+    },
+    "0J3Gvp": {
+        "defaultMessage": "{count, plural, one {# series} other {# series} }"
+    },
+    "0JF9f5": {
+        "defaultMessage": "Riduci sidebar"
+    },
+    "0YG9GQ": {
+        "defaultMessage": "Ricordami"
+    },
+    "1+Ux6s": {
+        "defaultMessage": "Crea una libreria per iniziare"
+    },
+    "111Isd": {
+        "defaultMessage": "Ricostruisci l'indice di ricerca"
+    },
+    "18OKhZ": {
+        "defaultMessage": "Trova libri da convertire"
+    },
+    "2Bh8F2": {
+        "defaultMessage": "Ultimo"
+    },
+    "2p+JVw": {
+        "defaultMessage": "Questo server Komga non è ancora attivo, crea un account utente per accederci."
+    },
+    "3MUQYL": {
+        "defaultMessage": "Crea o aggiunti alle collezioni"
+    },
+    "3Pm2PO": {
+        "defaultMessage": "Nome file di destinazione"
+    },
+    "3T1ln7": {
+        "defaultMessage": "Cancella libreria"
+    },
+    "3b7v1+": {
+        "defaultMessage": "Importa i metadata del libro"
+    },
+    "3beD4X": {
+        "defaultMessage": "Cancella l' API Key"
+    },
+    "3rNj7/": {
+        "defaultMessage": "Clicca per confermare"
+    },
+    "4CX0cY": {
+        "defaultMessage": "Importa i metadati delle serie"
+    },
+    "4X3RAp": {
+        "defaultMessage": "{count, plural, one {# book} other {# books} }"
+    },
+    "4g2M9O": {
+        "defaultMessage": "Nessuna serie trovata"
+    },
+    "0sIkhg": {
+        "defaultMessage": "FILTERS"
+    },
+    "8CVWWg": {
+        "defaultMessage": "Cancella i file"
+    },
+    "8Om/o/": {
+        "defaultMessage": "Importa da una cartella"
+    },
+    "8hC76W": {
+        "defaultMessage": "Tasks"
+    },
+    "8jE3eP": {
+        "defaultMessage": "Il libro non può essere analizzato"
+    },
+    "90yqRq": {
+        "defaultMessage": "Aggiungi libreria"
+    },
+    "cAu/I6": {
+        "defaultMessage": "Pagine duplicate"
+    },
+    "app.locale-name": {
+        "defaultMessage": "Italiano"
+    },
+    "+TldjW": {
+        "defaultMessage": "Niente da mostrare"
+    },
+    "+jaADC": {
+        "defaultMessage": "Nome del file"
+    },
+    "+pyj1u": {
+        "defaultMessage": "Non disponibile"
+    },
+    "/5Gb4y": {
+        "defaultMessage": "Elimina"
+    },
+    "/NAG9i": {
+        "defaultMessage": "Nessun risultato"
+    },
+    "/bathK": {
+        "defaultMessage": "Consenti solo sotto"
+    },
+    "/lE31l": {
+        "defaultMessage": "Forza sync Kobo"
+    },
+    "/mhcNO": {
+        "defaultMessage": "Chiudi"
+    },
+    "02SRax": {
+        "defaultMessage": "Accedi"
+    },
+    "0ILHru": {
+        "defaultMessage": "OK"
+    },
+    "0UFr4y": {
+        "defaultMessage": "Tutto di"
+    },
+    "0eIJ3K": {
+        "defaultMessage": "Ordinamento manuale"
+    },
+    "0iT7Vf": {
+        "defaultMessage": "Metadati"
+    },
+    "0qntYX": {
+        "defaultMessage": "Calcola gli hash per le pagine"
+    },
+    "1E0Duw": {
+        "defaultMessage": "Dimensioni del file"
+    },
+    "1MAL38": {
+        "defaultMessage": "Libro duplicato"
+    },
+    "1VkZao": {
+        "defaultMessage": "Di più"
+    },
+    "2Sx0J4": {
+        "defaultMessage": "Pagina"
+    },
+    "2g7iOx": {
+        "defaultMessage": "Metriche"
+    },
+    "3DBPuv": {
+        "defaultMessage": "Scorri"
+    },
+    "3OgH93": {
+        "defaultMessage": "Serie"
+    },
+    "3W0jUi": {
+        "defaultMessage": "Escludi etichette"
+    },
+    "3qQjnw": {
+        "defaultMessage": "Lingua"
+    },
+    "4AKIbg": {
+        "defaultMessage": "Porta esterna di Kobo Sync"
+    },
+    "4PDVX2": {
+        "defaultMessage": "EPUB"
+    },
+    "4uqafX": {
+        "defaultMessage": "One-shot"
+    },
+    "8Dun/Y": {
+        "defaultMessage": "No"
+    },
+    "8kylzj": {
+        "defaultMessage": "Elimina"
+    },
+    "8xonXJ": {
+        "defaultMessage": "Analizza tutti i file nella libreria. L'analisi cattura le informazioni sui media. A seconda delle dimensioni della tua libreria, questo potrebbe richiedere molto tempo."
+    }
+}
