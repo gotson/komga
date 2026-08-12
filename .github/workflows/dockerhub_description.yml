@@ -7,6 +7,9 @@ on:
     paths:
     - 'DOCKERHUB.md'
 
+permissions:
+  contents: read
+
 jobs:
   update_docker_description:
     name: Update DockerHub description
@@ -15,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: DockerHub Description
-      uses: peter-evans/dockerhub-description@v5.0.0
+      uses: peter-evans/dockerhub-description@1b9a80c056b620d92cedb9d9b5a223409c68ddfa # v5.0.0
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

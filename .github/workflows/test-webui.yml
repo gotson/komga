@@ -14,6 +14,9 @@ on:
       - 'dependabot/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   webui:
     runs-on: ubuntu-latest
