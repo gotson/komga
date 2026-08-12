@@ -1,7 +1,7 @@
 import { setupWorker } from 'msw/browser'
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'
-import { configure } from '@testing-library/vue'
+import { configure } from 'storybook/test'
 import { mswLoader } from 'msw-storybook-addon/csf3'
 import { handlers } from '@/mocks/api/handlers'
 import { vuetify, vuetifyRulesPlugin } from '@/plugins/vuetify'
