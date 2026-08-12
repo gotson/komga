@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Übersicht",
     "libraries": "Bibliotheken",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "try_new_ui": "Probier die neue UI aus"
   },
   "no_libraries_pinned": {
     "subtitle": "Es ist möglich über das 3 Punkte Menü eine Bibliothek anzupinnen",
