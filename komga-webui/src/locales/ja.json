@@ -930,7 +930,8 @@
   "navigation": {
     "home": "ホーム",
     "libraries": "ライブラリ",
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "try_new_ui": "新しい UI をお試しください"
   },
   "no_libraries_pinned": {
     "subtitle": "ライブラリは3点メニューからピン留めできます",
