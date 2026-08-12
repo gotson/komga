@@ -203,7 +203,7 @@ jobs:
         if: inputs.github_release
         run: ./gradlew jreleaserRelease
         env:
-          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       - name: JReleaser Release output
         if: always() && inputs.github_release
         uses: actions/upload-artifact@v7
