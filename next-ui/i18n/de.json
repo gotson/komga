@@ -1,1 +1,308 @@
-{}
+{
+    "3beD4X": {
+        "defaultMessage": "API-Key löschen"
+    },
+    "0ILHru": {
+        "defaultMessage": "Ok"
+    },
+    "6UXlVe": {
+        "defaultMessage": "Schlagworte"
+    },
+    "+jaADC": {
+        "defaultMessage": "Dateiname"
+    },
+    "9/1/c7": {
+        "defaultMessage": "Buch-Vorschaubild erstellen"
+    },
+    "111Isd": {
+        "defaultMessage": "Suchindex neu aufbauen"
+    },
+    "7z91nm": {
+        "defaultMessage": "Historie"
+    },
+    "7M1pUf": {
+        "defaultMessage": "Papierkorb leeren"
+    },
+    "/5Gb4y": {
+        "defaultMessage": "Löschen"
+    },
+    "0JF9f5": {
+        "defaultMessage": "Seitenleiste einklappen"
+    },
+    "1E0Duw": {
+        "defaultMessage": "Dateigröße"
+    },
+    "02SRax": {
+        "defaultMessage": "Anmelden"
+    },
+    "8xonXJ": {
+        "defaultMessage": "Analysiert alle Mediendateien in der Bibliothek. Die Analyse erfasst Informationen über die Medien. Je nach Größe Ihrer Bibliothek kann dies längere Zeit in Anspruch nehmen."
+    },
+    "2Bh8F2": {
+        "defaultMessage": "Aktuellste Version"
+    },
+    "3b7v1+": {
+        "defaultMessage": "Metadaten importieren"
+    },
+    "8kylzj": {
+        "defaultMessage": "Löschen"
+    },
+    "1VkZao": {
+        "defaultMessage": "Mehr"
+    },
+    "+mJGIg": {
+        "defaultMessage": "Dateipfad"
+    },
+    "0MePSx": {
+        "defaultMessage": "Bibliothek zum Anheften hierher ziehen"
+    },
+    "/bathK": {
+        "defaultMessage": "Maximalalter unter"
+    },
+    "9XDmYO": {
+        "defaultMessage": "Nutzer löschen"
+    },
+    "8Dun/Y": {
+        "defaultMessage": "Nein"
+    },
+    "1bxWGd": {
+        "defaultMessage": "Serien-Metadaten bearbeiten"
+    },
+    "6WDISV": {
+        "defaultMessage": "Die Seite wurde nicht gefunden"
+    },
+    "2p+JVw": {
+        "defaultMessage": "Dieser Komga-Server ist noch nicht aktiv. Erstelle ein Benutzerkonto, um darauf zugreifen zu können."
+    },
+    "1MAL38": {
+        "defaultMessage": "Dieses Buch existiert bereits."
+    },
+    "/8sSxS": {
+        "defaultMessage": "Zur Wiederherstellung aus dem Papierkorb und Duplikat-Erkennung erforderlich"
+    },
+    "0qntYX": {
+        "defaultMessage": "Hashwert für Seiten berechnen"
+    },
+    "5b2A0u": {
+        "defaultMessage": "Sie werden zur Startseite weitergeleitet"
+    },
+    "3T1ln7": {
+        "defaultMessage": "Bibliothek löschen"
+    },
+    "/NAG9i": {
+        "defaultMessage": "Keine Suchergebnisse vorhanden"
+    },
+    "6Kd/YV": {
+        "defaultMessage": "Neustart erforderlich, damit die Änderungen übernommen werden"
+    },
+    "3OgH93": {
+        "defaultMessage": "Serien"
+    },
+    "0iT7Vf": {
+        "defaultMessage": "Metadaten"
+    },
+    "1+Ux6s": {
+        "defaultMessage": "Erstelle eine Bibliothek, um loszulegen"
+    },
+    "7hwFJo": {
+        "defaultMessage": "Schriftsteller"
+    },
+    "8jE3eP": {
+        "defaultMessage": "Fehler beim Analysieren des Buches"
+    },
+    "/Acs82": {
+        "defaultMessage": "In Leselisten speichern oder neue erstellen"
+    },
+    "3Pm2PO": {
+        "defaultMessage": "Zieldateiname"
+    },
+    "+opDqu": {
+        "defaultMessage": "Springe zu"
+    },
+    "3qQjnw": {
+        "defaultMessage": "Sprache"
+    },
+    "9oA9gw": {
+        "defaultMessage": "Nicht angeheftet"
+    },
+    "3J6FI8": {
+        "defaultMessage": "Ansicht anpassen"
+    },
+    "5tbu8Y": {
+        "defaultMessage": "Erneut versuchen"
+    },
+    "4PDVX2": {
+        "defaultMessage": "EPUB"
+    },
+    "3MUQYL": {
+        "defaultMessage": "Neue Sammlungen erstellen oder zu bestehenden hinzufügen"
+    },
+    "3rNj7/": {
+        "defaultMessage": "Zum Bestätigen klicken"
+    },
+    "2g7iOx": {
+        "defaultMessage": "Server Metriken"
+    },
+    "0sIkhg": {
+        "defaultMessage": "Filter"
+    },
+    "5AAGkA": {
+        "defaultMessage": "Passwort"
+    },
+    "5JGOUU": {
+        "defaultMessage": "Bibliothek analysieren"
+    },
+    "2Sx0J4": {
+        "defaultMessage": "Seite"
+    },
+    "ALGXT9": {
+        "defaultMessage": "Duplikate"
+    },
+    "/YxHru": {
+        "defaultMessage": "Einige der ausgewählten Bücher sind Duplikate"
+    },
+    "90yqRq": {
+        "defaultMessage": "Bibliothek hinzufügen"
+    },
+    "/lE31l": {
+        "defaultMessage": "Kobo-Sync erzwingen"
+    },
+    "AjWlka": {
+        "defaultMessage": "Benutzername oder Passwort ist falsch"
+    },
+    "4yDvPA": {
+        "defaultMessage": "Filter zurücksetzen"
+    },
+    "8hC76W": {
+        "defaultMessage": "Aufgaben"
+    },
+    "5rziSG": {
+        "defaultMessage": "Nicht verfügbar"
+    },
+    "/mhcNO": {
+        "defaultMessage": "Schließen"
+    },
+    "5WMvLb": {
+        "defaultMessage": "Epub"
+    },
+    "70/wK4": {
+        "defaultMessage": "Bibliothek anlegen"
+    },
+    "1qIfds": {
+        "defaultMessage": "Angeheftet"
+    },
+    "8CVWWg": {
+        "defaultMessage": "Dateien löschen"
+    },
+    "+pyj1u": {
+        "defaultMessage": "Nicht verfügbar"
+    },
+    "700A3r": {
+        "defaultMessage": "Buch"
+    },
+    "0YG9GQ": {
+        "defaultMessage": "Angemeldet bleiben"
+    },
+    "8P7Yn+": {
+        "defaultMessage": "Altersfreigabe"
+    },
+    "8/BXfN": {
+        "defaultMessage": "Alle"
+    },
+    "AJa6Tq": {
+        "defaultMessage": "Keine Daten"
+    },
+    "4g2M9O": {
+        "defaultMessage": "Keine Reihe gefunden"
+    },
+    "+8++PW": {
+        "defaultMessage": "Bibliothek erstellt: {library}"
+    },
+    "AEaKHC": {
+        "defaultMessage": "Buch-Thumbnails zum erneuern finden"
+    },
+    "8NDqor": {
+        "defaultMessage": "Lettering"
+    },
+    "AjBiEw": {
+        "defaultMessage": "Band an Reihen-Titel anhängen"
+    },
+    "6F1ebQ": {
+        "defaultMessage": "HTTP Server"
+    },
+    "5cbjLE": {
+        "defaultMessage": "Als Nächstes – #{number}"
+    },
+    "5zPpyT": {
+        "defaultMessage": "Altersgruppe"
+    },
+    "AeA9Ka": {
+        "defaultMessage": "Keine Altersbeschränkung"
+    },
+    "B2wcN0": {
+        "defaultMessage": "ISBN aus dem Strichcode importieren"
+    },
+    "BQmPch": {
+        "defaultMessage": "Buch löschen"
+    },
+    "4TEXni": {
+        "defaultMessage": "Alle Mitwirkenden"
+    },
+    "+6YDzS": {
+        "defaultMessage": "Keine Daten gefunden"
+    },
+    "18OKhZ": {
+        "defaultMessage": "Bücher zum konvertieren finden"
+    },
+    "9VuyZU": {
+        "defaultMessage": "Versuch ein anderes Verzeichnics zu scannen"
+    },
+    "4CX0cY": {
+        "defaultMessage": "Serien-Metadaten importieren"
+    },
+    "9TJRkm": {
+        "defaultMessage": "Reihen-Metadaten importieren"
+    },
+    "8Om/o/": {
+        "defaultMessage": "Aus Verzeichnis importieren"
+    },
+    "81BMAQ": {
+        "defaultMessage": "Buch-Metadaten importieren"
+    },
+    "6OXY1N": {
+        "defaultMessage": "One-Shots Verzeichnis"
+    },
+    "4AKIbg": {
+        "defaultMessage": "Kobo Sync externer Port"
+    },
+    "B48EcS": {
+        "defaultMessage": "Übergeordnet"
+    },
+    "0eIJ3K": {
+        "defaultMessage": "Manuelles Sortieren"
+    },
+    "0UFr4y": {
+        "defaultMessage": "Alle von"
+    },
+    "+TldjW": {
+        "defaultMessage": "Nichts anzuzeigen"
+    },
+    "3W0jUi": {
+        "defaultMessage": "Ausschließen von Kennzeichnungen"
+    },
+    "app.locale-name": {
+        "defaultMessage": "Deutsch"
+    },
+    "3DBPuv": {
+        "defaultMessage": "Scrollen"
+    },
+    "5Qha5m": {
+        "defaultMessage": "Manuelles Sortieren"
+    },
+    "87q6WX": {
+        "defaultMessage": "Keine"
+    },
+    "4uqafX": {
+        "defaultMessage": "One-Shot"
+    }
+}
