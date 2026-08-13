@@ -3,6 +3,7 @@
     v-model="showDialog"
     :activator="activator"
     :max-width="maxWidth"
+    :max-height="fullscreen ? undefined : maxHeight"
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     :aria-label="title"
@@ -20,7 +21,7 @@
           :subtitle="subtitle"
           :loading="loading"
         >
-          <template #text>
+          <v-card-text v-bind="cardTextProps">
             <slot name="warning" />
             <slot name="text">
               <FormattedMessage
@@ -65,7 +66,7 @@
                 })
               "
             />
-          </template>
+          </v-card-text>
 
           <template #actions>
             <v-spacer />
@@ -147,9 +148,11 @@ const {
   mode = 'click',
   color = undefined,
   maxWidth = undefined,
+  maxHeight = undefined,
   activator = undefined,
   loading = false,
   closeOnSave = true,
   fullscreen = undefined,
+  cardTextProps = undefined,
 } = defineProps<DialogConfirmProps>()
 </script>

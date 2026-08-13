@@ -112,8 +112,9 @@ function editSections() {
   dialogConfirmEdit.value.dialogProps = {
     title: intl.formatMessage(editMessage),
     maxWidth: 500,
-    okText: 'Save',
-    cardTextClass: 'px-0',
+    cardTextProps: {
+      class: 'px-0',
+    },
     closeOnSave: false,
     scrollable: false,
     fullscreen: display.xs.value,

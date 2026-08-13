@@ -3,6 +3,7 @@
     v-model="showDialog"
     :activator="activator"
     :max-width="maxWidth"
+    :max-height="fullscreen ? undefined : maxHeight"
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     :scrollable="scrollable"
@@ -14,9 +15,9 @@
         :subtitle="subtitle"
         :loading="loading"
       >
-        <template #text>
+        <v-card-text v-bind="cardTextProps">
           <slot name="text" />
-        </template>
+        </v-card-text>
 
         <template #actions>
           <v-spacer />
@@ -45,9 +46,11 @@ const {
   title = undefined,
   subtitle = undefined,
   maxWidth = undefined,
+  maxHeight = undefined,
   activator = undefined,
   loading = false,
   fullscreen = undefined,
   scrollable = undefined,
+  cardTextProps = undefined,
 } = defineProps<DialogSimpleProps>()
 </script>

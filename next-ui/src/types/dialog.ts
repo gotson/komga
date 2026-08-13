@@ -28,6 +28,10 @@ type DialogBaseProps = {
    */
   scrollable?: boolean
   /**
+   * Props to bind to the v-card-text
+   */
+  cardTextProps?: object
+  /**
    * Controls the dialog's visibility.
    */
   shown?: boolean
@@ -69,9 +73,4 @@ export type DialogConfirmProps = DialogConfirmBaseProps & {
   color?: string
 }
 
-export type DialogConfirmEditProps = DialogConfirmBaseProps & {
-  /**
-   * CSS classes applied to the card.
-   */
-  cardTextClass?: string
-}
+export type DialogConfirmEditProps = DialogConfirmBaseProps

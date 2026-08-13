@@ -25,8 +25,9 @@ export function useEditBookMetadataDialog() {
       }),
       subtitle: book.metadata.title,
       maxWidth: 600,
-      okText: 'Save',
-      cardTextClass: 'px-0',
+      cardTextProps: {
+        class: 'px-0',
+      },
       closeOnSave: false,
       scrollable: true,
       fullscreen: display.xs.value,

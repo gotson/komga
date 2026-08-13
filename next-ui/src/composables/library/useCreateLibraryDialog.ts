@@ -25,8 +25,9 @@ export function useCreateLibraryDialog() {
         id: 'nuoJ1n',
       }),
       maxWidth: 600,
-      okText: 'Create',
-      cardTextClass: 'px-0',
+      cardTextProps: {
+        class: 'px-0',
+      },
       closeOnSave: false,
       scrollable: true,
       fullscreen: display.xs.value,

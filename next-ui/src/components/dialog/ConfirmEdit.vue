@@ -3,6 +3,7 @@
     v-model="showDialog"
     :activator="activator"
     :max-width="maxWidth"
+    :max-height="fullscreen ? undefined : maxHeight"
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     :scrollable="scrollable"
@@ -26,7 +27,7 @@
               :subtitle="subtitle"
               :loading="loading"
             >
-              <v-card-text :class="cardTextClass">
+              <v-card-text v-bind="cardTextProps">
                 <slot
                   name="text"
                   :proxy-model="proxyModel"
@@ -86,12 +87,13 @@ const {
   title = undefined,
   subtitle = undefined,
   okText = undefined,
-  cardTextClass = undefined,
   maxWidth = undefined,
+  maxHeight = undefined,
   activator = undefined,
   loading = false,
   closeOnSave = true,
   fullscreen = undefined,
   scrollable = undefined,
+  cardTextProps = undefined,
 } = defineProps<DialogConfirmEditProps>()
 </script>
