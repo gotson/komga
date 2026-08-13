@@ -315,6 +315,10 @@
     "defaultMessage": "Empty trash",
     "description": "Library empty trash dialog: confirm button"
   },
+  "7gdpKG": {
+    "defaultMessage": "Create",
+    "description": "Read list add to: create button label"
+  },
   "7hwFJo": {
     "defaultMessage": "Writer",
     "description": "Author role: writer"
@@ -527,6 +531,10 @@
     "defaultMessage": "<ul><li>This will delete all sync history for this API key.</li><li>Your Kobo will sync everything on the next sync.</li></ul>",
     "description": "API Key for sync warning notice"
   },
+  "DG4tYb": {
+    "defaultMessage": "{count, plural, one {# book} other {# books} }",
+    "description": "Read list add to: read list item subtitle: count of books"
+  },
   "DK4PsD": {
     "defaultMessage": "Series books",
     "description": "Book picker dialog: series books table header"
@@ -594,6 +602,10 @@
   "EzOmuX": {
     "defaultMessage": "Created",
     "description": "Known Duplicate Page Table header: creation date"
+  },
+  "FBGnzt": {
+    "defaultMessage": "A read list with that name already exists",
+    "description": "Read list add to: duplicate name error message"
   },
   "FLqm9f": {
     "defaultMessage": "Help us translate",
@@ -734,6 +746,10 @@
   "IXhDH6": {
     "defaultMessage": "Duplicate page",
     "description": "Unknown Duplicate Page Table: alt description for thumbnail"
+  },
+  "Ih4MH9": {
+    "defaultMessage": "Try to adjust the search",
+    "description": "Search empty state: text"
   },
   "InW6ko": {
     "defaultMessage": "Translations",
@@ -1075,6 +1091,10 @@
     "defaultMessage": "Password",
     "description": "Claim server screen: password field label"
   },
+  "UPOAPc": {
+    "defaultMessage": "Clear search",
+    "description": "Search empty state: button"
+  },
   "UaD47n": {
     "defaultMessage": "Regenerate the 'remember me' key",
     "description": "Server settings: checkbox to regenerate the remember me key"
@@ -1134,6 +1154,10 @@
   "Vpmsx0": {
     "defaultMessage": "Series books",
     "description": "File name picker dialog: series books table header"
+  },
+  "Vs7y3+": {
+    "defaultMessage": "Add to read list",
+    "description": "Add to read list dialog title"
   },
   "VtC7Ce": {
     "defaultMessage": "Editor",
@@ -1202,6 +1226,10 @@
   "X80giU": {
     "defaultMessage": "Add",
     "description": "Users table global header: add user button"
+  },
+  "XCwAkR": {
+    "defaultMessage": "Open",
+    "description": "Notification: button text to open element"
   },
   "XDV3Si": {
     "defaultMessage": "More",
@@ -1643,6 +1671,10 @@
     "defaultMessage": "Overall scan behaviour",
     "description": "Server settings: section header for scan behaviour"
   },
+  "dSy8IC": {
+    "defaultMessage": "Added to readlist",
+    "description": "Add to read list notification: books added to read list"
+  },
   "da/wb0": {
     "defaultMessage": "Mark all as read",
     "description": "Announcements view: mark all as read button tooltip"
@@ -2027,6 +2059,10 @@
     "defaultMessage": "Proxy unhandled requests to Kobo Store",
     "description": "Server settings: checkbox to enable Kobo Store proxying for Kobo Sync "
   },
+  "icSG40": {
+    "defaultMessage": "Search or create",
+    "description": "Read list add to: search field label"
+  },
   "ieysdI": {
     "defaultMessage": "Upgrade search index",
     "description": "Task name: UpgradeIndex"
@@ -2170,10 +2206,6 @@
   "lvCpSX": {
     "defaultMessage": "Actions",
     "description": "User table header: user actions"
-  },
-  "lyknmW": {
-    "defaultMessage": "Open",
-    "description": "Create read list notification: button text to navigate to read list"
   },
   "lzHPYD": {
     "defaultMessage": "Try searching for something else",
@@ -2579,6 +2611,10 @@
     "defaultMessage": "Release year",
     "description": "Filter panel: Release year"
   },
+  "y1Fk/a": {
+    "defaultMessage": "No results",
+    "description": "Search empty state: title"
+  },
   "y1P/K4": {
     "defaultMessage": "Latest activity",
     "description": "User table header: user latest activity"
@@ -2590,6 +2626,10 @@
   "yDWzUi": {
     "defaultMessage": "API Keys",
     "description": "API Key table global header"
+  },
+  "yPygXa": {
+    "defaultMessage": "Create",
+    "description": "Create library dialog: confirmation button"
   },
   "yaa8so": {
     "defaultMessage": "Scanner",

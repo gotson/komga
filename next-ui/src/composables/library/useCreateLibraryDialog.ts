@@ -25,6 +25,11 @@ export function useCreateLibraryDialog() {
         id: 'nuoJ1n',
       }),
       maxWidth: 600,
+      okText: intl.formatMessage({
+        description: 'Create library dialog: confirmation button',
+        defaultMessage: 'Create',
+        id: 'yPygXa',
+      }),
       cardTextProps: {
         class: 'px-0',
       },
