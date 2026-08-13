@@ -598,18 +598,10 @@ function doCreateReadList() {
 function success(readListId: string) {
   readListCreatedId.value = readListId
   messagesStore.messages.push({
-    message: defineMessage({
-      description: 'Create read list notification: read list created',
-      defaultMessage: 'Read list created',
-      id: 'estf95',
-    }),
+    message: commonMessages.readListCreated,
     action: {
       to: { name: '/readlist/[id]', params: { id: readListId } },
-      label: defineMessage({
-        description: 'Create read list notification: button text to navigate to read list',
-        defaultMessage: 'Open',
-        id: 'lyknmW',
-      }),
+      label: commonMessages.notificationOpen,
     },
   })
 }

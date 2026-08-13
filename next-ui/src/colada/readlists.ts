@@ -4,7 +4,7 @@ import {
   defineQueryOptions,
   useMutation,
 } from '@pinia/colada'
-import { PageRequest } from '@/types/PageRequest'
+import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
 import { entitiesChanged, entityChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
@@ -41,7 +41,7 @@ export const readListsListQuery = defineQueryOptions(
     query: () =>
       komgaGetReadLists({
         query: {
-          search: search,
+          search: search || undefined,
           library_id: libraryIds,
           ...pageRequest,
         },
@@ -51,9 +51,11 @@ export const readListsListQuery = defineQueryOptions(
 )
 
 export const readListsListQueryInfinite = defineInfiniteQueryOptions(
-  ({ libraryIds }: { libraryIds?: string[] }) => ({
+  ({ search, libraryIds, sort }: { search?: string; libraryIds?: string[]; sort?: Sort[] }) => ({
     key: QUERY_KEYS_READLIST.bySearch({
+      search: search,
       libraryIds: libraryIds,
+      sort: sort,
       infinite: true,
     }),
     initialPageParam: new PageRequest(0, 50),
@@ -62,7 +64,9 @@ export const readListsListQueryInfinite = defineInfiniteQueryOptions(
         query: {
           page: pageParam.page,
           size: pageParam.size,
+          search: search || undefined,
           library_id: libraryIds,
+          sort: sort?.map((it) => sortToString(it)),
         },
       }),
     getNextPageParam: (lastPage, _, lastPageParam) =>

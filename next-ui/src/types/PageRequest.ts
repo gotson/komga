@@ -38,8 +38,8 @@ export class PageRequest {
     )
   }
 
-  static Unpaged(): PageRequest {
-    return new PageRequest(undefined, undefined, undefined, true)
+  static Unpaged(sort?: Sort[]): PageRequest {
+    return new PageRequest(undefined, undefined, sort, true)
   }
 
   static Zero(): PageRequest {

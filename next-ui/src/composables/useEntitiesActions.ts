@@ -22,6 +22,7 @@ import {
   useRefreshMetadataSeries,
 } from '@/colada/series'
 import type { BookDto, CollectionDto, ReadListDto, SeriesDto } from '@/generated/openapi'
+import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
 
 export function useEntitiesActions(
   entities: MaybeRefOrGetter<(BookDto | SeriesDto | CollectionDto | ReadListDto)[]>,
@@ -41,7 +42,11 @@ export function useEntitiesActions(
       disabled: true,
     },
     [ActionName.AddToReadList]: {
-      disabled: true,
+      onMouseenter: (event: Event) =>
+        (addToReadListActivator.value = event.currentTarget as Element),
+      onClick: () => {
+        addToReadList(() => callback(ActionName.AddToReadList))
+      },
     },
     [ActionName.EditBook]: {
       disabled: true,
@@ -132,6 +137,18 @@ export function useEntitiesActions(
     })
 
     callback(ActionName.MarkUnread)
+  }
+  //endregion
+
+  //region Add to read list
+  const { prepareDialog: showAddToReadListDialog, activator: addToReadListActivator } =
+    useAddToReadListDialog()
+
+  function addToReadList(callback: () => void) {
+    showAddToReadListDialog(
+      toValue(entities).filter((e) => isBook(e) || isSeries(e)),
+      callback,
+    )
   }
   //endregion
 

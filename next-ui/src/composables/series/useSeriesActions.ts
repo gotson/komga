@@ -19,6 +19,7 @@ import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useBooks } from '@/composables/book/useBooks'
 import { useSeries } from '@/composables/series/useSeries'
 import type { SeriesDto } from '@/generated/openapi'
+import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
 
 export function useSeriesActions(
   series: MaybeRefOrGetter<SeriesDto>,
@@ -50,11 +51,11 @@ export function useSeriesActions(
       ? [
           {
             title: intl.formatMessage(actionDetails[ActionName.AddToReadList].message),
-            disabled: true, //TODO: implement
             action: ActionName.AddToReadList,
+            onMouseenter: (event: Event) =>
+              (addToReadListActivator.value = event.currentTarget as Element),
             onClick: () => {
-              todo()
-              callback(ActionName.AddToReadList)
+              addToReadList(() => callback(ActionName.AddToReadList))
             },
           },
         ]
@@ -179,6 +180,16 @@ export function useSeriesActions(
       },
     },
   ])
+
+  //region Add to read list
+  const { prepareDialog: showAddToReadListDialog, activator: addToReadListActivator } =
+    useAddToReadListDialog()
+
+  function addToReadList(callback: () => void) {
+    showAddToReadListDialog([toValue(series)], callback)
+  }
+  //endregion
+
   //region Update Series metadata
   const { prepareDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
     useEditSeriesMetadataDialog()

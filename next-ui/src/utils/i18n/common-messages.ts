@@ -142,4 +142,14 @@ export const commonMessages = {
     defaultMessage: 'More',
     id: '1VkZao',
   }),
+  notificationOpen: defineMessage({
+    description: 'Notification: button text to open element',
+    defaultMessage: 'Open',
+    id: 'XCwAkR',
+  }),
+  readListCreated: defineMessage({
+    description: 'Create read list notification: read list created',
+    defaultMessage: 'Read list created',
+    id: 'estf95',
+  })
 }

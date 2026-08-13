@@ -20,6 +20,7 @@ import { useBook } from '@/composables/book/useBook'
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { bookReaderUrl } from '@/api/links'
 import type { BookDto } from '@/generated/openapi'
+import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
 
 export function useBookActions(
   book: MaybeRefOrGetter<BookDto>,
@@ -51,11 +52,11 @@ export function useBookActions(
       ? [
           {
             title: intl.formatMessage(actionDetails[ActionName.AddToReadList].message),
-            disabled: true, //TODO: implement
             action: ActionName.AddToReadList,
+            onMouseenter: (event: Event) =>
+              (addToReadListActivator.value = event.currentTarget as Element),
             onClick: () => {
-              todo()
-              callback(ActionName.AddToReadList)
+              addToReadList(() => callback(ActionName.AddToReadList))
             },
           },
         ]
@@ -182,7 +183,16 @@ export function useBookActions(
     },
   ])
 
-  //region Update Series metadata
+  //region Add to read list
+  const { prepareDialog: showAddToReadListDialog, activator: addToReadListActivator } =
+    useAddToReadListDialog()
+
+  function addToReadList(callback: () => void) {
+    showAddToReadListDialog([toValue(book)], callback)
+  }
+  //endregion
+
+  //region Update Book metadata
   const { prepareDialog: showEditBookMetadataDialog, activator: editMetadataActivator } =
     useEditBookMetadataDialog()
 

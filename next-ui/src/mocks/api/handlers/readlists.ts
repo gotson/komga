@@ -178,6 +178,15 @@ const mockReadList2 = {
 
 const readlists = [mockReadList1, mockReadList2]
 
+export function mockReadLists(count: number) {
+  return [...Array(count).keys()].map((index) =>
+    Object.assign({}, mockReadList1, {
+      id: `RL${index + 1}`,
+      name: `Read list ${index + 1}`,
+    }),
+  )
+}
+
 export const readListsHandlers = [
   handleGetReadLists(({ request }) => {
     const query = new URL(request.url).searchParams
