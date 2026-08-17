@@ -6,7 +6,7 @@ import { handleGetCollections } from '@/generated/openapi/msw.gen'
 
 import { response200OK } from '@/mocks/api/utils'
 
-export const mockCollection = {
+export const mockCollection1 = {
   id: '026801S4HWRZA',
   name: 'Golden Age',
   ordered: true,
@@ -16,7 +16,26 @@ export const mockCollection = {
   filtered: false,
 }
 
-const collections = [mockCollection]
+const mockCollection2 = {
+  id: '026801S4HWRZB',
+  name: 'Iron Age',
+  ordered: false,
+  seriesIds: ['57'],
+  createdDate: new Date('2020-08-06T06:13:25Z'),
+  lastModifiedDate: new Date('2020-08-06T06:17:12Z'),
+  filtered: false,
+}
+
+const collections = [mockCollection1, mockCollection2]
+
+export function mockCollections(count: number) {
+  return [...Array(count).keys()].map((index) =>
+    Object.assign({}, mockCollection1, {
+      id: `COL${index + 1}`,
+      name: `Collection ${index + 1}`,
+    }),
+  )
+}
 
 export const collectionsHandlers = [
   handleGetCollections(({ request }) => {

@@ -23,6 +23,7 @@ import {
 } from '@/colada/series'
 import type { BookDto, CollectionDto, ReadListDto, SeriesDto } from '@/generated/openapi'
 import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
+import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
 
 export function useEntitiesActions(
   entities: MaybeRefOrGetter<(BookDto | SeriesDto | CollectionDto | ReadListDto)[]>,
@@ -39,7 +40,11 @@ export function useEntitiesActions(
   //TODO: implement remaining actions
   const actionsSpecifics: Partial<Record<ActionName, object>> = {
     [ActionName.AddToCollection]: {
-      disabled: true,
+      onMouseenter: (event: Event) =>
+        (addToCollectionActivator.value = event.currentTarget as Element),
+      onClick: () => {
+        addToCollection(() => callback(ActionName.AddToCollection))
+      },
     },
     [ActionName.AddToReadList]: {
       onMouseenter: (event: Event) =>
@@ -137,6 +142,22 @@ export function useEntitiesActions(
     })
 
     callback(ActionName.MarkUnread)
+  }
+  //endregion
+
+  //region Add to collection
+  const { prepareDialog: showAddToCollectionDialog, activator: addToCollectionActivator } =
+    useAddToCollectionDialog()
+
+  function addToCollection(callback: () => void) {
+    showAddToCollectionDialog(
+      toValue(entities).flatMap((e) => {
+        if (isSeries(e)) return [e.id]
+        if (isBook(e) && e.oneshot) return [e.seriesId]
+        return []
+      }),
+      callback,
+    )
   }
   //endregion
 

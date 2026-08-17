@@ -20,6 +20,7 @@ import { useBooks } from '@/composables/book/useBooks'
 import { useSeries } from '@/composables/series/useSeries'
 import type { SeriesDto } from '@/generated/openapi'
 import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
+import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
 
 export function useSeriesActions(
   series: MaybeRefOrGetter<SeriesDto>,
@@ -38,11 +39,11 @@ export function useSeriesActions(
       ? [
           {
             title: intl.formatMessage(actionDetails[ActionName.AddToCollection].message),
-            disabled: true, //TODO: implement
             action: ActionName.AddToCollection,
+            onMouseenter: (event: Event) =>
+              (addToCollectionActivator.value = event.currentTarget as Element),
             onClick: () => {
-              todo()
-              callback(ActionName.AddToCollection)
+              addToCollection(() => callback(ActionName.AddToCollection))
             },
           },
         ]
@@ -181,6 +182,15 @@ export function useSeriesActions(
     },
   ])
 
+  //region Add to collection
+  const { prepareDialog: showAddToCollectionDialog, activator: addToCollectionActivator } =
+    useAddToCollectionDialog()
+
+  function addToCollection(callback: () => void) {
+    showAddToCollectionDialog([toValue(series).id], callback)
+  }
+  //endregion
+
   //region Add to read list
   const { prepareDialog: showAddToReadListDialog, activator: addToReadListActivator } =
     useAddToReadListDialog()
@@ -216,9 +226,6 @@ export function useSeriesActions(
     callback(ActionName.Analyze)
   }
   //endregion
-
-  //TODO: do :)
-  function todo() {}
 
   //region Mark read
   const { mutate: mutateMarkRead } = useMarkSeriesRead()

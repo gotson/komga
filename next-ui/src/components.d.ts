@@ -25,6 +25,7 @@ declare module 'vue' {
     BuildCommit: typeof import('./components/BuildCommit.vue')['default']
     BuildVersion: typeof import('./components/BuildVersion.vue')['default']
     ChipCount: typeof import('./components/ChipCount.vue')['default']
+    CollectionAddTo: typeof import('./components/collection/AddTo.vue')['default']
     CollectionCard: typeof import('./components/collection/card/CollectionCard.vue')['default']
     CollectionDeletionWarning: typeof import('./components/collection/DeletionWarning.vue')['default']
     CollectionMenuSheet: typeof import('./components/collection/menu/Sheet.vue')['default']

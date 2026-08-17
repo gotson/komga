@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest'
 import { mockBook } from '@/mocks/api/handlers/books'
 import { isBook, isCollection, isReadList, isSeries, resolveEntityKind } from '@/functions/entity'
 import { mockSeries1 } from '@/mocks/api/handlers/series'
-import { mockCollection } from '@/mocks/api/handlers/collections'
+import { mockCollection1 } from '@/mocks/api/handlers/collections'
 import { mockReadList1 } from '@/mocks/api/handlers/readlists'
 
 describe('entity type guards', () => {
@@ -29,7 +29,7 @@ describe('entity type guards', () => {
   })
 
   test('collection', () => {
-    const item = mockCollection
+    const item = mockCollection1
 
     expect(isBook(item)).toBeFalsy()
     expect(isSeries(item)).toBeFalsy()

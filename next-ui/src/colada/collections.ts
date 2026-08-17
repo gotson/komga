@@ -4,8 +4,8 @@ import {
   defineQueryOptions,
   useMutation,
 } from '@pinia/colada'
-import { PageRequest } from '@/types/PageRequest'
-import { entityChanged } from '@/colada/cache'
+import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
+import { entitiesChanged, entityChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
   komgaDeleteCollectionById,
@@ -13,6 +13,8 @@ import {
   komgaGetCollections,
   komgaUpdateCollectionById,
   type CollectionUpdateDto,
+  type CollectionCreationDto,
+  komgaCreateCollection,
 } from '@/generated/openapi'
 
 export const QUERY_KEYS_COLLECTIONS = {
@@ -35,7 +37,7 @@ export const collectionsListQuery = defineQueryOptions(
     query: () =>
       komgaGetCollections({
         query: {
-          search: search,
+          search: search || undefined,
           library_id: libraryIds,
           ...pageRequest,
         },
@@ -45,8 +47,13 @@ export const collectionsListQuery = defineQueryOptions(
 )
 
 export const collectionsListQueryInfinite = defineInfiniteQueryOptions(
-  ({ libraryIds }: { libraryIds?: string[] }) => ({
-    key: QUERY_KEYS_COLLECTIONS.bySearch({ libraryIds, infinite: true }),
+  ({ search, libraryIds, sort }: { search?: string; libraryIds?: string[]; sort?: Sort[] }) => ({
+    key: QUERY_KEYS_COLLECTIONS.bySearch({
+      search: search,
+      libraryIds,
+      sort: sort,
+      infinite: true,
+    }),
     initialPageParam: new PageRequest(0, 50),
     query: ({ pageParam }) =>
       komgaGetCollections({
@@ -54,6 +61,8 @@ export const collectionsListQueryInfinite = defineInfiniteQueryOptions(
           library_id: libraryIds,
           page: pageParam.page,
           size: pageParam.size,
+          search: search || undefined,
+          sort: sort?.map((it) => sortToString(it)),
         },
       }),
     getNextPageParam: (lastPage, _, lastPageParam) =>
@@ -72,6 +81,19 @@ export const collectionDetailQuery = defineQueryOptions(
       }),
   }),
 )
+
+export const useCreateCollection = defineMutation(() => {
+  const appStore = useAppStore()
+  return useMutation({
+    mutation: (collection: CollectionCreationDto) =>
+      komgaCreateCollection({
+        body: collection,
+      }),
+    onSuccess: () => {
+      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_COLLECTIONS.root)
+    },
+  })
+})
 
 export const useUpdateCollection = defineMutation(() => {
   const appStore = useAppStore()

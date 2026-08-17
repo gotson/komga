@@ -12,9 +12,9 @@
           :error-messages="errorMessages"
           :label="
             $formatMessage({
-              description: 'Read list add to: search field label',
+              description: 'Collection add to: search field label',
               defaultMessage: 'Search or create',
-              id: 'icSG40',
+              id: 'DbrNAW',
             })
           "
           autofocus
@@ -22,14 +22,14 @@
         <v-btn
           :text="
             $formatMessage({
-              description: 'Read list add to: create button label',
+              description: 'Collection add to: create button label',
               defaultMessage: 'Create',
-              id: '7gdpKG',
+              id: '4Ybicn',
             })
           "
           :disabled="isDuplicate || !search"
           :loading="creating"
-          @click="createReadList()"
+          @click="createCollection()"
         />
       </div>
     </div>
@@ -40,32 +40,32 @@
     >
       <v-list v-if="dataFlat?.length !== 0">
         <v-list-item
-          v-for="rl in dataFlat"
-          :key="rl.id"
-          @click="addToReadList(rl)"
+          v-for="item in dataFlat"
+          :key="item.id"
+          @click="addToCollection(item)"
         >
           <template #prepend>
             <v-img
               width="52"
               height="75"
               contain
-              :src="readListPosterUrl(rl.id)"
+              :src="collectionPosterUrl(item.id)"
               lazy-src="@/assets/cover.svg"
               class="me-2"
             />
           </template>
 
-          <v-list-item-title>{{ rl.name }}</v-list-item-title>
+          <v-list-item-title>{{ item.name }}</v-list-item-title>
           <v-list-item-subtitle
             >{{
               $formatMessage(
                 {
-                  description: 'Read list add to: read list item subtitle: count of books',
-                  defaultMessage: '{count, plural, one {# book} other {# books} }',
-                  id: 'DG4tYb',
+                  description: 'Collection add to: collection item subtitle: count of series',
+                  defaultMessage: '{count, plural, one {# series} other {# series} }',
+                  id: 'Fwvj/i',
                 },
                 {
-                  count: rl.bookIds.length,
+                  count: item.seriesIds.length,
                 },
               )
             }}
@@ -88,29 +88,26 @@
 </template>
 
 <script setup lang="ts">
-import { useInfiniteQuery, useQuery } from '@pinia/colada'
-import {
-  readListsListQueryInfinite,
-  useCreateReadList,
-  useUpdateReadList,
-} from '@/colada/readlists'
-import { readListPosterUrl } from '@/api/images'
+import { useInfiniteQuery } from '@pinia/colada'
+import { collectionPosterUrl } from '@/api/images'
 import { refDebounced } from '@vueuse/core'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useMessagesStore } from '@/stores/messages'
-import type { ReadListDto } from '@/generated/openapi'
-import { bookListQuery } from '@/colada/books'
-import { PageRequest } from '@/types/PageRequest'
+import type { CollectionDto } from '@/generated/openapi'
+import {
+  collectionsListQueryInfinite,
+  useCreateCollection,
+  useUpdateCollection,
+} from '@/colada/collections'
 
-const { bookIds = [], seriesIds = [] } = defineProps<{
-  bookIds?: string[]
+const { seriesIds = [] } = defineProps<{
   seriesIds?: string[]
 }>()
 
 const emit = defineEmits<{
-  created: [readList: ReadListDto]
-  addedTo: [readList: ReadListDto]
+  created: [collection: CollectionDto]
+  addedTo: [collection: CollectionDto]
 }>()
 
 const intl = useIntl()
@@ -120,7 +117,7 @@ const search = ref<string>('')
 const searchDebounced = refDebounced(search, 500)
 
 const { data, hasNextPage, loadNextPage } = useInfiniteQuery(() =>
-  readListsListQueryInfinite({
+  collectionsListQueryInfinite({
     search: searchDebounced.value,
     sort: [{ key: 'lastModifiedDate', order: 'desc' }],
   }),
@@ -137,43 +134,22 @@ const errorMessages = computed(() => [
   ...(isDuplicate.value
     ? [
         intl.formatMessage({
-          description: 'Read list add to: duplicate name error message',
-          defaultMessage: 'A read list with that name already exists',
-          id: 'FBGnzt',
+          description: 'Collection add to: duplicate name error message',
+          defaultMessage: 'A collection with that name already exists',
+          id: 'vOS8Dl',
         }),
       ]
     : []),
 ])
 
-const { data: seriesBooks } = useQuery(() => ({
-  ...bookListQuery({
-    search: {
-      condition: {
-        anyOf: seriesIds.map((s) => ({ seriesId: { operator: 'Is', value: s } })),
-      },
-    },
-    pageRequest: PageRequest.Unpaged([
-      { key: 'series', order: 'asc' },
-      { key: 'metadata.numberSort', order: 'asc' },
-    ]),
-  }),
-  enabled: seriesIds.length > 0,
-}))
+const { mutateAsync: postCollection, isLoading: creating } = useCreateCollection()
+const { mutateAsync: updateCollection } = useUpdateCollection()
 
-const effectiveBookIds = computed(() => {
-  const seriesBookIds = seriesBooks.value?.content?.map((b) => b.id) ?? []
-  return [...bookIds, ...seriesBookIds]
-})
-
-const { mutateAsync: postReadList, isLoading: creating } = useCreateReadList()
-const { mutateAsync: updateReadList } = useUpdateReadList()
-
-function createReadList() {
-  postReadList({
+function createCollection() {
+  postCollection({
     name: search.value,
-    bookIds: effectiveBookIds.value,
-    ordered: true,
-    summary: '',
+    seriesIds: seriesIds,
+    ordered: false,
   })
     .then((data) => {
       if (data) emit('created', data)
@@ -183,12 +159,12 @@ function createReadList() {
     )
 }
 
-function addToReadList(readList: ReadListDto) {
-  updateReadList({
-    readListId: readList.id,
-    data: { bookIds: [...new Set([...readList.bookIds, ...effectiveBookIds.value])] },
+function addToCollection(collection: CollectionDto) {
+  updateCollection({
+    collectionId: collection.id,
+    data: { seriesIds: [...new Set([...collection.seriesIds, ...seriesIds])] },
   })
-    .then(() => emit('addedTo', readList))
+    .then(() => emit('addedTo', collection))
     .catch((error) =>
       messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError),
     )

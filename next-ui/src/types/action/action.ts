@@ -44,6 +44,16 @@ export const selectionActions: Record<EntityKind, ActionName[]> = {
     ActionName.EditBook,
     ActionName.Delete,
   ],
+  book_oneshot: [
+    ActionName.MarkRead,
+    ActionName.MarkUnread,
+    ActionName.AddToReadList,
+    ActionName.AddToCollection,
+    ActionName.RefreshMetadata,
+    ActionName.Analyze,
+    ActionName.EditBook,
+    ActionName.Delete,
+  ],
   series: [
     ActionName.MarkRead,
     ActionName.MarkUnread,

@@ -21,6 +21,7 @@ import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { bookReaderUrl } from '@/api/links'
 import type { BookDto } from '@/generated/openapi'
 import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
+import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
 
 export function useBookActions(
   book: MaybeRefOrGetter<BookDto>,
@@ -39,11 +40,11 @@ export function useBookActions(
       ? [
           {
             title: intl.formatMessage(actionDetails[ActionName.AddToCollection].message),
-            disabled: true, //TODO: implement
             action: ActionName.AddToCollection,
+            onMouseenter: (event: Event) =>
+              (addToCollectionActivator.value = event.currentTarget as Element),
             onClick: () => {
-              todo()
-              callback(ActionName.AddToCollection)
+              addToCollection(() => callback(ActionName.AddToCollection))
             },
           },
         ]
@@ -183,6 +184,15 @@ export function useBookActions(
     },
   ])
 
+  //region Add to collection
+  const { prepareDialog: showAddToCollectionDialog, activator: addToCollectionActivator } =
+    useAddToCollectionDialog()
+
+  function addToCollection(callback: () => void) {
+    showAddToCollectionDialog([toValue(book).seriesId], callback)
+  }
+  //endregion
+
   //region Add to read list
   const { prepareDialog: showAddToReadListDialog, activator: addToReadListActivator } =
     useAddToReadListDialog()
@@ -218,9 +228,6 @@ export function useBookActions(
     callback(ActionName.Analyze)
   }
   //endregion
-
-  //TODO: do :)
-  function todo() {}
 
   //region Mark read
   const { mutate: mutateMarkRead } = useMarkBookRead()

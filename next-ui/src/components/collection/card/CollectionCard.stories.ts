@@ -6,7 +6,7 @@ import { fn } from 'storybook/test'
 import { userRegular } from '@/mocks/api/handlers/users'
 import DialogConfirmEditInstance from '@/components/dialog/ConfirmEditInstance.vue'
 import DialogConfirmInstance from '@/components/dialog/ConfirmInstance.vue'
-import { mockCollection } from '@/mocks/api/handlers/collections'
+import { mockCollection1 } from '@/mocks/api/handlers/collections'
 import { handleGetCurrentUser } from '@/generated/openapi/msw.gen'
 
 import { response200OK } from '@/mocks/api/utils'
@@ -31,7 +31,7 @@ const meta = {
     },
   },
   args: {
-    collection: mockCollection,
+    collection: mockCollection1,
     onSelection: fn(),
   },
 } satisfies Meta<typeof CollectionCard>
