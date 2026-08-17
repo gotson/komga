@@ -26,6 +26,7 @@ import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.openapi.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
+import org.gotson.komga.infrastructure.openapi.PageableAsQueryParam
 import org.gotson.komga.infrastructure.openapi.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.Authors
@@ -77,7 +78,7 @@ class SeriesCollectionController(
   private val eventPublisher: ApplicationEventPublisher,
 ) {
   @Operation(summary = "List collections", tags = [OpenApiConfiguration.TagNames.COLLECTIONS])
-  @PageableWithoutSortAsQueryParam
+  @PageableAsQueryParam
   @GetMapping
   fun getCollections(
     @AuthenticationPrincipal principal: KomgaPrincipal,
@@ -88,6 +89,7 @@ class SeriesCollectionController(
   ): Page<CollectionDto> {
     val sort =
       when {
+        page.sort.isSorted -> page.sort
         !searchTerm.isNullOrBlank() -> Sort.by("relevance")
         else -> Sort.by(Sort.Order.asc("name"))
       }

@@ -3,7 +3,6 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
@@ -47,6 +46,8 @@ class SeriesCollectionDao(
   private val sorts =
     mapOf(
       "name" to c.NAME.unicode3(),
+      "createdDate" to c.CREATED_DATE,
+      "lastModifiedDate" to c.LAST_MODIFIED_DATE,
     )
 
   override fun findByIdOrNull(
