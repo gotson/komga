@@ -42,6 +42,7 @@ class TrayIconRunner(
         icon = ClassPathResource("icons/$iconFileName").inputStream.readAllBytes().decodeToSvgPainter(LocalDensity.current),
         menu = {
           Item(RB.getString("menu.open_komga"), onClick = { openUrl(komgaUrl) })
+          Item(RB.getString("menu.open_komga_nextui"), onClick = { openUrl("$komgaUrl/next") })
           Item(RB.getString("menu.show_log"), onClick = { openExplorer(logFile) })
           Item(RB.getString("menu.show_conf_dir"), onClick = { openExplorer(komgaConfigDir) })
           Item(RB.getString("menu.quit"), onClick = ::exitApplication)
