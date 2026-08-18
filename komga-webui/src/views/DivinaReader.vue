@@ -121,7 +121,7 @@
       </v-slide-y-reverse-transition>
     </div>
 
-    <div class="full-height">
+    <div class="full-height" :key="bookId">
       <continuous-reader
         v-if="continuousReader"
         :pages="pages"
