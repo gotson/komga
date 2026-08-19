@@ -176,7 +176,7 @@
           'px-2 mb-1',
           { 'min-height': line.allowEmpty },
           line.classes,
-          { 'force-line-count text-wrap': line.lines },
+          { 'force-line-count text-wrap': line.lines && line.lines > 1 ? line.lines : undefined },
         ]"
         :style="[{ '--lines': line.lines }, { '--line-height': 1.4 }]"
       >
