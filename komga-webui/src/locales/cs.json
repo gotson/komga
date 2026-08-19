@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Úvod",
     "libraries": "Knihovny",
-    "logout": "Odhlásit se"
+    "logout": "Odhlásit se",
+    "try_new_ui": "Vyzkoušej nové UI"
   },
   "no_libraries_pinned": {
     "subtitle": "Můžete připnout knihovnu pomocí třítečkového menu",
