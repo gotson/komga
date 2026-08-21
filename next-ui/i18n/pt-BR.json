@@ -1,0 +1,1076 @@
+{
+  "+6YDzS": {
+    "defaultMessage": "Dados não encontrados"
+  },
+  "+8++PW": {
+    "defaultMessage": "Biblioteca criada:{library}"
+  },
+  "+TldjW": {
+    "defaultMessage": "Nada para mostrar"
+  },
+  "+jaADC": {
+    "defaultMessage": "Nome do arquivo"
+  },
+  "+mJGIg": {
+    "defaultMessage": "Caminho do arquivo"
+  },
+  "+opDqu": {
+    "defaultMessage": "Pular para"
+  },
+  "+pyj1u": {
+    "defaultMessage": "Indisponível"
+  },
+  "+r8FCS": {
+    "defaultMessage": "Servidor escutando na porta"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "Excluir"
+  },
+  "/8sSxS": {
+    "defaultMessage": "Necessário para restaurar da lixeira e detectar arquivos duplicados"
+  },
+  "/Acs82": {
+    "defaultMessage": "Criar ou adicionar listas de leitura"
+  },
+  "/NAG9i": {
+    "defaultMessage": "Sem resultados"
+  },
+  "/YxHru": {
+    "defaultMessage": "Alguns dos livros selecionados são duplicados"
+  },
+  "/bathK": {
+    "defaultMessage": "Permitir somente abaixo de"
+  },
+  "/lE31l": {
+    "defaultMessage": "Forçar sincronização com Kobo"
+  },
+  "/mhcNO": {
+    "defaultMessage": "Fechar"
+  },
+  "02SRax": {
+    "defaultMessage": "Entrar"
+  },
+  "0ILHru": {
+    "defaultMessage": "OK"
+  },
+  "0JF9f5": {
+    "defaultMessage": "Barra lateral"
+  },
+  "0MePSx": {
+    "defaultMessage": "Arraste aqui para fixar uma biblioteca"
+  },
+  "0UFr4y": {
+    "defaultMessage": "Todos"
+  },
+  "0XDhyR": {
+    "defaultMessage": "Seletor de temas"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "Lembre-se de mim"
+  },
+  "0eIJ3K": {
+    "defaultMessage": "Ordenação manual"
+  },
+  "0iT7Vf": {
+    "defaultMessage": "Metadados"
+  },
+  "0qntYX": {
+    "defaultMessage": "Computar hash para páginas"
+  },
+  "0sIkhg": {
+    "defaultMessage": "FILTROS"
+  },
+  "1+Ux6s": {
+    "defaultMessage": "Crie uma biblioteca para iniciar"
+  },
+  "111Isd": {
+    "defaultMessage": "Reconstruir índice de pesquisa"
+  },
+  "14/Uh8": {
+    "defaultMessage": "Modo de importação"
+  },
+  "18OKhZ": {
+    "defaultMessage": "Encontre livros para converter"
+  },
+  "1E0Duw": {
+    "defaultMessage": "Tamanho do arquivo"
+  },
+  "1MAL38": {
+    "defaultMessage": "Livro Duplicado"
+  },
+  "1VkZao": {
+    "defaultMessage": "Mais"
+  },
+  "1bxWGd": {
+    "defaultMessage": "Editar metadados da série"
+  },
+  "1qIfds": {
+    "defaultMessage": "Fixado"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "Recente"
+  },
+  "2Sx0J4": {
+    "defaultMessage": "Página"
+  },
+  "2g7iOx": {
+    "defaultMessage": "Métricas"
+  },
+  "2p+JVw": {
+    "defaultMessage": "Esse servidor Komga ainda não está ativo, você precisa criar um usuário para conseguir acessar."
+  },
+  "3DBPuv": {
+    "defaultMessage": "Rolar"
+  },
+  "3J6FI8": {
+    "defaultMessage": "Editar modo de visualização"
+  },
+  "3MUQYL": {
+    "defaultMessage": "Criar ou adicionar a coleções"
+  },
+  "3OgH93": {
+    "defaultMessage": "Séries"
+  },
+  "3Pm2PO": {
+    "defaultMessage": "Nome do arquivo de destino"
+  },
+  "3T1ln7": {
+    "defaultMessage": "Deletar biblioteca"
+  },
+  "3W0jUi": {
+    "defaultMessage": "Excluir rótulos"
+  },
+  "3b7v1+": {
+    "defaultMessage": "Importar metadados de livros"
+  },
+  "3beD4X": {
+    "defaultMessage": "Deletar chave API"
+  },
+  "3gimvl": {
+    "defaultMessage": "Menu da biblioteca"
+  },
+  "3qQjnw": {
+    "defaultMessage": "Língua"
+  },
+  "3rNj7/": {
+    "defaultMessage": "Clique para confirmar"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Porta externa do Kobo Sync"
+  },
+  "4CX0cY": {
+    "defaultMessage": "Importar metadados de série"
+  },
+  "4PDVX2": {
+    "defaultMessage": "EPUB"
+  },
+  "4TEXni": {
+    "defaultMessage": "Todos os contribuíntes"
+  },
+  "4g2M9O": {
+    "defaultMessage": "Nenhuma série encontrada"
+  },
+  "4uqafX": {
+    "defaultMessage": "Capítulo único"
+  },
+  "4yDvPA": {
+    "defaultMessage": "Limpar filtros"
+  },
+  "5AAGkA": {
+    "defaultMessage": "Senha"
+  },
+  "5JGOUU": {
+    "defaultMessage": "Analisar biblioteca"
+  },
+  "5Qha5m": {
+    "defaultMessage": "Ordenação manual"
+  },
+  "5WMvLb": {
+    "defaultMessage": "Epub"
+  },
+  "5b2A0u": {
+    "defaultMessage": "Você será redirecionado para a página principal"
+  },
+  "5cbjLE": {
+    "defaultMessage": "A seguir - #{number}"
+  },
+  "5rziSG": {
+    "defaultMessage": "Indisponível"
+  },
+  "5tbu8Y": {
+    "defaultMessage": "Tentar novamente"
+  },
+  "5zPpyT": {
+    "defaultMessage": "Faixa etária"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "Servidor HTTP"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "Requer reinicialização para ter efeito"
+  },
+  "6OXY1N": {
+    "defaultMessage": "Pasta de histórias únicas"
+  },
+  "6UXlVe": {
+    "defaultMessage": "Etiquetas"
+  },
+  "6WDISV": {
+    "defaultMessage": "Página não encontrada"
+  },
+  "70/wK4": {
+    "defaultMessage": "Criar biblioteca"
+  },
+  "700A3r": {
+    "defaultMessage": "Livro"
+  },
+  "7M1pUf": {
+    "defaultMessage": "Limpar lixeira"
+  },
+  "7hwFJo": {
+    "defaultMessage": "Escritor"
+  },
+  "7z91nm": {
+    "defaultMessage": "Histórico"
+  },
+  "8/BXfN": {
+    "defaultMessage": "Tudo"
+  },
+  "81BMAQ": {
+    "defaultMessage": "Importar metadados de livros"
+  },
+  "87q6WX": {
+    "defaultMessage": "Nenhum"
+  },
+  "8CVWWg": {
+    "defaultMessage": "Deletar arquivos"
+  },
+  "8Dun/Y": {
+    "defaultMessage": "Não"
+  },
+  "8NDqor": {
+    "defaultMessage": "Letrista"
+  },
+  "8Om/o/": {
+    "defaultMessage": "Importar de uma pasta"
+  },
+  "8P7Yn+": {
+    "defaultMessage": "Classificação indicativa"
+  },
+  "8hC76W": {
+    "defaultMessage": "Tarefas"
+  },
+  "8jE3eP": {
+    "defaultMessage": "Não foi possível analisar o livro"
+  },
+  "8kylzj": {
+    "defaultMessage": "Deletar"
+  },
+  "8xonXJ": {
+    "defaultMessage": "Analisa todos os arquivos de mídia da biblioteca. A análise captura informações sobre a mídia. Dependendo do tamanho da sua biblioteca, isso pode levar muito tempo."
+  },
+  "9/1/c7": {
+    "defaultMessage": "Gerar miniatura do livro"
+  },
+  "90yqRq": {
+    "defaultMessage": "Adicionar biblioteca"
+  },
+  "9TJRkm": {
+    "defaultMessage": "Importar metadados da série"
+  },
+  "9VuyZU": {
+    "defaultMessage": "Tente escanear outra pasta"
+  },
+  "9XDmYO": {
+    "defaultMessage": "Deletar usuário"
+  },
+  "B2wcN0": {
+    "defaultMessage": "Importar ISBN de código de barras"
+  },
+  "Bl30xt": {
+    "defaultMessage": "Adicionar usuário"
+  },
+  "BpzKDW": {
+    "defaultMessage": "Multiplos itens serão deletados.<b>Essa ação não pode ser desfeita.</b>"
+  },
+  "C1bGrS": {
+    "defaultMessage": "Mostrar informações"
+  },
+  "C9LkYh": {
+    "defaultMessage": "Comentar"
+  },
+  "CE7pPQ": {
+    "defaultMessage": "Caminho do arquivo"
+  },
+  "CGRz8d": {
+    "defaultMessage": "O arquivo desse livro foi alterado e necessita de nova analise"
+  },
+  "CJaS7j": {
+    "defaultMessage": "Diretório raiz da biblioteca"
+  },
+  "CMuDjt": {
+    "defaultMessage": "Detalhes de atividade"
+  },
+  "COn5A6": {
+    "defaultMessage": "Recursos de mídia local"
+  },
+  "CPMLrI": {
+    "defaultMessage": "O livro precisa ser analisado primeiro"
+  },
+  "CUxhzL": {
+    "defaultMessage": "Cargos"
+  },
+  "CVk1J6": {
+    "defaultMessage": "Erro"
+  },
+  "CY8sfH": {
+    "defaultMessage": "Escanear todas as bibliotecas"
+  },
+  "CkUPZe": {
+    "defaultMessage": "O formato de arquivo do livro não é suportado"
+  },
+  "CpNtjm": {
+    "defaultMessage": "Data e Hora"
+  },
+  "CvsH7/": {
+    "defaultMessage": "Sem atividade recente"
+  },
+  "CwteMk": {
+    "defaultMessage": "Limpar lixeira de todas as bibliotecas"
+  },
+  "CxuwFR": {
+    "defaultMessage": "Tipo de arquivo não suportado"
+  },
+  "D/yypj": {
+    "defaultMessage": "<ul><li>Isso irá deletar todo o histórico de sincronização dessa chave API.</li><li>Seu Kobo sincronizará tudo na proxima sincronização.</li></ul>"
+  },
+  "DK4PsD": {
+    "defaultMessage": "Livros da série"
+  },
+  "DNVnmS": {
+    "defaultMessage": "Nome de diretório"
+  },
+  "DNmepU": {
+    "defaultMessage": "Ative isso caso use KOReader Sync"
+  },
+  "DfakWW": {
+    "defaultMessage": "Deletar arquivos"
+  },
+  "Dn4qvV": {
+    "defaultMessage": "Restaurar padrões"
+  },
+  "DwDa04": {
+    "defaultMessage": "Escanear intervalos"
+  },
+  "DxtDpt": {
+    "defaultMessage": "Analise de mídia"
+  },
+  "E0cw62": {
+    "defaultMessage": "Coleção atualizada: {collection}"
+  },
+  "E1kQun": {
+    "defaultMessage": "Navegar"
+  },
+  "E4ssEg": {
+    "defaultMessage": "Converter livro"
+  },
+  "E5ZMyt": {
+    "defaultMessage": "Analisar"
+  },
+  "EIYfj+": {
+    "defaultMessage": "Número"
+  },
+  "ELttw/": {
+    "defaultMessage": "Esvaziar lixeira"
+  },
+  "EMhLEN": {
+    "defaultMessage": "Mover arquivos"
+  },
+  "EOrAHc": {
+    "defaultMessage": "PDF"
+  },
+  "EabQ38": {
+    "defaultMessage": "Lembrar-se de mim"
+  },
+  "EzOmuX": {
+    "defaultMessage": "Criado"
+  },
+  "FLqm9f": {
+    "defaultMessage": "Ajude-nos à traduzir"
+  },
+  "FSJoDl": {
+    "defaultMessage": "Selecione uma série para ver seus livros"
+  },
+  "FZXkIP": {
+    "defaultMessage": "Tradutor"
+  },
+  "FpwJlU": {
+    "defaultMessage": "Salvar mudanças"
+  },
+  "G/T8/2": {
+    "defaultMessage": "Cancelar"
+  },
+  "G25PY/": {
+    "defaultMessage": "Pesquisar"
+  },
+  "G7quju": {
+    "defaultMessage": "Anúncios"
+  },
+  "G93mS3": {
+    "defaultMessage": "Mostrar tudo"
+  },
+  "GCwZB2": {
+    "defaultMessage": "Escanear arquivos da biblioteca"
+  },
+  "GnHrCd": {
+    "defaultMessage": "Usar arte local"
+  },
+  "GyRV+/": {
+    "defaultMessage": "Você deve ativar isso se a biblioteca estiver hospedada no Google Drive"
+  },
+  "GySX8C": {
+    "defaultMessage": "Esvaziar a lixeira automaticamente após cada verificação"
+  },
+  "H+LXXE": {
+    "defaultMessage": "Arraste aqui para desprender uma biblioteca"
+  },
+  "H2B6uF": {
+    "defaultMessage": "Escolha uma série"
+  },
+  "H4Kte4": {
+    "defaultMessage": "Título"
+  },
+  "HA4xOM": {
+    "defaultMessage": "Atualizar metadados do livro"
+  },
+  "HHvDPs": {
+    "defaultMessage": "E-mail"
+  },
+  "HMbMJF": {
+    "defaultMessage": "Data e Hora"
+  },
+  "HOBFqq": {
+    "defaultMessage": "Erro"
+  },
+  "HXms0S": {
+    "defaultMessage": "Selecione um item ou crie um novo"
+  },
+  "HZ/e6n": {
+    "defaultMessage": "Tente ajustar os filtros"
+  },
+  "HZqgan": {
+    "defaultMessage": "Fechar"
+  },
+  "HaWCi3": {
+    "defaultMessage": "Configurações"
+  },
+  "HdsnFp": {
+    "defaultMessage": "Coleção deletada: {collection}"
+  },
+  "Hl9H/B": {
+    "defaultMessage": "Mídia"
+  },
+  "Hv7lqq": {
+    "defaultMessage": "Grade"
+  },
+  "Hyz5su": {
+    "defaultMessage": "Importar livro"
+  },
+  "I9L5Ag": {
+    "defaultMessage": "ORGANIZAR"
+  },
+  "I9ub/l": {
+    "defaultMessage": "Duplicatas encontradas"
+  },
+  "IE0XzE": {
+    "defaultMessage": "Deletar"
+  },
+  "IEUgyy": {
+    "defaultMessage": "Arquivo já existente"
+  },
+  "II5EFN": {
+    "defaultMessage": "Desenhista"
+  },
+  "IIqDdQ": {
+    "defaultMessage": "Lista de leitura atualizada: {readlist}"
+  },
+  "IXhDH6": {
+    "defaultMessage": "Página duplicada"
+  },
+  "InW6ko": {
+    "defaultMessage": "Traduções"
+  },
+  "IpvWiZ": {
+    "defaultMessage": "Servidor"
+  },
+  "J+H9cC": {
+    "defaultMessage": "Deletar arquivos"
+  },
+  "J44THG": {
+    "defaultMessage": "Status"
+  },
+  "J8rAqm": {
+    "defaultMessage": "Ano de lançamento"
+  },
+  "JGOfZq": {
+    "defaultMessage": "Usuários"
+  },
+  "JHaKYw": {
+    "defaultMessage": "Selecionar tudo"
+  },
+  "JNBONk": {
+    "defaultMessage": "Lista"
+  },
+  "JbF1nK": {
+    "defaultMessage": "Senha alterada para o usuário: {email}"
+  },
+  "JwBlXP": {
+    "defaultMessage": "Abrir"
+  },
+  "K+fQO2": {
+    "defaultMessage": "Verificar estes tipos de arquivo"
+  },
+  "K40g4r": {
+    "defaultMessage": "Editar usuário"
+  },
+  "KBLD9U": {
+    "defaultMessage": "Classificação indicativa"
+  },
+  "Kie8HQ": {
+    "defaultMessage": "Livro"
+  },
+  "Ku7NJ+": {
+    "defaultMessage": "Os arquivos dessa série não puderam ser encontrados"
+  },
+  "LD5j8J": {
+    "defaultMessage": "Série solicitada"
+  },
+  "LFf8QB": {
+    "defaultMessage": "Deletar"
+  },
+  "NKVL81": {
+    "defaultMessage": "Capítulo único"
+  },
+  "NN7kAK": {
+    "defaultMessage": "Sincronização forçada do Kobo: {apiKeyComment}"
+  },
+  "NasBHg": {
+    "defaultMessage": "Data de leitura"
+  },
+  "Nb0V0p": {
+    "defaultMessage": "Pôsteres ausentes"
+  },
+  "NhIart": {
+    "defaultMessage": "Deletar arquivos do livro"
+  },
+  "NpjqFA": {
+    "defaultMessage": "Tente reajustar os filtros"
+  },
+  "NruW40": {
+    "defaultMessage": "Editora"
+  },
+  "NwK2Kv": {
+    "defaultMessage": "Etiqueta"
+  },
+  "O/3awV": {
+    "defaultMessage": "Analise"
+  },
+  "O4Nnj5": {
+    "defaultMessage": "Livro {number}"
+  },
+  "O9hZBS": {
+    "defaultMessage": "Tamanho da arte"
+  },
+  "OLqBQc": {
+    "defaultMessage": "Editora"
+  },
+  "OUyleX": {
+    "defaultMessage": "Atualizar todos os metadados"
+  },
+  "OW1/zn": {
+    "defaultMessage": "Sem atividade recente"
+  },
+  "OZSDCE": {
+    "defaultMessage": "Fixado"
+  },
+  "OgM2Q2": {
+    "defaultMessage": "Atualizar metadados da série"
+  },
+  "Oj3xqB": {
+    "defaultMessage": "Lista de leitura excluída: {readlist}"
+  },
+  "OxqfKF": {
+    "defaultMessage": "Escaneamento profundo"
+  },
+  "P+WI/K": {
+    "defaultMessage": "Página duplicada"
+  },
+  "P8Ox+D": {
+    "defaultMessage": "Metadados do livro atualizados: {book}"
+  },
+  "PTr5Wc": {
+    "defaultMessage": "Verifique se o seu servidor Komga está em execução"
+  },
+  "PguYSD": {
+    "defaultMessage": "Sobrescrever a lista de leitura existente"
+  },
+  "Pp3+1S": {
+    "defaultMessage": "Estado"
+  },
+  "PvKF7E": {
+    "defaultMessage": "Biblioteca deletada: {library}"
+  },
+  "QALnuE": {
+    "defaultMessage": "Tipo de arquivo"
+  },
+  "QIr0z7": {
+    "defaultMessage": "E-mail"
+  },
+  "QM5+gW": {
+    "defaultMessage": "Contagem de exclusões"
+  },
+  "Qxij/I": {
+    "defaultMessage": "Página deletada"
+  },
+  "REmxIM": {
+    "defaultMessage": "Modificado"
+  },
+  "RHJo8j": {
+    "defaultMessage": "Importar"
+  },
+  "ROFRn4": {
+    "defaultMessage": "Gerar"
+  },
+  "RR+XGR": {
+    "defaultMessage": "Esta página está em construção"
+  },
+  "RTNaxB": {
+    "defaultMessage": "Expandir barra lateral"
+  },
+  "Rm52xk": {
+    "defaultMessage": "Boas-vindas ao Komga"
+  },
+  "RwuMl5": {
+    "defaultMessage": "Reparar automaticamente extensões de arquivo incorretas"
+  },
+  "S39lnB": {
+    "defaultMessage": "Classificação por ano"
+  },
+  "SIfmpC": {
+    "defaultMessage": "Selecionar série"
+  },
+  "STdfYg": {
+    "defaultMessage": "Analise as dimensões das páginas"
+  },
+  "SZHxy4": {
+    "defaultMessage": "Selecionar livro"
+  },
+  "Sj0HXz": {
+    "defaultMessage": "Permitir apenas rótulos"
+  },
+  "SqZoei": {
+    "defaultMessage": "Selecionar séries"
+  },
+  "Ss08kC": {
+    "defaultMessage": "{count} itens"
+  },
+  "SuegoE": {
+    "defaultMessage": "Ordenação automática"
+  },
+  "T3Ofay": {
+    "defaultMessage": "Lido em {readDate}"
+  },
+  "TAVSfO": {
+    "defaultMessage": "Contagem de livros"
+  },
+  "TG7prC": {
+    "defaultMessage": "Data de adição"
+  },
+  "TPX4qo": {
+    "defaultMessage": "Etiquetas"
+  },
+  "TUxJCd": {
+    "defaultMessage": "Verificar ao iniciar o aplicativo"
+  },
+  "ThHjN4": {
+    "defaultMessage": "Séries"
+  },
+  "Thjcar": {
+    "defaultMessage": "Etiquetas de livro"
+  },
+  "ToD0+o": {
+    "defaultMessage": "E-mail"
+  },
+  "TwB29u": {
+    "defaultMessage": "Definir apenas em caso de problemas de sincronização com capas e downloads"
+  },
+  "U3Uo3q": {
+    "defaultMessage": "Senha"
+  },
+  "aU1qcP": {
+    "defaultMessage": "Deletar"
+  },
+  "aYalqk": {
+    "defaultMessage": "Selecione alguns livros"
+  },
+  "afXGQS": {
+    "defaultMessage": "Diretório raiz"
+  },
+  "am3r7e": {
+    "defaultMessage": "Atualizar biblioteca"
+  },
+  "ap/Lnw": {
+    "defaultMessage": "Criar hardlinks/copiar arquivos"
+  },
+  "app.error.ERR_1000": {
+    "defaultMessage": "Não foi possível acessar o arquivo durante a análise"
+  },
+  "app.error.ERR_1001": {
+    "defaultMessage": "Tipo de arquivo não suportado"
+  },
+  "app.error.ERR_1002": {
+    "defaultMessage": "Arquivos RAR encriptados não são suportados"
+  },
+  "app.error.ERR_1003": {
+    "defaultMessage": "Arquivos RAR não são suportados"
+  },
+  "app.error.ERR_1004": {
+    "defaultMessage": "Arquivos RAR multivolume não são suportados"
+  },
+  "app.error.ERR_1005": {
+    "defaultMessage": "Erro desconhecido encontrado ao analisar livro"
+  },
+  "app.error.ERR_1006": {
+    "defaultMessage": "Livro não contem nenhuma página"
+  },
+  "app.error.ERR_1007": {
+    "defaultMessage": "Alguns arquivos não puderam ser analisados"
+  },
+  "app.error.ERR_1008": {
+    "defaultMessage": "Erro desconhecido ao obter as entradas do livro"
+  },
+  "app.error.ERR_1009": {
+    "defaultMessage": "Já existe uma lista de leitura com esse nome"
+  },
+  "app.error.ERR_1015": {
+    "defaultMessage": "Erro ao desserializar o arquivo CBL do ComicRack"
+  },
+  "app.error.ERR_1016": {
+    "defaultMessage": "Diretório não acessível ou não é um diretório"
+  },
+  "app.error.ERR_1018": {
+    "defaultMessage": "Arquivo não encontrado"
+  },
+  "app.error.ERR_1021": {
+    "defaultMessage": "O arquivo de destino já existe"
+  },
+  "app.error.ERR_1022": {
+    "defaultMessage": "Não foi possível digitalizar o livro recém-importado"
+  },
+  "app.locale-name": {
+    "defaultMessage": "Português (Brasil)"
+  },
+  "app.user-create-dialog.all_libraries": {
+    "defaultMessage": "Todas as bibliotecas"
+  },
+  "b1hvh9": {
+    "defaultMessage": "Converter CBR para CBZ automaticamente"
+  },
+  "b4J0RU": {
+    "defaultMessage": "Em construção"
+  },
+  "bCFD9B": {
+    "defaultMessage": "Paginado"
+  },
+  "bDNZqj": {
+    "defaultMessage": "Editar lista de leitura"
+  },
+  "bDNv5+": {
+    "defaultMessage": "Qualquer"
+  },
+  "bFoCHJ": {
+    "defaultMessage": "Nome do arquivo de destino"
+  },
+  "bN2VbA": {
+    "defaultMessage": "Exclusões de diretórios"
+  },
+  "bOUy3X": {
+    "defaultMessage": "Livro"
+  },
+  "bSoeY6": {
+    "defaultMessage": "Nome do destino"
+  },
+  "bk1tX8": {
+    "defaultMessage": "A biblioteca será excluída deste servidor.<ul><li>As séries e os livros serão excluídos, juntamente com seus metadados e o progresso de leitura.</li><li>Os arquivos de mídia não serão excluídos do disco.</li></ul><b>Esta ação não pode ser desfeita.</b>"
+  },
+  "bzY8FH": {
+    "defaultMessage": "Buscar"
+  },
+  "bzn96A": {
+    "defaultMessage": "Criar biblioteca"
+  },
+  "c+hx0g": {
+    "defaultMessage": "Usuários"
+  },
+  "cAu/I6": {
+    "defaultMessage": "Páginas duplicadas"
+  },
+  "cIM3eJ": {
+    "defaultMessage": "Retomar"
+  },
+  "cM9FuW": {
+    "defaultMessage": "Escolha uma série"
+  },
+  "cWVIRm": {
+    "defaultMessage": "Agente do usuário"
+  },
+  "ccAMWS": {
+    "defaultMessage": "Documentação"
+  },
+  "ccDES8": {
+    "defaultMessage": "Arquivos de livros deletados: {book}"
+  },
+  "crClNV": {
+    "defaultMessage": "Capa"
+  },
+  "cyQk6S": {
+    "defaultMessage": "Coleção"
+  },
+  "d2J/J/": {
+    "defaultMessage": "Escolha"
+  },
+  "d8lMZe": {
+    "defaultMessage": "Criar conta de usuário"
+  },
+  "dHyAgE": {
+    "defaultMessage": "Alterar senha"
+  },
+  "dK/kHO": {
+    "defaultMessage": "Comentário da mídia"
+  },
+  "dLE2PW": {
+    "defaultMessage": "Sem atividade"
+  },
+  "dQ9kx9": {
+    "defaultMessage": "Seletor de linguagem"
+  },
+  "dSlkbn": {
+    "defaultMessage": "Comportamento geral da varredura"
+  },
+  "da/wb0": {
+    "defaultMessage": "Marcar tudo como lido"
+  },
+  "ddthL2": {
+    "defaultMessage": "Confirmar"
+  },
+  "dfslqC": {
+    "defaultMessage": "Os arquivos da série serão excluídos<ul><li>Os arquivos de mídia dos livros serão excluídos do disco.</li><li>A série e os livros serão excluídos, juntamente com seus metadados e o progresso de leitura.</li></ul><b>Esta ação não pode ser desfeita.</b>"
+  },
+  "dipMGb": {
+    "defaultMessage": "Criar"
+  },
+  "dx9s7S": {
+    "defaultMessage": "Criado"
+  },
+  "e8DJzj": {
+    "defaultMessage": "Tema"
+  },
+  "eDA9Gm": {
+    "defaultMessage": "Tamanho do pôster gerado"
+  },
+  "eRJOa6": {
+    "defaultMessage": "URL base do servidor"
+  },
+  "eW3fXu": {
+    "defaultMessage": "Arquivos duplicados"
+  },
+  "efspoY": {
+    "defaultMessage": "Tabela"
+  },
+  "egrxd6": {
+    "defaultMessage": "Usuário criado: {email}"
+  },
+  "enum.MediaProfile.DIVINA": {
+    "defaultMessage": "DiViNa"
+  },
+  "enum.MediaProfile.EPUB": {
+    "defaultMessage": "E-pub"
+  },
+  "enum.MediaProfile.PDF": {
+    "defaultMessage": "Pdf"
+  },
+  "enum.MediaStatus.ERROR": {
+    "defaultMessage": "Erro"
+  },
+  "enum.MediaStatus.OUTDATED": {
+    "defaultMessage": "Desatualizado"
+  },
+  "enum.MediaStatus.READY": {
+    "defaultMessage": "Pronto"
+  },
+  "enum.MediaStatus.UNKNOWN": {
+    "defaultMessage": "Desconhecido"
+  },
+  "enum.MediaStatus.UNSUPPORTED": {
+    "defaultMessage": "Sem suporte"
+  },
+  "enum.OverviewSection.keep_reading": {
+    "defaultMessage": "Continuar lendo"
+  },
+  "enum.OverviewSection.on_deck": {
+    "defaultMessage": "A seguir"
+  },
+  "enum.OverviewSection.recently_added_books": {
+    "defaultMessage": "Livros adicionados recentemente"
+  },
+  "enum.OverviewSection.recently_added_series": {
+    "defaultMessage": "Séries adicionadas recentemente"
+  },
+  "enum.OverviewSection.recently_read_books": {
+    "defaultMessage": "Ultimas leituras"
+  },
+  "enum.OverviewSection.recently_released_books": {
+    "defaultMessage": "Livros lançados recentemente"
+  },
+  "enum.OverviewSection.recently_updated_series": {
+    "defaultMessage": "Séries atualizadas recentemente"
+  },
+  "enum.ReadStatus.IN_PROGRESS": {
+    "defaultMessage": "Em progresso"
+  },
+  "enum.ReadStatus.READ": {
+    "defaultMessage": "Lido"
+  },
+  "enum.ReadStatus.UNREAD": {
+    "defaultMessage": "Não lido"
+  },
+  "enum.ReadingDirection.LEFT_TO_RIGHT": {
+    "defaultMessage": "Esquerda para direita"
+  },
+  "enum.ReadingDirection.RIGHT_TO_LEFT": {
+    "defaultMessage": "Direita para esquerda"
+  },
+  "enum.ReadingDirection.VERTICAL": {
+    "defaultMessage": "Vertical"
+  },
+  "enum.ReadingDirection.WEBTOON": {
+    "defaultMessage": "Webtoon"
+  },
+  "enum.ScanInterval.DAILY": {
+    "defaultMessage": "Diario"
+  },
+  "enum.ScanInterval.DISABLED": {
+    "defaultMessage": "Desabilitado"
+  },
+  "enum.ScanInterval.EVERY_12H": {
+    "defaultMessage": "À cada 12 horas"
+  },
+  "enum.ScanInterval.EVERY_6H": {
+    "defaultMessage": "À cada 6 horas"
+  },
+  "enum.ScanInterval.HOURLY": {
+    "defaultMessage": "A cada hora"
+  },
+  "enum.ScanInterval.WEEKLY": {
+    "defaultMessage": "Semanalmente"
+  },
+  "enum.SeriesCover.FIRST": {
+    "defaultMessage": "Primeiro"
+  },
+  "enum.SeriesCover.LAST": {
+    "defaultMessage": "Ultimo"
+  },
+  "enum.SeriesStatus.ABANDONED": {
+    "defaultMessage": "Abandonado"
+  },
+  "enum.SeriesStatus.ENDED": {
+    "defaultMessage": "Finalizado"
+  },
+  "enum.SeriesStatus.HIATUS": {
+    "defaultMessage": "Em hiato"
+  },
+  "enum.SeriesStatus.ONGOING": {
+    "defaultMessage": "Em andamento"
+  },
+  "enum.ThumbnailSize.DEFAULT": {
+    "defaultMessage": "Padrão (300px)"
+  },
+  "enum.ThumbnailSize.LARGE": {
+    "defaultMessage": "Largo (900px)"
+  },
+  "enum.ThumbnailSize.MEDIUM": {
+    "defaultMessage": "Médio (600px)"
+  },
+  "enum.ThumbnailSize.XLARGE": {
+    "defaultMessage": "Extra largo (1200px)"
+  },
+  "enum.UserRole.ADMIN": {
+    "defaultMessage": "Administrador"
+  },
+  "enum.UserRole.FILE_DOWNLOAD": {
+    "defaultMessage": "Download de arquivo"
+  },
+  "enum.UserRole.KOBO_SYNC": {
+    "defaultMessage": "Sincronização do Kobo"
+  },
+  "enum.UserRole.KOREADER_SYNC": {
+    "defaultMessage": "Sincronização do KOReader"
+  },
+  "enum.UserRole.PAGE_STREAMING": {
+    "defaultMessage": "Transmissão de páginas"
+  },
+  "enum.UserRole.USER": {
+    "defaultMessage": "Usuário"
+  },
+  "enum.historicalEvent.BookConverted": {
+    "defaultMessage": "Livro convertido"
+  },
+  "enum.historicalEvent.BookFileDeleted": {
+    "defaultMessage": "Arquivo do livro deletado"
+  },
+  "enum.historicalEvent.BookImported": {
+    "defaultMessage": "Livro importado"
+  },
+  "xpBvz8": {
+    "defaultMessage": "Ano de lançamento"
+  },
+  "y1P/K4": {
+    "defaultMessage": "Última atividade"
+  },
+  "y3nPgO": {
+    "defaultMessage": "Realiza uma verificação completa dos arquivos da biblioteca. Dependendo do tamanho da sua biblioteca, isso pode levar muito tempo."
+  },
+  "yDWzUi": {
+    "defaultMessage": "Chaves de API"
+  },
+  "yaa8so": {
+    "defaultMessage": "Scanner"
+  },
+  "ycrpqO": {
+    "defaultMessage": "Gerar nova chave API"
+  },
+  "yrE0Rx": {
+    "defaultMessage": "Detalhes"
+  },
+  "z5sjUM": {
+    "defaultMessage": "Gerar hash do arquivo"
+  },
+  "z8b1Xe": {
+    "defaultMessage": "Importar de um diretório"
+  },
+  "zRDVnR": {
+    "defaultMessage": "Tamanho"
+  },
+  "zfQq+w": {
+    "defaultMessage": "E-mail"
+  },
+  "zphiTI": {
+    "defaultMessage": "Já existe uma chave de API com esse comentário"
+  },
+  "zqAxRE": {
+    "defaultMessage": "Livro"
+  },
+  "zuhGGz": {
+    "defaultMessage": "Reordenar ou fixarS"
+  }
+}
