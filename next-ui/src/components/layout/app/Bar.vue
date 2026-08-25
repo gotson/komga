@@ -11,6 +11,7 @@
               activator="parent"
               location="end"
               :text="tooltipMessage"
+              :disabled="display.mobile.value"
             />
 
             <v-badge
@@ -21,11 +22,13 @@
             >
               <v-icon
                 :icon="
-                  isHovering
-                    ? appStore.drawer
-                      ? 'i-tabler:layout-sidebar-left-collapse'
-                      : 'i-tabler:layout-sidebar-left-expand'
-                    : 'i-tabler:layout-sidebar'
+                  display.mobile.value
+                    ? 'i-mdi:menu'
+                    : isHovering
+                      ? appStore.drawer
+                        ? 'i-tabler:layout-sidebar-left-collapse'
+                        : 'i-tabler:layout-sidebar-left-expand'
+                      : 'i-tabler:layout-sidebar'
                 "
               />
             </v-badge>
