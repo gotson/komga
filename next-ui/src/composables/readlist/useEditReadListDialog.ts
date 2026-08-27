@@ -4,10 +4,17 @@ import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
 
-import EditMetadata from '@/components/series/form/EditMetadata.vue'
+import EditReadList from '@/components/readlist/form/Edit.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useUpdateReadList } from '@/colada/readlists'
-import type { ReadListDto, ReadListUpdateDto } from '@/generated/openapi'
+import {
+  useAddReadListPoster,
+  useDeleteReadListPoster,
+  useMarkReadListPosterSelected,
+  useUpdateReadList,
+} from '@/colada/readlists'
+import type { ReadListDto } from '@/generated/openapi'
+import { createEntityUpdate, type EntityUpdate } from '@/functions/poster'
+import { pick } from '@/functions/pick'
 
 export function useEditReadListDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
@@ -24,7 +31,7 @@ export function useEditReadListDialog() {
         id: 'bDNZqj',
       }),
       subtitle: readList.name,
-      maxWidth: 600,
+      maxWidth: 900,
       cardTextProps: {
         class: 'px-0',
       },
@@ -33,18 +40,58 @@ export function useEditReadListDialog() {
       fullscreen: display.xs.value,
     }
     dialogConfirmEdit.value.slot = {
-      component: markRaw(EditMetadata),
+      component: markRaw(EditReadList),
     }
-    dialogConfirmEdit.value.record = readList
-    dialogConfirmEdit.value.callback = (
+    dialogConfirmEdit.value.record = createEntityUpdate(readList)
+    dialogConfirmEdit.value.callback = async (
       hideDialog: () => void,
       setLoading: (isLoading: boolean) => void,
     ) => {
       setLoading(true)
 
-      const updatedData = dialogConfirmEdit.value.record as ReadListUpdateDto
+      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<ReadListDto>
 
-      mutateUpdate({ readListId: readList.id, data: updatedData })
+      // upload new posters
+      if (updatedData.uploadQueue.length > 0) {
+        const { mutateAsync } = useAddReadListPoster()
+        for (const newPoster of updatedData.uploadQueue) {
+          await mutateAsync({
+            readListId: updatedData.entity.id,
+            file: newPoster.file,
+            selected: newPoster.selected,
+          }).catch((error) => {
+            messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+          })
+        }
+      }
+
+      // mark existing poster as selected
+      if (updatedData.selected) {
+        const { mutateAsync } = useMarkReadListPosterSelected()
+        await mutateAsync({
+          readListId: updatedData.entity.id,
+          thumbnailId: updatedData.selected.id,
+        }).catch((error) => {
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+        })
+      }
+
+      // delete posters
+      if (updatedData.deleteQueue.length > 0) {
+        const { mutateAsync } = useDeleteReadListPoster()
+        for (const posterToDelete of updatedData.deleteQueue) {
+          await mutateAsync({
+            readListId: updatedData.entity.id,
+            thumbnailId: posterToDelete.id,
+          }).catch((error) => {
+            messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+          })
+        }
+      }
+
+      // update read list
+      const updateDto = pick(updatedData.entity, 'name', 'ordered', 'summary')
+      mutateUpdate({ readListId: readList.id, data: updateDto })
         .then(() => {
           hideDialog()
           messagesStore.messages.push({
@@ -55,7 +102,7 @@ export function useEditReadListDialog() {
                 id: 'IIqDdQ',
               },
               {
-                readlist: updatedData.name,
+                readlist: updateDto.name,
               },
             ),
           })

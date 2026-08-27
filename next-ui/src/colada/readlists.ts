@@ -8,19 +8,25 @@ import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
 import { entitiesChanged, entityChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
+  komgaAddUserUploadedReadListThumbnail,
   komgaCreateReadList,
   komgaDeleteReadListById,
+  komgaDeleteUserUploadedReadListThumbnail,
   komgaGetReadListById,
   komgaGetReadLists,
+  komgaGetReadListThumbnails,
+  komgaMarkReadListThumbnailSelected,
   komgaUpdateReadListById,
   type ReadListCreationDto,
   type ReadListUpdateDto,
 } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 export const QUERY_KEYS_READLIST = {
   root: ['readlists'] as const,
   bySearch: (request: object) => [...QUERY_KEYS_READLIST.root, JSON.stringify(request)] as const,
   byId: (id: string) => [...QUERY_KEYS_READLIST.root, id] as const,
+  posters: (id: string) => [...QUERY_KEYS_READLIST.byId(id), 'posters'] as const,
 }
 
 export const readListsListQuery = defineQueryOptions(
@@ -124,6 +130,91 @@ export const useDeleteReadList = defineMutation(() => {
       }),
     onSuccess: (_data, readListId) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_READLIST.root, readListId)
+    },
+  })
+})
+
+export const readListPostersQuery = defineQueryOptions(
+  ({ readListId }: { readListId: string }) => ({
+    key: QUERY_KEYS_READLIST.posters(readListId),
+    query: () =>
+      komgaGetReadListThumbnails({
+        path: {
+          id: readListId,
+        },
+      }),
+  }),
+)
+
+export const useAddReadListPoster = defineMutation(() => {
+  const appStore = useAppStore()
+  const cacheStore = useImageCacheStore()
+  return useMutation({
+    mutation: ({
+      readListId,
+      file,
+      selected,
+    }: {
+      readListId: string
+      file: File
+      selected: boolean
+    }) =>
+      komgaAddUserUploadedReadListThumbnail({
+        query: {
+          selected: selected,
+        },
+        body: {
+          file: file,
+        },
+        path: {
+          id: readListId,
+        },
+      }),
+    onSuccess: (_data, { readListId }) => {
+      if (appStore.sseUnavailable) {
+        entitiesChanged(QUERY_KEYS_READLIST.posters(readListId))
+        cacheStore.bustCache(readListId)
+      }
+    },
+  })
+})
+
+export const useDeleteReadListPoster = defineMutation(() => {
+  const appStore = useAppStore()
+  const cacheStore = useImageCacheStore()
+  return useMutation({
+    mutation: ({ readListId, thumbnailId }: { readListId: string; thumbnailId: string }) =>
+      komgaDeleteUserUploadedReadListThumbnail({
+        path: {
+          id: readListId,
+          thumbnailId: thumbnailId,
+        },
+      }),
+    onSuccess: (_data, { readListId }) => {
+      if (appStore.sseUnavailable) {
+        entitiesChanged(QUERY_KEYS_READLIST.posters(readListId))
+        cacheStore.bustCache(readListId)
+      }
+    },
+  })
+})
+
+export const useMarkReadListPosterSelected = defineMutation(() => {
+  const appStore = useAppStore()
+  const cacheStore = useImageCacheStore()
+  return useMutation({
+    mutation: ({ readListId, thumbnailId }: { readListId: string; thumbnailId: string }) =>
+      komgaMarkReadListThumbnailSelected({
+        path: {
+          id: readListId,
+          thumbnailId: thumbnailId,
+        },
+      }),
+    onSuccess: (_data, { readListId }) => {
+      if (appStore.sseUnavailable) {
+        entitiesChanged(QUERY_KEYS_READLIST.posters(readListId))
+        cacheStore.bustCache(readListId)
+      }
     },
   })
 })

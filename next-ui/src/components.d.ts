@@ -131,6 +131,8 @@ declare module 'vue' {
     ReadlistAddTo: typeof import('./components/readlist/AddTo.vue')['default']
     ReadlistCard: typeof import('./components/readlist/card/ReadlistCard.vue')['default']
     ReadlistDeletionWarning: typeof import('./components/readlist/DeletionWarning.vue')['default']
+    ReadlistFormEdit: typeof import('./components/readlist/form/Edit.vue')['default']
+    ReadlistFormGeneral: typeof import('./components/readlist/form/General.vue')['default']
     ReadlistMenuSheet: typeof import('./components/readlist/menu/Sheet.vue')['default']
     ReadlistView: typeof import('./components/readlist/view/ReadlistView.vue')['default']
     ReadlistViewActions: typeof import('./components/readlist/view/Actions.vue')['default']
