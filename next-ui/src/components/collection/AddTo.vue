@@ -49,7 +49,7 @@
               width="52"
               height="75"
               contain
-              :src="collectionPosterUrl(item.id)"
+              :src="collectionPosterUrl(item.id, cacheStore.getVersion(item.id))"
               lazy-src="@/assets/cover.svg"
               class="me-2"
             />
@@ -100,6 +100,7 @@ import {
   useCreateCollection,
   useUpdateCollection,
 } from '@/colada/collections'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const { seriesIds = [] } = defineProps<{
   seriesIds?: string[]
@@ -112,6 +113,7 @@ const emit = defineEmits<{
 
 const intl = useIntl()
 const messagesStore = useMessagesStore()
+const cacheStore = useImageCacheStore()
 
 const search = ref<string>('')
 const searchDebounced = refDebounced(search, 500)

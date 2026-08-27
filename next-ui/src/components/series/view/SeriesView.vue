@@ -6,7 +6,7 @@
         sm="3"
       >
         <ItemPoster
-          :poster-url="seriesPosterUrl(series.id)"
+          :poster-url="seriesPosterUrl(series.id, cacheStore.getVersion(series.id))"
           :top-right-icon="isRead ? 'i-mdi:check' : undefined"
           :top-right="unreadCount"
           :max-width="posterMaxWidth"
@@ -255,9 +255,11 @@ import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import { useBooks } from '@/composables/book/useBooks'
 import type { SeriesDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const intl = useIntl()
 const display = useDisplay()
+const cacheStore = useImageCacheStore()
 const id = useId()
 const posterMaxWidth = 220
 

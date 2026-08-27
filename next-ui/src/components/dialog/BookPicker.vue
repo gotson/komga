@@ -71,7 +71,7 @@
                     width="52"
                     height="75"
                     contain
-                    :src="bookPosterUrl(item.id)"
+                    :src="bookPosterUrl(item.id, cacheStore.getVersion(item.id))"
                     lazy-src="@/assets/cover.svg"
                     class="me-2"
                   />
@@ -97,8 +97,10 @@ import { bookPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { BookDto } from '@/generated/openapi'
 import type { VSortItem } from '@/types/PageRequest'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const intl = useIntl()
+const cacheStore = useImageCacheStore()
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 

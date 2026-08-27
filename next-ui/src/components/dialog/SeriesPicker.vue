@@ -59,7 +59,7 @@
                       width="52"
                       height="75"
                       contain
-                      :src="seriesPosterUrl(s.id)"
+                      :src="seriesPosterUrl(s.id, cacheStore.getVersion(s.id))"
                       lazy-src="@/assets/cover.svg"
                       class="me-2"
                     />
@@ -115,9 +115,11 @@ import { useLibraries } from '@/colada/libraries'
 import { PageRequest } from '@/types/PageRequest'
 import { useIntl } from 'vue-intl'
 import type { SeriesDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const intl = useIntl()
+const cacheStore = useImageCacheStore()
 
 const {
   includeOneShots = true,

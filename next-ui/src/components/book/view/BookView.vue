@@ -6,7 +6,7 @@
         sm="3"
       >
         <ItemPoster
-          :poster-url="bookPosterUrl(book.id)"
+          :poster-url="bookPosterUrl(book.id, cacheStore.getVersion(book.id))"
           :progress-percent="progressPercent"
           :max-width="posterMaxWidth"
         />
@@ -238,9 +238,11 @@ import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { createOrderCompareFn } from '@/functions/sort'
 import type { BookDto } from '@/generated/openapi'
 import { MediaStatus } from '@/types/MediaStatus'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const intl = useIntl()
 const display = useDisplay()
+const cacheStore = useImageCacheStore()
 const { convertErrorCodes } = useErrorCodeFormatter()
 const id = useId()
 const posterMaxWidth = 220

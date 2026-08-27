@@ -5,7 +5,9 @@
         cols="6"
         sm="3"
       >
-        <ItemPoster :poster-url="collectionPosterUrl(collection.id)" />
+        <ItemPoster
+          :poster-url="collectionPosterUrl(collection.id, cacheStore.getVersion(collection.id))"
+        />
       </v-col>
 
       <v-col
@@ -64,9 +66,11 @@ import { collectionPosterUrl } from '@/api/images'
 
 import { useDisplay } from 'vuetify'
 import type { CollectionDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const display = useDisplay()
 const id = useId()
+const cacheStore = useImageCacheStore()
 
 defineProps<{
   collection: CollectionDto

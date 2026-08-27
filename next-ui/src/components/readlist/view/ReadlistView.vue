@@ -5,7 +5,9 @@
         cols="6"
         sm="3"
       >
-        <ItemPoster :poster-url="readListPosterUrl(readList.id)" />
+        <ItemPoster
+          :poster-url="readListPosterUrl(readList.id, cacheStore.getVersion(readList.id))"
+        />
       </v-col>
 
       <v-col
@@ -70,9 +72,11 @@ import { readListPosterUrl } from '@/api/images'
 
 import { useDisplay } from 'vuetify'
 import type { ReadListDto } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const display = useDisplay()
 const id = useId()
+const cacheStore = useImageCacheStore()
 
 defineProps<{
   readList: ReadListDto

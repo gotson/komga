@@ -49,7 +49,7 @@
               width="52"
               height="75"
               contain
-              :src="readListPosterUrl(rl.id)"
+              :src="readListPosterUrl(rl.id, cacheStore.getVersion(rl.id))"
               lazy-src="@/assets/cover.svg"
               class="me-2"
             />
@@ -102,6 +102,7 @@ import { useMessagesStore } from '@/stores/messages'
 import type { ReadListDto } from '@/generated/openapi'
 import { bookListQuery } from '@/colada/books'
 import { PageRequest } from '@/types/PageRequest'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 const { bookIds = [], seriesIds = [] } = defineProps<{
   bookIds?: string[]
@@ -115,6 +116,7 @@ const emit = defineEmits<{
 
 const intl = useIntl()
 const messagesStore = useMessagesStore()
+const cacheStore = useImageCacheStore()
 
 const search = ref<string>('')
 const searchDebounced = refDebounced(search, 500)
