@@ -1,6 +1,8 @@
 import * as v from 'valibot'
 import type { BookDto, ReadListDto, SeriesDto, CollectionDto } from '@/generated/openapi'
 
+export type EntityDto = BookDto | SeriesDto | ReadListDto | CollectionDto
+
 // Using looseObject ensures it doesn't fail due to the other fields in the DTO
 const BookDiscriminator = v.looseObject({
   seriesTitle: v.string(),

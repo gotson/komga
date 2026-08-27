@@ -1,8 +1,6 @@
 import { partial } from 'filesize'
 import { currentLocale } from '@/utils/i18n/locale-helper'
 
-export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
-
 // Query Intl for the unit symbol of a given unit (byte, kilobyte, etc.)
 function getUnitSymbol(
   locale: string,

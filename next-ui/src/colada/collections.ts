@@ -15,12 +15,18 @@ import {
   type CollectionUpdateDto,
   type CollectionCreationDto,
   komgaCreateCollection,
+  komgaGetCollectionThumbnails,
+  komgaAddUserUploadedCollectionThumbnail,
+  komgaDeleteUserUploadedCollectionThumbnail,
+  komgaMarkCollectionThumbnailSelected,
 } from '@/generated/openapi'
+import { useImageCacheStore } from '@/stores/image-cache'
 
 export const QUERY_KEYS_COLLECTIONS = {
   root: ['collections'] as const,
   bySearch: (request: object) => [...QUERY_KEYS_COLLECTIONS.root, JSON.stringify(request)] as const,
   byId: (id: string) => [...QUERY_KEYS_COLLECTIONS.root, id] as const,
+  posters: (id: string) => [...QUERY_KEYS_COLLECTIONS.byId(id), 'posters'] as const,
 }
 
 export const collectionsListQuery = defineQueryOptions(
@@ -122,6 +128,91 @@ export const useDeleteCollection = defineMutation(() => {
       }),
     onSuccess: (_data, collectionId) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_COLLECTIONS.root, collectionId)
+    },
+  })
+})
+
+export const collectionPostersQuery = defineQueryOptions(
+  ({ collectionId }: { collectionId: string }) => ({
+    key: QUERY_KEYS_COLLECTIONS.posters(collectionId),
+    query: () =>
+      komgaGetCollectionThumbnails({
+        path: {
+          id: collectionId,
+        },
+      }),
+  }),
+)
+
+export const useAddCollectionPoster = defineMutation(() => {
+  const appStore = useAppStore()
+  const cacheStore = useImageCacheStore()
+  return useMutation({
+    mutation: ({
+      collectionId,
+      file,
+      selected,
+    }: {
+      collectionId: string
+      file: File
+      selected: boolean
+    }) =>
+      komgaAddUserUploadedCollectionThumbnail({
+        query: {
+          selected: selected,
+        },
+        body: {
+          file: file,
+        },
+        path: {
+          id: collectionId,
+        },
+      }),
+    onSuccess: (_data, { collectionId }) => {
+      if (appStore.sseUnavailable) {
+        entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(collectionId))
+        cacheStore.bustCache(collectionId)
+      }
+    },
+  })
+})
+
+export const useDeleteCollectionPoster = defineMutation(() => {
+  const appStore = useAppStore()
+  const cacheStore = useImageCacheStore()
+  return useMutation({
+    mutation: ({ collectionId, thumbnailId }: { collectionId: string; thumbnailId: string }) =>
+      komgaDeleteUserUploadedCollectionThumbnail({
+        path: {
+          id: collectionId,
+          thumbnailId: thumbnailId,
+        },
+      }),
+    onSuccess: (_data, { collectionId }) => {
+      if (appStore.sseUnavailable) {
+        entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(collectionId))
+        cacheStore.bustCache(collectionId)
+      }
+    },
+  })
+})
+
+export const useMarkCollectionPosterSelected = defineMutation(() => {
+  const appStore = useAppStore()
+  const cacheStore = useImageCacheStore()
+  return useMutation({
+    mutation: ({ collectionId, thumbnailId }: { collectionId: string; thumbnailId: string }) =>
+      komgaMarkCollectionThumbnailSelected({
+        path: {
+          id: collectionId,
+          thumbnailId: thumbnailId,
+        },
+      }),
+    onSuccess: (_data, { collectionId }) => {
+      if (appStore.sseUnavailable) {
+        entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(collectionId))
+        cacheStore.bustCache(collectionId)
+      }
     },
   })
 })

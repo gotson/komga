@@ -2,7 +2,7 @@ import { PageRequest } from '@/types/PageRequest'
 import { mockPage } from '@/mocks/api/pageable'
 import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
-import { handleGetCollections } from '@/generated/openapi/msw.gen'
+import { handleGetCollections, handleGetCollectionThumbnails } from '@/generated/openapi/msw.gen'
 
 import { response200OK } from '@/mocks/api/utils'
 
@@ -52,6 +52,30 @@ export const collectionsHandlers = [
       mockPage(selected, new PageRequest(Number(query.get('page')), Number(query.get('size')))),
     )
   }),
+  handleGetCollectionThumbnails(({ params }) =>
+    response200OK([
+      {
+        collectionId: params.id,
+        fileSize: 1524,
+        height: 1300,
+        width: 1250,
+        mediaType: 'image/avif',
+        id: '1',
+        selected: true,
+        type: 'USER_UPLOADED',
+      },
+      {
+        collectionId: params.id,
+        fileSize: 1524,
+        height: 300,
+        width: 250,
+        mediaType: 'image/jpeg',
+        id: '2',
+        selected: false,
+        type: 'GENERATED',
+      },
+    ]),
+  ),
   http.get('*/api/v1/collections/*/thumbnail', async () => {
     // Get an ArrayBuffer from reading the file from disk or fetching it.
     const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
