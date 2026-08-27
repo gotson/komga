@@ -54,7 +54,7 @@ export const useCurrentUser = defineQuery(() => {
   })
 
   const isAuthenticated = computed(() => !!data.value && !error.value)
-  const hasRole = (role: UserRole) => data.value?.roles.includes(role)
+  const hasRole = (role: UserRole) => data.value?.roles.includes(role) ?? false
   const isAdmin = computed(() => hasRole('ADMIN'))
 
   return {
