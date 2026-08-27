@@ -1125,16 +1125,17 @@ export type SettingMultiSourceString = {
 };
 
 export type SettingsDto = {
-    deleteEmptyCollections: boolean;
-    deleteEmptyReadLists: boolean;
-    kepubifyPath: SettingMultiSourceString;
+    deleteEmptyCollections?: boolean;
+    deleteEmptyReadLists?: boolean;
+    kepubifyPath?: SettingMultiSourceString;
     koboPort?: number;
-    koboProxy: boolean;
-    rememberMeDurationDays: number;
-    serverContextPath: SettingMultiSourceString;
-    serverPort: SettingMultiSourceInteger;
-    taskPoolSize: number;
-    thumbnailSize: ThumbnailSizeEnum;
+    koboProxy?: boolean;
+    maxUploadFileSizeBytes?: number;
+    rememberMeDurationDays?: number;
+    serverContextPath?: SettingMultiSourceString;
+    serverPort?: SettingMultiSourceInteger;
+    taskPoolSize?: number;
+    thumbnailSize?: ThumbnailSizeEnum;
 };
 
 /**

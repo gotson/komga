@@ -25,7 +25,7 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  *
  * Required role: **ADMIN**
  */
-export const komgaGetActuatorInfo = <ThrowOnError extends boolean = false>(options?: Options<GetActuatorInfoData, ThrowOnError>): RequestResult<GetActuatorInfoResponses, unknown, ThrowOnError, 'data'> => (options?.client ?? client).get<GetActuatorInfoResponses, unknown, ThrowOnError, 'data'>({
+export const komgaGetActuatorInfo = <ThrowOnError extends boolean = true>(options?: Options<GetActuatorInfoData, ThrowOnError>): RequestResult<GetActuatorInfoResponses, unknown, ThrowOnError, 'data'> => (options?.client ?? client).get<GetActuatorInfoResponses, unknown, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/actuator/info',
@@ -37,7 +37,7 @@ export const komgaGetActuatorInfo = <ThrowOnError extends boolean = false>(optio
  *
  * Invalidates the current session and clean up any remember-me authentication.
  */
-export const komgaPostLogout = <ThrowOnError extends boolean = false>(options?: Options<PostLogoutData, ThrowOnError>): RequestResult<PostLogoutResponses, unknown, ThrowOnError, 'data'> => (options?.client ?? client).get<PostLogoutResponses, unknown, ThrowOnError, 'data'>({
+export const komgaPostLogout = <ThrowOnError extends boolean = true>(options?: Options<PostLogoutData, ThrowOnError>): RequestResult<PostLogoutResponses, unknown, ThrowOnError, 'data'> => (options?.client ?? client).get<PostLogoutResponses, unknown, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/logout',
@@ -49,7 +49,7 @@ export const komgaPostLogout = <ThrowOnError extends boolean = false>(options?: 
  *
  * Invalidates the current session and clean up any remember-me authentication.
  */
-export const komgaPostLogout1 = <ThrowOnError extends boolean = false>(options?: Options<PostLogout1Data, ThrowOnError>): RequestResult<PostLogout1Responses, unknown, ThrowOnError, 'data'> => (options?.client ?? client).post<PostLogout1Responses, unknown, ThrowOnError, 'data'>({
+export const komgaPostLogout1 = <ThrowOnError extends boolean = true>(options?: Options<PostLogout1Data, ThrowOnError>): RequestResult<PostLogout1Responses, unknown, ThrowOnError, 'data'> => (options?.client ?? client).post<PostLogout1Responses, unknown, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/logout',
@@ -61,7 +61,7 @@ export const komgaPostLogout1 = <ThrowOnError extends boolean = false>(options?:
  *
  * Required role: **ADMIN**
  */
-export const komgaGetAnnouncements = <ThrowOnError extends boolean = false>(options?: Options<GetAnnouncementsData, ThrowOnError>): RequestResult<GetAnnouncementsResponses, GetAnnouncementsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAnnouncementsResponses, GetAnnouncementsErrors, ThrowOnError, 'data'>({
+export const komgaGetAnnouncements = <ThrowOnError extends boolean = true>(options?: Options<GetAnnouncementsData, ThrowOnError>): RequestResult<GetAnnouncementsResponses, GetAnnouncementsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAnnouncementsResponses, GetAnnouncementsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/announcements',
@@ -73,7 +73,7 @@ export const komgaGetAnnouncements = <ThrowOnError extends boolean = false>(opti
  *
  * Required role: **ADMIN**
  */
-export const komgaMarkAnnouncementsRead = <ThrowOnError extends boolean = false>(options: Options<MarkAnnouncementsReadData, ThrowOnError>): RequestResult<MarkAnnouncementsReadResponses, MarkAnnouncementsReadErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkAnnouncementsReadResponses, MarkAnnouncementsReadErrors, ThrowOnError, 'data'>({
+export const komgaMarkAnnouncementsRead = <ThrowOnError extends boolean = true>(options: Options<MarkAnnouncementsReadData, ThrowOnError>): RequestResult<MarkAnnouncementsReadResponses, MarkAnnouncementsReadErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkAnnouncementsReadResponses, MarkAnnouncementsReadErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/announcements',
@@ -91,7 +91,7 @@ export const komgaMarkAnnouncementsRead = <ThrowOnError extends boolean = false>
  *
  * Required role: **ADMIN**
  */
-export const komgaGetBooksDuplicates = <ThrowOnError extends boolean = false>(options?: Options<GetBooksDuplicatesData, ThrowOnError>): RequestResult<GetBooksDuplicatesResponses, GetBooksDuplicatesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetBooksDuplicatesResponses, GetBooksDuplicatesErrors, ThrowOnError, 'data'>({
+export const komgaGetBooksDuplicates = <ThrowOnError extends boolean = true>(options?: Options<GetBooksDuplicatesData, ThrowOnError>): RequestResult<GetBooksDuplicatesResponses, GetBooksDuplicatesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetBooksDuplicatesResponses, GetBooksDuplicatesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/duplicates',
@@ -103,7 +103,7 @@ export const komgaGetBooksDuplicates = <ThrowOnError extends boolean = false>(op
  *
  * Required role: **ADMIN**
  */
-export const komgaImportBooks = <ThrowOnError extends boolean = false>(options: Options<ImportBooksData, ThrowOnError>): RequestResult<ImportBooksResponses, ImportBooksErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ImportBooksResponses, ImportBooksErrors, ThrowOnError, 'data'>({
+export const komgaImportBooks = <ThrowOnError extends boolean = true>(options: Options<ImportBooksData, ThrowOnError>): RequestResult<ImportBooksResponses, ImportBooksErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ImportBooksResponses, ImportBooksErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/import',
@@ -119,7 +119,7 @@ export const komgaImportBooks = <ThrowOnError extends boolean = false>(options: 
  *
  * Return newly added or updated books.
  */
-export const komgaGetBooksLatest = <ThrowOnError extends boolean = false>(options?: Options<GetBooksLatestData, ThrowOnError>): RequestResult<GetBooksLatestResponses, GetBooksLatestErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetBooksLatestResponses, GetBooksLatestErrors, ThrowOnError, 'data'>({
+export const komgaGetBooksLatest = <ThrowOnError extends boolean = true>(options?: Options<GetBooksLatestData, ThrowOnError>): RequestResult<GetBooksLatestResponses, GetBooksLatestErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetBooksLatestResponses, GetBooksLatestErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/latest',
@@ -129,7 +129,7 @@ export const komgaGetBooksLatest = <ThrowOnError extends boolean = false>(option
 /**
  * List books
  */
-export const komgaGetBooks = <ThrowOnError extends boolean = false>(options: Options<GetBooksData, ThrowOnError>): RequestResult<GetBooksResponses, GetBooksErrors, ThrowOnError, 'data'> => (options.client ?? client).post<GetBooksResponses, GetBooksErrors, ThrowOnError, 'data'>({
+export const komgaGetBooks = <ThrowOnError extends boolean = true>(options: Options<GetBooksData, ThrowOnError>): RequestResult<GetBooksResponses, GetBooksErrors, ThrowOnError, 'data'> => (options.client ?? client).post<GetBooksResponses, GetBooksErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/list',
@@ -147,7 +147,7 @@ export const komgaGetBooks = <ThrowOnError extends boolean = false>(options: Opt
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdateBookMetadataByBatch = <ThrowOnError extends boolean = false>(options: Options<UpdateBookMetadataByBatchData, ThrowOnError>): RequestResult<UpdateBookMetadataByBatchResponses, UpdateBookMetadataByBatchErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateBookMetadataByBatchResponses, UpdateBookMetadataByBatchErrors, ThrowOnError, 'data'>({
+export const komgaUpdateBookMetadataByBatch = <ThrowOnError extends boolean = true>(options: Options<UpdateBookMetadataByBatchData, ThrowOnError>): RequestResult<UpdateBookMetadataByBatchResponses, UpdateBookMetadataByBatchErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateBookMetadataByBatchResponses, UpdateBookMetadataByBatchErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/metadata',
@@ -163,7 +163,7 @@ export const komgaUpdateBookMetadataByBatch = <ThrowOnError extends boolean = fa
  *
  * Return first unread book of series with at least one book read and no books in progress.
  */
-export const komgaGetBooksOnDeck = <ThrowOnError extends boolean = false>(options?: Options<GetBooksOnDeckData, ThrowOnError>): RequestResult<GetBooksOnDeckResponses, GetBooksOnDeckErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetBooksOnDeckResponses, GetBooksOnDeckErrors, ThrowOnError, 'data'>({
+export const komgaGetBooksOnDeck = <ThrowOnError extends boolean = true>(options?: Options<GetBooksOnDeckData, ThrowOnError>): RequestResult<GetBooksOnDeckResponses, GetBooksOnDeckErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetBooksOnDeckResponses, GetBooksOnDeckErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/ondeck',
@@ -175,7 +175,7 @@ export const komgaGetBooksOnDeck = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **ADMIN**
  */
-export const komgaBooksRegenerateThumbnails = <ThrowOnError extends boolean = false>(options?: Options<BooksRegenerateThumbnailsData, ThrowOnError>): RequestResult<BooksRegenerateThumbnailsResponses, BooksRegenerateThumbnailsErrors, ThrowOnError, 'data'> => (options?.client ?? client).put<BooksRegenerateThumbnailsResponses, BooksRegenerateThumbnailsErrors, ThrowOnError, 'data'>({
+export const komgaBooksRegenerateThumbnails = <ThrowOnError extends boolean = true>(options?: Options<BooksRegenerateThumbnailsData, ThrowOnError>): RequestResult<BooksRegenerateThumbnailsResponses, BooksRegenerateThumbnailsErrors, ThrowOnError, 'data'> => (options?.client ?? client).put<BooksRegenerateThumbnailsResponses, BooksRegenerateThumbnailsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/thumbnails',
@@ -185,7 +185,7 @@ export const komgaBooksRegenerateThumbnails = <ThrowOnError extends boolean = fa
 /**
  * Get book details
  */
-export const komgaGetBookById = <ThrowOnError extends boolean = false>(options: Options<GetBookByIdData, ThrowOnError>): RequestResult<GetBookByIdResponses, GetBookByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookByIdResponses, GetBookByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetBookById = <ThrowOnError extends boolean = true>(options: Options<GetBookByIdData, ThrowOnError>): RequestResult<GetBookByIdResponses, GetBookByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookByIdResponses, GetBookByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}',
@@ -197,7 +197,7 @@ export const komgaGetBookById = <ThrowOnError extends boolean = false>(options: 
  *
  * Required role: **ADMIN**
  */
-export const komgaBookAnalyze = <ThrowOnError extends boolean = false>(options: Options<BookAnalyzeData, ThrowOnError>): RequestResult<BookAnalyzeResponses, BookAnalyzeErrors, ThrowOnError, 'data'> => (options.client ?? client).post<BookAnalyzeResponses, BookAnalyzeErrors, ThrowOnError, 'data'>({
+export const komgaBookAnalyze = <ThrowOnError extends boolean = true>(options: Options<BookAnalyzeData, ThrowOnError>): RequestResult<BookAnalyzeResponses, BookAnalyzeErrors, ThrowOnError, 'data'> => (options.client ?? client).post<BookAnalyzeResponses, BookAnalyzeErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/analyze',
@@ -209,7 +209,7 @@ export const komgaBookAnalyze = <ThrowOnError extends boolean = false>(options: 
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteBookFile = <ThrowOnError extends boolean = false>(options: Options<DeleteBookFileData, ThrowOnError>): RequestResult<DeleteBookFileResponses, DeleteBookFileErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteBookFileResponses, DeleteBookFileErrors, ThrowOnError, 'data'>({
+export const komgaDeleteBookFile = <ThrowOnError extends boolean = true>(options: Options<DeleteBookFileData, ThrowOnError>): RequestResult<DeleteBookFileResponses, DeleteBookFileErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteBookFileResponses, DeleteBookFileErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/file',
@@ -223,7 +223,7 @@ export const komgaDeleteBookFile = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **FILE_DOWNLOAD**
  */
-export const komgaDownloadBookFile = <ThrowOnError extends boolean = false>(options: Options<DownloadBookFileData, ThrowOnError>): RequestResult<DownloadBookFileResponses, DownloadBookFileErrors, ThrowOnError, 'data'> => (options.client ?? client).get<DownloadBookFileResponses, DownloadBookFileErrors, ThrowOnError, 'data'>({
+export const komgaDownloadBookFile = <ThrowOnError extends boolean = true>(options: Options<DownloadBookFileData, ThrowOnError>): RequestResult<DownloadBookFileResponses, DownloadBookFileErrors, ThrowOnError, 'data'> => (options.client ?? client).get<DownloadBookFileResponses, DownloadBookFileErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/file',
@@ -237,7 +237,7 @@ export const komgaDownloadBookFile = <ThrowOnError extends boolean = false>(opti
  *
  * Required role: **FILE_DOWNLOAD**
  */
-export const komgaDownloadBookFile1 = <ThrowOnError extends boolean = false>(options: Options<DownloadBookFile1Data, ThrowOnError>): RequestResult<DownloadBookFile1Responses, DownloadBookFile1Errors, ThrowOnError, 'data'> => (options.client ?? client).get<DownloadBookFile1Responses, DownloadBookFile1Errors, ThrowOnError, 'data'>({
+export const komgaDownloadBookFile1 = <ThrowOnError extends boolean = true>(options: Options<DownloadBookFile1Data, ThrowOnError>): RequestResult<DownloadBookFile1Responses, DownloadBookFile1Errors, ThrowOnError, 'data'> => (options.client ?? client).get<DownloadBookFile1Responses, DownloadBookFile1Errors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/file/*',
@@ -247,7 +247,7 @@ export const komgaDownloadBookFile1 = <ThrowOnError extends boolean = false>(opt
 /**
  * Get book's WebPub manifest
  */
-export const komgaGetBookWebPubManifest = <ThrowOnError extends boolean = false>(options: Options<GetBookWebPubManifestData, ThrowOnError>): RequestResult<GetBookWebPubManifestResponses, GetBookWebPubManifestErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookWebPubManifestResponses, GetBookWebPubManifestErrors, ThrowOnError, 'data'>({
+export const komgaGetBookWebPubManifest = <ThrowOnError extends boolean = true>(options: Options<GetBookWebPubManifestData, ThrowOnError>): RequestResult<GetBookWebPubManifestResponses, GetBookWebPubManifestErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookWebPubManifestResponses, GetBookWebPubManifestErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/manifest',
@@ -257,7 +257,7 @@ export const komgaGetBookWebPubManifest = <ThrowOnError extends boolean = false>
 /**
  * Get book's WebPub manifest (DiViNa)
  */
-export const komgaGetBookWebPubManifestDivina = <ThrowOnError extends boolean = false>(options: Options<GetBookWebPubManifestDivinaData, ThrowOnError>): RequestResult<GetBookWebPubManifestDivinaResponses, GetBookWebPubManifestDivinaErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookWebPubManifestDivinaResponses, GetBookWebPubManifestDivinaErrors, ThrowOnError, 'data'>({
+export const komgaGetBookWebPubManifestDivina = <ThrowOnError extends boolean = true>(options: Options<GetBookWebPubManifestDivinaData, ThrowOnError>): RequestResult<GetBookWebPubManifestDivinaResponses, GetBookWebPubManifestDivinaErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookWebPubManifestDivinaResponses, GetBookWebPubManifestDivinaErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/manifest/divina',
@@ -267,7 +267,7 @@ export const komgaGetBookWebPubManifestDivina = <ThrowOnError extends boolean = 
 /**
  * Get book's WebPub manifest (Epub)
  */
-export const komgaGetBookWebPubManifestEpub = <ThrowOnError extends boolean = false>(options: Options<GetBookWebPubManifestEpubData, ThrowOnError>): RequestResult<GetBookWebPubManifestEpubResponses, GetBookWebPubManifestEpubErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookWebPubManifestEpubResponses, GetBookWebPubManifestEpubErrors, ThrowOnError, 'data'>({
+export const komgaGetBookWebPubManifestEpub = <ThrowOnError extends boolean = true>(options: Options<GetBookWebPubManifestEpubData, ThrowOnError>): RequestResult<GetBookWebPubManifestEpubResponses, GetBookWebPubManifestEpubErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookWebPubManifestEpubResponses, GetBookWebPubManifestEpubErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/manifest/epub',
@@ -277,7 +277,7 @@ export const komgaGetBookWebPubManifestEpub = <ThrowOnError extends boolean = fa
 /**
  * Get book's WebPub manifest (PDF)
  */
-export const komgaGetBookWebPubManifestPdf = <ThrowOnError extends boolean = false>(options: Options<GetBookWebPubManifestPdfData, ThrowOnError>): RequestResult<GetBookWebPubManifestPdfResponses, GetBookWebPubManifestPdfErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookWebPubManifestPdfResponses, GetBookWebPubManifestPdfErrors, ThrowOnError, 'data'>({
+export const komgaGetBookWebPubManifestPdf = <ThrowOnError extends boolean = true>(options: Options<GetBookWebPubManifestPdfData, ThrowOnError>): RequestResult<GetBookWebPubManifestPdfResponses, GetBookWebPubManifestPdfErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookWebPubManifestPdfResponses, GetBookWebPubManifestPdfErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/manifest/pdf',
@@ -291,7 +291,7 @@ export const komgaGetBookWebPubManifestPdf = <ThrowOnError extends boolean = fal
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdateBookMetadata = <ThrowOnError extends boolean = false>(options: Options<UpdateBookMetadataData, ThrowOnError>): RequestResult<UpdateBookMetadataResponses, UpdateBookMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateBookMetadataResponses, UpdateBookMetadataErrors, ThrowOnError, 'data'>({
+export const komgaUpdateBookMetadata = <ThrowOnError extends boolean = true>(options: Options<UpdateBookMetadataData, ThrowOnError>): RequestResult<UpdateBookMetadataResponses, UpdateBookMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateBookMetadataResponses, UpdateBookMetadataErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/metadata',
@@ -307,7 +307,7 @@ export const komgaUpdateBookMetadata = <ThrowOnError extends boolean = false>(op
  *
  * Required role: **ADMIN**
  */
-export const komgaBookRefreshMetadata = <ThrowOnError extends boolean = false>(options: Options<BookRefreshMetadataData, ThrowOnError>): RequestResult<BookRefreshMetadataResponses, BookRefreshMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).post<BookRefreshMetadataResponses, BookRefreshMetadataErrors, ThrowOnError, 'data'>({
+export const komgaBookRefreshMetadata = <ThrowOnError extends boolean = true>(options: Options<BookRefreshMetadataData, ThrowOnError>): RequestResult<BookRefreshMetadataResponses, BookRefreshMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).post<BookRefreshMetadataResponses, BookRefreshMetadataErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/metadata/refresh',
@@ -317,7 +317,7 @@ export const komgaBookRefreshMetadata = <ThrowOnError extends boolean = false>(o
 /**
  * Get next book in series
  */
-export const komgaGetBookSiblingNext = <ThrowOnError extends boolean = false>(options: Options<GetBookSiblingNextData, ThrowOnError>): RequestResult<GetBookSiblingNextResponses, GetBookSiblingNextErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookSiblingNextResponses, GetBookSiblingNextErrors, ThrowOnError, 'data'>({
+export const komgaGetBookSiblingNext = <ThrowOnError extends boolean = true>(options: Options<GetBookSiblingNextData, ThrowOnError>): RequestResult<GetBookSiblingNextResponses, GetBookSiblingNextErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookSiblingNextResponses, GetBookSiblingNextErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/next',
@@ -327,7 +327,7 @@ export const komgaGetBookSiblingNext = <ThrowOnError extends boolean = false>(op
 /**
  * List book pages
  */
-export const komgaGetBookPages = <ThrowOnError extends boolean = false>(options: Options<GetBookPagesData, ThrowOnError>): RequestResult<GetBookPagesResponses, GetBookPagesErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPagesResponses, GetBookPagesErrors, ThrowOnError, 'data'>({
+export const komgaGetBookPages = <ThrowOnError extends boolean = true>(options: Options<GetBookPagesData, ThrowOnError>): RequestResult<GetBookPagesResponses, GetBookPagesErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPagesResponses, GetBookPagesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/pages',
@@ -339,7 +339,7 @@ export const komgaGetBookPages = <ThrowOnError extends boolean = false>(options:
  *
  * Required role: **PAGE_STREAMING**
  */
-export const komgaGetBookPageByNumber = <ThrowOnError extends boolean = false>(options: Options<GetBookPageByNumberData, ThrowOnError>): RequestResult<GetBookPageByNumberResponses, GetBookPageByNumberErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPageByNumberResponses, GetBookPageByNumberErrors, ThrowOnError, 'data'>({
+export const komgaGetBookPageByNumber = <ThrowOnError extends boolean = true>(options: Options<GetBookPageByNumberData, ThrowOnError>): RequestResult<GetBookPageByNumberResponses, GetBookPageByNumberErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPageByNumberResponses, GetBookPageByNumberErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/pages/{pageNumber}',
@@ -353,7 +353,7 @@ export const komgaGetBookPageByNumber = <ThrowOnError extends boolean = false>(o
  *
  * Required role: **PAGE_STREAMING**
  */
-export const komgaGetBookPageRawByNumber = <ThrowOnError extends boolean = false>(options: Options<GetBookPageRawByNumberData, ThrowOnError>): RequestResult<GetBookPageRawByNumberResponses, GetBookPageRawByNumberErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPageRawByNumberResponses, GetBookPageRawByNumberErrors, ThrowOnError, 'data'>({
+export const komgaGetBookPageRawByNumber = <ThrowOnError extends boolean = true>(options: Options<GetBookPageRawByNumberData, ThrowOnError>): RequestResult<GetBookPageRawByNumberResponses, GetBookPageRawByNumberErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPageRawByNumberResponses, GetBookPageRawByNumberErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/pages/{pageNumber}/raw',
@@ -365,7 +365,7 @@ export const komgaGetBookPageRawByNumber = <ThrowOnError extends boolean = false
  *
  * The image is resized to 300px on the largest dimension.
  */
-export const komgaGetBookPageThumbnailByNumber = <ThrowOnError extends boolean = false>(options: Options<GetBookPageThumbnailByNumberData, ThrowOnError>): RequestResult<GetBookPageThumbnailByNumberResponses, GetBookPageThumbnailByNumberErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPageThumbnailByNumberResponses, GetBookPageThumbnailByNumberErrors, ThrowOnError, 'data'>({
+export const komgaGetBookPageThumbnailByNumber = <ThrowOnError extends boolean = true>(options: Options<GetBookPageThumbnailByNumberData, ThrowOnError>): RequestResult<GetBookPageThumbnailByNumberResponses, GetBookPageThumbnailByNumberErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPageThumbnailByNumberResponses, GetBookPageThumbnailByNumberErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/pages/{pageNumber}/thumbnail',
@@ -377,7 +377,7 @@ export const komgaGetBookPageThumbnailByNumber = <ThrowOnError extends boolean =
  *
  * The Positions API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.
  */
-export const komgaGetBookPositions = <ThrowOnError extends boolean = false>(options: Options<GetBookPositionsData, ThrowOnError>): RequestResult<GetBookPositionsResponses, GetBookPositionsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPositionsResponses, GetBookPositionsErrors, ThrowOnError, 'data'>({
+export const komgaGetBookPositions = <ThrowOnError extends boolean = true>(options: Options<GetBookPositionsData, ThrowOnError>): RequestResult<GetBookPositionsResponses, GetBookPositionsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookPositionsResponses, GetBookPositionsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/positions',
@@ -387,7 +387,7 @@ export const komgaGetBookPositions = <ThrowOnError extends boolean = false>(opti
 /**
  * Get previous book in series
  */
-export const komgaGetBookSiblingPrevious = <ThrowOnError extends boolean = false>(options: Options<GetBookSiblingPreviousData, ThrowOnError>): RequestResult<GetBookSiblingPreviousResponses, GetBookSiblingPreviousErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookSiblingPreviousResponses, GetBookSiblingPreviousErrors, ThrowOnError, 'data'>({
+export const komgaGetBookSiblingPrevious = <ThrowOnError extends boolean = true>(options: Options<GetBookSiblingPreviousData, ThrowOnError>): RequestResult<GetBookSiblingPreviousResponses, GetBookSiblingPreviousErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookSiblingPreviousResponses, GetBookSiblingPreviousErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/previous',
@@ -399,7 +399,7 @@ export const komgaGetBookSiblingPrevious = <ThrowOnError extends boolean = false
  *
  * The Progression API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.
  */
-export const komgaGetBookProgression = <ThrowOnError extends boolean = false>(options: Options<GetBookProgressionData, ThrowOnError>): RequestResult<GetBookProgressionResponses, GetBookProgressionErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookProgressionResponses, GetBookProgressionErrors, ThrowOnError, 'data'>({
+export const komgaGetBookProgression = <ThrowOnError extends boolean = true>(options: Options<GetBookProgressionData, ThrowOnError>): RequestResult<GetBookProgressionResponses, GetBookProgressionErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookProgressionResponses, GetBookProgressionErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/progression',
@@ -411,7 +411,7 @@ export const komgaGetBookProgression = <ThrowOnError extends boolean = false>(op
  *
  * The Progression API is a proposed standard for OPDS 2 and Readium. It is used by the Epub Reader.
  */
-export const komgaUpdateBookProgression = <ThrowOnError extends boolean = false>(options: Options<UpdateBookProgressionData, ThrowOnError>): RequestResult<UpdateBookProgressionResponses, UpdateBookProgressionErrors, ThrowOnError, 'data'> => (options.client ?? client).put<UpdateBookProgressionResponses, UpdateBookProgressionErrors, ThrowOnError, 'data'>({
+export const komgaUpdateBookProgression = <ThrowOnError extends boolean = true>(options: Options<UpdateBookProgressionData, ThrowOnError>): RequestResult<UpdateBookProgressionResponses, UpdateBookProgressionErrors, ThrowOnError, 'data'> => (options.client ?? client).put<UpdateBookProgressionResponses, UpdateBookProgressionErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/progression',
@@ -427,7 +427,7 @@ export const komgaUpdateBookProgression = <ThrowOnError extends boolean = false>
  *
  * Mark book as unread
  */
-export const komgaDeleteBookReadProgress = <ThrowOnError extends boolean = false>(options: Options<DeleteBookReadProgressData, ThrowOnError>): RequestResult<DeleteBookReadProgressResponses, DeleteBookReadProgressErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteBookReadProgressResponses, DeleteBookReadProgressErrors, ThrowOnError, 'data'>({
+export const komgaDeleteBookReadProgress = <ThrowOnError extends boolean = true>(options: Options<DeleteBookReadProgressData, ThrowOnError>): RequestResult<DeleteBookReadProgressResponses, DeleteBookReadProgressErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteBookReadProgressResponses, DeleteBookReadProgressErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/read-progress',
@@ -439,7 +439,7 @@ export const komgaDeleteBookReadProgress = <ThrowOnError extends boolean = false
  *
  * Mark book as read and/or change page progress.
  */
-export const komgaMarkBookReadProgress = <ThrowOnError extends boolean = false>(options: Options<MarkBookReadProgressData, ThrowOnError>): RequestResult<MarkBookReadProgressResponses, MarkBookReadProgressErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<MarkBookReadProgressResponses, MarkBookReadProgressErrors, ThrowOnError, 'data'>({
+export const komgaMarkBookReadProgress = <ThrowOnError extends boolean = true>(options: Options<MarkBookReadProgressData, ThrowOnError>): RequestResult<MarkBookReadProgressResponses, MarkBookReadProgressErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<MarkBookReadProgressResponses, MarkBookReadProgressErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/read-progress',
@@ -453,7 +453,7 @@ export const komgaMarkBookReadProgress = <ThrowOnError extends boolean = false>(
 /**
  * List book's readlists
  */
-export const komgaGetReadListsByBookId = <ThrowOnError extends boolean = false>(options: Options<GetReadListsByBookIdData, ThrowOnError>): RequestResult<GetReadListsByBookIdResponses, GetReadListsByBookIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListsByBookIdResponses, GetReadListsByBookIdErrors, ThrowOnError, 'data'>({
+export const komgaGetReadListsByBookId = <ThrowOnError extends boolean = true>(options: Options<GetReadListsByBookIdData, ThrowOnError>): RequestResult<GetReadListsByBookIdResponses, GetReadListsByBookIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListsByBookIdResponses, GetReadListsByBookIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/readlists',
@@ -465,7 +465,7 @@ export const komgaGetReadListsByBookId = <ThrowOnError extends boolean = false>(
  *
  * Return a resource from within an Epub book.
  */
-export const komgaGetBookEpubResource = <ThrowOnError extends boolean = false>(options: Options<GetBookEpubResourceData, ThrowOnError>): RequestResult<GetBookEpubResourceResponses, GetBookEpubResourceErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookEpubResourceResponses, GetBookEpubResourceErrors, ThrowOnError, 'data'>({
+export const komgaGetBookEpubResource = <ThrowOnError extends boolean = true>(options: Options<GetBookEpubResourceData, ThrowOnError>): RequestResult<GetBookEpubResourceResponses, GetBookEpubResourceErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookEpubResourceResponses, GetBookEpubResourceErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     url: '/api/v1/books/{bookId}/resource/{resource}',
     ...options
@@ -474,7 +474,7 @@ export const komgaGetBookEpubResource = <ThrowOnError extends boolean = false>(o
 /**
  * Get book's poster image
  */
-export const komgaGetBookThumbnail = <ThrowOnError extends boolean = false>(options: Options<GetBookThumbnailData, ThrowOnError>): RequestResult<GetBookThumbnailResponses, GetBookThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookThumbnailResponses, GetBookThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaGetBookThumbnail = <ThrowOnError extends boolean = true>(options: Options<GetBookThumbnailData, ThrowOnError>): RequestResult<GetBookThumbnailResponses, GetBookThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookThumbnailResponses, GetBookThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/thumbnail',
@@ -484,7 +484,7 @@ export const komgaGetBookThumbnail = <ThrowOnError extends boolean = false>(opti
 /**
  * List book posters
  */
-export const komgaGetBookThumbnails = <ThrowOnError extends boolean = false>(options: Options<GetBookThumbnailsData, ThrowOnError>): RequestResult<GetBookThumbnailsResponses, GetBookThumbnailsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookThumbnailsResponses, GetBookThumbnailsErrors, ThrowOnError, 'data'>({
+export const komgaGetBookThumbnails = <ThrowOnError extends boolean = true>(options: Options<GetBookThumbnailsData, ThrowOnError>): RequestResult<GetBookThumbnailsResponses, GetBookThumbnailsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookThumbnailsResponses, GetBookThumbnailsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/thumbnails',
@@ -496,7 +496,7 @@ export const komgaGetBookThumbnails = <ThrowOnError extends boolean = false>(opt
  *
  * Required role: **ADMIN**
  */
-export const komgaAddUserUploadedBookThumbnail = <ThrowOnError extends boolean = false>(options: Options<AddUserUploadedBookThumbnailData, ThrowOnError>): RequestResult<AddUserUploadedBookThumbnailResponses, AddUserUploadedBookThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserUploadedBookThumbnailResponses, AddUserUploadedBookThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaAddUserUploadedBookThumbnail = <ThrowOnError extends boolean = true>(options: Options<AddUserUploadedBookThumbnailData, ThrowOnError>): RequestResult<AddUserUploadedBookThumbnailResponses, AddUserUploadedBookThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserUploadedBookThumbnailResponses, AddUserUploadedBookThumbnailErrors, ThrowOnError, 'data'>({
     ...formDataBodySerializer,
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
@@ -515,7 +515,7 @@ export const komgaAddUserUploadedBookThumbnail = <ThrowOnError extends boolean =
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteUserUploadedBookThumbnail = <ThrowOnError extends boolean = false>(options: Options<DeleteUserUploadedBookThumbnailData, ThrowOnError>): RequestResult<DeleteUserUploadedBookThumbnailResponses, DeleteUserUploadedBookThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserUploadedBookThumbnailResponses, DeleteUserUploadedBookThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaDeleteUserUploadedBookThumbnail = <ThrowOnError extends boolean = true>(options: Options<DeleteUserUploadedBookThumbnailData, ThrowOnError>): RequestResult<DeleteUserUploadedBookThumbnailResponses, DeleteUserUploadedBookThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserUploadedBookThumbnailResponses, DeleteUserUploadedBookThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/thumbnails/{thumbnailId}',
@@ -525,7 +525,7 @@ export const komgaDeleteUserUploadedBookThumbnail = <ThrowOnError extends boolea
 /**
  * Get book poster image
  */
-export const komgaGetBookThumbnailById = <ThrowOnError extends boolean = false>(options: Options<GetBookThumbnailByIdData, ThrowOnError>): RequestResult<GetBookThumbnailByIdResponses, GetBookThumbnailByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookThumbnailByIdResponses, GetBookThumbnailByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetBookThumbnailById = <ThrowOnError extends boolean = true>(options: Options<GetBookThumbnailByIdData, ThrowOnError>): RequestResult<GetBookThumbnailByIdResponses, GetBookThumbnailByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookThumbnailByIdResponses, GetBookThumbnailByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/thumbnails/{thumbnailId}',
@@ -537,7 +537,7 @@ export const komgaGetBookThumbnailById = <ThrowOnError extends boolean = false>(
  *
  * Required role: **ADMIN**
  */
-export const komgaMarkBookThumbnailSelected = <ThrowOnError extends boolean = false>(options: Options<MarkBookThumbnailSelectedData, ThrowOnError>): RequestResult<MarkBookThumbnailSelectedResponses, MarkBookThumbnailSelectedErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkBookThumbnailSelectedResponses, MarkBookThumbnailSelectedErrors, ThrowOnError, 'data'>({
+export const komgaMarkBookThumbnailSelected = <ThrowOnError extends boolean = true>(options: Options<MarkBookThumbnailSelectedData, ThrowOnError>): RequestResult<MarkBookThumbnailSelectedResponses, MarkBookThumbnailSelectedErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkBookThumbnailSelectedResponses, MarkBookThumbnailSelectedErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/books/{bookId}/thumbnails/{thumbnailId}/selected',
@@ -549,7 +549,7 @@ export const komgaMarkBookThumbnailSelected = <ThrowOnError extends boolean = fa
  *
  * Check whether this server has already been claimed.
  */
-export const komgaGetClaimStatus = <ThrowOnError extends boolean = false>(options?: Options<GetClaimStatusData, ThrowOnError>): RequestResult<GetClaimStatusResponses, GetClaimStatusErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetClaimStatusResponses, GetClaimStatusErrors, ThrowOnError, 'data'>({
+export const komgaGetClaimStatus = <ThrowOnError extends boolean = true>(options?: Options<GetClaimStatusData, ThrowOnError>): RequestResult<GetClaimStatusResponses, GetClaimStatusErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetClaimStatusResponses, GetClaimStatusErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     url: '/api/v1/claim',
     ...options
@@ -560,7 +560,7 @@ export const komgaGetClaimStatus = <ThrowOnError extends boolean = false>(option
  *
  * Creates an admin user with the provided credentials.
  */
-export const komgaClaimServer = <ThrowOnError extends boolean = false>(options: Options<ClaimServerData, ThrowOnError>): RequestResult<ClaimServerResponses, ClaimServerErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ClaimServerResponses, ClaimServerErrors, ThrowOnError, 'data'>({
+export const komgaClaimServer = <ThrowOnError extends boolean = true>(options: Options<ClaimServerData, ThrowOnError>): RequestResult<ClaimServerResponses, ClaimServerErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ClaimServerResponses, ClaimServerErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     url: '/api/v1/claim',
     ...options
@@ -573,7 +573,7 @@ export const komgaClaimServer = <ThrowOnError extends boolean = false>(options: 
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteGlobalSettings = <ThrowOnError extends boolean = false>(options: Options<DeleteGlobalSettingsData, ThrowOnError>): RequestResult<DeleteGlobalSettingsResponses, DeleteGlobalSettingsErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteGlobalSettingsResponses, DeleteGlobalSettingsErrors, ThrowOnError, 'data'>({
+export const komgaDeleteGlobalSettings = <ThrowOnError extends boolean = true>(options: Options<DeleteGlobalSettingsData, ThrowOnError>): RequestResult<DeleteGlobalSettingsResponses, DeleteGlobalSettingsErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteGlobalSettingsResponses, DeleteGlobalSettingsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/client-settings/global',
@@ -591,7 +591,7 @@ export const komgaDeleteGlobalSettings = <ThrowOnError extends boolean = false>(
  *
  * Required role: **ADMIN**
  */
-export const komgaSaveGlobalSetting = <ThrowOnError extends boolean = false>(options: Options<SaveGlobalSettingData, ThrowOnError>): RequestResult<SaveGlobalSettingResponses, SaveGlobalSettingErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<SaveGlobalSettingResponses, SaveGlobalSettingErrors, ThrowOnError, 'data'>({
+export const komgaSaveGlobalSetting = <ThrowOnError extends boolean = true>(options: Options<SaveGlobalSettingData, ThrowOnError>): RequestResult<SaveGlobalSettingResponses, SaveGlobalSettingErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<SaveGlobalSettingResponses, SaveGlobalSettingErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/client-settings/global',
@@ -607,7 +607,7 @@ export const komgaSaveGlobalSetting = <ThrowOnError extends boolean = false>(opt
  *
  * For unauthenticated users, only settings with 'allowUnauthorized=true' will be returned.
  */
-export const komgaGetGlobalSettings = <ThrowOnError extends boolean = false>(options?: Options<GetGlobalSettingsData, ThrowOnError>): RequestResult<GetGlobalSettingsResponses, GetGlobalSettingsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetGlobalSettingsResponses, GetGlobalSettingsErrors, ThrowOnError, 'data'>({
+export const komgaGetGlobalSettings = <ThrowOnError extends boolean = true>(options?: Options<GetGlobalSettingsData, ThrowOnError>): RequestResult<GetGlobalSettingsResponses, GetGlobalSettingsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetGlobalSettingsResponses, GetGlobalSettingsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     url: '/api/v1/client-settings/global/list',
     ...options
@@ -618,7 +618,7 @@ export const komgaGetGlobalSettings = <ThrowOnError extends boolean = false>(opt
  *
  * Setting key should be a valid lowercase namespace string like 'application.domain.key'
  */
-export const komgaDeleteUserSettings = <ThrowOnError extends boolean = false>(options: Options<DeleteUserSettingsData, ThrowOnError>): RequestResult<DeleteUserSettingsResponses, DeleteUserSettingsErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserSettingsResponses, DeleteUserSettingsErrors, ThrowOnError, 'data'>({
+export const komgaDeleteUserSettings = <ThrowOnError extends boolean = true>(options: Options<DeleteUserSettingsData, ThrowOnError>): RequestResult<DeleteUserSettingsResponses, DeleteUserSettingsErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserSettingsResponses, DeleteUserSettingsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/client-settings/user',
@@ -634,7 +634,7 @@ export const komgaDeleteUserSettings = <ThrowOnError extends boolean = false>(op
  *
  * Setting key should be a valid lowercase namespace string like 'application.domain.key'
  */
-export const komgaSaveUserSetting = <ThrowOnError extends boolean = false>(options: Options<SaveUserSettingData, ThrowOnError>): RequestResult<SaveUserSettingResponses, SaveUserSettingErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<SaveUserSettingResponses, SaveUserSettingErrors, ThrowOnError, 'data'>({
+export const komgaSaveUserSetting = <ThrowOnError extends boolean = true>(options: Options<SaveUserSettingData, ThrowOnError>): RequestResult<SaveUserSettingResponses, SaveUserSettingErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<SaveUserSettingResponses, SaveUserSettingErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/client-settings/user',
@@ -648,7 +648,7 @@ export const komgaSaveUserSetting = <ThrowOnError extends boolean = false>(optio
 /**
  * Retrieve user client settings
  */
-export const komgaGetUserSettings = <ThrowOnError extends boolean = false>(options?: Options<GetUserSettingsData, ThrowOnError>): RequestResult<GetUserSettingsResponses, GetUserSettingsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetUserSettingsResponses, GetUserSettingsErrors, ThrowOnError, 'data'>({
+export const komgaGetUserSettings = <ThrowOnError extends boolean = true>(options?: Options<GetUserSettingsData, ThrowOnError>): RequestResult<GetUserSettingsResponses, GetUserSettingsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetUserSettingsResponses, GetUserSettingsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/client-settings/user/list',
@@ -658,7 +658,7 @@ export const komgaGetUserSettings = <ThrowOnError extends boolean = false>(optio
 /**
  * List collections
  */
-export const komgaGetCollections = <ThrowOnError extends boolean = false>(options?: Options<GetCollectionsData, ThrowOnError>): RequestResult<GetCollectionsResponses, GetCollectionsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetCollectionsResponses, GetCollectionsErrors, ThrowOnError, 'data'>({
+export const komgaGetCollections = <ThrowOnError extends boolean = true>(options?: Options<GetCollectionsData, ThrowOnError>): RequestResult<GetCollectionsResponses, GetCollectionsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetCollectionsResponses, GetCollectionsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections',
@@ -670,7 +670,7 @@ export const komgaGetCollections = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **ADMIN**
  */
-export const komgaCreateCollection = <ThrowOnError extends boolean = false>(options: Options<CreateCollectionData, ThrowOnError>): RequestResult<CreateCollectionResponses, CreateCollectionErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateCollectionResponses, CreateCollectionErrors, ThrowOnError, 'data'>({
+export const komgaCreateCollection = <ThrowOnError extends boolean = true>(options: Options<CreateCollectionData, ThrowOnError>): RequestResult<CreateCollectionResponses, CreateCollectionErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateCollectionResponses, CreateCollectionErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections',
@@ -686,7 +686,7 @@ export const komgaCreateCollection = <ThrowOnError extends boolean = false>(opti
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteCollectionById = <ThrowOnError extends boolean = false>(options: Options<DeleteCollectionByIdData, ThrowOnError>): RequestResult<DeleteCollectionByIdResponses, DeleteCollectionByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteCollectionByIdResponses, DeleteCollectionByIdErrors, ThrowOnError, 'data'>({
+export const komgaDeleteCollectionById = <ThrowOnError extends boolean = true>(options: Options<DeleteCollectionByIdData, ThrowOnError>): RequestResult<DeleteCollectionByIdResponses, DeleteCollectionByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteCollectionByIdResponses, DeleteCollectionByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}',
@@ -696,7 +696,7 @@ export const komgaDeleteCollectionById = <ThrowOnError extends boolean = false>(
 /**
  * Get collection details
  */
-export const komgaGetCollectionById = <ThrowOnError extends boolean = false>(options: Options<GetCollectionByIdData, ThrowOnError>): RequestResult<GetCollectionByIdResponses, GetCollectionByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionByIdResponses, GetCollectionByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetCollectionById = <ThrowOnError extends boolean = true>(options: Options<GetCollectionByIdData, ThrowOnError>): RequestResult<GetCollectionByIdResponses, GetCollectionByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionByIdResponses, GetCollectionByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}',
@@ -708,7 +708,7 @@ export const komgaGetCollectionById = <ThrowOnError extends boolean = false>(opt
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdateCollectionById = <ThrowOnError extends boolean = false>(options: Options<UpdateCollectionByIdData, ThrowOnError>): RequestResult<UpdateCollectionByIdResponses, UpdateCollectionByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateCollectionByIdResponses, UpdateCollectionByIdErrors, ThrowOnError, 'data'>({
+export const komgaUpdateCollectionById = <ThrowOnError extends boolean = true>(options: Options<UpdateCollectionByIdData, ThrowOnError>): RequestResult<UpdateCollectionByIdResponses, UpdateCollectionByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateCollectionByIdResponses, UpdateCollectionByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}',
@@ -722,7 +722,7 @@ export const komgaUpdateCollectionById = <ThrowOnError extends boolean = false>(
 /**
  * List collection's series
  */
-export const komgaGetSeriesByCollectionId = <ThrowOnError extends boolean = false>(options: Options<GetSeriesByCollectionIdData, ThrowOnError>): RequestResult<GetSeriesByCollectionIdResponses, GetSeriesByCollectionIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesByCollectionIdResponses, GetSeriesByCollectionIdErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesByCollectionId = <ThrowOnError extends boolean = true>(options: Options<GetSeriesByCollectionIdData, ThrowOnError>): RequestResult<GetSeriesByCollectionIdResponses, GetSeriesByCollectionIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesByCollectionIdResponses, GetSeriesByCollectionIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}/series',
@@ -732,7 +732,7 @@ export const komgaGetSeriesByCollectionId = <ThrowOnError extends boolean = fals
 /**
  * Get collection's poster image
  */
-export const komgaGetCollectionThumbnail = <ThrowOnError extends boolean = false>(options: Options<GetCollectionThumbnailData, ThrowOnError>): RequestResult<GetCollectionThumbnailResponses, GetCollectionThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionThumbnailResponses, GetCollectionThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaGetCollectionThumbnail = <ThrowOnError extends boolean = true>(options: Options<GetCollectionThumbnailData, ThrowOnError>): RequestResult<GetCollectionThumbnailResponses, GetCollectionThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionThumbnailResponses, GetCollectionThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}/thumbnail',
@@ -742,7 +742,7 @@ export const komgaGetCollectionThumbnail = <ThrowOnError extends boolean = false
 /**
  * List collection's posters
  */
-export const komgaGetCollectionThumbnails = <ThrowOnError extends boolean = false>(options: Options<GetCollectionThumbnailsData, ThrowOnError>): RequestResult<GetCollectionThumbnailsResponses, GetCollectionThumbnailsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionThumbnailsResponses, GetCollectionThumbnailsErrors, ThrowOnError, 'data'>({
+export const komgaGetCollectionThumbnails = <ThrowOnError extends boolean = true>(options: Options<GetCollectionThumbnailsData, ThrowOnError>): RequestResult<GetCollectionThumbnailsResponses, GetCollectionThumbnailsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionThumbnailsResponses, GetCollectionThumbnailsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}/thumbnails',
@@ -754,7 +754,7 @@ export const komgaGetCollectionThumbnails = <ThrowOnError extends boolean = fals
  *
  * Required role: **ADMIN**
  */
-export const komgaAddUserUploadedCollectionThumbnail = <ThrowOnError extends boolean = false>(options: Options<AddUserUploadedCollectionThumbnailData, ThrowOnError>): RequestResult<AddUserUploadedCollectionThumbnailResponses, AddUserUploadedCollectionThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserUploadedCollectionThumbnailResponses, AddUserUploadedCollectionThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaAddUserUploadedCollectionThumbnail = <ThrowOnError extends boolean = true>(options: Options<AddUserUploadedCollectionThumbnailData, ThrowOnError>): RequestResult<AddUserUploadedCollectionThumbnailResponses, AddUserUploadedCollectionThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserUploadedCollectionThumbnailResponses, AddUserUploadedCollectionThumbnailErrors, ThrowOnError, 'data'>({
     ...formDataBodySerializer,
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
@@ -771,7 +771,7 @@ export const komgaAddUserUploadedCollectionThumbnail = <ThrowOnError extends boo
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteUserUploadedCollectionThumbnail = <ThrowOnError extends boolean = false>(options: Options<DeleteUserUploadedCollectionThumbnailData, ThrowOnError>): RequestResult<DeleteUserUploadedCollectionThumbnailResponses, DeleteUserUploadedCollectionThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserUploadedCollectionThumbnailResponses, DeleteUserUploadedCollectionThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaDeleteUserUploadedCollectionThumbnail = <ThrowOnError extends boolean = true>(options: Options<DeleteUserUploadedCollectionThumbnailData, ThrowOnError>): RequestResult<DeleteUserUploadedCollectionThumbnailResponses, DeleteUserUploadedCollectionThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserUploadedCollectionThumbnailResponses, DeleteUserUploadedCollectionThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}/thumbnails/{thumbnailId}',
@@ -781,7 +781,7 @@ export const komgaDeleteUserUploadedCollectionThumbnail = <ThrowOnError extends 
 /**
  * Get collection poster image
  */
-export const komgaGetCollectionThumbnailById = <ThrowOnError extends boolean = false>(options: Options<GetCollectionThumbnailByIdData, ThrowOnError>): RequestResult<GetCollectionThumbnailByIdResponses, GetCollectionThumbnailByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionThumbnailByIdResponses, GetCollectionThumbnailByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetCollectionThumbnailById = <ThrowOnError extends boolean = true>(options: Options<GetCollectionThumbnailByIdData, ThrowOnError>): RequestResult<GetCollectionThumbnailByIdResponses, GetCollectionThumbnailByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionThumbnailByIdResponses, GetCollectionThumbnailByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}/thumbnails/{thumbnailId}',
@@ -793,7 +793,7 @@ export const komgaGetCollectionThumbnailById = <ThrowOnError extends boolean = f
  *
  * Required role: **ADMIN**
  */
-export const komgaMarkCollectionThumbnailSelected = <ThrowOnError extends boolean = false>(options: Options<MarkCollectionThumbnailSelectedData, ThrowOnError>): RequestResult<MarkCollectionThumbnailSelectedResponses, MarkCollectionThumbnailSelectedErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkCollectionThumbnailSelectedResponses, MarkCollectionThumbnailSelectedErrors, ThrowOnError, 'data'>({
+export const komgaMarkCollectionThumbnailSelected = <ThrowOnError extends boolean = true>(options: Options<MarkCollectionThumbnailSelectedData, ThrowOnError>): RequestResult<MarkCollectionThumbnailSelectedResponses, MarkCollectionThumbnailSelectedErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkCollectionThumbnailSelectedResponses, MarkCollectionThumbnailSelectedErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/collections/{id}/thumbnails/{thumbnailId}/selected',
@@ -807,7 +807,7 @@ export const komgaMarkCollectionThumbnailSelected = <ThrowOnError extends boolea
  *
  * Required role: **ADMIN**
  */
-export const komgaGetDirectoryListing = <ThrowOnError extends boolean = false>(options?: Options<GetDirectoryListingData, ThrowOnError>): RequestResult<GetDirectoryListingResponses, GetDirectoryListingErrors, ThrowOnError, 'data'> => (options?.client ?? client).post<GetDirectoryListingResponses, GetDirectoryListingErrors, ThrowOnError, 'data'>({
+export const komgaGetDirectoryListing = <ThrowOnError extends boolean = true>(options?: Options<GetDirectoryListingData, ThrowOnError>): RequestResult<GetDirectoryListingResponses, GetDirectoryListingErrors, ThrowOnError, 'data'> => (options?.client ?? client).post<GetDirectoryListingResponses, GetDirectoryListingErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/filesystem',
@@ -823,7 +823,7 @@ export const komgaGetDirectoryListing = <ThrowOnError extends boolean = false>(o
  *
  * List all available font families.
  */
-export const komgaGetFonts = <ThrowOnError extends boolean = false>(options?: Options<GetFontsData, ThrowOnError>): RequestResult<GetFontsResponses, GetFontsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetFontsResponses, GetFontsErrors, ThrowOnError, 'data'>({
+export const komgaGetFonts = <ThrowOnError extends boolean = true>(options?: Options<GetFontsData, ThrowOnError>): RequestResult<GetFontsResponses, GetFontsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetFontsResponses, GetFontsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/fonts/families',
@@ -835,7 +835,7 @@ export const komgaGetFonts = <ThrowOnError extends boolean = false>(options?: Op
  *
  * Download a CSS file with the @font-face block for the font family. This is used by the Epub Reader to change fonts.
  */
-export const komgaGetFontFamilyAsCss = <ThrowOnError extends boolean = false>(options: Options<GetFontFamilyAsCssData, ThrowOnError>): RequestResult<GetFontFamilyAsCssResponses, GetFontFamilyAsCssErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetFontFamilyAsCssResponses, GetFontFamilyAsCssErrors, ThrowOnError, 'data'>({
+export const komgaGetFontFamilyAsCss = <ThrowOnError extends boolean = true>(options: Options<GetFontFamilyAsCssData, ThrowOnError>): RequestResult<GetFontFamilyAsCssResponses, GetFontFamilyAsCssErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetFontFamilyAsCssResponses, GetFontFamilyAsCssErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     url: '/api/v1/fonts/resource/{fontFamily}/css',
     ...options
@@ -844,7 +844,7 @@ export const komgaGetFontFamilyAsCss = <ThrowOnError extends boolean = false>(op
 /**
  * Download font file
  */
-export const komgaGetFontFile = <ThrowOnError extends boolean = false>(options: Options<GetFontFileData, ThrowOnError>): RequestResult<GetFontFileResponses, GetFontFileErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetFontFileResponses, GetFontFileErrors, ThrowOnError, 'data'>({
+export const komgaGetFontFile = <ThrowOnError extends boolean = true>(options: Options<GetFontFileData, ThrowOnError>): RequestResult<GetFontFileResponses, GetFontFileErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetFontFileResponses, GetFontFileErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     url: '/api/v1/fonts/resource/{fontFamily}/{fontFile}',
     ...options
@@ -855,7 +855,7 @@ export const komgaGetFontFile = <ThrowOnError extends boolean = false>(options: 
  *
  * Required role: **ADMIN**
  */
-export const komgaGetHistoricalEvents = <ThrowOnError extends boolean = false>(options?: Options<GetHistoricalEventsData, ThrowOnError>): RequestResult<GetHistoricalEventsResponses, GetHistoricalEventsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetHistoricalEventsResponses, GetHistoricalEventsErrors, ThrowOnError, 'data'>({
+export const komgaGetHistoricalEvents = <ThrowOnError extends boolean = true>(options?: Options<GetHistoricalEventsData, ThrowOnError>): RequestResult<GetHistoricalEventsResponses, GetHistoricalEventsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetHistoricalEventsResponses, GetHistoricalEventsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/history',
@@ -867,7 +867,7 @@ export const komgaGetHistoricalEvents = <ThrowOnError extends boolean = false>(o
  *
  * The libraries are filtered based on the current user's permissions
  */
-export const komgaGetLibraries = <ThrowOnError extends boolean = false>(options?: Options<GetLibrariesData, ThrowOnError>): RequestResult<GetLibrariesResponses, GetLibrariesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetLibrariesResponses, GetLibrariesErrors, ThrowOnError, 'data'>({
+export const komgaGetLibraries = <ThrowOnError extends boolean = true>(options?: Options<GetLibrariesData, ThrowOnError>): RequestResult<GetLibrariesResponses, GetLibrariesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetLibrariesResponses, GetLibrariesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries',
@@ -879,7 +879,7 @@ export const komgaGetLibraries = <ThrowOnError extends boolean = false>(options?
  *
  * Required role: **ADMIN**
  */
-export const komgaAddLibrary = <ThrowOnError extends boolean = false>(options: Options<AddLibraryData, ThrowOnError>): RequestResult<AddLibraryResponses, AddLibraryErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddLibraryResponses, AddLibraryErrors, ThrowOnError, 'data'>({
+export const komgaAddLibrary = <ThrowOnError extends boolean = true>(options: Options<AddLibraryData, ThrowOnError>): RequestResult<AddLibraryResponses, AddLibraryErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddLibraryResponses, AddLibraryErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries',
@@ -895,7 +895,7 @@ export const komgaAddLibrary = <ThrowOnError extends boolean = false>(options: O
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteLibraryById = <ThrowOnError extends boolean = false>(options: Options<DeleteLibraryByIdData, ThrowOnError>): RequestResult<DeleteLibraryByIdResponses, DeleteLibraryByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteLibraryByIdResponses, DeleteLibraryByIdErrors, ThrowOnError, 'data'>({
+export const komgaDeleteLibraryById = <ThrowOnError extends boolean = true>(options: Options<DeleteLibraryByIdData, ThrowOnError>): RequestResult<DeleteLibraryByIdResponses, DeleteLibraryByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteLibraryByIdResponses, DeleteLibraryByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries/{libraryId}',
@@ -905,7 +905,7 @@ export const komgaDeleteLibraryById = <ThrowOnError extends boolean = false>(opt
 /**
  * Get details for a single library
  */
-export const komgaGetLibraryById = <ThrowOnError extends boolean = false>(options: Options<GetLibraryByIdData, ThrowOnError>): RequestResult<GetLibraryByIdResponses, GetLibraryByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetLibraryByIdResponses, GetLibraryByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetLibraryById = <ThrowOnError extends boolean = true>(options: Options<GetLibraryByIdData, ThrowOnError>): RequestResult<GetLibraryByIdResponses, GetLibraryByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetLibraryByIdResponses, GetLibraryByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries/{libraryId}',
@@ -919,7 +919,7 @@ export const komgaGetLibraryById = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdateLibraryById = <ThrowOnError extends boolean = false>(options: Options<UpdateLibraryByIdData, ThrowOnError>): RequestResult<UpdateLibraryByIdResponses, UpdateLibraryByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateLibraryByIdResponses, UpdateLibraryByIdErrors, ThrowOnError, 'data'>({
+export const komgaUpdateLibraryById = <ThrowOnError extends boolean = true>(options: Options<UpdateLibraryByIdData, ThrowOnError>): RequestResult<UpdateLibraryByIdResponses, UpdateLibraryByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateLibraryByIdResponses, UpdateLibraryByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries/{libraryId}',
@@ -935,7 +935,7 @@ export const komgaUpdateLibraryById = <ThrowOnError extends boolean = false>(opt
  *
  * Required role: **ADMIN**
  */
-export const komgaLibraryAnalyze = <ThrowOnError extends boolean = false>(options: Options<LibraryAnalyzeData, ThrowOnError>): RequestResult<LibraryAnalyzeResponses, LibraryAnalyzeErrors, ThrowOnError, 'data'> => (options.client ?? client).post<LibraryAnalyzeResponses, LibraryAnalyzeErrors, ThrowOnError, 'data'>({
+export const komgaLibraryAnalyze = <ThrowOnError extends boolean = true>(options: Options<LibraryAnalyzeData, ThrowOnError>): RequestResult<LibraryAnalyzeResponses, LibraryAnalyzeErrors, ThrowOnError, 'data'> => (options.client ?? client).post<LibraryAnalyzeResponses, LibraryAnalyzeErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries/{libraryId}/analyze',
@@ -947,7 +947,7 @@ export const komgaLibraryAnalyze = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **ADMIN**
  */
-export const komgaLibraryEmptyTrash = <ThrowOnError extends boolean = false>(options: Options<LibraryEmptyTrashData, ThrowOnError>): RequestResult<LibraryEmptyTrashResponses, LibraryEmptyTrashErrors, ThrowOnError, 'data'> => (options.client ?? client).post<LibraryEmptyTrashResponses, LibraryEmptyTrashErrors, ThrowOnError, 'data'>({
+export const komgaLibraryEmptyTrash = <ThrowOnError extends boolean = true>(options: Options<LibraryEmptyTrashData, ThrowOnError>): RequestResult<LibraryEmptyTrashResponses, LibraryEmptyTrashErrors, ThrowOnError, 'data'> => (options.client ?? client).post<LibraryEmptyTrashResponses, LibraryEmptyTrashErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries/{libraryId}/empty-trash',
@@ -959,7 +959,7 @@ export const komgaLibraryEmptyTrash = <ThrowOnError extends boolean = false>(opt
  *
  * Required role: **ADMIN**
  */
-export const komgaLibraryRefreshMetadata = <ThrowOnError extends boolean = false>(options: Options<LibraryRefreshMetadataData, ThrowOnError>): RequestResult<LibraryRefreshMetadataResponses, LibraryRefreshMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).post<LibraryRefreshMetadataResponses, LibraryRefreshMetadataErrors, ThrowOnError, 'data'>({
+export const komgaLibraryRefreshMetadata = <ThrowOnError extends boolean = true>(options: Options<LibraryRefreshMetadataData, ThrowOnError>): RequestResult<LibraryRefreshMetadataResponses, LibraryRefreshMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).post<LibraryRefreshMetadataResponses, LibraryRefreshMetadataErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries/{libraryId}/metadata/refresh',
@@ -971,7 +971,7 @@ export const komgaLibraryRefreshMetadata = <ThrowOnError extends boolean = false
  *
  * Required role: **ADMIN**
  */
-export const komgaLibraryScan = <ThrowOnError extends boolean = false>(options: Options<LibraryScanData, ThrowOnError>): RequestResult<LibraryScanResponses, LibraryScanErrors, ThrowOnError, 'data'> => (options.client ?? client).post<LibraryScanResponses, LibraryScanErrors, ThrowOnError, 'data'>({
+export const komgaLibraryScan = <ThrowOnError extends boolean = true>(options: Options<LibraryScanData, ThrowOnError>): RequestResult<LibraryScanResponses, LibraryScanErrors, ThrowOnError, 'data'> => (options.client ?? client).post<LibraryScanResponses, LibraryScanErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/libraries/{libraryId}/scan',
@@ -983,7 +983,7 @@ export const komgaLibraryScan = <ThrowOnError extends boolean = false>(options: 
  *
  * Forcefully return Set-Cookie header, even if the session is contained in the X-Auth-Token header.
  */
-export const komgaConvertHeaderSessionToCookie = <ThrowOnError extends boolean = false>(options?: Options<ConvertHeaderSessionToCookieData, ThrowOnError>): RequestResult<ConvertHeaderSessionToCookieResponses, ConvertHeaderSessionToCookieErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ConvertHeaderSessionToCookieResponses, ConvertHeaderSessionToCookieErrors, ThrowOnError, 'data'>({
+export const komgaConvertHeaderSessionToCookie = <ThrowOnError extends boolean = true>(options?: Options<ConvertHeaderSessionToCookieData, ThrowOnError>): RequestResult<ConvertHeaderSessionToCookieResponses, ConvertHeaderSessionToCookieErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<ConvertHeaderSessionToCookieResponses, ConvertHeaderSessionToCookieErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/login/set-cookie',
@@ -993,7 +993,7 @@ export const komgaConvertHeaderSessionToCookie = <ThrowOnError extends boolean =
 /**
  * List registered OAuth2 providers
  */
-export const komgaGetOAuth2Providers = <ThrowOnError extends boolean = false>(options?: Options<GetOAuth2ProvidersData, ThrowOnError>): RequestResult<GetOAuth2ProvidersResponses, GetOAuth2ProvidersErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetOAuth2ProvidersResponses, GetOAuth2ProvidersErrors, ThrowOnError, 'data'>({
+export const komgaGetOAuth2Providers = <ThrowOnError extends boolean = true>(options?: Options<GetOAuth2ProvidersData, ThrowOnError>): RequestResult<GetOAuth2ProvidersResponses, GetOAuth2ProvidersErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetOAuth2ProvidersResponses, GetOAuth2ProvidersErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     url: '/api/v1/oauth2/providers',
     ...options
@@ -1004,7 +1004,7 @@ export const komgaGetOAuth2Providers = <ThrowOnError extends boolean = false>(op
  *
  * Required role: **ADMIN**
  */
-export const komgaGetKnownPageHashes = <ThrowOnError extends boolean = false>(options?: Options<GetKnownPageHashesData, ThrowOnError>): RequestResult<GetKnownPageHashesResponses, GetKnownPageHashesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetKnownPageHashesResponses, GetKnownPageHashesErrors, ThrowOnError, 'data'>({
+export const komgaGetKnownPageHashes = <ThrowOnError extends boolean = true>(options?: Options<GetKnownPageHashesData, ThrowOnError>): RequestResult<GetKnownPageHashesResponses, GetKnownPageHashesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetKnownPageHashesResponses, GetKnownPageHashesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/page-hashes',
@@ -1016,7 +1016,7 @@ export const komgaGetKnownPageHashes = <ThrowOnError extends boolean = false>(op
  *
  * Required role: **ADMIN**
  */
-export const komgaCreateOrUpdateKnownPageHash = <ThrowOnError extends boolean = false>(options: Options<CreateOrUpdateKnownPageHashData, ThrowOnError>): RequestResult<CreateOrUpdateKnownPageHashResponses, CreateOrUpdateKnownPageHashErrors, ThrowOnError, 'data'> => (options.client ?? client).put<CreateOrUpdateKnownPageHashResponses, CreateOrUpdateKnownPageHashErrors, ThrowOnError, 'data'>({
+export const komgaCreateOrUpdateKnownPageHash = <ThrowOnError extends boolean = true>(options: Options<CreateOrUpdateKnownPageHashData, ThrowOnError>): RequestResult<CreateOrUpdateKnownPageHashResponses, CreateOrUpdateKnownPageHashErrors, ThrowOnError, 'data'> => (options.client ?? client).put<CreateOrUpdateKnownPageHashResponses, CreateOrUpdateKnownPageHashErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/page-hashes',
@@ -1032,7 +1032,7 @@ export const komgaCreateOrUpdateKnownPageHash = <ThrowOnError extends boolean = 
  *
  * Required role: **ADMIN**
  */
-export const komgaGetUnknownPageHashes = <ThrowOnError extends boolean = false>(options?: Options<GetUnknownPageHashesData, ThrowOnError>): RequestResult<GetUnknownPageHashesResponses, GetUnknownPageHashesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetUnknownPageHashesResponses, GetUnknownPageHashesErrors, ThrowOnError, 'data'>({
+export const komgaGetUnknownPageHashes = <ThrowOnError extends boolean = true>(options?: Options<GetUnknownPageHashesData, ThrowOnError>): RequestResult<GetUnknownPageHashesResponses, GetUnknownPageHashesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetUnknownPageHashesResponses, GetUnknownPageHashesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/page-hashes/unknown',
@@ -1044,7 +1044,7 @@ export const komgaGetUnknownPageHashes = <ThrowOnError extends boolean = false>(
  *
  * Required role: **ADMIN**
  */
-export const komgaGetUnknownPageHashThumbnail = <ThrowOnError extends boolean = false>(options: Options<GetUnknownPageHashThumbnailData, ThrowOnError>): RequestResult<GetUnknownPageHashThumbnailResponses, GetUnknownPageHashThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetUnknownPageHashThumbnailResponses, GetUnknownPageHashThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaGetUnknownPageHashThumbnail = <ThrowOnError extends boolean = true>(options: Options<GetUnknownPageHashThumbnailData, ThrowOnError>): RequestResult<GetUnknownPageHashThumbnailResponses, GetUnknownPageHashThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetUnknownPageHashThumbnailResponses, GetUnknownPageHashThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/page-hashes/unknown/{pageHash}/thumbnail',
@@ -1056,7 +1056,7 @@ export const komgaGetUnknownPageHashThumbnail = <ThrowOnError extends boolean = 
  *
  * Required role: **ADMIN**
  */
-export const komgaGetPageHashMatches = <ThrowOnError extends boolean = false>(options: Options<GetPageHashMatchesData, ThrowOnError>): RequestResult<GetPageHashMatchesResponses, GetPageHashMatchesErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetPageHashMatchesResponses, GetPageHashMatchesErrors, ThrowOnError, 'data'>({
+export const komgaGetPageHashMatches = <ThrowOnError extends boolean = true>(options: Options<GetPageHashMatchesData, ThrowOnError>): RequestResult<GetPageHashMatchesResponses, GetPageHashMatchesErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetPageHashMatchesResponses, GetPageHashMatchesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/page-hashes/{pageHash}',
@@ -1068,7 +1068,7 @@ export const komgaGetPageHashMatches = <ThrowOnError extends boolean = false>(op
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteDuplicatePagesByPageHash = <ThrowOnError extends boolean = false>(options: Options<DeleteDuplicatePagesByPageHashData, ThrowOnError>): RequestResult<DeleteDuplicatePagesByPageHashResponses, DeleteDuplicatePagesByPageHashErrors, ThrowOnError, 'data'> => (options.client ?? client).post<DeleteDuplicatePagesByPageHashResponses, DeleteDuplicatePagesByPageHashErrors, ThrowOnError, 'data'>({
+export const komgaDeleteDuplicatePagesByPageHash = <ThrowOnError extends boolean = true>(options: Options<DeleteDuplicatePagesByPageHashData, ThrowOnError>): RequestResult<DeleteDuplicatePagesByPageHashResponses, DeleteDuplicatePagesByPageHashErrors, ThrowOnError, 'data'> => (options.client ?? client).post<DeleteDuplicatePagesByPageHashResponses, DeleteDuplicatePagesByPageHashErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/page-hashes/{pageHash}/delete-all',
@@ -1080,7 +1080,7 @@ export const komgaDeleteDuplicatePagesByPageHash = <ThrowOnError extends boolean
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteSingleMatchByPageHash = <ThrowOnError extends boolean = false>(options: Options<DeleteSingleMatchByPageHashData, ThrowOnError>): RequestResult<DeleteSingleMatchByPageHashResponses, DeleteSingleMatchByPageHashErrors, ThrowOnError, 'data'> => (options.client ?? client).post<DeleteSingleMatchByPageHashResponses, DeleteSingleMatchByPageHashErrors, ThrowOnError, 'data'>({
+export const komgaDeleteSingleMatchByPageHash = <ThrowOnError extends boolean = true>(options: Options<DeleteSingleMatchByPageHashData, ThrowOnError>): RequestResult<DeleteSingleMatchByPageHashResponses, DeleteSingleMatchByPageHashErrors, ThrowOnError, 'data'> => (options.client ?? client).post<DeleteSingleMatchByPageHashResponses, DeleteSingleMatchByPageHashErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/page-hashes/{pageHash}/delete-match',
@@ -1096,7 +1096,7 @@ export const komgaDeleteSingleMatchByPageHash = <ThrowOnError extends boolean = 
  *
  * Required role: **ADMIN**
  */
-export const komgaGetKnownPageHashThumbnail = <ThrowOnError extends boolean = false>(options: Options<GetKnownPageHashThumbnailData, ThrowOnError>): RequestResult<GetKnownPageHashThumbnailResponses, GetKnownPageHashThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetKnownPageHashThumbnailResponses, GetKnownPageHashThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaGetKnownPageHashThumbnail = <ThrowOnError extends boolean = true>(options: Options<GetKnownPageHashThumbnailData, ThrowOnError>): RequestResult<GetKnownPageHashThumbnailResponses, GetKnownPageHashThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetKnownPageHashThumbnailResponses, GetKnownPageHashThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/page-hashes/{pageHash}/thumbnail',
@@ -1106,7 +1106,7 @@ export const komgaGetKnownPageHashThumbnail = <ThrowOnError extends boolean = fa
 /**
  * List readlists
  */
-export const komgaGetReadLists = <ThrowOnError extends boolean = false>(options?: Options<GetReadListsData, ThrowOnError>): RequestResult<GetReadListsResponses, GetReadListsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetReadListsResponses, GetReadListsErrors, ThrowOnError, 'data'>({
+export const komgaGetReadLists = <ThrowOnError extends boolean = true>(options?: Options<GetReadListsData, ThrowOnError>): RequestResult<GetReadListsResponses, GetReadListsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetReadListsResponses, GetReadListsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists',
@@ -1118,7 +1118,7 @@ export const komgaGetReadLists = <ThrowOnError extends boolean = false>(options?
  *
  * Required role: **ADMIN**
  */
-export const komgaCreateReadList = <ThrowOnError extends boolean = false>(options: Options<CreateReadListData, ThrowOnError>): RequestResult<CreateReadListResponses, CreateReadListErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateReadListResponses, CreateReadListErrors, ThrowOnError, 'data'>({
+export const komgaCreateReadList = <ThrowOnError extends boolean = true>(options: Options<CreateReadListData, ThrowOnError>): RequestResult<CreateReadListResponses, CreateReadListErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateReadListResponses, CreateReadListErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists',
@@ -1134,7 +1134,7 @@ export const komgaCreateReadList = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **ADMIN**
  */
-export const komgaMatchComicRackList = <ThrowOnError extends boolean = false>(options?: Options<MatchComicRackListData, ThrowOnError>): RequestResult<MatchComicRackListResponses, MatchComicRackListErrors, ThrowOnError, 'data'> => (options?.client ?? client).post<MatchComicRackListResponses, MatchComicRackListErrors, ThrowOnError, 'data'>({
+export const komgaMatchComicRackList = <ThrowOnError extends boolean = true>(options?: Options<MatchComicRackListData, ThrowOnError>): RequestResult<MatchComicRackListResponses, MatchComicRackListErrors, ThrowOnError, 'data'> => (options?.client ?? client).post<MatchComicRackListResponses, MatchComicRackListErrors, ThrowOnError, 'data'>({
     ...formDataBodySerializer,
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
@@ -1151,7 +1151,7 @@ export const komgaMatchComicRackList = <ThrowOnError extends boolean = false>(op
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteReadListById = <ThrowOnError extends boolean = false>(options: Options<DeleteReadListByIdData, ThrowOnError>): RequestResult<DeleteReadListByIdResponses, DeleteReadListByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteReadListByIdResponses, DeleteReadListByIdErrors, ThrowOnError, 'data'>({
+export const komgaDeleteReadListById = <ThrowOnError extends boolean = true>(options: Options<DeleteReadListByIdData, ThrowOnError>): RequestResult<DeleteReadListByIdResponses, DeleteReadListByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteReadListByIdResponses, DeleteReadListByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}',
@@ -1161,7 +1161,7 @@ export const komgaDeleteReadListById = <ThrowOnError extends boolean = false>(op
 /**
  * Get readlist details
  */
-export const komgaGetReadListById = <ThrowOnError extends boolean = false>(options: Options<GetReadListByIdData, ThrowOnError>): RequestResult<GetReadListByIdResponses, GetReadListByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListByIdResponses, GetReadListByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetReadListById = <ThrowOnError extends boolean = true>(options: Options<GetReadListByIdData, ThrowOnError>): RequestResult<GetReadListByIdResponses, GetReadListByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListByIdResponses, GetReadListByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}',
@@ -1173,7 +1173,7 @@ export const komgaGetReadListById = <ThrowOnError extends boolean = false>(optio
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdateReadListById = <ThrowOnError extends boolean = false>(options: Options<UpdateReadListByIdData, ThrowOnError>): RequestResult<UpdateReadListByIdResponses, UpdateReadListByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateReadListByIdResponses, UpdateReadListByIdErrors, ThrowOnError, 'data'>({
+export const komgaUpdateReadListById = <ThrowOnError extends boolean = true>(options: Options<UpdateReadListByIdData, ThrowOnError>): RequestResult<UpdateReadListByIdResponses, UpdateReadListByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateReadListByIdResponses, UpdateReadListByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}',
@@ -1187,7 +1187,7 @@ export const komgaUpdateReadListById = <ThrowOnError extends boolean = false>(op
 /**
  * List readlist's books
  */
-export const komgaGetBooksByReadListId = <ThrowOnError extends boolean = false>(options: Options<GetBooksByReadListIdData, ThrowOnError>): RequestResult<GetBooksByReadListIdResponses, GetBooksByReadListIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBooksByReadListIdResponses, GetBooksByReadListIdErrors, ThrowOnError, 'data'>({
+export const komgaGetBooksByReadListId = <ThrowOnError extends boolean = true>(options: Options<GetBooksByReadListIdData, ThrowOnError>): RequestResult<GetBooksByReadListIdResponses, GetBooksByReadListIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBooksByReadListIdResponses, GetBooksByReadListIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/books',
@@ -1197,7 +1197,7 @@ export const komgaGetBooksByReadListId = <ThrowOnError extends boolean = false>(
 /**
  * Get next book in readlist
  */
-export const komgaGetBookSiblingNextInReadList = <ThrowOnError extends boolean = false>(options: Options<GetBookSiblingNextInReadListData, ThrowOnError>): RequestResult<GetBookSiblingNextInReadListResponses, GetBookSiblingNextInReadListErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookSiblingNextInReadListResponses, GetBookSiblingNextInReadListErrors, ThrowOnError, 'data'>({
+export const komgaGetBookSiblingNextInReadList = <ThrowOnError extends boolean = true>(options: Options<GetBookSiblingNextInReadListData, ThrowOnError>): RequestResult<GetBookSiblingNextInReadListResponses, GetBookSiblingNextInReadListErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookSiblingNextInReadListResponses, GetBookSiblingNextInReadListErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/books/{bookId}/next',
@@ -1207,7 +1207,7 @@ export const komgaGetBookSiblingNextInReadList = <ThrowOnError extends boolean =
 /**
  * Get previous book in readlist
  */
-export const komgaGetBookSiblingPreviousInReadList = <ThrowOnError extends boolean = false>(options: Options<GetBookSiblingPreviousInReadListData, ThrowOnError>): RequestResult<GetBookSiblingPreviousInReadListResponses, GetBookSiblingPreviousInReadListErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookSiblingPreviousInReadListResponses, GetBookSiblingPreviousInReadListErrors, ThrowOnError, 'data'>({
+export const komgaGetBookSiblingPreviousInReadList = <ThrowOnError extends boolean = true>(options: Options<GetBookSiblingPreviousInReadListData, ThrowOnError>): RequestResult<GetBookSiblingPreviousInReadListResponses, GetBookSiblingPreviousInReadListErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetBookSiblingPreviousInReadListResponses, GetBookSiblingPreviousInReadListErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/books/{bookId}/previous',
@@ -1221,7 +1221,7 @@ export const komgaGetBookSiblingPreviousInReadList = <ThrowOnError extends boole
  *
  * Required role: **FILE_DOWNLOAD**
  */
-export const komgaDownloadReadListAsZip = <ThrowOnError extends boolean = false>(options: Options<DownloadReadListAsZipData, ThrowOnError>): RequestResult<DownloadReadListAsZipResponses, DownloadReadListAsZipErrors, ThrowOnError, 'data'> => (options.client ?? client).get<DownloadReadListAsZipResponses, DownloadReadListAsZipErrors, ThrowOnError, 'data'>({
+export const komgaDownloadReadListAsZip = <ThrowOnError extends boolean = true>(options: Options<DownloadReadListAsZipData, ThrowOnError>): RequestResult<DownloadReadListAsZipResponses, DownloadReadListAsZipErrors, ThrowOnError, 'data'> => (options.client ?? client).get<DownloadReadListAsZipResponses, DownloadReadListAsZipErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/file',
@@ -1233,7 +1233,7 @@ export const komgaDownloadReadListAsZip = <ThrowOnError extends boolean = false>
  *
  * Mihon specific, due to how read progress is handled in Mihon.
  */
-export const komgaGetMihonReadProgressByReadListId = <ThrowOnError extends boolean = false>(options: Options<GetMihonReadProgressByReadListIdData, ThrowOnError>): RequestResult<GetMihonReadProgressByReadListIdResponses, GetMihonReadProgressByReadListIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetMihonReadProgressByReadListIdResponses, GetMihonReadProgressByReadListIdErrors, ThrowOnError, 'data'>({
+export const komgaGetMihonReadProgressByReadListId = <ThrowOnError extends boolean = true>(options: Options<GetMihonReadProgressByReadListIdData, ThrowOnError>): RequestResult<GetMihonReadProgressByReadListIdResponses, GetMihonReadProgressByReadListIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetMihonReadProgressByReadListIdResponses, GetMihonReadProgressByReadListIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/read-progress/tachiyomi',
@@ -1245,7 +1245,7 @@ export const komgaGetMihonReadProgressByReadListId = <ThrowOnError extends boole
  *
  * Mihon specific, due to how read progress is handled in Mihon.
  */
-export const komgaUpdateMihonReadProgressByReadListId = <ThrowOnError extends boolean = false>(options: Options<UpdateMihonReadProgressByReadListIdData, ThrowOnError>): RequestResult<UpdateMihonReadProgressByReadListIdResponses, UpdateMihonReadProgressByReadListIdErrors, ThrowOnError, 'data'> => (options.client ?? client).put<UpdateMihonReadProgressByReadListIdResponses, UpdateMihonReadProgressByReadListIdErrors, ThrowOnError, 'data'>({
+export const komgaUpdateMihonReadProgressByReadListId = <ThrowOnError extends boolean = true>(options: Options<UpdateMihonReadProgressByReadListIdData, ThrowOnError>): RequestResult<UpdateMihonReadProgressByReadListIdResponses, UpdateMihonReadProgressByReadListIdErrors, ThrowOnError, 'data'> => (options.client ?? client).put<UpdateMihonReadProgressByReadListIdResponses, UpdateMihonReadProgressByReadListIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/read-progress/tachiyomi',
@@ -1259,7 +1259,7 @@ export const komgaUpdateMihonReadProgressByReadListId = <ThrowOnError extends bo
 /**
  * Get readlist's poster image
  */
-export const komgaGetReadListThumbnail = <ThrowOnError extends boolean = false>(options: Options<GetReadListThumbnailData, ThrowOnError>): RequestResult<GetReadListThumbnailResponses, GetReadListThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListThumbnailResponses, GetReadListThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaGetReadListThumbnail = <ThrowOnError extends boolean = true>(options: Options<GetReadListThumbnailData, ThrowOnError>): RequestResult<GetReadListThumbnailResponses, GetReadListThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListThumbnailResponses, GetReadListThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/thumbnail',
@@ -1269,7 +1269,7 @@ export const komgaGetReadListThumbnail = <ThrowOnError extends boolean = false>(
 /**
  * List readlist's posters
  */
-export const komgaGetReadListThumbnails = <ThrowOnError extends boolean = false>(options: Options<GetReadListThumbnailsData, ThrowOnError>): RequestResult<GetReadListThumbnailsResponses, GetReadListThumbnailsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListThumbnailsResponses, GetReadListThumbnailsErrors, ThrowOnError, 'data'>({
+export const komgaGetReadListThumbnails = <ThrowOnError extends boolean = true>(options: Options<GetReadListThumbnailsData, ThrowOnError>): RequestResult<GetReadListThumbnailsResponses, GetReadListThumbnailsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListThumbnailsResponses, GetReadListThumbnailsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/thumbnails',
@@ -1281,7 +1281,7 @@ export const komgaGetReadListThumbnails = <ThrowOnError extends boolean = false>
  *
  * Required role: **ADMIN**
  */
-export const komgaAddUserUploadedReadListThumbnail = <ThrowOnError extends boolean = false>(options: Options<AddUserUploadedReadListThumbnailData, ThrowOnError>): RequestResult<AddUserUploadedReadListThumbnailResponses, AddUserUploadedReadListThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserUploadedReadListThumbnailResponses, AddUserUploadedReadListThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaAddUserUploadedReadListThumbnail = <ThrowOnError extends boolean = true>(options: Options<AddUserUploadedReadListThumbnailData, ThrowOnError>): RequestResult<AddUserUploadedReadListThumbnailResponses, AddUserUploadedReadListThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserUploadedReadListThumbnailResponses, AddUserUploadedReadListThumbnailErrors, ThrowOnError, 'data'>({
     ...formDataBodySerializer,
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
@@ -1298,7 +1298,7 @@ export const komgaAddUserUploadedReadListThumbnail = <ThrowOnError extends boole
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteUserUploadedReadListThumbnail = <ThrowOnError extends boolean = false>(options: Options<DeleteUserUploadedReadListThumbnailData, ThrowOnError>): RequestResult<DeleteUserUploadedReadListThumbnailResponses, DeleteUserUploadedReadListThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserUploadedReadListThumbnailResponses, DeleteUserUploadedReadListThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaDeleteUserUploadedReadListThumbnail = <ThrowOnError extends boolean = true>(options: Options<DeleteUserUploadedReadListThumbnailData, ThrowOnError>): RequestResult<DeleteUserUploadedReadListThumbnailResponses, DeleteUserUploadedReadListThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserUploadedReadListThumbnailResponses, DeleteUserUploadedReadListThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/thumbnails/{thumbnailId}',
@@ -1308,7 +1308,7 @@ export const komgaDeleteUserUploadedReadListThumbnail = <ThrowOnError extends bo
 /**
  * Get readlist poster image
  */
-export const komgaGetReadListThumbnailById = <ThrowOnError extends boolean = false>(options: Options<GetReadListThumbnailByIdData, ThrowOnError>): RequestResult<GetReadListThumbnailByIdResponses, GetReadListThumbnailByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListThumbnailByIdResponses, GetReadListThumbnailByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetReadListThumbnailById = <ThrowOnError extends boolean = true>(options: Options<GetReadListThumbnailByIdData, ThrowOnError>): RequestResult<GetReadListThumbnailByIdResponses, GetReadListThumbnailByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetReadListThumbnailByIdResponses, GetReadListThumbnailByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/thumbnails/{thumbnailId}',
@@ -1320,7 +1320,7 @@ export const komgaGetReadListThumbnailById = <ThrowOnError extends boolean = fal
  *
  * Required role: **ADMIN**
  */
-export const komgaMarkReadListThumbnailSelected = <ThrowOnError extends boolean = false>(options: Options<MarkReadListThumbnailSelectedData, ThrowOnError>): RequestResult<MarkReadListThumbnailSelectedResponses, MarkReadListThumbnailSelectedErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkReadListThumbnailSelectedResponses, MarkReadListThumbnailSelectedErrors, ThrowOnError, 'data'>({
+export const komgaMarkReadListThumbnailSelected = <ThrowOnError extends boolean = true>(options: Options<MarkReadListThumbnailSelectedData, ThrowOnError>): RequestResult<MarkReadListThumbnailSelectedResponses, MarkReadListThumbnailSelectedErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkReadListThumbnailSelectedResponses, MarkReadListThumbnailSelectedErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/readlists/{id}/thumbnails/{thumbnailId}/selected',
@@ -1332,7 +1332,7 @@ export const komgaMarkReadListThumbnailSelected = <ThrowOnError extends boolean 
  *
  * Required role: **ADMIN**
  */
-export const komgaGetReleases = <ThrowOnError extends boolean = false>(options?: Options<GetReleasesData, ThrowOnError>): RequestResult<GetReleasesResponses, GetReleasesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetReleasesResponses, GetReleasesErrors, ThrowOnError, 'data'>({
+export const komgaGetReleases = <ThrowOnError extends boolean = true>(options?: Options<GetReleasesData, ThrowOnError>): RequestResult<GetReleasesResponses, GetReleasesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetReleasesResponses, GetReleasesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/releases',
@@ -1344,7 +1344,7 @@ export const komgaGetReleases = <ThrowOnError extends boolean = false>(options?:
  *
  * Return recently added or updated series.
  */
-export const komgaGetSeriesLatest = <ThrowOnError extends boolean = false>(options?: Options<GetSeriesLatestData, ThrowOnError>): RequestResult<GetSeriesLatestResponses, GetSeriesLatestErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSeriesLatestResponses, GetSeriesLatestErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesLatest = <ThrowOnError extends boolean = true>(options?: Options<GetSeriesLatestData, ThrowOnError>): RequestResult<GetSeriesLatestResponses, GetSeriesLatestErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSeriesLatestResponses, GetSeriesLatestErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/latest',
@@ -1354,7 +1354,7 @@ export const komgaGetSeriesLatest = <ThrowOnError extends boolean = false>(optio
 /**
  * List series
  */
-export const komgaGetSeries = <ThrowOnError extends boolean = false>(options: Options<GetSeriesData, ThrowOnError>): RequestResult<GetSeriesResponses, GetSeriesErrors, ThrowOnError, 'data'> => (options.client ?? client).post<GetSeriesResponses, GetSeriesErrors, ThrowOnError, 'data'>({
+export const komgaGetSeries = <ThrowOnError extends boolean = true>(options: Options<GetSeriesData, ThrowOnError>): RequestResult<GetSeriesResponses, GetSeriesErrors, ThrowOnError, 'data'> => (options.client ?? client).post<GetSeriesResponses, GetSeriesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/list',
@@ -1370,7 +1370,7 @@ export const komgaGetSeries = <ThrowOnError extends boolean = false>(options: Op
  *
  * List series grouped by the first character of their sort title.
  */
-export const komgaGetSeriesAlphabeticalGroups = <ThrowOnError extends boolean = false>(options: Options<GetSeriesAlphabeticalGroupsData, ThrowOnError>): RequestResult<GetSeriesAlphabeticalGroupsResponses, GetSeriesAlphabeticalGroupsErrors, ThrowOnError, 'data'> => (options.client ?? client).post<GetSeriesAlphabeticalGroupsResponses, GetSeriesAlphabeticalGroupsErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesAlphabeticalGroups = <ThrowOnError extends boolean = true>(options: Options<GetSeriesAlphabeticalGroupsData, ThrowOnError>): RequestResult<GetSeriesAlphabeticalGroupsResponses, GetSeriesAlphabeticalGroupsErrors, ThrowOnError, 'data'> => (options.client ?? client).post<GetSeriesAlphabeticalGroupsResponses, GetSeriesAlphabeticalGroupsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/list/alphabetical-groups',
@@ -1386,7 +1386,7 @@ export const komgaGetSeriesAlphabeticalGroups = <ThrowOnError extends boolean = 
  *
  * Return newly added series.
  */
-export const komgaGetSeriesNew = <ThrowOnError extends boolean = false>(options?: Options<GetSeriesNewData, ThrowOnError>): RequestResult<GetSeriesNewResponses, GetSeriesNewErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSeriesNewResponses, GetSeriesNewErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesNew = <ThrowOnError extends boolean = true>(options?: Options<GetSeriesNewData, ThrowOnError>): RequestResult<GetSeriesNewResponses, GetSeriesNewErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSeriesNewResponses, GetSeriesNewErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/new',
@@ -1398,7 +1398,7 @@ export const komgaGetSeriesNew = <ThrowOnError extends boolean = false>(options?
  *
  * Return recently updated series, but not newly added ones.
  */
-export const komgaGetSeriesUpdated = <ThrowOnError extends boolean = false>(options?: Options<GetSeriesUpdatedData, ThrowOnError>): RequestResult<GetSeriesUpdatedResponses, GetSeriesUpdatedErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSeriesUpdatedResponses, GetSeriesUpdatedErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesUpdated = <ThrowOnError extends boolean = true>(options?: Options<GetSeriesUpdatedData, ThrowOnError>): RequestResult<GetSeriesUpdatedResponses, GetSeriesUpdatedErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSeriesUpdatedResponses, GetSeriesUpdatedErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/updated',
@@ -1408,7 +1408,7 @@ export const komgaGetSeriesUpdated = <ThrowOnError extends boolean = false>(opti
 /**
  * Get series details
  */
-export const komgaGetSeriesById = <ThrowOnError extends boolean = false>(options: Options<GetSeriesByIdData, ThrowOnError>): RequestResult<GetSeriesByIdResponses, GetSeriesByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesByIdResponses, GetSeriesByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesById = <ThrowOnError extends boolean = true>(options: Options<GetSeriesByIdData, ThrowOnError>): RequestResult<GetSeriesByIdResponses, GetSeriesByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesByIdResponses, GetSeriesByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}',
@@ -1420,7 +1420,7 @@ export const komgaGetSeriesById = <ThrowOnError extends boolean = false>(options
  *
  * Required role: **ADMIN**
  */
-export const komgaSeriesAnalyze = <ThrowOnError extends boolean = false>(options: Options<SeriesAnalyzeData, ThrowOnError>): RequestResult<SeriesAnalyzeResponses, SeriesAnalyzeErrors, ThrowOnError, 'data'> => (options.client ?? client).post<SeriesAnalyzeResponses, SeriesAnalyzeErrors, ThrowOnError, 'data'>({
+export const komgaSeriesAnalyze = <ThrowOnError extends boolean = true>(options: Options<SeriesAnalyzeData, ThrowOnError>): RequestResult<SeriesAnalyzeResponses, SeriesAnalyzeErrors, ThrowOnError, 'data'> => (options.client ?? client).post<SeriesAnalyzeResponses, SeriesAnalyzeErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/analyze',
@@ -1430,7 +1430,7 @@ export const komgaSeriesAnalyze = <ThrowOnError extends boolean = false>(options
 /**
  * List series' collections
  */
-export const komgaGetCollectionsBySeriesId = <ThrowOnError extends boolean = false>(options: Options<GetCollectionsBySeriesIdData, ThrowOnError>): RequestResult<GetCollectionsBySeriesIdResponses, GetCollectionsBySeriesIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionsBySeriesIdResponses, GetCollectionsBySeriesIdErrors, ThrowOnError, 'data'>({
+export const komgaGetCollectionsBySeriesId = <ThrowOnError extends boolean = true>(options: Options<GetCollectionsBySeriesIdData, ThrowOnError>): RequestResult<GetCollectionsBySeriesIdResponses, GetCollectionsBySeriesIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetCollectionsBySeriesIdResponses, GetCollectionsBySeriesIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/collections',
@@ -1444,7 +1444,7 @@ export const komgaGetCollectionsBySeriesId = <ThrowOnError extends boolean = fal
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteSeriesFile = <ThrowOnError extends boolean = false>(options: Options<DeleteSeriesFileData, ThrowOnError>): RequestResult<DeleteSeriesFileResponses, DeleteSeriesFileErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteSeriesFileResponses, DeleteSeriesFileErrors, ThrowOnError, 'data'>({
+export const komgaDeleteSeriesFile = <ThrowOnError extends boolean = true>(options: Options<DeleteSeriesFileData, ThrowOnError>): RequestResult<DeleteSeriesFileResponses, DeleteSeriesFileErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteSeriesFileResponses, DeleteSeriesFileErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/file',
@@ -1458,7 +1458,7 @@ export const komgaDeleteSeriesFile = <ThrowOnError extends boolean = false>(opti
  *
  * Required role: **FILE_DOWNLOAD**
  */
-export const komgaDownloadSeriesAsZip = <ThrowOnError extends boolean = false>(options: Options<DownloadSeriesAsZipData, ThrowOnError>): RequestResult<DownloadSeriesAsZipResponses, DownloadSeriesAsZipErrors, ThrowOnError, 'data'> => (options.client ?? client).get<DownloadSeriesAsZipResponses, DownloadSeriesAsZipErrors, ThrowOnError, 'data'>({
+export const komgaDownloadSeriesAsZip = <ThrowOnError extends boolean = true>(options: Options<DownloadSeriesAsZipData, ThrowOnError>): RequestResult<DownloadSeriesAsZipResponses, DownloadSeriesAsZipErrors, ThrowOnError, 'data'> => (options.client ?? client).get<DownloadSeriesAsZipResponses, DownloadSeriesAsZipErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/file',
@@ -1470,7 +1470,7 @@ export const komgaDownloadSeriesAsZip = <ThrowOnError extends boolean = false>(o
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdateSeriesMetadata = <ThrowOnError extends boolean = false>(options: Options<UpdateSeriesMetadataData, ThrowOnError>): RequestResult<UpdateSeriesMetadataResponses, UpdateSeriesMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateSeriesMetadataResponses, UpdateSeriesMetadataErrors, ThrowOnError, 'data'>({
+export const komgaUpdateSeriesMetadata = <ThrowOnError extends boolean = true>(options: Options<UpdateSeriesMetadataData, ThrowOnError>): RequestResult<UpdateSeriesMetadataResponses, UpdateSeriesMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateSeriesMetadataResponses, UpdateSeriesMetadataErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/metadata',
@@ -1486,7 +1486,7 @@ export const komgaUpdateSeriesMetadata = <ThrowOnError extends boolean = false>(
  *
  * Required role: **ADMIN**
  */
-export const komgaSeriesRefreshMetadata = <ThrowOnError extends boolean = false>(options: Options<SeriesRefreshMetadataData, ThrowOnError>): RequestResult<SeriesRefreshMetadataResponses, SeriesRefreshMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).post<SeriesRefreshMetadataResponses, SeriesRefreshMetadataErrors, ThrowOnError, 'data'>({
+export const komgaSeriesRefreshMetadata = <ThrowOnError extends boolean = true>(options: Options<SeriesRefreshMetadataData, ThrowOnError>): RequestResult<SeriesRefreshMetadataResponses, SeriesRefreshMetadataErrors, ThrowOnError, 'data'> => (options.client ?? client).post<SeriesRefreshMetadataResponses, SeriesRefreshMetadataErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/metadata/refresh',
@@ -1498,7 +1498,7 @@ export const komgaSeriesRefreshMetadata = <ThrowOnError extends boolean = false>
  *
  * Mark all book for series as unread
  */
-export const komgaMarkSeriesAsUnread = <ThrowOnError extends boolean = false>(options: Options<MarkSeriesAsUnreadData, ThrowOnError>): RequestResult<MarkSeriesAsUnreadResponses, MarkSeriesAsUnreadErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<MarkSeriesAsUnreadResponses, MarkSeriesAsUnreadErrors, ThrowOnError, 'data'>({
+export const komgaMarkSeriesAsUnread = <ThrowOnError extends boolean = true>(options: Options<MarkSeriesAsUnreadData, ThrowOnError>): RequestResult<MarkSeriesAsUnreadResponses, MarkSeriesAsUnreadErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<MarkSeriesAsUnreadResponses, MarkSeriesAsUnreadErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/read-progress',
@@ -1510,7 +1510,7 @@ export const komgaMarkSeriesAsUnread = <ThrowOnError extends boolean = false>(op
  *
  * Mark all book for series as read
  */
-export const komgaMarkSeriesAsRead = <ThrowOnError extends boolean = false>(options: Options<MarkSeriesAsReadData, ThrowOnError>): RequestResult<MarkSeriesAsReadResponses, MarkSeriesAsReadErrors, ThrowOnError, 'data'> => (options.client ?? client).post<MarkSeriesAsReadResponses, MarkSeriesAsReadErrors, ThrowOnError, 'data'>({
+export const komgaMarkSeriesAsRead = <ThrowOnError extends boolean = true>(options: Options<MarkSeriesAsReadData, ThrowOnError>): RequestResult<MarkSeriesAsReadResponses, MarkSeriesAsReadErrors, ThrowOnError, 'data'> => (options.client ?? client).post<MarkSeriesAsReadResponses, MarkSeriesAsReadErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/read-progress',
@@ -1520,7 +1520,7 @@ export const komgaMarkSeriesAsRead = <ThrowOnError extends boolean = false>(opti
 /**
  * Get series' poster image
  */
-export const komgaGetSeriesThumbnail = <ThrowOnError extends boolean = false>(options: Options<GetSeriesThumbnailData, ThrowOnError>): RequestResult<GetSeriesThumbnailResponses, GetSeriesThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesThumbnailResponses, GetSeriesThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesThumbnail = <ThrowOnError extends boolean = true>(options: Options<GetSeriesThumbnailData, ThrowOnError>): RequestResult<GetSeriesThumbnailResponses, GetSeriesThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesThumbnailResponses, GetSeriesThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/thumbnail',
@@ -1530,7 +1530,7 @@ export const komgaGetSeriesThumbnail = <ThrowOnError extends boolean = false>(op
 /**
  * List series posters
  */
-export const komgaGetSeriesThumbnails = <ThrowOnError extends boolean = false>(options: Options<GetSeriesThumbnailsData, ThrowOnError>): RequestResult<GetSeriesThumbnailsResponses, GetSeriesThumbnailsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesThumbnailsResponses, GetSeriesThumbnailsErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesThumbnails = <ThrowOnError extends boolean = true>(options: Options<GetSeriesThumbnailsData, ThrowOnError>): RequestResult<GetSeriesThumbnailsResponses, GetSeriesThumbnailsErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesThumbnailsResponses, GetSeriesThumbnailsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/thumbnails',
@@ -1542,7 +1542,7 @@ export const komgaGetSeriesThumbnails = <ThrowOnError extends boolean = false>(o
  *
  * Required role: **ADMIN**
  */
-export const komgaAddUserUploadedSeriesThumbnail = <ThrowOnError extends boolean = false>(options: Options<AddUserUploadedSeriesThumbnailData, ThrowOnError>): RequestResult<AddUserUploadedSeriesThumbnailResponses, AddUserUploadedSeriesThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserUploadedSeriesThumbnailResponses, AddUserUploadedSeriesThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaAddUserUploadedSeriesThumbnail = <ThrowOnError extends boolean = true>(options: Options<AddUserUploadedSeriesThumbnailData, ThrowOnError>): RequestResult<AddUserUploadedSeriesThumbnailResponses, AddUserUploadedSeriesThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserUploadedSeriesThumbnailResponses, AddUserUploadedSeriesThumbnailErrors, ThrowOnError, 'data'>({
     ...formDataBodySerializer,
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
@@ -1559,7 +1559,7 @@ export const komgaAddUserUploadedSeriesThumbnail = <ThrowOnError extends boolean
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteUserUploadedSeriesThumbnail = <ThrowOnError extends boolean = false>(options: Options<DeleteUserUploadedSeriesThumbnailData, ThrowOnError>): RequestResult<DeleteUserUploadedSeriesThumbnailResponses, DeleteUserUploadedSeriesThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserUploadedSeriesThumbnailResponses, DeleteUserUploadedSeriesThumbnailErrors, ThrowOnError, 'data'>({
+export const komgaDeleteUserUploadedSeriesThumbnail = <ThrowOnError extends boolean = true>(options: Options<DeleteUserUploadedSeriesThumbnailData, ThrowOnError>): RequestResult<DeleteUserUploadedSeriesThumbnailResponses, DeleteUserUploadedSeriesThumbnailErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserUploadedSeriesThumbnailResponses, DeleteUserUploadedSeriesThumbnailErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/thumbnails/{thumbnailId}',
@@ -1569,7 +1569,7 @@ export const komgaDeleteUserUploadedSeriesThumbnail = <ThrowOnError extends bool
 /**
  * Get series poster image
  */
-export const komgaGetSeriesThumbnailById = <ThrowOnError extends boolean = false>(options: Options<GetSeriesThumbnailByIdData, ThrowOnError>): RequestResult<GetSeriesThumbnailByIdResponses, GetSeriesThumbnailByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesThumbnailByIdResponses, GetSeriesThumbnailByIdErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesThumbnailById = <ThrowOnError extends boolean = true>(options: Options<GetSeriesThumbnailByIdData, ThrowOnError>): RequestResult<GetSeriesThumbnailByIdResponses, GetSeriesThumbnailByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetSeriesThumbnailByIdResponses, GetSeriesThumbnailByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/thumbnails/{thumbnailId}',
@@ -1581,7 +1581,7 @@ export const komgaGetSeriesThumbnailById = <ThrowOnError extends boolean = false
  *
  * Required role: **ADMIN**
  */
-export const komgaMarkSeriesThumbnailSelected = <ThrowOnError extends boolean = false>(options: Options<MarkSeriesThumbnailSelectedData, ThrowOnError>): RequestResult<MarkSeriesThumbnailSelectedResponses, MarkSeriesThumbnailSelectedErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkSeriesThumbnailSelectedResponses, MarkSeriesThumbnailSelectedErrors, ThrowOnError, 'data'>({
+export const komgaMarkSeriesThumbnailSelected = <ThrowOnError extends boolean = true>(options: Options<MarkSeriesThumbnailSelectedData, ThrowOnError>): RequestResult<MarkSeriesThumbnailSelectedResponses, MarkSeriesThumbnailSelectedErrors, ThrowOnError, 'data'> => (options.client ?? client).put<MarkSeriesThumbnailSelectedResponses, MarkSeriesThumbnailSelectedErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/series/{seriesId}/thumbnails/{thumbnailId}/selected',
@@ -1590,10 +1590,8 @@ export const komgaMarkSeriesThumbnailSelected = <ThrowOnError extends boolean = 
 
 /**
  * Retrieve server settings
- *
- * Required role: **ADMIN**
  */
-export const komgaGetServerSettings = <ThrowOnError extends boolean = false>(options?: Options<GetServerSettingsData, ThrowOnError>): RequestResult<GetServerSettingsResponses, GetServerSettingsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetServerSettingsResponses, GetServerSettingsErrors, ThrowOnError, 'data'>({
+export const komgaGetServerSettings = <ThrowOnError extends boolean = true>(options?: Options<GetServerSettingsData, ThrowOnError>): RequestResult<GetServerSettingsResponses, GetServerSettingsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetServerSettingsResponses, GetServerSettingsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/settings',
@@ -1607,7 +1605,7 @@ export const komgaGetServerSettings = <ThrowOnError extends boolean = false>(opt
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdateServerSettings = <ThrowOnError extends boolean = false>(options: Options<UpdateServerSettingsData, ThrowOnError>): RequestResult<UpdateServerSettingsResponses, UpdateServerSettingsErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateServerSettingsResponses, UpdateServerSettingsErrors, ThrowOnError, 'data'>({
+export const komgaUpdateServerSettings = <ThrowOnError extends boolean = true>(options: Options<UpdateServerSettingsData, ThrowOnError>): RequestResult<UpdateServerSettingsResponses, UpdateServerSettingsErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateServerSettingsResponses, UpdateServerSettingsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/settings',
@@ -1623,7 +1621,7 @@ export const komgaUpdateServerSettings = <ThrowOnError extends boolean = false>(
  *
  * If an API Key ID is passed, deletes only the sync points associated with that API Key. Deleting sync points will allow a Kobo to sync from scratch upon the next sync.
  */
-export const komgaDeleteSyncPointsForCurrentUser = <ThrowOnError extends boolean = false>(options?: Options<DeleteSyncPointsForCurrentUserData, ThrowOnError>): RequestResult<DeleteSyncPointsForCurrentUserResponses, DeleteSyncPointsForCurrentUserErrors, ThrowOnError, 'data'> => (options?.client ?? client).delete<DeleteSyncPointsForCurrentUserResponses, DeleteSyncPointsForCurrentUserErrors, ThrowOnError, 'data'>({
+export const komgaDeleteSyncPointsForCurrentUser = <ThrowOnError extends boolean = true>(options?: Options<DeleteSyncPointsForCurrentUserData, ThrowOnError>): RequestResult<DeleteSyncPointsForCurrentUserResponses, DeleteSyncPointsForCurrentUserErrors, ThrowOnError, 'data'> => (options?.client ?? client).delete<DeleteSyncPointsForCurrentUserResponses, DeleteSyncPointsForCurrentUserErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/syncpoints/me',
@@ -1637,7 +1635,7 @@ export const komgaDeleteSyncPointsForCurrentUser = <ThrowOnError extends boolean
  *
  * Required role: **ADMIN**
  */
-export const komgaEmptyTaskQueue = <ThrowOnError extends boolean = false>(options?: Options<EmptyTaskQueueData, ThrowOnError>): RequestResult<EmptyTaskQueueResponses, EmptyTaskQueueErrors, ThrowOnError, 'data'> => (options?.client ?? client).delete<EmptyTaskQueueResponses, EmptyTaskQueueErrors, ThrowOnError, 'data'>({
+export const komgaEmptyTaskQueue = <ThrowOnError extends boolean = true>(options?: Options<EmptyTaskQueueData, ThrowOnError>): RequestResult<EmptyTaskQueueResponses, EmptyTaskQueueErrors, ThrowOnError, 'data'> => (options?.client ?? client).delete<EmptyTaskQueueResponses, EmptyTaskQueueErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/tasks',
@@ -1651,7 +1649,7 @@ export const komgaEmptyTaskQueue = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **ADMIN**
  */
-export const komgaScanTransientBooks = <ThrowOnError extends boolean = false>(options: Options<ScanTransientBooksData, ThrowOnError>): RequestResult<ScanTransientBooksResponses, ScanTransientBooksErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ScanTransientBooksResponses, ScanTransientBooksErrors, ThrowOnError, 'data'>({
+export const komgaScanTransientBooks = <ThrowOnError extends boolean = true>(options: Options<ScanTransientBooksData, ThrowOnError>): RequestResult<ScanTransientBooksResponses, ScanTransientBooksErrors, ThrowOnError, 'data'> => (options.client ?? client).post<ScanTransientBooksResponses, ScanTransientBooksErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/transient-books',
@@ -1667,7 +1665,7 @@ export const komgaScanTransientBooks = <ThrowOnError extends boolean = false>(op
  *
  * Required role: **ADMIN**
  */
-export const komgaAnalyzeTransientBook = <ThrowOnError extends boolean = false>(options: Options<AnalyzeTransientBookData, ThrowOnError>): RequestResult<AnalyzeTransientBookResponses, AnalyzeTransientBookErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AnalyzeTransientBookResponses, AnalyzeTransientBookErrors, ThrowOnError, 'data'>({
+export const komgaAnalyzeTransientBook = <ThrowOnError extends boolean = true>(options: Options<AnalyzeTransientBookData, ThrowOnError>): RequestResult<AnalyzeTransientBookResponses, AnalyzeTransientBookErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AnalyzeTransientBookResponses, AnalyzeTransientBookErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/transient-books/{id}/analyze',
@@ -1679,7 +1677,7 @@ export const komgaAnalyzeTransientBook = <ThrowOnError extends boolean = false>(
  *
  * Required role: **ADMIN**
  */
-export const komgaGetPageByTransientBookId = <ThrowOnError extends boolean = false>(options: Options<GetPageByTransientBookIdData, ThrowOnError>): RequestResult<GetPageByTransientBookIdResponses, GetPageByTransientBookIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetPageByTransientBookIdResponses, GetPageByTransientBookIdErrors, ThrowOnError, 'data'>({
+export const komgaGetPageByTransientBookId = <ThrowOnError extends boolean = true>(options: Options<GetPageByTransientBookIdData, ThrowOnError>): RequestResult<GetPageByTransientBookIdResponses, GetPageByTransientBookIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetPageByTransientBookIdResponses, GetPageByTransientBookIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v1/transient-books/{id}/pages/{pageNumber}',
@@ -1691,7 +1689,7 @@ export const komgaGetPageByTransientBookId = <ThrowOnError extends boolean = fal
  *
  * Can be filtered by various criteria
  */
-export const komgaGetAgeRatings = <ThrowOnError extends boolean = false>(options?: Options<GetAgeRatingsData, ThrowOnError>): RequestResult<GetAgeRatingsResponses, GetAgeRatingsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAgeRatingsResponses, GetAgeRatingsErrors, ThrowOnError, 'data'>({
+export const komgaGetAgeRatings = <ThrowOnError extends boolean = true>(options?: Options<GetAgeRatingsData, ThrowOnError>): RequestResult<GetAgeRatingsResponses, GetAgeRatingsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAgeRatingsResponses, GetAgeRatingsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/age-ratings',
@@ -1703,7 +1701,7 @@ export const komgaGetAgeRatings = <ThrowOnError extends boolean = false>(options
  *
  * Can be filtered by various criteria
  */
-export const komgaGetAuthors = <ThrowOnError extends boolean = false>(options?: Options<GetAuthorsData, ThrowOnError>): RequestResult<GetAuthorsResponses, GetAuthorsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthorsResponses, GetAuthorsErrors, ThrowOnError, 'data'>({
+export const komgaGetAuthors = <ThrowOnError extends boolean = true>(options?: Options<GetAuthorsData, ThrowOnError>): RequestResult<GetAuthorsResponses, GetAuthorsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthorsResponses, GetAuthorsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/authors',
@@ -1715,7 +1713,7 @@ export const komgaGetAuthors = <ThrowOnError extends boolean = false>(options?: 
  *
  * Can be filtered by various criteria
  */
-export const komgaGetAuthorsNames = <ThrowOnError extends boolean = false>(options?: Options<GetAuthorsNamesData, ThrowOnError>): RequestResult<GetAuthorsNamesResponses, GetAuthorsNamesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthorsNamesResponses, GetAuthorsNamesErrors, ThrowOnError, 'data'>({
+export const komgaGetAuthorsNames = <ThrowOnError extends boolean = true>(options?: Options<GetAuthorsNamesData, ThrowOnError>): RequestResult<GetAuthorsNamesResponses, GetAuthorsNamesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthorsNamesResponses, GetAuthorsNamesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/authors/names',
@@ -1727,7 +1725,7 @@ export const komgaGetAuthorsNames = <ThrowOnError extends boolean = false>(optio
  *
  * Can be filtered by various criteria
  */
-export const komgaGetAuthorsRoles = <ThrowOnError extends boolean = false>(options?: Options<GetAuthorsRolesData, ThrowOnError>): RequestResult<GetAuthorsRolesResponses, GetAuthorsRolesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthorsRolesResponses, GetAuthorsRolesErrors, ThrowOnError, 'data'>({
+export const komgaGetAuthorsRoles = <ThrowOnError extends boolean = true>(options?: Options<GetAuthorsRolesData, ThrowOnError>): RequestResult<GetAuthorsRolesResponses, GetAuthorsRolesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthorsRolesResponses, GetAuthorsRolesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/authors/roles',
@@ -1739,7 +1737,7 @@ export const komgaGetAuthorsRoles = <ThrowOnError extends boolean = false>(optio
  *
  * Can be filtered by various criteria
  */
-export const komgaGetGenres = <ThrowOnError extends boolean = false>(options?: Options<GetGenresData, ThrowOnError>): RequestResult<GetGenresResponses, GetGenresErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetGenresResponses, GetGenresErrors, ThrowOnError, 'data'>({
+export const komgaGetGenres = <ThrowOnError extends boolean = true>(options?: Options<GetGenresData, ThrowOnError>): RequestResult<GetGenresResponses, GetGenresErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetGenresResponses, GetGenresErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/genres',
@@ -1751,7 +1749,7 @@ export const komgaGetGenres = <ThrowOnError extends boolean = false>(options?: O
  *
  * Can be filtered by various criteria
  */
-export const komgaGetLanguages = <ThrowOnError extends boolean = false>(options?: Options<GetLanguagesData, ThrowOnError>): RequestResult<GetLanguagesResponses, GetLanguagesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetLanguagesResponses, GetLanguagesErrors, ThrowOnError, 'data'>({
+export const komgaGetLanguages = <ThrowOnError extends boolean = true>(options?: Options<GetLanguagesData, ThrowOnError>): RequestResult<GetLanguagesResponses, GetLanguagesErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetLanguagesResponses, GetLanguagesErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/languages',
@@ -1763,7 +1761,7 @@ export const komgaGetLanguages = <ThrowOnError extends boolean = false>(options?
  *
  * Can be filtered by various criteria
  */
-export const komgaGetPublishers = <ThrowOnError extends boolean = false>(options?: Options<GetPublishersData, ThrowOnError>): RequestResult<GetPublishersResponses, GetPublishersErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetPublishersResponses, GetPublishersErrors, ThrowOnError, 'data'>({
+export const komgaGetPublishers = <ThrowOnError extends boolean = true>(options?: Options<GetPublishersData, ThrowOnError>): RequestResult<GetPublishersResponses, GetPublishersErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetPublishersResponses, GetPublishersErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/publishers',
@@ -1775,7 +1773,7 @@ export const komgaGetPublishers = <ThrowOnError extends boolean = false>(options
  *
  * Can be filtered by various criteria
  */
-export const komgaGetSeriesReleaseYears = <ThrowOnError extends boolean = false>(options?: Options<GetSeriesReleaseYearsData, ThrowOnError>): RequestResult<GetSeriesReleaseYearsResponses, GetSeriesReleaseYearsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSeriesReleaseYearsResponses, GetSeriesReleaseYearsErrors, ThrowOnError, 'data'>({
+export const komgaGetSeriesReleaseYears = <ThrowOnError extends boolean = true>(options?: Options<GetSeriesReleaseYearsData, ThrowOnError>): RequestResult<GetSeriesReleaseYearsResponses, GetSeriesReleaseYearsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSeriesReleaseYearsResponses, GetSeriesReleaseYearsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/series/release-years',
@@ -1787,7 +1785,7 @@ export const komgaGetSeriesReleaseYears = <ThrowOnError extends boolean = false>
  *
  * Mihon specific, due to how read progress is handled in Mihon.
  */
-export const komgaGetMihonReadProgressBySeriesId = <ThrowOnError extends boolean = false>(options: Options<GetMihonReadProgressBySeriesIdData, ThrowOnError>): RequestResult<GetMihonReadProgressBySeriesIdResponses, GetMihonReadProgressBySeriesIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetMihonReadProgressBySeriesIdResponses, GetMihonReadProgressBySeriesIdErrors, ThrowOnError, 'data'>({
+export const komgaGetMihonReadProgressBySeriesId = <ThrowOnError extends boolean = true>(options: Options<GetMihonReadProgressBySeriesIdData, ThrowOnError>): RequestResult<GetMihonReadProgressBySeriesIdResponses, GetMihonReadProgressBySeriesIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetMihonReadProgressBySeriesIdResponses, GetMihonReadProgressBySeriesIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/series/{seriesId}/read-progress/tachiyomi',
@@ -1799,7 +1797,7 @@ export const komgaGetMihonReadProgressBySeriesId = <ThrowOnError extends boolean
  *
  * Mihon specific, due to how read progress is handled in Mihon.
  */
-export const komgaUpdateMihonReadProgressBySeriesId = <ThrowOnError extends boolean = false>(options: Options<UpdateMihonReadProgressBySeriesIdData, ThrowOnError>): RequestResult<UpdateMihonReadProgressBySeriesIdResponses, UpdateMihonReadProgressBySeriesIdErrors, ThrowOnError, 'data'> => (options.client ?? client).put<UpdateMihonReadProgressBySeriesIdResponses, UpdateMihonReadProgressBySeriesIdErrors, ThrowOnError, 'data'>({
+export const komgaUpdateMihonReadProgressBySeriesId = <ThrowOnError extends boolean = true>(options: Options<UpdateMihonReadProgressBySeriesIdData, ThrowOnError>): RequestResult<UpdateMihonReadProgressBySeriesIdResponses, UpdateMihonReadProgressBySeriesIdErrors, ThrowOnError, 'data'> => (options.client ?? client).put<UpdateMihonReadProgressBySeriesIdResponses, UpdateMihonReadProgressBySeriesIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/series/{seriesId}/read-progress/tachiyomi',
@@ -1815,7 +1813,7 @@ export const komgaUpdateMihonReadProgressBySeriesId = <ThrowOnError extends bool
  *
  * Can be filtered by various criteria
  */
-export const komgaGetSharingLabels = <ThrowOnError extends boolean = false>(options?: Options<GetSharingLabelsData, ThrowOnError>): RequestResult<GetSharingLabelsResponses, GetSharingLabelsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSharingLabelsResponses, GetSharingLabelsErrors, ThrowOnError, 'data'>({
+export const komgaGetSharingLabels = <ThrowOnError extends boolean = true>(options?: Options<GetSharingLabelsData, ThrowOnError>): RequestResult<GetSharingLabelsResponses, GetSharingLabelsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetSharingLabelsResponses, GetSharingLabelsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/sharing-labels',
@@ -1827,7 +1825,7 @@ export const komgaGetSharingLabels = <ThrowOnError extends boolean = false>(opti
  *
  * Can be filtered by various criteria
  */
-export const komgaGetTags = <ThrowOnError extends boolean = false>(options?: Options<GetTagsData, ThrowOnError>): RequestResult<GetTagsResponses, GetTagsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetTagsResponses, GetTagsErrors, ThrowOnError, 'data'>({
+export const komgaGetTags = <ThrowOnError extends boolean = true>(options?: Options<GetTagsData, ThrowOnError>): RequestResult<GetTagsResponses, GetTagsErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetTagsResponses, GetTagsErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/tags',
@@ -1839,7 +1837,7 @@ export const komgaGetTags = <ThrowOnError extends boolean = false>(options?: Opt
  *
  * Required role: **ADMIN**
  */
-export const komgaGetUsers = <ThrowOnError extends boolean = false>(options?: Options<GetUsersData, ThrowOnError>): RequestResult<GetUsersResponses, GetUsersErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetUsersResponses, GetUsersErrors, ThrowOnError, 'data'>({
+export const komgaGetUsers = <ThrowOnError extends boolean = true>(options?: Options<GetUsersData, ThrowOnError>): RequestResult<GetUsersResponses, GetUsersErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetUsersResponses, GetUsersErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users',
@@ -1851,7 +1849,7 @@ export const komgaGetUsers = <ThrowOnError extends boolean = false>(options?: Op
  *
  * Required role: **ADMIN**
  */
-export const komgaAddUser = <ThrowOnError extends boolean = false>(options: Options<AddUserData, ThrowOnError>): RequestResult<AddUserResponses, AddUserErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserResponses, AddUserErrors, ThrowOnError, 'data'>({
+export const komgaAddUser = <ThrowOnError extends boolean = true>(options: Options<AddUserData, ThrowOnError>): RequestResult<AddUserResponses, AddUserErrors, ThrowOnError, 'data'> => (options.client ?? client).post<AddUserResponses, AddUserErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users',
@@ -1867,7 +1865,7 @@ export const komgaAddUser = <ThrowOnError extends boolean = false>(options: Opti
  *
  * Required role: **ADMIN**
  */
-export const komgaGetAuthenticationActivity = <ThrowOnError extends boolean = false>(options?: Options<GetAuthenticationActivityData, ThrowOnError>): RequestResult<GetAuthenticationActivityResponses, GetAuthenticationActivityErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthenticationActivityResponses, GetAuthenticationActivityErrors, ThrowOnError, 'data'>({
+export const komgaGetAuthenticationActivity = <ThrowOnError extends boolean = true>(options?: Options<GetAuthenticationActivityData, ThrowOnError>): RequestResult<GetAuthenticationActivityResponses, GetAuthenticationActivityErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthenticationActivityResponses, GetAuthenticationActivityErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/authentication-activity',
@@ -1877,7 +1875,7 @@ export const komgaGetAuthenticationActivity = <ThrowOnError extends boolean = fa
 /**
  * Retrieve current user
  */
-export const komgaGetCurrentUser = <ThrowOnError extends boolean = false>(options?: Options<GetCurrentUserData, ThrowOnError>): RequestResult<GetCurrentUserResponses, GetCurrentUserErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetCurrentUserResponses, GetCurrentUserErrors, ThrowOnError, 'data'>({
+export const komgaGetCurrentUser = <ThrowOnError extends boolean = true>(options?: Options<GetCurrentUserData, ThrowOnError>): RequestResult<GetCurrentUserResponses, GetCurrentUserErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetCurrentUserResponses, GetCurrentUserErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/me',
@@ -1887,7 +1885,7 @@ export const komgaGetCurrentUser = <ThrowOnError extends boolean = false>(option
 /**
  * Retrieve API keys
  */
-export const komgaGetApiKeysForCurrentUser = <ThrowOnError extends boolean = false>(options?: Options<GetApiKeysForCurrentUserData, ThrowOnError>): RequestResult<GetApiKeysForCurrentUserResponses, GetApiKeysForCurrentUserErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetApiKeysForCurrentUserResponses, GetApiKeysForCurrentUserErrors, ThrowOnError, 'data'>({
+export const komgaGetApiKeysForCurrentUser = <ThrowOnError extends boolean = true>(options?: Options<GetApiKeysForCurrentUserData, ThrowOnError>): RequestResult<GetApiKeysForCurrentUserResponses, GetApiKeysForCurrentUserErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetApiKeysForCurrentUserResponses, GetApiKeysForCurrentUserErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/me/api-keys',
@@ -1897,7 +1895,7 @@ export const komgaGetApiKeysForCurrentUser = <ThrowOnError extends boolean = fal
 /**
  * Create API key
  */
-export const komgaCreateApiKeyForCurrentUser = <ThrowOnError extends boolean = false>(options: Options<CreateApiKeyForCurrentUserData, ThrowOnError>): RequestResult<CreateApiKeyForCurrentUserResponses, CreateApiKeyForCurrentUserErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateApiKeyForCurrentUserResponses, CreateApiKeyForCurrentUserErrors, ThrowOnError, 'data'>({
+export const komgaCreateApiKeyForCurrentUser = <ThrowOnError extends boolean = true>(options: Options<CreateApiKeyForCurrentUserData, ThrowOnError>): RequestResult<CreateApiKeyForCurrentUserResponses, CreateApiKeyForCurrentUserErrors, ThrowOnError, 'data'> => (options.client ?? client).post<CreateApiKeyForCurrentUserResponses, CreateApiKeyForCurrentUserErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/me/api-keys',
@@ -1911,7 +1909,7 @@ export const komgaCreateApiKeyForCurrentUser = <ThrowOnError extends boolean = f
 /**
  * Delete API key
  */
-export const komgaDeleteApiKeyByKeyId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiKeyByKeyIdData, ThrowOnError>): RequestResult<DeleteApiKeyByKeyIdResponses, DeleteApiKeyByKeyIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteApiKeyByKeyIdResponses, DeleteApiKeyByKeyIdErrors, ThrowOnError, 'data'>({
+export const komgaDeleteApiKeyByKeyId = <ThrowOnError extends boolean = true>(options: Options<DeleteApiKeyByKeyIdData, ThrowOnError>): RequestResult<DeleteApiKeyByKeyIdResponses, DeleteApiKeyByKeyIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteApiKeyByKeyIdResponses, DeleteApiKeyByKeyIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/me/api-keys/{keyId}',
@@ -1921,7 +1919,7 @@ export const komgaDeleteApiKeyByKeyId = <ThrowOnError extends boolean = false>(o
 /**
  * Retrieve authentication activity for the current user
  */
-export const komgaGetAuthenticationActivityForCurrentUser = <ThrowOnError extends boolean = false>(options?: Options<GetAuthenticationActivityForCurrentUserData, ThrowOnError>): RequestResult<GetAuthenticationActivityForCurrentUserResponses, GetAuthenticationActivityForCurrentUserErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthenticationActivityForCurrentUserResponses, GetAuthenticationActivityForCurrentUserErrors, ThrowOnError, 'data'>({
+export const komgaGetAuthenticationActivityForCurrentUser = <ThrowOnError extends boolean = true>(options?: Options<GetAuthenticationActivityForCurrentUserData, ThrowOnError>): RequestResult<GetAuthenticationActivityForCurrentUserResponses, GetAuthenticationActivityForCurrentUserErrors, ThrowOnError, 'data'> => (options?.client ?? client).get<GetAuthenticationActivityForCurrentUserResponses, GetAuthenticationActivityForCurrentUserErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/me/authentication-activity',
@@ -1931,7 +1929,7 @@ export const komgaGetAuthenticationActivityForCurrentUser = <ThrowOnError extend
 /**
  * Update current user's password
  */
-export const komgaUpdatePasswordForCurrentUser = <ThrowOnError extends boolean = false>(options: Options<UpdatePasswordForCurrentUserData, ThrowOnError>): RequestResult<UpdatePasswordForCurrentUserResponses, UpdatePasswordForCurrentUserErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdatePasswordForCurrentUserResponses, UpdatePasswordForCurrentUserErrors, ThrowOnError, 'data'>({
+export const komgaUpdatePasswordForCurrentUser = <ThrowOnError extends boolean = true>(options: Options<UpdatePasswordForCurrentUserData, ThrowOnError>): RequestResult<UpdatePasswordForCurrentUserResponses, UpdatePasswordForCurrentUserErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdatePasswordForCurrentUserResponses, UpdatePasswordForCurrentUserErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/me/password',
@@ -1947,7 +1945,7 @@ export const komgaUpdatePasswordForCurrentUser = <ThrowOnError extends boolean =
  *
  * Required role: **ADMIN**
  */
-export const komgaDeleteUserById = <ThrowOnError extends boolean = false>(options: Options<DeleteUserByIdData, ThrowOnError>): RequestResult<DeleteUserByIdResponses, DeleteUserByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserByIdResponses, DeleteUserByIdErrors, ThrowOnError, 'data'>({
+export const komgaDeleteUserById = <ThrowOnError extends boolean = true>(options: Options<DeleteUserByIdData, ThrowOnError>): RequestResult<DeleteUserByIdResponses, DeleteUserByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).delete<DeleteUserByIdResponses, DeleteUserByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/{id}',
@@ -1959,7 +1957,7 @@ export const komgaDeleteUserById = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdateUserById = <ThrowOnError extends boolean = false>(options: Options<UpdateUserByIdData, ThrowOnError>): RequestResult<UpdateUserByIdResponses, UpdateUserByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateUserByIdResponses, UpdateUserByIdErrors, ThrowOnError, 'data'>({
+export const komgaUpdateUserById = <ThrowOnError extends boolean = true>(options: Options<UpdateUserByIdData, ThrowOnError>): RequestResult<UpdateUserByIdResponses, UpdateUserByIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdateUserByIdResponses, UpdateUserByIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/{id}',
@@ -1975,7 +1973,7 @@ export const komgaUpdateUserById = <ThrowOnError extends boolean = false>(option
  *
  * Required role: **ADMIN**
  */
-export const komgaGetLatestAuthenticationActivityByUserId = <ThrowOnError extends boolean = false>(options: Options<GetLatestAuthenticationActivityByUserIdData, ThrowOnError>): RequestResult<GetLatestAuthenticationActivityByUserIdResponses, GetLatestAuthenticationActivityByUserIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetLatestAuthenticationActivityByUserIdResponses, GetLatestAuthenticationActivityByUserIdErrors, ThrowOnError, 'data'>({
+export const komgaGetLatestAuthenticationActivityByUserId = <ThrowOnError extends boolean = true>(options: Options<GetLatestAuthenticationActivityByUserIdData, ThrowOnError>): RequestResult<GetLatestAuthenticationActivityByUserIdResponses, GetLatestAuthenticationActivityByUserIdErrors, ThrowOnError, 'data'> => (options.client ?? client).get<GetLatestAuthenticationActivityByUserIdResponses, GetLatestAuthenticationActivityByUserIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/{id}/authentication-activity/latest',
@@ -1987,7 +1985,7 @@ export const komgaGetLatestAuthenticationActivityByUserId = <ThrowOnError extend
  *
  * Required role: **ADMIN**
  */
-export const komgaUpdatePasswordByUserId = <ThrowOnError extends boolean = false>(options: Options<UpdatePasswordByUserIdData, ThrowOnError>): RequestResult<UpdatePasswordByUserIdResponses, UpdatePasswordByUserIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdatePasswordByUserIdResponses, UpdatePasswordByUserIdErrors, ThrowOnError, 'data'>({
+export const komgaUpdatePasswordByUserId = <ThrowOnError extends boolean = true>(options: Options<UpdatePasswordByUserIdData, ThrowOnError>): RequestResult<UpdatePasswordByUserIdResponses, UpdatePasswordByUserIdErrors, ThrowOnError, 'data'> => (options.client ?? client).patch<UpdatePasswordByUserIdResponses, UpdatePasswordByUserIdErrors, ThrowOnError, 'data'>({
     responseStyle: 'data',
     security: [{ scheme: 'basic', type: 'http' }, { name: 'X-API-Key', type: 'apiKey' }],
     url: '/api/v2/users/{id}/password',
