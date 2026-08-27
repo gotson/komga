@@ -37,11 +37,19 @@ class SettingsControllerTest(
 
     @Test
     @WithMockCustomUser
-    fun `given restricted user when retrieving settings then returns forbidden`() {
+    fun `given restricted user when retrieving settings then returns public settings only`() {
       mockMvc
         .get("/api/v1/settings")
         .andExpect {
-          status { isForbidden() }
+          status { isOk() }
+          jsonPath("deleteEmptyCollections") { doesNotHaveJsonPath() }
+          jsonPath("deleteEmptyReadLists") { doesNotHaveJsonPath() }
+          jsonPath("rememberMeDurationDays") { doesNotHaveJsonPath() }
+          jsonPath("thumbnailSize") { doesNotHaveJsonPath() }
+          jsonPath("taskPoolSize") { doesNotHaveJsonPath() }
+          jsonPath("serverPort") { doesNotHaveJsonPath() }
+          jsonPath("serverContextPath") { doesNotHaveJsonPath() }
+          jsonPath("maxUploadFileSizeBytes") { isNotEmpty() }
         }
     }
   }
@@ -72,6 +80,7 @@ class SettingsControllerTest(
         jsonPath("serverContextPath.configurationSource") { value(null) }
         jsonPath("serverContextPath.databaseSource") { value("/example") }
         jsonPath("serverContextPath.effectiveValue") { value("") }
+        jsonPath("maxUploadFileSizeBytes") { isNotEmpty() }
       }
   }
 

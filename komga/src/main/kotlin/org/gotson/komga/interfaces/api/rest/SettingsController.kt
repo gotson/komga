@@ -7,16 +7,20 @@ import jakarta.validation.Valid
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.kobo.KepubConverter
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
+import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.infrastructure.web.WebServerEffectiveSettings
 import org.gotson.komga.interfaces.api.rest.dto.SettingMultiSource
 import org.gotson.komga.interfaces.api.rest.dto.SettingsDto
 import org.gotson.komga.interfaces.api.rest.dto.SettingsUpdateDto
+import org.gotson.komga.interfaces.api.rest.dto.public
 import org.gotson.komga.interfaces.api.rest.dto.toDomain
 import org.gotson.komga.interfaces.api.rest.dto.toDto
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.web.servlet.MultipartProperties
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -27,7 +31,6 @@ import kotlin.time.Duration.Companion.days
 
 @RestController
 @RequestMapping(value = ["api/v1/settings"], produces = [MediaType.APPLICATION_JSON_VALUE])
-@PreAuthorize("hasRole('ADMIN')")
 @Tag(name = OpenApiConfiguration.TagNames.SERVER_SETTINGS)
 class SettingsController(
   private val komgaSettingsProvider: KomgaSettingsProvider,
@@ -35,26 +38,35 @@ class SettingsController(
   @param:Value($$"${server.servlet.context-path:#{null}}") private val configServerContextPath: String?,
   private val serverSettings: WebServerEffectiveSettings,
   private val kepubConverter: KepubConverter,
+  private val multipartProperties: MultipartProperties,
 ) {
   @GetMapping
   @Operation(summary = "Retrieve server settings")
-  fun getServerSettings(): SettingsDto =
-    SettingsDto(
-      komgaSettingsProvider.deleteEmptyCollections,
-      komgaSettingsProvider.deleteEmptyReadLists,
-      komgaSettingsProvider.rememberMeDuration.inWholeDays,
-      komgaSettingsProvider.thumbnailSize.toDto(),
-      komgaSettingsProvider.taskPoolSize,
-      SettingMultiSource(configServerPort, komgaSettingsProvider.serverPort, serverSettings.effectiveServerPort),
-      SettingMultiSource(configServerContextPath, komgaSettingsProvider.serverContextPath, serverSettings.effectiveServletContextPath),
-      komgaSettingsProvider.koboProxy,
-      komgaSettingsProvider.koboPort,
-      SettingMultiSource(kepubConverter.kepubifyConfigurationPath, komgaSettingsProvider.kepubifyPath, kepubConverter.kepubifyPath?.toString()),
-    )
+  fun getServerSettings(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
+  ): SettingsDto {
+    val settingsDto =
+      SettingsDto(
+        komgaSettingsProvider.deleteEmptyCollections,
+        komgaSettingsProvider.deleteEmptyReadLists,
+        komgaSettingsProvider.rememberMeDuration.inWholeDays,
+        komgaSettingsProvider.thumbnailSize.toDto(),
+        komgaSettingsProvider.taskPoolSize,
+        SettingMultiSource(configServerPort, komgaSettingsProvider.serverPort, serverSettings.effectiveServerPort),
+        SettingMultiSource(configServerContextPath, komgaSettingsProvider.serverContextPath, serverSettings.effectiveServletContextPath),
+        komgaSettingsProvider.koboProxy,
+        komgaSettingsProvider.koboPort,
+        SettingMultiSource(kepubConverter.kepubifyConfigurationPath, komgaSettingsProvider.kepubifyPath, kepubConverter.kepubifyPath?.toString()),
+        multipartProperties.maxFileSize?.toBytes(),
+      )
+
+    return if (principal.user.isAdmin) settingsDto else settingsDto.public()
+  }
 
   @PatchMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "Update server settings", description = "You can omit fields you don't want to update")
+  @PreAuthorize("hasRole('ADMIN')")
   fun updateServerSettings(
     @Valid @RequestBody
     @Parameter(description = "Fields to update. You can omit fields you don't want to update.")
