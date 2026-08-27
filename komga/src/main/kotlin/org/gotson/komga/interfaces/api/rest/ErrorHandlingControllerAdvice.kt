@@ -3,17 +3,17 @@ package org.gotson.komga.interfaces.api.rest
 import jakarta.validation.ConstraintViolationException
 import org.gotson.komga.domain.model.EntityNotFoundException
 import org.springframework.http.HttpStatus
+import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.MethodArgumentNotValidException
-import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.multipart.MaxUploadSizeExceededException
 
-@ControllerAdvice
+@RestControllerAdvice
 class ErrorHandlingControllerAdvice {
   @ExceptionHandler(ConstraintViolationException::class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ResponseBody
   fun onConstraintValidationException(
     e: ConstraintViolationException,
   ): ValidationErrorResponse =
@@ -23,7 +23,6 @@ class ErrorHandlingControllerAdvice {
 
   @ExceptionHandler(MethodArgumentNotValidException::class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ResponseBody
   fun onMethodArgumentNotValidException(
     e: MethodArgumentNotValidException,
   ): ValidationErrorResponse =
@@ -35,6 +34,9 @@ class ErrorHandlingControllerAdvice {
   @ResponseStatus(HttpStatus.NOT_FOUND)
   fun handleEntityNotFound() {
   }
+
+  @ExceptionHandler(MaxUploadSizeExceededException::class)
+  fun handleMaxUploadSizeExceededException(e: MaxUploadSizeExceededException): ProblemDetail = e.body
 }
 
 data class ValidationErrorResponse(
