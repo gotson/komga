@@ -4,6 +4,7 @@ import { client } from '@/generated/openapi/client.gen'
 
 type SpringError = {
   message?: string
+  detail?: string
 }
 
 const ApiErrorCause = v.object({
@@ -33,7 +34,7 @@ const responseInterceptor = async (response: Response) => {
       cause: {
         body: body,
         status: response.status,
-        message: body?.message,
+        message: body?.detail ?? body?.message,
       },
     })
   }
