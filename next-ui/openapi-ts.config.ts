@@ -33,6 +33,7 @@ export default defineConfig({
   plugins: [
     {
       name: '@hey-api/client-fetch',
+      throwOnError: true,
     },
     {
       name: '@hey-api/typescript',
