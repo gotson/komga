@@ -6,7 +6,6 @@
     <v-file-upload
       v-model="fileToUpload"
       :disabled="isLoading"
-      density="compact"
       filter-by-type=".cbl"
       :error-messages="errorMessage"
       @rejected="handleReject()"
