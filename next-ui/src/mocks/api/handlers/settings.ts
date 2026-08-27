@@ -16,6 +16,7 @@ export const settings = {
     configurationSource: '/usr/bin/kepubify',
     effectiveValue: '/usr/bin/kepubify',
   },
+  maxUploadFileSizeBytes: 1048576,
 } as SettingsDto
 
 export const settingsHandlers = [handleGetServerSettings(() => response200OK(settings))]
