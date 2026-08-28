@@ -106,7 +106,7 @@ export const booksHandlers = [
     )
   }),
   handleImportBooks(() => response202Empty()),
-  http.get('*/api/v1/books/*/thumbnail', async () => {
+  http.get('*/api/v1/books/*/thumbnail*', async () => {
     // Get an ArrayBuffer from reading the file from disk or fetching it.
     const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
 

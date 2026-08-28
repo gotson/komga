@@ -217,7 +217,7 @@ export const readListsHandlers = [
     })
   }),
   handleMatchComicRackList(() => response200OK(matchCbl)),
-  http.get('*/api/v1/readlists/*/thumbnail', async () => {
+  http.get('*/api/v1/readlists/*/thumbnail*', async () => {
     // Get an ArrayBuffer from reading the file from disk or fetching it.
     const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
 
