@@ -5,14 +5,44 @@
       multiple
       filter-by-type="image/*"
       @rejected="handleReject()"
-      @update:model-value="handleLocalFilesChanged"
+      @update:model-value="updateLocalFiles"
     >
       <template #default>
-        <v-file-upload-dropzone />
+        <v-file-upload-dropzone>
+          <template #title>
+            <div>
+              {{
+                $formatMessage({
+                  description: 'Poster upload: dropzone title',
+                  defaultMessage: 'Drag and drop images here',
+                  id: 'sNSGMQ',
+                })
+              }}
+            </div>
+            <div class="text-title-medium d-flex ga-2 justify-center">
+              <span>{{
+                $formatMessage({
+                  description:
+                    'Poster upload: dropzone subtitle, will be followed by the keyboard hotkey for pasting',
+                  defaultMessage: 'or paste using',
+                  id: 'cTPeOs',
+                })
+              }}</span>
+              <v-hotkey
+                keys="cmd+v"
+                platform="auto"
+                variant="contained"
+              />
+            </div>
+          </template>
+        </v-file-upload-dropzone>
       </template>
     </v-file-upload>
 
-    <v-container class="pa-0">
+    <v-container
+      fluid
+      class="pa-0"
+    >
       <v-row :density="display.xs.value ? 'compact' : 'comfortable'">
         <v-col
           v-for="poster in posters"
@@ -45,8 +75,9 @@ import {
   type PosterDto,
   type PosterUpload,
 } from '@/functions/poster'
-import { watchImmediate } from '@vueuse/core'
+import { useEventListener, watchImmediate } from '@vueuse/core'
 import { useSettings } from '@/colada/settings'
+import { extractImageFromClipboard } from '@/functions/clipboard'
 
 const { entityPosters } = defineProps<{
   entityPosters: PosterDto[]
@@ -87,9 +118,12 @@ watch([selection, deleteQueue], ([newSelectedPoster, newDeleteQueue]) => {
   // if no poster is selected, try to select the best candidate
   if (!newSelectedPoster) {
     // fallback to the selected one from the entity poster, if not marked for deletion
-    const selected = entityPosters.find((it) => it.selected)
-    if (selected && !newDeleteQueue.some((it) => it.id === selected.id))
-      selection.value = { id: selected.id, type: 'remote' }
+    const candidate1 = entityPosters.find((it) => it.selected)
+    if (candidate1 && !newDeleteQueue.some((it) => it.id === candidate1.id))
+      selection.value = { id: candidate1.id, type: 'remote' }
+    // else select the first local file
+    const candidate2 = uploadQueue.value.at(0)
+    if (candidate2) selection.value = { type: 'local', id: fileIdentifier(candidate2) }
   }
 })
 
@@ -131,6 +165,12 @@ watch(
   },
 )
 
+// register paste event
+useEventListener(window, 'paste', (event: ClipboardEvent) => {
+  void handleClipboardItems(Array.from(event.clipboardData?.items ?? []))
+  event.preventDefault()
+})
+
 function isSelected(poster: File | PosterDto): boolean {
   if (poster instanceof File)
     return selection.value?.type === 'local' && selection.value.id === fileIdentifier(poster)
@@ -147,10 +187,10 @@ function handleReject() {
   )
 }
 
-function handleLocalFilesChanged(localFiles: File[]) {
+function updateLocalFiles(localFiles: File[]) {
   // remove duplicates
   const seen = new Set<string>()
-  uploadQueue.value = localFiles.filter((file) => {
+  const distinctFiles = localFiles.filter((file) => {
     // Create a unique key using filename, size, and timestamp
     const identifier = fileIdentifier(file)
 
@@ -165,11 +205,11 @@ function handleLocalFilesChanged(localFiles: File[]) {
   // remove files over the size limit
   const validFiles: File[] = []
   const rejectedFiles: File[] = []
-  for (const localFile of uploadQueue.value) {
+  for (const localFile of distinctFiles) {
     if (localFile.size > posterSizeLimit.value) rejectedFiles.push(localFile)
     else validFiles.push(localFile)
   }
-  uploadQueue.value = validFiles
+
   if (rejectedFiles.length > 0) {
     messagesStore.messages.push(
       intl.formatMessage(
@@ -188,6 +228,8 @@ function handleLocalFilesChanged(localFiles: File[]) {
       ),
     )
   }
+
+  uploadQueue.value = validFiles
 
   // select the first local file
   const selectionCandidate = uploadQueue.value.at(0)
@@ -217,6 +259,26 @@ function handleDelete(poster: File | PosterDto) {
 function handleUndelete(poster: File | PosterDto) {
   if (isPosterDto(poster) && deleteQueue.value.some((it) => it.id === poster.id)) {
     deleteQueue.value = deleteQueue.value.filter((it) => it.id !== poster.id)
+  }
+}
+
+async function handleClipboardItems(clipItems: ClipboardItem[] | DataTransferItem[]) {
+  if (!clipItems || clipItems.length === 0) return
+
+  const pastedFiles = (
+    await Promise.all(clipItems.map((it) => extractImageFromClipboard(it)))
+  ).filter((it) => it !== undefined)
+
+  if (pastedFiles.length > 0) {
+    updateLocalFiles([...uploadQueue.value, ...pastedFiles])
+  } else {
+    messagesStore.messages.push(
+      defineMessage({
+        description: 'Poster upload: error message when pasting from clipboard failed',
+        defaultMessage: 'No valid image found in clipboard',
+        id: 'wwiazg',
+      }),
+    )
   }
 }
 </script>
