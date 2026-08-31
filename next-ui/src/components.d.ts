@@ -91,6 +91,7 @@ declare module 'vue' {
     ItemMenuSheet: typeof import('./components/item/menu/Sheet.vue')['default']
     ItemPoster: typeof import('./components/item/Poster.vue')['default']
     ItemScroller: typeof import('./components/item/Scroller.vue')['default']
+    KTooltip: typeof import('./components/k/Tooltip.vue')['default']
     LayoutAppBar: typeof import('./components/layout/app/Bar.vue')['default']
     LayoutAppBarHolder: typeof import('./components/layout/app/BarHolder.vue')['default']
     LayoutAppDrawer: typeof import('./components/layout/app/drawer/Drawer.vue')['default']

@@ -37,3 +37,7 @@ export function getFileSize(n?: number): string | undefined {
   if (!n) return undefined
   return filesizePartial(n)
 }
+
+export function isObject(obj: unknown): obj is Record<string, unknown> {
+  return obj !== null && typeof obj === 'object' && !Array.isArray(obj)
+}
