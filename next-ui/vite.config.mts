@@ -36,12 +36,26 @@ export default defineConfig(({ mode }) => ({
     }),
     Components({
       dts: 'src/components.d.ts',
-      dirs: ['src/components'],
+      dirs: ['src/components', 'src/directives'],
       extensions: ['vue', 'ts'],
       include: [/\.vue$/, /\.[tj]s$/],
       excludeNames: [/\.stories/],
       directoryAsNamespace: true,
       collapseSamePrefixes: true,
+      resolvers: [
+        {
+          type: 'directive',
+          resolve: (name) => {
+            // Captures v-ktooltip in templates
+            if (name === 'Ktooltip') {
+              return {
+                name: 'vKtooltip',
+                from: '@/directives/ktooltip',
+              }
+            }
+          },
+        },
+      ],
     }),
     Vue({
       template: { transformAssetUrls },

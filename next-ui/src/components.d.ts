@@ -91,6 +91,7 @@ declare module 'vue' {
     ItemMenuSheet: typeof import('./components/item/menu/Sheet.vue')['default']
     ItemPoster: typeof import('./components/item/Poster.vue')['default']
     ItemScroller: typeof import('./components/item/Scroller.vue')['default']
+    Ktooltip: typeof import('./directives/ktooltip.ts')['default']
     KTooltip: typeof import('./components/k/Tooltip.vue')['default']
     LayoutAppBar: typeof import('./components/layout/app/Bar.vue')['default']
     LayoutAppBarHolder: typeof import('./components/layout/app/BarHolder.vue')['default']
@@ -167,5 +168,8 @@ declare module 'vue' {
     UserFormChangePassword: typeof import('./components/user/form/ChangePassword.vue')['default']
     UserFormCreateEdit: typeof import('./components/user/form/CreateEdit.vue')['default']
     UserTable: typeof import('./components/user/Table.vue')['default']
+  }
+  export interface GlobalDirectives {
+    vKtooltip: typeof import('@/directives/ktooltip')['vKtooltip']
   }
 }
