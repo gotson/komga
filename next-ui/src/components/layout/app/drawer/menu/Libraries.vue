@@ -13,7 +13,7 @@
     <template #append>
       <v-icon-btn
         v-if="isAdmin"
-        v-tooltip:bottom="
+        v-ktooltip:bottom="
           $formatMessage({
             description: 'Add library button: tooltip',
             defaultMessage: 'Create library',

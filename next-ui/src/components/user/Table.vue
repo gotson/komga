@@ -78,14 +78,14 @@
     <template #[`item.actions`]="{ item: user }">
       <div class="d-flex ga-1 justify-end">
         <v-icon-btn
-          v-tooltip:bottom="$formatMessage(messages.changePassword)"
+          v-ktooltip:bottom="$formatMessage(messages.changePassword)"
           icon="i-mdi:lock-reset"
           :aria-label="$formatMessage(messages.changePassword)"
           @click="emit('changePassword', user)"
           @mouseenter="emit('enterChangePassword', $event.currentTarget)"
         />
         <v-icon-btn
-          v-tooltip:bottom="$formatMessage(messages.editUser)"
+          v-ktooltip:bottom="$formatMessage(messages.editUser)"
           icon="i-mdi:pencil"
           :disabled="me?.id == user.id"
           :aria-label="$formatMessage(messages.editUser)"
@@ -93,7 +93,7 @@
           @mouseenter="emit('enterEditUser', $event.currentTarget)"
         />
         <v-icon-btn
-          v-tooltip:bottom="$formatMessage(messages.deleteUser)"
+          v-ktooltip:bottom="$formatMessage(messages.deleteUser)"
           icon="i-mdi:delete"
           :disabled="me?.id == user.id"
           :aria-label="$formatMessage(messages.deleteUser)"

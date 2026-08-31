@@ -117,14 +117,16 @@
         >
           <template #append>
             <v-icon
-              v-tooltip:bottom="
-                $formatMessage({
+              v-ktooltip:bottom="{
+                text: $formatMessage({
                   description:
                     'Form add/edit library: Scanner - Force directory modified time - information tooltip',
                   defaultMessage: 'You should enable this if the library is hosted on Google Drive',
                   id: 'GyRV+/',
-                })
-              "
+                }),
+                openOnClick: true,
+                clickFade: 2500,
+              }"
               icon="i-mdi:information-outline"
             ></v-icon>
           </template>

@@ -6,7 +6,7 @@
     <PosterSizeSlider />
 
     <v-icon-btn
-      v-tooltip:bottom="$formatMessage(editMessage)"
+      v-ktooltip:bottom="$formatMessage(editMessage)"
       icon="i-mdi:star-cog"
       @mouseenter="(event: Event) => (dialogConfirmEdit.activator = event.currentTarget as Element)"
       @click="editSections()"

@@ -11,7 +11,7 @@
       <v-btn
         v-for="action in selectionStore.contextualActions"
         :key="action.text"
-        v-tooltip:bottom="action.text"
+        v-ktooltip:bottom="action.text"
         :icon="action.icon"
         @click="action.callback()"
       />

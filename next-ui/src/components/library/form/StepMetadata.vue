@@ -66,14 +66,16 @@
         >
           <template #append>
             <v-icon
-              v-tooltip:bottom="
-                $formatMessage({
+              v-ktooltip:bottom="{
+                text: $formatMessage({
                   description:
                     'Form add/edit library: Metadata - Comicinfo.xml collections - information tooltip',
                   defaultMessage: `The 'SeriesGroup' element will be used`,
                   id: 'VcueWO',
-                })
-              "
+                }),
+                openOnClick: true,
+                clickFade: 2500,
+              }"
               icon="i-mdi:information-outline"
             ></v-icon>
           </template>
@@ -92,14 +94,16 @@
         >
           <template #append>
             <v-icon
-              v-tooltip:bottom="
-                $formatMessage({
+              v-ktooltip:bottom="{
+                text: $formatMessage({
                   description:
                     'Form add/edit library: Metadata - Comicinfo.xml collections - information tooltip',
                   defaultMessage: `The 'AlternateSeries' or 'StoryArc' elements will be used`,
                   id: 'nyxfPy',
-                })
-              "
+                }),
+                openOnClick: true,
+                clickFade: 2500,
+              }"
               icon="i-mdi:information-outline"
             ></v-icon>
           </template>
@@ -207,7 +211,14 @@
 
     <v-row>
       <v-col>
-        <div class="text-label-large d-flex ga-2 align-center">
+        <div
+          v-ktooltip:bottom="{
+            text: $formatMessage(commonMessages.resourceIntensive),
+            openOnClick: true,
+            clickFade: 2500,
+          }"
+          class="text-label-large d-flex ga-2 align-center"
+        >
           {{
             $formatMessage({
               description: 'Form add/edit library: Metadata - section header for ISBN barcode',
@@ -216,7 +227,6 @@
             })
           }}
           <v-icon
-            v-tooltip:bottom="$formatMessage(commonMessages.resourceIntensive)"
             size="small"
             color="warning"
             icon="i-mdi:alert-circle-outline"

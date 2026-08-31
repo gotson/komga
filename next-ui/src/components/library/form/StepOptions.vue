@@ -2,7 +2,14 @@
   <v-container class="px-0">
     <v-row>
       <v-col cols="auto">
-        <div class="text-label-large d-flex ga-2 align-center">
+        <div
+          v-ktooltip:bottom="{
+            text: $formatMessage(commonMessages.resourceIntensive),
+            openOnClick: true,
+            clickFade: 2500,
+          }"
+          class="text-label-large d-flex ga-2 align-center"
+        >
           <div>
             {{
               $formatMessage({
@@ -13,7 +20,6 @@
             }}
           </div>
           <v-icon
-            v-tooltip:bottom="$formatMessage(commonMessages.resourceIntensive)"
             size="small"
             color="warning"
             icon="i-mdi:alert-circle-outline"
@@ -33,13 +39,15 @@
         >
           <template #append>
             <v-icon
-              v-tooltip:bottom="
-                $formatMessage({
+              v-ktooltip:bottom="{
+                text: $formatMessage({
                   description: 'Form add/edit library: Options - hash files - information tooltip',
                   defaultMessage: 'Required to restore from trash and detect duplicate files',
                   id: '/8sSxS',
-                })
-              "
+                }),
+                openOnClick: true,
+                clickFade: 2500,
+              }"
               icon="i-mdi:information-outline"
             ></v-icon>
           </template>
@@ -58,13 +66,15 @@
         >
           <template #append>
             <v-icon
-              v-tooltip:bottom="
-                $formatMessage({
+              v-ktooltip:bottom="{
+                text: $formatMessage({
                   description: 'Form add/edit library: Options - hash pages - information tooltip',
                   defaultMessage: 'Required for detecting duplicate pages',
                   id: 'Pj29A+',
-                })
-              "
+                }),
+                openOnClick: true,
+                clickFade: 2500,
+              }"
               icon="i-mdi:information-outline"
             ></v-icon>
           </template>
@@ -83,14 +93,16 @@
         >
           <template #append>
             <v-icon
-              v-tooltip:bottom="
-                $formatMessage({
+              v-ktooltip:bottom="{
+                text: $formatMessage({
                   description:
                     'Form add/edit library: Options - koreader hash - information tooltip',
                   defaultMessage: 'Enable this if you use KOReader Sync',
                   id: 'DNmepU',
-                })
-              "
+                }),
+                openOnClick: true,
+                clickFade: 2500,
+              }"
               icon="i-mdi:information-outline"
             ></v-icon>
           </template>
@@ -109,14 +121,16 @@
         >
           <template #append>
             <v-icon
-              v-tooltip:bottom="
-                $formatMessage({
+              v-ktooltip:bottom="{
+                text: $formatMessage({
                   description:
                     'Form add/edit library: Options - analyze page dimensions - information tooltip',
                   defaultMessage: 'Required for the WebReader to detect landscape pages',
                   id: 'ByRsV9',
-                })
-              "
+                }),
+                openOnClick: true,
+                clickFade: 2500,
+              }"
               icon="i-mdi:information-outline"
             ></v-icon>
           </template>

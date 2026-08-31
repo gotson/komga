@@ -1,6 +1,6 @@
 <template>
   <v-icon-btn
-    v-tooltip:bottom="
+    v-ktooltip:bottom="
       $formatMessage({
         description: 'Theme selector button: tooltip',
         defaultMessage: 'Theme',

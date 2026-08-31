@@ -93,7 +93,7 @@
                         />
                         <v-icon
                           v-else
-                          v-tooltip:bottom="
+                          v-ktooltip:bottom="
                             $formatMessage({
                               description: 'Generate API key dialog: copy button tooltip',
                               defaultMessage: 'Copy to clipboard',

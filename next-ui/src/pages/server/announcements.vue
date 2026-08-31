@@ -36,7 +36,7 @@
       >
         <!--  Workaround for https://github.com/vuetifyjs/vuetify/issues/21439  -->
         <v-btn
-          v-tooltip:start="$formatMessage(markAllReadMessage)"
+          v-ktooltip:start="$formatMessage(markAllReadMessage)"
           color="success"
           size="x-large"
           icon="i-mdi:check-all"

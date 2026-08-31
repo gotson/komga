@@ -10,7 +10,7 @@
       }}</v-list-item-title>
       <template #append>
         <v-icon-btn
-          v-tooltip:bottom="closeMessage"
+          v-ktooltip:bottom="closeMessage"
           icon="i-mdi:close"
           variant="text"
           :aria-label="closeMessage"

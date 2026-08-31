@@ -11,14 +11,14 @@
     <v-icon-btn
       v-for="action in prominentActions"
       :key="action.action"
-      v-tooltip:bottom="action.title"
+      v-ktooltip:bottom="action.title"
       v-bind="action"
     />
 
     <v-icon-btn
       v-if="hasExtra"
       :id="id"
-      v-tooltip:bottom="$formatMessage(commonMessages.buttonMore)"
+      v-ktooltip:bottom="$formatMessage(commonMessages.buttonMore)"
       icon="i-mdi:dots-horizontal"
       @click="bottomSheet = true"
     />

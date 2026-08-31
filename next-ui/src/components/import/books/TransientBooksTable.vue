@@ -53,7 +53,7 @@
           item.transientBook.status === MediaStatus.Error ||
           item.transientBook.status === MediaStatus.Unsupported
         "
-        v-tooltip="convertErrorCodes(item.transientBook.comment)"
+        v-ktooltip="convertErrorCodes(item.transientBook.comment)"
         icon="i-mdi:alert-circle"
         color="error"
       />
@@ -153,20 +153,20 @@
     <template #[`item.statusMessage`]="{ item, value, internalItem, isSelected }">
       <v-icon
         v-if="item.imported"
-        v-tooltip="value"
+        v-ktooltip="value"
         icon="i-mdi:import"
         color="info"
       />
       <template v-else-if="isSelected(internalItem)">
         <v-icon
           v-if="item.upgradeBook"
-          v-tooltip="value"
+          v-ktooltip="value"
           icon="i-mdi:file-replace"
           color="warning"
         />
         <v-icon
           v-else-if="value"
-          v-tooltip="value"
+          v-ktooltip="value"
           icon="i-mdi:alert-circle"
           color="error"
         />

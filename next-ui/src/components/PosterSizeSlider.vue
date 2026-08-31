@@ -2,7 +2,7 @@
   <v-slider
     v-if="display.smAndUp.value"
     v-model="appStore.gridCardWidth"
-    v-tooltip:bottom="
+    v-ktooltip:bottom="
       $formatMessage({
         description: 'Poster size slider tooltip',
         defaultMessage: 'Poster size',

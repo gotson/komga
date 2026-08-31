@@ -11,7 +11,7 @@
       disable-route-watcher
     >
       <v-icon-btn
-        v-tooltip:bottom="closeMessage"
+        v-ktooltip:bottom="closeMessage"
         icon="i-mdi:close"
         :aria-label="closeMessage"
         variant="text"

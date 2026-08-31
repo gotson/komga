@@ -12,7 +12,7 @@
     <v-icon-btn
       v-if="hasExtra"
       :id="id"
-      v-tooltip:bottom="$formatMessage(commonMessages.buttonMore)"
+      v-ktooltip:bottom="$formatMessage(commonMessages.buttonMore)"
       icon="i-mdi:dots-horizontal"
       @click="bottomSheet = true"
     />

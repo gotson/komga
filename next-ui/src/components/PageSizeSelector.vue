@@ -2,7 +2,7 @@
   <v-menu>
     <template #activator="{ props }">
       <v-icon-btn
-        v-tooltip:bottom="message"
+        v-ktooltip:bottom="message"
         v-bind="props"
         icon="i-mdi:view-grid-plus"
         :aria-label="message"

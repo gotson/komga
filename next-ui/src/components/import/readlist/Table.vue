@@ -120,7 +120,7 @@
         <template v-if="isSelected(internalItem)">
           <v-icon
             v-if="duplicateBookIds?.includes(item.book?.bookId)"
-            v-tooltip="
+            v-ktooltip="
               $formatMessage({
                 description: 'Import reading list table: tooltip for status - duplicate book',
                 defaultMessage: 'Duplicate book',
@@ -132,7 +132,7 @@
           />
           <v-icon
             v-else-if="value"
-            v-tooltip="value"
+            v-ktooltip="value"
             icon="i-mdi:alert-circle"
             color="error"
           />

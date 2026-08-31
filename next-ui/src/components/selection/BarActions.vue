@@ -2,7 +2,7 @@
   <v-btn
     v-for="action in actions"
     :key="action.action"
-    v-tooltip:bottom="action.title"
+    v-ktooltip:bottom="action.title"
     v-bind="action"
   />
 </template>

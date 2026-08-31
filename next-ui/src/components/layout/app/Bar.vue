@@ -7,11 +7,10 @@
           @click="appStore.drawer = !appStore.drawer"
         >
           <template #default>
-            <v-tooltip
+            <KTooltip
               activator="parent"
               location="end"
               :text="tooltipMessage"
-              :disabled="display.mobile.value"
             />
 
             <v-badge
@@ -76,7 +75,9 @@ const collapseMessage = intl.formatMessage({
   defaultMessage: 'Collapse sidebar',
   id: '0JF9f5',
 })
-const tooltipMessage = computed(() => (appStore.drawer ? collapseMessage : expandMessage))
+const tooltipMessage = computed(() =>
+  display.mobile.value ? expandMessage : appStore.drawer ? collapseMessage : expandMessage,
+)
 </script>
 
 <script lang="ts"></script>

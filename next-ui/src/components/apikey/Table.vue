@@ -77,14 +77,14 @@
     <template #[`item.actions`]="{ item: apiKey }">
       <div class="d-flex ga-1 justify-end">
         <v-icon-btn
-          v-tooltip:bottom="$formatMessage(messages.forceKoboSync)"
+          v-ktooltip:bottom="$formatMessage(messages.forceKoboSync)"
           icon="i-mdi:sync-alert"
           :aria-label="$formatMessage(messages.forceKoboSync)"
           @click="emit('forceSyncApiKey', apiKey)"
           @mouseenter="emit('enterForceSyncApiKey', $event.currentTarget)"
         />
         <v-icon-btn
-          v-tooltip:bottom="$formatMessage(messages.deleteApiKey)"
+          v-ktooltip:bottom="$formatMessage(messages.deleteApiKey)"
           icon="i-mdi:delete"
           :aria-label="$formatMessage(messages.deleteApiKey)"
           @click="emit('deleteApiKey', apiKey)"

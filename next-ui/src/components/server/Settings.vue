@@ -240,7 +240,11 @@
                 #append-inner
               >
                 <v-icon
-                  v-tooltip:bottom="messagePrecedence"
+                  v-ktooltip:bottom="{
+                    text: messagePrecedence,
+                    openOnClick: true,
+                    clickFade: 2500,
+                  }"
                   icon="i-mdi:information-outline"
                 ></v-icon>
               </template>
@@ -279,7 +283,11 @@
                 #append-inner
               >
                 <v-icon
-                  v-tooltip:bottom="messagePrecedence"
+                  v-ktooltip:bottom="{
+                    text: messagePrecedence,
+                    openOnClick: true,
+                    clickFade: 2500,
+                  }"
                   icon="i-mdi:information-outline"
                 ></v-icon> </template
             ></v-text-field>

@@ -2,7 +2,7 @@
   <v-menu>
     <template #activator="{ props }">
       <v-btn
-        v-tooltip:bottom="
+        v-ktooltip:bottom="
           $formatMessage({
             description: 'Task Indicator button: tooltip',
             defaultMessage: 'Activity',

@@ -11,7 +11,7 @@
     offset-y="7"
   >
     <v-icon-btn
-      v-tooltip:bottom="
+      v-ktooltip:bottom="
         $formatMessage({
           description: 'Filter button: tooltip',
           defaultMessage: 'Show filters',

@@ -130,7 +130,7 @@
         @update:model-value="(v) => updateHashAction(item, v)"
       >
         <v-btn
-          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['DELETE_AUTO'])"
+          v-ktooltip:bottom="intl.formatMessage(pageHashActionMessages['DELETE_AUTO'])"
           size="small"
           icon="i-mdi:robot"
           value="DELETE_AUTO"
@@ -138,7 +138,7 @@
           @click.stop
         />
         <v-btn
-          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['DELETE_MANUAL'])"
+          v-ktooltip:bottom="intl.formatMessage(pageHashActionMessages['DELETE_MANUAL'])"
           size="small"
           icon="i-mdi:hand-back-right"
           value="DELETE_MANUAL"
@@ -146,7 +146,7 @@
           @click.stop
         />
         <v-btn
-          v-tooltip:bottom="intl.formatMessage(pageHashActionMessages['IGNORE'])"
+          v-ktooltip:bottom="intl.formatMessage(pageHashActionMessages['IGNORE'])"
           size="small"
           icon="i-mdi:cancel"
           value="IGNORE"

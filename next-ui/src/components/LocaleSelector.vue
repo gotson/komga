@@ -2,7 +2,7 @@
   <v-menu>
     <template #activator="{ props }">
       <v-icon-btn
-        v-tooltip:bottom="
+        v-ktooltip:bottom="
           $formatMessage({
             description: 'Locale selector button: tooltip',
             defaultMessage: 'Language',
