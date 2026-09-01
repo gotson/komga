@@ -1,0 +1,104 @@
+{
+  "+6YDzS": {
+    "defaultMessage": "Нет данных"
+  },
+  "+8++PW": {
+    "defaultMessage": "Создана библиотека: {library}"
+  },
+  "+TldjW": {
+    "defaultMessage": "Нет данных для отображения"
+  },
+  "+jaADC": {
+    "defaultMessage": "Имя файла"
+  },
+  "+mJGIg": {
+    "defaultMessage": "Путь к файлу"
+  },
+  "+opDqu": {
+    "defaultMessage": "Перейти к"
+  },
+  "+pyj1u": {
+    "defaultMessage": "Недоступен"
+  },
+  "+r8FCS": {
+    "defaultMessage": "Порт сервера"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "Удалить"
+  },
+  "/Acs82": {
+    "defaultMessage": "Создать или добавить к спискам чтения"
+  },
+  "/NAG9i": {
+    "defaultMessage": "Нет результатов"
+  },
+  "/YxHru": {
+    "defaultMessage": "Некоторые из выбранных книг являются дубликатами"
+  },
+  "/bathK": {
+    "defaultMessage": "Разрешать только младше"
+  },
+  "/lE31l": {
+    "defaultMessage": "Инициировать синхронизацию Kobo"
+  },
+  "/mhcNO": {
+    "defaultMessage": "Закрыть"
+  },
+  "02SRax": {
+    "defaultMessage": "Войти"
+  },
+  "0ILHru": {
+    "defaultMessage": "ОК"
+  },
+  "0JF9f5": {
+    "defaultMessage": "Скрыть боковую панель"
+  },
+  "0MePSx": {
+    "defaultMessage": "Перетащите сюда чтобы закрепить библиотеку"
+  },
+  "0UFr4y": {
+    "defaultMessage": "Все"
+  },
+  "0XDhyR": {
+    "defaultMessage": "Выбор темы"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "Запомнить меня"
+  },
+  "0iT7Vf": {
+    "defaultMessage": "Метаданные"
+  },
+  "0qntYX": {
+    "defaultMessage": "Просчитать хэш для страниц"
+  },
+  "0sIkhg": {
+    "defaultMessage": "ФИЛЬТРЫ"
+  },
+  "1+Ux6s": {
+    "defaultMessage": "Создайте библиотеку чтобы начать"
+  },
+  "111Isd": {
+    "defaultMessage": "Перестроить поисковый индекс"
+  },
+  "14/Uh8": {
+    "defaultMessage": "Режим импорта"
+  },
+  "18OKhZ": {
+    "defaultMessage": "Поиск книг для конвертации"
+  },
+  "1E0Duw": {
+    "defaultMessage": "Размер файла"
+  },
+  "1MAL38": {
+    "defaultMessage": "Задублировать книгу"
+  },
+  "1VkZao": {
+    "defaultMessage": "Больше"
+  },
+  "1bxWGd": {
+    "defaultMessage": "Редактирование метаданных серии"
+  },
+  "app.locale-name": {
+    "defaultMessage": "Русский"
+  }
+}
