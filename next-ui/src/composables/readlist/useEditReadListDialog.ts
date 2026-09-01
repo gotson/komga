@@ -32,9 +32,6 @@ export function useEditReadListDialog() {
       }),
       subtitle: readList.name,
       maxWidth: 900,
-      cardTextProps: {
-        class: 'px-0',
-      },
       closeOnSave: false,
       scrollable: true,
       fullscreen: display.xs.value,

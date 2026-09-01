@@ -3,6 +3,7 @@
     <v-row>
       <v-col>
         <v-text-field
+          ref="fieldNameRef"
           v-model="model.name"
           :rules="[rules.required()]"
           :label="
@@ -73,10 +74,22 @@
 <script setup lang="ts">
 import { useRules } from 'vuetify/labs/rules'
 import type { ReadListUpdateDto } from '@/generated/openapi'
+import { VTextField } from 'vuetify/components'
 
 const rules = useRules()
+
+const fieldNameRef = ref<InstanceType<typeof VTextField> | null>(null)
 
 type ReadListUpdateGeneral = Pick<ReadListUpdateDto, 'name' | 'ordered' | 'summary'>
 
 const model = defineModel<ReadListUpdateGeneral>({ required: true })
+
+const emit = defineEmits<{
+  'update:errorCount': [errorCount: number]
+}>()
+
+watch([() => fieldNameRef.value?.isValid], ([nameValid]) => {
+  const fields = [nameValid]
+  emit('update:errorCount', fields.filter((it) => it === false).length)
+})
 </script>
