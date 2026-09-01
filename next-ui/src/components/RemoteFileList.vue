@@ -35,7 +35,7 @@
               id: 'B48EcS',
             })
           "
-          prepend-icon="i-mdi:arrow-left"
+          :prepend-icon="isRtl ? 'i-mdi:arrow-right' : 'i-mdi:arrow-left'"
           @click="selectedPath = directoryListing.parent"
         />
 
@@ -56,6 +56,9 @@
 import { useQuery } from '@pinia/colada'
 import { komgaGetDirectoryListing } from '@/generated/openapi'
 import { isApiErrorWithCause } from '@/api/komga-client'
+import { useRtl } from 'vuetify/framework'
+
+const { isRtl } = useRtl()
 
 const selectedPath = defineModel<string>({ required: false, default: '' })
 

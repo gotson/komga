@@ -65,9 +65,9 @@
 <script setup lang="ts">
 import { availableLocales, currentLocale, setLocale } from '@/utils/i18n/locale-helper'
 
-const locales = Object.entries(availableLocales).map(([k, v]) => ({
-  title: v,
-  value: k,
+const locales = Object.entries(availableLocales).map(([code, localeInfo]) => ({
+  title: localeInfo.nameLocalized,
+  value: code,
 }))
 </script>
 

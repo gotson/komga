@@ -44,7 +44,7 @@
           <v-chip-group
             v-model="filterSelect"
             multiple
-            class="ms-2"
+            class="mx-2"
             :disabled="finishedState"
           >
             <v-chip

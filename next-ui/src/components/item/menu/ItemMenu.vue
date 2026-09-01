@@ -17,7 +17,7 @@
               id: 'iq1PzT',
             })
           "
-          append-icon="i-mdi:menu-right"
+          :append-icon="isRtl ? 'i-mdi:menu-left' : 'i-mdi:menu-right'"
         >
           <v-menu
             activator="parent"
@@ -42,6 +42,9 @@
 
 <script setup lang="ts">
 import type { Action } from '@/types/action/action'
+import { useRtl } from 'vuetify/framework'
+
+const { isRtl } = useRtl()
 
 const { actions = [], manageActions = [] } = defineProps<{
   activator: string | Element

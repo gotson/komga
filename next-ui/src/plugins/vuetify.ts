@@ -32,6 +32,9 @@ export const vuetify = createVuetify({
   locale: {
     locale: currentLocale,
     fallback: fallbackLocale,
+    rtl: {
+      [currentLocale]: availableLocales[currentLocale]?.isRtl ?? false,
+    },
     messages,
   },
   icons: {

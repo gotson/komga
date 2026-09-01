@@ -37,7 +37,7 @@
           <v-chip-group
             v-model="filterSelect"
             multiple
-            class="ms-2"
+            class="mx-2"
           >
             <v-chip
               v-for="f in filterOptions"

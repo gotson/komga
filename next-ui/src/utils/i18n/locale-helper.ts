@@ -13,6 +13,13 @@ const localeName = defineMessage({
   id: 'app.locale-name',
 })
 
+const localeRtl = defineMessage({
+  description:
+    "Whether the locale is using Right to Left script",
+  defaultMessage: 'true',
+  id: 'app.locale-rtl',
+})
+
 /**
  * Loads messages from a translation file by its locale code.
  * If the translation file does not exist, loads the `fallbackLocale` instead.
@@ -23,13 +30,20 @@ export function loadLocale(locale: string): Record<string, string> {
   return (localeMessages as unknown as Record<string, Record<string, string>>)[localeToLoad]!
 }
 
-function loadAvailableLocales(): Record<string, string> {
-  const localesInfo: Record<string, string> = {}
+export type LocaleInfo = {
+  nameLocalized: string
+  isRtl: boolean
+}
+
+function loadAvailableLocales(): Record<string, LocaleInfo> {
+  const localesInfo: Record<string, LocaleInfo> = {}
   Object.keys(localeMessages).forEach(
-    (x) =>
-      (localesInfo[x] = (localeMessages as unknown as Record<string, Record<string, string>>)[x]![
-        localeName.id
-      ]!),
+    (code) => {
+      localesInfo[code] = {
+        nameLocalized: (localeMessages as unknown as Record<string, Record<string, string>>)[code]![localeName.id]!,
+        isRtl: (localeMessages as unknown as Record<string, Record<string, string>>)[code]![localeRtl.id]! === 'true'
+      }
+    }
   )
   return localesInfo
 }

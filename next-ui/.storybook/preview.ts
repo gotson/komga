@@ -20,10 +20,10 @@ import { setupOpenapiClient } from '@/api/komga-client'
 import router from './router'
 
 const locales: object[] = []
-Object.entries(availableLocales).forEach(([code, name]) => {
+Object.entries(availableLocales).forEach(([code, localeInfo]) => {
   locales.push({
     value: code,
-    title: name,
+    title: localeInfo.nameLocalized,
   })
 })
 

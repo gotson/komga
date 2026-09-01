@@ -7,9 +7,11 @@ vi.mock('@/i18n?dir2json&ext=.json&1', () => {
     default: {
       en: {
         sample: 'sample',
+        'app.locale-rtl': 'false',
       },
       fr: {
         sample: 'échantillon',
+        'app.locale-rtl': 'true'
       },
     } as Record<string, Record<string, string>>,
   }
@@ -22,6 +24,8 @@ describe('locale', () => {
 
   test('given available locales when getting available locales then they are returned', () => {
     expect(Object.keys(availableLocales)).toStrictEqual(['en', 'fr'])
+    expect(availableLocales['en']?.isRtl).toStrictEqual(false)
+    expect(availableLocales['fr']?.isRtl).toStrictEqual(true)
   })
 
   test('when trying to load unknown locale then fallback locale is loaded', () => {
