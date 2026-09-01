@@ -1,653 +1,818 @@
 {
-    "app.locale-name": {
-        "defaultMessage": "Suomi"
-    },
-    "+TldjW": {
-        "defaultMessage": "Ei näytettävää"
-    },
-    "+jaADC": {
-        "defaultMessage": "Tiedoston nimi"
-    },
-    "+6YDzS": {
-        "defaultMessage": "Tietoja ei löytynyt"
-    },
-    "+8++PW": {
-        "defaultMessage": "Kirjasto luotu :{library}"
-    },
-    "+mJGIg": {
-        "defaultMessage": "Tiedostopolku"
-    },
-    "+opDqu": {
-        "defaultMessage": "Hyppää"
-    },
-    "+pyj1u": {
-        "defaultMessage": "Ei saatavilla"
-    },
-    "+r8FCS": {
-        "defaultMessage": "Palvelimen kuunteluportti"
-    },
-    "/5Gb4y": {
-        "defaultMessage": "Poista"
-    },
-    "/8sSxS": {
-        "defaultMessage": "Vaaditaan roskakorista palautusta ja tiedostojen kaksoikappaleiden tunnistusta varten"
-    },
-    "/Acs82": {
-        "defaultMessage": "Luo lukulista tai lisää lukulistaan"
-    },
-    "/NAG9i": {
-        "defaultMessage": "Ei tuloksia"
-    },
-    "/YxHru": {
-        "defaultMessage": "Osa valituista kirjoista on kaksoiskappaleita"
-    },
-    "/bathK": {
-        "defaultMessage": "Salli vain alle"
-    },
-    "/lE31l": {
-        "defaultMessage": "Pakota Kobo synkronointi"
-    },
-    "/mhcNO": {
-        "defaultMessage": "Sulje"
-    },
-    "02SRax": {
-        "defaultMessage": "Kirjaudu sisään"
-    },
-    "0ILHru": {
-        "defaultMessage": "OK"
-    },
-    "0JF9f5": {
-        "defaultMessage": "Kutista sivupalkki"
-    },
-    "0MePSx": {
-        "defaultMessage": "Kiinnitä kirjasto vetämällä se tähän"
-    },
-    "0UFr4y": {
-        "defaultMessage": "Kaikki"
-    },
-    "0XDhyR": {
-        "defaultMessage": "teeman valitsija"
-    },
-    "0YG9GQ": {
-        "defaultMessage": "Muista minut"
-    },
-    "0eIJ3K": {
-        "defaultMessage": "Manuaalinen järjestely"
-    },
-    "0iT7Vf": {
-        "defaultMessage": "Metatiedot"
-    },
-    "0qntYX": {
-        "defaultMessage": "Laske sivujen tarkisteet"
-    },
-    "0sIkhg": {
-        "defaultMessage": "SUODATTIMET"
-    },
-    "1+Ux6s": {
-        "defaultMessage": "Luo kirjasto aloittaaksesi"
-    },
-    "111Isd": {
-        "defaultMessage": "Luo hakuindeksi uudestaan"
-    },
-    "14/Uh8": {
-        "defaultMessage": "Tuontitila"
-    },
-    "18OKhZ": {
-        "defaultMessage": "Etsi muunnettavia kirjoja"
-    },
-    "1E0Duw": {
-        "defaultMessage": "Tiedoston koko"
-    },
-    "1MAL38": {
-        "defaultMessage": "Monista kirja"
-    },
-    "1VkZao": {
-        "defaultMessage": "Lisää"
-    },
-    "1bxWGd": {
-        "defaultMessage": "Muokkaa sarjan metatietoja"
-    },
-    "1qIfds": {
-        "defaultMessage": "Kiinnitetty"
-    },
-    "2Bh8F2": {
-        "defaultMessage": "Viimeisin"
-    },
-    "2Sx0J4": {
-        "defaultMessage": "Sivu"
-    },
-    "2g7iOx": {
-        "defaultMessage": "Metriikat"
-    },
-    "2p+JVw": {
-        "defaultMessage": "Tämä Komga-palvelin ei ole vielä aktiivinen. Sinun täytyy luoda käyttäjätili voidaksesi käyttää sitä."
-    },
-    "3DBPuv": {
-        "defaultMessage": "Rullaa"
-    },
-    "3MUQYL": {
-        "defaultMessage": "Luo kokoelma tai lisää kokoelmiin"
-    },
-    "3OgH93": {
-        "defaultMessage": "Sarjat"
-    },
-    "3Pm2PO": {
-        "defaultMessage": "Kohdetiedoston nimi"
-    },
-    "3T1ln7": {
-        "defaultMessage": "Poista kirjasto"
-    },
-    "3W0jUi": {
-        "defaultMessage": "Kielletyt tunnisteet"
-    },
-    "3b7v1+": {
-        "defaultMessage": "Tuo kirjan metatiedot"
-    },
-    "3beD4X": {
-        "defaultMessage": "Poista API-avain"
-    },
-    "3qQjnw": {
-        "defaultMessage": "Kieli"
-    },
-    "6WDISV": {
-        "defaultMessage": "Sivua ei löytynyt"
-    },
-    "6nCIPn": {
-        "defaultMessage": "Tyyppi"
-    },
-    "87q6WX": {
-        "defaultMessage": "Ei mitään"
-    },
-    "ALGXT9": {
-        "defaultMessage": "Kaksoiskappale"
-    },
-    "AeA9Ka": {
-        "defaultMessage": "Ei rajoituksia"
-    },
-    "H4Kte4": {
-        "defaultMessage": "Nimi"
-    },
-    "Nb0V0p": {
-        "defaultMessage": "Puuttuvia julisteita"
-    },
-    "3gimvl": {
-        "defaultMessage": "kirjastovalikko"
-    },
-    "3rNj7/": {
-        "defaultMessage": "Klikkaa vahvistaaksesi"
-    },
-    "4AKIbg": {
-        "defaultMessage": "Kobo Syncin ulkoinen portti"
-    },
-    "4CX0cY": {
-        "defaultMessage": "Tuo sarjan metatiedot"
-    },
-    "4PDVX2": {
-        "defaultMessage": "EPUB"
-    },
-    "4TEXni": {
-        "defaultMessage": "Kaikki tekijät"
-    },
-    "4g2M9O": {
-        "defaultMessage": "Sarjaa ei löytynyt"
-    },
-    "4uqafX": {
-        "defaultMessage": "Kertajulkaisu"
-    },
-    "4yDvPA": {
-        "defaultMessage": "Tyhjennä suodattimet"
-    },
-    "5AAGkA": {
-        "defaultMessage": "Salasana"
-    },
-    "5JGOUU": {
-        "defaultMessage": "Analysoi kirjasto"
-    },
-    "5Qha5m": {
-        "defaultMessage": "Manuaalinen järjestely"
-    },
-    "5WMvLb": {
-        "defaultMessage": "Epub"
-    },
-    "5b2A0u": {
-        "defaultMessage": "Sinut ohjataan kotisivulle"
-    },
-    "5cbjLE": {
-        "defaultMessage": "Meneillään — #{number}"
-    },
-    "5rziSG": {
-        "defaultMessage": "Ei saatavilla"
-    },
-    "5tbu8Y": {
-        "defaultMessage": "Yritä uudelleen"
-    },
-    "5zPpyT": {
-        "defaultMessage": "Ikäryhmä"
-    },
-    "6F1ebQ": {
-        "defaultMessage": "HTTP-palvelin"
-    },
-    "6Kd/YV": {
-        "defaultMessage": "Vaatii uudelleenkäynnistyksen"
-    },
-    "6OXY1N": {
-        "defaultMessage": "Kertajulkaisujen kansio"
-    },
-    "6UXlVe": {
-        "defaultMessage": "Tunnisteet"
-    },
-    "70/wK4": {
-        "defaultMessage": "Luo kirjasto"
-    },
-    "700A3r": {
-        "defaultMessage": "Kirja"
-    },
-    "7M1pUf": {
-        "defaultMessage": "Tyhkennä roskakori"
-    },
-    "7hwFJo": {
-        "defaultMessage": "Kirjoittaja"
-    },
-    "7z91nm": {
-        "defaultMessage": "Historia"
-    },
-    "8/BXfN": {
-        "defaultMessage": "Kaikki"
-    },
-    "81BMAQ": {
-        "defaultMessage": "Tuo kirjan metatiedot"
-    },
-    "8CVWWg": {
-        "defaultMessage": "Poista tiedostot"
-    },
-    "8Dun/Y": {
-        "defaultMessage": "Ei"
-    },
-    "8NDqor": {
-        "defaultMessage": "Tekstaaja"
-    },
-    "8Om/o/": {
-        "defaultMessage": "Tuo kansiosta"
-    },
-    "8P7Yn+": {
-        "defaultMessage": "Ikäluokitus"
-    },
-    "8hC76W": {
-        "defaultMessage": "Tehtävät"
-    },
-    "8jE3eP": {
-        "defaultMessage": "Kirjaa ei voitu analysoida"
-    },
-    "8kylzj": {
-        "defaultMessage": "Poista"
-    },
-    "8xonXJ": {
-        "defaultMessage": "Analysoi kaikki kirjaston mediatiedostot. Analyysi kerää tietoa mediasta. Kirjaston koosta riippuen tämä voi kestää kauan."
-    },
-    "9/1/c7": {
-        "defaultMessage": "Luo kirjan pikkukuva"
-    },
-    "90yqRq": {
-        "defaultMessage": "lisää kirjasto"
-    },
-    "9TJRkm": {
-        "defaultMessage": "Tuo sarjan metatiedot"
-    },
-    "9VuyZU": {
-        "defaultMessage": "Yritä skannata toinen kansio"
-    },
-    "9XDmYO": {
-        "defaultMessage": "Poista käyttäjä"
-    },
-    "9oA9gw": {
-        "defaultMessage": "Kiinnittämätön"
-    },
-    "3J6FI8": {
-        "defaultMessage": "Muokkaa näkymää"
-    },
-    "AEaKHC": {
-        "defaultMessage": "Etsi uudelleenluotavia kijojen pikkukuvia"
-    },
-    "AJa6Tq": {
-        "defaultMessage": "Ei tietoa"
-    },
-    "AjBiEw": {
-        "defaultMessage": "Lisää nide sarjan nimeen"
-    },
-    "AjWlka": {
-        "defaultMessage": "Väärä käyttäjätunnus tai salasana"
-    },
-    "B2wcN0": {
-        "defaultMessage": "Tuo ISBN viivakoodista"
-    },
-    "B48EcS": {
-        "defaultMessage": "Ylähakemisto"
-    },
-    "BQmPch": {
-        "defaultMessage": "Poista kirja"
-    },
-    "Bewgy6": {
-        "defaultMessage": "Sarjan kansi"
-    },
-    "Bl30xt": {
-        "defaultMessage": "Lisää käyttäjä"
-    },
-    "BpzKDW": {
-        "defaultMessage": "Useita kohteita poistetaan. <b>Tätä toimintoa ei voi perua.</b>"
-    },
-    "BtDfUf": {
-        "defaultMessage": "Ylikirjaa"
-    },
-    "ByRsV9": {
-        "defaultMessage": "Vaaditaan, jotta WebReader tunnistaa vaakasivut"
-    },
-    "C0paz4": {
-        "defaultMessage": "Analysoi kirja"
-    },
-    "C1bGrS": {
-        "defaultMessage": "Näytä tiedot"
-    },
-    "C9LkYh": {
-        "defaultMessage": "Kommentti"
-    },
-    "CE7pPQ": {
-        "defaultMessage": "Tiedostopolku"
-    },
-    "CGRz8d": {
-        "defaultMessage": "Kirjan tiedosto on muuttunut ja se on analysoitava uudestaan"
-    },
-    "CJaS7j": {
-        "defaultMessage": "Kirjaston juurihakemisto"
-    },
-    "CPMLrI": {
-        "defaultMessage": "Kirja täytyy analysoida ensin"
-    },
-    "CUxhzL": {
-        "defaultMessage": "Roolit"
-    },
-    "CVk1J6": {
-        "defaultMessage": "Virhe"
-    },
-    "CY8sfH": {
-        "defaultMessage": "Skannaa kaikki kirjastot"
-    },
-    "CkUPZe": {
-        "defaultMessage": "Kirjan tiedostomuotoa ei tueta"
-    },
-    "CpNtjm": {
-        "defaultMessage": "Päivämäärä & Aika"
-    },
-    "CvsH7/": {
-        "defaultMessage": "Ei viimeaikaista toimintaa"
-    },
-    "CwteMk": {
-        "defaultMessage": "Tyhjennä kaikkien kirjastojen roskakorit"
-    },
-    "CxuwFR": {
-        "defaultMessage": "Tiedostotyyppiä ei tueta"
-    },
-    "D/yypj": {
-        "defaultMessage": "<ul><li>Tämä poistaa tämän API-avaimen synkronointihistorian kokonaan.</li><li>Kobosi synkronoi kaiken seuraavalla kerralla.</li></ul>"
-    },
-    "DNVnmS": {
-        "defaultMessage": "Kansion nimi"
-    },
-    "DfakWW": {
-        "defaultMessage": "Poista tiedostot"
-    },
-    "Dn4qvV": {
-        "defaultMessage": "Palauta oletukset"
-    },
-    "DwDa04": {
-        "defaultMessage": "Skannausten aikaväli"
-    },
-    "E1kQun": {
-        "defaultMessage": "Selaa"
-    },
-    "E0cw62": {
-        "defaultMessage": "Kokoelma päivitetty: {collection}"
-    },
-    "E4ssEg": {
-        "defaultMessage": "Muunna kirja"
-    },
-    "E5ZMyt": {
-        "defaultMessage": "Analysoi"
-    },
-    "EIYfj+": {
-        "defaultMessage": "Numero"
-    },
-    "ELttw/": {
-        "defaultMessage": "Tyhjennä roskakori"
-    },
-    "EMhLEN": {
-        "defaultMessage": "Siirrä tiedostot"
-    },
-    "EOrAHc": {
-        "defaultMessage": "PDF"
-    },
-    "EabQ38": {
-        "defaultMessage": "Muista minut"
-    },
-    "EzOmuX": {
-        "defaultMessage": "Luotu"
-    },
-    "FLqm9f": {
-        "defaultMessage": "Auta meitä kääntämään"
-    },
-    "FSJoDl": {
-        "defaultMessage": "Valitse sarja nähdäksesi sen kirjat"
-    },
-    "FZXkIP": {
-        "defaultMessage": "Kääntäjä"
-    },
-    "FpwJlU": {
-        "defaultMessage": "Tallenna muutokset"
-    },
-    "G/T8/2": {
-        "defaultMessage": "Peruuta"
-    },
-    "G25PY/": {
-        "defaultMessage": "Etsi"
-    },
-    "G7quju": {
-        "defaultMessage": "Tiedotteet"
-    },
-    "G93mS3": {
-        "defaultMessage": "Näytä kaikki"
-    },
-    "GCwZB2": {
-        "defaultMessage": "Skannaa kirjaston tiedostot"
-    },
-    "GnHrCd": {
-        "defaultMessage": "Käytä paikallista kuvamateriaalia"
-    },
-    "GyRV+/": {
-        "defaultMessage": "Tämä kannattaa ottaa käyttöön, jos kirjasto on Google Drivessa"
-    },
-    "GySX8C": {
-        "defaultMessage": "Tyhjennä roskakori automaattisesti jokaisen skannauksen jälkeen"
-    },
-    "H+LXXE": {
-        "defaultMessage": "Poista kirjaston kiinnitys vetämällä se tähän"
-    },
-    "H2B6uF": {
-        "defaultMessage": "Valitse sarja"
-    },
-    "HA4xOM": {
-        "defaultMessage": "Päivitä kirjan metatiedot"
-    },
-    "HHvDPs": {
-        "defaultMessage": "Sähköposti"
-    },
-    "HMbMJF": {
-        "defaultMessage": "Päivämäärä & Aika"
-    },
-    "HOBFqq": {
-        "defaultMessage": "virhe"
-    },
-    "HZ/e6n": {
-        "defaultMessage": "Yritä säätää suodattimia"
-    },
-    "HZqgan": {
-        "defaultMessage": "Sulje"
-    },
-    "HaWCi3": {
-        "defaultMessage": "Asetukset"
-    },
-    "HdsnFp": {
-        "defaultMessage": "Kokoelma poistettu: {collection}"
-    },
-    "Hl9H/B": {
-        "defaultMessage": "Media"
-    },
-    "Hv7lqq": {
-        "defaultMessage": "Ruudukko"
-    },
-    "Hyz5su": {
-        "defaultMessage": "Tuo kirja"
-    },
-    "I9L5Ag": {
-        "defaultMessage": "LAJITTELE"
-    },
-    "I9ub/l": {
-        "defaultMessage": "Tunnetut kaksoiskappaleet"
-    },
-    "IE0XzE": {
-        "defaultMessage": "Poista"
-    },
-    "II5EFN": {
-        "defaultMessage": "Luonnostelija"
-    },
-    "InW6ko": {
-        "defaultMessage": "Käännökset"
-    },
-    "IpvWiZ": {
-        "defaultMessage": "Palvelin"
-    },
-    "J+H9cC": {
-        "defaultMessage": "Poista tiedostot"
-    },
-    "J44THG": {
-        "defaultMessage": "Tila"
-    },
-    "J8rAqm": {
-        "defaultMessage": "Julkaisuvuosi"
-    },
-    "JGOfZq": {
-        "defaultMessage": "Käyttäjät"
-    },
-    "JHaKYw": {
-        "defaultMessage": "Valitse kaikki"
-    },
-    "JNBONk": {
-        "defaultMessage": "Luettelo"
-    },
-    "JbF1nK": {
-        "defaultMessage": "Käyttäjän {email} salasana vaihdettu"
-    },
-    "JwBlXP": {
-        "defaultMessage": "Avaa"
-    },
-    "K+fQO2": {
-        "defaultMessage": "Skannaa näitä tiedostomuotoja"
-    },
-    "K40g4r": {
-        "defaultMessage": "Muokkaa käyttäjää"
-    },
-    "KBLD9U": {
-        "defaultMessage": "Ikäluokitus"
-    },
-    "Kie8HQ": {
-        "defaultMessage": "Kirja"
-    },
-    "LFf8QB": {
-        "defaultMessage": "Poista"
-    },
-    "LaMAsc": {
-        "defaultMessage": "Todentamisaktiviteetti"
-    },
-    "LjqS9+": {
-        "defaultMessage": "Tämänniminen lukulista on jo olemassa"
-    },
-    "Lto2Lg": {
-        "defaultMessage": "Täytyy alkaa '/', ei voi päättyä '/-_' ja voi sisältää vain '/-_a-z0-9'"
-    },
-    "MC2JtF": {
-        "defaultMessage": "Kaikki"
-    },
-    "MEWT0D": {
-        "defaultMessage": "Yhteenveto kirjasta {number}:"
-    },
-    "MKs9N+": {
-        "defaultMessage": "Yleiskatsaus"
-    },
-    "MoOECu": {
-        "defaultMessage": "Tuo sarjan metatiedot"
-    },
-    "MvwDsn": {
-        "defaultMessage": "Tunnetut"
-    },
-    "N7+QXi": {
-        "defaultMessage": "Tuo"
-    },
-    "N9WFH4": {
-        "defaultMessage": "Tallenna"
-    },
-    "NArFTo": {
-        "defaultMessage": "API-avain poistettu: {apiKeyComment}"
-    },
-    "NKVL81": {
-        "defaultMessage": "Kertajulkaisu"
-    },
-    "NN7kAK": {
-        "defaultMessage": "Kobo sync pakotettu: {apiKeyComment}"
-    },
-    "NasBHg": {
-        "defaultMessage": "Lukupäivä"
-    },
-    "NhIart": {
-        "defaultMessage": "Poista kirjatiedostot"
-    },
-    "NpjqFA": {
-        "defaultMessage": "Yritä säätää suodattimia"
-    },
-    "NruW40": {
-        "defaultMessage": "Julkaisija"
-    },
-    "NwK2Kv": {
-        "defaultMessage": "Tunniste"
-    },
-    "O/3awV": {
-        "defaultMessage": "Analyysi"
-    },
-    "O4Nnj5": {
-        "defaultMessage": "Kirja {number}"
-    },
-    "O9hZBS": {
-        "defaultMessage": "Julisteen koko"
-    },
-    "OLqBQc": {
-        "defaultMessage": "Julkaisija"
-    },
-    "OUyleX": {
-        "defaultMessage": "Päivitä kaikki metatiedot"
-    },
-    "OW1/zn": {
-        "defaultMessage": "Ei viimeaikaista toimintaa"
-    },
-    "OZSDCE": {
-        "defaultMessage": "Kiinnitetty"
-    },
-    "OgM2Q2": {
-        "defaultMessage": "Päivitä sarjan metatiedot"
-    },
-    "Oj3xqB": {
-        "defaultMessage": "Lukulista poistettu: {readlist}"
-    },
-    "OxqfKF": {
-        "defaultMessage": "Syvä skannaus"
-    },
-    "PTr5Wc": {
-        "defaultMessage": "Tarkista, että Komga-palvelimesi toimii"
-    }
+  "+6YDzS": {
+    "defaultMessage": "Tietoja ei löytynyt"
+  },
+  "+8++PW": {
+    "defaultMessage": "Kirjasto luotu :{library}"
+  },
+  "+TldjW": {
+    "defaultMessage": "Ei näytettävää"
+  },
+  "+jaADC": {
+    "defaultMessage": "Tiedoston nimi"
+  },
+  "+mJGIg": {
+    "defaultMessage": "Tiedostopolku"
+  },
+  "+opDqu": {
+    "defaultMessage": "Hyppää"
+  },
+  "+pyj1u": {
+    "defaultMessage": "Ei saatavilla"
+  },
+  "+r8FCS": {
+    "defaultMessage": "Palvelimen kuunteluportti"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "Poista"
+  },
+  "/8sSxS": {
+    "defaultMessage": "Vaaditaan roskakorista palautusta ja tiedostojen kaksoikappaleiden tunnistusta varten"
+  },
+  "/Acs82": {
+    "defaultMessage": "Luo lukulista tai lisää lukulistaan"
+  },
+  "/NAG9i": {
+    "defaultMessage": "Ei tuloksia"
+  },
+  "/YxHru": {
+    "defaultMessage": "Osa valituista kirjoista on kaksoiskappaleita"
+  },
+  "/bathK": {
+    "defaultMessage": "Salli vain alle"
+  },
+  "/lE31l": {
+    "defaultMessage": "Pakota Kobo synkronointi"
+  },
+  "/mhcNO": {
+    "defaultMessage": "Sulje"
+  },
+  "02SRax": {
+    "defaultMessage": "Kirjaudu sisään"
+  },
+  "0ILHru": {
+    "defaultMessage": "OK"
+  },
+  "0JF9f5": {
+    "defaultMessage": "Kutista sivupalkki"
+  },
+  "0MePSx": {
+    "defaultMessage": "Kiinnitä kirjasto vetämällä se tähän"
+  },
+  "0UFr4y": {
+    "defaultMessage": "Kaikki"
+  },
+  "0XDhyR": {
+    "defaultMessage": "teeman valitsija"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "Muista minut"
+  },
+  "0eIJ3K": {
+    "defaultMessage": "Manuaalinen järjestely"
+  },
+  "0iT7Vf": {
+    "defaultMessage": "Metatiedot"
+  },
+  "0qntYX": {
+    "defaultMessage": "Laske sivujen tarkisteet"
+  },
+  "0sIkhg": {
+    "defaultMessage": "SUODATTIMET"
+  },
+  "1+Ux6s": {
+    "defaultMessage": "Luo kirjasto aloittaaksesi"
+  },
+  "111Isd": {
+    "defaultMessage": "Luo hakuindeksi uudestaan"
+  },
+  "14/Uh8": {
+    "defaultMessage": "Tuontitila"
+  },
+  "18OKhZ": {
+    "defaultMessage": "Etsi muunnettavia kirjoja"
+  },
+  "1E0Duw": {
+    "defaultMessage": "Tiedoston koko"
+  },
+  "1MAL38": {
+    "defaultMessage": "Monista kirja"
+  },
+  "1VkZao": {
+    "defaultMessage": "Lisää"
+  },
+  "1bxWGd": {
+    "defaultMessage": "Muokkaa sarjan metatietoja"
+  },
+  "1qIfds": {
+    "defaultMessage": "Kiinnitetty"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "Viimeisin"
+  },
+  "2Sx0J4": {
+    "defaultMessage": "Sivu"
+  },
+  "2g7iOx": {
+    "defaultMessage": "Metriikat"
+  },
+  "2p+JVw": {
+    "defaultMessage": "Tämä Komga-palvelin ei ole vielä aktiivinen. Sinun täytyy luoda käyttäjätili voidaksesi käyttää sitä."
+  },
+  "3DBPuv": {
+    "defaultMessage": "Rullaa"
+  },
+  "3J6FI8": {
+    "defaultMessage": "Muokkaa näkymää"
+  },
+  "3MUQYL": {
+    "defaultMessage": "Luo kokoelma tai lisää kokoelmiin"
+  },
+  "3OgH93": {
+    "defaultMessage": "Sarjat"
+  },
+  "3Pm2PO": {
+    "defaultMessage": "Kohdetiedoston nimi"
+  },
+  "3T1ln7": {
+    "defaultMessage": "Poista kirjasto"
+  },
+  "3W0jUi": {
+    "defaultMessage": "Kielletyt tunnisteet"
+  },
+  "3b7v1+": {
+    "defaultMessage": "Tuo kirjan metatiedot"
+  },
+  "3beD4X": {
+    "defaultMessage": "Poista API-avain"
+  },
+  "3gimvl": {
+    "defaultMessage": "kirjastovalikko"
+  },
+  "3qQjnw": {
+    "defaultMessage": "Kieli"
+  },
+  "3rNj7/": {
+    "defaultMessage": "Klikkaa vahvistaaksesi"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Kobo Syncin ulkoinen portti"
+  },
+  "4CX0cY": {
+    "defaultMessage": "Tuo sarjan metatiedot"
+  },
+  "4PDVX2": {
+    "defaultMessage": "EPUB"
+  },
+  "4TEXni": {
+    "defaultMessage": "Kaikki tekijät"
+  },
+  "4g2M9O": {
+    "defaultMessage": "Sarjaa ei löytynyt"
+  },
+  "4uqafX": {
+    "defaultMessage": "Kertajulkaisu"
+  },
+  "4yDvPA": {
+    "defaultMessage": "Tyhjennä suodattimet"
+  },
+  "5AAGkA": {
+    "defaultMessage": "Salasana"
+  },
+  "5JGOUU": {
+    "defaultMessage": "Analysoi kirjasto"
+  },
+  "5Qha5m": {
+    "defaultMessage": "Manuaalinen järjestely"
+  },
+  "5WMvLb": {
+    "defaultMessage": "Epub"
+  },
+  "5b2A0u": {
+    "defaultMessage": "Sinut ohjataan kotisivulle"
+  },
+  "5cbjLE": {
+    "defaultMessage": "Meneillään — #{number}"
+  },
+  "5rziSG": {
+    "defaultMessage": "Ei saatavilla"
+  },
+  "5tbu8Y": {
+    "defaultMessage": "Yritä uudelleen"
+  },
+  "5zPpyT": {
+    "defaultMessage": "Ikäryhmä"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "HTTP-palvelin"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "Vaatii uudelleenkäynnistyksen"
+  },
+  "6OXY1N": {
+    "defaultMessage": "Kertajulkaisujen kansio"
+  },
+  "6UXlVe": {
+    "defaultMessage": "Tunnisteet"
+  },
+  "6WDISV": {
+    "defaultMessage": "Sivua ei löytynyt"
+  },
+  "6nCIPn": {
+    "defaultMessage": "Tyyppi"
+  },
+  "70/wK4": {
+    "defaultMessage": "Luo kirjasto"
+  },
+  "700A3r": {
+    "defaultMessage": "Kirja"
+  },
+  "7M1pUf": {
+    "defaultMessage": "Tyhkennä roskakori"
+  },
+  "7hwFJo": {
+    "defaultMessage": "Kirjoittaja"
+  },
+  "7z91nm": {
+    "defaultMessage": "Historia"
+  },
+  "8/BXfN": {
+    "defaultMessage": "Kaikki"
+  },
+  "81BMAQ": {
+    "defaultMessage": "Tuo kirjan metatiedot"
+  },
+  "87q6WX": {
+    "defaultMessage": "Ei mitään"
+  },
+  "8CVWWg": {
+    "defaultMessage": "Poista tiedostot"
+  },
+  "8Dun/Y": {
+    "defaultMessage": "Ei"
+  },
+  "8NDqor": {
+    "defaultMessage": "Tekstaaja"
+  },
+  "8Om/o/": {
+    "defaultMessage": "Tuo kansiosta"
+  },
+  "8P7Yn+": {
+    "defaultMessage": "Ikäluokitus"
+  },
+  "8hC76W": {
+    "defaultMessage": "Tehtävät"
+  },
+  "8jE3eP": {
+    "defaultMessage": "Kirjaa ei voitu analysoida"
+  },
+  "8kylzj": {
+    "defaultMessage": "Poista"
+  },
+  "8xonXJ": {
+    "defaultMessage": "Analysoi kaikki kirjaston mediatiedostot. Analyysi kerää tietoa mediasta. Kirjaston koosta riippuen tämä voi kestää kauan."
+  },
+  "9/1/c7": {
+    "defaultMessage": "Luo kirjan pikkukuva"
+  },
+  "90yqRq": {
+    "defaultMessage": "lisää kirjasto"
+  },
+  "9TJRkm": {
+    "defaultMessage": "Tuo sarjan metatiedot"
+  },
+  "9VuyZU": {
+    "defaultMessage": "Yritä skannata toinen kansio"
+  },
+  "9XDmYO": {
+    "defaultMessage": "Poista käyttäjä"
+  },
+  "9oA9gw": {
+    "defaultMessage": "Kiinnittämätön"
+  },
+  "AEaKHC": {
+    "defaultMessage": "Etsi uudelleenluotavia kijojen pikkukuvia"
+  },
+  "AJa6Tq": {
+    "defaultMessage": "Ei tietoa"
+  },
+  "ALGXT9": {
+    "defaultMessage": "Kaksoiskappale"
+  },
+  "AeA9Ka": {
+    "defaultMessage": "Ei rajoituksia"
+  },
+  "AjBiEw": {
+    "defaultMessage": "Lisää nide sarjan nimeen"
+  },
+  "AjWlka": {
+    "defaultMessage": "Väärä käyttäjätunnus tai salasana"
+  },
+  "B2wcN0": {
+    "defaultMessage": "Tuo ISBN viivakoodista"
+  },
+  "B48EcS": {
+    "defaultMessage": "Ylähakemisto"
+  },
+  "BQmPch": {
+    "defaultMessage": "Poista kirja"
+  },
+  "Bewgy6": {
+    "defaultMessage": "Sarjan kansi"
+  },
+  "Bl30xt": {
+    "defaultMessage": "Lisää käyttäjä"
+  },
+  "BpzKDW": {
+    "defaultMessage": "Useita kohteita poistetaan. <b>Tätä toimintoa ei voi perua.</b>"
+  },
+  "BtDfUf": {
+    "defaultMessage": "Ylikirjaa"
+  },
+  "ByRsV9": {
+    "defaultMessage": "Vaaditaan, jotta WebReader tunnistaa vaakasivut"
+  },
+  "C0paz4": {
+    "defaultMessage": "Analysoi kirja"
+  },
+  "C1bGrS": {
+    "defaultMessage": "Näytä tiedot"
+  },
+  "C9LkYh": {
+    "defaultMessage": "Kommentti"
+  },
+  "CE7pPQ": {
+    "defaultMessage": "Tiedostopolku"
+  },
+  "CGRz8d": {
+    "defaultMessage": "Kirjan tiedosto on muuttunut ja se on analysoitava uudestaan"
+  },
+  "CJaS7j": {
+    "defaultMessage": "Kirjaston juurihakemisto"
+  },
+  "CPMLrI": {
+    "defaultMessage": "Kirja täytyy analysoida ensin"
+  },
+  "CUxhzL": {
+    "defaultMessage": "Roolit"
+  },
+  "CVk1J6": {
+    "defaultMessage": "Virhe"
+  },
+  "CY8sfH": {
+    "defaultMessage": "Skannaa kaikki kirjastot"
+  },
+  "CkUPZe": {
+    "defaultMessage": "Kirjan tiedostomuotoa ei tueta"
+  },
+  "CpNtjm": {
+    "defaultMessage": "Päivämäärä & Aika"
+  },
+  "CvsH7/": {
+    "defaultMessage": "Ei viimeaikaista toimintaa"
+  },
+  "CwteMk": {
+    "defaultMessage": "Tyhjennä kaikkien kirjastojen roskakorit"
+  },
+  "CxuwFR": {
+    "defaultMessage": "Tiedostotyyppiä ei tueta"
+  },
+  "D/yypj": {
+    "defaultMessage": "<ul><li>Tämä poistaa tämän API-avaimen synkronointihistorian kokonaan.</li><li>Kobosi synkronoi kaiken seuraavalla kerralla.</li></ul>"
+  },
+  "DNVnmS": {
+    "defaultMessage": "Kansion nimi"
+  },
+  "DfakWW": {
+    "defaultMessage": "Poista tiedostot"
+  },
+  "Dn4qvV": {
+    "defaultMessage": "Palauta oletukset"
+  },
+  "DwDa04": {
+    "defaultMessage": "Skannausten aikaväli"
+  },
+  "E0cw62": {
+    "defaultMessage": "Kokoelma päivitetty: {collection}"
+  },
+  "E1kQun": {
+    "defaultMessage": "Selaa"
+  },
+  "E4ssEg": {
+    "defaultMessage": "Muunna kirja"
+  },
+  "E5ZMyt": {
+    "defaultMessage": "Analysoi"
+  },
+  "EIYfj+": {
+    "defaultMessage": "Numero"
+  },
+  "ELttw/": {
+    "defaultMessage": "Tyhjennä roskakori"
+  },
+  "EMhLEN": {
+    "defaultMessage": "Siirrä tiedostot"
+  },
+  "EOrAHc": {
+    "defaultMessage": "PDF"
+  },
+  "EabQ38": {
+    "defaultMessage": "Muista minut"
+  },
+  "EzOmuX": {
+    "defaultMessage": "Luotu"
+  },
+  "FLqm9f": {
+    "defaultMessage": "Auta meitä kääntämään"
+  },
+  "FSJoDl": {
+    "defaultMessage": "Valitse sarja nähdäksesi sen kirjat"
+  },
+  "FZXkIP": {
+    "defaultMessage": "Kääntäjä"
+  },
+  "FpwJlU": {
+    "defaultMessage": "Tallenna muutokset"
+  },
+  "G/T8/2": {
+    "defaultMessage": "Peruuta"
+  },
+  "G25PY/": {
+    "defaultMessage": "Etsi"
+  },
+  "G7quju": {
+    "defaultMessage": "Tiedotteet"
+  },
+  "G93mS3": {
+    "defaultMessage": "Näytä kaikki"
+  },
+  "GCwZB2": {
+    "defaultMessage": "Skannaa kirjaston tiedostot"
+  },
+  "GnHrCd": {
+    "defaultMessage": "Käytä paikallista kuvamateriaalia"
+  },
+  "GyRV+/": {
+    "defaultMessage": "Tämä kannattaa ottaa käyttöön, jos kirjasto on Google Drivessa"
+  },
+  "GySX8C": {
+    "defaultMessage": "Tyhjennä roskakori automaattisesti jokaisen skannauksen jälkeen"
+  },
+  "H+LXXE": {
+    "defaultMessage": "Poista kirjaston kiinnitys vetämällä se tähän"
+  },
+  "H2B6uF": {
+    "defaultMessage": "Valitse sarja"
+  },
+  "H4Kte4": {
+    "defaultMessage": "Nimi"
+  },
+  "HA4xOM": {
+    "defaultMessage": "Päivitä kirjan metatiedot"
+  },
+  "HHvDPs": {
+    "defaultMessage": "Sähköposti"
+  },
+  "HMbMJF": {
+    "defaultMessage": "Päivämäärä & Aika"
+  },
+  "HOBFqq": {
+    "defaultMessage": "virhe"
+  },
+  "HZ/e6n": {
+    "defaultMessage": "Yritä säätää suodattimia"
+  },
+  "HZqgan": {
+    "defaultMessage": "Sulje"
+  },
+  "HaWCi3": {
+    "defaultMessage": "Asetukset"
+  },
+  "HdsnFp": {
+    "defaultMessage": "Kokoelma poistettu: {collection}"
+  },
+  "Hl9H/B": {
+    "defaultMessage": "Media"
+  },
+  "Hv7lqq": {
+    "defaultMessage": "Ruudukko"
+  },
+  "Hyz5su": {
+    "defaultMessage": "Tuo kirja"
+  },
+  "I9L5Ag": {
+    "defaultMessage": "LAJITTELE"
+  },
+  "I9ub/l": {
+    "defaultMessage": "Tunnetut kaksoiskappaleet"
+  },
+  "IE0XzE": {
+    "defaultMessage": "Poista"
+  },
+  "II5EFN": {
+    "defaultMessage": "Luonnostelija"
+  },
+  "InW6ko": {
+    "defaultMessage": "Käännökset"
+  },
+  "IpvWiZ": {
+    "defaultMessage": "Palvelin"
+  },
+  "J+H9cC": {
+    "defaultMessage": "Poista tiedostot"
+  },
+  "J44THG": {
+    "defaultMessage": "Tila"
+  },
+  "J8rAqm": {
+    "defaultMessage": "Julkaisuvuosi"
+  },
+  "JGOfZq": {
+    "defaultMessage": "Käyttäjät"
+  },
+  "JHaKYw": {
+    "defaultMessage": "Valitse kaikki"
+  },
+  "JNBONk": {
+    "defaultMessage": "Luettelo"
+  },
+  "JbF1nK": {
+    "defaultMessage": "Käyttäjän {email} salasana vaihdettu"
+  },
+  "JwBlXP": {
+    "defaultMessage": "Avaa"
+  },
+  "K+fQO2": {
+    "defaultMessage": "Skannaa näitä tiedostomuotoja"
+  },
+  "K40g4r": {
+    "defaultMessage": "Muokkaa käyttäjää"
+  },
+  "KBLD9U": {
+    "defaultMessage": "Ikäluokitus"
+  },
+  "Kie8HQ": {
+    "defaultMessage": "Kirja"
+  },
+  "LFf8QB": {
+    "defaultMessage": "Poista"
+  },
+  "LM4LL9": {
+    "defaultMessage": "Päivitä sarjan paikallinen kuvamateriaali"
+  },
+  "LaMAsc": {
+    "defaultMessage": "Todentamisaktiviteetti"
+  },
+  "LaxrEO": {
+    "defaultMessage": "Salasanojen tulee olla samanlaiset"
+  },
+  "LjqS9+": {
+    "defaultMessage": "Tämänniminen lukulista on jo olemassa"
+  },
+  "Lto2Lg": {
+    "defaultMessage": "Täytyy alkaa '/', ei voi päättyä '/-_' ja voi sisältää vain '/-_a-z0-9'"
+  },
+  "MC2JtF": {
+    "defaultMessage": "Kaikki"
+  },
+  "MEWT0D": {
+    "defaultMessage": "Yhteenveto kirjasta {number}:"
+  },
+  "MKs9N+": {
+    "defaultMessage": "Yleiskatsaus"
+  },
+  "MoOECu": {
+    "defaultMessage": "Tuo sarjan metatiedot"
+  },
+  "MvwDsn": {
+    "defaultMessage": "Tunnetut"
+  },
+  "N7+QXi": {
+    "defaultMessage": "Tuo"
+  },
+  "N9WFH4": {
+    "defaultMessage": "Tallenna"
+  },
+  "NArFTo": {
+    "defaultMessage": "API-avain poistettu: {apiKeyComment}"
+  },
+  "NKVL81": {
+    "defaultMessage": "Kertajulkaisu"
+  },
+  "NN7kAK": {
+    "defaultMessage": "Kobo sync pakotettu: {apiKeyComment}"
+  },
+  "NasBHg": {
+    "defaultMessage": "Lukupäivä"
+  },
+  "Nb0V0p": {
+    "defaultMessage": "Puuttuvia julisteita"
+  },
+  "NhIart": {
+    "defaultMessage": "Poista kirjatiedostot"
+  },
+  "NpjqFA": {
+    "defaultMessage": "Yritä säätää suodattimia"
+  },
+  "NruW40": {
+    "defaultMessage": "Julkaisija"
+  },
+  "NwK2Kv": {
+    "defaultMessage": "Tunniste"
+  },
+  "O/3awV": {
+    "defaultMessage": "Analyysi"
+  },
+  "O4Nnj5": {
+    "defaultMessage": "Kirja {number}"
+  },
+  "O9hZBS": {
+    "defaultMessage": "Julisteen koko"
+  },
+  "OLqBQc": {
+    "defaultMessage": "Julkaisija"
+  },
+  "OUyleX": {
+    "defaultMessage": "Päivitä kaikki metatiedot"
+  },
+  "OW1/zn": {
+    "defaultMessage": "Ei viimeaikaista toimintaa"
+  },
+  "OZSDCE": {
+    "defaultMessage": "Kiinnitetty"
+  },
+  "OgM2Q2": {
+    "defaultMessage": "Päivitä sarjan metatiedot"
+  },
+  "Oj3xqB": {
+    "defaultMessage": "Lukulista poistettu: {readlist}"
+  },
+  "OxqfKF": {
+    "defaultMessage": "Syvä skannaus"
+  },
+  "P+WI/K": {
+    "defaultMessage": "Sivun kaksoikappale"
+  },
+  "P8Ox+D": {
+    "defaultMessage": "Kirjan metatiedot päivitetty: {book}"
+  },
+  "PTr5Wc": {
+    "defaultMessage": "Tarkista, että Komga-palvelimesi toimii"
+  },
+  "PguYSD": {
+    "defaultMessage": "Korvaa nykyinen lukulista"
+  },
+  "Pj29A+": {
+    "defaultMessage": "Tarvitaan, jotta voidaan havaita sivujen kaksoikappaleet"
+  },
+  "Pp3+1S": {
+    "defaultMessage": "Tila"
+  },
+  "PvKF7E": {
+    "defaultMessage": "Kirjasto poistettu: {library}"
+  },
+  "QALnuE": {
+    "defaultMessage": "Tiedostotyyppi"
+  },
+  "QIr0z7": {
+    "defaultMessage": "Sähköposti"
+  },
+  "QM5+gW": {
+    "defaultMessage": "Poistojen lukumäärä"
+  },
+  "Qxij/I": {
+    "defaultMessage": "Poistettu sivu"
+  },
+  "REmxIM": {
+    "defaultMessage": "Muokattu"
+  },
+  "RHJo8j": {
+    "defaultMessage": "Tuo"
+  },
+  "RMHfEo": {
+    "defaultMessage": "Mikä tahansa"
+  },
+  "ROFRn4": {
+    "defaultMessage": "Luo"
+  },
+  "RR+XGR": {
+    "defaultMessage": "Tämä sivu on rakenteilla."
+  },
+  "RTNaxB": {
+    "defaultMessage": "Laajenna sivupalkki"
+  },
+  "Rm52xk": {
+    "defaultMessage": "Tervetuloa Komgaan"
+  },
+  "RwuMl5": {
+    "defaultMessage": "Korjaa virheelliset tiedostopäätteet automaattisesti"
+  },
+  "SIfmpC": {
+    "defaultMessage": "Valitse sarjat"
+  },
+  "STdfYg": {
+    "defaultMessage": "Analysoi sivujen mitat"
+  },
+  "SZHxy4": {
+    "defaultMessage": "Valitse kirja"
+  },
+  "Sj0HXz": {
+    "defaultMessage": "Vain sallitut tunnisteet"
+  },
+  "SqZoei": {
+    "defaultMessage": "Valitse sarja"
+  },
+  "Ss08kC": {
+    "defaultMessage": "{count} kohdetta"
+  },
+  "SuegoE": {
+    "defaultMessage": "Automaattinen järjestely"
+  },
+  "T3Ofay": {
+    "defaultMessage": "Luettu {readDate}"
+  },
+  "TAVSfO": {
+    "defaultMessage": "Kirjojen määrä"
+  },
+  "TG7prC": {
+    "defaultMessage": "Lisäyspäivämäärä"
+  },
+  "TPX4qo": {
+    "defaultMessage": "Tunnisteet"
+  },
+  "TUxJCd": {
+    "defaultMessage": "Skannaa sovelluksen käynnistyessä"
+  },
+  "ThHjN4": {
+    "defaultMessage": "Sarjat"
+  },
+  "Thjcar": {
+    "defaultMessage": "Kirjan tunnisteet"
+  },
+  "ToD0+o": {
+    "defaultMessage": "Sähköposti"
+  },
+  "TwB29u": {
+    "defaultMessage": "Aseta vain, jos kansien ja latausten synkronoinnissa on ongelmia"
+  },
+  "U3Uo3q": {
+    "defaultMessage": "Salasana"
+  },
+  "UaD47n": {
+    "defaultMessage": "Uudista \"muista minut\"-avain"
+  },
+  "UfbIyV": {
+    "defaultMessage": "Linkit"
+  },
+  "Uj479p": {
+    "defaultMessage": "Julkaisupäivä"
+  },
+  "UoaxO7": {
+    "defaultMessage": "Kirja päivitetään"
+  },
+  "Usohru": {
+    "defaultMessage": "Selaa"
+  },
+  "Uuu6fQ": {
+    "defaultMessage": "Ei tuloksia"
+  },
+  "UvhIIT": {
+    "defaultMessage": "Jaetut kirjastot"
+  },
+  "V/OYJE": {
+    "defaultMessage": "Käyttäjä poistettu: {email}"
+  },
+  "VHe28r": {
+    "defaultMessage": "Päivityspäivämäärä"
+  },
+  "VP+GhR": {
+    "defaultMessage": "Luo"
+  },
+  "VQ/hT4": {
+    "defaultMessage": "ISBN"
+  },
+  "VtC7Ce": {
+    "defaultMessage": "Toimittaja"
+  },
+  "VvjZEl": {
+    "defaultMessage": "Kirjoja ei löytynyt"
+  },
+  "Vwpr+D": {
+    "defaultMessage": "Satunnainen"
+  },
+  "W3BUf7": {
+    "defaultMessage": "Ymmärrän"
+  },
+  "WADecv": {
+    "defaultMessage": "Asennettu"
+  },
+  "WLwQG8": {
+    "defaultMessage": "API-avaimia ei ole vielä luotu"
+  },
+  "WNY0pu": {
+    "defaultMessage": "Uusin Komgan versio on jo asennettu"
+  },
+  "app.locale-name": {
+    "defaultMessage": "Suomi"
+  }
 }
