@@ -1,128 +1,95 @@
 <template>
-  <v-stepper-vertical
-    :hide-actions="editMode"
-    eager
-    flat
+  <v-tabs
+    v-model="currentTab"
+    :items="tabs"
   >
-    <template #default="{ step }">
-      <v-stepper-vertical-item
-        :title="
-          $formatMessage({
-            description: 'Form add/edit library: General',
-            defaultMessage: 'General',
-            id: 'h6C8/l',
-          })
-        "
-        value="1"
-        :complete="createMode && step > 1"
-        :editable="editMode"
+    <template #tab="{ item }">
+      <v-tab
+        :value="item.value"
+        :text="item.text"
       >
-        <LibraryFormStepGeneral v-model="model" />
-
-        <template #next="{ next }">
-          <v-btn
-            color="primary"
-            :disabled="!model.name || !model.root"
-            @click="next"
-          ></v-btn>
+        <template #append>
+          <v-badge
+            :model-value="(tabErrors[item.value] ?? 0) > 0"
+            :content="tabErrors[item.value]"
+            color="error"
+            inline
+          />
         </template>
-
-        <template #prev></template>
-      </v-stepper-vertical-item>
-
-      <v-stepper-vertical-item
-        :title="
-          $formatMessage({
-            description: 'Form add/edit library: Scanner',
-            defaultMessage: 'Scanner',
-            id: 'yaa8so',
-          })
-        "
-        value="2"
-        :complete="createMode && step > 2"
-        :editable="editMode"
-      >
-        <LibraryFormStepScanner v-model="model" />
-
-        <template #next="{ next }">
-          <v-btn
-            color="primary"
-            @click="next"
-          ></v-btn>
-        </template>
-
-        <template #prev="{ prev }">
-          <v-btn
-            variant="plain"
-            @click="prev"
-          ></v-btn>
-        </template>
-      </v-stepper-vertical-item>
-
-      <v-stepper-vertical-item
-        :title="
-          $formatMessage({
-            description: 'Form add/edit library: Options',
-            defaultMessage: 'Options',
-            id: 'uGC9fD',
-          })
-        "
-        value="3"
-        :complete="createMode && step > 3"
-        :editable="editMode"
-      >
-        <LibraryFormStepOptions v-model="model" />
-
-        <template #next="{ next }">
-          <v-btn
-            color="primary"
-            @click="next"
-          ></v-btn>
-        </template>
-
-        <template #prev="{ prev }">
-          <v-btn
-            variant="plain"
-            @click="prev"
-          ></v-btn>
-        </template>
-      </v-stepper-vertical-item>
-
-      <v-stepper-vertical-item
-        :title="
-          $formatMessage({
-            description: 'Form add/edit library: Metadata',
-            defaultMessage: 'Metadata',
-            id: '0iT7Vf',
-          })
-        "
-        value="4"
-        :complete="createMode && step > 4"
-        :editable="editMode"
-      >
-        <LibraryFormStepMetadata v-model="model" />
-
-        <template #next="{}"></template>
-
-        <template #prev="{ prev }">
-          <v-btn
-            variant="plain"
-            @click="prev"
-          ></v-btn>
-        </template>
-      </v-stepper-vertical-item>
+      </v-tab>
     </template>
-  </v-stepper-vertical>
+
+    <template #[`item.1`]>
+      <LibraryFormStepGeneral
+        v-model="model"
+        @update:error-count="(errorCount) => (tabErrors[1] = errorCount)"
+      />
+    </template>
+
+    <template #[`item.2`]>
+      <LibraryFormStepScanner v-model="model" />
+    </template>
+
+    <template #[`item.3`]>
+      <LibraryFormStepOptions v-model="model" />
+    </template>
+    <template #[`item.4`]>
+      <LibraryFormStepMetadata v-model="model" />
+    </template>
+  </v-tabs>
 </template>
 
 <script setup lang="ts">
 import type { LibraryCreationDto } from '@/generated/openapi'
+import { useIntl } from 'vue-intl'
 
-const { createMode } = defineProps<{
-  createMode: boolean
-}>()
+const intl = useIntl()
 
-const editMode = computed(() => !createMode)
+const currentTab = ref(1)
+const tabs = [
+  {
+    value: 1,
+    text: intl.formatMessage({
+      description: 'Form add/edit library: General',
+      defaultMessage: 'General',
+      id: 'h6C8/l',
+    }),
+  },
+  {
+    value: 2,
+    text: intl.formatMessage({
+      description: 'Form add/edit library: Scanner',
+      defaultMessage: 'Scanner',
+      id: 'yaa8so',
+    }),
+  },
+  {
+    value: 3,
+    text: intl.formatMessage({
+      description: 'Form add/edit library: Options',
+      defaultMessage: 'Options',
+      id: 'uGC9fD',
+    }),
+  },
+  {
+    value: 4,
+    text: intl.formatMessage({
+      description: 'Form add/edit library: Metadata',
+      defaultMessage: 'Metadata',
+      id: '0iT7Vf',
+    }),
+  },
+]
+
+const tabErrors = ref<Record<number, number>>({})
 
 const model = defineModel<LibraryCreationDto>({ required: true })
+const submitFailed = defineModel<boolean>('submit-failed', { required: false })
+
+watch(submitFailed, (attempted) => {
+  if (attempted) {
+    currentTab.value = 1
+    submitFailed.value = false
+  }
+})
 </script>

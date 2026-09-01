@@ -30,9 +30,6 @@ export function useCreateLibraryDialog() {
         defaultMessage: 'Create',
         id: 'yPygXa',
       }),
-      cardTextProps: {
-        class: 'px-0',
-      },
       closeOnSave: false,
       scrollable: true,
       fullscreen: display.xs.value,

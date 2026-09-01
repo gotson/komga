@@ -28,14 +28,12 @@ type Story = StoryObj<typeof meta>
 
 export const Create: Story = {
   args: {
-    createMode: true,
     modelValue: getLibraryDefaults(),
   },
 }
 
 export const Edit: Story = {
   args: {
-    createMode: false,
     modelValue: {
       analyzeDimensions: false,
       convertToCbz: false,

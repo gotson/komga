@@ -76,11 +76,16 @@ import type { DialogConfirmEditProps } from '@/types/dialog'
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const record = defineModel<unknown>('record', { required: true })
 
+const emit = defineEmits<{
+  submitFailed: []
+}>()
+
 const form = ref()
 
 async function submitForm(callback: () => void) {
   const { valid } = await form.value.validate()
   if (valid) callback()
+  else emit('submitFailed')
 }
 
 const {
