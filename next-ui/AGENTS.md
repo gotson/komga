@@ -11,11 +11,13 @@
     - Valibot
 - Package manager: npm
 
-## Commands
+## Quality gates
 
-- test: `npm test:unit`
+Every change should have passed all quality gates:
+
+- unit test: `npm test:unit`
 - lint: `npm lint:fix`
-- format code: `npm prettier:fix`
+- code formatting: `npm prettier:fix`
 - type checking: `npm type-check`
 
 # Other
