@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Inicio",
     "libraries": "Bibliotecas",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "try_new_ui": "Prueba la nueva interfaz de usuario"
   },
   "no_libraries_pinned": {
     "subtitle": "Puedes anclar una librería desde el menú de 3 puntos",
