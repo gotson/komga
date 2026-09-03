@@ -5,9 +5,15 @@
         <a
           :href="release.url"
           target="_blank"
-          class="text-headline-large font-weight-medium link-underline"
-          >{{ release.version }}</a
+          class="text-headline-large font-weight-medium link-underline d-inline-flex align-center ga-1"
         >
+          {{ release.version }}
+          <v-icon
+            size="0.7em"
+            icon="i-mdi:launch"
+            class="text-medium-emphasis"
+          />
+        </a>
         <v-chip
           v-if="current"
           size="small"
