@@ -22,8 +22,8 @@
             $formatMessage(
               {
                 description: 'Series view: book on deck',
-                defaultMessage: 'On deck — #{number}',
-                id: '5cbjLE',
+                defaultMessage: 'On deck — {number}',
+                id: '4jKnoO',
               },
               { number: bookOnDeck.metadata.number },
             )
