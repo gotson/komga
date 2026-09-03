@@ -149,7 +149,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import { useMessagesStore } from '@/stores/messages'
 
 import { useClipboard } from '@vueuse/core'
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 import type { ApiKeyDto } from '@/generated/openapi'
 
 const intl = useIntl()

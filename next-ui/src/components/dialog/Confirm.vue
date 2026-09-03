@@ -106,7 +106,7 @@
 <script setup lang="ts">
 import { defineMessage, useIntl } from 'vue-intl'
 import type { DialogConfirmProps } from '@/types/dialog'
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 
 const intl = useIntl()
 const rules = useRules()

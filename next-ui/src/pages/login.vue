@@ -131,7 +131,7 @@ import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useAppStore } from '@/stores/app'
 import { useLogin } from '@/colada/users'
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 
 const messagesStore = useMessagesStore()
 const intl = useIntl()

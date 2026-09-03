@@ -13,7 +13,7 @@ import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
 
 import { availableLocales, currentLocale, fallbackLocale } from '@/utils/i18n/locale-helper'
-import { createRulesPlugin } from 'vuetify/labs/rules'
+import { createRulesPlugin } from 'vuetify'
 
 // load vuetify locales only for the available locales in i18n
 async function loadVuetifyLocale(locale: string) {

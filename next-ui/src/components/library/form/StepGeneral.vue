@@ -112,7 +112,7 @@
 <script setup lang="ts">
 import RemoteFileList from '@/components/RemoteFileList.vue'
 import { useDisplay } from 'vuetify'
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 import type { LibraryCreationDto } from '@/generated/openapi'
 import { VTextField } from 'vuetify/components'
 

@@ -135,7 +135,7 @@ import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useClaimServer } from '@/colada/claim'
 import { useLogin } from '@/colada/users'
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 
 const messagesStore = useMessagesStore()
 const rules = useRules()

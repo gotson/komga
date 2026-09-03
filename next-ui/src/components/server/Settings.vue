@@ -384,7 +384,7 @@ import { ThumbnailSizeValues, thumbnailSizeMessages } from '@/types/ThumbnailSiz
 import { useIntl } from 'vue-intl'
 
 import { watchImmediate } from '@vueuse/core'
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 import type { SettingsDto } from '@/generated/openapi'
 import type { SettingsUpdateDtoExtended } from '@/types/ThumbnailRegenerate'
 

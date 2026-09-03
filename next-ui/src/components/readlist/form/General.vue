@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 import type { ReadListUpdateDto } from '@/generated/openapi'
 import { VTextField } from 'vuetify/components'
 

@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 
 const rules = useRules()
 

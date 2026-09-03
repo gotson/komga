@@ -254,7 +254,7 @@ import { useCreateReadList, readListsListQuery, useUpdateReadList } from '@/cola
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { PageRequest } from '@/types/PageRequest'
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 import type {
   BookDto,
   ReadListCreationDto,

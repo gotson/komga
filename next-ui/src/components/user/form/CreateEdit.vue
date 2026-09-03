@@ -264,7 +264,7 @@ import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useQuery } from '@pinia/colada'
 import { PageRequest } from '@/types/PageRequest'
-import { useRules } from 'vuetify/labs/rules'
+import { useRules } from 'vuetify'
 import type { UserCreationDto, UserUpdateDto } from '@/generated/openapi'
 
 const intl = useIntl()

@@ -28,13 +28,13 @@
           :icon="isRtl ? 'i-mdi:chevron-right' : 'i-mdi:chevron-left'"
           :disabled="!slideGroup?.hasPrev"
           variant="text"
-          @click="slideGroup?.scrollTo('prev')"
+          @click="slideGroup?.slide('prev')"
         />
         <v-icon-btn
           :icon="isRtl ? 'i-mdi:chevron-left' : 'i-mdi:chevron-right'"
           :disabled="!slideGroup?.hasNext"
           variant="text"
-          @click="slideGroup?.scrollTo('next')"
+          @click="slideGroup?.slide('next')"
         />
       </div>
     </div>
