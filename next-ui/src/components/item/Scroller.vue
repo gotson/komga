@@ -9,8 +9,14 @@
           v-if="titleTo"
           :to="titleTo"
           class="link-underline"
-          >{{ title }}</RouterLink
-        >
+          >{{ title }}
+          <v-icon
+            v-if="isTouchPrimary"
+            size="xs"
+            class="text-medium-emphasis"
+            :icon="isRtl ? 'i-mdi:chevron-left' : 'i-mdi:chevron-right'"
+          />
+        </RouterLink>
         <div v-else>{{ title }}</div>
       </div>
 
