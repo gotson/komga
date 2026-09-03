@@ -9,20 +9,12 @@ export function buildSpreads(pages: PageDtoWithUrl[], pageLayout: PagedReaderLay
   if (pageLayout !== PagedReaderLayout.SINGLE_PAGE) {
     const spreads = [] as PageDtoWithUrl[][]
     const pagesClone = cloneDeep(pages)
-    let lastPages = undefined
     if (pageLayout === PagedReaderLayout.DOUBLE_PAGES) {
       const firstPage = pagesClone.shift() as PageDtoWithUrl
       if (isPageLandscape(firstPage))
         spreads.push([firstPage] as PageDtoWithUrl[])
       else
         spreads.push([createEmptyPage(firstPage), firstPage] as PageDtoWithUrl[])
-      if (pagesClone.length > 0) {
-        const lastPage = pagesClone.pop() as PageDtoWithUrl
-        if(isPageLandscape(lastPage))
-          lastPages = [lastPage] as PageDtoWithUrl[]
-        else
-          lastPages = [lastPage, createEmptyPage(lastPage)] as PageDtoWithUrl[]
-      }
     }
     while (pagesClone.length > 0) {
       const p = pagesClone.shift() as PageDtoWithUrl
@@ -30,19 +22,23 @@ export function buildSpreads(pages: PageDtoWithUrl[], pageLayout: PagedReaderLay
         spreads.push([p])
       } else {
         if (pagesClone.length > 0) {
-          const p2 = pagesClone.shift() as PageDtoWithUrl
-          if (isPageLandscape(p2)) {
-            spreads.push([p, createEmptyPage(p)])
-            spreads.push([p2])
+          const [prevPage] = spreads.length > 0 ? (spreads[spreads.length - 1] as PageDtoWithUrl[]) : []
+          if (pageLayout === PagedReaderLayout.DOUBLE_NO_COVER && isPageLandscape(prevPage)){
+            spreads.push([createEmptyPage(p), p])
           } else {
-            spreads.push([p, p2])
+            const p2 = pagesClone.shift() as PageDtoWithUrl
+            if (isPageLandscape(p2)) {
+              spreads.push([p, createEmptyPage(p)])
+              spreads.push([p2])
+            } else {
+              spreads.push([p, p2])
+            }
           }
         } else {
           spreads.push([p, createEmptyPage(p)])
         }
       }
     }
-    if (lastPages) spreads.push(lastPages)
     return spreads
   } else {
     return pages.map(p => [p])
