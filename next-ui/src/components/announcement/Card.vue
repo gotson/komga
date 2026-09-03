@@ -4,9 +4,14 @@
       <a
         :href="item.url"
         target="_blank"
-        class="text-display-small font-weight-medium link-underline"
-        >{{ item.title }}</a
+        class="text-display-small font-weight-medium link-underline text-wrap d-inline-block"
       >
+        {{ item.title }}
+        <v-icon
+          size="0.7em"
+          icon="i-mdi:launch"
+          class="text-medium-emphasis"
+      /></a>
     </template>
     <template #subtitle>
       {{ $formatDate(item.date_modified, { dateStyle: 'long' }) }}
