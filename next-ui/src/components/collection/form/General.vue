@@ -59,10 +59,13 @@
 import { useRules } from 'vuetify'
 import type { CollectionUpdateDto } from '@/generated/openapi'
 import { VTextField } from 'vuetify/components'
+import { useFieldValidity } from '@/composables/fieldValidity'
 
 const rules = useRules()
 
-const fieldNameRef = ref<InstanceType<typeof VTextField> | null>(null)
+const fields = {
+  name: useTemplateRef<InstanceType<typeof VTextField>>('fieldNameRef'),
+}
 
 type CollectionUpdateGeneral = Pick<CollectionUpdateDto, 'name' | 'ordered'>
 
@@ -72,8 +75,5 @@ const emit = defineEmits<{
   'update:errorCount': [errorCount: number]
 }>()
 
-watch([() => fieldNameRef.value?.isValid], ([nameValid]) => {
-  const fields = [nameValid]
-  emit('update:errorCount', fields.filter((it) => it === false).length)
-})
+useFieldValidity(fields, (errorCount) => emit('update:errorCount', errorCount))
 </script>
