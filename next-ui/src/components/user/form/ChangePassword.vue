@@ -18,17 +18,19 @@
   <v-text-field
     v-model="confirmPassword"
     class="mt-2"
-    :rules="[
+    :rules="
       [
-        'sameAs',
-        newPassword,
-        $formatMessage({
-          description: 'User password change dialog: Error message if passwords differ',
-          defaultMessage: 'Passwords must be identical',
-          id: 'LaxrEO',
-        }),
-      ],
-    ]"
+        [
+          'sameAs',
+          newPassword,
+          $formatMessage({
+            description: 'User password change dialog: Error message if passwords differ',
+            defaultMessage: 'Passwords must be identical',
+            id: 'LaxrEO',
+          }),
+        ],
+      ] satisfies CustomRuleTuple[]
+    "
     :label="
       $formatMessage({
         description: 'User password change dialog: Confirm Password field label',
@@ -45,6 +47,7 @@
 
 <script setup lang="ts">
 import { useRules } from 'vuetify'
+import type { CustomRuleTuple } from '@/plugins/vuetify'
 
 const rules = useRules()
 

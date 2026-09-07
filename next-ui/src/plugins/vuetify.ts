@@ -14,6 +14,8 @@ import { md3 } from 'vuetify/blueprints'
 
 import { availableLocales, currentLocale, fallbackLocale } from '@/utils/i18n/locale-helper'
 import { createRulesPlugin } from 'vuetify'
+import isISBN from 'validator/es/lib/isISBN'
+import isURL from 'validator/es/lib/isURL'
 
 // load vuetify locales only for the available locales in i18n
 async function loadVuetifyLocale(locale: string) {
@@ -44,6 +46,11 @@ export const vuetify = createVuetify({
       mdi,
     },
   },
+  date: {
+    locale: {
+      en: 'en-GB',
+    },
+  },
   theme: {
     defaultTheme: 'light',
     themes: {
@@ -68,19 +75,48 @@ export const vuetify = createVuetify({
   blueprint: md3,
 })
 
+const aliasesDefinition = {
+  sameAs: (other?: string, err?: string) => {
+    return (v: unknown) => other === v || err || 'Field must have the same value'
+  },
+  sameAsIgnoreCase: (other?: string, err?: string) => {
+    return (v: unknown) =>
+      other?.localeCompare(String(v), undefined, { sensitivity: 'accent' }) == 0 ||
+      err ||
+      'Field must have the same value'
+  },
+  isbn13: (err?: string) => {
+    return (v: unknown) => {
+      if (!v) return true
+      return (typeof v === 'string' && isISBN(v, 13)) || err || 'Must be a valid ISBN 13'
+    }
+  },
+  linkUrl: (err?: string) => {
+    return (v: unknown) => {
+      if (!v) return true
+      return (
+        (typeof v === 'string' &&
+          isURL(v, {
+            protocols: ['http', 'https'],
+          })) ||
+        err ||
+        'Must be a valid URL'
+      )
+    }
+  },
+}
+
 export const vuetifyRulesPlugin = createRulesPlugin(
   {
-    aliases: {
-      sameAs: (other?: string, err?: string) => {
-        return (v: unknown) => other === v || err || 'Field must have the same value'
-      },
-      sameAsIgnoreCase: (other?: string, err?: string) => {
-        return (v: unknown) =>
-          other?.localeCompare(String(v), undefined, { sensitivity: 'accent' }) == 0 ||
-          err ||
-          'Field must have the same value'
-      },
-    },
+    aliases: aliasesDefinition,
   },
   vuetify.locale,
 )
+
+export type CustomRulesMap = typeof aliasesDefinition
+
+export type CustomRuleTuple = {
+  [K in keyof CustomRulesMap]: Parameters<CustomRulesMap[K]> extends []
+    ? K
+    : [K, ...Parameters<CustomRulesMap[K]>]
+}[keyof CustomRulesMap]

@@ -75,7 +75,7 @@
 import { useRules } from 'vuetify'
 import type { ReadListUpdateDto } from '@/generated/openapi'
 import { VTextField } from 'vuetify/components'
-import { useFieldValidity } from '@/composables/fieldValidity'
+import { useFieldValidity } from '@/composables/form'
 
 const rules = useRules()
 

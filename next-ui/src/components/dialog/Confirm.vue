@@ -47,7 +47,7 @@
 
             <v-text-field
               v-if="mode === 'textinput'"
-              :rules="[['sameAsIgnoreCase', validateTextEffective]]"
+              :rules="[['sameAsIgnoreCase', validateTextEffective]] satisfies CustomRuleTuple[]"
               hide-details
               class="mt-2"
               autofocus
@@ -107,6 +107,7 @@
 import { defineMessage, useIntl } from 'vue-intl'
 import type { DialogConfirmProps } from '@/types/dialog'
 import { useRules } from 'vuetify'
+import type { CustomRuleTuple } from '@/plugins/vuetify'
 
 const intl = useIntl()
 const rules = useRules()

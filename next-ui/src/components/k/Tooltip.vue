@@ -110,8 +110,14 @@ onMounted(() => {
 const getActivatorProps = (activatorProps: Record<string, unknown>) => {
   return {
     ...activatorProps,
-    ref: (el: HTMLElement | null) => {
-      activatorRef.value = el
+    ref: (el: Element | ComponentPublicInstance | null) => {
+      // Safely extract the raw HTMLElement whether el is a ComponentInstance or DOM Node
+      if (el && '$el' in el) {
+        activatorRef.value = (el.$el as HTMLElement) || null
+      } else {
+        activatorRef.value = (el as HTMLElement) || null
+      }
+
       // Forward the element ref back to Vuetify's internal positional tracking
       if (typeof activatorProps.ref === 'function') {
         activatorProps.ref(el)

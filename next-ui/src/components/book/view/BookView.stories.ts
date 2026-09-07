@@ -46,7 +46,7 @@ export const InProgress: Story = {
     book: {
       ...mockBook,
       readProgress: {
-        ...mockBook.readProgress,
+        ...mockBook.readProgress!,
         completed: false,
         page: 25,
       },

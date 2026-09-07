@@ -19,15 +19,15 @@ export const filterMessages: Record<string, MessageDescriptor> = {
   }),
 }
 
+export type FilterContext = {
+  library_id?: string[]
+  collection_id?: string[]
+  series_id?: string[]
+  readlist_id?: string[]
+}
+
 export const filterKeys = {
-  context: Symbol() as InjectionKey<
-    MaybeRefOrGetter<{
-      library_id?: string[]
-      collection_id?: string[]
-      series_id?: string[]
-      readlist_id?: string[]
-    }>
-  >,
+  context: Symbol() as InjectionKey<MaybeRefOrGetter<FilterContext>>,
 }
 
 export type AnyAll = 'anyOf' | 'allOf'

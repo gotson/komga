@@ -198,7 +198,8 @@ export const referentialHandlers = [
   }),
   handleGetAuthorsRoles(({ request }) => {
     const query = new URL(request.url).searchParams
-    const roles = [...new Set(mockAuthors.map((it) => it.role))]
+    const hasSeries = query.getAll('series_id').length > 0
+    const roles = hasSeries ? authorRoles.slice(0, 2) : authorRoles
 
     return response200OK(
       mockPage(

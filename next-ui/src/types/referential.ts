@@ -2,6 +2,17 @@ import { defineMessage, type MessageDescriptor } from 'vue-intl'
 
 export const CONTRIBUTOR_ANYROLE = 'anyrole' as const
 
+export const DefaultContributorRoles = [
+  'writer',
+  'penciller',
+  'inker',
+  'colorist',
+  'letterer',
+  'cover',
+  'editor',
+  'translator',
+] as const
+
 export const contributorsRolesMessages: Record<string, MessageDescriptor> = {
   [CONTRIBUTOR_ANYROLE]: defineMessage({
     description: 'Author filter: any role',

@@ -9,21 +9,24 @@ export default defineComponent({
     values: Object as PropType<Record<string, string | number | boolean | Date | undefined | null>>,
   },
   setup(props, context) {
-    const { messageDescriptor, tag, values = {} } = props
-    if (!messageDescriptor) return () => ''
-
     const intl = useIntl()
-    const slotNames = Object.keys(context.slots)
 
-    const v = {
-      ...values,
-      ...slotNames.reduce((slots: Record<string, unknown>, name) => {
-        slots[name] = (content: unknown) => context.slots[name]!(() => content)
-        return slots
-      }, {}),
-    } as Record<string, string | number | boolean | Date | undefined | null>
-    const message = intl.formatMessage(messageDescriptor, v)
+    return () => {
+      const { messageDescriptor, tag, values = {} } = props
+      if (!messageDescriptor) return ''
 
-    return () => (tag || Array.isArray(message) ? h(tag || 'div', message) : message)
+      const slotNames = Object.keys(context.slots)
+
+      const v = {
+        ...values,
+        ...slotNames.reduce((slots: Record<string, unknown>, name) => {
+          slots[name] = (content: unknown) => context.slots[name]!(() => content)
+          return slots
+        }, {}),
+      } as Record<string, string | number | boolean | Date | undefined | null>
+      const message = intl.formatMessage(messageDescriptor, v)
+
+      return tag || Array.isArray(message) ? h(tag || 'div', message) : message
+    }
   },
 })
