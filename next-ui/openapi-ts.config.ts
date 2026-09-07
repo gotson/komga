@@ -61,5 +61,36 @@ export default defineConfig({
     {
       name: 'msw',
     },
+    {
+      name: 'valibot',
+      // Override standard string format resolutions for dates
+      $resolvers: {
+        string(ctx) {
+          const { schema, $, plugin } = ctx
+          const { v } = plugin.imports
+
+          if (schema.format === 'date' || schema.format === 'date-time') {
+            const isoCheck = schema.format === 'date' ? 'isoDate' : 'isoTimestamp'
+
+            // Return the full pipeline node to override the default generator completely
+            return $(v)
+              .attr('pipe')
+              .call(
+                $(v).attr('string').call(),
+                $(v).attr(isoCheck).call(),
+                $(v)
+                  .attr('transform')
+                  .call(
+                    $.func((f) => {
+                      f.param('val', (p) => p.type('string'))
+                      f.returns('Date')
+                      f.do($.return($.new($('Date')).args('val')))
+                    }),
+                  ),
+              )
+          }
+        },
+      },
+    },
   ],
 })
