@@ -43,6 +43,7 @@
           <v-tab
             :text="route.title"
             :to="route.to"
+            rounded="0"
             exact
           />
         </template>

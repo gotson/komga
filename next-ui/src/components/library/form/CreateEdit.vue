@@ -7,6 +7,7 @@
       <v-tab
         :value="item.value"
         :text="item.text"
+        rounded="0"
       >
         <template #append>
           <v-badge
