@@ -28,10 +28,7 @@
     </template>
 
     <template #[`item.2`]>
-      <v-sheet
-        class="pa-4"
-        style="max-height: 80vh; overflow-y: auto"
-      >
+      <v-sheet class="pa-4">
         <PosterUpload
           :entity-posters="entityPosters ?? []"
           @upload-queue-changed="(it) => (model.uploadQueue = it)"

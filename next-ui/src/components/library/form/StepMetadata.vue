@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-0">
+  <v-container fluid>
     <v-row>
       <v-col cols="auto">
         <div class="text-label-large d-flex ga-2 align-center">

@@ -136,6 +136,9 @@ export function useLibraryActions(
         id: 'am3r7e',
       }),
       maxWidth: 600,
+      cardTextProps: {
+        class: 'px-0',
+      },
       closeOnSave: false,
       scrollable: true,
       fullscreen: display.xs.value,

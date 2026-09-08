@@ -1,5 +1,5 @@
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
@@ -32,6 +32,9 @@ export function useEditReadListDialog() {
       }),
       subtitle: readList.name,
       maxWidth: 900,
+      cardTextProps: {
+        class: 'px-0',
+      },
       closeOnSave: false,
       scrollable: true,
       fullscreen: display.xs.value,
