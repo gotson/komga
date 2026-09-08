@@ -41,9 +41,15 @@ export function useEditReadListDialog() {
     }
     dialogConfirmEdit.value.record = createEntityUpdate(readList)
     dialogConfirmEdit.value.callback = async (
+      result: DialogResult,
       hideDialog: () => void,
       setLoading: (isLoading: boolean) => void,
     ) => {
+      if (result === 'cancel') {
+        callback()
+        return
+      }
+
       setLoading(true)
 
       const updatedData = dialogConfirmEdit.value.record as EntityUpdate<ReadListDto>

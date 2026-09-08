@@ -78,7 +78,12 @@
                   id: 'pENCUD',
                 })
               "
-              @click="isActive.value = false"
+              @click="
+                () => {
+                  emit('cancel')
+                  isActive.value = false
+                }
+              "
             />
             <v-btn
               :loading="loading"
@@ -115,6 +120,7 @@ const rules = useRules()
 const showDialog = defineModel<boolean>('dialog', { required: false })
 const emit = defineEmits<{
   confirm: []
+  cancel: []
 }>()
 
 const form = ref()

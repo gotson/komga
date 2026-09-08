@@ -75,7 +75,7 @@ import {
   type ClientSettingUserOverviewSection,
 } from '@/types/ClientSettingsUser'
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { defineMessage, useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
@@ -124,9 +124,12 @@ function editSections() {
   }
   dialogConfirmEdit.value.record = toValue(overviewSections)
   dialogConfirmEdit.value.callback = (
+    result: DialogResult,
     hideDialog: () => void,
     setLoading: (isLoading: boolean) => void,
   ) => {
+    if (result === 'cancel') return
+
     setLoading(true)
 
     const updatedSections = dialogConfirmEdit.value.record as ClientSettingUserOverviewSection[]

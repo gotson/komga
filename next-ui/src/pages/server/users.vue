@@ -26,7 +26,7 @@
 import { useLibraries } from '@/colada/libraries'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
@@ -183,9 +183,12 @@ function showDialog(action: DialogAction, user?: UserDto) {
 }
 
 function handleDialogConfirmation(
+  result: DialogResult,
   hideDialog: () => void,
   setLoading: (isLoading: boolean) => void,
 ) {
+  if (result === 'cancel') return
+
   let mutation: Promise<unknown> | undefined
   let successMessage: string | undefined
 

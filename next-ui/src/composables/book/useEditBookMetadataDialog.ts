@@ -1,5 +1,5 @@
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
@@ -43,9 +43,15 @@ export function useEditBookMetadataDialog() {
     }
     dialogConfirmEdit.value.record = createEntityUpdate(book)
     dialogConfirmEdit.value.callback = async (
+      result: DialogResult,
       hideDialog: () => void,
       setLoading: (isLoading: boolean) => void,
     ) => {
+      if (result === 'cancel') {
+        callback()
+        return
+      }
+
       setLoading(true)
 
       const updatedData = dialogConfirmEdit.value.record as EntityUpdate<BookDto>

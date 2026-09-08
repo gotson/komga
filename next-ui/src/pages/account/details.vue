@@ -29,7 +29,7 @@
 import { useCurrentUser, useUpdateUserPassword } from '@/colada/users'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import UserFormChangePassword from '@/components/user/form/ChangePassword.vue'
 import { useMessagesStore } from '@/stores/messages'
 import { useIntl } from 'vue-intl'
@@ -63,9 +63,12 @@ function changePassword() {
 }
 
 function handleDialogConfirmation(
+  result: DialogResult,
   hideDialog: () => void,
   setLoading: (isLoading: boolean) => void,
 ) {
+  if (result === 'cancel') return
+
   setLoading(true)
 
   mutateUserPassword({

@@ -1,5 +1,5 @@
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
@@ -85,25 +85,28 @@ export function useCollectionActions(
       component: markRaw(CollectionDeletionWarning),
       props: {},
     }
-    dialogConfirm.value.callback = () => {
-      mutateDelete(toValue(collection).id)
-        .then(() => {
-          messagesStore.messages.push({
-            message: intl.formatMessage(
-              {
-                description: 'Snackbar notification shown upon successful collection deletion',
-                defaultMessage: 'Collection deleted: {collection}',
-                id: 'HdsnFp',
-              },
-              {
-                collection: toValue(collection).name,
-              },
-            ),
+    dialogConfirm.value.callback = (result: DialogResult) => {
+      if (result === 'confirm') {
+        mutateDelete(toValue(collection).id)
+          .then(() => {
+            messagesStore.messages.push({
+              message: intl.formatMessage(
+                {
+                  description: 'Snackbar notification shown upon successful collection deletion',
+                  defaultMessage: 'Collection deleted: {collection}',
+                  id: 'HdsnFp',
+                },
+                {
+                  collection: toValue(collection).name,
+                },
+              ),
+            })
           })
-        })
-        .catch((error) => {
-          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
-        })
+          .catch((error) => {
+            messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+          })
+      }
+
       callback(ActionName.Delete)
     }
   }

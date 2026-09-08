@@ -44,10 +44,16 @@ export const useDialogsStore = defineStore('dialogs', () => {
   }
 })
 
+export type DialogResult = 'cancel' | 'confirm'
+
 type DialogActivation<T> = {
   activator?: Element | string
   dialogProps: T
-  callback: (hideDialog: () => void, setLoading: (isLoading: boolean) => void) => unknown
+  callback: (
+    result: DialogResult,
+    hideDialog: () => void,
+    setLoading: (isLoading: boolean) => void,
+  ) => unknown
 }
 
 type DialogConfirmEditActivation = DialogActivation<DialogConfirmEditProps> & {

@@ -29,7 +29,12 @@
                 id: 'Wivz5J',
               })
             "
-            @click="isActive.value = false"
+            @click="
+              () => {
+                emit('cancel')
+                isActive.value = false
+              }
+            "
           />
         </template>
       </v-card>
@@ -41,6 +46,10 @@
 import type { DialogSimpleProps } from '@/types/dialog'
 
 const showDialog = defineModel<boolean>('dialog', { required: false, default: false })
+
+const emit = defineEmits<{
+  cancel: []
+}>()
 
 const {
   title = undefined,

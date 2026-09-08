@@ -34,6 +34,7 @@ export function useAddToReadListDialog() {
       scrollable: true,
       fullscreen: display.xs.value,
     }
+    dialogSimple.value.callback = () => callback()
     dialogSimple.value.slot = {
       component: markRaw(AddToReadList),
       props: {

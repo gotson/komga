@@ -47,7 +47,12 @@
                       id: 'G/T8/2',
                     })
                   "
-                  @click="isActive.value = false"
+                  @click="
+                    () => {
+                      emit('cancel')
+                      isActive.value = false
+                    }
+                  "
                 />
                 <v-btn
                   :text="
@@ -78,6 +83,7 @@ const record = defineModel<unknown>('record', { required: true })
 
 const emit = defineEmits<{
   submitFailed: []
+  cancel: []
 }>()
 
 const form = ref()

@@ -1,5 +1,5 @@
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
@@ -119,25 +119,28 @@ export function useReadListActions(
       component: markRaw(ReadListDeletionWarning),
       props: {},
     }
-    dialogConfirm.value.callback = () => {
-      mutateDelete(toValue(readList).id)
-        .then(() => {
-          messagesStore.messages.push({
-            message: intl.formatMessage(
-              {
-                description: 'Snackbar notification shown upon successful readlist deletion',
-                defaultMessage: 'Read list deleted: {readlist}',
-                id: 'Oj3xqB',
-              },
-              {
-                readlist: toValue(readList).name,
-              },
-            ),
+    dialogConfirm.value.callback = (result: DialogResult) => {
+      if (result === 'confirm') {
+        mutateDelete(toValue(readList).id)
+          .then(() => {
+            messagesStore.messages.push({
+              message: intl.formatMessage(
+                {
+                  description: 'Snackbar notification shown upon successful readlist deletion',
+                  defaultMessage: 'Read list deleted: {readlist}',
+                  id: 'Oj3xqB',
+                },
+                {
+                  readlist: toValue(readList).name,
+                },
+              ),
+            })
           })
-        })
-        .catch((error) => {
-          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
-        })
+          .catch((error) => {
+            messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+          })
+      }
+
       callback(ActionName.Delete)
     }
   }

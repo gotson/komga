@@ -1,7 +1,7 @@
 import { useCurrentUser } from '@/colada/users'
 import { useIntl } from 'vue-intl'
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { useDisplay } from 'vuetify/framework'
 import EntitiesDeletionWarning from '@/components/entities/DeletionWarning.vue'
 import {
@@ -204,11 +204,13 @@ export function useEntitiesActions(
       component: markRaw(EntitiesDeletionWarning),
       props: {},
     }
-    dialogConfirm.value.callback = () => {
-      toValue(entities).forEach((item) => {
-        if (isBook(item)) useDeleteBook().mutate(item.id)
-        if (isSeries(item)) useDeleteSeries().mutate(item.id)
-      })
+    dialogConfirm.value.callback = (result: DialogResult) => {
+      if (result === 'confirm') {
+        toValue(entities).forEach((item) => {
+          if (isBook(item)) useDeleteBook().mutate(item.id)
+          if (isSeries(item)) useDeleteSeries().mutate(item.id)
+        })
+      }
 
       callback(ActionName.Delete)
     }

@@ -1,7 +1,7 @@
 import { useCurrentUser } from '@/colada/users'
 import { useIntl } from 'vue-intl'
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { useDisplay } from 'vuetify/framework'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { type Action } from '@/types/action/action'
@@ -90,8 +90,10 @@ export function useLibrariesActions(callback: (action: LibrariesAction) => void 
       component: markRaw(h('div', intl.formatMessage(commonMessages.dialogEmptyTrashNotice))),
       props: {},
     }
-    dialogConfirm.value.callback = () => {
-      libraries.value?.forEach((it) => mutateEmptyTrash(it.id))
+    dialogConfirm.value.callback = (result: DialogResult) => {
+      if (result === 'confirm') {
+        libraries.value?.forEach((it) => mutateEmptyTrash(it.id))
+      }
       callback(LibrariesAction.EmptyTrashAll)
     }
   }

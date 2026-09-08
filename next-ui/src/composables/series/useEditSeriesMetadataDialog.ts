@@ -1,5 +1,5 @@
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
@@ -37,9 +37,15 @@ export function useEditSeriesMetadataDialog() {
     }
     dialogConfirmEdit.value.record = series.metadata
     dialogConfirmEdit.value.callback = (
+      result: DialogResult,
       hideDialog: () => void,
       setLoading: (isLoading: boolean) => void,
     ) => {
+      if (result === 'cancel') {
+        callback()
+        return
+      }
+
       setLoading(true)
 
       const updatedMetadata = dialogConfirmEdit.value.record as SeriesMetadataDto

@@ -29,6 +29,7 @@ export function useAddToCollectionDialog() {
       scrollable: true,
       fullscreen: display.xs.value,
     }
+    dialogSimple.value.callback = () => callback()
     dialogSimple.value.slot = {
       component: markRaw(AddToCollection),
       props: {

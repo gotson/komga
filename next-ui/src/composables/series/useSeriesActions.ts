@@ -1,5 +1,5 @@
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
@@ -271,25 +271,28 @@ export function useSeriesActions(
       component: markRaw(SeriesDeletionWarning),
       props: {},
     }
-    dialogConfirm.value.callback = () => {
-      mutateDelete(toValue(series).id)
-        .then(() => {
-          messagesStore.messages.push({
-            message: intl.formatMessage(
-              {
-                description: 'Snackbar notification shown upon successful series files deletion',
-                defaultMessage: 'Series files deleted: {series}',
-                id: 'aSDxrt',
-              },
-              {
-                series: toValue(series).metadata.title,
-              },
-            ),
+    dialogConfirm.value.callback = (result: DialogResult) => {
+      if (result === 'confirm') {
+        mutateDelete(toValue(series).id)
+          .then(() => {
+            messagesStore.messages.push({
+              message: intl.formatMessage(
+                {
+                  description: 'Snackbar notification shown upon successful series files deletion',
+                  defaultMessage: 'Series files deleted: {series}',
+                  id: 'aSDxrt',
+                },
+                {
+                  series: toValue(series).metadata.title,
+                },
+              ),
+            })
           })
-        })
-        .catch((error) => {
-          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
-        })
+          .catch((error) => {
+            messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+          })
+      }
+
       callback(ActionName.Delete)
     }
   }

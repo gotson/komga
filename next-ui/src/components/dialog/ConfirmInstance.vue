@@ -4,7 +4,8 @@
     :loading="loading"
     v-bind="confirm.dialogProps"
     :activator="confirm.activator"
-    @confirm="confirm.callback(hideDialog, setLoading)"
+    @cancel="confirm.callback('cancel', hideDialog, setLoading)"
+    @confirm="confirm.callback('confirm', hideDialog, setLoading)"
   >
     <template #warning>
       <component

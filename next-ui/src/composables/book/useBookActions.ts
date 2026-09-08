@@ -1,7 +1,7 @@
 import { useCurrentUser } from '@/colada/users'
 import { useIntl } from 'vue-intl'
 import { storeToRefs } from 'pinia'
-import { useDialogsStore } from '@/stores/dialogs'
+import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { useMessagesStore } from '@/stores/messages'
 import { useDisplay } from 'vuetify/framework'
 import BookDeletionWarning from '@/components/book/DeletionWarning.vue'
@@ -273,25 +273,28 @@ export function useBookActions(
       component: markRaw(BookDeletionWarning),
       props: {},
     }
-    dialogConfirm.value.callback = () => {
-      mutateDelete(toValue(book).id)
-        .then(() => {
-          messagesStore.messages.push({
-            message: intl.formatMessage(
-              {
-                description: 'Snackbar notification shown upon successful book files deletion',
-                defaultMessage: 'Book files deleted: {book}',
-                id: 'ccDES8',
-              },
-              {
-                book: toValue(book).metadata.title,
-              },
-            ),
+    dialogConfirm.value.callback = (result: DialogResult) => {
+      if (result === 'confirm') {
+        mutateDelete(toValue(book).id)
+          .then(() => {
+            messagesStore.messages.push({
+              message: intl.formatMessage(
+                {
+                  description: 'Snackbar notification shown upon successful book files deletion',
+                  defaultMessage: 'Book files deleted: {book}',
+                  id: 'ccDES8',
+                },
+                {
+                  book: toValue(book).metadata.title,
+                },
+              ),
+            })
           })
-        })
-        .catch((error) => {
-          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
-        })
+          .catch((error) => {
+            messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+          })
+      }
+
       callback(ActionName.Delete)
     }
   }

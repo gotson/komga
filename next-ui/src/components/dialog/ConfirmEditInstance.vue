@@ -5,7 +5,8 @@
     v-model:record="confirmEdit.record"
     :loading="loading"
     :activator="confirmEdit.activator"
-    @update:record="confirmEdit.callback(hideDialog, setLoading)"
+    @cancel="confirmEdit.callback('cancel', hideDialog, setLoading)"
+    @update:record="confirmEdit.callback('confirm', hideDialog, setLoading)"
     @submit-failed="submitFailed = true"
   >
     <template #text="{ proxyModel }">
