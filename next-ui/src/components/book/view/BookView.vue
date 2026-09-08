@@ -209,6 +209,47 @@
         </v-col>
       </v-row>
 
+      <v-row v-if="oneShotAttributes">
+        <v-col>
+          <div class="d-flex ga-2">
+            <v-chip
+              v-if="oneShotAttributes.language"
+              size="small"
+              rounded
+              label
+              :text="languageDisplayNames.of(oneShotAttributes.language)"
+            />
+            <v-chip
+              v-if="oneShotAttributes.ageRating"
+              size="small"
+              rounded
+              label
+              :text="
+                $formatMessage(
+                  {
+                    description: 'Book view: age rating chip',
+                    defaultMessage: '{rating}+',
+                    id: 'tbNQ5v',
+                  },
+                  { rating: oneShotAttributes.ageRating },
+                )
+              "
+            />
+            <v-chip
+              v-if="oneShotAttributes.readingDirection"
+              size="small"
+              rounded
+              label
+              :text="
+                $formatMessage(
+                  readingDirectionMessages[oneShotAttributes.readingDirection as ReadingDirection],
+                )
+              "
+            />
+          </div>
+        </v-col>
+      </v-row>
+
       <v-row v-if="book.metadata.summary">
         <v-col>
           <ReadMore :text="book.metadata.summary" />
@@ -227,7 +268,6 @@
 <script setup lang="ts">
 import { bookPosterUrl } from '@/api/images'
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
-
 import { useIntl } from 'vue-intl'
 import { useBook } from '@/composables/book/useBook'
 import { useDisplay } from 'vuetify'
@@ -236,9 +276,11 @@ import { contributorsRolesMessages } from '@/types/referential'
 import { getFileSize } from '@/utils/utils'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { createOrderCompareFn } from '@/functions/sort'
-import type { BookDto } from '@/generated/openapi'
+import type { BookDto, SeriesMetadataDto } from '@/generated/openapi'
 import { MediaStatus } from '@/types/MediaStatus'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { languageDisplayNames } from '@/utils/i18n/locale-helper'
+import { type ReadingDirection, readingDirectionMessages } from '@/types/ReadingDirection'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -247,8 +289,14 @@ const { convertErrorCodes } = useErrorCodeFormatter()
 const id = useId()
 const posterMaxWidth = 220
 
+type OneShotAttributes = Pick<
+  SeriesMetadataDto,
+  'publisher' | 'ageRating' | 'genres' | 'language' | 'readingDirection'
+>
+
 const props = defineProps<{
   book: BookDto
+  oneShotAttributes?: OneShotAttributes
 }>()
 
 const { isRead, progressPercent, pagesLeft } = useBookReadProgress(() => props.book)
@@ -256,6 +304,16 @@ const { isDeleted, format } = useBook(() => props.book)
 
 const tableRows = computed(() => {
   const rows: TableRow[] = []
+
+  if (props.oneShotAttributes?.publisher)
+    rows.push({
+      header: intl.formatMessage({
+        description: 'Series view table: publisher header',
+        defaultMessage: 'Publisher',
+        id: 'OLqBQc',
+      }),
+      data: [{ text: props.oneShotAttributes.publisher }],
+    })
 
   if (props.book.metadata.authors.length > 0)
     Object.entries(Object.groupBy(props.book.metadata.authors, (it) => it.role))
@@ -268,6 +326,16 @@ const tableRows = computed(() => {
           data: contributor!.map((it) => ({ text: it.name })),
         })
       })
+
+  if (props.oneShotAttributes && props.oneShotAttributes.genres.length > 0)
+    rows.push({
+      header: intl.formatMessage({
+        description: 'Book view table: genre header',
+        defaultMessage: 'Genre',
+        id: 'uOPuSH',
+      }),
+      data: props.oneShotAttributes.genres.map((it) => ({ text: it })),
+    })
 
   if (props.book.metadata.tags.length > 0)
     rows.push({

@@ -60,6 +60,13 @@ export const Oneshot: Story = {
       ...mockBook,
       oneshot: true,
     },
+    oneShotAttributes: {
+      ageRating: 12,
+      genres: ['action', 'adventure'],
+      language: 'ja',
+      publisher: 'Dekopon Press',
+      readingDirection: 'WEBTOON',
+    },
   },
 }
 

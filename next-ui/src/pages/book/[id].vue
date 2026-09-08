@@ -30,7 +30,10 @@
     <EmptyStateNetworkError v-else-if="error" />
 
     <template v-else-if="book">
-      <BookView :book="book" />
+      <BookView
+        :book="book"
+        :one-shot-attributes="series?.metadata"
+      />
     </template>
   </v-container>
 </template>
@@ -40,6 +43,7 @@ import { useQuery } from '@pinia/colada'
 import { bookDetailQuery } from '@/colada/books'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import BookView from '../../components/book/view/BookView.vue'
+import { seriesDetailQuery } from '@/colada/series'
 
 const route = useRoute('/book/[id]')
 const bookId = computed(() => route.params.id)
@@ -50,6 +54,11 @@ const {
   isPending,
 } = useQuery(() => ({
   ...bookDetailQuery({ bookId: bookId.value }),
+}))
+
+const { data: series } = useQuery(() => ({
+  ...seriesDetailQuery({ seriesId: book.value?.seriesId ?? '' }),
+  enabled: book.value && book.value.oneshot,
 }))
 </script>
 
