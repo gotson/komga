@@ -49,7 +49,7 @@ import { useIntl } from 'vue-intl'
 
 const intl = useIntl()
 
-const model = defineModel<EntityUpdate<ReadListDto>>({ required: true })
+const model = defineModel<EntityUpdate<ReadListDto, never>>({ required: true })
 const submitFailed = defineModel<boolean>('submit-failed', { required: false })
 
 const currentTab = ref(1)

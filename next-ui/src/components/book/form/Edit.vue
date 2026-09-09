@@ -24,6 +24,7 @@
     <template #[`item.1`]="{ item }">
       <BookFormGeneral
         v-model="model.entity.metadata"
+        v-model:one-shot-attributes="model.extra"
         @update:error-count="(errorCount) => (tabErrors[item.value] = errorCount)"
       />
     </template>
@@ -33,7 +34,10 @@
     </template>
 
     <template #[`item.3`]>
-      <BookFormTags v-model="model.entity.metadata" />
+      <BookFormTags
+        v-model="model.entity.metadata"
+        v-model:one-shot-attributes="model.extra"
+      />
     </template>
 
     <template #[`item.4`]="{ item }">
@@ -62,10 +66,11 @@ import type { EntityUpdate } from '@/functions/poster'
 import { useQuery } from '@pinia/colada'
 import { useIntl } from 'vue-intl'
 import { bookPostersQuery } from '@/colada/books'
+import type { OneShotAttributes } from '@/types/oneshot'
 
 const intl = useIntl()
 
-const model = defineModel<EntityUpdate<BookDto>>({ required: true })
+const model = defineModel<EntityUpdate<BookDto, OneShotAttributes>>({ required: true })
 const submitFailed = defineModel<boolean>('submit-failed', { required: false })
 
 const currentTab = ref(1)

@@ -54,7 +54,7 @@ export function useEditSeriesMetadataDialog() {
 
       setLoading(true)
 
-      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<SeriesDto>
+      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<SeriesDto, never>
 
       // upload new posters
       if (updatedData.uploadQueue.length > 0) {

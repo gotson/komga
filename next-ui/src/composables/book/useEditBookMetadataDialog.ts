@@ -3,7 +3,6 @@ import { type DialogResult, useDialogsStore } from '@/stores/dialogs'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
-
 import EditBook from '@/components/book/form/Edit.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import {
@@ -14,6 +13,10 @@ import {
 } from '@/colada/books'
 import type { BookDto } from '@/generated/openapi'
 import { createEntityUpdate, type EntityUpdate } from '@/functions/poster'
+import { seriesDetailQuery, useUpdateSeriesMetadata } from '@/colada/series'
+import { useQuery } from '@pinia/colada'
+import { type OneShotAttributes, vOneShotAttributes } from '@/types/oneshot'
+import { pickSchemaKeys } from '@/functions/pick'
 
 export function useEditBookMetadataDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
@@ -21,8 +24,14 @@ export function useEditBookMetadataDialog() {
   const display = useDisplay()
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateBookMetadata } = useUpdateBookMetadata()
+  const { mutateAsync: mutateUpdateSeriesMetadata } = useUpdateSeriesMetadata()
 
   const prepareDialog = (book: BookDto, callback: () => void = () => {}) => {
+    const { refresh: refreshSeries } = useQuery(() => ({
+      ...seriesDetailQuery({ seriesId: book.seriesId }),
+      enabled: book.oneshot,
+    }))
+
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit book metadata dialog title',
@@ -42,6 +51,19 @@ export function useEditBookMetadataDialog() {
       component: markRaw(EditBook),
     }
     dialogConfirmEdit.value.record = createEntityUpdate(book)
+
+    // load parent series asynchronously so we don't delay the dialog opening
+    if (book.oneshot) {
+      void refreshSeries().then(({ data }) => {
+        if (data) {
+          dialogConfirmEdit.value.record = createEntityUpdate(
+            book,
+            pickSchemaKeys(vOneShotAttributes, data.metadata),
+          )
+        }
+      })
+    }
+
     dialogConfirmEdit.value.callback = async (
       result: DialogResult,
       hideDialog: () => void,
@@ -54,7 +76,7 @@ export function useEditBookMetadataDialog() {
 
       setLoading(true)
 
-      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<BookDto>
+      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<BookDto, OneShotAttributes>
 
       // upload new posters
       if (updatedData.uploadQueue.length > 0) {
@@ -92,6 +114,16 @@ export function useEditBookMetadataDialog() {
             messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
           })
         }
+      }
+
+      // update series if book is oneshot
+      if (book.oneshot && updatedData.extra) {
+        await mutateUpdateSeriesMetadata({
+          seriesId: book.seriesId,
+          metadata: updatedData.extra,
+        }).catch((error) => {
+          messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+        })
       }
 
       // update book

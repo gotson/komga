@@ -5,7 +5,7 @@ import {
   useMutation,
 } from '@pinia/colada'
 import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
-import { seriesMetadataToDto } from '@/functions/series'
+import { seriesMetadataToUpdateDto } from '@/functions/series'
 import { entitiesChanged, entityChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
@@ -166,12 +166,18 @@ export const useMarkSeriesUnread = defineMutation(() => {
 export const useUpdateSeriesMetadata = defineMutation(() => {
   const appStore = useAppStore()
   return useMutation({
-    mutation: ({ seriesId, metadata }: { seriesId: string; metadata: SeriesMetadataDto }) =>
+    mutation: ({
+      seriesId,
+      metadata,
+    }: {
+      seriesId: string
+      metadata: Partial<SeriesMetadataDto>
+    }) =>
       komgaUpdateSeriesMetadata({
         path: {
           seriesId: seriesId,
         },
-        body: seriesMetadataToDto(metadata),
+        body: seriesMetadataToUpdateDto(metadata),
       }),
     onSuccess: (_data, { seriesId }) => {
       if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_SERIES.root, seriesId)

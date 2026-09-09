@@ -147,6 +147,79 @@
         </v-text-field>
       </v-col>
     </v-row>
+
+    <v-row v-if="modelOneShot">
+      <v-col
+        cols="12"
+        sm="6"
+      >
+        <v-text-field
+          ref="fieldPublisherRef"
+          v-model="modelOneShot.publisher"
+          clearable
+          :label="$formatMessage(commonMessages.seriesFormGeneralPublisher)"
+        >
+          <template #prepend>
+            <LockIcon v-model="modelOneShot.publisherLock" />
+          </template>
+        </v-text-field>
+      </v-col>
+
+      <v-col
+        cols="12"
+        sm="6"
+      >
+        <v-select
+          v-model="modelOneShot.readingDirection"
+          :items="readingDirectionOptions"
+          clearable
+          :label="$formatMessage(commonMessages.seriesFormGeneralReadingDirection)"
+        >
+          <template #prepend>
+            <LockIcon v-model="modelOneShot.readingDirectionLock" />
+          </template>
+        </v-select>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="modelOneShot">
+      <v-col
+        cols="12"
+        sm="6"
+      >
+        <v-text-field
+          ref="fieldLanguageRef"
+          v-model="modelOneShot.language"
+          clearable
+          :rules="
+            [['bcp47', $formatMessage(commonMessages.bcp47Error)]] satisfies CustomRuleTuple[]
+          "
+          :label="$formatMessage(commonMessages.seriesFormGeneralLanguage)"
+          :hint="$formatMessage(commonMessages.seriesFormGeneralLanguageHint)"
+        >
+          <template #prepend>
+            <LockIcon v-model="modelOneShot.languageLock" />
+          </template>
+        </v-text-field>
+      </v-col>
+
+      <v-col
+        cols="12"
+        sm="6"
+      >
+        <v-number-input
+          ref="fieldAgeRatingRef"
+          v-model="modelOneShot.ageRating"
+          clearable
+          :min="0"
+          :label="$formatMessage(commonMessages.seriesFormGeneralAgeRating)"
+        >
+          <template #prepend>
+            <LockIcon v-model="modelOneShot.ageRatingLock" />
+          </template>
+        </v-number-input>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -156,9 +229,14 @@ import { useRules } from 'vuetify'
 import { VTextField } from 'vuetify/components'
 import { useFieldValidity, useLockWatcher } from '@/composables/form'
 import type { CustomRuleTuple } from '@/plugins/vuetify'
-import { vBookMetadataDto } from '@/generated/openapi/valibot.gen'
+import { vBookMetadataDto, vSeriesMetadataDto } from '@/generated/openapi/valibot.gen'
+import { readingDirectionMessages, ReadingDirectionValues } from '@/types/ReadingDirection'
+import { useIntl } from 'vue-intl'
+import { watchImmediate } from '@vueuse/core'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const rules = useRules()
+const intl = useIntl()
 
 const vBookUpdateGeneral = v.pick(vBookMetadataDto, [
   'title',
@@ -179,6 +257,31 @@ type BookUpdateGeneral = v.InferOutput<typeof vBookUpdateGeneral>
 const model = defineModel<BookUpdateGeneral>({ required: true })
 useLockWatcher(model, vBookUpdateGeneral)
 
+const vOneShotGeneral = v.pick(vSeriesMetadataDto, [
+  'publisher',
+  'publisherLock',
+  'ageRating',
+  'ageRatingLock',
+  'language',
+  'languageLock',
+  'readingDirection',
+  'readingDirectionLock',
+])
+type OneShotGeneral = v.InferOutput<typeof vOneShotGeneral>
+
+const modelOneShot = defineModel<OneShotGeneral>('oneShotAttributes', { required: false })
+watchImmediate(modelOneShot, (newModel, oldModel) => {
+  if (
+    newModel &&
+    newModel.readingDirection === '' &&
+    newModel.readingDirection !== oldModel?.readingDirection
+  ) {
+    // @ts-expect-error readingDirection from the API can be an empty string, but VSelect expects null for empty. The Series Metadata patch API also expects null.
+    modelOneShot.value.readingDirection = null
+  }
+})
+useLockWatcher(modelOneShot, vOneShotGeneral)
+
 const fields = {
   title: useTemplateRef<InstanceType<typeof VTextField>>('fieldTitleRef'),
   number: useTemplateRef<InstanceType<typeof VTextField>>('fieldNumberRef'),
@@ -190,4 +293,9 @@ const emit = defineEmits<{
   'update:errorCount': [errorCount: number]
 }>()
 useFieldValidity(fields, (errorCount) => emit('update:errorCount', errorCount))
+
+const readingDirectionOptions = ReadingDirectionValues.map((x) => ({
+  title: intl.formatMessage(readingDirectionMessages[x]),
+  value: x,
+}))
 </script>

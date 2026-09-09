@@ -33,11 +33,13 @@ export function useFieldValidity(
  * @param schemaOrKeys An array of keys, or a valibot schema from which keys will be extracted
  */
 export function useLockWatcher<T extends Record<string, unknown>>(
-  model: MaybeRefOrGetter<T>,
+  model: MaybeRefOrGetter<T | undefined>,
   schemaOrKeys:
     | v.ObjectSchema<v.ObjectEntries, v.ErrorMessage<v.ObjectIssue> | undefined>
     | (keyof T & string)[],
 ) {
+  if (!toValue(model)) return
+
   // Extract keys array whether passed a Valibot schema or a key array
   const keys = Array.isArray(schemaOrKeys)
     ? schemaOrKeys

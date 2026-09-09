@@ -55,7 +55,7 @@ export function useEditCollectionDialog() {
 
       setLoading(true)
 
-      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<CollectionDto>
+      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<CollectionDto, never>
 
       // upload new posters
       if (updatedData.uploadQueue.length > 0) {

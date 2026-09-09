@@ -71,13 +71,7 @@
           ref="fieldPublisherRef"
           v-model="model.publisher"
           clearable
-          :label="
-            $formatMessage({
-              description: 'Form edit series: General - series publisher',
-              defaultMessage: 'Publisher',
-              id: 'CW0idP',
-            })
-          "
+          :label="$formatMessage(commonMessages.seriesFormGeneralPublisher)"
         >
           <template #prepend>
             <LockIcon v-model="model.publisherLock" />
@@ -140,13 +134,7 @@
           v-model="model.readingDirection"
           :items="readingDirectionOptions"
           clearable
-          :label="
-            $formatMessage({
-              description: 'Form edit series: General - series reading direction',
-              defaultMessage: 'Reading direction',
-              id: 'hPYi11',
-            })
-          "
+          :label="$formatMessage(commonMessages.seriesFormGeneralReadingDirection)"
         >
           <template #prepend>
             <LockIcon v-model="model.readingDirectionLock" />
@@ -163,31 +151,10 @@
           v-model="model.language"
           clearable
           :rules="
-            [
-              [
-                'bcp47',
-                $formatMessage({
-                  description: 'Form edit series: General - language, error code',
-                  defaultMessage: 'Must be a valid BCP 47 language code',
-                  id: 'v3beFf',
-                }),
-              ],
-            ] satisfies CustomRuleTuple[]
+            [['bcp47', $formatMessage(commonMessages.bcp47Error)]] satisfies CustomRuleTuple[]
           "
-          :label="
-            $formatMessage({
-              description: 'Form edit series: General - language',
-              defaultMessage: 'Language',
-              id: 'aR6KDt',
-            })
-          "
-          :hint="
-            $formatMessage({
-              description: 'Form edit series: General - language, hint',
-              defaultMessage: 'IETF BCP 47 language tag',
-              id: '083NeH',
-            })
-          "
+          :label="$formatMessage(commonMessages.seriesFormGeneralLanguage)"
+          :hint="$formatMessage(commonMessages.seriesFormGeneralLanguageHint)"
         >
           <template #prepend>
             <LockIcon v-model="model.languageLock" />
@@ -204,13 +171,7 @@
           v-model="model.ageRating"
           clearable
           :min="0"
-          :label="
-            $formatMessage({
-              description: 'Form edit series: General - series age rating',
-              defaultMessage: 'Age rating',
-              id: 'tLFumw',
-            })
-          "
+          :label="$formatMessage(commonMessages.seriesFormGeneralAgeRating)"
         >
           <template #prepend>
             <LockIcon v-model="model.ageRatingLock" />
@@ -231,6 +192,8 @@ import { readingDirectionMessages, ReadingDirectionValues } from '@/types/Readin
 import { useIntl } from 'vue-intl'
 import { seriesStatusMessages, SeriesStatusValues } from '@/types/SeriesStatus'
 import type { CustomRuleTuple } from '@/plugins/vuetify'
+import { watchImmediate } from '@vueuse/core'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
 const rules = useRules()
@@ -258,6 +221,15 @@ const vSeriesUpdateGeneral = v.pick(vSeriesMetadataDto, [
 type SeriesUpdateGeneral = v.InferOutput<typeof vSeriesUpdateGeneral>
 
 const model = defineModel<SeriesUpdateGeneral>({ required: true })
+watchImmediate(model, (newModel, oldModel) => {
+  if (
+    newModel.readingDirection === '' &&
+    newModel.readingDirection !== oldModel?.readingDirection
+  ) {
+    // @ts-expect-error readingDirection from the API can be an empty string, but VSelect expects null for empty. The Series Metadata patch API also expects null.
+    model.value.readingDirection = null
+  }
+})
 useLockWatcher(model, vSeriesUpdateGeneral)
 
 const fields = {

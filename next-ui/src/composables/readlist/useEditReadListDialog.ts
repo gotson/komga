@@ -55,7 +55,7 @@ export function useEditReadListDialog() {
 
       setLoading(true)
 
-      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<ReadListDto>
+      const updatedData = dialogConfirmEdit.value.record as EntityUpdate<ReadListDto, never>
 
       // upload new posters
       if (updatedData.uploadQueue.length > 0) {

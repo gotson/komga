@@ -72,7 +72,7 @@ import { seriesPostersQuery } from '@/colada/series'
 
 const intl = useIntl()
 
-const model = defineModel<EntityUpdate<SeriesDto>>({ required: true })
+const model = defineModel<EntityUpdate<SeriesDto, never>>({ required: true })
 const submitFailed = defineModel<boolean>('submit-failed', { required: false })
 
 const currentTab = ref(1)
