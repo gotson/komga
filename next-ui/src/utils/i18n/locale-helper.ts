@@ -1,47 +1,44 @@
-import { defineMessage } from 'vue-intl'
-import localeMessages from '@/i18n?dir2json&ext=.json&1'
+import localeMessages from '@/i18n?dir2json&ext=.json&lazy'
 import { match } from '@formatjs/intl-localematcher'
 
 export const fallbackLocale = 'en'
 
 const USER_LOCALE_KEY = 'komga.userLocale'
 
-const localeName = defineMessage({
-  description:
-    "The name of the locale, shown in the language selection menu. Must be translated to the language's name",
-  defaultMessage: 'English',
-  id: 'app.locale-name',
-})
-
-const localeRtl = defineMessage({
-  description:
-    "Whether the locale is using Right to Left script",
-  defaultMessage: 'true',
-  id: 'app.locale-rtl',
-})
-
 /**
  * Loads messages from a translation file by its locale code.
  * If the translation file does not exist, loads the `fallbackLocale` instead.
  * @param locale the locale code, e.g. 'fr'
  */
-export function loadLocale(locale: string): Record<string, string> {
+export async function loadLocale(locale: string): Promise<Record<string, string>> {
   const localeToLoad = locale in availableLocales ? locale : fallbackLocale
-  return (localeMessages as unknown as Record<string, Record<string, string>>)[localeToLoad]!
+
+  const lazyImports = localeMessages as unknown as Record<string, () => Promise<{ default: Record<string, string> }>>
+
+  const loadFn = lazyImports[localeToLoad]
+  if(!loadFn) return {}
+
+  const module = await loadFn()
+
+  return module.default || module
 }
 
 export type LocaleInfo = {
+  /**
+   * Name of the locale in its own locale.
+   */
   nameLocalized: string
-  isRtl: boolean
 }
 
 function loadAvailableLocales(): Record<string, LocaleInfo> {
   const localesInfo: Record<string, LocaleInfo> = {}
   Object.keys(localeMessages).forEach(
     (code) => {
+      // name of the locale in that locale
+      const intl = new Intl.DisplayNames([code], {type: 'language'})
+      const displayName = intl.of(code) || code
       localesInfo[code] = {
-        nameLocalized: (localeMessages as unknown as Record<string, Record<string, string>>)[code]![localeName.id]!,
-        isRtl: (localeMessages as unknown as Record<string, Record<string, string>>)[code]![localeRtl.id]! === 'true'
+        nameLocalized: displayName,
       }
     }
   )
@@ -51,7 +48,6 @@ function loadAvailableLocales(): Record<string, LocaleInfo> {
 /**
  * Available locales loaded from translation files.
  * Key is the locale code (e.g. 'fr')
- * Value is the locale name in its own locale (e.g. 'Français')
  */
 export const availableLocales = loadAvailableLocales()
 
@@ -69,6 +65,9 @@ export function getLocale(): string {
 }
 
 export const currentLocale = getLocale()
+/**
+ * Language display names in the current locale.
+ */
 export const languageDisplayNames = new Intl.DisplayNames(currentLocale, { type: 'language' })
 
 /**
@@ -80,4 +79,8 @@ export function setLocale(locale: string) {
     localStorage.setItem(USER_LOCALE_KEY, locale)
     window.location.reload()
   }
+}
+
+export function isLocaleRtl(): boolean {
+  return new Intl.Locale(currentLocale).getTextInfo().direction === 'rtl'
 }

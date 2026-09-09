@@ -11,23 +11,17 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-unocss'
 // Composables
 import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
-import { availableLocales, currentLocale, fallbackLocale } from '@/utils/i18n/locale-helper'
+import { currentLocale, fallbackLocale, isLocaleRtl } from '@/utils/i18n/locale-helper'
 import { createRulesPlugin } from 'vuetify'
 import isISBN from 'validator/es/lib/isISBN'
 import isURL from 'validator/es/lib/isURL'
 import { isValidLanguageCode } from '@/functions/language-code'
 
-// load vuetify locales only for the available locales in i18n
+// load vuetify locales only for the current locale
 async function loadVuetifyLocale(locale: string) {
   return await import(`../../node_modules/vuetify/lib/locale/${locale}.js`)
 }
-
-const messages: Record<string, string> = {}
-void (async () => {
-  for (const locale of Object.keys(availableLocales)) {
-    messages[locale] = (await loadVuetifyLocale(locale)).default
-  }
-})()
+const vuetifyMessages = (await loadVuetifyLocale(currentLocale)).default
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export const vuetify = createVuetify({
@@ -35,9 +29,11 @@ export const vuetify = createVuetify({
     locale: currentLocale,
     fallback: fallbackLocale,
     rtl: {
-      [currentLocale]: availableLocales[currentLocale]?.isRtl ?? false,
+      [currentLocale]: isLocaleRtl(),
     },
-    messages,
+    messages: {
+      [currentLocale]: vuetifyMessages,
+    },
   },
   icons: {
     defaultSet: 'mdi',

@@ -22,7 +22,6 @@ declare module 'vue' {
     BookFormContributors: typeof import('./components/book/form/Contributors.vue')['default']
     BookFormEdit: typeof import('./components/book/form/Edit.vue')['default']
     BookFormGeneral: typeof import('./components/book/form/General.vue')['default']
-    BookFormLinks: typeof import('./components/item/form/Links.vue')['default']
     BookFormTags: typeof import('./components/book/form/Tags.vue')['default']
     BookMenuSheet: typeof import('./components/book/menu/Sheet.vue')['default']
     BookView: typeof import('./components/book/view/BookView.vue')['default']
