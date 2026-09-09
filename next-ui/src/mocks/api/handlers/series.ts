@@ -3,7 +3,11 @@ import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 import mockThumbnailLandscapeUrl from '@/assets/mock-thumbnail-landscape.jpg'
 import { PageRequest } from '@/types/PageRequest'
 import { mockPage } from '@/mocks/api/pageable'
-import { handleGetSeries, handleGetSeriesById } from '@/generated/openapi/msw.gen'
+import {
+  handleGetSeries,
+  handleGetSeriesById,
+  handleGetSeriesThumbnails,
+} from '@/generated/openapi/msw.gen'
 import { response200OK, response404NotFound } from '@/mocks/api/utils'
 
 export const mockSeries1 = {
@@ -146,6 +150,30 @@ export const seriesHandlers = [
       Object.assign({}, mockSeries1, { metadata: { title: `Series ${params.seriesId}` } }),
     )
   }),
+  handleGetSeriesThumbnails(({ params }) =>
+    response200OK([
+      {
+        seriesId: params.seriesId,
+        fileSize: 1524,
+        height: 1300,
+        width: 1250,
+        mediaType: 'image/avif',
+        id: '1',
+        selected: true,
+        type: 'USER_UPLOADED',
+      },
+      {
+        seriesId: params.seriesId,
+        fileSize: 1524,
+        height: 300,
+        width: 250,
+        mediaType: 'image/jpeg',
+        id: '2',
+        selected: false,
+        type: 'GENERATED',
+      },
+    ]),
+  ),
   http.get('*/api/v1/series/:seriesId/thumbnail*', async ({ params }) => {
     const seriesId = params.seriesId as string
 

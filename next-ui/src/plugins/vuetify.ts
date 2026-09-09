@@ -11,11 +11,11 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-unocss'
 // Composables
 import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
-
 import { availableLocales, currentLocale, fallbackLocale } from '@/utils/i18n/locale-helper'
 import { createRulesPlugin } from 'vuetify'
 import isISBN from 'validator/es/lib/isISBN'
 import isURL from 'validator/es/lib/isURL'
+import { isValidLanguageCode } from '@/functions/language-code'
 
 // load vuetify locales only for the available locales in i18n
 async function loadVuetifyLocale(locale: string) {
@@ -89,6 +89,16 @@ const aliasesDefinition = {
     return (v: unknown) => {
       if (!v) return true
       return (typeof v === 'string' && isISBN(v, 13)) || err || 'Must be a valid ISBN 13'
+    }
+  },
+  bcp47: (err?: string) => {
+    return (v: unknown) => {
+      if (!v) return true
+      return (
+        (typeof v === 'string' && isValidLanguageCode(v)) ||
+        err ||
+        'Must be a valid BCP 47 language code'
+      )
     }
   },
   linkUrl: (err?: string) => {

@@ -22,18 +22,21 @@
     </template>
 
     <template #[`item.1`]="{ item }">
-      <BookFormGeneral
+      <SeriesFormGeneral
         v-model="model.entity.metadata"
         @update:error-count="(errorCount) => (tabErrors[item.value] = errorCount)"
       />
     </template>
 
-    <template #[`item.2`]>
-      <BookFormContributors v-model="model.entity" />
+    <template #[`item.2`]="{ item }">
+      <SeriesFormTitles
+        v-model="model.entity.metadata"
+        @update:error-count="(errorCount) => (tabErrors[item.value] = errorCount)"
+      />
     </template>
 
     <template #[`item.3`]>
-      <BookFormTags v-model="model.entity.metadata" />
+      <SeriesFormTags v-model="model.entity.metadata" />
     </template>
 
     <template #[`item.4`]="{ item }">
@@ -53,19 +56,23 @@
         />
       </v-sheet>
     </template>
+
+    <template #[`item.6`]>
+      <SeriesFormSharing v-model="model.entity.metadata" />
+    </template>
   </v-tabs>
 </template>
 
 <script setup lang="ts">
-import type { BookDto } from '@/generated/openapi'
+import type { SeriesDto } from '@/generated/openapi'
 import type { EntityUpdate } from '@/functions/poster'
 import { useQuery } from '@pinia/colada'
 import { useIntl } from 'vue-intl'
-import { bookPostersQuery } from '@/colada/books'
+import { seriesPostersQuery } from '@/colada/series'
 
 const intl = useIntl()
 
-const model = defineModel<EntityUpdate<BookDto>>({ required: true })
+const model = defineModel<EntityUpdate<SeriesDto>>({ required: true })
 const submitFailed = defineModel<boolean>('submit-failed', { required: false })
 
 const currentTab = ref(1)
@@ -74,49 +81,57 @@ const tabErrors = ref<Record<number, number>>({})
 const tabs = [
   {
     text: intl.formatMessage({
-      description: 'Form edit book: General',
+      description: 'Form edit series: General',
       defaultMessage: 'General',
-      id: 'exrB0E',
+      id: 'ZPuFVu',
     }),
     value: 1,
   },
   {
     text: intl.formatMessage({
-      description: 'Form edit book: Contributors',
-      defaultMessage: 'Contributors',
-      id: 'CqlsIa',
+      description: 'Form edit series: alternate titles',
+      defaultMessage: 'Alternate titles',
+      id: 'zWRhDm',
     }),
     value: 2,
   },
   {
     text: intl.formatMessage({
-      description: 'Form edit book: Tags',
+      description: 'Form edit series: Tags',
       defaultMessage: 'Tags',
-      id: 'UFZ+PY',
+      id: 'Epp7Fi',
     }),
     value: 3,
   },
   {
     text: intl.formatMessage({
-      description: 'Form edit book: Links',
+      description: 'Form edit series: Links',
       defaultMessage: 'Links',
-      id: 'VeEnkD',
+      id: '4U6L0S',
     }),
     value: 4,
   },
   {
     text: intl.formatMessage({
-      description: 'Form edit book: Poster',
+      description: 'Form edit series: Poster',
       defaultMessage: 'Poster',
-      id: 'xjHL5K',
+      id: 'Fdinos',
     }),
     value: 5,
+  },
+  {
+    text: intl.formatMessage({
+      description: 'Form edit series: Sharing',
+      defaultMessage: 'Sharing',
+      id: 'oB2hG3',
+    }),
+    value: 6,
   },
 ]
 
 const { data: entityPosters } = useQuery(() =>
-  bookPostersQuery({
-    bookId: model.value.entity.id,
+  seriesPostersQuery({
+    seriesId: model.value.entity.id,
   }),
 )
 
