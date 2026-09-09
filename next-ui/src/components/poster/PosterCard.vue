@@ -111,7 +111,7 @@
 <script setup lang="ts">
 import { type PosterDto, resolvePosterUrl } from '@/functions/poster'
 import { useIntl } from 'vue-intl'
-import { getFileSize } from '@/utils/utils'
+import { getFileSize } from '@/functions/filesize'
 import { watchImmediate } from '@vueuse/core'
 import type { ImageDimensions } from '@/types/image'
 import { pick } from '@/functions/pick'

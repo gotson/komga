@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import { pageHashKnownThumbnailUrl } from '@/api/images'
 import type { HistoricalEventDto } from '@/generated/openapi'
-import { getFileSize } from '@/utils/utils'
+import { getFileSize } from '@/functions/filesize'
 
 const { event } = defineProps<{
   event: HistoricalEventDto

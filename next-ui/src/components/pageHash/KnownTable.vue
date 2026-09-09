@@ -201,7 +201,7 @@ import { PageRequest, type VSortItem } from '@/types/PageRequest'
 import { useMutation, useQuery } from '@pinia/colada'
 import { pageHashesKnownQuery } from '@/colada/page-hashes'
 
-import { getFileSize } from '@/utils/utils'
+import { getFileSize } from '@/functions/filesize'
 import { pageHashKnownThumbnailUrl } from '@/api/images'
 import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'

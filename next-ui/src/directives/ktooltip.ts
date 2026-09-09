@@ -1,6 +1,7 @@
 import { createVNode, render, type Directive, type DirectiveBinding } from 'vue'
 import KTooltip from '@/components/k/Tooltip.vue'
-import { isObject } from '@/utils/utils'
+
+import { isObject } from '@/functions/object'
 
 export type KTooltipDirectiveBinding = Omit<DirectiveBinding, 'arg' | 'value'> & {
   arg?: string
