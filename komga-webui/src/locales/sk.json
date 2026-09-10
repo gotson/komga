@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Domov",
     "libraries": "Knižnice",
-    "logout": "Odhlásiť sa"
+    "logout": "Odhlásiť sa",
+    "try_new_ui": "Vyskúšajte nové používateľské rozhranie"
   },
   "no_libraries_pinned": {
     "subtitle": "Knižnicu môžete pripnúť z menu s tromi bodkami",
