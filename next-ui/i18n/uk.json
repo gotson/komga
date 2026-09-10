@@ -1,0 +1,1976 @@
+{
+  "+6YDzS": {
+    "defaultMessage": "Дані не знайдено"
+  },
+  "+8++PW": {
+    "defaultMessage": "Бібліотеку створено: {library}"
+  },
+  "+TldjW": {
+    "defaultMessage": "Немає даних для показу"
+  },
+  "+jaADC": {
+    "defaultMessage": "Назва файлу"
+  },
+  "+mJGIg": {
+    "defaultMessage": "Шлях до файлу"
+  },
+  "+opDqu": {
+    "defaultMessage": "Перейти до"
+  },
+  "+pyj1u": {
+    "defaultMessage": "Недоступно"
+  },
+  "+r8FCS": {
+    "defaultMessage": "Порт прослуховування сервера"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "Видалити"
+  },
+  "/8sSxS": {
+    "defaultMessage": "Необхідно для відновлення з кошика та виявлення дублікатів файлів"
+  },
+  "/Acs82": {
+    "defaultMessage": "Створити або додати до списків читання"
+  },
+  "/NAG9i": {
+    "defaultMessage": "Немає результатів"
+  },
+  "/YxHru": {
+    "defaultMessage": "Деякі з вибраних книг є дублікатами"
+  },
+  "/bathK": {
+    "defaultMessage": "Дозволити лише молодше"
+  },
+  "/lE31l": {
+    "defaultMessage": "Примусова синхронізація Kobo"
+  },
+  "/mhcNO": {
+    "defaultMessage": "Закрити"
+  },
+  "02SRax": {
+    "defaultMessage": "Увійти"
+  },
+  "0ILHru": {
+    "defaultMessage": "OK"
+  },
+  "0J3Gvp": {
+    "defaultMessage": "{count, plural, one {# серія} few {# серії} many {# серій} other {# серії} }"
+  },
+  "0JF9f5": {
+    "defaultMessage": "Згорнути бічну панель"
+  },
+  "0MePSx": {
+    "defaultMessage": "Перетягніть сюди, щоб закріпити бібліотеку"
+  },
+  "0UFr4y": {
+    "defaultMessage": "Усі з"
+  },
+  "0XDhyR": {
+    "defaultMessage": "вибір теми"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "Запам'ятати мене"
+  },
+  "0eIJ3K": {
+    "defaultMessage": "Ручне впорядкування"
+  },
+  "0iT7Vf": {
+    "defaultMessage": "Метадані"
+  },
+  "0qntYX": {
+    "defaultMessage": "Обчислювати хеш для сторінок"
+  },
+  "0sIkhg": {
+    "defaultMessage": "ФІЛЬТРИ"
+  },
+  "1+Ux6s": {
+    "defaultMessage": "Створіть бібліотеку, щоб почати"
+  },
+  "111Isd": {
+    "defaultMessage": "Перебудувати пошуковий індекс"
+  },
+  "14/Uh8": {
+    "defaultMessage": "Режим імпорту"
+  },
+  "18OKhZ": {
+    "defaultMessage": "Знайти книги для конвертації"
+  },
+  "1E0Duw": {
+    "defaultMessage": "Розмір файлу"
+  },
+  "1MAL38": {
+    "defaultMessage": "Дублікат книги"
+  },
+  "1VkZao": {
+    "defaultMessage": "Більше"
+  },
+  "1bxWGd": {
+    "defaultMessage": "Редагувати метадані серії"
+  },
+  "1qIfds": {
+    "defaultMessage": "Закріплені"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "Найновіша"
+  },
+  "2Sx0J4": {
+    "defaultMessage": "Сторінка"
+  },
+  "2g7iOx": {
+    "defaultMessage": "Метрики"
+  },
+  "2p+JVw": {
+    "defaultMessage": "Цей сервер Komga ще не активовано, потрібно створити обліковий запис користувача, щоб отримати до нього доступ."
+  },
+  "3DBPuv": {
+    "defaultMessage": "Прокручування"
+  },
+  "3J6FI8": {
+    "defaultMessage": "Редагувати вигляд"
+  },
+  "3MUQYL": {
+    "defaultMessage": "Створити або додати до колекцій"
+  },
+  "3OgH93": {
+    "defaultMessage": "Серія"
+  },
+  "3Pm2PO": {
+    "defaultMessage": "Назва файлу призначення"
+  },
+  "3T1ln7": {
+    "defaultMessage": "Видалити бібліотеку"
+  },
+  "3W0jUi": {
+    "defaultMessage": "Виключити мітки"
+  },
+  "3b7v1+": {
+    "defaultMessage": "Імпортувати метадані книги"
+  },
+  "3beD4X": {
+    "defaultMessage": "Видалити API-ключ"
+  },
+  "3gimvl": {
+    "defaultMessage": "меню бібліотеки"
+  },
+  "3qQjnw": {
+    "defaultMessage": "Мова"
+  },
+  "3rNj7/": {
+    "defaultMessage": "Натисніть, щоб підтвердити"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Зовнішній порт синхронізації Kobo"
+  },
+  "4CX0cY": {
+    "defaultMessage": "Імпортувати метадані серії"
+  },
+  "4PDVX2": {
+    "defaultMessage": "EPUB"
+  },
+  "4TEXni": {
+    "defaultMessage": "Усі учасники"
+  },
+  "4X3RAp": {
+    "defaultMessage": "{count, plural, one {# книга} few {# книги} many {# книг} other {# книги} }"
+  },
+  "4g2M9O": {
+    "defaultMessage": "Серій не знайдено"
+  },
+  "4uqafX": {
+    "defaultMessage": "Ван-шот"
+  },
+  "4yDvPA": {
+    "defaultMessage": "Очистити фільтри"
+  },
+  "5AAGkA": {
+    "defaultMessage": "Пароль"
+  },
+  "5JGOUU": {
+    "defaultMessage": "Аналізувати бібліотеку"
+  },
+  "5Qha5m": {
+    "defaultMessage": "Ручне впорядкування"
+  },
+  "5WMvLb": {
+    "defaultMessage": "Epub"
+  },
+  "5b2A0u": {
+    "defaultMessage": "Вас буде перенаправлено на головну сторінку"
+  },
+  "5cbjLE": {
+    "defaultMessage": "На черзі — #{number}"
+  },
+  "5rziSG": {
+    "defaultMessage": "Недоступно"
+  },
+  "5tbu8Y": {
+    "defaultMessage": "Повторити"
+  },
+  "5zPpyT": {
+    "defaultMessage": "Віковий діапазон"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "HTTP-сервер"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "Для набуття чинності потрібен перезапуск"
+  },
+  "6OXY1N": {
+    "defaultMessage": "Каталог ван-шотів"
+  },
+  "6UXlVe": {
+    "defaultMessage": "Теги"
+  },
+  "6WDISV": {
+    "defaultMessage": "Сторінку не знайдено"
+  },
+  "6nCIPn": {
+    "defaultMessage": "Тип"
+  },
+  "70/wK4": {
+    "defaultMessage": "Створити бібліотеку"
+  },
+  "700A3r": {
+    "defaultMessage": "Книга"
+  },
+  "7M1pUf": {
+    "defaultMessage": "Очистити кошик"
+  },
+  "7hwFJo": {
+    "defaultMessage": "Сценарист"
+  },
+  "7z91nm": {
+    "defaultMessage": "Історія"
+  },
+  "8/BXfN": {
+    "defaultMessage": "Усі"
+  },
+  "81BMAQ": {
+    "defaultMessage": "Імпортувати метадані книги"
+  },
+  "87q6WX": {
+    "defaultMessage": "Немає"
+  },
+  "8CVWWg": {
+    "defaultMessage": "Видалити файли"
+  },
+  "8Dun/Y": {
+    "defaultMessage": "Ні"
+  },
+  "8NDqor": {
+    "defaultMessage": "Літерувальник"
+  },
+  "8Om/o/": {
+    "defaultMessage": "Імпортувати з каталогу"
+  },
+  "8P7Yn+": {
+    "defaultMessage": "Віковий рейтинг"
+  },
+  "8hC76W": {
+    "defaultMessage": "Завдання"
+  },
+  "8jE3eP": {
+    "defaultMessage": "Не вдалося проаналізувати книгу"
+  },
+  "8kylzj": {
+    "defaultMessage": "Видалити"
+  },
+  "8xonXJ": {
+    "defaultMessage": "Аналізує всі медіафайли в бібліотеці. Аналіз збирає інформацію про медіа. Залежно від розміру бібліотеки це може зайняти багато часу."
+  },
+  "9/1/c7": {
+    "defaultMessage": "Створити мініатюру книги"
+  },
+  "90yqRq": {
+    "defaultMessage": "додати бібліотеку"
+  },
+  "9TJRkm": {
+    "defaultMessage": "Імпортувати метадані серії"
+  },
+  "9VuyZU": {
+    "defaultMessage": "Спробуйте сканувати інший каталог"
+  },
+  "9XDmYO": {
+    "defaultMessage": "Видалити користувача"
+  },
+  "9oA9gw": {
+    "defaultMessage": "Незакріплені"
+  },
+  "AEaKHC": {
+    "defaultMessage": "Знайти мініатюри книг для регенерації"
+  },
+  "AJa6Tq": {
+    "defaultMessage": "Немає даних"
+  },
+  "ALGXT9": {
+    "defaultMessage": "Дублікат"
+  },
+  "AeA9Ka": {
+    "defaultMessage": "Без обмежень"
+  },
+  "Ai7bBV": {
+    "defaultMessage": "{count, plural, one {# сторінка} few {# сторінки} many {# сторінок} other {# сторінки} }"
+  },
+  "AjBiEw": {
+    "defaultMessage": "Додавати том до назви серії"
+  },
+  "AjWlka": {
+    "defaultMessage": "Неправильний логін або пароль"
+  },
+  "B2wcN0": {
+    "defaultMessage": "Імпортувати ISBN зі штрих-коду"
+  },
+  "B48EcS": {
+    "defaultMessage": "Батьківський каталог"
+  },
+  "BQmPch": {
+    "defaultMessage": "Видалити книгу"
+  },
+  "Bewgy6": {
+    "defaultMessage": "Обкладинка серії"
+  },
+  "Bl30xt": {
+    "defaultMessage": "Додати користувача"
+  },
+  "BpzKDW": {
+    "defaultMessage": "Буде видалено кілька елементів.<b>Цю дію неможливо скасувати.</b>"
+  },
+  "BtDfUf": {
+    "defaultMessage": "Перезаписати"
+  },
+  "ByRsV9": {
+    "defaultMessage": "Необхідно для того, щоб WebReader визначав альбомні сторінки"
+  },
+  "C0paz4": {
+    "defaultMessage": "Аналізувати книгу"
+  },
+  "C1bGrS": {
+    "defaultMessage": "Показати інформацію"
+  },
+  "C9LkYh": {
+    "defaultMessage": "Коментар"
+  },
+  "CE7pPQ": {
+    "defaultMessage": "Шлях до файлу"
+  },
+  "CGRz8d": {
+    "defaultMessage": "Файл книги змінився і потребує повторного аналізу"
+  },
+  "CJaS7j": {
+    "defaultMessage": "Кореневий каталог бібліотеки"
+  },
+  "CMuDjt": {
+    "defaultMessage": "деталі активності"
+  },
+  "COn5A6": {
+    "defaultMessage": "Локальні медіафайли"
+  },
+  "CPMLrI": {
+    "defaultMessage": "Спочатку книгу потрібно проаналізувати"
+  },
+  "CUxhzL": {
+    "defaultMessage": "Ролі"
+  },
+  "CVk1J6": {
+    "defaultMessage": "Помилка"
+  },
+  "CY8sfH": {
+    "defaultMessage": "Сканувати всі бібліотеки"
+  },
+  "CkUPZe": {
+    "defaultMessage": "Формат файлу книги не підтримується"
+  },
+  "CpNtjm": {
+    "defaultMessage": "Дата й час"
+  },
+  "CvsH7/": {
+    "defaultMessage": "Немає нещодавньої активності"
+  },
+  "CwteMk": {
+    "defaultMessage": "Очистити кошик для всіх бібліотек"
+  },
+  "CxuwFR": {
+    "defaultMessage": "Тип файлу не підтримується"
+  },
+  "D/yypj": {
+    "defaultMessage": "<ul><li>Це видалить всю історію синхронізації для цього API-ключа.</li><li>Ваш Kobo синхронізує все під час наступної синхронізації.</li></ul>"
+  },
+  "DK4PsD": {
+    "defaultMessage": "Книги серії"
+  },
+  "DNVnmS": {
+    "defaultMessage": "Назва каталогу"
+  },
+  "DNmepU": {
+    "defaultMessage": "Увімкніть, якщо ви використовуєте синхронізацію KOReader"
+  },
+  "DfakWW": {
+    "defaultMessage": "Видалити файли"
+  },
+  "Dn4qvV": {
+    "defaultMessage": "Відновити типові налаштування"
+  },
+  "DwDa04": {
+    "defaultMessage": "Інтервал сканування"
+  },
+  "DxtDpt": {
+    "defaultMessage": "Аналіз медіа"
+  },
+  "E0cw62": {
+    "defaultMessage": "Колекцію оновлено: {collection}"
+  },
+  "E1kQun": {
+    "defaultMessage": "Огляд"
+  },
+  "E4ssEg": {
+    "defaultMessage": "Конвертувати книгу"
+  },
+  "E5ZMyt": {
+    "defaultMessage": "Аналізувати"
+  },
+  "EIYfj+": {
+    "defaultMessage": "Номер"
+  },
+  "ELttw/": {
+    "defaultMessage": "Очистити кошик"
+  },
+  "EMhLEN": {
+    "defaultMessage": "Перемістити файли"
+  },
+  "EOrAHc": {
+    "defaultMessage": "PDF"
+  },
+  "EabQ38": {
+    "defaultMessage": "Запам'ятати мене"
+  },
+  "EzOmuX": {
+    "defaultMessage": "Створено"
+  },
+  "FLqm9f": {
+    "defaultMessage": "Допоможіть нам з перекладом"
+  },
+  "FSJoDl": {
+    "defaultMessage": "Виберіть серію, щоб побачити її книги"
+  },
+  "FVq9w5": {
+    "defaultMessage": "Mylar (series.json)"
+  },
+  "FZXkIP": {
+    "defaultMessage": "Перекладач"
+  },
+  "FpwJlU": {
+    "defaultMessage": "Зберегти зміни"
+  },
+  "G/T8/2": {
+    "defaultMessage": "Скасувати"
+  },
+  "G25PY/": {
+    "defaultMessage": "Пошук"
+  },
+  "G7quju": {
+    "defaultMessage": "Оголошення"
+  },
+  "G93mS3": {
+    "defaultMessage": "Показати все"
+  },
+  "GCwZB2": {
+    "defaultMessage": "Сканувати файли бібліотеки"
+  },
+  "GnHrCd": {
+    "defaultMessage": "Використовувати локальні зображення"
+  },
+  "GyRV+/": {
+    "defaultMessage": "Увімкніть цей параметр, якщо бібліотека розміщена на Google Drive"
+  },
+  "GySX8C": {
+    "defaultMessage": "Автоматично очищати кошик після кожного сканування"
+  },
+  "H+LXXE": {
+    "defaultMessage": "Перетягніть сюди, щоб відкріпити бібліотеку"
+  },
+  "H2B6uF": {
+    "defaultMessage": "Виберіть серію"
+  },
+  "H4Kte4": {
+    "defaultMessage": "Назва"
+  },
+  "HA4xOM": {
+    "defaultMessage": "Оновити метадані книги"
+  },
+  "HHvDPs": {
+    "defaultMessage": "Електронна пошта"
+  },
+  "HMbMJF": {
+    "defaultMessage": "Дата й час"
+  },
+  "HOBFqq": {
+    "defaultMessage": "помилка"
+  },
+  "HXms0S": {
+    "defaultMessage": "Виберіть елемент або створіть новий"
+  },
+  "HZ/e6n": {
+    "defaultMessage": "Спробуйте змінити фільтри"
+  },
+  "HZqgan": {
+    "defaultMessage": "Закрити"
+  },
+  "HaWCi3": {
+    "defaultMessage": "Налаштування"
+  },
+  "HdsnFp": {
+    "defaultMessage": "Колекцію видалено: {collection}"
+  },
+  "Hl9H/B": {
+    "defaultMessage": "Медіа"
+  },
+  "Hv7lqq": {
+    "defaultMessage": "Сітка"
+  },
+  "Hyz5su": {
+    "defaultMessage": "Імпортувати книгу"
+  },
+  "I9L5Ag": {
+    "defaultMessage": "СОРТУВАННЯ"
+  },
+  "I9ub/l": {
+    "defaultMessage": "Відомі дублікати"
+  },
+  "IE0XzE": {
+    "defaultMessage": "Видалити"
+  },
+  "IEUgyy": {
+    "defaultMessage": "Наявний файл"
+  },
+  "II5EFN": {
+    "defaultMessage": "Пенсилер"
+  },
+  "IIqDdQ": {
+    "defaultMessage": "Список читання оновлено: {readlist}"
+  },
+  "IXhDH6": {
+    "defaultMessage": "Дубльована сторінка"
+  },
+  "InW6ko": {
+    "defaultMessage": "Переклади"
+  },
+  "IpvWiZ": {
+    "defaultMessage": "Сервер"
+  },
+  "J+H9cC": {
+    "defaultMessage": "Видалити файли"
+  },
+  "J44THG": {
+    "defaultMessage": "Статус"
+  },
+  "J8rAqm": {
+    "defaultMessage": "Рік випуску"
+  },
+  "JGOfZq": {
+    "defaultMessage": "Користувачі"
+  },
+  "JHaKYw": {
+    "defaultMessage": "Вибрати все"
+  },
+  "JNBONk": {
+    "defaultMessage": "Список"
+  },
+  "JbF1nK": {
+    "defaultMessage": "Пароль змінено для користувача: {email}"
+  },
+  "JwBlXP": {
+    "defaultMessage": "Відкрити"
+  },
+  "K+fQO2": {
+    "defaultMessage": "Сканувати ці типи файлів"
+  },
+  "K40g4r": {
+    "defaultMessage": "Редагувати користувача"
+  },
+  "KBLD9U": {
+    "defaultMessage": "Віковий рейтинг"
+  },
+  "Kie8HQ": {
+    "defaultMessage": "Книга"
+  },
+  "Ku7NJ+": {
+    "defaultMessage": "Не вдалося знайти файли серії"
+  },
+  "LD5j8J": {
+    "defaultMessage": "Запитана серія"
+  },
+  "LFf8QB": {
+    "defaultMessage": "Видалити"
+  },
+  "LM4LL9": {
+    "defaultMessage": "Оновити локальні зображення серії"
+  },
+  "LaMAsc": {
+    "defaultMessage": "Активність автентифікації"
+  },
+  "LaxrEO": {
+    "defaultMessage": "Паролі мають збігатися"
+  },
+  "LjqS9+": {
+    "defaultMessage": "Список читання з такою назвою вже існує"
+  },
+  "Lto2Lg": {
+    "defaultMessage": "Має починатися з '/', не закінчуватися на '/-_' і містити лише '/-_a-z0-9'"
+  },
+  "MC2JtF": {
+    "defaultMessage": "Усі"
+  },
+  "MEWT0D": {
+    "defaultMessage": "Опис з книги {number}:"
+  },
+  "MKs9N+": {
+    "defaultMessage": "Огляд"
+  },
+  "MoOECu": {
+    "defaultMessage": "Імпортувати метадані серії"
+  },
+  "MvwDsn": {
+    "defaultMessage": "Відомі"
+  },
+  "N7+QXi": {
+    "defaultMessage": "Імпорт"
+  },
+  "N9WFH4": {
+    "defaultMessage": "Зберегти"
+  },
+  "NArFTo": {
+    "defaultMessage": "API-ключ видалено: {apiKeyComment}"
+  },
+  "NKVL81": {
+    "defaultMessage": "Ван-шот"
+  },
+  "NN7kAK": {
+    "defaultMessage": "Примусову синхронізацію Kobo виконано: {apiKeyComment}"
+  },
+  "NasBHg": {
+    "defaultMessage": "Дата прочитання"
+  },
+  "Nb0V0p": {
+    "defaultMessage": "Відсутні постери"
+  },
+  "NhIart": {
+    "defaultMessage": "Видалити файли книги"
+  },
+  "NpjqFA": {
+    "defaultMessage": "Спробуйте змінити фільтри"
+  },
+  "NruW40": {
+    "defaultMessage": "Видавець"
+  },
+  "NwK2Kv": {
+    "defaultMessage": "Тег"
+  },
+  "O/3awV": {
+    "defaultMessage": "Аналіз"
+  },
+  "O4Nnj5": {
+    "defaultMessage": "Книга {number}"
+  },
+  "O9hZBS": {
+    "defaultMessage": "Розмір постера"
+  },
+  "OLqBQc": {
+    "defaultMessage": "Видавець"
+  },
+  "OUyleX": {
+    "defaultMessage": "Оновити всі метадані"
+  },
+  "OW1/zn": {
+    "defaultMessage": "Немає нещодавньої активності"
+  },
+  "OZSDCE": {
+    "defaultMessage": "Закріплені"
+  },
+  "OgM2Q2": {
+    "defaultMessage": "Оновити метадані серії"
+  },
+  "Oj3xqB": {
+    "defaultMessage": "Список читання видалено: {readlist}"
+  },
+  "OxqfKF": {
+    "defaultMessage": "Глибоке сканування"
+  },
+  "P+WI/K": {
+    "defaultMessage": "Дубльована сторінка"
+  },
+  "P8Ox+D": {
+    "defaultMessage": "Метадані книги оновлено: {book}"
+  },
+  "PTr5Wc": {
+    "defaultMessage": "Перевірте, чи запущено ваш сервер Komga"
+  },
+  "PguYSD": {
+    "defaultMessage": "Перезаписати наявний список читання"
+  },
+  "Pj29A+": {
+    "defaultMessage": "Необхідно для виявлення дубльованих сторінок"
+  },
+  "Pp3+1S": {
+    "defaultMessage": "Статус"
+  },
+  "PvKF7E": {
+    "defaultMessage": "Бібліотеку видалено: {library}"
+  },
+  "QALnuE": {
+    "defaultMessage": "Тип файлу"
+  },
+  "QIr0z7": {
+    "defaultMessage": "Електронна пошта"
+  },
+  "QM5+gW": {
+    "defaultMessage": "Кількість видалень"
+  },
+  "Qxij/I": {
+    "defaultMessage": "Видалена сторінка"
+  },
+  "REmxIM": {
+    "defaultMessage": "Змінено"
+  },
+  "RHJo8j": {
+    "defaultMessage": "Імпортувати"
+  },
+  "RMHfEo": {
+    "defaultMessage": "Будь-що з"
+  },
+  "ROFRn4": {
+    "defaultMessage": "Створити"
+  },
+  "RR+XGR": {
+    "defaultMessage": "Ця сторінка перебуває в розробці."
+  },
+  "RTNaxB": {
+    "defaultMessage": "Розгорнути бічну панель"
+  },
+  "Rm52xk": {
+    "defaultMessage": "Ласкаво просимо до Komga"
+  },
+  "RwuMl5": {
+    "defaultMessage": "Автоматично виправляти неправильні розширення файлів"
+  },
+  "S39lnB": {
+    "defaultMessage": "Рік випуску"
+  },
+  "SIfmpC": {
+    "defaultMessage": "Виберіть серію"
+  },
+  "STdfYg": {
+    "defaultMessage": "Аналізувати розміри сторінок"
+  },
+  "SZHxy4": {
+    "defaultMessage": "Виберіть книгу"
+  },
+  "Sj0HXz": {
+    "defaultMessage": "Дозволити лише мітки"
+  },
+  "SqZoei": {
+    "defaultMessage": "Вибрати серію"
+  },
+  "Ss08kC": {
+    "defaultMessage": "{count} елементів"
+  },
+  "SuegoE": {
+    "defaultMessage": "Автоматичне впорядкування"
+  },
+  "T3Ofay": {
+    "defaultMessage": "Прочитано {readDate}"
+  },
+  "TAVSfO": {
+    "defaultMessage": "Кількість книг"
+  },
+  "TG7prC": {
+    "defaultMessage": "Дата додавання"
+  },
+  "TPX4qo": {
+    "defaultMessage": "Теги"
+  },
+  "TUxJCd": {
+    "defaultMessage": "Сканувати під час запуску застосунку"
+  },
+  "ThHjN4": {
+    "defaultMessage": "Серія"
+  },
+  "Thjcar": {
+    "defaultMessage": "Теги книги"
+  },
+  "ToD0+o": {
+    "defaultMessage": "Електронна пошта"
+  },
+  "TwB29u": {
+    "defaultMessage": "Вказуйте лише у разі проблем із синхронізацією обкладинок і завантажень"
+  },
+  "U3Uo3q": {
+    "defaultMessage": "Пароль"
+  },
+  "UaD47n": {
+    "defaultMessage": "Перегенерувати ключ 'запам'ятати мене'"
+  },
+  "UfbIyV": {
+    "defaultMessage": "Посилання"
+  },
+  "Uj479p": {
+    "defaultMessage": "Дата випуску"
+  },
+  "UoaxO7": {
+    "defaultMessage": "Книгу буде оновлено"
+  },
+  "Usohru": {
+    "defaultMessage": "Огляд"
+  },
+  "Uuu6fQ": {
+    "defaultMessage": "Немає результатів"
+  },
+  "UvhIIT": {
+    "defaultMessage": "Спільні бібліотеки"
+  },
+  "V/OYJE": {
+    "defaultMessage": "Користувача видалено: {email}"
+  },
+  "V3wgcu": {
+    "defaultMessage": "Дубльована сторінка"
+  },
+  "VHe28r": {
+    "defaultMessage": "Дата оновлення"
+  },
+  "VP+GhR": {
+    "defaultMessage": "Створити"
+  },
+  "VQ/hT4": {
+    "defaultMessage": "ISBN"
+  },
+  "VcueWO": {
+    "defaultMessage": "Використовуватиметься елемент 'SeriesGroup'"
+  },
+  "VhMXcu": {
+    "defaultMessage": "{total, plural, one {{count} / # книга} few {{count} / # книги} many {{count} / # книг} other {{count} / # книги} }"
+  },
+  "Vpmsx0": {
+    "defaultMessage": "Книги серії"
+  },
+  "VtC7Ce": {
+    "defaultMessage": "Редактор"
+  },
+  "VvjZEl": {
+    "defaultMessage": "Книг не знайдено"
+  },
+  "Vwpr+D": {
+    "defaultMessage": "Випадково"
+  },
+  "W3BUf7": {
+    "defaultMessage": "Я розумію"
+  },
+  "WADecv": {
+    "defaultMessage": "Встановлено"
+  },
+  "WLfi1+": {
+    "defaultMessage": "{count, plural, one {# книга} few {# книги} many {# книг} other {# книги} }"
+  },
+  "WLwQG8": {
+    "defaultMessage": "Ще не створено жодного API-ключа"
+  },
+  "WNY0pu": {
+    "defaultMessage": "Уже встановлено найновішу версію Komga"
+  },
+  "WPxleH": {
+    "defaultMessage": "Файли книги буде видалено<ul><li>Медіафайл книги буде видалено з диска.</li><li>Супутні файли книги буде видалено з диска.</li><li>Книгу буде видалено разом з її метаданими та прогресом читання.</li></ul><b>Цю дію неможливо скасувати.</b>"
+  },
+  "WVblsI": {
+    "defaultMessage": "Кількість сторінок"
+  },
+  "WY7aQf": {
+    "defaultMessage": "Заощаджено місця"
+  },
+  "WhasCZ": {
+    "defaultMessage": "Новий пароль"
+  },
+  "Wivz5J": {
+    "defaultMessage": "Закрити"
+  },
+  "Wlzzv8": {
+    "defaultMessage": "Запитаний номер"
+  },
+  "X/Z8x+": {
+    "defaultMessage": "Обов'язково скопіюйте API-ключ зараз. Ви більше не зможете його побачити!"
+  },
+  "X47Js+": {
+    "defaultMessage": "Серія"
+  },
+  "X80giU": {
+    "defaultMessage": "Додати"
+  },
+  "XDV3Si": {
+    "defaultMessage": "Більше"
+  },
+  "XM8VQH": {
+    "defaultMessage": "Дія"
+  },
+  "XR+P68": {
+    "defaultMessage": "Мова"
+  },
+  "XRbUyd": {
+    "defaultMessage": "Статус читання"
+  },
+  "XXr6pI": {
+    "defaultMessage": "Розмір сторінки"
+  },
+  "XZ5lw4": {
+    "defaultMessage": "Успіх"
+  },
+  "Xbf2fj": {
+    "defaultMessage": "Примусово оновлювати час зміни каталогу"
+  },
+  "XnidLu": {
+    "defaultMessage": "Введіть <b>{validateText}</b>, щоб підтвердити."
+  },
+  "XuqK4C": {
+    "defaultMessage": "Невідомі дублікати"
+  },
+  "Xx+ITC": {
+    "defaultMessage": "Моя активність"
+  },
+  "Xxu514": {
+    "defaultMessage": "Видалити файли серії"
+  },
+  "Y/fJj5": {
+    "defaultMessage": "Розмір файлу"
+  },
+  "Y0cG3G": {
+    "defaultMessage": "API-ключ буде видалено з цього сервера.<ul><li>Будь-які застосунки чи скрипти, що використовують цей API-ключ, більше не зможуть отримати доступ до API Komga.</li><li>Активність автентифікації для цього API-ключа буде остаточно видалено.</li></ul><b>Цю дію неможливо скасувати.</b>"
+  },
+  "Y4xJBN": {
+    "defaultMessage": "Останні зміни"
+  },
+  "Y6VlM9": {
+    "defaultMessage": "Список читання"
+  },
+  "Y7Y2T0": {
+    "defaultMessage": "Читати"
+  },
+  "Y8SsFO": {
+    "defaultMessage": "Читати"
+  },
+  "YHxouG": {
+    "defaultMessage": "Запит на імпорт надіслано"
+  },
+  "YVQ49g": {
+    "defaultMessage": "Редагувати колекцію"
+  },
+  "YbkrN9": {
+    "defaultMessage": "IP"
+  },
+  "Yf4DJ2": {
+    "defaultMessage": "Інтерфейс користувача"
+  },
+  "Ym48fa": {
+    "defaultMessage": "Немає нещодавніх подій"
+  },
+  "Z/EY89": {
+    "defaultMessage": "Помилка мережі"
+  },
+  "Z42XVQ": {
+    "defaultMessage": "Хешувати файл книги (Koreader)"
+  },
+  "Z5hsZ9": {
+    "defaultMessage": "Залишилося {count} сторінок"
+  },
+  "ZE3XpF": {
+    "defaultMessage": "Розділи не налаштовано"
+  },
+  "ZEbDUo": {
+    "defaultMessage": "Завершено"
+  },
+  "ZWFPAg": {
+    "defaultMessage": "Паролі мають збігатися"
+  },
+  "ZZmdmI": {
+    "defaultMessage": "{pagesCount} сторінок"
+  },
+  "ZfDKy4": {
+    "defaultMessage": "Знайти книги з відсутнім хешем сторінок"
+  },
+  "Zh8AOV": {
+    "defaultMessage": "Редагувати користувача"
+  },
+  "ZnjyI3": {
+    "defaultMessage": "Показати менше"
+  },
+  "Zozcfh": {
+    "defaultMessage": "Джерело"
+  },
+  "a5MYiP": {
+    "defaultMessage": "Постери"
+  },
+  "a5jT6x": {
+    "defaultMessage": "Видалити список читання"
+  },
+  "aDFZOW": {
+    "defaultMessage": "Електронна пошта"
+  },
+  "aOiU5f": {
+    "defaultMessage": "Бібліотеку оновлено: {library}"
+  },
+  "aSDxrt": {
+    "defaultMessage": "Файли серії видалено: {series}"
+  },
+  "aU1qcP": {
+    "defaultMessage": "Видалити"
+  },
+  "aYalqk": {
+    "defaultMessage": "Виберіть кілька книг"
+  },
+  "afXGQS": {
+    "defaultMessage": "Кореневий каталог"
+  },
+  "am3r7e": {
+    "defaultMessage": "Оновити бібліотеку"
+  },
+  "ap/Lnw": {
+    "defaultMessage": "Жорсткі посилання/копіювання файлів"
+  },
+  "app.error.ERR_1000": {
+    "defaultMessage": "Не вдалося отримати доступ до файлу під час аналізу"
+  },
+  "app.error.ERR_1001": {
+    "defaultMessage": "Тип медіа не підтримується"
+  },
+  "app.error.ERR_1002": {
+    "defaultMessage": "Зашифровані RAR-архіви не підтримуються"
+  },
+  "app.error.ERR_1003": {
+    "defaultMessage": "Суцільні (solid) RAR-архіви не підтримуються"
+  },
+  "app.error.ERR_1004": {
+    "defaultMessage": "Багатотомні RAR-архіви не підтримуються"
+  },
+  "app.error.ERR_1005": {
+    "defaultMessage": "Невідома помилка під час аналізу книги"
+  },
+  "app.error.ERR_1006": {
+    "defaultMessage": "Книга не містить жодної сторінки"
+  },
+  "app.error.ERR_1007": {
+    "defaultMessage": "Деякі елементи не вдалося проаналізувати"
+  },
+  "app.error.ERR_1008": {
+    "defaultMessage": "Невідома помилка під час отримання елементів книги"
+  },
+  "app.error.ERR_1009": {
+    "defaultMessage": "Список читання з такою назвою вже існує"
+  },
+  "app.error.ERR_1015": {
+    "defaultMessage": "Помилка десеріалізації ComicRack CBL"
+  },
+  "app.error.ERR_1016": {
+    "defaultMessage": "Каталог недоступний або не є каталогом"
+  },
+  "app.error.ERR_1017": {
+    "defaultMessage": "Неможливо сканувати папку, яка є частиною наявної бібліотеки"
+  },
+  "app.error.ERR_1018": {
+    "defaultMessage": "Файл не знайдено"
+  },
+  "app.error.ERR_1019": {
+    "defaultMessage": "Неможливо імпортувати файл, який є частиною наявної бібліотеки"
+  },
+  "app.error.ERR_1020": {
+    "defaultMessage": "Книга для оновлення не належить вказаній серії"
+  },
+  "app.error.ERR_1021": {
+    "defaultMessage": "Файл призначення вже існує"
+  },
+  "app.error.ERR_1022": {
+    "defaultMessage": "Не вдалося просканувати щойно імпортовану книгу"
+  },
+  "app.error.ERR_1023": {
+    "defaultMessage": "Книга вже присутня у списку читання"
+  },
+  "app.error.ERR_1024": {
+    "defaultMessage": "Помилка входу OAuth2: відсутній атрибут електронної пошти"
+  },
+  "app.error.ERR_1025": {
+    "defaultMessage": "Помилка входу OAuth2: локального користувача з такою електронною поштою не існує"
+  },
+  "app.error.ERR_1026": {
+    "defaultMessage": "Помилка входу OpenID Connect: електронну пошту не підтверджено"
+  },
+  "app.error.ERR_1027": {
+    "defaultMessage": "Помилка входу OpenID Connect: відсутній атрибут email_verified"
+  },
+  "app.error.ERR_1028": {
+    "defaultMessage": "Помилка входу OpenID Connect: відсутній атрибут електронної пошти"
+  },
+  "app.error.ERR_1029": {
+    "defaultMessage": "ComicRack CBL не містить жодного елемента Book"
+  },
+  "app.error.ERR_1030": {
+    "defaultMessage": "ComicRack CBL не містить елемента Name"
+  },
+  "app.error.ERR_1031": {
+    "defaultMessage": "У елементі Book ComicRack CBL відсутня серія або номер"
+  },
+  "app.error.ERR_1032": {
+    "defaultMessage": "Файл EPUB має неправильний тип медіа"
+  },
+  "app.error.ERR_1033": {
+    "defaultMessage": "Деякі елементи відсутні"
+  },
+  "app.error.ERR_1034": {
+    "defaultMessage": "API-ключ з таким коментарем вже існує"
+  },
+  "app.error.ERR_1035": {
+    "defaultMessage": "Помилка отримання змісту (TOC) EPUB"
+  },
+  "app.error.ERR_1036": {
+    "defaultMessage": "Помилка отримання орієнтирів (Landmarks) EPUB"
+  },
+  "app.error.ERR_1037": {
+    "defaultMessage": "Помилка отримання списку сторінок EPUB"
+  },
+  "app.error.ERR_1038": {
+    "defaultMessage": "Помилка отримання сторінок divina EPUB"
+  },
+  "app.error.ERR_1039": {
+    "defaultMessage": "Помилка отримання позицій EPUB"
+  },
+  "app.locale-name": {
+    "defaultMessage": "Українська"
+  },
+  "app.user-create-dialog.all_libraries": {
+    "defaultMessage": "Усі бібліотеки"
+  },
+  "b1hvh9": {
+    "defaultMessage": "Автоматично конвертувати CBR у CBZ"
+  },
+  "b4J0RU": {
+    "defaultMessage": "У розробці"
+  },
+  "bCFD9B": {
+    "defaultMessage": "Посторінково"
+  },
+  "bDNZqj": {
+    "defaultMessage": "Редагувати список читання"
+  },
+  "bDNv5+": {
+    "defaultMessage": "Будь-який"
+  },
+  "bFoCHJ": {
+    "defaultMessage": "Назва файлу призначення"
+  },
+  "bN2VbA": {
+    "defaultMessage": "Винятки каталогів"
+  },
+  "bOUy3X": {
+    "defaultMessage": "Книга"
+  },
+  "bSoeY6": {
+    "defaultMessage": "Назва призначення"
+  },
+  "bk1tX8": {
+    "defaultMessage": "Бібліотеку буде видалено з цього сервера.<ul><li>Серії та книги буде видалено разом з їхніми метаданими та прогресом читання.</li><li>Медіафайли не буде видалено з диска.</li></ul><b>Цю дію неможливо скасувати.</b>"
+  },
+  "bqoEfm": {
+    "defaultMessage": "Хешувати сторінки книги"
+  },
+  "bzY8FH": {
+    "defaultMessage": "Пошук"
+  },
+  "bzn96A": {
+    "defaultMessage": "Створити бібліотеку"
+  },
+  "c+hx0g": {
+    "defaultMessage": "Користувачі"
+  },
+  "cAu/I6": {
+    "defaultMessage": "Дубльовані сторінки"
+  },
+  "cGOJnB": {
+    "defaultMessage": "{count, plural, one {# книга} few {# книги} many {# книг} other {# книги} }"
+  },
+  "cIM3eJ": {
+    "defaultMessage": "Продовжити"
+  },
+  "cM9FuW": {
+    "defaultMessage": "Виберіть серію"
+  },
+  "cWVIRm": {
+    "defaultMessage": "User Agent"
+  },
+  "ccAMWS": {
+    "defaultMessage": "Документація"
+  },
+  "ccDES8": {
+    "defaultMessage": "Файли книги видалено: {book}"
+  },
+  "crClNV": {
+    "defaultMessage": "Обкладинка"
+  },
+  "cyQk6S": {
+    "defaultMessage": "Колекції"
+  },
+  "d2J/J/": {
+    "defaultMessage": "Вибрати"
+  },
+  "d8lMZe": {
+    "defaultMessage": "Створити обліковий запис"
+  },
+  "dHyAgE": {
+    "defaultMessage": "Змінити пароль"
+  },
+  "dK/kHO": {
+    "defaultMessage": "Коментар медіа"
+  },
+  "dLE2PW": {
+    "defaultMessage": "Немає активності"
+  },
+  "dQ9kx9": {
+    "defaultMessage": "вибір мови"
+  },
+  "dSlkbn": {
+    "defaultMessage": "Загальна поведінка сканування"
+  },
+  "da/wb0": {
+    "defaultMessage": "Позначити все як прочитане"
+  },
+  "ddthL2": {
+    "defaultMessage": "Підтвердити"
+  },
+  "dfslqC": {
+    "defaultMessage": "Файли серії буде видалено<ul><li>Медіафайли книг буде видалено з диска.</li><li>Серію та книги буде видалено разом з їхніми метаданими та прогресом читання.</li></ul><b>Цю дію неможливо скасувати.</b>"
+  },
+  "dipMGb": {
+    "defaultMessage": "Створити"
+  },
+  "dx9s7S": {
+    "defaultMessage": "Створено"
+  },
+  "e8DJzj": {
+    "defaultMessage": "Тема"
+  },
+  "eDA9Gm": {
+    "defaultMessage": "Розмір згенерованого постера"
+  },
+  "eRJOa6": {
+    "defaultMessage": "Базова URL-адреса сервера"
+  },
+  "eW3fXu": {
+    "defaultMessage": "Дубльовані файли"
+  },
+  "efspoY": {
+    "defaultMessage": "Таблиця"
+  },
+  "egrxd6": {
+    "defaultMessage": "Користувача створено: {email}"
+  },
+  "enum.MediaProfile.DIVINA": {
+    "defaultMessage": "DiViNa"
+  },
+  "enum.MediaProfile.EPUB": {
+    "defaultMessage": "Epub"
+  },
+  "enum.MediaProfile.PDF": {
+    "defaultMessage": "Pdf"
+  },
+  "enum.MediaStatus.ERROR": {
+    "defaultMessage": "Помилка"
+  },
+  "enum.MediaStatus.OUTDATED": {
+    "defaultMessage": "Застаріло"
+  },
+  "enum.MediaStatus.READY": {
+    "defaultMessage": "Готово"
+  },
+  "enum.MediaStatus.UNKNOWN": {
+    "defaultMessage": "Невідомо"
+  },
+  "enum.MediaStatus.UNSUPPORTED": {
+    "defaultMessage": "Не підтримується"
+  },
+  "enum.OverviewSection.keep_reading": {
+    "defaultMessage": "Продовжити читання"
+  },
+  "enum.OverviewSection.on_deck": {
+    "defaultMessage": "На черзі"
+  },
+  "enum.OverviewSection.recently_added_books": {
+    "defaultMessage": "Нещодавно додані книги"
+  },
+  "enum.OverviewSection.recently_added_series": {
+    "defaultMessage": "Нещодавно додані серії"
+  },
+  "enum.OverviewSection.recently_read_books": {
+    "defaultMessage": "Нещодавно прочитані книги"
+  },
+  "enum.OverviewSection.recently_released_books": {
+    "defaultMessage": "Нещодавно випущені книги"
+  },
+  "enum.OverviewSection.recently_updated_series": {
+    "defaultMessage": "Нещодавно оновлені серії"
+  },
+  "enum.ReadStatus.IN_PROGRESS": {
+    "defaultMessage": "У процесі"
+  },
+  "enum.ReadStatus.READ": {
+    "defaultMessage": "Прочитано"
+  },
+  "enum.ReadStatus.UNREAD": {
+    "defaultMessage": "Непрочитано"
+  },
+  "enum.ReadingDirection.LEFT_TO_RIGHT": {
+    "defaultMessage": "Зліва направо"
+  },
+  "enum.ReadingDirection.RIGHT_TO_LEFT": {
+    "defaultMessage": "Справа наліво"
+  },
+  "enum.ReadingDirection.VERTICAL": {
+    "defaultMessage": "Вертикально"
+  },
+  "enum.ReadingDirection.WEBTOON": {
+    "defaultMessage": "Вебтун"
+  },
+  "enum.ScanInterval.DAILY": {
+    "defaultMessage": "Щодня"
+  },
+  "enum.ScanInterval.DISABLED": {
+    "defaultMessage": "Вимкнено"
+  },
+  "enum.ScanInterval.EVERY_12H": {
+    "defaultMessage": "Кожні 12 годин"
+  },
+  "enum.ScanInterval.EVERY_6H": {
+    "defaultMessage": "Кожні 6 годин"
+  },
+  "enum.ScanInterval.HOURLY": {
+    "defaultMessage": "Щогодини"
+  },
+  "enum.ScanInterval.WEEKLY": {
+    "defaultMessage": "Щотижня"
+  },
+  "enum.SeriesCover.FIRST": {
+    "defaultMessage": "Перша"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_FIRST": {
+    "defaultMessage": "Перша непрочитана, інакше перша"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_LAST": {
+    "defaultMessage": "Перша непрочитана, інакше остання"
+  },
+  "enum.SeriesCover.LAST": {
+    "defaultMessage": "Остання"
+  },
+  "enum.SeriesStatus.ABANDONED": {
+    "defaultMessage": "Покинуто"
+  },
+  "enum.SeriesStatus.ENDED": {
+    "defaultMessage": "Завершено"
+  },
+  "enum.SeriesStatus.HIATUS": {
+    "defaultMessage": "Призупинено"
+  },
+  "enum.SeriesStatus.ONGOING": {
+    "defaultMessage": "Триває"
+  },
+  "enum.ThumbnailSize.DEFAULT": {
+    "defaultMessage": "Типовий (300px)"
+  },
+  "enum.ThumbnailSize.LARGE": {
+    "defaultMessage": "Великий (900px)"
+  },
+  "enum.ThumbnailSize.MEDIUM": {
+    "defaultMessage": "Середній (600px)"
+  },
+  "enum.ThumbnailSize.XLARGE": {
+    "defaultMessage": "Дуже великий (1200px)"
+  },
+  "enum.UserRole.ADMIN": {
+    "defaultMessage": "Адміністратор"
+  },
+  "enum.UserRole.FILE_DOWNLOAD": {
+    "defaultMessage": "Завантаження файлів"
+  },
+  "enum.UserRole.KOBO_SYNC": {
+    "defaultMessage": "Синхронізація Kobo"
+  },
+  "enum.UserRole.KOREADER_SYNC": {
+    "defaultMessage": "Синхронізація KOReader"
+  },
+  "enum.UserRole.PAGE_STREAMING": {
+    "defaultMessage": "Потокове передавання сторінок"
+  },
+  "enum.UserRole.USER": {
+    "defaultMessage": "Користувач"
+  },
+  "enum.historicalEvent.BookConverted": {
+    "defaultMessage": "Книгу конвертовано"
+  },
+  "enum.historicalEvent.BookFileDeleted": {
+    "defaultMessage": "Файл книги видалено"
+  },
+  "enum.historicalEvent.BookImported": {
+    "defaultMessage": "Книгу імпортовано"
+  },
+  "enum.historicalEvent.DuplicatePageDeleted": {
+    "defaultMessage": "Дубльовану сторінку видалено"
+  },
+  "enum.historicalEvent.SeriesFolderDeleted": {
+    "defaultMessage": "Каталог серії видалено"
+  },
+  "enum.pageHashAction.DELETE_AUTO": {
+    "defaultMessage": "Автоматичне видалення"
+  },
+  "enum.pageHashAction.DELETE_MANUAL": {
+    "defaultMessage": "Ручне видалення"
+  },
+  "enum.pageHashAction.IGNORE": {
+    "defaultMessage": "Ігнорувати"
+  },
+  "estf95": {
+    "defaultMessage": "Список читання створено"
+  },
+  "eyYZUe": {
+    "defaultMessage": "Бібліотеки"
+  },
+  "ezgnXr": {
+    "defaultMessage": "Підтвердьте пароль"
+  },
+  "f1fW81": {
+    "defaultMessage": "Статус аналізу"
+  },
+  "fQIepD": {
+    "defaultMessage": "Книги"
+  },
+  "fVqdik": {
+    "defaultMessage": "ComicInfo.xml (CBR/CBZ)"
+  },
+  "fbEqBB": {
+    "defaultMessage": "Посилання"
+  },
+  "fl2YLT": {
+    "defaultMessage": "Статус медіа"
+  },
+  "foSDIW": {
+    "defaultMessage": "Глибоке сканування"
+  },
+  "g+OQSw": {
+    "defaultMessage": "змінити порядок"
+  },
+  "g2UW+6": {
+    "defaultMessage": "Формат книги не підтримується"
+  },
+  "gEBeQv": {
+    "defaultMessage": "Метадані серії оновлено: {series}"
+  },
+  "gNiEAF": {
+    "defaultMessage": "Коментар"
+  },
+  "ggaOkE": {
+    "defaultMessage": "Дані не знайдено"
+  },
+  "gsqrOd": {
+    "defaultMessage": "Регенерувати постери"
+  },
+  "gxZjIe": {
+    "defaultMessage": "Дія"
+  },
+  "h6C8/l": {
+    "defaultMessage": "Загальне"
+  },
+  "hBanlz": {
+    "defaultMessage": "Жанр"
+  },
+  "hEOGa9": {
+    "defaultMessage": "Вікове обмеження"
+  },
+  "hGFogR": {
+    "defaultMessage": "Мітка спільного доступу"
+  },
+  "hJEc5M": {
+    "defaultMessage": "меню бібліотек"
+  },
+  "hPo41m": {
+    "defaultMessage": "Дані не знайдено"
+  },
+  "hV3EW+": {
+    "defaultMessage": "Глибоке сканування"
+  },
+  "hYO2n6": {
+    "defaultMessage": "Можливо, виникла проблема з вашим з'єднанням або сервером."
+  },
+  "hdoWGT": {
+    "defaultMessage": "Збіги"
+  },
+  "hgiBeR": {
+    "defaultMessage": "Остання активність"
+  },
+  "hrh5Rn": {
+    "defaultMessage": "Оновити"
+  },
+  "hude41": {
+    "defaultMessage": "Видалити API-ключ"
+  },
+  "i+kSy9": {
+    "defaultMessage": "Оновити"
+  },
+  "iDU5FS": {
+    "defaultMessage": "Тривалість 'запам'ятати мене' (у днях)"
+  },
+  "iNBto3": {
+    "defaultMessage": "Проксіювати необроблені запити до Kobo Store"
+  },
+  "ieysdI": {
+    "defaultMessage": "Оновити пошуковий індекс"
+  },
+  "iin6d2": {
+    "defaultMessage": "API-ключі можна використовувати для автентифікації через протокол Kobo Sync або REST API."
+  },
+  "iq1PzT": {
+    "defaultMessage": "Керування"
+  },
+  "iu31A4": {
+    "defaultMessage": "Архіви коміксів"
+  },
+  "ixQlWv": {
+    "defaultMessage": "Щось пішло не так"
+  },
+  "iylxeo": {
+    "defaultMessage": "Так (усі книги)"
+  },
+  "j7CGMQ": {
+    "defaultMessage": "підтвердити"
+  },
+  "jD87k9": {
+    "defaultMessage": "Колекцію буде видалено<ul><li>Серії та книги не буде видалено.</li></ul><b>Цю дію неможливо скасувати.</b>"
+  },
+  "jHJk+v": {
+    "defaultMessage": "Створено"
+  },
+  "jN3N1Q": {
+    "defaultMessage": "Аналізувати"
+  },
+  "jyrqhz": {
+    "defaultMessage": "Штрих-код"
+  },
+  "jywpqq": {
+    "defaultMessage": "Вік"
+  },
+  "k2JkZX": {
+    "defaultMessage": "Колорист"
+  },
+  "k6BCzW": {
+    "defaultMessage": "Видалити колекцію"
+  },
+  "kDc7YL": {
+    "defaultMessage": "Типово медіасервер не видаляє інформацію про медіа одразу. Це допомагає, якщо диск тимчасово відключено. Коли ви очищаєте кошик для бібліотеки, вся інформація про відсутні медіа видаляється."
+  },
+  "kFQatO": {
+    "defaultMessage": "Показати фільтри"
+  },
+  "kGC6Gu": {
+    "defaultMessage": "Немає нещодавньої активності"
+  },
+  "kHmCVM": {
+    "defaultMessage": "Сканувати бібліотеку"
+  },
+  "kXuNY8": {
+    "defaultMessage": "Додати сторінку до вибору"
+  },
+  "kYDPt1": {
+    "defaultMessage": "Назва файлу"
+  },
+  "kZ0WlY": {
+    "defaultMessage": "Не вдалося знайти файл книги"
+  },
+  "kh49ZJ": {
+    "defaultMessage": "Відхилити"
+  },
+  "knm6Z+": {
+    "defaultMessage": "Статус"
+  },
+  "kqV7EJ": {
+    "defaultMessage": "Видаляти порожні списки читання після сканування"
+  },
+  "kvbi4j": {
+    "defaultMessage": "Користувача оновлено: {email}"
+  },
+  "l/To3S": {
+    "defaultMessage": "Історія"
+  },
+  "l5qiAB": {
+    "defaultMessage": "Знайти дубльовані сторінки для видалення"
+  },
+  "l7+H/k": {
+    "defaultMessage": "Має пріоритет над файлом конфігурації"
+  },
+  "l7mpQK": {
+    "defaultMessage": "Прочитано"
+  },
+  "lDnmZD": {
+    "defaultMessage": "Оновлення"
+  },
+  "lFTdQ+": {
+    "defaultMessage": "Позначити як"
+  },
+  "lPZ5hy": {
+    "defaultMessage": "Закрити"
+  },
+  "lSlhp0": {
+    "defaultMessage": "Назва вихідного файлу"
+  },
+  "laWvMU": {
+    "defaultMessage": "Ок"
+  },
+  "lt7Tru": {
+    "defaultMessage": "Серії"
+  },
+  "lvCpSX": {
+    "defaultMessage": "Дії"
+  },
+  "lyknmW": {
+    "defaultMessage": "Відкрити"
+  },
+  "lzHPYD": {
+    "defaultMessage": "Спробуйте пошукати щось інше"
+  },
+  "m+yz6Z": {
+    "defaultMessage": "Номер сторінки"
+  },
+  "m9h2wk": {
+    "defaultMessage": "Мініатюра"
+  },
+  "m9tuzy": {
+    "defaultMessage": "Активність"
+  },
+  "mP9Ldq": {
+    "defaultMessage": "Дата створення"
+  },
+  "mtUacw": {
+    "defaultMessage": "Редагувати метадані книги"
+  },
+  "n0TnQ2": {
+    "defaultMessage": "Сервер недоступний"
+  },
+  "n0yuoo": {
+    "defaultMessage": "Активність"
+  },
+  "n1Ik+L": {
+    "defaultMessage": "Доступні оновлення"
+  },
+  "n4w2CE": {
+    "defaultMessage": "Редагувати"
+  },
+  "n8mugB": {
+    "defaultMessage": "Так (лише збільшення)"
+  },
+  "nJiYF7": {
+    "defaultMessage": "Підтвердьте пароль"
+  },
+  "nXFVsQ": {
+    "defaultMessage": "Обчислювати хеш для KOReader"
+  },
+  "nXWSTf": {
+    "defaultMessage": "Назва"
+  },
+  "nhrFtV": {
+    "defaultMessage": "Недоступно"
+  },
+  "nuoJ1n": {
+    "defaultMessage": "Створити бібліотеку"
+  },
+  "nyxfPy": {
+    "defaultMessage": "Використовуватимуться елементи 'AlternateSeries' або 'StoryArc'"
+  },
+  "o+A10T": {
+    "defaultMessage": "Пароль"
+  },
+  "o+h0F+": {
+    "defaultMessage": "Назва файлу"
+  },
+  "o1XnPU": {
+    "defaultMessage": "API-ключ"
+  },
+  "o8WeX3": {
+    "defaultMessage": "Видалити"
+  },
+  "oFOkWZ": {
+    "defaultMessage": "API-ключі"
+  },
+  "oOtDhj": {
+    "defaultMessage": "Копіювати в буфер обміну"
+  },
+  "oQ2wIE": {
+    "defaultMessage": "Деякі з вибраних книг мають помилку"
+  },
+  "oWsqnh": {
+    "defaultMessage": "Для чого цей API-ключ?"
+  },
+  "od545m": {
+    "defaultMessage": "Мій обліковий запис"
+  },
+  "oyeyK/": {
+    "defaultMessage": "Мініатюра"
+  },
+  "pENCUD": {
+    "defaultMessage": "Скасувати"
+  },
+  "pHdVzh": {
+    "defaultMessage": "Видаляти порожні колекції після сканування"
+  },
+  "pHycdf": {
+    "defaultMessage": "Файл книги ще не проаналізовано"
+  },
+  "pR3VdQ": {
+    "defaultMessage": "Серія"
+  },
+  "pTsA/M": {
+    "defaultMessage": "Книги"
+  },
+  "phzvRy": {
+    "defaultMessage": "Бібліотека"
+  },
+  "q/AkPU": {
+    "defaultMessage": "Агрегувати метадані серії"
+  },
+  "q7gxLw": {
+    "defaultMessage": "Обліковий запис користувача буде видалено з цього сервера.<ul><li>Прогрес читання для цього облікового запису буде остаточно видалено.</li><li>Активність автентифікації для цього користувача буде остаточно видалено.</li></ul><b>Цю дію неможливо скасувати.</b>"
+  },
+  "qiZm6U": {
+    "defaultMessage": "Невідомі"
+  },
+  "r/G7j0": {
+    "defaultMessage": "Номер"
+  },
+  "r5O+/d": {
+    "defaultMessage": "Жанр"
+  },
+  "r6CqyT": {
+    "defaultMessage": "Видалити користувача"
+  },
+  "r6JNfI": {
+    "defaultMessage": "Забули пароль?"
+  },
+  "r7xCeA": {
+    "defaultMessage": "Змінити пароль"
+  },
+  "rCLYEd": {
+    "defaultMessage": "Виправити розширення"
+  },
+  "rDBhmQ": {
+    "defaultMessage": "Видалити"
+  },
+  "rHwSrF": {
+    "defaultMessage": "Потоки завдань"
+  },
+  "rKyTwd": {
+    "defaultMessage": "Дії"
+  },
+  "rRFQKU": {
+    "defaultMessage": "Синхронізація Kobo"
+  },
+  "rhtmLf": {
+    "defaultMessage": "Порядок"
+  },
+  "rkpCD1": {
+    "defaultMessage": "Учасники"
+  },
+  "rks1H9": {
+    "defaultMessage": "Керування файлами"
+  },
+  "rm0c6Y": {
+    "defaultMessage": "На цьому сервері ще немає жодної бібліотеки"
+  },
+  "rnClur": {
+    "defaultMessage": "{rating}+"
+  },
+  "rrF/Z2": {
+    "defaultMessage": "Назва"
+  },
+  "rw/Dkw": {
+    "defaultMessage": "Інтерфейс користувача"
+  },
+  "s1nzhU": {
+    "defaultMessage": "Назва бібліотеки"
+  },
+  "sGsWvI": {
+    "defaultMessage": "Змінити пароль"
+  },
+  "sPScum": {
+    "defaultMessage": "Книгу імпортовано"
+  },
+  "sUSVQS": {
+    "defaultMessage": "Позначити як прочитане"
+  },
+  "sUl0GP": {
+    "defaultMessage": "вибір режиму перегляду"
+  },
+  "samiG7": {
+    "defaultMessage": "Останні зміни"
+  },
+  "sbwSuO": {
+    "defaultMessage": "З'єднання в реальному часі з сервером недоступне. Елементи інтерфейсу можуть оновлюватися некоректно."
+  },
+  "sdNz1F": {
+    "defaultMessage": "Очистити кошик"
+  },
+  "sj2JGj": {
+    "defaultMessage": "Незакріплені"
+  },
+  "sjC8ot": {
+    "defaultMessage": "Не вдалося проаналізувати файл книги:"
+  },
+  "so1P5Y": {
+    "defaultMessage": "Оновити локальні зображення книги"
+  },
+  "syF0Ap": {
+    "defaultMessage": "Розмір"
+  },
+  "t0Tkmy": {
+    "defaultMessage": "Примусова синхронізація Kobo"
+  },
+  "t3B+Qv": {
+    "defaultMessage": "Видалити хешовані сторінки"
+  },
+  "t5NC5O": {
+    "defaultMessage": "+ ще {count}"
+  },
+  "t5ZhnZ": {
+    "defaultMessage": "Залиште порожнім, щоб вимкнути"
+  },
+  "tCm6kO": {
+    "defaultMessage": "{count, plural, one {# вибрано} few {# вибрано} many {# вибрано} other {# вибрано} }"
+  },
+  "tPD6YO": {
+    "defaultMessage": "Пошук серій"
+  },
+  "ti4Pzo": {
+    "defaultMessage": "Вийти"
+  },
+  "tm9g8D": {
+    "defaultMessage": "Ок"
+  },
+  "tn7uib": {
+    "defaultMessage": "Рік"
+  },
+  "toP54Z": {
+    "defaultMessage": "Помилка"
+  },
+  "uGC9fD": {
+    "defaultMessage": "Параметри"
+  },
+  "uW+6XG": {
+    "defaultMessage": "Опис"
+  },
+  "uXY7Eg": {
+    "defaultMessage": "Логотип Komga"
+  },
+  "uY7N6Z": {
+    "defaultMessage": "Профіль медіа"
+  },
+  "uoc99F": {
+    "defaultMessage": "Може споживати багато ресурсів для великих бібліотек або повільного апаратного забезпечення"
+  },
+  "ut2gmo": {
+    "defaultMessage": "Ролі"
+  },
+  "uwFE74": {
+    "defaultMessage": "Сканувати"
+  },
+  "vTqlcG": {
+    "defaultMessage": "Видалити"
+  },
+  "vXhkpo": {
+    "defaultMessage": "Видалити файл"
+  },
+  "vkeTYG": {
+    "defaultMessage": "Не вдалося імпортувати книгу"
+  },
+  "vs88Ef": {
+    "defaultMessage": "Оновлює метадані для всіх медіафайлів бібліотеки. Залежно від розміру бібліотеки це може зайняти багато часу."
+  },
+  "vvl9xP": {
+    "defaultMessage": "Очистити кошик"
+  },
+  "w2K5yu": {
+    "defaultMessage": "Списки читання"
+  },
+  "wJaip6": {
+    "defaultMessage": "Обчислювати хеш для файлів"
+  },
+  "wRjFWz": {
+    "defaultMessage": "Автоматичне впорядкування"
+  },
+  "wXGljO": {
+    "defaultMessage": "Продовжити"
+  },
+  "wbH42A": {
+    "defaultMessage": "Недоступно"
+  },
+  "wmGcF+": {
+    "defaultMessage": "Виключити старше"
+  },
+  "xPBqGY": {
+    "defaultMessage": "Видалити серію"
+  },
+  "xSNdDU": {
+    "defaultMessage": "Список читання буде видалено<ul><li>Серії та книги не буде видалено.</li></ul><b>Цю дію неможливо скасувати.</b>"
+  },
+  "xYGXuU": {
+    "defaultMessage": "Деталі"
+  },
+  "xYp/8u": {
+    "defaultMessage": "Виберіть книгу"
+  },
+  "xeiMMk": {
+    "defaultMessage": "Інкер"
+  },
+  "xfThoX": {
+    "defaultMessage": "Збіги"
+  },
+  "xiyw1J": {
+    "defaultMessage": "Оновити всі метадані"
+  },
+  "xpBvz8": {
+    "defaultMessage": "Рік випуску"
+  },
+  "y1P/K4": {
+    "defaultMessage": "Остання активність"
+  },
+  "y3nPgO": {
+    "defaultMessage": "Виконує глибоке сканування файлів бібліотеки. Залежно від розміру бібліотеки це може зайняти багато часу."
+  },
+  "yDWzUi": {
+    "defaultMessage": "API-ключі"
+  },
+  "yaa8so": {
+    "defaultMessage": "Сканер"
+  },
+  "ycrpqO": {
+    "defaultMessage": "Створити новий API-ключ"
+  },
+  "yrE0Rx": {
+    "defaultMessage": "Деталі"
+  },
+  "z5sjUM": {
+    "defaultMessage": "Хешувати файл книги"
+  },
+  "z8b1Xe": {
+    "defaultMessage": "Імпортувати з каталогу"
+  },
+  "zRDVnR": {
+    "defaultMessage": "Розмір"
+  },
+  "zfQq+w": {
+    "defaultMessage": "Електронна пошта"
+  },
+  "zphiTI": {
+    "defaultMessage": "API-ключ з таким коментарем вже існує"
+  },
+  "zqAxRE": {
+    "defaultMessage": "Книга"
+  },
+  "zuhGGz": {
+    "defaultMessage": "Змінити порядок або закріпити"
+  }
+}
