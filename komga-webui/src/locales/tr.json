@@ -271,8 +271,10 @@
     "roles": "Roller",
     "save_changes": "Değişiklikleri kaydet",
     "series": "Seri | Seriler",
+    "settings": "Ayarlar",
     "sidecars": "Ek bilgi",
     "tags": "Etiketler",
+    "ui": "Kullanıcı Arayüzü",
     "unavailable": "Kullanılamıyor",
     "unlock_all": "Hepsini aç",
     "url": "URL",
@@ -508,6 +510,10 @@
       "tab_general": "Genel",
       "tab_poster": "Poster"
     },
+    "edit_recommended": {
+      "button_confirm": "Değişiklikleri kaydet",
+      "button_reset": "Varsayılana sıfırla"
+    },
     "edit_series": {
       "button_cancel": "İptal",
       "button_confirm": "Değişiklikleri kaydet",
@@ -704,7 +710,7 @@
       "ERROR": "Hata",
       "OUTDATED": "Güncel değil",
       "READY": "Hazır",
-      "UNKNOWN": "Bİlinmiyor",
+      "UNKNOWN": "Bilinmiyor",
       "UNSUPPORTED": "Desteklenmiyor"
     },
     "page_hash_action": {
@@ -856,7 +862,7 @@
   },
   "media_analysis": {
     "comment": "Yorum",
-    "media_analysis": "Medya analizi",
+    "media_analysis": "Medya Analizi",
     "media_type": "Medya Tipi",
     "name": "İsim",
     "size": "Boyut",
@@ -891,10 +897,14 @@
     "tasks_total_time": "Toplam görev süresi",
     "title": "İstatistikler"
   },
+  "missing_posters": {
+    "title": "Eksik Posterler"
+  },
   "navigation": {
     "home": "Anasayfa",
     "libraries": "Kütüphaneler",
-    "logout": "Çıkış Yap"
+    "logout": "Çıkış Yap",
+    "try_new_ui": "Yeni arayüzü dene"
   },
   "page_not_found": {
     "go_back_to_home_page": "Ana sayfaya geri dön",
@@ -1005,6 +1015,11 @@
   "titles_more": {
     "less": "Daha az başlık",
     "more": "Daha çok başlık"
+  },
+  "ui_settings": {
+    "series_groups": {
+      "alpha": "Alfabetik"
+    }
   },
   "updates": {
     "available": "Yeni güncellemeler mevcut",
