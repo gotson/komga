@@ -93,7 +93,16 @@
     </template>
 
     <template #[`item.upgradeBook`]="{ item }">
+      <div v-if="item.series?.oneshot">
+        <v-chip
+          text="One shot"
+          rounded
+          color="primary"
+          variant="tonal"
+        />
+      </div>
       <div
+        v-else
         @mouseenter="
           item.upgradable
             ? (dialogBookPickerActivator = $event.currentTarget as Element)

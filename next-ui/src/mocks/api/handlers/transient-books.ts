@@ -56,7 +56,7 @@ export const scanned = [
   },
 ]
 
-const analyzed1 = {
+export const mockTransientBookAnalyzed1 = {
   id: '0N1BHX5RKQTR2',
   name: 'Star Trek_ The Next Generation (1988)',
   url: '/comics/Star Trek_ The Next Generation (1988).zip',
@@ -84,7 +84,7 @@ const analyzed2 = {
   comment: 'ERR_1003',
 }
 
-const analyzed3 = {
+export const mockTransientBookAnalyzed3 = {
   id: '0N1BHX5RVQQ8S',
   name: 'Hulk #1',
   url: '/comics/Hulk 001.cbz',
@@ -1085,10 +1085,11 @@ const analyzed4 = {
     },
   ],
   files: ['ComicInfo.xml'],
+  seriesId: '634',
   comment: '',
 }
 
-export const analyzed = [analyzed1, analyzed2, analyzed3, analyzed4]
+const analyzed = [mockTransientBookAnalyzed1, analyzed2, mockTransientBookAnalyzed3, analyzed4]
 
 export const transientBooksHandlers = [
   handleScanTransientBooks(async ({ request }) => {
