@@ -244,7 +244,7 @@
     "go_to_series": "Zu Serien gehen",
     "i_understand": "Ich akzeptiere",
     "library": "Bibliothek",
-    "locale_name": "Deutsch",
+    "locale_name": "Englisch",
     "locale_rtl": "false",
     "lock_all": "Alle sperren",
     "media": "Medien",
@@ -286,8 +286,8 @@
     "year": "Jahr"
   },
   "dashboard": {
-    "keep_reading": "Weiter lesen",
-    "on_deck": "Oben auf dem Stapel",
+    "keep_reading": "Weiterlesen",
+    "on_deck": "Erstes",
     "recently_added_books": "Kürzlich hinzugefügte Bücher",
     "recently_added_series": "Kürzlich hinzugefügte Serien",
     "recently_read_books": "Kürzlich gelesene Bücher",
@@ -873,7 +873,7 @@
     "translation": "Sprache"
   },
   "library_navigation": {
-    "browse": "Stöbern",
+    "browse": "Durchsuchen",
     "browse_books": "Bücher",
     "browse_series": "Serien",
     "collections": "Sammlungen",
@@ -928,7 +928,7 @@
     "title": "Fehlende Titelbilder"
   },
   "navigation": {
-    "home": "Übersicht",
+    "home": "Startseite",
     "libraries": "Bibliotheken",
     "logout": "Abmelden",
     "try_new_ui": "Probier die neue UI aus"
@@ -944,7 +944,7 @@
   },
   "read_more": {
     "less": "Zeige weniger an",
-    "more": "Weiterlesen"
+    "more": "mehr lesen"
   },
   "readlist_import": {
     "row": {
@@ -1015,13 +1015,13 @@
   },
   "sort": {
     "books_count": "Anzahl der Bücher",
-    "date_added": "Hinzufügedatum",
+    "date_added": "Hinzugefügt am",
     "date_read": "Lesedatum",
     "date_updated": "Aktualisierungsdatum",
     "file_name": "Dateiname",
     "file_size": "Dateigröße",
     "folder_name": "Ordnername",
-    "name": "Nach Name sortiert",
+    "name": "Name",
     "number": "Nummer",
     "page_count": "Anzahl Seiten",
     "random": "Zufällige Sortierung",
