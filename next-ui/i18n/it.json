@@ -1,185 +1,1976 @@
 {
-    "c+hx0g": {
-        "defaultMessage": "Utenti"
-    },
-    "+6YDzS": {
-        "defaultMessage": "Nessun dato trovato"
-    },
-    "+8++PW": {
-        "defaultMessage": "Libreria creata: {library}"
-    },
-    "+mJGIg": {
-        "defaultMessage": "Percorso del file"
-    },
-    "+opDqu": {
-        "defaultMessage": "Salta a"
-    },
-    "+r8FCS": {
-        "defaultMessage": "Porta in ascolto del server"
-    },
-    "/YxHru": {
-        "defaultMessage": "Alcuni dei libri selezionati sono duplicati"
-    },
-    "0J3Gvp": {
-        "defaultMessage": "{count, plural, one {# series} other {# series} }"
-    },
-    "0JF9f5": {
-        "defaultMessage": "Riduci sidebar"
-    },
-    "0YG9GQ": {
-        "defaultMessage": "Ricordami"
-    },
-    "1+Ux6s": {
-        "defaultMessage": "Crea una libreria per iniziare"
-    },
-    "111Isd": {
-        "defaultMessage": "Ricostruisci l'indice di ricerca"
-    },
-    "18OKhZ": {
-        "defaultMessage": "Trova libri da convertire"
-    },
-    "2Bh8F2": {
-        "defaultMessage": "Ultimo"
-    },
-    "2p+JVw": {
-        "defaultMessage": "Questo server Komga non è ancora attivo, crea un account utente per accederci."
-    },
-    "3MUQYL": {
-        "defaultMessage": "Crea o aggiunti alle collezioni"
-    },
-    "3Pm2PO": {
-        "defaultMessage": "Nome file di destinazione"
-    },
-    "3T1ln7": {
-        "defaultMessage": "Cancella libreria"
-    },
-    "3b7v1+": {
-        "defaultMessage": "Importa i metadata del libro"
-    },
-    "3beD4X": {
-        "defaultMessage": "Cancella l' API Key"
-    },
-    "3rNj7/": {
-        "defaultMessage": "Clicca per confermare"
-    },
-    "4CX0cY": {
-        "defaultMessage": "Importa i metadati delle serie"
-    },
-    "4X3RAp": {
-        "defaultMessage": "{count, plural, one {# book} other {# books} }"
-    },
-    "4g2M9O": {
-        "defaultMessage": "Nessuna serie trovata"
-    },
-    "0sIkhg": {
-        "defaultMessage": "FILTERS"
-    },
-    "8CVWWg": {
-        "defaultMessage": "Cancella i file"
-    },
-    "8Om/o/": {
-        "defaultMessage": "Importa da una cartella"
-    },
-    "8hC76W": {
-        "defaultMessage": "Tasks"
-    },
-    "8jE3eP": {
-        "defaultMessage": "Il libro non può essere analizzato"
-    },
-    "90yqRq": {
-        "defaultMessage": "Aggiungi libreria"
-    },
-    "cAu/I6": {
-        "defaultMessage": "Pagine duplicate"
-    },
-    "app.locale-name": {
-        "defaultMessage": "Italiano"
-    },
-    "+TldjW": {
-        "defaultMessage": "Niente da mostrare"
-    },
-    "+jaADC": {
-        "defaultMessage": "Nome del file"
-    },
-    "+pyj1u": {
-        "defaultMessage": "Non disponibile"
-    },
-    "/5Gb4y": {
-        "defaultMessage": "Elimina"
-    },
-    "/NAG9i": {
-        "defaultMessage": "Nessun risultato"
-    },
-    "/bathK": {
-        "defaultMessage": "Consenti solo sotto"
-    },
-    "/lE31l": {
-        "defaultMessage": "Forza sync Kobo"
-    },
-    "/mhcNO": {
-        "defaultMessage": "Chiudi"
-    },
-    "02SRax": {
-        "defaultMessage": "Accedi"
-    },
-    "0ILHru": {
-        "defaultMessage": "OK"
-    },
-    "0UFr4y": {
-        "defaultMessage": "Tutto di"
-    },
-    "0eIJ3K": {
-        "defaultMessage": "Ordinamento manuale"
-    },
-    "0iT7Vf": {
-        "defaultMessage": "Metadati"
-    },
-    "0qntYX": {
-        "defaultMessage": "Calcola gli hash per le pagine"
-    },
-    "1E0Duw": {
-        "defaultMessage": "Dimensioni del file"
-    },
-    "1MAL38": {
-        "defaultMessage": "Libro duplicato"
-    },
-    "1VkZao": {
-        "defaultMessage": "Di più"
-    },
-    "2Sx0J4": {
-        "defaultMessage": "Pagina"
-    },
-    "2g7iOx": {
-        "defaultMessage": "Metriche"
-    },
-    "3DBPuv": {
-        "defaultMessage": "Scorri"
-    },
-    "3OgH93": {
-        "defaultMessage": "Serie"
-    },
-    "3W0jUi": {
-        "defaultMessage": "Escludi etichette"
-    },
-    "3qQjnw": {
-        "defaultMessage": "Lingua"
-    },
-    "4AKIbg": {
-        "defaultMessage": "Porta esterna di Kobo Sync"
-    },
-    "4PDVX2": {
-        "defaultMessage": "EPUB"
-    },
-    "4uqafX": {
-        "defaultMessage": "One-shot"
-    },
-    "8Dun/Y": {
-        "defaultMessage": "No"
-    },
-    "8kylzj": {
-        "defaultMessage": "Elimina"
-    },
-    "8xonXJ": {
-        "defaultMessage": "Analizza tutti i file nella libreria. L'analisi cattura le informazioni sui media. A seconda delle dimensioni della tua libreria, questo potrebbe richiedere molto tempo."
-    }
+  "+6YDzS": {
+    "defaultMessage": "Nessun dato trovato"
+  },
+  "+8++PW": {
+    "defaultMessage": "Libreria creata: {library}"
+  },
+  "+TldjW": {
+    "defaultMessage": "Niente da mostrare"
+  },
+  "+jaADC": {
+    "defaultMessage": "Nome del file"
+  },
+  "+mJGIg": {
+    "defaultMessage": "Percorso del file"
+  },
+  "+opDqu": {
+    "defaultMessage": "Salta a"
+  },
+  "+pyj1u": {
+    "defaultMessage": "Non disponibile"
+  },
+  "+r8FCS": {
+    "defaultMessage": "Porta in ascolto del server"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "Elimina"
+  },
+  "/8sSxS": {
+    "defaultMessage": "Necessario per ripristinare dal cestino e rilevare i file duplicati"
+  },
+  "/Acs82": {
+    "defaultMessage": "Crea o aggiungi alle liste di lettura"
+  },
+  "/NAG9i": {
+    "defaultMessage": "Nessun risultato"
+  },
+  "/YxHru": {
+    "defaultMessage": "Alcuni dei volumi selezionati sono duplicati"
+  },
+  "/bathK": {
+    "defaultMessage": "Consenti solo sotto"
+  },
+  "/lE31l": {
+    "defaultMessage": "Forza sync Kobo"
+  },
+  "/mhcNO": {
+    "defaultMessage": "Chiudi"
+  },
+  "02SRax": {
+    "defaultMessage": "Accedi"
+  },
+  "0ILHru": {
+    "defaultMessage": "OK"
+  },
+  "0J3Gvp": {
+    "defaultMessage": "{count, plural, one {# serie} other {# serie} }"
+  },
+  "0JF9f5": {
+    "defaultMessage": "Riduci sidebar"
+  },
+  "0MePSx": {
+    "defaultMessage": "Trascina qui per evidenziare una libreria"
+  },
+  "0UFr4y": {
+    "defaultMessage": "Tutto di"
+  },
+  "0XDhyR": {
+    "defaultMessage": "tema selettore"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "Ricordami"
+  },
+  "0eIJ3K": {
+    "defaultMessage": "Ordinamento manuale"
+  },
+  "0iT7Vf": {
+    "defaultMessage": "Metadati"
+  },
+  "0qntYX": {
+    "defaultMessage": "Calcola gli hash per le pagine"
+  },
+  "0sIkhg": {
+    "defaultMessage": "FILTRI"
+  },
+  "1+Ux6s": {
+    "defaultMessage": "Crea una libreria per iniziare"
+  },
+  "111Isd": {
+    "defaultMessage": "Ricostruisci l'indice di ricerca"
+  },
+  "14/Uh8": {
+    "defaultMessage": "Modalità di importazione"
+  },
+  "18OKhZ": {
+    "defaultMessage": "Trova volumi da convertire"
+  },
+  "1E0Duw": {
+    "defaultMessage": "Dimensioni del file"
+  },
+  "1MAL38": {
+    "defaultMessage": "Volume duplicato"
+  },
+  "1VkZao": {
+    "defaultMessage": "Di più"
+  },
+  "1bxWGd": {
+    "defaultMessage": "Modifica i metadati della serie"
+  },
+  "1qIfds": {
+    "defaultMessage": "In evidenza"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "Ultimo"
+  },
+  "2Sx0J4": {
+    "defaultMessage": "Pagina"
+  },
+  "2g7iOx": {
+    "defaultMessage": "Metriche"
+  },
+  "2p+JVw": {
+    "defaultMessage": "Questo server Komga non è ancora attivo, crea un account utente per accederci."
+  },
+  "3DBPuv": {
+    "defaultMessage": "Scorri"
+  },
+  "3J6FI8": {
+    "defaultMessage": "Modifica visualizzazione"
+  },
+  "3MUQYL": {
+    "defaultMessage": "Crea o aggiunti alle collezioni"
+  },
+  "3OgH93": {
+    "defaultMessage": "Serie"
+  },
+  "3Pm2PO": {
+    "defaultMessage": "Nome file di destinazione"
+  },
+  "3T1ln7": {
+    "defaultMessage": "Cancella libreria"
+  },
+  "3W0jUi": {
+    "defaultMessage": "Escludi etichette"
+  },
+  "3b7v1+": {
+    "defaultMessage": "Importa i metadati del volume"
+  },
+  "3beD4X": {
+    "defaultMessage": "Cancella l' API Key"
+  },
+  "3gimvl": {
+    "defaultMessage": "menu libreria"
+  },
+  "3qQjnw": {
+    "defaultMessage": "Lingua"
+  },
+  "3rNj7/": {
+    "defaultMessage": "Clicca per confermare"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Porta esterna di Kobo Sync"
+  },
+  "4CX0cY": {
+    "defaultMessage": "Importa i metadati delle serie"
+  },
+  "4PDVX2": {
+    "defaultMessage": "EPUB"
+  },
+  "4TEXni": {
+    "defaultMessage": "Tutti i collaboratori"
+  },
+  "4X3RAp": {
+    "defaultMessage": "{count, plural, one {# volume} other {# volumi} }"
+  },
+  "4g2M9O": {
+    "defaultMessage": "Nessuna serie trovata"
+  },
+  "4uqafX": {
+    "defaultMessage": "Autoconclusivo"
+  },
+  "4yDvPA": {
+    "defaultMessage": "Cancella filtri"
+  },
+  "5AAGkA": {
+    "defaultMessage": "Password"
+  },
+  "5JGOUU": {
+    "defaultMessage": "Analizza libreria"
+  },
+  "5Qha5m": {
+    "defaultMessage": "Ordinamento manuale"
+  },
+  "5WMvLb": {
+    "defaultMessage": "Epub"
+  },
+  "5b2A0u": {
+    "defaultMessage": "Verrai reindirizzato alla pagina iniziale"
+  },
+  "5cbjLE": {
+    "defaultMessage": "In lettura — #{number}"
+  },
+  "5rziSG": {
+    "defaultMessage": "Non disponibile"
+  },
+  "5tbu8Y": {
+    "defaultMessage": "Riprova"
+  },
+  "5zPpyT": {
+    "defaultMessage": "Fascia d’età"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "Server HTTP"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "Richiede riavvio per apportare le modifiche"
+  },
+  "6OXY1N": {
+    "defaultMessage": "Cartella degli albi autoconclusivi"
+  },
+  "6UXlVe": {
+    "defaultMessage": "Tag"
+  },
+  "6WDISV": {
+    "defaultMessage": "Pagina non trovata"
+  },
+  "6nCIPn": {
+    "defaultMessage": "Tipo"
+  },
+  "70/wK4": {
+    "defaultMessage": "Crea libreria"
+  },
+  "700A3r": {
+    "defaultMessage": "Volume"
+  },
+  "7M1pUf": {
+    "defaultMessage": "Svuota cestino"
+  },
+  "7hwFJo": {
+    "defaultMessage": "Sceneggiatore"
+  },
+  "7z91nm": {
+    "defaultMessage": "Cronologia"
+  },
+  "8/BXfN": {
+    "defaultMessage": "Tutti"
+  },
+  "81BMAQ": {
+    "defaultMessage": "Importa metadati del volume"
+  },
+  "87q6WX": {
+    "defaultMessage": "Nessuno"
+  },
+  "8CVWWg": {
+    "defaultMessage": "Cancella i file"
+  },
+  "8Dun/Y": {
+    "defaultMessage": "No"
+  },
+  "8NDqor": {
+    "defaultMessage": "Letterista"
+  },
+  "8Om/o/": {
+    "defaultMessage": "Importa da una cartella"
+  },
+  "8P7Yn+": {
+    "defaultMessage": "Classificazione per età"
+  },
+  "8hC76W": {
+    "defaultMessage": "Attività"
+  },
+  "8jE3eP": {
+    "defaultMessage": "Il volume non può essere analizzato"
+  },
+  "8kylzj": {
+    "defaultMessage": "Elimina"
+  },
+  "8xonXJ": {
+    "defaultMessage": "Analizza tutti i file nella libreria. L'analisi cattura le informazioni sui media. A seconda delle dimensioni della tua libreria, questo potrebbe richiedere molto tempo."
+  },
+  "9/1/c7": {
+    "defaultMessage": "Genera miniatura del volume"
+  },
+  "90yqRq": {
+    "defaultMessage": "Aggiungi libreria"
+  },
+  "9TJRkm": {
+    "defaultMessage": "Importa metadati della serie"
+  },
+  "9VuyZU": {
+    "defaultMessage": "Prova a scansionare un’altra cartella"
+  },
+  "9XDmYO": {
+    "defaultMessage": "Elimina Utente"
+  },
+  "9oA9gw": {
+    "defaultMessage": "Non in evidenza"
+  },
+  "AEaKHC": {
+    "defaultMessage": "Trova le miniature dei volumi da rigenerare"
+  },
+  "AJa6Tq": {
+    "defaultMessage": "Nessun dato"
+  },
+  "ALGXT9": {
+    "defaultMessage": "Duplica"
+  },
+  "AeA9Ka": {
+    "defaultMessage": "Nessuna restrizione"
+  },
+  "Ai7bBV": {
+    "defaultMessage": "{count, plural, one {# pagina} other {# pagine} }"
+  },
+  "AjBiEw": {
+    "defaultMessage": "Aggiungi il volume al titolo della serie"
+  },
+  "AjWlka": {
+    "defaultMessage": "Nome utente o password non validi"
+  },
+  "B2wcN0": {
+    "defaultMessage": "Importa ISBN dal codice a barre"
+  },
+  "B48EcS": {
+    "defaultMessage": "Cartella superiore"
+  },
+  "BQmPch": {
+    "defaultMessage": "Elimina volume"
+  },
+  "Bewgy6": {
+    "defaultMessage": "Copertina della serie"
+  },
+  "Bl30xt": {
+    "defaultMessage": "Aggiungi un utente"
+  },
+  "BpzKDW": {
+    "defaultMessage": "Verranno eliminati più elementi.<b>Questa operazione non può essere annullata.</b>"
+  },
+  "BtDfUf": {
+    "defaultMessage": "Sovrascrivi"
+  },
+  "ByRsV9": {
+    "defaultMessage": "Necessario affinché il WebReader rilevi le pagine in formato orizzontale"
+  },
+  "C0paz4": {
+    "defaultMessage": "Analizza volume"
+  },
+  "C1bGrS": {
+    "defaultMessage": "Mostra informazioni"
+  },
+  "C9LkYh": {
+    "defaultMessage": "Commento"
+  },
+  "CE7pPQ": {
+    "defaultMessage": "Percorso del file"
+  },
+  "CGRz8d": {
+    "defaultMessage": "Il file del volume è stato modificato e dovrà essere analizzato nuovamente"
+  },
+  "CJaS7j": {
+    "defaultMessage": "Cartella principale della libreria"
+  },
+  "CMuDjt": {
+    "defaultMessage": "Dettagli attività"
+  },
+  "COn5A6": {
+    "defaultMessage": "Risorse multimediali locali"
+  },
+  "CPMLrI": {
+    "defaultMessage": "Il volume deve essere prima analizzato"
+  },
+  "CUxhzL": {
+    "defaultMessage": "Permessi"
+  },
+  "CVk1J6": {
+    "defaultMessage": "Errore"
+  },
+  "CY8sfH": {
+    "defaultMessage": "Scansiona tutte le librerie"
+  },
+  "CkUPZe": {
+    "defaultMessage": "Il formato del file del volume non è supportato"
+  },
+  "CpNtjm": {
+    "defaultMessage": "Data e ora"
+  },
+  "CvsH7/": {
+    "defaultMessage": "Nessuna attività recente"
+  },
+  "CwteMk": {
+    "defaultMessage": "Svuota il cestino per tutte le librerie"
+  },
+  "CxuwFR": {
+    "defaultMessage": "Tipo di file non supportato"
+  },
+  "D/yypj": {
+    "defaultMessage": "<ul><li>Questa operazione eliminerà tutta la cronologia di sincronizzazione per questa chiave API.</li><li>Il tuo Kobo sincronizzerà nuovamente tutto alla prossima sincronizzazione.</li></ul>"
+  },
+  "DK4PsD": {
+    "defaultMessage": "Volumi della serie"
+  },
+  "DNVnmS": {
+    "defaultMessage": "Nome della cartella"
+  },
+  "DNmepU": {
+    "defaultMessage": "Abilita questa opzione se utilizzi KOReader Sync"
+  },
+  "DfakWW": {
+    "defaultMessage": "Elimina i file"
+  },
+  "Dn4qvV": {
+    "defaultMessage": "Ripristina impostazioni predefinite"
+  },
+  "DwDa04": {
+    "defaultMessage": "Intervallo di scansione"
+  },
+  "DxtDpt": {
+    "defaultMessage": "Analisi dei supporti"
+  },
+  "E0cw62": {
+    "defaultMessage": "Collezione aggiornata: {collection}"
+  },
+  "E1kQun": {
+    "defaultMessage": "Esplora"
+  },
+  "E4ssEg": {
+    "defaultMessage": "Converti volume"
+  },
+  "E5ZMyt": {
+    "defaultMessage": "Analizza"
+  },
+  "EIYfj+": {
+    "defaultMessage": "Numero"
+  },
+  "ELttw/": {
+    "defaultMessage": "Svuota cestino"
+  },
+  "EMhLEN": {
+    "defaultMessage": "Sposta i file"
+  },
+  "EOrAHc": {
+    "defaultMessage": "PDF"
+  },
+  "EabQ38": {
+    "defaultMessage": "Ricordami"
+  },
+  "EzOmuX": {
+    "defaultMessage": "Creato"
+  },
+  "FLqm9f": {
+    "defaultMessage": "Aiutaci a tradurre"
+  },
+  "FSJoDl": {
+    "defaultMessage": "Seleziona una serie per visualizzarne i volumi"
+  },
+  "FVq9w5": {
+    "defaultMessage": "Mylar (series.json)"
+  },
+  "FZXkIP": {
+    "defaultMessage": "Traduttore"
+  },
+  "FpwJlU": {
+    "defaultMessage": "Salva modifiche"
+  },
+  "G/T8/2": {
+    "defaultMessage": "Annulla"
+  },
+  "G25PY/": {
+    "defaultMessage": "Cerca"
+  },
+  "G7quju": {
+    "defaultMessage": "Annunci"
+  },
+  "G93mS3": {
+    "defaultMessage": "Mostra tutto"
+  },
+  "GCwZB2": {
+    "defaultMessage": "Scansiona i file della libreria"
+  },
+  "GnHrCd": {
+    "defaultMessage": "Usa copertine locali"
+  },
+  "GyRV+/": {
+    "defaultMessage": "Dovresti abilitare questa opzione se la libreria è ospitata su Google Drive"
+  },
+  "GySX8C": {
+    "defaultMessage": "Svuota il cestino in automatico dopo ogni scansione"
+  },
+  "H+LXXE": {
+    "defaultMessage": "Trascina qui per rimuovere la libreria dagli elementi in evidenza"
+  },
+  "H2B6uF": {
+    "defaultMessage": "Scegli una serie"
+  },
+  "H4Kte4": {
+    "defaultMessage": "Titolo"
+  },
+  "HA4xOM": {
+    "defaultMessage": "Aggiorna metadati del volume"
+  },
+  "HHvDPs": {
+    "defaultMessage": "E-mail"
+  },
+  "HMbMJF": {
+    "defaultMessage": "Data e ora"
+  },
+  "HOBFqq": {
+    "defaultMessage": "Errore"
+  },
+  "HXms0S": {
+    "defaultMessage": "Seleziona un elemento o creane uno"
+  },
+  "HZ/e6n": {
+    "defaultMessage": "Prova a modificare i filtri"
+  },
+  "HZqgan": {
+    "defaultMessage": "Chiudi"
+  },
+  "HaWCi3": {
+    "defaultMessage": "Impostazioni"
+  },
+  "HdsnFp": {
+    "defaultMessage": "Raccolta eliminata: {collection}"
+  },
+  "Hl9H/B": {
+    "defaultMessage": "Contenuti"
+  },
+  "Hv7lqq": {
+    "defaultMessage": "Griglia"
+  },
+  "Hyz5su": {
+    "defaultMessage": "Importa volume"
+  },
+  "I9L5Ag": {
+    "defaultMessage": "ORDINA"
+  },
+  "I9ub/l": {
+    "defaultMessage": "Duplicati noti"
+  },
+  "IE0XzE": {
+    "defaultMessage": "Elimina"
+  },
+  "IEUgyy": {
+    "defaultMessage": "File esistente"
+  },
+  "II5EFN": {
+    "defaultMessage": "Disegnatore"
+  },
+  "IIqDdQ": {
+    "defaultMessage": "Lista di lettura aggiornata: {readlist}"
+  },
+  "IXhDH6": {
+    "defaultMessage": "Pagina duplicata"
+  },
+  "InW6ko": {
+    "defaultMessage": "Traduzioni"
+  },
+  "IpvWiZ": {
+    "defaultMessage": "Server"
+  },
+  "J+H9cC": {
+    "defaultMessage": "Elimina file"
+  },
+  "J44THG": {
+    "defaultMessage": "Stato"
+  },
+  "J8rAqm": {
+    "defaultMessage": "Anno di pubblicazione"
+  },
+  "JGOfZq": {
+    "defaultMessage": "Utenti"
+  },
+  "JHaKYw": {
+    "defaultMessage": "Seleziona Tutto"
+  },
+  "JNBONk": {
+    "defaultMessage": "Elenco"
+  },
+  "JbF1nK": {
+    "defaultMessage": "Password modificata per l’utente: {email}"
+  },
+  "JwBlXP": {
+    "defaultMessage": "Apri"
+  },
+  "K+fQO2": {
+    "defaultMessage": "Scasiona file di questo tipo"
+  },
+  "K40g4r": {
+    "defaultMessage": "Modifica utente"
+  },
+  "KBLD9U": {
+    "defaultMessage": "Classificazione per età"
+  },
+  "Kie8HQ": {
+    "defaultMessage": "Volume"
+  },
+  "Ku7NJ+": {
+    "defaultMessage": "Impossibile trovare i file della serie"
+  },
+  "LD5j8J": {
+    "defaultMessage": "Serie richieste"
+  },
+  "LFf8QB": {
+    "defaultMessage": "Elimina"
+  },
+  "LM4LL9": {
+    "defaultMessage": "Aggiorna le copertine locali della serie"
+  },
+  "LaMAsc": {
+    "defaultMessage": "Attività di autenticazione"
+  },
+  "LaxrEO": {
+    "defaultMessage": "Le password devono essere identiche"
+  },
+  "LjqS9+": {
+    "defaultMessage": "Esiste già una lista di lettura con quel nome"
+  },
+  "Lto2Lg": {
+    "defaultMessage": "Deve iniziare con '/', non terminare con '/-_', e contenere solo '/-_a-z0-9'"
+  },
+  "MC2JtF": {
+    "defaultMessage": "Tutte"
+  },
+  "MEWT0D": {
+    "defaultMessage": "Riassunto dal fumetto {number}:"
+  },
+  "MKs9N+": {
+    "defaultMessage": "Panoramica"
+  },
+  "MoOECu": {
+    "defaultMessage": "Importa metadati della serie"
+  },
+  "MvwDsn": {
+    "defaultMessage": "Conosciute"
+  },
+  "N7+QXi": {
+    "defaultMessage": "Importa"
+  },
+  "N9WFH4": {
+    "defaultMessage": "Salva"
+  },
+  "NArFTo": {
+    "defaultMessage": "Chiave API eliminata: {apiKeyComment}"
+  },
+  "NKVL81": {
+    "defaultMessage": "Autoconclusivo"
+  },
+  "NN7kAK": {
+    "defaultMessage": "Sincronizzazione Kobo forzata: {apiKeyComment}"
+  },
+  "NasBHg": {
+    "defaultMessage": "Data lettura"
+  },
+  "Nb0V0p": {
+    "defaultMessage": "Copertine mancanti"
+  },
+  "NhIart": {
+    "defaultMessage": "Elimina i file del volume"
+  },
+  "NpjqFA": {
+    "defaultMessage": "Prova a modificare i filtri"
+  },
+  "NruW40": {
+    "defaultMessage": "Editore"
+  },
+  "NwK2Kv": {
+    "defaultMessage": "Tag"
+  },
+  "O/3awV": {
+    "defaultMessage": "Analisi"
+  },
+  "O4Nnj5": {
+    "defaultMessage": "Volume {number}"
+  },
+  "O9hZBS": {
+    "defaultMessage": "Dimensione copertina"
+  },
+  "OLqBQc": {
+    "defaultMessage": "Editore"
+  },
+  "OUyleX": {
+    "defaultMessage": "Aggiorna tutti i metadati"
+  },
+  "OW1/zn": {
+    "defaultMessage": "Nessuna attività recente"
+  },
+  "OZSDCE": {
+    "defaultMessage": "In evidenza"
+  },
+  "OgM2Q2": {
+    "defaultMessage": "Aggiorna i metadati delle serie"
+  },
+  "Oj3xqB": {
+    "defaultMessage": "Lista di lettura eliminata: {readlist}"
+  },
+  "OxqfKF": {
+    "defaultMessage": "Scansione approfondita"
+  },
+  "P+WI/K": {
+    "defaultMessage": "Pagina duplicata"
+  },
+  "P8Ox+D": {
+    "defaultMessage": "Metadati del volume aggiornati: {book}"
+  },
+  "PTr5Wc": {
+    "defaultMessage": "Verifica che il server Komga sia in esecuzione"
+  },
+  "PguYSD": {
+    "defaultMessage": "Sovrascrivi la lista di lettura esistente"
+  },
+  "Pj29A+": {
+    "defaultMessage": "Necessario per rilevare le pagine duplicate"
+  },
+  "Pp3+1S": {
+    "defaultMessage": "Stato"
+  },
+  "PvKF7E": {
+    "defaultMessage": "Libreria eliminata: {library}"
+  },
+  "QALnuE": {
+    "defaultMessage": "Tipo di file"
+  },
+  "QIr0z7": {
+    "defaultMessage": "E-mail"
+  },
+  "QM5+gW": {
+    "defaultMessage": "Numero di eliminazioni"
+  },
+  "Qxij/I": {
+    "defaultMessage": "Pagina eliminata"
+  },
+  "REmxIM": {
+    "defaultMessage": "Modificato"
+  },
+  "RHJo8j": {
+    "defaultMessage": "Importa"
+  },
+  "RMHfEo": {
+    "defaultMessage": "Uno qualsiasi di"
+  },
+  "ROFRn4": {
+    "defaultMessage": "Genera"
+  },
+  "RR+XGR": {
+    "defaultMessage": "Questa pagina è in costruzione."
+  },
+  "RTNaxB": {
+    "defaultMessage": "Espandi la barra laterale"
+  },
+  "Rm52xk": {
+    "defaultMessage": "Benvenuto in Komga"
+  },
+  "RwuMl5": {
+    "defaultMessage": "Ripara automaticamente le estensioni dei file errate"
+  },
+  "S39lnB": {
+    "defaultMessage": "Valutazione per anno"
+  },
+  "SIfmpC": {
+    "defaultMessage": "Seleziona una serie"
+  },
+  "STdfYg": {
+    "defaultMessage": "Analizza le dimensioni delle pagine"
+  },
+  "SZHxy4": {
+    "defaultMessage": "Seleziona un volume"
+  },
+  "Sj0HXz": {
+    "defaultMessage": "Consenti solo etichette"
+  },
+  "SqZoei": {
+    "defaultMessage": "Seleziona una serie"
+  },
+  "Ss08kC": {
+    "defaultMessage": "{count} elementi"
+  },
+  "SuegoE": {
+    "defaultMessage": "Ordinamento automatico"
+  },
+  "T3Ofay": {
+    "defaultMessage": "Letto il {readDate}"
+  },
+  "TAVSfO": {
+    "defaultMessage": "Numero di volumi"
+  },
+  "TG7prC": {
+    "defaultMessage": "Data di aggiunta"
+  },
+  "TPX4qo": {
+    "defaultMessage": "Tag"
+  },
+  "TUxJCd": {
+    "defaultMessage": "Scansiona all'avvio dell'applicazione"
+  },
+  "ThHjN4": {
+    "defaultMessage": "Serie"
+  },
+  "Thjcar": {
+    "defaultMessage": "Tag dei volumi"
+  },
+  "ToD0+o": {
+    "defaultMessage": "E-mail"
+  },
+  "TwB29u": {
+    "defaultMessage": "Imposta solo in caso di problemi di sincronizzazione con copertine e download"
+  },
+  "U3Uo3q": {
+    "defaultMessage": "Password"
+  },
+  "UaD47n": {
+    "defaultMessage": "Rigenera la chiave «ricordami»"
+  },
+  "UfbIyV": {
+    "defaultMessage": "Collegamenti"
+  },
+  "Uj479p": {
+    "defaultMessage": "Data di uscita"
+  },
+  "UoaxO7": {
+    "defaultMessage": "Il volume verrà aggiornato"
+  },
+  "Usohru": {
+    "defaultMessage": "Sfoglia"
+  },
+  "Uuu6fQ": {
+    "defaultMessage": "Nessun risultato"
+  },
+  "UvhIIT": {
+    "defaultMessage": "Librerie condivise"
+  },
+  "V/OYJE": {
+    "defaultMessage": "Utente eliminato: {email}"
+  },
+  "V3wgcu": {
+    "defaultMessage": "Pagina duplicata"
+  },
+  "VHe28r": {
+    "defaultMessage": "Data di aggiornamento"
+  },
+  "VP+GhR": {
+    "defaultMessage": "Genera"
+  },
+  "VQ/hT4": {
+    "defaultMessage": "ISBN"
+  },
+  "VcueWO": {
+    "defaultMessage": "Verrà utilizzato l'elemento «SeriesGroup»"
+  },
+  "VhMXcu": {
+    "defaultMessage": "{total, plural, one {{count} / # volume} other {{count} / # volumi} }"
+  },
+  "Vpmsx0": {
+    "defaultMessage": "Volumi della serie"
+  },
+  "VtC7Ce": {
+    "defaultMessage": "Redattore"
+  },
+  "VvjZEl": {
+    "defaultMessage": "Nessun volume trovato"
+  },
+  "Vwpr+D": {
+    "defaultMessage": "Casuale"
+  },
+  "W3BUf7": {
+    "defaultMessage": "Ho capito"
+  },
+  "WADecv": {
+    "defaultMessage": "Installato"
+  },
+  "WLfi1+": {
+    "defaultMessage": "{count, plural, one {# volume} other {# volumi} }"
+  },
+  "WLwQG8": {
+    "defaultMessage": "Nessuna chiave API ancora creata"
+  },
+  "WNY0pu": {
+    "defaultMessage": "La versione più recente di Komga è già installata"
+  },
+  "WPxleH": {
+    "defaultMessage": "I file del volume verranno eliminati<ul><li>Il file del volume verrà eliminato dal disco.</li><li>I file associati al volume verranno eliminati dal disco.</li><li>Il volume verrà eliminato insieme ai metadati e ai progressi di lettura.</li></ul><b>Questa operazione non può essere annullata.</b>"
+  },
+  "WVblsI": {
+    "defaultMessage": "Numero di pagine"
+  },
+  "WY7aQf": {
+    "defaultMessage": "Spazio risparmiato"
+  },
+  "WhasCZ": {
+    "defaultMessage": "Nuova password"
+  },
+  "Wivz5J": {
+    "defaultMessage": "Chiudi"
+  },
+  "Wlzzv8": {
+    "defaultMessage": "Numero richiesto"
+  },
+  "X/Z8x+": {
+    "defaultMessage": "Assicurati di copiare subito la tua chiave API. Non potrai visualizzarla di nuovo!"
+  },
+  "X47Js+": {
+    "defaultMessage": "Serie"
+  },
+  "X80giU": {
+    "defaultMessage": "Aggiungi"
+  },
+  "XDV3Si": {
+    "defaultMessage": "Altro"
+  },
+  "XM8VQH": {
+    "defaultMessage": "Azione"
+  },
+  "XR+P68": {
+    "defaultMessage": "Lingua"
+  },
+  "XRbUyd": {
+    "defaultMessage": "Stato di lettura"
+  },
+  "XXr6pI": {
+    "defaultMessage": "Dimensione pagina"
+  },
+  "XZ5lw4": {
+    "defaultMessage": "Riuscita"
+  },
+  "Xbf2fj": {
+    "defaultMessage": "Forza l'ora di modifica della directory"
+  },
+  "XnidLu": {
+    "defaultMessage": "Digita <b>{validateText}</b> per confermare."
+  },
+  "XuqK4C": {
+    "defaultMessage": "Duplicati sconosciuti"
+  },
+  "Xx+ITC": {
+    "defaultMessage": "La mia attività"
+  },
+  "Xxu514": {
+    "defaultMessage": "Elimina i file della serie"
+  },
+  "Y/fJj5": {
+    "defaultMessage": "Dimensione file"
+  },
+  "Y0cG3G": {
+    "defaultMessage": "La chiave API verrà eliminata da questo server.<ul><li>Le applicazioni o gli script che utilizzano questa chiave API non potranno più accedere all'API di Komga.</li><li>L'attività di autenticazione per questa chiave API verrà eliminata definitivamente.</li></ul><b>Questa azione non può essere annullata.</b>"
+  },
+  "Y4xJBN": {
+    "defaultMessage": "Ultima modifica"
+  },
+  "Y6VlM9": {
+    "defaultMessage": "Elenco di lettura"
+  },
+  "Y7Y2T0": {
+    "defaultMessage": "Leggi"
+  },
+  "Y8SsFO": {
+    "defaultMessage": "Leggi"
+  },
+  "YHxouG": {
+    "defaultMessage": "Importazione richiesta"
+  },
+  "YVQ49g": {
+    "defaultMessage": "Modifica raccolta"
+  },
+  "YbkrN9": {
+    "defaultMessage": "IP"
+  },
+  "Yf4DJ2": {
+    "defaultMessage": "Interfaccia utente"
+  },
+  "Ym48fa": {
+    "defaultMessage": "Nessun evento recente"
+  },
+  "Z/EY89": {
+    "defaultMessage": "Errore di rete"
+  },
+  "Z42XVQ": {
+    "defaultMessage": "Calcola hash del file del volume (Koreader)"
+  },
+  "Z5hsZ9": {
+    "defaultMessage": "{count} pagine rimanenti"
+  },
+  "ZE3XpF": {
+    "defaultMessage": "Nessuna sezione configurata"
+  },
+  "ZEbDUo": {
+    "defaultMessage": "Completato"
+  },
+  "ZWFPAg": {
+    "defaultMessage": "Le password devono essere identiche"
+  },
+  "ZZmdmI": {
+    "defaultMessage": "{pagesCount} pagine"
+  },
+  "ZfDKy4": {
+    "defaultMessage": "Trova volumi con hash delle pagine mancanti"
+  },
+  "Zh8AOV": {
+    "defaultMessage": "Modifica utente"
+  },
+  "ZnjyI3": {
+    "defaultMessage": "Mostra meno"
+  },
+  "Zozcfh": {
+    "defaultMessage": "Fonte"
+  },
+  "a5MYiP": {
+    "defaultMessage": "Copertine"
+  },
+  "a5jT6x": {
+    "defaultMessage": "Elimina lista di lettura"
+  },
+  "aDFZOW": {
+    "defaultMessage": "E-mail"
+  },
+  "aOiU5f": {
+    "defaultMessage": "Libreria aggiornata: {library}"
+  },
+  "aSDxrt": {
+    "defaultMessage": "File della serie eliminati: {series}"
+  },
+  "aU1qcP": {
+    "defaultMessage": "Elimina"
+  },
+  "aYalqk": {
+    "defaultMessage": "Seleziona alcuni volumi"
+  },
+  "afXGQS": {
+    "defaultMessage": "Directory radice"
+  },
+  "am3r7e": {
+    "defaultMessage": "Aggiorna libreria"
+  },
+  "ap/Lnw": {
+    "defaultMessage": "Collega fisicamente/Copia file"
+  },
+  "app.error.ERR_1000": {
+    "defaultMessage": "Impossibile accedere al file durante l'analisi"
+  },
+  "app.error.ERR_1001": {
+    "defaultMessage": "Tipo di media non supportato"
+  },
+  "app.error.ERR_1002": {
+    "defaultMessage": "Gli archivi RAR crittografati non sono supportati"
+  },
+  "app.error.ERR_1003": {
+    "defaultMessage": "Gli archivi RAR solidi non sono supportati"
+  },
+  "app.error.ERR_1004": {
+    "defaultMessage": "Gli archivi RAR multivolume non sono supportati"
+  },
+  "app.error.ERR_1005": {
+    "defaultMessage": "Errore sconosciuto durante l’analisi del volume"
+  },
+  "app.error.ERR_1006": {
+    "defaultMessage": "Il volume non contiene pagine"
+  },
+  "app.error.ERR_1007": {
+    "defaultMessage": "Non è stato possibile analizzare alcune voci"
+  },
+  "app.error.ERR_1008": {
+    "defaultMessage": "Errore sconosciuto durante il recupero delle voci del volume"
+  },
+  "app.error.ERR_1009": {
+    "defaultMessage": "Esiste già una lista di lettura con questo nome"
+  },
+  "app.error.ERR_1015": {
+    "defaultMessage": "Errore durante la deserializzazione del CBL di ComicRack"
+  },
+  "app.error.ERR_1016": {
+    "defaultMessage": "La cartella non è accessibile o non è una cartella"
+  },
+  "app.error.ERR_1017": {
+    "defaultMessage": "Non è possibile analizzare una cartella che fa parte di una biblioteca esistente"
+  },
+  "app.error.ERR_1018": {
+    "defaultMessage": "File non trovato"
+  },
+  "app.error.ERR_1019": {
+    "defaultMessage": "Non è possibile importare un file che fa parte di una libreria esistente"
+  },
+  "app.error.ERR_1020": {
+    "defaultMessage": "Il volume da aggiornare non appartiene alla serie specificata"
+  },
+  "app.error.ERR_1021": {
+    "defaultMessage": "Il file di destinazione esiste già"
+  },
+  "app.error.ERR_1022": {
+    "defaultMessage": "Non è stato possibile analizzare il volume appena importato"
+  },
+  "app.error.ERR_1023": {
+    "defaultMessage": "Il volume è già presente nella lista di lettura"
+  },
+  "app.error.ERR_1024": {
+    "defaultMessage": "Errore di accesso OAuth2: nessun attributo email"
+  },
+  "app.error.ERR_1025": {
+    "defaultMessage": "Errore di accesso OAuth2: nessun utente locale con questa email"
+  },
+  "app.error.ERR_1026": {
+    "defaultMessage": "Errore di accesso OpenID Connect: email non verificata"
+  },
+  "app.error.ERR_1027": {
+    "defaultMessage": "Errore di accesso OpenID Connect: nessun attributo email_verified"
+  },
+  "app.error.ERR_1028": {
+    "defaultMessage": "Errore di accesso OpenID Connect: nessun attributo email"
+  },
+  "app.error.ERR_1029": {
+    "defaultMessage": "Il CBL di ComicRack non contiene alcun elemento Book"
+  },
+  "app.error.ERR_1030": {
+    "defaultMessage": "ComicRack CBL non contiene alcun elemento Name"
+  },
+  "app.error.ERR_1031": {
+    "defaultMessage": "Il volume ComicRack CBL non contiene la serie o il numero"
+  },
+  "app.error.ERR_1032": {
+    "defaultMessage": "Il file EPUB ha un tipo di supporto errato"
+  },
+  "app.error.ERR_1033": {
+    "defaultMessage": "Alcune voci sono mancanti"
+  },
+  "app.error.ERR_1034": {
+    "defaultMessage": "Esiste già una chiave API con questo commento"
+  },
+  "app.error.ERR_1035": {
+    "defaultMessage": "Errore durante il recupero dell’indice dell’EPUB"
+  },
+  "app.error.ERR_1036": {
+    "defaultMessage": "Errore durante il recupero dei riferimenti dell’EPUB"
+  },
+  "app.error.ERR_1037": {
+    "defaultMessage": "Errore durante il recupero dell’elenco delle pagine dell’EPUB"
+  },
+  "app.error.ERR_1038": {
+    "defaultMessage": "Errore durante il recupero delle pagine DIVINA dell’EPUB"
+  },
+  "app.error.ERR_1039": {
+    "defaultMessage": "Errore durante il recupero delle posizioni dell’EPUB"
+  },
+  "app.locale-name": {
+    "defaultMessage": "Italiano"
+  },
+  "app.user-create-dialog.all_libraries": {
+    "defaultMessage": "Tutte le librerie"
+  },
+  "b1hvh9": {
+    "defaultMessage": "Converti automaticamente i file CBR in CBZ"
+  },
+  "b4J0RU": {
+    "defaultMessage": "In costruzione"
+  },
+  "bCFD9B": {
+    "defaultMessage": "Impaginato"
+  },
+  "bDNZqj": {
+    "defaultMessage": "Modifica lista di lettura"
+  },
+  "bDNv5+": {
+    "defaultMessage": "Qualsiasi"
+  },
+  "bFoCHJ": {
+    "defaultMessage": "Nome del file di destinazione"
+  },
+  "bN2VbA": {
+    "defaultMessage": "Esclusioni delle cartelle"
+  },
+  "bOUy3X": {
+    "defaultMessage": "Volume"
+  },
+  "bSoeY6": {
+    "defaultMessage": "Nome di destinazione"
+  },
+  "bk1tX8": {
+    "defaultMessage": "La libreria verrà eliminata da questo server.<ul><li>Le serie e i volumi verranno eliminati, insieme ai relativi metadati e ai progressi di lettura.</li><li>I file multimediali non verranno eliminati dal disco.</li></ul><b>Questa operazione non può essere annullata.</b>"
+  },
+  "bqoEfm": {
+    "defaultMessage": "Calcola l'hash delle pagine del volume"
+  },
+  "bzY8FH": {
+    "defaultMessage": "Cerca"
+  },
+  "bzn96A": {
+    "defaultMessage": "Crea libreria"
+  },
+  "c+hx0g": {
+    "defaultMessage": "Utenti"
+  },
+  "cAu/I6": {
+    "defaultMessage": "Pagine duplicate"
+  },
+  "cGOJnB": {
+    "defaultMessage": "{count, plural, one {# volume} other {# volumi} }"
+  },
+  "cIM3eJ": {
+    "defaultMessage": "Riprendi"
+  },
+  "cM9FuW": {
+    "defaultMessage": "Scegli una serie"
+  },
+  "cWVIRm": {
+    "defaultMessage": "User Agent"
+  },
+  "ccAMWS": {
+    "defaultMessage": "Documentazione"
+  },
+  "ccDES8": {
+    "defaultMessage": "File dei volumi eliminati: {book}"
+  },
+  "crClNV": {
+    "defaultMessage": "Copertina"
+  },
+  "cyQk6S": {
+    "defaultMessage": "Raccolte"
+  },
+  "d2J/J/": {
+    "defaultMessage": "Scegli"
+  },
+  "d8lMZe": {
+    "defaultMessage": "Crea utente"
+  },
+  "dHyAgE": {
+    "defaultMessage": "Cambia password"
+  },
+  "dK/kHO": {
+    "defaultMessage": "Commento del file multimediale"
+  },
+  "dLE2PW": {
+    "defaultMessage": "Nessuna attività"
+  },
+  "dQ9kx9": {
+    "defaultMessage": "Selettore della lingua"
+  },
+  "dSlkbn": {
+    "defaultMessage": "Comportamento generale della scansione"
+  },
+  "da/wb0": {
+    "defaultMessage": "Segna tutti come letti"
+  },
+  "ddthL2": {
+    "defaultMessage": "Conferma"
+  },
+  "dfslqC": {
+    "defaultMessage": "I file della serie verranno eliminati<ul><li>I file multimediali dei volumi verranno eliminati dal disco.</li><li>Le serie e i volumi verranno eliminati, insieme ai relativi metadati e ai progressi di lettura.</li></ul><b>Questa operazione non può essere annullata.</b>"
+  },
+  "dipMGb": {
+    "defaultMessage": "Crea"
+  },
+  "dx9s7S": {
+    "defaultMessage": "Creata"
+  },
+  "e8DJzj": {
+    "defaultMessage": "Tema"
+  },
+  "eDA9Gm": {
+    "defaultMessage": "Dimensione della copertina generata"
+  },
+  "eRJOa6": {
+    "defaultMessage": "URL del server"
+  },
+  "eW3fXu": {
+    "defaultMessage": "File duplicati"
+  },
+  "efspoY": {
+    "defaultMessage": "Tabella"
+  },
+  "egrxd6": {
+    "defaultMessage": "Utente creato: {email}"
+  },
+  "enum.MediaProfile.DIVINA": {
+    "defaultMessage": "DiViNa"
+  },
+  "enum.MediaProfile.EPUB": {
+    "defaultMessage": "Epub"
+  },
+  "enum.MediaProfile.PDF": {
+    "defaultMessage": "Pdf"
+  },
+  "enum.MediaStatus.ERROR": {
+    "defaultMessage": "Errore"
+  },
+  "enum.MediaStatus.OUTDATED": {
+    "defaultMessage": "Scaduto"
+  },
+  "enum.MediaStatus.READY": {
+    "defaultMessage": "Pronto"
+  },
+  "enum.MediaStatus.UNKNOWN": {
+    "defaultMessage": "Sconosciuto"
+  },
+  "enum.MediaStatus.UNSUPPORTED": {
+    "defaultMessage": "Non supportato"
+  },
+  "enum.OverviewSection.keep_reading": {
+    "defaultMessage": "Continua a leggere"
+  },
+  "enum.OverviewSection.on_deck": {
+    "defaultMessage": "Primo Piano"
+  },
+  "enum.OverviewSection.recently_added_books": {
+    "defaultMessage": "Volumi aggiunti di recente"
+  },
+  "enum.OverviewSection.recently_added_series": {
+    "defaultMessage": "Serie aggiunte di recente"
+  },
+  "enum.OverviewSection.recently_read_books": {
+    "defaultMessage": "Volumi letti di recente"
+  },
+  "enum.OverviewSection.recently_released_books": {
+    "defaultMessage": "Volumi pubblicati di recente"
+  },
+  "enum.OverviewSection.recently_updated_series": {
+    "defaultMessage": "Serie aggiornate di recente"
+  },
+  "enum.ReadStatus.IN_PROGRESS": {
+    "defaultMessage": "In corso"
+  },
+  "enum.ReadStatus.READ": {
+    "defaultMessage": "Letto"
+  },
+  "enum.ReadStatus.UNREAD": {
+    "defaultMessage": "Non letto"
+  },
+  "enum.ReadingDirection.LEFT_TO_RIGHT": {
+    "defaultMessage": "Da sinistra a destra"
+  },
+  "enum.ReadingDirection.RIGHT_TO_LEFT": {
+    "defaultMessage": "Da destra a sinistra"
+  },
+  "enum.ReadingDirection.VERTICAL": {
+    "defaultMessage": "Verticale"
+  },
+  "enum.ReadingDirection.WEBTOON": {
+    "defaultMessage": "Webtoon"
+  },
+  "enum.ScanInterval.DAILY": {
+    "defaultMessage": "Giornaliera"
+  },
+  "enum.ScanInterval.DISABLED": {
+    "defaultMessage": "Disabilitata"
+  },
+  "enum.ScanInterval.EVERY_12H": {
+    "defaultMessage": "Ogni 12 ore"
+  },
+  "enum.ScanInterval.EVERY_6H": {
+    "defaultMessage": "Ogni 6 ore"
+  },
+  "enum.ScanInterval.HOURLY": {
+    "defaultMessage": "Ogni ora"
+  },
+  "enum.ScanInterval.WEEKLY": {
+    "defaultMessage": "Settimanale"
+  },
+  "enum.SeriesCover.FIRST": {
+    "defaultMessage": "Primo"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_FIRST": {
+    "defaultMessage": "Primo non letto, altrimenti primo"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_LAST": {
+    "defaultMessage": "Primo non letto, altrimenti ultimo"
+  },
+  "enum.SeriesCover.LAST": {
+    "defaultMessage": "Ultimo"
+  },
+  "enum.SeriesStatus.ABANDONED": {
+    "defaultMessage": "Abbandonata"
+  },
+  "enum.SeriesStatus.ENDED": {
+    "defaultMessage": "Terminata"
+  },
+  "enum.SeriesStatus.HIATUS": {
+    "defaultMessage": "In pausa"
+  },
+  "enum.SeriesStatus.ONGOING": {
+    "defaultMessage": "In corso"
+  },
+  "enum.ThumbnailSize.DEFAULT": {
+    "defaultMessage": "Predefinita (300 px)"
+  },
+  "enum.ThumbnailSize.LARGE": {
+    "defaultMessage": "Grande (900 px)"
+  },
+  "enum.ThumbnailSize.MEDIUM": {
+    "defaultMessage": "Media (600 px)"
+  },
+  "enum.ThumbnailSize.XLARGE": {
+    "defaultMessage": "Molto grande (1200 px)"
+  },
+  "enum.UserRole.ADMIN": {
+    "defaultMessage": "Amministratore"
+  },
+  "enum.UserRole.FILE_DOWNLOAD": {
+    "defaultMessage": "Download dei file"
+  },
+  "enum.UserRole.KOBO_SYNC": {
+    "defaultMessage": "Sincronizzazione Kobo"
+  },
+  "enum.UserRole.KOREADER_SYNC": {
+    "defaultMessage": "Sincronizzazione KOReader"
+  },
+  "enum.UserRole.PAGE_STREAMING": {
+    "defaultMessage": "Streaming delle pagine"
+  },
+  "enum.UserRole.USER": {
+    "defaultMessage": "Utente"
+  },
+  "enum.historicalEvent.BookConverted": {
+    "defaultMessage": "Volume convertito"
+  },
+  "enum.historicalEvent.BookFileDeleted": {
+    "defaultMessage": "File del volume eliminato"
+  },
+  "enum.historicalEvent.BookImported": {
+    "defaultMessage": "Volume importato"
+  },
+  "enum.historicalEvent.DuplicatePageDeleted": {
+    "defaultMessage": "Pagina duplicata eliminata"
+  },
+  "enum.historicalEvent.SeriesFolderDeleted": {
+    "defaultMessage": "Cartella della serie eliminata"
+  },
+  "enum.pageHashAction.DELETE_AUTO": {
+    "defaultMessage": "Eliminazione automatica"
+  },
+  "enum.pageHashAction.DELETE_MANUAL": {
+    "defaultMessage": "Eliminazione manuale"
+  },
+  "enum.pageHashAction.IGNORE": {
+    "defaultMessage": "Ignora"
+  },
+  "estf95": {
+    "defaultMessage": "Lista di lettura creata"
+  },
+  "eyYZUe": {
+    "defaultMessage": "Librerie"
+  },
+  "ezgnXr": {
+    "defaultMessage": "Conferma password"
+  },
+  "f1fW81": {
+    "defaultMessage": "Stato dell'analisi"
+  },
+  "fQIepD": {
+    "defaultMessage": "Volumi"
+  },
+  "fVqdik": {
+    "defaultMessage": "ComicInfo.xml (CBR/CBZ)"
+  },
+  "fbEqBB": {
+    "defaultMessage": "Collegamenti"
+  },
+  "fl2YLT": {
+    "defaultMessage": "Stato dei media"
+  },
+  "foSDIW": {
+    "defaultMessage": "Scansione approfondita"
+  },
+  "g+OQSw": {
+    "defaultMessage": "Riordina"
+  },
+  "g2UW+6": {
+    "defaultMessage": "Formato del volume non supportato"
+  },
+  "gEBeQv": {
+    "defaultMessage": "Metadati della serie aggiornati: {series}"
+  },
+  "gNiEAF": {
+    "defaultMessage": "Commento"
+  },
+  "ggaOkE": {
+    "defaultMessage": "Nessun dato trovato"
+  },
+  "gsqrOd": {
+    "defaultMessage": "Rigenera le copertine"
+  },
+  "gxZjIe": {
+    "defaultMessage": "Azione"
+  },
+  "h6C8/l": {
+    "defaultMessage": "Generale"
+  },
+  "hBanlz": {
+    "defaultMessage": "Genere"
+  },
+  "hEOGa9": {
+    "defaultMessage": "Limitazione d'età"
+  },
+  "hGFogR": {
+    "defaultMessage": "Etichetta di condivisione"
+  },
+  "hJEc5M": {
+    "defaultMessage": "menu delle biblioteche"
+  },
+  "hPo41m": {
+    "defaultMessage": "Nessun dato trovato"
+  },
+  "hV3EW+": {
+    "defaultMessage": "Scansione approfondita"
+  },
+  "hYO2n6": {
+    "defaultMessage": "Potrebbe esserci un problema con la connessione o con il server."
+  },
+  "hdoWGT": {
+    "defaultMessage": "Corrispondenze"
+  },
+  "hgiBeR": {
+    "defaultMessage": "Ultima attività"
+  },
+  "hrh5Rn": {
+    "defaultMessage": "Aggiorna"
+  },
+  "hude41": {
+    "defaultMessage": "Elimina chiave API"
+  },
+  "i+kSy9": {
+    "defaultMessage": "Aggiorna"
+  },
+  "iDU5FS": {
+    "defaultMessage": "Durata di «Ricordami» (in giorni)"
+  },
+  "iNBto3": {
+    "defaultMessage": "Invia tramite proxy le richieste non gestite al Kobo Store"
+  },
+  "ieysdI": {
+    "defaultMessage": "Aggiorna indice di ricerca"
+  },
+  "iin6d2": {
+    "defaultMessage": "Le chiavi API possono essere utilizzate per autenticarsi tramite il protocollo Kobo Sync o l'API REST."
+  },
+  "iq1PzT": {
+    "defaultMessage": "Gestisci"
+  },
+  "iu31A4": {
+    "defaultMessage": "Archivi di fumetti"
+  },
+  "ixQlWv": {
+    "defaultMessage": "Si è verificato un errore"
+  },
+  "iylxeo": {
+    "defaultMessage": "Sì (tutti i volumi)"
+  },
+  "j7CGMQ": {
+    "defaultMessage": "conferma"
+  },
+  "jD87k9": {
+    "defaultMessage": "La raccolta verrà eliminata<ul><li>Le serie e i volumi non verranno eliminati.</li></ul><b>Questa azione non può essere annullata.</b>"
+  },
+  "jHJk+v": {
+    "defaultMessage": "Creato"
+  },
+  "jN3N1Q": {
+    "defaultMessage": "Analizza"
+  },
+  "jyrqhz": {
+    "defaultMessage": "Codice a barre"
+  },
+  "jywpqq": {
+    "defaultMessage": "Età"
+  },
+  "k2JkZX": {
+    "defaultMessage": "Colorista"
+  },
+  "k6BCzW": {
+    "defaultMessage": "Elimina raccolta"
+  },
+  "kDc7YL": {
+    "defaultMessage": "Per impostazione predefinita, il server multimediale non rimuove immediatamente le informazioni sui contenuti multimediali. Questo è utile se un'unità è temporaneamente disconnessa. Quando svuoti il cestino di una libreria, tutte le informazioni sui contenuti mancanti vengono eliminate."
+  },
+  "kFQatO": {
+    "defaultMessage": "Mostra filtri"
+  },
+  "kGC6Gu": {
+    "defaultMessage": "Nessuna attività recente"
+  },
+  "kHmCVM": {
+    "defaultMessage": "Scansiona libreria"
+  },
+  "kXuNY8": {
+    "defaultMessage": "Aggiungi pagina alla selezione"
+  },
+  "kYDPt1": {
+    "defaultMessage": "Nome del file"
+  },
+  "kZ0WlY": {
+    "defaultMessage": "Impossibile trovare il file del volume"
+  },
+  "kh49ZJ": {
+    "defaultMessage": "Scarta"
+  },
+  "knm6Z+": {
+    "defaultMessage": "Stato"
+  },
+  "kqV7EJ": {
+    "defaultMessage": "Elimina le liste di lettura vuote dopo la scansione"
+  },
+  "kvbi4j": {
+    "defaultMessage": "Utente aggiornato: {email}"
+  },
+  "l/To3S": {
+    "defaultMessage": "Cronologia"
+  },
+  "l5qiAB": {
+    "defaultMessage": "Trova pagine duplicate da eliminare"
+  },
+  "l7+H/k": {
+    "defaultMessage": "Ha la precedenza sul file di configurazione"
+  },
+  "l7mpQK": {
+    "defaultMessage": "Letto"
+  },
+  "lDnmZD": {
+    "defaultMessage": "Aggiornamenti"
+  },
+  "lFTdQ+": {
+    "defaultMessage": "Contrassegna come"
+  },
+  "lPZ5hy": {
+    "defaultMessage": "Chiudi"
+  },
+  "lSlhp0": {
+    "defaultMessage": "Nome del file sorgente"
+  },
+  "laWvMU": {
+    "defaultMessage": "Ok"
+  },
+  "lt7Tru": {
+    "defaultMessage": "Serie"
+  },
+  "lvCpSX": {
+    "defaultMessage": "Azioni"
+  },
+  "lyknmW": {
+    "defaultMessage": "Apri"
+  },
+  "lzHPYD": {
+    "defaultMessage": "Prova a cercare qualcos'altro"
+  },
+  "m+yz6Z": {
+    "defaultMessage": "Numero di pagina"
+  },
+  "m9h2wk": {
+    "defaultMessage": "Miniatura"
+  },
+  "m9tuzy": {
+    "defaultMessage": "Attività"
+  },
+  "mP9Ldq": {
+    "defaultMessage": "Data di creazione"
+  },
+  "mtUacw": {
+    "defaultMessage": "Modifica i metadati del volume"
+  },
+  "n0TnQ2": {
+    "defaultMessage": "Server non raggiungibile"
+  },
+  "n0yuoo": {
+    "defaultMessage": "Attività"
+  },
+  "n1Ik+L": {
+    "defaultMessage": "Sono disponibili aggiornamenti"
+  },
+  "n4w2CE": {
+    "defaultMessage": "Modifica"
+  },
+  "n8mugB": {
+    "defaultMessage": "Sì (solo ingrandimento)"
+  },
+  "nJiYF7": {
+    "defaultMessage": "Conferma password"
+  },
+  "nXFVsQ": {
+    "defaultMessage": "Calcola hash per KOReader"
+  },
+  "nXWSTf": {
+    "defaultMessage": "Nome"
+  },
+  "nhrFtV": {
+    "defaultMessage": "Non disponibile"
+  },
+  "nuoJ1n": {
+    "defaultMessage": "Crea libreria"
+  },
+  "nyxfPy": {
+    "defaultMessage": "Verranno utilizzati gli elementi 'AlternateSeries' o 'StoryArc'"
+  },
+  "o+A10T": {
+    "defaultMessage": "Password"
+  },
+  "o+h0F+": {
+    "defaultMessage": "Nome del file"
+  },
+  "o1XnPU": {
+    "defaultMessage": "Chiave API"
+  },
+  "o8WeX3": {
+    "defaultMessage": "Elimina"
+  },
+  "oFOkWZ": {
+    "defaultMessage": "Chiavi API"
+  },
+  "oOtDhj": {
+    "defaultMessage": "Copia negli appunti"
+  },
+  "oQ2wIE": {
+    "defaultMessage": "Alcuni dei volumi selezionati presentano errori"
+  },
+  "oWsqnh": {
+    "defaultMessage": "A cosa serve questa chiave API?"
+  },
+  "od545m": {
+    "defaultMessage": "Il mio account"
+  },
+  "oyeyK/": {
+    "defaultMessage": "Miniatura"
+  },
+  "pENCUD": {
+    "defaultMessage": "Annulla"
+  },
+  "pHdVzh": {
+    "defaultMessage": "Elimina le raccolte vuote dopo la scansione"
+  },
+  "pHycdf": {
+    "defaultMessage": "Il file del volume non è ancora stato analizzato"
+  },
+  "pR3VdQ": {
+    "defaultMessage": "Serie"
+  },
+  "pTsA/M": {
+    "defaultMessage": "Volumi"
+  },
+  "phzvRy": {
+    "defaultMessage": "Libreria"
+  },
+  "q/AkPU": {
+    "defaultMessage": "Aggrega i metadati delle serie"
+  },
+  "q7gxLw": {
+    "defaultMessage": "L'account utente verrà eliminato da questo server.<ul><li>I progressi di lettura di questo account utente verranno eliminati definitivamente.</li><li>L'attività di autenticazione di questo utente verrà eliminata definitivamente.</li></ul><b>Questa azione non può essere annullata.</b>"
+  },
+  "qiZm6U": {
+    "defaultMessage": "Sconosciuto"
+  },
+  "r/G7j0": {
+    "defaultMessage": "Numero"
+  },
+  "r5O+/d": {
+    "defaultMessage": "Genere"
+  },
+  "r6CqyT": {
+    "defaultMessage": "Elimina utente"
+  },
+  "r6JNfI": {
+    "defaultMessage": "Hai dimenticato la password?"
+  },
+  "r7xCeA": {
+    "defaultMessage": "Cambia password"
+  },
+  "rCLYEd": {
+    "defaultMessage": "Ripara estensione"
+  },
+  "rDBhmQ": {
+    "defaultMessage": "Elimina"
+  },
+  "rHwSrF": {
+    "defaultMessage": "Thread delle attività"
+  },
+  "rKyTwd": {
+    "defaultMessage": "Azioni"
+  },
+  "rRFQKU": {
+    "defaultMessage": "Sincronizzazione Kobo"
+  },
+  "rhtmLf": {
+    "defaultMessage": "Ordine"
+  },
+  "rkpCD1": {
+    "defaultMessage": "Contributori"
+  },
+  "rks1H9": {
+    "defaultMessage": "Gestione dei file"
+  },
+  "rm0c6Y": {
+    "defaultMessage": "Questo server non contiene ancora alcuna libreria"
+  },
+  "rnClur": {
+    "defaultMessage": "{rating}+"
+  },
+  "rrF/Z2": {
+    "defaultMessage": "Nome"
+  },
+  "rw/Dkw": {
+    "defaultMessage": "Interfaccia utente"
+  },
+  "s1nzhU": {
+    "defaultMessage": "Nome della libreria"
+  },
+  "sGsWvI": {
+    "defaultMessage": "Cambia password"
+  },
+  "sPScum": {
+    "defaultMessage": "Volume importato"
+  },
+  "sUSVQS": {
+    "defaultMessage": "Segna come letto"
+  },
+  "sUl0GP": {
+    "defaultMessage": "selettore della presentazione"
+  },
+  "samiG7": {
+    "defaultMessage": "Ultima modifica"
+  },
+  "sbwSuO": {
+    "defaultMessage": "La connessione in tempo reale al server non è disponibile. Gli elementi dell'interfaccia potrebbero non aggiornarsi correttamente."
+  },
+  "sdNz1F": {
+    "defaultMessage": "Svuota cestino"
+  },
+  "sj2JGj": {
+    "defaultMessage": "Non in evidenza"
+  },
+  "sjC8ot": {
+    "defaultMessage": "Il file del volume non può essere analizzato:"
+  },
+  "so1P5Y": {
+    "defaultMessage": "Aggiorna la copertina locale del volume"
+  },
+  "syF0Ap": {
+    "defaultMessage": "Dimensioni"
+  },
+  "t0Tkmy": {
+    "defaultMessage": "Forza sincronizzazione Kobo"
+  },
+  "t3B+Qv": {
+    "defaultMessage": "Rimuovi le pagine con hash"
+  },
+  "t5NC5O": {
+    "defaultMessage": "+ altri {count}"
+  },
+  "t5ZhnZ": {
+    "defaultMessage": "Lascia vuoto per disabilitare"
+  },
+  "tCm6kO": {
+    "defaultMessage": "{count, plural, one {# selezionato} other {# selezionati} }"
+  },
+  "tPD6YO": {
+    "defaultMessage": "Cerca serie"
+  },
+  "ti4Pzo": {
+    "defaultMessage": "Esci"
+  },
+  "tm9g8D": {
+    "defaultMessage": "Ok"
+  },
+  "tn7uib": {
+    "defaultMessage": "Anno"
+  },
+  "toP54Z": {
+    "defaultMessage": "Errore"
+  },
+  "uGC9fD": {
+    "defaultMessage": "Opzioni"
+  },
+  "uW+6XG": {
+    "defaultMessage": "Riepilogo"
+  },
+  "uXY7Eg": {
+    "defaultMessage": "Logo di Komga"
+  },
+  "uY7N6Z": {
+    "defaultMessage": "Profilo multimediale"
+  },
+  "uoc99F": {
+    "defaultMessage": "Può consumare molte risorse nelle librerie di grandi dimensioni o su hardware lento"
+  },
+  "ut2gmo": {
+    "defaultMessage": "Ruoli"
+  },
+  "uwFE74": {
+    "defaultMessage": "Scansiona"
+  },
+  "vTqlcG": {
+    "defaultMessage": "Elimina"
+  },
+  "vXhkpo": {
+    "defaultMessage": "Elimina file"
+  },
+  "vkeTYG": {
+    "defaultMessage": "Importazione del volume non riuscita"
+  },
+  "vs88Ef": {
+    "defaultMessage": "Aggiorna i metadati di tutti i file multimediali nella libreria. A seconda delle dimensioni della libreria, l'operazione potrebbe richiedere molto tempo."
+  },
+  "vvl9xP": {
+    "defaultMessage": "Svuota cestino"
+  },
+  "w2K5yu": {
+    "defaultMessage": "Liste Lettura"
+  },
+  "wJaip6": {
+    "defaultMessage": "Calcola l'hash dei file"
+  },
+  "wRjFWz": {
+    "defaultMessage": "Ordinamento automatico"
+  },
+  "wXGljO": {
+    "defaultMessage": "Riprendi"
+  },
+  "wbH42A": {
+    "defaultMessage": "Non disponibile"
+  },
+  "wmGcF+": {
+    "defaultMessage": "Escludi oltre"
+  },
+  "xPBqGY": {
+    "defaultMessage": "Elimina serie"
+  },
+  "xSNdDU": {
+    "defaultMessage": "La lista di lettura verrà eliminata<ul><li>Le serie e i volumi non verranno eliminati.</li></ul><b>Questa azione non può essere annullata.</b>"
+  },
+  "xYGXuU": {
+    "defaultMessage": "Dettagli"
+  },
+  "xYp/8u": {
+    "defaultMessage": "Scegli un volume"
+  },
+  "xeiMMk": {
+    "defaultMessage": "Inchiostratore"
+  },
+  "xfThoX": {
+    "defaultMessage": "Corrispondenze"
+  },
+  "xiyw1J": {
+    "defaultMessage": "Aggiorna tutti i metadati"
+  },
+  "xpBvz8": {
+    "defaultMessage": "Anno di pubblicazione"
+  },
+  "y1P/K4": {
+    "defaultMessage": "Ultima attività"
+  },
+  "y3nPgO": {
+    "defaultMessage": "Esegue una scansione approfondita dei file della libreria. A seconda delle dimensioni della libreria, potrebbe richiedere molto tempo."
+  },
+  "yDWzUi": {
+    "defaultMessage": "Chiavi API"
+  },
+  "yaa8so": {
+    "defaultMessage": "Scanner"
+  },
+  "ycrpqO": {
+    "defaultMessage": "Genera una nuova chiave API"
+  },
+  "yrE0Rx": {
+    "defaultMessage": "Dettagli"
+  },
+  "z5sjUM": {
+    "defaultMessage": "Calcola l'hash del file del volume"
+  },
+  "z8b1Xe": {
+    "defaultMessage": "Importa dalla directory"
+  },
+  "zRDVnR": {
+    "defaultMessage": "Dimensione"
+  },
+  "zfQq+w": {
+    "defaultMessage": "Email"
+  },
+  "zphiTI": {
+    "defaultMessage": "Esiste già una chiave API con questo commento"
+  },
+  "zqAxRE": {
+    "defaultMessage": "Volume"
+  },
+  "zuhGGz": {
+    "defaultMessage": "Riordina o metti in evidenza"
+  }
 }

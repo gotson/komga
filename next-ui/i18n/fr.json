@@ -1,23 +1,59 @@
 {
-    "app.locale-name": {
-        "defaultMessage": "Français"
-    },
-    "+6YDzS": {
-        "defaultMessage": "Aucune donnée trouvée"
-    },
-    "+TldjW": {
-        "defaultMessage": "Rien à afficher"
-    },
-    "+jaADC": {
-        "defaultMessage": "Nom du fichier"
-    },
-    "+pyj1u": {
-        "defaultMessage": "Indisponible"
-    },
-    "/5Gb4y": {
-        "defaultMessage": "Supprimer"
-    },
-    "/NAG9i": {
-        "defaultMessage": "Aucun résultat"
-    }
+  "+6YDzS": {
+    "defaultMessage": "Aucune donnée trouvée"
+  },
+  "+8++PW": {
+    "defaultMessage": "Bibliothèque créée :{library}"
+  },
+  "+TldjW": {
+    "defaultMessage": "Rien à afficher"
+  },
+  "+jaADC": {
+    "defaultMessage": "Nom du fichier"
+  },
+  "+mJGIg": {
+    "defaultMessage": "Chemin du fichier"
+  },
+  "+opDqu": {
+    "defaultMessage": "Aller à"
+  },
+  "+pyj1u": {
+    "defaultMessage": "Indisponible"
+  },
+  "+r8FCS": {
+    "defaultMessage": "Port d'écoute du serveur"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "Supprimer"
+  },
+  "/8sSxS": {
+    "defaultMessage": "Requis pour restaurer depuis la corbeille et détecter les fichiers dupliqués"
+  },
+  "/Acs82": {
+    "defaultMessage": "Créer ou ajouter aux listes de lecture"
+  },
+  "/NAG9i": {
+    "defaultMessage": "Aucun résultat"
+  },
+  "/YxHru": {
+    "defaultMessage": "Certains des livres sélectionnés sont en double"
+  },
+  "/bathK": {
+    "defaultMessage": "Autoriser seulement en dessous de"
+  },
+  "/lE31l": {
+    "defaultMessage": "Forcer la synchronisation à Kobo"
+  },
+  "/mhcNO": {
+    "defaultMessage": "Fermer"
+  },
+  "02SRax": {
+    "defaultMessage": "Se connecter"
+  },
+  "0ILHru": {
+    "defaultMessage": "OK"
+  },
+  "app.locale-name": {
+    "defaultMessage": "Français"
+  }
 }
