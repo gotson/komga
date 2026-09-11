@@ -644,6 +644,7 @@ export default Vue.extend({
       genresAvailable: [] as string[],
       tagsAvailable: [] as string[],
       sharingLabelsAvailable: [] as string[],
+      isMultiBookAuthorDirty: false, // workaround for author consistency in bulk mode
     }
   },
   props: {
@@ -651,6 +652,11 @@ export default Vue.extend({
     oneshots: {
       type: [Object as () => Oneshot, Array as () => Oneshot[]],
       required: true,
+    },
+    additionalRoles: {
+      type: Array as () => string[],
+      required: false,
+      default: () => [],
     },
   },
   watch: {
@@ -729,7 +735,7 @@ export default Vue.extend({
         remoteRoles = this.books.flatMap(b => b.metadata.authors).map(a => a.role)
       else if (this.books?.metadata?.authors)
         remoteRoles = this.books.metadata.authors.map(a => a.role)
-      const allRoles = this.$_.uniq([...authorRoles, ...remoteRoles, ...this.customRoles])
+      const allRoles = this.$_.uniq([...authorRoles, ...remoteRoles, ...this.customRoles, ...this.additionalRoles])
       return allRoles.map((role: string) => ({
         name: this.$te(`author_roles.${role}`) ? this.$t(`author_roles.${role}`).toString() : role,
         value: role,
