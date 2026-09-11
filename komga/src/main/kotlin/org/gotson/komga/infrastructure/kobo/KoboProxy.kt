@@ -108,8 +108,6 @@ class KoboProxy(
           if (includeSyncToken) {
             if (syncToken != null && syncToken.rawKoboSyncToken.isNotBlank()) {
               headersOut.add(X_KOBO_SYNCTOKEN, syncToken.rawKoboSyncToken)
-            } else {
-              throw IllegalStateException("request must include sync token, but no raw Kobo sync token found")
             }
           }
           logger.debug { "Headers out: $headersOut" }
