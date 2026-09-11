@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
 
 @SpringBootTest
 class ReadListMatcherTest(
@@ -37,6 +38,7 @@ class ReadListMatcherTest(
   @Autowired private val readListRepository: ReadListRepository,
   @Autowired private val libraryRepository: LibraryRepository,
   @Autowired private val bookMetadataRepository: BookMetadataRepository,
+  @Autowired private val seriesMetadataLifecycle: SeriesMetadataLifecycle,
   @Autowired private val readListMatcher: ReadListMatcher,
 ) {
   private val library = makeLibrary()
@@ -280,6 +282,127 @@ class ReadListMatcherTest(
           ),
         )
       }
+    }
+
+    /**
+     * Creates a series with a single book, and aggregates its metadata so the release date is available for matching.
+     */
+    private fun makeSeriesWithFirstIssue(
+      name: String,
+      title: String,
+      releaseDate: LocalDate,
+    ) = makeSeries(name = name, libraryId = library.id).also { s ->
+      val books = listOf(makeBook("book1", libraryId = library.id))
+      seriesLifecycle.createSeries(s)
+      seriesLifecycle.addBooks(s, books)
+      seriesLifecycle.sortBooks(s)
+      seriesMetadataRepository.findById(s.id).let {
+        seriesMetadataRepository.update(it.copy(title = title))
+      }
+      bookMetadataRepository.findById(books[0].id).let {
+        bookMetadataRepository.update(it.copy(number = "1", releaseDate = releaseDate))
+      }
+      seriesMetadataLifecycle.aggregateMetadata(s)
+    }
+
+    @Test
+    fun `given series with volume in title when matching with a series year then the matching volume comes first`() {
+      // given
+      val seriesOriginal = makeSeriesWithFirstIssue("batman-1940", "Batman", LocalDate.of(1940, 4, 25))
+      val seriesRebirth = makeSeriesWithFirstIssue("batman-2016", "Batman (2016)", LocalDate.of(2016, 8, 3))
+
+      val request =
+        ReadListRequest(
+          name = "readlist",
+          books = listOf(ReadListRequestBook(series = setOf("Batman (2016)", "Batman"), number = "1", seriesYear = 2016)),
+        )
+
+      // when
+      val result = readListMatcher.matchReadListRequest(request)
+
+      // then
+      assertThat(result.requests).hasSize(1)
+      val matchedSeriesIds =
+        result.requests
+          .first()
+          .matches.keys
+          .map { it.id }
+      assertThat(matchedSeriesIds).containsExactly(seriesRebirth.id, seriesOriginal.id)
+    }
+
+    @Test
+    fun `given series sharing the same title when matching with a series year then the matching first issue comes first`() {
+      // given
+      val seriesOriginal = makeSeriesWithFirstIssue("batman-1940", "Batman", LocalDate.of(1940, 4, 25))
+      val seriesRebirth = makeSeriesWithFirstIssue("batman-2016", "Batman", LocalDate.of(2016, 8, 3))
+
+      val request =
+        ReadListRequest(
+          name = "readlist",
+          books = listOf(ReadListRequestBook(series = setOf("Batman (2016)", "Batman"), number = "1", seriesYear = 2016)),
+        )
+
+      // when
+      val result = readListMatcher.matchReadListRequest(request)
+
+      // then
+      assertThat(result.requests).hasSize(1)
+      val matchedSeriesIds =
+        result.requests
+          .first()
+          .matches.keys
+          .map { it.id }
+      assertThat(matchedSeriesIds).containsExactly(seriesRebirth.id, seriesOriginal.id)
+    }
+
+    @Test
+    fun `given series sharing the same title when matching with an older series year then the matching first issue comes first`() {
+      // given
+      val seriesOriginal = makeSeriesWithFirstIssue("batman-1940", "Batman", LocalDate.of(1940, 4, 25))
+      val seriesRebirth = makeSeriesWithFirstIssue("batman-2016", "Batman", LocalDate.of(2016, 8, 3))
+
+      val request =
+        ReadListRequest(
+          name = "readlist",
+          books = listOf(ReadListRequestBook(series = setOf("Batman (1940)", "Batman"), number = "1", seriesYear = 1940)),
+        )
+
+      // when
+      val result = readListMatcher.matchReadListRequest(request)
+
+      // then
+      assertThat(result.requests).hasSize(1)
+      val matchedSeriesIds =
+        result.requests
+          .first()
+          .matches.keys
+          .map { it.id }
+      assertThat(matchedSeriesIds).containsExactly(seriesOriginal.id, seriesRebirth.id)
+    }
+
+    @Test
+    fun `given series sharing a title when matching without a series year then all matches are kept`() {
+      // given
+      val seriesOriginal = makeSeriesWithFirstIssue("batman-1940", "Batman", LocalDate.of(1940, 4, 25))
+      val seriesRebirth = makeSeriesWithFirstIssue("batman-2016", "Batman (2016)", LocalDate.of(2016, 8, 3))
+
+      val request =
+        ReadListRequest(
+          name = "readlist",
+          books = listOf(ReadListRequestBook(series = setOf("Batman (2016)", "Batman"), number = "1")),
+        )
+
+      // when
+      val result = readListMatcher.matchReadListRequest(request)
+
+      // then
+      assertThat(result.requests).hasSize(1)
+      val matchedSeriesIds =
+        result.requests
+          .first()
+          .matches.keys
+          .map { it.id }
+      assertThat(matchedSeriesIds).containsExactlyInAnyOrder(seriesOriginal.id, seriesRebirth.id)
     }
   }
 }

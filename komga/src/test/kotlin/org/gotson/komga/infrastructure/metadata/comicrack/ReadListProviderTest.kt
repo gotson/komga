@@ -50,11 +50,55 @@ class ReadListProviderTest {
         with(books[0]) {
           assertThat(series).containsExactlyInAnyOrder("series 1 (2005)", "series 1")
           assertThat(number).isEqualTo("4")
+          assertThat(seriesYear).isEqualTo(2005)
         }
 
         with(books[1]) {
           assertThat(series).containsExactlyInAnyOrder("series 2")
           assertThat(number).isEqualTo("1")
+          assertThat(seriesYear).isNull()
+        }
+      }
+    }
+
+    @Test
+    fun `given CBL list with volume ordinals when getting ReadListRequest then series year is not set`() {
+      // given
+      val cbl =
+        ReadingList().apply {
+          name = "my read list"
+          books =
+            listOf(
+              Book().apply {
+                series = "series 1"
+                number = "4"
+                volume = 2
+              },
+              Book().apply {
+                series = "series 2"
+                number = "1"
+                volume = 1
+              },
+            )
+        }
+
+      every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
+
+      // when
+      val request = readListProvider.importFromCbl(ByteArray(0))
+
+      // then
+      with(request) {
+        assertThat(books).hasSize(2)
+
+        with(books[0]) {
+          assertThat(series).containsExactlyInAnyOrder("series 1 (2)", "series 1")
+          assertThat(seriesYear).isNull()
+        }
+
+        with(books[1]) {
+          assertThat(series).containsExactlyInAnyOrder("series 2")
+          assertThat(seriesYear).isNull()
         }
       }
     }

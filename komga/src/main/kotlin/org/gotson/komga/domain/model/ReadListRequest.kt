@@ -13,6 +13,10 @@ data class ReadListRequest(
 data class ReadListRequestBook(
   val series: Set<String>,
   val number: String,
+  /**
+   * The year the series started, if known. Used to discriminate between series sharing the same title.
+   */
+  val seriesYear: Int? = null,
 )
 
 data class ReadListRequestMatch(
