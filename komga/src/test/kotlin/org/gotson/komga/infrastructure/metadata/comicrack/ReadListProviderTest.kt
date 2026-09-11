@@ -104,6 +104,59 @@ class ReadListProviderTest {
     }
 
     @Test
+    fun `given CBL list with issue years when getting ReadListRequest then issue year is set`() {
+      // given
+      val cbl =
+        ReadingList().apply {
+          name = "my read list"
+          books =
+            listOf(
+              Book().apply {
+                series = "series 1"
+                number = "4"
+                volume = 2005
+                year = 2008
+              },
+              Book().apply {
+                series = "series 2"
+                number = "1"
+                year = 1
+              },
+              Book().apply {
+                series = "series 3"
+                number = "1"
+              },
+            )
+        }
+
+      every { mockMapper.readValue(any<ByteArray>(), ReadingList::class.java) } returns cbl
+
+      // when
+      val request = readListProvider.importFromCbl(ByteArray(0))
+
+      // then
+      with(request) {
+        assertThat(books).hasSize(3)
+
+        with(books[0]) {
+          assertThat(seriesYear).isEqualTo(2005)
+          assertThat(issueYear).isEqualTo(2008)
+        }
+
+        // an implausible year is ignored
+        with(books[1]) {
+          assertThat(seriesYear).isNull()
+          assertThat(issueYear).isNull()
+        }
+
+        with(books[2]) {
+          assertThat(seriesYear).isNull()
+          assertThat(issueYear).isNull()
+        }
+      }
+    }
+
+    @Test
     fun `given CBL list with invalid books when getting ReadListRequest then exception is thrown`() {
       // given
       val cbl =

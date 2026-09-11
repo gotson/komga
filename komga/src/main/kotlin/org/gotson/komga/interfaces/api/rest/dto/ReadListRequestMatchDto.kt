@@ -19,7 +19,7 @@ fun ReadListRequestMatch.toDto() =
       ReadListRequestBookMatchesDto(
         request.request.toDto(),
         request.matches.entries.map { (series, books) ->
-          ReadListRequestBookMatchDto(ReadListRequestBookMatchSeriesDto(series.id, series.title, series.releaseDate), books.map { ReadListRequestBookMatchBookDto(it.id, it.number, it.title) })
+          ReadListRequestBookMatchDto(ReadListRequestBookMatchSeriesDto(series.id, series.title, series.releaseDate), books.map { ReadListRequestBookMatchBookDto(it.id, it.number, it.title, it.releaseDate) })
         },
       )
     },
@@ -64,4 +64,6 @@ data class ReadListRequestBookMatchBookDto(
   val bookId: String,
   val number: String,
   val title: String,
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  val releaseDate: LocalDate?,
 )

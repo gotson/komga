@@ -17,6 +17,10 @@ data class ReadListRequestBook(
    * The year the series started, if known. Used to discriminate between series sharing the same title.
    */
   val seriesYear: Int? = null,
+  /**
+   * The year the requested issue was released, if known. Used to discriminate between books sharing the same number.
+   */
+  val issueYear: Int? = null,
 )
 
 data class ReadListRequestMatch(
@@ -45,4 +49,5 @@ data class ReadListRequestBookMatchBook(
   val id: String,
   val number: String,
   val title: String,
+  val releaseDate: LocalDate? = null,
 )

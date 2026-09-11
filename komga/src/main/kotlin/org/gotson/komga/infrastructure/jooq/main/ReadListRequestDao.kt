@@ -45,6 +45,7 @@ class ReadListRequestDao(
           bd.NUMBER,
           bd.TITLE,
           bma.RELEASE_DATE,
+          bd.RELEASE_DATE,
         ).from(requestsTable)
         .innerJoin(sd)
         .on(requestsTable.field(seriesField, String::class.java)?.eq(sd.TITLE.noCase()))
@@ -62,7 +63,7 @@ class ReadListRequestDao(
           // use the requests index to match results
           records.groupBy(
             { ReadListRequestBookMatchSeries(it.get(1, String::class.java), it.get(2, String::class.java), it.get(6, LocalDate::class.java)) },
-            { ReadListRequestBookMatchBook(it.get(3, String::class.java), it.get(4, String::class.java), it.get(5, String::class.java)) },
+            { ReadListRequestBookMatchBook(it.get(3, String::class.java), it.get(4, String::class.java), it.get(5, String::class.java), it.get(7, LocalDate::class.java)) },
           )
         }
 

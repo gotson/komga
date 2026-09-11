@@ -404,5 +404,99 @@ class ReadListMatcherTest(
           .map { it.id }
       assertThat(matchedSeriesIds).containsExactlyInAnyOrder(seriesOriginal.id, seriesRebirth.id)
     }
+
+    @Test
+    fun `given series sharing the same title and no series year when matching with an issue year then the matching release date comes first`() {
+      // given
+      val seriesOriginal = makeSeriesWithFirstIssue("batman-1940", "Batman", LocalDate.of(1940, 4, 25))
+      val seriesRebirth = makeSeriesWithFirstIssue("batman-2016", "Batman", LocalDate.of(2016, 8, 3))
+
+      val request =
+        ReadListRequest(
+          name = "readlist",
+          books = listOf(ReadListRequestBook(series = setOf("Batman"), number = "1", issueYear = 2016)),
+        )
+
+      // when
+      val result = readListMatcher.matchReadListRequest(request)
+
+      // then
+      assertThat(result.requests).hasSize(1)
+      val matchedSeriesIds =
+        result.requests
+          .first()
+          .matches.keys
+          .map { it.id }
+      assertThat(matchedSeriesIds).containsExactly(seriesRebirth.id, seriesOriginal.id)
+    }
+
+    @Test
+    fun `given series sharing the same title when matching without any year then matches are left untouched`() {
+      // given
+      val seriesOriginal = makeSeriesWithFirstIssue("batman-1940", "Batman", LocalDate.of(1940, 4, 25))
+      val seriesRebirth = makeSeriesWithFirstIssue("batman-2016", "Batman", LocalDate.of(2016, 8, 3))
+
+      val request =
+        ReadListRequest(
+          name = "readlist",
+          books = listOf(ReadListRequestBook(series = setOf("Batman"), number = "1")),
+        )
+
+      // when
+      val result = readListMatcher.matchReadListRequest(request)
+
+      // then
+      assertThat(result.requests).hasSize(1)
+      val matchedSeriesIds =
+        result.requests
+          .first()
+          .matches.keys
+          .map { it.id }
+      assertThat(matchedSeriesIds).containsExactlyInAnyOrder(seriesOriginal.id, seriesRebirth.id)
+    }
+
+    @Test
+    fun `given books sharing the same number when matching with an issue year then the matching book comes first`() {
+      // given
+      val books =
+        listOf(
+          makeBook("book1", libraryId = library.id),
+          makeBook("book2", libraryId = library.id),
+        )
+      makeSeries(name = "batman", libraryId = library.id).also { s ->
+        seriesLifecycle.createSeries(s)
+        seriesLifecycle.addBooks(s, books)
+        seriesLifecycle.sortBooks(s)
+        seriesMetadataRepository.findById(s.id).let {
+          seriesMetadataRepository.update(it.copy(title = "Batman"))
+        }
+        bookMetadataRepository.findById(books[0].id).let {
+          bookMetadataRepository.update(it.copy(number = "1", releaseDate = LocalDate.of(1940, 4, 25)))
+        }
+        bookMetadataRepository.findById(books[1].id).let {
+          bookMetadataRepository.update(it.copy(number = "1", releaseDate = LocalDate.of(2016, 8, 3)))
+        }
+        seriesMetadataLifecycle.aggregateMetadata(s)
+      }
+
+      val request =
+        ReadListRequest(
+          name = "readlist",
+          books = listOf(ReadListRequestBook(series = setOf("Batman"), number = "1", issueYear = 2016)),
+        )
+
+      // when
+      val result = readListMatcher.matchReadListRequest(request)
+
+      // then
+      assertThat(result.requests).hasSize(1)
+      val matchedBookIds =
+        result.requests
+          .first()
+          .matches.values
+          .first()
+          .map { it.id }
+      assertThat(matchedBookIds).containsExactly(books[1].id, books[0].id)
+    }
   }
 }
