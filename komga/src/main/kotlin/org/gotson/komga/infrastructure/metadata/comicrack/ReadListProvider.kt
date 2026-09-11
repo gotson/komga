@@ -8,6 +8,7 @@ import org.gotson.komga.domain.model.ReadListRequestBook
 import org.gotson.komga.infrastructure.metadata.comicrack.dto.ReadingList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 private val logger = KotlinLogging.logger {}
 
@@ -33,10 +34,21 @@ class ReadListProvider(
       readingList.books.map {
         if (it.series.isNullOrBlank() || it.number == null) throw ComicRackListException("Book is missing series or number: $it", "ERR_1031")
         val series = setOfNotNull(computeSeriesFromSeriesAndVolume(it.series, it.volume), it.series?.ifBlank { null })
-        ReadListRequestBook(series, it.number!!.trim())
+        ReadListRequestBook(
+          series = series,
+          number = it.number!!.trim(),
+          seriesYear = it.volume?.takeIf { volume -> volume.isPlausibleYear() },
+          issueYear = it.year?.takeIf { year -> year.isPlausibleYear() },
+        )
       }
 
     return ReadListRequest(name = readingList.name!!, books = books)
       .also { logger.debug { "Converted request: $it" } }
   }
 }
+
+/**
+ * In the ComicRack reading list format the `Volume` element holds the year the series started, and the `Year`
+ * element the year the issue was released. Some tools write a volume ordinal instead, which cannot be used as a year.
+ */
+private fun Int.isPlausibleYear() = this in 1900..LocalDate.now().year + 1
