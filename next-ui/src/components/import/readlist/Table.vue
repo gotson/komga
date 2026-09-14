@@ -60,13 +60,18 @@
         </v-toolbar>
       </template>
 
-      <template #[`item.request.request.series`]="{ value }">
+      <template #[`item.request.request.series`]="{ value, item }">
         <div
           v-for="s in value"
           :key="s"
         >
           {{ s }}
         </div>
+        <ImportReadlistEntryWatcher
+          :entry="item"
+          @update:series-books="(books) => (item.seriesBooks = books)"
+          @update:matched-book="(book) => (item.book = book)"
+        />
       </template>
 
       <template #[`item.series`]="{ item, internalItem, isSelected, value }">
@@ -85,10 +90,18 @@
               {{ $formatDate(value?.releaseDate, { year: 'numeric', timeZone: 'UTC' }) }}
             </div>
           </template>
-          <div
+          <v-btn
             v-else
-            style="height: 2em"
-            :class="isSelected(internalItem) ? 'missing' : ''"
+            :text="
+              $formatMessage({
+                description: 'Import reading list table: series cell: select series button',
+                defaultMessage: 'Select series',
+                id: 'gojrIJ',
+              })
+            "
+            :disabled="!item.selectable"
+            :color="isSelected(internalItem) ? 'error' : ''"
+            size="small"
           />
         </div>
       </template>
@@ -101,13 +114,21 @@
               ? undefined
               : (dialogBookPickerActivator = $event.currentTarget as Element)
           "
-          @click="finishedState || !item?.series ? undefined : (currentActionedItem = item)"
+          @click="finishedState || !item?.series ? undefined : prepareBookPicker(item)"
         >
           <span v-if="value">{{ value.number }} - {{ value.title }}</span>
-          <div
+          <v-btn
             v-else
-            style="height: 2em"
-            :class="isSelected(internalItem) && item?.series ? 'missing' : ''"
+            :text="
+              $formatMessage({
+                description: 'Import reading list table: book cell: select book button',
+                defaultMessage: 'Select book',
+                id: 'noaGSP',
+              })
+            "
+            :disabled="!item.selectable || !item?.series"
+            :color="isSelected(internalItem) && item?.series ? 'error' : ''"
+            size="small"
           />
         </div>
       </template>
@@ -132,7 +153,7 @@
           />
           <v-icon
             v-else-if="value"
-            v-ktooltip="value"
+            v-ktooltip="$formatMessage(value)"
             icon="i-mdi:alert-circle"
             color="error"
           />
@@ -239,72 +260,20 @@
 
 <script setup lang="ts">
 import { defineMessage, useIntl } from 'vue-intl'
-import {
-  computedAsync,
-  syncRefs,
-  useArrayFilter,
-  useArrayMap,
-  useMemoize,
-  watchImmediate,
-} from '@vueuse/core'
-import { useDisplay } from 'vuetify'
+import { useArrayFilter, useArrayMap, watchImmediate } from '@vueuse/core'
+import { useDisplay, useRules } from 'vuetify'
 import { useQuery } from '@pinia/colada'
-import { bookListQuery } from '@/colada/books'
-import { useCreateReadList, readListsListQuery, useUpdateReadList } from '@/colada/readlists'
+import { readListsListQuery, useCreateReadList, useUpdateReadList } from '@/colada/readlists'
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { PageRequest } from '@/types/PageRequest'
-import { useRules } from 'vuetify'
 import type {
   BookDto,
   ReadListCreationDto,
-  ReadListRequestBookMatchBookDto,
-  ReadListRequestBookMatchesDto,
-  ReadListRequestBookMatchSeriesDto,
   ReadListRequestMatchDto,
   SeriesDto,
 } from '@/generated/openapi'
-
-class ReadListEntry {
-  index: number
-  request: ReadListRequestBookMatchesDto
-  series?: ReadListRequestBookMatchSeriesDto
-  book?: ReadListRequestBookMatchBookDto
-
-  constructor(request: ReadListRequestBookMatchesDto, index: number) {
-    this.index = index
-    this.request = request
-    const match = request.matches.find(Boolean)
-    if (match) {
-      this.series = match.series
-      this.book = match.books.find(Boolean)
-    }
-  }
-
-  public get selectable(): boolean {
-    return !finishedState.value
-  }
-
-  public get importable(): boolean {
-    return !!this.book
-  }
-
-  public get statusMessage(): string {
-    if (!this.series)
-      return intl.formatMessage({
-        description: 'Import reading list: status message: choose a series',
-        defaultMessage: 'Choose a series',
-        id: 'H2B6uF',
-      })
-    if (!this.book)
-      return intl.formatMessage({
-        description: 'Import reading list: status message: choose a book',
-        defaultMessage: 'Choose a book',
-        id: 'xYp/8u',
-      })
-    return ''
-  }
-}
+import { ReadListImportEntry } from '@/types/ReadListImportEntry'
 
 const display = useDisplay()
 const intl = useIntl()
@@ -316,24 +285,22 @@ const { match, loading = false } = defineProps<{
   loading?: boolean
 }>()
 
-// a read-only array of ReadListEntry, kept in sync with the requests prop
-const readListEntriesRO = useArrayMap(
-  toRef(() => match.requests),
-  (it, index) => new ReadListEntry(it, index + 1),
-)
-// read-write array of ReadListEntry, will be modified by the different actions
-const readListEntries = ref<ReadListEntry[]>([])
-// 1-way sync from readListEntriesRO to readListEntries
-syncRefs(readListEntriesRO, readListEntries)
+// read list entries: will be modified by the different actions
+const readListEntries = ref<ReadListImportEntry[]>([])
+
+// form
+const readListName = ref<string>(match.readListMatch.name)
+const readListOverwrite = ref<boolean>(false)
+const readListSummary = ref<string>()
+
+// created read list
+const readListCreatedId = ref<string>()
+const finishedState = computed<boolean>(() => !!readListCreatedId.value)
 
 // the current item being acted upon, used for dialog callback
-const currentActionedItem = ref<ReadListEntry>()
+const currentActionedItem = ref<ReadListImportEntry>()
 // the selected indices, used to programmatically select items
 const selectedIndices = ref<number[]>([])
-// a read-only list of the request indices, used to select all on initialization
-const entriesIndex = useArrayMap(readListEntriesRO, (it) => it.index)
-// 1-way sync from entriesIndex to selectedIndices, will effectively select all on initialization
-syncRefs(entriesIndex, selectedIndices)
 
 // the selected books
 const selectedBooks = useArrayFilter(readListEntries, (it) =>
@@ -345,17 +312,23 @@ const duplicateBookIds = useArrayFilter(
   (it, index, array) => !!it && array.indexOf(it) !== index,
 )
 
-const readListName = ref<string>(match.readListMatch.name)
-const readListOverwrite = ref<boolean>(false)
-const readListSummary = ref<string>()
-const readListCreatedId = ref<string>()
-// if the prop changes, reset some data
 watchImmediate(
   () => match,
   (m) => {
+    // reinitialize form
     readListName.value = m.readListMatch.name
     readListSummary.value = ''
+
+    // clear created state
     readListCreatedId.value = undefined
+
+    // create entries
+    readListEntries.value = m.requests.map(
+      (it, index) => new ReadListImportEntry(it, index + 1, () => !finishedState.value),
+    )
+
+    // select all
+    selectedIndices.value = Array.from({ length: m.requests.length }, (_, i) => i + 1)
   },
 )
 
@@ -377,8 +350,6 @@ const readListNameErrorMessage = computed(() => {
 })
 const shouldOverwrite = computed(() => !!readListDuplicate.value && readListOverwrite.value)
 //endregion
-
-const finishedState = computed<boolean>(() => !!readListCreatedId.value)
 
 //region Table setup
 const hideFooter = computed(() => readListEntries.value.length < 10)
@@ -465,7 +436,7 @@ const filterOptions = [
 function filterFn(
   value: string,
   query: string,
-  item?: { raw: ReadListEntry },
+  item?: { raw: ReadListImportEntry },
 ): boolean | number | [number, number] | [number, number][] {
   const error = item?.raw.statusMessage
   const duplicate = duplicateBookIds.value.includes(item?.raw.book?.bookId)
@@ -479,31 +450,28 @@ function filterFn(
 //region Series Picker Dialog
 const dialogSeriesPickerActivator = ref<Element | undefined>(undefined)
 
-async function seriesPicked(series: SeriesDto) {
+function seriesPicked(series: SeriesDto) {
   if (currentActionedItem.value) {
     currentActionedItem.value.series = {
       seriesId: series.id,
       title: series.metadata.title,
       releaseDate: series.booksMetadata?.releaseDate,
     }
-
-    const requestedNumber = currentActionedItem.value.request.request.number
-    const seriesBooks = await getSeriesBooks(series.id)
-    if (seriesBooks) {
-      const matchedBook = seriesBooks.content?.find((b) => b.metadata.number === requestedNumber)
-      if (matchedBook) bookPicked(matchedBook)
-    }
+    currentActionedItem.value.shouldFetchSeriesBooks = true
   }
 }
 //endregion
 
 //region Book Picker Dialog
 const dialogBookPickerActivator = ref<Element | undefined>(undefined)
-const dialogBookPickerBooks = computedAsync(async () =>
-  currentActionedItem.value?.series
-    ? (await getSeriesBooks(currentActionedItem.value.series.seriesId))?.content
-    : undefined,
+const dialogBookPickerBooks = computed(() =>
+  currentActionedItem.value?.series ? currentActionedItem.value.seriesBooks : undefined,
 )
+
+function prepareBookPicker(item: ReadListImportEntry) {
+  item.shouldFetchSeriesBooks = true
+  currentActionedItem.value = item
+}
 
 function bookPicked(book: BookDto) {
   if (currentActionedItem.value) {
@@ -515,20 +483,6 @@ function bookPicked(book: BookDto) {
   }
 }
 //endregion
-
-const getSeriesBooks = useMemoize(async (seriesId: string) =>
-  useQuery(() =>
-    bookListQuery({
-      search: {
-        condition: {
-          seriesId: { operator: 'Is', value: seriesId },
-        },
-      },
-    }),
-  )
-    .refresh()
-    .then(({ data }) => data),
-)
 
 const isFormValid = computed<boolean>(() => !!readListName.value && !readListNameErrorMessage.value)
 const createPayload = computed(
@@ -606,9 +560,3 @@ function success(readListId: string) {
   })
 }
 </script>
-
-<style scoped>
-.missing {
-  border: 2px dashed red;
-}
-</style>

@@ -102,6 +102,7 @@ declare module 'vue' {
     ImportBooksDirectorySelection: typeof import('./components/import/books/DirectorySelection.vue')['default']
     ImportBooksTransientBooksTable: typeof import('./components/import/books/TransientBooksTable.vue')['default']
     ImportBooksTransientBookWatcher: typeof import('./components/import/books/TransientBookWatcher.vue')['default']
+    ImportReadlistEntryWatcher: typeof import('./components/import/readlist/EntryWatcher.vue')['default']
     ImportReadlistTable: typeof import('./components/import/readlist/Table.vue')['default']
     ItemBrowser: typeof import('./components/item/Browser.vue')['default']
     ItemCard: typeof import('./components/item/card/ItemCard.vue')['default']
