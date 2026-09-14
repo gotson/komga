@@ -23,9 +23,20 @@ class SessionConfiguration {
   fun sessionHeaderName() = "X-Auth-Token"
 
   @Bean
-  fun cookieSerializer(sessionCookieName: String): CookieSerializer =
+  fun cookieSerializer(
+    sessionCookieName: String,
+    serverProperties: ServerProperties,
+  ): CookieSerializer =
     DefaultCookieSerializer().apply {
       setCookieName(sessionCookieName)
+      // Declaring a CookieSerializer bean makes Spring Boot's session
+      // auto-configuration back off, and with it the binding of the
+      // server.servlet.session.cookie.* properties. Apply max-age here so it
+      // can still be used: without it the session cookie is always browser
+      // session scoped, and closing the browser signs the user out even while
+      // the server side session is still valid.
+      serverProperties.servlet.session.cookie.maxAge
+        ?.let { setCookieMaxAge(it.seconds.toInt()) }
     }
 
   @Bean
