@@ -81,12 +81,19 @@
           :class="item.imported ? 'text-disabled' : undefined"
           >{{ item.series?.metadata.title }}</span
         >
-        <template v-else>
-          <div
-            style="height: 2em"
-            :class="isSelected(internalItem) ? 'missing' : ''"
-          />
-        </template>
+        <v-btn
+          v-else
+          :text="
+            $formatMessage({
+              description: 'Import books table: series cell: select series button',
+              defaultMessage: 'Select series',
+              id: '464rk3',
+            })
+          "
+          :disabled="!item.selectable"
+          :color="isSelected(internalItem) ? 'error' : ''"
+          size="small"
+        />
       </div>
     </template>
 
@@ -704,8 +711,4 @@ function compareBooks(item: BookImport) {
 }
 </script>
 
-<style scoped>
-.missing {
-  border: 2px dashed red;
-}
-</style>
+<style scoped></style>
