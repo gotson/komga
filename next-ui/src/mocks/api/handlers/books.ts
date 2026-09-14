@@ -4,12 +4,15 @@ import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 import {
   handleGetBookById,
+  handleGetBookPageByNumber,
+  handleGetBookPages,
   handleGetBooks,
   handleGetBookThumbnails,
   handleImportBooks,
 } from '@/generated/openapi/msw.gen'
 import { response200OK, response202Empty, response404NotFound } from '@/mocks/api/utils'
 import type { BookDto } from '@/generated/openapi'
+import { mockTransientBookAnalyzed3 } from '@/mocks/api/handlers/transient-books'
 
 export const mockBook = {
   id: '05RKH8CC8B4RW',
@@ -136,6 +139,17 @@ export const booksHandlers = [
       },
     ]),
   ),
+  handleGetBookPages(() => response200OK(mockTransientBookAnalyzed3.pages)),
+  handleGetBookPageByNumber(async () => {
+    // Get an ArrayBuffer from reading the file from disk or fetching it.
+    const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())
+
+    return HttpResponse.arrayBuffer(buffer, {
+      headers: {
+        'content-type': 'image/jpg',
+      },
+    })
+  }),
   http.get('*/api/v1/books/*/thumbnail*', async () => {
     // Get an ArrayBuffer from reading the file from disk or fetching it.
     const buffer = await fetch(mockThumbnailUrl).then((response) => response.arrayBuffer())

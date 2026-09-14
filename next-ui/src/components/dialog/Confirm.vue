@@ -4,6 +4,7 @@
     :activator="activator"
     :max-width="maxWidth"
     :max-height="fullscreen ? undefined : maxHeight"
+    :min-height="fullscreen ? undefined : minHeight"
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     :aria-label="title"
@@ -156,6 +157,7 @@ const {
   color = undefined,
   maxWidth = undefined,
   maxHeight = undefined,
+  minHeight = undefined,
   activator = undefined,
   loading = false,
   closeOnSave = true,

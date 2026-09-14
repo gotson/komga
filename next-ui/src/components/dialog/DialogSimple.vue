@@ -4,6 +4,7 @@
     :activator="activator"
     :max-width="maxWidth"
     :max-height="fullscreen ? undefined : maxHeight"
+    :min-height="fullscreen ? undefined : minHeight"
     :fullscreen="fullscreen"
     :transition="fullscreen ? 'dialog-bottom-transition' : undefined"
     :scrollable="scrollable"
@@ -56,6 +57,7 @@ const {
   subtitle = undefined,
   maxWidth = undefined,
   maxHeight = undefined,
+  minHeight = undefined,
   activator = undefined,
   loading = false,
   fullscreen = undefined,

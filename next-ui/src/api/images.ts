@@ -66,3 +66,14 @@ export function pageHashUnknownThumbnailUrl(hash?: string): string | undefined {
   if (hash) return `${ApiBaseUrl.noSlash}/api/v1/page-hashes/unknown/${hash}/thumbnail`
   return undefined
 }
+
+export function transientBookPageUrl(transientBookId?: string, page?: number): string | undefined {
+  if (transientBookId && page)
+    return `${ApiBaseUrl.noSlash}/api/v1/transient-books/${transientBookId}/pages/${page}`
+  return undefined
+}
+
+export function bookPageUrl(bookdId?: string, page?: number): string | undefined {
+  if (bookdId && page) return `${ApiBaseUrl.noSlash}/api/v1/books/${bookdId}/pages/${page}`
+  return undefined
+}

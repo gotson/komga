@@ -12,6 +12,10 @@ type DialogBaseProps = {
    */
   maxWidth?: string | number
   /**
+   * Minimum height of the dialog.
+   */
+  minHeight?: string | number
+  /**
    * Maximum height of the dialog.
    */
   maxHeight?: string | number

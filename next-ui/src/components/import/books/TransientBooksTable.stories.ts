@@ -5,17 +5,18 @@ import TransientBooksTable from './TransientBooksTable.vue'
 import { scanned } from '@/mocks/api/handlers/transient-books'
 import SnackQueue from '@/components/SnackQueue.vue'
 import { response400BadRequest } from '@/mocks/api/utils'
+import DialogSimpleInstance from '@/components/dialog/DialogSimpleInstance.vue'
 
 const meta = {
   component: TransientBooksTable,
   subcomponents: { SnackQueue },
   render: (args: object) => ({
-    components: { TransientBooksTable, SnackQueue },
+    components: { TransientBooksTable, SnackQueue, DialogSimpleInstance },
     inheritAttrs: false,
     setup() {
       return { args }
     },
-    template: '<TransientBooksTable v-bind="args"/><SnackQueue/>',
+    template: '<TransientBooksTable v-bind="args"/><SnackQueue/><DialogSimpleInstance/>',
   }),
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout

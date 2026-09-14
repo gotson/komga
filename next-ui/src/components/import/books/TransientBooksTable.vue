@@ -1,12 +1,10 @@
 <template>
   <v-data-table
     v-model="selectedBookIds"
-    v-model:items-per-page="itemsPerPage"
     :loading="importing || loading"
     :items="importBooks"
     item-value="transientBook.id"
     :headers="headers"
-    :items-per-page-options="itemsPerPageOptions"
     :hide-default-footer="hideFooter"
     fixed-header
     fixed-footer
@@ -99,6 +97,7 @@
           rounded
           color="primary"
           variant="tonal"
+          class="text-wrap"
         />
       </div>
       <div
@@ -110,16 +109,24 @@
         "
         @click="item.upgradable ? (currentActionedItems = [item]) : undefined"
       >
-        <v-chip
-          v-if="item.upgradeBook"
-          variant="text"
-          closable
-          class="cursor-pointer"
-          :disabled="!item.upgradable"
-          @click:close="unassignBook(item)"
-        >
-          {{ item.upgradeBook.metadata.number }} - {{ item.upgradeBook.metadata.title }}
-        </v-chip>
+        <div v-if="item.upgradeBook">
+          <v-chip
+            v-ktooltip:bottom="
+              `${item.upgradeBook.metadata.number} - ${item.upgradeBook.metadata.title}`
+            "
+            variant="text"
+            closable
+            class="cursor-pointer"
+            :disabled="!item.upgradable"
+            @click:close="unassignBook(item)"
+          >
+            <span
+              class="text-truncate"
+              style="max-width: 120px"
+              >{{ item.upgradeBook.metadata.number }} - {{ item.upgradeBook.metadata.title }}</span
+            >
+          </v-chip>
+        </div>
         <v-btn
           v-else
           color=""
@@ -135,6 +142,27 @@
           "
         />
       </div>
+    </template>
+
+    <template #[`header.details`]>
+      <v-icon icon="i-mdi:file-document-outline" />
+    </template>
+
+    <template #[`item.details`]="{ item }">
+      <v-icon-btn
+        v-ktooltip:bottom="
+          $formatMessage({
+            description: 'Import books table: book compare button',
+            defaultMessage: 'Compare',
+            id: 'pvD6TS',
+          })
+        "
+        :disabled="!item.upgradeBook"
+        icon="i-mdi:file-compare"
+        variant="elevated"
+        @mouseenter="compareBookActivator = $event.currentTarget as Element"
+        @click="compareBooks(item)"
+      />
     </template>
 
     <template #[`item.destinationName`]="{ item }">
@@ -266,7 +294,7 @@ import { syncRefs, useArrayFilter, useArrayMap } from '@vueuse/core'
 import { useDisplay } from 'vuetify'
 import { useMutation, useQuery } from '@pinia/colada'
 import { seriesDetailQuery } from '@/colada/series'
-import { bookListQuery } from '@/colada/books'
+import { bookListQuery, bookPagesQuery } from '@/colada/books'
 import { transientBookAnalyze } from '@/colada/transient-books'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useMessagesStore } from '@/stores/messages'
@@ -275,10 +303,17 @@ import {
   type BookDto,
   type BookImportBatchDto,
   komgaImportBooks,
+  type PageDto,
   type SeriesDto,
   type TransientBookDto,
 } from '@/generated/openapi'
 import { MediaStatus } from '@/types/MediaStatus'
+import {
+  type BookDetails,
+  bookDtoToBookDetails,
+  transientBookDtoToBookDetails,
+} from '@/types/BookDetails'
+import { useCompareBookDialog } from '@/composables/book/useCompareBookDialog'
 
 class BookImport {
   transientBook: TransientBookDto
@@ -287,12 +322,14 @@ class BookImport {
   series?: SeriesDto
   seriesBooks?: BookDto[]
   upgradeBook?: BookDto
+  upgradeBookPages: PageDto[]
   imported: boolean
 
   constructor(transientBook: TransientBookDto) {
     this.transientBook = transientBook
     this.originalName = transientBook.name
     this.destinationName = transientBook.name
+    this.upgradeBookPages = []
     this.imported = false
   }
 
@@ -352,6 +389,15 @@ class BookImport {
         id: 'UoaxO7',
       })
     return ''
+  }
+
+  public get transientBookDetails(): BookDetails {
+    return transientBookDtoToBookDetails(this.transientBook)
+  }
+
+  public get upgradeBookDetails(): BookDetails | undefined {
+    if (this.upgradeBook) return bookDtoToBookDetails(this.upgradeBook, this.upgradeBookPages)
+    return undefined
   }
 }
 
@@ -413,10 +459,6 @@ function onDisplayedItems(items: { key: string }[]) {
 }
 
 //region Table setup
-const itemsPerPage = ref<number>(display.smAndDown.value ? 1 : 10)
-const itemsPerPageOptions = computed(() =>
-  display.smAndDown.value ? [1, 5, 10, 20] : [10, 25, 50],
-)
 const hideFooter = computed(() => importBooks.value.length < (display.smAndDown.value ? 1 : 10))
 
 const headers = [
@@ -452,6 +494,15 @@ const headers = [
       id: 'Kie8HQ',
     }),
     key: 'upgradeBook',
+  },
+  {
+    title: intl.formatMessage({
+      description: 'Import books table header: details',
+      defaultMessage: 'Details',
+      id: 'EbhcQd',
+    }),
+    key: 'details',
+    align: 'center',
   },
   {
     title: intl.formatMessage({
@@ -579,7 +630,7 @@ function fetchBooks(book: BookImport) {
     .then(({ data }) => {
       if (data) {
         book.seriesBooks = data.content
-        if (book.series?.oneshot) book.upgradeBook = data.content?.at(0)
+        if (book.series?.oneshot) assignBook(book, data.content?.at(0))
         else if (book.transientBook.number) assignBookNumber(book, book.transientBook.number)
       }
     })
@@ -593,12 +644,36 @@ function assignSeries(book: BookImport, series: SeriesDto) {
     selectedBookIds.value.push(book.transientBook.id)
 }
 
+function fetchBookPages(book: BookImport) {
+  if (book.upgradeBook)
+    void useQuery(() => bookPagesQuery({ bookId: book.upgradeBook!.id }))
+      .refresh()
+      .then(({ data }) => {
+        if (data) {
+          book.upgradeBookPages = data
+        }
+      })
+}
+
+function assignBook(book: BookImport, data?: BookDto) {
+  if (data) {
+    book.upgradeBook = data
+    fetchBookPages(book)
+  } else {
+    unassignBook(book)
+  }
+}
+
 function assignBookNumber(book: BookImport, number: number) {
-  book.upgradeBook = book.seriesBooks?.find((b) => b.metadata.numberSort === number)
+  assignBook(
+    book,
+    book.seriesBooks?.find((b) => b.metadata.numberSort === number),
+  )
 }
 
 function unassignBook(book: BookImport) {
   book.upgradeBook = undefined
+  book.upgradeBookPages = []
 }
 
 const { mutateAsync: postImportBooks, isLoading: importing } = useMutation({
@@ -618,6 +693,14 @@ function doImportBooks() {
     .catch((error) => {
       messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
     })
+}
+
+const { prepareDialog: prepareCompareBookDialog, activator: compareBookActivator } =
+  useCompareBookDialog()
+
+function compareBooks(item: BookImport) {
+  if (item.upgradeBookDetails)
+    prepareCompareBookDialog(item.transientBookDetails, item.upgradeBookDetails, true)
 }
 </script>
 

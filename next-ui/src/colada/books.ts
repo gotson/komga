@@ -23,6 +23,7 @@ import {
   komgaUpdateBookMetadata,
   komgaDeleteUserUploadedBookThumbnail,
   type BookMetadataUpdateDto,
+  komgaGetBookPages,
 } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
 
@@ -251,3 +252,13 @@ export const useMarkBookPosterSelected = defineMutation(() => {
     },
   })
 })
+
+export const bookPagesQuery = defineQueryOptions(({ bookId }: { bookId: string }) => ({
+  key: [...QUERY_KEYS_BOOKS.byId(bookId), 'pages'],
+  query: () =>
+    komgaGetBookPages({
+      path: {
+        bookId: bookId,
+      },
+    }),
+}))
