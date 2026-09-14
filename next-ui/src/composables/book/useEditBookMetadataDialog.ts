@@ -25,13 +25,13 @@ export function useEditBookMetadataDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateBookMetadata } = useUpdateBookMetadata()
   const { mutateAsync: mutateUpdateSeriesMetadata } = useUpdateSeriesMetadata()
+  const fetchSeriesId = ref<string | undefined>(undefined)
+  const { refresh: refreshSeries } = useQuery(() => ({
+    ...seriesDetailQuery({ seriesId: fetchSeriesId.value || 'none' }),
+    enabled: !!fetchSeriesId.value,
+  }))
 
   const prepareDialog = (book: BookDto, callback: () => void = () => {}) => {
-    const { refresh: refreshSeries } = useQuery(() => ({
-      ...seriesDetailQuery({ seriesId: book.seriesId }),
-      enabled: book.oneshot,
-    }))
-
     dialogConfirmEdit.value.dialogProps = {
       title: intl.formatMessage({
         description: 'Edit book metadata dialog title',
@@ -54,6 +54,7 @@ export function useEditBookMetadataDialog() {
 
     // load parent series asynchronously so we don't delay the dialog opening
     if (book.oneshot) {
+      fetchSeriesId.value = book.seriesId
       void refreshSeries().then(({ data }) => {
         if (data) {
           dialogConfirmEdit.value.record = createEntityUpdate(
