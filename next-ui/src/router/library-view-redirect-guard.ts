@@ -1,5 +1,9 @@
 import type { Router, NavigationGuardReturn } from 'vue-router'
-import { useLibraries } from '@/colada/libraries'
+import { useQueryCache } from '@pinia/colada'
+import { librariesQuery } from '@/colada/libraries'
+import { clientSettingsUserQuery } from '@/colada/client-settings'
+import { parseUserSettings } from '@/functions/user-settings'
+import { getUserLibrariesState } from '@/functions/libraries'
 
 /**
  * Redirect from /libraries/[viewId] and its child routes to the appropriate sub-route.
@@ -11,20 +15,25 @@ export function useLibraryViewRedirectGuard(router: Router) {
   router.beforeEach(async (to): Promise<NavigationGuardReturn | void> => {
     if (!to.matched.some((record) => record.name === '/libraries/[viewId]')) return
 
-    const { noLibraries, anyPinned, anyUnpinned, refresh } = useLibraries()
-
-    await refresh()
-
-    if (noLibraries.value) {
-      return { name: '/libraries/create' }
-    }
-
     const viewId = (to.params as { viewId?: string }).viewId
-
     if (!viewId) return
 
+    const queryCache = useQueryCache()
+    const [stateLibraries, stateUserSettings] = await Promise.all([
+      queryCache.refresh(queryCache.ensure(librariesQuery)),
+      queryCache.refresh(queryCache.ensure(clientSettingsUserQuery)),
+    ])
+
+    const userSettings = parseUserSettings(stateUserSettings.data)
+    const { noLibraries, anyPinned, anyUnpinned } = getUserLibrariesState(
+      stateLibraries.data,
+      userSettings,
+    )
+
+    if (noLibraries) return { name: '/libraries/create' }
+
     const redirectToAll =
-      (viewId === 'pinned' && !anyPinned.value) || (viewId === 'unpinned' && !anyUnpinned.value)
+      (viewId === 'pinned' && !anyPinned) || (viewId === 'unpinned' && !anyUnpinned)
 
     //TODO: for now we always redirect to 'overview', this should be persisted per viewId or pinned somehow
     if (to.name === '/libraries/[viewId]') {

@@ -182,4 +182,3 @@ const dialogTitle = intl.formatMessage({
   id: 'SIfmpC',
 })
 </script>
-<script setup lang="ts"></script>

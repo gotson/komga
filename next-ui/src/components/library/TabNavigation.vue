@@ -87,9 +87,8 @@
 <script setup lang="ts">
 import type { Route } from '@/types/route'
 import type { LibraryViewId } from '@/types/libraries'
-import { useGetLibrariesByViewId } from '@/composables/libraries'
+import { useGetLibrariesByViewId, useUserLibraries } from '@/composables/libraries'
 import { useIntl } from 'vue-intl'
-import { useLibraries } from '@/colada/libraries'
 import { useDisplay } from 'vuetify/framework'
 import type { RouteLocationRaw } from 'vue-router'
 
@@ -103,7 +102,7 @@ const display = useDisplay()
 const currentRoute = useRoute()
 const router = useRouter()
 
-const { anyPinned, anyUnpinned } = useLibraries()
+const { anyPinned, anyUnpinned } = useUserLibraries()
 const { isSingle, library: librarySingle } = useGetLibrariesByViewId(props.libraryViewId)
 
 type LibRouteItem = {

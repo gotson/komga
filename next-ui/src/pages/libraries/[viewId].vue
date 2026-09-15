@@ -7,12 +7,11 @@
 
 <script lang="ts" setup>
 import { filterKeys } from '@/types/filter'
-import { useGetLibrariesByViewId } from '@/composables/libraries'
-import { useLibraries } from '@/colada/libraries'
+import { useGetLibrariesByViewId, useUserLibraries } from '@/composables/libraries'
 
 const route = useRoute('/libraries/[viewId]')
 const router = useRouter()
-const { noLibraries, anyPinned, anyUnpinned } = useLibraries()
+const { noLibraries, anyPinned, anyUnpinned } = useUserLibraries()
 const libraryViewId = computed(() => route.params.viewId)
 const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 

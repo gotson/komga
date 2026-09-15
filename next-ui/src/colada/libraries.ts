@@ -1,7 +1,4 @@
-import { defineMutation, defineQuery, useMutation, useQuery } from '@pinia/colada'
-import { ClientSettingUser } from '@/types/ClientSettingsUser'
-import { useClientSettingsUser } from '@/colada/client-settings'
-import { combinePromises } from '@/colada/utils'
+import { defineMutation, defineQueryOptions, useMutation, useQuery } from '@pinia/colada'
 import { entitiesChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
@@ -21,63 +18,15 @@ export const QUERY_KEYS_LIBRARIES = {
   root: ['libraries'] as const,
 }
 
-export const useLibraries = defineQuery(() => {
-  const {
-    data,
-    refresh: refreshLibraries,
-    refetch: refetchLibraries,
-    ...rest
-  } = useQuery({
-    key: () => QUERY_KEYS_LIBRARIES.root,
-    query: () => komgaGetLibraries(),
-    // 1 hour
-    staleTime: 60 * 60 * 1000,
-    gcTime: false,
-  })
-
-  const {
-    userSettings,
-    refresh: refreshSettings,
-    refetch: refetchSettings,
-  } = useClientSettingsUser()
-
-  const userLibraries = computed(() => {
-    return userSettings.value[ClientSettingUser.NextUILibraries]
-  })
-
-  const refresh = combinePromises(refreshLibraries, [refreshSettings])
-  const refetch = combinePromises(refetchLibraries, [refetchSettings])
-
-  const ordered = computed(() =>
-    data?.value?.sort(
-      (a, b) =>
-        (userLibraries.value?.[a.id]?.order || 0) - (userLibraries.value?.[b.id]?.order || 0),
-    ),
-  )
-
-  const unpinned = computed(
-    () => ordered.value?.filter((it) => userLibraries.value?.[it.id]?.unpinned) || [],
-  )
-  const pinned = computed(
-    () => ordered.value?.filter((it) => !userLibraries.value?.[it.id]?.unpinned) || [],
-  )
-  const anyPinned = computed(() => pinned.value.length > 0)
-  const anyUnpinned = computed(() => unpinned.value.length > 0)
-  const noLibraries = computed(() => data.value?.length === 0)
-
-  return {
-    data,
-    ordered,
-    unpinned,
-    pinned,
-    anyPinned,
-    anyUnpinned,
-    noLibraries,
-    refresh,
-    refetch,
-    ...rest,
-  }
+export const librariesQuery = defineQueryOptions({
+  key: QUERY_KEYS_LIBRARIES.root,
+  query: () => komgaGetLibraries(),
+  // 1 hour
+  staleTime: 60 * 60 * 1000,
+  gcTime: false,
 })
+
+export const useLibraries = () => useQuery(librariesQuery)
 
 export const useCreateLibrary = defineMutation(() => {
   const appStore = useAppStore()

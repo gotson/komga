@@ -13,17 +13,17 @@
 import * as v from 'valibot'
 import { type AnyAll, SchemaString } from '@/types/filter'
 import type { ItemType } from '@/components/filter/List.vue'
-import { useLibraries } from '@/colada/libraries'
 import type { LibraryDto } from '@/generated/openapi'
+import { useUserLibraries } from '@/composables/libraries'
 
 type SchString = v.InferOutput<typeof SchemaString>
 
 const model = defineModel<SchString[]>({ default: () => [] })
 const modelMode = defineModel<AnyAll>('mode', { default: 'anyOf' })
 
-const { ordered } = useLibraries()
+const { ordered } = useUserLibraries()
 
-const items = computed(() => ordered.value?.map((it) => toItemType(it)))
+const items = computed(() => ordered.value.map((it) => toItemType(it)))
 
 function toItemType(value: LibraryDto): ItemType<SchString> {
   return {

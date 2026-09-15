@@ -95,18 +95,18 @@
 
 <script setup lang="ts">
 import { VueDraggable } from 'vue-draggable-plus'
-import { useLibraries } from '@/colada/libraries'
 
 import { ClientSettingUser, type ClientSettingUserLibrary } from '@/types/ClientSettingsUser'
 import { useUpdateClientSettingsUser } from '@/colada/client-settings'
 import { useAppStore } from '@/stores/app'
 import { useIntl } from 'vue-intl'
 import type { LibraryDto } from '@/generated/openapi'
+import { useUserLibraries } from '@/composables/libraries'
 
 const intl = useIntl()
 const appStore = useAppStore()
 
-const { unpinned, pinned, refresh } = useLibraries()
+const { unpinned, pinned, refresh } = useUserLibraries()
 const { mutate } = useUpdateClientSettingsUser()
 
 const localPinned = ref<LibraryDto[]>([])

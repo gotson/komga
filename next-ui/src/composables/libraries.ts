@@ -1,13 +1,38 @@
 import { useLibraries } from '@/colada/libraries'
 import type { LibraryViewId } from '@/types/libraries'
 import type { LibraryDto } from '@/generated/openapi'
+import { useClientSettingsUser } from '@/colada/client-settings'
+import { getUserLibrariesState } from '@/functions/libraries'
+
+/**
+ * A composable that returns user libraries.
+ */
+export function useUserLibraries() {
+  const { data: libraries, ...librariesRest } = useLibraries()
+  const { userSettings } = useClientSettingsUser()
+
+  const userLibrariesState = computed(() =>
+    getUserLibrariesState(libraries.value, userSettings.value),
+  )
+
+  return {
+    librariesRaw: libraries,
+    ordered: computed(() => userLibrariesState.value.ordered),
+    unpinned: computed(() => userLibrariesState.value.unpinned),
+    pinned: computed(() => userLibrariesState.value.pinned),
+    anyPinned: computed(() => userLibrariesState.value.anyPinned),
+    anyUnpinned: computed(() => userLibrariesState.value.anyUnpinned),
+    noLibraries: computed(() => userLibrariesState.value.noLibraries),
+    ...librariesRest,
+  }
+}
 
 /**
  * A composable that returns libraries filtered by a LibraryViewId.
  * @param libraryViewId the library ID or group to get
  */
 export function useGetLibrariesByViewId(libraryViewId: MaybeRefOrGetter<LibraryViewId>) {
-  const { data: all, pinned, unpinned, status } = useLibraries()
+  const { librariesRaw: all, pinned, unpinned, status } = useUserLibraries()
 
   const libs = computed(() => {
     if (status.value !== 'success') return undefined

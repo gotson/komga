@@ -53,12 +53,12 @@
 <script lang="ts" setup>
 import { useCurrentUser } from '@/colada/users'
 import { useCreateLibraryDialog } from '@/composables/library/useCreateLibraryDialog'
-import { useLibraries } from '@/colada/libraries'
+import { useUserLibraries } from '@/composables/libraries'
 
 const router = useRouter()
 const { isAdmin } = useCurrentUser()
 const { activator, prepareDialog: createLibrary } = useCreateLibraryDialog()
-const { noLibraries } = useLibraries()
+const { noLibraries } = useUserLibraries()
 
 watch(noLibraries, (newNoLibraries) => {
   if (!newNoLibraries) {
