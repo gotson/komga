@@ -11,6 +11,7 @@ import { VueRouterAutoImports } from 'vue-router/unplugin'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import dir2json from 'vite-plugin-dir2json'
 import UnoCSS from 'unocss/vite'
+import { unheadVueComposablesImports } from '@unhead/vue'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -27,7 +28,7 @@ export default defineConfig(({ mode }) => ({
     }),
     Layouts(),
     AutoImport({
-      imports: ['vue', VueRouterAutoImports],
+      imports: ['vue', VueRouterAutoImports, unheadVueComposablesImports],
       dts: 'src/auto-imports.d.ts',
       eslintrc: {
         enabled: true,

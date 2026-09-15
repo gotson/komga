@@ -5,6 +5,7 @@
  */
 
 // Plugins
+import { head } from '@/plugins/head'
 import { vuetify, vuetifyRulesPlugin } from './vuetify'
 import pinia from '../stores'
 import router from '../router'
@@ -25,6 +26,7 @@ import { useLibraryViewRedirectGuard } from '@/router/library-view-redirect-guar
 
 export function registerPlugins(app: App) {
   app
+    .use(head)
     .use(vuetify)
     .use(vuetifyRulesPlugin)
     .use(vueIntl)
