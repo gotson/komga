@@ -1,17 +1,17 @@
 <template>
   <v-app-bar>
-    <LibraryHeader
-      class="ms-4"
-      :library-id="series?.libraryId"
-      link
-    />
+    <template #prepend>
+      <LibraryHeader
+        class="ms-4"
+        :library-id="series?.libraryId"
+        link
+      />
 
-    <ChipCount
-      class="ms-2"
-      :count="totalElements"
-    />
-
-    <v-spacer />
+      <ChipCount
+        class="ms-2"
+        :count="totalElements"
+      />
+    </template>
 
     <PosterSizeSlider />
 

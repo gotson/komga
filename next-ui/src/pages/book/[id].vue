@@ -1,10 +1,12 @@
 <template>
   <v-app-bar>
-    <LibraryHeader
-      class="ms-4"
-      :library-id="book?.libraryId"
-      link
-    />
+    <template #prepend>
+      <LibraryHeader
+        class="ms-4"
+        :library-id="book?.libraryId"
+        link
+      />
+    </template>
   </v-app-bar>
 
   <v-container
