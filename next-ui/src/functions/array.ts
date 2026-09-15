@@ -14,3 +14,22 @@ export function getIntersection<T>(...arrays: T[][]): T[] {
     return accumulator.filter((item) => currentSet.has(item))
   })
 }
+
+export function getSurroundingElements<T>(
+  array: T[],
+  index: number,
+  beforeCount: number = 0,
+  afterCount: number = 0,
+): T[] {
+  if (index < 0 || index >= array.length) return []
+
+  // slice before
+  const startBefore = Math.max(0, index - beforeCount)
+  const before = array.slice(startBefore, index)
+
+  // slice after
+  const endAfter = Math.min(array.length, index + 1 + afterCount)
+  const after = array.slice(index + 1, endAfter)
+
+  return [...before, ...after]
+}

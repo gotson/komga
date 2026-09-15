@@ -47,6 +47,8 @@ import type { PageDtoWithUrl } from '@/types/BookDetails'
 import { watchImmediate } from '@vueuse/core'
 import { clamp } from '@/functions/clamp'
 import { useDisplay } from 'vuetify'
+import { getSurroundingElements } from '@/functions/array'
+import { useImagePrefetch } from '@/composables/image'
 
 const display = useDisplay()
 
@@ -96,4 +98,10 @@ function bothLast() {
   pageNumberLeft.value = left.length
   pageNumberRight.value = right.length
 }
+
+const prefetchUrls = computed(() => [
+  ...getSurroundingElements(left, pageNumberLeft.value - 1, 2, 2).map((it) => it.url!),
+  ...getSurroundingElements(right, pageNumberRight.value - 1, 2, 2).map((it) => it.url!),
+])
+useImagePrefetch(prefetchUrls)
 </script>

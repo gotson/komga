@@ -171,6 +171,7 @@
 
     <template #[`item.details`]="{ item }">
       <v-icon-btn
+        v-if="item.upgradeBook"
         v-ktooltip:bottom="
           $formatMessage({
             description: 'Import books table: book compare button',
@@ -178,11 +179,26 @@
             id: 'pvD6TS',
           })
         "
-        :disabled="!item.upgradeBook || item.imported"
+        :disabled="item.imported"
         icon="i-mdi:file-compare"
         variant="elevated"
         @mouseenter="compareBookActivator = $event.currentTarget as Element"
         @click="compareBooks(item)"
+      />
+      <v-icon-btn
+        v-else
+        v-ktooltip:bottom="
+          $formatMessage({
+            description: 'Import books table: book details button',
+            defaultMessage: 'Show details',
+            id: '2LLpzV',
+          })
+        "
+        :disabled="item.imported"
+        icon="i-mdi:file-document-outline"
+        variant="elevated"
+        @mouseenter="bookDetailsActivator = $event.currentTarget as Element"
+        @click="bookDetails(item)"
       />
     </template>
 
@@ -326,6 +342,7 @@ import {
 import { MediaStatus } from '@/types/MediaStatus'
 import { useCompareBookDialog } from '@/composables/book/useCompareBookDialog'
 import { BookImport } from '@/types/BookImport'
+import { useBookDetailsDialog } from '@/composables/book/useBookDetailsDialog'
 
 const messagesStore = useMessagesStore()
 const display = useDisplay()
@@ -550,6 +567,13 @@ function doImportBooks() {
     .catch((error) => {
       messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
     })
+}
+
+const { prepareDialog: prepareBookDetailsDialog, activator: bookDetailsActivator } =
+  useBookDetailsDialog()
+
+function bookDetails(item: BookImport) {
+  prepareBookDetailsDialog(item.transientBookDetails)
 }
 
 const { prepareDialog: prepareCompareBookDialog, activator: compareBookActivator } =
