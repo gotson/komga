@@ -12,7 +12,7 @@ export function useLoginGuard(router: Router) {
     if (!to.meta.noAuth) {
       const queryCache = useQueryCache()
       const entry = queryCache.ensure(currentUserQuery)
-      const state = await queryCache.fetch(entry)
+      const state = await queryCache.refresh(entry)
 
       const isAuthenticated = !!state.data && !state.error
 

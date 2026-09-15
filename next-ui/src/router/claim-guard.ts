@@ -12,7 +12,7 @@ export function useClaimGuard(router: Router) {
       const queryCache = useQueryCache()
 
       const cacheEntry = queryCache.ensure(claimStatusQuery)
-      const state = await queryCache.fetch(cacheEntry)
+      const state = await queryCache.refresh(cacheEntry)
 
       if (state.error) return { name: '/error' }
 

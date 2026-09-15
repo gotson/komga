@@ -243,7 +243,7 @@ definePage({
     // check cache
     const queryCache = useQueryCache()
     const cacheEntry = queryCache.ensure(seriesDetailQuery({ seriesId: params.id }))
-    const state = await queryCache.fetch(cacheEntry)
+    const state = await queryCache.refresh(cacheEntry)
     const series = state.data
 
     if (series?.oneshot) {
