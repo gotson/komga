@@ -1,7 +1,8 @@
+import { createGlobalState } from '@vueuse/core'
 import { useTheme } from 'vuetify'
 import { useAppStore } from '@/stores/app'
 
-export function useThemeWatcher() {
+export const useThemeWatcher = createGlobalState(() => {
   const appStore = useAppStore()
   const theme = useTheme()
 
@@ -16,4 +17,4 @@ export function useThemeWatcher() {
 
   // trigger an update on startup to get the proper theme loaded
   updateTheme(appStore.theme)
-}
+})
