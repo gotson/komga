@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import { useAppReleases } from '@/colada/app-releases'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { useAppReleasesEnriched } from '@/composables/app-releases'
 
-const { buildVersion, isLatestVersion, isLoading } = useAppReleases()
+const { buildVersion, isLatestVersion, isLoading } = useAppReleasesEnriched()
 </script>

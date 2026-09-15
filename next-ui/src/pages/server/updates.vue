@@ -57,17 +57,17 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppReleases } from '@/colada/app-releases'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
+import { useAppReleasesEnriched } from '@/composables/app-releases'
 
 const {
-  data: releases,
+  releases,
   error,
   buildVersion: currentVersion,
   isLatestVersion,
   latestRelease: latest,
   isLoading,
-} = useAppReleases()
+} = useAppReleasesEnriched()
 </script>
 
 <route lang="yaml">

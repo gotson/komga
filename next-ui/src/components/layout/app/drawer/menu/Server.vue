@@ -120,8 +120,8 @@
 
 <script setup lang="ts">
 import { useAnnouncements } from '@/colada/announcements'
-import { useAppReleases } from '@/colada/app-releases'
+import { useAppReleasesEnriched } from '@/composables/app-releases'
 
 const { unreadCount } = useAnnouncements()
-const { isLatestVersion } = useAppReleases()
+const { isLatestVersion } = useAppReleasesEnriched()
 </script>
