@@ -1,5 +1,6 @@
 import type { Router } from 'vue-router'
-import { useClaimStatus } from '@/colada/claim'
+import { claimStatusQuery } from '@/colada/claim'
+import { useQueryCache } from '@pinia/colada'
 
 /**
  * Check if the server has already been claimed.
@@ -7,12 +8,16 @@ import { useClaimStatus } from '@/colada/claim'
 export function useClaimGuard(router: Router) {
   router.beforeEach(async (to) => {
     if (to.name === '/claim' || to.name === '/login') {
-      const { data, error } = await useClaimStatus().refresh()
+      // check cache
+      const queryCache = useQueryCache()
 
-      if (error) return { name: '/error' }
+      const cacheEntry = queryCache.ensure(claimStatusQuery)
+      const state = await queryCache.fetch(cacheEntry)
 
-      if (to.name === '/login' && !data?.isClaimed) return { name: '/claim' }
-      if (to.name === '/claim' && data?.isClaimed) return { name: '/login' }
+      if (state.error) return { name: '/error' }
+
+      if (to.name === '/login' && !state.data?.isClaimed) return { name: '/claim' }
+      if (to.name === '/claim' && state.data?.isClaimed) return { name: '/login' }
     }
   })
 }

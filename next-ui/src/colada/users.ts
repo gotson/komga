@@ -40,18 +40,20 @@ export const useUsers = defineQuery(() =>
   }),
 )
 
-export const useCurrentUser = defineQuery(() => {
-  const { data, error, ...rest } = useQuery({
-    key: QUERY_KEYS_USERS.currentUser,
-    query: () => komgaGetCurrentUser(),
-    // 10 minutes
-    staleTime: 10 * 60 * 1000,
-    gcTime: false,
-    autoRefetch: true,
-    meta: {
-      no401handling: true,
-    },
-  })
+export const currentUserQuery = defineQueryOptions({
+  key: QUERY_KEYS_USERS.currentUser(),
+  query: () => komgaGetCurrentUser(),
+  // 10 minutes
+  staleTime: 10 * 60 * 1000,
+  gcTime: false,
+  autoRefetch: true,
+  meta: {
+    no401handling: true,
+  },
+})
+
+export const useCurrentUser = () => {
+  const { data, error, ...rest } = useQuery(currentUserQuery)
 
   const isAuthenticated = computed(() => !!data.value && !error.value)
   const hasRole = (role: UserRole) => data.value?.roles.includes(role) ?? false
@@ -65,7 +67,7 @@ export const useCurrentUser = defineQuery(() => {
     isAdmin,
     isAuthenticated,
   }
-})
+}
 
 export const useLogin = defineMutation(() => {
   const queryCache = useQueryCache()

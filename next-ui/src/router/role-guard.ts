@@ -1,5 +1,6 @@
 import type { Router } from 'vue-router'
-import { useCurrentUser } from '@/colada/users'
+import { currentUserQuery } from '@/colada/users'
+import { useQueryCache } from '@pinia/colada'
 
 /**
  * Check if the user has the necessary role before navigating to restricted pages.
@@ -7,10 +8,13 @@ import { useCurrentUser } from '@/colada/users'
  * Redirect to the home page in case of insufficient permissions.
  */
 export function useRoleGuard(router: Router) {
-  router.beforeEach((to) => {
+  router.beforeEach(async (to) => {
     if (to.meta.requiresRole) {
-      const { data } = useCurrentUser()
-      if (!data.value?.roles?.includes(to.meta.requiresRole)) {
+      const queryCache = useQueryCache()
+      const entry = queryCache.ensure(currentUserQuery)
+      const state = await queryCache.fetch(entry)
+
+      if (!state.data?.roles?.includes(to.meta.requiresRole)) {
         return { name: '/' }
       }
     }
