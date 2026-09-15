@@ -21,6 +21,7 @@ import {
   type ReadListUpdateDto,
 } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_READLIST = {
   root: ['readlists'] as const,
@@ -88,6 +89,7 @@ export const readListDetailQuery = defineQueryOptions(({ readListId }: { readLis
         id: readListId,
       },
     }),
+  staleTime: STALE_TIME.LONG,
 }))
 
 export const useCreateReadList = defineMutation(() => {
@@ -143,6 +145,7 @@ export const readListPostersQuery = defineQueryOptions(
           id: readListId,
         },
       }),
+    staleTime: STALE_TIME.LONG,
   }),
 )
 

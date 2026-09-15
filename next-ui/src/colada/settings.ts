@@ -4,6 +4,7 @@ import {
   komgaUpdateServerSettings,
   type SettingsUpdateDto,
 } from '@/generated/openapi'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_SETTINGS = {
   root: ['settings'] as const,
@@ -13,8 +14,7 @@ export const useSettings = defineQuery(() => {
   return useQuery({
     key: () => QUERY_KEYS_SETTINGS.root,
     query: () => komgaGetServerSettings(),
-    // 1 hour
-    staleTime: 60 * 60 * 1000,
+    staleTime: STALE_TIME.LONG,
     gcTime: false,
   })
 })

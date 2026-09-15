@@ -1,5 +1,6 @@
 import { defineMutation, defineQueryOptions, useMutation, useQueryCache } from '@pinia/colada'
 import { komgaClaimServer, komgaGetClaimStatus } from '@/generated/openapi'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_CLAIM = {
   root: ['claim'] as const,
@@ -8,7 +9,7 @@ export const QUERY_KEYS_CLAIM = {
 export const claimStatusQuery = defineQueryOptions({
   key: QUERY_KEYS_CLAIM.root,
   query: () => komgaGetClaimStatus(),
-  staleTime: Infinity,
+  staleTime: STALE_TIME.STATIC,
   gcTime: false,
 })
 

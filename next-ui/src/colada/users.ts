@@ -26,6 +26,7 @@ import {
   type UserCreationDto,
   type UserDto,
 } from '@/generated/openapi'
+import { MINUTE, STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_USERS = {
   root: ['users'] as const,
@@ -37,14 +38,14 @@ export const useUsers = defineQuery(() =>
   useQuery({
     key: () => QUERY_KEYS_USERS.root,
     query: () => komgaGetUsers(),
+    staleTime: STALE_TIME.LONG,
   }),
 )
 
 export const currentUserQuery = defineQueryOptions({
   key: QUERY_KEYS_USERS.currentUser(),
   query: () => komgaGetCurrentUser(),
-  // 10 minutes
-  staleTime: 10 * 60 * 1000,
+  staleTime: 10 * MINUTE,
   gcTime: false,
   autoRefetch: true,
   meta: {

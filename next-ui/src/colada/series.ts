@@ -26,6 +26,7 @@ import {
   type SeriesSearch,
 } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_SERIES = {
   root: ['series'] as const,
@@ -94,6 +95,7 @@ export const seriesDetailQuery = defineQueryOptions(({ seriesId }: { seriesId: s
         seriesId: seriesId,
       },
     }),
+  staleTime: STALE_TIME.LONG,
 }))
 
 export const useRefreshMetadataSeries = defineMutation(() =>
@@ -193,6 +195,7 @@ export const seriesPostersQuery = defineQueryOptions(({ seriesId }: { seriesId: 
         seriesId: seriesId,
       },
     }),
+  staleTime: STALE_TIME.LONG,
 }))
 
 export const useAddSeriesPoster = defineMutation(() => {

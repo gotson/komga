@@ -1,5 +1,6 @@
 import { defineQueryOptions } from '@pinia/colada'
 import { komgaAnalyzeTransientBook, komgaScanTransientBooks } from '@/generated/openapi'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_TRANSIENT_BOOKS = {
   root: ['transient-books'] as const,
@@ -16,8 +17,7 @@ export const transientBooksScan = defineQueryOptions(({ path }: { path: string }
         path: path,
       },
     }),
-  // 1 hour
-  staleTime: 60 * 60 * 1000,
+  staleTime: STALE_TIME.LONG,
 }))
 
 export const transientBookAnalyze = defineQueryOptions(
@@ -29,7 +29,6 @@ export const transientBookAnalyze = defineQueryOptions(
           id: transientBookId,
         },
       }),
-    // 1 hour
-    staleTime: 60 * 60 * 1000,
+    staleTime: STALE_TIME.LONG,
   }),
 )

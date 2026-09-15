@@ -1,6 +1,7 @@
 import { defineMutation, defineQuery, useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { komgaGetAnnouncements, komgaMarkAnnouncementsRead } from '@/generated/openapi'
 import { useCurrentUser } from '@/colada/users'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_ANNOUNCEMENTS = {
   root: ['announcements'] as const,
@@ -12,8 +13,7 @@ export const useAnnouncements = defineQuery(() => {
   const { data, ...rest } = useQuery({
     key: () => QUERY_KEYS_ANNOUNCEMENTS.root,
     query: () => komgaGetAnnouncements(),
-    // 1 hour
-    staleTime: 60 * 60 * 1000,
+    staleTime: STALE_TIME.LONG,
     gcTime: false,
     enabled: () => isAdmin.value,
   })

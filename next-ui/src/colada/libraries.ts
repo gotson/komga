@@ -13,6 +13,7 @@ import {
   type LibraryCreationDto,
   type LibraryDto,
 } from '@/generated/openapi'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_LIBRARIES = {
   root: ['libraries'] as const,
@@ -21,8 +22,7 @@ export const QUERY_KEYS_LIBRARIES = {
 export const librariesQuery = defineQueryOptions({
   key: QUERY_KEYS_LIBRARIES.root,
   query: () => komgaGetLibraries(),
-  // 1 hour
-  staleTime: 60 * 60 * 1000,
+  staleTime: STALE_TIME.LONG,
   gcTime: false,
 })
 

@@ -423,18 +423,23 @@ export const useSSE = createGlobalState(() => {
       case 'ThumbnailBookDeleted':
         if (event.data.selected) cacheStore.bustCache(event.data.bookId)
         if (event.data.selected) cacheStore.bustCache(event.data.seriesId)
+        void entitiesChanged(QUERY_KEYS_BOOKS.posters(event.data.bookId))
+        void entitiesChanged(QUERY_KEYS_SERIES.posters(event.data.seriesId))
         break
       case 'ThumbnailSeriesAdded':
       case 'ThumbnailSeriesDeleted':
         if (event.data.selected) cacheStore.bustCache(event.data.seriesId)
+        void entitiesChanged(QUERY_KEYS_SERIES.posters(event.data.seriesId))
         break
       case 'ThumbnailReadListAdded':
       case 'ThumbnailReadListDeleted':
         if (event.data.selected) cacheStore.bustCache(event.data.readListId)
+        void entitiesChanged(QUERY_KEYS_READLIST.posters(event.data.readListId))
         break
       case 'ThumbnailSeriesCollectionAdded':
       case 'ThumbnailSeriesCollectionDeleted':
         if (event.data.selected) cacheStore.bustCache(event.data.collectionId)
+        void entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(event.data.collectionId))
         break
     }
   })

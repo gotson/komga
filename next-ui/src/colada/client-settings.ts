@@ -13,6 +13,7 @@ import {
   komgaSaveUserSetting,
 } from '@/generated/openapi'
 import { parseUserSettings } from '@/functions/user-settings'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_CLIENT_SETTINGS = {
   root: ['client-settings'] as const,
@@ -23,8 +24,7 @@ export const QUERY_KEYS_CLIENT_SETTINGS = {
 export const clientSettingsUserQuery = defineQueryOptions({
   key: QUERY_KEYS_CLIENT_SETTINGS.user(),
   query: () => komgaGetUserSettings(),
-  // 1 hour
-  staleTime: 60 * 60 * 1000,
+  staleTime: STALE_TIME.LONG,
   gcTime: false,
 })
 

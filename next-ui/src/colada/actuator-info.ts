@@ -1,13 +1,13 @@
 import { defineQuery, useQuery } from '@pinia/colada'
 import type { ActuatorInfo } from '@/types/actuator'
 import { komgaGetActuatorInfo } from '@/generated/openapi'
+import { STALE_TIME } from '@/types/time'
 
 export const useActuatorInfo = defineQuery(() => {
   const { data, ...rest } = useQuery({
     key: () => ['actuator-info'],
     query: () => komgaGetActuatorInfo().then((data) => data as ActuatorInfo),
-    // 1 hour
-    staleTime: 60 * 60 * 1000,
+    staleTime: STALE_TIME.LONG,
     gcTime: false,
   })
 

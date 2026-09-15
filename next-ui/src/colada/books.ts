@@ -26,6 +26,7 @@ import {
   komgaGetBookPages,
 } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_BOOKS = {
   root: ['books'] as const,
@@ -92,6 +93,7 @@ export const bookDetailQuery = defineQueryOptions(({ bookId }: { bookId: string 
         bookId: bookId,
       },
     }),
+  staleTime: STALE_TIME.LONG,
 }))
 
 export const useRefreshMetadataBook = defineMutation(() =>
@@ -186,6 +188,7 @@ export const bookPostersQuery = defineQueryOptions(({ bookId }: { bookId: string
         bookId: bookId,
       },
     }),
+  staleTime: STALE_TIME.LONG,
 }))
 
 export const useAddBookPoster = defineMutation(() => {

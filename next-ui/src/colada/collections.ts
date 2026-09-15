@@ -21,6 +21,7 @@ import {
   komgaMarkCollectionThumbnailSelected,
 } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { STALE_TIME } from '@/types/time'
 
 export const QUERY_KEYS_COLLECTIONS = {
   root: ['collections'] as const,
@@ -85,6 +86,7 @@ export const collectionDetailQuery = defineQueryOptions(
           id: collectionId,
         },
       }),
+    staleTime: STALE_TIME.LONG,
   }),
 )
 
@@ -141,6 +143,7 @@ export const collectionPostersQuery = defineQueryOptions(
           id: collectionId,
         },
       }),
+    staleTime: STALE_TIME.LONG,
   }),
 )
 
