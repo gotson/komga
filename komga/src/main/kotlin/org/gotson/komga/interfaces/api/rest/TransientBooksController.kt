@@ -14,7 +14,9 @@ import org.gotson.komga.domain.service.TransientBookLifecycle
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.web.getMediaTypeOrDefault
 import org.gotson.komga.infrastructure.web.toFilePath
+import org.gotson.komga.interfaces.api.getBookLastModified
 import org.gotson.komga.interfaces.api.rest.dto.PageDto
+import org.gotson.komga.interfaces.api.setNotModified
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.server.ResponseStatusException
 import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
@@ -71,14 +74,23 @@ class TransientBooksController(
   fun getPageByTransientBookId(
     @PathVariable id: String,
     @PathVariable pageNumber: Int,
+    request: ServletWebRequest,
   ): ResponseEntity<ByteArray> =
     transientBookRepository.findByIdOrNull(id)?.let {
+      if (request.checkNotModified(getBookLastModified(it.media))) {
+        return@let ResponseEntity
+          .status(HttpStatus.NOT_MODIFIED)
+          .setNotModified(it.media)
+          .body(ByteArray(0))
+      }
+
       try {
         val pageContent = transientBookLifecycle.getBookPage(it, pageNumber)
 
         ResponseEntity
           .ok()
           .contentType(getMediaTypeOrDefault(pageContent.mediaType))
+          .setNotModified(it.media)
           .body(pageContent.bytes)
       } catch (ex: IndexOutOfBoundsException) {
         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Page number does not exist")
