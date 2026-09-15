@@ -44,12 +44,8 @@ export function getUserLibrariesState(
     libraries?.toSorted(
       (a, b) => (userLibraries?.[a.id]?.order || 0) - (userLibraries?.[b.id]?.order || 0),
     ) ?? []
-  console.log('settings:', userLibraries)
-  console.log('ordered:', ordered)
   const pinned = ordered.filter((it) => !userLibraries?.[it.id]?.unpinned) || []
-  console.log('pinned:', pinned)
   const unpinned = ordered.filter((it) => userLibraries?.[it.id]?.unpinned) || []
-  console.log('unpinned:', unpinned)
   const anyPinned = pinned.length > 0
   const anyUnpinned = unpinned.length > 0
   const noLibraries = libraries?.length === 0

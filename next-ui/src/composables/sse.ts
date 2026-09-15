@@ -359,7 +359,6 @@ export const useSSE = createGlobalState(() => {
         break
       case 'BookChanged':
       case 'BookDeleted':
-        console.log('book changed', event.data.bookId)
         void entityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
         break
       case 'BookImported':
