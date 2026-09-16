@@ -526,8 +526,8 @@
       "button_confirm": "保存修改",
       "dialog_title_multiple": "编辑 {count} 个系列 | 编辑 {count} 个系列",
       "dialog_title_single": "编辑 {series}",
-      "field_age_rating": "年龄限制",
-      "field_age_rating_error": "年龄限制必须为 0 或更高",
+      "field_age_rating": "年龄分级",
+      "field_age_rating_error": "年龄分级必须为 0 或更高",
       "field_genres": "类型",
       "field_labels": "标签",
       "field_language": "语言",
@@ -585,7 +585,7 @@
       "label_source_filename": "源文件名",
       "table": {
         "existing_file": "现有文件",
-        "order": "命令"
+        "order": "排序"
       },
       "title": "目标文件名"
     },
@@ -835,10 +835,10 @@
     "ERR_1039": "获取 EPUB 位置时出错"
   },
   "filter": {
-    "age_rating": "年龄限制",
+    "age_rating": "年龄分级",
     "age_rating_none": "无",
     "any": "任何",
-    "complete": "完结",
+    "complete": "已完结",
     "genre": "类型",
     "in_progress": "继续阅读",
     "language": "语言",
