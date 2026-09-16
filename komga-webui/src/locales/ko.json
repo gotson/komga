@@ -40,7 +40,7 @@
     "email": "이메일",
     "error": "오류",
     "ip": "IP",
-    "source": "소스",
+    "source": "원본",
     "success": "성공",
     "user_agent": "사용자 에이전트"
   },
@@ -84,7 +84,7 @@
     },
     "table": {
       "destination_name": "대상 이름",
-      "file_name": "파일 이름",
+      "file_name": "파일명",
       "number": "번호",
       "series": "시리즈"
     },
@@ -166,7 +166,7 @@
       "show_hide_settings": "설정 메뉴 켜기/끄기",
       "show_hide_thumbnails": "썸네일 탐색기 켜기/끄기",
       "show_hide_toolbars": "툴바 켜기/끄기",
-      "vertical": "수직",
+      "vertical": "세로",
       "webtoon": "웹툰"
     },
     "tooltip_incognito": "읽기 진행률은 저장되지 않습니다"
@@ -174,7 +174,7 @@
   "browse_book": {
     "comment": "논평",
     "date_created": "생성됨",
-    "date_modified": "마지막으로 수정됨",
+    "date_modified": "마지막 수정일",
     "download_file": "파일 다운로드",
     "file": "파일",
     "format": "형식",
@@ -202,7 +202,7 @@
     "earliest_year_from_release_dates": "올해는 시리즈의 모든 책들의 발매일로부터 가장 이른 해이다",
     "remove_from_collection": "모음집에서 시리즈 제거",
     "series_no_summary": "이 시리즈는 요약이 없어서 저희가 골라드렸습니다!",
-    "summary_from_book": "요약본 {number}:"
+    "summary_from_book": "{number}번 책의 요약:"
   },
   "collections_expansion_panel": {
     "manage_collection": "모음집 관리",
@@ -212,8 +212,8 @@
     "age": "연령",
     "all_libraries": "모든 서재",
     "all_of": "모든",
-    "any_of": "아무거나",
-    "book": "도서",
+    "any_of": "하나 이상 포함",
+    "book": "책",
     "books": "도서",
     "books_n": "없음 | 1 권 | {count} 권",
     "books_total": "{count} / {total} 권",
@@ -242,7 +242,7 @@
     "go_to_library": "서재로 이동",
     "go_to_readlist": "읽기 목록으로 이동",
     "go_to_series": "시리즈로 이동",
-    "i_understand": "이해합니다",
+    "i_understand": "이해했습니다",
     "library": "서재",
     "locale_name": "한국어",
     "locale_rtl": "false",
@@ -278,7 +278,7 @@
     "settings": "설정",
     "sidecars": "사이드카",
     "tags": "태그",
-    "ui": "유저 인터페이스",
+    "ui": "사용자 인터페이스",
     "unavailable": "사용할 수 없음",
     "unlock_all": "전체 잠금 해제",
     "url": "URL",
@@ -287,7 +287,7 @@
   },
   "dashboard": {
     "keep_reading": "이어보기",
-    "on_deck": "올려 두기",
+    "on_deck": "다음 읽을 책",
     "recently_added_books": "최근 추가된 책",
     "recently_added_series": "최근 추가된 시리즈",
     "recently_read_books": "최근 읽은 책",
@@ -478,7 +478,7 @@
       "field_import_mylar_series": "시리즈 메타데이터",
       "field_name": "이름",
       "field_oneshotsdirectory": "단행본 디렉토리",
-      "field_repair_extensions": "잘못된 파일 확장명 자동 복구",
+      "field_repair_extensions": "잘못된 파일 확장자 자동 복구",
       "field_root_folder": "루트 폴더",
       "field_scan_interval": "스캔 간격",
       "field_scanner_empty_trash_after_scan": "스캔 후 자동으로 휴지통 비우기",
@@ -503,7 +503,7 @@
       "tab_options": "옵션",
       "tooltip_oneshotsdirectory": "비활성화 하려면 비워두세요",
       "tooltip_scanner_force_modified_time": "라이브러리가 구글 드라이브에 있으면 활성화",
-      "tooltip_use_resources": "큰 라이브러리 또는 저사양 하드웨어에서 많은 자원을 소모할 수 있음"
+      "tooltip_use_resources": "큰 서재 또는 저사양 하드웨어에서 많은 자원을 소모할 수 있습니다"
     },
     "edit_readlist": {
       "button_cancel": "취소",
@@ -558,7 +558,7 @@
     "edit_user_restrictions": {
       "age_restriction": {
         "allow_under": "설정한 연령 미만만 허용",
-        "exclude_over": "설정한 연령 이상도 허용",
+        "exclude_over": "설정한 연령을 초과하면 제외",
         "none": "제한 없음"
       },
       "edit_restrictions_for": "{name} 제한 편집",
@@ -566,10 +566,10 @@
       "label_allow_only_labels": "설정한 라벨만 허용",
       "label_exclude_labels": "설정한 라벨 제외",
       "tab_content_restrictions": "콘텐츠 제한",
-      "tab_shared_libraries": "공유 라이브러리"
+      "tab_shared_libraries": "공유 서재"
     },
     "empty_trash": {
-      "body": "기본적으로 미디어 서버는 미디어에 대한 정보를 즉시 제거하지 않습니다. 이 방법은 드라이브 연결이 일시적으로 끊어질 때 도움이 됩니다. 라이브러리의 휴지통을 비우면 누락된 미디어에 대한 모든 정보가 삭제됩니다.",
+      "body": "기본적으로 미디어 서버는 미디어에 대한 정보를 즉시 제거하지 않습니다. 이 방법은 드라이브 연결이 일시적으로 끊어질 때 도움이 됩니다. 서재의 휴지통을 비우면 누락된 미디어에 대한 모든 정보가 삭제됩니다.",
       "button_confirm": "비우기",
       "title": "서재의 휴지통 비우기"
     },
@@ -603,7 +603,7 @@
       "field_repeat_password_error": "비밀번호는 동일해야 합니다."
     },
     "refresh_library_metadata": {
-      "body": "라이브러리의 모든 미디어 파일에 대한 메타데이터를 새로 고칩니다. 라이브러리 크기에 따라 시간이 오래 걸릴 수 있습니다.",
+      "body": "서재의 모든 미디어 파일에 대한 메타데이터를 새로 고칩니다. 서재 크기에 따라 시간이 오래 걸릴 수 있습니다.",
       "button_confirm": "새로고침",
       "title": "라이브러리 메타데이터 새로고침"
     },
@@ -629,7 +629,7 @@
       "label_pages": "페이지",
       "label_size": "크기",
       "pages_table": {
-        "filename": "파일 이름",
+        "filename": "파일명",
         "height": "높이",
         "index": "색인",
         "media_type": "미디어 유형",
@@ -722,7 +722,7 @@
     "media_status": {
       "ERROR": "오류",
       "OUTDATED": "오래됨",
-      "READY": "준비",
+      "READY": "준비됨",
       "UNKNOWN": "알 수 없음",
       "UNSUPPORTED": "미지원"
     },
@@ -734,7 +734,7 @@
     "reading_direction": {
       "LEFT_TO_RIGHT": "왼쪽에서 오른쪽",
       "RIGHT_TO_LEFT": "오른쪽에서 왼쪽",
-      "VERTICAL": "수직으로",
+      "VERTICAL": "세로",
       "WEBTOON": "웹툰"
     },
     "scan_interval": {
@@ -743,19 +743,19 @@
       "EVERY_12H": "매 12시간",
       "EVERY_6H": "매 6시간",
       "HOURLY": "매시간",
-      "WEEKLY": "주간"
+      "WEEKLY": "매주"
     },
     "series_cover": {
-      "FIRST": "처음",
-      "FIRST_UNREAD_OR_FIRST": "읽지 않은 항목의 처음",
-      "FIRST_UNREAD_OR_LAST": "읽지 않은 항목의 마지막",
-      "LAST": "마지막"
+      "FIRST": "첫 번째 책",
+      "FIRST_UNREAD_OR_FIRST": "읽지 않은 첫 번째 책, 없을 경우 첫 번째 책",
+      "FIRST_UNREAD_OR_LAST": "읽지 않은 첫 번째 책, 없을 경우 마지막 책",
+      "LAST": "마지막 책"
     },
     "series_status": {
       "ABANDONED": "연재 중단",
       "ENDED": "완결",
       "HIATUS": "휴재",
-      "ONGOING": "연재"
+      "ONGOING": "연재 중"
     },
     "thumbnail_size": {
       "DEFAULT": "기본 (300px)",
@@ -807,19 +807,19 @@
     "ERR_1006": "책에 페이지가 포함되지 않음",
     "ERR_1007": "일부 항목을 분석할 수 없음",
     "ERR_1008": "책 항목을 가져오는 중 알 수 없는 오류",
-    "ERR_1009": "같은 이름의 읽기 목록이 이미 존재합니다",
+    "ERR_1009": "같은 이름의 읽기 목록 존재",
     "ERR_1015": "ComicRack CBL 역직렬화 오류",
     "ERR_1016": "디렉토리가 아니거나 접근 불가",
-    "ERR_1017": "기존 라이브러리의 일부인 폴더를 스캔할 수 없습니다",
+    "ERR_1017": "기존 서재의 일부인 폴더를 스캔할 수 없음",
     "ERR_1018": "파일을 찾을 수 없음",
-    "ERR_1019": "기존 라이브러리의 일부인 파일을 가져올 수 없습니다",
-    "ERR_1020": "업그레이드할 책은 제공된 시리즈에 속하지 않습니다",
-    "ERR_1021": "대상 파일이 이미 존재합니다",
-    "ERR_1022": "새로 가져온 책을 스캔할 수 업습니다",
+    "ERR_1019": "기존 서재의 일부인 파일을 가져올 수 없음",
+    "ERR_1020": "업그레이드할 책은 제공된 시리즈에 속하지 않음",
+    "ERR_1021": "대상 파일이 이미 존재함",
+    "ERR_1022": "새로 가져온 책을 스캔할 수 없음",
     "ERR_1023": "읽기 목록에 이미 있는 책",
     "ERR_1024": "OAuth2 로그인 오류: 이메일 속성 없음",
     "ERR_1025": "OAuth2 로그인 오류: 해당 이메일에 로컬 사용자 없음",
-    "ERR_1026": "OpenID Connect 로그인 오류: 이메일이 확인되지 않음",
+    "ERR_1026": "OpenID Connect 로그인 오류: 이메일이 인증되지 않음",
     "ERR_1027": "OpenID Connect 로그인 오류: email_verified 속성 없음",
     "ERR_1028": "OpenID Connect 로그인 오류: 이메일 속성 없음",
     "ERR_1029": "ComicRack CBL에서 책 항목을 찾을 수 없음",
@@ -827,7 +827,7 @@
     "ERR_1031": "ComicRack CBL 책에 시리즈 또는 번호가 없음",
     "ERR_1032": "EPUB 파일의 미디어 타입이 잘못됨",
     "ERR_1033": "일부 항목이 누락됨",
-    "ERR_1034": "같은 주석을 가진 API 키가 이미 존재합니다",
+    "ERR_1034": "같은 이름의 API 키가 이미 존재합니다",
     "ERR_1035": "EPUB 목차(TOC)를 가져오는 중 오류 발생",
     "ERR_1036": "EPUB 랜드마크를 가져오는 중 오류 발생",
     "ERR_1037": "EPUB 페이지 리스트를 가져오는 중 오류 발생",
@@ -837,7 +837,7 @@
   "filter": {
     "age_rating": "연령 등급",
     "age_rating_none": "없음",
-    "any": "아무거나",
+    "any": "전체",
     "complete": "완결",
     "genre": "장르",
     "in_progress": "읽는 중",
@@ -860,7 +860,7 @@
   },
   "history": {
     "header": {
-      "book": "도서",
+      "book": "책",
       "date": "날짜",
       "details": "세부",
       "series": "시리즈",
@@ -925,7 +925,7 @@
     "title": "통계"
   },
   "missing_posters": {
-    "title": "포스터 없음"
+    "title": "표지 없음"
   },
   "navigation": {
     "home": "홈",
@@ -986,7 +986,7 @@
     "dialog_regenerate_thumbnails": {
       "body": "썸네일 크기가 변경되었습니다. 썸네일을 재생성하시겠습니까?",
       "btn_alternate": "예 (모든 책)",
-      "btn_cancel": "아니요",
+      "btn_cancel": "아니오",
       "btn_confirm": "예 (더 큰 경우에만)",
       "title": "썸네일 재생성"
     },
@@ -994,9 +994,9 @@
     "label_delete_empty_collections": "스캔 후 빈 모음집 삭제",
     "label_delete_empty_readlists": "스캔 후 빈 읽기 목록 삭제",
     "label_kepubify_path": "kepubify 경로",
-    "label_kobo_port": "Kobo Sync 외부 포트",
+    "label_kobo_port": "Kobo 동기화 외부 포트",
     "label_kobo_proxy": "Kobo Sync 요청을 Kobo Store로 프록시하기",
-    "label_rememberme_duration": "로그인 상태 유지 시간 (일)",
+    "label_rememberme_duration": "로그인 상태 유지 기간(일)",
     "label_server_context_path": "기본 URL",
     "label_server_port": "서버 포트",
     "label_task_pool_size": "작업 스레드",
@@ -1014,7 +1014,7 @@
     "role_user": "사용자"
   },
   "sort": {
-    "books_count": "도서의 수",
+    "books_count": "도서 수",
     "date_added": "추가된 날짜",
     "date_read": "읽은 날짜",
     "date_updated": "갱신된 날짜",
@@ -1063,14 +1063,14 @@
     "tooltip_oauth2_auto_login": "하나의 OAuth2 프로바이더와 '로그인 숨기기'가 켜져 있어야 함"
   },
   "updates": {
-    "available": "업데이트가 사용 가능합니다",
+    "available": "업데이트가 있습니다",
     "latest_installed": "최신 버전의 Komga가 이미 설치되어 있습니다"
   },
   "user_roles": {
     "ADMIN": "관리자",
     "FILE_DOWNLOAD": "파일 다운로드",
-    "KOBO_SYNC": "Kobo Sync",
-    "KOREADER_SYNC": "KOReader Sync",
+    "KOBO_SYNC": "Kobo 동기화",
+    "KOREADER_SYNC": "KOReader 동기화",
     "PAGE_STREAMING": "페이지 스트리밍",
     "USER": "사용자"
   },
@@ -1088,6 +1088,6 @@
   "welcome": {
     "add_library": "서재 추가",
     "no_libraries_yet": "서재가 아직 추가되지 않았습니다!",
-    "welcome_message": "Komga에 오신걸 환영합니다"
+    "welcome_message": "Komga에 오신 것을 환영합니다"
   }
 }
