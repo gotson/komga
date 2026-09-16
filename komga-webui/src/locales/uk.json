@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Дім",
     "libraries": "Бібліотеки",
-    "logout": "Вийти"
+    "logout": "Вийти",
+    "try_new_ui": "Спробуй новий UI"
   },
   "no_libraries_pinned": {
     "subtitle": "Ви можете закріпити бібліотеку з меню з трьома крапками",
