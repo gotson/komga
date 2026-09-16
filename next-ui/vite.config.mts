@@ -116,6 +116,9 @@ export default defineConfig(({ mode }) => ({
       'pinia-plugin-persistedstate',
       'qs',
       '@testing-library/vue',
+      '@unhead/vue/client',
+      '@storybook/addon-vitest',
+      '@storybook/vue3',
     ],
   },
   test: {
@@ -137,6 +140,7 @@ export default defineConfig(({ mode }) => ({
         test: {
           name: 'storybook',
           testTimeout: 30_000,
+          hookTimeout: 30_000,
           browser: {
             enabled: true,
             headless: true,
