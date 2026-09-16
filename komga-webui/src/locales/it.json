@@ -228,7 +228,7 @@
     "dimension": "l: {width}, a: {height}",
     "discard": "Scarta",
     "disk_space": "Spazio su disco",
-    "dismiss": "Chiudi",
+    "dismiss": "Ignora",
     "download": "Scarica",
     "drag_drop": "trascina e rilascia",
     "duplicate": "Duplica",
@@ -371,7 +371,7 @@
       "confirm_delete_multiple": "Si, cancella {count} libri e i loro file",
       "dialog_title": "Elimina Libro",
       "dialog_title_multiple": "Elimina Libri",
-      "warning_html": "Il libro <b>{name}</b> verrà rimosso da questo server insieme ai file multimediali memorizzati. Questo <b> non può essere annullato</b>. Continuare?",
+      "warning_html": "Il volume <b>{name}</b> verrà rimosso da questo server insieme ai file memorizzati. Questo <b> non può essere annullato</b>. Continuare?",
       "warning_multiple_html": "{count} Libri verranno rimossi da questo server insieme a file multimediali memorizzati. Questo <b>non può</b> essere annullato. Continua?"
     },
     "delete_collection": {
@@ -781,7 +781,7 @@
         "click": "Clicca / Tocca"
       },
       "page_margins": "Margini di pagina",
-      "viewing_theme": "Tema"
+      "viewing_theme": "Tema di lettura"
     },
     "shortcuts": {
       "cycle_pagination": "Cambiare conteggio colonna",
@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Home",
     "libraries": "Librerie",
-    "logout": "Esci"
+    "logout": "Esci",
+    "try_new_ui": "Prova la nuova interfaccia"
   },
   "no_libraries_pinned": {
     "subtitle": "Puoi bloccare una libreria dal menu a 3 punti",
