@@ -46,9 +46,7 @@ import { UserRole } from '@/types/UserRoles'
 const intl = useIntl()
 
 // API data
-const { data: users, error, isLoading, refetch: refetchUsers } = useUsers()
-
-onMounted(() => refetchUsers())
+const { data: users, error, isLoading } = useUsers()
 
 // Dialogs handling
 // stores the user being actioned upon

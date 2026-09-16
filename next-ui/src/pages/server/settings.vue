@@ -37,7 +37,7 @@ const messagesStore = useMessagesStore()
 
 const loading = ref<boolean>(false)
 
-const { data: settings, error, isPending, refetch } = useSettings()
+const { data: settings, error, isPending } = useSettings()
 const { mutateAsync } = useUpdateSettings()
 
 function saveSettings(settings: SettingsUpdateDtoExtended) {
@@ -57,7 +57,6 @@ function saveSettings(settings: SettingsUpdateDtoExtended) {
     })
     .finally(() => {
       loading.value = false
-      void refetch()
     })
 }
 

@@ -42,9 +42,7 @@ const intl = useIntl()
 const display = useDisplay()
 
 // API data
-const { data: apiKeys, error, isLoading, refetch: refetchApiKeys } = useApiKeys()
-
-onMounted(() => refetchApiKeys())
+const { data: apiKeys, error, isLoading } = useApiKeys()
 
 // Dialogs handling
 // stores the API Key being actioned upon
