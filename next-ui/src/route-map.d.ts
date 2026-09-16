@@ -158,8 +158,8 @@ declare module 'vue-router/auto-routes' {
     '/libraries/[viewId]/overview/[section]': RouteRecordInfo<
       '/libraries/[viewId]/overview/[section]',
       '/libraries/:viewId/overview/:section',
-      { viewId: ParamValue<true>, section: ParamValue<true> },
-      { viewId: ParamValue<false>, section: ParamValue<false> },
+      { section: ParamValue<true>, viewId: ParamValue<true> },
+      { section: ParamValue<false>, viewId: ParamValue<false> },
       | never
     >,
     '/libraries/[viewId]/readlists': RouteRecordInfo<
