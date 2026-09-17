@@ -22,7 +22,7 @@
     "prettier:fix": "npm run prettier -- --write",
     "openapi-ts": "openapi-ts",
     "i18n:clean-empty": "tsx i18n-clean-empty.config.ts",
-    "i18n:compile": "run-s i18n:clean-empty formatjs:compile",
+    "i18n:compile": "run-s formatjs:compile i18n:clean-empty",
     "formatjs:extract": "formatjs extract \"src/**/*.{ts,tsx,vue}\" --ignore=\"**/*.d.ts\" --ignore=\"**/*.stories.*\" --out-file i18n/en.json",
     "formatjs:compile": "formatjs compile-folder i18n src/i18n",
     "formatjs:verify": "formatjs verify --missing-keys --source-locale=en \"i18n/*.json\"",

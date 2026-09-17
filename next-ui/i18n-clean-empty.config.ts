@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const i18nDir = path.resolve('i18n')
+const i18nDir = path.resolve('src/i18n')
 
 if (fs.existsSync(i18nDir)) {
   const files = fs.readdirSync(i18nDir)
