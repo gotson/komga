@@ -52,7 +52,7 @@ Message IDs are generated automatically using the ESLint plugin, and hard-coded 
 
 Tasks:
 
-- `i18n:extract`: extracts the messages from the source into the `i18n` folder. This folder is what Weblate uses.
+- `formatjs:extract`: extracts the messages from the source into the `i18n` folder. This folder is what Weblate uses.
 - `i18n:compile`: compiles the translated files in `i18n` into `./src/i18n`. This folder is what the application uses at runtime.
 
 The Vite plugin [dir2json](https://github.com/buddywang/vite-plugin-dir2json) is used to load the available translation files, see `./src/utils/locale-helper.ts` for more details.

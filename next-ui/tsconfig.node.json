@@ -6,7 +6,8 @@
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "openapi-ts.config.*"
+    "openapi-ts.config.*",
+    "i18n-clean-empty.config.ts"
   ],
   "compilerOptions": {
     "composite": true,

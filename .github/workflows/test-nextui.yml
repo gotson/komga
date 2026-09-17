@@ -111,5 +111,5 @@ jobs:
       - name: check for missing i18n extract
         working-directory: next-ui
         run: |
-          npm run i18n:extract
+          npm run formatjs:extract
           git diff --exit-code
