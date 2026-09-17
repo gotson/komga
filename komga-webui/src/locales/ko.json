@@ -420,7 +420,7 @@
       "copy_from": "{field}로부터 복사",
       "dialog_title_multiple": "{count}권 편집 | {count}권 편집",
       "dialog_title_single": "{book} 편집",
-      "field_alternate_title": "부제목",
+      "field_alternate_title": "대체 제목",
       "field_isbn": "ISBN",
       "field_isbn_error": "ISBN은 13자리여야 합니다",
       "field_link_label": "라벨",
@@ -474,7 +474,7 @@
       "field_import_comicinfo_series_append_volume": "시리즈 제목에 볼륨 추가",
       "field_import_epub_book": "책 메타데이터",
       "field_import_epub_series": "시리즈 메타데이터",
-      "field_import_local_artwork": "로컬 아트웍스",
+      "field_import_local_artwork": "로컬 아트워크",
       "field_import_mylar_series": "시리즈 메타데이터",
       "field_name": "이름",
       "field_oneshotsdirectory": "단행본 디렉토리",
@@ -546,7 +546,7 @@
       "tab_poster": "표지",
       "tab_sharing": "공유",
       "tab_tags": "태그",
-      "tab_titles": "부제목",
+      "tab_titles": "대체 제목",
       "tags_notice_multiple_edit": "다수의 시리즈를 일괄 편집합니다. 기존 태그가 수정될 수 있습니다."
     },
     "edit_user": {
