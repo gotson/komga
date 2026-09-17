@@ -7,7 +7,7 @@
       "url": "https://github.com/gotson/komga/blob/master/LICENSE"
     },
     "title": "Komga API",
-    "version": "1.26.3"
+    "version": "1.27.0"
   },
   "externalDocs": {
     "description": "Komga documentation",
@@ -2839,6 +2839,17 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
@@ -4862,6 +4873,17 @@
             "name": "size",
             "schema": {
               "type": "integer"
+            }
+          },
+          {
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -7511,7 +7533,6 @@
     },
     "/api/v1/settings": {
       "get": {
-        "description": "Required role: **ADMIN**",
         "operationId": "getServerSettings",
         "responses": {
           "200": {
@@ -13652,6 +13673,10 @@
           "koboProxy": {
             "type": "boolean"
           },
+          "maxUploadFileSizeBytes": {
+            "type": "integer",
+            "format": "int64"
+          },
           "rememberMeDurationDays": {
             "type": "integer",
             "format": "int64"
@@ -13675,18 +13700,7 @@
               "XLARGE"
             ]
           }
-        },
-        "required": [
-          "deleteEmptyCollections",
-          "deleteEmptyReadLists",
-          "kepubifyPath",
-          "koboProxy",
-          "rememberMeDurationDays",
-          "serverContextPath",
-          "serverPort",
-          "taskPoolSize",
-          "thumbnailSize"
-        ]
+        }
       },
       "SettingsUpdateDto": {
         "type": "object",
