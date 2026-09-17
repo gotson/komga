@@ -54,7 +54,7 @@
     "defaultMessage": "OK"
   },
   "0J3Gvp": {
-    "defaultMessage": "{nombre, pluriel, une {# séries} autres {# séries}}"
+    "defaultMessage": "{count, plural, one {# série} other {# séries}}"
   },
   "0JF9f5": {
     "defaultMessage": "Fermer la barre latérale"
