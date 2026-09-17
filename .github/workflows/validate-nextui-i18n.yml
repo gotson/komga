@@ -1,0 +1,27 @@
+name: Validate NextUI i18n
+
+on:
+  pull_request:
+    paths:
+      - 'next-ui/i18n/*'
+  push:
+    paths:
+      - '.github/workflows/validate-nextui-i18n.yml'
+      - 'next-ui/i18n/*'
+    branches-ignore:
+      - 'dependabot/**'
+  workflow_dispatch:
+
+jobs:
+  build-i18n:
+    runs-on: ubuntu-latest
+    name: Build with i18n
+    steps:
+      - uses: actions/checkout@v7
+      - name: NextUI - Setup
+        uses: ./.github/actions/setup-web
+        with:
+          working-directory: next-ui
+      - name: build:with-i18n
+        working-directory: next-ui
+        run: npm run build:with-i18n
