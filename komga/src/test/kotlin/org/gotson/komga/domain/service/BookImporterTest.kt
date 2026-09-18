@@ -19,6 +19,7 @@ import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.PathContainedInPath
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -533,7 +534,7 @@ class BookImporterTest(
       val books = bookRepository.findAllBySeriesId(series.id).sortedBy { it.number }
       assertThat(books).hasSize(1)
 
-      with(readListRepository.findByIdOrNull(readList.id)!!) {
+      with(readListRepository.findByIdOrNull(readList.id, SearchContext.empty())!!) {
         assertThat(bookIds).hasSize(1)
         assertThat(bookIds[0]).isEqualTo(books[0].id)
       }

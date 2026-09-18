@@ -231,18 +231,14 @@ class BookDtoDao(
   override fun findPreviousInReadListOrNull(
     readList: ReadList,
     bookId: String,
-    userId: String,
-    filterOnLibraryIds: Collection<String>?,
-    restrictions: ContentRestrictions,
-  ): BookDto? = findSiblingReadList(readList, bookId, userId, filterOnLibraryIds, restrictions, next = false)
+    context: SearchContext,
+  ): BookDto? = findSiblingReadList(readList, bookId, context, next = false)
 
   override fun findNextInReadListOrNull(
     readList: ReadList,
     bookId: String,
-    userId: String,
-    filterOnLibraryIds: Collection<String>?,
-    restrictions: ContentRestrictions,
-  ): BookDto? = findSiblingReadList(readList, bookId, userId, filterOnLibraryIds, restrictions, next = true)
+    context: SearchContext,
+  ): BookDto? = findSiblingReadList(readList, bookId, context, next = true)
 
   override fun findAllOnDeck(
     userId: String,
@@ -336,11 +332,11 @@ class BookDtoDao(
   private fun findSiblingReadList(
     readList: ReadList,
     bookId: String,
-    userId: String,
-    filterOnLibraryIds: Collection<String>?,
-    restrictions: ContentRestrictions,
+    context: SearchContext,
     next: Boolean,
   ): BookDto? {
+    requireNotNull(context.userId) { "Missing userId in search context" }
+
     if (readList.ordered) {
       val numberSort =
         dslRO
@@ -350,13 +346,13 @@ class BookDtoDao(
           .on(b.ID.eq(rlb.BOOK_ID))
           .where(b.ID.eq(bookId))
           .and(rlb.READLIST_ID.eq(readList.id))
-          .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+          .apply { context.libraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
           .fetchOne(rlb.NUMBER)
 
       return dslRO
-        .selectBase(userId, setOf(RequiredJoin.ReadList(readList.id)))
-        .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
-        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .selectBase(context.userId, setOf(RequiredJoin.ReadList(readList.id)))
+        .apply { if (context.restrictions.isRestricted) and(context.restrictions.toCondition()) }
+        .apply { context.libraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
         .orderBy(rlbAlias(readList.id).NUMBER.let { if (next) it.asc() else it.desc() })
         .seek(numberSort)
         .limit(1)
@@ -373,10 +369,10 @@ class BookDtoDao(
           .on(b.ID.eq(rlb.BOOK_ID))
           .leftJoin(d)
           .on(b.ID.eq(d.BOOK_ID))
-          .apply { if (restrictions.isRestricted) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
+          .apply { if (context.restrictions.isRestricted) leftJoin(sd).on(sd.SERIES_ID.eq(b.SERIES_ID)) }
           .where(rlb.READLIST_ID.eq(readList.id))
-          .apply { if (restrictions.isRestricted) and(restrictions.toCondition()) }
-          .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+          .apply { if (context.restrictions.isRestricted) and(context.restrictions.toCondition()) }
+          .apply { context.libraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
           .orderBy(d.RELEASE_DATE)
           .fetch(b.ID)
 
@@ -385,9 +381,9 @@ class BookDtoDao(
       val siblingId = bookIds.getOrNull(bookIndex + if (next) 1 else -1) ?: return null
 
       return dslRO
-        .selectBase(userId)
+        .selectBase(context.userId)
         .where(b.ID.eq(siblingId))
-        .apply { filterOnLibraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
+        .apply { context.libraryIds?.let { and(b.LIBRARY_ID.`in`(it)) } }
         .limit(1)
         .fetchAndMap(dslRO)
         .firstOrNull()

@@ -9,6 +9,7 @@ import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.HistoricalEvent
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.PathContainedInPath
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.model.ThumbnailBook
@@ -226,7 +227,7 @@ class BookImporter(
 
         // replace upgraded book by imported book in read lists
         readListRepository
-          .findAllContainingBookId(bookToUpgrade.id, filterOnLibraryIds = null)
+          .findAllContainingBookId(bookToUpgrade.id, SearchContext.empty())
           .forEach { rl ->
             readListRepository.update(
               rl.copy(

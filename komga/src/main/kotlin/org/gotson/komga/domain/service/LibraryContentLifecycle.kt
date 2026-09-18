@@ -331,7 +331,7 @@ class LibraryContentLifecycle(
 
           // replace deleted series by new series in collections
           collectionRepository
-            .findAllContainingSeriesId(match.first.id, filterOnLibraryIds = null)
+            .findAllContainingSeriesId(match.first.id, SearchContext.empty())
             .forEach { col ->
               collectionRepository.update(
                 col.copy(
@@ -408,7 +408,7 @@ class LibraryContentLifecycle(
 
             // replace deleted book by new book in read lists
             readListRepository
-              .findAllContainingBookId(match.id, filterOnLibraryIds = null)
+              .findAllContainingBookId(match.id, SearchContext.empty())
               .forEach { rl ->
                 readListRepository.update(
                   rl.copy(

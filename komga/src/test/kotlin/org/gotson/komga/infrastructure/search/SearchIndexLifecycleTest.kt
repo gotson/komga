@@ -6,6 +6,7 @@ import io.mockk.slot
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -67,10 +68,10 @@ class SearchIndexLifecycleTest(
   @AfterEach
   fun deleteEntities() {
     seriesLifecycle.deleteMany(seriesRepository.findAll())
-    collectionRepository.findAll(pageable = Pageable.unpaged()).forEach {
+    collectionRepository.findAll(SearchContext.empty(), Pageable.unpaged()).forEach {
       collectionLifecycle.deleteCollection(it)
     }
-    readListRepository.findAll(pageable = Pageable.unpaged()).forEach {
+    readListRepository.findAll(SearchContext.empty(), Pageable.unpaged()).forEach {
       readListLifecycle.deleteReadList(it)
     }
   }
@@ -226,7 +227,7 @@ class SearchIndexLifecycleTest(
         assertThat(found).hasSize(1)
       }
 
-      collectionRepository.findByIdOrNull(collection.id)?.let {
+      collectionRepository.findByIdOrNull(collection.id, SearchContext.empty())?.let {
         collectionRepository.update(it.copy(name = "updated"))
       }
       mockEventPublisher.publishEvent(DomainEvent.CollectionUpdated(collection))
@@ -283,7 +284,7 @@ class SearchIndexLifecycleTest(
         assertThat(found).hasSize(1)
       }
 
-      readListRepository.findByIdOrNull(readList.id)?.let {
+      readListRepository.findByIdOrNull(readList.id, SearchContext.empty())?.let {
         readListRepository.update(it.copy(name = "updated"))
       }
       mockEventPublisher.publishEvent(DomainEvent.ReadListUpdated(readList))

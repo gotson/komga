@@ -322,7 +322,7 @@ class BookController(
     contentRestrictionChecker.checkContentRestrictionBook(principal.user, bookId)
 
     return readListRepository
-      .findAllContainingBookId(bookId, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
+      .findAllContainingBookId(bookId, SearchContext(principal.user))
       .map { it.toDto() }
   }
 

@@ -1,6 +1,6 @@
 package org.gotson.komga.domain.persistence
 
-import org.gotson.komga.domain.model.ContentRestrictions
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SeriesCollection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -8,35 +8,32 @@ import org.springframework.data.domain.Pageable
 interface SeriesCollectionRepository {
   /**
    * Find one SeriesCollection by [collectionId],
-   * optionally with only seriesId filtered by the provided [filterOnLibraryIds] if not null.
+   * seriesId will be filtered by the provided [context] libraries.
    */
   fun findByIdOrNull(
     collectionId: String,
-    filterOnLibraryIds: Collection<String>? = null,
-    restrictions: ContentRestrictions = ContentRestrictions(),
+    context: SearchContext,
   ): SeriesCollection?
 
   /**
    * Find all SeriesCollection
    * optionally with at least one Series belonging to the provided [belongsToLibraryIds] if not null,
-   * optionally with only seriesId filtered by the provided [filterOnLibraryIds] if not null.
+   * seriesId will be filtered by the provided [context] libraries.
    */
   fun findAll(
-    belongsToLibraryIds: Collection<String>? = null,
-    filterOnLibraryIds: Collection<String>? = null,
-    search: String? = null,
+    context: SearchContext,
     pageable: Pageable,
-    restrictions: ContentRestrictions = ContentRestrictions(),
+    belongsToLibraryIds: Collection<String>? = null,
+    search: String? = null,
   ): Page<SeriesCollection>
 
   /**
    * Find all SeriesCollection that contains the provided [containsSeriesId],
-   * optionally with only seriesId filtered by the provided [filterOnLibraryIds] if not null.
+   * seriesId will be filtered by the provided [context] libraries.
    */
   fun findAllContainingSeriesId(
     containsSeriesId: String,
-    filterOnLibraryIds: Collection<String>?,
-    restrictions: ContentRestrictions = ContentRestrictions(),
+    context: SearchContext,
   ): Collection<SeriesCollection>
 
   fun findAllEmpty(): Collection<SeriesCollection>

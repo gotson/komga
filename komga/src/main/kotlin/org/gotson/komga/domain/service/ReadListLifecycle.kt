@@ -6,6 +6,7 @@ import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadListRequestMatch
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.ThumbnailReadList
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.ThumbnailReadListRepository
@@ -43,14 +44,14 @@ class ReadListLifecycle(
 
     eventPublisher.publishEvent(DomainEvent.ReadListAdded(readList))
 
-    return readListRepository.findByIdOrNull(readList.id)!!
+    return readListRepository.findByIdOrNull(readList.id, SearchContext.empty())!!
   }
 
   @Transactional
   fun updateReadList(toUpdate: ReadList) {
     logger.info { "Update read list: $toUpdate" }
     val existing =
-      readListRepository.findByIdOrNull(toUpdate.id)
+      readListRepository.findByIdOrNull(toUpdate.id, SearchContext.empty())
         ?: throw IllegalArgumentException("Cannot update read list that does not exist")
 
     if (!existing.name.equals(toUpdate.name, true) && readListRepository.existsByName(toUpdate.name))

@@ -5,6 +5,7 @@ import org.apache.lucene.document.Document
 import org.apache.lucene.index.Term
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
@@ -45,8 +46,8 @@ class SearchIndexLifecycle(
       when (it) {
         LuceneEntity.Book -> rebuildIndex(it, { p: Pageable -> bookDtoRepository.findAll(p) }, { e: BookDto -> e.bookToDocument() })
         LuceneEntity.Series -> rebuildIndex(it, { p: Pageable -> seriesDtoRepository.findAll(p) }, { e: SeriesDto -> e.toDocument() })
-        LuceneEntity.Collection -> rebuildIndex(it, { p: Pageable -> collectionRepository.findAll(pageable = p) }, { e: SeriesCollection -> e.toDocument() })
-        LuceneEntity.ReadList -> rebuildIndex(it, { p: Pageable -> readListRepository.findAll(pageable = p) }, { e: ReadList -> e.toDocument() })
+        LuceneEntity.Collection -> rebuildIndex(it, { p: Pageable -> collectionRepository.findAll(SearchContext.empty(), p) }, { e: SeriesCollection -> e.toDocument() })
+        LuceneEntity.ReadList -> rebuildIndex(it, { p: Pageable -> readListRepository.findAll(SearchContext.empty(), p) }, { e: ReadList -> e.toDocument() })
       }
     }
 
@@ -92,12 +93,12 @@ class SearchIndexLifecycle(
       is DomainEvent.BookUpdated -> bookDtoRepository.findByIdOrNull(event.book.id, "unused")?.bookToDocument()?.let { updateEntity(LuceneEntity.Book, event.book.id, it) }
       is DomainEvent.BookDeleted -> deleteEntity(LuceneEntity.Book, event.book.id)
 
-      is DomainEvent.ReadListAdded -> readListRepository.findByIdOrNull(event.readList.id)?.toDocument()?.let { addEntity(it) }
-      is DomainEvent.ReadListUpdated -> readListRepository.findByIdOrNull(event.readList.id)?.toDocument()?.let { updateEntity(LuceneEntity.ReadList, event.readList.id, it) }
+      is DomainEvent.ReadListAdded -> readListRepository.findByIdOrNull(event.readList.id, SearchContext.empty())?.toDocument()?.let { addEntity(it) }
+      is DomainEvent.ReadListUpdated -> readListRepository.findByIdOrNull(event.readList.id, SearchContext.empty())?.toDocument()?.let { updateEntity(LuceneEntity.ReadList, event.readList.id, it) }
       is DomainEvent.ReadListDeleted -> deleteEntity(LuceneEntity.ReadList, event.readList.id)
 
-      is DomainEvent.CollectionAdded -> collectionRepository.findByIdOrNull(event.collection.id)?.toDocument()?.let { addEntity(it) }
-      is DomainEvent.CollectionUpdated -> collectionRepository.findByIdOrNull(event.collection.id)?.toDocument()?.let { updateEntity(LuceneEntity.Collection, event.collection.id, it) }
+      is DomainEvent.CollectionAdded -> collectionRepository.findByIdOrNull(event.collection.id, SearchContext.empty())?.toDocument()?.let { addEntity(it) }
+      is DomainEvent.CollectionUpdated -> collectionRepository.findByIdOrNull(event.collection.id, SearchContext.empty())?.toDocument()?.let { updateEntity(LuceneEntity.Collection, event.collection.id, it) }
       is DomainEvent.CollectionDeleted -> deleteEntity(LuceneEntity.Collection, event.collection.id)
 
       else -> Unit

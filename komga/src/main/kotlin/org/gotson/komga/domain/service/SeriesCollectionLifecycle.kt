@@ -3,6 +3,7 @@ package org.gotson.komga.domain.service
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.domain.model.DomainEvent
 import org.gotson.komga.domain.model.DuplicateNameException
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.ThumbnailSeriesCollection
@@ -39,7 +40,7 @@ class SeriesCollectionLifecycle(
 
     eventPublisher.publishEvent(DomainEvent.CollectionAdded(collection))
 
-    return collectionRepository.findByIdOrNull(collection.id)!!
+    return collectionRepository.findByIdOrNull(collection.id, SearchContext.empty())!!
   }
 
   @Transactional
@@ -47,7 +48,7 @@ class SeriesCollectionLifecycle(
     logger.info { "Update collection: $toUpdate" }
 
     val existing =
-      collectionRepository.findByIdOrNull(toUpdate.id)
+      collectionRepository.findByIdOrNull(toUpdate.id, SearchContext.empty())
         ?: throw IllegalArgumentException("Cannot update collection that does not exist")
 
     if (!existing.name.equals(toUpdate.name, true) && collectionRepository.existsByName(toUpdate.name))

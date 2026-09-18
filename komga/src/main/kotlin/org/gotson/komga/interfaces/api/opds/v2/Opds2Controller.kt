@@ -155,8 +155,8 @@ class Opds2Controller(
   ): List<WPLinkDto> {
     val uriBuilder = uriBuilder("libraries${if (libraryId != null) "/$libraryId" else ""}")
 
-    val collections = collectionRepository.findAll(libraryId?.let { listOf(it) }, restrictions = user.restrictions, pageable = Pageable.ofSize(1))
-    val readLists = readListRepository.findAll(libraryId?.let { listOf(it) }, restrictions = user.restrictions, pageable = Pageable.ofSize(1))
+    val collections = collectionRepository.findAll(SearchContext(user), Pageable.ofSize(1), libraryId?.let { listOf(it) })
+    val readLists = readListRepository.findAll(SearchContext(user), Pageable.ofSize(1), user.getAuthorizedLibraryIds(libraryId?.let { listOf(it) }))
 
     return listOfNotNull(
       WPLinkDto("Recommended", OpdsLinkRel.SUBSECTION, href = uriBuilder.toUriString(), type = MEDIATYPE_OPDS_JSON_VALUE),
@@ -527,10 +527,9 @@ class Opds2Controller(
     val entries =
       collectionRepository
         .findAll(
-          authorizedLibraryIds,
-          authorizedLibraryIds,
-          pageable = pageable,
-          restrictions = principal.user.restrictions,
+          SearchContext(principal.user),
+          pageable,
+          principal.user.getAuthorizedLibraryIds(libraryId?.let { listOf(it) }),
         ).map { it.toWPLinkDto() }
 
     val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/collections")
@@ -563,7 +562,7 @@ class Opds2Controller(
     @PathVariable id: String,
     @Parameter(hidden = true) page: Pageable,
   ): FeedDto =
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let { collection ->
       val sort =
         if (collection.ordered)
           Sort.by(Sort.Order.asc("collection.number"))
@@ -612,10 +611,9 @@ class Opds2Controller(
     val entries =
       readListRepository
         .findAll(
-          authorizedLibraryIds,
-          authorizedLibraryIds,
-          pageable = pageable,
-          restrictions = principal.user.restrictions,
+          SearchContext(principal.user),
+          pageable,
+          principal.user.getAuthorizedLibraryIds(libraryId?.let { listOf(it) }),
         ).map { it.toWPLinkDto() }
 
     val uriBuilder = uriBuilder("libraries${if (library != null) "/${library.id}" else ""}/readlists")
@@ -648,7 +646,7 @@ class Opds2Controller(
     @PathVariable id: String,
     @Parameter(hidden = true) page: Pageable,
   ): FeedDto =
-    readListRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { readList ->
+    readListRepository.findByIdOrNull(id, SearchContext(principal.user))?.let { readList ->
       val sort =
         if (readList.ordered)
           Sort.by(Sort.Order.asc("readList.number"))
@@ -810,21 +808,19 @@ class Opds2Controller(
     val resultsCollections =
       collectionRepository
         .findAll(
-          principal.user.getAuthorizedLibraryIds(null),
+          SearchContext(principal.user),
+          pageable,
           principal.user.getAuthorizedLibraryIds(null),
           query,
-          pageable,
-          principal.user.restrictions,
         ).map { it.toWPLinkDto() }
 
     val resultsReadLists =
       readListRepository
         .findAll(
-          principal.user.getAuthorizedLibraryIds(null),
+          SearchContext(principal.user),
+          pageable,
           principal.user.getAuthorizedLibraryIds(null),
           query,
-          pageable,
-          principal.user.restrictions,
         ).map { it.toWPLinkDto() }
 
     return FeedDto(

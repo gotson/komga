@@ -1,6 +1,8 @@
 package org.gotson.komga.infrastructure.jooq.main
 
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
@@ -24,6 +26,7 @@ class SeriesCollectionDaoTest(
 ) {
   private val library = makeLibrary()
   private val library2 = makeLibrary("library2")
+  private val testUser = KomgaUser("test@example.org", "")
 
   @BeforeAll
   fun setup() {
@@ -58,7 +61,7 @@ class SeriesCollectionDaoTest(
     val now = LocalDateTime.now()
 
     collectionDao.insert(collection)
-    val created = collectionDao.findByIdOrNull(collection.id)!!
+    val created = collectionDao.findByIdOrNull(collection.id, SearchContext.empty())!!
 
     // then
     assertThat(created.name).isEqualTo(collection.name)
@@ -93,7 +96,7 @@ class SeriesCollectionDaoTest(
 
     val now = LocalDateTime.now()
     collectionDao.update(updatedCollection)
-    val updated = collectionDao.findByIdOrNull(updatedCollection.id)!!
+    val updated = collectionDao.findByIdOrNull(updatedCollection.id, SearchContext.empty())!!
 
     // then
     assertThat(updated.name).isEqualTo(updatedCollection.name)
@@ -129,12 +132,12 @@ class SeriesCollectionDaoTest(
     collectionDao.removeSeriesFromAll(series.first().id)
 
     // then
-    val col1 = collectionDao.findByIdOrNull(collection1.id)!!
+    val col1 = collectionDao.findByIdOrNull(collection1.id, SearchContext.empty())!!
     assertThat(col1.seriesIds)
       .hasSize(9)
       .doesNotContain(series.first().id)
 
-    val col2 = collectionDao.findByIdOrNull(collection2.id)!!
+    val col2 = collectionDao.findByIdOrNull(collection2.id, SearchContext.empty())!!
     assertThat(col2.seriesIds)
       .hasSize(4)
       .doesNotContain(series.first().id)
@@ -168,11 +171,11 @@ class SeriesCollectionDaoTest(
     )
 
     // when
-    val foundLibrary1Filtered = collectionDao.findAll(listOf(library.id), listOf(library.id), pageable = Pageable.unpaged()).content
-    val foundLibrary1Unfiltered = collectionDao.findAll(listOf(library.id), null, pageable = Pageable.unpaged()).content
-    val foundLibrary2Filtered = collectionDao.findAll(listOf(library2.id), listOf(library2.id), pageable = Pageable.unpaged()).content
-    val foundLibrary2Unfiltered = collectionDao.findAll(listOf(library2.id), null, pageable = Pageable.unpaged()).content
-    val foundBothUnfiltered = collectionDao.findAll(listOf(library.id, library2.id), null, pageable = Pageable.unpaged()).content
+    val foundLibrary1Filtered = collectionDao.findAll(SearchContext(testUser.copy(sharedAllLibraries = false, sharedLibrariesIds = setOf(library.id))), pageable = Pageable.unpaged(), listOf(library.id)).content
+    val foundLibrary1Unfiltered = collectionDao.findAll(SearchContext(testUser), pageable = Pageable.unpaged(), listOf(library.id)).content
+    val foundLibrary2Filtered = collectionDao.findAll(SearchContext(testUser.copy(sharedAllLibraries = false, sharedLibrariesIds = setOf(library2.id))), pageable = Pageable.unpaged(), listOf(library2.id)).content
+    val foundLibrary2Unfiltered = collectionDao.findAll(SearchContext(testUser), pageable = Pageable.unpaged(), listOf(library2.id)).content
+    val foundBothUnfiltered = collectionDao.findAll(SearchContext(testUser), pageable = Pageable.unpaged(), listOf(library.id, library2.id)).content
 
     // then
     assertThat(foundLibrary1Filtered).hasSize(2)

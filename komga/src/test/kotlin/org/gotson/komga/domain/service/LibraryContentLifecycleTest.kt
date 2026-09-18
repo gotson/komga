@@ -17,6 +17,7 @@ import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.ReadList
+import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.Series
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.model.ThumbnailBook
@@ -833,7 +834,7 @@ class LibraryContentLifecycleTest(
       with(allBooks.last()) {
         assertThat(name).isEqualTo("book3")
 
-        readListRepository.findAllContainingBookId(id, null).let { readLists ->
+        readListRepository.findAllContainingBookId(id, SearchContext.empty()).let { readLists ->
           assertThat(readLists).hasSize(1)
           assertThat(readLists.first().name).isEqualTo("read list")
         }
@@ -1194,7 +1195,7 @@ class LibraryContentLifecycleTest(
         assertThat(books).hasSize(2)
 
         books.first { it.name == "book2" }.let {
-          readListRepository.findAllContainingBookId(it.id, null).let { readLists ->
+          readListRepository.findAllContainingBookId(it.id, SearchContext.empty()).let { readLists ->
             assertThat(readLists).hasSize(1)
             assertThat(readLists.first().name).isEqualTo("read list")
           }
@@ -1460,7 +1461,7 @@ class LibraryContentLifecycleTest(
         assertThat(series2.name).isEqualTo("series2")
         assertThat(bookRepository.findAllBySeriesId(series2.id)).hasSize(2)
 
-        collectionRepository.findAllContainingSeriesId(series2.id, null).let { collections ->
+        collectionRepository.findAllContainingSeriesId(series2.id, SearchContext.empty()).let { collections ->
           assertThat(collections).hasSize(1)
           assertThat(collections.first().name).isEqualTo("collection")
         }
@@ -1648,8 +1649,8 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.emptyTrash(library)
 
       // then
-      val collections = collectionRepository.findAll(pageable = Pageable.unpaged())
-      val readLists = readListRepository.findAll(pageable = Pageable.unpaged())
+      val collections = collectionRepository.findAll(SearchContext.empty(), Pageable.unpaged())
+      val readLists = readListRepository.findAll(SearchContext.empty(), Pageable.unpaged())
 
       assertThat(collections.content).isEmpty()
       assertThat(readLists.content).isEmpty()

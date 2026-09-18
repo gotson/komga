@@ -40,17 +40,13 @@ interface BookDtoRepository {
   fun findPreviousInReadListOrNull(
     readList: ReadList,
     bookId: String,
-    userId: String,
-    filterOnLibraryIds: Collection<String>?,
-    restrictions: ContentRestrictions = ContentRestrictions(),
+    context: SearchContext,
   ): BookDto?
 
   fun findNextInReadListOrNull(
     readList: ReadList,
     bookId: String,
-    userId: String,
-    filterOnLibraryIds: Collection<String>?,
-    restrictions: ContentRestrictions = ContentRestrictions(),
+    context: SearchContext,
   ): BookDto?
 
   fun findAllOnDeck(

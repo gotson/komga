@@ -643,7 +643,7 @@ class SeriesController(
     contentRestrictionChecker.checkContentRestrictionSeries(principal.user, seriesId)
 
     return collectionRepository
-      .findAllContainingSeriesId(seriesId, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
+      .findAllContainingSeriesId(seriesId, SearchContext(principal.user))
       .map { it.toDto() }
   }
 

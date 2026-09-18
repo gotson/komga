@@ -105,7 +105,7 @@ class SeriesCollectionController(
         )
 
     return collectionRepository
-      .findAll(principal.user.getAuthorizedLibraryIds(libraryIds), principal.user.getAuthorizedLibraryIds(null), searchTerm, pageRequest, principal.user.restrictions)
+      .findAll(SearchContext(principal.user), pageRequest, principal.user.getAuthorizedLibraryIds(libraryIds), searchTerm)
       .map { it.toDto() }
   }
 
@@ -116,7 +116,7 @@ class SeriesCollectionController(
     @PathVariable id: String,
   ): CollectionDto =
     collectionRepository
-      .findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)
+      .findByIdOrNull(id, SearchContext(principal.user))
       ?.toDto()
       ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
@@ -127,7 +127,7 @@ class SeriesCollectionController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ): ResponseEntity<ByteArray> {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let {
       return ResponseEntity
         .ok()
         .cacheControl(CacheControl.maxAge(1, TimeUnit.HOURS).cachePrivate())
@@ -143,7 +143,7 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ): ByteArray {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let { collection ->
       thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let { poster ->
         if (poster.collectionId != collection.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         return poster.thumbnail
@@ -157,7 +157,7 @@ class SeriesCollectionController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable(name = "id") id: String,
   ): Collection<ThumbnailSeriesCollectionDto> {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let {
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let {
       return thumbnailSeriesCollectionRepository.findAllByCollectionId(id).map { it.toDto() }
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -171,7 +171,7 @@ class SeriesCollectionController(
     @RequestParam("file") file: MultipartFile,
     @RequestParam("selected") selected: Boolean = true,
   ): ThumbnailSeriesCollectionDto {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let { collection ->
 
       val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
       if (!contentDetector.isImage(mediaType))
@@ -201,7 +201,7 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let { collection ->
       thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let { poster ->
         if (poster.collectionId != collection.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         collectionLifecycle.markSelectedThumbnail(poster)
@@ -219,7 +219,7 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let { collection ->
       thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let { poster ->
         if (poster.collectionId != collection.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         collectionLifecycle.deleteThumbnail(poster)
@@ -257,7 +257,7 @@ class SeriesCollectionController(
     @Valid @RequestBody
     collection: CollectionUpdateDto,
   ) {
-    collectionRepository.findByIdOrNull(id, restrictions = principal.user.restrictions)?.let { existing ->
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let { existing ->
       val updated =
         existing.copy(
           name = collection.name ?: existing.name,
@@ -280,7 +280,7 @@ class SeriesCollectionController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ) {
-    collectionRepository.findByIdOrNull(id, restrictions = principal.user.restrictions)?.let {
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let {
       collectionLifecycle.deleteCollection(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
@@ -307,7 +307,7 @@ class SeriesCollectionController(
     @Parameter(hidden = true) @Authors authors: List<Author>?,
     @Parameter(hidden = true) page: Pageable,
   ): Page<SeriesDto> =
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
+    collectionRepository.findByIdOrNull(id, SearchContext(principal.user))?.let { collection ->
       val sort =
         if (collection.ordered)
           Sort.by(Sort.Order.asc("collection.number"))
