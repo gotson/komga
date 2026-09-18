@@ -171,7 +171,7 @@ class SeriesCollectionController(
     @RequestParam("file") file: MultipartFile,
     @RequestParam("selected") selected: Boolean = true,
   ): ThumbnailSeriesCollectionDto {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
 
       val mediaType = file.inputStream.buffered().use { contentDetector.detectMediaType(it) }
       if (!contentDetector.isImage(mediaType))
@@ -201,7 +201,7 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
       thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let { poster ->
         if (poster.collectionId != collection.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         collectionLifecycle.markSelectedThumbnail(poster)
@@ -219,7 +219,7 @@ class SeriesCollectionController(
     @PathVariable(name = "id") id: String,
     @PathVariable(name = "thumbnailId") thumbnailId: String,
   ) {
-    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null))?.let { collection ->
+    collectionRepository.findByIdOrNull(id, principal.user.getAuthorizedLibraryIds(null), principal.user.restrictions)?.let { collection ->
       thumbnailSeriesCollectionRepository.findByIdOrNull(thumbnailId)?.let { poster ->
         if (poster.collectionId != collection.id) throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         collectionLifecycle.deleteThumbnail(poster)
@@ -252,11 +252,12 @@ class SeriesCollectionController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateCollectionById(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
     @Valid @RequestBody
     collection: CollectionUpdateDto,
   ) {
-    collectionRepository.findByIdOrNull(id)?.let { existing ->
+    collectionRepository.findByIdOrNull(id, restrictions = principal.user.restrictions)?.let { existing ->
       val updated =
         existing.copy(
           name = collection.name ?: existing.name,
@@ -276,9 +277,10 @@ class SeriesCollectionController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteCollectionById(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ) {
-    collectionRepository.findByIdOrNull(id)?.let {
+    collectionRepository.findByIdOrNull(id, restrictions = principal.user.restrictions)?.let {
       collectionLifecycle.deleteCollection(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }

@@ -289,11 +289,12 @@ class ReadListController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun updateReadListById(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
     @Valid @RequestBody
     readList: ReadListUpdateDto,
   ) {
-    readListRepository.findByIdOrNull(id)?.let { existing ->
+    readListRepository.findByIdOrNull(id, restrictions = principal.user.restrictions)?.let { existing ->
       val updated =
         existing.copy(
           name = readList.name ?: existing.name,
@@ -314,9 +315,10 @@ class ReadListController(
   @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun deleteReadListById(
+    @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable id: String,
   ) {
-    readListRepository.findByIdOrNull(id)?.let {
+    readListRepository.findByIdOrNull(id, restrictions = principal.user.restrictions)?.let {
       readListLifecycle.deleteReadList(it)
     } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
   }
