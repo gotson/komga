@@ -27,7 +27,7 @@
           ref="fieldTitleSortRef"
           v-model="model.titleSort"
           :rules="[rules.required()]"
-          :label="$formatMessage(commonMessages.seriesFormGeneralTitleSOrt)"
+          :label="$formatMessage(commonMessages.seriesFormGeneralTitleSort)"
         >
           <template #prepend>
             <LockIcon v-model="model.titleSortLock" />

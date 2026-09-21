@@ -152,7 +152,12 @@ export const commonMessages = {
     defaultMessage: 'Read list created',
     id: 'estf95',
   }),
-  seriesFormGeneralTitleSOrt: defineMessage({
+  seriesFormEditSharing: defineMessage({
+    description: 'Form edit series: Sharing',
+    defaultMessage: 'Sharing',
+    id: 'oB2hG3',
+  }),
+  seriesFormGeneralTitleSort: defineMessage({
     description: 'Form edit series: General - series sort title',
     defaultMessage: 'Sort title',
     id: 'ayrmyn',

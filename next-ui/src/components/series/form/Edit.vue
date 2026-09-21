@@ -69,6 +69,7 @@ import type { EntityUpdate } from '@/functions/poster'
 import { useQuery } from '@pinia/colada'
 import { useIntl } from 'vue-intl'
 import { seriesPostersQuery } from '@/colada/series'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
 
@@ -120,11 +121,7 @@ const tabs = [
     value: 5,
   },
   {
-    text: intl.formatMessage({
-      description: 'Form edit series: Sharing',
-      defaultMessage: 'Sharing',
-      id: 'oB2hG3',
-    }),
+    text: intl.formatMessage(commonMessages.seriesFormEditSharing),
     value: 6,
   },
 ]

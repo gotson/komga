@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row v-if="model">
       <v-col>
         <ComboboxSharingLabel v-model="model.sharingLabels">
           <template #prepend>
@@ -20,6 +20,6 @@ import { useLockWatcher } from '@/composables/form'
 const vSeriesUpdateSharing = v.pick(vSeriesMetadataDto, ['sharingLabels', 'sharingLabelsLock'])
 type SeriesUpdateSharing = v.InferOutput<typeof vSeriesUpdateSharing>
 
-const model = defineModel<SeriesUpdateSharing>({ required: true })
+const model = defineModel<SeriesUpdateSharing>()
 useLockWatcher(model, vSeriesUpdateSharing)
 </script>

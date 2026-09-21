@@ -14,5 +14,7 @@ export const vOneShotAttributes = v.pick(vSeriesMetadataDto, [
   'readingDirectionLock',
   'titleSort',
   'titleSortLock',
+  'sharingLabels',
+  'sharingLabelsLock',
 ])
 export type OneShotAttributes = v.InferOutput<typeof vOneShotAttributes>

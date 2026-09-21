@@ -57,6 +57,10 @@
         />
       </v-sheet>
     </template>
+
+    <template #[`item.6`]>
+      <SeriesFormSharing v-model="model.extra" />
+    </template>
   </v-tabs>
 </template>
 
@@ -67,6 +71,7 @@ import { useQuery } from '@pinia/colada'
 import { useIntl } from 'vue-intl'
 import { bookPostersQuery } from '@/colada/books'
 import type { OneShotAttributes } from '@/types/oneshot'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
 
@@ -76,7 +81,7 @@ const submitFailed = defineModel<boolean>('submit-failed', { required: false })
 const currentTab = ref(1)
 const tabErrors = ref<Record<number, number>>({})
 
-const tabs = [
+const tabs = computed(() => [
   {
     text: intl.formatMessage({
       description: 'Form edit book: General',
@@ -117,7 +122,15 @@ const tabs = [
     }),
     value: 5,
   },
-]
+  ...(model.value.extra
+    ? [
+        {
+          text: intl.formatMessage(commonMessages.seriesFormEditSharing),
+          value: 6,
+        },
+      ]
+    : []),
+])
 
 const { data: entityPosters } = useQuery(() =>
   bookPostersQuery({
