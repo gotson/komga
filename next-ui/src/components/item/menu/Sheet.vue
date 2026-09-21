@@ -1,7 +1,6 @@
 <template>
   <ItemMenu
     v-if="!isTouchPrimary"
-    v-click-outside="isShown = false"
     :actions="actions"
     :manage-actions="manageActions"
     :activator="activator"

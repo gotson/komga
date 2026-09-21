@@ -1,11 +1,16 @@
 <template>
   <div>
-    <v-menu :activator="activator">
+    <v-menu
+      v-model="rootShown"
+      :activator="activator"
+      :close-on-content-click="false"
+    >
       <v-list density="compact">
         <v-list-item
           v-for="(action, i) in actions"
           :key="i"
           v-bind="action"
+          @click="handleItemClick(action)"
         />
 
         <v-list-item
@@ -20,17 +25,20 @@
           :append-icon="isRtl ? 'i-mdi:menu-left' : 'i-mdi:menu-right'"
         >
           <v-menu
+            v-model="subShown"
             activator="parent"
             open-on-click
             open-on-hover
             location="end"
             submenu
+            :close-on-content-click="false"
           >
             <v-list density="compact">
               <v-list-item
                 v-for="(action, i) in manageActions"
                 :key="i"
                 v-bind="action"
+                @click="handleItemClick(action)"
               />
             </v-list>
           </v-menu>
@@ -51,6 +59,18 @@ const { actions = [], manageActions = [] } = defineProps<{
   actions?: Action<unknown>[]
   manageActions?: Action<unknown>[]
 }>()
+
+const rootShown = ref(false)
+const subShown = ref(false)
+
+function handleItemClick(action: Action<unknown>): void {
+  if (action?.onClick) {
+    action.onClick()
+  }
+
+  subShown.value = false
+  rootShown.value = false
+}
 </script>
 
 <script lang="ts"></script>
