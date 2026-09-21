@@ -349,6 +349,17 @@ const allRows = computed(() => {
       }),
       data: props.series.metadata.links.map((it) => ({ text: it.label, href: it.url })),
     }
+
+  if (props.series.metadata.sharingLabels.length > 0)
+    rows['sharing'] = {
+      header: intl.formatMessage({
+        description: 'Series view table: sharing labels header',
+        defaultMessage: 'Sharing labels',
+        id: 'UsTdV2',
+      }),
+      data: props.series.metadata.sharingLabels.map((it) => ({ text: it })),
+    }
+
   rows['filePath'] = {
     header: intl.formatMessage({
       description: 'Series view table: file path header',

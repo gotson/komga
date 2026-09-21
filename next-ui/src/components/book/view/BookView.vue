@@ -291,7 +291,7 @@ const posterMaxWidth = 220
 
 type OneShotAttributes = Pick<
   SeriesMetadataDto,
-  'publisher' | 'ageRating' | 'genres' | 'language' | 'readingDirection'
+  'publisher' | 'ageRating' | 'genres' | 'language' | 'readingDirection' | 'sharingLabels'
 >
 
 const props = defineProps<{
@@ -346,6 +346,7 @@ const tableRows = computed(() => {
       }),
       data: props.book.metadata.tags.map((it) => ({ text: it })),
     })
+
   if (props.book.metadata.links.length > 0)
     rows.push({
       header: intl.formatMessage({
@@ -355,6 +356,17 @@ const tableRows = computed(() => {
       }),
       data: props.book.metadata.links.map((it) => ({ text: it.label, href: it.url })),
     })
+
+  if (props.oneShotAttributes && props.oneShotAttributes.sharingLabels.length > 0)
+    rows.push({
+      header: intl.formatMessage({
+        description: 'Book view table: sharing labels  header',
+        defaultMessage: 'Sharing labels',
+        id: '1z+Z+q',
+      }),
+      data: props.oneShotAttributes.sharingLabels.map((it) => ({ text: it })),
+    })
+
   if (props.book.metadata.isbn)
     rows.push({
       header: intl.formatMessage({

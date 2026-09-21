@@ -66,6 +66,7 @@ export const Oneshot: Story = {
       language: 'ja',
       publisher: 'Dekopon Press',
       readingDirection: 'WEBTOON',
+      sharingLabels: ['shared', 'kids'],
     },
   },
 }
