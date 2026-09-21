@@ -121,14 +121,21 @@ export function useEditBookMetadataDialog() {
       if (book.oneshot && updatedData.extra) {
         await mutateUpdateSeriesMetadata({
           seriesId: book.seriesId,
-          metadata: updatedData.extra,
+          metadata: {
+            ...updatedData.extra,
+            title: updatedData.entity.metadata.title,
+            titleLock: updatedData.entity.metadata.titleLock,
+          },
         }).catch((error) => {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
         })
       }
 
       // update book
-      const updateDto = updatedData.entity.metadata
+      const updateDto = {
+        ...updatedData.entity.metadata,
+        ...(book.oneshot ? { number: '1', numberSort: 1 } : {}),
+      }
       mutateUpdateBookMetadata({ bookId: book.id, metadata: updateDto })
         .then(() => {
           hideDialog()

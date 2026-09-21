@@ -27,13 +27,7 @@
           ref="fieldTitleSortRef"
           v-model="model.titleSort"
           :rules="[rules.required()]"
-          :label="
-            $formatMessage({
-              description: 'Form edit series: General - series sort title',
-              defaultMessage: 'Sort title',
-              id: 'ayrmyn',
-            })
-          "
+          :label="$formatMessage(commonMessages.seriesFormGeneralTitleSOrt)"
         >
           <template #prepend>
             <LockIcon v-model="model.titleSortLock" />

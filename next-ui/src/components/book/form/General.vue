@@ -21,7 +21,22 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row v-if="modelOneShot">
+      <v-col>
+        <v-text-field
+          ref="fieldTitleSortRef"
+          v-model="modelOneShot.titleSort"
+          :rules="[rules.required()]"
+          :label="$formatMessage(commonMessages.seriesFormGeneralTitleSOrt)"
+        >
+          <template #prepend>
+            <LockIcon v-model="modelOneShot.titleSortLock" />
+          </template>
+        </v-text-field>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="!modelOneShot">
       <v-col>
         <v-text-field
           ref="fieldNumberRef"
@@ -266,6 +281,8 @@ const vOneShotGeneral = v.pick(vSeriesMetadataDto, [
   'languageLock',
   'readingDirection',
   'readingDirectionLock',
+  'titleSort',
+  'titleSortLock',
 ])
 type OneShotGeneral = v.InferOutput<typeof vOneShotGeneral>
 
@@ -284,6 +301,7 @@ useLockWatcher(modelOneShot, vOneShotGeneral)
 
 const fields = {
   title: useTemplateRef<InstanceType<typeof VTextField>>('fieldTitleRef'),
+  titleSort: useTemplateRef<InstanceType<typeof VTextField>>('fieldTitleSortRef'),
   number: useTemplateRef<InstanceType<typeof VTextField>>('fieldNumberRef'),
   numberSort: useTemplateRef<InstanceType<typeof VTextField>>('fieldNumberSortRef'),
   releaseDate: useTemplateRef<InstanceType<typeof VTextField>>('fieldReleaseDateRef'),
