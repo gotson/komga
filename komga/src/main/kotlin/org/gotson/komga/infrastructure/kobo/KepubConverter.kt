@@ -2,8 +2,12 @@ package org.gotson.komga.infrastructure.kobo
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.annotation.PostConstruct
+import org.gotson.komga.domain.model.Book
+import org.gotson.komga.domain.model.BookProjection
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.KEPUB_DEFAULT
 import org.gotson.komga.domain.model.MediaType
+import org.gotson.komga.domain.persistence.BookProjectionRepository
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.configuration.SettingChangedEvent
 import org.springframework.beans.factory.annotation.Value
@@ -15,6 +19,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.io.path.Path
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.exists
+import kotlin.io.path.fileSize
 import kotlin.io.path.isDirectory
 import kotlin.io.path.nameWithoutExtension
 
@@ -23,6 +28,7 @@ private val logger = KotlinLogging.logger {}
 @Component
 class KepubConverter(
   private val settingsProvider: KomgaSettingsProvider,
+  private val bookProjectionRepository: BookProjectionRepository,
   @param:Value($$"${komga.kobo.kepubify-path:#{null}}") val kepubifyConfigurationPath: String?,
 ) {
   final var kepubifyPath: Path? = null
@@ -108,7 +114,7 @@ class KepubConverter(
     require(!bookWithMedia.media.epubIsKepub) { "Cannot convert, EPUB is already a KEPUB: ${bookWithMedia.book.path}" }
     require(bookWithMedia.book.path.exists()) { "Source file does not exist: ${bookWithMedia.book.path}" }
 
-    return convertEpubToKepubWithoutChecks(bookWithMedia.book.path, destinationDir)
+    return convertEpubToKepubWithoutChecks(bookWithMedia.book, destinationDir)
   }
 
   /**
@@ -118,7 +124,7 @@ class KepubConverter(
    * This is intended for internal use in the EpubExtractor
    */
   fun convertEpubToKepubWithoutChecks(
-    epub: Path,
+    book: Book,
     destinationDir: Path? = null,
   ): Path? {
     check(isAvailable) { "Kepub conversion is not available, kepubify path may not be set, or may be invalid" }
@@ -126,13 +132,13 @@ class KepubConverter(
     if (destinationDir != null) require(destinationDir.isDirectory()) { "Destination directory does not exist: $destinationDir" }
 
     // kepubify will only convert when the destination name has the .kepub.epub extension, so we have to force it
-    val destinationPath = (destinationDir ?: tmpDir).resolve(epub.nameWithoutExtension + ".kepub.epub")
+    val destinationPath = (destinationDir ?: tmpDir).resolve(book.path.nameWithoutExtension + ".kepub.epub")
     destinationPath.deleteIfExists()
 
     val command =
       arrayOf(
         kepubifyPath.toString(),
-        epub.toString(),
+        book.path.toString(),
         "-o",
         destinationPath.toString(),
       )
@@ -163,6 +169,9 @@ class KepubConverter(
       logger.error { "Converted file not found: $destinationPath" }
       return null
     }
+
+    // store the kepub filesize, so we can pass it back during Kobo Sync
+    bookProjectionRepository.save(BookProjection(book.id, KEPUB_DEFAULT, destinationPath.fileSize()))
 
     return destinationPath
   }

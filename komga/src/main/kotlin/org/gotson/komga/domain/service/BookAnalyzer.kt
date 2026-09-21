@@ -190,7 +190,7 @@ class BookAnalyzer(
 
       val positions =
         try {
-          epubExtractor.computePositions(epub, book.path, resources, isFixedLayout, isKepub)
+          epubExtractor.computePositions(epub, book, resources, isFixedLayout, isKepub)
         } catch (e: Exception) {
           logger.error(e) { "Error while getting EPUB positions" }
           errors.add("ERR_1039")

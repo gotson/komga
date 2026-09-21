@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.RandomStringUtils
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookWithMedia
+import org.gotson.komga.domain.model.KEPUB_DEFAULT
 import org.gotson.komga.domain.model.KomgaSyncToken
 import org.gotson.komga.domain.model.MediaExtensionEpub
 import org.gotson.komga.domain.model.MediaType.EPUB
@@ -778,7 +779,7 @@ class KoboController(
           add(
             DownloadUrlDto(
               format = format,
-              size = fileSize,
+              size = if (format === FormatDto.KEPUB) extraFileSizes[KEPUB_DEFAULT] ?: fileSize else fileSize,
               url = downloadUriBuilder.build(entitlementId, convert).toURL().toString(),
             ),
           )

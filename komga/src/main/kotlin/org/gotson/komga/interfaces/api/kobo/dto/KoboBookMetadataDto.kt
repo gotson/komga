@@ -47,4 +47,7 @@ data class KoboBookMetadataDto(
   val isPrePaginated: Boolean,
   @JsonIgnore
   val fileSize: Long,
+  // file size per profile
+  @JsonIgnore
+  val extraFileSizes: Map<String, Long> = emptyMap(),
 )

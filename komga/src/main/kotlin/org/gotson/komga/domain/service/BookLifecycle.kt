@@ -22,6 +22,7 @@ import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.model.TypedBytes
 import org.gotson.komga.domain.persistence.BookMetadataRepository
+import org.gotson.komga.domain.persistence.BookProjectionRepository
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.persistence.HistoricalEventRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -58,6 +59,7 @@ class BookLifecycle(
   private val bookRepository: BookRepository,
   private val mediaRepository: MediaRepository,
   private val bookMetadataRepository: BookMetadataRepository,
+  private val bookProjectionRepository: BookProjectionRepository,
   private val readProgressRepository: ReadProgressRepository,
   private val thumbnailBookRepository: ThumbnailBookRepository,
   private val readListRepository: ReadListRepository,
@@ -370,6 +372,7 @@ class BookLifecycle(
       mediaRepository.delete(book.id)
       thumbnailBookRepository.deleteByBookId(book.id)
       bookMetadataRepository.delete(book.id)
+      bookProjectionRepository.delete(book.id)
 
       bookRepository.delete(book.id)
     }
@@ -396,6 +399,7 @@ class BookLifecycle(
       mediaRepository.delete(bookIds)
       thumbnailBookRepository.deleteByBookIds(bookIds)
       bookMetadataRepository.delete(bookIds)
+      bookProjectionRepository.delete(bookIds)
 
       bookRepository.delete(bookIds)
     }

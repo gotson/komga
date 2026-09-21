@@ -2,6 +2,7 @@ package org.gotson.komga.infrastructure.mediacontainer.epub
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.apache.commons.compress.archivers.ArchiveEntry
+import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookPage
 import org.gotson.komga.domain.model.EpubTocEntry
 import org.gotson.komga.domain.model.MediaFile
@@ -236,7 +237,7 @@ class EpubExtractor(
 
   fun computePositions(
     epub: EpubPackage,
-    path: Path,
+    book: Book,
     resources: List<MediaFile>,
     isFixedLayout: Boolean,
     isKepub: Boolean,
@@ -253,7 +254,7 @@ class EpubExtractor(
           try {
             val kepub =
               kepubConverter
-                .convertEpubToKepubWithoutChecks(path)
+                .convertEpubToKepubWithoutChecks(book)
                 ?.also { it.toFile().deleteOnExit() }
                 // if the conversion failed, throw an exception that will be caught in the catch block
                 ?: throw IllegalStateException()
@@ -261,7 +262,7 @@ class EpubExtractor(
             kepub.deleteIfExists()
             positions
           } catch (_: Exception) {
-            logger.warn { "Could not convert to Kepub to compute positions: $path" }
+            logger.warn { "Could not convert to Kepub to compute positions: $book" }
             emptyMap()
           }
         }
