@@ -70,7 +70,13 @@
     </template>
 
     <template #[`item.transientBook.name`]="{ value, item }">
-      <span :class="item.imported ? 'text-disabled' : undefined">{{ value }}</span>
+      <div
+        class="text-wrap"
+        style="word-break: break-all"
+        :class="item.imported ? 'text-disabled' : undefined"
+      >
+        {{ value }}
+      </div>
     </template>
 
     <template #[`item.series`]="{ item, internalItem, isSelected }">
@@ -204,11 +210,13 @@
 
     <template #[`item.destinationName`]="{ item }">
       <div
-        :class="
-          (item.selectable ? 'cursor-pointer' : 'cursor-not-allowed') +
-          ' ' +
-          (item.imported ? 'text-disabled' : undefined)
-        "
+        :class="{
+          'text-disabled': item.imported,
+          'cursor-pointer': item.selectable,
+          'cursor-not-allowed': !item.selectable,
+        }"
+        class="text-wrap"
+        style="word-break: break-all"
         @mouseenter="
           item.selectable
             ? (dialogFileNamePickerActivator = $event.currentTarget as Element)
