@@ -2,6 +2,7 @@ import { useCurrentUser } from '@/colada/users'
 import { useGetLibrariesByViewId } from '@/composables/libraries'
 import type { BookDto } from '@/generated/openapi'
 import { MediaStatus } from '@/types/MediaStatus'
+import { defineMessage } from 'vue-intl'
 
 export function useBook(book: MaybeRefOrGetter<BookDto>) {
   const { hasRole } = useCurrentUser()
@@ -26,10 +27,30 @@ export function useBook(book: MaybeRefOrGetter<BookDto>) {
 
   const format = computed(() => {
     const b = toValue(book)
-    if (b.media.mediaType.includes('x-rar-compressed')) return 'CBR'
-    if (b.media.mediaType === 'application/zip') return 'CBZ'
-    if (b.media.mediaType === 'application/pdf') return 'PDF'
-    if (b.media.mediaType === 'application/epub+zip') return 'EPUB'
+    if (b.media.mediaType.includes('x-rar-compressed'))
+      return defineMessage({
+        description: 'Book file format: CBR',
+        defaultMessage: 'CBR',
+        id: 'lkoTf7',
+      })
+    if (b.media.mediaType === 'application/zip')
+      return defineMessage({
+        description: 'Book file format: CBZ',
+        defaultMessage: 'CBZ',
+        id: '9aVhJC',
+      })
+    if (b.media.mediaType === 'application/pdf')
+      return defineMessage({
+        description: 'Book file format: PDF',
+        defaultMessage: 'PDF',
+        id: 'EnHAAa',
+      })
+    if (b.media.mediaType === 'application/epub+zip')
+      return defineMessage({
+        description: 'Book file format: EPUB',
+        defaultMessage: 'EPUB',
+        id: 'iQKrku',
+      })
     return b.media.mediaType
   })
 

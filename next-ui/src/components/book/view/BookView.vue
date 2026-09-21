@@ -281,6 +281,7 @@ import { MediaStatus } from '@/types/MediaStatus'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { languageDisplayNames } from '@/utils/i18n/locale-helper'
 import { type ReadingDirection, readingDirectionMessages } from '@/types/ReadingDirection'
+import { isMessageDescriptor } from '@/stores/messages'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -376,14 +377,14 @@ const tableRows = computed(() => {
       }),
       data: props.book.metadata.isbn,
     })
-  if (props.book.media.comment)
+  if (format.value)
     rows.push({
       header: intl.formatMessage({
         description: 'Book view table: file type header',
         defaultMessage: 'File type',
         id: 'QALnuE',
       }),
-      data: format.value,
+      data: isMessageDescriptor(format.value) ? intl.formatMessage(format.value) : format.value,
     })
   rows.push({
     header: intl.formatMessage({
