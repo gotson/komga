@@ -403,6 +403,7 @@ export const useSSE = createGlobalState(() => {
       case 'CollectionChanged':
       case 'CollectionDeleted':
         void entityChanged(QUERY_KEYS_COLLECTIONS.root, event.data.collectionId)
+        void entitiesChanged(QUERY_KEYS_COLLECTIONS.bySeries())
         break
       case 'ReadProgressChanged':
       case 'ReadProgressDeleted':

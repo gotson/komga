@@ -55,6 +55,7 @@ declare module 'vue' {
     ComboboxInfinite: typeof import('./components/combobox/Infinite.vue')['default']
     ComboboxSharingLabel: typeof import('./components/combobox/SharingLabel.vue')['default']
     ComboboxTag: typeof import('./components/combobox/Tag.vue')['default']
+    ContainerChip: typeof import('./components/ContainerChip.vue')['default']
     DialogBookPicker: typeof import('./components/dialog/BookPicker.vue')['default']
     DialogConfirm: typeof import('./components/dialog/Confirm.vue')['default']
     DialogConfirmEdit: typeof import('./components/dialog/ConfirmEdit.vue')['default']

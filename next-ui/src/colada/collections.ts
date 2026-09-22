@@ -19,6 +19,7 @@ import {
   komgaAddUserUploadedCollectionThumbnail,
   komgaDeleteUserUploadedCollectionThumbnail,
   komgaMarkCollectionThumbnailSelected,
+  komgaGetCollectionsBySeriesId,
 } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { STALE_TIME } from '@/types/time'
@@ -27,6 +28,8 @@ export const QUERY_KEYS_COLLECTIONS = {
   root: ['collections'] as const,
   bySearch: (request: object) => [...QUERY_KEYS_COLLECTIONS.root, JSON.stringify(request)] as const,
   byId: (id: string) => [...QUERY_KEYS_COLLECTIONS.root, id] as const,
+  bySeries: () => [...QUERY_KEYS_COLLECTIONS.root, 'bySeries'] as const,
+  bySeriesId: (seriesId: string) => [...QUERY_KEYS_COLLECTIONS.bySeries(), seriesId] as const,
   posters: (id: string) => [...QUERY_KEYS_COLLECTIONS.byId(id), 'posters'] as const,
 }
 
@@ -89,6 +92,17 @@ export const collectionDetailQuery = defineQueryOptions(
     staleTime: STALE_TIME.LONG,
   }),
 )
+
+export const seriesCollectionsQuery = defineQueryOptions(({ seriesId }: { seriesId: string }) => ({
+  key: QUERY_KEYS_COLLECTIONS.bySeriesId(seriesId),
+  query: () =>
+    komgaGetCollectionsBySeriesId({
+      path: {
+        seriesId: seriesId,
+      },
+    }),
+  staleTime: STALE_TIME.LONG,
+}))
 
 export const useCreateCollection = defineMutation(() => {
   const appStore = useAppStore()

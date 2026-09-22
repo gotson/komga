@@ -2,7 +2,11 @@ import { PageRequest } from '@/types/PageRequest'
 import { mockPage } from '@/mocks/api/pageable'
 import { http, HttpResponse } from 'msw'
 import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
-import { handleGetCollections, handleGetCollectionThumbnails } from '@/generated/openapi/msw.gen'
+import {
+  handleGetCollections,
+  handleGetCollectionsBySeriesId,
+  handleGetCollectionThumbnails,
+} from '@/generated/openapi/msw.gen'
 
 import { response200OK } from '@/mocks/api/utils'
 
@@ -52,6 +56,7 @@ export const collectionsHandlers = [
       mockPage(selected, new PageRequest(Number(query.get('page')), Number(query.get('size')))),
     )
   }),
+  handleGetCollectionsBySeriesId(() => response200OK([])),
   handleGetCollectionThumbnails(({ params }) =>
     response200OK([
       {

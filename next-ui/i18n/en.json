@@ -1507,6 +1507,10 @@
     "defaultMessage": "My activity",
     "description": "Drawer menu for My Account > Activity"
   },
+  "Xxk+hl": {
+    "defaultMessage": "Appears in",
+    "description": "Container chip, showing in what collection/readlist a series or book appears"
+  },
   "Xxu514": {
     "defaultMessage": "Delete series files",
     "description": "Series delete dialog: title"

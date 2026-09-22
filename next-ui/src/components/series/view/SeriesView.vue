@@ -51,6 +51,13 @@
         sm="9"
       >
         <v-container class="pa-0">
+          <div
+            v-if="display.smAndUp.value && containedIn.length > 0"
+            class="float-end"
+          >
+            <ContainerChip :containers="containedIn" />
+          </div>
+
           <v-row>
             <v-col>
               <div class="text-headline-small">{{ series.metadata.title }}</div>
@@ -220,6 +227,15 @@ other {# books}
         </v-col>
       </v-row>
 
+      <v-row v-if="display.xs.value && containedIn.length > 0">
+        <v-col>
+          <ContainerChip
+            :containers="containedIn"
+            small
+          />
+        </v-col>
+      </v-row>
+
       <v-row v-if="tableRows.length > 0">
         <v-col>
           <SimpleDataTable :rows="tableRows" />
@@ -248,7 +264,7 @@ other {# books}
 </template>
 
 <script setup lang="ts">
-import { seriesPosterUrl } from '@/api/images'
+import { collectionPosterUrl, seriesPosterUrl } from '@/api/images'
 
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
@@ -266,6 +282,8 @@ import { useImageCacheStore } from '@/stores/image-cache'
 import { getFirstBookInParentOptions } from '@/functions/book-container'
 import { useQuery } from '@pinia/colada'
 import { bookListQuery } from '@/colada/books'
+import { seriesCollectionsQuery } from '@/colada/collections'
+import type { Container } from '@/components/ContainerChip.vue'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -291,6 +309,22 @@ const alternateTitles = computed(() =>
     header: it.label,
     data: it.title,
   })),
+)
+
+// browsing context
+const { data: collections } = useQuery(() => ({
+  ...seriesCollectionsQuery({ seriesId: props.series.id }),
+}))
+const containedIn = computed(
+  () =>
+    collections.value?.map(
+      (it) =>
+        ({
+          text: it.name,
+          imageUrl: collectionPosterUrl(it.id, cacheStore.getVersion(it.id)),
+          link: { name: '/collection/[id]', params: { id: it.id } },
+        }) satisfies Container,
+    ) ?? [],
 )
 
 const allRows = computed(() => {
