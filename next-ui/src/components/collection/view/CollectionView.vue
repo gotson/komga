@@ -4,10 +4,16 @@
       <v-col
         cols="6"
         sm="3"
+        lg="2"
       >
-        <ItemPoster
-          :poster-url="collectionPosterUrl(collection.id, cacheStore.getVersion(collection.id))"
-        />
+        <div
+          class="ms-auto w-100"
+          style="max-width: 220px"
+        >
+          <ItemPoster
+            :poster-url="collectionPosterUrl(collection.id, cacheStore.getVersion(collection.id))"
+          />
+        </div>
       </v-col>
 
       <v-col

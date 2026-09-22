@@ -4,44 +4,52 @@
       <v-col
         cols="6"
         sm="3"
+        lg="2"
       >
-        <ItemPoster
-          :poster-url="bookPosterUrl(book.id, cacheStore.getVersion(book.id))"
-          :progress-percent="progressPercent"
-          :max-width="posterMaxWidth"
-        />
-
-        <v-alert
-          v-if="isRead || pagesLeft"
-          :icon="isRead ? 'i-mdi:check' : undefined"
-          class="mt-1 text-center text-body-small"
-          :max-width="posterMaxWidth"
+        <div
+          class="ms-auto"
+          style="max-width: 220px"
         >
-          <template v-if="pagesLeft">{{
-            $formatMessage(
-              {
-                description: 'Book view: number of pages left',
-                defaultMessage: '{count} pages left',
-                id: 'Z5hsZ9',
-              },
-              { count: pagesLeft },
-            )
-          }}</template>
-          <template v-if="isRead">{{
-            $formatMessage(
-              {
-                description: 'Book view: date read',
-                defaultMessage: 'Read on {readDate}',
-                id: 'T3Ofay',
-              },
-              {
-                readDate: intl.formatDate(book.readProgress?.readDate, {
-                  dateStyle: 'medium',
-                }),
-              },
-            )
-          }}</template>
-        </v-alert>
+          <ItemPoster
+            :poster-url="bookPosterUrl(book.id, cacheStore.getVersion(book.id))"
+            :progress-percent="progressPercent"
+          />
+
+          <v-alert
+            v-if="isRead || pagesLeft"
+            :icon="isRead ? 'i-mdi:check' : undefined"
+            class="mt-1 text-center text-body-small"
+          >
+            <template v-if="pagesLeft"
+              >{{
+                $formatMessage(
+                  {
+                    description: 'Book view: number of pages left',
+                    defaultMessage: '{count} pages left',
+                    id: 'Z5hsZ9',
+                  },
+                  { count: pagesLeft },
+                )
+              }}
+            </template>
+            <template v-if="isRead"
+              >{{
+                $formatMessage(
+                  {
+                    description: 'Book view: date read',
+                    defaultMessage: 'Read on {readDate}',
+                    id: 'T3Ofay',
+                  },
+                  {
+                    readDate: intl.formatDate(book.readProgress?.readDate, {
+                      dateStyle: 'medium',
+                    }),
+                  },
+                )
+              }}
+            </template>
+          </v-alert>
+        </div>
       </v-col>
 
       <v-col
@@ -288,7 +296,6 @@ const display = useDisplay()
 const cacheStore = useImageCacheStore()
 const { convertErrorCodes } = useErrorCodeFormatter()
 const id = useId()
-const posterMaxWidth = 220
 
 type OneShotAttributes = Pick<
   SeriesMetadataDto,

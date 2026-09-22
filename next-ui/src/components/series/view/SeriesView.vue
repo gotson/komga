@@ -4,38 +4,46 @@
       <v-col
         cols="6"
         sm="3"
+        lg="2"
       >
-        <ItemPoster
-          :poster-url="seriesPosterUrl(series.id, cacheStore.getVersion(series.id))"
-          :top-right-icon="isRead ? 'i-mdi:check' : undefined"
-          :top-right="unreadCount"
-          :max-width="posterMaxWidth"
-        />
-
-        <v-alert
-          v-if="isRead || bookOnDeck"
-          :icon="isRead ? 'i-mdi:check' : undefined"
-          class="mt-1 text-center text-body-small"
-          :max-width="posterMaxWidth"
+        <div
+          class="ms-auto w-100"
+          style="max-width: 220px"
         >
-          <template v-if="bookOnDeck">{{
-            $formatMessage(
-              {
-                description: 'Series view: book on deck',
-                defaultMessage: 'On deck — {number}',
-                id: '4jKnoO',
-              },
-              { number: bookOnDeck.metadata.number },
-            )
-          }}</template>
-          <template v-if="isRead">{{
-            $formatMessage({
-              description: 'Series view: read indicator',
-              defaultMessage: 'Read',
-              id: 'l7mpQK',
-            })
-          }}</template>
-        </v-alert>
+          <ItemPoster
+            :poster-url="seriesPosterUrl(series.id, cacheStore.getVersion(series.id))"
+            :top-right-icon="isRead ? 'i-mdi:check' : undefined"
+            :top-right="unreadCount"
+          />
+
+          <v-alert
+            v-if="isRead || bookOnDeck"
+            :icon="isRead ? 'i-mdi:check' : undefined"
+            class="mt-1 text-center text-body-small"
+          >
+            <template v-if="bookOnDeck"
+              >{{
+                $formatMessage(
+                  {
+                    description: 'Series view: book on deck',
+                    defaultMessage: 'On deck — {number}',
+                    id: '4jKnoO',
+                  },
+                  { number: bookOnDeck.metadata.number },
+                )
+              }}
+            </template>
+            <template v-if="isRead"
+              >{{
+                $formatMessage({
+                  description: 'Series view: read indicator',
+                  defaultMessage: 'Read',
+                  id: 'l7mpQK',
+                })
+              }}
+            </template>
+          </v-alert>
+        </div>
       </v-col>
 
       <v-col
@@ -263,7 +271,6 @@ const intl = useIntl()
 const display = useDisplay()
 const cacheStore = useImageCacheStore()
 const id = useId()
-const posterMaxWidth = 220
 
 const props = defineProps<{
   series: SeriesDto

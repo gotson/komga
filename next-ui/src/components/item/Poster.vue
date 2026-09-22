@@ -6,7 +6,6 @@
     lazy-src="@/assets/cover.svg"
     aspect-ratio="0.7071"
     rounded
-    :max-width="posterMaxWidth"
   >
     <template #placeholder>
       <div class="d-flex align-center justify-center fill-height">
@@ -46,8 +45,7 @@
 </template>
 
 <script setup lang="ts">
-const { posterMaxWidth = 220 } = defineProps<{
-  posterMaxWidth?: number
+defineProps<{
   posterUrl?: string
   /**
    * Number displayed in the top-right corner.
