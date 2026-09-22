@@ -9,6 +9,7 @@ import { entitiesChanged, entityChanged } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
   komgaAddUserUploadedReadListThumbnail,
+  komgaGetReadListsByBookId,
   komgaCreateReadList,
   komgaDeleteReadListById,
   komgaDeleteUserUploadedReadListThumbnail,
@@ -27,6 +28,8 @@ export const QUERY_KEYS_READLIST = {
   root: ['readlists'] as const,
   bySearch: (request: object) => [...QUERY_KEYS_READLIST.root, JSON.stringify(request)] as const,
   byId: (id: string) => [...QUERY_KEYS_READLIST.root, id] as const,
+  byBook: () => [...QUERY_KEYS_READLIST.root, 'byBook'] as const,
+  byBookId: (bookId: string) => [...QUERY_KEYS_READLIST.byBook(), bookId] as const,
   posters: (id: string) => [...QUERY_KEYS_READLIST.byId(id), 'posters'] as const,
 }
 
@@ -87,6 +90,17 @@ export const readListDetailQuery = defineQueryOptions(({ readListId }: { readLis
     komgaGetReadListById({
       path: {
         id: readListId,
+      },
+    }),
+  staleTime: STALE_TIME.LONG,
+}))
+
+export const bookReadListsQuery = defineQueryOptions(({ bookId }: { bookId: string }) => ({
+  key: QUERY_KEYS_READLIST.byBookId(bookId),
+  query: () =>
+    komgaGetReadListsByBookId({
+      path: {
+        bookId: bookId,
       },
     }),
   staleTime: STALE_TIME.LONG,

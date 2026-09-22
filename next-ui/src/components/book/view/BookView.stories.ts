@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import BookView from './BookView.vue'
 import { mockBook } from '@/mocks/api/handlers/books'
+import { response200OK } from '@/mocks/api/utils'
+import { handleGetReadListsByBookId } from '@/generated/openapi/msw.gen'
+import { mockReadLists } from '@/mocks/api/handlers/readlists'
 
 const meta = {
   component: BookView,
@@ -30,6 +33,12 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {},
+}
+
+export const ContainedInReadLists: Story = {
+  beforeEach({ msw }) {
+    msw.use(handleGetReadListsByBookId(() => response200OK(mockReadLists(5))))
+  },
 }
 
 export const Unread: Story = {

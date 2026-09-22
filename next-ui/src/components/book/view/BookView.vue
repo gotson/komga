@@ -57,6 +57,13 @@
         sm="9"
       >
         <v-container class="pa-0">
+          <div
+            v-if="display.smAndUp.value && containedIn.length > 0"
+            class="float-end"
+          >
+            <ContainerChip :containers="containedIn" />
+          </div>
+
           <v-row v-if="!book.oneshot">
             <v-col>
               <RouterLink
@@ -264,6 +271,15 @@
         </v-col>
       </v-row>
 
+      <v-row v-if="display.xs.value && containedIn.length > 0">
+        <v-col>
+          <ContainerChip
+            :containers="containedIn"
+            small
+          />
+        </v-col>
+      </v-row>
+
       <v-row>
         <v-col>
           <SimpleDataTable :rows="tableRows" />
@@ -274,7 +290,7 @@
 </template>
 
 <script setup lang="ts">
-import { bookPosterUrl } from '@/api/images'
+import { bookPosterUrl, collectionPosterUrl, readListPosterUrl } from '@/api/images'
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
 import { useIntl } from 'vue-intl'
 import { useBook } from '@/composables/book/useBook'
@@ -290,6 +306,10 @@ import { useImageCacheStore } from '@/stores/image-cache'
 import { languageDisplayNames } from '@/utils/i18n/locale-helper'
 import { type ReadingDirection, readingDirectionMessages } from '@/types/ReadingDirection'
 import { isMessageDescriptor } from '@/stores/messages'
+import { useQuery } from '@pinia/colada'
+import { bookReadListsQuery } from '@/colada/readlists'
+import type { Container } from '@/components/ContainerChip.vue'
+import { seriesCollectionsQuery } from '@/colada/collections'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -309,6 +329,32 @@ const props = defineProps<{
 
 const { isRead, progressPercent, pagesLeft } = useBookReadProgress(() => props.book)
 const { isDeleted, format } = useBook(() => props.book)
+
+const { data: readLists } = useQuery(() => ({
+  ...bookReadListsQuery({ bookId: props.book.id }),
+}))
+// for oneshots we need to retrieve collections
+const { data: collections } = useQuery(() => ({
+  ...seriesCollectionsQuery({ seriesId: props.book.seriesId }),
+}))
+const containedIn = computed(() => [
+  ...(readLists.value?.map(
+    (it) =>
+      ({
+        text: it.name,
+        imageUrl: readListPosterUrl(it.id, cacheStore.getVersion(it.id)),
+        link: { name: '/readlist/[id]', params: { id: it.id } },
+      }) satisfies Container,
+  ) ?? []),
+  ...(collections.value?.map(
+    (it) =>
+      ({
+        text: it.name,
+        imageUrl: collectionPosterUrl(it.id, cacheStore.getVersion(it.id)),
+        link: { name: '/collection/[id]', params: { id: it.id } },
+      }) satisfies Container,
+  ) ?? []),
+])
 
 const tableRows = computed(() => {
   const rows: TableRow[] = []

@@ -396,6 +396,7 @@ export const useSSE = createGlobalState(() => {
       case 'ReadListChanged':
       case 'ReadListDeleted':
         void entityChanged(QUERY_KEYS_READLIST.root, event.data.readListId)
+        void entitiesChanged(QUERY_KEYS_READLIST.byBook())
         break
       case 'CollectionAdded':
         void entitiesChanged(QUERY_KEYS_COLLECTIONS.root)

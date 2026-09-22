@@ -5,6 +5,7 @@ import mockThumbnailUrl from '@/assets/mock-thumbnail.jpg'
 import {
   handleCreateReadList,
   handleGetReadLists,
+  handleGetReadListsByBookId,
   handleMatchComicRackList,
 } from '@/generated/openapi/msw.gen'
 
@@ -216,6 +217,7 @@ export const readListsHandlers = [
       filtered: false,
     })
   }),
+  handleGetReadListsByBookId(() => response200OK([])),
   handleMatchComicRackList(() => response200OK(matchCbl)),
   http.get('*/api/v1/readlists/*/thumbnail*', async () => {
     // Get an ArrayBuffer from reading the file from disk or fetching it.
