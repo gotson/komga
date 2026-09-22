@@ -171,6 +171,10 @@
     "defaultMessage": "Pinned",
     "description": "Library tab navigation: library selection: pinned"
   },
+  "1z+Z+q": {
+    "defaultMessage": "Sharing labels",
+    "description": "Book view table: sharing labels  header"
+  },
   "2Bh8F2": {
     "defaultMessage": "Latest",
     "description": "Updates view: badge showing next to the latest release number"
@@ -467,6 +471,10 @@
     "defaultMessage": "Delete User",
     "description": "Delete user dialog title"
   },
+  "9aVhJC": {
+    "defaultMessage": "CBZ",
+    "description": "Book file format: CBZ"
+  },
   "9dNd68": {
     "defaultMessage": "User uploaded",
     "description": "Poster card: type - user uploaded"
@@ -714,6 +722,10 @@
   "EbhcQd": {
     "defaultMessage": "Details",
     "description": "Import books table header: details"
+  },
+  "EnHAAa": {
+    "defaultMessage": "PDF",
+    "description": "Book file format: PDF"
   },
   "Epp7Fi": {
     "defaultMessage": "Tags",
@@ -1318,6 +1330,10 @@
   "UoaxO7": {
     "defaultMessage": "Book will be upgraded",
     "description": "Import books: status message: book will be upgraded"
+  },
+  "UsTdV2": {
+    "defaultMessage": "Sharing labels",
+    "description": "Series view table: sharing labels header"
   },
   "Usohru": {
     "defaultMessage": "Browse",
@@ -2359,6 +2375,10 @@
     "defaultMessage": "Proxy unhandled requests to Kobo Store",
     "description": "Server settings: checkbox to enable Kobo Store proxying for Kobo Sync "
   },
+  "iQKrku": {
+    "defaultMessage": "EPUB",
+    "description": "Book file format: EPUB"
+  },
   "iVYrha": {
     "defaultMessage": "General",
     "description": "Book Compare: General"
@@ -2514,6 +2534,10 @@
   "laWvMU": {
     "defaultMessage": "Ok",
     "description": "Form add/edit library: General - root directory selection dialog confirmation button label"
+  },
+  "lkoTf7": {
+    "defaultMessage": "CBR",
+    "description": "Book file format: CBR"
   },
   "lt7Tru": {
     "defaultMessage": "Series",
