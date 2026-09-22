@@ -71,6 +71,7 @@ jreleaser {
       discussionCategoryName = "Announcements"
       skipTag = true
       tagName = "{{projectVersion}}"
+      immutableRelease = true
 
       changelog {
         formatted = Active.ALWAYS
