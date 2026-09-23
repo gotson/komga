@@ -256,7 +256,6 @@ definePage({
           name: '/book/[id]',
           params: { id: book.id },
           query: to.query,
-          replace: true,
         }
       }
     }
