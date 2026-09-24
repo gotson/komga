@@ -24,3 +24,23 @@
     overflow: hidden;
     height: calc(var(--line-height) * var(--lines, 1) * 1rem);
 }
+
+.sticky-bar {
+    position: sticky;
+    /* Adjust offset to match your v-app-bar height (56px for mobile, 64px for desktop, or a Vuetify CSS var) */
+    top: var(--v-layout-top, 64px);
+    z-index: 4;
+    background-color: rgb(var(--v-theme-background));
+
+    /* Extends the background upward slightly to cover sub-pixel gaps without layout shift */
+    &::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: inherit;
+        pointer-events: none;
+    }
+}

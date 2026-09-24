@@ -2,40 +2,7 @@
   <v-app-bar>
     <template #prepend>
       <NavigationBreadcrumbs />
-
-      <v-divider
-        vertical
-        inset
-        class="mx-4"
-      />
-
-      <ChipCount :count="totalElements" />
     </template>
-
-    <PosterSizeSlider />
-
-    <PresentationSelector
-      v-if="display.smAndUp.value"
-      v-model="presentationMode"
-      :modes="['grid', 'list']"
-      toggle
-    />
-
-    <PageSizeSelector
-      v-if="isBrowsingPaged"
-      v-model="appStore.browsingPageSize"
-      allow-unpaged
-    />
-
-    <PagingSelector
-      v-model="appStore.browsingPaging"
-      class="px-2"
-    />
-
-    <FilterButton
-      :count="filterCount"
-      @click="filterDrawer = true"
-    />
   </v-app-bar>
 
   <TempDrawer v-model="filterDrawer">
@@ -215,7 +182,38 @@
     <template v-else-if="collection">
       <CollectionView :collection="collection" />
 
-      <v-divider />
+      <v-divider class="mb-1 mx-2" />
+
+      <div class="sticky-bar d-flex align-center pa-2">
+        <ChipCount :count="totalElements" />
+
+        <v-spacer />
+
+        <!-- Append -->
+        <div class="d-flex ga-2">
+          <PosterSizeSlider />
+
+          <PresentationSelector
+            v-if="display.smAndUp.value"
+            v-model="presentationMode"
+            :modes="['grid', 'list']"
+            toggle
+          />
+
+          <PageSizeSelector
+            v-if="isBrowsingPaged"
+            v-model="appStore.browsingPageSize"
+            allow-unpaged
+          />
+
+          <PagingSelector v-model="appStore.browsingPaging" />
+
+          <FilterButton
+            :count="filterCount"
+            @click="filterDrawer = true"
+          />
+        </div>
+      </div>
 
       <EmptyStateFilterNoResults
         v-if="totalElements === 0 && filterCount > 0"

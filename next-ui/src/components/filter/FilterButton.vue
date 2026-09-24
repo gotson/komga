@@ -6,7 +6,6 @@
     bordered
     :content="count"
     :model-value="count > 0"
-    class="pe-4"
     offset-x="7"
     offset-y="7"
   >
