@@ -3,7 +3,11 @@
     v-if="effectiveLibrary"
     class="d-flex ga-2 align-center"
   >
-    <div class="text-title-large">
+    <div
+      v-ktooltip:bottom-start
+      class="text-title-large text-truncate"
+      :style="{ 'max-width': display.xs.value ? '120px' : '200px' }"
+    >
       <RouterLink
         v-if="link"
         class="link-underline"
@@ -38,6 +42,7 @@
 import { useCurrentUser } from '@/colada/users'
 import { useGetLibrariesByViewId } from '@/composables/libraries'
 import type { LibraryDto } from '@/generated/openapi'
+import { useDisplay } from 'vuetify'
 
 const {
   library,
@@ -49,6 +54,7 @@ const {
   link?: boolean
 }>()
 
+const display = useDisplay()
 const { isAdmin } = useCurrentUser()
 const id = useId()
 
