@@ -20,6 +20,8 @@ import {
   komgaUpdateReadListById,
   type ReadListCreationDto,
   type ReadListUpdateDto,
+  komgaGetBookSiblingPreviousInReadList,
+  komgaGetBookSiblingNextInReadList,
 } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { STALE_TIME } from '@/types/time'
@@ -105,6 +107,32 @@ export const bookReadListsQuery = defineQueryOptions(({ bookId }: { bookId: stri
     }),
   staleTime: STALE_TIME.LONG,
 }))
+
+export const bookPreviousInReadList = defineQueryOptions(
+  ({ readListId, bookId }: { readListId: string; bookId: string }) => ({
+    key: [...QUERY_KEYS_READLIST.byId(bookId), 'books', bookId, 'previous'],
+    query: () =>
+      komgaGetBookSiblingPreviousInReadList({
+        path: {
+          id: readListId,
+          bookId: bookId,
+        },
+      }),
+  }),
+)
+
+export const bookNextInReadList = defineQueryOptions(
+  ({ readListId, bookId }: { readListId: string; bookId: string }) => ({
+    key: [...QUERY_KEYS_READLIST.byId(bookId), 'books', bookId, 'next'],
+    query: () =>
+      komgaGetBookSiblingNextInReadList({
+        path: {
+          id: readListId,
+          bookId: bookId,
+        },
+      }),
+  }),
+)
 
 export const useCreateReadList = defineMutation(() => {
   const appStore = useAppStore()

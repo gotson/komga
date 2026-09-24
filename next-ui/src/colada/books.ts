@@ -24,6 +24,8 @@ import {
   komgaDeleteUserUploadedBookThumbnail,
   type BookMetadataUpdateDto,
   komgaGetBookPages,
+  komgaGetBookSiblingPrevious,
+  komgaGetBookSiblingNext,
 } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { STALE_TIME } from '@/types/time'
@@ -94,6 +96,26 @@ export const bookDetailQuery = defineQueryOptions(({ bookId }: { bookId: string 
       },
     }),
   staleTime: STALE_TIME.LONG,
+}))
+
+export const bookPreviousInSeries = defineQueryOptions(({ bookId }: { bookId: string }) => ({
+  key: [...QUERY_KEYS_BOOKS.byId(bookId), 'series', 'previous'],
+  query: () =>
+    komgaGetBookSiblingPrevious({
+      path: {
+        bookId: bookId,
+      },
+    }),
+}))
+
+export const bookNextInSeries = defineQueryOptions(({ bookId }: { bookId: string }) => ({
+  key: [...QUERY_KEYS_BOOKS.byId(bookId), 'series', 'next'],
+  query: () =>
+    komgaGetBookSiblingNext({
+      path: {
+        bookId: bookId,
+      },
+    }),
 }))
 
 export const useRefreshMetadataBook = defineMutation(() =>
