@@ -9,6 +9,7 @@
     v-if="isTouchPrimary"
     v-model="isShown"
     :title="sheetTitle"
+    :subtitle="sheetSubtitle"
     :actions="actions"
     :manage-actions="manageActions"
   />
@@ -26,6 +27,7 @@ const { actions = [], manageActions = [] } = defineProps<{
   actions?: Action<unknown>[]
   manageActions?: Action<unknown>[]
   sheetTitle?: string
+  sheetSubtitle?: string
 }>()
 </script>
 

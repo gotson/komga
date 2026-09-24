@@ -4,6 +4,13 @@
     :actions="actionsDefault"
     :manage-actions="actionsManagement"
     :activator="activator"
+    :sheet-title="
+      $formatMessage({
+        description: 'Libraries bottom sheet, subtitle',
+        defaultMessage: 'Libraries',
+        id: 'HaF+a6',
+      })
+    "
   />
 </template>
 

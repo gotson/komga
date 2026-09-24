@@ -5,6 +5,13 @@
     :manage-actions="actionsManagement"
     :activator="activator"
     :sheet-title="readList.name"
+    :sheet-subtitle="
+      $formatMessage({
+        description: 'Read list bottom sheet, subtitle',
+        defaultMessage: 'Read list',
+        id: 'Po0Z4Z',
+      })
+    "
   />
 </template>
 

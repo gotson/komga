@@ -5,6 +5,13 @@
     :manage-actions="actionsManagement"
     :activator="activator"
     :sheet-title="book.metadata.title"
+    :sheet-subtitle="
+      $formatMessage({
+        description: 'Book bottom sheet, subtitle',
+        defaultMessage: 'Book',
+        id: 'dN5GoW',
+      })
+    "
   />
 </template>
 
