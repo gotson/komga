@@ -11,7 +11,7 @@
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
     :menu-props="menuProps"
-    :card-to="`/book/${book.id}`"
+    :card-to="linkTo"
     v-bind="propsLeft"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
@@ -38,6 +38,8 @@ import { useBook } from '@/composables/book/useBook'
 import { bookReaderUrl } from '@/api/links'
 import type { BookDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { BrowsingContextKey, formatBrowsingContextAsQueryParam } from '@/functions/browsing-context'
+import type { RouteLocationRaw } from 'vue-router'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -104,7 +106,7 @@ other {# pages}
 
   if (book.value.oneshot) {
     return {
-      title: { text: book.value.metadata.title, lines: 2, routerLink: `/book/${book.value.id}` },
+      title: { text: book.value.metadata.title, lines: 2, routerLink: linkTo.value },
       lines: [footer],
     }
   } else {
@@ -114,17 +116,31 @@ other {# pages}
         title: {
           text: book.value.seriesTitle,
           lines: 1,
-          routerLink: `/series/${book.value.seriesId}`,
+          routerLink: {
+            name: '/series/[id]',
+            params: { id: book.value.seriesId },
+            query: formatBrowsingContextAsQueryParam(toValue(context)),
+          },
         },
-        lines: [{ text: numberedTitle, lines: 1, routerLink: `/book/${book.value.id}` }, footer],
+        lines: [{ text: numberedTitle, lines: 1, routerLink: linkTo.value }, footer],
       }
     else
       return {
-        title: { text: numberedTitle, lines: 2, routerLink: `/book/${book.value.id}` },
+        title: { text: numberedTitle, lines: 2, routerLink: linkTo.value },
         lines: [footer],
       }
   }
 })
+
+const context = inject(BrowsingContextKey)
+const linkTo = computed(
+  () =>
+    ({
+      name: '/book/[id]',
+      params: { id: book.value.id },
+      query: formatBrowsingContextAsQueryParam(toValue(context)),
+    }) satisfies RouteLocationRaw,
+)
 
 const { isAdmin } = useCurrentUser()
 const { canRead, isEpubReader } = useBook(book)

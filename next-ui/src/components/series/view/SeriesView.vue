@@ -284,6 +284,12 @@ import { useQuery } from '@pinia/colada'
 import { bookListQuery } from '@/colada/books'
 import { seriesCollectionsQuery } from '@/colada/collections'
 import type { Container } from '@/components/ContainerChip.vue'
+import { commonMessages } from '@/utils/i18n/common-messages'
+import { useBrowsingContext } from '@/composables/browsingContext'
+import {
+  filterBrowsingContext,
+  formatBrowsingContextAsQueryParam,
+} from '@/functions/browsing-context'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -311,6 +317,12 @@ const alternateTitles = computed(() =>
   })),
 )
 
+const { context } = useBrowsingContext()
+// upper context for lateral navigation
+const contextFilteredParam = computed(() =>
+  formatBrowsingContextAsQueryParam(filterBrowsingContext(context.value, ['libraryView'])),
+)
+
 // browsing context
 const { data: collections } = useQuery(() => ({
   ...seriesCollectionsQuery({ seriesId: props.series.id }),
@@ -322,7 +334,11 @@ const containedIn = computed(
         ({
           text: it.name,
           imageUrl: collectionPosterUrl(it.id, cacheStore.getVersion(it.id)),
-          link: { name: '/collection/[id]', params: { id: it.id } },
+          link: {
+            name: '/collection/[id]',
+            params: { id: it.id },
+            query: contextFilteredParam.value,
+          },
         }) satisfies Container,
     ) ?? [],
 )

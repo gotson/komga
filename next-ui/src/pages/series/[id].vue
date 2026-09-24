@@ -1,16 +1,15 @@
 <template>
   <v-app-bar>
     <template #prepend>
-      <LibraryHeader
-        class="ms-4"
-        :library-id="series?.libraryId"
-        link
+      <NavigationBreadcrumbs />
+
+      <v-divider
+        vertical
+        inset
+        class="mx-4"
       />
 
-      <ChipCount
-        class="ms-2"
-        :count="totalElements"
-      />
+      <ChipCount :count="totalElements" />
     </template>
 
     <PosterSizeSlider />
@@ -233,6 +232,8 @@ import type { SearchConditionBook } from '@/generated/openapi'
 import { seriesDetailQuery } from '@/colada/series'
 import { logger } from '@/services/logtape'
 import { getFirstBookInParent } from '@/functions/book-container'
+import { BrowsingContextKey, pushBrowsingContext } from '@/functions/browsing-context'
+import { useBrowsingContext } from '@/composables/browsingContext'
 
 // oneshot redirection
 definePage({
@@ -268,6 +269,12 @@ const seriesId = computed(() => route.params.id)
 provide(
   filterKeys.context,
   computed(() => ({ series_id: [seriesId.value] })),
+)
+
+const { context } = useBrowsingContext()
+provide(
+  BrowsingContextKey,
+  computed(() => pushBrowsingContext(context.value, { type: 'series', id: seriesId.value })),
 )
 
 const {

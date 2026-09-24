@@ -8,7 +8,7 @@
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
     :menu-props="menuProps"
-    :card-to="`/collection/${collection.id}`"
+    :card-to="linkTo"
     v-bind="props"
     :disable-selection="!isAdmin"
     @selection="(val, event) => emit('selection', val, event)"
@@ -31,6 +31,8 @@ import { useCurrentUser } from '@/colada/users'
 import { useEditCollectionDialog } from '@/composables/collection/useEditCollectionDialog'
 import type { CollectionDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { BrowsingContextKey, formatBrowsingContextAsQueryParam } from '@/functions/browsing-context'
+import type { RouteLocationRaw } from 'vue-router'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -49,7 +51,7 @@ const bottomSheet = ref(false)
 const title = computed<ItemCardTitle>(() => ({
   text: collection.name,
   lines: 2,
-  routerLink: `/collection/${collection.id}`,
+  routerLink: linkTo.value,
 }))
 
 const lines = computed<ItemCardLine[]>(() => [
@@ -67,6 +69,16 @@ other {# series}
     ),
   },
 ])
+
+const context = inject(BrowsingContextKey)
+const linkTo = computed(
+  () =>
+    ({
+      name: '/collection/[id]',
+      params: { id: collection.id },
+      query: formatBrowsingContextAsQueryParam(toValue(context)),
+    }) satisfies RouteLocationRaw,
+)
 
 const { isAdmin } = useCurrentUser()
 const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))

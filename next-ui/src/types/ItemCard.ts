@@ -1,3 +1,5 @@
+import type { RouteLocationRaw } from 'vue-router'
+
 export type ItemCardProps = {
   /**
    * Card width.
@@ -41,7 +43,7 @@ export type ItemCardTitle = {
   /**
    * Link.
    */
-  routerLink?: string | object
+  routerLink?: RouteLocationRaw
 }
 
 export type ItemCardLine = {
@@ -64,5 +66,5 @@ export type ItemCardLine = {
   /**
    * Link.
    */
-  routerLink?: string | object
+  routerLink?: RouteLocationRaw
 }

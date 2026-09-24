@@ -11,7 +11,7 @@
     :quick-action-props="quickActionProps"
     :menu-icon="menuIcon"
     :menu-props="menuProps"
-    :card-to="`/series/${series.id}`"
+    :card-to="linkTo"
     v-bind="propsLeft"
     @selection="(val, event) => emit('selection', val, event)"
     @click-quick-action="showEditMetadataDialog()"
@@ -37,6 +37,8 @@ import { useBooks } from '@/composables/book/useBooks'
 import { useSeries } from '@/composables/series/useSeries'
 import type { SeriesDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { BrowsingContextKey, formatBrowsingContextAsQueryParam } from '@/functions/browsing-context'
+import type { RouteLocationRaw } from 'vue-router'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -63,7 +65,7 @@ const { isRead, unreadCount, canRead } = useSeries(series)
 const title = computed<ItemCardTitle>(() => ({
   text: series.value.metadata.title,
   lines: 2,
-  routerLink: `/series/${series.value.id}`,
+  routerLink: linkTo.value,
 }))
 
 const lines = computed<ItemCardLine[]>(() => {
@@ -107,6 +109,16 @@ other {# books}
     },
   ]
 })
+
+const context = inject(BrowsingContextKey)
+const linkTo = computed(
+  () =>
+    ({
+      name: '/series/[id]',
+      params: { id: series.value.id },
+      query: formatBrowsingContextAsQueryParam(toValue(context)),
+    }) satisfies RouteLocationRaw,
+)
 
 const { isAdmin } = useCurrentUser()
 const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))

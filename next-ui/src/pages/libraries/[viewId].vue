@@ -8,6 +8,7 @@
 <script lang="ts" setup>
 import { filterKeys } from '@/types/filter'
 import { useGetLibrariesByViewId, useUserLibraries } from '@/composables/libraries'
+import { BrowsingContextKey } from '@/functions/browsing-context'
 
 const route = useRoute('/libraries/[viewId]')
 const router = useRouter()
@@ -18,6 +19,10 @@ const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 provide(
   filterKeys.context,
   computed(() => ({ library_id: libraryIds.value })),
+)
+provide(
+  BrowsingContextKey,
+  computed(() => ({ type: 'libraryView', id: libraryViewId.value })),
 )
 
 watch([noLibraries, anyPinned, anyUnpinned], ([newNoLibraries, hasPinned, hasUnpinned]) => {

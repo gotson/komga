@@ -67,7 +67,11 @@
           <v-row v-if="!book.oneshot">
             <v-col>
               <RouterLink
-                :to="{ name: '/series/[id]', params: { id: book.seriesId } }"
+                :to="{
+                  name: '/series/[id]',
+                  params: { id: book.seriesId },
+                  query: contextFilteredParam,
+                }"
                 class="text-headline-large link-underline"
                 >{{ book.seriesTitle }}</RouterLink
               >
@@ -310,6 +314,12 @@ import { useQuery } from '@pinia/colada'
 import { bookReadListsQuery } from '@/colada/readlists'
 import type { Container } from '@/components/ContainerChip.vue'
 import { seriesCollectionsQuery } from '@/colada/collections'
+import { useBrowsingContext } from '@/composables/browsingContext'
+import {
+  filterBrowsingContext,
+  formatBrowsingContextAsQueryParam,
+} from '@/functions/browsing-context'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -330,6 +340,12 @@ const props = defineProps<{
 const { isRead, progressPercent, pagesLeft } = useBookReadProgress(() => props.book)
 const { isDeleted, format } = useBook(() => props.book)
 
+const { context } = useBrowsingContext()
+// upper context for lateral navigation
+const contextFilteredParam = computed(() =>
+  formatBrowsingContextAsQueryParam(filterBrowsingContext(context.value, ['libraryView'])),
+)
+
 const { data: readLists } = useQuery(() => ({
   ...bookReadListsQuery({ bookId: props.book.id }),
 }))
@@ -343,7 +359,11 @@ const containedIn = computed(() => [
       ({
         text: it.name,
         imageUrl: readListPosterUrl(it.id, cacheStore.getVersion(it.id)),
-        link: { name: '/readlist/[id]', params: { id: it.id } },
+        link: {
+          name: '/readlist/[id]',
+          params: { id: it.id },
+          query: contextFilteredParam.value,
+        },
       }) satisfies Container,
   ) ?? []),
   ...(collections.value?.map(
@@ -351,7 +371,11 @@ const containedIn = computed(() => [
       ({
         text: it.name,
         imageUrl: collectionPosterUrl(it.id, cacheStore.getVersion(it.id)),
-        link: { name: '/collection/[id]', params: { id: it.id } },
+        link: {
+          name: '/collection/[id]',
+          params: { id: it.id },
+          query: contextFilteredParam.value,
+        },
       }) satisfies Container,
   ) ?? []),
 ])

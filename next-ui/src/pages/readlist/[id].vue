@@ -1,11 +1,16 @@
 <template>
   <v-app-bar>
-    <ChipCount
-      :count="totalElements"
-      class="ms-4"
-    />
+    <template #prepend>
+      <NavigationBreadcrumbs />
 
-    <v-spacer />
+      <v-divider
+        vertical
+        inset
+        class="mx-4"
+      />
+
+      <ChipCount :count="totalElements" />
+    </template>
 
     <PosterSizeSlider />
 
@@ -213,6 +218,8 @@ import { contributorsRolesMessages } from '@/types/referential'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionBook } from '@/generated/openapi'
+import { BrowsingContextKey, pushBrowsingContext } from '@/functions/browsing-context'
+import { useBrowsingContext } from '@/composables/browsingContext'
 
 const route = useRoute('/readlist/[id]')
 const router = useRouter()
@@ -221,6 +228,12 @@ const readListId = computed(() => route.params.id)
 provide(
   filterKeys.context,
   computed(() => ({ readlist_id: [readListId.value] })),
+)
+
+const { context } = useBrowsingContext()
+provide(
+  BrowsingContextKey,
+  computed(() => pushBrowsingContext(context.value, { type: 'readList', id: readListId.value })),
 )
 
 const display = useDisplay()

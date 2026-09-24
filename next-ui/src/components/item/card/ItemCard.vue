@@ -198,7 +198,7 @@ import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '
 import { vOnLongPress } from '@vueuse/components'
 import { usePrimaryInput } from '@/composables/device'
 import { reactiveOmit, reactivePick } from '@vueuse/core'
-import type { RouteLocation } from 'vue-router'
+import type { RouteLocationRaw } from 'vue-router'
 
 const { isTouchPrimary } = usePrimaryInput()
 const router = useRouter()
@@ -257,7 +257,7 @@ const {
      */
     menuProps?: object
     progressPercent?: number
-    cardTo?: RouteLocation | string
+    cardTo?: RouteLocationRaw
   }
 >()
 

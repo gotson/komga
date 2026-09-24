@@ -1,11 +1,11 @@
 <template>
   <v-app-bar>
     <template #prepend>
-      <LibraryHeader
-        class="ms-4"
-        :library-id="book?.libraryId"
-        link
-      />
+      <NavigationBreadcrumbs />
+    </template>
+
+    <template #append>
+      <BookNavigation :book-id="bookId" />
     </template>
   </v-app-bar>
 

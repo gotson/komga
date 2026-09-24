@@ -192,4 +192,19 @@ export const commonMessages = {
     defaultMessage: 'Must be a valid BCP 47 language code',
     id: 'v3beFf',
   }),
+  libraryPinned: defineMessage({
+    description: 'Library tab navigation: library selection: pinned',
+    defaultMessage: 'Pinned',
+    id: '1qIfds',
+  }),
+  libraryUnpinned: defineMessage({
+    description: 'Library tab navigation: library selection: unpinned',
+    defaultMessage: 'Unpinned',
+    id: '9oA9gw',
+  }),
+  libraryAll: defineMessage({
+    description: 'Library tab navigation: library selection: all',
+    defaultMessage: 'All',
+    id: '8/BXfN',
+  }),
 }
