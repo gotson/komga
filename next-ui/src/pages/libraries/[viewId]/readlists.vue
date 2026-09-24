@@ -1,24 +1,22 @@
 <template>
-  <v-app-bar>
-    <ChipCount
-      class="ms-4"
-      :count="totalElements"
-    />
+  <v-app-bar class="bg-background px-2">
+    <template #prepend>
+      <ChipCount :count="totalElements" />
+    </template>
 
-    <v-spacer />
+    <template #append>
+      <div class="d-flex ga-2">
+        <PosterSizeSlider />
 
-    <PosterSizeSlider />
+        <PageSizeSelector
+          v-if="isBrowsingPaged"
+          v-model="appStore.browsingPageSize"
+          allow-unpaged
+        />
 
-    <PageSizeSelector
-      v-if="isBrowsingPaged"
-      v-model="appStore.browsingPageSize"
-      allow-unpaged
-    />
-
-    <PagingSelector
-      v-model="appStore.browsingPaging"
-      class="px-2"
-    />
+        <PagingSelector v-model="appStore.browsingPaging" />
+      </div>
+    </template>
   </v-app-bar>
 
   <ItemBrowser

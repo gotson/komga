@@ -1,36 +1,34 @@
 <template>
-  <v-app-bar>
-    <ChipCount
-      class="ms-4"
-      :count="totalElements"
-    />
+  <v-app-bar class="bg-background px-2">
+    <template #prepend>
+      <ChipCount :count="totalElements" />
+    </template>
 
-    <v-spacer />
+    <template #append>
+      <div class="d-flex ga-2">
+        <PosterSizeSlider />
 
-    <PosterSizeSlider />
+        <PresentationSelector
+          v-if="display.smAndUp.value"
+          v-model="presentationMode"
+          :modes="['grid', 'list']"
+          toggle
+        />
 
-    <PresentationSelector
-      v-if="display.smAndUp.value"
-      v-model="presentationMode"
-      :modes="['grid', 'list']"
-      toggle
-    />
+        <PageSizeSelector
+          v-if="isBrowsingPaged"
+          v-model="appStore.browsingPageSize"
+          allow-unpaged
+        />
 
-    <PageSizeSelector
-      v-if="isBrowsingPaged"
-      v-model="appStore.browsingPageSize"
-      allow-unpaged
-    />
+        <PagingSelector v-model="appStore.browsingPaging" />
 
-    <PagingSelector
-      v-model="appStore.browsingPaging"
-      class="px-2"
-    />
-
-    <FilterButton
-      :count="filterCount"
-      @click="filterDrawer = true"
-    />
+        <FilterButton
+          :count="filterCount"
+          @click="filterDrawer = true"
+        />
+      </div>
+    </template>
   </v-app-bar>
 
   <TempDrawer v-model="filterDrawer">
