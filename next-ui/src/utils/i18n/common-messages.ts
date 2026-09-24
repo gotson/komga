@@ -207,4 +207,14 @@ export const commonMessages = {
     defaultMessage: 'All',
     id: '8/BXfN',
   }),
+  containerChipSubTitleReadList: defineMessage({
+    description: 'Container chip, subtitle for read list',
+    defaultMessage: 'Read list',
+    id: 'Q7tJAG',
+  }),
+  containerChipSubTitleCollection: defineMessage({
+    description: 'Container chip, subtitle for collection',
+    defaultMessage: 'Collection',
+    id: 'nWgSSS',
+  }),
 }

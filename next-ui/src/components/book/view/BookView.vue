@@ -358,6 +358,7 @@ const containedIn = computed(() => [
     (it) =>
       ({
         text: it.name,
+        subTitle: intl.formatMessage(commonMessages.containerChipSubTitleReadList),
         imageUrl: readListPosterUrl(it.id, cacheStore.getVersion(it.id)),
         link: {
           name: '/readlist/[id]',
@@ -370,6 +371,7 @@ const containedIn = computed(() => [
     (it) =>
       ({
         text: it.name,
+        subTitle: intl.formatMessage(commonMessages.containerChipSubTitleCollection),
         imageUrl: collectionPosterUrl(it.id, cacheStore.getVersion(it.id)),
         link: {
           name: '/collection/[id]',

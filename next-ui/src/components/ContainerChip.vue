@@ -1,13 +1,13 @@
 <template>
-  <v-btn-toggle
+  <v-btn-group
     v-if="first"
     ref="splitBtnRef"
+    color=""
     :class="{ 'v-split-btn': isSplit }"
     rounded="pill"
     :size="small ? 'small' : undefined"
   >
     <v-btn
-      :active="false"
       variant="tonal"
       width="auto"
       :to="first.link"
@@ -32,9 +32,7 @@
 
     <v-btn
       v-if="isSplit"
-      :class="{ active: menuOpen }"
       class="ps-2"
-      :active="menuOpen"
       variant="tonal"
       @click="menuOpen = !menuOpen"
     >
@@ -64,6 +62,7 @@
             v-for="(container, i) in containers"
             :key="i"
             :title="container.text"
+            :subtitle="container.subTitle"
             :to="container.link"
           >
             <template #prepend>
@@ -80,7 +79,7 @@
         </v-list>
       </v-menu>
     </v-btn>
-  </v-btn-toggle>
+  </v-btn-group>
 </template>
 
 <script setup lang="ts">
@@ -88,6 +87,7 @@ import type { RouteLocationRaw } from 'vue-router'
 
 export type Container = {
   text: string
+  subTitle?: string
   imageUrl?: string
   link?: RouteLocationRaw
 }

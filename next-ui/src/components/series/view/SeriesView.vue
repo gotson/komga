@@ -333,6 +333,7 @@ const containedIn = computed(
       (it) =>
         ({
           text: it.name,
+          subTitle: intl.formatMessage(commonMessages.containerChipSubTitleCollection),
           imageUrl: collectionPosterUrl(it.id, cacheStore.getVersion(it.id)),
           link: {
             name: '/collection/[id]',
