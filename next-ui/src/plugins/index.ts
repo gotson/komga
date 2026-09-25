@@ -23,6 +23,7 @@ import { useScroll } from '@/router/scroll'
 import { globalErrorHandler } from '@/colada/error-handling'
 import { useClaimGuard } from '@/router/claim-guard'
 import { useLibraryViewRedirectGuard } from '@/router/library-view-redirect-guard'
+import { useOneshotGuard } from '@/router/oneshot-guard'
 
 export function registerPlugins(app: App) {
   app
@@ -50,5 +51,6 @@ export function registerPlugins(app: App) {
   useLoginGuard(router)
   useRoleGuard(router)
   useLibraryViewRedirectGuard(router)
+  useOneshotGuard(router)
   useScroll(router)
 }

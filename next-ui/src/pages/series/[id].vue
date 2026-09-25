@@ -200,7 +200,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useInfiniteQuery, useQuery, useQueryCache } from '@pinia/colada'
+import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { filterKeys } from '@/types/filter'
 import { usePagination } from '@/composables/pagination'
@@ -231,38 +231,8 @@ import { contributorsRolesMessages } from '@/types/referential'
 import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionBook } from '@/generated/openapi'
 import { seriesDetailQuery } from '@/colada/series'
-import { logger } from '@/services/logtape'
-import { getFirstBookInParent } from '@/functions/book-container'
 import { BrowsingContextKey, pushBrowsingContext } from '@/functions/browsing-context'
 import { useBrowsingContext } from '@/composables/browsingContext'
-
-// oneshot redirection
-definePage({
-  beforeEnter: async (to) => {
-    logger.debug('navigation guard: check if series is oneshot')
-    const params = to.params as { id: string }
-
-    // check cache
-    const queryCache = useQueryCache()
-    const cacheEntry = queryCache.ensure(seriesDetailQuery({ seriesId: params.id }))
-    const state = await queryCache.refresh(cacheEntry)
-    const series = state.data
-
-    if (series?.oneshot) {
-      logger.debug('navigation guard: series is oneshot, fetch book for redirection')
-      const book = await getFirstBookInParent(series, false)
-
-      if (book) {
-        logger.debug('navigation guard: book found, redirect to book page')
-        return {
-          name: '/book/[id]',
-          params: { id: book.id },
-          query: to.query,
-        }
-      }
-    }
-  },
-})
 
 const route = useRoute('/series/[id]')
 const seriesId = computed(() => route.params.id)
