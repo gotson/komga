@@ -256,10 +256,16 @@ import ChipCount from '@/components/ChipCount.vue'
 import { contributorsRolesMessages } from '@/types/referential'
 import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionSeries } from '@/generated/openapi'
+import { BrowsingContextKey } from '@/functions/browsing-context'
 
 const route = useRoute('/libraries/[viewId]/series')
 const libraryViewId = route.params.viewId
 const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
+
+provide(
+  BrowsingContextKey,
+  computed(() => ({ type: 'libraryView', id: libraryViewId, subType: 'series' })),
+)
 
 const display = useDisplay()
 const appStore = useAppStore()

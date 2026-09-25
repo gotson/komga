@@ -82,7 +82,7 @@ const { uppercaseHeaders = true } = defineProps<{
 </script>
 
 <script lang="ts">
-import type { RouteLocation } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 export type TableRow = {
   header: string
@@ -92,7 +92,7 @@ export type TableRow = {
 
 export type TableValue = {
   text: string
-  to?: RouteLocation
+  to?: RouteLocationObject | undefined
   href?: string
 }
 </script>

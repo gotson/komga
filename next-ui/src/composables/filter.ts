@@ -22,6 +22,8 @@ import { createOrderCompareFn } from '@/functions/sort'
 import { clearFilter, countFilter } from '@/functions/filter'
 import type { UnwrapRef } from 'vue'
 
+export const QueryParamContributors = 'contributors'
+
 export function useFilterContributors() {
   // the update function for the query param
   function updateRouteFn(data: v.InferOutput<typeof SchemaFilterContributorsRecord>) {
@@ -35,7 +37,7 @@ export function useFilterContributors() {
   }
 
   const filterContributors = useRouteQuerySchema(
-    'contributors',
+    QueryParamContributors,
     SchemaFilterContributorsRecord,
     updateRouteFn,
   ).data
@@ -110,6 +112,11 @@ const supportedFilters = {
   mediaStatus: SchemaFilterMediaStatus,
   profile: SchemaFilterMediaProfile,
 }
+
+export type SupportedFilters = {
+  [K in keyof typeof supportedFilters]: v.InferOutput<(typeof supportedFilters)[K]>
+}
+
 type SupportedFiltersOutput = {
   [K in keyof typeof supportedFilters]: FilterValue<(typeof supportedFilters)[K]>
 }

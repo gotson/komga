@@ -148,6 +148,7 @@ other {# books}
               rounded
               label
               :text="$formatMessage(seriesStatusMessages[series.metadata.status as SeriesStatus])"
+              :to="seriesStatusLink"
             />
             <v-chip
               v-if="series.metadata.language"
@@ -155,6 +156,7 @@ other {# books}
               rounded
               label
               :text="languageDisplayNames.of(series.metadata.language)"
+              :to="languageLink"
             />
             <v-chip
               v-if="series.metadata.ageRating"
@@ -171,6 +173,7 @@ other {# books}
                   { rating: series.metadata.ageRating },
                 )
               "
+              :to="ageRatingLink"
             />
             <v-chip
               v-if="series.metadata.readingDirection"
@@ -288,8 +291,12 @@ import { useBrowsingContext } from '@/composables/browsingContext'
 import {
   filterBrowsingContext,
   formatBrowsingContextAsQueryParam,
+  popBrowsingContext,
 } from '@/functions/browsing-context'
 import { PageRequest } from '@/types/PageRequest'
+import type { RouteLocationObject } from '@/types/route'
+import { enrichRouteQuery } from '@/functions/router'
+import { contributorToContributorsQuery, filterToQuery } from '@/functions/filter'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -319,6 +326,11 @@ const alternateTitles = computed(() =>
 )
 
 const { context } = useBrowsingContext()
+// first valid context for filter navigation
+const contextFilter = computed(() =>
+  popBrowsingContext(filterBrowsingContext(context.value, ['libraryView', 'collection'])),
+)
+
 // upper context for lateral navigation
 const contextFilteredParam = computed(() =>
   formatBrowsingContextAsQueryParam(filterBrowsingContext(context.value, ['libraryView'])),
@@ -345,6 +357,48 @@ const containedIn = computed(
     ) ?? [],
 )
 
+const parentTo = computed<RouteLocationObject | undefined>(() => {
+  if (contextFilter.value.top?.type === 'libraryView')
+    return {
+      name: '/libraries/[viewId]/series',
+      params: { viewId: contextFilter.value.top.id },
+      query: formatBrowsingContextAsQueryParam(contextFilter.value.remainingStack),
+    }
+  if (contextFilter.value.top?.type === 'collection')
+    return {
+      name: '/collection/[id]',
+      params: { id: contextFilter.value.top.id },
+      query: formatBrowsingContextAsQueryParam(contextFilter.value.remainingStack),
+    }
+})
+
+const seriesStatusLink = computed(() => {
+  if (props.series.metadata.status)
+    return enrichRouteQuery(
+      parentTo.value,
+      filterToQuery('seriesStatus', {
+        v: [props.series.metadata.status as 'ENDED' | 'ONGOING' | 'ABANDONED' | 'HIATUS'],
+      }),
+    )
+})
+const languageLink = computed(() => {
+  if (props.series.metadata.language)
+    return enrichRouteQuery(
+      parentTo.value,
+      filterToQuery('language', {
+        m: 'anyOf',
+        v: [{ i: 'i', v: props.series.metadata.language }],
+      }),
+    )
+})
+const ageRatingLink = computed(() => {
+  if (props.series.metadata.ageRating)
+    return enrichRouteQuery(
+      parentTo.value,
+      filterToQuery('age', { is: props.series.metadata.ageRating }),
+    )
+})
+
 const allRows = computed(() => {
   const rows = {} as Record<string, TableRow>
 
@@ -356,7 +410,10 @@ const allRows = computed(() => {
           header: contributorsRolesMessages?.[role]
             ? intl.formatMessage(contributorsRolesMessages?.[role])
             : role,
-          data: contributor!.map((it) => ({ text: it.name })),
+          data: contributor!.map((it) => ({
+            text: it.name,
+            to: enrichRouteQuery(parentTo.value, contributorToContributorsQuery(it)),
+          })),
         }
       })
 
@@ -367,7 +424,18 @@ const allRows = computed(() => {
         defaultMessage: 'Publisher',
         id: 'OLqBQc',
       }),
-      data: [{ text: props.series.metadata.publisher }],
+      data: [
+        {
+          text: props.series.metadata.publisher,
+          to: enrichRouteQuery(
+            parentTo.value,
+            filterToQuery('publisher', {
+              m: 'anyOf',
+              v: [{ v: props.series.metadata.publisher }],
+            }),
+          ),
+        },
+      ],
     }
 
   if (props.series.metadata.genres.length > 0)
@@ -377,7 +445,16 @@ const allRows = computed(() => {
         defaultMessage: 'Genre',
         id: 'r5O+/d',
       }),
-      data: props.series.metadata.genres.map((it) => ({ text: it })),
+      data: props.series.metadata.genres.map((it) => ({
+        text: it,
+        to: enrichRouteQuery(
+          parentTo.value,
+          filterToQuery('genre', {
+            m: 'anyOf',
+            v: [{ v: it }],
+          }),
+        ),
+      })),
     }
 
   if (props.series.metadata.tags.length > 0)
@@ -387,7 +464,10 @@ const allRows = computed(() => {
         defaultMessage: 'Tags',
         id: '6UXlVe',
       }),
-      data: props.series.metadata.tags.map((it) => ({ text: it })),
+      data: props.series.metadata.tags.map((it) => ({
+        text: it,
+        to: enrichRouteQuery(parentTo.value, filterToQuery('tag', { m: 'anyOf', v: [{ v: it }] })),
+      })),
     }
   if (props.series.booksMetadata.tags.length > 0)
     rows['bookTags'] = {
@@ -396,7 +476,10 @@ const allRows = computed(() => {
         defaultMessage: 'Book tags',
         id: 'Thjcar',
       }),
-      data: props.series.booksMetadata.tags.map((it) => ({ text: it })),
+      data: props.series.booksMetadata.tags.map((it) => ({
+        text: it,
+        to: enrichRouteQuery(parentTo.value, filterToQuery('tag', { m: 'anyOf', v: [{ v: it }] })),
+      })),
     }
 
   if (props.series.metadata.links.length > 0)
@@ -416,7 +499,13 @@ const allRows = computed(() => {
         defaultMessage: 'Sharing labels',
         id: 'UsTdV2',
       }),
-      data: props.series.metadata.sharingLabels.map((it) => ({ text: it })),
+      data: props.series.metadata.sharingLabels.map((it) => ({
+        text: it,
+        to: enrichRouteQuery(
+          parentTo.value,
+          filterToQuery('sharingLabel', { m: 'anyOf', v: [{ v: it }] }),
+        ),
+      })),
     }
 
   rows['filePath'] = {

@@ -1,4 +1,5 @@
 import {
+  type FilterContributorsRecord,
   type FilterIncludeExclude,
   type FilterType,
   SchemaAnyNone,
@@ -11,6 +12,8 @@ import {
 import type { InferOutput } from 'valibot'
 import * as v from 'valibot'
 import { CONTRIBUTOR_ANYROLE } from '@/types/referential'
+import type { AuthorDto } from '@/generated/openapi'
+import { QueryParamContributors, type SupportedFilters } from '@/composables/filter'
 
 export function clearFilter(filter: FilterType) {
   if ('v' in filter) filter.v = []
@@ -238,5 +241,31 @@ export function schemaFilterAgeRatingToConditions(
   if (conds.length === 0) return null
   return {
     allOf: conds,
+  }
+}
+
+/**
+ * Transforms a {@link AuthorDto} to a valid Vue Router route query param for filtering purpose.
+ * @param contributor
+ */
+export function contributorToContributorsQuery(contributor: AuthorDto) {
+  return {
+    [QueryParamContributors]: JSON.stringify({
+      [contributor.role]: { m: 'anyOf', v: [{ i: 'i', v: contributor.name }] },
+    } satisfies FilterContributorsRecord),
+  }
+}
+
+/**
+ * Transforms a filter into its corresponding query param for filtering purpose.
+ * @param filter
+ * @param value
+ */
+export function filterToQuery<K extends keyof SupportedFilters>(
+  filter: K,
+  value: SupportedFilters[K],
+) {
+  return {
+    [filter]: JSON.stringify(value),
   }
 }

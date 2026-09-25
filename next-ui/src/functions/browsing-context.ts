@@ -10,7 +10,8 @@ export type SingleBrowsingContext =
   | { type: 'series'; id: string }
   | { type: 'readList'; id: string }
   | { type: 'collection'; id: string }
-  | { type: 'libraryView'; id: string }
+  // subtype is required to differentiate parent context for oneshots in some cases
+  | { type: 'libraryView'; id: string; subType?: 'series' | 'books' }
 
 export type BrowsingContext = SingleBrowsingContext | SingleBrowsingContext[]
 
@@ -22,7 +23,20 @@ function parseSingleContext(val: string): SingleBrowsingContext | undefined {
   if (val.startsWith('s_')) return { type: 'series', id: val.slice(2) }
   if (val.startsWith('rl_')) return { type: 'readList', id: val.slice(3) }
   if (val.startsWith('c_')) return { type: 'collection', id: val.slice(2) }
-  if (val.startsWith('lv_')) return { type: 'libraryView', id: val.slice(3) }
+  if (val.startsWith('lv_')) {
+    const payload = val.slice(3)
+
+    // with subType
+    if (payload.endsWith('_s')) {
+      return { type: 'libraryView', id: payload.slice(0, -2), subType: 'series' }
+    }
+    if (payload.endsWith('_b')) {
+      return { type: 'libraryView', id: payload.slice(0, -2), subType: 'books' }
+    }
+
+    // fallback for libraryView without a subType
+    return { type: 'libraryView', id: payload }
+  }
 
   return undefined
 }
@@ -35,7 +49,10 @@ function formatSingleContext(context?: SingleBrowsingContext): string | undefine
     case 'collection':
       return context.id ? `c_${context.id}` : undefined
     case 'libraryView':
-      return context.id ? `lv_${context.id}` : undefined
+      if (!context.id) return undefined
+      if (context.subType === 'series') return `lv_${context.id}_s`
+      if (context.subType === 'books') return `lv_${context.id}_b`
+      return `lv_${context.id}`
     case 'series':
       return context.id ? `s_${context.id}` : undefined
     default:

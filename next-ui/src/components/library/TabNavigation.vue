@@ -44,7 +44,7 @@
             :text="route.title"
             :to="route.to"
             rounded="0"
-            exact
+            :exact="route.to?.name === '/libraries/[viewId]/overview'"
           />
         </template>
       </v-tabs>

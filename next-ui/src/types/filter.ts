@@ -173,6 +173,7 @@ export const SchemaFilterContributorsRecord = v.optional(
   ),
   {},
 )
+export type FilterContributorsRecord = v.InferOutput<typeof SchemaFilterContributorsRecord>
 
 export const SchemaFilterAnyAll = createSchemaFilterAnyAll(v.unknown())
 export type FilterTypeAnyAll = v.InferOutput<typeof SchemaFilterAnyAll>

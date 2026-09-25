@@ -48,6 +48,14 @@ watch(
     }
   },
 )
+
+const route = useRoute()
+watch(
+  () => route?.name,
+  () => {
+    showDialog.value = false
+  },
+)
 </script>
 
 <style scoped></style>
