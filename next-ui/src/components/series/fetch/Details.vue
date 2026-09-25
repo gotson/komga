@@ -1,5 +1,5 @@
 <template>
-  <slot :details="data" />
+  <slot v-bind="reactiveData" />
 </template>
 
 <script setup lang="ts">
@@ -10,8 +10,10 @@ const { seriesId } = defineProps<{
   seriesId?: string
 }>()
 
-const { data } = useQuery(() => ({
+const data = useQuery(() => ({
   ...seriesDetailQuery({ seriesId: seriesId || 'none' }),
   enabled: !!seriesId,
 }))
+// reactive() unwraps all computed refs, so we can v-bind them in the slot
+const reactiveData = reactive(data)
 </script>

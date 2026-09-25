@@ -56,12 +56,12 @@
 
     <template #[`item.seriesId`]="{ value: seriesId }">
       <SeriesFetchDetails :series-id="seriesId">
-        <template #default="{ details }">
+        <template #default="{ data: seriesData }">
           <RouterLink
-            v-if="seriesId && details"
+            v-if="seriesId && seriesData"
             :to="{ name: '/series/[id]', params: { id: seriesId } }"
             class="link-underline"
-            >{{ details?.metadata.title }}</RouterLink
+            >{{ seriesData?.metadata.title }}</RouterLink
           >
           <span v-else>{{ seriesId }}</span>
         </template>
@@ -70,12 +70,12 @@
 
     <template #[`item.bookId`]="{ value: bookId }">
       <BookFetchDetails :book-id="bookId">
-        <template #default="{ details }">
+        <template #default="{ data: bookData }">
           <RouterLink
-            v-if="bookId && details"
+            v-if="bookId && bookData"
             :to="{ name: '/book/[id]', params: { id: bookId } }"
             class="link-underline"
-            >{{ details?.metadata.title }}</RouterLink
+            >{{ bookData?.metadata.title }}</RouterLink
           >
           <span v-else>{{ bookId }}</span>
         </template>

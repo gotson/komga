@@ -24,8 +24,8 @@
             v-if="(item as ContextItem).type === 'series'"
             :series-id="(item as ContextItem).id"
           >
-            <template #default="{ details }">
-              <span v-ktooltip:bottom-start>{{ details?.metadata.title }}</span>
+            <template #default="{ data }">
+              <span v-ktooltip:bottom-start>{{ data?.metadata.title }}</span>
             </template>
           </SeriesFetchDetails>
 
@@ -33,8 +33,8 @@
             v-if="(item as ContextItem).type === 'collection'"
             :collection-id="(item as ContextItem).id"
           >
-            <template #default="{ details }">
-              <span v-ktooltip:bottom-start>{{ details?.name }}</span>
+            <template #default="{ data }">
+              <span v-ktooltip:bottom-start>{{ data?.name }}</span>
             </template>
           </CollectionFetchDetails>
 
@@ -42,8 +42,8 @@
             v-if="(item as ContextItem).type === 'readList'"
             :read-list-id="(item as ContextItem).id"
           >
-            <template #default="{ details }">
-              <span v-ktooltip:bottom-start>{{ details?.name }}</span>
+            <template #default="{ data }">
+              <span v-ktooltip:bottom-start>{{ data?.name }}</span>
             </template>
           </ReadlistFetchDetails>
 
