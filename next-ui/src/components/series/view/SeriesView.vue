@@ -447,7 +447,7 @@ const allRows = computed(() => {
   return rows
 })
 
-const displayDefault = ['writer', 'penciller', 'publisher', 'genre', 'tags', 'links']
+const displayDefault = ['writer', 'penciller', 'publisher', 'genres', 'tags', 'links']
 const tableRows = computed(() =>
   Object.entries(allRows.value)
     .filter(([key]) => displayDefault.includes(key))
