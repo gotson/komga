@@ -42,7 +42,7 @@
     <template v-else-if="book">
       <BookView
         :book="book"
-        :one-shot-attributes="series?.metadata"
+        :one-shot-attributes="book.oneshot ? series?.metadata : undefined"
       />
     </template>
   </v-container>
