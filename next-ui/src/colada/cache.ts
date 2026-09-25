@@ -19,27 +19,37 @@ export function createInfinitePageSchema<T extends v.GenericSchema>(itemSchema: 
 const StandardPageSchema = createStandardPageSchema(HasIdSchema)
 const InfinitePageSchema = createInfinitePageSchema(StandardPageSchema)
 
-function expireCachePredicate(
-  targetId: string,
-): (entry: UseQueryEntry<unknown, unknown, unknown>) => boolean {
-  return (entry) => {
+/**
+ * Generate a predicate function that can be passed to `queryCache.invalidateQueries`.
+ * @param target the value to match against the {@link key}
+ * @param key the key in the data object to match against {@link target}. Defaults to `id`.
+ */
+export const expireCachePredicate =
+  (
+    target: string,
+    key: string = 'id',
+  ): ((entry: UseQueryEntry<unknown, unknown, unknown>) => boolean) =>
+  (entry) => {
     const data = entry.state.value.data
 
-    if (v.is(HasIdSchema, data)) return data.id === targetId
-    if (v.is(StandardPageSchema, data)) return data.content.some((item) => item.id === targetId)
+    if (v.is(HasIdSchema, data)) return data[key] === target
+    if (v.is(StandardPageSchema, data)) return data.content.some((item) => item[key] === target)
     if (v.is(InfinitePageSchema, data)) {
-      return data.pages.some((page) => page.content.some((item) => item.id === targetId))
+      return data.pages.some((page) => page.content.some((item) => item[key] === target))
     }
     return false
   }
-}
 
-export function entityChanged(key: EntryKey, targetId: string) {
+export function entityChanged(
+  key: EntryKey,
+  targetId: string,
+  predicate: ReturnType<typeof expireCachePredicate> = expireCachePredicate(targetId),
+) {
   const queryCache = useQueryCache()
 
   void queryCache.invalidateQueries({
     key: key,
-    predicate: expireCachePredicate(targetId),
+    predicate: predicate,
   })
 }
 

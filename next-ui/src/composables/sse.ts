@@ -3,7 +3,7 @@ import { ApiBaseUrl } from '@/api/base'
 import { logger } from '@/services/logtape'
 import { useAppStore } from '@/stores/app'
 import * as v from 'valibot'
-import { entitiesChanged, entityChanged } from '@/colada/cache'
+import { entitiesChanged, entityChanged, expireCachePredicate } from '@/colada/cache'
 import { QUERY_KEYS_BOOKS } from '@/colada/books'
 import { QUERY_KEYS_SERIES } from '@/colada/series'
 import { QUERY_KEYS_COLLECTIONS } from '@/colada/collections'
@@ -351,6 +351,12 @@ export const useSSE = createGlobalState(() => {
         void entitiesChanged(QUERY_KEYS_SERIES.root)
         break
       case 'SeriesChanged':
+        void entityChanged(
+          QUERY_KEYS_BOOKS.root,
+          event.data.seriesId,
+          expireCachePredicate(event.data.seriesId, 'seriesId'),
+        )
+      // fallthrough
       case 'SeriesDeleted':
         void entityChanged(QUERY_KEYS_SERIES.root, event.data.seriesId)
         break
