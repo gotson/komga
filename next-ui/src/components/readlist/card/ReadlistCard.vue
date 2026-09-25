@@ -35,7 +35,7 @@ import type { ReadListDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { useBooks } from '@/composables/book/useBooks'
 import { BrowsingContextKey, formatBrowsingContextAsQueryParam } from '@/functions/browsing-context'
-import type { RouteLocationRaw } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -74,14 +74,11 @@ other {# books}
 ])
 
 const context = inject(BrowsingContextKey)
-const linkTo = computed(
-  () =>
-    ({
-      name: '/readlist/[id]',
-      params: { id: readList.id },
-      query: formatBrowsingContextAsQueryParam(toValue(context)),
-    }) satisfies RouteLocationRaw,
-)
+const linkTo = computed<RouteLocationObject>(() => ({
+  name: '/readlist/[id]',
+  params: { id: readList.id },
+  query: formatBrowsingContextAsQueryParam(toValue(context)),
+}))
 
 const { isAdmin, hasRole } = useCurrentUser()
 const quickActionIcon = computed(() => (isAdmin.value ? 'i-mdi:pencil' : undefined))

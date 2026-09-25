@@ -83,13 +83,13 @@
 </template>
 
 <script setup lang="ts">
-import type { RouteLocationRaw } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 export type Container = {
   text: string
   subTitle?: string
   imageUrl?: string
-  link?: RouteLocationRaw
+  link?: RouteLocationObject
 }
 
 const { containers } = defineProps<{

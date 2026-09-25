@@ -31,11 +31,11 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     routes: [
-      { title: 'Recommended', icon: 'i-mdi:star', to: '' },
-      { title: 'Series', icon: 'i-mdi:bookshelf', to: '' },
-      { title: 'Books', icon: 'i-mdi:book-multiple', to: '' },
-      { title: 'Collections', icon: 'i-mdi:layers-triple', to: '' },
-      { title: 'Read Lists', icon: 'i-mdi:bookmark-multiple', to: '' },
+      { title: 'Recommended', icon: 'i-mdi:star', to: {} },
+      { title: 'Series', icon: 'i-mdi:bookshelf', to: {} },
+      { title: 'Books', icon: 'i-mdi:book-multiple', to: {} },
+      { title: 'Collections', icon: 'i-mdi:layers-triple', to: {} },
+      { title: 'Read Lists', icon: 'i-mdi:bookmark-multiple', to: {} },
     ],
   },
   play: async ({ canvasElement }) => {
@@ -55,10 +55,10 @@ export const Default: Story = {
 export const NoCollection: Story = {
   args: {
     routes: [
-      { title: 'Recommended', icon: 'i-mdi:star', to: '' },
-      { title: 'Series', icon: 'i-mdi:bookshelf', to: '' },
-      { title: 'Books', icon: 'i-mdi:book-multiple', to: '' },
-      { title: 'Read Lists', icon: 'i-mdi:bookmark-multiple', to: '' },
+      { title: 'Recommended', icon: 'i-mdi:star', to: {} },
+      { title: 'Series', icon: 'i-mdi:bookshelf', to: {} },
+      { title: 'Books', icon: 'i-mdi:book-multiple', to: {} },
+      { title: 'Read Lists', icon: 'i-mdi:bookmark-multiple', to: {} },
     ],
   },
   play: async ({ canvasElement }) => {
@@ -78,10 +78,10 @@ export const NoCollection: Story = {
 export const NoReadList: Story = {
   args: {
     routes: [
-      { title: 'Recommended', icon: 'i-mdi:star', to: '' },
-      { title: 'Series', icon: 'i-mdi:bookshelf', to: '' },
-      { title: 'Books', icon: 'i-mdi:book-multiple', to: '' },
-      { title: 'Collections', icon: 'i-mdi:layers-triple', to: '' },
+      { title: 'Recommended', icon: 'i-mdi:star', to: {} },
+      { title: 'Series', icon: 'i-mdi:bookshelf', to: {} },
+      { title: 'Books', icon: 'i-mdi:book-multiple', to: {} },
+      { title: 'Collections', icon: 'i-mdi:layers-triple', to: {} },
     ],
   },
   play: async ({ canvasElement }) => {
@@ -101,9 +101,9 @@ export const NoReadList: Story = {
 export const NoCollectionNorReadList: Story = {
   args: {
     routes: [
-      { title: 'Recommended', icon: 'i-mdi:star', to: '' },
-      { title: 'Series', icon: 'i-mdi:bookshelf', to: '' },
-      { title: 'Books', icon: 'i-mdi:book-multiple', to: '' },
+      { title: 'Recommended', icon: 'i-mdi:star', to: {} },
+      { title: 'Series', icon: 'i-mdi:bookshelf', to: {} },
+      { title: 'Books', icon: 'i-mdi:book-multiple', to: {} },
     ],
   },
   play: async ({ canvasElement }) => {

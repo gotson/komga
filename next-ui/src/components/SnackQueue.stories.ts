@@ -117,7 +117,7 @@ export const ActionRouter: Story = {
         message: 'Router',
         action: {
           label: 'open link',
-          to: '/route',
+          to: {},
         },
         timer: false,
         timeout: -1,

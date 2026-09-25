@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import type { MessageDescriptor } from 'vue-intl'
 import * as v from 'valibot'
-import type { RouteLocationRaw } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 const MessageDescriptorDiscriminator = v.looseObject({
   defaultMessage: v.string(),
@@ -25,7 +25,7 @@ type Message =
   | string
 
 type MessageActionRouter = {
-  to: RouteLocationRaw
+  to: RouteLocationObject
   label: string | MessageDescriptor
 }
 

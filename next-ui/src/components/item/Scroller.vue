@@ -73,8 +73,8 @@
 import { VSlideGroup } from 'vuetify/components'
 import { usePrimaryInput } from '@/composables/device'
 import { type SelectionType, useSelectionStore } from '@/stores/selection'
-import type { RouteLocationRaw } from 'vue-router'
 import { useRtl } from 'vuetify/framework'
+import type { RouteLocationObject } from '@/types/route'
 
 const { isTouchPrimary } = usePrimaryInput()
 const { isRtl } = useRtl()
@@ -87,7 +87,7 @@ const showArrows = computed(
 defineProps<{
   items?: SelectionType[]
   title?: string
-  titleTo?: RouteLocationRaw
+  titleTo?: RouteLocationObject
   hasNextPage: boolean
 }>()
 

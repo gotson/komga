@@ -39,7 +39,7 @@ import { bookReaderUrl } from '@/api/links'
 import type { BookDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { BrowsingContextKey, formatBrowsingContextAsQueryParam } from '@/functions/browsing-context'
-import type { RouteLocationRaw } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -133,14 +133,11 @@ other {# pages}
 })
 
 const context = inject(BrowsingContextKey)
-const linkTo = computed(
-  () =>
-    ({
-      name: '/book/[id]',
-      params: { id: book.value.id },
-      query: formatBrowsingContextAsQueryParam(toValue(context)),
-    }) satisfies RouteLocationRaw,
-)
+const linkTo = computed<RouteLocationObject>(() => ({
+  name: '/book/[id]',
+  params: { id: book.value.id },
+  query: formatBrowsingContextAsQueryParam(toValue(context)),
+}))
 
 const { isAdmin } = useCurrentUser()
 const { canRead, isEpubReader } = useBook(book)

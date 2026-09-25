@@ -44,7 +44,7 @@ import { overviewSectionMessages } from '@/types/OverviewSection'
 import { useAppStore } from '@/stores/app'
 import { useDisplay } from 'vuetify'
 import type { ClientSettingUserOverviewSection } from '@/types/ClientSettingsUser'
-import type { RouteLocationRaw } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 const props = defineProps<{
   section: ClientSettingUserOverviewSection
@@ -80,7 +80,7 @@ defineExpose({
   isPending,
 })
 
-const routeTo = computed<RouteLocationRaw>(() => ({
+const routeTo = computed<RouteLocationObject>(() => ({
   name: '/libraries/[viewId]/overview/[section]',
   params: { viewId: props.libraryViewId, section: props.section.section },
 }))

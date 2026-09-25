@@ -89,11 +89,11 @@ import {
   formatBrowsingContextAsQueryParam,
   type SingleBrowsingContext,
 } from '@/functions/browsing-context'
-import type { RouteLocationRaw } from 'vue-router'
 import { useIntl } from 'vue-intl'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useRtl } from 'vuetify/framework'
 import { useDisplay } from 'vuetify'
+import type { RouteLocationObject } from '@/types/route'
 
 const intl = useIntl()
 const { isRtl } = useRtl()
@@ -101,7 +101,7 @@ const display = useDisplay()
 
 type ContextItem = {
   title: string
-  to: RouteLocationRaw
+  to: RouteLocationObject
   type: SingleBrowsingContext['type']
   id: string
 }

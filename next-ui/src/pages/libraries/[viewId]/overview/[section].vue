@@ -51,7 +51,7 @@ import { useOverviewSection } from '@/composables/section'
 import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useInfiniteQuery } from '@pinia/colada'
 import type { BookDto, PageBookDto, PageSeriesDto, SeriesDto } from '@/generated/openapi'
-import type { RouteLocationRaw } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 definePage({
   beforeEnter: (to) => {
@@ -81,7 +81,7 @@ const items = computed(() => {
   return pages?.flatMap((it) => (it?.content as (BookDto | SeriesDto)[]) ?? []) ?? []
 })
 
-const parentRoute = computed<RouteLocationRaw>(() => ({
+const parentRoute = computed<RouteLocationObject>(() => ({
   name: '/libraries/[viewId]/overview',
   params: { viewId: libraryViewId },
 }))

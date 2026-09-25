@@ -85,16 +85,16 @@
 </template>
 
 <script setup lang="ts">
-import type { Route } from '@/types/route'
 import type { LibraryViewId } from '@/types/libraries'
 import { useGetLibrariesByViewId, useUserLibraries } from '@/composables/libraries'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify/framework'
-import type { RouteLocationRaw } from 'vue-router'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import type { LibrarySubRoute } from '@/types/librarySubRoute'
+import type { RouteLocationObject } from '@/types/route'
 
 const props = defineProps<{
-  routes: Route[]
+  routes: LibrarySubRoute[]
   libraryViewId: LibraryViewId
 }>()
 
@@ -109,7 +109,7 @@ const { isSingle, library: librarySingle } = useGetLibrariesByViewId(props.libra
 type LibRouteItem = {
   title: string
   value: LibraryViewId
-  to: RouteLocationRaw
+  to: RouteLocationObject
 }
 const libTypes = computed(
   () =>

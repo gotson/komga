@@ -1,4 +1,4 @@
-import type { RouteLocationRaw } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 export type ItemCardProps = {
   /**
@@ -43,7 +43,7 @@ export type ItemCardTitle = {
   /**
    * Link.
    */
-  routerLink?: RouteLocationRaw
+  routerLink?: RouteLocationObject
 }
 
 export type ItemCardLine = {
@@ -66,5 +66,5 @@ export type ItemCardLine = {
   /**
    * Link.
    */
-  routerLink?: RouteLocationRaw
+  routerLink?: RouteLocationObject
 }

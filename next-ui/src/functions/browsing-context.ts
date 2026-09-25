@@ -1,6 +1,7 @@
 import * as v from 'valibot'
 import type { MaybeRefOrGetter } from 'vue'
-import type { LocationQueryRaw, RouteLocationRaw } from 'vue-router'
+import type { LocationQueryRaw } from 'vue-router'
+import type { RouteLocationObject } from '@/types/route'
 
 export const ContextQueryParam = 'ctx'
 const ContextSeparator = '~'
@@ -121,7 +122,7 @@ export function formatBrowsingContextAsQueryParam(context?: BrowsingContext): Lo
 export function browsingContextToRouteLocation(
   context?: SingleBrowsingContext,
   query?: LocationQueryRaw,
-): RouteLocationRaw | undefined {
+): RouteLocationObject | undefined {
   if (!context) return undefined
   switch (context.type) {
     case 'series':

@@ -15,7 +15,8 @@ import { collectionsListQuery } from '@/colada/collections'
 import { PageRequest } from '@/types/PageRequest'
 import { readListsListQuery } from '@/colada/readlists'
 import { useIntl } from 'vue-intl'
-import type { Route } from '@/types/route'
+
+import type { LibrarySubRoute } from '@/types/librarySubRoute'
 
 const intl = useIntl()
 
@@ -39,7 +40,7 @@ const { data: readlists } = useQuery(() => ({
   enabled: libraries.value !== undefined,
 }))
 
-const routesBase: Route[] = [
+const routesBase: LibrarySubRoute[] = [
   {
     title: intl.formatMessage({
       description: 'Library navigation: overview',
@@ -70,7 +71,7 @@ const routesBase: Route[] = [
 ]
 
 const routes = computed(() => {
-  const extra: Route[] = []
+  const extra: LibrarySubRoute[] = []
   if ((collections.value?.totalElements ?? 0) > 0)
     extra.push({
       title: intl.formatMessage({
@@ -91,7 +92,7 @@ const routes = computed(() => {
       icon: 'i-mdi:bookmark-multiple',
       to: { name: '/libraries/[viewId]/readlists', params: { viewId: props.libraryViewId } },
     })
-  return [...routesBase, ...extra] as Route[]
+  return [...routesBase, ...extra] as LibrarySubRoute[]
 })
 </script>
 
