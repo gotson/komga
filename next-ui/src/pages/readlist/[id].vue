@@ -109,7 +109,10 @@
     fluid
     class="pa-0 pa-sm-4"
   >
-    <div v-if="isPending">
+    <div
+      v-if="isPending"
+      class="pa-4 pa-sm-0"
+    >
       <v-row>
         <v-col cols="3">
           <v-skeleton-loader type="image" />
