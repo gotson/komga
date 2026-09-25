@@ -3,6 +3,10 @@
     <template #prepend>
       <NavigationBreadcrumbs />
     </template>
+
+    <template #append>
+      <CollectionNavigation :series-id="seriesId" />
+    </template>
   </v-app-bar>
 
   <TempDrawer v-model="filterDrawer">

@@ -50,6 +50,7 @@ declare module 'vue' {
     CollectionFormEdit: typeof import('./components/collection/form/Edit.vue')['default']
     CollectionFormGeneral: typeof import('./components/collection/form/General.vue')['default']
     CollectionMenuSheet: typeof import('./components/collection/menu/Sheet.vue')['default']
+    CollectionNavigation: typeof import('./components/collection/Navigation.vue')['default']
     CollectionView: typeof import('./components/collection/view/CollectionView.vue')['default']
     CollectionViewActions: typeof import('./components/collection/view/Actions.vue')['default']
     ComboboxContributor: typeof import('./components/combobox/Contributor.vue')['default']

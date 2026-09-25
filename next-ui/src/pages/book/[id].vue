@@ -5,7 +5,12 @@
     </template>
 
     <template #append>
+      <!-- The relevant navigation will be displayed depending on browsing context -->
       <BookNavigation :book-id="bookId" />
+      <CollectionNavigation
+        v-if="book?.oneshot"
+        :series-id="book.seriesId"
+      />
     </template>
   </v-app-bar>
 
