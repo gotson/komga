@@ -45,3 +45,17 @@ export function resolveEntityKind(item: unknown): EntityKind | undefined {
   if (isReadList(item)) return 'readlist'
   return undefined
 }
+
+export type EntityId<K extends EntityKind = Exclude<EntityKind, 'book_oneshot'>> = {
+  id: string
+  kind: K
+}
+
+const EntityIdDiscriminator = v.object({
+  id: v.string(),
+  kind: v.string(),
+})
+
+export function isEntityId(item: unknown): item is EntityId {
+  return v.is(EntityIdDiscriminator, item)
+}

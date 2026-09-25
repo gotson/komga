@@ -265,7 +265,6 @@ other {# books}
 
 <script setup lang="ts">
 import { collectionPosterUrl, seriesPosterUrl } from '@/api/images'
-
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
 import SimpleDataTable, { type TableRow } from '@/components/SimpleDataTable.vue'
@@ -279,7 +278,7 @@ import { storeToRefs } from 'pinia'
 import { useDialogsStore } from '@/stores/dialogs'
 import type { SeriesDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
-import { getFirstBookInParentOptions } from '@/functions/book-container'
+import { getBooksInParentOptions } from '@/functions/book-container'
 import { useQuery } from '@pinia/colada'
 import { bookListQuery } from '@/colada/books'
 import { seriesCollectionsQuery } from '@/colada/collections'
@@ -290,6 +289,7 @@ import {
   filterBrowsingContext,
   formatBrowsingContextAsQueryParam,
 } from '@/functions/browsing-context'
+import { PageRequest } from '@/types/PageRequest'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -302,10 +302,11 @@ const props = defineProps<{
 
 const { unreadCount, isRead } = useSeries(() => props.series)
 
-const bookOnDeckOptions = computed(() => getFirstBookInParentOptions(props.series, true))
+const bookOnDeckOptions = computed(() => getBooksInParentOptions(props.series, true))
 const { data: booksOnDeck } = useQuery(() =>
   bookListQuery({
-    ...bookOnDeckOptions.value,
+    search: bookOnDeckOptions.value.search,
+    pageRequest: new PageRequest(0, 1, bookOnDeckOptions.value.sort),
   }),
 )
 const bookOnDeck = computed(() => booksOnDeck.value?.content?.[0])

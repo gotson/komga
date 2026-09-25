@@ -7,9 +7,9 @@ import { getFirstBookInParent } from '@/functions/book-container'
 
 /**
  * Provide functions to retrieve books from either a series or a read list
- * @param parent a SeriesDto, ReadListDto, or seriesId as string
+ * @param parent a SeriesDto, ReadListDto
  */
-export function useBooks(parent: MaybeRefOrGetter<SeriesDto | ReadListDto | string>) {
+export function useBooks(parent: MaybeRefOrGetter<SeriesDto | ReadListDto>) {
   const messagesStore = useMessagesStore()
 
   async function readFirstBook(incognito: boolean = false) {

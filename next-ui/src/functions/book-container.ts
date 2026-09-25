@@ -1,4 +1,4 @@
-import { isReadList, isSeries } from '@/functions/entity'
+import { type EntityId, isEntityId, isReadList, isSeries } from '@/functions/entity'
 import { PageRequest, type Sort } from '@/types/PageRequest'
 import {
   type BookDto,
@@ -12,17 +12,18 @@ import { bookListQuery } from '@/colada/books'
 /**
  * Returns the condition and page request necessary to call the book list API.
  *
- * @param parent parent series or readlist. If a string is passed, it's considered to be a series.
+ * @param parent parent series or read list.
  * @param unreadOnly to only fetch unread books.
  */
-export function getFirstBookInParentOptions(
-  parent: MaybeRefOrGetter<SeriesDto | ReadListDto | string>,
+export function getBooksInParentOptions(
+  parent: MaybeRefOrGetter<SeriesDto | ReadListDto | EntityId<'series'>>,
   unreadOnly: boolean,
-): { search: BookSearch; pageRequest: PageRequest } {
+): { search: BookSearch; sort: Sort[] } {
   const parentValue = toValue(parent)
-  const seriesType = isSeries(parentValue) || typeof parentValue === 'string'
+  const seriesType =
+    isSeries(parentValue) || (isEntityId(parentValue) && parentValue.kind === 'series')
   const readListType = isReadList(parentValue)
-  const parentId = typeof parentValue === 'string' ? parentValue : parentValue.id
+  const parentId = parentValue.id
 
   const sort: Sort[] = []
   if (seriesType) sort.push({ key: 'metadata.numberSort', order: 'asc' })
@@ -70,25 +71,25 @@ export function getFirstBookInParentOptions(
     search: {
       condition: conditions,
     },
-    pageRequest: new PageRequest(0, 1, sort),
+    sort: sort,
   }
 }
 
 /**
  * Returns the first book in the parent.
  *
- * @param parent parent series or readlist. If a string is passed, it's considered to be a series.
+ * @param parent parent series or read list. If a string is passed, it's considered to be a series.
  * @param unreadOnly to only fetch unread books.
  */
 export async function getFirstBookInParent(
-  parent: MaybeRefOrGetter<SeriesDto | ReadListDto | string>,
+  parent: MaybeRefOrGetter<SeriesDto | ReadListDto>,
   unreadOnly: boolean,
 ): Promise<BookDto | undefined> {
-  const options = getFirstBookInParentOptions(toValue(parent), unreadOnly)
+  const options = getBooksInParentOptions(toValue(parent), unreadOnly)
 
   const query = bookListQuery({
     search: options.search,
-    pageRequest: options.pageRequest,
+    pageRequest: new PageRequest(0, 1, options.sort),
   })
   const queryCache = useQueryCache()
   const cacheEntry = queryCache.ensure(query)
