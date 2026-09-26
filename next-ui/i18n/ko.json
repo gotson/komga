@@ -128,6 +128,9 @@
   "1qIfds": {
     "defaultMessage": "고정됨"
   },
+  "1z+Z+q": {
+    "defaultMessage": "공유 라벨"
+  },
   "2Bh8F2": {
     "defaultMessage": "최신"
   },
@@ -350,6 +353,9 @@
   "9XDmYO": {
     "defaultMessage": "사용자 삭제"
   },
+  "9aVhJC": {
+    "defaultMessage": "CBZ"
+  },
   "9dNd68": {
     "defaultMessage": "사용자 업로드"
   },
@@ -535,6 +541,9 @@
   },
   "EbhcQd": {
     "defaultMessage": "세부"
+  },
+  "EnHAAa": {
+    "defaultMessage": "PDF"
   },
   "Epp7Fi": {
     "defaultMessage": "태그"
@@ -988,6 +997,9 @@
   },
   "UoaxO7": {
     "defaultMessage": "책이 업그레이드됩니다"
+  },
+  "UsTdV2": {
+    "defaultMessage": "공유 라벨"
   },
   "Usohru": {
     "defaultMessage": "찾아보기"
@@ -1769,6 +1781,9 @@
   "iNBto3": {
     "defaultMessage": "처리하지 못한 요청을 Kobo Store로 프록시"
   },
+  "iQKrku": {
+    "defaultMessage": "EPUB"
+  },
   "iVYrha": {
     "defaultMessage": "일반"
   },
@@ -1885,6 +1900,9 @@
   },
   "laWvMU": {
     "defaultMessage": "확인"
+  },
+  "lkoTf7": {
+    "defaultMessage": "CBR"
   },
   "lt7Tru": {
     "defaultMessage": "시리즈"
