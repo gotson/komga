@@ -24,7 +24,11 @@ export const useAppStore = defineStore(
     const presentationMode = ref<Record<string, PresentationMode>>({})
     const getPresentationMode = (key: string, defaultValue: PresentationMode) => {
       return computed({
-        get: () => presentationMode.value[key] ?? (presentationMode.value[key] = defaultValue),
+        get: () => {
+          if (!presentationMode.value[key])
+            presentationMode.value[key] = structuredClone(defaultValue)
+          return presentationMode.value[key]
+        },
         set: (value) => {
           presentationMode.value[key] = value
         },
@@ -38,7 +42,10 @@ export const useAppStore = defineStore(
     const sortActive = ref<Record<string, Sort[]>>({})
     const getSortActive = (key: string, defaultValue: Sort[]) => {
       return computed({
-        get: () => sortActive.value[key] ?? (sortActive.value[key] = defaultValue),
+        get: () => {
+          if (!sortActive.value[key]) sortActive.value[key] = structuredClone(defaultValue)
+          return sortActive.value[key]
+        },
         set: (value) => {
           sortActive.value[key] = value
         },
