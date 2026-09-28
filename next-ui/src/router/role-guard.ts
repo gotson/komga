@@ -12,10 +12,14 @@ export function useRoleGuard(router: Router) {
     if (to.meta.requiresRole) {
       const queryCache = useQueryCache()
       const entry = queryCache.ensure(currentUserQuery)
-      const state = await queryCache.refresh(entry)
+      try {
+        const state = await queryCache.refresh(entry)
 
-      if (!state.data?.roles?.includes(to.meta.requiresRole)) {
-        return { name: '/' }
+        if (!state.data?.roles?.includes(to.meta.requiresRole)) {
+          return { name: '/' }
+        }
+      } catch (ignored) {
+        return { name: '/error' }
       }
     }
   })

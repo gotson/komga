@@ -93,7 +93,11 @@ export async function getFirstBookInParent(
   })
   const queryCache = useQueryCache()
   const cacheEntry = queryCache.ensure(query)
-  const state = await queryCache.refresh(cacheEntry)
+  try {
+    const state = await queryCache.refresh(cacheEntry)
 
-  return state.data?.content?.at(0)
+    return state.data?.content?.at(0)
+  } catch (ignored) {
+    return undefined
+  }
 }

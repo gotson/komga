@@ -15,21 +15,25 @@ export function useOneshotGuard(router: Router) {
       // check cache
       const queryCache = useQueryCache()
       const cacheEntry = queryCache.ensure(seriesDetailQuery({ seriesId: to.params.id }))
-      const state = await queryCache.refresh(cacheEntry)
-      const series = state.data
+      try {
+        const state = await queryCache.refresh(cacheEntry)
+        const series = state.data
 
-      if (series?.oneshot) {
-        logger.debug('navigation guard: series is oneshot, fetch book for redirection')
-        const book = await getFirstBookInParent(series, false)
+        if (series?.oneshot) {
+          logger.debug('navigation guard: series is oneshot, fetch book for redirection')
+          const book = await getFirstBookInParent(series, false)
 
-        if (book) {
-          logger.debug('navigation guard: book found, redirect to book page')
-          return {
-            name: '/book/[id]',
-            params: { id: book.id },
-            query: to.query,
+          if (book) {
+            logger.debug('navigation guard: book found, redirect to book page')
+            return {
+              name: '/book/[id]',
+              params: { id: book.id },
+              query: to.query,
+            }
           }
         }
+      } catch (ignored) {
+        return { name: '/error' }
       }
     }
   })

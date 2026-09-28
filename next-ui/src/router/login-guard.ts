@@ -12,17 +12,21 @@ export function useLoginGuard(router: Router) {
     if (!to.meta.noAuth) {
       const queryCache = useQueryCache()
       const entry = queryCache.ensure(currentUserQuery)
-      const state = await queryCache.refresh(entry)
+      try {
+        const state = await queryCache.refresh(entry)
 
-      const isAuthenticated = !!state.data && !state.error
+        const isAuthenticated = !!state.data
 
-      if (!isAuthenticated) {
-        const query = Object.assign(
-          {},
-          to.query,
-          to.fullPath !== '/' ? { redirect: to.fullPath } : {},
-        )
-        return { name: '/startup', query: query }
+        if (!isAuthenticated) {
+          const query = Object.assign(
+            {},
+            to.query,
+            to.fullPath !== '/' ? { redirect: to.fullPath } : {},
+          )
+          return { name: '/startup', query: query }
+        }
+      } catch (ignored) {
+        return { name: '/error' }
       }
     }
   })

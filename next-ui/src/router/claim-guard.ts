@@ -12,12 +12,14 @@ export function useClaimGuard(router: Router) {
       const queryCache = useQueryCache()
 
       const cacheEntry = queryCache.ensure(claimStatusQuery)
-      const state = await queryCache.refresh(cacheEntry)
+      try {
+        const state = await queryCache.refresh(cacheEntry)
 
-      if (state.error) return { name: '/error' }
-
-      if (to.name === '/login' && !state.data?.isClaimed) return { name: '/claim' }
-      if (to.name === '/claim' && state.data?.isClaimed) return { name: '/login' }
+        if (to.name === '/login' && !state.data?.isClaimed) return { name: '/claim' }
+        if (to.name === '/claim' && state.data?.isClaimed) return { name: '/login' }
+      } catch (ignored) {
+        return { name: '/error' }
+      }
     }
   })
 }
