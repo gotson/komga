@@ -1,3 +1,7 @@
+import type { Sort } from '@/types/PageRequest'
+import * as v from 'valibot'
+import type { SortOption } from '@/types/sort'
+
 /**
  * Creates a compare function for Array.prototype.sort()
  * that orders items based on a predefined array of keys.
@@ -22,4 +26,44 @@ export function createOrderCompareFn<K, T>(
 
     return indexA - indexB
   }
+}
+
+const SortItemSchema = v.pipe(
+  v.string(),
+  // Regex ensures it's either "key", "key,asc", or "key,desc"
+  v.regex(/^[a-zA-Z0-9._]+(,(asc|desc))?$/i, 'Invalid sort format'),
+  v.transform((input): Sort => {
+    // The regex guarantees the split will yield a valid key
+    const [key = '', order] = input.split(',')
+
+    return {
+      key,
+      order: order === 'desc' ? 'desc' : 'asc',
+    }
+  }),
+)
+
+export const MultiSortSchema = v.optional(v.array(SortItemSchema), [])
+
+/**
+ * Converts a Sort object to a string format (e.g., "title,asc")
+ */
+export function stringifySort(sort: Sort): string {
+  // Defaults to 'asc' if order is omitted
+  return `${sort.key},${sort.order || 'asc'}`
+}
+
+export function sortOptionToSorts(option: SortOption): Sort[] {
+  const sorts: Sort[] = [
+    {
+      key: option.key,
+      order: option.initialOrder,
+    },
+  ]
+  if (option.invertible)
+    sorts.push({
+      key: option.key,
+      order: option.initialOrder === 'asc' ? 'desc' : 'asc',
+    })
+  return sorts
 }

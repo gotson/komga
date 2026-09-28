@@ -197,6 +197,7 @@ declare module 'vue' {
     SimpleDataTable: typeof import('./components/SimpleDataTable.vue')['default']
     SnackQueue: typeof import('./components/SnackQueue.vue')['default']
     SortList: typeof import('./components/sort/List.vue')['default']
+    SortRestore: typeof import('./components/sort/Restore.vue')['default']
     SortTriState: typeof import('./components/sort/TriState.vue')['default']
     TaskIndicator: typeof import('./components/TaskIndicator.vue')['default']
     TempDrawer: typeof import('./components/TempDrawer.vue')['default']

@@ -9,15 +9,18 @@ import { syncRef } from '@vueuse/core'
  * @param queryName the query parameter name
  * @param schema valibot schema to validate against
  * @param updateQueryFn custom function to update the query param. The default function compares the JSON.stringify'ed value against the schema's defaults.
+ * @param defaultValue default value to use if the query param cannot be parsed. The default is to use `v.getDefaults` on the {@link schema}
  */
 export function useRouteQuerySchema<T extends v.GenericSchema>(
   queryName: string,
   schema: T,
   updateQueryFn?: (data: v.InferOutput<T>) => string | undefined,
+  defaultValue?: v.InferOutput<T>,
 ) {
   const queryString = useRouteQuery(queryName, '{}')
 
-  const defaults = v.getDefaults(schema)
+  const defaults =
+    defaultValue !== undefined ? structuredClone(defaultValue) : v.getDefaults(schema)
 
   function getInitialValue(stringValue: string) {
     try {

@@ -101,7 +101,14 @@
 
       <v-divider />
 
-      <v-list-subheader>{{ $formatMessage(commonMessages.filterPanelSort) }}</v-list-subheader>
+      <v-list-subheader>
+        <span>{{ $formatMessage(commonMessages.filterPanelSort) }}</span>
+        <SortRestore
+          v-if="!sortIsDefault"
+          class="position-absolute right-0 me-6"
+          @restore="sortRestore()"
+        />
+      </v-list-subheader>
 
       <SortList
         v-model="sortActive"
@@ -167,6 +174,7 @@
 
           <FilterButton
             :count="filterCount"
+            :dot="!sortIsDefault"
             @click="filterDrawer = true"
           />
         </div>
@@ -209,7 +217,7 @@ import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { filterKeys } from '@/types/filter'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
-import { PageRequest } from '@/types/PageRequest'
+import { PageRequest, type Sort } from '@/types/PageRequest'
 import { useDisplay } from 'vuetify/framework'
 import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
@@ -237,6 +245,7 @@ import type { SearchConditionBook } from '@/generated/openapi'
 import { seriesDetailQuery } from '@/colada/series'
 import { BrowsingContextKey, pushBrowsingContext } from '@/functions/browsing-context'
 import { useBrowsingContext } from '@/composables/browsingContext'
+import { useSort } from '@/composables/sort'
 
 const route = useRoute('/series/[id]')
 const seriesId = computed(() => route.params.id)
@@ -277,12 +286,15 @@ function clearFilters() {
 const filterCount = computed(() => filterContributorsCount.value + filtersCountAll.value)
 
 const { convertSortOptionDescriptor } = useIntlFormatter()
-const sortActive = appStore.getSortActive(viewName.value, [
-  { key: 'metadata.numberSort', order: 'asc' },
-])
+const sortDefault: Sort[] = [{ key: 'metadata.numberSort', order: 'asc' }]
 const sortOptions = sortBooks
   .filter((it) => it.key !== 'series')
   .map((it) => convertSortOptionDescriptor(it))
+const {
+  sortActive,
+  isDefault: sortIsDefault,
+  restore: sortRestore,
+} = useSort(sortDefault, sortOptions, false)
 
 const {
   filter: filterContributors,

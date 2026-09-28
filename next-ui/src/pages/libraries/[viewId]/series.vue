@@ -25,6 +25,7 @@
 
         <FilterButton
           :count="filterCount"
+          :dot="!sortIsDefault"
           @click="filterDrawer = true"
         />
       </div>
@@ -175,7 +176,14 @@
 
       <v-divider />
 
-      <v-list-subheader>{{ $formatMessage(commonMessages.filterPanelSort) }}</v-list-subheader>
+      <v-list-subheader>
+        <span>{{ $formatMessage(commonMessages.filterPanelSort) }}</span>
+        <SortRestore
+          v-if="!sortIsDefault"
+          class="position-absolute right-0 me-6"
+          @restore="sortRestore()"
+        />
+      </v-list-subheader>
 
       <SortList
         v-model="sortActive"
@@ -228,7 +236,7 @@
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { seriesListQuery, seriesListQueryInfinite } from '@/colada/series'
 
-import { PageRequest } from '@/types/PageRequest'
+import { PageRequest, type Sort } from '@/types/PageRequest'
 import { useGetLibrariesByViewId } from '@/composables/libraries'
 import { useAppStore } from '@/stores/app'
 import { usePagination } from '@/composables/pagination'
@@ -257,6 +265,7 @@ import { contributorsRolesMessages } from '@/types/referential'
 import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionSeries } from '@/generated/openapi'
 import { BrowsingContextKey } from '@/functions/browsing-context'
+import { useSort } from '@/composables/sort'
 
 const route = useRoute('/libraries/[viewId]/series')
 const libraryViewId = route.params.viewId
@@ -312,10 +321,13 @@ const {
 ])
 
 const { convertSortOptionDescriptor } = useIntlFormatter()
-const sortActive = appStore.getSortActive(viewName.value, [
-  { key: 'metadata.titleSort', order: 'asc' },
-])
+const sortDefault: Sort[] = [{ key: 'metadata.titleSort', order: 'asc' }]
 const sortOptions = sortSeries.map((it) => convertSortOptionDescriptor(it))
+const {
+  sortActive,
+  isDefault: sortIsDefault,
+  restore: sortRestore,
+} = useSort(sortDefault, sortOptions, false)
 
 const conds = computed(() => ({
   allOf: [
