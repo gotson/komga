@@ -190,7 +190,7 @@ export const sortBooks: SortOptionDescriptor[] = [
       id: 'WVblsI',
     }),
     key: 'pagesCount',
-    initialOrder: 'asc',
-    invertible: false,
+    initialOrder: 'desc',
+    invertible: true,
   },
 ]
