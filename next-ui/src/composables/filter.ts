@@ -21,6 +21,7 @@ import { watchImmediate } from '@vueuse/core'
 import { createOrderCompareFn } from '@/functions/sort'
 import { clearFilter, countFilter } from '@/functions/filter'
 import type { UnwrapRef } from 'vue'
+import { deepEqual } from 'fast-equals'
 
 export const QueryParamContributors = 'contributors'
 
@@ -30,7 +31,7 @@ export function useFilterContributors() {
     const defaults = v.getDefaults(SchemaFilterContributors)
     const notDefault: v.InferOutput<typeof SchemaFilterContributorsRecord> = {}
     Object.entries(data).forEach(([role, value]) => {
-      if (JSON.stringify(value) !== JSON.stringify(defaults)) notDefault[role] = value
+      if (!deepEqual(value, defaults)) notDefault[role] = value
     })
     if (Object.keys(notDefault).length > 0) return JSON.stringify(notDefault)
     return undefined

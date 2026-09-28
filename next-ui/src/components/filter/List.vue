@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import type { IncludeExclude } from '@/components/filter/TriState.vue'
 import type { AnyAll } from '@/types/filter'
+import { deepEqual } from 'fast-equals'
 
 export type ItemType<T> = {
   title: string
@@ -66,7 +67,7 @@ function internalUpdate(item: ItemType<unknown>, newVal: IncludeExclude, oldVal:
   const newEl = toModel(item, newVal)
 
   // remove old element if present
-  const oldIndex = model.value.findIndex((it) => JSON.stringify(it) === JSON.stringify(oldEl))
+  const oldIndex = model.value.findIndex((it) => deepEqual(it, oldEl))
   if (oldIndex >= 0) model.value.splice(oldIndex, 1)
 
   // add new element if defined
@@ -75,14 +76,14 @@ function internalUpdate(item: ItemType<unknown>, newVal: IncludeExclude, oldVal:
 
 watchEffect(() => {
   internalModel.value = model.value.reduce((acc, item) => {
-    const itemInclude = items.find((it) => JSON.stringify(it.value) === JSON.stringify(item))
+    const itemInclude = items.find((it) => deepEqual(it.value, item))
     if (itemInclude)
       return {
         ...(acc as Record<number, string | undefined>),
         [JSON.stringify(itemInclude)]: 'include',
       }
 
-    const itemExclude = items.find((it) => JSON.stringify(it.valueExclude) === JSON.stringify(item))
+    const itemExclude = items.find((it) => deepEqual(it.valueExclude, item))
     if (itemExclude)
       return {
         ...(acc as Record<number, string | undefined>),
