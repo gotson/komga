@@ -34,6 +34,11 @@ configure({ asyncUtilTimeout: 5000 })
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        method: 'alphabetical',
+      },
+    },
     chromatic: {
       modes: allModes,
     },
