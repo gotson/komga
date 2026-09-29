@@ -243,6 +243,10 @@
     "defaultMessage": "library menu",
     "description": "Library menu button: aria label"
   },
+  "3lLmfX": {
+    "defaultMessage": "Collection",
+    "description": "Browsing context: collection"
+  },
   "3qQjnw": {
     "defaultMessage": "Language",
     "description": "Filter panel: Language"
@@ -323,6 +327,10 @@
     "defaultMessage": "Epub",
     "description": "Form add/edit library: Scanner - file types: epub"
   },
+  "5Zw5Zt": {
+    "defaultMessage": "Go to next series within collection",
+    "description": "Navigation within collection: next button tootlip"
+  },
   "5b2A0u": {
     "defaultMessage": "You will be redirected to the home page",
     "description": "Page not found view: error message subtitle"
@@ -358,6 +366,10 @@
   "6WDISV": {
     "defaultMessage": "Page not found",
     "description": "Page not found view: error message title"
+  },
+  "6eAECF": {
+    "defaultMessage": "Library",
+    "description": "Library bottom sheet, subtitle"
   },
   "6nCIPn": {
     "defaultMessage": "Type",
@@ -478,6 +490,10 @@
   "9dNd68": {
     "defaultMessage": "User uploaded",
     "description": "Poster card: type - user uploaded"
+  },
+  "9mujmD": {
+    "defaultMessage": "No release date",
+    "description": "Card subtitle: no release date"
   },
   "9oA9gw": {
     "defaultMessage": "Unpinned",
@@ -671,6 +687,10 @@
     "defaultMessage": "Delete files",
     "description": "Series delete dialog: confirm button"
   },
+  "DgXStw": {
+    "defaultMessage": "Go to previous series within collection",
+    "description": "Navigation within collection: previous button tootlip"
+  },
   "Dn4qvV": {
     "defaultMessage": "Restore defaults",
     "description": "Reorder sections: restore defaults button"
@@ -799,6 +819,10 @@
     "defaultMessage": "Use local artwork",
     "description": "Form add/edit library: Metadata - local artwork"
   },
+  "Gwmnm6": {
+    "defaultMessage": "Series",
+    "description": "Series bottom sheet, subtitle"
+  },
   "GyRV+/": {
     "defaultMessage": "You should enable this if the library is hosted on Google Drive",
     "description": "Form add/edit library: Scanner - Force directory modified time - information tooltip"
@@ -851,6 +875,10 @@
     "defaultMessage": "Close",
     "description": "Generate API key dialog: close button"
   },
+  "HaF+a6": {
+    "defaultMessage": "Libraries",
+    "description": "Libraries bottom sheet, subtitle"
+  },
   "HaWCi3": {
     "defaultMessage": "Settings",
     "description": "Drawer menu for Server > Settings"
@@ -870,6 +898,10 @@
   "Hyz5su": {
     "defaultMessage": "Import book",
     "description": "Task name: ImportBook"
+  },
+  "I75Xgh": {
+    "defaultMessage": "Go to next book within series",
+    "description": "Book navigation within series: next button tootlip"
   },
   "I9L5Ag": {
     "defaultMessage": "SORT",
@@ -1135,6 +1167,10 @@
     "defaultMessage": "Book metadata updated: {book}",
     "description": "Snackbar notification shown upon successful book metadata update"
   },
+  "P9B8fE": {
+    "defaultMessage": "Go to previous book within series",
+    "description": "Book navigation within series: previous button tootlip"
+  },
   "PTr5Wc": {
     "defaultMessage": "Check that your Komga server is running",
     "description": "Server unreachable error view: error message subtitle"
@@ -1147,6 +1183,10 @@
     "defaultMessage": "Required for detecting duplicate pages",
     "description": "Form add/edit library: Options - hash pages - information tooltip"
   },
+  "Po0Z4Z": {
+    "defaultMessage": "Read list",
+    "description": "Read list bottom sheet, subtitle"
+  },
   "Pp3+1S": {
     "defaultMessage": "Status",
     "description": "Filter panel: Series status"
@@ -1154,6 +1194,10 @@
   "PvKF7E": {
     "defaultMessage": "Library deleted: {library}",
     "description": "Snackbar notification shown upon successful library deletion"
+  },
+  "Q7tJAG": {
+    "defaultMessage": "Read list",
+    "description": "Container chip, subtitle for read list"
   },
   "QALnuE": {
     "defaultMessage": "File type",
@@ -1199,13 +1243,25 @@
     "defaultMessage": "Expand sidebar",
     "description": "Sidebar button: tooltip expand"
   },
+  "RcbD73": {
+    "defaultMessage": "Book {number}",
+    "description": "Book navigation siblings menu: book number in series"
+  },
   "Rm52xk": {
     "defaultMessage": "Welcome to Komga",
     "description": "No libraries view: title"
   },
+  "Rw2Iwj": {
+    "defaultMessage": "Go to next book within read list",
+    "description": "Book navigation within read list: next button tootlip"
+  },
   "RwuMl5": {
     "defaultMessage": "Automatically repair incorrect file extensions",
     "description": "Form add/edit library: Options - repair extensions"
+  },
+  "S1/qO0": {
+    "defaultMessage": "Collection",
+    "description": "Collection bottom sheet, subtitle"
   },
   "S39lnB": {
     "defaultMessage": "Year rating",
@@ -1499,6 +1555,10 @@
     "defaultMessage": "Please type <b>{validateText}</b> to confirm.",
     "description": "Confirmation dialog: default hint to retype validation text"
   },
+  "Xq4kkn": {
+    "defaultMessage": "Go to previous book within read list",
+    "description": "Book navigation within read list: previous button tootlip"
+  },
   "XuqK4C": {
     "defaultMessage": "Unknown Duplicates",
     "description": "Unknown Duplicate Page Table global header"
@@ -1578,6 +1638,10 @@
   "ZEbDUo": {
     "defaultMessage": "Complete",
     "description": "Filter: complete"
+  },
+  "ZGppaw": {
+    "defaultMessage": "Series",
+    "description": "Browsing context: series"
   },
   "ZPuFVu": {
     "defaultMessage": "General",
@@ -1938,6 +2002,10 @@
   "dLE2PW": {
     "defaultMessage": "No activity",
     "description": "Task Indicator menu: no activity"
+  },
+  "dN5GoW": {
+    "defaultMessage": "Book",
+    "description": "Book bottom sheet, subtitle"
   },
   "dP6SpT": {
     "defaultMessage": "By name",
@@ -2539,6 +2607,10 @@
     "defaultMessage": "Ok",
     "description": "Form add/edit library: General - root directory selection dialog confirmation button label"
   },
+  "ldAVd7": {
+    "defaultMessage": "Read list",
+    "description": "Browsing context: read list"
+  },
   "lkoTf7": {
     "defaultMessage": "CBR",
     "description": "Book file format: CBR"
@@ -2602,6 +2674,10 @@
   "nOcpr8": {
     "defaultMessage": "One shot",
     "description": "Import books table: book cell: one shot indicator"
+  },
+  "nWgSSS": {
+    "defaultMessage": "Collection",
+    "description": "Container chip, subtitle for collection"
   },
   "nXFVsQ": {
     "defaultMessage": "Compute hash for KOReader",
@@ -2671,6 +2747,10 @@
     "defaultMessage": "Thumbnail",
     "description": "Unknown Duplicate Page Table header: thumbnail"
   },
+  "pCBNlA": {
+    "defaultMessage": "Library",
+    "description": "Browsing context: library"
+  },
   "pENCUD": {
     "defaultMessage": "Cancel",
     "description": "Confirmation dialog: Cancel button"
@@ -2718,6 +2798,10 @@
   "qiZm6U": {
     "defaultMessage": "Unknown",
     "description": "Drawer menu for Media > Duplicate Pages > Unknown"
+  },
+  "qlImvg": {
+    "defaultMessage": "Restore to default",
+    "description": "Sort panel: restore icon tootlip"
   },
   "r/G7j0": {
     "defaultMessage": "Number",
@@ -2990,6 +3074,10 @@
   "w2K5yu": {
     "defaultMessage": "Read Lists",
     "description": "Library navigation: read lists"
+  },
+  "wESuod": {
+    "defaultMessage": "Unread",
+    "description": "Card subtitle: unread"
   },
   "wJaip6": {
     "defaultMessage": "Compute hash for files",
