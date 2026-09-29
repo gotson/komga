@@ -19,6 +19,8 @@ import { fileURLToPath, URL } from 'node:url'
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import * as path from 'path'
 import { playwright } from '@vitest/browser-playwright'
+import { PiniaColadaDevtools } from '@pinia/colada-devtools/vite'
+import { DevTools } from '@vitejs/devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -83,6 +85,8 @@ export default defineConfig(({ mode }) => ({
       dts: true,
     }),
     UnoCSS(),
+    DevTools(),
+    PiniaColadaDevtools(),
   ],
   define: { 'process.env': {} },
   resolve: {
