@@ -1,6 +1,6 @@
 import type { Sort } from '@/types/PageRequest'
 import * as v from 'valibot'
-import type { SortOption } from '@/types/sort'
+import type { SortDefinition } from '@/types/sort'
 
 /**
  * Creates a compare function for Array.prototype.sort()
@@ -53,7 +53,7 @@ export function stringifySort(sort: Sort): string {
   return `${sort.key},${sort.order || 'asc'}`
 }
 
-export function sortOptionToSorts(option: SortOption): Sort[] {
+export function sortDefinitionToSorts(option: SortDefinition): Sort[] {
   const sorts: Sort[] = [
     {
       key: option.key,

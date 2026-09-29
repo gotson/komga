@@ -6,6 +6,7 @@ import type { SearchConditionBook, SearchConditionSeries } from '@/generated/ope
 import { seriesListQueryInfinite, seriesUpdatedQueryInfinite } from '@/colada/series'
 import type { OverviewSection } from '@/types/OverviewSection'
 import type { Sort } from '@/types/PageRequest'
+import type { SortBook, SortSeries } from '@/types/sort'
 
 export function useOverviewSection(
   section: MaybeRefOrGetter<OverviewSection>,
@@ -15,19 +16,19 @@ export function useOverviewSection(
   const sort = computed<Sort[]>(() => {
     switch (toValue(section)) {
       case 'on_deck':
-        return []
+        return [] satisfies SortBook[]
       case 'keep_reading':
-        return [{ key: 'readProgress.readDate', order: 'desc' }]
+        return [{ key: 'readProgress.readDate', order: 'desc' }] satisfies SortBook[]
       case 'recently_released_books':
-        return [{ key: 'metadata.releaseDate', order: 'desc' }]
+        return [{ key: 'metadata.releaseDate', order: 'desc' }] satisfies SortBook[]
       case 'recently_added_books':
-        return [{ key: 'createdDate', order: 'desc' }]
+        return [{ key: 'createdDate', order: 'desc' }] satisfies SortBook[]
       case 'recently_read_books':
-        return [{ key: 'readProgress.readDate', order: 'desc' }]
+        return [{ key: 'readProgress.readDate', order: 'desc' }] satisfies SortBook[]
       case 'recently_added_series':
-        return [{ key: 'createdDate', order: 'desc' }]
+        return [{ key: 'createdDate', order: 'desc' }] satisfies SortSeries[]
       case 'recently_updated_series':
-        return [{ key: 'lastModifiedDate', order: 'desc' }]
+        return [{ key: 'lastModifiedDate', order: 'desc' }] satisfies SortSeries[]
     }
   })
 

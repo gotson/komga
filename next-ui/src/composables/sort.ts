@@ -1,6 +1,6 @@
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
 import { type Sort } from '@/types/PageRequest'
-import { MultiSortSchema, sortOptionToSorts, stringifySort } from '@/functions/sort'
+import { MultiSortSchema, sortDefinitionToSorts, stringifySort } from '@/functions/sort'
 import { deepEqual } from 'fast-equals'
 import type { SortOption } from '@/types/sort'
 
@@ -17,7 +17,7 @@ export function useSort(defaultSort: Sort[], options: SortOption[], multiSort: b
     defaultSort,
   ).data
 
-  const validSorts = options.flatMap((it) => sortOptionToSorts(it))
+  const validSorts = options.flatMap((it) => sortDefinitionToSorts(it))
 
   // filter out invalid values
   watch(

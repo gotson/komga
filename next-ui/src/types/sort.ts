@@ -1,8 +1,6 @@
 import { defineMessage, type MessageDescriptor } from 'vue-intl'
 
-export type SortOption = {
-  // for display
-  label: string
+export type SortDefinition = {
   // sorting key sent to API
   key: string
   // initial order
@@ -11,9 +9,26 @@ export type SortOption = {
   invertible: boolean
 }
 
+export type SortOption = {
+  // for display
+  label: string
+} & SortDefinition
+
 export type SortOrder = 'asc' | 'desc'
 
 export type SortOptionDescriptor = Omit<SortOption, 'label'> & { message: MessageDescriptor }
+
+type ResolveOrder<T extends readonly SortDefinition[]> = {
+  [K in keyof T]: T[K] extends {
+    key: infer KKey extends string
+    initialOrder: infer KOrder
+    invertible: infer KInvert
+  }
+    ? KInvert extends true
+      ? { key: KKey; order: SortOrder }
+      : { key: KKey; order: KOrder }
+    : never
+}[number]
 
 const messages = {
   createdDate: defineMessage({
@@ -105,6 +120,7 @@ export const sortSeries = [
 ] as const satisfies readonly SortOptionDescriptor[]
 
 export type SortKeysSeries = (typeof sortSeries)[number]['key']
+export type SortSeries = ResolveOrder<typeof sortSeries>
 
 export const sortBooks = [
   {
@@ -198,3 +214,4 @@ export const sortBooks = [
 ] as const satisfies readonly SortOptionDescriptor[]
 
 export type SortKeysBook = (typeof sortBooks)[number]['key']
+export type SortBook = ResolveOrder<typeof sortBooks>
