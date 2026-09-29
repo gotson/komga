@@ -7,6 +7,7 @@ const meta = {
   component: ContainerChip,
   render: (args: object) => ({
     components: { ContainerChip },
+    inheritAttrs: false,
     setup() {
       return { args }
     },
