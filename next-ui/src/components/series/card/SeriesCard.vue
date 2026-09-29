@@ -132,7 +132,7 @@ other {# books}
   }
 })
 
-const context = inject(BrowsingContextKey)
+const context = inject(BrowsingContextKey, undefined)
 const linkTo = computed<RouteLocationObject>(() => ({
   name: '/series/[id]',
   params: { id: series.value.id },

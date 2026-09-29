@@ -175,7 +175,7 @@ const titleAndLines = computed<{ title: ItemCardTitle; lines: ItemCardLine[] }>(
   }
 })
 
-const context = inject(BrowsingContextKey)
+const context = inject(BrowsingContextKey, undefined)
 const linkTo = computed<RouteLocationObject>(() => ({
   name: '/book/[id]',
   params: { id: book.value.id },
