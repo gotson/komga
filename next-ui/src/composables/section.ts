@@ -5,11 +5,32 @@ import { ReadStatus } from '@/types/ReadStatus'
 import type { SearchConditionBook, SearchConditionSeries } from '@/generated/openapi'
 import { seriesListQueryInfinite, seriesUpdatedQueryInfinite } from '@/colada/series'
 import type { OverviewSection } from '@/types/OverviewSection'
+import type { Sort } from '@/types/PageRequest'
 
 export function useOverviewSection(
   section: MaybeRefOrGetter<OverviewSection>,
   libraryIds: MaybeRefOrGetter<string[] | undefined>,
 ) {
+  // compute the sort separately, can be used to determine the subtitle of item cards
+  const sort = computed<Sort[]>(() => {
+    switch (toValue(section)) {
+      case 'on_deck':
+        return []
+      case 'keep_reading':
+        return [{ key: 'readProgress.readDate', order: 'desc' }]
+      case 'recently_released_books':
+        return [{ key: 'metadata.releaseDate', order: 'desc' }]
+      case 'recently_added_books':
+        return [{ key: 'createdDate', order: 'desc' }]
+      case 'recently_read_books':
+        return [{ key: 'readDate', order: 'desc' }]
+      case 'recently_added_series':
+        return [{ key: 'createdDate', order: 'desc' }]
+      case 'recently_updated_series':
+        return [{ key: 'lastModifiedDate', order: 'desc' }]
+    }
+  })
+
   const queryOptions = computed(() => {
     const libIds = toValue(libraryIds)
 
@@ -24,7 +45,7 @@ export function useOverviewSection(
               ].filter(Boolean) as SearchConditionBook[],
             },
           },
-          sort: [{ key: 'readProgress.readDate', order: 'desc' }],
+          sort: sort.value,
         })
       case 'on_deck':
         return booksOnDeckQueryInfinite({
@@ -45,7 +66,7 @@ export function useOverviewSection(
               ].filter(Boolean) as SearchConditionBook[],
             },
           },
-          sort: [{ key: 'metadata.releaseDate', order: 'desc' }],
+          sort: sort.value,
         })
       case 'recently_added_books':
         return bookListQueryInfinite({
@@ -56,7 +77,7 @@ export function useOverviewSection(
               ) as SearchConditionBook[],
             },
           },
-          sort: [{ key: 'createdDate', order: 'desc' }],
+          sort: sort.value,
         })
       case 'recently_read_books':
         return bookListQueryInfinite({
@@ -68,7 +89,7 @@ export function useOverviewSection(
               ].filter(Boolean) as SearchConditionBook[],
             },
           },
-          sort: [{ key: 'readProgress.readDate', order: 'desc' }],
+          sort: sort.value,
         })
       case 'recently_added_series':
         return seriesListQueryInfinite({
@@ -80,7 +101,7 @@ export function useOverviewSection(
               ].filter(Boolean) as SearchConditionSeries[],
             },
           },
-          sort: [{ key: 'createdDate', order: 'desc' }],
+          sort: sort.value,
         })
       case 'recently_updated_series':
         return seriesUpdatedQueryInfinite({
@@ -103,5 +124,5 @@ export function useOverviewSection(
     }
   })
 
-  return { queryOptions, kind }
+  return { queryOptions, sort, kind }
 }

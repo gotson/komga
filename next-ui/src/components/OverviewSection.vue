@@ -17,6 +17,7 @@
           :selected="isSelected"
           :pre-select="preSelect"
           :width="cardWidth"
+          :sort-active="sort"
           @selection="toggleSelect"
         />
         <BookCard
@@ -27,6 +28,7 @@
           :selected="isSelected"
           :pre-select="preSelect"
           :width="cardWidth"
+          :sort-active="sort"
           @selection="toggleSelect"
         />
       </div>
@@ -57,7 +59,7 @@ const { libraryIds } = useGetLibrariesByViewId(props.libraryViewId)
 
 const cardWidth = computed(() => (display.smAndUp.value ? appStore.gridCardWidth : 130))
 
-const { queryOptions, kind } = useOverviewSection(props.section.section, libraryIds)
+const { queryOptions, sort, kind } = useOverviewSection(props.section.section, libraryIds)
 
 const { data, hasNextPage, loadNextPage, isPending } = useInfiniteQuery(
   () => queryOptions.value as never,

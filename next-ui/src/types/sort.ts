@@ -33,7 +33,7 @@ const messages = {
   }),
 }
 
-export const sortSeries: SortOptionDescriptor[] = [
+export const sortSeries = [
   {
     message: defineMessage({
       description: 'Sort label: metadata.titleSort',
@@ -102,9 +102,11 @@ export const sortSeries: SortOptionDescriptor[] = [
     initialOrder: 'asc',
     invertible: false,
   },
-]
+] as const satisfies readonly SortOptionDescriptor[]
 
-export const sortBooks: SortOptionDescriptor[] = [
+export type SortKeysSeries = (typeof sortSeries)[number]['key']
+
+export const sortBooks = [
   {
     message: defineMessage({
       description: 'Sort label: series',
@@ -193,4 +195,6 @@ export const sortBooks: SortOptionDescriptor[] = [
     initialOrder: 'desc',
     invertible: true,
   },
-]
+] as const satisfies readonly SortOptionDescriptor[]
+
+export type SortKeysBook = (typeof sortBooks)[number]['key']

@@ -23,6 +23,7 @@
         :selected="isSelected"
         :pre-select="preSelect"
         :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
+        :sort-active="sort"
         @selection="(_val, event) => toggleSelect(event as MouseEvent)"
       />
       <BookCard
@@ -33,6 +34,7 @@
         :selected="isSelected"
         :pre-select="preSelect"
         :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
+        :sort-active="sort"
         @selection="(_val, event) => toggleSelect(event as MouseEvent)"
       />
     </template>
@@ -72,7 +74,7 @@ const libraryViewId = route.params.viewId
 const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
 const section = route.params.section as OverviewSection
 
-const { queryOptions, kind } = useOverviewSection(section, libraryIds)
+const { queryOptions, sort, kind } = useOverviewSection(section, libraryIds)
 
 const { data, hasNextPage, loadNextPage } = useInfiniteQuery(() => queryOptions.value as never)
 

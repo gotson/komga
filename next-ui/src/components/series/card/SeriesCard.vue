@@ -2,7 +2,7 @@
   <ItemCard
     :id="id"
     :title="title"
-    :lines="lines"
+    :lines="[footer]"
     :poster-url="seriesPosterUrl(series.id, cacheStore.getVersion(series.id))"
     :top-right="unreadCount"
     :top-right-icon="isRead ? 'i-mdi:check' : undefined"
@@ -39,6 +39,8 @@ import type { SeriesDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { BrowsingContextKey, formatBrowsingContextAsQueryParam } from '@/functions/browsing-context'
 import type { RouteLocationObject } from '@/types/route'
+import type { SortKeysSeries } from '@/types/sort'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -68,46 +70,66 @@ const title = computed<ItemCardTitle>(() => ({
   routerLink: linkTo.value,
 }))
 
-const lines = computed<ItemCardLine[]>(() => {
+const excludedKeys = ['metadata.titleSort', 'readDate', 'booksCount', 'random'] as const
+type SortKeysSupported = Exclude<SortKeysSeries, (typeof excludedKeys)[number]>
+const footer = computed<ItemCardLine>(() => {
   if (series.value.deleted)
-    return [
-      {
-        text: intl.formatMessage({
-          description: 'Series card subtitle: unavailable',
-          defaultMessage: 'Unavailable',
-          id: 'wbH42A',
-        }),
-        classes: 'text-error',
-      },
-    ]
+    return {
+      text: intl.formatMessage({
+        description: 'Series card subtitle: unavailable',
+        defaultMessage: 'Unavailable',
+        id: 'wbH42A',
+      }),
+      classes: 'text-error',
+    }
 
-  if (series.value.oneshot) {
-    return [
-      {
-        text: intl.formatMessage({
-          description: 'Series card subtitle: oneshot',
-          defaultMessage: 'One-shot',
-          id: 'NKVL81',
-        }),
-      },
-    ]
+  const sortKey = props.sortActive?.find(
+    (it) => !(excludedKeys as readonly string[]).includes(it.key),
+  )
+  if (sortKey) {
+    switch (sortKey.key as SortKeysSupported) {
+      case 'createdDate':
+        return {
+          text: intl.formatDate(series.value.created, { dateStyle: 'medium' }),
+        }
+      case 'lastModifiedDate':
+        return {
+          text: intl.formatDate(series.value.lastModified, { dateStyle: 'medium' }),
+        }
+      case 'booksMetadata.releaseDate':
+        return {
+          text: series.value.booksMetadata.releaseDate
+            ? intl.formatDate(series.value.booksMetadata.releaseDate, { year: 'numeric' })
+            : intl.formatMessage(commonMessages.cardSubtitleNoReleaseDate),
+        }
+      case 'name':
+        return { text: series.value.name }
+    }
   }
 
-  return [
-    {
-      text: intl.formatMessage(
-        {
-          description: 'Series card subtitle: count of books',
-          defaultMessage: `{count, plural,
+  if (series.value.oneshot) {
+    return {
+      text: intl.formatMessage({
+        description: 'Series card subtitle: oneshot',
+        defaultMessage: 'One-shot',
+        id: 'NKVL81',
+      }),
+    }
+  }
+
+  return {
+    text: intl.formatMessage(
+      {
+        description: 'Series card subtitle: count of books',
+        defaultMessage: `{count, plural,
 one {# book}
 other {# books}
 }`,
-          id: 'cGOJnB',
-        },
-        { count: series.value.booksCount },
-      ),
-    },
-  ]
+        id: 'cGOJnB',
+      },
+      { count: series.value.booksCount },
+    ),
+  }
 })
 
 const context = inject(BrowsingContextKey)

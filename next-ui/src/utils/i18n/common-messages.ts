@@ -217,4 +217,14 @@ export const commonMessages = {
     defaultMessage: 'Collection',
     id: 'nWgSSS',
   }),
+  cardSubtitleNoReleaseDate:defineMessage({
+    description: 'Card subtitle: no release date',
+    defaultMessage: 'No release date',
+    id: '9mujmD',
+  }),
+  cardSubtitleUnread:defineMessage({
+    description: 'Card subtitle: unread',
+    defaultMessage: 'Unread',
+    id: 'wESuod',
+  }),
 }

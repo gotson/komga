@@ -203,6 +203,7 @@
             :selected="isSelected"
             :pre-select="preSelect"
             :width="display.xs.value ? 'auto' : appStore.gridCardWidth"
+            :sort-active="sortActive"
             @selection="(_val, event) => toggleSelect(event as MouseEvent)"
           />
         </template>
