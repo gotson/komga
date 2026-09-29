@@ -1,3 +1,4 @@
+tio
 <template>
   <v-container fluid>
     <v-row>
@@ -365,6 +366,7 @@ const { data: readLists } = useQuery(() => ({
 // for oneshots we need to retrieve collections
 const { data: collections } = useQuery(() => ({
   ...seriesCollectionsQuery({ seriesId: props.book.seriesId }),
+  enabled: props.book.oneshot,
 }))
 const containedIn = computed(() => [
   ...(readLists.value?.map(
@@ -380,19 +382,21 @@ const containedIn = computed(() => [
         },
       }) satisfies Container,
   ) ?? []),
-  ...(collections.value?.map(
-    (it) =>
-      ({
-        text: it.name,
-        subTitle: intl.formatMessage(commonMessages.containerChipSubTitleCollection),
-        imageUrl: collectionPosterUrl(it.id, cacheStore.getVersion(it.id)),
-        link: {
-          name: '/collection/[id]',
-          params: { id: it.id },
-          query: contextFilteredParam.value,
-        },
-      }) satisfies Container,
-  ) ?? []),
+  ...(props.book.oneshot
+    ? (collections.value?.map(
+        (it) =>
+          ({
+            text: it.name,
+            subTitle: intl.formatMessage(commonMessages.containerChipSubTitleCollection),
+            imageUrl: collectionPosterUrl(it.id, cacheStore.getVersion(it.id)),
+            link: {
+              name: '/collection/[id]',
+              params: { id: it.id },
+              query: contextFilteredParam.value,
+            },
+          }) satisfies Container,
+      ) ?? [])
+    : []),
 ])
 
 const parentToOneShot = computed<RouteLocationObject | undefined>(() => {
