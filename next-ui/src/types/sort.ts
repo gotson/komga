@@ -161,7 +161,7 @@ export const sortBooks = [
   },
   {
     message: messages.readDate,
-    key: 'readDate',
+    key: 'readProgress.readDate',
     initialOrder: 'desc',
     invertible: true,
   },

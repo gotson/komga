@@ -116,7 +116,7 @@ const footer = computed(() => {
               })
             : intl.formatMessage(commonMessages.cardSubtitleNoReleaseDate),
         }
-      case 'readDate':
+      case 'readProgress.readDate':
         return {
           text: book.value.readProgress
             ? intl.formatDate(book.value.readProgress.readDate, {

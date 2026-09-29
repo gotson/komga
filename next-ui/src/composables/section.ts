@@ -23,7 +23,7 @@ export function useOverviewSection(
       case 'recently_added_books':
         return [{ key: 'createdDate', order: 'desc' }]
       case 'recently_read_books':
-        return [{ key: 'readDate', order: 'desc' }]
+        return [{ key: 'readProgress.readDate', order: 'desc' }]
       case 'recently_added_series':
         return [{ key: 'createdDate', order: 'desc' }]
       case 'recently_updated_series':
