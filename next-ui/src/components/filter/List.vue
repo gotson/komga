@@ -68,10 +68,12 @@ function internalUpdate(item: ItemType<unknown>, newVal: IncludeExclude, oldVal:
 
   // remove old element if present
   const oldIndex = model.value.findIndex((it) => deepEqual(it, oldEl))
-  if (oldIndex >= 0) model.value.splice(oldIndex, 1)
+  let nextValue = oldIndex >= 0 ? model.value.toSpliced(oldIndex, 1) : model.value
 
   // add new element if defined
-  if (newEl) model.value.push(newEl)
+  if (newEl) nextValue = [...nextValue, newEl]
+
+  model.value = nextValue
 }
 
 watchEffect(() => {

@@ -53,19 +53,22 @@ function internalUpdate(newVal: Sort | undefined, oldVal: Sort | undefined) {
   if (multiSort) {
     const oldIndex = model.value.findIndex((it) => it.key === oldVal?.key)
 
+    let nextValue = model.value
+
     // if key is not present, add to end
-    if (oldIndex === -1 && newVal) model.value.push(newVal)
+    if (oldIndex === -1 && newVal) nextValue = [...nextValue, newVal]
 
     // if key is present, replace or remove
-    if (oldIndex >= 0) {
+    else if (oldIndex >= 0) {
       if (!!newVal) {
         // replace
-        model.value.splice(oldIndex, 1, newVal)
+        nextValue = nextValue.toSpliced(oldIndex, 1, newVal)
       } else {
         // remove
-        model.value.splice(oldIndex, 1)
+        nextValue = nextValue.toSpliced(oldIndex, 1)
       }
     }
+    model.value = nextValue
   } else {
     model.value = newVal ? [newVal] : []
   }

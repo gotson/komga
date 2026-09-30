@@ -79,8 +79,9 @@ const displayedItems = computed(() => {
 })
 
 function acceptAndClear() {
-  if (search.value && !model.value.includes(search.value)) {
-    model.value.push(search.value)
+  const trimmed = search.value?.trim()
+  if (trimmed && !model.value.includes(trimmed)) {
+    model.value = [...model.value, trimmed]
   }
   search.value = undefined
 }
