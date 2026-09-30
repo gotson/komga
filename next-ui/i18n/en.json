@@ -255,6 +255,10 @@
     "defaultMessage": "Click to confirm",
     "description": "Confirmation dialog: default checkbox label"
   },
+  "40HXjy": {
+    "defaultMessage": "Cancel",
+    "description": "Metadata edition: add role dialog - cancel button"
+  },
   "464rk3": {
     "defaultMessage": "Select series",
     "description": "Import books table: series cell: select series button"
@@ -442,6 +446,10 @@
   "8P7Yn+": {
     "defaultMessage": "Age rating",
     "description": "Filter panel: Age rating"
+  },
+  "8Yd/3a": {
+    "defaultMessage": "Role name",
+    "description": "Metadata edition: add role dialog - input field label"
   },
   "8hC76W": {
     "defaultMessage": "Tasks",
@@ -1087,6 +1095,10 @@
     "defaultMessage": "Kobo sync forced: {apiKeyComment}",
     "description": "Snackbar notification shown upon successful API key force sync"
   },
+  "Nahedl": {
+    "defaultMessage": "Add",
+    "description": "Metadata edition: add role dialog - add button"
+  },
   "NasBHg": {
     "defaultMessage": "Date read",
     "description": "Sort label: readDate"
@@ -1610,6 +1622,10 @@
   "YbkrN9": {
     "defaultMessage": "IP",
     "description": "Authentication Activity table header: IP address"
+  },
+  "YeUvoE": {
+    "defaultMessage": "Custom role...",
+    "description": "Metadata edition: add role menu - custom role"
   },
   "Yf4DJ2": {
     "defaultMessage": "User Interface",
@@ -2418,6 +2434,10 @@
   "hgiBeR": {
     "defaultMessage": "Latest activity",
     "description": "API Key table header: key latest activity"
+  },
+  "hkbgs/": {
+    "defaultMessage": "Add Custom Role",
+    "description": "Metadata edition: add role dialog title"
   },
   "hrh5Rn": {
     "defaultMessage": "Upgrade",

@@ -41,7 +41,13 @@
         />
 
         <v-list-item
-          title="Custom role..."
+          :title="
+            $formatMessage({
+              description: 'Metadata edition: add role menu - custom role',
+              defaultMessage: 'Custom role...',
+              id: 'YeUvoE',
+            })
+          "
           prepend-icon="i-mdi:plus"
           class="text-primary"
           @click="openCustomRoleDialog"
@@ -54,11 +60,25 @@
       v-model="dialogIsOpen"
       max-width="400"
     >
-      <v-card title="Add Custom Role">
+      <v-card
+        :title="
+          $formatMessage({
+            description: 'Metadata edition: add role dialog title',
+            defaultMessage: 'Add Custom Role',
+            id: 'hkbgs/',
+          })
+        "
+      >
         <v-card-text>
           <v-text-field
             v-model="customRoleInput"
-            label="Role Name"
+            :label="
+              $formatMessage({
+                description: 'Metadata edition: add role dialog - input field label',
+                defaultMessage: 'Role name',
+                id: '8Yd/3a',
+              })
+            "
             autofocus
             hide-details
             @keyup.enter="confirmCustomRole"
@@ -67,12 +87,24 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            text="Cancel"
+            :text="
+              $formatMessage({
+                description: 'Metadata edition: add role dialog - cancel button',
+                defaultMessage: 'Cancel',
+                id: '40HXjy',
+              })
+            "
             variant="plain"
             @click="dialogIsOpen = false"
           />
           <v-btn
-            text="Add"
+            :text="
+              $formatMessage({
+                description: 'Metadata edition: add role dialog - add button',
+                defaultMessage: 'Add',
+                id: 'Nahedl',
+              })
+            "
             color="primary"
             variant="flat"
             :disabled="!customRoleInput.trim()"
