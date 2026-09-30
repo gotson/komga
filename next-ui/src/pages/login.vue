@@ -142,15 +142,17 @@ const form = ref()
 const username = ref('')
 const password = ref('')
 const loginError = ref<string>('')
+const isLoading = ref(false)
 
 const router = useRouter()
 const route = useRoute()
 
-const { mutateAsync: performLogin, isLoading } = useLogin()
+const { mutateAsync: performLogin } = useLogin()
 
 async function submitForm() {
   const { valid } = await form.value.validate()
-  if (valid)
+  if (valid) {
+    isLoading.value = true
     performLogin({
       username: username.value,
       password: password.value,
@@ -168,7 +170,9 @@ async function submitForm() {
             id: 'AjWlka',
           })
         else messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+        isLoading.value = false
       })
+  }
 }
 </script>
 
