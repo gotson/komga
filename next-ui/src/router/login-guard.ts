@@ -1,6 +1,7 @@
 import type { Router } from 'vue-router'
 import { currentUserQuery } from '@/colada/users'
 import { useQueryCache } from '@pinia/colada'
+import { isApiErrorWithCause } from '@/api/komga-client'
 
 /**
  * Check if the user is authenticated before navigating to any page.
@@ -25,7 +26,8 @@ export function useLoginGuard(router: Router) {
           )
           return { name: '/startup', query: query }
         }
-      } catch (ignored) {
+      } catch (e) {
+        if (isApiErrorWithCause(e) && e.cause.status === 401) return { name: '/login' }
         return { name: '/error' }
       }
     }
