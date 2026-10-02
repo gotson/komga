@@ -1,5 +1,10 @@
 import * as v from 'valibot'
 import { type EntryKey, useQueryCache, type UseQueryEntry } from '@pinia/colada'
+import { QUERY_KEYS_BOOKS } from '@/colada/books'
+import { QUERY_KEYS_SERIES } from '@/colada/series'
+import { QUERY_KEYS_LIBRARIES } from '@/colada/libraries'
+import { QUERY_KEYS_READLIST } from '@/colada/readlists'
+import { QUERY_KEYS_COLLECTIONS } from '@/colada/collections'
 
 const HasIdSchema = v.looseObject({
   id: v.string(),
@@ -40,7 +45,7 @@ export const expireCachePredicate =
     return false
   }
 
-export function entityChanged(
+function entityChanged(
   key: EntryKey,
   targetId: string,
   predicate: ReturnType<typeof expireCachePredicate> = expireCachePredicate(targetId),
@@ -53,7 +58,7 @@ export function entityChanged(
   })
 }
 
-export function entitiesChanged(key: EntryKey) {
+function entitiesChanged(key: EntryKey) {
   const queryCache = useQueryCache()
 
   void queryCache.invalidateQueries({ key: key })
@@ -70,4 +75,60 @@ export function clearAll() {
 
   // drop all entries from the cache
   queryCache.getEntries().forEach((entry) => queryCache.remove(entry))
+}
+
+export function clearBook(bookId: string) {
+  void entityChanged(QUERY_KEYS_BOOKS.root, bookId)
+}
+
+export function clearAllBooks() {
+  void entitiesChanged(QUERY_KEYS_BOOKS.root)
+}
+
+export function clearSeries(seriesId: string, clearChildrenBooks: boolean) {
+  void entityChanged(QUERY_KEYS_SERIES.root, seriesId)
+  if (clearChildrenBooks)
+    void entityChanged(QUERY_KEYS_BOOKS.root, seriesId, expireCachePredicate(seriesId, 'seriesId'))
+}
+
+export function clearAllSeries() {
+  void entitiesChanged(QUERY_KEYS_SERIES.root)
+}
+
+export function clearAllLibraries() {
+  void entitiesChanged(QUERY_KEYS_LIBRARIES.root)
+}
+
+export function clearAllReadLists() {
+  void entitiesChanged(QUERY_KEYS_READLIST.root)
+}
+
+export function clearReadList(readListId: string) {
+  void entityChanged(QUERY_KEYS_READLIST.root, readListId)
+  void entitiesChanged(QUERY_KEYS_READLIST.byBook())
+}
+
+export function clearAllCollections() {
+  void entitiesChanged(QUERY_KEYS_READLIST.root)
+}
+
+export function clearCollection(collectionId: string) {
+  void entityChanged(QUERY_KEYS_COLLECTIONS.root, collectionId)
+  void entitiesChanged(QUERY_KEYS_COLLECTIONS.bySeries())
+}
+
+export function clearThumbnailBook(bookId: string) {
+  void entitiesChanged(QUERY_KEYS_BOOKS.posters(bookId))
+}
+
+export function clearThumbnailSeries(seriesId: string) {
+  void entitiesChanged(QUERY_KEYS_SERIES.posters(seriesId))
+}
+
+export function clearThumbnailReadList(readListId: string) {
+  void entitiesChanged(QUERY_KEYS_READLIST.posters(readListId))
+}
+
+export function clearThumbnailCollection(collectionId: string) {
+  void entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(collectionId))
 }

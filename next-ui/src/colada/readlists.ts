@@ -5,7 +5,7 @@ import {
   useMutation,
 } from '@pinia/colada'
 import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
-import { entitiesChanged, entityChanged } from '@/colada/cache'
+import { clearAllReadLists, clearReadList, clearThumbnailReadList } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
   komgaAddUserUploadedReadListThumbnail,
@@ -142,7 +142,7 @@ export const useCreateReadList = defineMutation(() => {
         body: readList,
       }),
     onSuccess: () => {
-      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_READLIST.root)
+      if (appStore.sseUnavailable) clearAllReadLists()
     },
   })
 })
@@ -158,7 +158,7 @@ export const useUpdateReadList = defineMutation(() => {
         body: data,
       }),
     onSuccess: (_data, { readListId }) => {
-      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_READLIST.root, readListId)
+      if (appStore.sseUnavailable) clearReadList(readListId)
     },
   })
 })
@@ -173,7 +173,7 @@ export const useDeleteReadList = defineMutation(() => {
         },
       }),
     onSuccess: (_data, readListId) => {
-      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_READLIST.root, readListId)
+      if (appStore.sseUnavailable) clearReadList(readListId)
     },
   })
 })
@@ -217,7 +217,7 @@ export const useAddReadListPoster = defineMutation(() => {
       }),
     onSuccess: (_data, { readListId }) => {
       if (appStore.sseUnavailable) {
-        entitiesChanged(QUERY_KEYS_READLIST.posters(readListId))
+        clearThumbnailReadList(readListId)
         cacheStore.bustCache(readListId)
       }
     },
@@ -237,7 +237,7 @@ export const useDeleteReadListPoster = defineMutation(() => {
       }),
     onSuccess: (_data, { readListId }) => {
       if (appStore.sseUnavailable) {
-        entitiesChanged(QUERY_KEYS_READLIST.posters(readListId))
+        clearThumbnailReadList(readListId)
         cacheStore.bustCache(readListId)
       }
     },
@@ -257,7 +257,7 @@ export const useMarkReadListPosterSelected = defineMutation(() => {
       }),
     onSuccess: (_data, { readListId }) => {
       if (appStore.sseUnavailable) {
-        entitiesChanged(QUERY_KEYS_READLIST.posters(readListId))
+        clearThumbnailReadList(readListId)
         cacheStore.bustCache(readListId)
       }
     },

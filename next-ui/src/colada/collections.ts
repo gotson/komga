@@ -5,7 +5,7 @@ import {
   useMutation,
 } from '@pinia/colada'
 import { PageRequest, type Sort, sortToString } from '@/types/PageRequest'
-import { entitiesChanged, entityChanged } from '@/colada/cache'
+import { clearAllCollections, clearCollection, clearThumbnailCollection } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
   komgaDeleteCollectionById,
@@ -112,7 +112,7 @@ export const useCreateCollection = defineMutation(() => {
         body: collection,
       }),
     onSuccess: () => {
-      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_COLLECTIONS.root)
+      if (appStore.sseUnavailable) clearAllCollections()
     },
   })
 })
@@ -128,7 +128,7 @@ export const useUpdateCollection = defineMutation(() => {
         body: data,
       }),
     onSuccess: (_data, { collectionId }) => {
-      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_COLLECTIONS.root, collectionId)
+      if (appStore.sseUnavailable) clearCollection(collectionId)
     },
   })
 })
@@ -143,7 +143,7 @@ export const useDeleteCollection = defineMutation(() => {
         },
       }),
     onSuccess: (_data, collectionId) => {
-      if (appStore.sseUnavailable) entityChanged(QUERY_KEYS_COLLECTIONS.root, collectionId)
+      if (appStore.sseUnavailable) clearCollection(collectionId)
     },
   })
 })
@@ -187,7 +187,7 @@ export const useAddCollectionPoster = defineMutation(() => {
       }),
     onSuccess: (_data, { collectionId }) => {
       if (appStore.sseUnavailable) {
-        entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(collectionId))
+        clearThumbnailCollection(collectionId)
         cacheStore.bustCache(collectionId)
       }
     },
@@ -207,7 +207,7 @@ export const useDeleteCollectionPoster = defineMutation(() => {
       }),
     onSuccess: (_data, { collectionId }) => {
       if (appStore.sseUnavailable) {
-        entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(collectionId))
+        clearThumbnailCollection(collectionId)
         cacheStore.bustCache(collectionId)
       }
     },
@@ -227,7 +227,7 @@ export const useMarkCollectionPosterSelected = defineMutation(() => {
       }),
     onSuccess: (_data, { collectionId }) => {
       if (appStore.sseUnavailable) {
-        entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(collectionId))
+        clearThumbnailCollection(collectionId)
         cacheStore.bustCache(collectionId)
       }
     },

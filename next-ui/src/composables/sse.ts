@@ -3,13 +3,22 @@ import { ApiBaseUrl } from '@/api/base'
 import { logger } from '@/services/logtape'
 import { useAppStore } from '@/stores/app'
 import * as v from 'valibot'
-import { entitiesChanged, entityChanged, expireCachePredicate } from '@/colada/cache'
-import { QUERY_KEYS_BOOKS } from '@/colada/books'
-import { QUERY_KEYS_SERIES } from '@/colada/series'
-import { QUERY_KEYS_COLLECTIONS } from '@/colada/collections'
-import { QUERY_KEYS_READLIST } from '@/colada/readlists'
+import {
+  clearBook,
+  clearAllBooks,
+  clearSeries,
+  clearAllSeries,
+  clearAllLibraries,
+  clearAllReadLists,
+  clearReadList,
+  clearAllCollections,
+  clearCollection,
+  clearThumbnailBook,
+  clearThumbnailSeries,
+  clearThumbnailReadList,
+  clearThumbnailCollection,
+} from '@/colada/cache'
 import { useCurrentUser, userLoggedOut } from '@/colada/users'
-import { QUERY_KEYS_LIBRARIES } from '@/colada/libraries'
 import { useMessagesStore } from '@/stores/messages'
 import { defineMessage } from 'vue-intl'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
@@ -345,27 +354,23 @@ export const useSSE = createGlobalState(() => {
       case 'LibraryAdded':
       case 'LibraryChanged':
       case 'LibraryDeleted':
-        void entitiesChanged(QUERY_KEYS_LIBRARIES.root)
+        clearAllLibraries()
         break
       case 'SeriesAdded':
-        void entitiesChanged(QUERY_KEYS_SERIES.root)
+        clearAllSeries()
         break
       case 'SeriesChanged':
-        void entityChanged(
-          QUERY_KEYS_BOOKS.root,
-          event.data.seriesId,
-          expireCachePredicate(event.data.seriesId, 'seriesId'),
-        )
-      // fallthrough
+        clearSeries(event.data.seriesId, true)
+        break
       case 'SeriesDeleted':
-        void entityChanged(QUERY_KEYS_SERIES.root, event.data.seriesId)
+        clearSeries(event.data.seriesId, false)
         break
       case 'BookAdded':
-        void entitiesChanged(QUERY_KEYS_BOOKS.root)
+        clearAllBooks()
         break
       case 'BookChanged':
       case 'BookDeleted':
-        void entityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
+        clearBook(event.data.bookId)
         break
       case 'BookImported':
         if (event.data.success && event.data.bookId)
@@ -397,28 +402,26 @@ export const useSSE = createGlobalState(() => {
           })
         break
       case 'ReadListAdded':
-        void entitiesChanged(QUERY_KEYS_READLIST.root)
+        clearAllReadLists()
         break
       case 'ReadListChanged':
       case 'ReadListDeleted':
-        void entityChanged(QUERY_KEYS_READLIST.root, event.data.readListId)
-        void entitiesChanged(QUERY_KEYS_READLIST.byBook())
+        clearReadList(event.data.readListId)
         break
       case 'CollectionAdded':
-        void entitiesChanged(QUERY_KEYS_COLLECTIONS.root)
+        clearAllCollections()
         break
       case 'CollectionChanged':
       case 'CollectionDeleted':
-        void entityChanged(QUERY_KEYS_COLLECTIONS.root, event.data.collectionId)
-        void entitiesChanged(QUERY_KEYS_COLLECTIONS.bySeries())
+        clearCollection(event.data.collectionId)
         break
       case 'ReadProgressChanged':
       case 'ReadProgressDeleted':
-        void entityChanged(QUERY_KEYS_BOOKS.root, event.data.bookId)
+        clearBook(event.data.bookId)
         break
       case 'ReadProgressSeriesChanged':
       case 'ReadProgressSeriesDeleted':
-        void entityChanged(QUERY_KEYS_SERIES.root, event.data.seriesId)
+        clearSeries(event.data.seriesId, false)
         break
       case 'SessionExpired':
         userLoggedOut()
@@ -431,23 +434,23 @@ export const useSSE = createGlobalState(() => {
       case 'ThumbnailBookDeleted':
         if (event.data.selected) cacheStore.bustCache(event.data.bookId)
         if (event.data.selected) cacheStore.bustCache(event.data.seriesId)
-        void entitiesChanged(QUERY_KEYS_BOOKS.posters(event.data.bookId))
-        void entitiesChanged(QUERY_KEYS_SERIES.posters(event.data.seriesId))
+        clearThumbnailBook(event.data.bookId)
+        clearThumbnailSeries(event.data.seriesId)
         break
       case 'ThumbnailSeriesAdded':
       case 'ThumbnailSeriesDeleted':
         if (event.data.selected) cacheStore.bustCache(event.data.seriesId)
-        void entitiesChanged(QUERY_KEYS_SERIES.posters(event.data.seriesId))
+        clearThumbnailSeries(event.data.seriesId)
         break
       case 'ThumbnailReadListAdded':
       case 'ThumbnailReadListDeleted':
         if (event.data.selected) cacheStore.bustCache(event.data.readListId)
-        void entitiesChanged(QUERY_KEYS_READLIST.posters(event.data.readListId))
+        clearThumbnailReadList(event.data.readListId)
         break
       case 'ThumbnailSeriesCollectionAdded':
       case 'ThumbnailSeriesCollectionDeleted':
         if (event.data.selected) cacheStore.bustCache(event.data.collectionId)
-        void entitiesChanged(QUERY_KEYS_COLLECTIONS.posters(event.data.collectionId))
+        clearThumbnailCollection(event.data.collectionId)
         break
     }
   })

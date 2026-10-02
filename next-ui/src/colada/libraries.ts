@@ -1,5 +1,5 @@
 import { defineMutation, defineQueryOptions, useMutation, useQuery } from '@pinia/colada'
-import { entitiesChanged } from '@/colada/cache'
+import { clearAllLibraries } from '@/colada/cache'
 import { useAppStore } from '@/stores/app'
 import {
   komgaAddLibrary,
@@ -36,7 +36,7 @@ export const useCreateLibrary = defineMutation(() => {
         body: library,
       }),
     onSuccess: () => {
-      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_LIBRARIES.root)
+      if (appStore.sseUnavailable) clearAllLibraries()
     },
   })
 })
@@ -50,7 +50,7 @@ export const useUpdateLibrary = defineMutation(() => {
         path: { libraryId: library.id },
       }),
     onSuccess: () => {
-      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_LIBRARIES.root)
+      if (appStore.sseUnavailable) clearAllLibraries()
     },
   })
 })
@@ -65,7 +65,7 @@ export const useDeleteLibrary = defineMutation(() => {
         },
       }),
     onSuccess: () => {
-      if (appStore.sseUnavailable) entitiesChanged(QUERY_KEYS_LIBRARIES.root)
+      if (appStore.sseUnavailable) clearAllLibraries()
     },
   })
 })
