@@ -63,15 +63,11 @@ const infiniteItems = computed(() => {
     toItemType(it),
   )
   return [
-    ...(role === CONTRIBUTOR_ANYROLE
-      ? []
-      : [
-          {
-            title: intl.formatMessage(filterMessages.any!),
-            value: { a: 'any' },
-            valueExclude: { a: 'none' },
-          },
-        ]),
+    {
+      title: intl.formatMessage(filterMessages.any!),
+      value: { a: 'any' },
+      valueExclude: { a: 'none' },
+    },
     ...itemTypes,
   ]
 })

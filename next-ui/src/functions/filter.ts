@@ -61,7 +61,7 @@ export function schemaFilterAuthorsToConditions(
         author: {
           operator: it.a === 'any' ? 'is' : 'isNot',
           value: {
-            role: role,
+            ...(role === CONTRIBUTOR_ANYROLE ? {} : { role: role }),
           },
         },
       }
