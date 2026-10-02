@@ -5,6 +5,9 @@
   "+8++PW": {
     "defaultMessage": "Создана библиотека: {library}"
   },
+  "+PNCoe": {
+    "defaultMessage": "Альтернативное название"
+  },
   "+TldjW": {
     "defaultMessage": "Нет данных для отображения"
   },
@@ -23,14 +26,26 @@
   "+r8FCS": {
     "defaultMessage": "Порт сервера"
   },
+  "+y+9xL": {
+    "defaultMessage": "Файлы превышающие допустимый размер: {filenames}"
+  },
   "/5Gb4y": {
     "defaultMessage": "Удалить"
+  },
+  "/8sSxS": {
+    "defaultMessage": "Необходимы для восстановления из корзины и нахождения дубликатов"
   },
   "/Acs82": {
     "defaultMessage": "Создать или добавить к спискам чтения"
   },
+  "/LDx9p": {
+    "defaultMessage": "Сравнить книги"
+  },
   "/NAG9i": {
     "defaultMessage": "Нет результатов"
+  },
+  "/TRmi5": {
+    "defaultMessage": "Метки общего доступа"
   },
   "/YxHru": {
     "defaultMessage": "Некоторые из выбранных книг являются дубликатами"
@@ -47,14 +62,23 @@
   "02SRax": {
     "defaultMessage": "Войти"
   },
+  "083NeH": {
+    "defaultMessage": "Языковой тег IETF BCP 47"
+  },
   "0ILHru": {
     "defaultMessage": "ОК"
+  },
+  "0J3Gvp": {
+    "defaultMessage": "{count, plural, one {# серия} other {# серий} }"
   },
   "0JF9f5": {
     "defaultMessage": "Скрыть боковую панель"
   },
   "0MePSx": {
     "defaultMessage": "Перетащите сюда чтобы закрепить библиотеку"
+  },
+  "0OEO+j": {
+    "defaultMessage": "Жанры"
   },
   "0UFr4y": {
     "defaultMessage": "Все"
@@ -64,6 +88,9 @@
   },
   "0YG9GQ": {
     "defaultMessage": "Запомнить меня"
+  },
+  "0eIJ3K": {
+    "defaultMessage": "Ручная сортировка"
   },
   "0iT7Vf": {
     "defaultMessage": "Метаданные"
@@ -97,5 +124,29 @@
   },
   "1bxWGd": {
     "defaultMessage": "Редактирование метаданных серии"
+  },
+  "1qIfds": {
+    "defaultMessage": "Закреплённые"
+  },
+  "1z+Z+q": {
+    "defaultMessage": "Метки общего доступа"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "Последний"
+  },
+  "2IYW7s": {
+    "defaultMessage": "URL"
+  },
+  "2LLpzV": {
+    "defaultMessage": "Показать детали"
+  },
+  "2Sx0J4": {
+    "defaultMessage": "Страница"
+  },
+  "2g7iOx": {
+    "defaultMessage": "Метрики"
+  },
+  "2p+JVw": {
+    "defaultMessage": "Этот сервер Komga еще не активен, чтобы получить доступ необходимо создать учётную запись пользователя."
   }
 }
