@@ -1,0 +1,2 @@
+CREATE INDEX idx__tasks__queue_poll ON TASK (OWNER, PRIORITY DESC, LAST_MODIFIED_DATE);
+CREATE INDEX idx__tasks__simple_type ON TASK (SIMPLE_TYPE);
