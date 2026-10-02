@@ -62,7 +62,12 @@ export function entitiesChanged(key: EntryKey) {
 /**
  * Clears all the caches.
  */
-export function invalidateAll() {
+export function clearAll() {
   const queryCache = useQueryCache()
-  void queryCache.invalidateQueries()
+
+  // cancel everything in-flight
+  queryCache.cancelQueries()
+
+  // drop all entries from the cache
+  queryCache.getEntries().forEach((entry) => queryCache.remove(entry))
 }

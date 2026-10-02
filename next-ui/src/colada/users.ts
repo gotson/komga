@@ -8,7 +8,7 @@ import {
 } from '@pinia/colada'
 import { type UserRole } from '@/types/UserRoles'
 import { QUERY_KEYS_CLIENT_SETTINGS } from '@/colada/client-settings'
-import { invalidateAll } from '@/colada/cache'
+import { clearAll } from '@/colada/cache'
 import {
   type ApiKeyRequestDto,
   komgaAddUser,
@@ -245,5 +245,5 @@ function userChanged() {
 }
 
 export function userLoggedOut() {
-  invalidateAll()
+  clearAll()
 }
