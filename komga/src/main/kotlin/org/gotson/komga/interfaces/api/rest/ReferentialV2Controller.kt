@@ -3,18 +3,17 @@ package org.gotson.komga.interfaces.api.rest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.gotson.komga.domain.model.FilterBy
-import org.gotson.komga.domain.model.FilterByEntity
 import org.gotson.komga.domain.model.FilterTags
 import org.gotson.komga.domain.model.SearchContext
+import org.gotson.komga.domain.model.unpackFilters
 import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.openapi.PageableWithoutSortAsQueryParam
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.api.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.api.rest.dto.toDto
+import org.gotson.komga.interfaces.api.unpackPageParams
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -43,23 +42,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<AuthorDto> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        seriesIds.isNotEmpty() -> FilterBy(FilterByEntity.SERIES, seriesIds)
-        readListIds.isNotEmpty() -> FilterBy(FilterByEntity.READLIST, readListIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds, seriesIds, readListIds)
 
     return referentialRepository.findAuthors(SearchContext(principal.user), search, role, filterBy, pageRequest).map { it.toDto() }
   }
@@ -76,23 +60,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<String> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        seriesIds.isNotEmpty() -> FilterBy(FilterByEntity.SERIES, seriesIds)
-        readListIds.isNotEmpty() -> FilterBy(FilterByEntity.READLIST, readListIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds, seriesIds, readListIds)
 
     return referentialRepository.findAuthorsRoles(SearchContext(principal.user), filterBy, pageRequest)
   }
@@ -111,23 +80,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<String> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        seriesIds.isNotEmpty() -> FilterBy(FilterByEntity.SERIES, seriesIds)
-        readListIds.isNotEmpty() -> FilterBy(FilterByEntity.READLIST, readListIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds, seriesIds, readListIds)
 
     return referentialRepository.findAuthorsNames(SearchContext(principal.user), search, role, filterBy, pageRequest)
   }
@@ -143,22 +97,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<String> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds)
 
     return referentialRepository.findGenres(SearchContext(principal.user), search, filterBy, pageRequest)
   }
@@ -174,21 +114,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<String> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds)
 
     return referentialRepository.findSharingLabels(SearchContext(principal.user), search, filterBy, pageRequest)
   }
@@ -204,22 +131,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<String> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds)
 
     return referentialRepository.findLanguages(SearchContext(principal.user), search, filterBy, pageRequest)
   }
@@ -235,22 +148,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<String> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds)
 
     return referentialRepository.findPublishers(SearchContext(principal.user), search, filterBy, pageRequest)
   }
@@ -269,24 +168,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<String> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        seriesIds.isNotEmpty() -> FilterBy(FilterByEntity.SERIES, seriesIds)
-        readListIds.isNotEmpty() -> FilterBy(FilterByEntity.READLIST, readListIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds, seriesIds, readListIds)
 
     return referentialRepository.findTags(SearchContext(principal.user), search, filterBy, includeTags, pageRequest)
   }
@@ -301,22 +184,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<String> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds)
 
     return referentialRepository.findSeriesReleaseYears(SearchContext(principal.user), filterBy, pageRequest)
   }
@@ -331,22 +200,8 @@ class ReferentialV2Controller(
     @RequestParam(name = "unpaged", required = false) unpaged: Boolean = false,
     @Parameter(hidden = true) page: Pageable,
   ): Page<Int> {
-    val pageRequest =
-      if (unpaged)
-        Pageable.unpaged()
-      else
-        PageRequest.of(
-          page.pageNumber,
-          page.pageSize,
-        )
-
-    val filterBy =
-      when {
-        libraryIds.isNotEmpty() -> FilterBy(FilterByEntity.LIBRARY, libraryIds)
-
-        collectionIds.isNotEmpty() -> FilterBy(FilterByEntity.COLLECTION, collectionIds)
-        else -> null
-      }
+    val pageRequest = unpackPageParams(unpaged, page)
+    val filterBy = unpackFilters(libraryIds, collectionIds)
 
     return referentialRepository.findAgeRatings(SearchContext(principal.user), filterBy, pageRequest)
   }

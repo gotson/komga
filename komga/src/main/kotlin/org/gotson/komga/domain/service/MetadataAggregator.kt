@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 class MetadataAggregator {
   fun aggregate(metadatas: Collection<BookMetadata>): BookMetadataAggregation {
     val authors = metadatas.flatMap { it.authors }.distinctBy { "${it.role}__${it.name}" }
+    val notableEntities = metadatas.flatMap { it.notableEntities }.distinctBy { "${it.kind}__${it.name}" }
     val tags = metadatas.flatMap { it.tags }.toSet()
     val (summary, summaryNumber) =
       metadatas
@@ -18,6 +19,6 @@ class MetadataAggregator {
         } ?: ("" to "")
     val releaseDate = metadatas.mapNotNull { it.releaseDate }.minOrNull()
 
-    return BookMetadataAggregation(authors = authors, tags = tags, releaseDate = releaseDate, summary = summary, summaryNumber = summaryNumber)
+    return BookMetadataAggregation(authors = authors, notableEntities = notableEntities, tags = tags, releaseDate = releaseDate, summary = summary, summaryNumber = summaryNumber)
   }
 }

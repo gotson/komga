@@ -13,6 +13,7 @@ import org.gotson.komga.domain.model.FilterBy
 import org.gotson.komga.domain.model.FilterByEntity
 import org.gotson.komga.domain.model.FilterTags
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -91,7 +92,7 @@ class ReferentialDaoTest(
     makeBook("1", libraryId = library1.id, seriesId = series1.id).let { book ->
       seriesLifecycle.addBooks(series1, listOf(book))
       bookMetadataRepository.findById(book.id).let {
-        bookMetadataRepository.update(it.copy(authors = listOf(Author("item1", "writer")), releaseDate = LocalDate.of(2002, 1, 1), tags = setOf("bt1")))
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("item1", "writer")), notableEntities = listOf(NotableEntity("power", "item1")), releaseDate = LocalDate.of(2002, 1, 1), tags = setOf("bt1")))
       }
       seriesMetadataRepository.findById(series1.id).let {
         seriesMetadataRepository.update(it.copy(genres = setOf("item1"), sharingLabels = setOf("item1"), language = "fr", publisher = "item1", ageRating = 18, tags = setOf("st1")))
@@ -102,7 +103,7 @@ class ReferentialDaoTest(
     makeBook("2", libraryId = library2.id, seriesId = series2.id).let { book ->
       seriesLifecycle.addBooks(series2, listOf(book))
       bookMetadataRepository.findById(book.id).let {
-        bookMetadataRepository.update(it.copy(authors = listOf(Author("item2", "inker"), Author("item2", "translator")), releaseDate = LocalDate.of(2002, 2, 1), tags = setOf("bt2")))
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("item2", "inker"), Author("item2", "translator")), notableEntities = listOf(NotableEntity("location", "item2"), NotableEntity("team", "item2")), releaseDate = LocalDate.of(2002, 2, 1), tags = setOf("bt2")))
       }
       seriesMetadataRepository.findById(series2.id).let {
         seriesMetadataRepository.update(it.copy(genres = setOf("item2"), sharingLabels = setOf("item2"), language = "en", publisher = "item2", ageRating = 19, tags = setOf("st2")))
@@ -118,7 +119,7 @@ class ReferentialDaoTest(
     makeBook("shared", libraryId = library1.id, seriesId = seriesShared.id).let { book ->
       seriesLifecycle.addBooks(seriesShared, listOf(book))
       bookMetadataRepository.findById(book.id).let {
-        bookMetadataRepository.update(it.copy(authors = listOf(Author("item_shared", "penciller")), releaseDate = LocalDate.of(2003, 1, 1), tags = setOf("bt_shared")))
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("item_shared", "penciller")), notableEntities = listOf(NotableEntity("object", "item_shared")), releaseDate = LocalDate.of(2003, 1, 1), tags = setOf("bt_shared")))
       }
       seriesMetadataRepository.findById(seriesShared.id).let {
         seriesMetadataRepository.update(it.copy(genres = setOf("item_shared"), language = "ja", publisher = "item_shared", tags = setOf("st_shared")))
@@ -129,7 +130,7 @@ class ReferentialDaoTest(
     makeBook("10", libraryId = library1.id, seriesId = seriesAge10.id).let { book ->
       seriesLifecycle.addBooks(seriesAge10, listOf(book))
       bookMetadataRepository.findById(book.id).let {
-        bookMetadataRepository.update(it.copy(authors = listOf(Author("item_10", "cover")), releaseDate = LocalDate.of(2004, 1, 1), tags = setOf("bt_10")))
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("item_10", "cover")), notableEntities = listOf(NotableEntity("energy", "item_10")), releaseDate = LocalDate.of(2004, 1, 1), tags = setOf("bt_10")))
       }
       seriesMetadataRepository.findById(seriesAge10.id).let {
         seriesMetadataRepository.update(it.copy(genres = setOf("item_10"), sharingLabels = setOf("item_10"), language = "sp", publisher = "item_10", tags = setOf("st_10")))
@@ -755,6 +756,167 @@ class ReferentialDaoTest(
       val items = referentialDao.findSeriesReleaseYears(context, null, Pageable.unpaged()).content
 
       assertThat(items).containsExactly("2004")
+    }
+  }
+
+  @Nested
+  inner class NotableEntity {
+    @Test
+    fun `given search when getting notable entities then matching notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntities(context, "shared", null, null, Pageable.unpaged()).items
+
+      assertThat(items.map { it.name }).containsExactlyInAnyOrder("item_shared")
+    }
+
+    @Test
+    fun `given role when getting notable entities then matching notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntities(context, null, "power", null, Pageable.unpaged()).items
+
+      assertThat(items.map { it.name }).containsExactlyInAnyOrder("item1")
+    }
+
+    @Test
+    fun `given filter by library when getting notable entities then only matching notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntities(context, null, null, FilterBy(FilterByEntity.LIBRARY, setOf(library2.id)), Pageable.unpaged()).items
+
+      assertThat(items.map { it.name }.toSet()).containsExactlyInAnyOrder("item2")
+    }
+
+    @Test
+    fun `given user without restrictions when getting notable entities then all notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntities(context, null, null, null, Pageable.unpaged()).items
+
+      assertThat(items.map { it.name }.toSet()).containsExactlyInAnyOrder("item1", "item2", "item_shared", "item_10")
+    }
+
+    @Test
+    fun `given user with restricted library access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userLib1)
+      val items = referentialDao.findNotableEntities(context, null, null, null, Pageable.unpaged()).items
+
+      assertThat(items.map { it.name }).containsExactlyInAnyOrder("item1", "item_shared", "item_10")
+    }
+
+    @Test
+    fun `given user with restricted label access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userLabelAllow)
+      val items = referentialDao.findNotableEntities(context, null, null, null, Pageable.unpaged()).items
+
+      assertThat(items.map { it.name }).containsExactlyInAnyOrder("item_shared")
+    }
+
+    @Test
+    fun `given user with restricted age access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userAge10)
+      val items = referentialDao.findNotableEntities(context, null, null, null, Pageable.unpaged()).items
+
+      assertThat(items.map { it.name }).containsExactlyInAnyOrder("item_10")
+    }
+  }
+
+  @Nested
+  inner class NotableEntityName {
+    @Test
+    fun `given search when getting notable entities then matching notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntitiesNames(context, "shared", null, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("item_shared")
+    }
+
+    @Test
+    fun `given role when getting notable entities then matching notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntitiesNames(context, null, "power", null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("item1")
+    }
+
+    @Test
+    fun `given filter by library when getting notable entities then only matching notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntitiesNames(context, null, null, FilterBy(FilterByEntity.LIBRARY, setOf(library2.id)), Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("item2")
+    }
+
+    @Test
+    fun `given user without restrictions when getting notable entities then all notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntitiesNames(context, null, null, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("item1", "item2", "item_shared", "item_10")
+    }
+
+    @Test
+    fun `given user with restricted library access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userLib1)
+      val items = referentialDao.findNotableEntitiesNames(context, null, null, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("item1", "item_shared", "item_10")
+    }
+
+    @Test
+    fun `given user with restricted label access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userLabelAllow)
+      val items = referentialDao.findNotableEntitiesNames(context, null, null, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("item_shared")
+    }
+
+    @Test
+    fun `given user with restricted age access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userAge10)
+      val items = referentialDao.findNotableEntitiesNames(context, null, null, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("item_10")
+    }
+  }
+
+  @Nested
+  inner class NotableEntityKind {
+    @Test
+    fun `given filter by library when getting notable entities then only matching notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntitiesKinds(context, FilterBy(FilterByEntity.LIBRARY, setOf(library2.id)), Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("location", "team")
+    }
+
+    @Test
+    fun `given user without restrictions when getting notable entities then all notable entities are returned`() {
+      val context = SearchContext(userAll)
+      val items = referentialDao.findNotableEntitiesKinds(context, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("energy", "location", "object", "power", "team")
+    }
+
+    @Test
+    fun `given user with restricted library access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userLib1)
+      val items = referentialDao.findNotableEntitiesKinds(context, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("energy", "object", "power")
+    }
+
+    @Test
+    fun `given user with restricted label access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userLabelAllow)
+      val items = referentialDao.findNotableEntitiesKinds(context, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("object")
+    }
+
+    @Test
+    fun `given user with restricted age access when getting notable entities then only allowed notable entities are returned`() {
+      val context = SearchContext(userAge10)
+      val items = referentialDao.findNotableEntitiesKinds(context, null, Pageable.unpaged()).items
+
+      assertThat(items).containsExactlyInAnyOrder("energy")
     }
   }
 }

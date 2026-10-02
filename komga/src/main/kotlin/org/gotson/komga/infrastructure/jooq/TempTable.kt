@@ -20,6 +20,7 @@ class TempTable private constructor(
 
   private var created = false
 
+  // TODO: evaluate adding a PRIMARY KEY here
   fun create() {
     dslContext.execute("CREATE TEMPORARY TABLE $name (STRING varchar NOT NULL);")
     created = true
@@ -56,7 +57,7 @@ class TempTable private constructor(
     fun DSLContext.withTempTable(
       batchSize: Int,
       collection: Collection<String>,
-    ) = TempTable(this, generateName())
+    ) = TempTable(this)
       .also {
         it.insertTempStrings(batchSize, collection)
       }

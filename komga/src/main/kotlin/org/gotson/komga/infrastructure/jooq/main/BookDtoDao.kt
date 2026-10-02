@@ -24,6 +24,7 @@ import org.gotson.komga.interfaces.api.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.api.rest.dto.BookDto
 import org.gotson.komga.interfaces.api.rest.dto.BookMetadataDto
 import org.gotson.komga.interfaces.api.rest.dto.MediaDto
+import org.gotson.komga.interfaces.api.rest.dto.NotableEntityDto
 import org.gotson.komga.interfaces.api.rest.dto.ReadProgressDto
 import org.gotson.komga.interfaces.api.rest.dto.WebLinkDto
 import org.gotson.komga.jooq.main.Tables
@@ -68,6 +69,7 @@ class BookDtoDao(
   private val rlb = Tables.READLIST_BOOK
   private val bt = Tables.BOOK_METADATA_TAG
   private val bl = Tables.BOOK_METADATA_LINK
+  private val ne = Tables.BOOK_METADATA_NOTABLE_ENTITIES
 
   private val onDeckFields = b.fields() + m.fields() + d.fields() + r.fields() + sd.TITLE
 
@@ -151,6 +153,7 @@ class BookDtoDao(
           }
         }
 
+      // TODO: evaluate perf gain by not running the count if the request is unpaged
       val count =
         dslRO.fetchCount(
           dslRO
@@ -187,6 +190,7 @@ class BookDtoDao(
             .groupBy(b.ID),
         )
 
+      // TODO: evaluate perf gain by not running the query if the request is of size 0
       val dtos =
         dslRO
           .selectBase(userId, joins)
@@ -439,9 +443,11 @@ class BookDtoDao(
     val records = fetch()
     val bookIds = records.getValues(b.ID)
 
+    // TODO: evaluate using multiset
     lateinit var authors: Map<String, List<AuthorDto>>
     lateinit var tags: Map<String, List<String>>
     lateinit var links: Map<String, List<WebLinkDto>>
+    lateinit var notableEntities: Map<String, List<NotableEntityDto>>
     dsl.withTempTable(batchSize, bookIds).use { tempTable ->
       authors =
         dsl
@@ -461,6 +467,12 @@ class BookDtoDao(
           .selectFrom(bl)
           .where(bl.BOOK_ID.`in`(tempTable.selectTempStrings()))
           .groupBy({ it.bookId }, { WebLinkDto(it.label, it.url) })
+
+      notableEntities =
+        dsl
+          .selectFrom(ne)
+          .where(ne.BOOK_ID.`in`(tempTable.selectTempStrings()))
+          .groupBy({ it.bookId }, { NotableEntityDto(it.kind, it.name) })
     }
 
     return records
@@ -471,7 +483,7 @@ class BookDtoDao(
         val rr = rec.into(r)
         val seriesTitle = rec.into(sd.TITLE).component1()
 
-        br.toDto(mr.toDto(), dr.toDto(authors[br.id].orEmpty(), tags[br.id].orEmpty().toSet(), links[br.id].orEmpty()), if (rr.userId != null) rr.toDto() else null, seriesTitle)
+        br.toDto(mr.toDto(), dr.toDto(authors[br.id].orEmpty(), tags[br.id].orEmpty().toSet(), links[br.id].orEmpty(), notableEntities[br.id].orEmpty()), if (rr.userId != null) rr.toDto() else null, seriesTitle)
       }
   }
 
@@ -514,6 +526,7 @@ class BookDtoDao(
     authors: List<AuthorDto>,
     tags: Set<String>,
     links: List<WebLinkDto>,
+    notableEntities: List<NotableEntityDto>,
   ) = BookMetadataDto(
     title = title,
     titleLock = titleLock,
@@ -527,6 +540,8 @@ class BookDtoDao(
     releaseDateLock = releaseDateLock,
     authors = authors,
     authorsLock = authorsLock,
+    notableEntities = notableEntities,
+    notableEntitiesLock = notableEntitiesLock,
     tags = tags,
     tagsLock = tagsLock,
     isbn = isbn,

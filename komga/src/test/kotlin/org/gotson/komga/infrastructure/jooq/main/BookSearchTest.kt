@@ -14,11 +14,13 @@ import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
 import org.gotson.komga.domain.model.MediaProfile
 import org.gotson.komga.domain.model.MediaType
+import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchCondition.AuthorMatch
+import org.gotson.komga.domain.model.SearchCondition.NotableEntityMatch
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.ThumbnailBook
@@ -949,6 +951,122 @@ class BookSearchTest(
       val search =
         BookSearch(
           SearchCondition.Author(SearchOperator.Is(AuthorMatch())),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+    }
+  }
+
+  @Test
+  fun `given some books when searching by notable entity then results are accurate`() {
+    makeBook("1", libraryId = library1.id, seriesId = series1.id).let { book ->
+      seriesLifecycle.addBooks(series1, listOf(book))
+      bookMetadataRepository.findById(book.id).let {
+        bookMetadataRepository.update(it.copy(notableEntities = listOf(NotableEntity("writer", "john"), NotableEntity("cover", "jim"))))
+      }
+    }
+    makeBook("2", libraryId = library2.id, seriesId = series2.id).let { book ->
+      seriesLifecycle.addBooks(series2, listOf(book))
+      bookMetadataRepository.findById(book.id).let {
+        bookMetadataRepository.update(it.copy(notableEntities = listOf(NotableEntity("artist", "john"), NotableEntity("artist", "amanda"))))
+      }
+    }
+    makeBook("3", libraryId = library2.id, seriesId = series2.id).let { book ->
+      seriesLifecycle.addBooks(series2, listOf(book))
+      bookMetadataRepository.findById(book.id).let {
+        bookMetadataRepository.update(it.copy(notableEntities = listOf(NotableEntity("writer", "jack"))))
+      }
+    }
+    makeBook("4", libraryId = library2.id, seriesId = series2.id).let { book ->
+      seriesLifecycle.addBooks(series2, listOf(book))
+    }
+
+    // books with an notable entity named 'john'
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch("jÒhn"))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2")
+    }
+
+    // books with an notable entity named 'john' with the 'writer' kind
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch("john", "WRÎTER"))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1")
+    }
+
+    // books with any notable entity with the 'writer' kind
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch(kind = "writer"))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "3")
+    }
+
+    // books without any notable entity named 'john' with a 'writer' kind
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch("john", "writer"))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "3", "4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2", "3", "4")
+    }
+
+    // books without any notable entity named 'john'
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch("jOhn"))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("3", "4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("3", "4")
+    }
+
+    // books without any notable entity with the 'writer' kind
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch(kind = "writer"))),
+        )
+      val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2", "4")
+    }
+
+    // empty NotableEntityMatch searches for any notable entity
+    run {
+      val search =
+        BookSearch(
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch())),
         )
       val found = bookDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = bookDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content

@@ -4,6 +4,7 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.infrastructure.validation.NullOrBlankOrISBN
 import org.gotson.komga.infrastructure.validation.NullOrNotBlank
@@ -53,6 +54,14 @@ class BookMetadataUpdateDto {
 
   var authorsLock: Boolean? = null
 
+  @get:Valid
+  var notableEntities: List<NotableEntityUpdateDto>?
+    by Delegates.observable(null) { prop, _, _ ->
+      isSet[prop.name] = true
+    }
+
+  var notableEntitiesLock: Boolean? = null
+
   var tags: Set<String>?
     by Delegates.observable(null) { prop, _, _ ->
       isSet[prop.name] = true
@@ -85,6 +94,14 @@ class AuthorUpdateDto {
   val role: String? = null
 }
 
+class NotableEntityUpdateDto {
+  @get:NotBlank
+  val kind: String? = null
+
+  @get:NotBlank
+  val name: String? = null
+}
+
 class WebLinkUpdateDto {
   @get:NotBlank
   val label: String? = null
@@ -113,6 +130,13 @@ fun BookMetadata.patch(patch: BookMetadataUpdateDto) =
           this.authors
         },
       authorsLock = patch.authorsLock ?: this.authorsLock,
+      notableEntities =
+        if (patch.isSet("notableEntities")) {
+          if (patch.notableEntities != null) patch.notableEntities!!.map { NotableEntity(it.kind ?: "", it.name ?: "") } else emptyList()
+        } else {
+          this.notableEntities
+        },
+      notableEntitiesLock = patch.notableEntitiesLock ?: this.notableEntitiesLock,
       tags =
         if (patch.isSet("tags")) {
           if (patch.tags != null) patch.tags!! else emptySet()

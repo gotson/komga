@@ -201,6 +201,40 @@ class BookSearchHelper(
           } to emptySet()
         }
 
+      is SearchCondition.NotableEntity ->
+        Tables.BOOK.ID.let { field ->
+          val inner = { name: String?, kind: String? ->
+            DSL
+              .select(Tables.BOOK_METADATA_NOTABLE_ENTITIES.BOOK_ID)
+              .from(Tables.BOOK_METADATA_NOTABLE_ENTITIES)
+              .where(DSL.noCondition())
+              .apply {
+                if (name != null)
+                  and(
+                    Tables.BOOK_METADATA_NOTABLE_ENTITIES.NAME
+                      .unicode1()
+                      .equal(name),
+                  )
+              }.apply {
+                if (kind != null)
+                  and(
+                    Tables.BOOK_METADATA_NOTABLE_ENTITIES.KIND
+                      .unicode1()
+                      .equal(kind),
+                  )
+              }
+          }
+          when (searchCondition.operator) {
+            is SearchOperator.Is -> {
+              field.`in`(inner(searchCondition.operator.value.name, searchCondition.operator.value.kind))
+            }
+
+            is SearchOperator.IsNot -> {
+              field.notIn(inner(searchCondition.operator.value.name, searchCondition.operator.value.kind))
+            }
+          } to emptySet()
+        }
+
       is SearchCondition.Poster ->
         Tables.BOOK.ID.let { field ->
           val inner = { type: SearchCondition.PosterMatch.Type?, selected: Boolean? ->

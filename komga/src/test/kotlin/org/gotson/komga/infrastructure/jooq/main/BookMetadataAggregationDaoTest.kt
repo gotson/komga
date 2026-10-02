@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadataAggregation
+import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.makeLibrary
 import org.gotson.komga.domain.model.makeSeries
 import org.gotson.komga.domain.persistence.LibraryRepository
@@ -52,6 +53,7 @@ class BookMetadataAggregationDaoTest(
     val metadata =
       BookMetadataAggregation(
         authors = listOf(Author("author", "role")),
+        notableEntities = listOf(NotableEntity("power", "elasticity"), NotableEntity("team", "mutants")),
         tags = setOf("tag1", "tag2"),
         releaseDate = LocalDate.now(),
         summary = "Summary",
@@ -72,6 +74,10 @@ class BookMetadataAggregationDaoTest(
     with(created.authors.first()) {
       assertThat(name).isEqualTo(metadata.authors.first().name)
       assertThat(role).isEqualTo(metadata.authors.first().role)
+    }
+    with(created.notableEntities.first()) {
+      assertThat(name).isEqualTo(metadata.notableEntities.first().name)
+      assertThat(kind).isEqualTo(metadata.notableEntities.first().kind)
     }
     assertThat(created.tags).containsExactlyInAnyOrderElementsOf(metadata.tags)
   }
@@ -97,6 +103,7 @@ class BookMetadataAggregationDaoTest(
     assertThat(created.summary).isBlank
     assertThat(created.summaryNumber).isBlank
     assertThat(created.authors).isEmpty()
+    assertThat(created.notableEntities).isEmpty()
   }
 
   @Test
@@ -141,6 +148,7 @@ class BookMetadataAggregationDaoTest(
     val metadata =
       BookMetadataAggregation(
         authors = listOf(Author("author", "role")),
+        notableEntities = listOf(NotableEntity("power", "elasticity"), NotableEntity("team", "mutants")),
         tags = setOf("tag1", "tag2"),
         releaseDate = LocalDate.now(),
         summary = "Summary",
@@ -159,6 +167,7 @@ class BookMetadataAggregationDaoTest(
           summary = "SummaryUpdated",
           summaryNumber = "2",
           authors = listOf(Author("authorUpdated", "roleUpdated"), Author("author2", "role2")),
+          notableEntities = listOf(NotableEntity("powerUpdated", "elasticityUpdated")),
           tags = setOf("tag1", "tag2updated"),
         )
       }
@@ -177,6 +186,9 @@ class BookMetadataAggregationDaoTest(
     assertThat(modified.authors).hasSize(2)
     assertThat(modified.authors.map { it.name }).containsExactlyInAnyOrderElementsOf(updated.authors.map { it.name })
     assertThat(modified.authors.map { it.role }).containsExactlyInAnyOrderElementsOf(updated.authors.map { it.role })
+    assertThat(modified.notableEntities).hasSize(1)
+    assertThat(modified.notableEntities.map { it.name }).containsExactlyInAnyOrderElementsOf(updated.notableEntities.map { it.name })
+    assertThat(modified.notableEntities.map { it.kind }).containsExactlyInAnyOrderElementsOf(updated.notableEntities.map { it.kind })
     assertThat(modified.tags).containsExactlyInAnyOrderElementsOf(updated.tags)
   }
 }

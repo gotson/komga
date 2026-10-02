@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
+import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.model.makeBook
 import org.gotson.komga.domain.model.makeLibrary
@@ -67,6 +68,7 @@ class BookMetadataDaoTest(
         numberSort = 1F,
         releaseDate = LocalDate.now(),
         authors = listOf(Author("author", "role")),
+        notableEntities = listOf(NotableEntity("power", "elasticity"), NotableEntity("team", "mutants")),
         tags = setOf("tag", "another"),
         isbn = "987654321",
         links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange-30-a-gathering-of-fear/4000-18731/"))),
@@ -77,6 +79,7 @@ class BookMetadataDaoTest(
         numberSortLock = true,
         releaseDateLock = true,
         authorsLock = true,
+        notableEntitiesLock = true,
         tagsLock = true,
         isbnLock = true,
       )
@@ -98,6 +101,11 @@ class BookMetadataDaoTest(
       assertThat(name).isEqualTo(metadata.authors.first().name)
       assertThat(role).isEqualTo(metadata.authors.first().role)
     }
+    assertThat(created.notableEntities).hasSize(2)
+    with(created.notableEntities.first()) {
+      assertThat(name).isEqualTo(metadata.notableEntities.first().name)
+      assertThat(kind).isEqualTo(metadata.notableEntities.first().kind)
+    }
     assertThat(created.tags).containsAll(metadata.tags)
     assertThat(created.isbn).isEqualTo(metadata.isbn)
     with(created.links.first()) {
@@ -111,6 +119,7 @@ class BookMetadataDaoTest(
     assertThat(created.numberSortLock).isEqualTo(metadata.numberSortLock)
     assertThat(created.releaseDateLock).isEqualTo(metadata.releaseDateLock)
     assertThat(created.authorsLock).isEqualTo(metadata.authorsLock)
+    assertThat(created.notableEntitiesLock).isEqualTo(metadata.notableEntitiesLock)
     assertThat(created.tagsLock).isEqualTo(metadata.tagsLock)
     assertThat(created.isbnLock).isEqualTo(metadata.isbnLock)
     assertThat(created.linksLock).isEqualTo(metadata.linksLock)
@@ -137,6 +146,7 @@ class BookMetadataDaoTest(
     assertThat(created.numberSort).isEqualTo(metadata.numberSort)
     assertThat(created.releaseDate).isNull()
     assertThat(created.authors).isEmpty()
+    assertThat(created.notableEntities).isEmpty()
     assertThat(created.tags).isEmpty()
     assertThat(created.isbn).isBlank
     assertThat(created.links).isEmpty()
@@ -147,6 +157,7 @@ class BookMetadataDaoTest(
     assertThat(created.numberSortLock).isFalse
     assertThat(created.releaseDateLock).isFalse
     assertThat(created.authorsLock).isFalse
+    assertThat(created.notableEntitiesLock).isFalse
     assertThat(created.tagsLock).isFalse
     assertThat(created.isbnLock).isFalse
     assertThat(created.linksLock).isFalse
@@ -162,6 +173,7 @@ class BookMetadataDaoTest(
         numberSort = 1F,
         releaseDate = LocalDate.now(),
         authors = listOf(Author("author", "role")),
+        notableEntities = listOf(NotableEntity("power", "flying")),
         tags = setOf("tag"),
         links = listOf(WebLink("Comicvine", URI("https://comicvine.gamespot.com/doctor-strange-30-a-gathering-of-fear/4000-18731/"))),
         bookId = book.id,
@@ -178,6 +190,7 @@ class BookMetadataDaoTest(
           numberSort = 2F,
           releaseDate = LocalDate.now(),
           authors = listOf(Author("author2", "role2")),
+          notableEntities = listOf(NotableEntity("team", "mutants")),
           tags = setOf("another"),
           isbn = "987654321",
           links = listOf(WebLink("Bedetheque", URI("https://www.bedetheque.com/BD-AD-Grand-Riviere-Tome-1-Terre-d-election-12596.html"))),
@@ -187,6 +200,7 @@ class BookMetadataDaoTest(
           numberSortLock = true,
           releaseDateLock = true,
           authorsLock = true,
+          notableEntitiesLock = true,
           tagsLock = true,
           isbnLock = true,
           linksLock = true,
@@ -214,6 +228,7 @@ class BookMetadataDaoTest(
     assertThat(modified.numberSortLock).isEqualTo(updated.numberSortLock)
     assertThat(modified.releaseDateLock).isEqualTo(updated.releaseDateLock)
     assertThat(modified.authorsLock).isEqualTo(updated.authorsLock)
+    assertThat(modified.notableEntitiesLock).isEqualTo(updated.notableEntitiesLock)
     assertThat(modified.tagsLock).isEqualTo(updated.tagsLock)
     assertThat(modified.isbnLock).isEqualTo(updated.isbnLock)
     assertThat(modified.linksLock).isEqualTo(updated.linksLock)
@@ -221,6 +236,8 @@ class BookMetadataDaoTest(
     assertThat(modified.tags).containsAll(updated.tags)
     assertThat(modified.authors.first().name).isEqualTo(updated.authors.first().name)
     assertThat(modified.authors.first().role).isEqualTo(updated.authors.first().role)
+    assertThat(modified.notableEntities.first().name).isEqualTo(updated.notableEntities.first().name)
+    assertThat(modified.notableEntities.first().kind).isEqualTo(updated.notableEntities.first().kind)
     assertThat(modified.links.first().label).isEqualTo(updated.links.first().label)
     assertThat(modified.links.first().url).isEqualTo(updated.links.first().url)
   }

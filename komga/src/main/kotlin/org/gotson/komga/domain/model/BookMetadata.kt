@@ -11,6 +11,7 @@ class BookMetadata(
   val numberSort: Float,
   val releaseDate: LocalDate? = null,
   val authors: List<Author> = emptyList(),
+  val notableEntities: List<NotableEntity> = emptyList(),
   tags: Set<String> = emptySet(),
   val isbn: String = "",
   val links: List<WebLink> = emptyList(),
@@ -20,6 +21,7 @@ class BookMetadata(
   val numberSortLock: Boolean = false,
   val releaseDateLock: Boolean = false,
   val authorsLock: Boolean = false,
+  val notableEntitiesLock: Boolean = false,
   val tagsLock: Boolean = false,
   val isbnLock: Boolean = false,
   val linksLock: Boolean = false,
@@ -39,6 +41,7 @@ class BookMetadata(
     numberSort: Float = this.numberSort,
     releaseDate: LocalDate? = this.releaseDate,
     authors: List<Author> = this.authors.toList(),
+    notableEntities: List<NotableEntity> = this.notableEntities.toList(),
     tags: Set<String> = this.tags,
     isbn: String = this.isbn,
     links: List<WebLink> = this.links,
@@ -48,6 +51,7 @@ class BookMetadata(
     numberSortLock: Boolean = this.numberSortLock,
     releaseDateLock: Boolean = this.releaseDateLock,
     authorsLock: Boolean = this.authorsLock,
+    notableEntitiesLock: Boolean = this.notableEntitiesLock,
     tagsLock: Boolean = this.tagsLock,
     isbnLock: Boolean = this.isbnLock,
     linksLock: Boolean = this.linksLock,
@@ -61,6 +65,7 @@ class BookMetadata(
     numberSort = numberSort,
     releaseDate = releaseDate,
     authors = authors,
+    notableEntities = notableEntities,
     tags = tags,
     isbn = isbn,
     links = links,
@@ -70,6 +75,7 @@ class BookMetadata(
     numberSortLock = numberSortLock,
     releaseDateLock = releaseDateLock,
     authorsLock = authorsLock,
+    notableEntitiesLock = notableEntitiesLock,
     tagsLock = tagsLock,
     isbnLock = isbnLock,
     linksLock = linksLock,
@@ -78,5 +84,5 @@ class BookMetadata(
     lastModifiedDate = lastModifiedDate,
   )
 
-  override fun toString(): String = "BookMetadata(numberSort=$numberSort, releaseDate=$releaseDate, authors=$authors, isbn='$isbn', links=$links, titleLock=$titleLock, summaryLock=$summaryLock, numberLock=$numberLock, numberSortLock=$numberSortLock, releaseDateLock=$releaseDateLock, authorsLock=$authorsLock, tagsLock=$tagsLock, isbnLock=$isbnLock, linksLock=$linksLock, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', summary='$summary', number='$number', tags=$tags)"
+  override fun toString(): String = "BookMetadata(authors=$authors, numberSort=$numberSort, releaseDate=$releaseDate, notableEntities=$notableEntities, isbn='$isbn', links=$links, titleLock=$titleLock, summaryLock=$summaryLock, numberLock=$numberLock, numberSortLock=$numberSortLock, releaseDateLock=$releaseDateLock, authorsLock=$authorsLock, notableEntitiesLock=$notableEntitiesLock, tagsLock=$tagsLock, isbnLock=$isbnLock, linksLock=$linksLock, bookId='$bookId', createdDate=$createdDate, lastModifiedDate=$lastModifiedDate, title='$title', summary='$summary', number='$number', tags=$tags)"
 }

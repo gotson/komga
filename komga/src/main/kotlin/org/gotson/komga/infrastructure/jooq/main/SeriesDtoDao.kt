@@ -3,7 +3,6 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchField
 import org.gotson.komga.domain.model.SeriesSearch
-import org.gotson.komga.infrastructure.datasource.SqliteUdfDataSource
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
@@ -21,6 +20,7 @@ import org.gotson.komga.interfaces.api.rest.dto.AlternateTitleDto
 import org.gotson.komga.interfaces.api.rest.dto.AuthorDto
 import org.gotson.komga.interfaces.api.rest.dto.BookMetadataAggregationDto
 import org.gotson.komga.interfaces.api.rest.dto.GroupCountDto
+import org.gotson.komga.interfaces.api.rest.dto.NotableEntityDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesDto
 import org.gotson.komga.interfaces.api.rest.dto.SeriesMetadataDto
 import org.gotson.komga.interfaces.api.rest.dto.WebLinkDto
@@ -72,6 +72,7 @@ class SeriesDtoDao(
   private val bma = Tables.BOOK_METADATA_AGGREGATION
   private val bmaa = Tables.BOOK_METADATA_AGGREGATION_AUTHOR
   private val bmat = Tables.BOOK_METADATA_AGGREGATION_TAG
+  private val bmane = Tables.BOOK_METADATA_AGGREGATION_NOTABLE_ENTITIES
 
   private val groupFields =
     arrayOf(
@@ -310,8 +311,10 @@ class SeriesDtoDao(
     lateinit var links: Map<String, List<WebLinkDto>>
     lateinit var alternateTitles: Map<String, List<AlternateTitleDto>>
     lateinit var aggregatedAuthors: Map<String, List<AuthorDto>>
+    lateinit var aggregatedNotableEntities: Map<String, List<NotableEntityDto>>
     lateinit var aggregatedTags: Map<String, List<String>>
 
+    // TODO: evaluate using multiset
     dsl.withTempTable(batchSize, seriesIds).use { tempTable ->
       genres =
         dsl
@@ -350,6 +353,13 @@ class SeriesDtoDao(
           .filter { it.name != null }
           .groupBy({ it.seriesId }, { AuthorDto(it.name, it.role) })
 
+      aggregatedNotableEntities =
+        dsl
+          .selectFrom(bmane)
+          .where(bmane.SERIES_ID.`in`(tempTable.selectTempStrings()))
+          .filter { it.name != null }
+          .groupBy({ it.seriesId }, { NotableEntityDto(it.kind, it.name) })
+
       aggregatedTags =
         dsl
           .selectFrom(bmat)
@@ -373,7 +383,7 @@ class SeriesDtoDao(
           booksUnreadCount,
           booksInProgressCount,
           dr.toDto(genres[sr.id].orEmpty().toSet(), tags[sr.id].orEmpty().toSet(), sharingLabels[sr.id].orEmpty().toSet(), links[sr.id].orEmpty(), alternateTitles[sr.id].orEmpty()),
-          bmar.toDto(aggregatedAuthors[sr.id].orEmpty(), aggregatedTags[sr.id].orEmpty().toSet()),
+          bmar.toDto(aggregatedAuthors[sr.id].orEmpty(), aggregatedNotableEntities[sr.id].orEmpty(), aggregatedTags[sr.id].orEmpty().toSet()),
         )
       }
   }
@@ -450,9 +460,11 @@ class SeriesDtoDao(
 
   private fun BookMetadataAggregationRecord.toDto(
     authors: List<AuthorDto>,
+    notableEntities: List<NotableEntityDto>,
     tags: Set<String>,
   ) = BookMetadataAggregationDto(
     authors = authors,
+    notableEntities = notableEntities,
     tags = tags,
     releaseDate = releaseDate,
     summary = summary,

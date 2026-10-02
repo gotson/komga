@@ -8,9 +8,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.KomgaUser
+import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.ReadProgress
 import org.gotson.komga.domain.model.ReadStatus
 import org.gotson.komga.domain.model.SearchCondition
+import org.gotson.komga.domain.model.SearchCondition.AuthorMatch
+import org.gotson.komga.domain.model.SearchCondition.NotableEntityMatch
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.model.SeriesCollection
@@ -986,7 +989,7 @@ class SeriesSearchTest(
     run {
       val search =
         SeriesSearch(
-          SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch("john"))),
+          SearchCondition.Author(SearchOperator.Is(AuthorMatch("john"))),
         )
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
@@ -999,7 +1002,7 @@ class SeriesSearchTest(
     run {
       val search =
         SeriesSearch(
-          SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch("john", "writer"))),
+          SearchCondition.Author(SearchOperator.Is(AuthorMatch("john", "writer"))),
         )
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
@@ -1012,7 +1015,7 @@ class SeriesSearchTest(
     run {
       val search =
         SeriesSearch(
-          SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch(role = "writer"))),
+          SearchCondition.Author(SearchOperator.Is(AuthorMatch(role = "writer"))),
         )
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
@@ -1025,7 +1028,7 @@ class SeriesSearchTest(
     run {
       val search =
         SeriesSearch(
-          SearchCondition.Author(SearchOperator.IsNot(SearchCondition.AuthorMatch("john", "writer"))),
+          SearchCondition.Author(SearchOperator.IsNot(AuthorMatch("john", "writer"))),
         )
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
@@ -1038,7 +1041,7 @@ class SeriesSearchTest(
     run {
       val search =
         SeriesSearch(
-          SearchCondition.Author(SearchOperator.IsNot(SearchCondition.AuthorMatch("jOhn"))),
+          SearchCondition.Author(SearchOperator.IsNot(AuthorMatch("jOhn"))),
         )
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
@@ -1051,7 +1054,7 @@ class SeriesSearchTest(
     run {
       val search =
         SeriesSearch(
-          SearchCondition.Author(SearchOperator.IsNot(SearchCondition.AuthorMatch(role = "writer"))),
+          SearchCondition.Author(SearchOperator.IsNot(AuthorMatch(role = "writer"))),
         )
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
@@ -1064,7 +1067,132 @@ class SeriesSearchTest(
     run {
       val search =
         SeriesSearch(
-          SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch())),
+          SearchCondition.Author(SearchOperator.Is(AuthorMatch())),
+        )
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+    }
+  }
+
+  @Test
+  fun `given some series when searching by notable entities then results are accurate`() {
+    makeSeries("1", library1.id).let { series ->
+      seriesLifecycle.createSeries(series)
+      val book = makeBook("1", libraryId = series.libraryId)
+      seriesLifecycle.addBooks(series, listOf(book))
+      bookMetadataRepository.findById(book.id).let {
+        bookMetadataRepository.update(it.copy(notableEntities = listOf(NotableEntity("writer", "john"), NotableEntity("cover", "jim"))))
+      }
+      seriesMetadataLifecycle.aggregateMetadata(series)
+    }
+    makeSeries("2", library1.id).let { series ->
+      seriesLifecycle.createSeries(series)
+      val book = makeBook("2", libraryId = series.libraryId)
+      seriesLifecycle.addBooks(series, listOf(book))
+      bookMetadataRepository.findById(book.id).let {
+        bookMetadataRepository.update(it.copy(notableEntities = listOf(NotableEntity("artist", "john"), NotableEntity("artist", "amanda"))))
+      }
+      seriesMetadataLifecycle.aggregateMetadata(series)
+    }
+    makeSeries("3", library1.id).let { series ->
+      seriesLifecycle.createSeries(series)
+      val book = makeBook("3", libraryId = series.libraryId)
+      seriesLifecycle.addBooks(series, listOf(book))
+      bookMetadataRepository.findById(book.id).let {
+        bookMetadataRepository.update(it.copy(notableEntities = listOf(NotableEntity("writer", "jack"))))
+      }
+      seriesMetadataLifecycle.aggregateMetadata(series)
+    }
+    makeSeries("4", library1.id).let { series ->
+      seriesLifecycle.createSeries(series)
+    }
+
+    // series with an author named 'john'
+    run {
+      val search =
+        SeriesSearch(
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch("john"))),
+        )
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2")
+    }
+
+    // series with an notable entity named 'john' with the 'writer' kind
+    run {
+      val search =
+        SeriesSearch(
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch("john", "writer"))),
+        )
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1")
+    }
+
+    // series with any notable entity with the 'writer' kind
+    run {
+      val search =
+        SeriesSearch(
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch(kind = "writer"))),
+        )
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "3")
+    }
+
+    // series without any notable entity named 'john' with a 'writer' kind
+    run {
+      val search =
+        SeriesSearch(
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch("john", "writer"))),
+        )
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "3", "4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2", "3", "4")
+    }
+
+    // series without any notable entity named 'john'
+    run {
+      val search =
+        SeriesSearch(
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch("jOhn"))),
+        )
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("3", "4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("3", "4")
+    }
+
+    // series without any notable entity with the 'writer' kind
+    run {
+      val search =
+        SeriesSearch(
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch(kind = "writer"))),
+        )
+      val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
+      val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
+
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("2", "4")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2", "4")
+    }
+
+    // empty NotableEntityMatch searches for any notable entity
+    run {
+      val search =
+        SeriesSearch(
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch())),
         )
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content

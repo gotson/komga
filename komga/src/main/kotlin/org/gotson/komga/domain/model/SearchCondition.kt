@@ -8,14 +8,14 @@ import io.swagger.v3.oas.annotations.media.Schema
 class SearchCondition {
   @Schema(
     name = "SearchConditionBook",
-    oneOf = [AnyOfBook::class, AllOfBook::class, LibraryId::class, ReadListId::class, SeriesId::class, Deleted::class, OneShot::class, Title::class, ReleaseDate::class, Tag::class, NumberSort::class, ReadStatus::class, MediaStatus::class, MediaProfile::class, Author::class, Poster::class],
+    oneOf = [AnyOfBook::class, AllOfBook::class, LibraryId::class, ReadListId::class, SeriesId::class, Deleted::class, OneShot::class, Title::class, ReleaseDate::class, Tag::class, NumberSort::class, ReadStatus::class, MediaStatus::class, MediaProfile::class, Author::class, NotableEntity::class, Poster::class],
   )
   @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
   sealed interface Book
 
   @Schema(
     name = "SearchConditionSeries",
-    oneOf = [AnyOfSeries::class, AllOfSeries::class, LibraryId::class, CollectionId::class, Deleted::class, Complete::class, OneShot::class, Title::class, TitleSort::class, ReleaseDate::class, Tag::class, SharingLabel::class, Publisher::class, Language::class, Genre::class, AgeRating::class, ReadStatus::class, SeriesStatus::class, Author::class],
+    oneOf = [AnyOfSeries::class, AllOfSeries::class, LibraryId::class, CollectionId::class, Deleted::class, Complete::class, OneShot::class, Title::class, TitleSort::class, ReleaseDate::class, Tag::class, SharingLabel::class, Publisher::class, Language::class, Genre::class, AgeRating::class, ReadStatus::class, SeriesStatus::class, Author::class, NotableEntity::class],
   )
   @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
   sealed interface Series
@@ -196,6 +196,19 @@ class SearchCondition {
   data class AuthorMatch(
     val name: String? = null,
     val role: String? = null,
+  )
+
+  @Schema(name = "SearchConditionNotableEntity")
+  data class NotableEntity(
+    @JsonProperty("notableEntity")
+    val operator: SearchOperator.Equality<NotableEntityMatch>,
+  ) : Book,
+    Series
+
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  data class NotableEntityMatch(
+    val name: String? = null,
+    val kind: String? = null,
   )
 
   @Schema(name = "SearchConditionPoster")

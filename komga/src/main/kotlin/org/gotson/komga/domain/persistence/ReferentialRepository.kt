@@ -1,8 +1,10 @@
 package org.gotson.komga.domain.persistence
 
+import org.gotson.komga.application.query.PageResult
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.FilterBy
 import org.gotson.komga.domain.model.FilterTags
+import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.SearchContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -255,4 +257,26 @@ interface ReferentialRepository {
     filterBy: FilterBy?,
     pageable: Pageable,
   ): Page<String>
+
+  fun findNotableEntities(
+    context: SearchContext,
+    search: String?,
+    kind: String?,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): PageResult<NotableEntity>
+
+  fun findNotableEntitiesKinds(
+    context: SearchContext,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): PageResult<String>
+
+  fun findNotableEntitiesNames(
+    context: SearchContext,
+    search: String?,
+    kind: String?,
+    filterBy: FilterBy?,
+    pageable: Pageable,
+  ): PageResult<String>
 }

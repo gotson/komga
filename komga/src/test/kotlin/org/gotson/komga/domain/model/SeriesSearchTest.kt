@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.SearchCondition.AuthorMatch
+import org.gotson.komga.domain.model.SearchCondition.NotableEntityMatch
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -71,6 +72,11 @@ class SeriesSearchTest(
           SearchCondition.Author(SearchOperator.Is(AuthorMatch(role = "writer"))),
           SearchCondition.Author(SearchOperator.IsNot(AuthorMatch(name = "jim"))),
           SearchCondition.Author(SearchOperator.IsNot(AuthorMatch())),
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch("john", "writer"))),
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch("jack", "writer"))),
+          SearchCondition.NotableEntity(SearchOperator.Is(NotableEntityMatch(kind = "writer"))),
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch(name = "jim"))),
+          SearchCondition.NotableEntity(SearchOperator.IsNot(NotableEntityMatch())),
           SearchCondition.OneShot(SearchOperator.IsFalse),
           SearchCondition.OneShot(SearchOperator.IsTrue),
           SearchCondition.Title(SearchOperator.Is("abc")),
