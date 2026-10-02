@@ -33,6 +33,10 @@
       <BookFormContributors v-model="model.entity" />
     </template>
 
+    <template #[`item.2.5`]>
+      <BookFormNotableEntities v-model="model.entity" />
+    </template>
+
     <template #[`item.3`]>
       <BookFormTags
         v-model="model.entity.metadata"
@@ -97,6 +101,14 @@ const tabs = computed(() => [
       id: 'CqlsIa',
     }),
     value: 2,
+  },
+  {
+    text: intl.formatMessage({
+      description: 'Form edit book: Notable Entities',
+      defaultMessage: 'Notable entities',
+      id: '1A8Mc1',
+    }),
+    value: 2.5,
   },
   {
     text: intl.formatMessage({

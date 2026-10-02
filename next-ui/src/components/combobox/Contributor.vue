@@ -18,7 +18,7 @@ import { authorsNamesQuery, authorsNamesQueryInfinite } from '@/colada/referenti
 import { PageRequest } from '@/types/PageRequest'
 import { type FilterContext } from '@/types/filter'
 import { refDebounced } from '@vueuse/core'
-import { CONTRIBUTOR_ANYROLE, contributorsRolesMessages } from '@/types/referential'
+import { contributorsRolesMessages } from '@/types/referential/contributor'
 
 const selected = defineModel<string[]>({ default: () => [] })
 
@@ -26,8 +26,8 @@ const search = ref()
 const searchDebounced = refDebounced(search, 500)
 const isSearching = computed(() => searchDebounced.value?.trim()?.length > 0)
 
-const { role = CONTRIBUTOR_ANYROLE, filterContext } = defineProps<{
-  role?: string
+const { role, filterContext } = defineProps<{
+  role: string
   filterContext?: FilterContext
 }>()
 

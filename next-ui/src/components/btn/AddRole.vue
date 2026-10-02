@@ -121,7 +121,7 @@ import { useQuery } from '@pinia/colada'
 import { authorsRolesQuery } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
 import { useArrayDifference } from '@vueuse/core'
-import { contributorsRolesMessages, DefaultContributorRoles } from '@/types/referential'
+import { contributorsRolesMessages, DefaultContributorRoles } from '@/types/referential/contributor'
 
 const { excludeRoles = [] } = defineProps<{
   excludeRoles?: string[]

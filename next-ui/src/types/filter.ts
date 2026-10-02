@@ -81,7 +81,8 @@ export const SchemaAnyNone = v.strictObject({
   a: v.optional(v.picklist(['any', 'none'])),
 })
 
-export const SchemaAuthor = v.union([SchemaString, SchemaAnyNone])
+export const SchemaContributor = v.union([SchemaString, SchemaAnyNone])
+export const SchemaNotableEntity = v.union([SchemaString, SchemaAnyNone])
 
 const SchemaYear = v.pipe(v.string(), v.regex(/^\d{4}$/, 'Must be exactly 4 digits'))
 
@@ -163,9 +164,9 @@ export const SchemaSeriesAgeRatings = createSchemaFilterSelectRange(v.number())
 export const SchemaFilterStrings = createSchemaFilterAnyAll(SchemaString)
 
 /**
- * Schema for authors.
+ * Schema for contributors.
  */
-export const SchemaFilterContributors = createSchemaFilterAnyAll(SchemaAuthor)
+export const SchemaFilterContributors = createSchemaFilterAnyAll(SchemaContributor)
 export const SchemaFilterContributorsRecord = v.optional(
   v.record(
     v.string(),
@@ -174,6 +175,19 @@ export const SchemaFilterContributorsRecord = v.optional(
   {},
 )
 export type FilterContributorsRecord = v.InferOutput<typeof SchemaFilterContributorsRecord>
+
+/**
+ * Schema for notable entities.
+ */
+export const SchemaFilterNotableEntities = createSchemaFilterAnyAll(SchemaNotableEntity)
+export const SchemaFilterNotableEntitiesRecord = v.optional(
+  v.record(
+    v.string(),
+    v.optional(SchemaFilterNotableEntities, v.getDefaults(SchemaFilterNotableEntities)),
+  ),
+  {},
+)
+export type FilterNotableEntitiesRecord = v.InferOutput<typeof SchemaFilterNotableEntitiesRecord>
 
 export const SchemaFilterAnyAll = createSchemaFilterAnyAll(v.unknown())
 export type FilterTypeAnyAll = v.InferOutput<typeof SchemaFilterAnyAll>

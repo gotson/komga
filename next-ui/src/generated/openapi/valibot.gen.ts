@@ -57,16 +57,6 @@ export const vBookImportDto = v.object({
     upgradeBookId: v.optional(v.string())
 });
 
-export const vBookMetadataAggregationDto = v.object({
-    authors: v.array(vAuthorDto),
-    created: v.pipe(v.string(), v.isoTimestamp(), v.transform((val: string): Date => new Date(val))),
-    lastModified: v.pipe(v.string(), v.isoTimestamp(), v.transform((val: string): Date => new Date(val))),
-    releaseDate: v.optional(v.pipe(v.string(), v.isoDate(), v.transform((val: string): Date => new Date(val)))),
-    summary: v.string(),
-    summaryNumber: v.string(),
-    tags: v.array(v.string())
-});
-
 export const vClaimStatus = v.object({
     isClaimed: v.boolean()
 });
@@ -184,6 +174,27 @@ export const vMediaType = v.object({
     wildcardType: v.optional(v.boolean())
 });
 
+export const vNotableEntityDto = v.object({
+    kind: v.string(),
+    name: v.string()
+});
+
+export const vBookMetadataAggregationDto = v.object({
+    authors: v.array(vAuthorDto),
+    created: v.pipe(v.string(), v.isoTimestamp(), v.transform((val: string): Date => new Date(val))),
+    lastModified: v.pipe(v.string(), v.isoTimestamp(), v.transform((val: string): Date => new Date(val))),
+    notableEntities: v.array(vNotableEntityDto),
+    releaseDate: v.optional(v.pipe(v.string(), v.isoDate(), v.transform((val: string): Date => new Date(val)))),
+    summary: v.string(),
+    summaryNumber: v.string(),
+    tags: v.array(v.string())
+});
+
+export const vNotableEntityUpdateDto = v.object({
+    kind: v.pipe(v.string(), v.minLength(1)),
+    name: v.pipe(v.string(), v.minLength(1))
+});
+
 export const vOAuth2ClientDto = v.object({
     name: v.string(),
     registrationId: v.string()
@@ -224,6 +235,40 @@ export const vPageHashUnknownDto = v.object({
         v.string(),
         v.bigint()
     ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')))
+});
+
+/**
+ * Paginated API response container
+ */
+export const vPageResponseNotableEntityDto = v.object({
+    content: v.array(vNotableEntityDto),
+    first: v.boolean(),
+    last: v.boolean(),
+    page: v.pipe(v.number(), v.integer(), v.minValue(-2147483648, 'Invalid value: Expected int32 to be >= -2147483648'), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647')),
+    size: v.pipe(v.number(), v.integer(), v.minValue(-2147483648, 'Invalid value: Expected int32 to be >= -2147483648'), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647')),
+    totalElements: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    totalPages: v.pipe(v.number(), v.integer(), v.minValue(-2147483648, 'Invalid value: Expected int32 to be >= -2147483648'), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))
+});
+
+/**
+ * Paginated API response container
+ */
+export const vPageResponseString = v.object({
+    content: v.array(v.string()),
+    first: v.boolean(),
+    last: v.boolean(),
+    page: v.pipe(v.number(), v.integer(), v.minValue(-2147483648, 'Invalid value: Expected int32 to be >= -2147483648'), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647')),
+    size: v.pipe(v.number(), v.integer(), v.minValue(-2147483648, 'Invalid value: Expected int32 to be >= -2147483648'), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647')),
+    totalElements: v.pipe(v.union([
+        v.number(),
+        v.string(),
+        v.bigint()
+    ]), v.transform(x => BigInt(x)), v.minValue(BigInt('-9223372036854775808'), 'Invalid value: Expected int64 to be >= -9223372036854775808'), v.maxValue(BigInt('9223372036854775807'), 'Invalid value: Expected int64 to be <= 9223372036854775807')),
+    totalPages: v.pipe(v.number(), v.integer(), v.minValue(-2147483648, 'Invalid value: Expected int32 to be >= -2147483648'), v.maxValue(2147483647, 'Invalid value: Expected int32 to be <= 2147483647'))
 });
 
 export const vPasswordUpdateDto = v.object({
@@ -403,6 +448,14 @@ export const vSearchOperatorEqualityMediaProfile = v.intersect([v.union([vSearch
 
 export const vSearchConditionMediaProfile = v.object({
     mediaProfile: vSearchOperatorEqualityMediaProfile
+});
+
+export const vSearchOperatorEqualityNotableEntityMatch = v.intersect([v.union([vSearchOperatorIs, vSearchOperatorIsNot]), v.object({
+        operator: v.string()
+    })]);
+
+export const vSearchConditionNotableEntity = v.object({
+    notableEntity: vSearchOperatorEqualityNotableEntityMatch
 });
 
 export const vSearchOperatorEqualityPosterMatch = v.intersect([v.union([vSearchOperatorIs, vSearchOperatorIsNot]), v.object({
@@ -879,6 +932,8 @@ export const vBookMetadataDto = v.object({
     lastModified: v.pipe(v.string(), v.isoTimestamp(), v.transform((val: string): Date => new Date(val))),
     links: v.array(vWebLinkDto),
     linksLock: v.boolean(),
+    notableEntities: v.array(vNotableEntityDto),
+    notableEntitiesLock: v.boolean(),
     number: v.string(),
     numberLock: v.boolean(),
     numberSort: v.number(),
@@ -1020,6 +1075,8 @@ export const vBookMetadataUpdateDto = v.object({
     isbnLock: v.optional(v.boolean()),
     links: v.optional(v.array(vWebLinkUpdateDto)),
     linksLock: v.optional(v.boolean()),
+    notableEntities: v.optional(v.array(vNotableEntityUpdateDto)),
+    notableEntitiesLock: v.optional(v.boolean()),
     number: v.optional(v.string()),
     numberLock: v.optional(v.boolean()),
     numberSort: v.optional(v.number()),
@@ -2834,6 +2891,55 @@ export const vUpdatePasswordByUserIdPath = v.object({
  */
 export const vUpdatePasswordByUserIdResponse = v.void();
 
+export const vGetNotableEntitiesQuery = v.object({
+    search: v.optional(v.string()),
+    kind: v.optional(v.string()),
+    library_id: v.optional(v.array(v.string())),
+    collection_id: v.optional(v.array(v.string())),
+    series_id: v.optional(v.array(v.string())),
+    readlist_id: v.optional(v.array(v.string())),
+    unpaged: v.optional(v.boolean()),
+    page: v.optional(v.pipe(v.number(), v.integer())),
+    size: v.optional(v.pipe(v.number(), v.integer()))
+});
+
+/**
+ * OK
+ */
+export const vGetNotableEntitiesResponse = vPageResponseNotableEntityDto;
+
+export const vGetNotableEntitiesKindsQuery = v.object({
+    library_id: v.optional(v.array(v.string())),
+    collection_id: v.optional(v.array(v.string())),
+    series_id: v.optional(v.array(v.string())),
+    readlist_id: v.optional(v.array(v.string())),
+    unpaged: v.optional(v.boolean()),
+    page: v.optional(v.pipe(v.number(), v.integer())),
+    size: v.optional(v.pipe(v.number(), v.integer()))
+});
+
+/**
+ * OK
+ */
+export const vGetNotableEntitiesKindsResponse = vPageResponseString;
+
+export const vGetNotableEntitiesNamesQuery = v.object({
+    search: v.optional(v.string()),
+    kind: v.optional(v.string()),
+    library_id: v.optional(v.array(v.string())),
+    collection_id: v.optional(v.array(v.string())),
+    series_id: v.optional(v.array(v.string())),
+    readlist_id: v.optional(v.array(v.string())),
+    unpaged: v.optional(v.boolean()),
+    page: v.optional(v.pipe(v.number(), v.integer())),
+    size: v.optional(v.pipe(v.number(), v.integer()))
+});
+
+/**
+ * OK
+ */
+export const vGetNotableEntitiesNamesResponse = vPageResponseString;
+
 export const vBookSearch: v.GenericSchema = v.object({
     condition: v.optional(v.lazy(() => vSearchConditionBook)),
     fullTextSearch: v.optional(v.string())
@@ -2875,6 +2981,7 @@ export const vSearchConditionBook: v.GenericSchema = v.union([
     vSearchConditionMediaStatus,
     vSearchConditionMediaProfile,
     vSearchConditionAuthor,
+    vSearchConditionNotableEntity,
     vSearchConditionPoster
 ]);
 
@@ -2917,7 +3024,8 @@ export const vSearchConditionSeries: v.GenericSchema = v.union([
     vSearchConditionAgeRating,
     vSearchConditionReadStatus,
     vSearchConditionSeriesStatus,
-    vSearchConditionAuthor
+    vSearchConditionAuthor,
+    vSearchConditionNotableEntity
 ]);
 
 export const vSearchConditionSharingLabel: v.GenericSchema = v.object({

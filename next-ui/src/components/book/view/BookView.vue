@@ -303,7 +303,7 @@ import { useIntl } from 'vue-intl'
 import { useBook } from '@/composables/book/useBook'
 import { useDisplay } from 'vuetify'
 import SimpleDataTable, { type TableRow } from '@/components/SimpleDataTable.vue'
-import { contributorsRolesMessages } from '@/types/referential'
+import { contributorsRolesMessages } from '@/types/referential/contributor'
 import { getFileSize } from '@/functions/filesize'
 import { useErrorCodeFormatter } from '@/composables/errorCodeFormatter'
 import { createOrderCompareFn } from '@/functions/sort'
@@ -326,7 +326,12 @@ import {
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { enrichRouteQuery } from '@/functions/router'
 import type { RouteLocationObject } from '@/types/route'
-import { contributorToContributorsQuery, filterToQuery } from '@/functions/filter'
+import {
+  contributorToContributorsQuery,
+  filterToQuery,
+  notableEntityToQuery,
+} from '@/functions/filter'
+import { notableEntitiesKindsMessages } from '@/types/referential/notableEntity'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -486,6 +491,21 @@ const tableRows = computed(() => {
           data: contributor!.map((it) => ({
             text: it.name,
             to: enrichRouteQuery(parentTo.value, contributorToContributorsQuery(it)),
+          })),
+        })
+      })
+
+  if (props.book.metadata.notableEntities.length > 0)
+    Object.entries(Object.groupBy(props.book.metadata.notableEntities, (it) => it.kind))
+      .toSorted(createOrderCompareFn(Object.keys(notableEntitiesKindsMessages), ([kind]) => kind))
+      .forEach(([kind, entity]) => {
+        rows.push({
+          header: notableEntitiesKindsMessages?.[kind]
+            ? intl.formatMessage(notableEntitiesKindsMessages?.[kind])
+            : kind,
+          data: entity!.map((it) => ({
+            text: it.name,
+            to: enrichRouteQuery(parentTo.value, notableEntityToQuery(it)),
           })),
         })
       })

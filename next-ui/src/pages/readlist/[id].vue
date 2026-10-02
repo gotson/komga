@@ -85,24 +85,56 @@
         tile
       >
         <FilterExpansionPanel
-          v-for="(filterAuthor, role) in filterContributors"
+          v-for="(filterContributor, role) in filterContributors"
           :key="role"
           :title="
             contributorsRolesMessages?.[role]
               ? $formatMessage(contributorsRolesMessages?.[role])
               : role
           "
-          :count="countFilter(filterAuthor)"
+          :count="countFilter(filterContributor)"
           @clear="filterContributorsClear(role)"
         >
-          <FilterByAuthor
-            v-model="filterAuthor.v"
-            v-model:mode="filterAuthor.m"
+          <FilterByContributor
+            v-model="filterContributor.v"
+            v-model:mode="filterContributor.m"
             :role="role"
           />
         </FilterExpansionPanel>
       </v-expansion-panels>
     </v-list>
+
+    <v-divider
+      ><span class="text-body-medium text-medium-emphasis">{{
+        $formatMessage(commonMessages.filterPanelNotableEntities)
+      }}</span></v-divider
+    >
+
+    <v-expansion-panels
+      v-model="filterExpansionPanels"
+      variant="accordion"
+      class="no-padding"
+      flat
+      tile
+    >
+      <FilterExpansionPanel
+        v-for="(filterNotableEntity, kind) in filterNotableEntities"
+        :key="kind"
+        :title="
+          notableEntitiesKindsMessages?.[kind]
+            ? $formatMessage(notableEntitiesKindsMessages?.[kind])
+            : kind
+        "
+        :count="countFilter(filterNotableEntity)"
+        @clear="filterNotableEntitiesClear(kind)"
+      >
+        <FilterByNotableEntity
+          v-model="filterNotableEntity.v"
+          v-model:mode="filterNotableEntity.m"
+          :kind="kind"
+        />
+      </FilterExpansionPanel>
+    </v-expansion-panels>
   </TempDrawer>
 
   <v-container
@@ -201,8 +233,9 @@ import { useSelectionStore } from '@/stores/selection'
 import { PageRequest, type Sort } from '@/types/PageRequest'
 import {
   countFilter,
-  schemaFilterAuthorsToConditions,
+  schemaFilterContributorsToConditions,
   schemaFilterIncludeExcludeToConditions,
+  schemaFilterNotableEntitiesToConditions,
   schemaFilterReadStatusToConditions,
   schemaFilterStringToConditions,
   valuesToConditions,
@@ -212,24 +245,23 @@ import { bookListQuery, bookListQueryInfinite } from '@/colada/books'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import ChipCount from '@/components/ChipCount.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
-import { useFilterContributors, useFilters } from '@/composables/filter'
+import { useFilterContributors, useFilterNotableEntities, useFilters } from '@/composables/filter'
 import { filterKeys } from '@/types/filter'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { contributorsRolesMessages } from '@/types/referential'
+import { contributorsRolesMessages } from '@/types/referential/contributor'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionBook } from '@/generated/openapi'
 import { BrowsingContextKey, pushBrowsingContext } from '@/functions/browsing-context'
 import { useBrowsingContext } from '@/composables/browsingContext'
+import { notableEntitiesKindsMessages } from '@/types/referential/notableEntity'
 
 const route = useRoute('/readlist/[id]')
 const router = useRouter()
 const readListId = computed(() => route.params.id)
 
-provide(
-  filterKeys.context,
-  computed(() => ({ readlist_id: [readListId.value] })),
-)
+const filterContext = computed(() => ({ readlist_id: [readListId.value] }))
+provide(filterKeys.context, filterContext)
 
 const { context } = useBrowsingContext()
 provide(
@@ -259,11 +291,13 @@ const selectionStore = useSelectionStore()
 
 function clearFilters() {
   filterContributorsClearAll()
+  filterNotableEntitiesClearAll()
   filtersClearAll()
 }
 
-const filterCount = computed(() => filterContributorsCount.value + filtersCountAll.value)
-
+const filterCount = computed(
+  () => filterContributorsCount.value + filterNotableEntitiesCount.value + filtersCountAll.value,
+)
 const sortActive = computed<Sort[]>(() => {
   if (readList.value?.ordered) return [{ key: 'readList.number', order: 'asc' }]
   else return [{ key: 'metadata.releaseDate', order: 'asc' }]
@@ -274,7 +308,13 @@ const {
   countAll: filterContributorsCount,
   clearAll: filterContributorsClearAll,
   clear: filterContributorsClear,
-} = useFilterContributors()
+} = useFilterContributors(filterContext)
+const {
+  filter: filterNotableEntities,
+  countAll: filterNotableEntitiesCount,
+  clearAll: filterNotableEntitiesClearAll,
+  clear: filterNotableEntitiesClear,
+} = useFilterNotableEntities(filterContext)
 const {
   filters,
   clearAll: filtersClearAll,
@@ -292,7 +332,10 @@ const conds = computed(() => ({
     valuesToConditions(filters.value.profile.filter.v, 'mediaProfile'),
     schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),
     ...Object.entries(filterContributors.value).map(([role, filter]) =>
-      schemaFilterAuthorsToConditions(filter, role),
+      schemaFilterContributorsToConditions(filter, role),
+    ),
+    ...Object.entries(filterNotableEntities.value).map(([kind, filter]) =>
+      schemaFilterNotableEntitiesToConditions(filter, kind),
     ),
   ].filter(Boolean) as SearchConditionBook[],
 }))

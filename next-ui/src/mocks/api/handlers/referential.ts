@@ -1,6 +1,6 @@
 import { mockPage } from '@/mocks/api/pageable'
 import { PageRequest } from '@/types/PageRequest'
-import type { AuthorDto } from '@/generated/openapi'
+import type { AuthorDto, NotableEntityDto } from '@/generated/openapi'
 import {
   handleGetAgeRatings,
   handleGetAuthors,
@@ -8,6 +8,9 @@ import {
   handleGetAuthorsRoles,
   handleGetGenres,
   handleGetLanguages,
+  handleGetNotableEntities,
+  handleGetNotableEntitiesKinds,
+  handleGetNotableEntitiesNames,
   handleGetPublishers,
   handleGetSeriesReleaseYears,
   handleGetSharingLabels,
@@ -16,7 +19,7 @@ import {
 
 import { response200OK } from '@/mocks/api/utils'
 
-const authorRoles = [
+const contributorRoles = [
   'writer',
   'penciller',
   'inker',
@@ -27,16 +30,29 @@ const authorRoles = [
   'translator',
 ]
 
-function doMockAuthors(count: number) {
+function doMockContributors(count: number) {
   return [...Array(count).keys()].map((index) => {
-    const role = authorRoles[index % authorRoles.length]
+    const role = contributorRoles[index % contributorRoles.length]!
     return {
       role: role,
       name: `Author ${index} (${role})`,
-    } as AuthorDto
+    } satisfies AuthorDto
   })
 }
-const mockAuthors = doMockAuthors(10000)
+const mockContributors = doMockContributors(10000)
+
+const entityKinds = ['team', 'location', 'character']
+
+function doMockEntities(count: number) {
+  return [...Array(count).keys()].map((index) => {
+    const kind = entityKinds[index % entityKinds.length]!
+    return {
+      kind: kind,
+      name: `Entity ${index} (${kind})`,
+    } satisfies NotableEntityDto
+  })
+}
+const mockEntities = doMockEntities(10000)
 
 function doMockStrings(count: number, prefix: string) {
   return [...Array(count).keys()].map((index) => {
@@ -158,8 +174,8 @@ export const referentialHandlers = [
     const search = query.get('search')
     const role = query.get('role')
     const selected = search
-      ? mockAuthors.filter((it) => !!it.name.match(new RegExp(search, 'i')))
-      : mockAuthors
+      ? mockContributors.filter((it) => !!it.name.match(new RegExp(search, 'i')))
+      : mockContributors
     const byRole = role ? selected.filter((it) => it.role === role) : selected
 
     return response200OK(
@@ -179,8 +195,8 @@ export const referentialHandlers = [
     const search = query.get('search')
     const role = query.get('role')
     const selected = search
-      ? mockAuthors.filter((it) => !!it.name.match(new RegExp(search, 'i')))
-      : mockAuthors
+      ? mockContributors.filter((it) => !!it.name.match(new RegExp(search, 'i')))
+      : mockContributors
     const byRole = role ? selected.filter((it) => it.role === role) : selected
     const names = [...new Set(byRole.map((it) => it.name))]
 
@@ -199,11 +215,71 @@ export const referentialHandlers = [
   handleGetAuthorsRoles(({ request }) => {
     const query = new URL(request.url).searchParams
     const hasSeries = query.getAll('series_id').length > 0
-    const roles = hasSeries ? authorRoles.slice(0, 2) : authorRoles
+    const roles = hasSeries ? contributorRoles.slice(0, 2) : contributorRoles
 
     return response200OK(
       mockPage(
         roles,
+        new PageRequest(
+          Number(query.get('page')),
+          Number(query.get('size')),
+          undefined,
+          Boolean(query.get('unpaged')),
+        ),
+      ),
+    )
+  }),
+  handleGetNotableEntities(({ request }) => {
+    const query = new URL(request.url).searchParams
+    const search = query.get('search')
+    const kind = query.get('kind')
+    const selected = search
+      ? mockEntities.filter((it) => !!it.name.match(new RegExp(search, 'i')))
+      : mockEntities
+    const byKind = kind ? selected.filter((it) => it.kind === kind) : selected
+
+    return response200OK(
+      mockPage(
+        byKind,
+        new PageRequest(
+          Number(query.get('page')),
+          Number(query.get('size')),
+          undefined,
+          Boolean(query.get('unpaged')),
+        ),
+      ),
+    )
+  }),
+  handleGetNotableEntitiesNames(({ request }) => {
+    const query = new URL(request.url).searchParams
+    const search = query.get('search')
+    const kind = query.get('kind')
+    const selected = search
+      ? mockEntities.filter((it) => !!it.name.match(new RegExp(search, 'i')))
+      : mockEntities
+    const byKind = kind ? selected.filter((it) => it.kind === kind) : selected
+    const names = [...new Set(byKind.map((it) => it.name))]
+
+    return response200OK(
+      mockPage(
+        names,
+        new PageRequest(
+          Number(query.get('page')),
+          Number(query.get('size')),
+          undefined,
+          Boolean(query.get('unpaged')),
+        ),
+      ),
+    )
+  }),
+  handleGetNotableEntitiesKinds(({ request }) => {
+    const query = new URL(request.url).searchParams
+    const hasSeries = query.getAll('series_id').length > 0
+    const kinds = hasSeries ? entityKinds.slice(0, 1) : entityKinds
+
+    return response200OK(
+      mockPage(
+        kinds,
         new PageRequest(
           Number(query.get('page')),
           Number(query.get('size')),

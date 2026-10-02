@@ -41,7 +41,7 @@ describe('schema any all', () => {
   })
 })
 
-describe('schema SchemaFilterAuthorsV2', () => {
+describe('schema SchemaFilterContributorsRecord', () => {
   test('one role', () => {
     const input = { writer: { m: 'anyOf', v: [{ i: 'i', v: 'Mark+Lutz' }] } }
     const result = v.parse(SchemaFilterContributorsRecord, input)
@@ -191,14 +191,14 @@ describe('filter schemas have a default value', () => {
     expect(defaults).toStrictEqual(expected)
   })
 
-  test('SchemaFilterAuthors', () => {
+  test('SchemaFilterContributors', () => {
     const expected = { m: 'anyOf', v: [] }
     const defaults = v.getDefaults(SchemaFilterContributors)
 
     expect(defaults).toStrictEqual(expected)
   })
 
-  test('SchemaFilterAuthorsV2', () => {
+  test('SchemaFilterContributorsRecord', () => {
     const expected = {}
     const defaults = v.getDefaults(SchemaFilterContributorsRecord)
 

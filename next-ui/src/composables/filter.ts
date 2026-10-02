@@ -1,10 +1,13 @@
 import * as v from 'valibot'
 import {
+  type FilterContext,
   filterKeys,
   SchemaFilterContributors,
   SchemaFilterContributorsRecord,
   SchemaFilterMediaProfile,
   SchemaFilterMediaStatus,
+  SchemaFilterNotableEntities,
+  SchemaFilterNotableEntitiesRecord,
   SchemaFilterReadStatus,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
@@ -13,19 +16,24 @@ import {
   SchemaSeriesReleaseYears,
 } from '@/types/filter'
 import { useRouteQuerySchema } from '@/composables/useRouteQuerySchema'
-import { CONTRIBUTOR_ANYROLE, contributorsRolesMessages } from '@/types/referential'
+import { CONTRIBUTOR_ANYROLE, contributorsRolesMessages } from '@/types/referential/contributor'
 import { useQuery } from '@pinia/colada'
-import { authorsRolesQuery } from '@/colada/referential'
+import { authorsRolesQuery, notableEntitiesKindsQuery } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
 import { watchImmediate } from '@vueuse/core'
 import { createOrderCompareFn } from '@/functions/sort'
 import { clearFilter, countFilter } from '@/functions/filter'
-import type { UnwrapRef } from 'vue'
+import type { MaybeRefOrGetter, UnwrapRef } from 'vue'
 import { deepEqual } from 'fast-equals'
+import {
+  NOTABLE_ENTITY_ANYKIND,
+  notableEntitiesKindsMessages,
+} from '@/types/referential/notableEntity'
 
 export const QueryParamContributors = 'contributors'
+export const QueryParamNotableEntities = 'entities'
 
-export function useFilterContributors() {
+export function useFilterContributors(context?: MaybeRefOrGetter<FilterContext>) {
   // the update function for the query param
   function updateRouteFn(data: v.InferOutput<typeof SchemaFilterContributorsRecord>) {
     const defaults = v.getDefaults(SchemaFilterContributors)
@@ -44,7 +52,7 @@ export function useFilterContributors() {
   ).data
 
   // get the roles dynamically from the filter context
-  const filterContext = inject(filterKeys.context, {})
+  const filterContext = inject(filterKeys.context, context ?? {})
   const { data } = useQuery(() =>
     authorsRolesQuery({
       ...toValue(filterContext),
@@ -89,6 +97,77 @@ export function useFilterContributors() {
 
   return {
     filter: filterContributors,
+    countAll,
+    clearAll,
+    clear,
+  }
+}
+
+export function useFilterNotableEntities(context?: MaybeRefOrGetter<FilterContext>) {
+  // the update function for the query param
+  function updateRouteFn(data: v.InferOutput<typeof SchemaFilterNotableEntitiesRecord>) {
+    const defaults = v.getDefaults(SchemaFilterNotableEntities)
+    const notDefault: v.InferOutput<typeof SchemaFilterNotableEntitiesRecord> = {}
+    Object.entries(data).forEach(([kind, value]) => {
+      if (!deepEqual(value, defaults)) notDefault[kind] = value
+    })
+    if (Object.keys(notDefault).length > 0) return JSON.stringify(notDefault)
+    return undefined
+  }
+
+  const filterNotableEntities = useRouteQuerySchema(
+    QueryParamNotableEntities,
+    SchemaFilterNotableEntitiesRecord,
+    updateRouteFn,
+  ).data
+
+  // get the kinds dynamically from the filter context
+  const filterContext = inject(filterKeys.context, context ?? {})
+  const { data } = useQuery(() =>
+    notableEntitiesKindsQuery({
+      ...toValue(filterContext),
+      pageRequest: PageRequest.Unpaged(),
+    }),
+  )
+
+  watchImmediate(data, (newData) => {
+    if (!newData || !newData.content) return
+
+    // server kinds + the special kind for any kind
+    const serverKinds = [
+      NOTABLE_ENTITY_ANYKIND,
+      ...newData.content.toSorted(
+        createOrderCompareFn(Object.keys(notableEntitiesKindsMessages), (kind) => kind),
+      ),
+    ]
+    // delete extra kinds that are not returned by the API
+    Object.keys(filterNotableEntities.value).forEach((kind) => {
+      if (!serverKinds.includes(kind)) delete filterNotableEntities.value[kind]
+    })
+
+    // add default empty filter for kinds not yet in the filter
+    serverKinds.forEach((kind) => {
+      if (!filterNotableEntities.value[kind])
+        filterNotableEntities.value[kind] = { m: 'anyOf', v: [] }
+    })
+  })
+
+  const countAll = computed(() =>
+    Object.values(filterNotableEntities.value)
+      .map((filter) => filter.v.length)
+      .reduce((sum, item) => sum + item, 0),
+  )
+
+  function clearAll() {
+    Object.values(filterNotableEntities.value).forEach((it) => clearFilter(it))
+  }
+
+  function clear(kind: string) {
+    if (filterNotableEntities.value[kind]) clearFilter(filterNotableEntities.value[kind])
+  }
+
+  return {
+    filter: filterNotableEntities,
     countAll,
     clearAll,
     clear,

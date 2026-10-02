@@ -18,17 +18,17 @@ import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { authorsNamesQuery, authorsNamesQueryInfinite } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
 import * as v from 'valibot'
-import { type AnyAll, filterKeys, filterMessages, SchemaAuthor } from '@/types/filter'
+import { type AnyAll, filterKeys, filterMessages, SchemaContributor } from '@/types/filter'
 import type { ItemType } from '@/components/filter/List.vue'
 import { refDebounced } from '@vueuse/core'
 import { useIntl } from 'vue-intl'
-import { CONTRIBUTOR_ANYROLE } from '@/types/referential'
+import { CONTRIBUTOR_ANYROLE } from '@/types/referential/contributor'
 
-type Author = v.InferOutput<typeof SchemaAuthor>
+type Contributor = v.InferOutput<typeof SchemaContributor>
 
 const intl = useIntl()
 
-const model = defineModel<Author[]>({ default: () => [] })
+const model = defineModel<Contributor[]>({ default: () => [] })
 const modelMode = defineModel<AnyAll>('mode', { default: 'anyOf' })
 
 const search = ref()
@@ -74,11 +74,11 @@ const infiniteItems = computed(() => {
 
 const hideSearch = computed(() => (infiniteData.value?.pages?.[0]?.totalElements || 0) < 10)
 
-function toItemType(authorName: string): ItemType<Author> {
+function toItemType(contributorName: string): ItemType<Contributor> {
   return {
-    title: authorName,
-    value: { i: 'i', v: authorName },
-    valueExclude: { i: 'e', v: authorName },
+    title: contributorName,
+    value: { i: 'i', v: contributorName },
+    valueExclude: { i: 'e', v: contributorName },
   }
 }
 </script>

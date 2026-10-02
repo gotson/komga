@@ -62,6 +62,11 @@ export const commonMessages = {
     defaultMessage: 'Contributors',
     id: 'rkpCD1',
   }),
+  filterPanelNotableEntities: defineMessage({
+    description: 'Filter panel sub-section: Notable entities',
+    defaultMessage: 'Notable entities',
+    id: 'sMmke1',
+  }),
   filterPanelSort: defineMessage({
     description: 'Filter panel sub-section: Sort',
     defaultMessage: 'SORT',

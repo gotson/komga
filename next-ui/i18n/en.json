@@ -151,6 +151,10 @@
     "defaultMessage": "Find books to convert",
     "description": "Task name: FindBooksToConvert"
   },
+  "1A8Mc1": {
+    "defaultMessage": "Notable entities",
+    "description": "Form edit book: Notable Entities"
+  },
   "1E0Duw": {
     "defaultMessage": "File size",
     "description": "Book view table: file size header"
@@ -166,6 +170,10 @@
   "1bxWGd": {
     "defaultMessage": "Edit series metadata",
     "description": "Edit series metadata dialog title"
+  },
+  "1hsKmu": {
+    "defaultMessage": "Character",
+    "description": "Notable entity kind: character"
   },
   "1qIfds": {
     "defaultMessage": "Pinned",
@@ -331,6 +339,10 @@
     "defaultMessage": "Epub",
     "description": "Form add/edit library: Scanner - file types: epub"
   },
+  "5Xt1ke": {
+    "defaultMessage": "Team",
+    "description": "Notable entity kind: team"
+  },
   "5Zw5Zt": {
     "defaultMessage": "Go to next series within collection",
     "description": "Navigation within collection: next button tootlip"
@@ -435,6 +447,10 @@
     "defaultMessage": "Tags",
     "description": "Combobox tags: label"
   },
+  "8LT9D4": {
+    "defaultMessage": "Cancel",
+    "description": "Metadata edition: add kind dialog - cancel button"
+  },
   "8NDqor": {
     "defaultMessage": "Letterer",
     "description": "Author role: letterer"
@@ -518,6 +534,10 @@
   "ALGXT9": {
     "defaultMessage": "Duplicate",
     "description": "Import reading list table filter: duplicate"
+  },
+  "AMQANB": {
+    "defaultMessage": "Add Custom Kind",
+    "description": "Metadata edition: add kind dialog title"
   },
   "AeA9Ka": {
     "defaultMessage": "No restriction",
@@ -967,6 +987,10 @@
     "defaultMessage": "Status",
     "description": "Import reading list table header: status message"
   },
+  "J8l62K": {
+    "defaultMessage": "Add",
+    "description": "Metadata edition: add kind dialog - add button"
+  },
   "J8rAqm": {
     "defaultMessage": "Release year",
     "description": "Sort label: booksMetadata.releaseDate"
@@ -1006,6 +1030,10 @@
   "KBLD9U": {
     "defaultMessage": "Age rating",
     "description": "Filter by age rating: select placeholder"
+  },
+  "KTifVk": {
+    "defaultMessage": "All notable entities",
+    "description": "Notable entity filter: any kind"
   },
   "Kie8HQ": {
     "defaultMessage": "Book",
@@ -1923,6 +1951,10 @@
     "defaultMessage": "Book",
     "description": "Duplicate Page Hash Matches Table header: book file name"
   },
+  "bRAV2F": {
+    "defaultMessage": "Location",
+    "description": "Notable entity kind: location"
+  },
   "bRxSgh": {
     "defaultMessage": "Manually",
     "description": "Form edit read list: General - books ordering: manually"
@@ -1930,6 +1962,10 @@
   "bSoeY6": {
     "defaultMessage": "Destination name",
     "description": "Import books table header: destination name"
+  },
+  "bWiqyw": {
+    "defaultMessage": "Kind name",
+    "description": "Metadata edition: add kind dialog - input field label"
   },
   "bk1tX8": {
     "defaultMessage": "The library will be deleted from this server.<ul><li>Series and books will be deleted, along with their metadata and read progress.</li><li>Media files will not be deleted from disk.</li></ul><b>This action cannot be undone.</b>",
@@ -2615,6 +2651,10 @@
     "defaultMessage": "Mark as",
     "description": "Unknown Duplicate Page: selection action button"
   },
+  "lFWPpj": {
+    "defaultMessage": "Add kind",
+    "description": "Metadata edition: add kind button"
+  },
   "lPZ5hy": {
     "defaultMessage": "Close",
     "description": "Reorder library drawer: close button"
@@ -2911,6 +2951,10 @@
     "defaultMessage": "Change password",
     "description": "User details screen: change password button"
   },
+  "sMmke1": {
+    "defaultMessage": "Notable entities",
+    "description": "Filter panel sub-section: Notable entities"
+  },
   "sNSGMQ": {
     "defaultMessage": "Drag and drop images here",
     "description": "Poster upload: dropzone title"
@@ -2950,6 +2994,10 @@
   "so1P5Y": {
     "defaultMessage": "Refresh book local artwork",
     "description": "Task name: RefreshBookLocalArtwork"
+  },
+  "sutqn3": {
+    "defaultMessage": "Custom kind...",
+    "description": "Metadata edition: add kind menu - custom kind"
   },
   "syF0Ap": {
     "defaultMessage": "Size",

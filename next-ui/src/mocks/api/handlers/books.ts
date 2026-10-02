@@ -57,6 +57,11 @@ export const mockBook = {
       { name: 'Matt Herms', role: 'custom' },
     ],
     authorsLock: true,
+    notableEntities: [
+      { kind: 'location', name: 'Tokyo' },
+      { kind: 'character', name: 'The Batman' },
+    ],
+    notableEntitiesLock: false,
     tags: ['duck', 'adventure', 'comic'],
     tagsLock: false,
     isbn: '9781566199094',
@@ -78,7 +83,7 @@ export const mockBook = {
   deleted: false,
   fileHash: '7dc12ae431a8847b7f49918745254b0b',
   oneshot: false,
-} as BookDto
+} satisfies BookDto
 
 export function mockBooks(count: number): BookDto[] {
   return [...Array(count).keys()].map((index) =>

@@ -7,6 +7,8 @@ import {
   komgaGetAuthorsRoles,
   komgaGetGenres,
   komgaGetLanguages,
+  komgaGetNotableEntitiesKinds,
+  komgaGetNotableEntitiesNames,
   komgaGetPublishers,
   komgaGetSeriesReleaseYears,
   komgaGetSharingLabels,
@@ -144,6 +146,108 @@ export const authorsNamesQueryInfinite = defineInfiniteQueryOptions(
       initialPageParam: new PageRequest(0, 50),
       query: ({ pageParam }) =>
         komgaGetAuthorsNames({
+          query: { ...queryParams, ...pageParam },
+        }),
+      getNextPageParam: (lastPage, _, lastPageParam) =>
+        !lastPage?.last ? lastPageParam.next() : null,
+    }
+  },
+)
+
+export const notableEntitiesKindsQuery = defineQueryOptions(
+  ({
+    library_id,
+    collection_id,
+    series_id,
+    readlist_id,
+    pageRequest,
+  }: {
+    library_id?: string[]
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
+    pageRequest?: PageRequest
+  }) => {
+    const queryParams = {
+      library_id: library_id,
+      collection_id: collection_id,
+      series_id: series_id,
+      readlist_id: readlist_id,
+      ...pageRequest,
+    }
+    return {
+      key: ['notableEntities', 'kinds', queryParams],
+      query: () =>
+        komgaGetNotableEntitiesKinds({
+          query: queryParams,
+        }),
+    }
+  },
+)
+
+export const notableEntitiesNamesQuery = defineQueryOptions(
+  ({
+    search,
+    kind,
+    library_id,
+    collection_id,
+    series_id,
+    readlist_id,
+    pageRequest,
+  }: {
+    search?: string
+    kind?: string
+    library_id?: string[]
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
+    pageRequest?: PageRequest
+  }) => {
+    const queryParams = {
+      search: search,
+      kind: kind,
+      library_id: library_id,
+      collection_id: collection_id,
+      series_id: series_id,
+      readlist_id: readlist_id,
+      ...pageRequest,
+    }
+    return {
+      key: ['notableEntities', 'names', queryParams],
+      query: () =>
+        komgaGetNotableEntitiesNames({
+          query: queryParams,
+        }),
+    }
+  },
+)
+
+export const notableEntitiesNamesQueryInfinite = defineInfiniteQueryOptions(
+  ({
+    kind,
+    library_id,
+    collection_id,
+    series_id,
+    readlist_id,
+  }: {
+    kind?: string
+    library_id?: string[]
+    collection_id?: string[]
+    series_id?: string[]
+    readlist_id?: string[]
+  }) => {
+    const queryParams = {
+      kind: kind,
+      library_id: library_id,
+      collection_id: collection_id,
+      series_id: series_id,
+      readlist_id: readlist_id,
+    }
+    return {
+      key: ['notableEntities', 'names', queryParams, { infinite: true }],
+      initialPageParam: new PageRequest(0, 50),
+      query: ({ pageParam }) =>
+        komgaGetNotableEntitiesNames({
           query: { ...queryParams, ...pageParam },
         }),
       getNextPageParam: (lastPage, _, lastPageParam) =>

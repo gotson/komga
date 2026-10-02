@@ -43,11 +43,10 @@ export const WithBooksData: Story = {
         ageRating: 12,
       },
       booksMetadata: {
-        authors: [
-          {
-            name: 'Tim Marshall',
-            role: 'writer',
-          },
+        authors: [{ name: 'Tim Marshall', role: 'writer' }],
+        notableEntities: [
+          { kind: 'location', name: 'Tokyo' },
+          { kind: 'character', name: 'The Batman' },
         ],
         tags: ['bookTag', 'AnotherBookTag'],
         releaseDate: new Date('2014-12-31'),

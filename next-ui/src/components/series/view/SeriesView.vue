@@ -271,7 +271,7 @@ import { collectionPosterUrl, seriesPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import { useDisplay } from 'vuetify'
 import SimpleDataTable, { type TableRow } from '@/components/SimpleDataTable.vue'
-import { contributorsRolesMessages } from '@/types/referential'
+import { contributorsRolesMessages } from '@/types/referential/contributor'
 import { createOrderCompareFn } from '@/functions/sort'
 import { useSeries } from '@/composables/series/useSeries'
 import { type ReadingDirection, readingDirectionMessages } from '@/types/ReadingDirection'
@@ -296,7 +296,12 @@ import {
 import { PageRequest } from '@/types/PageRequest'
 import type { RouteLocationObject } from '@/types/route'
 import { enrichRouteQuery } from '@/functions/router'
-import { contributorToContributorsQuery, filterToQuery } from '@/functions/filter'
+import {
+  contributorToContributorsQuery,
+  filterToQuery,
+  notableEntityToQuery,
+} from '@/functions/filter'
+import { notableEntitiesKindsMessages } from '@/types/referential/notableEntity'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -413,6 +418,21 @@ const allRows = computed(() => {
           data: contributor!.map((it) => ({
             text: it.name,
             to: enrichRouteQuery(parentTo.value, contributorToContributorsQuery(it)),
+          })),
+        }
+      })
+
+  if (props.series.booksMetadata.notableEntities.length > 0)
+    Object.entries(Object.groupBy(props.series.booksMetadata.notableEntities, (it) => it.kind))
+      .toSorted(createOrderCompareFn(Object.keys(notableEntitiesKindsMessages), ([kind]) => kind))
+      .forEach(([kind, entity]) => {
+        rows[kind] = {
+          header: notableEntitiesKindsMessages?.[kind]
+            ? intl.formatMessage(notableEntitiesKindsMessages?.[kind])
+            : kind,
+          data: entity!.map((it) => ({
+            text: it.name,
+            to: enrichRouteQuery(parentTo.value, notableEntityToQuery(it)),
           })),
         }
       })

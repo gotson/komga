@@ -9,6 +9,7 @@ import {
   handleGetSeriesThumbnails,
 } from '@/generated/openapi/msw.gen'
 import { response200OK, response404NotFound } from '@/mocks/api/utils'
+import type { SeriesDto } from '@/generated/openapi'
 
 export const mockSeries1 = {
   id: '57',
@@ -59,6 +60,7 @@ export const mockSeries1 = {
   },
   booksMetadata: {
     authors: [],
+    notableEntities: [],
     tags: [],
     summary: '',
     summaryNumber: '',
@@ -67,7 +69,7 @@ export const mockSeries1 = {
   },
   deleted: false,
   oneshot: false,
-}
+} satisfies SeriesDto
 
 const series2 = {
   id: '63',
@@ -115,8 +117,9 @@ const series2 = {
   },
   booksMetadata: {
     authors: [],
+    notableEntities: [],
     tags: [],
-    releaseDate: '2018-07-10',
+    releaseDate: new Date('2018-07-10'),
     summary: '',
     summaryNumber: '',
     created: new Date('2021-01-11T09:59:23Z'),
@@ -124,7 +127,7 @@ const series2 = {
   },
   deleted: false,
   oneshot: false,
-}
+} satisfies SeriesDto
 
 const series3 = {
   id: '634',
@@ -172,8 +175,9 @@ const series3 = {
   },
   booksMetadata: {
     authors: [],
+    notableEntities: [],
     tags: [],
-    releaseDate: '2018-07-10',
+    releaseDate: new Date('2018-07-10'),
     summary: '',
     summaryNumber: '',
     created: new Date('2021-01-11T09:59:23Z'),
@@ -181,7 +185,7 @@ const series3 = {
   },
   deleted: false,
   oneshot: true,
-}
+} satisfies SeriesDto
 
 const series = [mockSeries1, series2, series3]
 
