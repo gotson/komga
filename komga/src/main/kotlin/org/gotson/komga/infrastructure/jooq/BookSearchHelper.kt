@@ -192,17 +192,11 @@ class BookSearchHelper(
           }
           when (searchCondition.operator) {
             is SearchOperator.Is -> {
-              if (searchCondition.operator.value.name == null && searchCondition.operator.value.role == null)
-                DSL.noCondition()
-              else
-                field.`in`(inner(searchCondition.operator.value.name, searchCondition.operator.value.role))
+              field.`in`(inner(searchCondition.operator.value.name, searchCondition.operator.value.role))
             }
 
             is SearchOperator.IsNot -> {
-              if (searchCondition.operator.value.name == null && searchCondition.operator.value.role == null)
-                DSL.noCondition()
-              else
-                field.notIn(inner(searchCondition.operator.value.name, searchCondition.operator.value.role))
+              field.notIn(inner(searchCondition.operator.value.name, searchCondition.operator.value.role))
             }
           } to emptySet()
         }

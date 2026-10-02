@@ -1060,7 +1060,7 @@ class SeriesSearchTest(
       assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("2", "4")
     }
 
-    // empty AuthorMatch does not apply any condition
+    // empty AuthorMatch searches for any author
     run {
       val search =
         SeriesSearch(
@@ -1069,8 +1069,8 @@ class SeriesSearchTest(
       val found = seriesDao.findAll(search.condition, SearchContext(user1), Pageable.unpaged()).content
       val foundDto = seriesDtoDao.findAll(search, SearchContext(user1), Pageable.unpaged()).content
 
-      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3", "4")
-      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3", "4")
+      assertThat(found.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
+      assertThat(foundDto.map { it.name }).containsExactlyInAnyOrder("1", "2", "3")
     }
   }
 

@@ -190,6 +190,58 @@ class BookDtoDaoTest(
       assertThat(page.content).hasSize(2)
       assertThat(page.content.map { it.metadata.title }).containsExactly("Éric le rouge", "Éric le bleu")
     }
+
+    @Test
+    fun `given books when searching by any author then results are matched and not duplicated`() {
+      // given
+      val book1 = makeBook("Éric le rouge", seriesId = series.id, libraryId = library.id)
+      val book2 = makeBook("Éric le bleu", seriesId = series.id, libraryId = library.id)
+      seriesLifecycle.addBooks(
+        series,
+        listOf(
+          book1,
+          book2,
+        ),
+      )
+
+      bookMetadataRepository.findById(book1.id).let {
+        bookMetadataRepository.update(it.copy(authors = listOf(Author("Mark", "writer"), Author("Jim", "inker"))))
+      }
+
+      run {
+        // when
+        val page =
+          bookDtoDao.findAll(
+            BookSearch(
+              SearchCondition.Author(SearchOperator.Is(SearchCondition.AuthorMatch())),
+            ),
+            SearchContext(user),
+            Pageable.unpaged(),
+          )
+
+        // then
+        assertThat(page.totalElements).isEqualTo(1)
+        assertThat(page.content).hasSize(1)
+        assertThat(page.content.map { it.metadata.title }).containsExactly("Éric le rouge")
+      }
+
+      run {
+        // when
+        val page =
+          bookDtoDao.findAll(
+            BookSearch(
+              SearchCondition.Author(SearchOperator.IsNot(SearchCondition.AuthorMatch())),
+            ),
+            SearchContext(user),
+            Pageable.unpaged(),
+          )
+
+        // then
+        assertThat(page.totalElements).isEqualTo(1)
+        assertThat(page.content).hasSize(1)
+        assertThat(page.content.map { it.metadata.title }).containsExactly("Éric le bleu")
+      }
+    }
   }
 
   @Nested
