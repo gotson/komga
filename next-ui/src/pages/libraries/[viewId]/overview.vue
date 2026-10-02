@@ -82,11 +82,17 @@ import { useDisplay } from 'vuetify'
 import ReorderOverviewSections from '@/components/ReorderOverviewSections.vue'
 import { useMessagesStore } from '@/stores/messages'
 import type OverviewSection from '@/components/OverviewSection.vue'
+import { BrowsingContextKey } from '@/functions/browsing-context'
 
 const intl = useIntl()
 const display = useDisplay()
 const route = useRoute('/libraries/[viewId]/overview')
 const libraryViewId = route.params.viewId
+
+provide(
+  BrowsingContextKey,
+  computed(() => ({ type: 'libraryView', id: libraryViewId, subType: 'overview' })),
+)
 
 const isExactParentRoute = computed(() => route.name === '/libraries/[viewId]/overview')
 

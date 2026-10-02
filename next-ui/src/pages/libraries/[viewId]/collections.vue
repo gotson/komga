@@ -54,11 +54,17 @@ import { storeToRefs } from 'pinia'
 import ChipCount from '@/components/ChipCount.vue'
 import { collectionsListQuery, collectionsListQueryInfinite } from '@/colada/collections'
 import { useSelectionContextualActions } from '@/composables/selection'
+import { BrowsingContextKey } from '@/functions/browsing-context'
 
 const router = useRouter()
 const route = useRoute('/libraries/[viewId]/collections')
 const libraryViewId = route.params.viewId
 const { libraryIds } = useGetLibrariesByViewId(libraryViewId)
+
+provide(
+  BrowsingContextKey,
+  computed(() => ({ type: 'libraryView', id: libraryViewId, subType: 'collections' })),
+)
 
 const display = useDisplay()
 const appStore = useAppStore()
