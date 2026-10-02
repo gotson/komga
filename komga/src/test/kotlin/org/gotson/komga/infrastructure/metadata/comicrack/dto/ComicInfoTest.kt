@@ -41,6 +41,9 @@ class ComicInfoTest {
         <Imprint>Vertigo</Imprint>
         <Count>10</Count>
         <Genre>Fantasy, Supernatural/Occult, Horror, Mature, Superhero, Mythology, Drama</Genre>
+        <Locations>Tokyo, Paris, London</Locations>
+        <Characters>Pierre, Paul, Jacques</Characters>
+        <Teams>Les bleus, les rouges, les verts</Teams>
         <Tags>dark, Occult</Tags>
         <PageCount>237</PageCount>
         <LanguageISO>en</LanguageISO>
@@ -74,6 +77,9 @@ class ComicInfoTest {
       assertThat(seriesGroup).isEqualTo("Sandman")
       assertThat(translator).isEqualTo("The translator")
       assertThat(gtin).isEqualTo("ABC123")
+      assertThat(locations).isEqualTo("Tokyo, Paris, London")
+      assertThat(characters).isEqualTo("Pierre, Paul, Jacques")
+      assertThat(teams).isEqualTo("Les bleus, les rouges, les verts")
     }
   }
 

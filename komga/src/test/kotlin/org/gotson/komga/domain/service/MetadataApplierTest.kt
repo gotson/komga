@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookMetadata
 import org.gotson.komga.domain.model.BookMetadataPatch
+import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.SeriesMetadata
 import org.gotson.komga.domain.model.SeriesMetadataPatch
 import org.gotson.komga.domain.model.WebLink
@@ -30,6 +31,7 @@ class MetadataApplierTest {
           numberSortLock = true,
           releaseDateLock = true,
           authorsLock = true,
+          notableEntitiesLock = true,
           tagsLock = true,
           isbnLock = true,
           linksLock = true,
@@ -43,6 +45,7 @@ class MetadataApplierTest {
           numberSort = 2F,
           releaseDate = LocalDate.of(2020, 12, 2),
           authors = listOf(Author("Marcel", "writer")),
+          notableEntities = listOf(NotableEntity("location", "Tokyo")),
           isbn = "9782811632397",
           links = listOf(WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888"))),
           tags = setOf("tag1", "tag2"),
@@ -55,6 +58,7 @@ class MetadataApplierTest {
       assertThat(patched.numberSort).isEqualTo(metadata.numberSort)
       assertThat(patched.summary).isEqualTo("")
       assertThat(patched.authors).isEmpty()
+      assertThat(patched.notableEntities).isEmpty()
       assertThat(patched.releaseDate).isNull()
       assertThat(patched.tags).isEmpty()
       assertThat(patched.isbn).isEqualTo("")
@@ -79,6 +83,7 @@ class MetadataApplierTest {
           numberSort = 2F,
           releaseDate = LocalDate.of(2020, 12, 2),
           authors = listOf(Author("Marcel", "writer")),
+          notableEntities = listOf(NotableEntity("location", "Tokyo")),
           isbn = "9782811632397",
           links = listOf(WebLink("Comixology", URI("https://www.comixology.com/Sandman/digital-comic/727888"))),
           tags = setOf("tag1", "tag2"),
@@ -94,6 +99,11 @@ class MetadataApplierTest {
         .hasSize(1)
         .containsExactlyInAnyOrder(
           Author("Marcel", "writer"),
+        )
+      assertThat(patched.notableEntities)
+        .hasSize(1)
+        .containsExactlyInAnyOrder(
+          NotableEntity("location", "Tokyo"),
         )
       assertThat(patched.releaseDate).isEqualTo(patch.releaseDate)
       assertThat(patched.isbn).isEqualTo(patch.isbn)

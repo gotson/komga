@@ -30,6 +30,7 @@ class MetadataApplier {
         numberSort = getIfNotLocked(numberSort, patch.numberSort, numberSortLock),
         releaseDate = getIfNotLocked(releaseDate, patch.releaseDate, releaseDateLock),
         authors = getIfNotLocked(authors, patch.authors, authorsLock),
+        notableEntities = getIfNotLocked(notableEntities, patch.notableEntities, notableEntitiesLock),
         isbn = getIfNotLocked(isbn, patch.isbn, isbnLock),
         links = getIfNotLocked(links, patch.links, linksLock),
         tags = getIfNotLocked(tags, patch.tags, tagsLock),

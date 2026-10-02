@@ -60,6 +60,9 @@ class ComicInfoProviderTest {
           web = "   https://www.comixology.com/Sandman/digital-comic/727888    https://www.comics.com/Sandman/digital-comic/727889   "
           tags = "dark, Occult"
           gtin = "9783440077894"
+          locations = "Tokyo, Paris, London"
+          teams = "Les bleus, les rouges, les verts"
+          characters = "Pierre, Paul, Jacques"
         }
 
       every { mockMapper.readValue(any<ByteArray>(), ComicInfo::class.java) } returns comicInfo
@@ -92,6 +95,17 @@ class ComicInfoProviderTest {
         assertThat(tags as Iterable<String>)
           .hasSize(2)
           .containsExactlyInAnyOrder("dark", "occult")
+
+        assertThat(notableEntities).hasSize(9)
+        assertThat(notableEntities?.filter { it.kind == "location" }?.map { it.name })
+          .hasSize(3)
+          .containsExactlyInAnyOrder("Tokyo", "Paris", "London")
+        assertThat(notableEntities?.filter { it.kind == "character" }?.map { it.name })
+          .hasSize(3)
+          .containsExactlyInAnyOrder("Pierre", "Paul", "Jacques")
+        assertThat(notableEntities?.filter { it.kind == "team" }?.map { it.name })
+          .hasSize(3)
+          .containsExactlyInAnyOrder("Les bleus", "les rouges", "les verts")
       }
     }
 
