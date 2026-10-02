@@ -13,20 +13,15 @@ import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.interfaces.api.rest.dto.ReadProgressUpdateDto
 import org.openjdk.jmh.annotations.Benchmark
 import org.openjdk.jmh.annotations.Level
-import org.openjdk.jmh.annotations.OutputTimeUnit
 import org.openjdk.jmh.annotations.Setup
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
-import java.util.concurrent.TimeUnit
 
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-class DashboardBenchmark : AbstractRestBenchmark() {
-  companion object {
-    lateinit var bookLatestReleaseDate: ZonedDateTime
-  }
+open class DashboardBenchmark : AbstractRestBenchmark() {
+  lateinit var bookLatestReleaseDate: ZonedDateTime
 
   @Setup(Level.Trial)
   override fun prepareData() {

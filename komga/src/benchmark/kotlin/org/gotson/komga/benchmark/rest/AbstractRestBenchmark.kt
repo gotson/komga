@@ -11,32 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired
 
 internal const val DEFAULT_PAGE_SIZE = 20
 
+@Suppress("SpringJavaInjectionPointsAutowiringInspection")
 abstract class AbstractRestBenchmark : AbstractBenchmark() {
-  companion object {
-    lateinit var userRepository: KomgaUserRepository
-    lateinit var seriesController: SeriesController
-    lateinit var bookController: BookController
-  }
+  @Autowired
+  protected lateinit var userRepository: KomgaUserRepository
 
   @Autowired
-  fun setUserRepository(repository: KomgaUserRepository) {
-    userRepository = repository
-  }
+  protected lateinit var seriesController: SeriesController
 
   @Autowired
-  fun setSeriesController(controller: SeriesController) {
-    seriesController = controller
-  }
-
-  @Autowired
-  fun setBookController(controller: BookController) {
-    bookController = controller
-  }
+  protected lateinit var bookController: BookController
 
   protected lateinit var principal: KomgaPrincipal
 
   @Setup(Level.Trial)
-  fun prepareData() {
+  open fun prepareData() {
     principal =
       KomgaPrincipal(
         userRepository.findByEmailIgnoreCaseOrNull("admin@example.org")

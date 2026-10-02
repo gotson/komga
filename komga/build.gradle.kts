@@ -242,6 +242,14 @@ tasks {
     inputs.files(benchmarkSourceSet.output)
     testClassesDirs = benchmarkSourceSet.output.classesDirs
     classpath = benchmarkSourceSet.runtimeClasspath
+
+    systemProperty(
+      "jmh.resultFolder",
+      layout.buildDirectory
+        .dir("reports/benchmarks")
+        .get()
+        .asFile.absolutePath,
+    )
   }
 }
 
