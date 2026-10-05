@@ -1222,6 +1222,7 @@ export type SettingsDto = {
     koboPort?: number;
     koboProxy?: boolean;
     maxUploadFileSizeBytes?: number;
+    nextUiAsDefault?: boolean;
     rememberMeDurationDays?: number;
     serverContextPath?: SettingMultiSourceString;
     serverPort?: SettingMultiSourceInteger;
@@ -1243,6 +1244,7 @@ export type SettingsUpdateDto = {
     kepubifyPath?: string;
     koboPort?: number;
     koboProxy?: boolean;
+    nextUiAsDefault?: boolean;
     rememberMeDurationDays?: number;
     renewRememberMeKey?: boolean;
     serverContextPath?: string;

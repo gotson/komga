@@ -14,6 +14,33 @@
             <div class="text-label-large">
               {{
                 $formatMessage({
+                  description: 'Server settings: section header for UI settings',
+                  defaultMessage: 'User interface',
+                  id: '+6DtMH',
+                })
+              }}
+            </div>
+            <v-checkbox
+              v-model="proxyModel.value.nextUiAsDefault"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: checkbox to use NextUI as the default UI',
+                  defaultMessage: 'Use the new NextUI as default for this server',
+                  id: '13nnQg',
+                })
+              "
+              hide-details
+            />
+          </v-col>
+        </v-row>
+
+        <v-divider class="mb-4" />
+
+        <v-row>
+          <v-col>
+            <div class="text-label-large">
+              {{
+                $formatMessage({
                   description: 'Server settings: section header for posters',
                   defaultMessage: 'Posters',
                   id: 'a5MYiP',
@@ -412,6 +439,7 @@ const settingsUpdate = ref<SettingsUpdateDtoExtended>({
   koboProxy: false,
   koboPort: undefined,
   thumbnailRegenerate: 'bigger',
+  nextUiAsDefault: false,
 })
 
 watchImmediate(
@@ -430,6 +458,7 @@ watchImmediate(
         koboProxy: settings.koboProxy,
         koboPort: settings.koboPort,
         thumbnailRegenerate: 'bigger',
+        nextUiAsDefault: settings.nextUiAsDefault,
       }
   },
 )
@@ -439,7 +468,7 @@ const form = ref()
 async function submitForm(callback: () => void) {
   const { valid } = await form.value.validate()
   if (valid) {
-    // comit the changes from the form to the model
+    // commit the changes from the form to the model
     callback()
     // if the thumbnail size did not change, force the regeneration value to 'no'
     if (settings?.thumbnailSize === settingsUpdate.value.thumbnailSize) {
