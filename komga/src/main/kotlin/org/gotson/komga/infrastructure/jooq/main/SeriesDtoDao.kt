@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.application.query.isEmpty
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchField
 import org.gotson.komga.domain.model.SeriesSearch
@@ -232,38 +233,6 @@ class SeriesDtoDao(
     val seriesIds = luceneHelper.searchEntitiesIds(searchTerm, LuceneEntity.Series)
     val searchCondition = s.ID.inOrNoCondition(seriesIds)
 
-    val count =
-      dslRO
-        .select(countDistinct(s.ID))
-        .from(s)
-        .leftJoin(d)
-        .on(s.ID.eq(d.SERIES_ID))
-        .leftJoin(bma)
-        .on(s.ID.eq(bma.SERIES_ID))
-        .leftJoin(rs)
-        .on(s.ID.eq(rs.SERIES_ID))
-        .and(readProgressConditionSeries(userId))
-        .apply {
-          joins.forEach { join ->
-            when (join) {
-              is RequiredJoin.Collection -> {
-                val csAlias = csAlias(join.collectionId)
-                leftJoin(csAlias).on(s.ID.eq(csAlias.SERIES_ID).and(csAlias.COLLECTION_ID.eq(join.collectionId)))
-              }
-              // always joined
-              is RequiredJoin.ReadProgress -> Unit
-              RequiredJoin.SeriesMetadata -> Unit
-              // Book joins - not needed
-              RequiredJoin.BookMetadata -> Unit
-              RequiredJoin.BookMetadataAggregation -> Unit
-              RequiredJoin.Media -> Unit
-              is RequiredJoin.ReadList -> Unit
-            }
-          }
-        }.where(conditions)
-        .and(searchCondition)
-        .fetchOne(countDistinct(s.ID)) ?: 0
-
     val orderBy =
       pageable.sort.mapNotNull {
         if (it.property == "relevance" && !seriesIds.isNullOrEmpty()) {
@@ -280,13 +249,51 @@ class SeriesDtoDao(
       }
 
     val dtos =
-      dslRO
-        .selectBase(userId, joins)
-        .where(conditions)
-        .and(searchCondition)
-        .orderBy(orderBy)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchAndMap(dslRO)
+      if (pageable.isEmpty())
+        emptyList()
+      else
+        dslRO
+          .selectBase(userId, joins)
+          .where(conditions)
+          .and(searchCondition)
+          .orderBy(orderBy)
+          .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+          .fetchAndMap(dslRO)
+
+    val count =
+      if (pageable.isUnpaged)
+        dtos.size
+      else
+        dslRO
+          .select(countDistinct(s.ID))
+          .from(s)
+          .leftJoin(d)
+          .on(s.ID.eq(d.SERIES_ID))
+          .leftJoin(bma)
+          .on(s.ID.eq(bma.SERIES_ID))
+          .leftJoin(rs)
+          .on(s.ID.eq(rs.SERIES_ID))
+          .and(readProgressConditionSeries(userId))
+          .apply {
+            joins.forEach { join ->
+              when (join) {
+                is RequiredJoin.Collection -> {
+                  val csAlias = csAlias(join.collectionId)
+                  leftJoin(csAlias).on(s.ID.eq(csAlias.SERIES_ID).and(csAlias.COLLECTION_ID.eq(join.collectionId)))
+                }
+                // always joined
+                is RequiredJoin.ReadProgress -> Unit
+                RequiredJoin.SeriesMetadata -> Unit
+                // Book joins - not needed
+                RequiredJoin.BookMetadata -> Unit
+                RequiredJoin.BookMetadataAggregation -> Unit
+                RequiredJoin.Media -> Unit
+                is RequiredJoin.ReadList -> Unit
+              }
+            }
+          }.where(conditions)
+          .and(searchCondition)
+          .fetchOne(countDistinct(s.ID)) ?: 0
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(
@@ -314,7 +321,6 @@ class SeriesDtoDao(
     lateinit var aggregatedNotableEntities: Map<String, List<NotableEntityDto>>
     lateinit var aggregatedTags: Map<String, List<String>>
 
-    // TODO: evaluate using multiset
     dsl.withTempTable(batchSize, seriesIds).use { tempTable ->
       genres =
         dsl

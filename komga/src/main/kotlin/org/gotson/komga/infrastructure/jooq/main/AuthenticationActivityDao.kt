@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.application.query.isEmpty
 import org.gotson.komga.domain.model.AuthenticationActivity
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
@@ -70,18 +71,21 @@ class AuthenticationActivityDao(
     conditions: Condition,
     pageable: Pageable,
   ): PageImpl<AuthenticationActivity> {
-    val count = dslRO.fetchCount(aa, conditions)
-
     val orderBy = pageable.sort.toOrderBy(sorts)
 
     val items =
-      dslRO
-        .selectFrom(aa)
-        .where(conditions)
-        .orderBy(orderBy)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchInto(aa)
-        .map { it.toDomain() }
+      if (pageable.isEmpty())
+        emptyList()
+      else
+        dslRO
+          .selectFrom(aa)
+          .where(conditions)
+          .orderBy(orderBy)
+          .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+          .fetchInto(aa)
+          .map { it.toDomain() }
+
+    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(aa, conditions)
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(

@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.application.query.isEmpty
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.ReadList
@@ -153,52 +154,56 @@ class BookDtoDao(
           }
         }
 
-      // TODO: evaluate perf gain by not running the count if the request is unpaged
-      val count =
-        dslRO.fetchCount(
-          dslRO
-            .select(b.ID)
-            .from(b)
-            .leftJoin(m)
-            .on(b.ID.eq(m.BOOK_ID))
-            .leftJoin(d)
-            .on(b.ID.eq(d.BOOK_ID))
-            .leftJoin(r)
-            .on(b.ID.eq(r.BOOK_ID))
-            .and(readProgressCondition(userId))
-            .leftJoin(sd)
-            .on(b.SERIES_ID.eq(sd.SERIES_ID))
-            .apply {
-              joins.forEach { join ->
-                when (join) {
-                  is RequiredJoin.ReadList -> {
-                    val rlbAlias = rlbAlias(join.readListId)
-                    leftJoin(rlbAlias).on(rlbAlias.BOOK_ID.eq(b.ID).and(rlbAlias.READLIST_ID.eq(join.readListId)))
-                  }
-                  // always joined
-                  RequiredJoin.BookMetadata -> Unit
-                  RequiredJoin.Media -> Unit
-                  is RequiredJoin.ReadProgress -> Unit
-                  // Series joins - not needed
-                  RequiredJoin.BookMetadataAggregation -> Unit
-                  RequiredJoin.SeriesMetadata -> Unit
-                  is RequiredJoin.Collection -> Unit
-                }
-              }
-            }.where(conditions)
-            .and(searchCondition)
-            .groupBy(b.ID),
-        )
-
-      // TODO: evaluate perf gain by not running the query if the request is of size 0
       val dtos =
-        dslRO
-          .selectBase(userId, joins)
-          .where(conditions)
-          .and(searchCondition)
-          .orderBy(orderBy)
-          .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-          .fetchAndMap(dslRO)
+        if (pageable.isEmpty())
+          emptyList()
+        else
+          dslRO
+            .selectBase(userId, joins)
+            .where(conditions)
+            .and(searchCondition)
+            .orderBy(orderBy)
+            .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+            .fetchAndMap(dslRO)
+
+      val count =
+        if (pageable.isUnpaged)
+          dtos.size
+        else
+          dslRO.fetchCount(
+            dslRO
+              .select(b.ID)
+              .from(b)
+              .leftJoin(m)
+              .on(b.ID.eq(m.BOOK_ID))
+              .leftJoin(d)
+              .on(b.ID.eq(d.BOOK_ID))
+              .leftJoin(r)
+              .on(b.ID.eq(r.BOOK_ID))
+              .and(readProgressCondition(userId))
+              .leftJoin(sd)
+              .on(b.SERIES_ID.eq(sd.SERIES_ID))
+              .apply {
+                joins.forEach { join ->
+                  when (join) {
+                    is RequiredJoin.ReadList -> {
+                      val rlbAlias = rlbAlias(join.readListId)
+                      leftJoin(rlbAlias).on(rlbAlias.BOOK_ID.eq(b.ID).and(rlbAlias.READLIST_ID.eq(join.readListId)))
+                    }
+                    // always joined
+                    RequiredJoin.BookMetadata -> Unit
+                    RequiredJoin.Media -> Unit
+                    is RequiredJoin.ReadProgress -> Unit
+                    // Series joins - not needed
+                    RequiredJoin.BookMetadataAggregation -> Unit
+                    RequiredJoin.SeriesMetadata -> Unit
+                    is RequiredJoin.Collection -> Unit
+                  }
+                }
+              }.where(conditions)
+              .and(searchCondition)
+              .groupBy(b.ID),
+          )
 
       val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
       return PageImpl(
@@ -252,12 +257,16 @@ class BookDtoDao(
   ): Page<BookDto> {
     val (query, sortField, _) = bookCommonDao.getBooksOnDeckQuery(userId, restrictions, filterOnLibraryIds, onDeckFields)
 
-    val count = dslRO.fetchCount(query)
     val dtos =
-      query
-        .orderBy(sortField.desc())
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchAndMap(dslRO)
+      if (pageable.isEmpty())
+        emptyList()
+      else
+        query
+          .orderBy(sortField.desc())
+          .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+          .fetchAndMap(dslRO)
+
+    val count = if (pageable.isUnpaged) dtos.size else dslRO.fetchCount(query)
 
     return PageImpl(
       dtos,
@@ -443,7 +452,6 @@ class BookDtoDao(
     val records = fetch()
     val bookIds = records.getValues(b.ID)
 
-    // TODO: evaluate using multiset
     lateinit var authors: Map<String, List<AuthorDto>>
     lateinit var tags: Map<String, List<String>>
     lateinit var links: Map<String, List<WebLinkDto>>

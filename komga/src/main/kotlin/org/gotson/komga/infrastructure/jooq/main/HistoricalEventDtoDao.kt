@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.application.query.isEmpty
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.interfaces.api.persistence.HistoricalEventDtoRepository
@@ -32,26 +33,29 @@ class HistoricalEventDtoDao(
     )
 
   override fun findAll(pageable: Pageable): Page<HistoricalEventDto> {
-    val count = dslRO.fetchCount(e)
-
     val orderBy = pageable.sort.toOrderBy(sorts)
 
     val items =
-      dslRO
-        .selectFrom(e)
-        .orderBy(orderBy)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .map { er ->
-          val epr = dslRO.selectFrom(ep).where(ep.ID.eq(er.id)).fetch()
-          HistoricalEventDto(
-            id = er.id,
-            type = er.type,
-            timestamp = er.timestamp,
-            bookId = er.bookId,
-            seriesId = er.seriesId,
-            properties = epr.filterNot { it.key == null }.associate { it.key to it.value },
-          )
-        }
+      if (pageable.isEmpty())
+        emptyList()
+      else
+        dslRO
+          .selectFrom(e)
+          .orderBy(orderBy)
+          .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+          .map { er ->
+            val epr = dslRO.selectFrom(ep).where(ep.ID.eq(er.id)).fetch()
+            HistoricalEventDto(
+              id = er.id,
+              type = er.type,
+              timestamp = er.timestamp,
+              bookId = er.bookId,
+              seriesId = er.seriesId,
+              properties = epr.filterNot { it.key == null }.associate { it.key to it.value },
+            )
+          }
+
+    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(e)
 
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
     return PageImpl(

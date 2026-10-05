@@ -1,6 +1,8 @@
 package org.gotson.komga.infrastructure.jooq.main
 
 import org.gotson.komga.application.query.PageResult
+import org.gotson.komga.application.query.buildPage
+import org.gotson.komga.application.query.isEmpty
 import org.gotson.komga.application.query.toPageResult
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.FilterBy
@@ -12,7 +14,6 @@ import org.gotson.komga.domain.persistence.ReferentialRepository
 import org.gotson.komga.infrastructure.jooq.ContentRestrictionsSearchHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.buildPage
 import org.gotson.komga.infrastructure.jooq.udfStripAccents
 import org.gotson.komga.infrastructure.jooq.unicode3
 import org.gotson.komga.jooq.main.Tables
@@ -60,7 +61,6 @@ class ReferentialDao(
   private val sl = Tables.SERIES_METADATA_SHARING
   private val at = Tables.SERIES_AND_BOOK_TAG
   private val ne = Tables.BOOK_METADATA_NOTABLE_ENTITIES
-  private val bmane = Tables.BOOK_METADATA_AGGREGATION_NOTABLE_ENTITIES
 
   @Deprecated("Use findAuthors instead")
   override fun findAllAuthorsByName(
@@ -484,14 +484,18 @@ class ReferentialDao(
         .where(sd.PUBLISHER.ne(""))
         .apply { filterOnLibraryIds?.let { and(s.LIBRARY_ID.`in`(it)) } }
 
-    val count = dslRO.fetchCount(query)
     val sort = sd.PUBLISHER.unicode3()
 
     val items =
-      query
-        .orderBy(sort)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetch(sd.PUBLISHER)
+      if (pageable.isEmpty())
+        emptyList()
+      else
+        query
+          .orderBy(sort)
+          .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+          .fetch(sd.PUBLISHER)
+
+    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
 
     val pageSort = Sort.by("name")
     return PageImpl(
@@ -693,13 +697,18 @@ class ReferentialDao(
             }
           }
         }
-    val count = dslRO.fetchCount(query)
     val items =
-      query
-        .orderBy(sortField)
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchArray(0)
-        .mapNotNull { it?.toString() }
+      if (pageable.isEmpty())
+        emptyList()
+      else
+        query
+          .orderBy(sortField)
+          .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+          .fetchArray(0)
+          .mapNotNull { it?.toString() }
+
+    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
+
     return buildPage(items, pageable, count, Sort.by(Order.desc("year")))
   }
 
@@ -847,18 +856,21 @@ class ReferentialDao(
           }
         }
 
-    val count = dslRO.fetchCount(query)
-
     val items =
-      query
-        .apply {
-          if (sortField != null)
-            orderBy(sortField)
-          else if (searchableField != null)
-            orderBy(searchableField.unicode3())
-        }.apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchInto(table)
-        .mapNotNull { mapper(it) }
+      if (pageable.isEmpty())
+        emptyList()
+      else
+        query
+          .apply {
+            if (sortField != null)
+              orderBy(sortField)
+            else if (searchableField != null)
+              orderBy(searchableField.unicode3())
+          }.apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+          .fetchInto(table)
+          .mapNotNull { mapper(it) }
+
+    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
 
     return buildPage(items, pageable, count, sort)
   }

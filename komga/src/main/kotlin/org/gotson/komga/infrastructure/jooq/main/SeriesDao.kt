@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.application.query.isEmpty
 import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.Series
@@ -141,13 +142,16 @@ class SeriesDao(
           }
         }.where(conditions)
 
-    val count = dslRO.fetchCount(query)
-
     val items =
-      query
-        .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-        .fetchInto(s)
-        .map { it.toDomain() }
+      if (pageable.isEmpty())
+        emptyList()
+      else
+        query
+          .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
+          .fetchInto(s)
+          .map { it.toDomain() }
+
+    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
 
     return PageImpl(
       items,
