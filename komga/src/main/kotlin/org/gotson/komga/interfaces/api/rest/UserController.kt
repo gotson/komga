@@ -3,6 +3,7 @@ package org.gotson.komga.interfaces.api.rest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
+import org.gotson.komga.application.query.UnpagedSorted
 import org.gotson.komga.domain.model.AgeRestriction
 import org.gotson.komga.domain.model.ContentRestrictions
 import org.gotson.komga.domain.model.DuplicateNameException
@@ -13,7 +14,6 @@ import org.gotson.komga.domain.persistence.AuthenticationActivityRepository
 import org.gotson.komga.domain.persistence.KomgaUserRepository
 import org.gotson.komga.domain.persistence.LibraryRepository
 import org.gotson.komga.domain.service.KomgaUserLifecycle
-import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration.TagNames
 import org.gotson.komga.infrastructure.security.KomgaPrincipal
 import org.gotson.komga.interfaces.api.rest.dto.AllowExcludeDto

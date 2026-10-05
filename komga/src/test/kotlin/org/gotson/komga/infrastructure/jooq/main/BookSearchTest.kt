@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
+import org.gotson.komga.application.query.UnpagedSorted
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Dimension
@@ -38,7 +39,6 @@ import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
-import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll

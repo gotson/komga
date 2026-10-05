@@ -5,6 +5,7 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import org.assertj.core.api.Assertions.assertThat
+import org.gotson.komga.application.query.UnpagedSorted
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.KomgaUser
 import org.gotson.komga.domain.model.ReadProgress
@@ -28,7 +29,6 @@ import org.gotson.komga.domain.service.KomgaUserLifecycle
 import org.gotson.komga.domain.service.LibraryLifecycle
 import org.gotson.komga.domain.service.SeriesLifecycle
 import org.gotson.komga.domain.service.SeriesMetadataLifecycle
-import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.search.SearchIndexLifecycle
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach

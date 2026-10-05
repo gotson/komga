@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.validation.Valid
+import org.gotson.komga.application.query.UnpagedSorted
 import org.gotson.komga.domain.model.Author
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
@@ -22,7 +23,6 @@ import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.domain.persistence.ThumbnailSeriesCollectionRepository
 import org.gotson.komga.domain.service.SeriesCollectionLifecycle
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
-import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.openapi.AuthorsAsQueryParam
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration

@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.jooq
+package org.gotson.komga.application.query
 
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort

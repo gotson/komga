@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
+import org.gotson.komga.application.query.UnpagedSorted
 import org.gotson.komga.application.tasks.HIGHEST_PRIORITY
 import org.gotson.komga.application.tasks.HIGH_PRIORITY
 import org.gotson.komga.application.tasks.LOWEST_PRIORITY
@@ -35,7 +36,6 @@ import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.domain.service.BookAnalyzer
 import org.gotson.komga.domain.service.BookLifecycle
 import org.gotson.komga.infrastructure.image.ImageAnalyzer
-import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.mediacontainer.ContentDetector
 import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.infrastructure.openapi.PageableAsQueryParam

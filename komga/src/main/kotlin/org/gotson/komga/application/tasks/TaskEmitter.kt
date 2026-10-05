@@ -1,6 +1,7 @@
 package org.gotson.komga.application.tasks
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.gotson.komga.application.query.UnpagedSorted
 import org.gotson.komga.domain.model.Book
 import org.gotson.komga.domain.model.BookMetadataPatchCapability
 import org.gotson.komga.domain.model.BookPageNumbered
@@ -12,7 +13,6 @@ import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SearchOperator
 import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.domain.service.BookConverter
-import org.gotson.komga.infrastructure.jooq.UnpagedSorted
 import org.gotson.komga.infrastructure.search.LuceneEntity
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Sort
