@@ -57,6 +57,18 @@ const router = new Router({
   },
   routes: [
     {
+      path: '/classic/:pathMatch(.*)*',
+      redirect: to => {
+        // Reconstruct the path without the 'classic' segment
+        const subPath = to.params.pathMatch ? '/' + to.params.pathMatch : '/'
+        // Return the path along with the existing query parameters
+        return {
+          path: subPath,
+          query: to.query,
+        }
+      },
+    },
+    {
       path: '/',
       name: 'home',
       redirect: {name: 'dashboard'},
