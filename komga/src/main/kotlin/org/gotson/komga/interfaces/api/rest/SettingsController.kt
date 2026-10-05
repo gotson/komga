@@ -58,6 +58,7 @@ class SettingsController(
         komgaSettingsProvider.koboPort,
         SettingMultiSource(kepubConverter.kepubifyConfigurationPath, komgaSettingsProvider.kepubifyPath, kepubConverter.kepubifyPath?.toString()),
         multipartProperties.maxFileSize?.toBytes(),
+        komgaSettingsProvider.nextUiAsDefault,
       )
 
     return if (principal.user.isAdmin) settingsDto else settingsDto.public()
@@ -85,5 +86,6 @@ class SettingsController(
     newSettings.koboProxy?.let { komgaSettingsProvider.koboProxy = it }
     if (newSettings.isSet("koboPort")) komgaSettingsProvider.koboPort = newSettings.koboPort
     if (newSettings.isSet("kepubifyPath")) komgaSettingsProvider.kepubifyPath = newSettings.kepubifyPath
+    newSettings.nextUiAsDefault?.let { komgaSettingsProvider.nextUiAsDefault = it }
   }
 }

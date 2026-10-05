@@ -112,6 +112,13 @@ class KomgaSettingsProvider(
       field = value
       eventPublisher.publishEvent(SettingChangedEvent.KepubifyPath)
     }
+
+  var nextUiAsDefault: Boolean =
+    serverSettingsDao.getSettingByKey(Settings.NEXTUI_AS_DEFAULT.name, Boolean::class.java) ?: false
+    set(value) {
+      serverSettingsDao.saveSetting(Settings.NEXTUI_AS_DEFAULT.name, value)
+      field = value
+    }
 }
 
 private enum class Settings {
@@ -126,4 +133,5 @@ private enum class Settings {
   KOBO_PROXY,
   KOBO_PORT,
   KEPUBIFY_PATH,
+  NEXTUI_AS_DEFAULT,
 }

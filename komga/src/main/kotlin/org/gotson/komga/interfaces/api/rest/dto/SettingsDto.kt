@@ -15,6 +15,7 @@ data class SettingsDto(
   val koboPort: Int? = null,
   val kepubifyPath: SettingMultiSource<String>? = null,
   val maxUploadFileSizeBytes: Long? = null,
+  val nextUiAsDefault: Boolean? = null,
 )
 
 fun SettingsDto.public() =
