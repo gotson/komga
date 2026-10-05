@@ -7,7 +7,7 @@ export function bookReaderUrl(
   readListId?: string,
 ): string | undefined {
   if (bookId) {
-    let url = `${ApiBaseUrl.noSlash}/book/${bookId}/read${epub ? '-epub' : ''}?incognito=${incognito}`
+    let url = `${ApiBaseUrl.noSlash}/classic/book/${bookId}/read${epub ? '-epub' : ''}?incognito=${incognito}`
     if (readListId) url += `&context=READLIST&contextId=${readListId}`
     return url
   }
