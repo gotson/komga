@@ -3,6 +3,7 @@ package org.gotson.komga.application.tasks
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.gotson.komga.infrastructure.configuration.KomgaSettingsProvider
 import org.gotson.komga.infrastructure.configuration.SettingChangedEvent
+import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder
@@ -18,7 +19,8 @@ class TaskProcessor(
   private val taskHandler: TaskHandler,
   private val settingsProvider: KomgaSettingsProvider,
   taskExecutorBuilder: ThreadPoolTaskExecutorBuilder,
-) : InitializingBean {
+) : InitializingBean,
+  DisposableBean {
   val executor: ThreadPoolTaskExecutor =
     taskExecutorBuilder
       .threadNamePrefix("taskProcessor-")
@@ -33,6 +35,11 @@ class TaskProcessor(
     if (disowned > 0)
       logger.info { "Reset $disowned tasks that were not finished" }
     processTasks = true
+  }
+
+  override fun destroy() {
+    processTasks = false
+    executor.destroy()
   }
 
   @EventListener(SettingChangedEvent.TaskPoolSize::class)
