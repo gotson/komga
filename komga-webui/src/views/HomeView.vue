@@ -310,7 +310,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item :href="nextUrl" target="_blank">
+          <v-list-item :href="nextUrl">
             <v-list-item-icon>
               <v-icon>mdi-ab-testing</v-icon>
             </v-list-item-icon>
