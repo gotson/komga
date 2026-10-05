@@ -1,17 +1,20 @@
 <template>
-  <v-card :title="user.email">
+  <v-card>
     <template #prepend>
       <v-avatar
         color="primary"
         size="x-large"
-        ><span class="text-headline-medium text-uppercase">{{
-          user.email.charAt(0)
-        }}</span></v-avatar
       >
+        <span class="text-headline-medium text-uppercase">{{ user.email.charAt(0) }}</span>
+      </v-avatar>
+    </template>
+
+    <template #title>
+      <span class="text-wrap">{{ user.email }}</span>
     </template>
 
     <template #text>
-      <div class="d-flex ga-2 flex-wrap">
+      <div class="d-flex ga-2 flex-wrap mt-2">
         <v-chip
           v-for="role in user.roles"
           :key="role"
