@@ -20,9 +20,8 @@ class TempTable private constructor(
 
   private var created = false
 
-  // TODO: evaluate adding a PRIMARY KEY here
   fun create() {
-    dslContext.execute("CREATE TEMPORARY TABLE $name (STRING varchar NOT NULL);")
+    dslContext.execute("CREATE TEMPORARY TABLE $name (STRING varchar NOT NULL PRIMARY KEY );")
     created = true
   }
 
@@ -35,7 +34,10 @@ class TempTable private constructor(
       collection.chunked(batchSize).forEach { chunk ->
         dslContext
           .batch(
-            dslContext.insertInto(DSL.table(DSL.name(name)), DSL.field(DSL.name("STRING"), String::class.java)).values(null as String?),
+            dslContext
+              .insertInto(DSL.table(DSL.name(name)), DSL.field(DSL.name("STRING"), String::class.java))
+              .values(null as String?)
+              .onConflictDoNothing(),
           ).also { step ->
             chunk.forEach {
               step.bind(it)
