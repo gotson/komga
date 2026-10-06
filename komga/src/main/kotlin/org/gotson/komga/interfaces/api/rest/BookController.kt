@@ -16,7 +16,6 @@ import org.gotson.komga.application.tasks.TaskEmitter
 import org.gotson.komga.domain.model.BookSearch
 import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.DomainEvent
-import org.gotson.komga.domain.model.EntityNotFoundException
 import org.gotson.komga.domain.model.ImageConversionException
 import org.gotson.komga.domain.model.MarkSelectedPreference
 import org.gotson.komga.domain.model.Media
@@ -274,7 +273,6 @@ class BookController(
 
   @Operation(summary = "Get book details", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping("api/v1/books/{bookId}")
-  @Throws(EntityNotFoundException::class)
   fun getBookById(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @PathVariable bookId: String,
@@ -283,7 +281,7 @@ class BookController(
       contentRestrictionChecker.checkContentRestrictionBook(principal.user, it)
 
       it.restrictUrl(!principal.user.isAdmin)
-    } ?: throw EntityNotFoundException()
+    } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   @Operation(summary = "Get previous book in series", tags = [OpenApiConfiguration.TagNames.BOOKS])
   @GetMapping("api/v1/books/{bookId}/previous")
