@@ -1,4 +1,4 @@
-package org.gotson.komga.interfaces.api.rest
+package org.gotson.komga.interfaces.api.rest.v3
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
