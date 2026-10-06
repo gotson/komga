@@ -12,7 +12,7 @@ export const useAuthWatcher = createGlobalState(() => {
   watch(authErrorEvent, (newValue) => {
     if (newValue) {
       logger.debug('Auth error detected, redirect to login')
-      void router.push('/login')
+      void router.push({ name: '/login', query: { logout: '1' } })
     }
   })
 })

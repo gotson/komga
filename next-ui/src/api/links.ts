@@ -13,3 +13,7 @@ export function bookReaderUrl(
   }
   return undefined
 }
+
+export function oauth2LoginUrl(registrationId: string | undefined): string | undefined {
+  if (registrationId) return `${ApiBaseUrl.noSlash}/oauth2/authorization/${registrationId}`
+}

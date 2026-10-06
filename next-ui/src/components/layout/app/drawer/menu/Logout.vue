@@ -19,6 +19,6 @@ const router = useRouter()
 const { mutateAsync: logoutAsync } = useLogout()
 
 function performLogout() {
-  void logoutAsync().then(() => router.push('/login'))
+  void logoutAsync().then(() => router.push({ name: '/login', query: { logout: '1' } }))
 }
 </script>

@@ -30,9 +30,9 @@ const meta = {
       serverPort: { configurationSource: 8090, effectiveValue: 8090 },
       serverContextPath: { effectiveValue: '' },
       koboProxy: false,
-      kepubifyPath: {
-        configurationSource: '/usr/bin/kepubify',
-        effectiveValue: '/usr/bin/kepubify',
+      oauth2: {
+        hideLoginFields: false,
+        autoLogin: false,
       },
     },
     onUpdateSettings: fn(),

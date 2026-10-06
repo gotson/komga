@@ -206,6 +206,7 @@ export const useSSE = createGlobalState(() => {
   const messagesStore = useMessagesStore()
   const cacheStore = useImageCacheStore()
   const taskStore = useTaskQueueStore()
+  const router = useRouter()
   const { convertErrorCodes } = useErrorCodeFormatter()
 
   const { isAuthenticated } = useCurrentUser()
@@ -425,6 +426,7 @@ export const useSSE = createGlobalState(() => {
         break
       case 'SessionExpired':
         userLoggedOut()
+        void router.push({ name: '/login', query: { logout: '1' } })
         break
       case 'TaskQueueStatus':
         taskStore.count = event.data.count

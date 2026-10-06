@@ -118,9 +118,7 @@
         </v-col>
       </v-row>
 
-      <v-divider class="my-4" />
-
-      <v-row class="justify-center">
+      <v-row class="justify-center mt-8">
         <v-col cols="auto">
           <div class="d-flex ga-4">
             <LocaleSelector />

@@ -20,6 +20,7 @@
                 })
               }}
             </div>
+
             <v-checkbox
               v-model="proxyModel.value.nextUiAsDefault"
               :label="
@@ -31,6 +32,52 @@
               "
               hide-details
             />
+
+            <v-checkbox
+              v-model="proxyModel.value.oauth2.hideLoginFields"
+              :label="
+                $formatMessage({
+                  description:
+                    'Server settings: checkbox to hide login fields if OAuth2 is enabled',
+                  defaultMessage: 'Hide login fields if OAuth2 is enabled',
+                  id: 'yxnX5k',
+                })
+              "
+              hide-details
+              @update:model-value="
+                (val) => (!val ? (proxyModel.value.oauth2.autoLogin = false) : undefined)
+              "
+            />
+
+            <v-checkbox
+              v-model="proxyModel.value.oauth2.autoLogin"
+              :disabled="!proxyModel.value.oauth2.hideLoginFields"
+              :label="
+                $formatMessage({
+                  description: 'Server settings: checkbox to set automatic OAuth2 login',
+                  defaultMessage: 'Automatic OAuth2 login',
+                  id: 'V8tkJa',
+                })
+              "
+              hide-details
+              class="ms-8"
+            >
+              <template #append>
+                <v-icon
+                  v-ktooltip:bottom="{
+                    text: $formatMessage({
+                      description:
+                        'Server settings: checkbox to set automatic OAuth2 login - information tooltip',
+                      defaultMessage: 'Works only if a single OAuth2 provider is configured',
+                      id: 'roy9ap',
+                    }),
+                    openOnClick: true,
+                    clickFade: 2500,
+                  }"
+                  icon="i-mdi:information-outline"
+                ></v-icon>
+              </template>
+            </v-checkbox>
           </v-col>
         </v-row>
 
@@ -413,13 +460,14 @@ import { useIntl } from 'vue-intl'
 import { watchImmediate } from '@vueuse/core'
 import { useRules } from 'vuetify'
 import type { SettingsDto } from '@/generated/openapi'
-import type { SettingsUpdateDtoExtended } from '@/types/ThumbnailRegenerate'
+import type { SettingsUpdateDtoExtended } from '@/types/Settings'
+import type { ClientSettingOauth2Login } from '@/types/ClientSettingsGlobal'
 
 const intl = useIntl()
 const rules = useRules()
 
 const { settings, loading = false } = defineProps<{
-  settings?: SettingsDto
+  settings?: Omit<SettingsDto, 'kepubifyPath'> & { oauth2: ClientSettingOauth2Login }
   loading?: boolean
 }>()
 
@@ -440,6 +488,10 @@ const settingsUpdate = ref<SettingsUpdateDtoExtended>({
   koboPort: undefined,
   thumbnailRegenerate: 'bigger',
   nextUiAsDefault: false,
+  oauth2: {
+    hideLoginFields: false,
+    autoLogin: false,
+  },
 })
 
 watchImmediate(
@@ -459,6 +511,10 @@ watchImmediate(
         koboPort: settings.koboPort,
         thumbnailRegenerate: 'bigger',
         nextUiAsDefault: settings.nextUiAsDefault,
+        oauth2: {
+          hideLoginFields: settings.oauth2.hideLoginFields,
+          autoLogin: settings.oauth2.autoLogin,
+        },
       }
   },
 )

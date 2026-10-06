@@ -3,9 +3,12 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import login from './login.vue'
 import { http, delay } from 'msw'
 
-import { expect, waitFor } from 'storybook/test'
+import { expect, waitFor, mocked } from 'storybook/test'
 import { useMessagesStore } from '@/stores/messages'
-import { response401Unauthorized, response502BadGateway } from '@/mocks/api/utils'
+import { response200OK, response401Unauthorized, response502BadGateway } from '@/mocks/api/utils'
+import { handleGetGlobalSettings, handleGetOAuth2Providers } from '@/generated/openapi/msw.gen'
+import { oauth2ProviderStyles } from '@/types/oauth2'
+import { performOAuth2LoginRedirect } from '@/functions/oauth2'
 
 const meta = {
   component: login,
@@ -25,6 +28,11 @@ const meta = {
     },
   },
   args: {},
+  beforeEach: () => {
+    mocked(performOAuth2LoginRedirect).mockImplementation((registrationId) => {
+      console.log(`attempted redirect to ${registrationId}`)
+    })
+  },
 } satisfies Meta<typeof login>
 
 export default meta
@@ -32,6 +40,137 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {},
+}
+
+export const Oauth: Story = {
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetOAuth2Providers(() => {
+        const providers = Object.keys(oauth2ProviderStyles).map((it) => ({
+          name: it,
+          registrationId: it,
+        }))
+        return response200OK(providers)
+      }),
+    )
+  },
+}
+
+export const OauthHideLogin1Provider: Story = {
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetGlobalSettings(() =>
+        response200OK({
+          'komga.nextui.oauth2': {
+            allowUnauthorized: true,
+            value: JSON.stringify({
+              hideLoginFields: true,
+            }),
+          },
+        }),
+      ),
+      handleGetOAuth2Providers(() => {
+        const providers = Object.keys(oauth2ProviderStyles)
+          .toSpliced(1)
+          .map((it) => ({
+            name: it,
+            registrationId: it,
+          }))
+        return response200OK(providers)
+      }),
+    )
+  },
+  play: async ({ canvas }) => {
+    const login = canvas.queryByLabelText(/email/i, {
+      selector: 'input',
+    })
+    await waitFor(() => expect(login).not.toBeVisible())
+  },
+}
+
+export const OauthHideLoginNoProvider: Story = {
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetGlobalSettings(() =>
+        response200OK({
+          'komga.nextui.oauth2': {
+            allowUnauthorized: true,
+            value: JSON.stringify({
+              hideLoginFields: true,
+            }),
+          },
+        }),
+      ),
+      handleGetOAuth2Providers(() => response200OK([])),
+    )
+  },
+  play: async ({ canvas }) => {
+    const login = canvas.queryByLabelText(/email/i, {
+      selector: 'input',
+    })
+    await waitFor(() => expect(login).toBeVisible())
+  },
+}
+
+export const OauthAutoLogin1Provider: Story = {
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetGlobalSettings(() =>
+        response200OK({
+          'komga.nextui.oauth2': {
+            allowUnauthorized: true,
+            value: JSON.stringify({
+              hideLoginFields: true,
+              autoLogin: true,
+            }),
+          },
+        }),
+      ),
+      handleGetOAuth2Providers(() => {
+        const providers = Object.keys(oauth2ProviderStyles)
+          .toSpliced(1)
+          .map((it) => ({
+            name: it,
+            registrationId: it,
+          }))
+        return response200OK(providers)
+      }),
+    )
+  },
+  play: async () => {
+    await waitFor(() => expect(performOAuth2LoginRedirect).toHaveBeenCalledOnce())
+  },
+}
+
+export const OauthAutoLogin2Provider: Story = {
+  beforeEach({ msw }) {
+    msw.use(
+      handleGetGlobalSettings(() =>
+        response200OK({
+          'komga.nextui.oauth2': {
+            allowUnauthorized: true,
+            value: JSON.stringify({
+              hideLoginFields: true,
+              autoLogin: true,
+            }),
+          },
+        }),
+      ),
+      handleGetOAuth2Providers(() => {
+        const providers = Object.keys(oauth2ProviderStyles)
+          .toSpliced(2)
+          .map((it) => ({
+            name: it,
+            registrationId: it,
+          }))
+        return response200OK(providers)
+      }),
+    )
+  },
+  play: async ({ canvas }) => {
+    await canvas.findByText(/continue with google/i)
+    await waitFor(() => expect(performOAuth2LoginRedirect).not.toHaveBeenCalled())
+  },
 }
 
 export const Invalid: Story = {

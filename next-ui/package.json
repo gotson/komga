@@ -63,6 +63,7 @@
     "@formatjs/cli": "^6.16.32",
     "@hey-api/openapi-ts": "0.99.0",
     "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/simple-icons": "^1.2.99",
     "@iconify-json/tabler": "^1.2.41",
     "@pinia/colada-devtools": "^2.0.0",
     "@storybook/addon-a11y": "^10.6.0",

@@ -16,6 +16,7 @@ import { pageHashesHandlers } from '@/mocks/api/handlers/page-hashes'
 import { clientSettingsHandlers } from '@/mocks/api/handlers/client-settings'
 import { collectionsHandlers } from '@/mocks/api/handlers/collections'
 import { createMswHandlers } from '@/generated/openapi/msw.gen'
+import { oauth2Handlers } from '@/mocks/api/handlers/oauth2'
 
 const mswHandlers = createMswHandlers()
 
@@ -29,6 +30,7 @@ export const handlers = [
   ...filesystemHandlers,
   ...historyHandlers,
   ...librariesHandlers,
+  ...oauth2Handlers,
   ...pageHashesHandlers,
   ...readListsHandlers,
   ...referentialHandlers,

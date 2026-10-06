@@ -2,8 +2,8 @@ import type { Router, NavigationGuardReturn } from 'vue-router'
 import { useQueryCache } from '@pinia/colada'
 import { librariesQuery } from '@/colada/libraries'
 import { clientSettingsUserQuery } from '@/colada/client-settings'
-import { parseUserSettings } from '@/functions/user-settings'
 import { getUserLibrariesState } from '@/functions/libraries'
+import { parseUserSettings } from '@/functions/client-settings'
 
 /**
  * Redirect from /libraries/[viewId] and its child routes to the appropriate sub-route.
