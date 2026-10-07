@@ -7,14 +7,11 @@ import type { RouteLocationObject } from '@/types/route'
  */
 export function enrichRouteQuery<T extends RouteLocationObject>(
   location: T | undefined,
-  extraQuery: LocationQueryRaw,
+  ...extraQueries: LocationQueryRaw[]
 ): T | undefined {
   if (!location) return undefined
   return {
     ...location,
-    query: {
-      ...(location.query || {}),
-      ...extraQuery,
-    },
+    query: Object.assign({}, location.query, ...extraQueries),
   }
 }
