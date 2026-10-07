@@ -5,6 +5,7 @@ import { MediaProfileValues } from '@/types/MediaProfile'
 import { MediaStatusValues } from '@/types/MediaStatus'
 import { SeriesStatusValues } from '@/types/SeriesStatus'
 import { ReadStatusValues } from '@/types/ReadStatus'
+import { PosterValues } from '@/types/Poster'
 
 export const filterMessages: Record<string, MessageDescriptor> = {
   any: defineMessage({
@@ -74,6 +75,16 @@ export const SchemaMediaProfile = v.pipe(
 export const SchemaReadStatus = createSchemaIncludeExclude(
   v.pipe(v.string(), v.toUpperCase(), v.picklist(ReadStatusValues)),
 )
+
+export const SchemaPosterType = v.pipe(v.string(), v.toUpperCase(), v.picklist(PosterValues))
+/**
+ * Tuple representing [PosterType, isSelected].
+ */
+export const SchemaPosterMatch = v.tuple([SchemaPosterType, v.boolean()])
+/**
+ * Example payload: { i: 'i', v: ['GENERATED', true] }
+ */
+export const SchemaPoster = createSchemaIncludeExclude(SchemaPosterMatch)
 
 export const SchemaString = createSchemaIncludeExclude(v.string())
 
@@ -162,6 +173,11 @@ export const SchemaSeriesAgeRatings = createSchemaFilterSelectRange(v.number())
  * Can be used for tags, genre, sharing labels…
  */
 export const SchemaFilterStrings = createSchemaFilterAnyAll(SchemaString)
+
+/**
+ * Schema for Poster.
+ */
+export const SchemaFilterPoster = createSchemaFilterArray(SchemaPoster)
 
 /**
  * Schema for contributors.

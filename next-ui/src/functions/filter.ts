@@ -6,6 +6,7 @@ import {
   SchemaAnyNone,
   SchemaFilterContributors,
   SchemaFilterNotableEntities,
+  SchemaFilterPoster,
   SchemaFilterReadStatus,
   SchemaFilterStrings,
   SchemaSeriesAgeRatings,
@@ -142,6 +143,24 @@ export function schemaFilterReadStatusToConditions(
       readStatus: {
         operator: it.i === 'e' ? 'isNot' : 'is',
         value: it.v,
+      },
+    }
+  })
+  return {
+    anyOf: list,
+  }
+}
+
+export function schemaFilterPosterToConditions(filter: InferOutput<typeof SchemaFilterPoster>) {
+  if (filter.v.length === 0) return null
+  const list = filter.v.map((it) => {
+    return {
+      poster: {
+        operator: it.i === 'e' ? 'isNot' : 'is',
+        value: {
+          type: it.v[0] === 'ANYTYPE' ? undefined : it.v[0],
+          selected: it.v[1],
+        },
       },
     }
   })

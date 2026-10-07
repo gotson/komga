@@ -88,6 +88,7 @@ declare module 'vue' {
     FilterByMediaStatus: typeof import('./components/filter/by/MediaStatus.vue')['default']
     FilterByNotableEntity: typeof import('./components/filter/by/NotableEntity.vue')['default']
     FilterByOneShot: typeof import('./components/filter/by/OneShot.vue')['default']
+    FilterByPoster: typeof import('./components/filter/by/Poster.vue')['default']
     FilterByPublisher: typeof import('./components/filter/by/Publisher.vue')['default']
     FilterByReadStatus: typeof import('./components/filter/by/ReadStatus.vue')['default']
     FilterByReleaseYear: typeof import('./components/filter/by/ReleaseYear.vue')['default']

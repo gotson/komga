@@ -69,13 +69,21 @@
             include="BOOK"
           />
         </FilterExpansionPanel>
+
+        <FilterExpansionPanel
+          :title="$formatMessage(commonMessages.filterPanelPoster)"
+          :count="filters.poster.count"
+          @clear="filters.poster.clear()"
+        >
+          <FilterByPoster v-model="filters.poster.filter.v" />
+        </FilterExpansionPanel>
       </v-expansion-panels>
 
-      <v-divider
-        ><span class="text-body-medium text-medium-emphasis">{{
+      <v-divider>
+        <span class="text-body-medium text-medium-emphasis">{{
           $formatMessage(commonMessages.filterPanelContributors)
-        }}</span></v-divider
-      >
+        }}</span>
+      </v-divider>
 
       <v-expansion-panels
         v-model="filterExpansionPanels"
@@ -102,39 +110,39 @@
           />
         </FilterExpansionPanel>
       </v-expansion-panels>
-    </v-list>
 
-    <v-divider
-      ><span class="text-body-medium text-medium-emphasis">{{
-        $formatMessage(commonMessages.filterPanelNotableEntities)
-      }}</span></v-divider
-    >
+      <v-divider>
+        <span class="text-body-medium text-medium-emphasis">{{
+          $formatMessage(commonMessages.filterPanelNotableEntities)
+        }}</span>
+      </v-divider>
 
-    <v-expansion-panels
-      v-model="filterExpansionPanels"
-      variant="accordion"
-      class="no-padding"
-      flat
-      tile
-    >
-      <FilterExpansionPanel
-        v-for="(filterNotableEntity, kind) in filterNotableEntities"
-        :key="kind"
-        :title="
-          notableEntitiesKindsMessages?.[kind]
-            ? $formatMessage(notableEntitiesKindsMessages?.[kind])
-            : kind
-        "
-        :count="countFilter(filterNotableEntity)"
-        @clear="filterNotableEntitiesClear(kind)"
+      <v-expansion-panels
+        v-model="filterExpansionPanels"
+        variant="accordion"
+        class="no-padding"
+        flat
+        tile
       >
-        <FilterByNotableEntity
-          v-model="filterNotableEntity.v"
-          v-model:mode="filterNotableEntity.m"
-          :kind="kind"
-        />
-      </FilterExpansionPanel>
-    </v-expansion-panels>
+        <FilterExpansionPanel
+          v-for="(filterNotableEntity, kind) in filterNotableEntities"
+          :key="kind"
+          :title="
+            notableEntitiesKindsMessages?.[kind]
+              ? $formatMessage(notableEntitiesKindsMessages?.[kind])
+              : kind
+          "
+          :count="countFilter(filterNotableEntity)"
+          @clear="filterNotableEntitiesClear(kind)"
+        >
+          <FilterByNotableEntity
+            v-model="filterNotableEntity.v"
+            v-model:mode="filterNotableEntity.m"
+            :kind="kind"
+          />
+        </FilterExpansionPanel>
+      </v-expansion-panels>
+    </v-list>
   </TempDrawer>
 
   <v-container
@@ -236,6 +244,7 @@ import {
   schemaFilterContributorsToConditions,
   schemaFilterIncludeExcludeToConditions,
   schemaFilterNotableEntitiesToConditions,
+  schemaFilterPosterToConditions,
   schemaFilterReadStatusToConditions,
   schemaFilterStringToConditions,
   valuesToConditions,
@@ -319,7 +328,16 @@ const {
   filters,
   clearAll: filtersClearAll,
   countAll: filtersCountAll,
-} = useFilters(['library', 'mediaStatus', 'profile', 'read', 'tag', 'unavailable', 'oneshot'])
+} = useFilters([
+  'library',
+  'mediaStatus',
+  'profile',
+  'read',
+  'tag',
+  'unavailable',
+  'oneshot',
+  'poster',
+])
 
 const conds = computed(() => ({
   allOf: [
@@ -328,6 +346,7 @@ const conds = computed(() => ({
     schemaFilterIncludeExcludeToConditions(filters.value.unavailable.filter, 'deleted'),
     schemaFilterIncludeExcludeToConditions(filters.value.oneshot.filter, 'oneShot'),
     schemaFilterReadStatusToConditions(filters.value.read.filter),
+    schemaFilterPosterToConditions(filters.value.poster.filter),
     valuesToConditions(filters.value.mediaStatus.filter.v, 'mediaStatus'),
     valuesToConditions(filters.value.profile.filter.v, 'mediaProfile'),
     schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),

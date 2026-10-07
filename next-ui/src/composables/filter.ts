@@ -8,6 +8,7 @@ import {
   SchemaFilterMediaStatus,
   SchemaFilterNotableEntities,
   SchemaFilterNotableEntitiesRecord,
+  SchemaFilterPoster,
   SchemaFilterReadStatus,
   SchemaFilterSeriesStatus,
   SchemaFilterStrings,
@@ -191,6 +192,7 @@ const supportedFilters = {
   oneshot: SchemaIncludeExclude,
   mediaStatus: SchemaFilterMediaStatus,
   profile: SchemaFilterMediaProfile,
+  poster: SchemaFilterPoster,
 }
 
 export type SupportedFilters = {

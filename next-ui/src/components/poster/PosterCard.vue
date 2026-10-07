@@ -115,6 +115,7 @@ import { getFileSize } from '@/functions/filesize'
 import { watchImmediate } from '@vueuse/core'
 import type { ImageDimensions } from '@/types/image'
 import { pick } from '@/functions/pick'
+import { posterMessages } from '@/types/Poster'
 
 const intl = useIntl()
 
@@ -204,29 +205,17 @@ const type = computed(() => {
     case 'SIDECAR':
       return {
         icon: 'i-mdi:folder',
-        text: intl.formatMessage({
-          description: 'Poster card: type - local artwork',
-          defaultMessage: 'Local artwork',
-          id: 'USJuJ1',
-        }),
+        text: intl.formatMessage(posterMessages['SIDECAR']),
       }
     case 'GENERATED':
       return {
         icon: 'i-mdi:file',
-        text: intl.formatMessage({
-          description: 'Poster card: type - generated artwork',
-          defaultMessage: 'Generated artwork',
-          id: 'vtBARB',
-        }),
+        text: intl.formatMessage(posterMessages['GENERATED']),
       }
     case 'USER_UPLOADED':
       return {
         icon: 'i-mdi:cloud-check',
-        text: intl.formatMessage({
-          description: 'Poster card: type - user uploaded',
-          defaultMessage: 'User uploaded',
-          id: '9dNd68',
-        }),
+        text: intl.formatMessage(posterMessages['USER_UPLOADED']),
       }
   }
 })

@@ -107,6 +107,11 @@ export const commonMessages = {
     defaultMessage: 'Tag',
     id: 'NwK2Kv',
   }),
+  filterPanelPoster: defineMessage({
+    description: 'Filter panel: Poster',
+    defaultMessage: 'Poster',
+    id: 'viKuRl',
+  }),
   filterPanelPublisher: defineMessage({
     description: 'Filter panel: Publisher',
     defaultMessage: 'Publisher',
