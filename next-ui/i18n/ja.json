@@ -1,0 +1,2429 @@
+{
+  "+6YDzS": {
+    "defaultMessage": "データが見つかりません"
+  },
+  "+8++PW": {
+    "defaultMessage": "ライブラリを作成しました：{library}"
+  },
+  "+PNCoe": {
+    "defaultMessage": "別タイトル"
+  },
+  "+TldjW": {
+    "defaultMessage": "表示できるデータはありません"
+  },
+  "+jaADC": {
+    "defaultMessage": "ファイル名"
+  },
+  "+mJGIg": {
+    "defaultMessage": "ファイルパス"
+  },
+  "+opDqu": {
+    "defaultMessage": "ページへ移動"
+  },
+  "+pyj1u": {
+    "defaultMessage": "利用不可"
+  },
+  "+r8FCS": {
+    "defaultMessage": "サーバー待受ポート"
+  },
+  "+y+9xL": {
+    "defaultMessage": "サイズ制限を超えているファイル：{filenames}"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "削除"
+  },
+  "/8sSxS": {
+    "defaultMessage": "ゴミ箱からの復元や重複ファイルの検出に必要です"
+  },
+  "/Acs82": {
+    "defaultMessage": "読書リストを作成／書籍を読書リストに追加"
+  },
+  "/LDx9p": {
+    "defaultMessage": "書籍を比較"
+  },
+  "/NAG9i": {
+    "defaultMessage": "一致する結果はありません"
+  },
+  "/TRmi5": {
+    "defaultMessage": "共有ラベル"
+  },
+  "/YxHru": {
+    "defaultMessage": "選択した書籍の中に重複があります"
+  },
+  "/bathK": {
+    "defaultMessage": "指定年齢以下のみ許可"
+  },
+  "/lE31l": {
+    "defaultMessage": "Koboを再同期"
+  },
+  "/mhcNO": {
+    "defaultMessage": "閉じる"
+  },
+  "02SRax": {
+    "defaultMessage": "ログイン"
+  },
+  "083NeH": {
+    "defaultMessage": "IETF BCP 47 言語タグ"
+  },
+  "0ILHru": {
+    "defaultMessage": "OK"
+  },
+  "0J3Gvp": {
+    "defaultMessage": "{count, plural, one {#シリーズ} other {#シリーズ}}"
+  },
+  "0JF9f5": {
+    "defaultMessage": "サイドバーを折りたたむ"
+  },
+  "0MePSx": {
+    "defaultMessage": "ここにドラッグしてライブラリを固定"
+  },
+  "0OEO+j": {
+    "defaultMessage": "ジャンル"
+  },
+  "0UFr4y": {
+    "defaultMessage": "すべてに一致"
+  },
+  "0XDhyR": {
+    "defaultMessage": "テーマの選択"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "ログイン状態を保持する"
+  },
+  "0eIJ3K": {
+    "defaultMessage": "手動並べ替え"
+  },
+  "0iT7Vf": {
+    "defaultMessage": "メタデータ"
+  },
+  "0qntYX": {
+    "defaultMessage": "ページのハッシュを計算する"
+  },
+  "0sIkhg": {
+    "defaultMessage": "フィルター"
+  },
+  "1+Ux6s": {
+    "defaultMessage": "ライブラリを作成して始めましょう"
+  },
+  "111Isd": {
+    "defaultMessage": "検索インデックスの再構築"
+  },
+  "14/Uh8": {
+    "defaultMessage": "インポートモード"
+  },
+  "18OKhZ": {
+    "defaultMessage": "変換対象の書籍を検索"
+  },
+  "1E0Duw": {
+    "defaultMessage": "ファイルサイズ"
+  },
+  "1MAL38": {
+    "defaultMessage": "重複した書籍"
+  },
+  "1VkZao": {
+    "defaultMessage": "その他"
+  },
+  "1bxWGd": {
+    "defaultMessage": "シリーズメタデータの編集"
+  },
+  "1qIfds": {
+    "defaultMessage": "ピン留め"
+  },
+  "1z+Z+q": {
+    "defaultMessage": "共有ラベル"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "最新"
+  },
+  "2IYW7s": {
+    "defaultMessage": "URL"
+  },
+  "2LLpzV": {
+    "defaultMessage": "詳細を表示"
+  },
+  "2Sx0J4": {
+    "defaultMessage": "ページ"
+  },
+  "2g7iOx": {
+    "defaultMessage": "統計"
+  },
+  "2p+JVw": {
+    "defaultMessage": "このKomgaサーバーはまだ有効化されていません。アクセスするにはユーザーアカウントを作成する必要があります。"
+  },
+  "2uUiqM": {
+    "defaultMessage": "シリーズの並び順"
+  },
+  "3DBPuv": {
+    "defaultMessage": "スクロール"
+  },
+  "3J6FI8": {
+    "defaultMessage": "表示の編集"
+  },
+  "3MUQYL": {
+    "defaultMessage": "コレクションを作成／書籍をコレクションに追加"
+  },
+  "3OgH93": {
+    "defaultMessage": "シリーズ"
+  },
+  "3Pm2PO": {
+    "defaultMessage": "保存先ファイル名"
+  },
+  "3T1ln7": {
+    "defaultMessage": "ライブラリの削除"
+  },
+  "3W0jUi": {
+    "defaultMessage": "除外ラベル"
+  },
+  "3b7v1+": {
+    "defaultMessage": "書籍メタデータをインポート"
+  },
+  "3beD4X": {
+    "defaultMessage": "APIキーの削除"
+  },
+  "3gimvl": {
+    "defaultMessage": "ライブラリメニュー"
+  },
+  "3lLmfX": {
+    "defaultMessage": "コレクション"
+  },
+  "3qQjnw": {
+    "defaultMessage": "言語"
+  },
+  "3rNj7/": {
+    "defaultMessage": "チェックして確認"
+  },
+  "40HXjy": {
+    "defaultMessage": "キャンセル"
+  },
+  "464rk3": {
+    "defaultMessage": "シリーズを選択"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Kobo同期の外部ポート"
+  },
+  "4CIw7i": {
+    "defaultMessage": "刊行状況"
+  },
+  "4CX0cY": {
+    "defaultMessage": "シリーズメタデータをインポート"
+  },
+  "4IKM3R": {
+    "defaultMessage": "ラベル"
+  },
+  "4PDVX2": {
+    "defaultMessage": "EPUB"
+  },
+  "4TEXni": {
+    "defaultMessage": "すべての制作関係者"
+  },
+  "4U6L0S": {
+    "defaultMessage": "リンク"
+  },
+  "4X3RAp": {
+    "defaultMessage": "{count, plural, one {#冊} other {#冊}}"
+  },
+  "4Ybicn": {
+    "defaultMessage": "作成"
+  },
+  "4g2M9O": {
+    "defaultMessage": "シリーズが見つかりません"
+  },
+  "4jKnoO": {
+    "defaultMessage": "次に読む — {number}"
+  },
+  "4uqafX": {
+    "defaultMessage": "読切"
+  },
+  "4yDvPA": {
+    "defaultMessage": "フィルターをクリア"
+  },
+  "5AAGkA": {
+    "defaultMessage": "パスワード"
+  },
+  "5JGOUU": {
+    "defaultMessage": "ライブラリを解析"
+  },
+  "5Qha5m": {
+    "defaultMessage": "手動並べ替え"
+  },
+  "5WMvLb": {
+    "defaultMessage": "EPUB"
+  },
+  "5Zw5Zt": {
+    "defaultMessage": "コレクション内の次のシリーズへ移動"
+  },
+  "5b2A0u": {
+    "defaultMessage": "ホームページへリダイレクトされます"
+  },
+  "5rziSG": {
+    "defaultMessage": "利用不可"
+  },
+  "5tbu8Y": {
+    "defaultMessage": "再試行"
+  },
+  "5zPpyT": {
+    "defaultMessage": "対象年齢の範囲"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "HTTPサーバー"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "反映には再起動が必要です"
+  },
+  "6OXY1N": {
+    "defaultMessage": "読み切りディレクトリ"
+  },
+  "6UXlVe": {
+    "defaultMessage": "タグ"
+  },
+  "6WDISV": {
+    "defaultMessage": "ページが見つかりません"
+  },
+  "6eAECF": {
+    "defaultMessage": "ライブラリ"
+  },
+  "6nCIPn": {
+    "defaultMessage": "種別"
+  },
+  "70/wK4": {
+    "defaultMessage": "ライブラリを作成"
+  },
+  "700A3r": {
+    "defaultMessage": "書籍"
+  },
+  "7M1pUf": {
+    "defaultMessage": "ゴミ箱を空にする"
+  },
+  "7Ndu8p": {
+    "defaultMessage": "番号（巻・号）"
+  },
+  "7RfNiY": {
+    "defaultMessage": "概要"
+  },
+  "7gdpKG": {
+    "defaultMessage": "作成"
+  },
+  "7hwFJo": {
+    "defaultMessage": "著者"
+  },
+  "7z91nm": {
+    "defaultMessage": "履歴"
+  },
+  "8/BXfN": {
+    "defaultMessage": "すべて"
+  },
+  "81BMAQ": {
+    "defaultMessage": "書籍のメタデータをインポート"
+  },
+  "87q6WX": {
+    "defaultMessage": "なし"
+  },
+  "8CVWWg": {
+    "defaultMessage": "ファイルを削除"
+  },
+  "8Dun/Y": {
+    "defaultMessage": "いいえ"
+  },
+  "8KsYYJ": {
+    "defaultMessage": "タグ"
+  },
+  "8NDqor": {
+    "defaultMessage": "レタラー"
+  },
+  "8Om/o/": {
+    "defaultMessage": "ディレクトリからインポート"
+  },
+  "8P7Yn+": {
+    "defaultMessage": "年齢制限"
+  },
+  "8Yd/3a": {
+    "defaultMessage": "役割名"
+  },
+  "8hC76W": {
+    "defaultMessage": "タスク"
+  },
+  "8jE3eP": {
+    "defaultMessage": "書籍を解析できませんでした"
+  },
+  "8kylzj": {
+    "defaultMessage": "削除"
+  },
+  "8xonXJ": {
+    "defaultMessage": "ライブラリ内のすべてのメディアファイルを解析します。解析によりメディアに関する情報を取得します。ライブラリのサイズによっては、時間がかかる場合があります。"
+  },
+  "9/1/c7": {
+    "defaultMessage": "書籍のサムネイルを生成"
+  },
+  "90yqRq": {
+    "defaultMessage": "ライブラリを追加"
+  },
+  "9GaR82": {
+    "defaultMessage": "全般"
+  },
+  "9TJRkm": {
+    "defaultMessage": "シリーズのメタデータをインポート"
+  },
+  "9VuyZU": {
+    "defaultMessage": "別のディレクトリをスキャンしてください"
+  },
+  "9XDmYO": {
+    "defaultMessage": "ユーザーの削除"
+  },
+  "9aVhJC": {
+    "defaultMessage": "CBZ"
+  },
+  "9dNd68": {
+    "defaultMessage": "ユーザーによるアップロード"
+  },
+  "9mujmD": {
+    "defaultMessage": "発売日なし"
+  },
+  "9oA9gw": {
+    "defaultMessage": "ピン留め解除済み"
+  },
+  "AEaKHC": {
+    "defaultMessage": "再生成が必要な書籍サムネイルの検出"
+  },
+  "AJa6Tq": {
+    "defaultMessage": "データがありません"
+  },
+  "ALGXT9": {
+    "defaultMessage": "重複"
+  },
+  "AeA9Ka": {
+    "defaultMessage": "制限なし"
+  },
+  "Ai7bBV": {
+    "defaultMessage": "{count, plural, one {#ページ} other {#ページ}}"
+  },
+  "AjBiEw": {
+    "defaultMessage": "シリーズタイトルに巻数を付加"
+  },
+  "AjWlka": {
+    "defaultMessage": "ログインIDまたはパスワードが正しくありません"
+  },
+  "AoSCGy": {
+    "defaultMessage": "左"
+  },
+  "B2wcN0": {
+    "defaultMessage": "バーコードからISBNをインポート"
+  },
+  "B48EcS": {
+    "defaultMessage": "親ディレクトリ"
+  },
+  "BQmPch": {
+    "defaultMessage": "書籍を削除"
+  },
+  "Bewgy6": {
+    "defaultMessage": "シリーズの表紙"
+  },
+  "Bl30xt": {
+    "defaultMessage": "ユーザーを追加"
+  },
+  "BpzKDW": {
+    "defaultMessage": "複数の項目が削除されます。<b>この操作は取り消せません。</b>"
+  },
+  "BtDfUf": {
+    "defaultMessage": "上書き"
+  },
+  "ByRsV9": {
+    "defaultMessage": "WebReaderが横長ページを検出するために必要です"
+  },
+  "C0paz4": {
+    "defaultMessage": "書籍を解析"
+  },
+  "C1bGrS": {
+    "defaultMessage": "情報を表示"
+  },
+  "C4S+yv": {
+    "defaultMessage": "有効なURLを入力してください"
+  },
+  "C9LkYh": {
+    "defaultMessage": "コメント"
+  },
+  "CAKrBF": {
+    "defaultMessage": "コレクションを作成しました"
+  },
+  "CE7pPQ": {
+    "defaultMessage": "ファイルパス"
+  },
+  "CGRz8d": {
+    "defaultMessage": "書籍ファイルが変更されたため、再解析が必要です"
+  },
+  "CJaS7j": {
+    "defaultMessage": "ライブラリのルートディレクトリ"
+  },
+  "CMuDjt": {
+    "defaultMessage": "アクティビティの詳細"
+  },
+  "COn5A6": {
+    "defaultMessage": "ローカルメディアアセット"
+  },
+  "CPMLrI": {
+    "defaultMessage": "先に書籍を解析する必要があります"
+  },
+  "CUxhzL": {
+    "defaultMessage": "役割"
+  },
+  "CVk1J6": {
+    "defaultMessage": "エラー"
+  },
+  "CW0idP": {
+    "defaultMessage": "出版社"
+  },
+  "CY8sfH": {
+    "defaultMessage": "すべてのライブラリをスキャン"
+  },
+  "CkUPZe": {
+    "defaultMessage": "この書籍のファイル形式はサポートされていません"
+  },
+  "CpNtjm": {
+    "defaultMessage": "日時"
+  },
+  "CqlsIa": {
+    "defaultMessage": "制作関係者"
+  },
+  "Cv11G8": {
+    "defaultMessage": "総書籍数"
+  },
+  "CvsH7/": {
+    "defaultMessage": "最近のアクティビティなし"
+  },
+  "CwteMk": {
+    "defaultMessage": "すべてのライブラリのゴミ箱を空にする"
+  },
+  "CxuwFR": {
+    "defaultMessage": "対応していないファイル形式です"
+  },
+  "D+ZsSd": {
+    "defaultMessage": "別タイトルを追加"
+  },
+  "D/yypj": {
+    "defaultMessage": "<ul><li>このAPIキーのすべての同期履歴が削除されます。</li><li>お使いのKoboは次回の同期時にすべてを同期します。</li></ul>"
+  },
+  "D4qD6S": {
+    "defaultMessage": "フィールドをロック"
+  },
+  "DG4tYb": {
+    "defaultMessage": "{count, plural, one {#冊} other {#冊}}"
+  },
+  "DK4PsD": {
+    "defaultMessage": "シリーズの書籍"
+  },
+  "DNVnmS": {
+    "defaultMessage": "ディレクトリ名"
+  },
+  "DNmepU": {
+    "defaultMessage": "KOReader Syncを使用している場合は有効にしてください"
+  },
+  "DbrNAW": {
+    "defaultMessage": "検索または作成"
+  },
+  "DfakWW": {
+    "defaultMessage": "ファイルを削除"
+  },
+  "DgXStw": {
+    "defaultMessage": "コレクション内の前のシリーズへ移動"
+  },
+  "Dn4qvV": {
+    "defaultMessage": "初期設定に戻す"
+  },
+  "DwDa04": {
+    "defaultMessage": "スキャン間隔"
+  },
+  "DxtDpt": {
+    "defaultMessage": "メディア解析"
+  },
+  "E0cw62": {
+    "defaultMessage": "コレクションを更新しました：{collection}"
+  },
+  "E1kQun": {
+    "defaultMessage": "参照"
+  },
+  "E4ssEg": {
+    "defaultMessage": "書籍を変換"
+  },
+  "E5ZMyt": {
+    "defaultMessage": "解析"
+  },
+  "EIYfj+": {
+    "defaultMessage": "番号（巻・号）"
+  },
+  "ELttw/": {
+    "defaultMessage": "ゴミ箱を空にする"
+  },
+  "EMhLEN": {
+    "defaultMessage": "ファイルを移動"
+  },
+  "EOrAHc": {
+    "defaultMessage": "PDF"
+  },
+  "EabQ38": {
+    "defaultMessage": "ログイン状態を保持"
+  },
+  "EbhcQd": {
+    "defaultMessage": "詳細"
+  },
+  "EnHAAa": {
+    "defaultMessage": "PDF"
+  },
+  "Epp7Fi": {
+    "defaultMessage": "タグ"
+  },
+  "Er4D87": {
+    "defaultMessage": "画像"
+  },
+  "EzOmuX": {
+    "defaultMessage": "作成日時"
+  },
+  "FBGnzt": {
+    "defaultMessage": "同じ名前の読書リストが既に存在します"
+  },
+  "FH0CJ+": {
+    "defaultMessage": "ページ"
+  },
+  "FLqm9f": {
+    "defaultMessage": "翻訳に参加"
+  },
+  "FSJoDl": {
+    "defaultMessage": "シリーズを選択すると書籍が表示されます"
+  },
+  "FVq9w5": {
+    "defaultMessage": "Mylar (series.json)"
+  },
+  "FZXkIP": {
+    "defaultMessage": "翻訳者"
+  },
+  "Fdinos": {
+    "defaultMessage": "ポスター"
+  },
+  "FpwJlU": {
+    "defaultMessage": "変更を保存"
+  },
+  "Fwvj/i": {
+    "defaultMessage": "{count, plural, one {#シリーズ} other {#シリーズ}}"
+  },
+  "G/T8/2": {
+    "defaultMessage": "キャンセル"
+  },
+  "G25PY/": {
+    "defaultMessage": "検索"
+  },
+  "G7quju": {
+    "defaultMessage": "お知らせ"
+  },
+  "G93mS3": {
+    "defaultMessage": "すべて表示"
+  },
+  "GCwZB2": {
+    "defaultMessage": "ライブラリのファイルをスキャン"
+  },
+  "GnHrCd": {
+    "defaultMessage": "ローカルのアートワークを使用"
+  },
+  "Gwmnm6": {
+    "defaultMessage": "シリーズ"
+  },
+  "GyRV+/": {
+    "defaultMessage": "ライブラリが Google ドライブ上にある場合は有効にしてください"
+  },
+  "GySX8C": {
+    "defaultMessage": "スキャンごとにゴミ箱を自動で空にする"
+  },
+  "H+LXXE": {
+    "defaultMessage": "ライブラリのピン留めを解除するにはここにドラッグ"
+  },
+  "H1+81t": {
+    "defaultMessage": "手動"
+  },
+  "H2B6uF": {
+    "defaultMessage": "シリーズを選択してください"
+  },
+  "H4Kte4": {
+    "defaultMessage": "タイトル"
+  },
+  "HA4xOM": {
+    "defaultMessage": "書籍メタデータを更新"
+  },
+  "HHvDPs": {
+    "defaultMessage": "メールアドレス"
+  },
+  "HMbMJF": {
+    "defaultMessage": "日時"
+  },
+  "HOBFqq": {
+    "defaultMessage": "エラー"
+  },
+  "HXms0S": {
+    "defaultMessage": "項目を選択するか新規作成してください"
+  },
+  "HZ/e6n": {
+    "defaultMessage": "フィルター条件を変更してみてください"
+  },
+  "HZqgan": {
+    "defaultMessage": "閉じる"
+  },
+  "HaF+a6": {
+    "defaultMessage": "ライブラリ"
+  },
+  "HaWCi3": {
+    "defaultMessage": "設定"
+  },
+  "HdsnFp": {
+    "defaultMessage": "コレクションを削除しました：{collection}"
+  },
+  "Hl9H/B": {
+    "defaultMessage": "メディア"
+  },
+  "Hv7lqq": {
+    "defaultMessage": "グリッド"
+  },
+  "Hyz5su": {
+    "defaultMessage": "書籍をインポート"
+  },
+  "I75Xgh": {
+    "defaultMessage": "シリーズ内の次の書籍へ移動"
+  },
+  "I9L5Ag": {
+    "defaultMessage": "並べ替え"
+  },
+  "I9ub/l": {
+    "defaultMessage": "検出済みの重複ページ"
+  },
+  "IE0XzE": {
+    "defaultMessage": "削除"
+  },
+  "IEUgyy": {
+    "defaultMessage": "既存のファイル名"
+  },
+  "II5EFN": {
+    "defaultMessage": "ペンシラー"
+  },
+  "IIqDdQ": {
+    "defaultMessage": "読書リストを更新しました：{readlist}"
+  },
+  "IXhDH6": {
+    "defaultMessage": "重複ページ"
+  },
+  "Icqm5y": {
+    "defaultMessage": "ページ番号"
+  },
+  "Ih4MH9": {
+    "defaultMessage": "検索条件を変更してみてください"
+  },
+  "IlRX+s": {
+    "defaultMessage": "幅: {width}, 高さ: {height}"
+  },
+  "InW6ko": {
+    "defaultMessage": "翻訳"
+  },
+  "IpvWiZ": {
+    "defaultMessage": "サーバー"
+  },
+  "J+H9cC": {
+    "defaultMessage": "ファイルを削除"
+  },
+  "J44THG": {
+    "defaultMessage": "状態"
+  },
+  "J8rAqm": {
+    "defaultMessage": "発売年"
+  },
+  "JGOfZq": {
+    "defaultMessage": "ユーザー"
+  },
+  "JHaKYw": {
+    "defaultMessage": "すべて選択"
+  },
+  "JNBONk": {
+    "defaultMessage": "リスト"
+  },
+  "JbF1nK": {
+    "defaultMessage": "ユーザーのパスワードを変更しました：{email}"
+  },
+  "Jj4uO/": {
+    "defaultMessage": "ページ数"
+  },
+  "JwBlXP": {
+    "defaultMessage": "開く"
+  },
+  "K+fQO2": {
+    "defaultMessage": "スキャン対象のファイル形式"
+  },
+  "K40g4r": {
+    "defaultMessage": "ユーザーを編集"
+  },
+  "KBLD9U": {
+    "defaultMessage": "対象年齢"
+  },
+  "Kie8HQ": {
+    "defaultMessage": "書籍"
+  },
+  "Ku7NJ+": {
+    "defaultMessage": "シリーズのファイルが見つかりませんでした"
+  },
+  "LD5j8J": {
+    "defaultMessage": "指定されたシリーズ"
+  },
+  "LFf8QB": {
+    "defaultMessage": "削除"
+  },
+  "LKoz42": {
+    "defaultMessage": "概要"
+  },
+  "LM4LL9": {
+    "defaultMessage": "シリーズのローカルアートワークを更新"
+  },
+  "LaMAsc": {
+    "defaultMessage": "認証履歴"
+  },
+  "LaxrEO": {
+    "defaultMessage": "パスワードが一致しません"
+  },
+  "LjqS9+": {
+    "defaultMessage": "同じ名前の読書リストがすでに存在します"
+  },
+  "Lto2Lg": {
+    "defaultMessage": "'/'で始まり、末尾が'/'、'-'、'_'のいずれでもなく、'/'、'-'、'_'、英小文字a～z、数字0～9のみを含める必要があります"
+  },
+  "MC2JtF": {
+    "defaultMessage": "すべて"
+  },
+  "MEWT0D": {
+    "defaultMessage": "書籍{number}のあらすじ："
+  },
+  "MKs9N+": {
+    "defaultMessage": "概要"
+  },
+  "MYYgTv": {
+    "defaultMessage": "ファイルサイズ不明"
+  },
+  "MoOECu": {
+    "defaultMessage": "シリーズメタデータをインポート"
+  },
+  "MvwDsn": {
+    "defaultMessage": "既知"
+  },
+  "N7+QXi": {
+    "defaultMessage": "インポート"
+  },
+  "N9WFH4": {
+    "defaultMessage": "保存"
+  },
+  "NArFTo": {
+    "defaultMessage": "APIキーを削除しました：{apiKeyComment}"
+  },
+  "NKVL81": {
+    "defaultMessage": "読切"
+  },
+  "NLiXdm": {
+    "defaultMessage": "ラベル"
+  },
+  "NN7kAK": {
+    "defaultMessage": "Koboの全件再同期を設定しました：{apiKeyComment}"
+  },
+  "Nahedl": {
+    "defaultMessage": "追加"
+  },
+  "NasBHg": {
+    "defaultMessage": "読了日"
+  },
+  "Nb0V0p": {
+    "defaultMessage": "未設定のポスター"
+  },
+  "NhIart": {
+    "defaultMessage": "書籍ファイルの削除"
+  },
+  "No9Upl": {
+    "defaultMessage": "タイトル"
+  },
+  "NpjqFA": {
+    "defaultMessage": "フィルターの条件を変更してみてください"
+  },
+  "NruW40": {
+    "defaultMessage": "出版社"
+  },
+  "NwK2Kv": {
+    "defaultMessage": "タグ"
+  },
+  "O/3awV": {
+    "defaultMessage": "解析"
+  },
+  "O4Nnj5": {
+    "defaultMessage": "書籍 {number}"
+  },
+  "O6qNva": {
+    "defaultMessage": "詳細"
+  },
+  "O9hZBS": {
+    "defaultMessage": "ポスターのサイズ"
+  },
+  "OLqBQc": {
+    "defaultMessage": "出版社"
+  },
+  "OUyleX": {
+    "defaultMessage": "すべてのメタデータを更新"
+  },
+  "OW1/zn": {
+    "defaultMessage": "最近の認証履歴はありません"
+  },
+  "OZSDCE": {
+    "defaultMessage": "ピン留め"
+  },
+  "OgM2Q2": {
+    "defaultMessage": "シリーズのメタデータを更新"
+  },
+  "Oj3xqB": {
+    "defaultMessage": "読書リストを削除しました：{readlist}"
+  },
+  "OxqfKF": {
+    "defaultMessage": "詳細スキャン"
+  },
+  "P+WI/K": {
+    "defaultMessage": "重複ページ"
+  },
+  "P8Ox+D": {
+    "defaultMessage": "書籍のメタデータを更新しました：{book}"
+  },
+  "P9B8fE": {
+    "defaultMessage": "シリーズ内の前の書籍へ移動"
+  },
+  "PTr5Wc": {
+    "defaultMessage": "Komgaサーバーが稼働しているか確認してください"
+  },
+  "PguYSD": {
+    "defaultMessage": "既存の読書リストを上書きする"
+  },
+  "Pj29A+": {
+    "defaultMessage": "重複ページの検出に必要です"
+  },
+  "Po0Z4Z": {
+    "defaultMessage": "読書リスト"
+  },
+  "Pp3+1S": {
+    "defaultMessage": "刊行状況"
+  },
+  "PvKF7E": {
+    "defaultMessage": "ライブラリを削除しました：{library}"
+  },
+  "Q7tJAG": {
+    "defaultMessage": "読書リスト"
+  },
+  "QALnuE": {
+    "defaultMessage": "ファイル形式"
+  },
+  "QBQ5a/": {
+    "defaultMessage": "タイトル"
+  },
+  "QIr0z7": {
+    "defaultMessage": "メールアドレス"
+  },
+  "QM5+gW": {
+    "defaultMessage": "削除数"
+  },
+  "Qxij/I": {
+    "defaultMessage": "削除されたページ"
+  },
+  "REmxIM": {
+    "defaultMessage": "更新日時"
+  },
+  "RHJo8j": {
+    "defaultMessage": "インポート"
+  },
+  "RMHfEo": {
+    "defaultMessage": "いずれか"
+  },
+  "ROFRn4": {
+    "defaultMessage": "生成"
+  },
+  "RR+XGR": {
+    "defaultMessage": "このページは準備中です。"
+  },
+  "RTNaxB": {
+    "defaultMessage": "サイドバーを展開"
+  },
+  "RcbD73": {
+    "defaultMessage": "書籍 {number}"
+  },
+  "Rm52xk": {
+    "defaultMessage": "Komga へようこそ"
+  },
+  "Rw2Iwj": {
+    "defaultMessage": "読書リスト内の次の書籍へ移動"
+  },
+  "RwuMl5": {
+    "defaultMessage": "誤った拡張子を自動的に修復する"
+  },
+  "S1/qO0": {
+    "defaultMessage": "コレクション"
+  },
+  "S39lnB": {
+    "defaultMessage": "対象年"
+  },
+  "SIfmpC": {
+    "defaultMessage": "シリーズを選択"
+  },
+  "STdfYg": {
+    "defaultMessage": "ページの寸法を解析"
+  },
+  "SWm3SC": {
+    "defaultMessage": "リンクを追加"
+  },
+  "SZHxy4": {
+    "defaultMessage": "書籍を選択"
+  },
+  "Sj0HXz": {
+    "defaultMessage": "許可するラベル"
+  },
+  "SqZoei": {
+    "defaultMessage": "シリーズを選択"
+  },
+  "Ss08kC": {
+    "defaultMessage": "{count}件の項目"
+  },
+  "SuegoE": {
+    "defaultMessage": "自動並べ替え"
+  },
+  "T3Ofay": {
+    "defaultMessage": "読了日：{readDate}"
+  },
+  "TAVSfO": {
+    "defaultMessage": "書籍数"
+  },
+  "TG7prC": {
+    "defaultMessage": "追加日"
+  },
+  "TPX4qo": {
+    "defaultMessage": "タグ"
+  },
+  "TTO9NT": {
+    "defaultMessage": "概要"
+  },
+  "TUxJCd": {
+    "defaultMessage": "アプリ起動時にスキャン"
+  },
+  "TfdugD": {
+    "defaultMessage": "発売日順"
+  },
+  "ThHjN4": {
+    "defaultMessage": "シリーズ"
+  },
+  "Thjcar": {
+    "defaultMessage": "書籍タグ"
+  },
+  "TkIvo8": {
+    "defaultMessage": "寸法不明"
+  },
+  "ToD0+o": {
+    "defaultMessage": "メールアドレス"
+  },
+  "TtH2LJ": {
+    "defaultMessage": "有効なISBN-13を入力してください"
+  },
+  "TwB29u": {
+    "defaultMessage": "表紙やダウンロードの同期に問題が発生した場合にのみ設定してください"
+  },
+  "U3Uo3q": {
+    "defaultMessage": "パスワード"
+  },
+  "UFZ+PY": {
+    "defaultMessage": "タグ"
+  },
+  "UPOAPc": {
+    "defaultMessage": "検索をクリア"
+  },
+  "USJuJ1": {
+    "defaultMessage": "ローカルのアートワーク"
+  },
+  "UTPZNG": {
+    "defaultMessage": "読書リスト名"
+  },
+  "UaD47n": {
+    "defaultMessage": "「ログイン状態を保持」キーを再生成する"
+  },
+  "UfbIyV": {
+    "defaultMessage": "リンク"
+  },
+  "Uj479p": {
+    "defaultMessage": "発行日"
+  },
+  "UoaxO7": {
+    "defaultMessage": "既存の書籍を差し替えます"
+  },
+  "UsTdV2": {
+    "defaultMessage": "共有ラベル"
+  },
+  "Usohru": {
+    "defaultMessage": "参照"
+  },
+  "Uuu6fQ": {
+    "defaultMessage": "結果が見つかりません"
+  },
+  "UvhIIT": {
+    "defaultMessage": "共有ライブラリ"
+  },
+  "V/OYJE": {
+    "defaultMessage": "ユーザーを削除しました：{email}"
+  },
+  "V3wgcu": {
+    "defaultMessage": "重複ページ"
+  },
+  "VHe28r": {
+    "defaultMessage": "更新日時"
+  },
+  "VP+GhR": {
+    "defaultMessage": "生成"
+  },
+  "VQ/hT4": {
+    "defaultMessage": "ISBN"
+  },
+  "VcueWO": {
+    "defaultMessage": "「SeriesGroup」要素が使用されます"
+  },
+  "VeEnkD": {
+    "defaultMessage": "リンク"
+  },
+  "VhMXcu": {
+    "defaultMessage": "{total, plural, one {{count} / #冊} other {{count} / #冊}}"
+  },
+  "Vpmsx0": {
+    "defaultMessage": "シリーズの書籍"
+  },
+  "Vs7y3+": {
+    "defaultMessage": "読書リストに追加"
+  },
+  "VtC7Ce": {
+    "defaultMessage": "編集者"
+  },
+  "VvjZEl": {
+    "defaultMessage": "書籍が見つかりません"
+  },
+  "Vwpr+D": {
+    "defaultMessage": "ランダム"
+  },
+  "W3BUf7": {
+    "defaultMessage": "了解しました"
+  },
+  "WADecv": {
+    "defaultMessage": "インストール済み"
+  },
+  "WLfi1+": {
+    "defaultMessage": "{count, plural, one {#冊} other {#冊}}"
+  },
+  "WLwQG8": {
+    "defaultMessage": "作成されたAPIキーはありません"
+  },
+  "WNY0pu": {
+    "defaultMessage": "すでに最新バージョンのKomgaがインストールされています"
+  },
+  "WPxleH": {
+    "defaultMessage": "書籍ファイルが削除されます。<ul><li>書籍のメディアファイルがディスクから削除されます。</li><li>書籍のサイドカーファイルがディスクから削除されます。</li><li>書籍はメタデータや読書進捗とともに削除されます。</li></ul><b>この操作は取り消せません。</b>"
+  },
+  "WSTiWA": {
+    "defaultMessage": "コレクションに追加しました"
+  },
+  "WVblsI": {
+    "defaultMessage": "ページ数"
+  },
+  "WY7aQf": {
+    "defaultMessage": "削減容量"
+  },
+  "WhasCZ": {
+    "defaultMessage": "新しいパスワード"
+  },
+  "Wi+k3O": {
+    "defaultMessage": "小数を指定できます"
+  },
+  "Wivz5J": {
+    "defaultMessage": "閉じる"
+  },
+  "Wlzzv8": {
+    "defaultMessage": "指定番号"
+  },
+  "X/Z8x+": {
+    "defaultMessage": "必ずAPIキーをコピーしてください。APIキーは後から再表示できません。"
+  },
+  "X47Js+": {
+    "defaultMessage": "シリーズ"
+  },
+  "X80giU": {
+    "defaultMessage": "追加"
+  },
+  "XCwAkR": {
+    "defaultMessage": "開く"
+  },
+  "XDV3Si": {
+    "defaultMessage": "その他"
+  },
+  "XM8VQH": {
+    "defaultMessage": "操作"
+  },
+  "XR+P68": {
+    "defaultMessage": "言語"
+  },
+  "XRbUyd": {
+    "defaultMessage": "読書状況"
+  },
+  "XXr6pI": {
+    "defaultMessage": "表示件数"
+  },
+  "XZ5lw4": {
+    "defaultMessage": "結果"
+  },
+  "Xbf2fj": {
+    "defaultMessage": "ファイルの更新日時をディレクトリに反映"
+  },
+  "XnidLu": {
+    "defaultMessage": "確認のため<b>{validateText}</b>と入力してください。"
+  },
+  "Xq4kkn": {
+    "defaultMessage": "読書リスト内の前の書籍へ移動"
+  },
+  "XuqK4C": {
+    "defaultMessage": "未判定の重複ページ"
+  },
+  "Xx+ITC": {
+    "defaultMessage": "マイアクティビティ"
+  },
+  "Xxk+hl": {
+    "defaultMessage": "収録先"
+  },
+  "Xxu514": {
+    "defaultMessage": "シリーズのファイルを削除"
+  },
+  "Y/fJj5": {
+    "defaultMessage": "ファイルサイズ"
+  },
+  "Y0cG3G": {
+    "defaultMessage": "このサーバーからAPIキーが削除されます。<ul><li>このAPIキーを使用しているアプリケーションやスクリプトは、Komga APIにアクセスできなくなります。</li><li>このAPIキーの認証履歴は完全に削除されます。</li></ul><b>この操作は取り消せません。</b>"
+  },
+  "Y4xJBN": {
+    "defaultMessage": "最終更新日時"
+  },
+  "Y6VlM9": {
+    "defaultMessage": "読書リスト"
+  },
+  "Y7Y2T0": {
+    "defaultMessage": "読む"
+  },
+  "Y8SsFO": {
+    "defaultMessage": "読む"
+  },
+  "YHxouG": {
+    "defaultMessage": "インポート要求済み"
+  },
+  "YVQ49g": {
+    "defaultMessage": "コレクションを編集"
+  },
+  "YbkrN9": {
+    "defaultMessage": "IP"
+  },
+  "YeUvoE": {
+    "defaultMessage": "カスタム役割…"
+  },
+  "Yf4DJ2": {
+    "defaultMessage": "UI"
+  },
+  "Ym48fa": {
+    "defaultMessage": "最近のイベントはありません"
+  },
+  "Z/EY89": {
+    "defaultMessage": "ネットワークエラー"
+  },
+  "Z42XVQ": {
+    "defaultMessage": "書籍ファイルのハッシュを計算（KOReader）"
+  },
+  "Z5hsZ9": {
+    "defaultMessage": "残り{count}ページ"
+  },
+  "ZE3XpF": {
+    "defaultMessage": "セクションが設定されていません"
+  },
+  "ZEbDUo": {
+    "defaultMessage": "完了"
+  },
+  "ZGppaw": {
+    "defaultMessage": "シリーズ"
+  },
+  "ZPuFVu": {
+    "defaultMessage": "全般"
+  },
+  "ZWFPAg": {
+    "defaultMessage": "パスワードが一致しません"
+  },
+  "ZZmdmI": {
+    "defaultMessage": "{pagesCount}ページ"
+  },
+  "ZfDKy4": {
+    "defaultMessage": "ページハッシュがない書籍を検索"
+  },
+  "Zh8AOV": {
+    "defaultMessage": "ユーザーを編集"
+  },
+  "ZnjyI3": {
+    "defaultMessage": "折りたたむ"
+  },
+  "ZnnG58": {
+    "defaultMessage": "ポスター"
+  },
+  "Zozcfh": {
+    "defaultMessage": "ソース"
+  },
+  "a5MYiP": {
+    "defaultMessage": "ポスター"
+  },
+  "a5jT6x": {
+    "defaultMessage": "読書リストの削除"
+  },
+  "aDFZOW": {
+    "defaultMessage": "メールアドレス"
+  },
+  "aHyrmS": {
+    "defaultMessage": "削除"
+  },
+  "aOiU5f": {
+    "defaultMessage": "ライブラリを更新しました：{library}"
+  },
+  "aR6KDt": {
+    "defaultMessage": "言語"
+  },
+  "aSDxrt": {
+    "defaultMessage": "シリーズのファイルを削除しました：{series}"
+  },
+  "aU1qcP": {
+    "defaultMessage": "削除"
+  },
+  "aYalqk": {
+    "defaultMessage": "書籍を選択してください"
+  },
+  "afXGQS": {
+    "defaultMessage": "ルートディレクトリ"
+  },
+  "am3r7e": {
+    "defaultMessage": "ライブラリの編集"
+  },
+  "anhfpP": {
+    "defaultMessage": "未対応のファイル形式です"
+  },
+  "ap/Lnw": {
+    "defaultMessage": "ハードリンク／コピー"
+  },
+  "app.error.ERR_1000": {
+    "defaultMessage": "解析中にファイルへアクセスできませんでした"
+  },
+  "app.error.ERR_1001": {
+    "defaultMessage": "未対応のメディア形式です"
+  },
+  "app.error.ERR_1002": {
+    "defaultMessage": "暗号化されたRARアーカイブには対応していません"
+  },
+  "app.error.ERR_1003": {
+    "defaultMessage": "ソリッドモードのRAR書庫はサポートしていません"
+  },
+  "app.error.ERR_1004": {
+    "defaultMessage": "分割形式のRARファイルには対応していません"
+  },
+  "app.error.ERR_1005": {
+    "defaultMessage": "書籍の解析中に不明なエラーが発生しました"
+  },
+  "app.error.ERR_1006": {
+    "defaultMessage": "書籍にページが含まれていません"
+  },
+  "app.error.ERR_1007": {
+    "defaultMessage": "一部のエントリを解析できませんでした"
+  },
+  "app.error.ERR_1008": {
+    "defaultMessage": "書籍のエントリ取得中に不明なエラーが発生しました"
+  },
+  "app.error.ERR_1009": {
+    "defaultMessage": "同じ名前の読書リストが既に存在します"
+  },
+  "app.error.ERR_1015": {
+    "defaultMessage": "ComicRack CBLのデシリアライズ中にエラーが発生しました"
+  },
+  "app.error.ERR_1016": {
+    "defaultMessage": "ディレクトリにアクセスできないか、ディレクトリではありません"
+  },
+  "app.error.ERR_1017": {
+    "defaultMessage": "既存のライブラリに含まれるフォルダーはスキャンできません"
+  },
+  "app.error.ERR_1018": {
+    "defaultMessage": "ファイルが見つかりません"
+  },
+  "app.error.ERR_1019": {
+    "defaultMessage": "既存のライブラリに含まれるファイルはインポートできません"
+  },
+  "app.error.ERR_1020": {
+    "defaultMessage": "差し替え対象の書籍が指定されたシリーズに属していません。"
+  },
+  "app.error.ERR_1021": {
+    "defaultMessage": "移動先ファイルが既に存在します"
+  },
+  "app.error.ERR_1022": {
+    "defaultMessage": "新しくインポートした書籍をスキャンできませんでした"
+  },
+  "app.error.ERR_1023": {
+    "defaultMessage": "書籍は既に読書リストに登録されています"
+  },
+  "app.error.ERR_1024": {
+    "defaultMessage": "OAuth2ログインエラー：email属性が見つかりません"
+  },
+  "app.error.ERR_1025": {
+    "defaultMessage": "OAuth2ログインエラー：そのメールアドレスを持つローカルユーザーが存在しません"
+  },
+  "app.error.ERR_1026": {
+    "defaultMessage": "OpenID Connectログインエラー：メールアドレスが未検証です"
+  },
+  "app.error.ERR_1027": {
+    "defaultMessage": "OpenID Connectログインエラー：email_verified属性が見つかりません"
+  },
+  "app.error.ERR_1028": {
+    "defaultMessage": "OpenID Connectログインエラー：email属性が見つかりません"
+  },
+  "app.error.ERR_1029": {
+    "defaultMessage": "ComicRack CBLにBook要素が含まれていません"
+  },
+  "app.error.ERR_1030": {
+    "defaultMessage": "ComicRack CBLにName要素がありません"
+  },
+  "app.error.ERR_1031": {
+    "defaultMessage": "ComicRack CBL Bookにシリーズまたは番号がありません"
+  },
+  "app.error.ERR_1032": {
+    "defaultMessage": "EPUBファイルのメディアタイプが正しくありません"
+  },
+  "app.error.ERR_1033": {
+    "defaultMessage": "一部のエントリが欠落しています"
+  },
+  "app.error.ERR_1034": {
+    "defaultMessage": "そのコメントのAPIキーは既に存在します"
+  },
+  "app.error.ERR_1035": {
+    "defaultMessage": "EPUBの目次取得中にエラーが発生しました"
+  },
+  "app.error.ERR_1036": {
+    "defaultMessage": "EPUBのランドマーク取得中にエラーが発生しました"
+  },
+  "app.error.ERR_1037": {
+    "defaultMessage": "EPUBのページ一覧取得中にエラーが発生しました"
+  },
+  "app.error.ERR_1038": {
+    "defaultMessage": "EPUBのDivinaページ取得中にエラーが発生しました"
+  },
+  "app.error.ERR_1039": {
+    "defaultMessage": "EPUBの位置情報取得中にエラーが発生しました"
+  },
+  "app.user-create-dialog.all_libraries": {
+    "defaultMessage": "すべてのライブラリ"
+  },
+  "ayrmyn": {
+    "defaultMessage": "並べ替え用タイトル"
+  },
+  "b1hvh9": {
+    "defaultMessage": "CBRをCBZへ自動変換する"
+  },
+  "b4J0RU": {
+    "defaultMessage": "準備中"
+  },
+  "bCFD9B": {
+    "defaultMessage": "ページめくり"
+  },
+  "bDNZqj": {
+    "defaultMessage": "読書リストを編集"
+  },
+  "bDNv5+": {
+    "defaultMessage": "指定なし"
+  },
+  "bFoCHJ": {
+    "defaultMessage": "保存先ファイル名"
+  },
+  "bN2VbA": {
+    "defaultMessage": "除外ディレクトリ"
+  },
+  "bOUy3X": {
+    "defaultMessage": "書籍"
+  },
+  "bRxSgh": {
+    "defaultMessage": "手動"
+  },
+  "bSoeY6": {
+    "defaultMessage": "移動先名"
+  },
+  "bk1tX8": {
+    "defaultMessage": "ライブラリはこのサーバーから削除されます。<ul><li>シリーズと書籍は、メタデータや読書進捗とともに削除されます。</li><li>メディアファイルはディスクから削除されません。</li></ul><b>この操作は取り消せません。</b>"
+  },
+  "bqoEfm": {
+    "defaultMessage": "書籍ページのハッシュを計算"
+  },
+  "bzY8FH": {
+    "defaultMessage": "検索"
+  },
+  "bzn96A": {
+    "defaultMessage": "ライブラリを作成"
+  },
+  "c+hx0g": {
+    "defaultMessage": "ユーザー"
+  },
+  "cAu/I6": {
+    "defaultMessage": "重複ページ"
+  },
+  "cGOJnB": {
+    "defaultMessage": "{count, plural, one {#冊} other {#冊}}"
+  },
+  "cIM3eJ": {
+    "defaultMessage": "続きを読む"
+  },
+  "cM9FuW": {
+    "defaultMessage": "シリーズを選択してください"
+  },
+  "cTPeOs": {
+    "defaultMessage": "または次のキーで貼り付け："
+  },
+  "cWVIRm": {
+    "defaultMessage": "ユーザーエージェント"
+  },
+  "ccAMWS": {
+    "defaultMessage": "ドキュメント"
+  },
+  "ccDES8": {
+    "defaultMessage": "書籍ファイルを削除しました：{book}"
+  },
+  "cfWux+": {
+    "defaultMessage": "コレクション名"
+  },
+  "crClNV": {
+    "defaultMessage": "表紙担当"
+  },
+  "cyQk6S": {
+    "defaultMessage": "コレクション"
+  },
+  "d2J/J/": {
+    "defaultMessage": "選択"
+  },
+  "d5c33V": {
+    "defaultMessage": "不明なメディアタイプ"
+  },
+  "d8lMZe": {
+    "defaultMessage": "ユーザーアカウントを作成"
+  },
+  "dHyAgE": {
+    "defaultMessage": "パスワードの変更"
+  },
+  "dK/kHO": {
+    "defaultMessage": "メディアコメント"
+  },
+  "dLE2PW": {
+    "defaultMessage": "アクティビティなし"
+  },
+  "dN5GoW": {
+    "defaultMessage": "書籍"
+  },
+  "dP6SpT": {
+    "defaultMessage": "名前順"
+  },
+  "dQ9kx9": {
+    "defaultMessage": "言語選択"
+  },
+  "dSlkbn": {
+    "defaultMessage": "全体的なスキャンの動作"
+  },
+  "dSy8IC": {
+    "defaultMessage": "読書リストに追加しました"
+  },
+  "da/wb0": {
+    "defaultMessage": "すべて既読にする"
+  },
+  "ddpX9L": {
+    "defaultMessage": "全般"
+  },
+  "ddthL2": {
+    "defaultMessage": "確認"
+  },
+  "dfslqC": {
+    "defaultMessage": "シリーズのファイルが削除されます。<ul><li>書籍のメディアファイルがディスクから削除されます。</li><li>シリーズと書籍は、メタデータや読書進捗とともに削除されます。</li></ul><b>この操作は取り消せません。</b>"
+  },
+  "dipMGb": {
+    "defaultMessage": "作成"
+  },
+  "dx9s7S": {
+    "defaultMessage": "作成日時"
+  },
+  "e7cgeE": {
+    "defaultMessage": "コレクションに追加"
+  },
+  "e8DJzj": {
+    "defaultMessage": "テーマ"
+  },
+  "eDA9Gm": {
+    "defaultMessage": "生成されるポスターのサイズ"
+  },
+  "eRJOa6": {
+    "defaultMessage": "サーバーのベースURL"
+  },
+  "eW3fXu": {
+    "defaultMessage": "重複ファイル"
+  },
+  "efspoY": {
+    "defaultMessage": "テーブル"
+  },
+  "egrxd6": {
+    "defaultMessage": "ユーザーを作成しました：{email}"
+  },
+  "enum.MediaProfile.DIVINA": {
+    "defaultMessage": "DiViNa"
+  },
+  "enum.MediaProfile.EPUB": {
+    "defaultMessage": "EPUB"
+  },
+  "enum.MediaProfile.PDF": {
+    "defaultMessage": "PDF"
+  },
+  "enum.MediaStatus.ERROR": {
+    "defaultMessage": "エラー"
+  },
+  "enum.MediaStatus.OUTDATED": {
+    "defaultMessage": "要更新"
+  },
+  "enum.MediaStatus.READY": {
+    "defaultMessage": "準備完了"
+  },
+  "enum.MediaStatus.UNKNOWN": {
+    "defaultMessage": "不明"
+  },
+  "enum.MediaStatus.UNSUPPORTED": {
+    "defaultMessage": "非対応"
+  },
+  "enum.OverviewSection.keep_reading": {
+    "defaultMessage": "読書を続ける"
+  },
+  "enum.OverviewSection.on_deck": {
+    "defaultMessage": "次に読む"
+  },
+  "enum.OverviewSection.recently_added_books": {
+    "defaultMessage": "最近追加された書籍"
+  },
+  "enum.OverviewSection.recently_added_series": {
+    "defaultMessage": "最近追加されたシリーズ"
+  },
+  "enum.OverviewSection.recently_read_books": {
+    "defaultMessage": "最近読んだ書籍"
+  },
+  "enum.OverviewSection.recently_released_books": {
+    "defaultMessage": "最近リリースされた書籍"
+  },
+  "enum.OverviewSection.recently_updated_series": {
+    "defaultMessage": "最近更新されたシリーズ"
+  },
+  "enum.ReadStatus.IN_PROGRESS": {
+    "defaultMessage": "読書中"
+  },
+  "enum.ReadStatus.READ": {
+    "defaultMessage": "既読"
+  },
+  "enum.ReadStatus.UNREAD": {
+    "defaultMessage": "未読"
+  },
+  "enum.ReadingDirection.LEFT_TO_RIGHT": {
+    "defaultMessage": "左から右"
+  },
+  "enum.ReadingDirection.RIGHT_TO_LEFT": {
+    "defaultMessage": "右から左"
+  },
+  "enum.ReadingDirection.VERTICAL": {
+    "defaultMessage": "縦スクロール"
+  },
+  "enum.ReadingDirection.WEBTOON": {
+    "defaultMessage": "ウェブトゥーン"
+  },
+  "enum.ScanInterval.DAILY": {
+    "defaultMessage": "毎日"
+  },
+  "enum.ScanInterval.DISABLED": {
+    "defaultMessage": "無効"
+  },
+  "enum.ScanInterval.EVERY_12H": {
+    "defaultMessage": "12時間ごと"
+  },
+  "enum.ScanInterval.EVERY_6H": {
+    "defaultMessage": "6時間ごと"
+  },
+  "enum.ScanInterval.HOURLY": {
+    "defaultMessage": "1時間ごと"
+  },
+  "enum.ScanInterval.WEEKLY": {
+    "defaultMessage": "毎週"
+  },
+  "enum.SeriesCover.FIRST": {
+    "defaultMessage": "最初の書籍"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_FIRST": {
+    "defaultMessage": "最初の未読（なければ最初）"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_LAST": {
+    "defaultMessage": "最初の未読（なければ最後）"
+  },
+  "enum.SeriesCover.LAST": {
+    "defaultMessage": "最後の書籍"
+  },
+  "enum.SeriesStatus.ABANDONED": {
+    "defaultMessage": "打ち切り"
+  },
+  "enum.SeriesStatus.ENDED": {
+    "defaultMessage": "完結"
+  },
+  "enum.SeriesStatus.HIATUS": {
+    "defaultMessage": "休載"
+  },
+  "enum.SeriesStatus.ONGOING": {
+    "defaultMessage": "連載中"
+  },
+  "enum.ThumbnailSize.DEFAULT": {
+    "defaultMessage": "デフォルト（300px）"
+  },
+  "enum.ThumbnailSize.LARGE": {
+    "defaultMessage": "大 (900px)"
+  },
+  "enum.ThumbnailSize.MEDIUM": {
+    "defaultMessage": "中 (600px)"
+  },
+  "enum.ThumbnailSize.XLARGE": {
+    "defaultMessage": "特大 (1200px)"
+  },
+  "enum.UserRole.ADMIN": {
+    "defaultMessage": "管理者"
+  },
+  "enum.UserRole.FILE_DOWNLOAD": {
+    "defaultMessage": "ファイルダウンロード"
+  },
+  "enum.UserRole.KOBO_SYNC": {
+    "defaultMessage": "Kobo同期"
+  },
+  "enum.UserRole.KOREADER_SYNC": {
+    "defaultMessage": "KOReader同期"
+  },
+  "enum.UserRole.PAGE_STREAMING": {
+    "defaultMessage": "ページストリーミング"
+  },
+  "enum.UserRole.USER": {
+    "defaultMessage": "ユーザー"
+  },
+  "enum.historicalEvent.BookConverted": {
+    "defaultMessage": "書籍の変換"
+  },
+  "enum.historicalEvent.BookFileDeleted": {
+    "defaultMessage": "書籍ファイルの削除"
+  },
+  "enum.historicalEvent.BookImported": {
+    "defaultMessage": "書籍のインポート"
+  },
+  "enum.historicalEvent.DuplicatePageDeleted": {
+    "defaultMessage": "重複ページの削除"
+  },
+  "enum.historicalEvent.SeriesFolderDeleted": {
+    "defaultMessage": "シリーズディレクトリの削除"
+  },
+  "enum.pageHashAction.DELETE_AUTO": {
+    "defaultMessage": "自動削除"
+  },
+  "enum.pageHashAction.DELETE_MANUAL": {
+    "defaultMessage": "手動削除"
+  },
+  "enum.pageHashAction.IGNORE": {
+    "defaultMessage": "無視"
+  },
+  "estf95": {
+    "defaultMessage": "読書リストを作成しました"
+  },
+  "exrB0E": {
+    "defaultMessage": "全般"
+  },
+  "eyYZUe": {
+    "defaultMessage": "ライブラリ"
+  },
+  "ezgnXr": {
+    "defaultMessage": "パスワード（確認）"
+  },
+  "f1fW81": {
+    "defaultMessage": "解析ステータス"
+  },
+  "f3/J8+": {
+    "defaultMessage": "右"
+  },
+  "fQIepD": {
+    "defaultMessage": "書籍"
+  },
+  "fRfbEb": {
+    "defaultMessage": "役割を追加"
+  },
+  "fVqdik": {
+    "defaultMessage": "ComicInfo.xml (CBR/CBZ)"
+  },
+  "fbEqBB": {
+    "defaultMessage": "リンク"
+  },
+  "fl2YLT": {
+    "defaultMessage": "メディアステータス"
+  },
+  "foSDIW": {
+    "defaultMessage": "詳細スキャン"
+  },
+  "g+OQSw": {
+    "defaultMessage": "並べ替え"
+  },
+  "g2UW+6": {
+    "defaultMessage": "サポートされていない書籍形式です"
+  },
+  "gEBeQv": {
+    "defaultMessage": "シリーズのメタデータを更新しました：{series}"
+  },
+  "gNiEAF": {
+    "defaultMessage": "コメント"
+  },
+  "ggaOkE": {
+    "defaultMessage": "データが見つかりません"
+  },
+  "gojrIJ": {
+    "defaultMessage": "シリーズを選択"
+  },
+  "gsqrOd": {
+    "defaultMessage": "ポスターを再生成"
+  },
+  "gtEH1R": {
+    "defaultMessage": "全般"
+  },
+  "gxZjIe": {
+    "defaultMessage": "操作"
+  },
+  "h6C8/l": {
+    "defaultMessage": "全般"
+  },
+  "hBanlz": {
+    "defaultMessage": "ジャンル"
+  },
+  "hEOGa9": {
+    "defaultMessage": "年齢制限"
+  },
+  "hGFogR": {
+    "defaultMessage": "共有ラベル"
+  },
+  "hJEc5M": {
+    "defaultMessage": "ライブラリメニュー"
+  },
+  "hPYi11": {
+    "defaultMessage": "読み方向"
+  },
+  "hPo41m": {
+    "defaultMessage": "データが見つかりません"
+  },
+  "hV3EW+": {
+    "defaultMessage": "詳細スキャン"
+  },
+  "hYO2n6": {
+    "defaultMessage": "接続またはサーバーに問題が発生している可能性があります。"
+  },
+  "hdoWGT": {
+    "defaultMessage": "一致数"
+  },
+  "hgiBeR": {
+    "defaultMessage": "最終アクティビティ"
+  },
+  "hkbgs/": {
+    "defaultMessage": "カスタム役割を追加"
+  },
+  "hrh5Rn": {
+    "defaultMessage": "差し替え"
+  },
+  "hude41": {
+    "defaultMessage": "APIキーを削除"
+  },
+  "i+kSy9": {
+    "defaultMessage": "更新"
+  },
+  "i6UTPu": {
+    "defaultMessage": "項目のロックを解除"
+  },
+  "iCYg8R": {
+    "defaultMessage": "「<b>{search}</b>」に一致する結果はありません。<kbd>Enter</kbd>キーを押すかクリックして新規作成してください。"
+  },
+  "iDU5FS": {
+    "defaultMessage": "ログイン状態保持期間（日数）"
+  },
+  "iNBto3": {
+    "defaultMessage": "未処理のリクエストをKoboストアにプロキシする"
+  },
+  "iQKrku": {
+    "defaultMessage": "EPUB"
+  },
+  "iVYrha": {
+    "defaultMessage": "全般"
+  },
+  "icSG40": {
+    "defaultMessage": "検索または作成"
+  },
+  "ieysdI": {
+    "defaultMessage": "検索インデックスを更新"
+  },
+  "iin6d2": {
+    "defaultMessage": "APIキーはKobo同期プロトコルやREST APIでの認証に使用できます。"
+  },
+  "iq1PzT": {
+    "defaultMessage": "管理"
+  },
+  "iu31A4": {
+    "defaultMessage": "コミックアーカイブ"
+  },
+  "ixQlWv": {
+    "defaultMessage": "問題が発生しました"
+  },
+  "iylxeo": {
+    "defaultMessage": "はい（すべての書籍）"
+  },
+  "j7CGMQ": {
+    "defaultMessage": "確認"
+  },
+  "jD87k9": {
+    "defaultMessage": "コレクションが削除されます。<ul><li>シリーズと書籍は削除されません。</li></ul><b>この操作は取り消せません。</b>"
+  },
+  "jHJk+v": {
+    "defaultMessage": "作成日時"
+  },
+  "jN3N1Q": {
+    "defaultMessage": "解析"
+  },
+  "jeXb2z": {
+    "defaultMessage": "メディアタイプ"
+  },
+  "jnjpZy": {
+    "defaultMessage": "ローカルファイル"
+  },
+  "jyrqhz": {
+    "defaultMessage": "バーコード"
+  },
+  "jywpqq": {
+    "defaultMessage": "年齢"
+  },
+  "k2JkZX": {
+    "defaultMessage": "カラリスト"
+  },
+  "k6BCzW": {
+    "defaultMessage": "コレクションの削除"
+  },
+  "k9X/05": {
+    "defaultMessage": "ポスター"
+  },
+  "kDc7YL": {
+    "defaultMessage": "デフォルトでは、メディアサーバーはメディアの情報をすぐには削除しません。これによりドライブが一時的に切断された場合でも情報が保持されます。ライブラリのゴミ箱を空にすると、見つからないメディアに関するすべての情報が削除されます。"
+  },
+  "kFQatO": {
+    "defaultMessage": "フィルターを表示"
+  },
+  "kGC6Gu": {
+    "defaultMessage": "最近のアクティビティはありません"
+  },
+  "kHmCVM": {
+    "defaultMessage": "ライブラリをスキャン"
+  },
+  "kXuNY8": {
+    "defaultMessage": "選択対象にページを追加"
+  },
+  "kYDPt1": {
+    "defaultMessage": "ファイル名"
+  },
+  "kZ0WlY": {
+    "defaultMessage": "書籍ファイルが見つかりませんでした"
+  },
+  "kh49ZJ": {
+    "defaultMessage": "破棄"
+  },
+  "knm6Z+": {
+    "defaultMessage": "状態"
+  },
+  "kqV7EJ": {
+    "defaultMessage": "スキャン後に空の読書リストを削除する"
+  },
+  "kvbi4j": {
+    "defaultMessage": "ユーザーを更新しました：{email}"
+  },
+  "l/To3S": {
+    "defaultMessage": "履歴"
+  },
+  "l5qiAB": {
+    "defaultMessage": "削除対象の重複ページを検索"
+  },
+  "l7+H/k": {
+    "defaultMessage": "設定ファイルよりも優先されます"
+  },
+  "l7mpQK": {
+    "defaultMessage": "既読"
+  },
+  "lDnmZD": {
+    "defaultMessage": "アップデート"
+  },
+  "lFTdQ+": {
+    "defaultMessage": "処理を指定"
+  },
+  "lPZ5hy": {
+    "defaultMessage": "閉じる"
+  },
+  "lSlhp0": {
+    "defaultMessage": "元のファイル名"
+  },
+  "laWvMU": {
+    "defaultMessage": "OK"
+  },
+  "ldAVd7": {
+    "defaultMessage": "読書リスト"
+  },
+  "lkoTf7": {
+    "defaultMessage": "CBR"
+  },
+  "lt7Tru": {
+    "defaultMessage": "シリーズ"
+  },
+  "lvCpSX": {
+    "defaultMessage": "操作"
+  },
+  "lzHPYD": {
+    "defaultMessage": "他のキーワードで検索してください"
+  },
+  "m+yz6Z": {
+    "defaultMessage": "ページ番号"
+  },
+  "m9h2wk": {
+    "defaultMessage": "サムネイル"
+  },
+  "m9tuzy": {
+    "defaultMessage": "認証履歴"
+  },
+  "mP9Ldq": {
+    "defaultMessage": "作成日時"
+  },
+  "mtUacw": {
+    "defaultMessage": "書籍メタデータを編集"
+  },
+  "n0TnQ2": {
+    "defaultMessage": "サーバーに接続できません"
+  },
+  "n0yuoo": {
+    "defaultMessage": "処理状況"
+  },
+  "n1Ik+L": {
+    "defaultMessage": "アップデートがあります"
+  },
+  "n4w2CE": {
+    "defaultMessage": "編集"
+  },
+  "n8mugB": {
+    "defaultMessage": "はい（拡大のみ）"
+  },
+  "nJiYF7": {
+    "defaultMessage": "パスワード（再入力）"
+  },
+  "nOcpr8": {
+    "defaultMessage": "読み切り"
+  },
+  "nWgSSS": {
+    "defaultMessage": "コレクション"
+  },
+  "nXFVsQ": {
+    "defaultMessage": "KOReader用ハッシュを計算"
+  },
+  "nXWSTf": {
+    "defaultMessage": "タイトル"
+  },
+  "nhrFtV": {
+    "defaultMessage": "利用不可"
+  },
+  "noaGSP": {
+    "defaultMessage": "書籍を選択"
+  },
+  "nuoJ1n": {
+    "defaultMessage": "ライブラリを作成"
+  },
+  "nyxfPy": {
+    "defaultMessage": "「AlternateSeries」または「StoryArc」要素が使用されます"
+  },
+  "o+A10T": {
+    "defaultMessage": "パスワード"
+  },
+  "o+h0F+": {
+    "defaultMessage": "ファイル名"
+  },
+  "o1XnPU": {
+    "defaultMessage": "APIキー"
+  },
+  "o8WeX3": {
+    "defaultMessage": "削除"
+  },
+  "oB2hG3": {
+    "defaultMessage": "共有"
+  },
+  "oFOkWZ": {
+    "defaultMessage": "APIキー"
+  },
+  "oOtDhj": {
+    "defaultMessage": "クリップボードにコピー"
+  },
+  "oQ2wIE": {
+    "defaultMessage": "選択した書籍の一部にエラーがあります"
+  },
+  "oWsqnh": {
+    "defaultMessage": "このAPIキーの用途は何ですか？"
+  },
+  "od545m": {
+    "defaultMessage": "マイアカウント"
+  },
+  "oyeyK/": {
+    "defaultMessage": "サムネイル"
+  },
+  "pCBNlA": {
+    "defaultMessage": "ライブラリ"
+  },
+  "pENCUD": {
+    "defaultMessage": "キャンセル"
+  },
+  "pHdVzh": {
+    "defaultMessage": "スキャン後に空のコレクションを削除する"
+  },
+  "pHycdf": {
+    "defaultMessage": "書籍ファイルがまだ解析されていません"
+  },
+  "pR3VdQ": {
+    "defaultMessage": "シリーズ"
+  },
+  "pTsA/M": {
+    "defaultMessage": "書籍"
+  },
+  "phzvRy": {
+    "defaultMessage": "ライブラリ"
+  },
+  "pvD6TS": {
+    "defaultMessage": "比較"
+  },
+  "pz7ZlL": {
+    "defaultMessage": "ページ"
+  },
+  "q/AkPU": {
+    "defaultMessage": "シリーズメタデータの集約"
+  },
+  "q4YedO": {
+    "defaultMessage": "並び順"
+  },
+  "q7gxLw": {
+    "defaultMessage": "ユーザーアカウントがこのサーバーから削除されます。<ul><li>このユーザーアカウントの読書進捗が完全に削除されます。</li><li>このユーザーの認証履歴が完全に削除されます。</li></ul><b>この操作は取り消せません。</b>"
+  },
+  "qiZm6U": {
+    "defaultMessage": "不明"
+  },
+  "qlImvg": {
+    "defaultMessage": "デフォルトに戻す"
+  },
+  "r/G7j0": {
+    "defaultMessage": "番号（巻・号）"
+  },
+  "r5O+/d": {
+    "defaultMessage": "ジャンル"
+  },
+  "r6CqyT": {
+    "defaultMessage": "ユーザーを削除"
+  },
+  "r6JNfI": {
+    "defaultMessage": "パスワードをお忘れですか？"
+  },
+  "r7xCeA": {
+    "defaultMessage": "パスワードを変更"
+  },
+  "rCLYEd": {
+    "defaultMessage": "拡張子の修復"
+  },
+  "rDBhmQ": {
+    "defaultMessage": "削除"
+  },
+  "rHwSrF": {
+    "defaultMessage": "タスクスレッド数"
+  },
+  "rKyTwd": {
+    "defaultMessage": "操作"
+  },
+  "rRFQKU": {
+    "defaultMessage": "Kobo同期"
+  },
+  "rhtmLf": {
+    "defaultMessage": "順序"
+  },
+  "rkpCD1": {
+    "defaultMessage": "制作関係者"
+  },
+  "rks1H9": {
+    "defaultMessage": "ファイル管理"
+  },
+  "rm0c6Y": {
+    "defaultMessage": "このサーバーにはまだライブラリがありません"
+  },
+  "rnClur": {
+    "defaultMessage": "{rating}+"
+  },
+  "rrF/Z2": {
+    "defaultMessage": "名前"
+  },
+  "rtOXU6": {
+    "defaultMessage": "書籍の詳細"
+  },
+  "rw/Dkw": {
+    "defaultMessage": "UI"
+  },
+  "rw5pw5": {
+    "defaultMessage": "画像"
+  },
+  "s/A/wz": {
+    "defaultMessage": "ISBN"
+  },
+  "s1nzhU": {
+    "defaultMessage": "ライブラリ名"
+  },
+  "sGsWvI": {
+    "defaultMessage": "パスワードを変更"
+  },
+  "sNSGMQ": {
+    "defaultMessage": "ここに画像をドラッグ＆ドロップ"
+  },
+  "sPScum": {
+    "defaultMessage": "書籍をインポートしました"
+  },
+  "sUSVQS": {
+    "defaultMessage": "既読にする"
+  },
+  "sUl0GP": {
+    "defaultMessage": "表示形式の切り替え"
+  },
+  "samiG7": {
+    "defaultMessage": "最終更新日時"
+  },
+  "sbwSuO": {
+    "defaultMessage": "サーバーへのリアルタイム接続を利用できません。表示が正しく更新されない可能性があります。"
+  },
+  "sdNz1F": {
+    "defaultMessage": "ゴミ箱を空にする"
+  },
+  "sj2JGj": {
+    "defaultMessage": "ピン留めなし"
+  },
+  "sjC8ot": {
+    "defaultMessage": "書籍ファイルを解析できませんでした："
+  },
+  "so1P5Y": {
+    "defaultMessage": "書籍のローカルアートワークを更新"
+  },
+  "syF0Ap": {
+    "defaultMessage": "サイズ"
+  },
+  "t0Tkmy": {
+    "defaultMessage": "Koboを再同期"
+  },
+  "t3B+Qv": {
+    "defaultMessage": "ハッシュ化されたページを削除"
+  },
+  "t5NC5O": {
+    "defaultMessage": "他 {count}件"
+  },
+  "t5ZhnZ": {
+    "defaultMessage": "無効にする場合は空欄のままにします"
+  },
+  "tA65z3": {
+    "defaultMessage": "ページ番号"
+  },
+  "tCm6kO": {
+    "defaultMessage": "{count, plural, one {#件選択中} other {#件選択中}}"
+  },
+  "tLFumw": {
+    "defaultMessage": "対象年齢"
+  },
+  "tPD6YO": {
+    "defaultMessage": "シリーズを検索"
+  },
+  "tbNQ5v": {
+    "defaultMessage": "{rating}+"
+  },
+  "ti4Pzo": {
+    "defaultMessage": "ログアウト"
+  },
+  "tm9g8D": {
+    "defaultMessage": "OK"
+  },
+  "tn7uib": {
+    "defaultMessage": "年"
+  },
+  "toP54Z": {
+    "defaultMessage": "エラー"
+  },
+  "u23YLt": {
+    "defaultMessage": "元に戻す"
+  },
+  "uBqZMx": {
+    "defaultMessage": "既存"
+  },
+  "uD9n5o": {
+    "defaultMessage": "書籍の並び順"
+  },
+  "uGC9fD": {
+    "defaultMessage": "オプション"
+  },
+  "uOPuSH": {
+    "defaultMessage": "ジャンル"
+  },
+  "uTuk/9": {
+    "defaultMessage": "ファイルサイズ"
+  },
+  "uW+6XG": {
+    "defaultMessage": "概要"
+  },
+  "uXY7Eg": {
+    "defaultMessage": "Komga ロゴ"
+  },
+  "uY7N6Z": {
+    "defaultMessage": "メディアプロファイル"
+  },
+  "uoc99F": {
+    "defaultMessage": "大規模なライブラリや低速なハードウェアでは、多くのリソースを消費する可能性があります"
+  },
+  "upo+2b": {
+    "defaultMessage": "候補"
+  },
+  "ut2gmo": {
+    "defaultMessage": "役割"
+  },
+  "uwFE74": {
+    "defaultMessage": "スキャン"
+  },
+  "v3beFf": {
+    "defaultMessage": "有効なBCP 47言語コードを入力してください"
+  },
+  "vOS8Dl": {
+    "defaultMessage": "その名前のコレクションは既に存在します"
+  },
+  "vTqlcG": {
+    "defaultMessage": "削除"
+  },
+  "vXhkpo": {
+    "defaultMessage": "ファイルを削除"
+  },
+  "vkeTYG": {
+    "defaultMessage": "書籍のインポートに失敗しました"
+  },
+  "vs88Ef": {
+    "defaultMessage": "ライブラリ内の全メディアファイルのメタデータを更新します。ライブラリの規模によっては、処理に時間がかかる場合があります。"
+  },
+  "vtBARB": {
+    "defaultMessage": "生成された画像"
+  },
+  "vvl9xP": {
+    "defaultMessage": "ゴミ箱を空にする"
+  },
+  "w2K5yu": {
+    "defaultMessage": "読書リスト"
+  },
+  "wESuod": {
+    "defaultMessage": "未読"
+  },
+  "wJaip6": {
+    "defaultMessage": "ファイルのハッシュを計算"
+  },
+  "wRjFWz": {
+    "defaultMessage": "自動並べ替え"
+  },
+  "wXGljO": {
+    "defaultMessage": "続きを読む"
+  },
+  "wbH42A": {
+    "defaultMessage": "利用不可"
+  },
+  "wmGcF+": {
+    "defaultMessage": "指定年齢以上を除外"
+  },
+  "wwiazg": {
+    "defaultMessage": "クリップボードに有効な画像が見つかりません"
+  },
+  "x1MEvu": {
+    "defaultMessage": "発売日"
+  },
+  "xAZMxz": {
+    "defaultMessage": "ファイル名"
+  },
+  "xPBqGY": {
+    "defaultMessage": "シリーズを削除"
+  },
+  "xSNdDU": {
+    "defaultMessage": "読書リストが削除されます。<ul><li>シリーズや書籍は削除されません。</li></ul><b>この操作は取り消せません。</b>"
+  },
+  "xYGXuU": {
+    "defaultMessage": "詳細"
+  },
+  "xYp/8u": {
+    "defaultMessage": "書籍を選択してください"
+  },
+  "xeiMMk": {
+    "defaultMessage": "インカー"
+  },
+  "xfThoX": {
+    "defaultMessage": "一致数"
+  },
+  "xiyw1J": {
+    "defaultMessage": "すべてのメタデータを更新"
+  },
+  "xjHL5K": {
+    "defaultMessage": "ポスター"
+  },
+  "xpBvz8": {
+    "defaultMessage": "リリース年"
+  },
+  "y1Fk/a": {
+    "defaultMessage": "検索結果がありません"
+  },
+  "y1P/K4": {
+    "defaultMessage": "最後のアクティビティ"
+  },
+  "y3nPgO": {
+    "defaultMessage": "ライブラリファイルの詳細スキャンを実行します。ライブラリのサイズによっては、長い時間がかかる場合があります。"
+  },
+  "yDWzUi": {
+    "defaultMessage": "APIキー"
+  },
+  "yPygXa": {
+    "defaultMessage": "作成"
+  },
+  "yaa8so": {
+    "defaultMessage": "スキャナ"
+  },
+  "ycrpqO": {
+    "defaultMessage": "新しいAPIキーを生成"
+  },
+  "yrE0Rx": {
+    "defaultMessage": "詳細"
+  },
+  "yyAGH1": {
+    "defaultMessage": "幅：{width}、高さ：{height}"
+  },
+  "z5sjUM": {
+    "defaultMessage": "書籍ファイルのハッシュ化"
+  },
+  "z8b1Xe": {
+    "defaultMessage": "インポート元のディレクトリ"
+  },
+  "zRDVnR": {
+    "defaultMessage": "サイズ"
+  },
+  "zWRhDm": {
+    "defaultMessage": "別タイトル"
+  },
+  "zfQq+w": {
+    "defaultMessage": "メールアドレス"
+  },
+  "zphiTI": {
+    "defaultMessage": "そのコメントのAPIキーは既に存在します"
+  },
+  "zqAxRE": {
+    "defaultMessage": "書籍"
+  },
+  "zuhGGz": {
+    "defaultMessage": "並べ替えまたはピン留め"
+  }
+}
