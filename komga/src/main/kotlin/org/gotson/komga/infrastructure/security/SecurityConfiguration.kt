@@ -187,17 +187,6 @@ class SecurityConfiguration(
         cacheControl { disable() }
       }
 
-      // somehow the Kobo gets a Json issue when receiving the session ID in a cookie header
-      // this happens when requesting /v1/user/profile
-      // Kobo error: packetdump.warning) Invalid JSON script: QVariant(Invalid) "illegal value"
-//      sessionManagement {
-//        sessionCreationPolicy = SessionCreationPolicy.IF_REQUIRED
-//        sessionConcurrency {
-//          sessionRegistry = theSessionRegistry
-//          maximumSessions = -1
-//        }
-//      }
-
       addFilterBefore<AnonymousAuthenticationFilter>(koboAuthenticationFilter())
     }
 
@@ -223,14 +212,6 @@ class SecurityConfiguration(
 
       headers {
         cacheControl { disable() }
-      }
-
-      sessionManagement {
-        sessionCreationPolicy = SessionCreationPolicy.IF_REQUIRED
-        sessionConcurrency {
-          sessionRegistry = theSessionRegistry
-          maximumSessions = -1
-        }
       }
 
       addFilterBefore<AnonymousAuthenticationFilter>(kosyncAuthenticationFilter())
