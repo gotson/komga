@@ -3,6 +3,8 @@ komga:
     file: "file:database?mode=memory"
   tasks-db:
     file: "file:tasks?mode=memory"
+  sessions-db:
+    file: "file:sessions?mode=memory"
   cors.allowed-origins:
     - http://localhost:8081
     - http://localhost:3000
@@ -11,6 +13,7 @@ komga:
     - https://komga.org
   oauth2-account-creation: false
   config-dir: ${rootDir}/config-dir
+  jdbc-session-enabled: true
 logging:
   level:
     org.apache.activemq.audit.message: WARN
@@ -26,6 +29,13 @@ logging:
 #    org.springframework.security.web.authentication.rememberme: DEBUG
 #    org.springframework.boot.context.config.ConfigDataEnvironment: TRACE
 #    org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor: TRACE
+    # Logs the SQL query execution (INSERT, UPDATE, DELETE)
+#    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+    # Logs query parameter values bound to SQL statements
+#    org.springframework.jdbc.core.StatementCreatorUtils: TRACE
+    # Optional: Logs Spring Session JDBC operations specifically
+#    org.springframework.session.jdbc: DEBUG
+#    org.springframework.session: TRACE
   logback:
     rollingpolicy:
       max-history: 1

@@ -66,6 +66,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
   implementation("org.springframework.session:spring-session-core")
+  implementation("org.springframework.session:spring-session-jdbc")
   implementation("com.github.gotson:spring-session-caffeine:2.1.0")
   implementation("org.springframework.data:spring-data-commons")
 
@@ -279,7 +280,6 @@ val sqliteMigrationDirs =
     "tasks" to
       listOf(
         "$projectDir/src/flyway/resources/tasks/migration/sqlite",
-//    "$projectDir/src/flyway/kotlin/tasks/migration/sqlite",
       ),
   )
 

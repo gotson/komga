@@ -21,7 +21,7 @@ import java.time.ZoneId
 private val logger = KotlinLogging.logger {}
 
 @Component
-@DependsOn("flywaySecondaryMigrationInitializer")
+@DependsOn("flywayTasksMigrationInitializer")
 class TasksDao(
   @Qualifier("tasksDslContextRW") dslRW: DSLContext,
   @Qualifier("tasksDslContextRO") dslRO: DSLContext,

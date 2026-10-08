@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import javax.sql.DataSource
 
 @Component
-class FlywaySecondaryMigrationInitializer(
+class FlywayTasksMigrationInitializer(
   @Qualifier("tasksDataSourceRW")
   private val tasksDataSource: DataSource,
 ) : InitializingBean {

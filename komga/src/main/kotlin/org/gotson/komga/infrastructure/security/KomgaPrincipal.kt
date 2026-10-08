@@ -9,16 +9,21 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.oauth2.core.user.OAuth2User
+import java.io.Serial
+import java.io.Serializable
 
 class KomgaPrincipal(
   val user: KomgaUser,
+  @Transient
   val oAuth2User: OAuth2User? = null,
+  @Transient
   val oidcUser: OidcUser? = null,
   val apiKey: ApiKey? = null,
   private val name: String = user.email,
 ) : UserDetails,
   OAuth2User,
-  OidcUser {
+  OidcUser,
+  Serializable {
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
     user.roles
       .map { SimpleGrantedAuthority("ROLE_$it") }
@@ -45,4 +50,9 @@ class KomgaPrincipal(
   override fun getUserInfo(): OidcUserInfo? = oidcUser?.userInfo
 
   override fun getIdToken(): OidcIdToken? = oidcUser?.idToken
+
+  companion object {
+    @Serial
+    private const val serialVersionUID: Long = -1115127032708270860L
+  }
 }

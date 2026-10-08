@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.security.session
+package org.gotson.komga.infrastructure.session
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

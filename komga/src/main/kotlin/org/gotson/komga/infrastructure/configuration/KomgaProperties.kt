@@ -36,9 +36,13 @@ class KomgaProperties {
 
   var oidcEmailVerification: Boolean = true
 
+  var jdbcSessionEnabled: Boolean = false
+
   var database = Database()
 
   var tasksDb = Database()
+
+  var sessionsDb = Database()
 
   var cors = Cors()
 

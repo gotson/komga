@@ -4,6 +4,8 @@ import com.github.f4b6a3.tsid.TsidCreator
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import org.gotson.komga.language.lowerNotBlank
+import java.io.Serial
+import java.io.Serializable
 import java.time.LocalDateTime
 
 data class KomgaUser(
@@ -19,11 +21,10 @@ data class KomgaUser(
   val id: String = TsidCreator.getTsid256().toString(),
   override val createdDate: LocalDateTime = LocalDateTime.now(),
   override val lastModifiedDate: LocalDateTime = createdDate,
-) : Auditable {
-  @delegate:Transient
-  val isAdmin: Boolean by lazy {
-    roles.contains(UserRoles.ADMIN)
-  }
+) : Auditable,
+  Serializable {
+  val isAdmin: Boolean
+    get() = roles.contains(UserRoles.ADMIN)
 
   /**
    * Return the list of LibraryIds this user is authorized to view, intersecting the provided list of LibraryIds.
@@ -93,4 +94,9 @@ data class KomgaUser(
   }
 
   override fun toString(): String = "KomgaUser(createdDate=$createdDate, email='$email', roles=$roles, sharedLibrariesIds=$sharedLibrariesIds, sharedAllLibraries=$sharedAllLibraries, restrictions=$restrictions, id='$id', lastModifiedDate=$lastModifiedDate)"
+
+  companion object {
+    @Serial
+    private const val serialVersionUID: Long = 4071331945217484635L
+  }
 }

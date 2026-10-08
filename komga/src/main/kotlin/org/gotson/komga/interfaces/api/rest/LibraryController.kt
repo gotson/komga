@@ -165,7 +165,7 @@ class LibraryController(
           existing.copy(
             id = libraryId,
             name = name ?: existing.name,
-            root = root?.let { filePathToUrl(root!!) } ?: existing.root,
+            root = root?.let { filePathToUrl(root) } ?: existing.root,
             importComicInfoBook = importComicInfoBook ?: existing.importComicInfoBook,
             importComicInfoSeries = importComicInfoSeries ?: existing.importComicInfoSeries,
             importComicInfoCollection = importComicInfoCollection ?: existing.importComicInfoCollection,

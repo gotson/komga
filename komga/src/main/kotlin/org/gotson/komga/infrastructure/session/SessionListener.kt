@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.security.session
+package org.gotson.komga.infrastructure.session
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener

@@ -6,3 +6,5 @@ komga:
     data-directory: \${komga.config-dir}/lucene/\${komga.workspace}
   tasks-db:
     file: \${komga.config-dir}/\${komga.workspace}-tasks.sqlite
+  sessions-db:
+    file: \${komga.config-dir}/\${komga.workspace}-sessions.sqlite

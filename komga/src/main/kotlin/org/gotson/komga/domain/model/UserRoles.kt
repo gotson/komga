@@ -1,6 +1,8 @@
 package org.gotson.komga.domain.model
 
-enum class UserRoles {
+import java.io.Serializable
+
+enum class UserRoles : Serializable {
   ADMIN,
   FILE_DOWNLOAD,
   PAGE_STREAMING,

@@ -1,22 +1,24 @@
 package org.gotson.komga.domain.model
 
 import org.gotson.komga.language.lowerNotBlank
+import java.io.Serial
+import java.io.Serializable
 
 class ContentRestrictions(
   val ageRestriction: AgeRestriction? = null,
   labelsAllow: Set<String> = emptySet(),
   labelsExclude: Set<String> = emptySet(),
-) {
+) : Serializable {
+  val labelsExclude = labelsExclude.lowerNotBlank().toSet()
+
   val labelsAllow =
     labelsAllow
       .lowerNotBlank()
       .toSet()
-      .minus(labelsExclude.lowerNotBlank().toSet())
+      .minus(this.labelsExclude)
 
-  val labelsExclude = labelsExclude.lowerNotBlank().toSet()
-
-  @delegate:Transient
-  val isRestricted: Boolean by lazy { ageRestriction != null || labelsAllow.isNotEmpty() || labelsExclude.isNotEmpty() }
+  val isRestricted: Boolean
+    get() = ageRestriction != null || labelsAllow.isNotEmpty() || labelsExclude.isNotEmpty()
 
   override fun toString(): String = "ContentRestrictions(ageRestriction=$ageRestriction, labelsAllow=$labelsAllow, labelsExclude=$labelsExclude)"
 
@@ -36,5 +38,10 @@ class ContentRestrictions(
     result = 31 * result + labelsAllow.hashCode()
     result = 31 * result + labelsExclude.hashCode()
     return result
+  }
+
+  companion object {
+    @Serial
+    private const val serialVersionUID: Long = -6674967573322990355L
   }
 }

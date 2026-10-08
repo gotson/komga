@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="SQLite" class="org.springframework.jdbc.support.SQLErrorCodes">
+        <property name="databaseProductName" value="SQLite"/>
+        <property name="badSqlGrammarCodes">
+            <value>1</value>
+        </property>
+        <property name="duplicateKeyCodes">
+            <!-- 19 is SQLITE_CONSTRAINT / SQLITE_CONSTRAINT_UNIQUE -->
+            <value>19,2067</value>
+        </property>
+        <property name="dataIntegrityViolationCodes">
+            <value>19,1555</value>
+        </property>
+    </bean>
+</beans>
