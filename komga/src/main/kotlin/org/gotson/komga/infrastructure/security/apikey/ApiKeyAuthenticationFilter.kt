@@ -80,6 +80,9 @@ class ApiKeyAuthenticationFilter(
       }
     securityContextHolderStrategy.context = context
     securityContextRepository.saveContext(context, request, response)
+
+    // Explicitly tell SessionManagementFilter to skip execution for this request thread, else it will create a session in the session registry
+    request.setAttribute("__spring_security_session_mgmt_filter_applied", true)
   }
 
   private fun authenticationIsRequired(username: String): Boolean {
