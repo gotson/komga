@@ -38,6 +38,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.hash.Hasher
+import org.gotson.komga.infrastructure.hash.KoreaderHasher
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.language.toIndexedMap
 import org.gotson.komga.toScanResult
@@ -86,6 +87,9 @@ class LibraryContentLifecycleTest(
 
   @MockkBean
   private lateinit var mockHasher: Hasher
+
+  @MockkBean
+  private lateinit var mockKoHasher: KoreaderHasher
 
   @MockkBean
   private lateinit var mockTaskEmitter: TaskEmitter
@@ -219,7 +223,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library)
 
       bookRepository.findAll().first().let { book ->
-        bookRepository.update(book.copy(fileHash = "hashed"))
+        bookRepository.update(book.copy(fileHash = "hashed", fileHashKoreader = "kohash"))
         mediaRepository.update(mediaRepository.findById(book.id).copy(status = Media.Status.READY))
       }
 
@@ -239,6 +243,7 @@ class LibraryContentLifecycleTest(
       assertThat(book.name).isEqualTo("book1")
       assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
       assertThat(book.fileHash).isBlank
+      assertThat(book.fileHashKoreader).isBlank
       val media = mediaRepository.findById(book.id)
       assertThat(media.status).isEqualTo(Media.Status.OUTDATED)
     }
@@ -257,7 +262,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library)
 
       bookRepository.findAll().first().let { book ->
-        bookRepository.update(book.copy(fileHash = "hashed"))
+        bookRepository.update(book.copy(fileHash = "hashed", fileHashKoreader = "kohash"))
         mediaRepository.update(mediaRepository.findById(book.id).copy(status = Media.Status.READY))
       }
 
@@ -279,6 +284,7 @@ class LibraryContentLifecycleTest(
       assertThat(book.name).isEqualTo("book1")
       assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
       assertThat(book.fileHash).isEqualTo("hashed")
+      assertThat(book.fileHashKoreader).isEqualTo("kohash")
       val media = mediaRepository.findById(book.id)
       assertThat(media.status)
         .isNotEqualTo(Media.Status.OUTDATED)
@@ -391,7 +397,7 @@ class LibraryContentLifecycleTest(
     fun `given existing book with different last modified date and hash when rescanning then media is marked as outdated and hash is reset`() {
       // given
       val library = makeLibrary()
-      libraryRepository.insert(library)
+      libraryRepository.insert(library.copy(hashKoreader = true))
 
       val book1 = makeBook("book1")
       every { mockScanner.scanRootFolder(any()) }
@@ -403,10 +409,12 @@ class LibraryContentLifecycleTest(
 
       every { mockAnalyzer.analyze(any(), any()) } returns Media(status = Media.Status.READY, mediaType = "application/zip", pages = mutableListOf(makeBookPage("1.jpg"), makeBookPage("2.jpg")), bookId = book1.id)
       every { mockHasher.computeHash(any<Path>()) }.returnsMany("abc", "def")
+      every { mockKoHasher.computeHash(any<Path>()) }.returnsMany("koabc", "kodef")
 
       bookRepository.findAll().map {
-        bookLifecycle.analyzeAndPersist(it)
-        bookLifecycle.hashAndPersist(it)
+        bookLifecycle.analyzeAndPersist(bookRepository.findByIdOrNull(it.id)!!)
+        bookLifecycle.hashAndPersist(bookRepository.findByIdOrNull(it.id)!!)
+        bookLifecycle.hashKoreaderAndPersist(bookRepository.findByIdOrNull(it.id)!!)
       }
 
       // when
@@ -416,10 +424,12 @@ class LibraryContentLifecycleTest(
       verify(exactly = 2) { mockScanner.scanRootFolder(any()) }
       verify(exactly = 1) { mockAnalyzer.analyze(any(), any()) }
       verify(exactly = 2) { mockHasher.computeHash(any<Path>()) }
+      verify(exactly = 1) { mockKoHasher.computeHash(any<Path>()) }
 
       bookRepository.findAll().first().let { book ->
         assertThat(book.lastModifiedDate).isNotEqualTo(book.createdDate)
         assertThat(book.fileHash).isEqualTo("def")
+        assertThat(book.fileHashKoreader).isEqualTo("")
 
         mediaRepository.findById(book.id).let { media ->
           assertThat(media.status).isEqualTo(Media.Status.OUTDATED)
@@ -567,7 +577,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // creation
 
       bookRepository.findByIdOrNull(book2.id)?.let {
-        bookRepository.update(it.copy(fileHash = "sameHash"))
+        bookRepository.update(it.copy(fileHash = "sameHash", fileHashKoreader = "kohash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
         bookMetadataRepository.update(bookMetadataRepository.findById(it.id).copy(tags = setOf("my-tag")))
         bookLifecycle.addThumbnailForBook(ThumbnailBook(ByteArray(10), type = ThumbnailBook.Type.USER_UPLOADED, mediaType = "image/jpeg", fileSize = 10L, dimension = Dimension(1, 1), bookId = it.id), MarkSelectedPreference.YES)
@@ -591,6 +601,7 @@ class LibraryContentLifecycleTest(
       assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
 
       with(allBooks.last()) {
+        assertThat(fileHashKoreader).`as` { "Book koreader hash should be kept intact" }.isEqualTo("kohash")
         assertThat(mediaRepository.findById(id).status).`as` { "Book media should be kept intact" }.isEqualTo(Media.Status.READY)
         assertThat(bookMetadataRepository.findById(id).tags).containsExactlyInAnyOrder("my-tag")
         val thumbnail = bookLifecycle.getThumbnail(id)
@@ -615,7 +626,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // creation
 
       bookRepository.findAll().forEach { book ->
-        bookRepository.update(book.copy(fileHash = "HASH-${book.name}"))
+        bookRepository.update(book.copy(fileHash = "HASH-${book.name}", fileHashKoreader = "kohash"))
         mediaRepository.findById(book.id).let { mediaRepository.update(it.copy(status = Media.Status.READY)) }
       }
 
@@ -655,6 +666,7 @@ class LibraryContentLifecycleTest(
       assertThat(allBooks).hasSize(2)
 
       allBooks.forEach { book ->
+        assertThat(book.fileHashKoreader).isEqualTo("kohash")
         assertThat(mediaRepository.findById(book.id).status).isEqualTo(Media.Status.READY)
       }
     }
@@ -679,7 +691,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // creation
 
       bookRepository.findByIdOrNull(book.id)?.let {
-        bookRepository.update(it.copy(fileHash = "sameHash"))
+        bookRepository.update(it.copy(fileHash = "sameHash", fileHashKoreader = "kohash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
         bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id, fileSize = 0, mediaType = "", dimension = Dimension(0, 0)), MarkSelectedPreference.NO)
         bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id, fileSize = 0, mediaType = "", dimension = Dimension(0, 0)), MarkSelectedPreference.NO)
@@ -700,6 +712,7 @@ class LibraryContentLifecycleTest(
       assertThat(allBooks).hasSize(2)
       assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
       with(allBooks.last()) {
+        assertThat(fileHashKoreader).isEqualTo("kohash")
         assertThat(name).`as` { "Book name should have changed to match the filename" }.isEqualTo("book3")
         assertThat(mediaRepository.findById(id).status).`as` { "Book media should be kept intact" }.isEqualTo(Media.Status.READY)
         assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, setOf(ThumbnailBook.Type.SIDECAR))).hasSize(0)
@@ -725,7 +738,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // creation
 
       bookRepository.findByIdOrNull(book.id)?.let {
-        bookRepository.update(it.copy(fileHash = "sameHash"))
+        bookRepository.update(it.copy(fileHash = "sameHash", fileHashKoreader = "kohash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
         bookLifecycle.addThumbnailForBook(ThumbnailBook(thumbnail = ByteArray(0), type = ThumbnailBook.Type.GENERATED, bookId = book.id, fileSize = 0, mediaType = "", dimension = Dimension(0, 0)), MarkSelectedPreference.NO)
         bookLifecycle.addThumbnailForBook(ThumbnailBook(url = URL("file:/sidecar"), type = ThumbnailBook.Type.SIDECAR, bookId = book.id, fileSize = 0, mediaType = "", dimension = Dimension(0, 0)), MarkSelectedPreference.NO)
@@ -746,6 +759,7 @@ class LibraryContentLifecycleTest(
       assertThat(allBooks).hasSize(2)
       assertThat(allBooks.map { it.deletedDate }).containsOnlyNulls()
       with(allBooks.last()) {
+        assertThat(fileHashKoreader).isEqualTo("kohash")
         assertThat(name).`as` { "Book name should have changed to match the filename" }.isEqualTo("book3")
         assertThat(mediaRepository.findById(id).status).`as` { "Book media should be kept intact" }.isEqualTo(Media.Status.READY)
         assertThat(thumbnailBookRepository.findAllByBookIdAndType(id, setOf(ThumbnailBook.Type.SIDECAR))).hasSize(0)
@@ -950,7 +964,7 @@ class LibraryContentLifecycleTest(
       }
 
       bookRepository.findAll().forEach { book ->
-        bookRepository.update(book.copy(fileHash = "sameHash"))
+        bookRepository.update(book.copy(fileHash = "sameHash", fileHashKoreader = "kohash"))
         mediaRepository.findById(book.id).let { mediaRepository.update(it.copy(status = Media.Status.READY)) }
       }
 
@@ -973,6 +987,7 @@ class LibraryContentLifecycleTest(
         val books = bookRepository.findAllBySeriesId(series1.id)
         assertThat(books).hasSize(1)
         books.first().let { book ->
+          assertThat(book.fileHashKoreader).isEqualTo("kohash")
           assertThat(book.name).isEqualTo("book2")
           assertThat(bookMetadataRepository.findById(book.id).title).isEqualTo("book2")
           assertThat(mediaRepository.findById(book.id).status).isEqualTo(Media.Status.READY)
@@ -1002,7 +1017,7 @@ class LibraryContentLifecycleTest(
       }
 
       bookRepository.findAll().forEach { book ->
-        bookRepository.update(book.copy(fileHash = "sameHash"))
+        bookRepository.update(book.copy(fileHash = "sameHash", fileHashKoreader = "kohash"))
         mediaRepository.findById(book.id).let { mediaRepository.update(it.copy(status = Media.Status.READY)) }
       }
 
@@ -1026,6 +1041,7 @@ class LibraryContentLifecycleTest(
         assertThat(books).hasSize(1)
         books.first().let { book ->
           assertThat(book.name).isEqualTo("book2")
+          assertThat(book.fileHashKoreader).isEqualTo("kohash")
           assertThat(bookMetadataRepository.findById(book.id).title).isEqualTo("book2")
           assertThat(mediaRepository.findById(book.id).status).isEqualTo(Media.Status.READY)
         }
@@ -1062,7 +1078,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // creation
 
       bookRepository.findByIdOrNull(book2.id)?.let {
-        bookRepository.update(it.copy(fileHash = "sameHash"))
+        bookRepository.update(it.copy(fileHash = "sameHash", fileHashKoreader = "kohash"))
         mediaRepository.update(mediaRepository.findById(it.id).copy(status = Media.Status.READY))
       }
 
@@ -1085,6 +1101,7 @@ class LibraryContentLifecycleTest(
         assertThat(books).hasSize(2)
 
         books.first { it.name == "book2" }.let {
+          assertThat(it.fileHashKoreader).isEqualTo("kohash")
           assertThat(mediaRepository.findById(it.id).status).isEqualTo(Media.Status.READY)
         }
       }
@@ -1343,7 +1360,7 @@ class LibraryContentLifecycleTest(
       libraryContentLifecycle.scanRootFolder(library) // creation
 
       bookRepository.findAll().forEach { book ->
-        bookRepository.update(book.copy(fileHash = "HASH-${book.name}"))
+        bookRepository.update(book.copy(fileHash = "HASH-${book.name}", fileHashKoreader = "kohash"))
         mediaRepository.findById(book.id).let { mediaRepository.update(it.copy(status = Media.Status.READY)) }
       }
 
@@ -1367,6 +1384,7 @@ class LibraryContentLifecycleTest(
         val books = bookRepository.findAllBySeriesId(series2.id)
         assertThat(books).hasSize(2)
         books.forEach { book ->
+          assertThat(book.fileHashKoreader).isEqualTo("kohash")
           assertThat(mediaRepository.findById(book.id).status).isEqualTo(Media.Status.READY)
         }
       }

@@ -192,6 +192,7 @@ class LibraryContentLifecycle(
                         fileLastModified = newBook.fileLastModified,
                         fileSize = newBook.fileSize,
                         fileHash = hash ?: "",
+                        fileHashKoreader = "",
                       )
                     transactionTemplate.executeWithoutResult {
                       mediaRepository.findById(existingBook.id).let {
@@ -378,32 +379,35 @@ class LibraryContentLifecycle(
 
         if (match != null) {
           // restore book
-          logger.info { "Match found, restore $match into $bookToAdd" }
+          logger.info { "Match found, restore $match into $bookWithHash" }
           transactionTemplate.executeWithoutResult {
+            // copy koreader hash
+            bookRepository.update(bookWithHash.copy(fileHashKoreader = match.fileHashKoreader))
+
             // copy media
-            mediaRepository.copy(match.id, bookToAdd.id)
+            mediaRepository.copy(match.id, bookWithHash.id)
 
             // copy generated and user uploaded thumbnails
             thumbnailBookRepository.findAllByBookIdAndType(match.id, setOf(ThumbnailBook.Type.GENERATED, ThumbnailBook.Type.USER_UPLOADED)).forEach { deleted ->
-              thumbnailBookRepository.update(deleted.copy(bookId = bookToAdd.id))
+              thumbnailBookRepository.update(deleted.copy(bookId = bookWithHash.id))
             }
 
             // copy metadata
             bookMetadataRepository.findById(match.id).let { deleted ->
-              val newlyAdded = bookMetadataRepository.findById(bookToAdd.id)
+              val newlyAdded = bookMetadataRepository.findById(bookWithHash.id)
               bookMetadataRepository.update(
                 deleted.copy(
-                  bookId = bookToAdd.id,
+                  bookId = bookWithHash.id,
                   title = if (deleted.titleLock) deleted.title else newlyAdded.title,
                 ),
               )
-              if (!deleted.titleLock) taskEmitter.refreshBookMetadata(bookToAdd, setOf(BookMetadataPatchCapability.TITLE))
+              if (!deleted.titleLock) taskEmitter.refreshBookMetadata(bookWithHash, setOf(BookMetadataPatchCapability.TITLE))
             }
 
             // copy read progress
             readProgressRepository
               .findAllByBookId(match.id)
-              .map { it.copy(bookId = bookToAdd.id) }
+              .map { it.copy(bookId = bookWithHash.id) }
               .forEach { readProgressRepository.save(it) }
 
             // replace deleted book by new book in read lists
@@ -414,7 +418,7 @@ class LibraryContentLifecycle(
                   rl.copy(
                     bookIds =
                       rl.bookIds.values
-                        .map { if (it == match.id) bookToAdd.id else it }
+                        .map { if (it == match.id) bookWithHash.id else it }
                         .toIndexedMap(),
                   ),
                 )
