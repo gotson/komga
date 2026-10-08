@@ -182,11 +182,17 @@
   "3gimvl": {
     "defaultMessage": "库菜单"
   },
+  "3lLmfX": {
+    "defaultMessage": "合集"
+  },
   "3qQjnw": {
     "defaultMessage": "语言"
   },
   "3rNj7/": {
     "defaultMessage": "点击确认"
+  },
+  "40HXjy": {
+    "defaultMessage": "取消"
   },
   "464rk3": {
     "defaultMessage": "选择系列"
@@ -242,6 +248,9 @@
   "5WMvLb": {
     "defaultMessage": "Epub"
   },
+  "5Zw5Zt": {
+    "defaultMessage": "前往合集中的下一个系列"
+  },
   "5b2A0u": {
     "defaultMessage": "您将被重定向到主页"
   },
@@ -268,6 +277,9 @@
   },
   "6WDISV": {
     "defaultMessage": "找不到页面"
+  },
+  "6eAECF": {
+    "defaultMessage": "库"
   },
   "6nCIPn": {
     "defaultMessage": "类型"
@@ -323,6 +335,9 @@
   "8P7Yn+": {
     "defaultMessage": "年龄分级"
   },
+  "8Yd/3a": {
+    "defaultMessage": "职务名称"
+  },
   "8hC76W": {
     "defaultMessage": "任务"
   },
@@ -358,6 +373,9 @@
   },
   "9dNd68": {
     "defaultMessage": "用户上传"
+  },
+  "9mujmD": {
+    "defaultMessage": "无发行日期"
   },
   "9oA9gw": {
     "defaultMessage": "未固定"
@@ -503,6 +521,9 @@
   "DfakWW": {
     "defaultMessage": "删除文件"
   },
+  "DgXStw": {
+    "defaultMessage": "返回合集中的上一个系列"
+  },
   "Dn4qvV": {
     "defaultMessage": "恢复默认"
   },
@@ -599,6 +620,9 @@
   "GnHrCd": {
     "defaultMessage": "使用本地图片"
   },
+  "Gwmnm6": {
+    "defaultMessage": "系列"
+  },
   "GyRV+/": {
     "defaultMessage": "如果库托管在 Google Drive 上，应启用此选项"
   },
@@ -638,6 +662,9 @@
   "HZqgan": {
     "defaultMessage": "关闭"
   },
+  "HaF+a6": {
+    "defaultMessage": "库"
+  },
   "HaWCi3": {
     "defaultMessage": "设置"
   },
@@ -652,6 +679,9 @@
   },
   "Hyz5su": {
     "defaultMessage": "导入书籍"
+  },
+  "I75Xgh": {
+    "defaultMessage": "前往系列中的下一本"
   },
   "I9L5Ag": {
     "defaultMessage": "排序"
@@ -791,6 +821,9 @@
   "NN7kAK": {
     "defaultMessage": "已强制 Kobo 同步：{apiKeyComment}"
   },
+  "Nahedl": {
+    "defaultMessage": "添加"
+  },
   "NasBHg": {
     "defaultMessage": "阅读日期"
   },
@@ -851,6 +884,9 @@
   "P8Ox+D": {
     "defaultMessage": "书籍元数据已更新：{book}"
   },
+  "P9B8fE": {
+    "defaultMessage": "返回系列中的上一本"
+  },
   "PTr5Wc": {
     "defaultMessage": "请检查您的 Komga 服务器是否正在运行"
   },
@@ -860,11 +896,17 @@
   "Pj29A+": {
     "defaultMessage": "检测重复页面所需"
   },
+  "Po0Z4Z": {
+    "defaultMessage": "阅读清单"
+  },
   "Pp3+1S": {
     "defaultMessage": "状态"
   },
   "PvKF7E": {
     "defaultMessage": "库已删除：{library}"
+  },
+  "Q7tJAG": {
+    "defaultMessage": "阅读清单"
   },
   "QALnuE": {
     "defaultMessage": "文件类型"
@@ -899,11 +941,20 @@
   "RTNaxB": {
     "defaultMessage": "展开侧边栏"
   },
+  "RcbD73": {
+    "defaultMessage": "第 {number} 册"
+  },
   "Rm52xk": {
     "defaultMessage": "欢迎使用 Komga"
   },
+  "Rw2Iwj": {
+    "defaultMessage": "前往阅读清单中的下一本"
+  },
   "RwuMl5": {
     "defaultMessage": "自动修复错误的文件扩展名"
+  },
+  "S1/qO0": {
+    "defaultMessage": "合集"
   },
   "S39lnB": {
     "defaultMessage": "发行年份"
@@ -1124,11 +1175,17 @@
   "XnidLu": {
     "defaultMessage": "请输入 <b>{validateText}</b> 以确认。"
   },
+  "Xq4kkn": {
+    "defaultMessage": "返回阅读清单中的上一本"
+  },
   "XuqK4C": {
     "defaultMessage": "未知重复"
   },
   "Xx+ITC": {
     "defaultMessage": "我的活动"
+  },
+  "Xxk+hl": {
+    "defaultMessage": "收录于"
   },
   "Xxu514": {
     "defaultMessage": "删除系列文件"
@@ -1160,6 +1217,9 @@
   "YbkrN9": {
     "defaultMessage": "IP"
   },
+  "YeUvoE": {
+    "defaultMessage": "自定义职务..."
+  },
   "Yf4DJ2": {
     "defaultMessage": "用户界面"
   },
@@ -1180,6 +1240,9 @@
   },
   "ZEbDUo": {
     "defaultMessage": "已完结"
+  },
+  "ZGppaw": {
+    "defaultMessage": "系列"
   },
   "ZPuFVu": {
     "defaultMessage": "常规"
@@ -1450,6 +1513,9 @@
   },
   "dLE2PW": {
     "defaultMessage": "无活动"
+  },
+  "dN5GoW": {
+    "defaultMessage": "书籍"
   },
   "dP6SpT": {
     "defaultMessage": "按名称"
@@ -1760,6 +1826,9 @@
   "hgiBeR": {
     "defaultMessage": "最新活动"
   },
+  "hkbgs/": {
+    "defaultMessage": "添加自定义职务"
+  },
   "hrh5Rn": {
     "defaultMessage": "升级"
   },
@@ -1901,6 +1970,9 @@
   "laWvMU": {
     "defaultMessage": "确定"
   },
+  "ldAVd7": {
+    "defaultMessage": "阅读清单"
+  },
   "lkoTf7": {
     "defaultMessage": "CBR"
   },
@@ -1948,6 +2020,9 @@
   },
   "nOcpr8": {
     "defaultMessage": "单篇"
+  },
+  "nWgSSS": {
+    "defaultMessage": "合集"
   },
   "nXFVsQ": {
     "defaultMessage": "计算 KOReader 哈希"
@@ -2000,6 +2075,9 @@
   "oyeyK/": {
     "defaultMessage": "缩略图"
   },
+  "pCBNlA": {
+    "defaultMessage": "库"
+  },
   "pENCUD": {
     "defaultMessage": "取消"
   },
@@ -2035,6 +2113,9 @@
   },
   "qiZm6U": {
     "defaultMessage": "未知"
+  },
+  "qlImvg": {
+    "defaultMessage": "恢复默认"
   },
   "r/G7j0": {
     "defaultMessage": "编号"
@@ -2239,6 +2320,9 @@
   },
   "w2K5yu": {
     "defaultMessage": "阅读列表"
+  },
+  "wESuod": {
+    "defaultMessage": "未读"
   },
   "wJaip6": {
     "defaultMessage": "计算文件的哈希值"
