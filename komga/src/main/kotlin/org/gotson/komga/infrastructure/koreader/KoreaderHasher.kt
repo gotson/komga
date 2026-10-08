@@ -1,4 +1,4 @@
-package org.gotson.komga.infrastructure.hash
+package org.gotson.komga.infrastructure.koreader
 
 import com.appmattus.crypto.Algorithm
 import io.github.oshai.kotlinlogging.KotlinLogging

@@ -38,7 +38,7 @@ import org.gotson.komga.domain.persistence.SeriesMetadataRepository
 import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.hash.Hasher
-import org.gotson.komga.infrastructure.hash.KoreaderHasher
+import org.gotson.komga.infrastructure.koreader.KoreaderHasher
 import org.gotson.komga.interfaces.api.persistence.SeriesDtoRepository
 import org.gotson.komga.language.toIndexedMap
 import org.gotson.komga.toScanResult
