@@ -85,7 +85,6 @@ class SearchIndexLifecycle(
 
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
   fun consumeEvents(event: DomainEvent) {
-    logger.info { "Consumer event ${event.javaClass.name} after transaction commit." }
     when (event) {
       is DomainEvent.SeriesAdded -> seriesDtoRepository.findByIdOrNull(event.series.id, "unused")?.toDocument()?.let { addEntity(it) }
       is DomainEvent.SeriesUpdated -> seriesDtoRepository.findByIdOrNull(event.series.id, "unused")?.toDocument()?.let { updateEntity(LuceneEntity.Series, event.series.id, it) }
