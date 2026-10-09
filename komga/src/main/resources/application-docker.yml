@@ -1,2 +1,3 @@
 komga:
   kobo.kepubify-path: /usr/bin/kepubify
+  jdbc-session-enabled: true
