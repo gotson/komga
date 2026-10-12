@@ -134,7 +134,7 @@ dependencies {
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("com.ninja-squad:springmockk:4.0.2") // v5 needs Spring Framework v7
   testImplementation("io.mockk:mockk:1.14.11")
-  testImplementation("com.google.jimfs:jimfs:1.3.1")
+  testImplementation("com.google.jimfs:jimfs:1.3.2")
 
   testImplementation("com.tngtech.archunit:archunit-junit5:1.5.1")
 
