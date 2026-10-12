@@ -7,7 +7,7 @@ RUN java -Djarmode=tools -jar application.jar extract --layers --destination ext
 # amd64 builder
 FROM ubuntu:26.04 AS build-amd64
 ENV JAVA_HOME=/opt/java/openjdk
-COPY --from=eclipse-temurin:23-jre $JAVA_HOME $JAVA_HOME
+COPY --from=eclipse-temurin:25-jre $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 RUN apt -y update && \
     apt -y install ca-certificates locales libjxl-dev libheif-dev libwebp-dev wget curl && \
@@ -21,7 +21,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/x86_64-linux-gnu"
 # arm64 builder
 FROM ubuntu:26.04 AS build-arm64
 ENV JAVA_HOME=/opt/java/openjdk
-COPY --from=eclipse-temurin:23-jre $JAVA_HOME $JAVA_HOME
+COPY --from=eclipse-temurin:25-jre $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 RUN apt -y update && \
     apt -y install ca-certificates locales libjxl-dev libheif-dev libwebp-dev wget curl && \
