@@ -1,13 +1,13 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "description": "Komga REST API.\n\n## Reference\n\nCheck the API reference:\n- on the [Komga website](https://komga.org/docs/openapi/komga-api)\n- on any running Komga instance at `/swagger-ui.html`\n- on [GitHub](https://raw.githubusercontent.com/gotson/komga/refs/heads/master/komga/docs/openapi.json)\n\n## Authentication\n\nMost endpoints require authentication. Authentication is done using either:\n- Basic Authentication\n- Passing an API Key in the `X-API-Key` header\n\n## Sessions\n\nUpon successful authentication, a session is created, and can be reused.\n\n- By default, a `KOMGA-SESSION` cookie is set via `Set-Cookie` response header. This works well for browsers and clients that can handle cookies.\n- If you specify a header `X-Auth-Token` during authentication, the session ID will be returned via this same header. You can then pass that header again for subsequent requests to reuse the session.\n\nIf you need to set the session cookie later on, you can call `/api/v1/login/set-cookie` with `X-Auth-Token`. The response will contain the `Set-Cookie` header.\n\n## Remember Me\n\nDuring authentication, if a request parameter `remember-me` is passed and set to `true`, the server will also return a `komga-remember-me` cookie. This cookie will be used to login automatically even if the session has expired.\n\n## Logout\n\nYou can explicitly logout an existing session by calling `/api/logout`. This would return a `204`.\n\n## Deprecation\n\nAPI endpoints marked as deprecated will be removed in the next major version.",
+    "description": "Komga REST API.\n\n## Reference\n\nCheck the API reference:\n- on the [Komga website](https://komga.org/docs/openapi/komga-api)\n- on any running Komga instance at `/swagger-ui.html`\n- on [GitHub](https://raw.githubusercontent.com/gotson/komga/refs/heads/master/komga/docs/openapi.json)\n\n## Authentication\n\nMost endpoints require authentication. Authentication is done using either:\n- Basic Authentication\n- Passing an API Key in the `X-API-Key` header\n\n## Sessions\n\nUpon successful authentication, a session is created, and can be reused.\n\n- By default, a `KOMGA-SESSION` cookie is set via `Set-Cookie` response header. This works well for browsers and clients that can handle cookies.\n- If you specify a header `X-Auth-Token` during authentication, the session ID will be returned via this same header. You can then pass that header again for subsequent requests to reuse the session.\n\nIf you need to set the session cookie later on, you can call `/api/v1/login/set-cookie` with `X-Auth-Token`. The response will contain the `Set-Cookie` header.\n\nSessions are not created when authenticating with an API Key.\n\n## Remember Me\n\nDuring authentication, if a request parameter `remember-me` is passed and set to `true`, the server will also return a `komga-remember-me` cookie. This cookie will be used to login automatically even if the session has expired.\n\n## Logout\n\nYou can explicitly logout an existing session by calling `/api/logout`. This would return a `204`.\n\n## Deprecation\n\nAPI endpoints marked as deprecated will be removed in the next major version.",
     "license": {
       "name": "MIT",
       "url": "https://github.com/gotson/komga/blob/master/LICENSE"
     },
     "title": "Komga API",
-    "version": "1.28.1"
+    "version": "1.29.0"
   },
   "externalDocs": {
     "description": "Komga documentation",
@@ -1069,9 +1069,6 @@
               }
             },
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
           }
         },
         "summary": "Get book details",
@@ -6772,9 +6769,6 @@
               }
             },
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
           }
         },
         "summary": "Get series details",
@@ -9711,6 +9705,356 @@
           "Users"
         ]
       }
+    },
+    "/api/v3/notable-entities": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getNotableEntities",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "series_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "readlist_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseNotableEntityDto"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List notable entities",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v3/notable-entities/kinds": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getNotableEntitiesKinds",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "series_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "readlist_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List notable entities kinds",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
+    },
+    "/api/v3/notable-entities/names": {
+      "get": {
+        "description": "Can be filtered by various criteria",
+        "operationId": "getNotableEntitiesNames",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "library_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "series_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "readlist_id",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "unpaged",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Zero-based page index (0..N)",
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "description": "The size of the page to be returned",
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseString"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "summary": "List notable entities names",
+        "tags": [
+          "Referential metadata"
+        ]
+      }
     }
   },
   "components": {
@@ -10049,6 +10393,12 @@
             "type": "string",
             "format": "date-time"
           },
+          "notableEntities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotableEntityDto"
+            }
+          },
           "releaseDate": {
             "type": "string",
             "format": "date"
@@ -10071,6 +10421,7 @@
           "authors",
           "created",
           "lastModified",
+          "notableEntities",
           "summary",
           "summaryNumber",
           "tags"
@@ -10109,6 +10460,15 @@
             }
           },
           "linksLock": {
+            "type": "boolean"
+          },
+          "notableEntities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotableEntityDto"
+            }
+          },
+          "notableEntitiesLock": {
             "type": "boolean"
           },
           "number": {
@@ -10163,6 +10523,8 @@
           "lastModified",
           "links",
           "linksLock",
+          "notableEntities",
+          "notableEntitiesLock",
           "number",
           "numberLock",
           "numberSort",
@@ -10202,6 +10564,15 @@
             }
           },
           "linksLock": {
+            "type": "boolean"
+          },
+          "notableEntities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotableEntityUpdateDto"
+            }
+          },
+          "notableEntitiesLock": {
             "type": "boolean"
           },
           "number": {
@@ -11139,6 +11510,38 @@
           }
         }
       },
+      "NotableEntityDto": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "name"
+        ]
+      },
+      "NotableEntityUpdateDto": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "kind",
+          "name"
+        ]
+      },
       "OAuth2ClientDto": {
         "type": "object",
         "properties": {
@@ -11772,6 +12175,118 @@
             "format": "int32"
           }
         }
+      },
+      "PageResponseNotableEntityDto": {
+        "type": "object",
+        "description": "Paginated API response container",
+        "properties": {
+          "content": {
+            "type": "array",
+            "description": "List of items contained in the current page",
+            "items": {
+              "$ref": "#/components/schemas/NotableEntityDto"
+            }
+          },
+          "first": {
+            "type": "boolean",
+            "description": "Indicates if the current page is the first page",
+            "example": true
+          },
+          "last": {
+            "type": "boolean",
+            "description": "Indicates if the current page is the last page",
+            "example": false
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Zero-based page index (0..N)",
+            "example": 0
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of items requested per page",
+            "example": 20
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of elements across all pages",
+            "example": 105
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Total number of calculated pages",
+            "example": 6
+          }
+        },
+        "required": [
+          "content",
+          "first",
+          "last",
+          "page",
+          "size",
+          "totalElements",
+          "totalPages"
+        ]
+      },
+      "PageResponseString": {
+        "type": "object",
+        "description": "Paginated API response container",
+        "properties": {
+          "content": {
+            "type": "array",
+            "description": "List of items contained in the current page",
+            "items": {
+              "type": "string"
+            }
+          },
+          "first": {
+            "type": "boolean",
+            "description": "Indicates if the current page is the first page",
+            "example": true
+          },
+          "last": {
+            "type": "boolean",
+            "description": "Indicates if the current page is the last page",
+            "example": false
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Zero-based page index (0..N)",
+            "example": 0
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of items requested per page",
+            "example": 20
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total number of elements across all pages",
+            "example": 105
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Total number of calculated pages",
+            "example": 6
+          }
+        },
+        "required": [
+          "content",
+          "first",
+          "last",
+          "page",
+          "size",
+          "totalElements",
+          "totalPages"
+        ]
       },
       "PageSeriesDto": {
         "type": "object",
@@ -12440,6 +12955,9 @@
             "$ref": "#/components/schemas/SearchConditionAuthor"
           },
           {
+            "$ref": "#/components/schemas/SearchConditionNotableEntity"
+          },
+          {
             "$ref": "#/components/schemas/SearchConditionPoster"
           }
         ]
@@ -12522,6 +13040,16 @@
         },
         "required": [
           "mediaStatus"
+        ]
+      },
+      "SearchConditionNotableEntity": {
+        "properties": {
+          "notableEntity": {
+            "$ref": "#/components/schemas/SearchOperatorEqualityNotableEntityMatch"
+          }
+        },
+        "required": [
+          "notableEntity"
         ]
       },
       "SearchConditionNumberSort": {
@@ -12652,6 +13180,9 @@
           },
           {
             "$ref": "#/components/schemas/SearchConditionAuthor"
+          },
+          {
+            "$ref": "#/components/schemas/SearchConditionNotableEntity"
           }
         ]
       },
@@ -12889,6 +13420,31 @@
         ]
       },
       "SearchOperatorEqualityMediaProfile": {
+        "discriminator": {
+          "mapping": {
+            "is": "#/components/schemas/SearchOperatorIs",
+            "isNot": "#/components/schemas/SearchOperatorIsNot"
+          },
+          "propertyName": "operator"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SearchOperatorIs"
+          },
+          {
+            "$ref": "#/components/schemas/SearchOperatorIsNot"
+          }
+        ],
+        "properties": {
+          "operator": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "operator"
+        ]
+      },
+      "SearchOperatorEqualityNotableEntityMatch": {
         "discriminator": {
           "mapping": {
             "is": "#/components/schemas/SearchOperatorIs",
@@ -13677,6 +14233,9 @@
             "type": "integer",
             "format": "int64"
           },
+          "nextUiAsDefault": {
+            "type": "boolean"
+          },
           "rememberMeDurationDays": {
             "type": "integer",
             "format": "int64"
@@ -13723,6 +14282,9 @@
             "maximum": 65535
           },
           "koboProxy": {
+            "type": "boolean"
+          },
+          "nextUiAsDefault": {
             "type": "boolean"
           },
           "rememberMeDurationDays": {
