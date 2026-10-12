@@ -13,7 +13,7 @@ plugins {
     kotlin("kapt") version kotlinVersion
   }
   id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
-  id("org.jreleaser") version "1.25.0"
+  id("org.jreleaser") version "1.26.0"
 }
 
 fun isNonStable(version: String): Boolean {
