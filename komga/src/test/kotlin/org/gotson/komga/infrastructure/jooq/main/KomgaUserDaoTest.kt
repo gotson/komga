@@ -90,7 +90,7 @@ class KomgaUserDaoTest(
     with(created) {
       assertThat(restrictions.ageRestriction).isNotNull
       assertThat(restrictions.ageRestriction!!.age).isEqualTo(10)
-      assertThat(restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
+      assertThat(restrictions.ageRestriction.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
       assertThat(restrictions.labelsAllow).containsExactly("allow")
       assertThat(restrictions.labelsExclude).containsExactly("exclude")
     }
@@ -126,7 +126,7 @@ class KomgaUserDaoTest(
       assertThat(sharedAllLibraries).isTrue
       assertThat(restrictions.ageRestriction).isNotNull
       assertThat(restrictions.ageRestriction!!.age).isEqualTo(16)
-      assertThat(restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.EXCLUDE)
+      assertThat(restrictions.ageRestriction.restriction).isEqualTo(AllowExclude.EXCLUDE)
       assertThat(restrictions.labelsAllow).containsExactly("allow2")
       assertThat(restrictions.labelsExclude).containsExactly("exclude2")
     }

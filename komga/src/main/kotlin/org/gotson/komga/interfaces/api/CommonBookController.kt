@@ -135,7 +135,7 @@ class CommonBookController(
     request: ServletWebRequest,
     principal: KomgaPrincipal,
     acceptHeaders: MutableList<MediaType>?,
-  ) = bookRepository.findByIdOrNull((bookId))?.let { book ->
+  ): ResponseEntity<ByteArray> = bookRepository.findByIdOrNull((bookId))?.let { book ->
     val media = mediaRepository.findById(bookId)
     if (request.checkNotModified(getBookLastModified(media))) {
       return@let ResponseEntity

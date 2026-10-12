@@ -19,7 +19,7 @@ class ContentRestrictionsTest {
 
     assertThat(restriction.ageRestriction).isNotNull
     assertThat(restriction.ageRestriction!!.age).isEqualTo(10)
-    assertThat(restriction.ageRestriction!!.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
+    assertThat(restriction.ageRestriction.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
 
     assertThat(restriction.labelsAllow).isEmpty()
     assertThat(restriction.labelsExclude).isEmpty()
@@ -31,7 +31,7 @@ class ContentRestrictionsTest {
 
     assertThat(restriction.ageRestriction).isNotNull
     assertThat(restriction.ageRestriction!!.age).isEqualTo(10)
-    assertThat(restriction.ageRestriction!!.restriction).isEqualTo(AllowExclude.EXCLUDE)
+    assertThat(restriction.ageRestriction.restriction).isEqualTo(AllowExclude.EXCLUDE)
 
     assertThat(restriction.labelsAllow).isEmpty()
     assertThat(restriction.labelsExclude).isEmpty()

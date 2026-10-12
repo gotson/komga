@@ -508,11 +508,11 @@ class BookLifecycle(
             if (extension.isFixedLayout && matchingPositions.size == 1)
               matchingPositions.first()
             else
-              matchingPositions.firstOrNull { it.locations!!.progression == newProgression.locator.locations!!.progression }
+              matchingPositions.firstOrNull { it.locations!!.progression == newProgression.locator.locations.progression }
                 ?: run {
                   // no exact match
-                  val before = matchingPositions.filter { it.locations!!.progression!! < newProgression.locator.locations!!.progression!! }.maxByOrNull { it.locations!!.position!! }
-                  val after = matchingPositions.filter { it.locations!!.progression!! > newProgression.locator.locations!!.progression!! }.minByOrNull { it.locations!!.position!! }
+                  val before = matchingPositions.filter { it.locations!!.progression!! < newProgression.locator.locations.progression }.maxByOrNull { it.locations!!.position!! }
+                  val after = matchingPositions.filter { it.locations!!.progression!! > newProgression.locator.locations.progression }.minByOrNull { it.locations!!.position!! }
                   if (before == null || after == null || before.locations!!.position!! > after.locations!!.position!!)
                     throw IllegalArgumentException("Invalid progression")
                   before
@@ -533,7 +533,7 @@ class BookLifecycle(
               // if no koboSpan is provided, use the one we matched
               koboSpan = newProgression.locator.koboSpan ?: matchedPosition.koboSpan,
               // don't trust the provided total progression, the one from Kobo can be wrong
-              locations = newProgression.locator.locations?.copy(totalProgression = totalProgression),
+              locations = newProgression.locator.locations.copy(totalProgression = totalProgression),
             ),
           )
         }

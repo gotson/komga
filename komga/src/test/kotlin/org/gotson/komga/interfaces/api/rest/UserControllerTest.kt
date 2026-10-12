@@ -448,7 +448,7 @@ class UserControllerTest(
         assertThat(this).isNotNull
         assertThat(this!!.restrictions.ageRestriction).isNotNull
         assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(12)
-        assertThat(this.restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
+        assertThat(this.restrictions.ageRestriction.restriction).isEqualTo(AllowExclude.ALLOW_ONLY)
       }
     }
 
@@ -553,7 +553,7 @@ class UserControllerTest(
         assertThat(this).isNotNull
         assertThat(this!!.restrictions.ageRestriction).isNotNull
         assertThat(this.restrictions.ageRestriction!!.age).isEqualTo(16)
-        assertThat(this.restrictions.ageRestriction!!.restriction).isEqualTo(AllowExclude.EXCLUDE)
+        assertThat(this.restrictions.ageRestriction.restriction).isEqualTo(AllowExclude.EXCLUDE)
       }
     }
   }

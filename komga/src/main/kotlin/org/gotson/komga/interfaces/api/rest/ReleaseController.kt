@@ -7,14 +7,12 @@ import org.gotson.komga.infrastructure.openapi.OpenApiConfiguration
 import org.gotson.komga.interfaces.api.rest.dto.GithubReleaseDto
 import org.gotson.komga.interfaces.api.rest.dto.ReleaseDto
 import org.springframework.core.ParameterizedTypeReference
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.server.ResponseStatusException
 import java.util.concurrent.TimeUnit
 
 private const val GITHUB_API = "https://api.github.com/repos/gotson/komga/releases"
@@ -40,7 +38,7 @@ class ReleaseController(
   fun getReleases(): List<ReleaseDto> =
     cache
       .get("releases") { fetchGitHubReleases() }
-      ?.let { releases ->
+      .let { releases ->
         releases.mapIndexed { index, ghRel ->
           ReleaseDto(
             ghRel.tagName,
@@ -52,7 +50,6 @@ class ReleaseController(
           )
         }
       }
-      ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
   fun fetchGitHubReleases(): List<GithubReleaseDto> {
     val response =
