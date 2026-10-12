@@ -23,7 +23,3 @@ const items = ReadStatusValues.map((it) => ({
   valueExclude: { i: 'e', v: it },
 }))
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

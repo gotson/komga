@@ -41,7 +41,3 @@ function handleChange(newVal: IncludeExclude) {
   }
 }
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

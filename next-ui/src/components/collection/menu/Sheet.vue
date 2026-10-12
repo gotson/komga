@@ -56,7 +56,3 @@ const actionsManagement = computed(() => [
     .toSorted(createOrderCompareFn(management, (it) => it.action.toString())),
 ])
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

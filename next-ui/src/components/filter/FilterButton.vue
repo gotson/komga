@@ -42,7 +42,3 @@ const emit = defineEmits<{
   click: []
 }>()
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

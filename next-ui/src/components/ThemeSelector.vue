@@ -49,7 +49,3 @@ function cycleTheme() {
   appStore.theme = themes[newIndex]!.value
 }
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

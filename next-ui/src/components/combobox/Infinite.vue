@@ -93,7 +93,3 @@ const message = defineMessage({
   id: 'iCYg8R',
 })
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

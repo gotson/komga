@@ -46,7 +46,3 @@ import { useSelectionStore } from '@/stores/selection'
 
 const selectionStore = useSelectionStore()
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

@@ -78,7 +78,3 @@ function cycle() {
   emit('change', newVal, oldVal)
 }
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

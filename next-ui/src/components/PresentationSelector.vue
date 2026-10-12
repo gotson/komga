@@ -80,7 +80,3 @@ function cycleMode() {
   currentMode.value = modes[newIndex]!
 }
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

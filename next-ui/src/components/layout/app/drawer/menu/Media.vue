@@ -82,4 +82,3 @@
     </v-list-group>
   </v-list-group>
 </template>
-<script setup lang="ts"></script>

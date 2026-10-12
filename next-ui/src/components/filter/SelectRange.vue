@@ -81,7 +81,3 @@ function clearRange() {
   model.value.max = undefined
 }
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

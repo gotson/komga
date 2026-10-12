@@ -95,5 +95,3 @@ const routes = computed(() => {
   return [...routesBase, ...extra] as LibrarySubRoute[]
 })
 </script>
-
-<style scoped></style>

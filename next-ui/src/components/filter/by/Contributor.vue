@@ -82,7 +82,3 @@ function toItemType(contributorName: string): ItemType<Contributor> {
   }
 }
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

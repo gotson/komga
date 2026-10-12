@@ -56,7 +56,3 @@ const message = intl.formatMessage({
   id: 'XXr6pI',
 })
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

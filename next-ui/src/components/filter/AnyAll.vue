@@ -63,7 +63,3 @@ const buttons = [
   },
 ]
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

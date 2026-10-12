@@ -11,5 +11,3 @@
     prepend-icon="i-mdi:clock-time-four-outline"
   />
 </template>
-
-<script setup lang="ts"></script>

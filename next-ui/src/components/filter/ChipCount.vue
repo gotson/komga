@@ -21,7 +21,3 @@ const emit = defineEmits<{
   clear: []
 }>()
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

@@ -83,6 +83,4 @@ function toItemType(notableEntityName: string): ItemType<NotableEntity> {
 }
 </script>
 
-<script lang="ts"></script>
-
 <style scoped></style>

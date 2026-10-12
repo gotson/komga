@@ -64,7 +64,3 @@ const emit = defineEmits<{
 
 const shownItems = computed(() => (search.value ? searchItems : items))
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

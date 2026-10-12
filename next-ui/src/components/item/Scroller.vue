@@ -97,5 +97,3 @@ const emit = defineEmits<{
 
 const selectionStore = useSelectionStore()
 </script>
-
-<style scoped></style>

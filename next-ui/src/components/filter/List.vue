@@ -97,8 +97,6 @@ watchEffect(() => {
 })
 </script>
 
-<script lang="ts"></script>
-
 <style scoped>
 .semi-transparent {
   opacity: 0.5;

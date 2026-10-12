@@ -65,7 +65,3 @@ const displayedItems = computed(() =>
   isSearching.value ? searchResults.value : infiniteItems.value,
 )
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

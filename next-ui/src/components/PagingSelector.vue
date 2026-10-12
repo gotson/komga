@@ -36,7 +36,3 @@ import type { Paging } from '@/types/page'
 
 const paging = defineModel<Paging>({ required: true })
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

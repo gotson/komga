@@ -11,7 +11,3 @@ const {} = defineProps<{
   count?: number
 }>()
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

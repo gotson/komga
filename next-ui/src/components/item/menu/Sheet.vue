@@ -30,7 +30,3 @@ const { actions = [], manageActions = [] } = defineProps<{
   sheetSubtitle?: string
 }>()
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

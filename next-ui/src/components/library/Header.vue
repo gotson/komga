@@ -64,7 +64,3 @@ const { library: librarySingle } = useGetLibrariesByViewId(() => libraryId ?? 'u
 
 const effectiveLibrary = computed(() => library ?? librarySingle.value)
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

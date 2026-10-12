@@ -26,8 +26,6 @@ const display = useDisplay()
 const appStore = useAppStore()
 </script>
 
-<script lang="ts"></script>
-
 <style scoped>
 .poster-slider {
   width: 80px;

@@ -29,7 +29,3 @@
 <script setup lang="ts">
 const isLocked = defineModel<boolean>({ required: true })
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

@@ -69,7 +69,3 @@ function afterClick() {
 
 const { actions } = useEntitiesActions(selectionAsArray, afterClick)
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

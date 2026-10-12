@@ -79,7 +79,3 @@ const tooltipMessage = computed(() =>
   display.mobile.value ? expandMessage : appStore.drawer ? collapseMessage : expandMessage,
 )
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

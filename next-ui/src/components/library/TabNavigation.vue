@@ -150,5 +150,3 @@ const selectedRoute = computed(() =>
   }),
 )
 </script>
-
-<style scoped></style>

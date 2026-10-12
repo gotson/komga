@@ -31,7 +31,3 @@ defineProps<{
   lines?: number
 }>()
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

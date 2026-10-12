@@ -72,7 +72,3 @@ function handleItemClick(action: Action<unknown>): void {
   rootShown.value = false
 }
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

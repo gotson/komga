@@ -21,7 +21,3 @@ const items: {
   value: it,
 }))
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

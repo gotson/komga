@@ -44,5 +44,3 @@ syncRefs(
   showDialog,
 )
 </script>
-
-<style scoped></style>

@@ -69,7 +69,3 @@ const rows = computed(() =>
   })),
 )
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

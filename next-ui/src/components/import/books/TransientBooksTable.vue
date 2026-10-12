@@ -592,5 +592,3 @@ function compareBooks(item: BookImport) {
     prepareCompareBookDialog(item.transientBookDetails, item.upgradeBookDetails, true)
 }
 </script>
-
-<style scoped></style>

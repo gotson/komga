@@ -81,7 +81,3 @@ function toItemType(value: string): ItemType<SchString> {
   }
 }
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

@@ -65,7 +65,3 @@ const selectItems = computed(() => [
 const min = computed(() => items.value?.content?.map((it) => Number(it))?.at(0))
 const max = computed(() => items.value?.content?.map((it) => Number(it))?.at(-1))
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

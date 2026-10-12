@@ -70,7 +70,3 @@ const locales = Object.entries(availableLocales).map(([code, localeInfo]) => ({
   value: code,
 }))
 </script>
-
-<script lang="ts"></script>
-
-<style scoped></style>

@@ -74,5 +74,3 @@ function internalUpdate(newVal: Sort | undefined, oldVal: Sort | undefined) {
   }
 }
 </script>
-
-<script lang="ts"></script>
