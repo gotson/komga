@@ -44,14 +44,17 @@ class JdbcSessionConfiguration {
     """.trimIndent()
 
   @Bean
-  fun customizeSessionRepository(sessionProperties: SessionProperties, serverProperties: ServerProperties) =
-    SessionRepositoryCustomizer<JdbcIndexedSessionRepository> { repository ->
-      repository.setCreateSessionQuery(sqliteCreateSessionQuery)
-      repository.setCreateSessionAttributeQuery(sqliteCreateSessionAttributeQuery)
+  fun customizeSessionRepository(
+    sessionProperties: SessionProperties,
+    serverProperties: ServerProperties,
+  ) = SessionRepositoryCustomizer<JdbcIndexedSessionRepository> { repository ->
+    repository.setCreateSessionQuery(sqliteCreateSessionQuery)
+    repository.setCreateSessionAttributeQuery(sqliteCreateSessionAttributeQuery)
 
-      val timeout = sessionProperties.timeout
+    val timeout =
+      sessionProperties.timeout
         ?: serverProperties.servlet.session.timeout
         ?: 30.minutes.toJavaDuration()
-      repository.setDefaultMaxInactiveInterval(timeout)
-    }
+    repository.setDefaultMaxInactiveInterval(timeout)
+  }
 }

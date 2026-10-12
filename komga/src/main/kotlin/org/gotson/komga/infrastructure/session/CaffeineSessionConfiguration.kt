@@ -20,11 +20,14 @@ import kotlin.time.toJavaDuration
 )
 class CaffeineSessionConfiguration {
   @Bean
-  fun customizeSessionRepository(sessionProperties: SessionProperties,serverProperties: ServerProperties) =
-    SessionRepositoryCustomizer<CaffeineIndexedSessionRepository> { repository ->
-      val timeout = sessionProperties.timeout
+  fun customizeSessionRepository(
+    sessionProperties: SessionProperties,
+    serverProperties: ServerProperties,
+  ) = SessionRepositoryCustomizer<CaffeineIndexedSessionRepository> { repository ->
+    val timeout =
+      sessionProperties.timeout
         ?: serverProperties.servlet.session.timeout
         ?: 30.minutes.toJavaDuration()
-      repository.setDefaultMaxInactiveInterval(timeout.seconds.toInt())
-    }
+    repository.setDefaultMaxInactiveInterval(timeout.seconds.toInt())
+  }
 }
