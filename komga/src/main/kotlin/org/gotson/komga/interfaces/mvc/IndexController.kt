@@ -22,13 +22,13 @@ class IndexController(
     return if (komgaSettingsProvider.nextUiAsDefault) "index-next" else "index"
   }
 
-  @GetMapping("/classic")
+  @GetMapping(value = ["/classic", "/classic/**"])
   fun indexClassic(model: Model): String {
     model.addAttribute("baseUrl", baseUrl)
     return "index"
   }
 
-  @GetMapping("/next")
+  @GetMapping(value = ["/next", "/next/**"])
   fun indexNext(model: Model): String {
     model.addAttribute("baseUrl", baseUrl)
     return "index-next"
