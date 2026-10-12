@@ -1,7 +1,12 @@
+
 import nu.studer.gradle.jooq.JooqGenerate
 import org.flywaydb.gradle.task.FlywayMigrateTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.util.prefixIfNot
+import org.jooq.meta.kotlin.database
+import org.jooq.meta.kotlin.generator
+import org.jooq.meta.kotlin.jdbc
+import org.jooq.meta.kotlin.target
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
@@ -329,37 +334,37 @@ buildscript {
 }
 
 jooq {
-  version = libs.versions.jooq.get()
+  version.set(libs.versions.jooq.get())
   configurations {
     create("main") {
-      jooqConfiguration.apply {
+      jooqConfiguration {
         logging = org.jooq.meta.jaxb.Logging.WARN
-        jdbc.apply {
+        jdbc {
           driver = "org.sqlite.JDBC"
           url = sqliteUrls["main"]
         }
-        generator.apply {
-          database.apply {
+        generator {
+          database {
             name = "org.jooq.meta.sqlite.SQLiteDatabase"
           }
-          target.apply {
+          target {
             packageName = "org.gotson.komga.jooq.main"
           }
         }
       }
     }
     create("tasks") {
-      jooqConfiguration.apply {
+      jooqConfiguration {
         logging = org.jooq.meta.jaxb.Logging.WARN
-        jdbc.apply {
+        jdbc {
           driver = "org.sqlite.JDBC"
           url = sqliteUrls["tasks"]
         }
-        generator.apply {
-          database.apply {
+        generator {
+          database {
             name = "org.jooq.meta.sqlite.SQLiteDatabase"
           }
-          target.apply {
+          target {
             packageName = "org.gotson.komga.jooq.tasks"
           }
         }
