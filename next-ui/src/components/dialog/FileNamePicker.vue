@@ -11,13 +11,6 @@
   >
     <template #default="{ isActive }">
       <v-card :title="dialogTitle">
-        <template #append>
-          <v-icon
-            icon="i-mdi:close"
-            @click="isActive.value = false"
-          />
-        </template>
-
         <v-card-text>
           <v-container fluid>
             <v-row>
@@ -120,6 +113,20 @@
             "
           />
         </v-card-text>
+
+        <template #actions>
+          <v-spacer />
+          <v-btn
+            :text="
+              $formatMessage({
+                description: 'File name picker dialog: Close button',
+                defaultMessage: 'Close',
+                id: 'Qz1UTX',
+              })
+            "
+            @click="isActive.value = false"
+          />
+        </template>
       </v-card>
     </template>
   </v-dialog>

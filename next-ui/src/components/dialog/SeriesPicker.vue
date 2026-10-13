@@ -10,13 +10,6 @@
   >
     <template #default="{ isActive }">
       <v-card :title="dialogTitle">
-        <template #append>
-          <v-icon
-            icon="i-mdi:close"
-            @click="isActive.value = false"
-          />
-        </template>
-
         <v-card-text>
           <v-list
             :disabled="isLoading"
@@ -100,6 +93,20 @@
             </template>
           </v-list>
         </v-card-text>
+
+        <template #actions>
+          <v-spacer />
+          <v-btn
+            :text="
+              $formatMessage({
+                description: 'Series picker dialog: Close button',
+                defaultMessage: 'Close',
+                id: 'BXkP7H',
+              })
+            "
+            @click="isActive.value = false"
+          />
+        </template>
       </v-card>
     </template>
   </v-dialog>

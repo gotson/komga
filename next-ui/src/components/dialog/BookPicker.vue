@@ -11,13 +11,6 @@
   >
     <template #default="{ isActive }">
       <v-card :title="dialogTitle">
-        <template #append>
-          <v-icon
-            icon="i-mdi:close"
-            @click="isActive.value = false"
-          />
-        </template>
-
         <v-card-text>
           <v-text-field
             v-model="filterRef"
@@ -87,6 +80,20 @@
             </template>
           </v-data-table>
         </v-card-text>
+
+        <template #actions>
+          <v-spacer />
+          <v-btn
+            :text="
+              $formatMessage({
+                description: 'Book picker dialog: Close button',
+                defaultMessage: 'Close',
+                id: '3zkvDp',
+              })
+            "
+            @click="isActive.value = false"
+          />
+        </template>
       </v-card>
     </template>
   </v-dialog>
