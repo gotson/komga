@@ -275,6 +275,10 @@
     "defaultMessage": "Click to confirm",
     "description": "Confirmation dialog: default checkbox label"
   },
+  "3zkvDp": {
+    "defaultMessage": "Close",
+    "description": "Book picker dialog: Close button"
+  },
   "40HXjy": {
     "defaultMessage": "Cancel",
     "description": "Metadata edition: add role dialog - cancel button"
@@ -590,6 +594,10 @@
   "BQmPch": {
     "defaultMessage": "Delete book",
     "description": "Task name: DeleteBook"
+  },
+  "BXkP7H": {
+    "defaultMessage": "Close",
+    "description": "Series picker dialog: Close button"
   },
   "Bewgy6": {
     "defaultMessage": "Series cover",
@@ -1283,6 +1291,10 @@
     "defaultMessage": "Deleted page",
     "description": "History Table, expansion panel for deleted page: alt description for deleted page"
   },
+  "Qz1UTX": {
+    "defaultMessage": "Close",
+    "description": "File name picker dialog: Close button"
+  },
   "REmxIM": {
     "defaultMessage": "Modified",
     "description": "Known Duplicate Page Table header: modified date"
@@ -1694,10 +1706,6 @@
   "YeUvoE": {
     "defaultMessage": "Custom role...",
     "description": "Metadata edition: add role menu - custom role"
-  },
-  "Yf4DJ2": {
-    "defaultMessage": "User Interface",
-    "description": "Drawer menu for Server > User Interface"
   },
   "Ym48fa": {
     "defaultMessage": "No recent events",
