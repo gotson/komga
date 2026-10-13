@@ -27,15 +27,15 @@
     </template>
 
     <template #[`item.url`]="{ value }">
-      <div
-        v-if="display.xs.value"
-        v-ktooltip="value"
-        class="text-truncate"
-        style="max-width: 200px"
-      >
+      <div style="overflow-wrap: anywhere">
         {{ value }}
       </div>
-      <template v-else>{{ value }}</template>
+    </template>
+
+    <template #[`item.fileName`]="{ value }">
+      <div style="overflow-wrap: anywhere">
+        {{ value }}
+      </div>
     </template>
 
     <template #[`item.bookId`]="{ item }">
@@ -75,12 +75,10 @@ import { PageRequest, type VSortItem } from '@/types/PageRequest'
 import { useQuery } from '@pinia/colada'
 import { pageHashMatchesQuery } from '@/colada/page-hashes'
 import { bookPageThumbnailUrl } from '@/api/images'
-import { useDisplay } from 'vuetify'
 
 const pageHash = defineModel<string>({ required: true })
 
 const intl = useIntl()
-const display = useDisplay()
 
 //region headers
 const headers = [
