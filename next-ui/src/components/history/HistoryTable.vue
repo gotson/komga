@@ -11,7 +11,6 @@
     multi-sort
     mobile-breakpoint="md"
     show-expand
-    style="height: 100%"
     @update:options="updateOptions"
   >
     <template #top>

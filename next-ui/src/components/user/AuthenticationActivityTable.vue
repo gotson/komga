@@ -9,7 +9,6 @@
     fixed-footer
     multi-sort
     mobile-breakpoint="md"
-    style="height: 100%"
     @update:options="updateOptions"
   >
     <template #top>
