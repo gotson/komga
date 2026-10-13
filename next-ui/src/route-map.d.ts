@@ -267,13 +267,6 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
-    '/server/ui': RouteRecordInfo<
-      '/server/ui',
-      '/server/ui',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
     '/server/updates': RouteRecordInfo<
       '/server/updates',
       '/server/updates',
@@ -574,14 +567,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/server/settings.vue': {
       routes:
         | '/server/settings'
-      views:
-        | never
-      pathParamNames:
-        | never
-    }
-    'src/pages/server/ui.vue': {
-      routes:
-        | '/server/ui'
       views:
         | never
       pathParamNames:

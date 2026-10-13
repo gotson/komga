@@ -57,16 +57,6 @@
       "
     />
     <v-list-item
-      to="/server/ui"
-      :title="
-        $formatMessage({
-          description: 'Drawer menu for Server > User Interface',
-          defaultMessage: 'User Interface',
-          id: 'Yf4DJ2',
-        })
-      "
-    />
-    <v-list-item
       to="/server/metrics"
       :title="
         $formatMessage({
