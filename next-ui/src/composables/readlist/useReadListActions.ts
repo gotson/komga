@@ -12,6 +12,7 @@ import { readListFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import type { ReadListDto } from '@/generated/openapi'
 import { useBooks } from '@/composables/book/useBooks'
+import { useEditReadListElementsDialog } from '@/composables/readlist/useEditReadListElementsDialog'
 
 export function useReadListActions(
   readList: MaybeRefOrGetter<ReadListDto>,
@@ -53,6 +54,20 @@ export function useReadListActions(
     ...(isAdmin.value
       ? [
           {
+            title: intl.formatMessage(actionDetails[ActionName.EditReadListElements].message),
+            icon: actionDetails[ActionName.EditReadListElements].icon,
+            action: ActionName.EditReadListElements,
+            onMouseenter: (event: Event) =>
+              (editElementsActivator.value = event.currentTarget as Element),
+            onClick: () => {
+              editElements(() => callback(ActionName.EditReadListElements))
+            },
+          },
+        ]
+      : []),
+    ...(isAdmin.value
+      ? [
+          {
             title: intl.formatMessage(actionDetails[ActionName.Delete].message),
             action: ActionName.Delete,
             onMouseenter: (event: Event) =>
@@ -85,11 +100,20 @@ export function useReadListActions(
     },
   ])
 
-  //region Edit collection
+  //region Edit read list
   const { prepareDialog: showEditDialog, activator: editActivator } = useEditReadListDialog()
 
   function edit(callback: () => void) {
     showEditDialog(toValue(readList), callback)
+  }
+  //endregion
+
+  //region Edit read list elements
+  const { prepareDialog: showEditElementsDialog, activator: editElementsActivator } =
+    useEditReadListElementsDialog()
+
+  function editElements(callback: () => void) {
+    showEditElementsDialog(toValue(readList), callback)
   }
   //endregion
 

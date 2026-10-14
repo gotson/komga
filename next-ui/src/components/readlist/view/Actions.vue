@@ -47,7 +47,12 @@ const { actions } = useReadListActions(() => props.readList)
 
 const bottomSheet = ref(false)
 const prominent = computed(
-  () => [ActionName.OpenReaderIncognito, ActionName.EditReadList] as ActionName[],
+  () =>
+    [
+      ActionName.OpenReaderIncognito,
+      ActionName.EditReadList,
+      ActionName.EditReadListElements,
+    ] as ActionName[],
 )
 
 const exclude = [...prominent.value, ActionName.OpenReader]

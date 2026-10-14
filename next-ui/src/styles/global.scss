@@ -7,6 +7,10 @@
     color: var(--v-anchor-base);
 }
 
+.end-0 {
+    inset-inline-end: 0;
+}
+
 // Desktop/Mouse Devices: Underline appears only on hover
 @media (pointer: fine) {
     .link-underline:hover {

@@ -106,6 +106,7 @@ export function clearAllReadLists() {
 export function clearReadList(readListId: string) {
   void entityChanged(QUERY_KEYS_READLIST.root, readListId)
   void entitiesChanged(QUERY_KEYS_READLIST.byBook())
+  clearAllBooks()
 }
 
 export function clearAllCollections() {
@@ -115,6 +116,7 @@ export function clearAllCollections() {
 export function clearCollection(collectionId: string) {
   void entityChanged(QUERY_KEYS_COLLECTIONS.root, collectionId)
   void entitiesChanged(QUERY_KEYS_COLLECTIONS.bySeries())
+  clearAllSeries()
 }
 
 export function clearThumbnailBook(bookId: string) {

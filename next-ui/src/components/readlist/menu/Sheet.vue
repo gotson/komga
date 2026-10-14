@@ -42,7 +42,11 @@ const main = [
   ActionName.OpenReaderIncognito,
   ActionName.Download,
 ] as ActionName[]
-const management = [ActionName.EditReadList, ActionName.Delete] as ActionName[]
+const management = [
+  ActionName.EditReadList,
+  ActionName.EditReadListElements,
+  ActionName.Delete,
+] as ActionName[]
 
 function afterClick() {
   isShown.value = false

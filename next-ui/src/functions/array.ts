@@ -64,3 +64,26 @@ export function findAdjacent<T>(
 
   return array[adjacentIndex]
 }
+
+/**
+ * Compares two arrays for set equality (ignoring order).
+ * Supports comparing arrays of different types (e.g., T[] vs U[]) using key selectors.
+ */
+export function isSameSet<T, U = T, K = unknown>(
+  arrA: readonly T[],
+  arrB: readonly U[],
+  keySelectorA?: (item: T) => K,
+  keySelectorB?: (item: U) => K,
+): boolean {
+  if (arrA.length !== arrB.length) return false
+
+  const selectA = keySelectorA ?? ((item) => item as unknown as K)
+  const selectB = keySelectorB ?? ((item) => item as unknown as K)
+
+  const setA = new Set(arrA.map(selectA))
+  const setB = new Set(arrB.map(selectB))
+
+  if (setA.size !== setB.size) return false
+
+  return setA.values().every((key) => setB.has(key))
+}

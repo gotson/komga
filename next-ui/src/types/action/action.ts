@@ -19,6 +19,7 @@ export const ActionName = {
   EditBook: 'EDIT_BOOK',
   EditCollection: 'EDIT_COLLECTION',
   EditReadList: 'EDIT_READLIST',
+  EditReadListElements: 'EDIT_READLIST_ELEMENTS',
   Delete: 'DELETE',
   AddToCollection: 'ADD_TO_COLLECTION',
   AddToReadList: 'ADD_TO_READLIST',
@@ -76,6 +77,14 @@ const actionEdit = {
   },
   icon: 'i-mdi:pencil',
 }
+const actionEditElements = {
+  message: {
+    description: 'Generic action: edit elements',
+    defaultMessage: 'Organize',
+    id: 'lFGLru',
+  },
+  icon: 'i-mdi:playlist-edit',
+}
 export const actionDetails: Record<ActionName, { message: MessageDescriptor; icon?: string }> = {
   [ActionName.Select]: {
     message: {
@@ -89,6 +98,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
   [ActionName.EditBook]: actionEdit,
   [ActionName.EditCollection]: actionEdit,
   [ActionName.EditReadList]: actionEdit,
+  [ActionName.EditReadListElements]: actionEditElements,
   [ActionName.Delete]: {
     message: {
       description: 'Generic action: delete',

@@ -43,6 +43,10 @@
     "defaultMessage": "Files over the size limit: {filenames}",
     "description": "Poster upload: error message when trying to upload file over the size limit"
   },
+  "/4RRHN": {
+    "defaultMessage": "List cannot be empty",
+    "description": "Organize read list: empty state title - empty list"
+  },
   "/5Gb4y": {
     "defaultMessage": "Delete",
     "description": "Library delete dialog: confirm button"
@@ -1107,6 +1111,10 @@
     "defaultMessage": "Must start with '/', not end with '/-_', and contain only '/-_a-z0-9'",
     "description": "Server settings: error message when server context path is invalid"
   },
+  "M4STMh": {
+    "defaultMessage": "Undo",
+    "description": "Organize list: Undo button tooltip"
+  },
   "MC2JtF": {
     "defaultMessage": "All",
     "description": "Page size selector: unpaged option"
@@ -1810,6 +1818,10 @@
   "aYalqk": {
     "defaultMessage": "Select some books",
     "description": "Create read list error: user need to select at least 1 book before creating a read list"
+  },
+  "aeEb6w": {
+    "defaultMessage": "Discard the changes or undo your last deletion",
+    "description": "Organize read list: empty state text - empty list"
   },
   "afXGQS": {
     "defaultMessage": "Root directory",
@@ -2931,6 +2943,10 @@
     "defaultMessage": "Number",
     "description": "Sort label: metadata.numberSort"
   },
+  "r48oBl": {
+    "defaultMessage": "Organize read list",
+    "description": "Edit readlist elements dialog title"
+  },
   "r5O+/d": {
     "defaultMessage": "Genre",
     "description": "Series view table: genre header"
@@ -3190,6 +3206,10 @@
   "vXhkpo": {
     "defaultMessage": "Delete file",
     "description": "Book menu: manage > delete file"
+  },
+  "veqjHc": {
+    "defaultMessage": "Redo",
+    "description": "Organize list: Redo button tooltip"
   },
   "viKuRl": {
     "defaultMessage": "Poster",
