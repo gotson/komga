@@ -1079,6 +1079,10 @@
     "defaultMessage": "Age rating",
     "description": "Filter by age rating: select placeholder"
   },
+  "KPlFII": {
+    "defaultMessage": "Age restriction",
+    "description": "User creation/edit dialog: Age restriction section header"
+  },
   "KTifVk": {
     "defaultMessage": "All notable entities",
     "description": "Notable entity filter: any kind"
@@ -1194,6 +1198,10 @@
   "Nb0V0p": {
     "defaultMessage": "Missing Posters",
     "description": "Drawer menu for Media > Missing Posters"
+  },
+  "NgRz9T": {
+    "defaultMessage": "Permissions",
+    "description": "User creation/edit dialog: Permissions section header"
   },
   "NhIart": {
     "defaultMessage": "Delete book files",
@@ -2810,6 +2818,10 @@
   "mP9Ldq": {
     "defaultMessage": "Creation date",
     "description": "API Key table header: key creation date"
+  },
+  "mQ3hSR": {
+    "defaultMessage": "Label restrictions",
+    "description": "User creation/edit dialog: label restrictions section header"
   },
   "mtUacw": {
     "defaultMessage": "Edit book metadata",

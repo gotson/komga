@@ -44,7 +44,15 @@
           v-if="!user.id"
           class="mb-4"
         />
-        <div class="text-label-large">Permissions</div>
+        <div class="text-label-large">
+          {{
+            $formatMessage({
+              description: 'User creation/edit dialog: Permissions section header',
+              defaultMessage: 'Permissions',
+              id: 'NgRz9T',
+            })
+          }}
+        </div>
       </v-col>
     </v-row>
     <!-- Roles  -->
@@ -148,7 +156,15 @@
     <v-row>
       <v-col>
         <v-divider class="mb-4" />
-        <div class="text-label-large">Age restriction</div>
+        <div class="text-label-large">
+          {{
+            $formatMessage({
+              description: 'User creation/edit dialog: Age restriction section header',
+              defaultMessage: 'Age restriction',
+              id: 'KPlFII',
+            })
+          }}
+        </div>
       </v-col>
     </v-row>
     <v-row>
@@ -192,7 +208,15 @@
     <v-row>
       <v-col>
         <v-divider class="mb-4" />
-        <div class="text-label-large">Label restrictions</div>
+        <div class="text-label-large">
+          {{
+            $formatMessage({
+              description: 'User creation/edit dialog: label restrictions section header',
+              defaultMessage: 'Label restrictions',
+              id: 'mQ3hSR',
+            })
+          }}
+        </div>
       </v-col>
     </v-row>
     <!-- Allow labels -->
