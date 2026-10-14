@@ -35,7 +35,11 @@ const {
   addSelectAction?: boolean
 }>()
 
-const management = [ActionName.EditCollection, ActionName.Delete] as ActionName[]
+const management = [
+  ActionName.EditCollection,
+  ActionName.EditCollectionElements,
+  ActionName.Delete,
+] as ActionName[]
 
 function afterClick() {
   isShown.value = false

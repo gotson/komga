@@ -406,6 +406,9 @@ export const useSSE = createGlobalState(() => {
         clearAllReadLists()
         break
       case 'ReadListChanged':
+        cacheStore.bustCache(event.data.readListId)
+        clearReadList(event.data.readListId)
+        break
       case 'ReadListDeleted':
         clearReadList(event.data.readListId)
         break
@@ -413,6 +416,9 @@ export const useSSE = createGlobalState(() => {
         clearAllCollections()
         break
       case 'CollectionChanged':
+        cacheStore.bustCache(event.data.collectionId)
+        clearCollection(event.data.collectionId)
+        break
       case 'CollectionDeleted':
         clearCollection(event.data.collectionId)
         break

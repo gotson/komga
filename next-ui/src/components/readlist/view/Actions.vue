@@ -46,21 +46,18 @@ const id = useId()
 const { actions } = useReadListActions(() => props.readList)
 
 const bottomSheet = ref(false)
-const prominent = computed(
-  () =>
-    [
-      ActionName.OpenReaderIncognito,
-      ActionName.EditReadList,
-      ActionName.EditReadListElements,
-    ] as ActionName[],
-)
+const prominent = [
+  ActionName.OpenReaderIncognito,
+  ActionName.EditReadList,
+  ActionName.EditReadListElements,
+] as ActionName[]
 
-const exclude = [...prominent.value, ActionName.OpenReader]
+const exclude = [...prominent, ActionName.OpenReader]
 
 const prominentActions = computed(() =>
   actions.value
-    .filter((it) => prominent.value.includes(it.action))
-    .toSorted(createOrderCompareFn(prominent.value, (it) => it.action.toString())),
+    .filter((it) => prominent.includes(it.action))
+    .toSorted(createOrderCompareFn(prominent, (it) => it.action.toString())),
 )
 const readAction = computed(() => actions.value.find((it) => it.action === ActionName.OpenReader))
 const hasExtra = computed(() => actions.value.some((it) => !exclude.includes(it.action)))

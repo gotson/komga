@@ -11,6 +11,10 @@
     "defaultMessage": "Library created: {library}",
     "description": "Snackbar notification shown upon successful library creation"
   },
+  "+C/+3o": {
+    "defaultMessage": "List cannot be empty",
+    "description": "Organize collection: empty state title - empty list"
+  },
   "+PNCoe": {
     "defaultMessage": "Alternate title",
     "description": "Form edit: Alternate titles - alternate title field label"
@@ -182,6 +186,10 @@
   "1bxWGd": {
     "defaultMessage": "Edit series metadata",
     "description": "Edit series metadata dialog title"
+  },
+  "1dgTdi": {
+    "defaultMessage": "Analyze",
+    "description": "Generic action: analyze"
   },
   "1hsKmu": {
     "defaultMessage": "Character",
@@ -1051,6 +1059,10 @@
     "defaultMessage": "Number of pages",
     "description": "Book info: number of pages"
   },
+  "Ju97UA": {
+    "defaultMessage": "Read",
+    "description": "Generic action: read"
+  },
   "JwBlXP": {
     "defaultMessage": "Open",
     "description": "Book imported notification: button text to navigate to book"
@@ -1079,6 +1091,10 @@
     "defaultMessage": "The series files could not be found",
     "description": "Series view: files deleted"
   },
+  "LBuB6T": {
+    "defaultMessage": "Add to read list",
+    "description": "Generic action: add to read list"
+  },
   "LD5j8J": {
     "defaultMessage": "Requested series",
     "description": "Import reading list table header: requested series"
@@ -1094,6 +1110,10 @@
   "LM4LL9": {
     "defaultMessage": "Refresh series local artwork",
     "description": "Task name: RefreshSeriesLocalArtwork"
+  },
+  "LOcuZ2": {
+    "defaultMessage": "Mark as read",
+    "description": "Generic action: mark as read"
   },
   "LaMAsc": {
     "defaultMessage": "Authentication Activity",
@@ -1359,6 +1379,10 @@
     "defaultMessage": "Select series",
     "description": "Series picker dialog: title"
   },
+  "ST34jK": {
+    "defaultMessage": "Private reading session",
+    "description": "Generic action: read incognito"
+  },
   "STdfYg": {
     "defaultMessage": "Analyze pages dimensions",
     "description": "Form add/edit library: Options - analyze page dimensions"
@@ -1470,6 +1494,10 @@
   "Uj479p": {
     "defaultMessage": "Release date",
     "description": "Sort label: metadata.releaseDate"
+  },
+  "Ulohnz": {
+    "defaultMessage": "Mark as unread",
+    "description": "Generic action: mark as unread"
   },
   "UoaxO7": {
     "defaultMessage": "Book will be upgraded",
@@ -2163,6 +2191,10 @@
     "defaultMessage": "Create",
     "description": "Import reading list: bottom bar: create button"
   },
+  "dto0D+": {
+    "defaultMessage": "Organize",
+    "description": "Generic action: edit elements"
+  },
   "dx9s7S": {
     "defaultMessage": "Created",
     "description": "Series view table: date created header"
@@ -2823,6 +2855,10 @@
     "defaultMessage": "Name",
     "description": "Sort label: metadata.title"
   },
+  "nYtEQI": {
+    "defaultMessage": "Refresh metadata",
+    "description": "Generic action: refresh metadata"
+  },
   "nhrFtV": {
     "defaultMessage": "Unavailable",
     "description": "Book card subtitle: unavailable"
@@ -2927,6 +2963,10 @@
     "defaultMessage": "Sort number",
     "description": "Form edit book: General - book sort number"
   },
+  "q6fppQ": {
+    "defaultMessage": "Delete",
+    "description": "Generic action: delete"
+  },
   "q7gxLw": {
     "defaultMessage": "The user account will be deleted from this server.<ul><li>The read progress for this user account will be permanently deleted.</li><li>Authentication activity for this user will be permanently deleted.</li></ul><b>This action cannot be undone.</b>",
     "description": "User deletion warning notice"
@@ -3015,6 +3055,10 @@
     "defaultMessage": "Book details",
     "description": "Book details dialog title"
   },
+  "ruWj+g": {
+    "defaultMessage": "Download",
+    "description": "Generic action: download"
+  },
   "rw/Dkw": {
     "defaultMessage": "User Interface",
     "description": "Drawer menu for My Account > User Interface"
@@ -3091,6 +3135,10 @@
     "defaultMessage": "Force Kobo sync",
     "description": "Tooltip for the force Kobo sync button in the API Key table"
   },
+  "t38TG7": {
+    "defaultMessage": "Read list books updated: {readlist}",
+    "description": "Snackbar notification shown upon successful readlist update"
+  },
   "t3B+Qv": {
     "defaultMessage": "Remove hashed pages",
     "description": "Task name: RemoveHashedPages"
@@ -3127,6 +3175,10 @@
     "defaultMessage": "Logout",
     "description": "Drawer menu for Logout"
   },
+  "tj5v0L": {
+    "defaultMessage": "Add to collection",
+    "description": "Generic action: add to collection"
+  },
   "tm9g8D": {
     "defaultMessage": "Ok",
     "description": "Import books: directory selection dialog confirmation button label"
@@ -3138,6 +3190,10 @@
   "toP54Z": {
     "defaultMessage": "Error",
     "description": "Import reading list table filter: Error"
+  },
+  "tqrq7S": {
+    "defaultMessage": "Discard the changes or undo your last deletion",
+    "description": "Organize collection: empty state text - empty list"
   },
   "u23YLt": {
     "defaultMessage": "Undo",
@@ -3255,6 +3311,14 @@
     "defaultMessage": "Unavailable",
     "description": "Series card subtitle: unavailable"
   },
+  "wk+b55": {
+    "defaultMessage": "Edit",
+    "description": "Generic action: edit"
+  },
+  "wmGcF+": {
+    "defaultMessage": "Exclude over",
+    "description": "User creation/edit dialog: Age restriction field possible option"
+  },
   "wwiazg": {
     "defaultMessage": "No valid image found in clipboard",
     "description": "Poster upload: error message when pasting from clipboard failed"
@@ -3342,6 +3406,10 @@
   "yyAGH1": {
     "defaultMessage": "w: {width}, h: {height}",
     "description": "Page comparison: file dimensions"
+  },
+  "z4ywpN": {
+    "defaultMessage": "Collection series updated: {collection}",
+    "description": "Snackbar notification shown upon successful collection update"
   },
   "z5sjUM": {
     "defaultMessage": "Hash book file",

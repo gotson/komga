@@ -1,4 +1,4 @@
-import type { MessageDescriptor } from 'vue-intl'
+import { defineMessage, type MessageDescriptor } from 'vue-intl'
 import type { EntityKind } from '@/functions/entity'
 
 export type Action<T> = {
@@ -18,6 +18,7 @@ export const ActionName = {
   EditSeries: 'EDIT_SERIES',
   EditBook: 'EDIT_BOOK',
   EditCollection: 'EDIT_COLLECTION',
+  EditCollectionElements: 'EDIT_COLLECTION_ELEMENTS',
   EditReadList: 'EDIT_READLIST',
   EditReadListElements: 'EDIT_READLIST_ELEMENTS',
   Delete: 'DELETE',
@@ -70,19 +71,19 @@ export const selectionActions: Record<EntityKind, ActionName[]> = {
 }
 
 const actionEdit = {
-  message: {
+  message: defineMessage({
     description: 'Generic action: edit',
     defaultMessage: 'Edit',
-    id: 'lFGLru',
-  },
+    id: 'wk+b55',
+  }),
   icon: 'i-mdi:pencil',
 }
 const actionEditElements = {
-  message: {
+  message: defineMessage({
     description: 'Generic action: edit elements',
     defaultMessage: 'Organize',
-    id: 'lFGLru',
-  },
+    id: 'dto0D+',
+  }),
   icon: 'i-mdi:playlist-edit',
 }
 export const actionDetails: Record<ActionName, { message: MessageDescriptor; icon?: string }> = {
@@ -97,86 +98,87 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
   [ActionName.EditSeries]: actionEdit,
   [ActionName.EditBook]: actionEdit,
   [ActionName.EditCollection]: actionEdit,
+  [ActionName.EditCollectionElements]: actionEditElements,
   [ActionName.EditReadList]: actionEdit,
   [ActionName.EditReadListElements]: actionEditElements,
   [ActionName.Delete]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: delete',
       defaultMessage: 'Delete',
-      id: 'lFGLru',
-    },
+      id: 'q6fppQ',
+    }),
     icon: 'i-mdi:delete',
   },
   [ActionName.AddToCollection]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: add to collection',
       defaultMessage: 'Add to collection',
-      id: 'lFGLru',
-    },
+      id: 'tj5v0L',
+    }),
     icon: 'i-mdi:playlist-plus',
   },
   [ActionName.AddToReadList]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: add to read list',
       defaultMessage: 'Add to read list',
-      id: 'lFGLru',
-    },
+      id: 'LBuB6T',
+    }),
     icon: 'i-mdi:book-plus-multiple',
   },
   [ActionName.MarkRead]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: mark as read',
       defaultMessage: 'Mark as read',
-      id: 'lFGLru',
-    },
+      id: 'LOcuZ2',
+    }),
     icon: 'i-mdi:book-check-outline',
   },
   [ActionName.MarkUnread]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: mark as unread',
       defaultMessage: 'Mark as unread',
-      id: 'lFGLru',
-    },
+      id: 'Ulohnz',
+    }),
     icon: 'i-mdi:book-remove-outline',
   },
   [ActionName.Download]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: download',
       defaultMessage: 'Download',
-      id: 'jn8Lib',
-    },
+      id: 'ruWj+g',
+    }),
     icon: undefined,
   },
   [ActionName.RefreshMetadata]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: refresh metadata',
       defaultMessage: 'Refresh metadata',
-      id: 'lFGLru',
-    },
+      id: 'nYtEQI',
+    }),
     icon: 'i-mdi:table-refresh',
   },
   [ActionName.Analyze]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: analyze',
       defaultMessage: 'Analyze',
-      id: 'lFGLru',
-    },
+      id: '1dgTdi',
+    }),
     icon: 'i-mdi:file-refresh',
   },
   [ActionName.OpenReader]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: read',
       defaultMessage: 'Read',
-      id: 'Y7Y2T0',
-    },
+      id: 'Ju97UA',
+    }),
     icon: 'i-mdi:play',
   },
   [ActionName.OpenReaderIncognito]: {
-    message: {
+    message: defineMessage({
       description: 'Generic action: read incognito',
       defaultMessage: 'Private reading session',
-      id: 'DLUIbm',
-    },
+      id: 'ST34jK',
+    }),
     icon: 'i-mdi:incognito',
   },
 }

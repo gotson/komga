@@ -60,8 +60,8 @@ export function useEditReadListElementsDialog() {
             message: intl.formatMessage(
               {
                 description: 'Snackbar notification shown upon successful readlist update',
-                defaultMessage: 'Read list updated: {readlist}',
-                id: 'IIqDdQ',
+                defaultMessage: 'Read list books updated: {readlist}',
+                id: 't38TG7',
               },
               {
                 readlist: updatedData.name,

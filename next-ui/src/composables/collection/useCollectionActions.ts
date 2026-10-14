@@ -10,6 +10,7 @@ import { useEditCollectionDialog } from '@/composables/collection/useEditCollect
 import { useDeleteCollection } from '@/colada/collections'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import type { CollectionDto } from '@/generated/openapi'
+import { useEditCollectionElementsDialog } from '@/composables/collection/useEditCollectionElementsDialog'
 
 export function useCollectionActions(
   collection: MaybeRefOrGetter<CollectionDto>,
@@ -38,6 +39,20 @@ export function useCollectionActions(
     ...(isAdmin.value
       ? [
           {
+            title: intl.formatMessage(actionDetails[ActionName.EditCollectionElements].message),
+            icon: actionDetails[ActionName.EditCollectionElements].icon,
+            action: ActionName.EditCollectionElements,
+            onMouseenter: (event: Event) =>
+              (editElementsActivator.value = event.currentTarget as Element),
+            onClick: () => {
+              editElements(() => callback(ActionName.EditCollectionElements))
+            },
+          },
+        ]
+      : []),
+    ...(isAdmin.value
+      ? [
+          {
             title: intl.formatMessage(actionDetails[ActionName.Delete].message),
             action: ActionName.Delete,
             onMouseenter: (event: Event) =>
@@ -56,6 +71,15 @@ export function useCollectionActions(
 
   function edit(callback: () => void) {
     showEditCollectionDialog(toValue(collection), callback)
+  }
+  //endregion
+
+  //region Edit collection elements
+  const { prepareDialog: showEditElementsDialog, activator: editElementsActivator } =
+    useEditCollectionElementsDialog()
+
+  function editElements(callback: () => void) {
+    showEditElementsDialog(toValue(collection), callback)
   }
   //endregion
 
