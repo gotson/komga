@@ -78,28 +78,39 @@ other {# books}
       if (result === 'confirm' && readList.value) {
         const updateDto = pick(readList.value, 'bookIds')
         updateDto.bookIds = updateDto.bookIds.filter((it) => !idsToRemove.includes(it))
-        mutateUpdate({ readListId: readListId, data: updateDto })
-          .then(() => {
-            messagesStore.messages.push({
-              message: intl.formatMessage(
-                {
-                  description: 'Snackbar notification shown upon successful readlist update',
-                  defaultMessage: `{count, plural,
+
+        if (updateDto.bookIds.length > 0) {
+          mutateUpdate({ readListId: readListId, data: updateDto })
+            .then(() => {
+              messagesStore.messages.push({
+                message: intl.formatMessage(
+                  {
+                    description: 'Snackbar notification shown upon successful readlist update',
+                    defaultMessage: `{count, plural,
 one {# book}
 other {# books}
 } removed from read list: {readlist}`,
-                  id: 'tFx9of',
-                },
-                {
-                  readlist: readList.value!.name,
-                  count: entities.length,
-                },
-              ),
+                    id: 'tFx9of',
+                  },
+                  {
+                    readlist: readList.value!.name,
+                    count: entities.length,
+                  },
+                ),
+              })
             })
-          })
-          .catch((error) => {
-            messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
-          })
+            .catch((error) => {
+              messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
+            })
+        } else {
+          messagesStore.messages.push(
+            intl.formatMessage({
+              description: 'Snackbar notification shown upon failed readlist update',
+              defaultMessage: 'Read list must have at least one book',
+              id: '+WVhA6',
+            }),
+          )
+        }
       }
 
       callback()

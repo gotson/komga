@@ -24,6 +24,13 @@ import {
 import type { BookDto, CollectionDto, ReadListDto, SeriesDto } from '@/generated/openapi'
 import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
 import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
+import { useCurrentBrowsingContextFromRoute } from '@/composables/browsingContext'
+import { useRemoveFromReadList } from '@/composables/book/useRemoveFromReadList'
+
+type ActionSpecific = {
+  shouldShow: () => boolean
+  [key: string]: unknown // Allows any additional property
+}
 
 export function useEntitiesActions(
   entities: MaybeRefOrGetter<(BookDto | SeriesDto | CollectionDto | ReadListDto)[]>,
@@ -37,9 +44,16 @@ export function useEntitiesActions(
   const entityKinds = computed(() => Array.from(new Set(toValue(entities).map(resolveEntityKind))))
   const commonActions = computed(() => getCommonActions(entityKinds.value))
 
+  // context
+  const { context } = useCurrentBrowsingContextFromRoute()
+  const contextReadListId = computed(() => {
+    if (context.value?.type === 'readList') return context.value.id
+  })
+
   //TODO: implement remaining actions
-  const actionsSpecifics: Partial<Record<ActionName, object>> = {
+  const actionsSpecifics: Partial<Record<ActionName, ActionSpecific>> = {
     [ActionName.AddToCollection]: {
+      shouldShow: () => true,
       onMouseenter: (event: Event) =>
         (addToCollectionActivator.value = event.currentTarget as Element),
       onClick: () => {
@@ -47,31 +61,47 @@ export function useEntitiesActions(
       },
     },
     [ActionName.AddToReadList]: {
+      shouldShow: () => true,
       onMouseenter: (event: Event) =>
         (addToReadListActivator.value = event.currentTarget as Element),
       onClick: () => {
         addToReadList(() => callback(ActionName.AddToReadList))
       },
     },
+    [ActionName.RemoveFromReadList]: {
+      shouldShow: () => !!contextReadListId.value,
+      onMouseenter: (event: Event) =>
+        (removeFromReadListActivator.value = event.currentTarget as Element),
+      onClick: () => {
+        removeFromReadList(() => callback(ActionName.RemoveFromReadList))
+      },
+    },
     [ActionName.EditBook]: {
+      shouldShow: () => true,
       disabled: true,
     },
     [ActionName.EditSeries]: {
+      shouldShow: () => true,
       disabled: true,
     },
     [ActionName.MarkRead]: {
+      shouldShow: () => true,
       onClick: () => markRead(),
     },
     [ActionName.MarkUnread]: {
+      shouldShow: () => true,
       onClick: () => markUnread(),
     },
     [ActionName.Analyze]: {
+      shouldShow: () => true,
       onClick: () => analyze(),
     },
     [ActionName.RefreshMetadata]: {
+      shouldShow: () => true,
       onClick: () => refreshMetadata(),
     },
     [ActionName.Delete]: {
+      shouldShow: () => true,
       onMouseenter: (event: Event) =>
         (dialogConfirm.value.activator = event.currentTarget as Element),
       onClick: () => {
@@ -89,7 +119,9 @@ export function useEntitiesActions(
         action: action,
         ...actionsSpecifics[action],
       }))
-      .filter((action) => (isAdmin.value ? true : nonAdmin.includes(action.action))),
+      .filter((action) => (isAdmin.value ? true : nonAdmin.includes(action.action)))
+      // filter out non-contextual actions
+      .filter((it) => it?.shouldShow?.() || false),
   )
 
   //region Update Series metadata
@@ -170,6 +202,20 @@ export function useEntitiesActions(
       toValue(entities).filter((e) => isBook(e) || isSeries(e)),
       callback,
     )
+  }
+  //endregion
+
+  //region Remove from read list
+  const { prepareDialog: showRemoveFromReadListDialog, activator: removeFromReadListActivator } =
+    useRemoveFromReadList()
+
+  function removeFromReadList(callback: () => void) {
+    if (contextReadListId.value)
+      void showRemoveFromReadListDialog(
+        toValue(entities).filter((e) => isBook(e)),
+        contextReadListId.value,
+        callback,
+      )
   }
   //endregion
 
