@@ -22,6 +22,8 @@ import { bookReaderUrl } from '@/api/links'
 import type { BookDto } from '@/generated/openapi'
 import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
 import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
+import { BrowsingContextKey, popBrowsingContext } from '@/functions/browsing-context'
+import { useRemoveFromReadList } from '@/composables/book/useRemoveFromReadList'
 
 export function useBookActions(
   book: MaybeRefOrGetter<BookDto>,
@@ -34,6 +36,13 @@ export function useBookActions(
   const display = useDisplay()
   const { canRead, isEpubReader } = useBook(book)
   const { inProgress } = useBookReadProgress(book)
+
+  // browsing context
+  const context = inject(BrowsingContextKey, undefined)
+  const contextReadListId = computed(() => {
+    const top = popBrowsingContext(toValue(context))?.top
+    if (top?.type === 'readList') return top.id
+  })
 
   const actions = computed<Action<ActionName>[]>(() => [
     ...(isAdmin.value && toValue(book).oneshot
@@ -58,6 +67,19 @@ export function useBookActions(
               (addToReadListActivator.value = event.currentTarget as Element),
             onClick: () => {
               addToReadList(() => callback(ActionName.AddToReadList))
+            },
+          },
+        ]
+      : []),
+    ...(isAdmin.value && contextReadListId.value
+      ? [
+          {
+            title: intl.formatMessage(actionDetails[ActionName.RemoveFromReadList].message),
+            action: ActionName.RemoveFromReadList,
+            onMouseenter: (event: Event) =>
+              (removeFromReadListActivator.value = event.currentTarget as Element),
+            onClick: () => {
+              removeFromReadList(() => callback(ActionName.RemoveFromReadList))
             },
           },
         ]
@@ -199,6 +221,16 @@ export function useBookActions(
 
   function addToReadList(callback: () => void) {
     showAddToReadListDialog([toValue(book)], callback)
+  }
+  //endregion
+
+  //region Remove from read list
+  const { prepareDialog: showRemoveFromReadListDialog, activator: removeFromReadListActivator } =
+    useRemoveFromReadList()
+
+  function removeFromReadList(callback: () => void) {
+    if (contextReadListId.value)
+      void showRemoveFromReadListDialog([toValue(book)], contextReadListId.value, callback)
   }
   //endregion
 

@@ -41,6 +41,7 @@ const main = [
   ActionName.OpenReaderIncognito,
   ActionName.AddToCollection,
   ActionName.AddToReadList,
+  ActionName.RemoveFromReadList,
   ActionName.MarkRead,
   ActionName.MarkUnread,
   ActionName.Download,

@@ -24,6 +24,7 @@ export const ActionName = {
   Delete: 'DELETE',
   AddToCollection: 'ADD_TO_COLLECTION',
   AddToReadList: 'ADD_TO_READLIST',
+  RemoveFromReadList: 'REMOVE_FROM_READLIST',
   MarkRead: 'MARK_READ',
   MarkUnread: 'MARK_UNREAD',
   Download: 'DOWNLOAD',
@@ -124,6 +125,14 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
       id: 'LBuB6T',
     }),
     icon: 'i-mdi:book-plus-multiple',
+  },
+  [ActionName.RemoveFromReadList]: {
+    message: defineMessage({
+      description: 'Generic action: remove from read list',
+      defaultMessage: 'Remove from read list',
+      id: 'kMw47z',
+    }),
+    icon: 'i-mdi:book-minus-multiple',
   },
   [ActionName.MarkRead]: {
     message: defineMessage({
