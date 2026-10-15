@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ItemReorderHistoryActions
+    <ReorderHistoryActions
       v-if="listRef?.canUndo || listRef?.canRedo"
       :can-undo="listRef?.canUndo"
       :can-redo="listRef?.canRedo"
@@ -14,27 +14,28 @@
       @redo="listRef?.redo()"
     />
 
-    <ItemReorderHistoryList
-      ref="listRef"
-      v-model="ids"
-      lines="two"
-      @update:model-value="(val) => (model.seriesIds = val)"
-    >
-      <template #item="{ id, handleClass, deleteItem }">
-        <v-skeleton-loader
-          v-if="!itemsMap.has(id)"
-          type="list-item-avatar-two-line"
-        />
-        <ItemReorderHistoryListItem
-          v-else
-          :disable-reorder="!model.ordered"
-          :handle-class="handleClass"
-          :title="itemsMap.get(id)?.title"
-          :avatar="seriesPosterUrl(id, cacheStore.getVersion(id))"
-          @delete="deleteItem()"
-        />
-      </template>
-    </ItemReorderHistoryList>
+    <v-list lines="two">
+      <ReorderHistoryScroller
+        ref="listRef"
+        v-model="ids"
+        @update:model-value="(val) => (model.seriesIds = val)"
+      >
+        <template #item="{ item: id, handleClass, deleteItem }">
+          <v-skeleton-loader
+            v-if="!itemsMap.has(id)"
+            type="list-item-avatar-two-line"
+          />
+          <ReorderHistoryListItem
+            v-else
+            :disable-reorder="!model.ordered"
+            :handle-class="handleClass"
+            :title="itemsMap.get(id)?.title"
+            :avatar="seriesPosterUrl(id, cacheStore.getVersion(id))"
+            @delete="deleteItem()"
+          />
+        </template>
+      </ReorderHistoryScroller>
+    </v-list>
 
     <v-empty-state
       v-if="model.seriesIds.length === 0"
@@ -69,16 +70,16 @@ import type { CollectionDto } from '@/generated/openapi'
 import { seriesPosterUrl } from '@/api/images'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { watchImmediate } from '@vueuse/core'
-import type ItemReorderHistoryList from '@/components/item/ReorderHistory/List.vue'
 import { useDisplay } from 'vuetify'
 import { useQuery } from '@pinia/colada'
 import { seriesListQuery } from '@/colada/series'
 import { PageRequest, type Sort } from '@/types/PageRequest'
+import type ReorderHistoryScroller from '@/components/ReorderHistory/Scroller.vue'
 
 const cacheStore = useImageCacheStore()
 const display = useDisplay()
 
-const listRef = useTemplateRef<InstanceType<typeof ItemReorderHistoryList>>('listRef')
+const listRef = useTemplateRef<InstanceType<typeof ReorderHistoryScroller>>('listRef')
 
 const model = defineModel<CollectionDto>({ required: true })
 
