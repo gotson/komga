@@ -26,6 +26,7 @@ import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialo
 import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
 import { useCurrentBrowsingContextFromRoute } from '@/composables/browsingContext'
 import { useRemoveFromReadList } from '@/composables/book/useRemoveFromReadList'
+import { useRemoveFromCollection } from '@/composables/series/useRemoveFromCollection'
 
 type ActionSpecific = {
   shouldShow: () => boolean
@@ -46,6 +47,9 @@ export function useEntitiesActions(
 
   // context
   const { context } = useCurrentBrowsingContextFromRoute()
+  const contextCollectionId = computed(() => {
+    if (context.value?.type === 'collection') return context.value.id
+  })
   const contextReadListId = computed(() => {
     if (context.value?.type === 'readList') return context.value.id
   })
@@ -58,6 +62,14 @@ export function useEntitiesActions(
         (addToCollectionActivator.value = event.currentTarget as Element),
       onClick: () => {
         addToCollection(() => callback(ActionName.AddToCollection))
+      },
+    },
+    [ActionName.RemoveFromCollection]: {
+      shouldShow: () => !!contextCollectionId.value,
+      onMouseenter: (event: Event) =>
+        (removeFromCollectionActivator.value = event.currentTarget as Element),
+      onClick: () => {
+        removeFromCollection(() => callback(ActionName.RemoveFromCollection))
       },
     },
     [ActionName.AddToReadList]: {
@@ -190,6 +202,26 @@ export function useEntitiesActions(
       }),
       callback,
     )
+  }
+  //endregion
+
+  //region Remove from collection
+  const {
+    prepareDialog: showRemoveFromCollectionDialog,
+    activator: removeFromCollectionActivator,
+  } = useRemoveFromCollection()
+
+  function removeFromCollection(callback: () => void) {
+    if (contextCollectionId.value)
+      void showRemoveFromCollectionDialog(
+        toValue(entities).flatMap((e) => {
+          if (isSeries(e)) return [e.id]
+          if (isBook(e) && e.oneshot) return [e.seriesId]
+          return []
+        }),
+        contextCollectionId.value,
+        callback,
+      )
   }
   //endregion
 
