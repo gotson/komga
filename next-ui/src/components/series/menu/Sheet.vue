@@ -44,6 +44,7 @@ const main = [
   ActionName.MarkRead,
   ActionName.MarkUnread,
   ActionName.AddToCollection,
+  ActionName.RemoveFromCollection,
   ActionName.AddToReadList,
   ActionName.Download,
 ] as ActionName[]

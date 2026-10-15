@@ -23,6 +23,7 @@ export const ActionName = {
   EditReadListElements: 'EDIT_READLIST_ELEMENTS',
   Delete: 'DELETE',
   AddToCollection: 'ADD_TO_COLLECTION',
+  RemoveFromCollection: 'REMOVE_FROM_COLLECTION',
   AddToReadList: 'ADD_TO_READLIST',
   RemoveFromReadList: 'REMOVE_FROM_READLIST',
   MarkRead: 'MARK_READ',
@@ -119,6 +120,14 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
       id: 'tj5v0L',
     }),
     icon: 'i-mdi:playlist-plus',
+  },
+  [ActionName.RemoveFromCollection]: {
+    message: defineMessage({
+      description: 'Generic action: remove from collection',
+      defaultMessage: 'Remove from collection',
+      id: 'Zzqa/A',
+    }),
+    icon: 'i-mdi:playlist-minus',
   },
   [ActionName.AddToReadList]: {
     message: defineMessage({

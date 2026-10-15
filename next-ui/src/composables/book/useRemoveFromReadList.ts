@@ -106,8 +106,8 @@ other {# books}
           messagesStore.messages.push(
             intl.formatMessage({
               description: 'Snackbar notification shown upon failed readlist update',
-              defaultMessage: 'Read list must have at least one book',
-              id: '+WVhA6',
+              defaultMessage: 'Read list must contain at least one book',
+              id: 'RCUCFa',
             }),
           )
         }

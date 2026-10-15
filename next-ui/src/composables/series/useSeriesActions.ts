@@ -21,6 +21,8 @@ import { useSeries } from '@/composables/series/useSeries'
 import type { SeriesDto } from '@/generated/openapi'
 import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialog'
 import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
+import { useRemoveFromCollection } from '@/composables/series/useRemoveFromCollection'
+import { BrowsingContextKey, popBrowsingContext } from '@/functions/browsing-context'
 
 export function useSeriesActions(
   series: MaybeRefOrGetter<SeriesDto>,
@@ -34,6 +36,13 @@ export function useSeriesActions(
   const { readFirstBook } = useBooks(series)
   const { canRead, inProgress } = useSeries(series)
 
+  // browsing context
+  const context = inject(BrowsingContextKey, undefined)
+  const contextCollectionId = computed(() => {
+    const top = popBrowsingContext(toValue(context))?.top
+    if (top?.type === 'collection') return top.id
+  })
+
   const actions = computed<Action<ActionName>[]>(() => [
     ...(isAdmin.value
       ? [
@@ -44,6 +53,19 @@ export function useSeriesActions(
               (addToCollectionActivator.value = event.currentTarget as Element),
             onClick: () => {
               addToCollection(() => callback(ActionName.AddToCollection))
+            },
+          },
+        ]
+      : []),
+    ...(isAdmin.value && !!contextCollectionId.value
+      ? [
+          {
+            title: intl.formatMessage(actionDetails[ActionName.RemoveFromCollection].message),
+            action: ActionName.RemoveFromCollection,
+            onMouseenter: (event: Event) =>
+              (removeFromCollectionActivator.value = event.currentTarget as Element),
+            onClick: () => {
+              removeFromCollection(() => callback(ActionName.RemoveFromCollection))
             },
           },
         ]
@@ -188,6 +210,18 @@ export function useSeriesActions(
 
   function addToCollection(callback: () => void) {
     showAddToCollectionDialog([toValue(series).id], callback)
+  }
+  //endregion
+
+  //region Remove from collection
+  const {
+    prepareDialog: showRemoveFromCollectionDialog,
+    activator: removeFromCollectionActivator,
+  } = useRemoveFromCollection()
+
+  function removeFromCollection(callback: () => void) {
+    if (contextCollectionId.value)
+      void showRemoveFromCollectionDialog([toValue(series).id], contextCollectionId.value, callback)
   }
   //endregion
 
