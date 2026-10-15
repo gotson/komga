@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import {
   browsingContextToRouteLocation,
   formatBrowsingContextAsQueryParam,
@@ -106,7 +106,7 @@ type ContextItem = {
   id: string
 }
 
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 
 const items = computed(() => {
   const segments = context.value?.map((it, index) => {

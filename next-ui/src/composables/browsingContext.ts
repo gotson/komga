@@ -6,7 +6,7 @@ import {
 } from '@/functions/browsing-context'
 import { useRouteQuery } from '@vueuse/router'
 
-export function useBrowsingContext() {
+export function useBrowsingContextFromRouteQuery() {
   // Bind directly to the route query parameter as a string
   const rawContext = useRouteQuery(ContextQueryParam)
 

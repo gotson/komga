@@ -54,7 +54,7 @@ import { bookDetailQuery } from '@/colada/books'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import BookView from '../../components/book/view/BookView.vue'
 import { seriesDetailQuery } from '@/colada/series'
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import { popBrowsingContext, pushBrowsingContext } from '@/functions/browsing-context'
 
 const route = useRoute('/book/[id]')
@@ -74,7 +74,7 @@ const { data: series } = useQuery(() => ({
 }))
 
 // if the top context is a library, and if the book is not a oneshot, add the parent series as context
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 watch(
   [context, book],
   ([ctx, b]) => {

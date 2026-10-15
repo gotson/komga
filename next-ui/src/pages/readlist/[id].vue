@@ -262,7 +262,7 @@ import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionBook } from '@/generated/openapi'
 import { BrowsingContextKey, pushBrowsingContext } from '@/functions/browsing-context'
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import { notableEntitiesKindsMessages } from '@/types/referential/notableEntity'
 
 const route = useRoute('/readlist/[id]')
@@ -272,7 +272,7 @@ const readListId = computed(() => route.params.id)
 const filterContext = computed(() => ({ readlist_id: [readListId.value] }))
 provide(filterKeys.context, filterContext)
 
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 provide(
   BrowsingContextKey,
   computed(() => pushBrowsingContext(context.value, { type: 'readList', id: readListId.value })),

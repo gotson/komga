@@ -75,7 +75,7 @@
 <script setup lang="ts">
 import { useRtl } from 'vuetify/framework'
 import { formatBrowsingContextAsQueryParam, popBrowsingContext } from '@/functions/browsing-context'
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import { seriesPosterUrl } from '@/api/images'
 import { useImageCacheStore } from '@/stores/image-cache'
 import { useQuery } from '@pinia/colada'
@@ -91,7 +91,7 @@ const props = defineProps<{
 const { isRtl } = useRtl()
 const cacheStore = useImageCacheStore()
 
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 const top = computed(() => popBrowsingContext(context.value)?.top)
 
 // retrieve collection and its series

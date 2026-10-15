@@ -287,7 +287,7 @@ import { bookListQuery } from '@/colada/books'
 import { seriesCollectionsQuery } from '@/colada/collections'
 import type { Container } from '@/components/ContainerChip.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import {
   filterBrowsingContext,
   formatBrowsingContextAsQueryParam,
@@ -330,7 +330,7 @@ const alternateTitles = computed(() =>
   })),
 )
 
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 // first valid context for filter navigation
 const contextFilter = computed(() =>
   popBrowsingContext(filterBrowsingContext(context.value, ['libraryView', 'collection'])),

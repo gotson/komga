@@ -324,7 +324,7 @@ import { contributorsRolesMessages } from '@/types/referential/contributor'
 import EmptyStateNetworkError from '@/components/EmptyStateNetworkError.vue'
 import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionSeries } from '@/generated/openapi'
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import { BrowsingContextKey, pushBrowsingContext } from '@/functions/browsing-context'
 import { notableEntitiesKindsMessages } from '@/types/referential/notableEntity'
 
@@ -335,7 +335,7 @@ const collectionId = computed(() => route.params.id)
 const filterContext = computed(() => ({ collection_id: [collectionId.value] }))
 provide(filterKeys.context, filterContext)
 
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 provide(
   BrowsingContextKey,
   computed(() =>

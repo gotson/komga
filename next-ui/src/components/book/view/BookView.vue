@@ -317,7 +317,7 @@ import { useQuery } from '@pinia/colada'
 import { bookReadListsQuery } from '@/colada/readlists'
 import type { Container } from '@/components/ContainerChip.vue'
 import { seriesCollectionsQuery } from '@/colada/collections'
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import {
   filterBrowsingContext,
   formatBrowsingContextAsQueryParam,
@@ -352,7 +352,7 @@ const props = defineProps<{
 const { isRead, progressPercent, pagesLeft } = useBookReadProgress(() => props.book)
 const { isDeleted, format } = useBook(() => props.book)
 
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 const popped = computed(() => popBrowsingContext(context.value))
 
 // first valid context for oneshot filter navigation

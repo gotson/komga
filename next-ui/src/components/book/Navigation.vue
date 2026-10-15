@@ -81,7 +81,7 @@ import { formatBrowsingContextAsQueryParam, popBrowsingContext } from '@/functio
 import { useIntl } from 'vue-intl'
 import { useBookSiblings } from '@/composables/book/useBookSiblings'
 import { useBookParentFromContext } from '@/composables/book/useBookParentFromContext'
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import { bookPosterUrl } from '@/api/images'
 import { useImageCacheStore } from '@/stores/image-cache'
 
@@ -95,7 +95,7 @@ const cacheStore = useImageCacheStore()
 
 const shouldFetchSiblings = ref(false)
 
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 const top = computed(() => popBrowsingContext(context.value)?.top)
 
 const { previous, next } = useBookNavigationFromContext(() => props.bookId, top)

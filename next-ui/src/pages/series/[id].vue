@@ -286,7 +286,7 @@ import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionBook } from '@/generated/openapi'
 import { seriesDetailQuery } from '@/colada/series'
 import { BrowsingContextKey, pushBrowsingContext } from '@/functions/browsing-context'
-import { useBrowsingContext } from '@/composables/browsingContext'
+import { useBrowsingContextFromRouteQuery } from '@/composables/browsingContext'
 import { useSort } from '@/composables/sort'
 import { contributorsRolesMessages } from '@/types/referential/contributor'
 import { notableEntitiesKindsMessages } from '@/types/referential/notableEntity'
@@ -297,7 +297,7 @@ const seriesId = computed(() => route.params.id)
 const filterContext = computed(() => ({ series_id: [seriesId.value] }))
 provide(filterKeys.context, filterContext)
 
-const { context } = useBrowsingContext()
+const { context } = useBrowsingContextFromRouteQuery()
 provide(
   BrowsingContextKey,
   computed(() => pushBrowsingContext(context.value, { type: 'series', id: seriesId.value })),
