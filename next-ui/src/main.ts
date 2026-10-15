@@ -1,27 +1,22 @@
+import { initLogger } from '@/services/logtape'
+await initLogger()
+
 /**
  * main.ts
  *
  * Bootstraps Vuetify and other plugins then mounts the App`
  */
 
-// Plugins
-import { registerPlugins } from '@/plugins'
+// dynamic imports so logtape can be initialized before top level imports
+const { registerPlugins } = await import('@/plugins')
+const { setupOpenapiClient } = await import('@/api/komga-client')
+
 import 'virtual:uno.css'
-
-// Components
 import App from './App.vue'
-
-// Composables
 import { createApp } from 'vue'
-import { initLogger } from '@/services/logtape'
-import { setupOpenapiClient } from '@/api/komga-client'
-
-await initLogger()
 
 setupOpenapiClient()
 
 const app = createApp(App)
-
 registerPlugins(app)
-
 app.mount('#app')
