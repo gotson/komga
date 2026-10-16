@@ -61,7 +61,7 @@ const { prepareDialog: showEditSeriesMetadataDialog, activator: editMetadataActi
   useEditSeriesMetadataDialog()
 
 function showEditMetadataDialog() {
-  showEditSeriesMetadataDialog(series)
+  showEditSeriesMetadataDialog([series])
 }
 
 const menuActivator = ref()

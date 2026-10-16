@@ -28,6 +28,7 @@ import { useCurrentBrowsingContextFromRoute } from '@/composables/browsingContex
 import { useRemoveFromReadList } from '@/composables/book/useRemoveFromReadList'
 import { useRemoveFromCollection } from '@/composables/series/useRemoveFromCollection'
 import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
+import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 
 type ActionSpecific = {
   shouldShow: () => boolean
@@ -55,7 +56,6 @@ export function useEntitiesActions(
     if (context.value?.type === 'readList') return context.value.id
   })
 
-  //TODO: implement remaining actions
   const actionsSpecifics: Partial<Record<ActionName, ActionSpecific>> = {
     [ActionName.AddToCollection]: {
       shouldShow: () => true,
@@ -98,7 +98,10 @@ export function useEntitiesActions(
     },
     [ActionName.EditSeries]: {
       shouldShow: () => true,
-      disabled: true,
+      onMouseenter: (event: Event) => (editSeriesActivator.value = event.currentTarget as Element),
+      onClick: () => {
+        editSeries(() => callback(ActionName.EditSeries))
+      },
     },
     [ActionName.MarkRead]: {
       shouldShow: () => true,
@@ -262,6 +265,18 @@ export function useEntitiesActions(
   function editBooks(callback: () => void) {
     showEditBookDialog(
       toValue(entities).filter((e) => isBook(e)),
+      callback,
+    )
+  }
+  //endregion
+
+  //region Edit series
+  const { prepareDialog: showEditSeriesDialog, activator: editSeriesActivator } =
+    useEditSeriesMetadataDialog()
+
+  function editSeries(callback: () => void) {
+    showEditSeriesDialog(
+      toValue(entities).filter((e) => isSeries(e)),
       callback,
     )
   }

@@ -157,7 +157,7 @@ const {
 } = useEditSeriesMetadataDialog()
 
 function showEditMetadataDialog() {
-  prepareEditSeriesMetadataDialog(series.value)
+  prepareEditSeriesMetadataDialog([series.value])
   showEditSeriesMetadataDialog()
 }
 

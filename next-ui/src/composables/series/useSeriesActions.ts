@@ -239,7 +239,7 @@ export function useSeriesActions(
     useEditSeriesMetadataDialog()
 
   function updateSeriesMetadata(callback: () => void) {
-    showEditSeriesMetadataDialog(toValue(series), callback)
+    showEditSeriesMetadataDialog([toValue(series)], callback)
   }
   //endregion
 

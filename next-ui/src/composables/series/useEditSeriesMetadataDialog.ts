@@ -14,6 +14,7 @@ import EditSeries from '@/components/series/form/Edit.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import type { SeriesDto } from '@/generated/openapi'
 import { createEntityUpdate, type EntityUpdate } from '@/functions/poster'
+import PrevNext from '@/components/item/form/PrevNext.vue'
 
 export function useEditSeriesMetadataDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())
@@ -22,28 +23,13 @@ export function useEditSeriesMetadataDialog() {
   const messagesStore = useMessagesStore()
   const { mutateAsync: mutateUpdateSeriesMetadata } = useUpdateSeriesMetadata()
 
-  const prepareDialog = (series: SeriesDto, callback: () => void = () => {}) => {
-    dialogConfirmEdit.value.dialogProps = {
-      title: intl.formatMessage({
-        description: 'Edit series metadata dialog title',
-        defaultMessage: 'Edit series metadata',
-        id: '1bxWGd',
-      }),
-      subtitle: series.metadata.title,
-      maxWidth: 1000,
-      cardTextProps: {
-        class: 'px-0',
-      },
-      closeOnSave: false,
-      scrollable: true,
-      fullscreen: display.xs.value,
-    }
-    dialogConfirmEdit.value.slots = {
-      default: {
-        component: markRaw(EditSeries),
-      },
-    }
-    dialogConfirmEdit.value.record = createEntityUpdate(series)
+  const prepareDialog = (series: SeriesDto[], callback: () => void = () => {}) => {
+    // use a ref so we can cycle series that have been modified
+    const seriesToEdit = ref(series)
+
+    // display first series
+    displayOne(seriesToEdit.value.at(0)!, seriesToEdit)
+
     dialogConfirmEdit.value.callback = async (
       result: DialogResult,
       hideDialog: () => void,
@@ -57,7 +43,91 @@ export function useEditSeriesMetadataDialog() {
       setLoading(true)
 
       const updatedData = dialogConfirmEdit.value.record as EntityUpdate<SeriesDto, never>
+      // keep track in the ref
+      seriesToEdit.value = seriesToEdit.value.map((it) =>
+        it.id !== updatedData.entity.id ? it : updatedData.entity,
+      )
+      // update server
+      await saveOne(updatedData)
 
+      const seriesIndex = seriesToEdit.value.findIndex((it) => it.id === updatedData.entity.id)
+
+      // if it's the last series, close dialog
+      if (seriesIndex === seriesToEdit.value.length - 1) {
+        hideDialog()
+        callback()
+      } else {
+        // display next book
+        displayOne(seriesToEdit.value.at(seriesIndex + 1)!, seriesToEdit)
+        setLoading(false)
+      }
+    }
+
+    function displayOne(current: SeriesDto, series: Ref<SeriesDto[]>) {
+      const isMultiple = series.value.length > 1
+      const isLast = series.value.at(-1)?.id === current.id
+
+      dialogConfirmEdit.value.dialogProps = {
+        title: intl.formatMessage({
+          description: 'Edit series metadata dialog title',
+          defaultMessage: 'Edit series metadata',
+          id: '1bxWGd',
+        }),
+        subtitle: current.metadata.title,
+        maxWidth: 1000,
+        cardTextProps: {
+          class: 'px-0',
+        },
+        cancelText: isMultiple
+          ? intl.formatMessage({
+              description: 'Edit series metadata dialog: close button text',
+              defaultMessage: 'Close',
+              id: '3ScD7a',
+            })
+          : undefined,
+        okText: isMultiple
+          ? isLast
+            ? intl.formatMessage({
+                description:
+                  'Edit multiple series metadata dialog: confirmation button text for last series',
+                defaultMessage: 'Save and close',
+                id: 'bBgvnt',
+              })
+            : intl.formatMessage({
+                description:
+                  'Edit multiple series metadata dialog: confirmation button text for all series except last',
+                defaultMessage: 'Save and next',
+                id: '9uC2jO',
+              })
+          : undefined,
+        closeOnSave: false,
+        scrollable: true,
+        fullscreen: display.xs.value,
+      }
+
+      dialogConfirmEdit.value.slots = {
+        default: {
+          component: markRaw(EditSeries),
+        },
+        prependActions: isMultiple
+          ? {
+              component: markRaw(PrevNext),
+              props: {
+                items: series,
+                current: current,
+              },
+              handlers: {
+                previous: (item: SeriesDto) => displayOne(item, series),
+                next: (item: SeriesDto) => displayOne(item, series),
+              },
+            }
+          : undefined,
+      }
+
+      dialogConfirmEdit.value.record = createEntityUpdate(current)
+    }
+
+    async function saveOne(updatedData: EntityUpdate<SeriesDto, never>) {
       // upload new posters
       if (updatedData.uploadQueue.length > 0) {
         const { mutateAsync } = useAddSeriesPoster()
@@ -98,9 +168,8 @@ export function useEditSeriesMetadataDialog() {
 
       // update series
       const updateDto = updatedData.entity.metadata
-      mutateUpdateSeriesMetadata({ seriesId: series.id, metadata: updateDto })
+      await mutateUpdateSeriesMetadata({ seriesId: updatedData.entity.id, metadata: updateDto })
         .then(() => {
-          hideDialog()
           messagesStore.messages.push({
             message: intl.formatMessage(
               {
@@ -116,9 +185,7 @@ export function useEditSeriesMetadataDialog() {
         })
         .catch((error) => {
           messagesStore.messages.push(error?.cause?.message ?? commonMessages.networkError)
-          setLoading(false)
         })
-        .finally(() => callback())
     }
   }
 
