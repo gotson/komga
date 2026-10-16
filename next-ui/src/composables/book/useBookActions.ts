@@ -239,7 +239,7 @@ export function useBookActions(
     useEditBookMetadataDialog()
 
   function updateBookMetadata(callback: () => void) {
-    showEditBookMetadataDialog(toValue(book), callback)
+    showEditBookMetadataDialog([toValue(book)], callback)
   }
   //endregion
 

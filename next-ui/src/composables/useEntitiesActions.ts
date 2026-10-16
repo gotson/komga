@@ -27,6 +27,7 @@ import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectio
 import { useCurrentBrowsingContextFromRoute } from '@/composables/browsingContext'
 import { useRemoveFromReadList } from '@/composables/book/useRemoveFromReadList'
 import { useRemoveFromCollection } from '@/composables/series/useRemoveFromCollection'
+import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 
 type ActionSpecific = {
   shouldShow: () => boolean
@@ -90,7 +91,10 @@ export function useEntitiesActions(
     },
     [ActionName.EditBook]: {
       shouldShow: () => true,
-      disabled: true,
+      onMouseenter: (event: Event) => (editBookActivator.value = event.currentTarget as Element),
+      onClick: () => {
+        editBooks(() => callback(ActionName.EditBook))
+      },
     },
     [ActionName.EditSeries]: {
       shouldShow: () => true,
@@ -248,6 +252,18 @@ export function useEntitiesActions(
         contextReadListId.value,
         callback,
       )
+  }
+  //endregion
+
+  //region Edit books
+  const { prepareDialog: showEditBookDialog, activator: editBookActivator } =
+    useEditBookMetadataDialog()
+
+  function editBooks(callback: () => void) {
+    showEditBookDialog(
+      toValue(entities).filter((e) => isBook(e)),
+      callback,
+    )
   }
   //endregion
 

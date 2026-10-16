@@ -23,7 +23,6 @@
  */
 import { useDialogsStore } from '@/stores/dialogs'
 import { storeToRefs } from 'pinia'
-import { syncRefs } from '@vueuse/core'
 
 const showDialog = ref<boolean>(false)
 const loading = ref<boolean>(false)
@@ -39,8 +38,13 @@ function setLoading(isLoading: boolean) {
   loading.value = isLoading
 }
 
-syncRefs(
-  toRef(() => confirm.value.dialogProps.shown),
-  showDialog,
+watch(
+  () => confirm.value.dialogProps.shown,
+  (newShow) => {
+    if (newShow != undefined) {
+      showDialog.value = newShow
+      confirm.value.dialogProps.shown = undefined
+    }
+  },
 )
 </script>

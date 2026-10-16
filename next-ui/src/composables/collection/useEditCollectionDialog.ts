@@ -39,8 +39,10 @@ export function useEditCollectionDialog() {
       scrollable: true,
       fullscreen: display.xs.value,
     }
-    dialogConfirmEdit.value.slot = {
-      component: markRaw(EditCollection),
+    dialogConfirmEdit.value.slots = {
+      default: {
+        component: markRaw(EditCollection),
+      },
     }
     dialogConfirmEdit.value.record = createEntityUpdate(collection)
     dialogConfirmEdit.value.callback = async (

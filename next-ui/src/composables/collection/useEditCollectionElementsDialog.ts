@@ -33,8 +33,10 @@ export function useEditCollectionElementsDialog() {
       scrollable: true,
       fullscreen: display.xs.value,
     }
-    dialogConfirmEdit.value.slot = {
-      component: markRaw(CollectionOrganize),
+    dialogConfirmEdit.value.slots = {
+      default: {
+        component: markRaw(CollectionOrganize),
+      },
     }
     dialogConfirmEdit.value.record = collection
     dialogConfirmEdit.value.callback = (

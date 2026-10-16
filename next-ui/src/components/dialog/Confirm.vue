@@ -73,6 +73,7 @@
             <v-spacer />
             <v-btn
               :text="
+                cancelText ||
                 $formatMessage({
                   description: 'Confirmation dialog: Cancel button',
                   defaultMessage: 'Cancel',
@@ -151,6 +152,7 @@ const {
   title = undefined,
   subtitle = undefined,
   okText = undefined,
+  cancelText = undefined,
   validateText = undefined,
   checkboxLabel = undefined,
   mode = 'click',

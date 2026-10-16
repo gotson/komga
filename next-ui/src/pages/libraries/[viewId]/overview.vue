@@ -125,8 +125,10 @@ function editSections() {
     scrollable: false,
     fullscreen: display.xs.value,
   }
-  dialogConfirmEdit.value.slot = {
-    component: markRaw(ReorderOverviewSections),
+  dialogConfirmEdit.value.slots = {
+    default: {
+      component: markRaw(ReorderOverviewSections),
+    },
   }
   dialogConfirmEdit.value.record = toValue(overviewSections)
   dialogConfirmEdit.value.callback = (

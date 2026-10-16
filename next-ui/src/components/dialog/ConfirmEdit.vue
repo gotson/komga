@@ -39,9 +39,11 @@
               </v-card-text>
 
               <template #actions>
+                <slot name="prepend-actions" />
                 <v-spacer />
                 <v-btn
                   :text="
+                    cancelText ||
                     $formatMessage({
                       description: 'ConfirmEdit dialog: Cancel button',
                       defaultMessage: 'Cancel',
@@ -99,6 +101,7 @@ const {
   title = undefined,
   subtitle = undefined,
   okText = undefined,
+  cancelText = undefined,
   maxWidth = undefined,
   maxHeight = undefined,
   minHeight = undefined,

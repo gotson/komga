@@ -39,8 +39,10 @@ export function useEditReadListDialog() {
       scrollable: true,
       fullscreen: display.xs.value,
     }
-    dialogConfirmEdit.value.slot = {
-      component: markRaw(EditReadList),
+    dialogConfirmEdit.value.slots = {
+      default: {
+        component: markRaw(EditReadList),
+      },
     }
     dialogConfirmEdit.value.record = createEntityUpdate(readList)
     dialogConfirmEdit.value.callback = async (

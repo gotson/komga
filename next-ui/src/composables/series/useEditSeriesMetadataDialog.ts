@@ -38,8 +38,10 @@ export function useEditSeriesMetadataDialog() {
       scrollable: true,
       fullscreen: display.xs.value,
     }
-    dialogConfirmEdit.value.slot = {
-      component: markRaw(EditSeries),
+    dialogConfirmEdit.value.slots = {
+      default: {
+        component: markRaw(EditSeries),
+      },
     }
     dialogConfirmEdit.value.record = createEntityUpdate(series)
     dialogConfirmEdit.value.callback = async (

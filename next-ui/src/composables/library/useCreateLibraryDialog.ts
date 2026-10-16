@@ -37,9 +37,11 @@ export function useCreateLibraryDialog() {
       scrollable: true,
       fullscreen: display.xs.value,
     }
-    dialogConfirmEdit.value.slot = {
-      component: markRaw(CreateEdit),
-      props: { createMode: true },
+    dialogConfirmEdit.value.slots = {
+      default: {
+        component: markRaw(CreateEdit),
+        props: { createMode: true },
+      },
     }
     dialogConfirmEdit.value.record = getLibraryDefaults()
     dialogConfirmEdit.value.callback = (

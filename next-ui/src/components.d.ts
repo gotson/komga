@@ -121,6 +121,7 @@ declare module 'vue' {
     ItemCard: typeof import('./components/item/card/ItemCard.vue')['default']
     ItemCardWide: typeof import('./components/item/CardWide/ItemCardWide.vue')['default']
     ItemFormLinks: typeof import('./components/item/form/Links.vue')['default']
+    ItemFormPrevNext: typeof import('./components/item/form/PrevNext.vue')['default']
     ItemMenu: typeof import('./components/item/menu/ItemMenu.vue')['default']
     ItemMenuBottomSheet: typeof import('./components/item/menu/ItemMenuBottomSheet.vue')['default']
     ItemMenuSheet: typeof import('./components/item/menu/Sheet.vue')['default']

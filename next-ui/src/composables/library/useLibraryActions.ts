@@ -143,9 +143,11 @@ export function useLibraryActions(
       scrollable: true,
       fullscreen: display.xs.value,
     }
-    dialogConfirmEdit.value.slot = {
-      component: markRaw(CreateEdit),
-      props: { createMode: false },
+    dialogConfirmEdit.value.slots = {
+      default: {
+        component: markRaw(CreateEdit),
+        props: { createMode: false },
+      },
     }
     dialogConfirmEdit.value.record = toValue(library)
     dialogConfirmEdit.value.callback = (

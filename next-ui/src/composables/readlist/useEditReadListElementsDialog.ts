@@ -33,8 +33,10 @@ export function useEditReadListElementsDialog() {
       scrollable: true,
       fullscreen: display.xs.value,
     }
-    dialogConfirmEdit.value.slot = {
-      component: markRaw(ReadListOrganize),
+    dialogConfirmEdit.value.slots = {
+      default: {
+        component: markRaw(ReadListOrganize),
+      },
     }
     dialogConfirmEdit.value.record = readList
     dialogConfirmEdit.value.callback = (

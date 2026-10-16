@@ -51,6 +51,10 @@ type DialogConfirmBaseProps = DialogBaseProps & {
    */
   okText?: string
   /**
+   * Text for the cancellation button.
+   */
+  cancelText?: string
+  /**
    * Whether the dialog should close itself on save.
    * If disabled, the dialog should be closed inside the callback function.
    */

@@ -82,9 +82,11 @@ function showDialog(action: DialogAction, user?: UserDto) {
         closeOnSave: false,
         fullscreen: display.xs.value,
       }
-      dialogConfirmEdit.value.slot = {
-        component: markRaw(UserFormCreateEdit),
-        props: {},
+      dialogConfirmEdit.value.slots = {
+        default: {
+          component: markRaw(UserFormCreateEdit),
+          props: {},
+        },
       }
       dialogConfirmEdit.value.record = {
         email: '',
@@ -115,9 +117,11 @@ function showDialog(action: DialogAction, user?: UserDto) {
         closeOnSave: false,
         fullscreen: display.xs.value,
       }
-      dialogConfirmEdit.value.slot = {
-        component: markRaw(UserFormCreateEdit),
-        props: {},
+      dialogConfirmEdit.value.slots = {
+        default: {
+          component: markRaw(UserFormCreateEdit),
+          props: {},
+        },
       }
       dialogConfirmEdit.value.record = {
         ...user,
@@ -169,9 +173,11 @@ function showDialog(action: DialogAction, user?: UserDto) {
         closeOnSave: false,
         fullscreen: display.xs.value,
       }
-      dialogConfirmEdit.value.slot = {
-        component: markRaw(UserFormChangePassword),
-        props: {},
+      dialogConfirmEdit.value.slots = {
+        default: {
+          component: markRaw(UserFormChangePassword),
+          props: {},
+        },
       }
       // password change initiated with an empty string
       dialogConfirmEdit.value.record = ''

@@ -53,9 +53,11 @@ function changePassword() {
     closeOnSave: false,
     fullscreen: display.xs.value,
   }
-  dialogConfirmEdit.value.slot = {
-    component: markRaw(UserFormChangePassword),
-    props: {},
+  dialogConfirmEdit.value.slots = {
+    default: {
+      component: markRaw(UserFormChangePassword),
+      props: {},
+    },
   }
   // password change initiated with an empty string
   dialogConfirmEdit.value.record = ''

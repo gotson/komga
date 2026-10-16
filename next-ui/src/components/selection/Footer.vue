@@ -1,7 +1,7 @@
 <template>
   <v-chip
     class="position-absolute top-0 left-0 mt-2 ms-2"
-    style="z-index: 5000"
+    style="z-index: 2000"
     variant="elevated"
     color="primary"
     rounded

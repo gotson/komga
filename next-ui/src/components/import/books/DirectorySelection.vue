@@ -96,9 +96,11 @@ function browse() {
     scrollable: true,
     fullscreen: display.xs.value,
   }
-  dialogConfirmEdit.value.slot = {
-    component: markRaw(RemoteFileList),
-    props: {},
+  dialogConfirmEdit.value.slots = {
+    default: {
+      component: markRaw(RemoteFileList),
+      props: {},
+    },
   }
   dialogConfirmEdit.value.record = appStore.importBooksPath || '' // workaround for https://github.com/vuetifyjs/vuetify/issues/4144
   dialogConfirmEdit.value.callback = (result: DialogResult) => {

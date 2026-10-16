@@ -201,7 +201,7 @@ const {
 } = useEditBookMetadataDialog()
 
 function showEditMetadataDialog() {
-  prepareEditBookMetadataDialog(book.value)
+  prepareEditBookMetadataDialog([book.value])
   showEditBookMetadataDialog()
 }
 
