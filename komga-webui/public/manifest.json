@@ -3,8 +3,8 @@
   "short_name": "Komga",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#005ed3",
-  "theme_color": "black",
+  "background_color": "#08397f",
+  "theme_color": "#000000",
   "description": "Free and open source comics/mangas media server",
   "icons": [
     {
