@@ -930,7 +930,8 @@
   "navigation": {
     "home": "Početna stranica",
     "libraries": "Biblioteke",
-    "logout": "Odjavi se"
+    "logout": "Odjavi se",
+    "try_new_ui": "Iskušaj novo korisničko sučelje"
   },
   "no_libraries_pinned": {
     "subtitle": "Biblioteku možeš prikvačiti u izborniku s 3 točke",
