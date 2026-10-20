@@ -383,6 +383,11 @@ tasks.named<JooqGenerate>("generateTasksJooq") {
   allInputsDeclared = true
   dependsOn("flywayMigrateTasks")
 }
+tasks.withType<JooqGenerate>().configureEach {
+  javaExecSpec = Action<JavaExecSpec> {
+    jvmArgs("--enable-native-access=ALL-UNNAMED")
+  }
+}
 
 tasks.whenTaskAdded {
   if (name == "kaptGenerateStubsKotlin") {
