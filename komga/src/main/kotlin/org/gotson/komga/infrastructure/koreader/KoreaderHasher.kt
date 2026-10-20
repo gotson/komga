@@ -19,7 +19,6 @@ class KoreaderHasher {
   /**
    * From https://github.com/koreader/koreader/blob/5bd3f3b42c95fd143d98f8fc9695d486fd92b7c8/frontend/util.lua#L1093-L1119
    */
-  @OptIn(ExperimentalStdlibApi::class)
   private fun partialMd5(path: Path): String {
     val step = 1024L
     val size = 1024
@@ -30,8 +29,8 @@ class KoreaderHasher {
     val buffer = ByteArray(size)
     (-1..10).forEach {
       file.seek(step shl (2 * it))
-      val s = file.read(buffer)
-      if (s > 0) digest.update(buffer)
+      val size = file.read(buffer)
+      if (size > 0) digest.update(buffer, 0, size)
     }
 
     return digest.digest().toHexString()
