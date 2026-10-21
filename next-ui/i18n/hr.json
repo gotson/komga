@@ -1,0 +1,260 @@
+{
+  "+PNCoe": {
+    "defaultMessage": "Alternativni naslov"
+  },
+  "+TldjW": {
+    "defaultMessage": "Nema ničega za pokazati"
+  },
+  "+jaADC": {
+    "defaultMessage": "Ime datoteke"
+  },
+  "+pyj1u": {
+    "defaultMessage": "Nedostupno"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "Izbriši"
+  },
+  "/NAG9i": {
+    "defaultMessage": "Nema rezultata"
+  },
+  "/bathK": {
+    "defaultMessage": "Dozvoli samo mlađima od"
+  },
+  "/lE31l": {
+    "defaultMessage": "Prisili Kobo sinkronizaciju"
+  },
+  "/mhcNO": {
+    "defaultMessage": "Zatvori"
+  },
+  "02SRax": {
+    "defaultMessage": "Prijavi se"
+  },
+  "083NeH": {
+    "defaultMessage": "IETF BCP 47 oznaka jezika"
+  },
+  "0ILHru": {
+    "defaultMessage": "U redu"
+  },
+  "0OEO+j": {
+    "defaultMessage": "Žanrovi"
+  },
+  "0UFr4y": {
+    "defaultMessage": "Sve od"
+  },
+  "0eIJ3K": {
+    "defaultMessage": "Ručno razvrstavanje"
+  },
+  "0iT7Vf": {
+    "defaultMessage": "Metapodaci"
+  },
+  "0qntYX": {
+    "defaultMessage": "Izračunaj šifre za stranice"
+  },
+  "1E0Duw": {
+    "defaultMessage": "Veličina datoteke"
+  },
+  "1MAL38": {
+    "defaultMessage": "Dupla knjiga"
+  },
+  "1VkZao": {
+    "defaultMessage": "Više"
+  },
+  "2IYW7s": {
+    "defaultMessage": "URL"
+  },
+  "2Sx0J4": {
+    "defaultMessage": "Stranica"
+  },
+  "2g7iOx": {
+    "defaultMessage": "Statistika"
+  },
+  "3OgH93": {
+    "defaultMessage": "Serije"
+  },
+  "3W0jUi": {
+    "defaultMessage": "Isključi etikete"
+  },
+  "3qQjnw": {
+    "defaultMessage": "Jezik"
+  },
+  "3zkvDp": {
+    "defaultMessage": "Zatvori"
+  },
+  "40HXjy": {
+    "defaultMessage": "Odustani"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Eksterni priključak Kobo sinkronizacije"
+  },
+  "4IKM3R": {
+    "defaultMessage": "Etiketa"
+  },
+  "4PDVX2": {
+    "defaultMessage": "EPUB"
+  },
+  "4U6L0S": {
+    "defaultMessage": "Poveznice"
+  },
+  "4Ybicn": {
+    "defaultMessage": "Stvori"
+  },
+  "4uqafX": {
+    "defaultMessage": "Izdanje bez nastavka"
+  },
+  "5AAGkA": {
+    "defaultMessage": "Lozinka"
+  },
+  "5JGOUU": {
+    "defaultMessage": "Analiziraj biblioteku"
+  },
+  "5Qha5m": {
+    "defaultMessage": "Ručno razvrstavanje"
+  },
+  "5WMvLb": {
+    "defaultMessage": "Epub"
+  },
+  "5rziSG": {
+    "defaultMessage": "Nedostupno"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "Zahtijeva ponovno pokretanje da stupi na snagu"
+  },
+  "6UXlVe": {
+    "defaultMessage": "Oznake"
+  },
+  "6WDISV": {
+    "defaultMessage": "Stranica nije pronađena"
+  },
+  "6eAECF": {
+    "defaultMessage": "Biblioteka"
+  },
+  "6nCIPn": {
+    "defaultMessage": "Vrsta"
+  },
+  "700A3r": {
+    "defaultMessage": "Knjiga"
+  },
+  "7M1pUf": {
+    "defaultMessage": "Isprazni smeće"
+  },
+  "7Ndu8p": {
+    "defaultMessage": "Broj"
+  },
+  "7RfNiY": {
+    "defaultMessage": "Sažetak"
+  },
+  "7gdpKG": {
+    "defaultMessage": "Stvori"
+  },
+  "7z91nm": {
+    "defaultMessage": "Povijest"
+  },
+  "87q6WX": {
+    "defaultMessage": "Bez"
+  },
+  "8Dun/Y": {
+    "defaultMessage": "Ne"
+  },
+  "8KsYYJ": {
+    "defaultMessage": "Oznake"
+  },
+  "8LT9D4": {
+    "defaultMessage": "Odustani"
+  },
+  "8kylzj": {
+    "defaultMessage": "Izbriši"
+  },
+  "BXkP7H": {
+    "defaultMessage": "Zatvori"
+  },
+  "E1kQun": {
+    "defaultMessage": "Pregledaj"
+  },
+  "HZqgan": {
+    "defaultMessage": "Zatvori"
+  },
+  "HaF+a6": {
+    "defaultMessage": "Biblioteke"
+  },
+  "HaWCi3": {
+    "defaultMessage": "Postavke"
+  },
+  "IE0XzE": {
+    "defaultMessage": "Izbriši"
+  },
+  "IEUgyy": {
+    "defaultMessage": "Postojeća datoteka"
+  },
+  "LFf8QB": {
+    "defaultMessage": "Izbriši"
+  },
+  "LKoz42": {
+    "defaultMessage": "Sažetak"
+  },
+  "Qz1UTX": {
+    "defaultMessage": "Zatvori"
+  },
+  "Usohru": {
+    "defaultMessage": "Pregledaj"
+  },
+  "Uuu6fQ": {
+    "defaultMessage": "Nema rezultata"
+  },
+  "UvhIIT": {
+    "defaultMessage": "Dijeljene biblioteke"
+  },
+  "Wivz5J": {
+    "defaultMessage": "Zatvori"
+  },
+  "aHyrmS": {
+    "defaultMessage": "Izbriši"
+  },
+  "aU1qcP": {
+    "defaultMessage": "Izbriši"
+  },
+  "cyQk6S": {
+    "defaultMessage": "Zbirke"
+  },
+  "d2J/J/": {
+    "defaultMessage": "Odaberi"
+  },
+  "eyYZUe": {
+    "defaultMessage": "Biblioteke"
+  },
+  "kYDPt1": {
+    "defaultMessage": "Ime datoteke"
+  },
+  "lPZ5hy": {
+    "defaultMessage": "Zatvori"
+  },
+  "o+h0F+": {
+    "defaultMessage": "Ime datoteke"
+  },
+  "o1XnPU": {
+    "defaultMessage": "API ključ"
+  },
+  "oOtDhj": {
+    "defaultMessage": "Kopiraj u međuspremnik"
+  },
+  "rDBhmQ": {
+    "defaultMessage": "Izbriši"
+  },
+  "vTqlcG": {
+    "defaultMessage": "Izbriši"
+  },
+  "w2K5yu": {
+    "defaultMessage": "Liste čitanja"
+  },
+  "wESuod": {
+    "defaultMessage": "Nepročitano"
+  },
+  "wJaip6": {
+    "defaultMessage": "Izračunaj šifre za datoteke"
+  },
+  "xAZMxz": {
+    "defaultMessage": "Ime datoteke"
+  },
+  "xPBqGY": {
+    "defaultMessage": "Izbriši serije"
+  }
+}
