@@ -1,4 +1,7 @@
 {
+  "+6DtMH": {
+    "defaultMessage": "사용자 인터페이스"
+  },
   "+6YDzS": {
     "defaultMessage": "데이터 없음"
   },
@@ -65,6 +68,9 @@
   "083NeH": {
     "defaultMessage": "IETF BCP 47 언어 태그"
   },
+  "0ESsC0": {
+    "defaultMessage": "{provider}(으)로 계속하기"
+  },
   "0ILHru": {
     "defaultMessage": "확인"
   },
@@ -107,11 +113,17 @@
   "111Isd": {
     "defaultMessage": "검색 인덱스 재구축"
   },
+  "13nnQg": {
+    "defaultMessage": "신규 NextUI를 이 서버에 기본값으로 사용"
+  },
   "14/Uh8": {
     "defaultMessage": "가져오기 모드"
   },
   "18OKhZ": {
     "defaultMessage": "변환할 책 찾기"
+  },
+  "1A8Mc1": {
+    "defaultMessage": "등장 요소"
   },
   "1E0Duw": {
     "defaultMessage": "파일 크기"
@@ -124,6 +136,9 @@
   },
   "1bxWGd": {
     "defaultMessage": "시리즈 메타데이터 편집"
+  },
+  "1hsKmu": {
+    "defaultMessage": "캐릭터"
   },
   "1qIfds": {
     "defaultMessage": "고정됨"
@@ -191,6 +206,9 @@
   "3rNj7/": {
     "defaultMessage": "클릭하여 확인"
   },
+  "3zkvDp": {
+    "defaultMessage": "닫기"
+  },
   "40HXjy": {
     "defaultMessage": "취소"
   },
@@ -248,11 +266,17 @@
   "5WMvLb": {
     "defaultMessage": "Epub"
   },
+  "5Xt1ke": {
+    "defaultMessage": "팀"
+  },
   "5Zw5Zt": {
     "defaultMessage": "모음집 내 다음 시리즈로 이동"
   },
   "5b2A0u": {
     "defaultMessage": "홈페이지로 리다이렉트됩니다"
+  },
+  "5nswuX": {
+    "defaultMessage": "클래식 UI 열기"
   },
   "5rziSG": {
     "defaultMessage": "사용할 수 없음"
@@ -311,6 +335,9 @@
   "8/BXfN": {
     "defaultMessage": "전체"
   },
+  "811PxA": {
+    "defaultMessage": "또는"
+  },
   "81BMAQ": {
     "defaultMessage": "책 메타데이터 가져오기"
   },
@@ -325,6 +352,9 @@
   },
   "8KsYYJ": {
     "defaultMessage": "태그"
+  },
+  "8LT9D4": {
+    "defaultMessage": "취소"
   },
   "8NDqor": {
     "defaultMessage": "식자"
@@ -389,6 +419,9 @@
   "ALGXT9": {
     "defaultMessage": "중복"
   },
+  "AMQANB": {
+    "defaultMessage": "사용자 지정 유형 추가"
+  },
   "AeA9Ka": {
     "defaultMessage": "제한 없음"
   },
@@ -412,6 +445,9 @@
   },
   "BQmPch": {
     "defaultMessage": "책 삭제"
+  },
+  "BXkP7H": {
+    "defaultMessage": "닫기"
   },
   "Bewgy6": {
     "defaultMessage": "시리즈 표지"
@@ -547,6 +583,9 @@
   },
   "EIYfj+": {
     "defaultMessage": "번호"
+  },
+  "ELl0N9": {
+    "defaultMessage": "이제 서재 화면에서 표지가 없는 도서를 바로 필터링할 수 있습니다."
   },
   "ELttw/": {
     "defaultMessage": "휴지통 비우기"
@@ -725,6 +764,9 @@
   "J44THG": {
     "defaultMessage": "상태"
   },
+  "J8l62K": {
+    "defaultMessage": "추가"
+  },
   "J8rAqm": {
     "defaultMessage": "발매연도"
   },
@@ -754,6 +796,9 @@
   },
   "KBLD9U": {
     "defaultMessage": "연령 등급"
+  },
+  "KTifVk": {
+    "defaultMessage": "모든 등장 요소"
   },
   "Kie8HQ": {
     "defaultMessage": "책"
@@ -923,6 +968,9 @@
   "Qxij/I": {
     "defaultMessage": "삭제된 페이지"
   },
+  "Qz1UTX": {
+    "defaultMessage": "닫기"
+  },
   "REmxIM": {
     "defaultMessage": "수정일"
   },
@@ -958,6 +1006,9 @@
   },
   "S39lnB": {
     "defaultMessage": "연도 범위"
+  },
+  "S9SjlA": {
+    "defaultMessage": "사용 중인 표지"
   },
   "SIfmpC": {
     "defaultMessage": "시리즈 선택"
@@ -1066,6 +1117,9 @@
   },
   "V3wgcu": {
     "defaultMessage": "중복 페이지"
+  },
+  "V8tkJa": {
+    "defaultMessage": "자동 OAuth2 로그인"
   },
   "VHe28r": {
     "defaultMessage": "갱신된 날짜"
@@ -1214,14 +1268,17 @@
   "YVQ49g": {
     "defaultMessage": "모음집 수정"
   },
+  "YaCWYs": {
+    "defaultMessage": "\"미디어 분석\" 메뉴가 이동했습니다"
+  },
   "YbkrN9": {
     "defaultMessage": "IP"
   },
+  "YeFgyc": {
+    "defaultMessage": "이제 서재 화면에서 오류가 있는 도서를 바로 필터링할 수 있습니다."
+  },
   "YeUvoE": {
     "defaultMessage": "사용자 지정 역할..."
-  },
-  "Yf4DJ2": {
-    "defaultMessage": "사용자 인터페이스"
   },
   "Ym48fa": {
     "defaultMessage": "최근 이벤트 없음"
@@ -1258,6 +1315,9 @@
   },
   "Zh8AOV": {
     "defaultMessage": "사용자 수정"
+  },
+  "ZiTv+F": {
+    "defaultMessage": "\"표지 없음\" 메뉴가 이동했습니다"
   },
   "ZnjyI3": {
     "defaultMessage": "간략히 보기"
@@ -1442,11 +1502,17 @@
   "bOUy3X": {
     "defaultMessage": "책"
   },
+  "bRAV2F": {
+    "defaultMessage": "장소"
+  },
   "bRxSgh": {
     "defaultMessage": "수동"
   },
   "bSoeY6": {
     "defaultMessage": "대상 이름"
+  },
+  "bWiqyw": {
+    "defaultMessage": "유형 이름"
   },
   "bk1tX8": {
     "defaultMessage": "서재가 이 서버에서 삭제됩니다.<ul><li>시리즈와 책이 메타데이터 및 읽기 진도와 함께 삭제됩니다.</li><li>미디어 파일은 디스크에서 삭제되지 않습니다.</li></ul><b>이 작업은 되돌릴 수 없습니다.</b>"
@@ -1889,8 +1955,14 @@
   "jN3N1Q": {
     "defaultMessage": "분석"
   },
+  "jYOsNC": {
+    "defaultMessage": "사용하지 않는 표지"
+  },
   "jeXb2z": {
     "defaultMessage": "미디어 유형"
+  },
+  "jm9oYh": {
+    "defaultMessage": "모든 유형"
   },
   "jnjpZy": {
     "defaultMessage": "로컬 파일"
@@ -1960,6 +2032,9 @@
   },
   "lFTdQ+": {
     "defaultMessage": "처리 방식 지정"
+  },
+  "lFWPpj": {
+    "defaultMessage": "유형 추가"
   },
   "lPZ5hy": {
     "defaultMessage": "닫기"
@@ -2162,6 +2237,9 @@
   "rnClur": {
     "defaultMessage": "{rating}+"
   },
+  "roy9ap": {
+    "defaultMessage": "OAuth2 제공자가 하나만 설정된 경우에만 작동합니다"
+  },
   "rrF/Z2": {
     "defaultMessage": "이름"
   },
@@ -2182,6 +2260,9 @@
   },
   "sGsWvI": {
     "defaultMessage": "패스워드 변경"
+  },
+  "sMmke1": {
+    "defaultMessage": "등장 요소"
   },
   "sNSGMQ": {
     "defaultMessage": "이미지를 여기로 끌어다 놓으세요"
@@ -2212,6 +2293,9 @@
   },
   "so1P5Y": {
     "defaultMessage": "책 로컬 아트워크 새로 고침"
+  },
+  "sutqn3": {
+    "defaultMessage": "사용자 지정 유형..."
   },
   "syF0Ap": {
     "defaultMessage": "크기"
@@ -2306,6 +2390,9 @@
   "vXhkpo": {
     "defaultMessage": "파일 삭제"
   },
+  "viKuRl": {
+    "defaultMessage": "표지"
+  },
   "vkeTYG": {
     "defaultMessage": "책 가져오기 실패"
   },
@@ -2398,6 +2485,9 @@
   },
   "yrE0Rx": {
     "defaultMessage": "정보"
+  },
+  "yxnX5k": {
+    "defaultMessage": "OAuth2가 활성화 되어있을 때 로그인 숨기기"
   },
   "yyAGH1": {
     "defaultMessage": "너비: {width}, 높이: {height}"
