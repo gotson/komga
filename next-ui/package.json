@@ -69,7 +69,7 @@
     "@storybook/addon-a11y": "^10.6.1",
     "@storybook/addon-docs": "^10.6.1",
     "@storybook/addon-themes": "^10.6.1",
-    "@storybook/addon-vitest": "^10.6.1",
+    "@storybook/addon-vitest": "^10.6.2",
     "@storybook/vue3-vite": "^10.6.1",
     "@testing-library/vue": "^8.1.0",
     "@tsconfig/node22": "^22.0.6",
