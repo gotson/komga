@@ -99,7 +99,7 @@
     "prettier": "^3.9.10",
     "sass": "^1.105.1",
     "sass-embedded": "^1.105.1",
-    "storybook": "^10.6.1",
+    "storybook": "^10.6.2",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "unocss": "^66.10.5",
