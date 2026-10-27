@@ -42,10 +42,10 @@
 
 <script setup lang="ts">
 import type { ReadListDto } from '@/generated/openapi'
-import type { EntityUpdate } from '@/functions/poster'
 import { useQuery } from '@pinia/colada'
 import { readListPostersQuery } from '@/colada/readlists'
 import { useIntl } from 'vue-intl'
+import type { EntityUpdate } from '@/types/entityUpdate'
 
 const intl = useIntl()
 

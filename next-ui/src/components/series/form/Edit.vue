@@ -65,11 +65,11 @@
 
 <script setup lang="ts">
 import type { SeriesDto } from '@/generated/openapi'
-import type { EntityUpdate } from '@/functions/poster'
 import { useQuery } from '@pinia/colada'
 import { useIntl } from 'vue-intl'
 import { seriesPostersQuery } from '@/colada/series'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import type { EntityUpdate } from '@/types/entityUpdate'
 
 const intl = useIntl()
 

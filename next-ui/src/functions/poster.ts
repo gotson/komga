@@ -1,9 +1,9 @@
 import * as v from 'valibot'
 import type {
   ThumbnailBookDto,
-  ThumbnailSeriesDto,
-  ThumbnailSeriesCollectionDto,
   ThumbnailReadListDto,
+  ThumbnailSeriesCollectionDto,
+  ThumbnailSeriesDto,
 } from '@/generated/openapi'
 import {
   bookPosterUrl,
@@ -11,7 +11,6 @@ import {
   readListPosterUrl,
   seriesPosterUrl,
 } from '@/api/images'
-import type { EntityDto } from '@/functions/entity'
 
 // fallback in case we can't get it from the server info API
 export const POSTER_SIZE_LIMIT = 1_048_576
@@ -22,30 +21,6 @@ export type PosterDto =
 export type PosterUpload = {
   file: File
   selected: boolean
-}
-
-export type PosterUpdate = {
-  uploadQueue: PosterUpload[]
-  deleteQueue: PosterDto[]
-  selected?: PosterDto
-}
-
-export type EntityUpdate<T extends EntityDto, E> = {
-  entity: T
-  extra?: E
-} & PosterUpdate
-
-export function createEntityUpdate<T extends EntityDto, E>(
-  entity: T,
-  extra?: E,
-): EntityUpdate<T, E> {
-  return {
-    entity: entity,
-    uploadQueue: [],
-    deleteQueue: [],
-    selected: undefined,
-    extra: extra,
-  }
 }
 
 // Using looseObject ensures it doesn't fail due to the other fields in the DTO
