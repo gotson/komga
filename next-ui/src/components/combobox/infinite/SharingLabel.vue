@@ -4,13 +4,7 @@
     v-model:search="search"
     :items="displayedItems"
     :has-more-data="hasNextPage"
-    :label="
-      $formatMessage({
-        description: 'Combobox sharing label: label',
-        defaultMessage: 'Sharing labels',
-        id: '/TRmi5',
-      })
-    "
+    :label="$formatMessage(commonMessages.comboboxSharingLabels)"
     @load-more="loadNextPage()"
   >
     <template #prepend>
@@ -25,6 +19,7 @@ import { sharingLabelsQuery, sharingLabelsQueryInfinite } from '@/colada/referen
 import { PageRequest } from '@/types/PageRequest'
 import { type FilterContext } from '@/types/filter'
 import { refDebounced } from '@vueuse/core'
+import { commonMessages } from '@/utils/i18n/common-messages'
 
 const selected = defineModel<string[]>({ default: () => [] })
 

@@ -2,24 +2,24 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <ComboboxGenre v-model="model.genres">
+        <ComboboxInfiniteGenre v-model="model.genres">
           <template #prepend>
             <LockIcon v-model="model.genresLock" />
           </template>
-        </ComboboxGenre>
+        </ComboboxInfiniteGenre>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col>
-        <ComboboxTag
+        <ComboboxInfiniteTag
           v-model="model.tags"
           include="SERIES"
         >
           <template #prepend>
             <LockIcon v-model="model.tagsLock" />
           </template>
-        </ComboboxTag>
+        </ComboboxInfiniteTag>
       </v-col>
     </v-row>
   </v-container>

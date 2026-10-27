@@ -18,7 +18,7 @@
         :key="role"
       >
         <v-col>
-          <ComboboxContributor
+          <ComboboxInfiniteContributor
             v-if="roleGroups[role]"
             v-model="roleGroups[role]!.value"
             :role="role"

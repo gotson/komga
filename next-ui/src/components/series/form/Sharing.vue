@@ -2,11 +2,11 @@
   <v-container fluid>
     <v-row v-if="model">
       <v-col>
-        <ComboboxSharingLabel v-model="model.sharingLabels">
+        <ComboboxInfiniteSharingLabel v-model="model.sharingLabels">
           <template #prepend>
             <LockIcon v-model="model.sharingLabelsLock" />
           </template>
-        </ComboboxSharingLabel>
+        </ComboboxInfiniteSharingLabel>
       </v-col>
     </v-row>
   </v-container>

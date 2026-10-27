@@ -237,4 +237,9 @@ export const commonMessages = {
     defaultMessage: 'Unread',
     id: 'wESuod',
   }),
+  comboboxSharingLabels: defineMessage({
+    description: 'Combobox sharing label: label',
+    defaultMessage: 'Sharing labels',
+    id: '/TRmi5',
+  }),
 }

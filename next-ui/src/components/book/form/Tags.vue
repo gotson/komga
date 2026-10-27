@@ -2,24 +2,24 @@
   <v-container fluid>
     <v-row v-if="modelOneShot">
       <v-col>
-        <ComboboxGenre v-model="modelOneShot.genres">
+        <ComboboxInfiniteGenre v-model="modelOneShot.genres">
           <template #prepend>
             <LockIcon v-model="modelOneShot.genresLock" />
           </template>
-        </ComboboxGenre>
+        </ComboboxInfiniteGenre>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col>
-        <ComboboxTag
+        <ComboboxInfiniteTag
           v-model="model.tags"
           include="BOOK"
         >
           <template #prepend>
             <LockIcon v-model="model.tagsLock" />
           </template>
-        </ComboboxTag>
+        </ComboboxInfiniteTag>
       </v-col>
     </v-row>
   </v-container>

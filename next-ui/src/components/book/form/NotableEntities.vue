@@ -18,7 +18,7 @@
         :key="kind"
       >
         <v-col>
-          <ComboboxNotableEntity
+          <ComboboxInfiniteNotableEntity
             v-if="kindGroups[kind]"
             v-model="kindGroups[kind]!.value"
             :kind="kind"

@@ -23,6 +23,7 @@
 
     <template #[`item.1`]="{ item }">
       <BookFormGeneral
+        v-if="model"
         v-model="model.entity.metadata"
         v-model:one-shot-attributes="model.extra"
         @update:error-count="(errorCount) => (tabErrors[item.value] = errorCount)"
@@ -30,15 +31,22 @@
     </template>
 
     <template #[`item.2`]>
-      <BookFormContributors v-model="model.entity" />
+      <BookFormContributors
+        v-if="model"
+        v-model="model.entity"
+      />
     </template>
 
     <template #[`item.2.5`]>
-      <BookFormNotableEntities v-model="model.entity" />
+      <BookFormNotableEntities
+        v-if="model"
+        v-model="model.entity"
+      />
     </template>
 
     <template #[`item.3`]>
       <BookFormTags
+        v-if="model"
         v-model="model.entity.metadata"
         v-model:one-shot-attributes="model.extra"
       />
@@ -46,40 +54,47 @@
 
     <template #[`item.4`]="{ item }">
       <ItemFormLinks
+        v-if="model"
         v-model="model.entity.metadata"
         @update:error-count="(errorCount) => (tabErrors[item.value] = errorCount)"
       />
     </template>
 
     <template #[`item.5`]>
-      <v-sheet class="pa-4">
+      <v-sheet
+        v-if="model"
+        class="pa-4"
+      >
         <PosterUpload
           :entity-posters="entityPosters ?? []"
-          @upload-queue-changed="(it) => (model.uploadQueue = it)"
-          @delete-queue-changed="(it) => (model.deleteQueue = it)"
-          @poster-selected="(it) => (model.selected = it)"
+          @upload-queue-changed="(it) => (model!.uploadQueue = it)"
+          @delete-queue-changed="(it) => (model!.deleteQueue = it)"
+          @poster-selected="(it) => (model!.selected = it)"
         />
       </v-sheet>
     </template>
 
     <template #[`item.6`]>
-      <SeriesFormSharing v-model="model.extra" />
+      <SeriesFormSharing
+        v-if="model"
+        v-model="model.extra"
+      />
     </template>
   </v-tabs>
 </template>
 
 <script setup lang="ts">
 import type { BookDto } from '@/generated/openapi'
-import type { EntityUpdate } from '@/functions/poster'
 import { useQuery } from '@pinia/colada'
 import { useIntl } from 'vue-intl'
 import { bookPostersQuery } from '@/colada/books'
 import type { OneShotAttributes } from '@/types/oneshot'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import type { EntityUpdate } from '@/types/entityUpdate'
 
 const intl = useIntl()
 
-const model = defineModel<EntityUpdate<BookDto, OneShotAttributes>>({ required: true })
+const model = defineModel<EntityUpdate<BookDto, OneShotAttributes>>()
 const submitFailed = defineModel<boolean>('submit-failed', { required: false })
 
 const currentTab = ref(1)
@@ -134,7 +149,7 @@ const tabs = computed(() => [
     }),
     value: 5,
   },
-  ...(model.value.extra
+  ...(model.value?.extra
     ? [
         {
           text: intl.formatMessage(commonMessages.seriesFormEditSharing),
@@ -144,11 +159,12 @@ const tabs = computed(() => [
     : []),
 ])
 
-const { data: entityPosters } = useQuery(() =>
-  bookPostersQuery({
-    bookId: model.value.entity.id,
+const { data: entityPosters } = useQuery(() => ({
+  ...bookPostersQuery({
+    bookId: model.value?.entity.id || 'none',
   }),
-)
+  enabled: !!model.value,
+}))
 
 watch(submitFailed, (attempted) => {
   if (attempted) {

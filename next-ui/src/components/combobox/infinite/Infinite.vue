@@ -53,6 +53,13 @@
         </v-list-item-title>
       </v-list-item>
     </template>
+
+    <template #chip="{ props }">
+      <v-chip
+        v-bind="props"
+        rounded
+      />
+    </template>
   </v-autocomplete>
 </template>
 
