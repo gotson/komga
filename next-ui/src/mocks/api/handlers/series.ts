@@ -46,8 +46,8 @@ export const mockSeries1 = {
     tagsLock: false,
     totalBookCount: 94,
     totalBookCountLock: true,
-    sharingLabels: ['sharingLabel1', 'sharingLabel2'],
-    sharingLabelsLock: false,
+    sharingLabels: ['SharingLabel 1', 'SharingLabel 2'],
+    sharingLabelsLock: true,
     links: [{ label: 'Publisher', url: 'https://archiecomics.com/super-duck-1-of-4/' }],
     linksLock: false,
     alternateTitles: [
@@ -71,7 +71,7 @@ export const mockSeries1 = {
   oneshot: false,
 } satisfies SeriesDto
 
-const series2 = {
+export const mockSeries2 = {
   id: '63',
   libraryId: '2',
   name: 'Space Adventures',
@@ -84,8 +84,8 @@ const series2 = {
   booksUnreadCount: 3,
   booksInProgressCount: 1,
   metadata: {
-    status: 'ENDED',
-    statusLock: true,
+    status: 'HIATUS',
+    statusLock: false,
     title: 'Space Adventures',
     titleLock: false,
     titleSort: 'Space Adventures',
@@ -93,12 +93,13 @@ const series2 = {
     summary:
       'Supersophisticated androids that can pass for human? Robots that turn on their creators to take control of their world? Strange alien armies secretly infiltrating the earth? Men rocketing through the galaxy as easily as taking an average Sunday drive in the country? Come on, that stuff is just a bunch of science fiction, right?\n\nYou bet it is! Published every two months, Charlton Comics presented a new collection of short stories about mankind’s long-dreamed-of exploration of the rest of the solar system…and beyond!\n\nThis series is notable for its many stories by Steve Ditko (creator of The Amazing Spider-Man), and for the first appearance of Captain Atom.',
     summaryLock: true,
-    readingDirection: 'LEFT_TO_RIGHT',
+    readingDirection: '',
     readingDirectionLock: true,
     publisher: 'Charlton',
     publisherLock: true,
+    ageRating: 12,
     ageRatingLock: false,
-    language: 'en',
+    language: '',
     languageLock: true,
     genres: ['science fiction'],
     genresLock: true,
@@ -106,7 +107,7 @@ const series2 = {
     tagsLock: false,
     totalBookCount: 70,
     totalBookCountLock: true,
-    sharingLabels: [],
+    sharingLabels: ['SharingLabel 2'],
     sharingLabelsLock: false,
     links: [],
     linksLock: false,
@@ -187,7 +188,7 @@ const series3 = {
   oneshot: true,
 } satisfies SeriesDto
 
-const series = [mockSeries1, series2, series3]
+const series = [mockSeries1, mockSeries2, series3]
 
 export const seriesHandlers = [
   handleGetSeries(async ({ request }) => {
