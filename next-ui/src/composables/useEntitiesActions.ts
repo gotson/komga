@@ -35,6 +35,14 @@ type ActionSpecific = {
   [key: string]: unknown // Allows any additional property
 }
 
+type ActionExtra = {
+  min?: number
+}
+
+type ActionGroupEntry = Partial<Action<ActionName>> & ActionExtra
+
+type ActionGroup = { menuItems?: ActionGroupEntry[] }
+
 export function useEntitiesActions(
   entities: MaybeRefOrGetter<(BookDto | SeriesDto | CollectionDto | ReadListDto)[]>,
   callback: (action: ActionName) => void = () => {},
@@ -130,7 +138,7 @@ export function useEntitiesActions(
   }
   const nonAdmin = [ActionName.MarkRead, ActionName.MarkUnread] as ActionName[]
 
-  const actions = computed<Action<ActionName>[]>(() =>
+  const actions = computed<(Action<ActionName> & ActionGroup & ActionExtra)[]>(() =>
     commonActions.value
       .map((action) => ({
         title: intl.formatMessage(actionDetails[action].message),

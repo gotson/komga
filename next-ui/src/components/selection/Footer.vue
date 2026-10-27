@@ -33,23 +33,41 @@
         v-for="action in actions"
         :key="action.title"
       >
-        <v-btn
-          :prepend-icon="action.icon"
-          stacked
-          variant="text"
-          class="h-auto pt-2 pb-1"
-          color=""
-          rounded="0"
-          v-bind="action"
-          :icon="undefined"
+        <v-menu
+          :disabled="!action.menuItems"
+          location="top center"
+          origin="bottom center"
         >
-          <span
-            class="text-caption mt-1 text-wrap text-center d-flex align-start justify-center"
-            style="width: 72px; min-height: 2.8em; line-height: 1.2"
-          >
-            {{ action.title }}
-          </span>
-        </v-btn>
+          <template #activator="{ props: menuProps }">
+            <v-btn
+              v-if="action.min ? selectionStore.count >= action.min : true"
+              :prepend-icon="action.icon"
+              stacked
+              variant="text"
+              class="h-auto pt-2 pb-1"
+              color=""
+              rounded="0"
+              v-bind="{ ...action, ...(!action.menuItems ? {} : menuProps) }"
+              :icon="undefined"
+            >
+              <span
+                class="text-caption mt-1 text-wrap text-center d-flex align-start justify-center"
+                style="width: 72px; min-height: 2.8em; line-height: 1.2"
+              >
+                {{ action.title }}
+              </span>
+            </v-btn>
+          </template>
+
+          <v-list density="comfortable">
+            <v-list-item
+              v-for="(entry, index) in action.menuItems"
+              :key="index"
+              v-bind="entry"
+              :disabled="entry.min ? selectionStore.count < entry.min : false"
+            />
+          </v-list>
+        </v-menu>
       </v-slide-group-item>
     </v-slide-group>
   </v-footer>

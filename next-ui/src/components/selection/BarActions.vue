@@ -1,10 +1,27 @@
 <template>
-  <v-btn
+  <template
     v-for="action in actions"
     :key="action.action"
-    v-ktooltip:bottom="action.title"
-    v-bind="action"
-  />
+  >
+    <v-menu :disabled="!action.menuItems">
+      <template #activator="{ props: menuProps }">
+        <v-btn
+          v-if="action.min ? selectionStore.count >= action.min : true"
+          v-ktooltip:bottom="action.title"
+          v-bind="{ ...action, ...(!action.menuItems ? {} : menuProps) }"
+        />
+      </template>
+
+      <v-list density="comfortable">
+        <v-list-item
+          v-for="(entry, index) in action.menuItems"
+          :key="index"
+          v-bind="entry"
+          :disabled="entry.min ? selectionStore.count < entry.min : false"
+        />
+      </v-list>
+    </v-menu>
+  </template>
 </template>
 
 <script setup lang="ts">
