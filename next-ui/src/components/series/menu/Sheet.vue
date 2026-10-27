@@ -49,7 +49,7 @@ const main = [
   ActionName.Download,
 ] as ActionName[]
 const management = [
-  ActionName.EditSeries,
+  ActionName.EditEntity,
   ActionName.RefreshMetadata,
   ActionName.Analyze,
   ActionName.Delete,

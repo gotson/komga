@@ -58,7 +58,7 @@ const prominent = computed(
       ActionName.OpenReaderIncognito,
       ActionName.MarkRead,
       ...(bothReadUnread.value ? [] : [ActionName.MarkUnread]),
-      ActionName.EditSeries,
+      ActionName.EditEntity,
     ] as ActionName[],
 )
 

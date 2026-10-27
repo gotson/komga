@@ -47,7 +47,7 @@ const main = [
   ActionName.Download,
 ] as ActionName[]
 const management = [
-  ActionName.EditBook,
+  ActionName.EditEntity,
   ActionName.RefreshMetadata,
   ActionName.Analyze,
   ActionName.Delete,

@@ -13,7 +13,6 @@ import {
 } from '@/colada/series'
 import { useCurrentUser } from '@/colada/users'
 import SeriesDeletionWarning from '@/components/series/DeletionWarning.vue'
-import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import { seriesFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useBooks } from '@/composables/book/useBooks'
@@ -23,6 +22,7 @@ import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialo
 import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
 import { useRemoveFromCollection } from '@/composables/series/useRemoveFromCollection'
 import { BrowsingContextKey, popBrowsingContext } from '@/functions/browsing-context'
+import { useEditDialog } from '@/composables/entity/useEditDialog'
 
 export function useSeriesActions(
   series: MaybeRefOrGetter<SeriesDto>,
@@ -122,13 +122,13 @@ export function useSeriesActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage(actionDetails[ActionName.EditSeries].message),
-            icon: actionDetails[ActionName.EditSeries].icon,
-            action: ActionName.EditSeries,
+            title: intl.formatMessage(actionDetails[ActionName.EditEntity].message),
+            icon: actionDetails[ActionName.EditEntity].icon,
+            action: ActionName.EditEntity,
             onMouseenter: (event: Event) =>
               (editMetadataActivator.value = event.currentTarget as Element),
             onClick: () => {
-              updateSeriesMetadata(() => callback(ActionName.EditSeries))
+              updateSeriesMetadata(() => callback(ActionName.EditEntity))
             },
           },
         ]
@@ -236,7 +236,7 @@ export function useSeriesActions(
 
   //region Update Series metadata
   const { prepareDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
-    useEditSeriesMetadataDialog()
+    useEditDialog()
 
   function updateSeriesMetadata(callback: () => void) {
     showEditSeriesMetadataDialog([toValue(series)], callback)

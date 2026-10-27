@@ -97,19 +97,13 @@ export function useEntitiesActions(
         removeFromReadList(() => callback(ActionName.RemoveFromReadList))
       },
     },
-    [ActionName.EditBook]: {
+    [ActionName.EditEntity]: {
       shouldShow: () => true,
-      onMouseenter: (event: Event) => (editBookActivator.value = event.currentTarget as Element),
+      onMouseenter: (event: Event) => (editEntityActivator.value = event.currentTarget as Element),
       onClick: () => {
-        editBooks(() => callback(ActionName.EditBook))
+        editEntities(() => callback(ActionName.EditEntity))
       },
-    },
-    [ActionName.EditSeries]: {
-      shouldShow: () => true,
-      onMouseenter: (event: Event) => (editSeriesActivator.value = event.currentTarget as Element),
-      onClick: () => {
-        editSeries(() => callback(ActionName.EditSeries))
-      },
+      min: 2,
     },
     [ActionName.MarkRead]: {
       shouldShow: () => true,
@@ -150,15 +144,6 @@ export function useEntitiesActions(
       // filter out non-contextual actions
       .filter((it) => it?.shouldShow?.() || false),
   )
-
-  //region Update Series metadata
-  // const { prepareDialog: showEditBookMetadataDialog, activator: editMetadataActivator } =
-  //   useEditBookMetadataDialog()
-  //
-  // function updateBookMetadata() {
-  //   showEditBookMetadataDialog(toValue(book))
-  // }
-  //endregion
 
   //region Refresh Metadata
   function refreshMetadata() {
@@ -266,25 +251,12 @@ export function useEntitiesActions(
   }
   //endregion
 
-  //region Edit books
-  const { prepareDialog: showEditBookDialog, activator: editBookActivator } =
-    useEditBookMetadataDialog()
+  //region Edit entities
+  const { prepareDialog: showEditDialog, activator: editEntityActivator } = useEditDialog()
 
-  function editBooks(callback: () => void) {
-    showEditBookDialog(
-      toValue(entities).filter((e) => isBook(e)),
-      callback,
-    )
-  }
-  //endregion
-
-  //region Edit series
-  const { prepareDialog: showEditSeriesDialog, activator: editSeriesActivator } =
-    useEditSeriesMetadataDialog()
-
-  function editSeries(callback: () => void) {
-    showEditSeriesDialog(
-      toValue(entities).filter((e) => isSeries(e)),
+  function editEntities(callback: () => void) {
+    void showEditDialog(
+      toValue(entities).filter((e) => isBook(e) || isSeries(e)),
       callback,
     )
   }

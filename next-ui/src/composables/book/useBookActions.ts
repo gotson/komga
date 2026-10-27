@@ -13,7 +13,6 @@ import {
   useMarkBookUnread,
   useRefreshMetadataBook,
 } from '@/colada/books'
-import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 import { bookFileUrl } from '@/api/files'
 import { type Action, actionDetails, ActionName } from '@/types/action/action'
 import { useBook } from '@/composables/book/useBook'
@@ -24,6 +23,7 @@ import { useAddToReadListDialog } from '@/composables/book/useAddToReadListDialo
 import { useAddToCollectionDialog } from '@/composables/series/useAddToCollectionDialog'
 import { BrowsingContextKey, popBrowsingContext } from '@/functions/browsing-context'
 import { useRemoveFromReadList } from '@/composables/book/useRemoveFromReadList'
+import { useEditDialog } from '@/composables/entity/useEditDialog'
 
 export function useBookActions(
   book: MaybeRefOrGetter<BookDto>,
@@ -123,13 +123,13 @@ export function useBookActions(
     ...(isAdmin.value
       ? [
           {
-            title: intl.formatMessage(actionDetails[ActionName.EditBook].message),
-            icon: actionDetails[ActionName.EditBook].icon,
-            action: ActionName.EditBook,
+            title: intl.formatMessage(actionDetails[ActionName.EditEntity].message),
+            icon: actionDetails[ActionName.EditEntity].icon,
+            action: ActionName.EditEntity,
             onMouseenter: (event: Event) =>
               (editMetadataActivator.value = event.currentTarget as Element),
             onClick: () => {
-              updateBookMetadata(() => callback(ActionName.EditBook))
+              updateBookMetadata(() => callback(ActionName.EditEntity))
             },
           },
         ]
@@ -236,10 +236,10 @@ export function useBookActions(
 
   //region Update Book metadata
   const { prepareDialog: showEditBookMetadataDialog, activator: editMetadataActivator } =
-    useEditBookMetadataDialog()
+    useEditDialog()
 
   function updateBookMetadata(callback: () => void) {
-    showEditBookMetadataDialog([toValue(book)], callback)
+    void showEditBookMetadataDialog([toValue(book)], callback)
   }
   //endregion
 

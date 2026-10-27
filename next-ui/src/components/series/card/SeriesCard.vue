@@ -31,8 +31,6 @@ import { seriesPosterUrl } from '@/api/images'
 import { useIntl } from 'vue-intl'
 import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
-
-import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import { useBooks } from '@/composables/book/useBooks'
 import { useSeries } from '@/composables/series/useSeries'
 import type { SeriesDto } from '@/generated/openapi'
@@ -41,6 +39,7 @@ import { BrowsingContextKey, formatBrowsingContextAsQueryParam } from '@/functio
 import type { RouteLocationObject } from '@/types/route'
 import type { SortKeysSeries } from '@/types/sort'
 import { commonMessages } from '@/utils/i18n/common-messages'
+import { useEditDialog } from '@/composables/entity/useEditDialog'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -154,7 +153,7 @@ const {
   prepareDialog: prepareEditSeriesMetadataDialog,
   showDialog: showEditSeriesMetadataDialog,
   activator: editMetadataActivator,
-} = useEditSeriesMetadataDialog()
+} = useEditDialog()
 
 function showEditMetadataDialog() {
   prepareEditSeriesMetadataDialog([series.value])

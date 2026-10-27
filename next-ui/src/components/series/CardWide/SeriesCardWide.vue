@@ -26,10 +26,9 @@
 import { seriesPosterUrl } from '@/api/images'
 import type { ItemCardEmits, ItemCardProps } from '@/types/ItemCard'
 import { useCurrentUser } from '@/colada/users'
-
-import { useEditSeriesMetadataDialog } from '@/composables/series/useEditSeriesMetadataDialog'
 import type { SeriesDto } from '@/generated/openapi'
 import { useImageCacheStore } from '@/stores/image-cache'
+import { useEditDialog } from '@/composables/entity/useEditDialog'
 
 const cacheStore = useImageCacheStore()
 
@@ -58,7 +57,7 @@ const menuProps = computed(() => ({
 }))
 
 const { prepareDialog: showEditSeriesMetadataDialog, activator: editMetadataActivator } =
-  useEditSeriesMetadataDialog()
+  useEditDialog()
 
 function showEditMetadataDialog() {
   showEditSeriesMetadataDialog([series])

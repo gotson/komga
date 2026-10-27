@@ -33,7 +33,6 @@ import type { ItemCardEmits, ItemCardLine, ItemCardProps, ItemCardTitle } from '
 import { useCurrentUser } from '@/colada/users'
 import { MediaStatus, mediaStatusMessages } from '@/types/MediaStatus'
 import { useBookReadProgress } from '@/composables/book/useBookReadProgress'
-import { useEditBookMetadataDialog } from '@/composables/book/useEditBookMetadataDialog'
 import { useBook } from '@/composables/book/useBook'
 import { bookReaderUrl } from '@/api/links'
 import type { BookDto } from '@/generated/openapi'
@@ -43,6 +42,7 @@ import type { RouteLocationObject } from '@/types/route'
 import type { SortKeysBook } from '@/types/sort'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { getFileSize } from '@/functions/filesize'
+import { useEditDialog } from '@/composables/entity/useEditDialog'
 
 const intl = useIntl()
 const cacheStore = useImageCacheStore()
@@ -198,10 +198,10 @@ const {
   prepareDialog: prepareEditBookMetadataDialog,
   showDialog: showEditBookMetadataDialog,
   activator: editMetadataActivator,
-} = useEditBookMetadataDialog()
+} = useEditDialog()
 
 function showEditMetadataDialog() {
-  prepareEditBookMetadataDialog([book.value])
+  void prepareEditBookMetadataDialog([book.value])
   showEditBookMetadataDialog()
 }
 

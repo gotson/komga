@@ -15,8 +15,7 @@ export type Action<T> = {
 // By using a single enum, we can find the common actions between different entities for the selection bulk actions
 export const ActionName = {
   Select: 'SELECT',
-  EditSeries: 'EDIT_SERIES',
-  EditBook: 'EDIT_BOOK',
+  EditEntity: 'EDIT_ENTITY',
   EditCollection: 'EDIT_COLLECTION',
   EditCollectionElements: 'EDIT_COLLECTION_ELEMENTS',
   EditReadList: 'EDIT_READLIST',
@@ -46,7 +45,7 @@ export const selectionActions: Record<EntityKind, ActionName[]> = {
     ActionName.RemoveFromReadList,
     ActionName.RefreshMetadata,
     ActionName.Analyze,
-    ActionName.EditBook,
+    ActionName.EditEntity,
     ActionName.Delete,
   ],
   book_oneshot: [
@@ -58,7 +57,7 @@ export const selectionActions: Record<EntityKind, ActionName[]> = {
     ActionName.RemoveFromCollection,
     ActionName.RefreshMetadata,
     ActionName.Analyze,
-    ActionName.EditBook,
+    ActionName.EditEntity,
     ActionName.Delete,
   ],
   series: [
@@ -69,7 +68,7 @@ export const selectionActions: Record<EntityKind, ActionName[]> = {
     ActionName.RemoveFromCollection,
     ActionName.RefreshMetadata,
     ActionName.Analyze,
-    ActionName.EditSeries,
+    ActionName.EditEntity,
     ActionName.Delete,
   ],
   collection: [ActionName.Delete],
@@ -101,8 +100,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     },
     icon: 'i-mdi:plus-box-outline',
   },
-  [ActionName.EditSeries]: actionEdit,
-  [ActionName.EditBook]: actionEdit,
+  [ActionName.EditEntity]: actionEdit,
   [ActionName.EditCollection]: actionEdit,
   [ActionName.EditCollectionElements]: actionEditElements,
   [ActionName.EditReadList]: actionEdit,
