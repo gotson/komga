@@ -197,7 +197,6 @@ declare module 'vue' {
     SeriesDeletionWarning: typeof import('./components/series/DeletionWarning.vue')['default']
     SeriesFetchDetails: typeof import('./components/series/fetch/Details.vue')['default']
     SeriesFormEdit: typeof import('./components/series/form/Edit.vue')['default']
-    SeriesFormEditMetadata: typeof import('./components/series/form/EditMetadata.vue')['default']
     SeriesFormGeneral: typeof import('./components/series/form/General.vue')['default']
     SeriesFormSharing: typeof import('./components/series/form/Sharing.vue')['default']
     SeriesFormTags: typeof import('./components/series/form/Tags.vue')['default']

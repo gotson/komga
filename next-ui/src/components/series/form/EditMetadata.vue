@@ -1,3 +1,0 @@
-<template>
-  <EmptyStateConstruction />
-</template>
