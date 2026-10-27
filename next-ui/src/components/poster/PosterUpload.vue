@@ -79,8 +79,8 @@ import { useEventListener, watchImmediate } from '@vueuse/core'
 import { useSettings } from '@/colada/settings'
 import { extractImageFromClipboard } from '@/functions/clipboard'
 
-const { entityPosters } = defineProps<{
-  entityPosters: PosterDto[]
+const { entityPosters = [] } = defineProps<{
+  entityPosters?: PosterDto[]
 }>()
 
 const emit = defineEmits<{
