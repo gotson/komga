@@ -81,11 +81,7 @@ const tabErrors = ref<Record<number, number>>({})
 
 const tabs = [
   {
-    text: intl.formatMessage({
-      description: 'Form edit series: General',
-      defaultMessage: 'General',
-      id: 'ZPuFVu',
-    }),
+    text: intl.formatMessage(commonMessages.seriesFormEditGeneral),
     value: 1,
   },
   {
@@ -97,11 +93,7 @@ const tabs = [
     value: 2,
   },
   {
-    text: intl.formatMessage({
-      description: 'Form edit series: Tags',
-      defaultMessage: 'Tags',
-      id: 'Epp7Fi',
-    }),
+    text: intl.formatMessage(commonMessages.seriesFormEditTags),
     value: 3,
   },
   {
@@ -113,11 +105,7 @@ const tabs = [
     value: 4,
   },
   {
-    text: intl.formatMessage({
-      description: 'Form edit series: Poster',
-      defaultMessage: 'Poster',
-      id: 'Fdinos',
-    }),
+    text: intl.formatMessage(commonMessages.seriesFormEditPoster),
     value: 5,
   },
   {

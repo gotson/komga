@@ -162,6 +162,21 @@ export const commonMessages = {
     defaultMessage: 'Read list created',
     id: 'estf95',
   }),
+  seriesFormEditGeneral: defineMessage({
+    description: 'Form edit series: General',
+    defaultMessage: 'General',
+    id: 'ZPuFVu',
+  }),
+  seriesFormEditTags:defineMessage({
+    description: 'Form edit series: Tags',
+    defaultMessage: 'Tags',
+    id: 'Epp7Fi',
+  }),
+  seriesFormEditPoster: defineMessage({
+    description: 'Form edit series: Poster',
+    defaultMessage: 'Poster',
+    id: 'Fdinos',
+  }),
   seriesFormEditSharing: defineMessage({
     description: 'Form edit series: Sharing',
     defaultMessage: 'Sharing',
@@ -176,6 +191,11 @@ export const commonMessages = {
     description: 'Form edit series: General - series publisher',
     defaultMessage: 'Publisher',
     id: 'CW0idP',
+  }),
+  seriesFormGeneralStatus: defineMessage({
+    description: 'Form edit series: General - series status',
+    defaultMessage: 'Publishing status',
+    id: '4CIw7i',
   }),
   seriesFormGeneralReadingDirection: defineMessage({
     description: 'Form edit series: General - series reading direction',
@@ -227,12 +247,12 @@ export const commonMessages = {
     defaultMessage: 'Collection',
     id: 'nWgSSS',
   }),
-  cardSubtitleNoReleaseDate:defineMessage({
+  cardSubtitleNoReleaseDate: defineMessage({
     description: 'Card subtitle: no release date',
     defaultMessage: 'No release date',
     id: '9mujmD',
   }),
-  cardSubtitleUnread:defineMessage({
+  cardSubtitleUnread: defineMessage({
     description: 'Card subtitle: unread',
     defaultMessage: 'Unread',
     id: 'wESuod',

@@ -81,13 +81,7 @@
           ref="fieldStatusRef"
           v-model="model.status"
           :items="seriesStatusOptions"
-          :label="
-            $formatMessage({
-              description: 'Form edit series: General - series status',
-              defaultMessage: 'Publishing status',
-              id: '4CIw7i',
-            })
-          "
+          :label="$formatMessage(commonMessages.seriesFormGeneralStatus)"
         >
           <template #prepend>
             <LockIcon v-model="model.statusLock" />
