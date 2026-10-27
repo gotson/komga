@@ -7,8 +7,8 @@ import { useMessagesStore } from '@/stores/messages'
 import CollectionOrganize from '@/components/collection/Organize.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import type { CollectionDto } from '@/generated/openapi'
-import { pick } from '@/functions/pick'
 import { useUpdateCollection } from '@/colada/collections'
+import { pick } from '@/functions/object'
 
 export function useEditCollectionElementsDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())

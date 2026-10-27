@@ -114,8 +114,8 @@ import { useIntl } from 'vue-intl'
 import { getFileSize } from '@/functions/filesize'
 import { watchImmediate } from '@vueuse/core'
 import type { ImageDimensions } from '@/types/image'
-import { pick } from '@/functions/pick'
 import { posterMessages } from '@/types/Poster'
+import { pick } from '@/functions/object'
 
 const intl = useIntl()
 

@@ -8,7 +8,8 @@ import ReadListOrganize from '@/components/readlist/Organize.vue'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useUpdateReadList } from '@/colada/readlists'
 import type { ReadListDto } from '@/generated/openapi'
-import { pick } from '@/functions/pick'
+
+import { pick } from '@/functions/object'
 
 export function useEditReadListElementsDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())

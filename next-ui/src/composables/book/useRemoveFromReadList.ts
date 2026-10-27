@@ -7,7 +7,7 @@ import { commonMessages } from '@/utils/i18n/common-messages'
 import type { BookDto } from '@/generated/openapi'
 import { useQuery } from '@pinia/colada'
 import { readListDetailQuery, useUpdateReadList } from '@/colada/readlists'
-import { pick } from '@/functions/pick'
+import { pick } from '@/functions/object'
 
 export function useRemoveFromReadList() {
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())

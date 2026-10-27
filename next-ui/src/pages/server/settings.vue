@@ -33,8 +33,8 @@ import { komgaBooksRegenerateThumbnails } from '@/generated/openapi'
 import { useMutation } from '@pinia/colada'
 import type { SettingsUpdateDtoExtended, ThumbnailRegenerate } from '@/types/Settings'
 import { useClientSettingsGlobal, useUpdateClientSettingsGlobal } from '@/colada/client-settings'
-import { pick } from '@/functions/pick'
 import type { ClientSettingGlobalSettings } from '@/types/ClientSettingsGlobal'
+import { pick } from '@/functions/object'
 
 const messagesStore = useMessagesStore()
 

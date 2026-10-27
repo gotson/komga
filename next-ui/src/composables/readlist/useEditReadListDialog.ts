@@ -14,7 +14,7 @@ import {
 } from '@/colada/readlists'
 import type { ReadListDto } from '@/generated/openapi'
 import { createEntityUpdate, type EntityUpdate } from '@/functions/poster'
-import { pick } from '@/functions/pick'
+import { pick } from '@/functions/object'
 
 export function useEditReadListDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())

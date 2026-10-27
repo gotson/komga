@@ -5,8 +5,8 @@ import { useDisplay } from 'vuetify/framework'
 import { useMessagesStore } from '@/stores/messages'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useQuery } from '@pinia/colada'
-import { pick } from '@/functions/pick'
 import { collectionDetailQuery, useUpdateCollection } from '@/colada/collections'
+import { pick } from '@/functions/object'
 
 export function useRemoveFromCollection() {
   const { confirm: dialogConfirm } = storeToRefs(useDialogsStore())

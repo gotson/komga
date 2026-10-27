@@ -13,8 +13,8 @@ import {
   useUpdateCollection,
 } from '@/colada/collections'
 import type { CollectionDto } from '@/generated/openapi'
-import { pick } from '@/functions/pick'
-import { createEntityUpdate, type EntityUpdate } from '@/functions/poster'
+import { createEntityUpdate, type EntityUpdate } from '@/types/entityUpdate'
+import { pick } from '@/functions/object'
 
 export function useEditCollectionDialog() {
   const { confirmEdit: dialogConfirmEdit } = storeToRefs(useDialogsStore())

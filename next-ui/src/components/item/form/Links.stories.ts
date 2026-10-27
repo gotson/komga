@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import Links from './Links.vue'
 import { mockBook } from '@/mocks/api/handlers/books'
-import { pick } from '@/functions/pick'
+import { pick } from '@/functions/object'
 
 const meta = {
   component: Links,
