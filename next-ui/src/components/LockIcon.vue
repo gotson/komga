@@ -27,5 +27,5 @@
 </template>
 
 <script setup lang="ts">
-const isLocked = defineModel<boolean>({ required: true })
+const isLocked = defineModel<boolean>()
 </script>
