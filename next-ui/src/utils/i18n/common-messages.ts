@@ -262,4 +262,34 @@ export const commonMessages = {
     defaultMessage: 'Sharing labels',
     id: '/TRmi5',
   }),
+  comboboxTags: defineMessage({
+    description: 'Combobox tags: label',
+    defaultMessage: 'Tags',
+    id: '8KsYYJ',
+  }),
+  comboboxGenres: defineMessage({
+    description: 'Combobox genre: label',
+    defaultMessage: 'Genres',
+    id: '0OEO+j',
+  }),
+  bulkEditMultipleValues: defineMessage({
+    description: 'Bulk edit input fields: multiple values placeholder',
+    defaultMessage: 'Multiple values',
+    id: 'M3OTuv',
+  }),
+  bulkEditNoValue: defineMessage({
+    description: 'Bulk edit input fields: no value placeholder',
+    defaultMessage: 'No value',
+    id: 'pBivnm',
+  }),
+  bulkEditUnset: defineMessage({
+    description: 'Bulk edit input fields: unset values hint',
+    defaultMessage: 'Will clear value on all selected items',
+    id: 'If3RCw',
+  }),
+  bulkEditExistingValues: defineMessage({
+    description: 'Bulk edit input fields: existing values header in dropdown list',
+    defaultMessage: 'Existing values',
+    id: '+sF9Fw',
+  }),
 }

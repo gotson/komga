@@ -15,6 +15,7 @@ export type Action<T> = {
 // By using a single enum, we can find the common actions between different entities for the selection bulk actions
 export const ActionName = {
   Select: 'SELECT',
+  EditSeriesBulk: 'EDIT_SERIES_BULK',
   EditEntity: 'EDIT_ENTITY',
   EditCollection: 'EDIT_COLLECTION',
   EditCollectionElements: 'EDIT_COLLECTION_ELEMENTS',
@@ -69,6 +70,7 @@ export const selectionActions: Record<EntityKind, ActionName[]> = {
     ActionName.RefreshMetadata,
     ActionName.Analyze,
     ActionName.EditEntity,
+    ActionName.EditSeriesBulk,
     ActionName.Delete,
   ],
   collection: [ActionName.Delete],
@@ -82,6 +84,15 @@ const actionEdit = {
     id: 'wk+b55',
   }),
   icon: 'i-mdi:pencil',
+}
+
+const actionEditBulk = {
+  message: defineMessage({
+    description: 'Generic action: edit bulk',
+    defaultMessage: 'Bulk edit',
+    id: 'n0tWL5',
+  }),
+  icon: 'i-mdi:pencil-box-multiple',
 }
 const actionEditElements = {
   message: defineMessage({
@@ -101,6 +112,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
     icon: 'i-mdi:plus-box-outline',
   },
   [ActionName.EditEntity]: actionEdit,
+  [ActionName.EditSeriesBulk]: actionEditBulk,
   [ActionName.EditCollection]: actionEdit,
   [ActionName.EditCollectionElements]: actionEditElements,
   [ActionName.EditReadList]: actionEdit,

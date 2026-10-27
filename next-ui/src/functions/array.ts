@@ -87,3 +87,72 @@ export function isSameSet<T, U = T, K = unknown>(
 
   return setA.values().every((key) => setB.has(key))
 }
+
+/**
+ * Count occurrences of elements across multiple arrays.
+ * @param arrays
+ */
+export function countAllOccurrences<T>(...arrays: T[][]): Map<T, number> {
+  const counts = new Map<T, number>()
+
+  for (const array of arrays) {
+    for (const item of array) {
+      counts.set(item, (counts.get(item) ?? 0) + 1)
+    }
+  }
+
+  return counts
+}
+
+/**
+ * Extracts element types from either `T[]` or `T`.
+ */
+export type UnwrappedElement<T> = T extends (infer U)[]
+  ? UnwrappedElement<U>
+  : T extends undefined
+    ? null
+    : T extends null
+      ? null
+      : Exclude<T, undefined> | (undefined extends T ? null : never)
+
+/**
+ * Helper to flatten single values or arrays into a single flat array.
+ */
+export function extractFlatValues<E, K extends keyof E>(
+  entities: E[],
+  key: K,
+): (UnwrappedElement<E[K]> | null)[] {
+  type ItemType = UnwrappedElement<E[K]> | null
+  const result: ItemType[] = []
+
+  for (const entity of entities) {
+    const val = entity[key]
+    if (val === undefined || val === null) result.push(null)
+    else if (Array.isArray(val)) {
+      for (const item of val) {
+        if (item !== undefined && item !== null) {
+          result.push(item as ItemType)
+        }
+      }
+    } else {
+      result.push(val as ItemType)
+    }
+  }
+
+  return result
+}
+
+/**
+ * Check whether boolean values in an array are all set or not.
+ * @param elements
+ */
+export function getBooleanArrayState(elements: boolean[]): 'all' | 'none' | 'some' {
+  if (elements.length === 0) return 'none'
+
+  const hasTrue = elements.some((it) => it)
+  const hasFalse = elements.some((it) => !it)
+
+  if (hasTrue && !hasFalse) return 'all'
+  if (!hasTrue) return 'none'
+  return 'some'
+}
