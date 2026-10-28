@@ -91,7 +91,7 @@
     "eslint-plugin-formatjs": "^8.1.1",
     "eslint-plugin-storybook": "^10.6.1",
     "eslint-plugin-vue": "^10.11.1",
-    "happy-dom": "^20.14.5",
+    "happy-dom": "^21.0.4",
     "msw": "^2.15.0",
     "msw-storybook-addon": "^3.0.3",
     "npm-run-all2": "^9.0.3",
