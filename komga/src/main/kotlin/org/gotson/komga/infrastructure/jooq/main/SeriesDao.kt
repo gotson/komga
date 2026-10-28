@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.application.query.buildPage
 import org.gotson.komga.application.query.isEmpty
 import org.gotson.komga.domain.model.SearchCondition
 import org.gotson.komga.domain.model.SearchContext
@@ -18,8 +19,6 @@ import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort.unsorted
 import org.springframework.stereotype.Component
@@ -142,6 +141,8 @@ class SeriesDao(
           }
         }.where(conditions)
 
+    val count = if (pageable.isUnpaged) null else dslRO.fetchCount(query)
+
     val items =
       if (pageable.isEmpty())
         emptyList()
@@ -151,16 +152,7 @@ class SeriesDao(
           .fetchInto(s)
           .map { it.toDomain() }
 
-    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
-
-    return PageImpl(
-      items,
-      if (pageable.isPaged)
-        PageRequest.of(pageable.pageNumber, pageable.pageSize, unsorted())
-      else
-        PageRequest.of(0, maxOf(count, 20), unsorted()),
-      count.toLong(),
-    )
+    return buildPage(items, pageable, count ?: items.size, unsorted())
   }
 
   override fun insert(series: Series) {

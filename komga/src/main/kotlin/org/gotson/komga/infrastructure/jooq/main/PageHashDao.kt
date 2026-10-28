@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.jooq.main
 
+import org.gotson.komga.application.query.buildPage
 import org.gotson.komga.application.query.isEmpty
 import org.gotson.komga.domain.model.BookPageNumbered
 import org.gotson.komga.domain.model.PageHashKnown
@@ -15,8 +16,6 @@ import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Component
@@ -84,6 +83,8 @@ class PageHashDao(
 
     val orderBy = pageable.sort.toOrderBy(sortsKnown)
 
+    val count = if (pageable.isUnpaged) null else dslRO.fetchCount(query)
+
     val items =
       if (pageable.isEmpty())
         emptyList()
@@ -94,17 +95,9 @@ class PageHashDao(
           .fetch()
           .map { it.into(ph).toDomain(it.get("count", Int::class.java)) }
 
-    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
-
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
-    return PageImpl(
-      items,
-      if (pageable.isPaged)
-        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else
-        PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong(),
-    )
+
+    return buildPage(items, pageable, count ?: items.size, pageSort)
   }
 
   override fun findAllUnknown(pageable: Pageable): Page<PageHashUnknown> {
@@ -130,6 +123,8 @@ class PageHashDao(
 
     val orderBy = pageable.sort.toOrderBy(sortsUnknown)
 
+    val count = if (pageable.isUnpaged) null else dslRO.fetchCount(query)
+
     val items =
       if (pageable.isEmpty())
         emptyList()
@@ -141,17 +136,8 @@ class PageHashDao(
             PageHashUnknown(it.value1(), it.value2(), it.value3())
           }
 
-    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
-
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
-    return PageImpl(
-      items,
-      if (pageable.isPaged)
-        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else
-        PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong(),
-    )
+    return buildPage(items, pageable, count ?: items.size, pageSort)
   }
 
   override fun findMatchesByHash(
@@ -167,6 +153,8 @@ class PageHashDao(
         .where(p.FILE_HASH.eq(pageHash))
 
     val orderBy = pageable.sort.toOrderBy(sortsUnknown)
+
+    val count = if (pageable.isUnpaged) null else dslRO.fetchCount(query)
 
     val items =
       if (pageable.isEmpty())
@@ -186,17 +174,8 @@ class PageHashDao(
             )
           }
 
-    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
-
     val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
-    return PageImpl(
-      items,
-      if (pageable.isPaged)
-        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else
-        PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong(),
-    )
+    return buildPage(items, pageable, count ?: items.size, pageSort)
   }
 
   override fun findMatchesByKnownHashAction(

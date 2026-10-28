@@ -32,8 +32,6 @@ import org.jooq.impl.TableImpl
 import org.jooq.impl.TableRecordImpl
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.domain.Sort.Order
@@ -486,6 +484,8 @@ class ReferentialDao(
 
     val sort = sd.PUBLISHER.unicode3()
 
+    val count = if (pageable.isUnpaged) null else dslRO.fetchCount(query)
+
     val items =
       if (pageable.isEmpty())
         emptyList()
@@ -495,17 +495,8 @@ class ReferentialDao(
           .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
           .fetch(sd.PUBLISHER)
 
-    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
-
     val pageSort = Sort.by("name")
-    return PageImpl(
-      items,
-      if (pageable.isPaged)
-        PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
-      else
-        PageRequest.of(0, maxOf(count, 20), pageSort),
-      count.toLong(),
-    )
+    return buildPage(items, pageable, count ?: items.size, pageSort)
   }
 
   @Deprecated("Use findPublishers instead")
@@ -697,6 +688,9 @@ class ReferentialDao(
             }
           }
         }
+
+    val count = if (pageable.isUnpaged) null else dslRO.fetchCount(query)
+
     val items =
       if (pageable.isEmpty())
         emptyList()
@@ -707,9 +701,7 @@ class ReferentialDao(
           .fetchArray(0)
           .mapNotNull { it?.toString() }
 
-    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
-
-    return buildPage(items, pageable, count, Sort.by(Order.desc("year")))
+    return buildPage(items, pageable, count ?: items.size, Sort.by(Order.desc("year")))
   }
 
   @Deprecated("Use findSharingLabels instead")
@@ -856,6 +848,8 @@ class ReferentialDao(
           }
         }
 
+    val count = if (pageable.isUnpaged) null else dslRO.fetchCount(query)
+
     val items =
       if (pageable.isEmpty())
         emptyList()
@@ -870,9 +864,7 @@ class ReferentialDao(
           .fetchInto(table)
           .mapNotNull { mapper(it) }
 
-    val count = if (pageable.isUnpaged) items.size else dslRO.fetchCount(query)
-
-    return buildPage(items, pageable, count, sort)
+    return buildPage(items, pageable, count ?: items.size, sort)
   }
 
   private fun BookMetadataAuthorRecord.toDomain(): Author =
