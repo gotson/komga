@@ -494,7 +494,7 @@ class OpdsController(
     @AuthenticationPrincipal principal: KomgaPrincipal,
     @Parameter(hidden = true) page: Pageable,
   ): OpdsFeed {
-    val publishers = referentialRepository.findAllPublishers(principal.user.getAuthorizedLibraryIds(null), page)
+    val publishers = referentialRepository.findPublishers(SearchContext(principal.user), null, null, page)
 
     val uriBuilder = uriBuilder(ROUTE_PUBLISHERS_ALL)
 
