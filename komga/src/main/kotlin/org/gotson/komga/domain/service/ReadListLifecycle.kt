@@ -15,6 +15,8 @@ import org.gotson.komga.infrastructure.metadata.comicrack.ReadListProvider
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.transaction.support.TransactionTemplate
 
 private val logger = KotlinLogging.logger {}
@@ -42,7 +44,13 @@ class ReadListLifecycle(
 
     readListRepository.insert(readList)
 
-    eventPublisher.publishEvent(DomainEvent.ReadListAdded(readList))
+    TransactionSynchronizationManager.registerSynchronization(
+      object : TransactionSynchronization {
+        override fun afterCommit() {
+          eventPublisher.publishEvent(DomainEvent.ReadListAdded(readList))
+        }
+      },
+    )
 
     return readListRepository.findByIdOrNull(readList.id, SearchContext.empty())!!
   }
@@ -59,7 +67,13 @@ class ReadListLifecycle(
 
     readListRepository.update(toUpdate)
 
-    eventPublisher.publishEvent(DomainEvent.ReadListUpdated(toUpdate))
+    TransactionSynchronizationManager.registerSynchronization(
+      object : TransactionSynchronization {
+        override fun afterCommit() {
+          eventPublisher.publishEvent(DomainEvent.ReadListUpdated(toUpdate))
+        }
+      },
+    )
   }
 
   fun deleteReadList(readList: ReadList) {
