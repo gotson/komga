@@ -24,6 +24,6 @@ export type BulkItemMultiField<T> =
       count: number
     }
   | {
-      value: string
+      value: T
       state: 'all' | 'new' | 'remove'
     }

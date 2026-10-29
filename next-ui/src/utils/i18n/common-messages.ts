@@ -292,4 +292,29 @@ export const commonMessages = {
     defaultMessage: 'Existing values',
     id: '+sF9Fw',
   }),
+  bookFormEditContributors: defineMessage({
+    description: 'Form edit book: Contributors',
+    defaultMessage: 'Contributors',
+    id: 'CqlsIa',
+  }),
+  bookFormEditNotableEntities: defineMessage({
+    description: 'Form edit book: Notable Entities',
+    defaultMessage: 'Notable entities',
+    id: '1A8Mc1',
+  }),
+  bookFormEditTags: defineMessage({
+    description: 'Form edit book: Tags',
+    defaultMessage: 'Tags',
+    id: 'UFZ+PY',
+  }),
+  bookFormEditLinks: defineMessage({
+    description: 'Form edit book: Links',
+    defaultMessage: 'Links',
+    id: 'VeEnkD',
+  }),
+  bookFormEditPoster: defineMessage({
+    description: 'Form edit book: Poster',
+    defaultMessage: 'Poster',
+    id: 'xjHL5K',
+  }),
 }

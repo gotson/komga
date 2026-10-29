@@ -110,43 +110,23 @@ const tabs = computed(() => [
     value: 1,
   },
   {
-    text: intl.formatMessage({
-      description: 'Form edit book: Contributors',
-      defaultMessage: 'Contributors',
-      id: 'CqlsIa',
-    }),
+    text: intl.formatMessage(commonMessages.bookFormEditContributors),
     value: 2,
   },
   {
-    text: intl.formatMessage({
-      description: 'Form edit book: Notable Entities',
-      defaultMessage: 'Notable entities',
-      id: '1A8Mc1',
-    }),
+    text: intl.formatMessage(commonMessages.bookFormEditNotableEntities),
     value: 2.5,
   },
   {
-    text: intl.formatMessage({
-      description: 'Form edit book: Tags',
-      defaultMessage: 'Tags',
-      id: 'UFZ+PY',
-    }),
+    text: intl.formatMessage(commonMessages.bookFormEditTags),
     value: 3,
   },
   {
-    text: intl.formatMessage({
-      description: 'Form edit book: Links',
-      defaultMessage: 'Links',
-      id: 'VeEnkD',
-    }),
+    text: intl.formatMessage(commonMessages.bookFormEditLinks),
     value: 4,
   },
   {
-    text: intl.formatMessage({
-      description: 'Form edit book: Poster',
-      defaultMessage: 'Poster',
-      id: 'xjHL5K',
-    }),
+    text: intl.formatMessage(commonMessages.bookFormEditPoster),
     value: 5,
   },
   ...(model.value?.extra

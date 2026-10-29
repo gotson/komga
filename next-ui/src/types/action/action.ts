@@ -16,6 +16,7 @@ export type Action<T> = {
 export const ActionName = {
   Select: 'SELECT',
   EditSeriesBulk: 'EDIT_SERIES_BULK',
+  EditBooksBulk: 'EDIT_BOOKS_BULK',
   EditEntity: 'EDIT_ENTITY',
   EditCollection: 'EDIT_COLLECTION',
   EditCollectionElements: 'EDIT_COLLECTION_ELEMENTS',
@@ -47,6 +48,7 @@ export const selectionActions: Record<EntityKind, ActionName[]> = {
     ActionName.RefreshMetadata,
     ActionName.Analyze,
     ActionName.EditEntity,
+    ActionName.EditBooksBulk,
     ActionName.Delete,
   ],
   book_oneshot: [
@@ -59,6 +61,7 @@ export const selectionActions: Record<EntityKind, ActionName[]> = {
     ActionName.RefreshMetadata,
     ActionName.Analyze,
     ActionName.EditEntity,
+    ActionName.EditBooksBulk,
     ActionName.Delete,
   ],
   series: [
@@ -113,6 +116,7 @@ export const actionDetails: Record<ActionName, { message: MessageDescriptor; ico
   },
   [ActionName.EditEntity]: actionEdit,
   [ActionName.EditSeriesBulk]: actionEditBulk,
+  [ActionName.EditBooksBulk]: actionEditBulk,
   [ActionName.EditCollection]: actionEdit,
   [ActionName.EditCollectionElements]: actionEditElements,
   [ActionName.EditReadList]: actionEdit,

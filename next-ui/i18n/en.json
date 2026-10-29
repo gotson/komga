@@ -1359,9 +1359,17 @@
     "defaultMessage": "Book {number}",
     "description": "Book navigation siblings menu: book number in series"
   },
+  "Rgl4jp": {
+    "defaultMessage": "{count, plural, one {# book} other {# books} } updated",
+    "description": "Snackbar notification shown upon successful bulk book metadata update"
+  },
   "Rm52xk": {
     "defaultMessage": "Welcome to Komga",
     "description": "No libraries view: title"
+  },
+  "Rt/kZN": {
+    "defaultMessage": "{first} and {rest, plural, one {# other book} other {# other books} }",
+    "description": "Edit bulk book metadata dialog subtitle"
   },
   "Rw2Iwj": {
     "defaultMessage": "Go to next book within read list",
@@ -2162,6 +2170,10 @@
   "dN5GoW": {
     "defaultMessage": "Book",
     "description": "Book bottom sheet, subtitle"
+  },
+  "dNnqm2": {
+    "defaultMessage": "Edit books metadata",
+    "description": "Edit bulk book metadata dialog title"
   },
   "dP6SpT": {
     "defaultMessage": "By name",

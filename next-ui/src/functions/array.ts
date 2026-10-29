@@ -1,3 +1,5 @@
+import { deepEqual } from 'fast-equals'
+
 /**
  * Returns the intersection of multiple arrays.
  * Uses Generics <T> to preserve the type of the array elements.
@@ -93,12 +95,23 @@ export function isSameSet<T, U = T, K = unknown>(
  * @param arrays
  */
 export function countAllOccurrences<T>(...arrays: T[][]): Map<T, number> {
-  const counts = new Map<T, number>()
+  const entries: { item: T; count: number }[] = []
 
   for (const array of arrays) {
     for (const item of array) {
-      counts.set(item, (counts.get(item) ?? 0) + 1)
+      const entry = entries.find((e) => deepEqual(e.item, item))
+
+      if (entry) {
+        entry.count += 1
+      } else {
+        entries.push({ item, count: 1 })
+      }
     }
+  }
+
+  const counts = new Map<T, number>()
+  for (const { item, count } of entries) {
+    counts.set(item, count)
   }
 
   return counts

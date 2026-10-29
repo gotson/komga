@@ -82,7 +82,7 @@ function applyBulkSingleField<T>(field: BulkItemSingleField<T> | undefined, curr
 /**
  * Applies multi-field bulk updates (handles 'remove' and 'new')
  */
-function applyBulkMultiField<T extends string>(
+function applyBulkMultiField<T>(
   items: BulkItemMultiField<T>[] | undefined,
   currentArray: T[] = [],
 ): T[] {
@@ -93,8 +93,8 @@ function applyBulkMultiField<T extends string>(
   for (const item of items) {
     if (item.state === 'remove') {
       result = result.filter((it) => it !== item.value)
-    } else if (item.state === 'new' && !result.includes(item.value as T)) {
-      result.push(item.value as T)
+    } else if (item.state === 'new' && !result.includes(item.value)) {
+      result.push(item.value)
     }
   }
 
@@ -109,7 +109,7 @@ export function applyBulkUpdates<
   TDto extends Record<string, unknown>,
   TBulk extends Partial<{
     [K in keyof TDto]: NonNullable<TDto[K]> extends (infer E)[]
-      ? BulkItemMultiField<E extends string ? E : string>[]
+      ? BulkItemMultiField<E>[]
       : BulkItemSingleField<NormalizeNullable<TDto[K]>>
   }>,
 >(targetDto: TDto, bulkUpdates: TBulk): TDto {
@@ -122,10 +122,7 @@ export function applyBulkUpdates<
     const currentTargetValue = result[key]
 
     if (Array.isArray(currentTargetValue) && Array.isArray(updateValue)) {
-      result[key] = applyBulkMultiField(
-        updateValue,
-        currentTargetValue as string[],
-      ) as TDto[typeof key]
+      result[key] = applyBulkMultiField(updateValue, currentTargetValue) as TDto[typeof key]
     } else {
       result[key] = applyBulkSingleField(
         updateValue as BulkItemSingleField<NormalizeNullable<TDto[keyof TDto]>>,

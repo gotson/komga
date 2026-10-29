@@ -29,6 +29,7 @@ import { useRemoveFromReadList } from '@/composables/book/useRemoveFromReadList'
 import { useRemoveFromCollection } from '@/composables/series/useRemoveFromCollection'
 import { useEditDialog } from '@/composables/entity/useEditDialog'
 import { useBulkEditSeriesMetadataDialog } from '@/composables/series/useBulkEditSeriesMetadataDialog'
+import { useBulkEditBookMetadataDialog } from '@/composables/book/useBulkEditBookMetadataDialog'
 
 type ActionSpecific = {
   shouldShow: () => boolean
@@ -102,6 +103,15 @@ export function useEntitiesActions(
       onMouseenter: (event: Event) => (editEntityActivator.value = event.currentTarget as Element),
       onClick: () => {
         editEntities(() => callback(ActionName.EditEntity))
+      },
+      min: 2,
+    },
+    [ActionName.EditBooksBulk]: {
+      shouldShow: () => true,
+      onMouseenter: (event: Event) =>
+        (bulkEditBookActivator.value = event.currentTarget as Element),
+      onClick: () => {
+        bulkEditBooks(() => callback(ActionName.EditBooksBulk))
       },
       min: 2,
     },
@@ -278,6 +288,18 @@ export function useEntitiesActions(
   function bulkEditSeries(callback: () => void) {
     showBulkEditSeriesDialog(
       toValue(entities).filter((e) => isSeries(e)),
+      callback,
+    )
+  }
+  //endregion
+
+  //region Edit books in bulk
+  const { prepareDialog: showBulkEditBookDialog, activator: bulkEditBookActivator } =
+    useBulkEditBookMetadataDialog()
+
+  function bulkEditBooks(callback: () => void) {
+    void showBulkEditBookDialog(
+      toValue(entities).filter((e) => isBook(e)),
       callback,
     )
   }

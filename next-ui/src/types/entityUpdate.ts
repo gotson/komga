@@ -2,7 +2,8 @@ import type { EntityDto } from '@/functions/entity'
 import type { PosterDto, PosterUpload } from '@/functions/poster'
 import type { BulkItemMultiField, BulkItemSingleField } from '@/types/bulk'
 import * as v from 'valibot'
-import type { vSeriesMetadataDto } from '@/generated/openapi/valibot.gen'
+import { vBookMetadataDto, type vSeriesMetadataDto } from '@/generated/openapi/valibot.gen'
+import type { OneShotAttributesBulk } from '@/types/oneshot'
 
 export type PosterUpdate = {
   uploadQueue: PosterUpload[]
@@ -74,4 +75,26 @@ export type BulkUpdateSeriesFields = (typeof BulkUpdateSeriesFields)[number]
 export type BulkUpdateSeries = MapBulkUpdate<
   v.InferOutput<typeof vSeriesMetadataDto>,
   BulkUpdateSeriesFields
+>
+
+export const BulkUpdateBookFields = [
+  'tags',
+  'tagsLock',
+  'authors',
+  'authorsLock',
+  'notableEntities',
+  'notableEntitiesLock',
+] as const
+export const BulkUpdateBookOneShotFields = [
+  'genres',
+  'genresLock',
+  'sharingLabels',
+  'sharingLabelsLock',
+] as const
+export type BulkUpdateBookFields = (typeof BulkUpdateBookFields)[number]
+export type BulkUpdateBookOneShotFields = (typeof BulkUpdateBookOneShotFields)[number]
+
+export type BulkUpdateBook = MapBulkUpdate<
+  v.InferOutput<typeof vBookMetadataDto> & OneShotAttributesBulk,
+  BulkUpdateBookFields | BulkUpdateBookOneShotFields
 >
