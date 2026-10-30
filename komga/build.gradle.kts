@@ -142,6 +142,7 @@ dependencies {
   testImplementation("com.google.jimfs:jimfs:1.3.2")
 
   testImplementation("com.tngtech.archunit:archunit-junit5:1.5.1")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 
   benchmarkImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
   benchmarkImplementation("org.openjdk.jmh:jmh-core:1.37")

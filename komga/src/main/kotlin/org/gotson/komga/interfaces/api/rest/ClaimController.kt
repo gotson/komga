@@ -29,6 +29,8 @@ import org.springframework.web.server.ResponseStatusException
 class ClaimController(
   private val userDetailsLifecycle: KomgaUserLifecycle,
 ) {
+  private val claimLock: Any = Any()
+
   @GetMapping
   @Operation(summary = "Retrieve claim status", description = "Check whether this server has already been claimed.")
   fun getClaimStatus() = ClaimStatus(userDetailsLifecycle.countUsers() > 0)
@@ -42,19 +44,20 @@ class ClaimController(
     @NotBlank
     @RequestHeader("X-Komga-Password")
     password: String,
-  ): UserDto {
-    if (userDetailsLifecycle.countUsers() > 0)
-      throw ResponseStatusException(HttpStatus.BAD_REQUEST, "This server has already been claimed")
+  ): UserDto =
+    synchronized(claimLock) {
+      if (userDetailsLifecycle.countUsers() > 0)
+        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "This server has already been claimed")
 
-    return userDetailsLifecycle
-      .createUser(
-        KomgaUser(
-          email = email,
-          password = password,
-          roles = UserRoles.entries.toSet(),
-        ),
-      ).toDto()
-  }
+      return userDetailsLifecycle
+        .createUser(
+          KomgaUser(
+            email = email,
+            password = password,
+            roles = UserRoles.entries.toSet(),
+          ),
+        ).toDto()
+    }
 
   data class ClaimStatus(
     val isClaimed: Boolean,
