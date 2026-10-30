@@ -28,7 +28,7 @@ komga:
     file: \${komga.config-dir}/sessions.sqlite
     pragmas:
       synchronous: NORMAL
-  jdbc-session-enabled: false
+  jdbc-session-enabled: true
 
 spring:
   session:

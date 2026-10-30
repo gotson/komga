@@ -36,7 +36,7 @@ class KomgaProperties {
 
   var oidcEmailVerification: Boolean = true
 
-  var jdbcSessionEnabled: Boolean = false
+  var jdbcSessionEnabled: Boolean = true
 
   var database = Database()
 
