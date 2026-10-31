@@ -1,0 +1,245 @@
+{
+  "2p+JVw": {
+    "defaultMessage": "Bu Komga sunucusu henüz aktif değil, erişebilmek için önce bir hesap oluşturmalısınız."
+  },
+  "2uUiqM": {
+    "defaultMessage": "Seri sıralaması"
+  },
+  "3DBPuv": {
+    "defaultMessage": "Kaydır"
+  },
+  "3J6FI8": {
+    "defaultMessage": "Görünümü düzenle"
+  },
+  "3MUQYL": {
+    "defaultMessage": "Oluştur ya da koleksiyonlara ekle"
+  },
+  "3OgH93": {
+    "defaultMessage": "Seri"
+  },
+  "3Pm2PO": {
+    "defaultMessage": "Hedef dosya adı"
+  },
+  "3T1ln7": {
+    "defaultMessage": "Kütüphaneyi Sil"
+  },
+  "3W0jUi": {
+    "defaultMessage": "Etiketleri hariç tut"
+  },
+  "3b7v1+": {
+    "defaultMessage": "Kitap bilgilerini içe aktar"
+  },
+  "3beD4X": {
+    "defaultMessage": "API Anahtarını Sil"
+  },
+  "3gimvl": {
+    "defaultMessage": "kütüphane adı"
+  },
+  "3lLmfX": {
+    "defaultMessage": "Koleksiyon"
+  },
+  "3qQjnw": {
+    "defaultMessage": "Dil"
+  },
+  "3rNj7/": {
+    "defaultMessage": "Onaylamak için tıklayın"
+  },
+  "3zkvDp": {
+    "defaultMessage": "Kapat"
+  },
+  "40HXjy": {
+    "defaultMessage": "İptal"
+  },
+  "464rk3": {
+    "defaultMessage": "Seri Seç"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Kobo Sync portu"
+  },
+  "4CIw7i": {
+    "defaultMessage": "Yayım Durumu"
+  },
+  "4CX0cY": {
+    "defaultMessage": "Seri detaylarını içe aktar"
+  },
+  "4IKM3R": {
+    "defaultMessage": "Etiket"
+  },
+  "4PDVX2": {
+    "defaultMessage": "EPUB"
+  },
+  "4TEXni": {
+    "defaultMessage": "Emeği geçen herkes"
+  },
+  "4U6L0S": {
+    "defaultMessage": "Bağlantılar"
+  },
+  "4X3RAp": {
+    "defaultMessage": "{count, plural, one {# cilt} other {# ciltler} }"
+  },
+  "4Ybicn": {
+    "defaultMessage": "Oluştur"
+  },
+  "4g2M9O": {
+    "defaultMessage": "Seri Bulunamadı"
+  },
+  "4jKnoO": {
+    "defaultMessage": "Okunacak — {number}"
+  },
+  "4uqafX": {
+    "defaultMessage": "One-shot"
+  },
+  "4yDvPA": {
+    "defaultMessage": "Filtreleri temizle"
+  },
+  "5AAGkA": {
+    "defaultMessage": "Şifre"
+  },
+  "5JGOUU": {
+    "defaultMessage": "Kütüphane analizi"
+  },
+  "5Qha5m": {
+    "defaultMessage": "Manuel sıralama"
+  },
+  "5WMvLb": {
+    "defaultMessage": "ePub"
+  },
+  "5Zw5Zt": {
+    "defaultMessage": "Koleksiyondaki sonraki seriye git"
+  },
+  "5b2A0u": {
+    "defaultMessage": "Ana sayfaya yönlendirileceksiniz"
+  },
+  "5nswuX": {
+    "defaultMessage": "Klasik arayüzü aç"
+  },
+  "5rziSG": {
+    "defaultMessage": "Kullanılamıyor"
+  },
+  "5tbu8Y": {
+    "defaultMessage": "Yinele"
+  },
+  "5zPpyT": {
+    "defaultMessage": "Yaş aralığı"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "HTTP Sunucusu"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "Ayarın etkin olması için yeniden başlatma gerekir"
+  },
+  "6OXY1N": {
+    "defaultMessage": "One-Shot klasörü"
+  },
+  "6UXlVe": {
+    "defaultMessage": "Etiketler"
+  },
+  "6WDISV": {
+    "defaultMessage": "Sayfa bulunamadı"
+  },
+  "6eAECF": {
+    "defaultMessage": "Kütüphane"
+  },
+  "6nCIPn": {
+    "defaultMessage": "Tip"
+  },
+  "70/wK4": {
+    "defaultMessage": "Kütüphane oluştur"
+  },
+  "700A3r": {
+    "defaultMessage": "Kitap"
+  },
+  "7M1pUf": {
+    "defaultMessage": "Çöp kutusunu boşalt"
+  },
+  "7Ndu8p": {
+    "defaultMessage": "Sayı"
+  },
+  "7RfNiY": {
+    "defaultMessage": "Özet"
+  },
+  "7gdpKG": {
+    "defaultMessage": "Oluştur"
+  },
+  "7hwFJo": {
+    "defaultMessage": "Yazar"
+  },
+  "7z91nm": {
+    "defaultMessage": "Geçmiş"
+  },
+  "8/BXfN": {
+    "defaultMessage": "Tümü"
+  },
+  "811PxA": {
+    "defaultMessage": "veya"
+  },
+  "81BMAQ": {
+    "defaultMessage": "Kitap bilgilerini içe aktar"
+  },
+  "87q6WX": {
+    "defaultMessage": "Yok"
+  },
+  "8CVWWg": {
+    "defaultMessage": "Dosyaları sil"
+  },
+  "8Dun/Y": {
+    "defaultMessage": "Hayır"
+  },
+  "8KsYYJ": {
+    "defaultMessage": "Etiketler"
+  },
+  "8LT9D4": {
+    "defaultMessage": "İptal"
+  },
+  "8NDqor": {
+    "defaultMessage": "Dizgici"
+  },
+  "8Om/o/": {
+    "defaultMessage": "Klasörden içe aktar"
+  },
+  "8P7Yn+": {
+    "defaultMessage": "Yaş aralığı"
+  },
+  "8Yd/3a": {
+    "defaultMessage": "Rol adı"
+  },
+  "8hC76W": {
+    "defaultMessage": "Görevler"
+  },
+  "8jE3eP": {
+    "defaultMessage": "Kitap analiz edilemedi"
+  },
+  "8kylzj": {
+    "defaultMessage": "Sil"
+  },
+  "8xonXJ": {
+    "defaultMessage": "Kitaplıktaki tüm medya dosyalarını analiz eder. Analiz, medya hakkındaki bilgileri yakalar. Kitaplığınızın boyutuna bağlı olarak bu işlem uzun sürebilir."
+  },
+  "9/1/c7": {
+    "defaultMessage": "Kitap kapağı oluştur"
+  },
+  "90yqRq": {
+    "defaultMessage": "kütüphane ekle"
+  },
+  "9GaR82": {
+    "defaultMessage": "Genel"
+  },
+  "9TJRkm": {
+    "defaultMessage": "Seri detaylarını içe aktar"
+  },
+  "9VuyZU": {
+    "defaultMessage": "Başka bir klasörü taramayı deneyin"
+  },
+  "9XDmYO": {
+    "defaultMessage": "Kullanıcı Silme"
+  },
+  "9aVhJC": {
+    "defaultMessage": "CBZ"
+  },
+  "9dNd68": {
+    "defaultMessage": "Kullanıcı tarafından yüklenmiş"
+  },
+  "9mujmD": {
+    "defaultMessage": "Yayın Tarihi yok"
+  }
+}
