@@ -1,9 +1,15 @@
 {
+  "+6DtMH": {
+    "defaultMessage": "Interfaccia Utente"
+  },
   "+6YDzS": {
     "defaultMessage": "Nessun dato trovato"
   },
   "+8++PW": {
     "defaultMessage": "Libreria creata: {library}"
+  },
+  "+PNCoe": {
+    "defaultMessage": "Titolo alternativo"
   },
   "+TldjW": {
     "defaultMessage": "Niente da mostrare"
@@ -23,6 +29,9 @@
   "+r8FCS": {
     "defaultMessage": "Porta in ascolto del server"
   },
+  "+y+9xL": {
+    "defaultMessage": "Files oltre il limite di dimensione: {filenames}"
+  },
   "/5Gb4y": {
     "defaultMessage": "Elimina"
   },
@@ -32,8 +41,14 @@
   "/Acs82": {
     "defaultMessage": "Crea o aggiungi alle liste di lettura"
   },
+  "/LDx9p": {
+    "defaultMessage": "Confronta libri"
+  },
   "/NAG9i": {
     "defaultMessage": "Nessun risultato"
+  },
+  "/TRmi5": {
+    "defaultMessage": "Condivisione di etichette"
   },
   "/YxHru": {
     "defaultMessage": "Alcuni dei volumi selezionati sono duplicati"
@@ -50,6 +65,12 @@
   "02SRax": {
     "defaultMessage": "Accedi"
   },
+  "083NeH": {
+    "defaultMessage": "Tag di lingua IETF BCP 47"
+  },
+  "0ESsC0": {
+    "defaultMessage": "Continua con {provider}"
+  },
   "0ILHru": {
     "defaultMessage": "OK"
   },
@@ -61,6 +82,9 @@
   },
   "0MePSx": {
     "defaultMessage": "Trascina qui per evidenziare una libreria"
+  },
+  "0OEO+j": {
+    "defaultMessage": "Generi"
   },
   "0UFr4y": {
     "defaultMessage": "Tutto di"
@@ -89,11 +113,17 @@
   "111Isd": {
     "defaultMessage": "Ricostruisci l'indice di ricerca"
   },
+  "13nnQg": {
+    "defaultMessage": "Usa la nuova NextUI come predefinita per questo server"
+  },
   "14/Uh8": {
     "defaultMessage": "Modalità di importazione"
   },
   "18OKhZ": {
     "defaultMessage": "Trova volumi da convertire"
+  },
+  "1A8Mc1": {
+    "defaultMessage": "Entità degne di nota"
   },
   "1E0Duw": {
     "defaultMessage": "Dimensioni del file"
@@ -107,11 +137,23 @@
   "1bxWGd": {
     "defaultMessage": "Modifica i metadati della serie"
   },
+  "1hsKmu": {
+    "defaultMessage": "Personaggio"
+  },
   "1qIfds": {
     "defaultMessage": "In evidenza"
   },
+  "1z+Z+q": {
+    "defaultMessage": "Condivisione di etichette"
+  },
   "2Bh8F2": {
     "defaultMessage": "Ultimo"
+  },
+  "2IYW7s": {
+    "defaultMessage": "URL"
+  },
+  "2LLpzV": {
+    "defaultMessage": "Mostra dettagli"
   },
   "2Sx0J4": {
     "defaultMessage": "Pagina"
@@ -121,6 +163,9 @@
   },
   "2p+JVw": {
     "defaultMessage": "Questo server Komga non è ancora attivo, crea un account utente per accederci."
+  },
+  "2uUiqM": {
+    "defaultMessage": "Ordinamento serie"
   },
   "3DBPuv": {
     "defaultMessage": "Scorri"
@@ -152,17 +197,35 @@
   "3gimvl": {
     "defaultMessage": "menu libreria"
   },
+  "3lLmfX": {
+    "defaultMessage": "Collezione"
+  },
   "3qQjnw": {
     "defaultMessage": "Lingua"
   },
   "3rNj7/": {
     "defaultMessage": "Clicca per confermare"
   },
+  "3zkvDp": {
+    "defaultMessage": "Chiudi"
+  },
+  "40HXjy": {
+    "defaultMessage": "Annulla"
+  },
+  "464rk3": {
+    "defaultMessage": "Seleziona serie"
+  },
   "4AKIbg": {
     "defaultMessage": "Porta esterna di Kobo Sync"
   },
+  "4CIw7i": {
+    "defaultMessage": "Stato pubblicazione"
+  },
   "4CX0cY": {
     "defaultMessage": "Importa i metadati delle serie"
+  },
+  "4IKM3R": {
+    "defaultMessage": "Etichetta"
   },
   "4PDVX2": {
     "defaultMessage": "EPUB"
@@ -170,11 +233,20 @@
   "4TEXni": {
     "defaultMessage": "Tutti i collaboratori"
   },
+  "4U6L0S": {
+    "defaultMessage": "Collegamenti"
+  },
   "4X3RAp": {
     "defaultMessage": "{count, plural, one {# volume} other {# volumi} }"
   },
+  "4Ybicn": {
+    "defaultMessage": "Crea"
+  },
   "4g2M9O": {
     "defaultMessage": "Nessuna serie trovata"
+  },
+  "4jKnoO": {
+    "defaultMessage": "In lettura — {number}"
   },
   "4uqafX": {
     "defaultMessage": "Autoconclusivo"
@@ -194,8 +266,17 @@
   "5WMvLb": {
     "defaultMessage": "Epub"
   },
+  "5Xt1ke": {
+    "defaultMessage": "Gruppo"
+  },
+  "5Zw5Zt": {
+    "defaultMessage": "Vai alla serie successiva nella collezione"
+  },
   "5b2A0u": {
     "defaultMessage": "Verrai reindirizzato alla pagina iniziale"
+  },
+  "5nswuX": {
+    "defaultMessage": "Apri la UI classica"
   },
   "5rziSG": {
     "defaultMessage": "Non disponibile"
@@ -216,10 +297,13 @@
     "defaultMessage": "Cartella degli albi autoconclusivi"
   },
   "6UXlVe": {
-    "defaultMessage": "Tag"
+    "defaultMessage": "Etichette"
   },
   "6WDISV": {
     "defaultMessage": "Pagina non trovata"
+  },
+  "6eAECF": {
+    "defaultMessage": "Libreria"
   },
   "6nCIPn": {
     "defaultMessage": "Tipo"
@@ -233,6 +317,15 @@
   "7M1pUf": {
     "defaultMessage": "Svuota cestino"
   },
+  "7Ndu8p": {
+    "defaultMessage": "Numero"
+  },
+  "7RfNiY": {
+    "defaultMessage": "Sommario"
+  },
+  "7gdpKG": {
+    "defaultMessage": "Crea"
+  },
   "7hwFJo": {
     "defaultMessage": "Sceneggiatore"
   },
@@ -241,6 +334,9 @@
   },
   "8/BXfN": {
     "defaultMessage": "Tutti"
+  },
+  "811PxA": {
+    "defaultMessage": "oppure"
   },
   "81BMAQ": {
     "defaultMessage": "Importa metadati del volume"
@@ -253,6 +349,12 @@
   },
   "8Dun/Y": {
     "defaultMessage": "No"
+  },
+  "8KsYYJ": {
+    "defaultMessage": "Etichette"
+  },
+  "8LT9D4": {
+    "defaultMessage": "Annulla"
   },
   "8NDqor": {
     "defaultMessage": "Letterista"
@@ -783,7 +885,7 @@
     "defaultMessage": "Data di aggiunta"
   },
   "TPX4qo": {
-    "defaultMessage": "Tag"
+    "defaultMessage": "Etichette"
   },
   "TUxJCd": {
     "defaultMessage": "Scansiona all'avvio dell'applicazione"
