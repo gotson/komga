@@ -557,8 +557,8 @@
     },
     "edit_user_restrictions": {
       "age_restriction": {
-        "allow_under": "仅限定年龄以下",
-        "exclude_over": "排除超过限定年龄",
+        "allow_under": "允许最大年龄（包括）",
+        "exclude_over": "排除年龄（包括）",
         "none": "无限制"
       },
       "edit_restrictions_for": "编辑 {name} 的限制",
