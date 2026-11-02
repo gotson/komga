@@ -109,16 +109,7 @@ import { useAppStore } from '@/stores/app'
 import { usePagination } from '@/composables/pagination'
 import { useSelectionStore } from '@/stores/selection'
 import { useDisplay } from 'vuetify'
-import {
-  schemaFilterContributorsToConditions,
-  schemaFilterStringToConditions,
-  schemaFilterReleaseYearToConditions,
-  schemaFilterAgeRatingToConditions,
-  schemaFilterReadStatusToConditions,
-  schemaFilterIncludeExcludeToConditions,
-  valuesToConditions,
-  schemaFilterNotableEntitiesToConditions,
-} from '@/functions/filter'
+import { valuesToConditions, filtersToConditions } from '@/functions/filter'
 import { commonMessages } from '@/utils/i18n/common-messages'
 import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortSeries } from '@/types/sort'
@@ -186,25 +177,8 @@ const {
 const conds = computed(() => ({
   allOf: [
     valuesToConditions(libraryIds.value, 'libraryId'),
-    schemaFilterIncludeExcludeToConditions(filters.value.complete.filter, 'complete'),
-    schemaFilterIncludeExcludeToConditions(filters.value.unavailable.filter, 'deleted'),
-    schemaFilterIncludeExcludeToConditions(filters.value.oneshot.filter, 'oneShot'),
-    valuesToConditions(filters.value.seriesStatus.filter.v, 'seriesStatus'),
-    schemaFilterReadStatusToConditions(filters.value.read.filter),
-    schemaFilterStringToConditions(filters.value.genre.filter, 'genre', true),
-    schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),
-    schemaFilterStringToConditions(filters.value.publisher.filter, 'publisher', false),
-    schemaFilterStringToConditions(filters.value.sharingLabel.filter, 'sharingLabel', true),
-    schemaFilterStringToConditions(filters.value.language.filter, 'language', false),
-    schemaFilterReleaseYearToConditions(filters.value.year.filter),
-    schemaFilterAgeRatingToConditions(filters.value.age.filter),
-    ...Object.entries(filters.value.contributors.filter).map(([role, filter]) =>
-      schemaFilterContributorsToConditions(filter, role),
-    ),
-    ...Object.entries(filters.value.notableEntities.filter).map(([kind, filter]) =>
-      schemaFilterNotableEntitiesToConditions(filter, kind),
-    ),
-  ].filter(Boolean) as SearchConditionSeries[],
+    ...filtersToConditions(filters),
+  ] as SearchConditionSeries[],
 }))
 
 // clear selection if filter or paging changes

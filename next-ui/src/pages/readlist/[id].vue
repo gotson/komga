@@ -108,15 +108,7 @@ import { usePagination } from '@/composables/pagination'
 import { readListDetailQuery } from '@/colada/readlists'
 import { useSelectionStore } from '@/stores/selection'
 import { PageRequest, type Sort } from '@/types/PageRequest'
-import {
-  schemaFilterContributorsToConditions,
-  schemaFilterIncludeExcludeToConditions,
-  schemaFilterNotableEntitiesToConditions,
-  schemaFilterPosterToConditions,
-  schemaFilterReadStatusToConditions,
-  schemaFilterStringToConditions,
-  valuesToConditions,
-} from '@/functions/filter'
+import { filtersToConditions, valuesToConditions } from '@/functions/filter'
 import { bookListQuery, bookListQueryInfinite } from '@/colada/books'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import ChipCount from '@/components/ChipCount.vue'
@@ -190,21 +182,8 @@ const {
 const conds = computed(() => ({
   allOf: [
     valuesToConditions([readListId.value], 'readListId'),
-    schemaFilterStringToConditions(filters.value.library.filter, 'libraryId', false),
-    schemaFilterIncludeExcludeToConditions(filters.value.unavailable.filter, 'deleted'),
-    schemaFilterIncludeExcludeToConditions(filters.value.oneshot.filter, 'oneShot'),
-    schemaFilterReadStatusToConditions(filters.value.read.filter),
-    schemaFilterPosterToConditions(filters.value.poster.filter),
-    valuesToConditions(filters.value.mediaStatus.filter.v, 'mediaStatus'),
-    valuesToConditions(filters.value.profile.filter.v, 'mediaProfile'),
-    schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),
-    ...Object.entries(filters.value.contributors.filter).map(([role, filter]) =>
-      schemaFilterContributorsToConditions(filter, role),
-    ),
-    ...Object.entries(filters.value.notableEntities.filter).map(([kind, filter]) =>
-      schemaFilterNotableEntitiesToConditions(filter, kind),
-    ),
-  ].filter(Boolean) as SearchConditionBook[],
+    ...filtersToConditions(filters),
+  ] as SearchConditionBook[],
 }))
 
 // clear selection if filter or paging changes

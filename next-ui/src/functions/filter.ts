@@ -20,8 +20,10 @@ import {
   QueryParamContributors,
   QueryParamNotableEntities,
   type StandardFilters,
+  type SupportedFiltersOutput,
 } from '@/composables/filter'
 import { NOTABLE_ENTITY_ANYKIND } from '@/types/referential/notableEntity'
+import type { UnwrapRef } from 'vue'
 
 export function clearFilter(filter: FilterType) {
   if ('v' in filter) filter.v = []
@@ -42,6 +44,70 @@ export function countFilter(filter: FilterType): number {
     return 1
   if ('i' in filter && !!filter.i) return 1
   return 0
+}
+
+export function filtersToConditions(filters: Ref<Partial<UnwrapRef<SupportedFiltersOutput>>>) {
+  const conditions = []
+
+  if (filters.value.library)
+    conditions.push(
+      schemaFilterStringToConditions(filters.value.library.filter, 'libraryId', false),
+    )
+
+  if (filters.value.complete)
+    conditions.push(
+      schemaFilterIncludeExcludeToConditions(filters.value.complete.filter, 'complete'),
+    )
+  if (filters.value.unavailable)
+    conditions.push(
+      schemaFilterIncludeExcludeToConditions(filters.value.unavailable.filter, 'deleted'),
+    )
+  if (filters.value.oneshot)
+    conditions.push(schemaFilterIncludeExcludeToConditions(filters.value.oneshot.filter, 'oneShot'))
+  if (filters.value.seriesStatus)
+    conditions.push(valuesToConditions(filters.value.seriesStatus.filter.v, 'seriesStatus'))
+  if (filters.value.read)
+    conditions.push(schemaFilterReadStatusToConditions(filters.value.read.filter))
+  if (filters.value.poster)
+    conditions.push(schemaFilterPosterToConditions(filters.value.poster.filter))
+  if (filters.value.mediaStatus)
+    conditions.push(valuesToConditions(filters.value.mediaStatus.filter.v, 'mediaStatus'))
+  if (filters.value.profile)
+    conditions.push(valuesToConditions(filters.value.profile.filter.v, 'mediaProfile'))
+  if (filters.value.genre)
+    conditions.push(schemaFilterStringToConditions(filters.value.genre.filter, 'genre', true))
+  if (filters.value.tag)
+    conditions.push(schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true))
+  if (filters.value.publisher)
+    conditions.push(
+      schemaFilterStringToConditions(filters.value.publisher.filter, 'publisher', false),
+    )
+  if (filters.value.sharingLabel)
+    conditions.push(
+      schemaFilterStringToConditions(filters.value.sharingLabel.filter, 'sharingLabel', true),
+    )
+  if (filters.value.language)
+    conditions.push(
+      schemaFilterStringToConditions(filters.value.language.filter, 'language', false),
+    )
+  if (filters.value.year)
+    conditions.push(schemaFilterReleaseYearToConditions(filters.value.year.filter))
+  if (filters.value.age)
+    conditions.push(schemaFilterAgeRatingToConditions(filters.value.age.filter))
+  if (filters.value.contributors)
+    conditions.push(
+      ...Object.entries(filters.value.contributors.filter).map(([role, filter]) =>
+        schemaFilterContributorsToConditions(filter, role),
+      ),
+    )
+  if (filters.value.notableEntities)
+    conditions.push(
+      ...Object.entries(filters.value.notableEntities.filter).map(([kind, filter]) =>
+        schemaFilterNotableEntitiesToConditions(filter, kind),
+      ),
+    )
+
+  return conditions.filter((it) => it !== null)
 }
 
 export function valuesToConditions(value: string[] | undefined, key: string) {

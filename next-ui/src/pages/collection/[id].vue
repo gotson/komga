@@ -119,16 +119,7 @@
 import ChipCount from '@/components/ChipCount.vue'
 import PosterSizeSlider from '@/components/PosterSizeSlider.vue'
 import FilterButton from '@/components/filter/FilterButton.vue'
-import {
-  schemaFilterAgeRatingToConditions,
-  schemaFilterContributorsToConditions,
-  schemaFilterIncludeExcludeToConditions,
-  schemaFilterNotableEntitiesToConditions,
-  schemaFilterReadStatusToConditions,
-  schemaFilterReleaseYearToConditions,
-  schemaFilterStringToConditions,
-  valuesToConditions,
-} from '@/functions/filter'
+import { filtersToConditions, valuesToConditions } from '@/functions/filter'
 import { useDisplay } from 'vuetify/framework'
 import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
@@ -218,26 +209,8 @@ const sortActive = computed<Sort[]>(() => {
 const conds = computed(() => ({
   allOf: [
     valuesToConditions([collectionId.value], 'collectionId'),
-    schemaFilterStringToConditions(filters.value.library.filter, 'libraryId', false),
-    schemaFilterIncludeExcludeToConditions(filters.value.complete.filter, 'complete'),
-    schemaFilterIncludeExcludeToConditions(filters.value.unavailable.filter, 'deleted'),
-    schemaFilterIncludeExcludeToConditions(filters.value.oneshot.filter, 'oneShot'),
-    valuesToConditions(filters.value.seriesStatus.filter.v, 'seriesStatus'),
-    schemaFilterReadStatusToConditions(filters.value.read.filter),
-    schemaFilterStringToConditions(filters.value.genre.filter, 'genre', true),
-    schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),
-    schemaFilterStringToConditions(filters.value.publisher.filter, 'publisher', false),
-    schemaFilterStringToConditions(filters.value.sharingLabel.filter, 'sharingLabel', true),
-    schemaFilterStringToConditions(filters.value.language.filter, 'language', false),
-    schemaFilterReleaseYearToConditions(filters.value.year.filter),
-    schemaFilterAgeRatingToConditions(filters.value.age.filter),
-    ...Object.entries(filters.value.contributors.filter).map(([role, filter]) =>
-      schemaFilterContributorsToConditions(filter, role),
-    ),
-    ...Object.entries(filters.value.notableEntities.filter).map(([kind, filter]) =>
-      schemaFilterNotableEntitiesToConditions(filter, kind),
-    ),
-  ].filter(Boolean) as SearchConditionSeries[],
+    ...filtersToConditions(filters),
+  ] as SearchConditionSeries[],
 }))
 
 // clear selection if filter or paging changes
