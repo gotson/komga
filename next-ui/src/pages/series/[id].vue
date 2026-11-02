@@ -15,8 +15,8 @@
         <div class="d-flex ga-2 align-center mb-1">
           <span>{{ $formatMessage(commonMessages.filterPanelHeader) }}</span>
           <FilterChipCount
-            :count="filterCount"
-            @clear="clearFilters()"
+            :count="filtersCountAll"
+            @clear="filtersClearAll()"
           />
         </div>
       </v-list-subheader>
@@ -89,7 +89,7 @@
         tile
       >
         <FilterExpansionPanel
-          v-for="(filterContributor, role) in filterContributors"
+          v-for="(filterContributor, role) in filters.contributors.filter"
           :key="role"
           :title="
             contributorsRolesMessages?.[role]
@@ -97,7 +97,7 @@
               : role
           "
           :count="countFilter(filterContributor)"
-          @clear="filterContributorsClear(role)"
+          @clear="filters.contributors.clearOne(role)"
         >
           <FilterByContributor
             v-model="filterContributor.v"
@@ -121,7 +121,7 @@
         tile
       >
         <FilterExpansionPanel
-          v-for="(filterNotableEntity, kind) in filterNotableEntities"
+          v-for="(filterNotableEntity, kind) in filters.notableEntities.filter"
           :key="kind"
           :title="
             notableEntitiesKindsMessages?.[kind]
@@ -129,7 +129,7 @@
               : kind
           "
           :count="countFilter(filterNotableEntity)"
-          @clear="filterNotableEntitiesClear(kind)"
+          @clear="filters.notableEntities.clearOne(kind)"
         >
           <FilterByNotableEntity
             v-model="filterNotableEntity.v"
@@ -213,7 +213,7 @@
           <PagingSelector v-model="appStore.browsingPaging" />
 
           <FilterButton
-            :count="filterCount"
+            :count="filtersCountAll"
             :dot="!sortIsDefault"
             @click="filterDrawer = true"
           />
@@ -221,8 +221,8 @@
       </div>
 
       <EmptyStateFilterNoResults
-        v-if="totalElements === 0 && filterCount > 0"
-        @reset="clearFilters()"
+        v-if="totalElements === 0 && filtersCountAll > 0"
+        @reset="filtersClearAll()"
       />
 
       <ItemBrowser
@@ -265,7 +265,7 @@ import { storeToRefs } from 'pinia'
 import { usePresentationMode } from '@/composables/presentationMode'
 import { useIntlFormatter } from '@/composables/intlFormatter'
 import { sortBooks } from '@/types/sort'
-import { useFilterContributors, useFilterNotableEntities, useFilters } from '@/composables/filter'
+import { useFilters } from '@/composables/filter'
 import {
   countFilter,
   schemaFilterContributorsToConditions,
@@ -320,16 +320,6 @@ const { page0, page1, pageCount } = usePagination()
 
 const selectionStore = useSelectionStore()
 
-function clearFilters() {
-  filterContributorsClearAll()
-  filterNotableEntitiesClearAll()
-  filtersClearAll()
-}
-
-const filterCount = computed(
-  () => filterContributorsCount.value + filterNotableEntitiesCount.value + filtersCountAll.value,
-)
-
 const { convertSortOptionDescriptor } = useIntlFormatter()
 const sortDefault: Sort[] = [{ key: 'metadata.numberSort', order: 'asc' }]
 const sortOptions = sortBooks
@@ -342,22 +332,20 @@ const {
 } = useSort(sortDefault, sortOptions, false)
 
 const {
-  filter: filterContributors,
-  countAll: filterContributorsCount,
-  clearAll: filterContributorsClearAll,
-  clear: filterContributorsClear,
-} = useFilterContributors(filterContext)
-const {
-  filter: filterNotableEntities,
-  countAll: filterNotableEntitiesCount,
-  clearAll: filterNotableEntitiesClearAll,
-  clear: filterNotableEntitiesClear,
-} = useFilterNotableEntities(filterContext)
-const {
   filters,
   clearAll: filtersClearAll,
   countAll: filtersCountAll,
-} = useFilters(['mediaStatus', 'profile', 'read', 'tag', 'unavailable', 'oneshot', 'poster'])
+} = useFilters([
+  'mediaStatus',
+  'profile',
+  'read',
+  'tag',
+  'unavailable',
+  'oneshot',
+  'poster',
+  'contributors',
+  'notableEntities',
+])
 
 const conds = computed(() => ({
   allOf: [
@@ -369,10 +357,10 @@ const conds = computed(() => ({
     valuesToConditions(filters.value.mediaStatus.filter.v, 'mediaStatus'),
     valuesToConditions(filters.value.profile.filter.v, 'mediaProfile'),
     schemaFilterStringToConditions(filters.value.tag.filter, 'tag', true),
-    ...Object.entries(filterContributors.value).map(([role, filter]) =>
+    ...Object.entries(filters.value.contributors.filter).map(([role, filter]) =>
       schemaFilterContributorsToConditions(filter, role),
     ),
-    ...Object.entries(filterNotableEntities.value).map(([kind, filter]) =>
+    ...Object.entries(filters.value.notableEntities.filter).map(([kind, filter]) =>
       schemaFilterNotableEntitiesToConditions(filter, kind),
     ),
   ].filter(Boolean) as SearchConditionBook[],

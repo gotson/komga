@@ -19,7 +19,7 @@ import type { AuthorDto, NotableEntityDto } from '@/generated/openapi'
 import {
   QueryParamContributors,
   QueryParamNotableEntities,
-  type SupportedFilters,
+  type StandardFilters,
 } from '@/composables/filter'
 import { NOTABLE_ENTITY_ANYKIND } from '@/types/referential/notableEntity'
 
@@ -337,9 +337,9 @@ export function notableEntityToQuery(notableEntity: NotableEntityDto) {
  * @param filter
  * @param value
  */
-export function filterToQuery<K extends keyof SupportedFilters>(
+export function filterToQuery<K extends keyof StandardFilters>(
   filter: K,
-  value: SupportedFilters[K],
+  value: StandardFilters[K],
 ) {
   return {
     [filter]: JSON.stringify(value),

@@ -34,7 +34,7 @@ import {
 export const QueryParamContributors = 'contributors'
 export const QueryParamNotableEntities = 'entities'
 
-export function useFilterContributors(context?: MaybeRefOrGetter<FilterContext>) {
+function useFilterContributors(context?: MaybeRefOrGetter<FilterContext>) {
   // the update function for the query param
   function updateRouteFn(data: v.InferOutput<typeof SchemaFilterContributorsRecord>) {
     const defaults = v.getDefaults(SchemaFilterContributors)
@@ -82,29 +82,29 @@ export function useFilterContributors(context?: MaybeRefOrGetter<FilterContext>)
     })
   })
 
-  const countAll = computed(() =>
+  const count = computed(() =>
     Object.values(filterContributors.value)
       .map((filter) => filter.v.length)
       .reduce((sum, item) => sum + item, 0),
   )
 
-  function clearAll() {
+  function clear() {
     Object.values(filterContributors.value).forEach((it) => clearFilter(it))
   }
 
-  function clear(role: string) {
+  function clearOne(role: string) {
     if (filterContributors.value[role]) clearFilter(filterContributors.value[role])
   }
 
   return {
     filter: filterContributors,
-    countAll,
-    clearAll,
+    count,
     clear,
+    clearOne,
   }
 }
 
-export function useFilterNotableEntities(context?: MaybeRefOrGetter<FilterContext>) {
+function useFilterNotableEntities(context?: MaybeRefOrGetter<FilterContext>) {
   // the update function for the query param
   function updateRouteFn(data: v.InferOutput<typeof SchemaFilterNotableEntitiesRecord>) {
     const defaults = v.getDefaults(SchemaFilterNotableEntities)
@@ -153,30 +153,30 @@ export function useFilterNotableEntities(context?: MaybeRefOrGetter<FilterContex
     })
   })
 
-  const countAll = computed(() =>
+  const count = computed(() =>
     Object.values(filterNotableEntities.value)
       .map((filter) => filter.v.length)
       .reduce((sum, item) => sum + item, 0),
   )
 
-  function clearAll() {
+  function clear() {
     Object.values(filterNotableEntities.value).forEach((it) => clearFilter(it))
   }
 
-  function clear(kind: string) {
+  function clearOne(kind: string) {
     if (filterNotableEntities.value[kind]) clearFilter(filterNotableEntities.value[kind])
   }
 
   return {
     filter: filterNotableEntities,
-    countAll,
-    clearAll,
+    count,
     clear,
+    clearOne,
   }
 }
 
-// list of supported filters and their associated schema
-const supportedFilters = {
+// list of supported standard filters and their associated schema
+const standardFilters = {
   seriesStatus: SchemaFilterSeriesStatus,
   read: SchemaFilterReadStatus,
   genre: SchemaFilterStrings,
@@ -195,45 +195,67 @@ const supportedFilters = {
   poster: SchemaFilterPoster,
 }
 
-export type SupportedFilters = {
-  [K in keyof typeof supportedFilters]: v.InferOutput<(typeof supportedFilters)[K]>
+export type StandardFilters = {
+  [K in keyof typeof standardFilters]: v.InferOutput<(typeof standardFilters)[K]>
 }
 
-type SupportedFiltersOutput = {
-  [K in keyof typeof supportedFilters]: FilterValue<(typeof supportedFilters)[K]>
-}
-type FilterValue<T extends v.GenericSchema> = {
+type StandardFilterValue<T extends v.GenericSchema> = {
   filter: Ref<v.InferOutput<T>>
   count: ComputedRef<number>
   clear: () => void
 }
 
-export function useFilters<K extends keyof typeof supportedFilters>(filterTypes: K[]) {
+type SupportedFilterKeys = keyof typeof standardFilters | 'contributors' | 'notableEntities'
+
+type SupportedFiltersOutput = {
+  [K in SupportedFilterKeys]: K extends keyof typeof standardFilters
+    ? StandardFilterValue<(typeof standardFilters)[K]>
+    : K extends 'contributors'
+      ? ReturnType<typeof useFilterContributors>
+      : K extends 'notableEntities'
+        ? ReturnType<typeof useFilterNotableEntities>
+        : never
+}
+
+function isStandardFilterKey(key: SupportedFilterKeys): key is keyof typeof standardFilters {
+  return key in standardFilters
+}
+
+export function useFilters<K extends SupportedFilterKeys>(
+  filterTypes: K[],
+  context?: MaybeRefOrGetter<FilterContext>,
+) {
   type SelectedFilter = Pick<SupportedFiltersOutput, K>
   const filters = ref<SelectedFilter>({} as SelectedFilter)
 
   filterTypes.forEach((type) => {
-    const filter = useRouteQuerySchema(type, supportedFilters[type]).data
-    filters.value[type] = {
-      filter: filter,
-      count: computed(() => countFilter(filter.value)),
-      clear: () => clearFilter(filter.value),
+    if (type === 'contributors') {
+      filters.value[type] = useFilterContributors(context)
+    } else if (type === 'notableEntities') {
+      filters.value[type] = useFilterNotableEntities(context)
+    } else if (isStandardFilterKey(type)) {
+      const filter = useRouteQuerySchema(type, standardFilters[type]).data
+      filters.value[type] = {
+        filter: filter,
+        count: computed(() => countFilter(filter.value)),
+        clear: () => clearFilter(filter.value),
+      }
     }
   })
 
   function clearAll() {
-    Object.values(filters.value).forEach((it) => (it as FilterValue<never>).clear())
+    Object.values(filters.value).forEach((it) => (it as StandardFilterValue<never>).clear())
   }
 
   const countAll = computed(() =>
     Object.values(filters.value)
-      .map((it) => (it as UnwrapRef<FilterValue<never>>).count)
+      .map((it) => (it as UnwrapRef<StandardFilterValue<never>>).count)
       .reduce((sum, val) => sum + val, 0),
   )
 
   return {
     filters,
     clearAll,
-    countAll: countAll,
+    countAll,
   }
 }
