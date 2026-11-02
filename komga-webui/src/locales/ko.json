@@ -557,8 +557,8 @@
     },
     "edit_user_restrictions": {
       "age_restriction": {
-        "allow_under": "설정한 연령 미만만 허용",
-        "exclude_over": "설정한 연령을 초과하면 제외",
+        "allow_under": "지정 연령 이하만 허용",
+        "exclude_over": "지정 연령 이상 제외",
         "none": "제한 없음"
       },
       "edit_restrictions_for": "{name} 제한 편집",
@@ -1083,7 +1083,7 @@
     "context_path": "'/'로 시작해야 하고, '/-_'로 끝나지 않으며, '/-_a-z0-9'만 포함해야 합니다",
     "one_or_more": "1 이상이어야 합니다",
     "tcp_port": "1에서 65535 사이여야 합니다",
-    "zero_or_more": "0 또는 그 이상이어야 함"
+    "zero_or_more": "0 또는 그 이상이어야 합니다"
   },
   "welcome": {
     "add_library": "서재 추가",
