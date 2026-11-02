@@ -95,6 +95,7 @@
     "beginning_of_book": "Kitabın başındasınız.",
     "changing_reading_direction": "Okuma Yönünü Değiştirme",
     "cycling_page_layout": "Çevrim Sayfa Düzeni",
+    "cycling_page_margin": "Çevrim Sayfa Aralığı",
     "cycling_scale": "Çevrim Ölçeği",
     "cycling_side_padding": "Çevrim Yan Dolgusu",
     "download_current_page": "Sayfayı indir",
@@ -260,12 +261,14 @@
     "password": "Şifre",
     "pdf": "PDF",
     "pending_tasks": "Bekleyen görev yok | 1 bekleyen görev | {count} bekleyen görev",
+    "pinned_libraries": "İşaretli Kütüphaneler",
     "publisher": "Yayıncı",
     "read": "Oku",
     "read_on": "{date} tarihinde oku",
     "readlist": "Okuma Listesi",
     "readlists": "Okuma Listeleri",
     "remember-me": "Beni hatırla",
+    "reorder": "Yeniden sırala",
     "required": "Zorunlu",
     "reset_filters": "Filtreleri sıfırla",
     "roles": "Roller",
@@ -298,6 +301,7 @@
     "comicrack_preambule_html": "ComickRack Okuma Listelerini <code>.cbl</code> formatında içeri aktarabilirsiniz. <br>Komga seri ve kitap sayısını kütüphanenizdeki seri ve kitap sayılarıyla eşleştirmeye çalışacak.",
     "dialog_confirmation": {
       "body": "{unmatched} / {total} kitap eşleşti",
+      "body2": "{total} kitaptan {duplicates} tanesi çoğaltıldı",
       "create": "Yine de oluştur",
       "title": "Bazı kitaplar eşleşmiyor"
     },
@@ -458,6 +462,7 @@
       "dialot_title_edit": "Kütüphaneyi Düzenle",
       "field_analysis_analyze_dimensions": "Sayfa boyutlarını analiz et",
       "field_analysis_hash_files": "Dosyalar için hash'leri hesapla",
+      "field_analysis_hash_koreader": "KOReader için hash'leri hesapla",
       "field_analysis_hash_pages": "Sayfalar için hash'leri hesapla",
       "field_convert_to_cbz": "Atomatik olarak CBZ formatına dönüştür",
       "field_import_barcode_isbn": "ISBN barkodu",
@@ -512,7 +517,8 @@
     },
     "edit_recommended": {
       "button_confirm": "Değişiklikleri kaydet",
-      "button_reset": "Varsayılana sıfırla"
+      "button_reset": "Varsayılana sıfırla",
+      "dialog_title": "Önerilenler görünümünü düzenle"
     },
     "edit_series": {
       "button_cancel": "İptal",
@@ -653,6 +659,7 @@
     "delete_to_save": "{size} alan kazanmak için silin",
     "deleted_count": "{count} defa silindi",
     "empty_title": "Eş sayfa bulunamadı",
+    "empty_title_known": "Bilinen bir kopya bulunamadı",
     "filter": {
       "count": "Sayı",
       "date_added": "Eklenme tarihi",
@@ -668,7 +675,7 @@
     "matches_n": "Eşleşme yok | 1 eşleşme | {count} eşleşme",
     "new": "Yeni",
     "saved_size": "{size} kazanıldı",
-    "title": "Eş sayfalar",
+    "title": "Eş Sayfalar",
     "unknown_size": "Bilinmeyen boyut"
   },
   "duplicates": {
@@ -754,6 +761,7 @@
   "epubreader": {
     "current_chapter": "Şimdiki bölüm",
     "page_of": "{count} sayfa içinde {page}.",
+    "publisher_font": "Yayıncı",
     "settings": {
       "column_count": "Sütun sayısı",
       "layout": "Düzen",
@@ -812,7 +820,8 @@
     "ERR_1031": "ComicRack CBL kitabında seri veya numara eksik",
     "ERR_1032": "EPUB dosyası hatalı medya tipinde",
     "ERR_1033": "Bazı öğeler eksik",
-    "ERR_1034": "Bu yorum ile bir API anahtarı zaten mevcut"
+    "ERR_1034": "Bu yorum ile bir API anahtarı zaten mevcut",
+    "ERR_1035": "EPUB içindekilerine erişilirken bir hata oluştu"
   },
   "filter": {
     "age_rating": "yaş sınırı",
