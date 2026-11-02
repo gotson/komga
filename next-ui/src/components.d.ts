@@ -115,6 +115,7 @@ declare module 'vue' {
     FilterExpansionPanel: typeof import('./components/filter/ExpansionPanel.vue')['default']
     FilterIncludeExclude: typeof import('./components/filter/IncludeExclude.vue')['default']
     FilterList: typeof import('./components/filter/List.vue')['default']
+    FilterPanel: typeof import('./components/filter/Panel.vue')['default']
     FilterSearchList: typeof import('./components/filter/SearchList.vue')['default']
     FilterSelectRange: typeof import('./components/filter/SelectRange.vue')['default']
     FilterTriState: typeof import('./components/filter/TriState.vue')['default']

@@ -207,7 +207,7 @@ type StandardFilterValue<T extends v.GenericSchema> = {
 
 type SupportedFilterKeys = keyof typeof standardFilters | 'contributors' | 'notableEntities'
 
-type SupportedFiltersOutput = {
+export type SupportedFiltersOutput = {
   [K in SupportedFilterKeys]: K extends keyof typeof standardFilters
     ? StandardFilterValue<(typeof standardFilters)[K]>
     : K extends 'contributors'
