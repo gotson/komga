@@ -5,6 +5,7 @@
       :animation="150"
       ghost-class="ghost"
       target=".sort-target"
+      handle=".handle"
       @start="drag = true"
       @end="nextTick(() => (drag = false))"
     >
@@ -16,10 +17,20 @@
           <v-list-item
             v-for="section in localSections"
             :key="section.section"
-            :title="$formatMessage(overviewSectionMessages[section.section])"
-            prepend-icon="i-mdi:drag-horizontal"
-            class="cursor-grab"
           >
+            <template #prepend>
+              <v-icon
+                icon="i-mdi:drag-horizontal"
+                class="handle cursor-grab"
+              />
+            </template>
+
+            <template #title>
+              <div class="handle cursor-grab">
+                {{ $formatMessage(overviewSectionMessages[section.section]) }}
+              </div>
+            </template>
+
             <template #append>
               <v-switch
                 v-model="section.enabled"
