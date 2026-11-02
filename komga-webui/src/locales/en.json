@@ -557,8 +557,8 @@
     },
     "edit_user_restrictions": {
       "age_restriction": {
-        "allow_under": "Allow only under",
-        "exclude_over": "Exclude over",
+        "allow_under": "Allow up to (inclusive)",
+        "exclude_over": "Exclude from (inclusive)",
         "none": "No restriction"
       },
       "edit_restrictions_for": "Edit restrictions for {name}",
