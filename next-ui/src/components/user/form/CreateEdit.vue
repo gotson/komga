@@ -304,25 +304,25 @@ const userRoles = computed(() =>
 const ageRestrictions = [
   {
     title: intl.formatMessage({
-      description: 'User creation/edit dialog: Age restriction field possible option',
+      description: 'User creation/edit dialog: Age restriction field - no restriction',
       defaultMessage: 'No restriction',
-      id: 'AeA9Ka',
+      id: '5voJNm',
     }),
     value: 'NONE',
   },
   {
     title: intl.formatMessage({
-      description: 'User creation/edit dialog: Age restriction field possible option',
-      defaultMessage: 'Allow only under',
-      id: '/bathK',
+      description: 'User creation/edit dialog: Age restriction field - allow up to',
+      defaultMessage: 'Allow up to (inclusive)',
+      id: 'a+32Gi',
     }),
     value: 'ALLOW_ONLY',
   },
   {
     title: intl.formatMessage({
-      description: 'User creation/edit dialog: Age restriction field possible option',
-      defaultMessage: 'Exclude over',
-      id: 'wmGcF+',
+      description: 'User creation/edit dialog: Age restriction field - exclude from',
+      defaultMessage: 'Exclude from (inclusive)',
+      id: 'Dsytsl',
     }),
     value: 'EXCLUDE',
   },

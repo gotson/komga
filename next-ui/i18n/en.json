@@ -71,10 +71,6 @@
     "defaultMessage": "Some of the selected books are duplicates",
     "description": "Create read list error: some of the selected books are duplicates"
   },
-  "/bathK": {
-    "defaultMessage": "Allow only under",
-    "description": "User creation/edit dialog: Age restriction field possible option"
-  },
   "/lE31l": {
     "defaultMessage": "Force Kobo sync",
     "description": "Force Sync API Key dialog title"
@@ -379,6 +375,10 @@
     "defaultMessage": "Retry",
     "description": "Server unreachable error view: button"
   },
+  "5voJNm": {
+    "defaultMessage": "No restriction",
+    "description": "User creation/edit dialog: Age restriction field - no restriction"
+  },
   "5zPpyT": {
     "defaultMessage": "Age range",
     "description": "Filter by age rating: range label"
@@ -563,10 +563,6 @@
     "defaultMessage": "Add Custom Kind",
     "description": "Metadata edition: add kind dialog title"
   },
-  "AeA9Ka": {
-    "defaultMessage": "No restriction",
-    "description": "User creation/edit dialog: Age restriction field possible option"
-  },
   "Ai7bBV": {
     "defaultMessage": "{count, plural, one {# page} other {# pages} }",
     "description": "Book card subtitle: count of pages"
@@ -750,6 +746,10 @@
   "Dn4qvV": {
     "defaultMessage": "Restore defaults",
     "description": "Reorder sections: restore defaults button"
+  },
+  "Dsytsl": {
+    "defaultMessage": "Exclude from (inclusive)",
+    "description": "User creation/edit dialog: Age restriction field - exclude from"
   },
   "DwDa04": {
     "defaultMessage": "Scan interval",
@@ -1770,6 +1770,10 @@
   "Zozcfh": {
     "defaultMessage": "Source",
     "description": "Authentication Activity table header: Source"
+  },
+  "a+32Gi": {
+    "defaultMessage": "Allow up to (inclusive)",
+    "description": "User creation/edit dialog: Age restriction field - allow up to"
   },
   "a5MYiP": {
     "defaultMessage": "Posters",
@@ -3230,10 +3234,6 @@
   "wbH42A": {
     "defaultMessage": "Unavailable",
     "description": "Series card subtitle: unavailable"
-  },
-  "wmGcF+": {
-    "defaultMessage": "Exclude over",
-    "description": "User creation/edit dialog: Age restriction field possible option"
   },
   "wwiazg": {
     "defaultMessage": "No valid image found in clipboard",
