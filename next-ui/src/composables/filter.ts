@@ -21,7 +21,7 @@ import { CONTRIBUTOR_ANYROLE, contributorsRolesMessages } from '@/types/referent
 import { useQuery } from '@pinia/colada'
 import { authorsRolesQuery, notableEntitiesKindsQuery } from '@/colada/referential'
 import { PageRequest } from '@/types/PageRequest'
-import { watchImmediate } from '@vueuse/core'
+import { watchDeep, watchImmediate } from '@vueuse/core'
 import { createOrderCompareFn } from '@/functions/sort'
 import { clearFilter, countFilter } from '@/functions/filter'
 import type { MaybeRefOrGetter, UnwrapRef } from 'vue'
@@ -30,6 +30,8 @@ import {
   NOTABLE_ENTITY_ANYKIND,
   notableEntitiesKindsMessages,
 } from '@/types/referential/notableEntity'
+import { useFilterStore } from '@/stores/filter'
+import { logger } from '@/services/logtape'
 
 export const QueryParamContributors = 'contributors'
 export const QueryParamNotableEntities = 'entities'
@@ -52,6 +54,7 @@ function useFilterContributors(context?: MaybeRefOrGetter<FilterContext>) {
     updateRouteFn,
   ).data
 
+  const isReady = ref(false)
   // get the roles dynamically from the filter context
   const filterContext = inject(filterKeys.context, context ?? {})
   const { data } = useQuery(() =>
@@ -80,6 +83,8 @@ function useFilterContributors(context?: MaybeRefOrGetter<FilterContext>) {
     serverRoles.forEach((role) => {
       if (!filterContributors.value[role]) filterContributors.value[role] = { m: 'anyOf', v: [] }
     })
+
+    isReady.value = true
   })
 
   const count = computed(() =>
@@ -101,6 +106,7 @@ function useFilterContributors(context?: MaybeRefOrGetter<FilterContext>) {
     count,
     clear,
     clearOne,
+    isReady,
   }
 }
 
@@ -122,6 +128,7 @@ function useFilterNotableEntities(context?: MaybeRefOrGetter<FilterContext>) {
     updateRouteFn,
   ).data
 
+  const isReady = ref(false)
   // get the kinds dynamically from the filter context
   const filterContext = inject(filterKeys.context, context ?? {})
   const { data } = useQuery(() =>
@@ -151,6 +158,8 @@ function useFilterNotableEntities(context?: MaybeRefOrGetter<FilterContext>) {
       if (!filterNotableEntities.value[kind])
         filterNotableEntities.value[kind] = { m: 'anyOf', v: [] }
     })
+
+    isReady.value = true
   })
 
   const count = computed(() =>
@@ -172,6 +181,7 @@ function useFilterNotableEntities(context?: MaybeRefOrGetter<FilterContext>) {
     count,
     clear,
     clearOne,
+    isReady,
   }
 }
 
@@ -205,7 +215,7 @@ type StandardFilterValue<T extends v.GenericSchema> = {
   clear: () => void
 }
 
-type SupportedFilterKeys = keyof typeof standardFilters | 'contributors' | 'notableEntities'
+export type SupportedFilterKeys = keyof typeof standardFilters | 'contributors' | 'notableEntities'
 
 export type SupportedFiltersOutput = {
   [K in SupportedFilterKeys]: K extends keyof typeof standardFilters
@@ -217,24 +227,57 @@ export type SupportedFiltersOutput = {
         : never
 }
 
+export type FilterStateMap = {
+  [K in SupportedFilterKeys]: UnwrapRef<SupportedFiltersOutput[K]>['filter']
+}
+
 function isStandardFilterKey(key: SupportedFilterKeys): key is keyof typeof standardFilters {
   return key in standardFilters
 }
 
+type FiltersConfig = {
+  context?: MaybeRefOrGetter<FilterContext>
+  persist?: boolean
+  viewName?: string
+}
+
 export function useFilters<K extends SupportedFilterKeys>(
   filterTypes: K[],
-  context?: MaybeRefOrGetter<FilterContext>,
+  config: FiltersConfig = {},
 ) {
+  const { context, persist, viewName } = config
+
+  const filterStore = useFilterStore()
+
   type SelectedFilter = Pick<SupportedFiltersOutput, K>
   const filters = ref<SelectedFilter>({} as SelectedFilter)
 
+  // store the readiness of each filter, in case they depend on async data
+  const readyRefs: Ref<boolean>[] = []
+
+  const isPersistMode = ref(false)
+
+  const isReady = computed(() => readyRefs.every((r) => r.value))
+
+  const countAll = computed(() =>
+    Object.values(filters.value)
+      .map((it) => (it as UnwrapRef<StandardFilterValue<never>>).count)
+      .reduce((sum, val) => sum + val, 0),
+  )
+
+  // build filters
   filterTypes.forEach((type) => {
     if (type === 'contributors') {
-      filters.value[type] = useFilterContributors(context)
+      const filterContributors = useFilterContributors(context)
+      readyRefs.push(filterContributors.isReady)
+      filters.value[type] = filterContributors
     } else if (type === 'notableEntities') {
-      filters.value[type] = useFilterNotableEntities(context)
+      const filterNotableEntities = useFilterNotableEntities(context)
+      readyRefs.push(filterNotableEntities.isReady)
+      filters.value[type] = filterNotableEntities
     } else if (isStandardFilterKey(type)) {
       const filter = useRouteQuerySchema(type, standardFilters[type]).data
+      readyRefs.push(ref(true))
       filters.value[type] = {
         filter: filter,
         count: computed(() => countFilter(filter.value)),
@@ -243,19 +286,85 @@ export function useFilters<K extends SupportedFilterKeys>(
     }
   })
 
+  // persistence handling
+  if (persist && viewName) {
+    let unwatchIsReady: (() => void) | undefined = undefined
+    unwatchIsReady = watchImmediate(isReady, (ready) => {
+      if (ready) {
+        const isFilterSameAsPersisted = deepEqual(
+          getSnapshot(),
+          filterStore.getSavedFilters(viewName),
+        )
+        logger.debug(`query filter equals stored filter: ${isFilterSameAsPersisted}`)
+
+        const isFilterClean = countAll.value === 0
+        logger.debug(`query filter is clean: ${isFilterClean}`)
+
+        isPersistMode.value = isFilterClean || isFilterSameAsPersisted
+        if (isPersistMode.value) {
+          restoreFromStore()
+
+          watchDeep(
+            () => getSnapshot(),
+            () => {
+              if (isPersistMode.value) persistToStore()
+            },
+          )
+        }
+
+        unwatchIsReady?.()
+      }
+    })
+  }
+
   function clearAll() {
     Object.values(filters.value).forEach((it) => (it as StandardFilterValue<never>).clear())
   }
 
-  const countAll = computed(() =>
-    Object.values(filters.value)
-      .map((it) => (it as UnwrapRef<StandardFilterValue<never>>).count)
-      .reduce((sum, val) => sum + val, 0),
-  )
+  function getSnapshot(): Partial<FilterStateMap> {
+    const state: Partial<FilterStateMap> = {}
+    Object.entries(filters.value).forEach(([key, val]) => {
+      const targetFilter = (val as { filter: unknown }).filter
+      const rawValue =
+        typeof targetFilter === 'object' && targetFilter !== null && 'value' in targetFilter
+          ? (targetFilter as Ref<unknown>).value
+          : targetFilter
+
+      state[key as K] = JSON.parse(JSON.stringify(rawValue))
+    })
+    return state
+  }
+
+  function restore(state: Partial<FilterStateMap>) {
+    Object.entries(state).forEach(([key, value]) => {
+      const target = filters.value[key as K]
+      if (!target || value === undefined) return
+
+      ;(target as { filter: unknown }).filter = JSON.parse(JSON.stringify(value))
+    })
+  }
+
+  function persistToStore() {
+    if (viewName) {
+      filterStore.saveFilterState(viewName, getSnapshot())
+    }
+  }
+
+  function restoreFromStore() {
+    if (viewName) {
+      const savedFilters = filterStore.getSavedFilters(viewName)
+      if (savedFilters) {
+        restore(savedFilters)
+      }
+    }
+  }
 
   return {
     filters,
     clearAll,
     countAll,
+    persistToStore,
+    restoreFromStore,
+    isPersistMode,
   }
 }

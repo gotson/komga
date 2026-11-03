@@ -198,7 +198,7 @@ const {
     'contributors',
     'notableEntities',
   ],
-  filterContext,
+  { context: filterContext, viewName: viewName.value, persist: true },
 )
 
 const sortActive = computed<Sort[]>(() => {

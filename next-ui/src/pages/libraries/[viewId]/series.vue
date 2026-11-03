@@ -148,22 +148,28 @@ const {
   filters,
   clearAll: filtersClearAll,
   countAll: filtersCountAll,
-} = useFilters([
-  'seriesStatus',
-  'read',
-  'genre',
-  'tag',
-  'publisher',
-  'sharingLabel',
-  'language',
-  'year',
-  'age',
-  'complete',
-  'unavailable',
-  'oneshot',
-  'contributors',
-  'notableEntities',
-])
+} = useFilters(
+  [
+    'seriesStatus',
+    'read',
+    'genre',
+    'tag',
+    'publisher',
+    'sharingLabel',
+    'language',
+    'year',
+    'age',
+    'complete',
+    'unavailable',
+    'oneshot',
+    'contributors',
+    'notableEntities',
+  ],
+  {
+    viewName: viewName.value,
+    persist: true,
+  },
+)
 
 const { convertSortOptionDescriptor } = useIntlFormatter()
 const sortDefault: Sort[] = [{ key: 'metadata.titleSort', order: 'asc' }]

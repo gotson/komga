@@ -150,6 +150,8 @@ const {
 // redirect to home if the entity is deleted
 watch(error, () => router.push('/'))
 
+const viewName = computed(() => `readlist${readListId.value}`)
+
 const { page0, page1, pageCount } = usePagination()
 
 const selectionStore = useSelectionStore()
@@ -176,7 +178,7 @@ const {
     'contributors',
     'notableEntities',
   ],
-  filterContext,
+  { context: filterContext, viewName: viewName.value, persist: true },
 )
 
 const conds = computed(() => ({

@@ -119,7 +119,7 @@ const display = useDisplay()
 const appStore = useAppStore()
 const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
 
-// const viewName = computed(() => `${libraryViewId}_books`)
+const viewName = computed(() => `${libraryViewId}_books`)
 
 const { page0, page1, pageCount } = usePagination()
 
@@ -129,17 +129,23 @@ const {
   filters,
   clearAll: filtersClearAll,
   countAll: filtersCountAll,
-} = useFilters([
-  'mediaStatus',
-  'profile',
-  'read',
-  'tag',
-  'unavailable',
-  'oneshot',
-  'poster',
-  'contributors',
-  'notableEntities',
-])
+} = useFilters(
+  [
+    'mediaStatus',
+    'profile',
+    'read',
+    'tag',
+    'unavailable',
+    'oneshot',
+    'poster',
+    'contributors',
+    'notableEntities',
+  ],
+  {
+    viewName: viewName.value,
+    persist: true,
+  },
+)
 
 const { convertSortOptionDescriptor } = useIntlFormatter()
 const sortDefault: Sort[] = [

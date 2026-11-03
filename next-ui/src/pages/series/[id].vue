@@ -202,17 +202,23 @@ const {
   filters,
   clearAll: filtersClearAll,
   countAll: filtersCountAll,
-} = useFilters([
-  'mediaStatus',
-  'profile',
-  'read',
-  'tag',
-  'unavailable',
-  'oneshot',
-  'poster',
-  'contributors',
-  'notableEntities',
-])
+} = useFilters(
+  [
+    'mediaStatus',
+    'profile',
+    'read',
+    'tag',
+    'unavailable',
+    'oneshot',
+    'poster',
+    'contributors',
+    'notableEntities',
+  ],
+  {
+    viewName: viewName.value,
+    persist: true,
+  },
+)
 
 const conds = computed(() => ({
   allOf: [
