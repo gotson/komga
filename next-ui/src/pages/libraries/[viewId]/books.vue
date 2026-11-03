@@ -156,8 +156,14 @@ const sortOptions = sortBooks.map((it) => convertSortOptionDescriptor(it))
 const {
   sortActive,
   isDefault: sortIsDefault,
-  restore: sortRestore,
-} = useSort(sortDefault, sortOptions, true)
+  restoreDefault: sortRestore,
+} = useSort({
+  defaultSort: sortDefault,
+  options: sortOptions,
+  multiSort: true,
+  persist: true,
+  viewName: viewName.value,
+})
 
 const conds = computed(() => ({
   allOf: [

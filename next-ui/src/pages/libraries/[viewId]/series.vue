@@ -177,8 +177,13 @@ const sortOptions = sortSeries.map((it) => convertSortOptionDescriptor(it))
 const {
   sortActive,
   isDefault: sortIsDefault,
-  restore: sortRestore,
-} = useSort(sortDefault, sortOptions, false)
+  restoreDefault: sortRestore,
+} = useSort({
+  defaultSort: sortDefault,
+  options: sortOptions,
+  persist: true,
+  viewName: viewName.value,
+})
 
 const conds = computed(() => ({
   allOf: [

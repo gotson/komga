@@ -195,8 +195,13 @@ const sortOptions = sortBooks
 const {
   sortActive,
   isDefault: sortIsDefault,
-  restore: sortRestore,
-} = useSort(sortDefault, sortOptions, false)
+  restoreDefault: sortRestore,
+} = useSort({
+  defaultSort: sortDefault,
+  options: sortOptions,
+  persist: true,
+  viewName: viewName.value,
+})
 
 const {
   filters,
