@@ -85,7 +85,7 @@
       >
         <template #default="{ item, isSelected, preSelect, toggleSelect }">
           <BookCard
-            stretch-poster
+            :stretch-poster="appStore.stretchPoster"
             show-series
             :book="item"
             :selected="isSelected"

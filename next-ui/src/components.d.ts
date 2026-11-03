@@ -242,6 +242,7 @@ declare module 'vue' {
     UserMenuItemLocale: typeof import('./components/user/menu/item/Locale.vue')['default']
     UserMenuItemLogout: typeof import('./components/user/menu/item/Logout.vue')['default']
     UserMenuItemNavigation: typeof import('./components/user/menu/item/Navigation.vue')['default']
+    UserMenuItemSettings: typeof import('./components/user/menu/item/Settings.vue')['default']
     UserMenuItemTheme: typeof import('./components/user/menu/item/Theme.vue')['default']
     UserTable: typeof import('./components/user/Table.vue')['default']
   }

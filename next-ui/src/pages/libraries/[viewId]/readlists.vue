@@ -30,7 +30,7 @@
   >
     <template #default="{ item, isSelected, preSelect, toggleSelect }">
       <ReadlistCard
-        stretch-poster
+        :stretch-poster="appStore.stretchPoster"
         :read-list="item"
         :selected="isSelected"
         :pre-select="preSelect"

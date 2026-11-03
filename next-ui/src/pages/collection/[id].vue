@@ -92,7 +92,7 @@
         <template #default="{ item, isSelected, preSelect, toggleSelect }">
           <SeriesCard
             v-if="presentationModeEffective === 'grid'"
-            stretch-poster
+            :stretch-poster="appStore.stretchPoster"
             :series="item"
             :selected="isSelected"
             :pre-select="preSelect"
@@ -102,7 +102,7 @@
 
           <SeriesCardWide
             v-if="presentationModeEffective === 'list'"
-            stretch-poster
+            :stretch-poster="appStore.stretchPoster"
             :series="item"
             :selected="isSelected"
             :pre-select="preSelect"

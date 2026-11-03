@@ -19,19 +19,23 @@
     <v-list>
       <UserMenuItemAccount />
 
-      <v-divider class="my-2" />
+      <v-divider class="my-2 mx-2" />
 
       <UserMenuItemNavigation />
 
-      <v-divider class="my-2" />
+      <v-divider class="my-2 mx-2" />
+
+      <UserMenuItemSettings />
+
+      <v-divider class="my-2 mx-2" />
 
       <UserMenuItemTheme />
 
-      <v-divider class="my-2" />
+      <v-divider class="my-2 mx-2" />
 
       <UserMenuItemLocale />
 
-      <v-divider class="my-2" />
+      <v-divider class="my-2 mx-2" />
 
       <UserMenuItemLogout />
     </v-list>

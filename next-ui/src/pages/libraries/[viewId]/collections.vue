@@ -30,7 +30,7 @@
   >
     <template #default="{ item, isSelected, preSelect, toggleSelect }">
       <CollectionCard
-        stretch-poster
+        :stretch-poster="appStore.stretchPoster"
         :collection="item"
         :selected="isSelected"
         :pre-select="preSelect"
