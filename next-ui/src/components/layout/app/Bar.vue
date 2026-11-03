@@ -46,9 +46,10 @@
     </v-app-bar-title>
 
     <template #append>
-      <TaskIndicator />
-      <LocaleSelector />
-      <ThemeSelector />
+      <div class="d-flex align-center ga-2">
+        <TaskIndicator />
+        <UserMenu />
+      </div>
     </template>
   </v-app-bar>
 </template>

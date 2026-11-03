@@ -21,23 +21,9 @@
 
 <script setup lang="ts">
 import { useAppStore } from '@/stores/app'
+import { themes } from '@/types/theme'
 
 const appStore = useAppStore()
-
-const themes = [
-  {
-    value: 'light',
-    icon: 'i-mdi:weather-sunny',
-  },
-  {
-    value: 'dark',
-    icon: 'i-mdi:weather-night',
-  },
-  {
-    value: 'system',
-    icon: 'i-mdi:theme-light-dark',
-  },
-]
 
 const themeIcon = computed(
   () => themes.find((x) => x.value === appStore.theme)?.icon || 'i-mdi:theme-light-dark',

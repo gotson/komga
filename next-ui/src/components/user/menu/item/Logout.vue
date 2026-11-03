@@ -7,7 +7,7 @@
         id: 'ti4Pzo',
       })
     "
-    prepend-icon="i-mdi:power"
+    prepend-icon="i-mdi:logout"
     @click="performLogout"
   />
 </template>
