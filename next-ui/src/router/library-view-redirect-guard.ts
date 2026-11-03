@@ -4,6 +4,7 @@ import { librariesQuery } from '@/colada/libraries'
 import { clientSettingsUserQuery } from '@/colada/client-settings'
 import { getUserLibrariesState } from '@/functions/libraries'
 import { parseUserSettings } from '@/functions/client-settings'
+import { useLibraryViewStore } from '@/stores/library-view'
 
 /**
  * Redirect from /libraries/[viewId] and its child routes to the appropriate sub-route.
@@ -35,11 +36,24 @@ export function useLibraryViewRedirectGuard(router: Router) {
     const redirectToAll =
       (viewId === 'pinned' && !anyPinned) || (viewId === 'unpinned' && !anyUnpinned)
 
-    //TODO: for now we always redirect to 'overview', this should be persisted per viewId or pinned somehow
     if (to.name === '/libraries/[viewId]') {
-      return {
-        name: '/libraries/[viewId]/overview',
-        params: { viewId: redirectToAll ? 'all' : viewId },
+      const libraryViewStore = useLibraryViewStore()
+      const preferred = libraryViewStore.getSavedState(viewId)
+
+      const targetParams = { viewId: redirectToAll ? 'all' : viewId }
+
+      switch (preferred) {
+        case 'readlists':
+          return { name: '/libraries/[viewId]/readlists', params: targetParams }
+        case 'series':
+          return { name: '/libraries/[viewId]/series', params: targetParams }
+        case 'books':
+          return { name: '/libraries/[viewId]/books', params: targetParams }
+        case 'collections':
+          return { name: '/libraries/[viewId]/collections', params: targetParams }
+        case 'overview':
+        default:
+          return { name: '/libraries/[viewId]/overview', params: targetParams }
       }
     }
 

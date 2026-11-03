@@ -83,6 +83,7 @@ import ReorderOverviewSections from '@/components/ReorderOverviewSections.vue'
 import { useMessagesStore } from '@/stores/messages'
 import type OverviewSection from '@/components/OverviewSection.vue'
 import { BrowsingContextKey } from '@/functions/browsing-context'
+import { useLibraryViewStore } from '@/stores/library-view'
 
 const intl = useIntl()
 const display = useDisplay()
@@ -95,6 +96,11 @@ provide(
 )
 
 const isExactParentRoute = computed(() => route.name === '/libraries/[viewId]/overview')
+
+const libraryViewStore = useLibraryViewStore()
+if (isExactParentRoute.value) {
+  libraryViewStore.saveState(libraryViewId, 'overview')
+}
 
 const { userSettings } = useClientSettingsUser()
 const overviewSections = computed(() => {

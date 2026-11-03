@@ -105,6 +105,7 @@ import { useSelectionContextualActions } from '@/composables/selection'
 import type { SearchConditionBook } from '@/generated/openapi'
 import { BrowsingContextKey } from '@/functions/browsing-context'
 import { useSort } from '@/composables/sort'
+import { useLibraryViewStore } from '@/stores/library-view'
 
 const route = useRoute('/libraries/[viewId]/books')
 const libraryViewId = route.params.viewId
@@ -118,6 +119,9 @@ provide(
 const display = useDisplay()
 const appStore = useAppStore()
 const { isBrowsingScroll, isBrowsingPaged } = storeToRefs(appStore)
+
+const libraryViewStore = useLibraryViewStore()
+libraryViewStore.saveState(libraryViewId, 'books')
 
 const viewName = computed(() => `${libraryViewId}_books`)
 

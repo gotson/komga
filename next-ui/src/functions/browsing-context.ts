@@ -2,6 +2,7 @@ import * as v from 'valibot'
 import type { MaybeRefOrGetter } from 'vue'
 import type { LocationQueryRaw } from 'vue-router'
 import type { RouteLocationObject } from '@/types/route'
+import type { LibrarySubType } from '@/types/librarySubRoute'
 
 export const ContextQueryParam = 'ctx'
 const ContextSeparator = '~'
@@ -14,7 +15,7 @@ export type SingleBrowsingContext =
   | {
       type: 'libraryView'
       id: string
-      subType?: 'series' | 'books' | 'readlists' | 'collections' | 'overview'
+      subType?: LibrarySubType
     }
 
 export type BrowsingContext = SingleBrowsingContext | SingleBrowsingContext[]

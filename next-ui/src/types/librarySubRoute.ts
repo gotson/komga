@@ -5,3 +5,5 @@ export type LibrarySubRoute = {
   icon?: string
   to: RouteLocationObject
 }
+
+export type LibrarySubType = 'series' | 'books' | 'readlists' | 'collections' | 'overview'
