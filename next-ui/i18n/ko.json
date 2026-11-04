@@ -53,9 +53,6 @@
   "/YxHru": {
     "defaultMessage": "선택한 책 중 일부가 중복입니다"
   },
-  "/bathK": {
-    "defaultMessage": "설정한 연령 미만만 허용"
-  },
   "/lE31l": {
     "defaultMessage": "강제 Kobo 동기화"
   },
@@ -133,9 +130,6 @@
   },
   "1VkZao": {
     "defaultMessage": "더 보기"
-  },
-  "1bxWGd": {
-    "defaultMessage": "시리즈 메타데이터 편집"
   },
   "1hsKmu": {
     "defaultMessage": "캐릭터"
@@ -284,6 +278,9 @@
   "5tbu8Y": {
     "defaultMessage": "재시도"
   },
+  "5voJNm": {
+    "defaultMessage": "제한 없음"
+  },
   "5zPpyT": {
     "defaultMessage": "연령 범위"
   },
@@ -422,9 +419,6 @@
   "AMQANB": {
     "defaultMessage": "사용자 지정 유형 추가"
   },
-  "AeA9Ka": {
-    "defaultMessage": "제한 없음"
-  },
   "Ai7bBV": {
     "defaultMessage": "{count, plural, one {#페이지} other {#페이지} }"
   },
@@ -562,6 +556,9 @@
   },
   "Dn4qvV": {
     "defaultMessage": "기본값 복원"
+  },
+  "Dsytsl": {
+    "defaultMessage": "지정 연령 이상 제외"
   },
   "DwDa04": {
     "defaultMessage": "스캔 간격"
@@ -1328,6 +1325,9 @@
   "Zozcfh": {
     "defaultMessage": "원본"
   },
+  "a+32Gi": {
+    "defaultMessage": "지정 연령 이하만 허용"
+  },
   "a5MYiP": {
     "defaultMessage": "표지"
   },
@@ -2072,9 +2072,6 @@
   "mP9Ldq": {
     "defaultMessage": "생성일"
   },
-  "mtUacw": {
-    "defaultMessage": "책 메타데이터 수정"
-  },
   "n0TnQ2": {
     "defaultMessage": "서버에 연결할 수 없음"
   },
@@ -2143,9 +2140,6 @@
   },
   "oWsqnh": {
     "defaultMessage": "API 키의 사용 목적이 무엇인가요?"
-  },
-  "od545m": {
-    "defaultMessage": "내 계정"
   },
   "oyeyK/": {
     "defaultMessage": "썸네일"
@@ -2245,9 +2239,6 @@
   },
   "rtOXU6": {
     "defaultMessage": "도서 세부 정보"
-  },
-  "rw/Dkw": {
-    "defaultMessage": "사용자 인터페이스"
   },
   "rw5pw5": {
     "defaultMessage": "이미지"
@@ -2423,9 +2414,6 @@
   "wbH42A": {
     "defaultMessage": "사용할 수 없음"
   },
-  "wmGcF+": {
-    "defaultMessage": "설정한 연령을 초과하면 제외"
-  },
   "wwiazg": {
     "defaultMessage": "클립보드에 유효한 이미지가 없습니다"
   },
@@ -2440,9 +2428,6 @@
   },
   "xSNdDU": {
     "defaultMessage": "읽기 목록 삭제<ul><li>시리즈와 책은 삭제되지 않습니다.</li></ul><b>이 작업은 되돌릴 수 없습니다.</b>"
-  },
-  "xYGXuU": {
-    "defaultMessage": "정보"
   },
   "xYp/8u": {
     "defaultMessage": "책 선택"
