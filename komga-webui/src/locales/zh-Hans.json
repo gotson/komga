@@ -746,10 +746,10 @@
       "WEEKLY": "每周"
     },
     "series_cover": {
-      "FIRST": "第一张",
-      "FIRST_UNREAD_OR_FIRST": "第一张未读或第一张封面",
-      "FIRST_UNREAD_OR_LAST": "第一张未读或最后一张封面",
-      "LAST": "最后一张"
+      "FIRST": "第一本",
+      "FIRST_UNREAD_OR_FIRST": "第一本未读，否则第一本",
+      "FIRST_UNREAD_OR_LAST": "第一本未读，否则最后一本",
+      "LAST": "最后一本"
     },
     "series_status": {
       "ABANDONED": "已放弃",
