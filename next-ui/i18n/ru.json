@@ -50,9 +50,6 @@
   "/YxHru": {
     "defaultMessage": "Некоторые из выбранных книг являются дубликатами"
   },
-  "/bathK": {
-    "defaultMessage": "Разрешать только младше"
-  },
   "/lE31l": {
     "defaultMessage": "Инициировать синхронизацию Kobo"
   },
@@ -121,9 +118,6 @@
   },
   "1VkZao": {
     "defaultMessage": "Больше"
-  },
-  "1bxWGd": {
-    "defaultMessage": "Редактирование метаданных серии"
   },
   "1qIfds": {
     "defaultMessage": "Закреплённые"
