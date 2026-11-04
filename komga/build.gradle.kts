@@ -384,9 +384,10 @@ tasks.named<JooqGenerate>("generateTasksJooq") {
   dependsOn("flywayMigrateTasks")
 }
 tasks.withType<JooqGenerate>().configureEach {
-  javaExecSpec = Action<JavaExecSpec> {
-    jvmArgs("--enable-native-access=ALL-UNNAMED")
-  }
+  javaExecSpec =
+    Action<JavaExecSpec> {
+      jvmArgs("--enable-native-access=ALL-UNNAMED")
+    }
 }
 
 tasks.whenTaskAdded {
