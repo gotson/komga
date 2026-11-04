@@ -46,7 +46,7 @@
     </v-app-bar-title>
 
     <template #append>
-      <div class="d-flex align-center ga-2">
+      <div class="d-flex align-center ga-2 pe-2">
         <TaskIndicator />
         <UserMenu />
       </div>
