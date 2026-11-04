@@ -15,8 +15,6 @@ java.sql
 java.sql.rowset
 java.transaction.xa
 java.xml
-jdk.compiler
-jdk.javadoc
 jdk.jfr
 jdk.management
 jdk.unsupported
