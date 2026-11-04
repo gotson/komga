@@ -38,9 +38,6 @@
   "/YxHru": {
     "defaultMessage": "Деякі з вибраних книг є дублікатами"
   },
-  "/bathK": {
-    "defaultMessage": "Дозволити лише молодше"
-  },
   "/lE31l": {
     "defaultMessage": "Примусова синхронізація Kobo"
   },
@@ -103,9 +100,6 @@
   },
   "1VkZao": {
     "defaultMessage": "Більше"
-  },
-  "1bxWGd": {
-    "defaultMessage": "Редагувати метадані серії"
   },
   "1qIfds": {
     "defaultMessage": "Закріплені"
@@ -301,9 +295,6 @@
   },
   "ALGXT9": {
     "defaultMessage": "Дублікат"
-  },
-  "AeA9Ka": {
-    "defaultMessage": "Без обмежень"
   },
   "Ai7bBV": {
     "defaultMessage": "{count, plural, one {# сторінка} few {# сторінки} many {# сторінок} other {# сторінки} }"
@@ -1634,9 +1625,6 @@
   "mP9Ldq": {
     "defaultMessage": "Дата створення"
   },
-  "mtUacw": {
-    "defaultMessage": "Редагувати метадані книги"
-  },
   "n0TnQ2": {
     "defaultMessage": "Сервер недоступний"
   },
@@ -1693,9 +1681,6 @@
   },
   "oWsqnh": {
     "defaultMessage": "Для чого цей API-ключ?"
-  },
-  "od545m": {
-    "defaultMessage": "Мій обліковий запис"
   },
   "oyeyK/": {
     "defaultMessage": "Мініатюра"
@@ -1774,9 +1759,6 @@
   },
   "rrF/Z2": {
     "defaultMessage": "Назва"
-  },
-  "rw/Dkw": {
-    "defaultMessage": "Інтерфейс користувача"
   },
   "s1nzhU": {
     "defaultMessage": "Назва бібліотеки"
@@ -1895,17 +1877,11 @@
   "wbH42A": {
     "defaultMessage": "Недоступно"
   },
-  "wmGcF+": {
-    "defaultMessage": "Виключити старше"
-  },
   "xPBqGY": {
     "defaultMessage": "Видалити серію"
   },
   "xSNdDU": {
     "defaultMessage": "Список читання буде видалено<ul><li>Серії та книги не буде видалено.</li></ul><b>Цю дію неможливо скасувати.</b>"
-  },
-  "xYGXuU": {
-    "defaultMessage": "Деталі"
   },
   "xYp/8u": {
     "defaultMessage": "Виберіть книгу"
