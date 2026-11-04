@@ -38,9 +38,6 @@
   "/YxHru": {
     "defaultMessage": "Einige der ausgewählten Bücher sind Duplikate"
   },
-  "/bathK": {
-    "defaultMessage": "Erlauben wenn jünger als"
-  },
   "/lE31l": {
     "defaultMessage": "Erzwinge Kobo Sync"
   },
@@ -103,9 +100,6 @@
   },
   "1VkZao": {
     "defaultMessage": "Mehr"
-  },
-  "1bxWGd": {
-    "defaultMessage": "Serien-Metadaten bearbeiten"
   },
   "1qIfds": {
     "defaultMessage": "Angeheftet"
@@ -301,9 +295,6 @@
   },
   "ALGXT9": {
     "defaultMessage": "Duplikat"
-  },
-  "AeA9Ka": {
-    "defaultMessage": "Keine Beschränkungen"
   },
   "Ai7bBV": {
     "defaultMessage": "{count, plural, one {# Seite} other {# Seiten} }"
@@ -1634,9 +1625,6 @@
   "mP9Ldq": {
     "defaultMessage": "Erstellungsdatum"
   },
-  "mtUacw": {
-    "defaultMessage": "Buchmetadaten bearbeiten"
-  },
   "n0TnQ2": {
     "defaultMessage": "Server nicht erreichbar"
   },
@@ -1693,9 +1681,6 @@
   },
   "oWsqnh": {
     "defaultMessage": "Wofür ist dieser API Schlüssel nutzbar?"
-  },
-  "od545m": {
-    "defaultMessage": "Mein Konto"
   },
   "oyeyK/": {
     "defaultMessage": "Miniaturansicht"
@@ -1774,9 +1759,6 @@
   },
   "rrF/Z2": {
     "defaultMessage": "Name"
-  },
-  "rw/Dkw": {
-    "defaultMessage": "Benutzeroberfläche"
   },
   "s1nzhU": {
     "defaultMessage": "Bibliotheksname"
@@ -1895,17 +1877,11 @@
   "wbH42A": {
     "defaultMessage": "Nicht verfügbar"
   },
-  "wmGcF+": {
-    "defaultMessage": "Ausschließen wenn älter als"
-  },
   "xPBqGY": {
     "defaultMessage": "Serie löschen"
   },
   "xSNdDU": {
     "defaultMessage": "Die Leseliste wird gelöscht<ul><li>Reihen und Bücher werden nicht gelöscht.</li></ul><b>Dieser Vorgang kann nicht rückgängig gemacht werden.</b>"
-  },
-  "xYGXuU": {
-    "defaultMessage": "Details"
   },
   "xYp/8u": {
     "defaultMessage": "Wähle ein Buch"
