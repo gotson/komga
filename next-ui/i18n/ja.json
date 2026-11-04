@@ -50,9 +50,6 @@
   "/YxHru": {
     "defaultMessage": "選択した書籍の中に重複があります"
   },
-  "/bathK": {
-    "defaultMessage": "指定年齢以下のみ許可"
-  },
   "/lE31l": {
     "defaultMessage": "Koboを再同期"
   },
@@ -121,9 +118,6 @@
   },
   "1VkZao": {
     "defaultMessage": "その他"
-  },
-  "1bxWGd": {
-    "defaultMessage": "シリーズメタデータの編集"
   },
   "1qIfds": {
     "defaultMessage": "ピン留め"
@@ -388,9 +382,6 @@
   },
   "ALGXT9": {
     "defaultMessage": "重複"
-  },
-  "AeA9Ka": {
-    "defaultMessage": "制限なし"
   },
   "Ai7bBV": {
     "defaultMessage": "{count, plural, one {#ページ} other {#ページ}}"
@@ -1994,9 +1985,6 @@
   "mP9Ldq": {
     "defaultMessage": "作成日時"
   },
-  "mtUacw": {
-    "defaultMessage": "書籍メタデータを編集"
-  },
   "n0TnQ2": {
     "defaultMessage": "サーバーに接続できません"
   },
@@ -2065,9 +2053,6 @@
   },
   "oWsqnh": {
     "defaultMessage": "このAPIキーの用途は何ですか？"
-  },
-  "od545m": {
-    "defaultMessage": "マイアカウント"
   },
   "oyeyK/": {
     "defaultMessage": "サムネイル"
@@ -2164,9 +2149,6 @@
   },
   "rtOXU6": {
     "defaultMessage": "書籍の詳細"
-  },
-  "rw/Dkw": {
-    "defaultMessage": "UI"
   },
   "rw5pw5": {
     "defaultMessage": "画像"
@@ -2333,9 +2315,6 @@
   "wbH42A": {
     "defaultMessage": "利用不可"
   },
-  "wmGcF+": {
-    "defaultMessage": "指定年齢以上を除外"
-  },
   "wwiazg": {
     "defaultMessage": "クリップボードに有効な画像が見つかりません"
   },
@@ -2350,9 +2329,6 @@
   },
   "xSNdDU": {
     "defaultMessage": "読書リストが削除されます。<ul><li>シリーズや書籍は削除されません。</li></ul><b>この操作は取り消せません。</b>"
-  },
-  "xYGXuU": {
-    "defaultMessage": "詳細"
   },
   "xYp/8u": {
     "defaultMessage": "書籍を選択してください"

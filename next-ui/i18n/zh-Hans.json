@@ -53,9 +53,6 @@
   "/YxHru": {
     "defaultMessage": "部分选中的书籍是重复的"
   },
-  "/bathK": {
-    "defaultMessage": "仅允许该年龄以下"
-  },
   "/lE31l": {
     "defaultMessage": "强制 Kobo 同步"
   },
@@ -133,9 +130,6 @@
   },
   "1VkZao": {
     "defaultMessage": "更多"
-  },
-  "1bxWGd": {
-    "defaultMessage": "编辑系列元数据"
   },
   "1hsKmu": {
     "defaultMessage": "角色"
@@ -284,6 +278,9 @@
   "5tbu8Y": {
     "defaultMessage": "重试"
   },
+  "5voJNm": {
+    "defaultMessage": "无限制"
+  },
   "5zPpyT": {
     "defaultMessage": "年龄范围"
   },
@@ -422,9 +419,6 @@
   "AMQANB": {
     "defaultMessage": "添加自定义类型"
   },
-  "AeA9Ka": {
-    "defaultMessage": "无限制"
-  },
   "Ai7bBV": {
     "defaultMessage": "{count, plural, one {# 页} other {# 页} }"
   },
@@ -562,6 +556,9 @@
   },
   "Dn4qvV": {
     "defaultMessage": "恢复默认"
+  },
+  "Dsytsl": {
+    "defaultMessage": "排除年龄（包括）"
   },
   "DwDa04": {
     "defaultMessage": "扫描间隔"
@@ -1328,6 +1325,9 @@
   "Zozcfh": {
     "defaultMessage": "源"
   },
+  "a+32Gi": {
+    "defaultMessage": "允许最大年龄（包括）"
+  },
   "a5MYiP": {
     "defaultMessage": "海报"
   },
@@ -2072,9 +2072,6 @@
   "mP9Ldq": {
     "defaultMessage": "创建日期"
   },
-  "mtUacw": {
-    "defaultMessage": "编辑书籍元数据"
-  },
   "n0TnQ2": {
     "defaultMessage": "服务器无法访问"
   },
@@ -2143,9 +2140,6 @@
   },
   "oWsqnh": {
     "defaultMessage": "此 API 密钥有何用途？"
-  },
-  "od545m": {
-    "defaultMessage": "我的账户"
   },
   "oyeyK/": {
     "defaultMessage": "缩略图"
@@ -2245,9 +2239,6 @@
   },
   "rtOXU6": {
     "defaultMessage": "书籍详情"
-  },
-  "rw/Dkw": {
-    "defaultMessage": "用户界面"
   },
   "rw5pw5": {
     "defaultMessage": "视觉"
@@ -2423,9 +2414,6 @@
   "wbH42A": {
     "defaultMessage": "不可用"
   },
-  "wmGcF+": {
-    "defaultMessage": "排除该年龄以上"
-  },
   "wwiazg": {
     "defaultMessage": "剪贴板中未找到有效图片"
   },
@@ -2440,9 +2428,6 @@
   },
   "xSNdDU": {
     "defaultMessage": "此阅读列表将被删除<ul><li>系列和书籍不会被删除。</li></ul><b>此操作无法撤销。</b>"
-  },
-  "xYGXuU": {
-    "defaultMessage": "详细信息"
   },
   "xYp/8u": {
     "defaultMessage": "选择一本书"

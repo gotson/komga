@@ -38,9 +38,6 @@
   "/YxHru": {
     "defaultMessage": "Algunos de los libros seleccionados están duplicados"
   },
-  "/bathK": {
-    "defaultMessage": "Permitir solo para menores de"
-  },
   "/lE31l": {
     "defaultMessage": "Forzar la sincronización de Kobo"
   },
@@ -103,9 +100,6 @@
   },
   "1VkZao": {
     "defaultMessage": "Más"
-  },
-  "1bxWGd": {
-    "defaultMessage": "Editar metadatos de la serie"
   },
   "1qIfds": {
     "defaultMessage": "Fijado"
@@ -301,9 +295,6 @@
   },
   "ALGXT9": {
     "defaultMessage": "Duplicado"
-  },
-  "AeA9Ka": {
-    "defaultMessage": "Sin restricción"
   },
   "Ai7bBV": {
     "defaultMessage": "{count, plural, one {# página} other {# páginas} }"
@@ -1634,9 +1625,6 @@
   "mP9Ldq": {
     "defaultMessage": "Fecha de creación"
   },
-  "mtUacw": {
-    "defaultMessage": "Editar metadatos del libro"
-  },
   "n0TnQ2": {
     "defaultMessage": "Servidor inalcanzable"
   },
@@ -1693,9 +1681,6 @@
   },
   "oWsqnh": {
     "defaultMessage": "¿Para qué es esta clave API?"
-  },
-  "od545m": {
-    "defaultMessage": "Mi cuenta"
   },
   "oyeyK/": {
     "defaultMessage": "Miniatura"
@@ -1774,9 +1759,6 @@
   },
   "rrF/Z2": {
     "defaultMessage": "Nombre"
-  },
-  "rw/Dkw": {
-    "defaultMessage": "Interfaz de usuario"
   },
   "s1nzhU": {
     "defaultMessage": "Nombre de la biblioteca"
@@ -1895,17 +1877,11 @@
   "wbH42A": {
     "defaultMessage": "No disponible"
   },
-  "wmGcF+": {
-    "defaultMessage": "Excluir para mayores de"
-  },
   "xPBqGY": {
     "defaultMessage": "Eliminar serie"
   },
   "xSNdDU": {
     "defaultMessage": "La lista de lectura será eliminada<ul><li>Las series y libros no se eliminarán.</li></ul><b>Esta acción no puede deshacerse.</b>"
-  },
-  "xYGXuU": {
-    "defaultMessage": "Detalles"
   },
   "xYp/8u": {
     "defaultMessage": "Elige un libro"
