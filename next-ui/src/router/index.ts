@@ -4,7 +4,7 @@
  * Automatic routes for `./src/pages/*.vue`
  */
 
-import { createRouter, createWebHistory, type LocationQuery } from 'vue-router'
+import { createRouter, createWebHistory, type RouterOptions } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
 import { parse, stringify } from 'qs'
@@ -34,7 +34,9 @@ const router = createRouter({
     })
   },
   stringifyQuery: stringify,
-  parseQuery: (query: string) => parse(query) as unknown as LocationQuery,
+  parseQuery: ((query: string) => parse(query)) as unknown as NonNullable<
+    RouterOptions['parseQuery']
+  >,
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

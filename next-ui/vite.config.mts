@@ -85,7 +85,10 @@ export default defineConfig(({ mode }) => ({
       dts: true,
     }),
     UnoCSS(),
-    DevTools(),
+    DevTools({
+      // @ts-expect-error don't care about mcp
+      mcp: false,
+    }),
     PiniaColadaDevtools(),
   ],
   define: { 'process.env': {} },

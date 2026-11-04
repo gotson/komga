@@ -9,7 +9,7 @@
     :href="'https://github.com/gotson/komga/commits/' + commitId"
     target="_blank"
   >
-    {{ commitId || $formatMessage(commonMessages.error) }}
+    {{ commitId || $formatMessage(errorMessage) }}
   </v-btn>
 </template>
 
@@ -18,4 +18,5 @@ import { useActuatorInfo } from '@/colada/actuator-info'
 import { commonMessages } from '@/utils/i18n/common-messages'
 
 const { commitId, isLoading } = useActuatorInfo()
+const errorMessage = commonMessages.error
 </script>

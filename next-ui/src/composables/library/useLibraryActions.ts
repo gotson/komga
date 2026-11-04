@@ -30,7 +30,7 @@ export function useLibraryActions(
   const display = useDisplay()
 
   const actions = computed<Action<LibraryAction>[]>(() =>
-    !isAdmin
+    !isAdmin.value
       ? []
       : [
           {

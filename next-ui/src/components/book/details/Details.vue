@@ -5,10 +5,7 @@
     show-arrows
   >
     <template #tab="{ item }">
-      <v-tab
-        v-bind="item"
-        rounded="0"
-      />
+      <v-tab v-bind="item" />
     </template>
 
     <template #[`item.1`]>
