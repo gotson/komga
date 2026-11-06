@@ -8,6 +8,9 @@
   "+8++PW": {
     "defaultMessage": "서재 생성됨: {library}"
   },
+  "+C/+3o": {
+    "defaultMessage": "목록은 비워 둘 수 없습니다"
+  },
   "+PNCoe": {
     "defaultMessage": "대체 제목"
   },
@@ -20,6 +23,9 @@
   "+mJGIg": {
     "defaultMessage": "파일 경로"
   },
+  "+mvfpU": {
+    "defaultMessage": "{count, plural, one {시리즈 #개} other {시리즈 #개} } 수정됨"
+  },
   "+opDqu": {
     "defaultMessage": "페이지 이동"
   },
@@ -29,8 +35,17 @@
   "+r8FCS": {
     "defaultMessage": "서버 수신 포트"
   },
+  "+sF9Fw": {
+    "defaultMessage": "기존 값"
+  },
+  "+sXZtI": {
+    "defaultMessage": "닫기"
+  },
   "+y+9xL": {
     "defaultMessage": "파일 크기 한도 초과: {filenames}"
+  },
+  "/4RRHN": {
+    "defaultMessage": "목록은 비워 둘 수 없습니다"
   },
   "/5Gb4y": {
     "defaultMessage": "삭제"
@@ -92,6 +107,9 @@
   "0YG9GQ": {
     "defaultMessage": "로그인 상태 유지"
   },
+  "0c6DrH": {
+    "defaultMessage": "초기값 복원"
+  },
   "0eIJ3K": {
     "defaultMessage": "수동 정렬"
   },
@@ -130,6 +148,9 @@
   },
   "1VkZao": {
     "defaultMessage": "더 보기"
+  },
+  "1dgTdi": {
+    "defaultMessage": "분석"
   },
   "1hsKmu": {
     "defaultMessage": "캐릭터"
@@ -284,6 +305,9 @@
   "5zPpyT": {
     "defaultMessage": "연령 범위"
   },
+  "69jd/r": {
+    "defaultMessage": "읽기 목록에서 제거"
+  },
   "6F1ebQ": {
     "defaultMessage": "HTTP 서버"
   },
@@ -298,6 +322,9 @@
   },
   "6WDISV": {
     "defaultMessage": "페이지를 찾을 수 없습니다"
+  },
+  "6cwDEs": {
+    "defaultMessage": "어두움"
   },
   "6eAECF": {
     "defaultMessage": "서재"
@@ -380,8 +407,14 @@
   "9/1/c7": {
     "defaultMessage": "책 썸네일 생성"
   },
+  "90k6a7": {
+    "defaultMessage": "모음집은 한 개 이상의 시리즈를 포함해야 합니다"
+  },
   "90yqRq": {
     "defaultMessage": "서재 추가"
+  },
+  "98Q8V7": {
+    "defaultMessage": "제거"
   },
   "9GaR82": {
     "defaultMessage": "일반"
@@ -582,7 +615,7 @@
     "defaultMessage": "번호"
   },
   "ELl0N9": {
-    "defaultMessage": "이제 서재 화면에서 표지가 없는 도서를 바로 필터링할 수 있습니다."
+    "defaultMessage": "이제 서재 화면에서 표지가 없는 책을 바로 필터링할 수 있습니다."
   },
   "ELttw/": {
     "defaultMessage": "휴지통 비우기"
@@ -625,6 +658,9 @@
   },
   "FVq9w5": {
     "defaultMessage": "Mylar (series.json)"
+  },
+  "FX2bI8": {
+    "defaultMessage": "{count, plural, one {시리즈 #개} other {시리즈 #개} } 모음집에서 제거됨: {collection}"
   },
   "FZXkIP": {
     "defaultMessage": "번역"
@@ -682,6 +718,9 @@
   },
   "HHvDPs": {
     "defaultMessage": "이메일"
+  },
+  "HIKKsB": {
+    "defaultMessage": "프로필"
   },
   "HMbMJF": {
     "defaultMessage": "날짜 시간"
@@ -743,8 +782,11 @@
   "Icqm5y": {
     "defaultMessage": "페이지 번호"
   },
+  "If3RCw": {
+    "defaultMessage": "선택한 모든 항목의 값이 지워집니다"
+  },
   "Ih4MH9": {
-    "defaultMessage": "검색 문구를 변경해 보십시오"
+    "defaultMessage": "검색 문구를 변경해 보세요"
   },
   "IlRX+s": {
     "defaultMessage": "너비: {width}, 높이: {height}"
@@ -782,6 +824,9 @@
   "Jj4uO/": {
     "defaultMessage": "페이지 수"
   },
+  "Ju97UA": {
+    "defaultMessage": "읽기"
+  },
   "JwBlXP": {
     "defaultMessage": "열기"
   },
@@ -794,6 +839,9 @@
   "KBLD9U": {
     "defaultMessage": "연령 등급"
   },
+  "KPlFII": {
+    "defaultMessage": "연령 제한"
+  },
   "KTifVk": {
     "defaultMessage": "모든 등장 요소"
   },
@@ -802,6 +850,9 @@
   },
   "Ku7NJ+": {
     "defaultMessage": "시리즈 파일 없음"
+  },
+  "LBuB6T": {
+    "defaultMessage": "읽기 목록에 추가"
   },
   "LD5j8J": {
     "defaultMessage": "요청 시리즈"
@@ -815,6 +866,9 @@
   "LM4LL9": {
     "defaultMessage": "시리즈 로컬 아트워크 새로 고침"
   },
+  "LOcuZ2": {
+    "defaultMessage": "읽음으로 표시"
+  },
   "LaMAsc": {
     "defaultMessage": "접근 내역"
   },
@@ -826,6 +880,12 @@
   },
   "Lto2Lg": {
     "defaultMessage": "'/'로 시작해야 하고, '/-_'로 끝나지 않으며, '/-_a-z0-9'만 포함해야 합니다"
+  },
+  "M3OTuv": {
+    "defaultMessage": "여러 값"
+  },
+  "M4STMh": {
+    "defaultMessage": "되돌리기"
   },
   "MC2JtF": {
     "defaultMessage": "전체"
@@ -871,6 +931,9 @@
   },
   "Nb0V0p": {
     "defaultMessage": "표지 없음"
+  },
+  "NgRz9T": {
+    "defaultMessage": "권한"
   },
   "NhIart": {
     "defaultMessage": "책 파일 삭제"
@@ -932,6 +995,9 @@
   "PTr5Wc": {
     "defaultMessage": "Komga 서버가 작동 중인지 확인하세요"
   },
+  "PUU04H": {
+    "defaultMessage": "표지 영역 가득 채우기"
+  },
   "PguYSD": {
     "defaultMessage": "기존 읽기 목록 덮어쓰기"
   },
@@ -968,6 +1034,9 @@
   "Qz1UTX": {
     "defaultMessage": "닫기"
   },
+  "RCUCFa": {
+    "defaultMessage": "읽기 목록은 하나 이상의 책을 포함해야 합니다"
+  },
   "REmxIM": {
     "defaultMessage": "수정일"
   },
@@ -989,8 +1058,14 @@
   "RcbD73": {
     "defaultMessage": "{number}권"
   },
+  "Rgl4jp": {
+    "defaultMessage": "{count, plural, one {책 #권} other {책 #권} } 수정됨"
+  },
   "Rm52xk": {
     "defaultMessage": "Komga에 오신 것을 환영합니다"
+  },
+  "Rt/kZN": {
+    "defaultMessage": "{first} 외 {rest, plural, one {#권} other {#권} }"
   },
   "Rw2Iwj": {
     "defaultMessage": "읽기 목록 내 다음 책으로 이동"
@@ -1007,8 +1082,14 @@
   "S9SjlA": {
     "defaultMessage": "사용 중인 표지"
   },
+  "SF1C8o": {
+    "defaultMessage": "저장 후 닫기"
+  },
   "SIfmpC": {
     "defaultMessage": "시리즈 선택"
+  },
+  "ST34jK": {
+    "defaultMessage": "시크릿 모드로 읽기"
   },
   "STdfYg": {
     "defaultMessage": "페이지 크기 분석"
@@ -1036,6 +1117,9 @@
   },
   "TAVSfO": {
     "defaultMessage": "도서 수"
+  },
+  "TCjAyg": {
+    "defaultMessage": "{first} 외 {rest, plural, one {시리즈 #개} other {시리즈 #개} }"
   },
   "TG7prC": {
     "defaultMessage": "추가된 날짜"
@@ -1077,7 +1161,7 @@
     "defaultMessage": "태그"
   },
   "UPOAPc": {
-    "defaultMessage": "검색 이력 삭제"
+    "defaultMessage": "검색어 지우기"
   },
   "USJuJ1": {
     "defaultMessage": "로컬 아트워크"
@@ -1094,6 +1178,9 @@
   "Uj479p": {
     "defaultMessage": "발매일"
   },
+  "Ulohnz": {
+    "defaultMessage": "읽지 않음으로 표시"
+  },
   "UoaxO7": {
     "defaultMessage": "책이 업그레이드됩니다"
   },
@@ -1108,6 +1195,9 @@
   },
   "UvhIIT": {
     "defaultMessage": "공유 서재"
+  },
+  "UxBl+J": {
+    "defaultMessage": "밝음"
   },
   "V/OYJE": {
     "defaultMessage": "사용자 삭제됨: {email}"
@@ -1167,7 +1257,7 @@
     "defaultMessage": "최신 버전의 Komga가 이미 설치되어 있습니다"
   },
   "WPxleH": {
-    "defaultMessage": "책 파일 삭제<ul><li>책 미디어 파일이 디스크에서 삭제됩니다.</li><li>책 사이드카 파일이 디스크에서 삭제됩니다.</li><li>책과 메타데이터 및 읽기 진행도가 함께 삭제됩니다.</li></ul><b>이 작업은 되돌릴 수 없습니다.</b>"
+    "defaultMessage": "책 파일 삭제<ul><li>책 미디어 파일이 디스크에서 삭제됩니다.</li><li>책 사이드카 파일이 디스크에서 삭제됩니다.</li><li>책과 메타데이터 및 읽기 진도가 함께 삭제됩니다.</li></ul><b>이 작업은 되돌릴 수 없습니다.</b>"
   },
   "WSTiWA": {
     "defaultMessage": "모음집에 추가"
@@ -1189,6 +1279,9 @@
   },
   "Wlzzv8": {
     "defaultMessage": "요청 번호"
+  },
+  "WyueEI": {
+    "defaultMessage": "시리즈 메타데이터 편집"
   },
   "X/Z8x+": {
     "defaultMessage": "지금 당장 API 키를 복사하세요. 사라지면 다시 볼 수 없습니다!"
@@ -1272,7 +1365,7 @@
     "defaultMessage": "IP"
   },
   "YeFgyc": {
-    "defaultMessage": "이제 서재 화면에서 오류가 있는 도서를 바로 필터링할 수 있습니다."
+    "defaultMessage": "이제 서재 화면에서 오류가 있는 책을 바로 필터링할 수 있습니다."
   },
   "YeUvoE": {
     "defaultMessage": "사용자 지정 역할..."
@@ -1325,6 +1418,9 @@
   "Zozcfh": {
     "defaultMessage": "원본"
   },
+  "Zzqa/A": {
+    "defaultMessage": "모음집에서 제거"
+  },
   "a+32Gi": {
     "defaultMessage": "지정 연령 이하만 허용"
   },
@@ -1354,6 +1450,9 @@
   },
   "aYalqk": {
     "defaultMessage": "책을 선택하세요"
+  },
+  "aeEb6w": {
+    "defaultMessage": "변경 사항을 취소하거나 마지막 삭제를 되돌리세요"
   },
   "afXGQS": {
     "defaultMessage": "루트 디렉토리"
@@ -1583,6 +1682,9 @@
   "dN5GoW": {
     "defaultMessage": "책"
   },
+  "dNnqm2": {
+    "defaultMessage": "책 메타데이터 편집"
+  },
   "dP6SpT": {
     "defaultMessage": "이름순"
   },
@@ -1605,10 +1707,13 @@
     "defaultMessage": "확인"
   },
   "dfslqC": {
-    "defaultMessage": "시리즈 삭제<ul><li>책 미디어 파일이 디스크에서 삭제됩니다.</li><li>시리즈와 책이 메타데이터 및 읽기 진도와 함께 삭제됩니다.</li></ul><b>이 동작은 되돌릴 수 없습니다.</b>"
+    "defaultMessage": "시리즈 파일 삭제<ul><li>책 미디어 파일이 디스크에서 삭제됩니다.</li><li>시리즈와 책이 메타데이터 및 읽기 진도와 함께 삭제됩니다.</li></ul><b>이 작업은 되돌릴 수 없습니다.</b>"
   },
   "dipMGb": {
     "defaultMessage": "만들기"
+  },
+  "dto0D+": {
+    "defaultMessage": "정리"
   },
   "dx9s7S": {
     "defaultMessage": "생성일"
@@ -1659,7 +1764,7 @@
     "defaultMessage": "미지원"
   },
   "enum.OverviewSection.keep_reading": {
-    "defaultMessage": "이어보기"
+    "defaultMessage": "이어서 읽기"
   },
   "enum.OverviewSection.on_deck": {
     "defaultMessage": "다음 읽을 책"
@@ -1847,6 +1952,9 @@
   "ggaOkE": {
     "defaultMessage": "데이터 없음"
   },
+  "gjlnkj": {
+    "defaultMessage": "시스템"
+  },
   "gojrIJ": {
     "defaultMessage": "시리즈 선택"
   },
@@ -1902,16 +2010,19 @@
     "defaultMessage": "API 키 삭제"
   },
   "i+kSy9": {
-    "defaultMessage": "새로고침"
+    "defaultMessage": "새로 고침"
   },
   "i6UTPu": {
     "defaultMessage": "필드 잠금 해제"
   },
   "iCYg8R": {
-    "defaultMessage": "\"<b>{search}</b>\"와(과) 일치하는 결과가 없습니다. <kbd>Enter</kbd> 또는 클릭하여 새로 추가하십시오."
+    "defaultMessage": "\"<b>{search}</b>\"와(과) 일치하는 결과가 없습니다. <kbd>Enter</kbd> 또는 클릭하여 새로 추가하세요."
   },
   "iDU5FS": {
     "defaultMessage": "로그인 상태 유지 기간(일)"
+  },
+  "iGdw+C": {
+    "defaultMessage": "다음"
   },
   "iNBto3": {
     "defaultMessage": "처리하지 못한 요청을 Kobo Store로 프록시"
@@ -1967,6 +2078,9 @@
   "jnjpZy": {
     "defaultMessage": "로컬 파일"
   },
+  "jpdD8R": {
+    "defaultMessage": "테마"
+  },
   "jyrqhz": {
     "defaultMessage": "바코드"
   },
@@ -1994,8 +2108,11 @@
   "kHmCVM": {
     "defaultMessage": "서재 스캔"
   },
+  "kMw47z": {
+    "defaultMessage": "읽기 목록에서 제거"
+  },
   "kXuNY8": {
-    "defaultMessage": "현재 페이지 선택"
+    "defaultMessage": "현재 페이지를 선택에 추가"
   },
   "kYDPt1": {
     "defaultMessage": "파일명"
@@ -2054,6 +2171,9 @@
   "lt7Tru": {
     "defaultMessage": "시리즈"
   },
+  "lu0qxx": {
+    "defaultMessage": "제거"
+  },
   "lvCpSX": {
     "defaultMessage": "작업"
   },
@@ -2067,13 +2187,19 @@
     "defaultMessage": "썸네일"
   },
   "m9tuzy": {
-    "defaultMessage": "작업"
+    "defaultMessage": "접근 내역"
   },
   "mP9Ldq": {
     "defaultMessage": "생성일"
   },
+  "mQ3hSR": {
+    "defaultMessage": "라벨 제한"
+  },
   "n0TnQ2": {
     "defaultMessage": "서버에 연결할 수 없음"
+  },
+  "n0tWL5": {
+    "defaultMessage": "일괄 편집"
   },
   "n0yuoo": {
     "defaultMessage": "작업"
@@ -2096,11 +2222,17 @@
   "nWgSSS": {
     "defaultMessage": "모음집"
   },
+  "nXEvYQ": {
+    "defaultMessage": "저장 후 다음"
+  },
   "nXFVsQ": {
     "defaultMessage": "KOReader용 파일 해시 계산"
   },
   "nXWSTf": {
     "defaultMessage": "이름"
+  },
+  "nYtEQI": {
+    "defaultMessage": "메타데이터 새로 고침"
   },
   "nhrFtV": {
     "defaultMessage": "사용할 수 없음"
@@ -2144,6 +2276,9 @@
   "oyeyK/": {
     "defaultMessage": "썸네일"
   },
+  "pBivnm": {
+    "defaultMessage": "값 없음"
+  },
   "pCBNlA": {
     "defaultMessage": "서재"
   },
@@ -2155,6 +2290,9 @@
   },
   "pHycdf": {
     "defaultMessage": "책 파일이 아직 분석되지 않았습니다"
+  },
+  "pK72Vk": {
+    "defaultMessage": "이전"
   },
   "pR3VdQ": {
     "defaultMessage": "시리즈"
@@ -2175,7 +2313,10 @@
     "defaultMessage": "시리즈 메타데이터 집계"
   },
   "q4YedO": {
-    "defaultMessage": "분류 번호"
+    "defaultMessage": "정렬 번호"
+  },
+  "q6fppQ": {
+    "defaultMessage": "삭제"
   },
   "q7gxLw": {
     "defaultMessage": "사용자 계정이 이 서버에서 삭제됩니다.<ul><li>사용자 계정의 읽기 진도가 영구적으로 삭제됩니다.</li><li>사용자 활동 내역이 영구적으로 삭제됩니다.</li></ul><b>이 작업은 되돌릴 수 없습니다.</b>"
@@ -2186,8 +2327,14 @@
   "qlImvg": {
     "defaultMessage": "기본값으로 복원"
   },
+  "qq92EF": {
+    "defaultMessage": "필드 잠금 해제"
+  },
   "r/G7j0": {
     "defaultMessage": "번호"
+  },
+  "r48oBl": {
+    "defaultMessage": "읽기 목록 정리"
   },
   "r5O+/d": {
     "defaultMessage": "장르"
@@ -2238,7 +2385,10 @@
     "defaultMessage": "이름"
   },
   "rtOXU6": {
-    "defaultMessage": "도서 세부 정보"
+    "defaultMessage": "책 세부 정보"
+  },
+  "ruWj+g": {
+    "defaultMessage": "다운로드"
   },
   "rw5pw5": {
     "defaultMessage": "이미지"
@@ -2294,8 +2444,11 @@
   "t0Tkmy": {
     "defaultMessage": "강제 Kobo 동기화"
   },
+  "t38TG7": {
+    "defaultMessage": "읽기 목록의 책 수정됨: {readlist}"
+  },
   "t3B+Qv": {
-    "defaultMessage": "페이지 해시 제거"
+    "defaultMessage": "해시 일치 페이지 제거"
   },
   "t5NC5O": {
     "defaultMessage": "+ {count}개 더 보기"
@@ -2309,6 +2462,12 @@
   "tCm6kO": {
     "defaultMessage": "{count, plural, one {#개 선택} other {#개 선택} }"
   },
+  "tEA65+": {
+    "defaultMessage": "{count, plural, one {책 #권이} other {책 #권이} } 제거됩니다"
+  },
+  "tFx9of": {
+    "defaultMessage": "{count, plural, one {책 #권} other {책 #권} } 읽기 목록에서 제거됨: {readlist}"
+  },
   "tLFumw": {
     "defaultMessage": "연령 등급"
   },
@@ -2318,8 +2477,17 @@
   "tbNQ5v": {
     "defaultMessage": "{rating}+"
   },
+  "tc55Tn": {
+    "defaultMessage": "모음집에서 제거"
+  },
+  "tcXhCG": {
+    "defaultMessage": "필드 잠금"
+  },
   "ti4Pzo": {
     "defaultMessage": "로그아웃"
+  },
+  "tj5v0L": {
+    "defaultMessage": "모음집에 추가"
   },
   "tm9g8D": {
     "defaultMessage": "확인"
@@ -2329,6 +2497,9 @@
   },
   "toP54Z": {
     "defaultMessage": "오류"
+  },
+  "tqrq7S": {
+    "defaultMessage": "변경 사항을 취소하거나 마지막 삭제를 되돌리세요"
   },
   "u23YLt": {
     "defaultMessage": "되돌리기"
@@ -2381,6 +2552,12 @@
   "vXhkpo": {
     "defaultMessage": "파일 삭제"
   },
+  "vcA12h": {
+    "defaultMessage": "언어"
+  },
+  "veqjHc": {
+    "defaultMessage": "다시 실행"
+  },
   "viKuRl": {
     "defaultMessage": "표지"
   },
@@ -2414,6 +2591,9 @@
   "wbH42A": {
     "defaultMessage": "사용할 수 없음"
   },
+  "wk+b55": {
+    "defaultMessage": "편집"
+  },
   "wwiazg": {
     "defaultMessage": "클립보드에 유효한 이미지가 없습니다"
   },
@@ -2421,7 +2601,7 @@
     "defaultMessage": "발매일"
   },
   "xAZMxz": {
-    "defaultMessage": "파일 이름"
+    "defaultMessage": "파일명"
   },
   "xPBqGY": {
     "defaultMessage": "시리즈 삭제"
@@ -2456,6 +2636,9 @@
   "y3nPgO": {
     "defaultMessage": "서재 파일을 심층 스캔합니다. 서재 크기에 따라 시간이 오래 걸릴 수 있습니다."
   },
+  "y5GoQ3": {
+    "defaultMessage": "사용자 메뉴 열기"
+  },
   "yDWzUi": {
     "defaultMessage": "API 키"
   },
@@ -2471,11 +2654,17 @@
   "yrE0Rx": {
     "defaultMessage": "정보"
   },
+  "yvQfma": {
+    "defaultMessage": "{count, plural, one {시리즈 #개가} other {시리즈 #개가} } 제거됩니다"
+  },
   "yxnX5k": {
-    "defaultMessage": "OAuth2가 활성화 되어있을 때 로그인 숨기기"
+    "defaultMessage": "OAuth2가 활성화되어 있으면 로그인 입력란 숨기기"
   },
   "yyAGH1": {
     "defaultMessage": "너비: {width}, 높이: {height}"
+  },
+  "z4ywpN": {
+    "defaultMessage": "모음집의 시리즈 수정됨: {collection}"
   },
   "z5sjUM": {
     "defaultMessage": "책 파일 해시 계산"
