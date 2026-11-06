@@ -8,6 +8,9 @@
   "+8++PW": {
     "defaultMessage": "Bibliothèque créée : {library}"
   },
+  "+C/+3o": {
+    "defaultMessage": "La liste ne peut pas être vide"
+  },
   "+PNCoe": {
     "defaultMessage": "Titre alternatif"
   },
@@ -20,6 +23,9 @@
   "+mJGIg": {
     "defaultMessage": "Chemin du fichier"
   },
+  "+mvfpU": {
+    "defaultMessage": "{count, plural, one {# série mise à jour} other {# séries mises à jour} }"
+  },
   "+opDqu": {
     "defaultMessage": "Aller à"
   },
@@ -29,8 +35,17 @@
   "+r8FCS": {
     "defaultMessage": "Port d'écoute du serveur"
   },
+  "+sF9Fw": {
+    "defaultMessage": "Valeurs existantes"
+  },
+  "+sXZtI": {
+    "defaultMessage": "Fermer"
+  },
   "+y+9xL": {
     "defaultMessage": "Fichiers dépassant la taille maximale : {filenames}"
+  },
+  "/4RRHN": {
+    "defaultMessage": "La liste ne peut pas être vide"
   },
   "/5Gb4y": {
     "defaultMessage": "Supprimer"
@@ -92,6 +107,9 @@
   "0YG9GQ": {
     "defaultMessage": "Se souvenir de moi"
   },
+  "0c6DrH": {
+    "defaultMessage": "Rétablir la valeur initiale"
+  },
   "0eIJ3K": {
     "defaultMessage": "Tri manuel"
   },
@@ -130,6 +148,9 @@
   },
   "1VkZao": {
     "defaultMessage": "Plus"
+  },
+  "1dgTdi": {
+    "defaultMessage": "Analyser"
   },
   "1hsKmu": {
     "defaultMessage": "Personnage"
@@ -284,6 +305,9 @@
   "5zPpyT": {
     "defaultMessage": "Tranche d’âge"
   },
+  "69jd/r": {
+    "defaultMessage": "Retirer de la liste de lecture"
+  },
   "6F1ebQ": {
     "defaultMessage": "Serveur HTTP"
   },
@@ -298,6 +322,9 @@
   },
   "6WDISV": {
     "defaultMessage": "Page introuvable"
+  },
+  "6cwDEs": {
+    "defaultMessage": "Sombre"
   },
   "6eAECF": {
     "defaultMessage": "Bibliothèque"
@@ -380,8 +407,14 @@
   "9/1/c7": {
     "defaultMessage": "Générer la vignette du livre"
   },
+  "90k6a7": {
+    "defaultMessage": "La collection doit contenir au moins une série"
+  },
   "90yqRq": {
     "defaultMessage": "ajouter une bibliothèque"
+  },
+  "98Q8V7": {
+    "defaultMessage": "Retirer"
   },
   "9GaR82": {
     "defaultMessage": "Général"
@@ -626,6 +659,9 @@
   "FVq9w5": {
     "defaultMessage": "Mylar (series.json)"
   },
+  "FX2bI8": {
+    "defaultMessage": "{count, plural, one {# série retirée} other {# séries retirées} } de la collection : {collection}"
+  },
   "FZXkIP": {
     "defaultMessage": "Traducteur"
   },
@@ -682,6 +718,9 @@
   },
   "HHvDPs": {
     "defaultMessage": "Email"
+  },
+  "HIKKsB": {
+    "defaultMessage": "Profil"
   },
   "HMbMJF": {
     "defaultMessage": "Date et heure"
@@ -743,6 +782,9 @@
   "Icqm5y": {
     "defaultMessage": "Numéro de page"
   },
+  "If3RCw": {
+    "defaultMessage": "Effacera la valeur de tous les éléments sélectionnés"
+  },
   "Ih4MH9": {
     "defaultMessage": "Essayez de modifier la recherche"
   },
@@ -782,6 +824,9 @@
   "Jj4uO/": {
     "defaultMessage": "Nombre de pages"
   },
+  "Ju97UA": {
+    "defaultMessage": "Lire"
+  },
   "JwBlXP": {
     "defaultMessage": "Ouvrir"
   },
@@ -794,6 +839,9 @@
   "KBLD9U": {
     "defaultMessage": "Âge minimal"
   },
+  "KPlFII": {
+    "defaultMessage": "Restriction d’âge"
+  },
   "KTifVk": {
     "defaultMessage": "Toutes les entités notables"
   },
@@ -802,6 +850,9 @@
   },
   "Ku7NJ+": {
     "defaultMessage": "Les fichiers de la série sont introuvables"
+  },
+  "LBuB6T": {
+    "defaultMessage": "Ajouter à une liste de lecture"
   },
   "LD5j8J": {
     "defaultMessage": "Série demandée"
@@ -815,6 +866,9 @@
   "LM4LL9": {
     "defaultMessage": "Actualiser les illustrations locales de la série"
   },
+  "LOcuZ2": {
+    "defaultMessage": "Marquer comme lu"
+  },
   "LaMAsc": {
     "defaultMessage": "Activité d’authentification"
   },
@@ -826,6 +880,12 @@
   },
   "Lto2Lg": {
     "defaultMessage": "Doit commencer par « / », ne pas se terminer par « / », « - » ou « _ », et ne contenir que les caractères « /-_a-z0-9 »"
+  },
+  "M3OTuv": {
+    "defaultMessage": "Valeurs multiples"
+  },
+  "M4STMh": {
+    "defaultMessage": "Annuler"
   },
   "MC2JtF": {
     "defaultMessage": "Tout"
@@ -871,6 +931,9 @@
   },
   "Nb0V0p": {
     "defaultMessage": "Couvertures manquantes"
+  },
+  "NgRz9T": {
+    "defaultMessage": "Permissions"
   },
   "NhIart": {
     "defaultMessage": "Supprimer les fichiers du livre"
@@ -932,6 +995,9 @@
   "PTr5Wc": {
     "defaultMessage": "Vérifiez que votre serveur Komga est en marche"
   },
+  "PUU04H": {
+    "defaultMessage": "Remplir le cadre des couvertures"
+  },
   "PguYSD": {
     "defaultMessage": "Remplacer la liste de lecture existante"
   },
@@ -968,6 +1034,9 @@
   "Qz1UTX": {
     "defaultMessage": "Fermer"
   },
+  "RCUCFa": {
+    "defaultMessage": "La liste de lecture doit contenir au moins un livre"
+  },
   "REmxIM": {
     "defaultMessage": "Modifiée"
   },
@@ -989,8 +1058,14 @@
   "RcbD73": {
     "defaultMessage": "Livre {number}"
   },
+  "Rgl4jp": {
+    "defaultMessage": "{count, plural, one {# livre mis à jour} other {# livres mis à jour} }"
+  },
   "Rm52xk": {
     "defaultMessage": "Bienvenue dans Komga"
+  },
+  "Rt/kZN": {
+    "defaultMessage": "{first} et {rest, plural, one {# autre livre} other {# autres livres} }"
   },
   "Rw2Iwj": {
     "defaultMessage": "Aller au livre suivant de la liste de lecture"
@@ -1007,8 +1082,14 @@
   "S9SjlA": {
     "defaultMessage": "Sélectionnée"
   },
+  "SF1C8o": {
+    "defaultMessage": "Enregistrer et fermer"
+  },
   "SIfmpC": {
     "defaultMessage": "Choisir la série"
+  },
+  "ST34jK": {
+    "defaultMessage": "Session de lecture privée"
   },
   "STdfYg": {
     "defaultMessage": "Analyser les dimensions des pages"
@@ -1036,6 +1117,9 @@
   },
   "TAVSfO": {
     "defaultMessage": "Nombre de livres"
+  },
+  "TCjAyg": {
+    "defaultMessage": "{first} et {rest, plural, one {# autre série} other {# autres séries} }"
   },
   "TG7prC": {
     "defaultMessage": "Date d’ajout"
@@ -1094,6 +1178,9 @@
   "Uj479p": {
     "defaultMessage": "Date de parution"
   },
+  "Ulohnz": {
+    "defaultMessage": "Marquer comme non lu"
+  },
   "UoaxO7": {
     "defaultMessage": "Le livre sera mis à niveau"
   },
@@ -1108,6 +1195,9 @@
   },
   "UvhIIT": {
     "defaultMessage": "Bibliothèques partagées"
+  },
+  "UxBl+J": {
+    "defaultMessage": "Clair"
   },
   "V/OYJE": {
     "defaultMessage": "Utilisateur supprimé : {email}"
@@ -1189,6 +1279,9 @@
   },
   "Wlzzv8": {
     "defaultMessage": "Numéro demandé"
+  },
+  "WyueEI": {
+    "defaultMessage": "Modifier les métadonnées des séries"
   },
   "X/Z8x+": {
     "defaultMessage": "Copiez votre clé API maintenant : vous ne pourrez plus la revoir ensuite !"
@@ -1325,6 +1418,9 @@
   "Zozcfh": {
     "defaultMessage": "Source"
   },
+  "Zzqa/A": {
+    "defaultMessage": "Retirer de la collection"
+  },
   "a+32Gi": {
     "defaultMessage": "Autoriser jusqu’à (inclus)"
   },
@@ -1354,6 +1450,9 @@
   },
   "aYalqk": {
     "defaultMessage": "Sélectionnez au moins un livre"
+  },
+  "aeEb6w": {
+    "defaultMessage": "Abandonnez les modifications ou annulez votre dernière suppression"
   },
   "afXGQS": {
     "defaultMessage": "Dossier racine"
@@ -1583,6 +1682,9 @@
   "dN5GoW": {
     "defaultMessage": "Livre"
   },
+  "dNnqm2": {
+    "defaultMessage": "Modifier les métadonnées des livres"
+  },
   "dP6SpT": {
     "defaultMessage": "Par nom"
   },
@@ -1609,6 +1711,9 @@
   },
   "dipMGb": {
     "defaultMessage": "Créer"
+  },
+  "dto0D+": {
+    "defaultMessage": "Organiser"
   },
   "dx9s7S": {
     "defaultMessage": "Créée"
@@ -1847,6 +1952,9 @@
   "ggaOkE": {
     "defaultMessage": "Aucune donnée trouvée"
   },
+  "gjlnkj": {
+    "defaultMessage": "Système"
+  },
   "gojrIJ": {
     "defaultMessage": "Choisir la série"
   },
@@ -1913,6 +2021,9 @@
   "iDU5FS": {
     "defaultMessage": "Durée de « Se souvenir de moi » (en jours)"
   },
+  "iGdw+C": {
+    "defaultMessage": "Suivant"
+  },
   "iNBto3": {
     "defaultMessage": "Transmettre au Kobo Store les requêtes non gérées"
   },
@@ -1967,6 +2078,9 @@
   "jnjpZy": {
     "defaultMessage": "Fichier local"
   },
+  "jpdD8R": {
+    "defaultMessage": "Thème"
+  },
   "jyrqhz": {
     "defaultMessage": "Code-barres"
   },
@@ -1993,6 +2107,9 @@
   },
   "kHmCVM": {
     "defaultMessage": "Scanner la bibliothèque"
+  },
+  "kMw47z": {
+    "defaultMessage": "Retirer de la liste de lecture"
   },
   "kXuNY8": {
     "defaultMessage": "Ajouter la page à la sélection"
@@ -2054,6 +2171,9 @@
   "lt7Tru": {
     "defaultMessage": "Séries"
   },
+  "lu0qxx": {
+    "defaultMessage": "Retirer"
+  },
   "lvCpSX": {
     "defaultMessage": "Actions"
   },
@@ -2072,8 +2192,14 @@
   "mP9Ldq": {
     "defaultMessage": "Date de création"
   },
+  "mQ3hSR": {
+    "defaultMessage": "Restrictions par étiquette"
+  },
   "n0TnQ2": {
     "defaultMessage": "Serveur injoignable"
+  },
+  "n0tWL5": {
+    "defaultMessage": "Modification groupée"
   },
   "n0yuoo": {
     "defaultMessage": "Activité"
@@ -2096,11 +2222,17 @@
   "nWgSSS": {
     "defaultMessage": "Collection"
   },
+  "nXEvYQ": {
+    "defaultMessage": "Enregistrer et suivant"
+  },
   "nXFVsQ": {
     "defaultMessage": "Calculer l’empreinte pour KOReader"
   },
   "nXWSTf": {
     "defaultMessage": "Nom"
+  },
+  "nYtEQI": {
+    "defaultMessage": "Actualiser les métadonnées"
   },
   "nhrFtV": {
     "defaultMessage": "Indisponible"
@@ -2144,6 +2276,9 @@
   "oyeyK/": {
     "defaultMessage": "Vignette"
   },
+  "pBivnm": {
+    "defaultMessage": "Aucune valeur"
+  },
   "pCBNlA": {
     "defaultMessage": "Bibliothèque"
   },
@@ -2155,6 +2290,9 @@
   },
   "pHycdf": {
     "defaultMessage": "Le fichier du livre n’a pas encore été analysé"
+  },
+  "pK72Vk": {
+    "defaultMessage": "Précédent"
   },
   "pR3VdQ": {
     "defaultMessage": "Série"
@@ -2177,6 +2315,9 @@
   "q4YedO": {
     "defaultMessage": "Numéro pour le tri"
   },
+  "q6fppQ": {
+    "defaultMessage": "Supprimer"
+  },
   "q7gxLw": {
     "defaultMessage": "Le compte utilisateur va être supprimé de ce serveur.<ul><li>La progression de lecture de ce compte sera définitivement supprimée.</li><li>L’activité d’authentification de cet utilisateur sera définitivement supprimée.</li></ul><b>Cette action est irréversible.</b>"
   },
@@ -2186,8 +2327,14 @@
   "qlImvg": {
     "defaultMessage": "Rétablir la valeur par défaut"
   },
+  "qq92EF": {
+    "defaultMessage": "Déverrouiller le champ"
+  },
   "r/G7j0": {
     "defaultMessage": "Numéro"
+  },
+  "r48oBl": {
+    "defaultMessage": "Organiser la liste de lecture"
   },
   "r5O+/d": {
     "defaultMessage": "Genre"
@@ -2239,6 +2386,9 @@
   },
   "rtOXU6": {
     "defaultMessage": "Détails du livre"
+  },
+  "ruWj+g": {
+    "defaultMessage": "Télécharger"
   },
   "rw5pw5": {
     "defaultMessage": "Visuel"
@@ -2294,6 +2444,9 @@
   "t0Tkmy": {
     "defaultMessage": "Forcer la synchronisation Kobo"
   },
+  "t38TG7": {
+    "defaultMessage": "Livres de la liste de lecture mis à jour : {readlist}"
+  },
   "t3B+Qv": {
     "defaultMessage": "Supprimer les pages identifiées par empreinte"
   },
@@ -2309,6 +2462,12 @@
   "tCm6kO": {
     "defaultMessage": "{count, plural, one {# sélectionné} other {# sélectionnés}}"
   },
+  "tEA65+": {
+    "defaultMessage": "{count, plural, one {# livre sera retiré} other {# livres seront retirés} }"
+  },
+  "tFx9of": {
+    "defaultMessage": "{count, plural, one {# livre retiré} other {# livres retirés} } de la liste de lecture : {readlist}"
+  },
   "tLFumw": {
     "defaultMessage": "Âge minimal"
   },
@@ -2318,8 +2477,17 @@
   "tbNQ5v": {
     "defaultMessage": "{rating}+"
   },
+  "tc55Tn": {
+    "defaultMessage": "Retirer de la collection"
+  },
+  "tcXhCG": {
+    "defaultMessage": "Verrouiller le champ"
+  },
   "ti4Pzo": {
     "defaultMessage": "Se déconnecter"
+  },
+  "tj5v0L": {
+    "defaultMessage": "Ajouter à une collection"
   },
   "tm9g8D": {
     "defaultMessage": "Ok"
@@ -2329,6 +2497,9 @@
   },
   "toP54Z": {
     "defaultMessage": "Erreur"
+  },
+  "tqrq7S": {
+    "defaultMessage": "Abandonnez les modifications ou annulez votre dernière suppression"
   },
   "u23YLt": {
     "defaultMessage": "Annuler"
@@ -2381,6 +2552,12 @@
   "vXhkpo": {
     "defaultMessage": "Supprimer le fichier"
   },
+  "vcA12h": {
+    "defaultMessage": "Langue"
+  },
+  "veqjHc": {
+    "defaultMessage": "Rétablir"
+  },
   "viKuRl": {
     "defaultMessage": "Couverture"
   },
@@ -2413,6 +2590,9 @@
   },
   "wbH42A": {
     "defaultMessage": "Indisponible"
+  },
+  "wk+b55": {
+    "defaultMessage": "Modifier"
   },
   "wwiazg": {
     "defaultMessage": "Aucune image valide dans le presse-papiers"
@@ -2456,6 +2636,9 @@
   "y3nPgO": {
     "defaultMessage": "Effectue un scan approfondi des fichiers de la bibliothèque. Selon la taille de votre bibliothèque, cela peut prendre beaucoup de temps."
   },
+  "y5GoQ3": {
+    "defaultMessage": "Ouvrir le menu utilisateur"
+  },
   "yDWzUi": {
     "defaultMessage": "Clés API"
   },
@@ -2471,11 +2654,17 @@
   "yrE0Rx": {
     "defaultMessage": "Détails"
   },
+  "yvQfma": {
+    "defaultMessage": "{count, plural, one {# série sera retirée} other {# séries seront retirées} }"
+  },
   "yxnX5k": {
     "defaultMessage": "Masquer les champs de connexion si OAuth2 est activé"
   },
   "yyAGH1": {
     "defaultMessage": "l : {width}, h : {height}"
+  },
+  "z4ywpN": {
+    "defaultMessage": "Séries de la collection mises à jour : {collection}"
   },
   "z5sjUM": {
     "defaultMessage": "Calculer l’empreinte du fichier du livre"
