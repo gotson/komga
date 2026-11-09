@@ -144,7 +144,7 @@ class BookLifecycle(
     try {
       addThumbnailForBook(bookAnalyzer.generateThumbnail(BookWithMedia(book, mediaRepository.findById(book.id))), MarkSelectedPreference.IF_NONE_OR_GENERATED)
     } catch (ex: NoThumbnailFoundException) {
-      logger.error { "Error while creating thumbnail" }
+      logger.warn(ex) { "No thumbnail or poster found" }
     } catch (ex: Exception) {
       logger.error(ex) { "Error while creating thumbnail" }
     }
