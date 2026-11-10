@@ -7,7 +7,7 @@ import org.gotson.komga.domain.model.SeriesSearch
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.infrastructure.jooq.csAlias
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
 import org.gotson.komga.infrastructure.jooq.sortByValues
@@ -321,7 +321,7 @@ class SeriesDtoDao(
     lateinit var aggregatedNotableEntities: Map<String, List<NotableEntityDto>>
     lateinit var aggregatedTags: Map<String, List<String>>
 
-    dsl.withTempTable(batchSize, seriesIds).use { tempTable ->
+    dsl.useTempTable(batchSize, seriesIds) { dsl, tempTable ->
       genres =
         dsl
           .selectFrom(g)

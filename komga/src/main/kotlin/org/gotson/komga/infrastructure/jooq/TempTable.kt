@@ -56,12 +56,24 @@ class TempTable private constructor(
   companion object {
     private fun generateName() = "temp_${TsidCreator.getTsid256()}"
 
-    fun DSLContext.withTempTable(
+    /**
+     * Executes the given [block] using a [TempTable] and then closes it properly.
+     * If the provided [collection] is null, the [TempTable] is not created.
+     *
+     * A [DSLContext] with a pinned connection is passed to the [block].
+     */
+    fun <R> DSLContext.useTempTable(
       batchSize: Int,
-      collection: Collection<String>,
-    ) = TempTable(this)
-      .also {
-        it.insertTempStrings(batchSize, collection)
+      collection: Collection<String>?,
+      block: (DSLContext, TempTable) -> R,
+    ): R =
+      this.connectionResult { connection ->
+        val pinnedDsl = DSL.using(connection, dialect(), settings())
+
+        TempTable(pinnedDsl).use { tempTable ->
+          if (collection !== null) tempTable.insertTempStrings(batchSize, collection)
+          block(pinnedDsl, tempTable)
+        }
       }
   }
 }

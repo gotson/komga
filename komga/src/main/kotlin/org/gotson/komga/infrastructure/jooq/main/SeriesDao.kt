@@ -9,7 +9,7 @@ import org.gotson.komga.domain.persistence.SeriesRepository
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SeriesSearchHelper
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.infrastructure.jooq.csAlias
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SeriesRecord
@@ -63,9 +63,9 @@ class SeriesDao(
   override fun findAllNotDeletedByLibraryIdAndUrlNotIn(
     libraryId: String,
     urls: Collection<URL>,
-  ): List<Series> {
-    dslRO.withTempTable(batchSize, urls.map { it.toString() }).use { tempTable ->
-      return dslRO
+  ): List<Series> =
+    dslRO.useTempTable(batchSize, urls.map { it.toString() }) { dsl, tempTable ->
+      dsl
         .selectFrom(s)
         .where(s.LIBRARY_ID.eq(libraryId))
         .and(s.DELETED_DATE.isNull)
@@ -73,7 +73,6 @@ class SeriesDao(
         .fetchInto(s)
         .map { it.toDomain() }
     }
-  }
 
   override fun findNotDeletedByLibraryIdAndUrlOrNull(
     libraryId: String,
@@ -196,8 +195,8 @@ class SeriesDao(
 
   @Transactional
   override fun delete(seriesIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, seriesIds).use {
-      dslRW.deleteFrom(s).where(s.ID.`in`(it.selectTempStrings())).execute()
+    dslRW.useTempTable(batchSize, seriesIds) { dsl, tempTable ->
+      dsl.deleteFrom(s).where(s.ID.`in`(tempTable.selectTempStrings())).execute()
     }
   }
 

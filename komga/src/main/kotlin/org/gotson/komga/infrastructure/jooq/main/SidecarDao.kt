@@ -4,7 +4,7 @@ import org.gotson.komga.domain.model.Sidecar
 import org.gotson.komga.domain.model.SidecarStored
 import org.gotson.komga.domain.persistence.SidecarRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.SidecarRecord
 import org.jooq.DSLContext
@@ -49,11 +49,11 @@ class SidecarDao(
     libraryId: String,
     urls: Collection<URL>,
   ) {
-    dslRW.withTempTable(batchSize, urls.map { it.toString() }).use {
-      dslRW
+    dslRW.useTempTable(batchSize, urls.map { it.toString() }) { dsl, tempTable ->
+      dsl
         .deleteFrom(sc)
         .where(sc.LIBRARY_ID.eq(libraryId))
-        .and(sc.URL.`in`(it.selectTempStrings()))
+        .and(sc.URL.`in`(tempTable.selectTempStrings()))
         .execute()
     }
   }

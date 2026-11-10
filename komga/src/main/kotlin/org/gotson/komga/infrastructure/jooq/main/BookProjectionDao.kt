@@ -3,7 +3,7 @@ package org.gotson.komga.infrastructure.jooq.main
 import org.gotson.komga.domain.model.BookProjection
 import org.gotson.komga.domain.persistence.BookProjectionRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.jooq.DSLContext
 import org.springframework.beans.factory.annotation.Qualifier
@@ -38,8 +38,8 @@ class BookProjectionDao(
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, bookIds).use { tempTable ->
-      dslRW.deleteFrom(p).where(p.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
+    dslRW.useTempTable(batchSize, bookIds) { dsl, tempTable ->
+      dsl.deleteFrom(p).where(p.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
     }
   }
 }

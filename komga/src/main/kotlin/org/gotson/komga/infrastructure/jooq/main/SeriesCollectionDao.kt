@@ -6,7 +6,7 @@ import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.model.SeriesCollection
 import org.gotson.komga.domain.persistence.SeriesCollectionRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toCondition
@@ -259,10 +259,10 @@ class SeriesCollectionDao(
 
   @Transactional
   override fun removeSeriesFromAll(seriesIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, seriesIds).use {
-      dslRW
+    dslRW.useTempTable(batchSize, seriesIds) { dsl, tempTable ->
+      dsl
         .deleteFrom(cs)
-        .where(cs.SERIES_ID.`in`(it.selectTempStrings()))
+        .where(cs.SERIES_ID.`in`(tempTable.selectTempStrings()))
         .execute()
     }
   }

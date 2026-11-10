@@ -6,7 +6,7 @@ import org.gotson.komga.domain.model.NotableEntity
 import org.gotson.komga.domain.model.WebLink
 import org.gotson.komga.domain.persistence.BookMetadataRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.BookMetadataRecord
 import org.gotson.komga.language.toCurrentTimeZone
@@ -288,12 +288,12 @@ class BookMetadataDao(
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, bookIds).use {
-      dslRW.deleteFrom(a).where(a.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dslRW.deleteFrom(ne).where(ne.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dslRW.deleteFrom(bt).where(bt.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dslRW.deleteFrom(bl).where(bl.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dslRW.deleteFrom(d).where(d.BOOK_ID.`in`(it.selectTempStrings())).execute()
+    dslRW.useTempTable(batchSize, bookIds) { dsl, tempTable ->
+      dsl.deleteFrom(a).where(a.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
+      dsl.deleteFrom(ne).where(ne.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
+      dsl.deleteFrom(bt).where(bt.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
+      dsl.deleteFrom(bl).where(bl.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
+      dsl.deleteFrom(d).where(d.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
     }
   }
 

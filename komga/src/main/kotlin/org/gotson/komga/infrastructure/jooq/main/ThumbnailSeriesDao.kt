@@ -4,7 +4,7 @@ import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailSeries
 import org.gotson.komga.domain.persistence.ThumbnailSeriesRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailSeriesRecord
 import org.jooq.DSLContext
@@ -134,8 +134,8 @@ class ThumbnailSeriesDao(
 
   @Transactional
   override fun deleteBySeriesIds(seriesIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, seriesIds).use {
-      dslRW.deleteFrom(ts).where(ts.SERIES_ID.`in`(it.selectTempStrings())).execute()
+    dslRW.useTempTable(batchSize, seriesIds) { dsl, tempTable ->
+      dsl.deleteFrom(ts).where(ts.SERIES_ID.`in`(tempTable.selectTempStrings())).execute()
     }
   }
 

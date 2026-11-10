@@ -4,7 +4,7 @@ import org.gotson.komga.domain.model.Dimension
 import org.gotson.komga.domain.model.ThumbnailBook
 import org.gotson.komga.domain.persistence.ThumbnailBookRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.jooq.main.Tables
 import org.gotson.komga.jooq.main.tables.records.ThumbnailBookRecord
 import org.jooq.DSLContext
@@ -150,8 +150,8 @@ class ThumbnailBookDao(
 
   @Transactional
   override fun deleteByBookIds(bookIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, bookIds).use {
-      dslRW.deleteFrom(tb).where(tb.BOOK_ID.`in`(it.selectTempStrings())).execute()
+    dslRW.useTempTable(batchSize, bookIds) { dsl, tempTable ->
+      dsl.deleteFrom(tb).where(tb.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
     }
   }
 

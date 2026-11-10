@@ -10,7 +10,7 @@ import org.gotson.komga.domain.model.MediaFile
 import org.gotson.komga.domain.model.ProxyExtension
 import org.gotson.komga.domain.persistence.MediaRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.infrastructure.jooq.deserializeMediaExtension
 import org.gotson.komga.infrastructure.jooq.serializeJsonGz
 import org.gotson.komga.jooq.main.Tables
@@ -306,10 +306,10 @@ class MediaDao(
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, bookIds).use {
-      dslRW.deleteFrom(p).where(p.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dslRW.deleteFrom(f).where(f.BOOK_ID.`in`(it.selectTempStrings())).execute()
-      dslRW.deleteFrom(m).where(m.BOOK_ID.`in`(it.selectTempStrings())).execute()
+    dslRW.useTempTable(batchSize, bookIds) { dsl, tempTable ->
+      dsl.deleteFrom(p).where(p.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
+      dsl.deleteFrom(f).where(f.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
+      dsl.deleteFrom(m).where(m.BOOK_ID.`in`(tempTable.selectTempStrings())).execute()
     }
   }
 

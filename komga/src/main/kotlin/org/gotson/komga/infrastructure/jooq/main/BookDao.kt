@@ -8,7 +8,7 @@ import org.gotson.komga.domain.persistence.BookRepository
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.infrastructure.jooq.rlbAlias
 import org.gotson.komga.infrastructure.jooq.toOrderBy
 import org.gotson.komga.jooq.main.Tables
@@ -78,24 +78,22 @@ class BookDao(
       .map { it.toDomain() }
 
   @Transactional
-  override fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book> {
-    dslRO.withTempTable(batchSize, seriesIds).use { tempTable ->
-      return dslRO
+  override fun findAllBySeriesIds(seriesIds: Collection<String>): Collection<Book> =
+    dslRO.useTempTable(batchSize, seriesIds) { dsl, tempTable ->
+      dsl
         .selectFrom(b)
         .where(b.SERIES_ID.`in`(tempTable.selectTempStrings()))
         .fetchInto(b)
         .map { it.toDomain() }
     }
-  }
 
   @Transactional
   override fun findAllNotDeletedByLibraryIdAndUrlNotIn(
     libraryId: String,
     urls: Collection<URL>,
-  ): Collection<Book> {
-    dslRO.withTempTable(batchSize, urls.map { it.toString() }).use { tempTable ->
-
-      return dslRO
+  ): Collection<Book> =
+    dslRO.useTempTable(batchSize, urls.map { it.toString() }) { dsl, tempTable ->
+      dsl
         .selectFrom(b)
         .where(b.LIBRARY_ID.eq(libraryId))
         .and(b.DELETED_DATE.isNull)
@@ -103,7 +101,6 @@ class BookDao(
         .fetchInto(b)
         .map { it.toDomain() }
     }
-  }
 
   override fun findAllDeletedByFileSize(fileSize: Long): Collection<Book> =
     dslRO
@@ -401,8 +398,8 @@ class BookDao(
 
   @Transactional
   override fun delete(bookIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, bookIds).use { tempTable ->
-      dslRW.deleteFrom(b).where(b.ID.`in`(tempTable.selectTempStrings())).execute()
+    dslRW.useTempTable(batchSize, bookIds) { dsl, tempTable ->
+      dsl.deleteFrom(b).where(b.ID.`in`(tempTable.selectTempStrings())).execute()
     }
   }
 

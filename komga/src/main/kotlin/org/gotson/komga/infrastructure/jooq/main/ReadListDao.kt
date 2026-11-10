@@ -6,7 +6,7 @@ import org.gotson.komga.domain.model.ReadList
 import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.domain.persistence.ReadListRepository
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.infrastructure.jooq.inOrNoCondition
 import org.gotson.komga.infrastructure.jooq.sortByValues
 import org.gotson.komga.infrastructure.jooq.toCondition
@@ -262,10 +262,10 @@ class ReadListDao(
 
   @Transactional
   override fun removeBooksFromAll(bookIds: Collection<String>) {
-    dslRW.withTempTable(batchSize, bookIds).use {
-      dslRW
+    dslRW.useTempTable(batchSize, bookIds) { dsl, tempTable ->
+      dsl
         .deleteFrom(rlb)
-        .where(rlb.BOOK_ID.`in`(it.selectTempStrings()))
+        .where(rlb.BOOK_ID.`in`(tempTable.selectTempStrings()))
         .execute()
     }
   }

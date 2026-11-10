@@ -9,8 +9,7 @@ import org.gotson.komga.domain.model.SearchContext
 import org.gotson.komga.infrastructure.jooq.BookSearchHelper
 import org.gotson.komga.infrastructure.jooq.RequiredJoin
 import org.gotson.komga.infrastructure.jooq.SplitDslDaoBase
-import org.gotson.komga.infrastructure.jooq.TempTable
-import org.gotson.komga.infrastructure.jooq.TempTable.Companion.withTempTable
+import org.gotson.komga.infrastructure.jooq.TempTable.Companion.useTempTable
 import org.gotson.komga.infrastructure.jooq.noCase
 import org.gotson.komga.infrastructure.jooq.rlbAlias
 import org.gotson.komga.infrastructure.jooq.sortByValues
@@ -141,38 +140,32 @@ class BookDtoDao(
         }
       }
 
-    // don't use the DSLContext.withTempTable form to control optional creation
-    TempTable(dslRO).use { tempTable ->
-
+    return dslRO.useTempTable(batchSize, bookIds) { dsl, tempTable ->
       val searchCondition =
         when {
           bookIds == null -> noCondition()
           bookIds.isEmpty() -> falseCondition()
-          // use temp table in case there are many search results
-          else -> {
-            tempTable.insertTempStrings(batchSize, bookIds)
-            b.ID.`in`(tempTable.selectTempStrings())
-          }
+          else -> b.ID.`in`(tempTable.selectTempStrings())
         }
 
       val dtos =
         if (pageable.isEmpty())
           emptyList()
         else
-          dslRO
+          dsl
             .selectBase(userId, joins)
             .where(conditions)
             .and(searchCondition)
             .orderBy(orderBy)
             .apply { if (pageable.isPaged) limit(pageable.pageSize).offset(pageable.offset) }
-            .fetchAndMap(dslRO)
+            .fetchAndMap(dsl)
 
       val count =
         if (pageable.isUnpaged)
           dtos.size
         else
-          dslRO.fetchCount(
-            dslRO
+          dsl.fetchCount(
+            dsl
               .select(b.ID)
               .from(b)
               .leftJoin(m)
@@ -207,7 +200,7 @@ class BookDtoDao(
           )
 
       val pageSort = if (orderBy.isNotEmpty()) pageable.sort else Sort.unsorted()
-      return PageImpl(
+      PageImpl(
         dtos,
         if (pageable.isPaged)
           PageRequest.of(pageable.pageNumber, pageable.pageSize, pageSort)
@@ -450,7 +443,7 @@ class BookDtoDao(
     lateinit var tags: Map<String, List<String>>
     lateinit var links: Map<String, List<WebLinkDto>>
     lateinit var notableEntities: Map<String, List<NotableEntityDto>>
-    dsl.withTempTable(batchSize, bookIds).use { tempTable ->
+    dsl.useTempTable(batchSize, bookIds) { dsl, tempTable ->
       authors =
         dsl
           .selectFrom(a)
