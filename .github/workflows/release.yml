@@ -261,8 +261,7 @@ jobs:
           B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
           B2_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
           LATEST_VERSION: ${{ needs.version.outputs.version_next }}
-        with:
-          working-directory: scripts/s3-release-cleaner
+        working-directory: scripts/s3-release-cleaner
         run: |
           npm ci
           npm run clean
