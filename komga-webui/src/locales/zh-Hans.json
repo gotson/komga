@@ -184,12 +184,12 @@
     "outdated_tooltip": "此书的文件已更改，必须重新分析这本书",
     "read_book": "阅读书籍",
     "read_incognito": "隐私(无痕)阅读",
-    "remove_from_collection": "从收藏中移除书籍",
+    "remove_from_collection": "从合集中移除书籍",
     "remove_from_readlist": "从阅读列表中移除书籍",
     "size": "文件大小"
   },
   "browse_collection": {
-    "edit_collection": "编辑收藏",
+    "edit_collection": "编辑合集",
     "edit_elements": "编辑元素",
     "manual_ordering": "手动排序"
   },
@@ -200,13 +200,13 @@
   },
   "browse_series": {
     "earliest_year_from_release_dates": "这是该系列所有书发行日期最早的一年",
-    "remove_from_collection": "从收藏中移除系列",
+    "remove_from_collection": "从合集中移除系列",
     "series_no_summary": "这个系列没有简介，所以我们为您挑选了一个！",
     "summary_from_book": "书籍 {number} 的简介："
   },
   "collections_expansion_panel": {
-    "manage_collection": "管理收藏",
-    "title": "包含 {name} 的收藏"
+    "manage_collection": "管理合集",
+    "title": "包含 {name} 的合集"
   },
   "common": {
     "age": "年龄",
@@ -221,7 +221,7 @@
     "cbx": "漫画书存档",
     "choose_image": "选择图片",
     "close": "关闭",
-    "collections": "收藏",
+    "collections": "合集",
     "copied": "已复制！",
     "create": "创建",
     "delete": "删除",
@@ -238,7 +238,7 @@
     "filename": "文件名",
     "filter_no_matches": "筛选器没有匹配的结果",
     "genre": "类型",
-    "go_to_collection": "转到收藏",
+    "go_to_collection": "转到合集",
     "go_to_library": "转到库",
     "go_to_readlist": "转到阅读列表",
     "go_to_series": "转到系列",
@@ -329,10 +329,10 @@
     "add_to_collection": {
       "button_create": "创建",
       "card_collection_subtitle": "无系列 | 1 系列 | {count} 系列",
-      "dialog_title": "添加到收藏",
-      "field_search_create": "搜索或创建收藏",
-      "field_search_create_error": "该收藏已存在",
-      "label_no_matching_collection": "没有匹配的收藏"
+      "dialog_title": "添加到合集",
+      "field_search_create": "搜索或创建合集",
+      "field_search_create_error": "该合集已存在",
+      "label_no_matching_collection": "没有匹配的合集"
     },
     "add_to_readlist": {
       "button_create": "创建",
@@ -376,12 +376,12 @@
     },
     "delete_collection": {
       "button_confirm": "删除",
-      "confirm_delete": "是的，删除收藏 “{name}”",
-      "confirm_delete_multiple": "是的，删除 {count} 个收藏",
-      "dialog_title": "删除收藏",
-      "dialog_title_multiple": "删除收藏",
-      "warning_html": "收藏 <b>{name}</b> 将从此服务器中删除。您的媒体文件不会受到影响。此操作<b>无法</b>撤消。继续吗？",
-      "warning_multiple_html": "将从此服务器删除 {count} 个收藏。您的媒体文件不会受到影响。此操作<b>无法</b>撤销。继续吗？"
+      "confirm_delete": "是的，删除合集 “{name}”",
+      "confirm_delete_multiple": "是的，删除 {count} 个合集",
+      "dialog_title": "删除合集",
+      "dialog_title_multiple": "删除合集",
+      "warning_html": "合集 <b>{name}</b> 将从此服务器中删除。您的媒体文件不会受到影响。此操作<b>无法</b>撤消。继续吗？",
+      "warning_multiple_html": "将从此服务器删除 {count} 个合集。您的媒体文件不会受到影响。此操作<b>无法</b>撤销。继续吗？"
     },
     "delete_library": {
       "button_confirm": "删除",
@@ -447,9 +447,9 @@
     "edit_collection": {
       "button_cancel": "取消",
       "button_confirm": "保存修改",
-      "dialog_title": "编辑收藏",
+      "dialog_title": "编辑合集",
       "field_manual_ordering": "手动排序",
-      "label_ordering": "默认情况下，收藏中的系列将按名称排序，您可以启用手动排序来整理想要的顺序。",
+      "label_ordering": "默认情况下，合集中的系列将按名称排序，您可以启用手动排序来整理想要的顺序。",
       "tab_general": "常规",
       "tab_poster": "海报"
     },
@@ -468,7 +468,7 @@
       "field_convert_to_cbz": "自动转换为 CBZ 格式",
       "field_import_barcode_isbn": "ISBN 条形码",
       "field_import_comicinfo_book": "书籍元数据",
-      "field_import_comicinfo_collections": "收藏",
+      "field_import_comicinfo_collections": "合集",
       "field_import_comicinfo_readlists": "阅读列表",
       "field_import_comicinfo_series": "系列元数据",
       "field_import_comicinfo_series_append_volume": "在系列标题中添加卷号",
@@ -746,10 +746,10 @@
       "WEEKLY": "每周"
     },
     "series_cover": {
-      "FIRST": "第一张",
-      "FIRST_UNREAD_OR_FIRST": "第一张未读或第一张封面",
-      "FIRST_UNREAD_OR_LAST": "第一张未读或最后一张封面",
-      "LAST": "最后一张"
+      "FIRST": "第一本",
+      "FIRST_UNREAD_OR_FIRST": "第一本未读，否则第一本",
+      "FIRST_UNREAD_OR_LAST": "第一本未读，否则最后一本",
+      "LAST": "最后一本"
     },
     "series_status": {
       "ABANDONED": "已放弃",
@@ -876,7 +876,7 @@
     "browse": "浏览",
     "browse_books": "书籍",
     "browse_series": "系列",
-    "collections": "收藏",
+    "collections": "合集",
     "readlists": "阅读列表",
     "recommended": "推荐"
   },
@@ -895,7 +895,7 @@
     "url": "地址"
   },
   "menu": {
-    "add_to_collection": "添加到收藏",
+    "add_to_collection": "添加到合集",
     "add_to_readlist": "添加到阅读列表",
     "analyze": "分析",
     "bulk_edit_metadata": "批量编辑元数据",
@@ -991,7 +991,7 @@
       "title": "重新生成缩略图"
     },
     "hint_kobo_port": "仅在封面和下载同步出现问题时设置",
-    "label_delete_empty_collections": "扫描后删除空的收藏",
+    "label_delete_empty_collections": "扫描后删除空的合集",
     "label_delete_empty_readlists": "扫描后删除空的阅读列表",
     "label_kepubify_path": "kepubify 的路径",
     "label_kobo_port": "Kobo 同步外部端口",
