@@ -2,7 +2,7 @@ name: "Setup web project"
 description: "Setup Node, and install dependencies"
 inputs:
   working-directory:
-    description: Specifies the working directory for the NextUI project.
+    description: Specifies the working directory for the project.
     default: .
 runs:
   using: "composite"

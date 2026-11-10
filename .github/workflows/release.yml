@@ -189,7 +189,7 @@ jobs:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
           AWS_S3_BUCKET: ${{ secrets.B2_BUCKET }}
-          AWS_S3_ENDPOINT: 'https://s3.us-east-005.backblazeb2.com'
+          AWS_S3_ENDPOINT: ${{ secrets.B2_S3_ENDPOINT }}
           AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
       - name: Upload Conveyor log
@@ -243,7 +243,7 @@ jobs:
           CONVEYOR_MSSTORE_CLIENT_SECRET: ${{ secrets.CONVEYOR_MSSTORE_CLIENT_SECRET }}
           CONVEYOR_MSSTORE_TENANT_ID: ${{ secrets.CONVEYOR_MSSTORE_TENANT_ID }}
           AWS_S3_BUCKET: ${{ secrets.B2_BUCKET }}
-          AWS_S3_ENDPOINT: 'https://s3.us-east-005.backblazeb2.com'
+          AWS_S3_ENDPOINT: ${{ secrets.B2_S3_ENDPOINT }}
           AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
       - name: Upload Conveyor log
@@ -252,6 +252,20 @@ jobs:
         with:
           name: conveyor-ms-store-release
           path: ~/.cache/hydraulic/conveyor/logs/log.latest.txt
+
+      - name: Cleanup obsolete release artifacts
+        if: inputs.conveyor-copied-site
+        env:
+          B2_BUCKET_NAME: ${{ secrets.B2_BUCKET_NAME }}
+          B2_REGION: ${{ secrets.B2_REGION }}
+          B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
+          B2_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
+          LATEST_VERSION: ${{ needs.version.outputs.version_next }}
+        with:
+          working-directory: scripts/s3-release-cleaner
+        run: |
+          npm ci
+          npm run clean
 
   dispatch:
     needs: release
