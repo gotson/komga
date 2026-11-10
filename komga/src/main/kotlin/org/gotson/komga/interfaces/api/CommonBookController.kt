@@ -177,6 +177,7 @@ class CommonBookController(
                   .builder("inline")
                   .filename(imageFileName, StandardCharsets.UTF_8)
                   .build()
+              set("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; sandbox")
             },
           ).contentType(getMediaTypeOrDefault(pageContent.mediaType))
           .setNotModified(media)
@@ -241,6 +242,7 @@ class CommonBookController(
                 .builder("inline")
                 .filename(pageFileName, StandardCharsets.UTF_8)
                 .build()
+            set("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; sandbox")
           },
         ).contentType(getMediaTypeOrDefault(pageContent.mediaType))
         .setNotModified(media)
