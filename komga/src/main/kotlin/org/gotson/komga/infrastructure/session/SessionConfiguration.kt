@@ -1,5 +1,6 @@
 package org.gotson.komga.infrastructure.session
 
+import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.session.SessionRegistry
@@ -12,15 +13,20 @@ import org.springframework.session.web.http.HttpSessionIdResolver
 @Configuration
 class SessionConfiguration {
   @Bean
-  fun sessionCookieName() = "KOMGA-SESSION"
-
-  @Bean
   fun sessionHeaderName() = "X-Auth-Token"
 
   @Bean
-  fun cookieSerializer(sessionCookieName: String): CookieSerializer =
+  fun cookieSerializer(serverProperties: ServerProperties): CookieSerializer =
     DefaultCookieSerializer().apply {
-      setCookieName(sessionCookieName)
+      serverProperties.servlet.session.cookie.let { cookieProperties ->
+        cookieProperties.name?.let { setCookieName(it) }
+        cookieProperties.domain?.let { setDomainName(it) }
+        cookieProperties.path?.let { setCookiePath(it) }
+        cookieProperties.httpOnly?.let { setUseHttpOnlyCookie(it) }
+        cookieProperties.secure?.let { setUseSecureCookie(it) }
+        cookieProperties.maxAge?.let { setCookieMaxAge(it.seconds.toInt()) }
+        cookieProperties.sameSite?.let { setSameSite(it.toString()) }
+      }
     }
 
   @Bean

@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import kotlin.time.Duration.Companion.days
 
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
@@ -23,11 +24,12 @@ class SessionTest(
   @Autowired private val userLifecycle: KomgaUserLifecycle,
   @Autowired private val userRepository: KomgaUserRepository,
   @Autowired private val sessionHeaderName: String,
-  @Autowired private val sessionCookieName: String,
 ) {
   private lateinit var user: KomgaUser
 
+  private val sessionCookieName = "KOMGA-SESSION"
   private val rememberMeCookieName = "komga-remember-me"
+  private val defaultMaxAge = 7.days.inWholeSeconds.toInt()
 
   @BeforeAll
   fun setup() {
@@ -54,6 +56,7 @@ class SessionTest(
         cookie {
           exists(sessionCookieName)
           httpOnly(sessionCookieName, true)
+          maxAge(sessionCookieName, defaultMaxAge)
         }
       }
   }

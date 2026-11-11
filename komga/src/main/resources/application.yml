@@ -70,6 +70,11 @@ spring:
       max-in-memory-size: 10MB
 
 server:
+  servlet:
+    session:
+      cookie:
+        name: KOMGA-SESSION
+        max-age: \${spring.session.timeout}
   forward-headers-strategy: framework
   shutdown: graceful
   error:
