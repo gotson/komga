@@ -5,11 +5,15 @@ import org.springframework.boot.autoconfigure.session.SessionProperties
 import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Primary
-import org.springframework.session.FindByIndexNameSessionRepository
+import org.springframework.jdbc.support.JdbcTransactionManager
 import org.springframework.session.config.SessionRepositoryCustomizer
 import org.springframework.session.jdbc.JdbcIndexedSessionRepository
+import org.springframework.session.jdbc.config.annotation.SpringSessionDataSource
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession
+import org.springframework.transaction.TransactionDefinition
+import org.springframework.transaction.support.TransactionOperations
+import org.springframework.transaction.support.TransactionTemplate
+import javax.sql.DataSource
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.toJavaDuration
 
@@ -57,4 +61,12 @@ class JdbcSessionConfiguration {
         ?: 30.minutes.toJavaDuration()
     repository.setDefaultMaxInactiveInterval(timeout)
   }
+
+  @Bean("springSessionTransactionOperations", defaultCandidate = false)
+  fun springSessionTransactionOperations(
+    @SpringSessionDataSource dataSource: DataSource,
+  ): TransactionOperations =
+    TransactionTemplate(JdbcTransactionManager(dataSource)).apply {
+      propagationBehavior = TransactionDefinition.PROPAGATION_REQUIRES_NEW
+    }
 }
