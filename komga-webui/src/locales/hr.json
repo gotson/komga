@@ -65,7 +65,7 @@
     "button_browse": "Pregledaj",
     "button_import": "Uvezi",
     "button_scan": "Pretraži",
-    "button_select_series": "Odaberi seriju",
+    "button_select_series": "Odaberi serije",
     "field_import_path": "Uvezi iz mape",
     "info_part1": "Ovaj ekran omogućuje uvoz datoteka koje se ne nalaze u tvojim postojećim bibliotekama. Datoteke možeš uvesti samo u postojeću seriju. U tom slučaju će Komga premjestiti ili kopirati datoteke u mapu odabrane serije.",
     "info_part2": "Ako odabereš broj za knjigu, a knjiga s tim brojem već postoji, tada ćeš moći usporediti te dvije knjige. Ako odlučiš uvesti knjigu, Komga će nadograditi postojeću knjigu s novomknjigom i zamijeniti staru datoteku s novom datotekom.",
@@ -101,8 +101,8 @@
     "download_current_page": "Preuzmi trenutačnu stranicu",
     "end_of_book": "Došao/la si do kraja knjige.",
     "from_series_metadata": "od metapodataka serije",
-    "move_next": "Ponovo pritisni „Dalje” za prelaženje na sljedeću knjigu.",
-    "move_next_exit": "Ponovo pritisni „Dalje” za zatvaranje čitača.",
+    "move_next": "Klikni ili pritisni „Dalje” za prelaženje na sljedeću knjigu.",
+    "move_next_exit": "Klikni ili pritisni „Dalje” za zatvaranje čitača.",
     "move_previous": "Ponovo pritisni „Prethodno” za prelaženje na prethodnu knjigu.",
     "notification_poster_set_book": "Trenutačna stranica je sada postavljena kao poster knjige.",
     "notification_poster_set_readlist": "Trenutačna stranica je sada postavljena kao poster liste čitanja.",
@@ -478,7 +478,7 @@
       "field_import_mylar_series": "Metapodaci serije",
       "field_name": "Ime",
       "field_oneshotsdirectory": "Mapa za izdanja bez nastavka",
-      "field_repair_extensions": "Automatski ispravi netočne ekstenzije datoteka",
+      "field_repair_extensions": "Automatski ispravi neispravne sufikse datoteka",
       "field_root_folder": "Osnovna mapa",
       "field_scan_interval": "Interval pretraživanja",
       "field_scanner_empty_trash_after_scan": "Automatski isprazni smeće nakon svakog pretraživanja",
@@ -557,8 +557,8 @@
     },
     "edit_user_restrictions": {
       "age_restriction": {
-        "allow_under": "Dozvoli samo mlađima od",
-        "exclude_over": "Isključi starije od",
+        "allow_under": "Dozvoli do (uključivo)",
+        "exclude_over": "Isključi starije od (uključivo)",
         "none": "Bez ograničenja"
       },
       "edit_restrictions_for": "Uredi ograničenja za {name}",
@@ -591,7 +591,7 @@
     },
     "force_kobo_sync": {
       "dialog_title": "Koristi Kobo sinkronizaciju",
-      "warning_html": "Ovo će izbrisati svu povijest sinkronizacije za ovaj API ključ. Tvoj Kobo će sinkronizirati sve pri sljedećoj sinkronizaciji."
+      "warning_html": "Ovo će se izbrisati svu povijest sinkronizacije za ovaj API ključ. Tvoj Kobo će sve sinkronizirati prilikom sljedeće sinkronizacije."
     },
     "password_change": {
       "button_cancel": "Odustani",
@@ -789,7 +789,7 @@
       "font_size_decrease": "Smanji veličinu fonta",
       "font_size_increase": "Povećaj veličinu fonta",
       "menus": "Izbornici",
-      "next": "Dalje",
+      "next": "Naprijed",
       "previous": "Natrag",
       "reader_navigation": "Navigacija čitača",
       "scroll": "Promijeni raspored za listanje klizačem",
@@ -922,10 +922,10 @@
     "library_sidecars": "Povezane datoteke po bilioteci",
     "tasks_executed": "Broj izvršenih zadataka",
     "tasks_total_time": "Ukupno utrošeno vrijeme za zadatke",
-    "title": "Statistika"
+    "title": "Metrike"
   },
   "missing_posters": {
-    "title": "Posteri koji nedostaju"
+    "title": "Nedostajući posteri"
   },
   "navigation": {
     "home": "Početna stranica",
@@ -1063,7 +1063,7 @@
     "tooltip_oauth2_auto_login": "Zahtijeva jednog pružatelja OAuth2 autentifikacije i aktiviranu opciju „sakrij polja prijave”"
   },
   "updates": {
-    "available": "Postoje nove verzije",
+    "available": "Dostupne su nove verzije",
     "latest_installed": "Najnovija Komga verzija je već instalirana"
   },
   "user_roles": {
