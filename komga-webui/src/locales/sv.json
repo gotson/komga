@@ -1,65 +1,65 @@
 {
   "$vuetify": {
     "dataFooter": {
-      "pageText": "{0}-{1} av {2}"
+      "pageText": "{0}–{1} av {2}"
     },
     "dataIterator": {
-      "loadingText": "Laddar objekt…",
-      "noResultsText": "Inga matchande uppgifter hittades"
+      "loadingText": "Läser in poster …",
+      "noResultsText": "Inga matchande poster hittades"
     },
     "dataTable": {
       "itemsPerPageText": "Rader per sida:",
       "sortBy": "Sortera efter"
     },
     "fileInput": {
-      "counter": "{0} filer",
-      "counterSize": "{0} filer (av {1} totalt)"
+      "counter": "Antal filer: {0}",
+      "counterSize": "Antal filer: {0} (totalt {1})"
     },
-    "noDataText": "Ingen data tillgänglig"
+    "noDataText": "Inga data att visa"
   },
   "account_settings": {
     "account_settings": "Kontoinställningar",
     "api_key": {
-      "created_date": "Skapades datum: {date}",
-      "force_kobo_sync": "Tvinga Kobo synk",
+      "created_date": "Skapad {date}",
+      "force_kobo_sync": "Tvinga fram en fullständig Kobo-synkronisering",
       "generate_api_key": "Skapa API-nyckel",
-      "no_keys": "Inga API-nycklar skapade ännu"
+      "no_keys": "Inga API-nycklar har skapats ännu"
     },
-    "change_password": "ändra lösenord",
-    "details": "Detaljer",
+    "change_password": "Byt lösenord",
+    "details": "Kontouppgifter",
     "my_account": "Mitt konto"
   },
   "announcements": {
     "mark_all_read": "Markera alla som lästa",
     "mark_read": "Markera som läst",
-    "tab_title": "Annonseringar"
+    "tab_title": "Meddelanden"
   },
   "authentication_activity": {
     "api_key": "API-nyckel",
-    "datetime": "Datum & Tid",
+    "datetime": "Datum och tid",
     "email": "E-post",
     "error": "Fel",
-    "ip": "IP",
+    "ip": "IP-adress",
     "source": "Källa",
     "success": "Lyckades",
     "user_agent": "Användaragent"
   },
   "author_roles": {
     "colorist": "färgläggare",
-    "cover": "omslag",
+    "cover": "omslagstecknare",
     "editor": "redaktörer",
-    "inker": "konturarbetare",
-    "letterer": "typdesigner",
-    "penciller": "formgivare",
+    "inker": "tuschare",
+    "letterer": "textare",
+    "penciller": "blyertstecknare",
     "translator": "översättare",
     "writer": "författare"
   },
   "book_card": {
     "error": "Fel",
     "no_release_date": "Inget utgivningsdatum",
-    "unknown": "Ska analyseras",
+    "unknown": "Väntar på analys",
     "unread": "Oläst",
-    "unsupported": "Stödjs inte"
+    "unsupported": "Stöds inte"
   },
   "book_import": {
     "button_browse": "Bläddra",
@@ -67,64 +67,64 @@
     "button_scan": "Skanna",
     "button_select_series": "Välj serie",
     "field_import_path": "Importera från mapp",
-    "info_part1": "Den här skärmen låter dig importera filer som ligger utanför dina befintliga bibliotek. Du kan bara importera filer till befintlig serie, i vilket fall Komga flyttar eller kopierar filerna till katalogen för den valda serien.",
-    "info_part2": "Om du väljer ett nummer för en bok och det redan finns en bok med det numret du kommer att kunna jämföra de två böckerna. Om du väljer att importera boken kommer Komga att uppgradera den befintliga boken med den nya, ersätter effektivt den gamla filen med den nya.",
-    "no_files_found": "Inga filer funna",
+    "info_part1": "Här kan du importera filer som ligger utanför dina bibliotek. Du kan bara importera till en befintlig serie. Komga flyttar eller kopierar filerna till den valda seriens mapp.",
+    "info_part2": "Om det redan finns en bok med det nummer du väljer kan du jämföra böckerna. Om du sedan importerar den nya boken ersätter Komga den gamla filen med den nya.",
+    "no_files_found": "Inga filer hittades",
     "notification": {
       "go_to_book": "Gå till boken",
       "import_failure": "Det gick inte att importera boken: {file}",
-      "import_successful": "Boken importerades framgångsrikt: {book}",
+      "import_successful": "Boken importerades: {book}",
       "source_file": "Källfil: {file}"
     },
     "row": {
       "error_analyze_first": "Boken måste analyseras först",
       "error_choose_series": "Välj en serie",
-      "error_only_import_no_errors": "Kan bara importera böcker utan fel",
-      "warning_upgrade": "Befintlig bok kommer att uppgraderas"
+      "error_only_import_no_errors": "Det går bara att importera böcker utan fel",
+      "warning_upgrade": "Den befintliga bokfilen kommer att ersättas"
     },
     "table": {
-      "destination_name": "Målnamn",
+      "destination_name": "Filnamn efter import",
       "file_name": "Filnamn",
       "number": "Nummer",
       "series": "Serie"
     },
     "title": "Importera",
-    "try_another_directory": "Försök att söka i en annan katalog"
+    "try_another_directory": "Prova att söka i en annan mapp"
   },
   "bookreader": {
     "beginning_of_book": "Du är i början av boken.",
-    "changing_reading_direction": "Byt läsriktning till",
-    "cycling_page_layout": "Växla Sidlayout",
-    "cycling_page_margin": "Växlar sidmarginal",
-    "cycling_scale": "Växla Skala",
-    "cycling_side_padding": "Växla Spaltfyllnad",
-    "download_current_page": "Ladda ner nuvarande sida",
+    "changing_reading_direction": "Läsriktning",
+    "cycling_page_layout": "Sidlayout",
+    "cycling_page_margin": "Marginal mellan sidorna",
+    "cycling_scale": "Skalning",
+    "cycling_side_padding": "Marginal i sidled",
+    "download_current_page": "Ladda ner den här sidan",
     "end_of_book": "Du har kommit till slutet av boken.",
     "from_series_metadata": "från seriens metadata",
-    "move_next": "Tryck ”Nästa” igen för att gå till nästa bok.",
-    "move_next_exit": "Tryck ”Nästa” igen för att stänga läsaren.",
-    "move_previous": "Tryck ”Föregående” igen för att gå till föregående bok.",
-    "notification_poster_set_book": "Bokens affisch är nu inställd på den aktuella sidan.",
-    "notification_poster_set_readlist": "Affischen i läslistan är nu inställd på den aktuella sidan.",
-    "notification_poster_set_series": "Serieaffischen är nu inställd på den aktuella sidan.",
+    "move_next": "Tryck på ”Nästa” igen för att gå till nästa bok.",
+    "move_next_exit": "Tryck på ”Nästa” igen för att stänga läsaren.",
+    "move_previous": "Tryck på ”Föregående” igen för att gå till föregående bok.",
+    "notification_poster_set_book": "Den här sidan används nu som bokens omslag.",
+    "notification_poster_set_readlist": "Den här sidan används nu som läslistans omslag.",
+    "notification_poster_set_series": "Den här sidan används nu som seriens omslag.",
     "paged_reader_layout": {
-      "double": "Dubbla sidor",
-      "double_no_cover": "Dubbla sidor (inget omslag)",
-      "single": "Enkelsidig"
+      "double": "Uppslag med separat omslag",
+      "double_no_cover": "Uppslag från första sidan",
+      "single": "En sida i taget"
     },
     "reader_settings": "Läsinställningar",
     "scale_type": {
-      "continuous_original": "Original",
-      "continuous_width": "Passa bredd",
-      "height": "Passa höjd",
-      "original": "Original",
-      "screen": "Skärm",
-      "width": "Passa bredd",
-      "width_shrink_only": "Anpassa bredd (endast krympning)"
+      "continuous_original": "Originalstorlek",
+      "continuous_width": "Anpassa till bredden",
+      "height": "Anpassa till höjden",
+      "original": "Originalstorlek",
+      "screen": "Anpassa till skärmen",
+      "width": "Anpassa till bredden",
+      "width_shrink_only": "Anpassa till bredden (endast förminskning)"
     },
-    "set_current_page_as_book_poster": "Ange sida som affisch för bok",
-    "set_current_page_as_readlist_poster": "Ange sidan som affisch för läslista",
-    "set_current_page_as_series_poster": "Skapa en sida som affisch för serien",
+    "set_current_page_as_book_poster": "Använd sidan som bokens omslag",
+    "set_current_page_as_readlist_poster": "Använd sidan som läslistans omslag",
+    "set_current_page_as_series_poster": "Använd sidan som seriens omslag",
     "settings": {
       "always_fullscreen": "Alltid helskärm",
       "animate_page_transitions": "Animera sidbyten",
@@ -134,42 +134,42 @@
         "gray": "Grå",
         "white": "Vit"
       },
-      "display": "Visa",
-      "general": "Generella",
+      "display": "Visning",
+      "general": "Allmänt",
       "gestures": "Gester",
       "page_layout": "Sidlayout",
-      "page_margin": "Sidmarginal",
+      "page_margin": "Marginal mellan sidorna",
       "paged": "Inställningar för sidvisning",
       "reading_mode": "Läsläge",
-      "scale_type": "Skal typ",
-      "side_padding": "Sidofyllning",
-      "side_padding_none": "Ingen",
-      "webtoon": "Webtoon Läsarinställningar"
+      "scale_type": "Skalning",
+      "side_padding": "Marginal i sidled",
+      "side_padding_none": "Ingen marginal",
+      "webtoon": "Inställningar för webtoonläsaren"
     },
     "shortcuts": {
       "close": "Stäng",
       "cycle_page_layout": "Växla sidlayout",
-      "cycle_page_margin": "Växla sidmarginal",
-      "cycle_scale": "Växla skala",
-      "cycle_side_padding": "Växla sidofyllning",
+      "cycle_page_margin": "Ändra marginalen mellan sidorna",
+      "cycle_scale": "Växla skalning",
+      "cycle_side_padding": "Ändra marginalen i sidled",
       "first_page": "Första sidan",
-      "fullscreen": "Öppna/avsluta helskärm",
+      "fullscreen": "Växla helskärmsläge",
       "last_page": "Sista sidan",
-      "left_to_right": "Vänster till höger",
+      "left_to_right": "Från vänster till höger",
       "menus": "Menyer",
       "next_page": "Nästa sida",
       "previous_page": "Föregående sida",
-      "reader_navigation": "Läsarnavigering",
-      "right_to_left": "Höger till vänster",
+      "reader_navigation": "Navigering i läsaren",
+      "right_to_left": "Från höger till vänster",
       "settings": "Inställningar",
       "show_hide_help": "Visa/dölj hjälp",
       "show_hide_settings": "Visa/dölj inställningsmenyn",
-      "show_hide_thumbnails": "Visa/dölj miniatyrutforskaren",
+      "show_hide_thumbnails": "Visa/dölj sidminiatyrer",
       "show_hide_toolbars": "Visa/dölj verktygsfält",
       "vertical": "Lodrät",
       "webtoon": "Webtoon"
     },
-    "tooltip_incognito": "Läsförlopp sparas inte"
+    "tooltip_incognito": "Ditt läsförlopp sparas inte"
   },
   "browse_book": {
     "comment": "KOMMENTAR",
@@ -180,64 +180,66 @@
     "format": "FORMAT",
     "isbn": "ISBN",
     "links": "LÄNKAR",
-    "navigation_within_readlist": "Navigering inom läslistan: {name}",
-    "outdated_tooltip": "Filen för den här boken har ändrats, boken måste analyseras om",
-    "read_book": "Läs bok",
-    "read_incognito": "Läs incognito",
-    "remove_from_collection": "Ta bort bok från samling",
-    "remove_from_readlist": "Ta bort bok från läslista",
+    "navigation_within_readlist": "Bläddra i läslistan {name}",
+    "outdated_tooltip": "Bokfilen har ändrats och behöver analyseras igen.",
+    "read_book": "Läs boken",
+    "read_incognito": "Läs i inkognitoläge",
+    "remove_from_collection": "Ta bort boken från samlingen",
+    "remove_from_readlist": "Ta bort boken från läslistan",
     "size": "STORLEK"
   },
   "browse_collection": {
     "edit_collection": "Redigera samling",
-    "edit_elements": "Redigera element",
+    "edit_elements": "Redigera samlingens innehåll",
     "manual_ordering": "manuell sortering"
   },
   "browse_readlist": {
-    "edit_elements": "Redigera element",
+    "edit_elements": "Redigera läslistans innehåll",
     "edit_readlist": "Redigera läslista",
     "manual_ordering": "manuell sortering"
   },
   "browse_series": {
-    "earliest_year_from_release_dates": "Detta är det tidigaste året från utgivningsdatum från alla böcker i serien",
-    "remove_from_collection": "Ta bort serie från samling",
-    "series_no_summary": "Denna serie har ingen sammanfattning, så vi valde en för dig!",
+    "earliest_year_from_release_dates": "Det här är utgivningsåret för den bok i serien som gavs ut först.",
+    "remove_from_collection": "Ta bort serien från samlingen",
+    "series_no_summary": "Serien saknar en egen sammanfattning. Här visas en från en av böckerna.",
     "summary_from_book": "Sammanfattning från bok {number}:"
   },
   "collections_expansion_panel": {
     "manage_collection": "Hantera samling",
-    "title": "{name} samling"
+    "title": "Samlingen ”{name}”"
   },
   "common": {
     "age": "Ålder",
     "all_libraries": "Alla bibliotek",
-    "all_of": "Samtliga",
-    "any_of": "Någon av",
+    "all_of": "Matcha alla valda värden",
+    "any_of": "Matcha minst ett valt värde",
     "book": "Bok",
     "books": "Böcker",
-    "books_n": "Ingen bok | 1 bok | {count} böcker",
-    "books_total": "{count} / {total} böcker",
+    "books_n": "Inga böcker | 1 bok | {count} böcker",
+    "books_total": "Böcker: {count} av {total}",
     "cancel": "Avbryt",
     "cbx": "Serietidningsarkiv",
     "choose_image": "Välj en bild",
     "close": "Stäng",
     "collections": "Samlingar",
-    "copied": "Kopierad!",
+    "copied": "Kopierat!",
     "create": "Skapa",
-    "delete": "Redera",
-    "dimension": "b: {width}, h: {height}",
+    "delete": "Ta bort",
+    "dimension": "Bredd: {width}, höjd: {height}",
+    "discard": "Förkasta ändringar",
     "disk_space": "Diskutrymme",
     "dismiss": "Avfärda",
     "download": "Ladda ner",
     "drag_drop": "dra och släpp",
+    "duplicate": "Dubblett",
     "email": "E-post",
-    "epub": "Epub",
+    "epub": "EPUB",
     "error": "Fel",
     "filename": "Filnamn",
-    "filter_no_matches": "Det aktiva filtret ger ingen träff",
+    "filter_no_matches": "Inga träffar med det aktuella filtret",
     "genre": "Genre",
-    "go_to_collection": "Gå till samling",
-    "go_to_library": "Gå till bibliotek",
+    "go_to_collection": "Gå till samlingen",
+    "go_to_library": "Gå till biblioteket",
     "go_to_readlist": "Gå till läslistan",
     "go_to_series": "Gå till serien",
     "i_understand": "Jag förstår",
@@ -247,10 +249,10 @@
     "lock_all": "Lås alla",
     "media": "Media",
     "more": "Mer",
-    "n_selected": "{count} valda",
+    "n_selected": "Antal markerade: {count}",
     "nothing_to_show": "Inget att visa",
     "ok": "OK",
-    "oneshot": "One-shot",
+    "oneshot": "Fristående bok",
     "outdated": "Föråldrad",
     "page": "Sida",
     "page_number": "Sidnummer",
@@ -259,8 +261,8 @@
     "pages_n": "Inga sidor | 1 sida | {count} sidor",
     "password": "Lösenord",
     "pdf": "PDF",
-    "pending_tasks": "Inga väntande uppgifter | 1 väntande uppgift | {count} väntande uppgifter",
-    "pinned_libraries": "Fästa Bibliotek",
+    "pending_tasks": "Inga jobb i kö | 1 jobb i kö | {count} jobb i kö",
+    "pinned_libraries": "Fästa bibliotek",
     "publisher": "Utgivare",
     "read": "Läs",
     "read_on": "Läst den {date}",
@@ -268,13 +270,13 @@
     "readlists": "Läslistor",
     "remember-me": "Kom ihåg mig",
     "reorder": "Ordna om",
-    "required": "Krävs",
+    "required": "Obligatoriskt fält",
     "reset_filters": "Återställ filter",
     "roles": "Roller",
     "save_changes": "Spara ändringar",
-    "series": "Serier | Serier",
+    "series": "Serie | Serier",
     "settings": "Inställningar",
-    "sidecars": "Sidovagnar",
+    "sidecars": "Sidofiler",
     "tags": "Taggar",
     "ui": "Gränssnitt",
     "unavailable": "Otillgänglig",
@@ -285,130 +287,134 @@
   },
   "dashboard": {
     "keep_reading": "Fortsätt läsa",
-    "on_deck": "Pågående",
+    "on_deck": "Nästa bok i påbörjade serier",
     "recently_added_books": "Nyligen tillagda böcker",
     "recently_added_series": "Nyligen tillagda serier",
     "recently_read_books": "Nyligen lästa böcker",
-    "recently_released_books": "Nyligen släppta böcker",
-    "recently_updated_series": "Nyligen uppdaterad serier"
+    "recently_released_books": "Nyligen utgivna böcker",
+    "recently_updated_series": "Nyligen uppdaterade serier"
   },
   "data_import": {
     "book_number": "Boknummer: {name}",
     "book_series": "Serie: {name}",
     "button_import": "Importera",
-    "button_match": "Träff",
-    "comicrack_preambule_html": "Du kan importera existerande ComicRack Läslistor i <code>.cbl</code>-format.<br>Komga kommer att försöka matcha innehållet med serier och böker i dina bibliotek.",
+    "button_match": "Matcha böcker",
+    "comicrack_preambule_html": "Du kan importera läslistor från ComicRack i <code>.cbl</code>-format.<br>Komga använder serienamn och boknummer i listan för att hitta böckerna i dina bibliotek.",
     "dialog_confirmation": {
-      "body": "{unmatched} / {total} böcker är ej matchade",
+      "body": "Böcker utan träff: {unmatched} av {total}",
+      "body2": "Böcker som förekommer flera gånger: {duplicates} av {total}",
       "create": "Skapa ändå",
-      "title": "Några böcker är inte matchade"
+      "title": "Kontrollera böckerna i läslistan"
     },
-    "field_file_label": "ComicRack Läslista (.cbl)",
-    "field_files_label": "ComicRack Läslistor (.cbl)",
-    "import_read_lists": "Importera Läslistor",
-    "imported_as": "Importerad som {name}",
-    "readlist_created": "Skapat läslistan: {name}",
-    "requested_number": "Begärt nummer",
-    "requested_series": "Begärd Serie",
-    "results_preambule": "Resultatet av importen visas nedan. Du kan också kontrollera omatchade böcker för varje fil.",
-    "size_limit": "Filstorlek ska vara mindre än {size} MB",
-    "tab_title": "Data import"
+    "field_file_label": "Läslista från ComicRack (.cbl)",
+    "field_files_label": "Läslistor från ComicRack (.cbl)",
+    "import_read_lists": "Importera läslistor",
+    "imported_as": "Importerades som {name}",
+    "readlist_created": "Läslistan ”{name}” har skapats",
+    "requested_number": "Nummer i läslistan",
+    "requested_series": "Serie i läslistan",
+    "results_preambule": "Här ser du resultatet av importen. För varje fil kan du också se vilka böcker som saknar träff.",
+    "size_limit": "Filen måste vara mindre än {size} MB",
+    "tab_title": "Dataimport"
   },
   "dialog": {
     "add_api_key": {
-      "context": "API-nycklar kan användas för autentisering via Kobo Synkprotokoll.",
+      "button_confirm": "Skapa",
+      "context": "API-nycklar kan användas för autentisering vid Kobo-synkronisering.",
       "dialog_title": "Skapa ny API-nyckel",
-      "field_comment": "Kommentar"
+      "field_comment": "Kommentar",
+      "field_comment_hint": "Vad ska API-nyckeln användas till?",
+      "info_copy": "Kopiera API-nyckeln nu. Den visas bara den här gången."
     },
     "add_to_collection": {
       "button_create": "Skapa",
-      "card_collection_subtitle": "Ingen serie | 1 serie | {count} serier",
+      "card_collection_subtitle": "Inga serier | 1 serie | {count} serier",
       "dialog_title": "Lägg till i samling",
-      "field_search_create": "Sök eller skapa samling",
-      "field_search_create_error": "En samling med detta namn finns redan",
-      "label_no_matching_collection": "Ingen matchande samling"
+      "field_search_create": "Sök efter eller skapa en samling",
+      "field_search_create_error": "Det finns redan en samling med det namnet",
+      "label_no_matching_collection": "Ingen samling matchar sökningen"
     },
     "add_to_readlist": {
       "button_create": "Skapa",
-      "card_readlist_subtitle": "Ingen bok | 1 bok | {count} böcker",
-      "dialog_title": "Lägg till i läslistan",
-      "field_search_create": "Sök eller skapa läslista",
-      "field_search_create_error": "En läslistan med detta namn finns redan",
-      "label_no_matching_readlist": "Ingen matchande läslista"
+      "card_readlist_subtitle": "Inga böcker | 1 bok | {count} böcker",
+      "dialog_title": "Lägg till i läslista",
+      "field_search_create": "Sök efter eller skapa en läslista",
+      "field_search_create_error": "Det finns redan en läslista med det namnet",
+      "label_no_matching_readlist": "Ingen läslista matchar sökningen"
     },
     "add_user": {
       "button_cancel": "Avbryt",
       "button_confirm": "Lägg till",
       "dialog_title": "Lägg till användare",
-      "field_email": "E-post",
-      "field_email_error": "Måste vara en giltig e-postadress",
+      "field_email": "E-postadress",
+      "field_email_error": "Ange en giltig e-postadress",
       "field_password": "Lösenord"
     },
     "analyze_library": {
-      "body": "Analyserar alla mediefiler i biblioteket. Analysen samlar in information om medierna. Beroende på bibliotekets storlek kan detta ta lång tid.",
+      "body": "Komga analyserar alla mediefiler i biblioteket och samlar in uppgifter om dem. Det kan ta lång tid om biblioteket är stort.",
       "button_confirm": "Analysera",
       "title": "Analysera biblioteket"
     },
     "book_picker": {
-      "filter": "Filtrera efter boknummer, titel, eller utgivningsdatum",
+      "filter": "Filtrera efter boknummer, titel eller utgivningsdatum",
       "title": "Välj bok"
     },
     "delete_apikey": {
-      "button_confirm": "Radera",
-      "confirm_delete": "Jag förstår, radera API-nyckel \"{name}\"",
-      "dialog_title": "Radera API-nyckel",
-      "warning_html": "Applikationer eller skript som använder denna API-nyckel kommer inte längre kunna nyttja Komga API:et. Det går ej att ångra denna åtgärd."
+      "button_confirm": "Ta bort",
+      "confirm_delete": "Jag förstår. Ta bort API-nyckeln ”{name}”.",
+      "dialog_title": "Ta bort API-nyckel",
+      "warning_html": "Appar och skript som använder den här API-nyckeln förlorar åtkomsten till Komgas API. Det går inte att ångra åtgärden."
     },
     "delete_book": {
       "button_confirm": "Ta bort",
-      "confirm_delete": "Ja, radera boken \"{name}\" och dess filer",
+      "confirm_delete": "Ja, ta bort boken ”{name}” och dess filer",
       "confirm_delete_multiple": "Ja, ta bort {count} böcker och deras filer",
       "dialog_title": "Ta bort bok",
       "dialog_title_multiple": "Ta bort böcker",
-      "warning_html": "Boken <b>{name}</b> kommer att tas bort från denna server tillsammans med lagrade mediefiler. Detta <b> kan inte</b> ångras. Fortsätta?",
-      "warning_multiple_html": "{count} böcker kommer att tas bort från den här servern tillsammans med lagrade mediefiler. Detta <b> kan inte</b> ångras. Fortsätta?"
+      "warning_html": "Boken <b>{name}</b> och tillhörande mediefiler tas bort från servern. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?",
+      "warning_multiple_html": "{count} böcker och tillhörande mediefiler tas bort från servern. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?"
     },
     "delete_collection": {
-      "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera samlingen ”{name}”",
+      "button_confirm": "Ta bort",
+      "confirm_delete": "Ja, ta bort samlingen ”{name}”",
       "confirm_delete_multiple": "Ja, ta bort {count} samlingar",
-      "dialog_title": "Radera samling",
+      "dialog_title": "Ta bort samling",
       "dialog_title_multiple": "Ta bort samlingar",
-      "warning_html": "Samlingen <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?",
-      "warning_multiple_html": "{count} samlingar tas bort från den här servern. Dina mediefiler påverkas inte. Denna <b> kan inte </b> ångras. Fortsätta?"
+      "warning_html": "Samlingen <b>{name}</b> tas bort från servern. Dina mediefiler påverkas inte. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?",
+      "warning_multiple_html": "{count} samlingar tas bort från servern. Dina mediefiler påverkas inte. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?"
     },
     "delete_library": {
-      "button_confirm": "Radera",
-      "confirm_delete": "Ja, redera biblioteket ”{name}”",
-      "title": "Redera bibliotek",
-      "warning_html": "Biblioteket <b>{name}</b> kommer att tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?"
+      "button_confirm": "Ta bort",
+      "confirm_delete": "Ja, ta bort biblioteket ”{name}”",
+      "title": "Ta bort bibliotek",
+      "warning_html": "Biblioteket <b>{name}</b> tas bort från servern. Dina mediefiler påverkas inte. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?"
     },
     "delete_readlist": {
-      "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera läslistan ”{name}”",
+      "button_confirm": "Ta bort",
+      "confirm_delete": "Ja, ta bort läslistan ”{name}”",
       "confirm_delete_multiple": "Ja, ta bort {count} läslistor",
-      "dialog_title": "Radera läslista",
+      "dialog_title": "Ta bort läslista",
       "dialog_title_multiple": "Ta bort läslistor",
-      "warning_html": "Läslistan <b>{name}</b> tas bort från den här servern. Dina mediefiler påverkas inte. Detta <b>kan inte</b> ångras. Fortsätta?",
-      "warning_multiple_html": "{count} läslistor kommer att tas bort från denna server. Dina mediefiler påverkas inte. Denna <b> kan inte </b> ångras. Fortsätta?"
+      "warning_html": "Läslistan <b>{name}</b> tas bort från servern. Dina mediefiler påverkas inte. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?",
+      "warning_multiple_html": "{count} läslistor tas bort från servern. Dina mediefiler påverkas inte. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?"
     },
     "delete_series": {
       "button_confirm": "Ta bort",
-      "confirm_delete": "Ja, radera serien \"{name}\" och dess filer",
-      "confirm_delete_multiple": "Ja, radera {count} serier och deras filer",
+      "confirm_delete": "Ja, ta bort serien ”{name}” och dess filer",
+      "confirm_delete_multiple": "Ja, ta bort {count} serier och deras filer",
       "dialog_title": "Ta bort serier",
-      "warning_html": "Serien <b>{name}</b> kommer att tas bort från den här servern tillsammans med lagrade mediefiler. Detta <b>kan inte</b> ångras. Fortsätta?",
-      "warning_multiple_html": "{count} serier kommer att tas bort från den här servern tillsammans med lagrade mediefiler. Detta <b> kan inte</b> ångras. Fortsätta?"
+      "warning_html": "Serien <b>{name}</b> och tillhörande mediefiler tas bort från servern. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?",
+      "warning_multiple_html": "{count} serier och tillhörande mediefiler tas bort från servern. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?"
     },
     "delete_user": {
-      "button_confirm": "Radera",
-      "confirm_delete": "Ja, radera användare ”{name}”",
-      "dialog_title": "Radera användare",
-      "warning_html": "Användaren <b>{name}</b> kommer att tas bort från den här servern. Detta <b>kan inte</b> ångras. Fortsätta?"
+      "button_confirm": "Ta bort",
+      "confirm_delete": "Ja, ta bort användaren ”{name}”",
+      "dialog_title": "Ta bort användare",
+      "warning_html": "Användaren <b>{name}</b> tas bort från servern. Det går <b>inte</b> att ångra åtgärden. Vill du fortsätta?"
     },
     "edit_books": {
       "add_author_role_error_duplicate": "Finns redan",
-      "authors_notice_multiple_edit": "Du redigerar författare för flera böcker. Detta kommer att skriva över befintliga författare till varje bok.",
+      "authors_notice_multiple_edit": "Du redigerar upphovspersoner för flera böcker samtidigt. När du sparar ersätts listan över upphovspersoner för varje bok.",
       "button_cancel": "Avbryt",
       "button_confirm": "Spara ändringar",
       "copy_from": "Kopiera från {field}",
@@ -416,36 +422,36 @@
       "dialog_title_single": "Redigera {book}",
       "field_alternate_title": "Alternativ titel",
       "field_isbn": "ISBN",
-      "field_isbn_error": "Måste vara ett giltigt ISBN 13",
+      "field_isbn_error": "Ange ett giltigt 13-siffrigt ISBN",
       "field_link_label": "Etikett",
-      "field_link_url": "URL",
-      "field_link_url_error_protocol": "Måste vara http eller https",
-      "field_link_url_error_url": "Måste vara en giltig URL",
+      "field_link_url": "Webbadress",
+      "field_link_url_error_protocol": "Adressen måste börja med http:// eller https://",
+      "field_link_url_error_url": "Ange en giltig webbadress",
       "field_number": "Nummer",
       "field_number_sort": "Sorteringsnummer",
       "field_number_sort_hint": "Du kan använda decimaltal",
       "field_release_date": "Utgivningsdatum",
-      "field_release_date_error": "Måste vara ett giltigt datum formaterat ÅÅÅÅ-MM-DD",
+      "field_release_date_error": "Ange ett giltigt datum i formatet ÅÅÅÅ-MM-DD",
       "field_summary": "Sammanfattning",
       "field_tags": "Taggar",
       "field_title": "Titel",
       "number_sort_decrement": "Minska alla med 1",
       "number_sort_increment": "Öka alla med 1",
-      "tab_authors": "Författare",
+      "tab_authors": "Upphovspersoner",
       "tab_general": "Allmänt",
       "tab_links": "Länkar",
-      "tab_poster": "Affisch",
+      "tab_poster": "Omslag",
       "tab_tags": "Taggar",
-      "tags_notice_multiple_edit": "Du redigerar taggar för flera böcker. Detta skriver över befintliga taggar i varje bok."
+      "tags_notice_multiple_edit": "Du redigerar taggar för flera böcker samtidigt. De taggar du anger ersätter de befintliga taggarna för varje bok."
     },
     "edit_collection": {
       "button_cancel": "Avbryt",
       "button_confirm": "Spara ändringar",
       "dialog_title": "Redigera samling",
       "field_manual_ordering": "Manuell sortering",
-      "label_ordering": "Som standard kommer serier i en samling att sorteras efter namn. Du kan aktivera manuell sortering för att definiera din egen sortering.",
+      "label_ordering": "Serierna i en samling sorteras efter namn som standard. Aktivera manuell sortering om du själv vill bestämma ordningen.",
       "tab_general": "Allmänt",
-      "tab_poster": "Affisch"
+      "tab_poster": "Omslag"
     },
     "edit_library": {
       "button_browse": "Bläddra",
@@ -455,58 +461,65 @@
       "button_next": "Nästa",
       "dialog_title_add": "Lägg till bibliotek",
       "dialot_title_edit": "Redigera bibliotek",
-      "field_analysis_analyze_dimensions": "Analysera sidornas dimensioner",
-      "field_analysis_hash_files": "Beräkna hash för filer",
-      "field_analysis_hash_pages": "Beräkna hash för sidor",
+      "field_analysis_analyze_dimensions": "Analysera sidornas mått",
+      "field_analysis_hash_files": "Beräkna hashvärden för filer",
+      "field_analysis_hash_koreader": "Beräkna filernas hashvärden för KOReader",
+      "field_analysis_hash_pages": "Beräkna hashvärden för sidor",
       "field_convert_to_cbz": "Konvertera automatiskt till CBZ",
-      "field_import_barcode_isbn": "ISBN streckkod",
-      "field_import_comicinfo_book": "Bok metadata",
+      "field_import_barcode_isbn": "ISBN-streckkod",
+      "field_import_comicinfo_book": "Bokmetadata",
       "field_import_comicinfo_collections": "Samlingar",
       "field_import_comicinfo_readlists": "Läslistor",
-      "field_import_comicinfo_series": "Serie metadata",
-      "field_import_comicinfo_series_append_volume": "Lägg till volym till serietitel",
-      "field_import_epub_book": "Bok metadata",
-      "field_import_epub_series": "Serie metadata",
+      "field_import_comicinfo_series": "Seriemetadata",
+      "field_import_comicinfo_series_append_volume": "Lägg till volymnumret sist i seriens titel",
+      "field_import_epub_book": "Bokmetadata",
+      "field_import_epub_series": "Seriemetadata",
       "field_import_local_artwork": "Lokala bilder",
-      "field_import_mylar_series": "Metadata om serien",
+      "field_import_mylar_series": "Seriemetadata",
       "field_name": "Namn",
-      "field_oneshotsdirectory": "One-Shots mapp",
-      "field_repair_extensions": "Reparera automatiskt felaktiga filtillägg",
-      "field_root_folder": "Rotkatalog",
+      "field_oneshotsdirectory": "Mapp för fristående böcker",
+      "field_repair_extensions": "Rätta felaktiga filändelser automatiskt",
+      "field_root_folder": "Rotmapp",
+      "field_scan_interval": "Skanningsintervall",
       "field_scanner_empty_trash_after_scan": "Töm papperskorgen automatiskt efter varje skanning",
-      "field_scanner_force_directory_modified_time": "Tvinga katalogen att söka baserat på tidsstämpeln",
+      "field_scanner_force_directory_modified_time": "Räkna med filernas ändringstider när mappens ändringstid bestäms",
+      "field_scanner_scan_startup": "Skanna vid start",
       "field_series_cover": "Serieomslag",
       "file_browser_dialog_button_confirm": "Välj",
-      "file_browser_dialog_title": "Bibliotekets rotkatalog",
+      "file_browser_dialog_title": "Bibliotekets rotmapp",
       "label_analysis": "Analys",
       "label_file_management": "Filhantering",
-      "label_import_barcode_isbn": "Importera ISBN streckkod",
-      "label_import_comicinfo": "Importera metadata för CBR/CBZ som innehåller en ComicInfo.xml-fil",
+      "label_import_barcode_isbn": "Läs in ISBN från streckkoder",
+      "label_import_comicinfo": "Importera metadata från ComicInfo.xml i CBR- och CBZ-filer",
       "label_import_epub": "Importera metadata från EPUB-filer",
-      "label_import_local": "Importera lokala mediatillgångar",
-      "label_import_mylar": "Importera metadata genererade av Mylar",
+      "label_import_local": "Importera lokala mediefiler",
+      "label_import_mylar": "Importera metadata som skapats av Mylar",
+      "label_scan_directory_exclusions": "Mappar som ska undantas",
+      "label_scan_types": "Sök efter följande filtyper",
       "label_scanner": "Skanning",
       "label_series_cover": "Serieomslag",
       "tab_general": "Allmänt",
       "tab_metadata": "Metadata",
       "tab_options": "Alternativ",
-      "tooltip_oneshotsdirectory": "Lämna tom för att inaktivera",
-      "tooltip_scanner_force_modified_time": "Aktivera om biblioteket finns på en Google Drive",
-      "tooltip_use_resources": "Kan ta mycket resurser i anspråk på stora bibliotek eller långsam hårdvara"
+      "tooltip_oneshotsdirectory": "Lämna fältet tomt för att stänga av funktionen",
+      "tooltip_scanner_force_modified_time": "Aktivera om biblioteket ligger på Google Drive",
+      "tooltip_use_resources": "Kan kräva mycket resurser om biblioteket är stort eller datorn är långsam"
     },
     "edit_readlist": {
       "button_cancel": "Avbryt",
       "button_confirm": "Spara ändringar",
-      "dialog_title": "Redigera läslistan",
+      "dialog_title": "Redigera läslista",
       "field_manual_ordering": "Manuell sortering",
       "field_name": "Namn",
       "field_summary": "Sammanfattning",
-      "label_ordering": "Som standard sorteras böcker i en läslista manuellt. Du kan inaktivera manuell sortering för att sortera böcker efter släppdatum.",
+      "label_ordering": "Böckerna i en läslista sorteras manuellt som standard. Stäng av manuell sortering om du vill sortera böckerna efter utgivningsdatum.",
       "tab_general": "Allmänt",
-      "tab_poster": "Affisch"
+      "tab_poster": "Omslag"
     },
     "edit_recommended": {
-      "button_confirm": "Spara ändringar"
+      "button_confirm": "Spara ändringar",
+      "button_reset": "Återställ standardinställningarna",
+      "dialog_title": "Anpassa rekommendationsvyn"
     },
     "edit_series": {
       "button_cancel": "Avbryt",
@@ -514,27 +527,27 @@
       "dialog_title_multiple": "Redigera {count} serie | Redigera {count} serier",
       "dialog_title_single": "Redigera {series}",
       "field_age_rating": "Åldersgräns",
-      "field_age_rating_error": "Åldersgränsen måste vara 0 eller mer",
+      "field_age_rating_error": "Åldersgränsen måste vara minst 0",
       "field_genres": "Genrer",
-      "field_labels": "Etiketter",
+      "field_labels": "Delningsetiketter",
       "field_language": "Språk",
-      "field_language_hint": "IETF BCP 47 språk tagg",
+      "field_language_hint": "Språktagg enligt IETF BCP 47",
       "field_publisher": "Utgivare",
       "field_reading_direction": "Läsriktning",
       "field_sort_title": "Sorteringstitel",
       "field_status": "Status",
-      "field_summary": "Sammanfatting",
+      "field_summary": "Sammanfattning",
       "field_tags": "Taggar",
       "field_title": "Titel",
       "field_total_book_count": "Totalt antal böcker",
       "field_total_book_count_error": "Totalt antal böcker måste vara minst 1",
-      "mixed": "BLANDAD",
-      "tab_general": "Allämnt",
-      "tab_poster": "Affisch",
+      "mixed": "OLIKA VÄRDEN",
+      "tab_general": "Allmänt",
+      "tab_poster": "Omslag",
       "tab_sharing": "Delning",
       "tab_tags": "Taggar",
       "tab_titles": "Alternativa titlar",
-      "tags_notice_multiple_edit": "Du redigerar taggar för flera serier. Detta skriver över befintliga taggar i varje serie."
+      "tags_notice_multiple_edit": "Du redigerar taggar för flera serier samtidigt. De taggar du anger ersätter de befintliga taggarna för varje serie."
     },
     "edit_user": {
       "button_cancel": "Avbryt",
@@ -544,19 +557,19 @@
     },
     "edit_user_restrictions": {
       "age_restriction": {
-        "allow_under": "Tillåt endast under",
-        "exclude_over": "Uteslut över",
-        "none": "Inga begränsningar"
+        "allow_under": "Tillåt upp till och med",
+        "exclude_over": "Uteslut från och med",
+        "none": "Ingen begränsning"
       },
       "edit_restrictions_for": "Redigera begränsningar för {name}",
       "label_age_restriction": "Åldersgräns",
-      "label_allow_only_labels": "Tillåt endast etiketter",
-      "label_exclude_labels": "Uteslut etiketter",
-      "tab_content_restrictions": "Begränsningar av innehållet",
+      "label_allow_only_labels": "Tillåt endast innehåll med dessa delningsetiketter",
+      "label_exclude_labels": "Uteslut innehåll med dessa delningsetiketter",
+      "tab_content_restrictions": "Innehållsbegränsningar",
       "tab_shared_libraries": "Delade bibliotek"
     },
     "empty_trash": {
-      "body": "Som standard tar mediaservern inte bort information för media direkt. Detta hjälper om en enhet tillfälligt kopplas bort. När du tömmer papperskorgen för ett bibliotek raderas all information om saknade media.",
+      "body": "Komga behåller normalt uppgifter om mediefiler som saknas. Det är till hjälp om en lagringsenhet tillfälligt kopplas bort. När du tömmer bibliotekets papperskorg tas alla uppgifter om de saknade mediefilerna bort.",
       "button_confirm": "Töm",
       "title": "Töm papperskorgen för biblioteket"
     },
@@ -564,116 +577,117 @@
       "button_cancel": "Avbryt",
       "button_confirm_default": "Välj",
       "dialog_title_default": "Filhanterare",
-      "parent_directory": "Ovanstående"
+      "parent_directory": "Överordnad mapp"
     },
     "filename_chooser": {
       "button_choose": "Välj",
-      "field_destination_filename": "Namn på målfil",
+      "field_destination_filename": "Målfilens namn",
       "label_source_filename": "Källfilens namn",
       "table": {
         "existing_file": "Befintlig fil",
         "order": "Ordning"
       },
-      "title": "Namn på målfil"
+      "title": "Målfilens namn"
     },
     "force_kobo_sync": {
-      "dialog_title": "Tvinga Kobo synk",
-      "warning_html": "Detta raderar all synkhistorik för denna API-nyckel. Din Kobo kommer synka allt vid nästa synktillfälle."
+      "dialog_title": "Tvinga fram en fullständig Kobo-synkronisering",
+      "warning_html": "All synkroniseringshistorik för den här API-nyckeln raderas. Din Kobo synkroniserar allt på nytt vid nästa synkronisering."
     },
     "password_change": {
       "button_cancel": "Avbryt",
       "button_confirm": "Ändra lösenord",
       "dialog_title": "Ändra lösenord",
       "field_new_password": "Nytt lösenord",
-      "field_new_password_error": "Nytt lösenord krävs.",
-      "field_repeat_password": "Upprepa nytt lösenord",
-      "field_repeat_password_error": "Lösenorden måste vara identiska."
+      "field_new_password_error": "Ange ett nytt lösenord.",
+      "field_repeat_password": "Upprepa det nya lösenordet",
+      "field_repeat_password_error": "Lösenorden måste stämma överens."
     },
     "refresh_library_metadata": {
-      "body": "Uppdaterar metadata för alla mediefiler i biblioteket. Beroende på biblioteksstorlek kan det ta lång tid.",
+      "body": "Komga uppdaterar metadata för alla mediefiler i biblioteket. Det kan ta lång tid om biblioteket är stort.",
       "button_confirm": "Uppdatera",
       "title": "Uppdatera metadata för biblioteket"
     },
     "series_picker": {
-      "label_search_series": "Sök serie",
-      "no_results": "Ingen serie hittad",
+      "label_search_series": "Sök efter serier",
+      "no_results": "Inga serier hittades",
       "title": "Välj serie"
     },
     "server_stop": {
-      "button_confirm": "Stopp",
+      "button_confirm": "Stoppa",
       "confirmation_message": "Är du säker på att du vill stoppa Komga?",
       "dialog_title": "Stäng av servern"
     },
     "shortcut_help": {
       "label_description": "Beskrivning",
-      "label_key": "Nyckel"
+      "label_key": "Tangent"
     },
     "transient_book_details": {
-      "label_candidate": "Kandidat",
-      "label_existing": "Befintlig",
+      "label_candidate": "Bok att importera",
+      "label_existing": "Befintlig bok",
       "label_format": "Format",
       "label_name": "Namn",
-      "label_pages": "Sidor",
+      "label_pages": "Antal sidor",
       "label_size": "Storlek",
       "pages_table": {
         "filename": "Filnamn",
         "height": "Höjd",
-        "index": "Index",
-        "media_type": "Mediatyp",
+        "index": "Sidnummer",
+        "media_type": "Medietyp",
         "size": "Storlek",
         "width": "Bredd"
       },
       "title": "Bokinformation",
-      "title_comparison": "Bokjämförelse"
+      "title_comparison": "Jämför böcker"
     },
     "transient_book_viewer": {
-      "label_candidate": "Kandidat",
-      "label_existing": "Befintlig",
+      "label_candidate": "Bok att importera",
+      "label_existing": "Befintlig bok",
       "page_of_pages": "{page}/{pages}",
-      "title": "Inspektera boken",
-      "title_comparison": "Bokjämförelse"
+      "title": "Granska bok",
+      "title_comparison": "Jämför böcker"
     }
   },
   "duplicate_pages": {
-    "action_auto_delete_remaining": "Ta bort återstående automatiskt ({count})",
-    "action_delete_auto": "Automatisk radering",
-    "action_delete_manual": "Manuell radering",
-    "action_delete_matches": "Ta bort matchningar",
+    "action_auto_delete_remaining": "Automatisk borttagning för återstående ({count})",
+    "action_delete_auto": "Automatisk borttagning",
+    "action_delete_manual": "Manuell borttagning",
+    "action_delete_matches": "Ta bort matchande sidor",
     "action_ignore": "Ignorera",
     "action_ignore_remaining": "Ignorera återstående ({count})",
-    "action_manual_delete_remaining": "Återstående manuell radering ({count})",
-    "confirm_auto_delete_remaining": "Alla återstående sidhashar på den här sidan ({count}) kommer att markeras för automatisk radering.",
-    "confirm_manual_delete_remaining": "Alla återstående sidhashar på den här sidan ({count}) kommer att markeras för manuell radering.",
-    "delete_to_save": "Radera för att spara {size}",
-    "deleted_count": "Raderat {count} gånger",
-    "empty_title": "Inga dubbletter av sidor hittades",
+    "action_manual_delete_remaining": "Manuell borttagning för återstående ({count})",
+    "confirm_auto_delete_remaining": "Alla återstående grupper av dubblettsidor i den här vyn ({count}) markeras för automatisk borttagning.",
+    "confirm_manual_delete_remaining": "Alla återstående grupper av dubblettsidor i den här vyn ({count}) markeras för manuell borttagning.",
+    "delete_to_save": "Frigör {size} genom att ta bort sidorna",
+    "deleted_count": "Antal borttagna sidor: {count}",
+    "empty_title": "Inga dubblettsidor hittades",
+    "empty_title_known": "Inga kända dubbletter",
     "filter": {
       "count": "Antal",
-      "date_added": "Datum tillagd",
-      "date_modified": "Datum ändrad",
-      "delete_count": "Antal gånger raderat",
+      "date_added": "Tillagd",
+      "date_modified": "Ändringsdatum",
+      "delete_count": "Antal borttagna sidor",
       "delete_size": "Sparat utrymme",
-      "match_count": "Matcha antal",
+      "match_count": "Antal träffar",
       "size": "Storlek",
       "total_size": "Total storlek"
     },
-    "info": "Om du tar bort dubbla sidor ändras dina filer. Säkerhetskopiera dina filer och använd manuell radering innan du använder automatisk radering.",
-    "known": "Känd",
+    "info": "När du tar bort dubblettsidor ändras innehållet i dina filer. Säkerhetskopiera filerna och prova manuell borttagning innan du använder automatisk borttagning.",
+    "known": "Kända",
     "matches_n": "Inga träffar | 1 träff | {count} träffar",
-    "new": "Ny",
-    "saved_size": "Sparat {size}",
-    "title": "Duplicerade sidor",
+    "new": "Nya",
+    "saved_size": "Frigjort utrymme: {size}",
+    "title": "Dubblettsidor",
     "unknown_size": "Okänd storlek"
   },
   "duplicates": {
-    "file_hash": "Filhash",
+    "file_hash": "Filens hashvärde",
     "size": "Storlek",
-    "title": "Duplicera filer",
+    "title": "Dubblettfiler",
     "url": "URL"
   },
   "enums": {
     "copy_mode": {
-      "HARDLINK": "Hårdlänk/kopiera filer",
+      "HARDLINK": "Skapa hårda länkar eller kopiera filerna",
       "MOVE": "Flytta filer"
     },
     "epubreader": {
@@ -683,22 +697,22 @@
         "sepia": "Sepia"
       },
       "column_count": {
-        "auto": "Auto",
+        "auto": "Automatiskt",
         "one": "En",
         "two": "Två"
       },
       "reading_direction": {
         "auto": "Automatisk",
-        "ltr": "Vänster till höger",
-        "rtl": "Höger till vänster"
+        "ltr": "Från vänster till höger",
+        "rtl": "Från höger till vänster"
       }
     },
     "historical_event_type": {
-      "BookConverted": "Boken konverterad",
-      "BookFileDeleted": "Bokfilen raderad",
-      "BookImported": "Boken importerad",
-      "DuplicatePageDeleted": "Duplicerad sida borttagen",
-      "SeriesFolderDeleted": "Seriemappen borttagen"
+      "BookConverted": "Boken konverterades",
+      "BookFileDeleted": "Bokfilen togs bort",
+      "BookImported": "Boken importerades",
+      "DuplicatePageDeleted": "Dubblettsidan togs bort",
+      "SeriesFolderDeleted": "Seriemappen togs bort"
     },
     "media_profile": {
       "DIVINA": "DIVINA",
@@ -708,125 +722,147 @@
     "media_status": {
       "ERROR": "Fel",
       "OUTDATED": "Föråldrad",
-      "READY": "Redo",
+      "READY": "Klar",
       "UNKNOWN": "Okänd",
-      "UNSUPPORTED": "Saknar stöd"
+      "UNSUPPORTED": "Stöds inte"
     },
     "page_hash_action": {
-      "DELETE_AUTO": "Ta bort automatiskt",
-      "DELETE_MANUAL": "Manuell radering",
+      "DELETE_AUTO": "Automatisk borttagning",
+      "DELETE_MANUAL": "Manuell borttagning",
       "IGNORE": "Ignorera"
     },
     "reading_direction": {
-      "LEFT_TO_RIGHT": "Vänster till höger",
-      "RIGHT_TO_LEFT": "Höger till vänster",
+      "LEFT_TO_RIGHT": "Från vänster till höger",
+      "RIGHT_TO_LEFT": "Från höger till vänster",
       "VERTICAL": "Lodrät",
       "WEBTOON": "Webtoon"
     },
     "scan_interval": {
       "DAILY": "Varje dag",
-      "DISABLED": "Inaktiverad",
-      "EVERY_12H": "Varje 12 timmar",
-      "EVERY_6H": "Varje 6 timmar",
+      "DISABLED": "Avstängd",
+      "EVERY_12H": "Var tolfte timme",
+      "EVERY_6H": "Var sjätte timme",
       "HOURLY": "Varje timme",
       "WEEKLY": "Varje vecka"
     },
     "series_cover": {
-      "FIRST": "Första",
-      "FIRST_UNREAD_OR_FIRST": "Första olästa annars första",
-      "FIRST_UNREAD_OR_LAST": "Första olästa annars sista",
-      "LAST": "Sista"
+      "FIRST": "Första boken",
+      "FIRST_UNREAD_OR_FIRST": "Första olästa boken, annars den första",
+      "FIRST_UNREAD_OR_LAST": "Första olästa boken, annars den sista",
+      "LAST": "Sista boken"
     },
     "series_status": {
-      "ABANDONED": "Övergiven",
+      "ABANDONED": "Nedlagd",
       "ENDED": "Avslutad",
-      "HIATUS": "Hiatus",
+      "HIATUS": "Pausad",
       "ONGOING": "Pågående"
     },
     "thumbnail_size": {
-      "LARGE": "Stor (900px)",
-      "MEDIUM": "Mellan (600px)"
+      "DEFAULT": "Standard (300 px)",
+      "LARGE": "Stor (900 px)",
+      "MEDIUM": "Medelstor (600 px)",
+      "XLARGE": "Extra stor (1 200 px)"
     }
   },
   "epubreader": {
-    "current_chapter": "Nuvarande kapitel",
+    "current_chapter": "Aktuellt kapitel",
     "page_of": "Sida {page} av {count}",
-    "publisher_font": "Utgivare",
+    "publisher_font": "Förlagets teckensnitt",
     "settings": {
+      "column_count": "Antal spalter",
       "font_family": "Teckensnitt",
       "layout": "Layout",
-      "layout_paginated": "Paginerad",
+      "layout_paginated": "Sidvisning",
+      "layout_scroll": "Rullning",
       "navigation_mode": "Navigeringsläge",
       "navigation_options": {
-        "buttons": "Knappar"
+        "both": "Båda",
+        "buttons": "Knappar",
+        "click": "Klick eller tryck"
       },
-      "page_margins": "Sidmarginal",
+      "page_margins": "Sidmarginaler",
       "viewing_theme": "Visningstema"
     },
     "shortcuts": {
+      "cycle_pagination": "Växla antal spalter",
       "cycle_viewing_theme": "Växla visningstema",
-      "font_size_decrease": "Minska storlek på teckensnitt",
-      "font_size_increase": "Öka storlek på teckensnitt",
+      "font_size_decrease": "Minska textstorleken",
+      "font_size_increase": "Öka textstorleken",
       "menus": "Menyer",
+      "next": "Framåt",
+      "previous": "Bakåt",
+      "reader_navigation": "Navigering i läsaren",
+      "scroll": "Växla till rullning",
       "settings": "Inställningar",
-      "show_hide_toc": "Visa/dölj innehållsförteckning"
+      "show_hide_toc": "Visa eller dölj innehållsförteckningen"
     }
   },
   "error_codes": {
-    "ERR_1000": "Filen kunde inte nås under analysen",
-    "ERR_1001": "Mediatyp är inte supporterad",
-    "ERR_1002": "Krypterade RAR-arkiv är inte supporterade",
-    "ERR_1003": "Solid RAR-arkiv är inte supporterade",
-    "ERR_1004": "Multi Volume RAR-arkiv är inte supporterade",
-    "ERR_1005": "Okänt fel vid analys av bok",
-    "ERR_1006": "Boken innehåller inte några sidor",
+    "ERR_1000": "Det gick inte att komma åt filen under analysen",
+    "ERR_1001": "Medietypen stöds inte",
+    "ERR_1002": "Krypterade RAR-arkiv stöds inte",
+    "ERR_1003": "RAR-arkiv med solid komprimering stöds inte",
+    "ERR_1004": "RAR-arkiv uppdelade i flera volymer stöds inte",
+    "ERR_1005": "Ett okänt fel uppstod när boken analyserades",
+    "ERR_1006": "Boken innehåller inga sidor",
     "ERR_1007": "Vissa poster kunde inte analyseras",
-    "ERR_1008": "Okänt fel vid inhämtning av poster",
+    "ERR_1008": "Ett okänt fel uppstod när bokens poster hämtades",
     "ERR_1009": "Det finns redan en läslista med det namnet",
-    "ERR_1015": "Fel vid nedbrytning av ComicRack CBL",
-    "ERR_1016": "Katalog inte tillgänglig eller är inte en katalog",
-    "ERR_1017": "Kan inte skanna en mapp som är en del av ett befintligt bibliotek",
+    "ERR_1015": "Det gick inte att läsa ComicRack-läslistan (CBL)",
+    "ERR_1016": "Sökvägen leder inte till en mapp eller så går det inte att komma åt den",
+    "ERR_1017": "Det går inte att skanna en mapp som ingår i ett befintligt bibliotek",
     "ERR_1018": "Filen hittades inte",
-    "ERR_1019": "Det går inte att importera filer som ingår i ett befintligt bibliotek",
-    "ERR_1020": "Boken att uppgradera tillhör inte den medföljande serien",
-    "ERR_1021": "Destinationsfilen finns redan",
-    "ERR_1022": "Nyimporterad boken kunde inte skannas",
-    "ERR_1023": "Boken finns redan i Läslistan",
-    "ERR_1024": "OAuth2 inloggningsfel: inget e-postattribut",
-    "ERR_1025": "OAuth2 inloggningsfel: det finns ingen lokal användare med den e-postadressen",
-    "ERR_1026": "OpenID Connect inloggningsfel: e-post är inte verifierad",
-    "ERR_1027": "OpenID Connect inloggningsfel: inget email_verified attribut",
-    "ERR_1028": "OpenID connect inloggningsfel: inget e-post attribut",
-    "ERR_1029": "ComicRack CBL innehåller inga bokelement",
-    "ERR_1030": "ComicRack CBL har inget namn-element",
-    "ERR_1031": "ComicRack CBL Book saknar serie eller nummer"
+    "ERR_1019": "Det går inte att importera en fil som ingår i ett befintligt bibliotek",
+    "ERR_1020": "Boken som ska ersättas tillhör inte den valda serien",
+    "ERR_1021": "Målfilen finns redan",
+    "ERR_1022": "Det gick inte att skanna den nyimporterade boken",
+    "ERR_1023": "Boken finns redan i läslistan",
+    "ERR_1024": "Inloggningen med OAuth 2.0 misslyckades eftersom attributet för e-postadress saknas",
+    "ERR_1025": "Inloggningen med OAuth 2.0 misslyckades eftersom det inte finns någon lokal användare med den e-postadressen",
+    "ERR_1026": "Inloggningen med OpenID Connect misslyckades eftersom e-postadressen inte har verifierats",
+    "ERR_1027": "Inloggningen med OpenID Connect misslyckades eftersom attributet email_verified saknas",
+    "ERR_1028": "Inloggningen med OpenID Connect misslyckades eftersom attributet för e-postadress saknas",
+    "ERR_1029": "CBL-filen från ComicRack innehåller inga Book-element",
+    "ERR_1030": "CBL-filen från ComicRack saknar ett Name-element",
+    "ERR_1031": "Ett Book-element i CBL-filen från ComicRack saknar serie eller nummer",
+    "ERR_1032": "EPUB-filen har fel medietyp",
+    "ERR_1033": "Vissa poster saknas",
+    "ERR_1034": "Det finns redan en API-nyckel med den kommentaren",
+    "ERR_1035": "Det gick inte att hämta EPUB-bokens innehållsförteckning",
+    "ERR_1036": "Det gick inte att hämta EPUB-bokens navigeringspunkter",
+    "ERR_1037": "Det gick inte att hämta EPUB-bokens sidlista",
+    "ERR_1038": "Det gick inte att hämta EPUB-bokens DIVINA-sidor",
+    "ERR_1039": "Det gick inte att hämta EPUB-bokens läspositioner"
   },
   "filter": {
-    "age_rating": "åldersgräns",
+    "age_rating": "Åldersgräns",
     "age_rating_none": "Ingen",
-    "complete": "Komplett",
-    "genre": "genre",
-    "in_progress": "Pågående",
-    "language": "språk",
-    "library": "bibliotek",
-    "oneshot": "One-shot",
-    "publisher": "utgivare",
-    "read": "Läsa",
-    "release_date": "utgivningsdatum",
+    "any": "Har ett värde",
+    "complete": "Kompletta",
+    "genre": "Genre",
+    "in_progress": "Påbörjade",
+    "language": "Språk",
+    "library": "Bibliotek",
+    "media_profile": "Medieprofil",
+    "media_status": "Mediestatus",
+    "oneshot": "Fristående",
+    "publisher": "Utgivare",
+    "read": "Lästa",
+    "release_date": "Utgivningsdatum",
     "sharing_label": "Delningsetikett",
-    "status": "status",
-    "tag": "tag",
+    "status": "Status",
+    "tag": "Tagg",
     "unread": "Olästa"
   },
   "filter_drawer": {
-    "filter": "filter",
-    "sort": "sortera"
+    "filter": "Filter",
+    "sort": "Sortering"
   },
   "history": {
     "header": {
       "book": "Bok",
       "date": "Datum",
-      "details": "Detaljer",
+      "details": "Uppgifter",
       "series": "Serie",
       "type": "Typ"
     },
@@ -838,19 +874,21 @@
   },
   "library_navigation": {
     "browse": "Bläddra",
+    "browse_books": "Böcker",
+    "browse_series": "Serier",
     "collections": "Samlingar",
     "readlists": "Läslistor",
-    "recommended": "Rekommenderad"
+    "recommended": "Rekommenderat"
   },
   "login": {
     "create_user_account": "Skapa användarkonto",
     "login": "Logga in",
-    "unclaimed_html": "Denna Komga-server är ännu inte aktiv, du måste skapa ett användarkonto för att få åtkomst till den.<br><br>Välj en <strong>e-post</strong> och ett <strong>lösenord</strong> och klicka på <strong>Skapa användarkonto</strong>."
+    "unclaimed_html": "Skapa ett användarkonto för att aktivera den här Komga-servern.<br><br>Ange din <strong>e-postadress</strong>, välj ett <strong>lösenord</strong> och klicka på <strong>Skapa användarkonto</strong>."
   },
   "media_analysis": {
     "comment": "Kommentar",
-    "media_analysis": "Mediaanalys",
-    "media_type": "Mediatyp",
+    "media_analysis": "Medieanalys",
+    "media_type": "Medietyp",
     "name": "Namn",
     "size": "Storlek",
     "status": "Status",
@@ -860,8 +898,8 @@
     "add_to_collection": "Lägg till i samling",
     "add_to_readlist": "Lägg till i läslista",
     "analyze": "Analysera",
-    "bulk_edit_metadata": "Massredigering av metadata",
-    "delete": "Radera",
+    "bulk_edit_metadata": "Redigera metadata för flera objekt",
+    "delete": "Ta bort",
     "deselect_all": "Avmarkera alla",
     "download_readlist": "Ladda ner läslista",
     "download_series": "Ladda ner serie",
@@ -870,43 +908,53 @@
     "empty_trash": "Töm papperskorgen",
     "mark_read": "Markera som läst",
     "mark_unread": "Markera som oläst",
+    "pin": "Fäst",
     "refresh_metadata": "Uppdatera metadata",
     "scan_library_files": "Skanna biblioteksfiler",
-    "scan_library_files_deep": "Skanna biblioteksfiler (djup)",
-    "select_all": "Välj alla"
+    "scan_library_files_deep": "Djupskanna biblioteksfiler",
+    "select_all": "Markera alla",
+    "unpin": "Lossa"
   },
   "metrics": {
     "library_books": "Böcker per bibliotek",
-    "library_disk_space": "Bibliotekets diskutrymme",
+    "library_disk_space": "Diskutrymme per bibliotek",
     "library_series": "Serier per bibliotek",
-    "library_sidecars": "Sidovagnar per bibliotek",
-    "tasks_executed": "Utförda uppgifter",
-    "tasks_total_time": "Uppdragens totala tid",
+    "library_sidecars": "Sidofiler per bibliotek",
+    "tasks_executed": "Utförda jobb",
+    "tasks_total_time": "Sammanlagd tid för jobben",
     "title": "Mätvärden"
+  },
+  "missing_posters": {
+    "title": "Omslag som saknas"
   },
   "navigation": {
     "home": "Hem",
     "libraries": "Bibliotek",
-    "logout": "Logga ut"
+    "logout": "Logga ut",
+    "try_new_ui": "Prova det nya gränssnittet"
+  },
+  "no_libraries_pinned": {
+    "subtitle": "Du kan fästa ett bibliotek via menyn med tre punkter.",
+    "title": "Inga fästa bibliotek"
   },
   "page_not_found": {
-    "go_back_to_home_page": "Gå tillbaka till startsidan",
+    "go_back_to_home_page": "Till startsidan",
     "page_does_not_exist": "Sidan du letar efter finns inte.",
     "page_not_found": "Sidan finns inte"
   },
   "read_more": {
-    "less": "Se mindre",
-    "more": "Se mer"
+    "less": "Visa mindre",
+    "more": "Visa mer"
   },
   "readlist_import": {
     "row": {
-      "duplicate_book": "Duplicera bok",
+      "duplicate_book": "Boken finns flera gånger i listan",
       "error_choose_book": "Välj en bok"
     }
   },
   "readlists_expansion_panel": {
     "manage_readlist": "Hantera läslistan",
-    "title": "{name} läslista"
+    "title": "Läslistan ”{name}”"
   },
   "search": {
     "no_results": "Sökningen gav inga resultat",
@@ -917,21 +965,43 @@
   "searchbox": {
     "in_library": "i {library}",
     "no_results": "Inga resultat",
-    "search_all": "Sök i alla…"
+    "search_all": "Visa alla sökresultat"
   },
   "server": {
     "server_management": {
-      "button_cancel_all_tasks": "Avbryt alla aktiviteter",
+      "button_cancel_all_tasks": "Avbryt alla jobb",
       "button_empty_trash": "Töm papperskorgen för alla bibliotek",
       "button_scan_libraries": "Skanna alla bibliotek",
-      "button_scan_libraries_deep": "Skanna alla bibliotek (djup)",
+      "button_scan_libraries_deep": "Djupskanna alla bibliotek",
       "button_shutdown": "Stäng av",
-      "notification_tasks_cancelled": "Inga aktiviteter att avbryta | En aktivitet avbruten | {count} aktiviteter avbröts",
+      "download_log": "Ladda ner loggfilen",
+      "notification_tasks_cancelled": "Inga jobb att avbryta | Ett jobb avbröts | {count} jobb avbröts",
       "section_title": "Serverhantering"
     },
-    "tab_title": "Server"
+    "tab_title": "Server",
+    "updates": "Uppdateringar"
   },
   "server_settings": {
+    "config_precedence": "Det här värdet har företräde framför värdet i konfigurationsfilen",
+    "dialog_regenerate_thumbnails": {
+      "body": "Storleken på miniatyrbilderna har ändrats. Vill du skapa om böckernas miniatyrbilder?",
+      "btn_alternate": "Ja, för alla böcker",
+      "btn_cancel": "Nej",
+      "btn_confirm": "Ja, men bara om bilderna blir större",
+      "title": "Skapa om miniatyrbilder"
+    },
+    "hint_kobo_port": "Ange bara en port om du har problem med omslag eller nedladdningar vid synkroniseringen",
+    "label_delete_empty_collections": "Ta bort tomma samlingar efter skanning",
+    "label_delete_empty_readlists": "Ta bort tomma läslistor efter skanning",
+    "label_kepubify_path": "Sökväg till kepubify",
+    "label_kobo_port": "Extern port för Kobo-synkronisering",
+    "label_kobo_proxy": "Vidarebefordra synkroniseringsförfrågningar från Kobo till Kobo Store",
+    "label_rememberme_duration": "Antal dagar som ”Kom ihåg mig” gäller",
+    "label_server_context_path": "Sökväg i basadressen",
+    "label_server_port": "Serverport",
+    "label_task_pool_size": "Antal trådar för bakgrundsjobb",
+    "label_thumbnail_size": "Storlek på miniatyrbilder",
+    "requires_restart": "Ändringen börjar gälla när servern startas om",
     "server_settings": "Serverinställningar"
   },
   "settings_user": {
@@ -945,51 +1015,79 @@
   },
   "sort": {
     "books_count": "Antal böcker",
-    "date_added": "Datum tillagd",
-    "date_updated": "Datum uppdaterat",
+    "date_added": "Tillagd",
+    "date_read": "Läsdatum",
+    "date_updated": "Senast uppdaterad",
     "file_name": "Filnamn",
     "file_size": "Filstorlek",
-    "folder_name": "Mapp namn",
+    "folder_name": "Mappnamn",
     "name": "Namn",
     "number": "Nummer",
-    "release_date": "Utgivningsdatum"
+    "page_count": "Antal sidor",
+    "random": "Slumpmässig ordning",
+    "release_date": "Utgivningsdatum",
+    "series": "Serie"
   },
   "theme": {
     "dark": "Mörkt",
     "light": "Ljust",
-    "system": "System"
+    "system": "Följ systemets inställning"
   },
   "thumbnail_card": {
     "tooltip_delete": "Ta bort",
-    "tooltip_generated": "Genererat konstverk",
-    "tooltip_mark_as_selected": "Markera som vald",
+    "tooltip_generated": "Automatiskt skapad bild",
+    "tooltip_mark_as_selected": "Välj bild",
     "tooltip_selected": "Vald",
-    "tooltip_sidecar": "Lokala bilder",
+    "tooltip_sidecar": "Lokal bildfil",
     "tooltip_to_be_deleted": "Ska tas bort",
     "tooltip_to_be_uploaded": "Ska laddas upp",
     "tooltip_too_big": "Filen är för stor!",
-    "tooltip_user_uploaded": "Användaren har laddat upp"
+    "tooltip_user_uploaded": "Uppladdad av en användare"
   },
   "titles_more": {
     "less": "Färre titlar",
     "more": "Fler titlar"
   },
+  "ui_settings": {
+    "general": "Allmänt",
+    "label_oauth2_auto_login": "Logga in automatiskt med OAuth 2.0",
+    "label_oauth2_hide_login": "Dölj inloggningsfälten när OAuth 2.0 är aktiverat",
+    "label_poster_blur_unread": "Visa suddiga omslag för olästa böcker och serier",
+    "label_poster_stretch": "Sträck ut omslaget så att det fyller kortet",
+    "label_series_groups": "Gruppering av serier",
+    "section_oauth2": "OAuth 2.0",
+    "series_groups": {
+      "alpha": "Alfabetisk ordning",
+      "japanese": "Gojūon (japansk ordning)"
+    },
+    "tooltip_oauth2_auto_login": "Automatisk inloggning kräver att bara en OAuth 2.0-leverantör är konfigurerad och att inloggningsfälten är dolda."
+  },
+  "updates": {
+    "available": "Det finns uppdateringar",
+    "latest_installed": "Den senaste versionen av Komga är redan installerad"
+  },
   "user_roles": {
     "ADMIN": "Administratör",
-    "FILE_DOWNLOAD": "Filhämtning",
+    "FILE_DOWNLOAD": "Ladda ner filer",
+    "KOBO_SYNC": "Synkronisera med Kobo",
+    "KOREADER_SYNC": "Synkronisera med KOReader",
     "PAGE_STREAMING": "Strömma sidor",
     "USER": "Användare"
   },
   "users": {
-    "authentication_activity": "Autentiseringsaktivitet",
+    "api_keys": "API-nycklar",
+    "authentication_activity": "Inloggningshistorik",
     "users": "Användare"
   },
   "validation": {
-    "zero_or_more": "Måste vara 0 eller mer"
+    "context_path": "Sökvägen måste börja med / och sluta med en bokstav eller siffra. Tillåtna tecken är A–Z, a–z, 0–9, /, - och _.",
+    "one_or_more": "Värdet måste vara minst 1",
+    "tcp_port": "Portnumret måste vara mellan 1 och 65535",
+    "zero_or_more": "Värdet måste vara minst 0"
   },
   "welcome": {
     "add_library": "Lägg till bibliotek",
-    "no_libraries_yet": "Inga bilbiotek har lagts till än!",
+    "no_libraries_yet": "Inga bibliotek har lagts till ännu.",
     "welcome_message": "Välkommen till Komga"
   }
 }

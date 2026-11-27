@@ -423,7 +423,7 @@
       "field_alternate_title": "Alternatívny názov",
       "field_isbn": "ISBN",
       "field_isbn_error": "Musí byť platné ISBN 13",
-      "field_link_label": "Značka",
+      "field_link_label": "Štítok",
       "field_link_url": "URL",
       "field_link_url_error_protocol": "Musí byť http alebo https",
       "field_link_url_error_url": "Musí byť platná adresa URL",
@@ -529,7 +529,7 @@
       "field_age_rating": "Vekové hodnotenie",
       "field_age_rating_error": "Vekové hodnotenie musí byť 0 alebo viac",
       "field_genres": "Žánre",
-      "field_labels": "Značky",
+      "field_labels": "Štítky",
       "field_language": "Jazyk",
       "field_language_hint": "Jazyková značka IETF BCP 47",
       "field_publisher": "Vydavateľ",
@@ -537,7 +537,7 @@
       "field_sort_title": "Názov pre radenie",
       "field_status": "Stav",
       "field_summary": "Zhrnutie",
-      "field_tags": "Štítky",
+      "field_tags": "Značky",
       "field_title": "Titul",
       "field_total_book_count": "Celkový počet kníh",
       "field_total_book_count_error": "Celkový počet kníh musí byť 1 alebo viac",
@@ -545,7 +545,7 @@
       "tab_general": "Všeobecné",
       "tab_poster": "Plagát",
       "tab_sharing": "Zdieľanie",
-      "tab_tags": "Štítky",
+      "tab_tags": "Značky",
       "tab_titles": "Alternatívne názvy",
       "tags_notice_multiple_edit": "Upravujete štítky pre viacero sérií. Týmto sa prepíšu existujúce štítky každej série."
     },
@@ -557,8 +557,8 @@
     },
     "edit_user_restrictions": {
       "age_restriction": {
-        "allow_under": "Povoliť len do",
-        "exclude_over": "Vylúčiť nad",
+        "allow_under": "Povoliť len do (vrátane)",
+        "exclude_over": "Vylúčiť nad (vrátane)",
         "none": "Bez obmedzení"
       },
       "edit_restrictions_for": "Upraviť obmedzenia pre {name}",
