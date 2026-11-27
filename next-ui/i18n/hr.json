@@ -1,4 +1,16 @@
 {
+  "+6DtMH": {
+    "defaultMessage": "Korisničko sučelje"
+  },
+  "+6YDzS": {
+    "defaultMessage": "Nema podataka"
+  },
+  "+8++PW": {
+    "defaultMessage": "Biblioteka je stvorena: {library}"
+  },
+  "+C/+3o": {
+    "defaultMessage": "Popis ne može biti prazan"
+  },
   "+PNCoe": {
     "defaultMessage": "Alternativni naslov"
   },
@@ -8,17 +20,53 @@
   "+jaADC": {
     "defaultMessage": "Ime datoteke"
   },
+  "+mJGIg": {
+    "defaultMessage": "Staza do datoteke"
+  },
+  "+mvfpU": {
+    "defaultMessage": "{count, plural, one {Aktualizirana je # serija} few {Aktualizirane su # serije} other {Aktualizirano je # serija} }"
+  },
+  "+opDqu": {
+    "defaultMessage": "Skoči na"
+  },
   "+pyj1u": {
     "defaultMessage": "Nedostupno"
+  },
+  "+r8FCS": {
+    "defaultMessage": "Priključak servera"
+  },
+  "+sF9Fw": {
+    "defaultMessage": "Postojeće vrijednosti"
   },
   "+sXZtI": {
     "defaultMessage": "Zatvori"
   },
+  "+y+9xL": {
+    "defaultMessage": "Datoteke preko ograničenja veličine: {filenames}"
+  },
+  "/4RRHN": {
+    "defaultMessage": "Popis ne može biti prazan"
+  },
   "/5Gb4y": {
     "defaultMessage": "Izbriši"
   },
+  "/8sSxS": {
+    "defaultMessage": "Potrebno je za obnavljanje iz smeća i otkrivanje duplih datoteka"
+  },
+  "/Acs82": {
+    "defaultMessage": "Stvori ili dodaj u popis čitanja"
+  },
+  "/LDx9p": {
+    "defaultMessage": "Usporedi knjige"
+  },
   "/NAG9i": {
     "defaultMessage": "Nema rezultata"
+  },
+  "/TRmi5": {
+    "defaultMessage": "Oznake dijeljenja"
+  },
+  "/YxHru": {
+    "defaultMessage": "Neke od odabranih knjiga su duplikati"
   },
   "/lE31l": {
     "defaultMessage": "Prisili Kobo sinkronizaciju"
@@ -32,14 +80,35 @@
   "083NeH": {
     "defaultMessage": "IETF BCP 47 oznaka jezika"
   },
+  "0ESsC0": {
+    "defaultMessage": "Nastavi s pružateljem {provider}"
+  },
   "0ILHru": {
     "defaultMessage": "U redu"
+  },
+  "0J3Gvp": {
+    "defaultMessage": "{count, plural, one {# serija} few {# serije} other {# serija} }"
+  },
+  "0JF9f5": {
+    "defaultMessage": "Sklopi bočnu traku"
+  },
+  "0MePSx": {
+    "defaultMessage": "Povuci ovamo za prikvačivanje biblioteke"
   },
   "0OEO+j": {
     "defaultMessage": "Žanrovi"
   },
   "0UFr4y": {
     "defaultMessage": "Sve od"
+  },
+  "0XDhyR": {
+    "defaultMessage": "izbornik tema"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "Zapamti me"
+  },
+  "0c6DrH": {
+    "defaultMessage": "Obnovi početnu vrijednost"
   },
   "0eIJ3K": {
     "defaultMessage": "Ručno razvrstavanje"
@@ -48,10 +117,28 @@
     "defaultMessage": "Metapodaci"
   },
   "0qntYX": {
-    "defaultMessage": "Izračunaj šifre za stranice"
+    "defaultMessage": "Izračunaj šifru za stranice"
+  },
+  "0sIkhg": {
+    "defaultMessage": "FILTRI"
+  },
+  "1+Ux6s": {
+    "defaultMessage": "Počni stvaranjem jedne biblioteke"
+  },
+  "111Isd": {
+    "defaultMessage": "Obnovi indeks pretraživanja"
   },
   "13nnQg": {
     "defaultMessage": "Koristi novi NextUI kao standardna postavka za ovaj server"
+  },
+  "14/Uh8": {
+    "defaultMessage": "Modus uvoza"
+  },
+  "18OKhZ": {
+    "defaultMessage": "Pronađi knjige za konvertiranje"
+  },
+  "1A8Mc1": {
+    "defaultMessage": "Značajni elementi"
   },
   "1E0Duw": {
     "defaultMessage": "Veličina datoteke"
@@ -65,6 +152,18 @@
   "1dgTdi": {
     "defaultMessage": "Analiziraj"
   },
+  "1hsKmu": {
+    "defaultMessage": "Znak"
+  },
+  "1qIfds": {
+    "defaultMessage": "Prikvačeno"
+  },
+  "1z+Z+q": {
+    "defaultMessage": "Oznake dijeljenja"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "Najnovije"
+  },
   "2IYW7s": {
     "defaultMessage": "URL"
   },
@@ -77,17 +176,50 @@
   "2g7iOx": {
     "defaultMessage": "Metrike"
   },
+  "2p+JVw": {
+    "defaultMessage": "Ovaj Komga server još nije aktivan. Za pristup serveru moraš stvoriti korisnički račun."
+  },
+  "2uUiqM": {
+    "defaultMessage": "Redoslijed serija"
+  },
+  "3DBPuv": {
+    "defaultMessage": "Kliži"
+  },
+  "3J6FI8": {
+    "defaultMessage": "Uredi prikaz"
+  },
+  "3MUQYL": {
+    "defaultMessage": "Stvori ili dodaj u zbirke"
+  },
   "3OgH93": {
     "defaultMessage": "Serije"
   },
+  "3Pm2PO": {
+    "defaultMessage": "Ime odredišne datoteke"
+  },
+  "3T1ln7": {
+    "defaultMessage": "Izbriši biblioteku"
+  },
   "3W0jUi": {
-    "defaultMessage": "Isključi etikete"
+    "defaultMessage": "Isključi oznake"
+  },
+  "3b7v1+": {
+    "defaultMessage": "Uvezi metapodakte knjige"
+  },
+  "3beD4X": {
+    "defaultMessage": "Izbriši API ključ"
+  },
+  "3gimvl": {
+    "defaultMessage": "izbornik biblioteke"
   },
   "3lLmfX": {
     "defaultMessage": "Zbirka"
   },
   "3qQjnw": {
     "defaultMessage": "Jezik"
+  },
+  "3rNj7/": {
+    "defaultMessage": "Klikni za potvrdu"
   },
   "3zkvDp": {
     "defaultMessage": "Zatvori"
@@ -101,20 +233,41 @@
   "4AKIbg": {
     "defaultMessage": "Eksterni priključak Kobo sinkronizacije"
   },
+  "4CIw7i": {
+    "defaultMessage": "Stanje objavljivanja"
+  },
+  "4CX0cY": {
+    "defaultMessage": "Uvezi metapodakte serije"
+  },
   "4IKM3R": {
-    "defaultMessage": "Etiketa"
+    "defaultMessage": "Oznaka"
   },
   "4PDVX2": {
     "defaultMessage": "EPUB"
   },
+  "4TEXni": {
+    "defaultMessage": "Svi doprinosilji"
+  },
   "4U6L0S": {
     "defaultMessage": "Poveznice"
+  },
+  "4X3RAp": {
+    "defaultMessage": "{count, plural, one {# knjiga} few {# knjige} other {# knjiga} }"
   },
   "4Ybicn": {
     "defaultMessage": "Stvori"
   },
+  "4g2M9O": {
+    "defaultMessage": "Nije pronađen nijedna serija"
+  },
+  "4jKnoO": {
+    "defaultMessage": "Za čitanje – {number}"
+  },
   "4uqafX": {
     "defaultMessage": "Izdanje bez nastavka"
+  },
+  "4yDvPA": {
+    "defaultMessage": "Očisti filtre"
   },
   "5AAGkA": {
     "defaultMessage": "Lozinka"
@@ -128,17 +281,41 @@
   "5WMvLb": {
     "defaultMessage": "Epub"
   },
+  "5Xt1ke": {
+    "defaultMessage": "Tim"
+  },
   "5Zw5Zt": {
     "defaultMessage": "Idi na sljedeću seriju unutar zbirke"
+  },
+  "5b2A0u": {
+    "defaultMessage": "Preusmjerit će te na početnu stranicu"
+  },
+  "5nswuX": {
+    "defaultMessage": "Otvoreno klasično korisničko sučelje"
   },
   "5rziSG": {
     "defaultMessage": "Nedostupno"
   },
+  "5tbu8Y": {
+    "defaultMessage": "Pokušaj ponovo"
+  },
   "5voJNm": {
     "defaultMessage": "Bez ograničenja"
   },
+  "5zPpyT": {
+    "defaultMessage": "Raspon dobi"
+  },
+  "69jd/r": {
+    "defaultMessage": "Ukloni iz popisa čitanja"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "HTTP server"
+  },
   "6Kd/YV": {
     "defaultMessage": "Zahtijeva ponovno pokretanje da stupi na snagu"
+  },
+  "6OXY1N": {
+    "defaultMessage": "Direktorij izdanja bez nastavka"
   },
   "6UXlVe": {
     "defaultMessage": "Oznake"
@@ -155,6 +332,9 @@
   "6nCIPn": {
     "defaultMessage": "Vrsta"
   },
+  "70/wK4": {
+    "defaultMessage": "Stvori biblioteku"
+  },
   "700A3r": {
     "defaultMessage": "Knjiga"
   },
@@ -170,11 +350,26 @@
   "7gdpKG": {
     "defaultMessage": "Stvori"
   },
+  "7hwFJo": {
+    "defaultMessage": "Pisac"
+  },
   "7z91nm": {
     "defaultMessage": "Povijest"
   },
+  "8/BXfN": {
+    "defaultMessage": "Sve"
+  },
+  "811PxA": {
+    "defaultMessage": "ili"
+  },
+  "81BMAQ": {
+    "defaultMessage": "Uvezi metapodakte knjige"
+  },
   "87q6WX": {
     "defaultMessage": "Bez"
+  },
+  "8CVWWg": {
+    "defaultMessage": "Izbriši datoteke"
   },
   "8Dun/Y": {
     "defaultMessage": "Ne"
@@ -185,14 +380,56 @@
   "8LT9D4": {
     "defaultMessage": "Odustani"
   },
+  "8NDqor": {
+    "defaultMessage": "Tipograf"
+  },
+  "8Om/o/": {
+    "defaultMessage": "Uvezi iz direktorija"
+  },
+  "8P7Yn+": {
+    "defaultMessage": "Dobna ocjena"
+  },
+  "8Yd/3a": {
+    "defaultMessage": "Ime uloge"
+  },
+  "8hC76W": {
+    "defaultMessage": "Zadaci"
+  },
+  "8jE3eP": {
+    "defaultMessage": "Knjiga se nije mogla analizirati"
+  },
   "8kylzj": {
     "defaultMessage": "Izbriši"
+  },
+  "8xonXJ": {
+    "defaultMessage": "Analizira sve medijske datoteke u biblioteci. Analiza prikuplja informacije o medijima. Ovisno o veličini biblioteke to može potrajati."
+  },
+  "9/1/c7": {
+    "defaultMessage": "Generiraj minijaturu knjige"
+  },
+  "90k6a7": {
+    "defaultMessage": "Zbirka mora sadržavati barem jednu seriju"
+  },
+  "90yqRq": {
+    "defaultMessage": "dodaj biblioteku"
+  },
+  "98Q8V7": {
+    "defaultMessage": "Ukloni"
   },
   "9GaR82": {
     "defaultMessage": "Općenito"
   },
+  "9TJRkm": {
+    "defaultMessage": "Uvezi metapodakte serije"
+  },
+  "9VuyZU": {
+    "defaultMessage": "Pokušaj pretražiti jedan drugi direktorij"
+  },
   "9XDmYO": {
     "defaultMessage": "Izbriši korisnika"
+  },
+  "9aVhJC": {
+    "defaultMessage": "CBZ"
   },
   "9dNd68": {
     "defaultMessage": "Preneseno od korisnika"
@@ -200,14 +437,158 @@
   "9mujmD": {
     "defaultMessage": "Bez datuma izdanja"
   },
+  "9oA9gw": {
+    "defaultMessage": "Otkvačeno"
+  },
+  "AEaKHC": {
+    "defaultMessage": "Pronađi minijature knjiga za ponovno generiranje"
+  },
+  "AJa6Tq": {
+    "defaultMessage": "Nema podataka"
+  },
+  "ALGXT9": {
+    "defaultMessage": "Duplikat"
+  },
+  "AMQANB": {
+    "defaultMessage": "Dodaj prilagođenu vrstu"
+  },
+  "Ai7bBV": {
+    "defaultMessage": "{count, plural, one {# stranica} few {# stranice} other {# stranica} }"
+  },
+  "AjBiEw": {
+    "defaultMessage": "Dodaj svezak naslovu serije"
+  },
+  "AjWlka": {
+    "defaultMessage": "Neispravna prijava ili lozinka"
+  },
+  "AoSCGy": {
+    "defaultMessage": "Lijevo"
+  },
+  "B2wcN0": {
+    "defaultMessage": "Uvezi ISBN iz barkoda"
+  },
+  "B48EcS": {
+    "defaultMessage": "Nadređeni"
+  },
+  "BQmPch": {
+    "defaultMessage": "Izbriši knjigu"
+  },
   "BXkP7H": {
     "defaultMessage": "Zatvori"
+  },
+  "Bewgy6": {
+    "defaultMessage": "Naslovnica serije"
+  },
+  "Bl30xt": {
+    "defaultMessage": "Dodaj korisnika"
+  },
+  "BpzKDW": {
+    "defaultMessage": "Izbrisat će se više stavki.<b>Ovo je nepovratna radnja.</b>"
+  },
+  "BtDfUf": {
+    "defaultMessage": "Prepiši"
+  },
+  "ByRsV9": {
+    "defaultMessage": "Potrebno je da WebReader prepozna polegnute stranice"
+  },
+  "C0paz4": {
+    "defaultMessage": "Analiziraj knjigu"
+  },
+  "C1bGrS": {
+    "defaultMessage": "Prikaži informacije"
+  },
+  "C4S+yv": {
+    "defaultMessage": "Mora biti valjani URL"
+  },
+  "C9LkYh": {
+    "defaultMessage": "Komentar"
+  },
+  "CAKrBF": {
+    "defaultMessage": "Zbirka je stvorena"
+  },
+  "CE7pPQ": {
+    "defaultMessage": "Staza do datoteke"
+  },
+  "CGRz8d": {
+    "defaultMessage": "Datoteka knjige se promijenila i morat će se ponovo analizirati"
+  },
+  "CJaS7j": {
+    "defaultMessage": "Osnovni direktorij biblioteke"
+  },
+  "CMuDjt": {
+    "defaultMessage": "detalji aktivnosti"
+  },
+  "COn5A6": {
+    "defaultMessage": "Lokalni medijski resursi"
+  },
+  "CPMLrI": {
+    "defaultMessage": "Knjiga se najprije mora analizirati"
+  },
+  "CUxhzL": {
+    "defaultMessage": "Uloge"
+  },
+  "CVk1J6": {
+    "defaultMessage": "Greška"
   },
   "CW0idP": {
     "defaultMessage": "Izdavač"
   },
+  "CY8sfH": {
+    "defaultMessage": "Pretraži sve biblioteke"
+  },
+  "CkUPZe": {
+    "defaultMessage": "Format datoteke knjige nije podržan"
+  },
+  "CpNtjm": {
+    "defaultMessage": "Datum i vrijeme"
+  },
+  "CqlsIa": {
+    "defaultMessage": "Doprinosilji"
+  },
+  "Cv11G8": {
+    "defaultMessage": "Ukupni broj knjiga"
+  },
+  "CvsH7/": {
+    "defaultMessage": "Nema nedavnih aktivnost"
+  },
+  "CwteMk": {
+    "defaultMessage": "Isprazni smeće za sve biblioteke"
+  },
+  "CxuwFR": {
+    "defaultMessage": "Vrsta datoteke nije podržana"
+  },
+  "D+ZsSd": {
+    "defaultMessage": "Dodaj alternativni naslov"
+  },
   "D/yypj": {
     "defaultMessage": "<ul><li>Ovo će se izbrisati svu povijest sinkronizacije za ovaj API ključ.</li><li>Tvoj Kobo će sve sinkronizirati prilikom sljedeće sinkronizacije.</li></ul>"
+  },
+  "D4qD6S": {
+    "defaultMessage": "Zaključaj polje"
+  },
+  "DG4tYb": {
+    "defaultMessage": "{count, plural, one {# knjiga} few {# knjige} other {# knjiga} }"
+  },
+  "DK4PsD": {
+    "defaultMessage": "Knjige serije"
+  },
+  "DNVnmS": {
+    "defaultMessage": "Ime direktorija"
+  },
+  "DNmepU": {
+    "defaultMessage": "Aktiviraj ovo ako koristi KOReader Sync"
+  },
+  "DbrNAW": {
+    "defaultMessage": "Traži ili stvori"
+  },
+  "DfakWW": {
+    "defaultMessage": "Izbriši datoteke"
+  },
+  "DgXStw": {
+    "defaultMessage": "Idi na prethodne serije unutar zbirke"
+  },
+  "Dn4qvV": {
+    "defaultMessage": "Obnovi standardne postavke"
   },
   "Dsytsl": {
     "defaultMessage": "Isključi starije od (uključivo)"
@@ -230,8 +611,128 @@
   "E5ZMyt": {
     "defaultMessage": "Analiziraj"
   },
+  "EIYfj+": {
+    "defaultMessage": "Broj"
+  },
+  "ELl0N9": {
+    "defaultMessage": "Knjige kojima nedostaju plakati sada se mogu filtrirati izravno u glavnom prikazu biblioteke."
+  },
+  "ELttw/": {
+    "defaultMessage": "Isprazni smeće"
+  },
+  "EMhLEN": {
+    "defaultMessage": "Premjesti datoteke"
+  },
+  "EOrAHc": {
+    "defaultMessage": "PDF"
+  },
+  "EabQ38": {
+    "defaultMessage": "Zapamti me"
+  },
+  "EbhcQd": {
+    "defaultMessage": "Detalji"
+  },
+  "EnHAAa": {
+    "defaultMessage": "PDF"
+  },
+  "Epp7Fi": {
+    "defaultMessage": "Oznake"
+  },
+  "Er4D87": {
+    "defaultMessage": "Ilustracija"
+  },
+  "EzOmuX": {
+    "defaultMessage": "Stvoreno"
+  },
+  "FBGnzt": {
+    "defaultMessage": "Popis čitanja s tim imenom već postoji"
+  },
+  "FH0CJ+": {
+    "defaultMessage": "Stranice"
+  },
+  "FLqm9f": {
+    "defaultMessage": "Pomogni prevesti"
+  },
+  "FSJoDl": {
+    "defaultMessage": "Odaberi seriju za prikaz njezinih knjiga"
+  },
+  "FVq9w5": {
+    "defaultMessage": "Mylar (series.json)"
+  },
+  "FX2bI8": {
+    "defaultMessage": "{count, plural, one {Uklonjena je # serija} few {Uklonjene su # serije} other {Uklonjeno je # serija} } iz zbirke: {collection}"
+  },
+  "FZXkIP": {
+    "defaultMessage": "Prevodilj"
+  },
+  "Fdinos": {
+    "defaultMessage": "Poster"
+  },
+  "FpwJlU": {
+    "defaultMessage": "Spremi promjene"
+  },
+  "Fwvj/i": {
+    "defaultMessage": "{count, plural, one {# serija} few {# serije} other {# serija} }"
+  },
+  "G/T8/2": {
+    "defaultMessage": "Odustani"
+  },
+  "G25PY/": {
+    "defaultMessage": "Traži"
+  },
+  "G7quju": {
+    "defaultMessage": "Objave"
+  },
+  "G93mS3": {
+    "defaultMessage": "Pokaži sve"
+  },
+  "GCwZB2": {
+    "defaultMessage": "Pretraži datoteke biblioteke"
+  },
+  "GnHrCd": {
+    "defaultMessage": "Koristi lokalnu grafiku"
+  },
+  "Gwmnm6": {
+    "defaultMessage": "Serije"
+  },
+  "GyRV+/": {
+    "defaultMessage": "Aktiviraj ovu opciju ako se biblioteka nalazi na platformi Google Drive"
+  },
+  "GySX8C": {
+    "defaultMessage": "Isprazni smeće automatski nakon svakog pretraživanja"
+  },
+  "H+LXXE": {
+    "defaultMessage": "Povuci ovamo za otkvačivanje biblioteke"
+  },
+  "H1+81t": {
+    "defaultMessage": "Ručno"
+  },
+  "H2B6uF": {
+    "defaultMessage": "Odaberi seriju"
+  },
   "H4Kte4": {
     "defaultMessage": "Naslov"
+  },
+  "HA4xOM": {
+    "defaultMessage": "Osvježi metapodatke knjige"
+  },
+  "HHvDPs": {
+    "defaultMessage": "E-mail adresa"
+  },
+  "HIKKsB": {
+    "defaultMessage": "Profil"
+  },
+  "HMbMJF": {
+    "defaultMessage": "Datum i vrijeme"
+  },
+  "HOBFqq": {
+    "defaultMessage": "greška"
+  },
+  "HXms0S": {
+    "defaultMessage": "Odaberi ili stvori jednu stavku"
+  },
+  "HZ/e6n": {
+    "defaultMessage": "Pokušaj prilagoditi filtre"
   },
   "HZqgan": {
     "defaultMessage": "Zatvori"
@@ -242,8 +743,26 @@
   "HaWCi3": {
     "defaultMessage": "Postavke"
   },
+  "HdsnFp": {
+    "defaultMessage": "Zbirka je izbrisana: {collection}"
+  },
+  "Hl9H/B": {
+    "defaultMessage": "Mediji"
+  },
+  "Hv7lqq": {
+    "defaultMessage": "Mreža"
+  },
+  "Hyz5su": {
+    "defaultMessage": "Uvezi knjigu"
+  },
   "I75Xgh": {
     "defaultMessage": "Idi na sljedeću knjigu unutar serije"
+  },
+  "I9L5Ag": {
+    "defaultMessage": "RAZVRSTAJ"
+  },
+  "I9ub/l": {
+    "defaultMessage": "Poznati duplikati"
   },
   "IE0XzE": {
     "defaultMessage": "Izbriši"
@@ -251,11 +770,101 @@
   "IEUgyy": {
     "defaultMessage": "Postojeća datoteka"
   },
+  "II5EFN": {
+    "defaultMessage": "Crtač olovkom"
+  },
+  "IIqDdQ": {
+    "defaultMessage": "Popis čitanja je aktualiziran: {readlist}"
+  },
+  "IXhDH6": {
+    "defaultMessage": "Dupla stranica"
+  },
+  "Icqm5y": {
+    "defaultMessage": "Broj stranice"
+  },
+  "If3RCw": {
+    "defaultMessage": "Očistit će vrijednost na svim odabranim stavkama"
+  },
+  "Ih4MH9": {
+    "defaultMessage": "Pokušaj prilagoditi pretragu"
+  },
+  "IlRX+s": {
+    "defaultMessage": "š: {width}, v: {height}"
+  },
+  "InW6ko": {
+    "defaultMessage": "Prijevodi"
+  },
+  "IpvWiZ": {
+    "defaultMessage": "Server"
+  },
+  "J+H9cC": {
+    "defaultMessage": "Izbriši datoteke"
+  },
+  "J44THG": {
+    "defaultMessage": "Stanje"
+  },
+  "J8l62K": {
+    "defaultMessage": "Dodaj"
+  },
+  "J8rAqm": {
+    "defaultMessage": "Godina izdanja"
+  },
+  "JGOfZq": {
+    "defaultMessage": "Korisnici"
+  },
+  "JHaKYw": {
+    "defaultMessage": "Odaberi sve"
+  },
+  "JNBONk": {
+    "defaultMessage": "Popis"
+  },
+  "JbF1nK": {
+    "defaultMessage": "Lozinka je promijenjena za korisnika: {email}"
+  },
+  "Jj4uO/": {
+    "defaultMessage": "Broj stranica"
+  },
+  "Ju97UA": {
+    "defaultMessage": "Čitaj"
+  },
+  "JwBlXP": {
+    "defaultMessage": "Otvori"
+  },
+  "K+fQO2": {
+    "defaultMessage": "Pretraži za ove vrste datoteka"
+  },
+  "K40g4r": {
+    "defaultMessage": "Uredi korisnika"
+  },
+  "KBLD9U": {
+    "defaultMessage": "Dobna ocjena"
+  },
+  "KPlFII": {
+    "defaultMessage": "Dobno ograničenje"
+  },
+  "KTifVk": {
+    "defaultMessage": "Svi značajni elementi"
+  },
+  "Kie8HQ": {
+    "defaultMessage": "Knjiga"
+  },
+  "Ku7NJ+": {
+    "defaultMessage": "Datoteke serije nisu pronađene"
+  },
+  "LBuB6T": {
+    "defaultMessage": "Dodaj u popis čitanja"
+  },
+  "LD5j8J": {
+    "defaultMessage": "Tražene serije"
+  },
   "LFf8QB": {
     "defaultMessage": "Izbriši"
   },
   "LKoz42": {
     "defaultMessage": "Sažetak"
+  },
+  "LM4LL9": {
+    "defaultMessage": "Osvježi lokalne grafike serije"
   },
   "LOcuZ2": {
     "defaultMessage": "Označi kao pročitano"
@@ -265,6 +874,54 @@
   },
   "LaxrEO": {
     "defaultMessage": "Lozinke moraju biti jednake"
+  },
+  "LjqS9+": {
+    "defaultMessage": "Popis čitanja s tim imenom već postoji"
+  },
+  "Lto2Lg": {
+    "defaultMessage": "Mora počinjati sa znakom „/”, ne smije završavati sa znakovima „/-_'” i smije sadržavati samo znakove „/-_a-z0-9”"
+  },
+  "M3OTuv": {
+    "defaultMessage": "Višebrojne vrijednosti"
+  },
+  "M4STMh": {
+    "defaultMessage": "Poništi"
+  },
+  "MC2JtF": {
+    "defaultMessage": "Sve"
+  },
+  "MEWT0D": {
+    "defaultMessage": "Sažetak iz knjige {number}:"
+  },
+  "MKs9N+": {
+    "defaultMessage": "Pregled"
+  },
+  "MYYgTv": {
+    "defaultMessage": "Nepoznata veličina datoteke"
+  },
+  "MoOECu": {
+    "defaultMessage": "Uvezi metapodakte serije"
+  },
+  "MvwDsn": {
+    "defaultMessage": "Poznato"
+  },
+  "N7+QXi": {
+    "defaultMessage": "Uvezi"
+  },
+  "N9WFH4": {
+    "defaultMessage": "Spremi"
+  },
+  "NArFTo": {
+    "defaultMessage": "API ključ je izbrisan: {apiKeyComment}"
+  },
+  "NKVL81": {
+    "defaultMessage": "Izdanje bez nastavka"
+  },
+  "NLiXdm": {
+    "defaultMessage": "Oznaka"
+  },
+  "NN7kAK": {
+    "defaultMessage": "Prisilna Kobo sinkronizacija: {apiKeyComment}"
   },
   "Nahedl": {
     "defaultMessage": "Dodaj"
@@ -284,6 +941,9 @@
   "No9Upl": {
     "defaultMessage": "Naslov"
   },
+  "NpjqFA": {
+    "defaultMessage": "Pokušaj prilagoditi filtre"
+  },
   "NruW40": {
     "defaultMessage": "Izdavač"
   },
@@ -296,14 +956,104 @@
   "O4Nnj5": {
     "defaultMessage": "Knjiga {number}"
   },
+  "O6qNva": {
+    "defaultMessage": "Detalji"
+  },
+  "O9hZBS": {
+    "defaultMessage": "Veličina postera"
+  },
   "OLqBQc": {
     "defaultMessage": "Izdavač"
+  },
+  "OUyleX": {
+    "defaultMessage": "Osvježi sve metapodatke"
+  },
+  "OW1/zn": {
+    "defaultMessage": "Nema nedavnih aktivnost"
+  },
+  "OZSDCE": {
+    "defaultMessage": "Prikvačeno"
+  },
+  "OgM2Q2": {
+    "defaultMessage": "Osvježi metapodatke serije"
+  },
+  "Oj3xqB": {
+    "defaultMessage": "Popis čitanja je izbrisan: {readlist}"
+  },
+  "OxqfKF": {
+    "defaultMessage": "Dubinsko pretraživanje"
+  },
+  "P+WI/K": {
+    "defaultMessage": "Dupla stranica"
+  },
+  "P8Ox+D": {
+    "defaultMessage": "Metapodaci knjige su aktualizirani: {book}"
+  },
+  "P9B8fE": {
+    "defaultMessage": "Idi na prethodnu knjigu unutar serije"
+  },
+  "PTr5Wc": {
+    "defaultMessage": "Provjeri radi li tvoj Komga server"
+  },
+  "PUU04H": {
+    "defaultMessage": "Popuni kontejnere za plakate"
+  },
+  "PguYSD": {
+    "defaultMessage": "Prepiši postojeći popis čitanja"
+  },
+  "Pj29A+": {
+    "defaultMessage": "Potrebno je za otkrivanje duplih stranica"
+  },
+  "Po0Z4Z": {
+    "defaultMessage": "Popis čitanja"
+  },
+  "Pp3+1S": {
+    "defaultMessage": "Stanje"
+  },
+  "PvKF7E": {
+    "defaultMessage": "Biblioteka je izbrisana: {library}"
+  },
+  "Q7tJAG": {
+    "defaultMessage": "Popis čitanja"
+  },
+  "QALnuE": {
+    "defaultMessage": "Vrsta datoteke"
   },
   "QBQ5a/": {
     "defaultMessage": "Naslov"
   },
+  "QIr0z7": {
+    "defaultMessage": "E-mail adresa"
+  },
+  "QM5+gW": {
+    "defaultMessage": "Izbriši broj"
+  },
+  "Qxij/I": {
+    "defaultMessage": "Izbrisana stranica"
+  },
   "Qz1UTX": {
     "defaultMessage": "Zatvori"
+  },
+  "RCUCFa": {
+    "defaultMessage": "Popis čitanja mora sadržati barem jednu knjigu"
+  },
+  "REmxIM": {
+    "defaultMessage": "Promijenjeno"
+  },
+  "RHJo8j": {
+    "defaultMessage": "Uvezi"
+  },
+  "RMHfEo": {
+    "defaultMessage": "Bilo kojie od"
+  },
+  "ROFRn4": {
+    "defaultMessage": "Generiraj"
+  },
+  "RR+XGR": {
+    "defaultMessage": "Ova se stranica još izgrađuje."
+  },
+  "RTNaxB": {
+    "defaultMessage": "Rasklopi bočnu traku"
   },
   "RcbD73": {
     "defaultMessage": "Knjiga {number}"
@@ -315,7 +1065,7 @@
     "defaultMessage": "Dobro došao, dobro došla u Komga"
   },
   "Rt/kZN": {
-    "defaultMessage": "{first}. i {rest, plural, one {# druga knjiga} few {# druge knjige} other {# drugih knjiga} }"
+    "defaultMessage": "{first} i {rest, plural, one {# druga knjiga} few {# druge knjige} other {# drugih knjiga} }"
   },
   "Rw2Iwj": {
     "defaultMessage": "Idi na sljedeću knjigu u popisu čitanja"
@@ -326,6 +1076,9 @@
   "S1/qO0": {
     "defaultMessage": "Zbirka"
   },
+  "S39lnB": {
+    "defaultMessage": "Godišnja ocjena"
+  },
   "S9SjlA": {
     "defaultMessage": "Odabrano"
   },
@@ -335,8 +1088,104 @@
   "SIfmpC": {
     "defaultMessage": "Odaberi serije"
   },
+  "ST34jK": {
+    "defaultMessage": "Privatna sesija čitanja"
+  },
+  "STdfYg": {
+    "defaultMessage": "Analiziraj dimenzije stranica"
+  },
+  "SWm3SC": {
+    "defaultMessage": "Dodaj poveznicu"
+  },
+  "SZHxy4": {
+    "defaultMessage": "Odaberi knjigu"
+  },
+  "Sj0HXz": {
+    "defaultMessage": "Dozvoli samo oznake"
+  },
   "SqZoei": {
     "defaultMessage": "Odaberi serije"
+  },
+  "Ss08kC": {
+    "defaultMessage": "{count} predmeta"
+  },
+  "SuegoE": {
+    "defaultMessage": "Automatski poredak"
+  },
+  "T3Ofay": {
+    "defaultMessage": "Čitano {readDate}"
+  },
+  "TAVSfO": {
+    "defaultMessage": "Broj knjiga"
+  },
+  "TCjAyg": {
+    "defaultMessage": "{first} i {rest, plural, one {# druga serija} few {# druge serije} other {# drugih serija} }"
+  },
+  "TG7prC": {
+    "defaultMessage": "Datum dodavanja"
+  },
+  "TPX4qo": {
+    "defaultMessage": "Oznake"
+  },
+  "TTO9NT": {
+    "defaultMessage": "Sažetak"
+  },
+  "TUxJCd": {
+    "defaultMessage": "Pretraži pri pokretanju aplikacije"
+  },
+  "TfdugD": {
+    "defaultMessage": "Po datumu izdanja"
+  },
+  "ThHjN4": {
+    "defaultMessage": "Serije"
+  },
+  "Thjcar": {
+    "defaultMessage": "Oznake za knjige"
+  },
+  "TkIvo8": {
+    "defaultMessage": "Nepoznate dimenzije"
+  },
+  "ToD0+o": {
+    "defaultMessage": "E-mail adresa"
+  },
+  "TtH2LJ": {
+    "defaultMessage": "Mora biti valjani ISBN 13"
+  },
+  "TwB29u": {
+    "defaultMessage": "Postavi samo u slučaju problema sa sinkronizacijom naslovnica i preuzimanja"
+  },
+  "U3Uo3q": {
+    "defaultMessage": "Lozinka"
+  },
+  "UFZ+PY": {
+    "defaultMessage": "Oznake"
+  },
+  "UPOAPc": {
+    "defaultMessage": "Isprazni pretragu"
+  },
+  "USJuJ1": {
+    "defaultMessage": "Lokalna grafika"
+  },
+  "UTPZNG": {
+    "defaultMessage": "Ime popisa čitanja"
+  },
+  "UaD47n": {
+    "defaultMessage": "Ponovo generiraj tipku „zapamti me”"
+  },
+  "UfbIyV": {
+    "defaultMessage": "Poveznice"
+  },
+  "Uj479p": {
+    "defaultMessage": "Datum izdanja"
+  },
+  "Ulohnz": {
+    "defaultMessage": "Označi kao nepročitano"
+  },
+  "UoaxO7": {
+    "defaultMessage": "Knjiga će se nadograditi"
+  },
+  "UsTdV2": {
+    "defaultMessage": "Oznake dijeljenja"
   },
   "Usohru": {
     "defaultMessage": "Pregledaj"
@@ -347,11 +1196,179 @@
   "UvhIIT": {
     "defaultMessage": "Dijeljene biblioteke"
   },
+  "UxBl+J": {
+    "defaultMessage": "Svijetla"
+  },
+  "V/OYJE": {
+    "defaultMessage": "Izbrisano od korisnika: {email}"
+  },
+  "V3wgcu": {
+    "defaultMessage": "Dupla stranica"
+  },
+  "V8tkJa": {
+    "defaultMessage": "Automatska OAuth2 prijava"
+  },
+  "VHe28r": {
+    "defaultMessage": "Datum aktualiziranja"
+  },
+  "VP+GhR": {
+    "defaultMessage": "Generiraj"
+  },
+  "VQ/hT4": {
+    "defaultMessage": "ISBN"
+  },
+  "VcueWO": {
+    "defaultMessage": "Koristit će se element „SeriesGroup”"
+  },
+  "VeEnkD": {
+    "defaultMessage": "Poveznice"
+  },
+  "VhMXcu": {
+    "defaultMessage": "{total, plural, one {{count} / # knjiga} few {{count} / # knjige} other {{count} / # knjiga} }"
+  },
+  "Vpmsx0": {
+    "defaultMessage": "Knjige serije"
+  },
+  "Vs7y3+": {
+    "defaultMessage": "Dodaj u popis čitanja"
+  },
+  "VtC7Ce": {
+    "defaultMessage": "Urednik"
+  },
+  "VvjZEl": {
+    "defaultMessage": "Nije pronađena nijedna knjiga"
+  },
+  "Vwpr+D": {
+    "defaultMessage": "Slučajno"
+  },
+  "W3BUf7": {
+    "defaultMessage": "Razumijem"
+  },
+  "WADecv": {
+    "defaultMessage": "Instalirano"
+  },
+  "WLfi1+": {
+    "defaultMessage": "{count, plural, one {# knjiga} few {# knjige} other {# knjiga} }"
+  },
+  "WLwQG8": {
+    "defaultMessage": "Još nije stvoren nijedan API ključ"
+  },
+  "WNY0pu": {
+    "defaultMessage": "Najnovija Komga verzija je već instalirana"
+  },
+  "WPxleH": {
+    "defaultMessage": "Datoteke knjiga će se izbrisati<ul><li>Medijska datoteka knjige će se izbrisati s diska.</li><li>Datoteke s knjigama će se izbrisati s diska.</li><li>Knjiga će se izbrisati zajedno s njezinim metapodacima i napretkom čitanja.</li></ul><b>Ovo je nepovratna radnja.</b>"
+  },
+  "WSTiWA": {
+    "defaultMessage": "Dodano u zbirku"
+  },
+  "WVblsI": {
+    "defaultMessage": "Broj stranica"
+  },
+  "WY7aQf": {
+    "defaultMessage": "Ušteđeni prostor"
+  },
+  "WhasCZ": {
+    "defaultMessage": "Nova lozinka"
+  },
+  "Wi+k3O": {
+    "defaultMessage": "Mogu se koristiti decimalni brojevi"
+  },
   "Wivz5J": {
     "defaultMessage": "Zatvori"
   },
+  "Wlzzv8": {
+    "defaultMessage": "Traženi broj"
+  },
+  "WyueEI": {
+    "defaultMessage": "Uredi metapodatke serije"
+  },
+  "X/Z8x+": {
+    "defaultMessage": "Obavezno kopiraj svoj API ključ sada. Nećeš ga moći ponovo vidjeti!"
+  },
+  "X47Js+": {
+    "defaultMessage": "Serije"
+  },
+  "X80giU": {
+    "defaultMessage": "Dodaj"
+  },
+  "XCwAkR": {
+    "defaultMessage": "Otvori"
+  },
+  "XDV3Si": {
+    "defaultMessage": "Više"
+  },
+  "XM8VQH": {
+    "defaultMessage": "Radnja"
+  },
   "XR+P68": {
     "defaultMessage": "Jezik"
+  },
+  "XRbUyd": {
+    "defaultMessage": "Stanje čitanja"
+  },
+  "XXr6pI": {
+    "defaultMessage": "Veličina stranice"
+  },
+  "XZ5lw4": {
+    "defaultMessage": "Uspjeh"
+  },
+  "Xbf2fj": {
+    "defaultMessage": "Prisili vrijeme promjene direktorija"
+  },
+  "XnidLu": {
+    "defaultMessage": "Za potvrdu upiši <b>{validateText}</b>."
+  },
+  "Xq4kkn": {
+    "defaultMessage": "Idi na prethodnu knjigu unutar popisa čitanja"
+  },
+  "XuqK4C": {
+    "defaultMessage": "Nepoznati duplikati"
+  },
+  "Xx+ITC": {
+    "defaultMessage": "Moja aktivnost"
+  },
+  "Xxk+hl": {
+    "defaultMessage": "Pojavljuje se u"
+  },
+  "Xxu514": {
+    "defaultMessage": "Izbriši datoteke serije"
+  },
+  "Y/fJj5": {
+    "defaultMessage": "Veličina datoteke"
+  },
+  "Y0cG3G": {
+    "defaultMessage": "API ključ će se izbrisati s ovog servera.<ul><li>Bilo koja aplikacija ili skripta koje koriste ovaj API ključ više neće moći pristupiti Komga API-ju.</li><li>Aktivnost autentifikacije za ovaj API ključ će se trajno izbrisati.</li></ul><b>Ovo je nepovratna radnja.</b>"
+  },
+  "Y4xJBN": {
+    "defaultMessage": "Zadnja promjena"
+  },
+  "Y6VlM9": {
+    "defaultMessage": "Popis čitanja"
+  },
+  "Y7Y2T0": {
+    "defaultMessage": "Pročitano"
+  },
+  "Y8SsFO": {
+    "defaultMessage": "Pročitano"
+  },
+  "YHxouG": {
+    "defaultMessage": "Zatražen je uvoz"
+  },
+  "YVQ49g": {
+    "defaultMessage": "Uredi zbirku"
+  },
+  "YaCWYs": {
+    "defaultMessage": "Analiza medija je premještena"
+  },
+  "YbkrN9": {
+    "defaultMessage": "IP"
+  },
+  "YeFgyc": {
+    "defaultMessage": "Knjige s greškom se sada mogu filtrirati izravno u glavnom prikazu biblioteke."
+  },
+  "YeUvoE": {
+    "defaultMessage": "Prilagođena uloga …"
   },
   "Ym48fa": {
     "defaultMessage": "Nema nedavnih događaja"
@@ -359,26 +1376,287 @@
   "Z/EY89": {
     "defaultMessage": "Greška mreže"
   },
+  "Z42XVQ": {
+    "defaultMessage": "Šifriraj datoteku knjige (Koreader)"
+  },
+  "Z5hsZ9": {
+    "defaultMessage": "{count} stranica preostalo"
+  },
   "ZE3XpF": {
     "defaultMessage": "Nijedan odjeljak inje konfiguriran"
+  },
+  "ZEbDUo": {
+    "defaultMessage": "Potpuno"
+  },
+  "ZGppaw": {
+    "defaultMessage": "Serije"
+  },
+  "ZPuFVu": {
+    "defaultMessage": "Općenito"
   },
   "ZWFPAg": {
     "defaultMessage": "Lozinke moraju biti jednake"
   },
+  "ZZmdmI": {
+    "defaultMessage": "{pagesCount} stranica"
+  },
+  "ZfDKy4": {
+    "defaultMessage": "Pronađi knjige s nedostajućom šifrom stranica"
+  },
+  "Zh8AOV": {
+    "defaultMessage": "Uredi korisnika"
+  },
+  "ZiTv+F": {
+    "defaultMessage": "Nedostajući posteri su premješteni"
+  },
+  "ZnjyI3": {
+    "defaultMessage": "Prikaži manje"
+  },
+  "ZnnG58": {
+    "defaultMessage": "Poster"
+  },
+  "Zozcfh": {
+    "defaultMessage": "Izvor"
+  },
+  "Zzqa/A": {
+    "defaultMessage": "Ukloni iz zbirke"
+  },
   "a+32Gi": {
     "defaultMessage": "Dozvoli do (uključivo)"
+  },
+  "a5MYiP": {
+    "defaultMessage": "Posteri"
+  },
+  "a5jT6x": {
+    "defaultMessage": "Izbriši popis čitanja"
+  },
+  "aDFZOW": {
+    "defaultMessage": "E-mail adresa"
   },
   "aHyrmS": {
     "defaultMessage": "Izbriši"
   },
+  "aOiU5f": {
+    "defaultMessage": "Biblioteka je aktualizirana: {library}"
+  },
   "aR6KDt": {
     "defaultMessage": "Jezik"
+  },
+  "aSDxrt": {
+    "defaultMessage": "Datoteke serije su izbrisane: {series}"
   },
   "aU1qcP": {
     "defaultMessage": "Izbriši"
   },
+  "aYalqk": {
+    "defaultMessage": "Odaberi neke knjige"
+  },
+  "aeEb6w": {
+    "defaultMessage": "Odbaci promjene ili poništi zadnje brisanje"
+  },
+  "afXGQS": {
+    "defaultMessage": "Osnovni direktorij"
+  },
+  "am3r7e": {
+    "defaultMessage": "Aktualiziraj biblioteku"
+  },
+  "anhfpP": {
+    "defaultMessage": "Vrsta datoteke nije podržana"
+  },
+  "ap/Lnw": {
+    "defaultMessage": "Poveži poveznicom/Kopiraj datoteke"
+  },
+  "app.error.ERR_1000": {
+    "defaultMessage": "Datoteci se nije moglo dostupiti tijekom analize"
+  },
+  "app.error.ERR_1001": {
+    "defaultMessage": "Vrsta medija nije podržana"
+  },
+  "app.error.ERR_1002": {
+    "defaultMessage": "Šifrirane RAR arhive nisu podržane"
+  },
+  "app.error.ERR_1003": {
+    "defaultMessage": "Solid RAR arhive nisu podržane"
+  },
+  "app.error.ERR_1004": {
+    "defaultMessage": "Viševolumenski RAR arhivi nisu podržani"
+  },
+  "app.error.ERR_1005": {
+    "defaultMessage": "Nepoznata greška pri analiziranju knjige"
+  },
+  "app.error.ERR_1006": {
+    "defaultMessage": "Knjiga ne sadrži nijednu stranicu"
+  },
+  "app.error.ERR_1007": {
+    "defaultMessage": "Neki se unosi nisu mogli analizirati"
+  },
+  "app.error.ERR_1008": {
+    "defaultMessage": "Nepoznata greška pri dohvaćanju unosa knjige"
+  },
+  "app.error.ERR_1009": {
+    "defaultMessage": "Popis čitanja s tim imenom već postoji"
+  },
+  "app.error.ERR_1015": {
+    "defaultMessage": "Greška pri deserijalizaciji ComicRack CBL-a"
+  },
+  "app.error.ERR_1016": {
+    "defaultMessage": "Direktorij nije dostupan ili nije direktorij"
+  },
+  "app.error.ERR_1017": {
+    "defaultMessage": "Nije moguće pretražiti mapu koja je dio postojeće biblioteke"
+  },
+  "app.error.ERR_1018": {
+    "defaultMessage": "Datoteka nije pronađena"
+  },
+  "app.error.ERR_1019": {
+    "defaultMessage": "Nije moguće uvesti datoteku koja je dio postojeće biblioteke"
+  },
+  "app.error.ERR_1020": {
+    "defaultMessage": "Knjiga za nadogradnju ne pripada ponuđenoj seriji"
+  },
+  "app.error.ERR_1021": {
+    "defaultMessage": "Odredišna datoteka već postoji"
+  },
+  "app.error.ERR_1022": {
+    "defaultMessage": "Novo uvezena knjiga se nije mogla pretražiti"
+  },
+  "app.error.ERR_1023": {
+    "defaultMessage": "Knjiga koja je već prisutna u popisu čitanja"
+  },
+  "app.error.ERR_1024": {
+    "defaultMessage": "Greška pri OAuth2 prijavi: nema atribut email"
+  },
+  "app.error.ERR_1025": {
+    "defaultMessage": "Greška pri OAuth2 prijavi: nema lokalnih korisnika s tom e-mail adresom"
+  },
+  "app.error.ERR_1026": {
+    "defaultMessage": "Greška pri OpenID Connect prijavi: e-mail adresa nije potvrđena"
+  },
+  "app.error.ERR_1027": {
+    "defaultMessage": "Greška pri OpenID Connect prijavi: nema atribut email_verified"
+  },
+  "app.error.ERR_1028": {
+    "defaultMessage": "Greška pri OpenID Connect prijavi: nema atribut email"
+  },
+  "app.error.ERR_1029": {
+    "defaultMessage": "ComicRack CBL ne sadrži nijedan element „Knjiga”"
+  },
+  "app.error.ERR_1030": {
+    "defaultMessage": "ComicRack CBL nema element „Ime”"
+  },
+  "app.error.ERR_1031": {
+    "defaultMessage": "ComicRack CBL knjiga nema seriju ili broj"
+  },
+  "app.error.ERR_1032": {
+    "defaultMessage": "EPUB datoteka ima pogrešnu vrstu medija"
+  },
+  "app.error.ERR_1033": {
+    "defaultMessage": "Neki unosi nedostaju"
+  },
+  "app.error.ERR_1034": {
+    "defaultMessage": "API ključ s tim komentarom već postoji"
+  },
+  "app.error.ERR_1035": {
+    "defaultMessage": "Greška pri dohvaćanju EPUB sadržaja"
+  },
+  "app.error.ERR_1036": {
+    "defaultMessage": "Greška pri dohvaćanju EPUB orijentira"
+  },
+  "app.error.ERR_1037": {
+    "defaultMessage": "Greška pri dohvaćanju EPUB popisa stranica"
+  },
+  "app.error.ERR_1038": {
+    "defaultMessage": "Greška pri dohvaćanju EPUB divina pages"
+  },
+  "app.error.ERR_1039": {
+    "defaultMessage": "Greška pri dohvaćanju EPUB pozicija"
+  },
   "app.user-create-dialog.all_libraries": {
     "defaultMessage": "Sve biblioteke"
+  },
+  "ayrmyn": {
+    "defaultMessage": "Naslov razvrstavanja"
+  },
+  "b1hvh9": {
+    "defaultMessage": "Automatski konvertiraj CBR u CBZ"
+  },
+  "b4J0RU": {
+    "defaultMessage": "U gradnji"
+  },
+  "bCFD9B": {
+    "defaultMessage": "Paginirano"
+  },
+  "bDNZqj": {
+    "defaultMessage": "Uredi popis čitanja"
+  },
+  "bDNv5+": {
+    "defaultMessage": "Bilo koje"
+  },
+  "bFoCHJ": {
+    "defaultMessage": "Ime odredišne datoteke"
+  },
+  "bN2VbA": {
+    "defaultMessage": "Isključenje direktorija"
+  },
+  "bOUy3X": {
+    "defaultMessage": "Knjiga"
+  },
+  "bRAV2F": {
+    "defaultMessage": "Mjesto"
+  },
+  "bRxSgh": {
+    "defaultMessage": "Ručno"
+  },
+  "bSoeY6": {
+    "defaultMessage": "Ime odredišta"
+  },
+  "bWiqyw": {
+    "defaultMessage": "Ime vrste"
+  },
+  "bk1tX8": {
+    "defaultMessage": "Biblioteka će se izbrisati s ovog servera.<ul><li>Serije i knjige će se izbrisati zajedno s njihovim metapodacima i napretkom čitanja.</li><li>Medijske datoteke se neće izbrisati s diska.</li></ul><b>Ovo je nepovratna radnja.</b>"
+  },
+  "bqoEfm": {
+    "defaultMessage": "Šifriraj stranice knjige"
+  },
+  "bzY8FH": {
+    "defaultMessage": "Traži"
+  },
+  "bzn96A": {
+    "defaultMessage": "Stvori biblioteku"
+  },
+  "c+hx0g": {
+    "defaultMessage": "Korisnici"
+  },
+  "cAu/I6": {
+    "defaultMessage": "Duple stranice"
+  },
+  "cGOJnB": {
+    "defaultMessage": "{count, plural, one {# knjiga} few {# knjige} other {# knjiga} }"
+  },
+  "cIM3eJ": {
+    "defaultMessage": "Nastavi"
+  },
+  "cM9FuW": {
+    "defaultMessage": "Odaberi seriju"
+  },
+  "cTPeOs": {
+    "defaultMessage": "ili zalijepi koristeći"
+  },
+  "cWVIRm": {
+    "defaultMessage": "Korisnički agent"
+  },
+  "ccAMWS": {
+    "defaultMessage": "Dokumentacija"
+  },
+  "ccDES8": {
+    "defaultMessage": "Datoteke knjige su izbrisane: {book}"
+  },
+  "cfWux+": {
+    "defaultMessage": "Ime zbirke"
+  },
+  "crClNV": {
+    "defaultMessage": "Naslovnica"
   },
   "cyQk6S": {
     "defaultMessage": "Zbirke"
@@ -386,11 +1664,248 @@
   "d2J/J/": {
     "defaultMessage": "Odaberi"
   },
+  "d5c33V": {
+    "defaultMessage": "Nepoznata vrsta medija"
+  },
+  "d8lMZe": {
+    "defaultMessage": "Stvori korisnički račun"
+  },
+  "dHyAgE": {
+    "defaultMessage": "Promijeni lozinku"
+  },
+  "dK/kHO": {
+    "defaultMessage": "Komentar medija"
+  },
+  "dLE2PW": {
+    "defaultMessage": "Nema aktivnosti"
+  },
+  "dN5GoW": {
+    "defaultMessage": "Knjiga"
+  },
+  "dNnqm2": {
+    "defaultMessage": "Uredi metapodataka knjiga"
+  },
+  "dP6SpT": {
+    "defaultMessage": "Po imenu"
+  },
+  "dQ9kx9": {
+    "defaultMessage": "izbornik jezika"
+  },
+  "dSlkbn": {
+    "defaultMessage": "Sveukupno ponašanje pretraživanja"
+  },
+  "dSy8IC": {
+    "defaultMessage": "Dodano u popis čitanja"
+  },
+  "da/wb0": {
+    "defaultMessage": "Označi sve kao pročitane"
+  },
+  "ddpX9L": {
+    "defaultMessage": "Općenito"
+  },
+  "ddthL2": {
+    "defaultMessage": "Potvrdi"
+  },
+  "dfslqC": {
+    "defaultMessage": "Datoteke serije će se izbrisati<ul><li>Medijske datoteke knjiga će se izbrisati s diska.</li><li>Serije i knjige će se izbrisati zajedno s njihovim metapodacima i napretkom čitanja.</li></ul><b>Ovo je nepovratna radnja.</b>"
+  },
+  "dipMGb": {
+    "defaultMessage": "Stvori"
+  },
+  "dto0D+": {
+    "defaultMessage": "Organiziraj"
+  },
+  "dx9s7S": {
+    "defaultMessage": "Stvoreno"
+  },
+  "e7cgeE": {
+    "defaultMessage": "Dodaj u zbirku"
+  },
+  "e8DJzj": {
+    "defaultMessage": "Tema"
+  },
+  "eDA9Gm": {
+    "defaultMessage": "Generirana veličina postera"
+  },
+  "eRJOa6": {
+    "defaultMessage": "URL baze servera"
+  },
+  "eW3fXu": {
+    "defaultMessage": "Duple datoteke"
+  },
+  "efspoY": {
+    "defaultMessage": "Tablica"
+  },
+  "egrxd6": {
+    "defaultMessage": "Stvoreno od korisnika: {email}"
+  },
+  "enum.MediaProfile.DIVINA": {
+    "defaultMessage": "DiViNa"
+  },
+  "enum.MediaProfile.EPUB": {
+    "defaultMessage": "Epub"
+  },
+  "enum.MediaProfile.PDF": {
+    "defaultMessage": "Pdf"
+  },
+  "enum.MediaStatus.ERROR": {
+    "defaultMessage": "Greška"
+  },
+  "enum.MediaStatus.OUTDATED": {
+    "defaultMessage": "Zastarjelo"
+  },
+  "enum.MediaStatus.READY": {
+    "defaultMessage": "Spremno"
+  },
+  "enum.MediaStatus.UNKNOWN": {
+    "defaultMessage": "Nepoznato"
+  },
+  "enum.MediaStatus.UNSUPPORTED": {
+    "defaultMessage": "Nepodržano"
+  },
+  "enum.OverviewSection.keep_reading": {
+    "defaultMessage": "Nastavi čitati"
+  },
+  "enum.OverviewSection.on_deck": {
+    "defaultMessage": "Za čitanje"
+  },
+  "enum.OverviewSection.recently_added_books": {
+    "defaultMessage": "Nedavno dodane knjige"
+  },
+  "enum.OverviewSection.recently_added_series": {
+    "defaultMessage": "Nedavno dodane serije"
+  },
+  "enum.OverviewSection.recently_read_books": {
+    "defaultMessage": "Nedavno pročitane knjige"
+  },
+  "enum.OverviewSection.recently_released_books": {
+    "defaultMessage": "Nedavno objavljene knjige"
+  },
+  "enum.OverviewSection.recently_updated_series": {
+    "defaultMessage": "Nedavno aktualizirane serije"
+  },
+  "enum.ReadStatus.IN_PROGRESS": {
+    "defaultMessage": "U tijeku"
+  },
+  "enum.ReadStatus.READ": {
+    "defaultMessage": "Pročitano"
+  },
+  "enum.ReadStatus.UNREAD": {
+    "defaultMessage": "Nepročitano"
+  },
+  "enum.ReadingDirection.LEFT_TO_RIGHT": {
+    "defaultMessage": "S lijeva na desno"
+  },
+  "enum.ReadingDirection.RIGHT_TO_LEFT": {
+    "defaultMessage": "S desna na lijevo"
+  },
+  "enum.ReadingDirection.VERTICAL": {
+    "defaultMessage": "Okomito"
+  },
+  "enum.ReadingDirection.WEBTOON": {
+    "defaultMessage": "Webtoon"
+  },
+  "enum.ScanInterval.DAILY": {
+    "defaultMessage": "Dnevno"
+  },
+  "enum.ScanInterval.DISABLED": {
+    "defaultMessage": "Isključeno"
+  },
+  "enum.ScanInterval.EVERY_12H": {
+    "defaultMessage": "Svakih 12 sati"
+  },
+  "enum.ScanInterval.EVERY_6H": {
+    "defaultMessage": "Svakih 6 sati"
+  },
+  "enum.ScanInterval.HOURLY": {
+    "defaultMessage": "Svaki sat"
+  },
+  "enum.ScanInterval.WEEKLY": {
+    "defaultMessage": "Tjedno"
+  },
+  "enum.SeriesCover.FIRST": {
+    "defaultMessage": "Prva"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_FIRST": {
+    "defaultMessage": "Prva nepročitana inače prva"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_LAST": {
+    "defaultMessage": "Prva nepročitana inače zadnja"
+  },
+  "enum.SeriesCover.LAST": {
+    "defaultMessage": "Zadnja"
+  },
+  "enum.SeriesStatus.ABANDONED": {
+    "defaultMessage": "Napušteno"
+  },
+  "enum.SeriesStatus.ENDED": {
+    "defaultMessage": "Završeno"
+  },
+  "enum.SeriesStatus.HIATUS": {
+    "defaultMessage": "Stanka"
+  },
+  "enum.SeriesStatus.ONGOING": {
+    "defaultMessage": "Nastavljajući"
+  },
+  "enum.ThumbnailSize.DEFAULT": {
+    "defaultMessage": "Standardna (300 px)"
+  },
+  "enum.ThumbnailSize.LARGE": {
+    "defaultMessage": "Velika (900 px)"
+  },
+  "enum.ThumbnailSize.MEDIUM": {
+    "defaultMessage": "Srednja (600 px)"
+  },
+  "enum.ThumbnailSize.XLARGE": {
+    "defaultMessage": "Posebno velika (1200 px)"
+  },
+  "enum.UserRole.ADMIN": {
+    "defaultMessage": "Administrator"
+  },
+  "enum.UserRole.FILE_DOWNLOAD": {
+    "defaultMessage": "Preuzimanje datoteke"
+  },
+  "enum.UserRole.KOBO_SYNC": {
+    "defaultMessage": "Kobo sinkronizacija"
+  },
+  "enum.UserRole.KOREADER_SYNC": {
+    "defaultMessage": "KOReader sinkronizacija"
+  },
+  "enum.UserRole.PAGE_STREAMING": {
+    "defaultMessage": "Postupno slanje stranica"
+  },
+  "enum.UserRole.USER": {
+    "defaultMessage": "Korisnik"
+  },
+  "enum.historicalEvent.BookConverted": {
+    "defaultMessage": "Knjiga je konvertirana"
+  },
+  "enum.historicalEvent.BookFileDeleted": {
+    "defaultMessage": "Datoteka knjige izbrisana"
+  },
   "enum.historicalEvent.BookImported": {
     "defaultMessage": "Knjiga uvezena"
   },
   "enum.historicalEvent.DuplicatePageDeleted": {
     "defaultMessage": "Dupla stranica izbrisana"
+  },
+  "enum.historicalEvent.SeriesFolderDeleted": {
+    "defaultMessage": "Direktorij serije je izbrisan"
+  },
+  "enum.pageHashAction.DELETE_AUTO": {
+    "defaultMessage": "Izbriši automatski"
+  },
+  "enum.pageHashAction.DELETE_MANUAL": {
+    "defaultMessage": "Izbriši ručno"
+  },
+  "enum.pageHashAction.IGNORE": {
+    "defaultMessage": "Zanemari"
+  },
+  "estf95": {
+    "defaultMessage": "Popis čitanja je stvoren"
+  },
+  "exrB0E": {
+    "defaultMessage": "Općenito"
   },
   "eyYZUe": {
     "defaultMessage": "Biblioteke"
@@ -398,20 +1913,296 @@
   "ezgnXr": {
     "defaultMessage": "Potvrdi lozinku"
   },
+  "f1fW81": {
+    "defaultMessage": "Stanje analize"
+  },
+  "f3/J8+": {
+    "defaultMessage": "Desno"
+  },
+  "fQIepD": {
+    "defaultMessage": "Knjige"
+  },
+  "fRfbEb": {
+    "defaultMessage": "Dodaj ulogu"
+  },
+  "fVqdik": {
+    "defaultMessage": "ComicInfo.xml (CBR/CBZ)"
+  },
+  "fbEqBB": {
+    "defaultMessage": "Poveznice"
+  },
+  "fl2YLT": {
+    "defaultMessage": "Stanje medija"
+  },
+  "foSDIW": {
+    "defaultMessage": "Dubinsko pretraživanje"
+  },
+  "g+OQSw": {
+    "defaultMessage": "promijeni redoslijed"
+  },
+  "g2UW+6": {
+    "defaultMessage": "Format knjige nije podržan"
+  },
+  "gEBeQv": {
+    "defaultMessage": "Metapodaci serije su aktualizirani: {series}"
+  },
+  "gNiEAF": {
+    "defaultMessage": "Komentar"
+  },
+  "ggaOkE": {
+    "defaultMessage": "Nema podataka"
+  },
+  "gjlnkj": {
+    "defaultMessage": "Sustav"
+  },
   "gojrIJ": {
     "defaultMessage": "Odaberi serije"
+  },
+  "gsqrOd": {
+    "defaultMessage": "Ponovo generiraj plakate"
+  },
+  "gtEH1R": {
+    "defaultMessage": "Općenito"
+  },
+  "gxZjIe": {
+    "defaultMessage": "Radnja"
+  },
+  "h6C8/l": {
+    "defaultMessage": "Općenito"
+  },
+  "hBanlz": {
+    "defaultMessage": "Žanr"
+  },
+  "hEOGa9": {
+    "defaultMessage": "Dobno ograničenje"
+  },
+  "hGFogR": {
+    "defaultMessage": "Oznaka dijeljenja"
+  },
+  "hJEc5M": {
+    "defaultMessage": "izbornik biblioteka"
+  },
+  "hPYi11": {
+    "defaultMessage": "Smjer čitanja"
+  },
+  "hPo41m": {
+    "defaultMessage": "Nema podataka"
+  },
+  "hV3EW+": {
+    "defaultMessage": "Dubinsko pretraživanje"
+  },
+  "hYO2n6": {
+    "defaultMessage": "Možda postoji problem s tvojom vezom ili serverom."
+  },
+  "hdoWGT": {
+    "defaultMessage": "Podudaranja"
+  },
+  "hgiBeR": {
+    "defaultMessage": "Zadnja aktivnost"
+  },
+  "hkbgs/": {
+    "defaultMessage": "Dodaj prilagođenu ulogu"
+  },
+  "hrh5Rn": {
+    "defaultMessage": "Nadogradi"
+  },
+  "hude41": {
+    "defaultMessage": "Izbriši API ključ"
+  },
+  "i+kSy9": {
+    "defaultMessage": "Osvježi"
+  },
+  "i6UTPu": {
+    "defaultMessage": "Otključaj polje"
+  },
+  "iCYg8R": {
+    "defaultMessage": "Nema rezultata koji odgovaraju pretrazi „<b>{search}</b>”. Pritisni <kbd>enter</kbd> ili klikni za stvaranje nove."
+  },
+  "iDU5FS": {
+    "defaultMessage": "„Zapamti me” trajanje (u danima)"
   },
   "iGdw+C": {
     "defaultMessage": "Dalje"
   },
+  "iNBto3": {
+    "defaultMessage": "Proslijedi neobrađene zahtjeve na Kobo Store"
+  },
+  "iQKrku": {
+    "defaultMessage": "EPUB"
+  },
+  "iVYrha": {
+    "defaultMessage": "Općenito"
+  },
+  "icSG40": {
+    "defaultMessage": "Traži ili stvori"
+  },
+  "ieysdI": {
+    "defaultMessage": "Nadogradi indeks pretrage"
+  },
+  "iin6d2": {
+    "defaultMessage": "API ključevi se mogu koristiti za autentifikaciju putem Kobo Sync protokola ili REST API-ja."
+  },
+  "iq1PzT": {
+    "defaultMessage": "Upravljaj"
+  },
+  "iu31A4": {
+    "defaultMessage": "Arhiva stripova"
+  },
+  "ixQlWv": {
+    "defaultMessage": "Dogodila se greška"
+  },
+  "iylxeo": {
+    "defaultMessage": "Da (sve knjige)"
+  },
+  "j7CGMQ": {
+    "defaultMessage": "potvrdi"
+  },
+  "jD87k9": {
+    "defaultMessage": "Zbirka će se izbrisati<ul><li>Serije i knjige se neće izbrisati.</li></ul><b>Ovo je nepovratna radnja.</b>"
+  },
+  "jHJk+v": {
+    "defaultMessage": "Stvoreno"
+  },
   "jN3N1Q": {
     "defaultMessage": "Analiziraj"
+  },
+  "jYOsNC": {
+    "defaultMessage": "Neodabrano"
+  },
+  "jeXb2z": {
+    "defaultMessage": "Vrsta medija"
+  },
+  "jm9oYh": {
+    "defaultMessage": "Bilo koja vrsta"
+  },
+  "jnjpZy": {
+    "defaultMessage": "Lokalna datoteka"
+  },
+  "jpdD8R": {
+    "defaultMessage": "Tema"
+  },
+  "jyrqhz": {
+    "defaultMessage": "Barkod"
+  },
+  "jywpqq": {
+    "defaultMessage": "Dob"
+  },
+  "k2JkZX": {
+    "defaultMessage": "Kolorist"
+  },
+  "k6BCzW": {
+    "defaultMessage": "Izbriši zbirku"
+  },
+  "k9X/05": {
+    "defaultMessage": "Poster"
+  },
+  "kDc7YL": {
+    "defaultMessage": "Server medija standardno ne uklanja informacije za medije odmah. To pomaže ako je pogon privremeno isključen. Kada isprazniš smeće za biblioteku, brišu se sve informacije o nedostajućim medijima."
+  },
+  "kFQatO": {
+    "defaultMessage": "Prikaži filtre"
+  },
+  "kGC6Gu": {
+    "defaultMessage": "Nema nedavnih aktivnost"
+  },
+  "kHmCVM": {
+    "defaultMessage": "Pretraži biblioteku"
+  },
+  "kMw47z": {
+    "defaultMessage": "Ukloni iz popisa čitanja"
+  },
+  "kXuNY8": {
+    "defaultMessage": "Dodaj stranicu u odabir"
   },
   "kYDPt1": {
     "defaultMessage": "Ime datoteke"
   },
+  "kZ0WlY": {
+    "defaultMessage": "Datoteka knjige se nije mogla pronaći"
+  },
+  "kh49ZJ": {
+    "defaultMessage": "Odbaci"
+  },
+  "knm6Z+": {
+    "defaultMessage": "Stanje"
+  },
+  "kqV7EJ": {
+    "defaultMessage": "Izbriši prazne popise čitanja nakon pretraživanja"
+  },
+  "kvbi4j": {
+    "defaultMessage": "Aktualizirano od korisnika: {email}"
+  },
+  "l/To3S": {
+    "defaultMessage": "Povijest"
+  },
+  "l5qiAB": {
+    "defaultMessage": "Pronađi duple stranice za brisanje"
+  },
+  "l7+H/k": {
+    "defaultMessage": "Ima prednost nad konfiguracijskom datotekom"
+  },
+  "l7mpQK": {
+    "defaultMessage": "Pročitano"
+  },
+  "lDnmZD": {
+    "defaultMessage": "Aktualiziranja"
+  },
+  "lFTdQ+": {
+    "defaultMessage": "Označi kao"
+  },
+  "lFWPpj": {
+    "defaultMessage": "Dodaj vrstu"
+  },
   "lPZ5hy": {
     "defaultMessage": "Zatvori"
+  },
+  "lSlhp0": {
+    "defaultMessage": "Ime izvorne datoteke"
+  },
+  "laWvMU": {
+    "defaultMessage": "U redu"
+  },
+  "ldAVd7": {
+    "defaultMessage": "Popis čitanja"
+  },
+  "lkoTf7": {
+    "defaultMessage": "CBR"
+  },
+  "lt7Tru": {
+    "defaultMessage": "Serije"
+  },
+  "lu0qxx": {
+    "defaultMessage": "Ukloni"
+  },
+  "lvCpSX": {
+    "defaultMessage": "Radnje"
+  },
+  "lzHPYD": {
+    "defaultMessage": "Pokušaj tražiti nešto drugo"
+  },
+  "m+yz6Z": {
+    "defaultMessage": "Broj stranice"
+  },
+  "m9h2wk": {
+    "defaultMessage": "Minijatura"
+  },
+  "m9tuzy": {
+    "defaultMessage": "Aktivnost"
+  },
+  "mP9Ldq": {
+    "defaultMessage": "Datum stvaranja"
+  },
+  "mQ3hSR": {
+    "defaultMessage": "Ograničenja oznaka"
+  },
+  "n0TnQ2": {
+    "defaultMessage": "Server nije dostupan"
+  },
+  "n0tWL5": {
+    "defaultMessage": "Grupno uređivanje"
+  },
+  "n0yuoo": {
+    "defaultMessage": "Aktivnost"
   },
   "n1Ik+L": {
     "defaultMessage": "Dostupne su nove verzije"
@@ -419,8 +2210,14 @@
   "n4w2CE": {
     "defaultMessage": "Uredi"
   },
+  "n8mugB": {
+    "defaultMessage": "Da (samo veća veličina)"
+  },
   "nJiYF7": {
     "defaultMessage": "Potvrdi lozinku"
+  },
+  "nOcpr8": {
+    "defaultMessage": "Izdanje bez nastavka"
   },
   "nWgSSS": {
     "defaultMessage": "Zbirka"
@@ -428,8 +2225,29 @@
   "nXEvYQ": {
     "defaultMessage": "Spremi i dalje"
   },
+  "nXFVsQ": {
+    "defaultMessage": "Izračunaj šifru za KOReader"
+  },
   "nXWSTf": {
     "defaultMessage": "Ime"
+  },
+  "nYtEQI": {
+    "defaultMessage": "Osvježi metapodatke"
+  },
+  "nhrFtV": {
+    "defaultMessage": "Nedostupno"
+  },
+  "noaGSP": {
+    "defaultMessage": "Odaberi knjigu"
+  },
+  "nuoJ1n": {
+    "defaultMessage": "Stvori biblioteku"
+  },
+  "nyxfPy": {
+    "defaultMessage": "Koristit će se elementi „AlternateSeries” ili „StoryArc”"
+  },
+  "o+A10T": {
+    "defaultMessage": "Lozinka"
   },
   "o+h0F+": {
     "defaultMessage": "Ime datoteke"
@@ -437,11 +2255,131 @@
   "o1XnPU": {
     "defaultMessage": "API ključ"
   },
+  "o8WeX3": {
+    "defaultMessage": "Izbriši"
+  },
+  "oB2hG3": {
+    "defaultMessage": "Dijeljenje"
+  },
+  "oFOkWZ": {
+    "defaultMessage": "API ključevi"
+  },
   "oOtDhj": {
     "defaultMessage": "Kopiraj u međuspremnik"
   },
+  "oQ2wIE": {
+    "defaultMessage": "Neke od odabranih knjiga su pogrešne"
+  },
+  "oWsqnh": {
+    "defaultMessage": "Čemu služi ovaj API ključ?"
+  },
+  "oyeyK/": {
+    "defaultMessage": "Minijatura"
+  },
+  "pBivnm": {
+    "defaultMessage": "Bez vrijednosti"
+  },
+  "pCBNlA": {
+    "defaultMessage": "Biblioteka"
+  },
+  "pENCUD": {
+    "defaultMessage": "Odustani"
+  },
+  "pHdVzh": {
+    "defaultMessage": "Izbriši prazne zbirke nakon pretraživanja"
+  },
+  "pHycdf": {
+    "defaultMessage": "Datoteka knjige se još mora analizirati"
+  },
+  "pK72Vk": {
+    "defaultMessage": "Prethodno"
+  },
+  "pR3VdQ": {
+    "defaultMessage": "Serije"
+  },
+  "pTsA/M": {
+    "defaultMessage": "Knjige"
+  },
+  "phzvRy": {
+    "defaultMessage": "Biblioteka"
+  },
+  "pvD6TS": {
+    "defaultMessage": "Usporedi"
+  },
+  "pz7ZlL": {
+    "defaultMessage": "Stranice"
+  },
+  "q/AkPU": {
+    "defaultMessage": "Objedini metapodatke serije"
+  },
+  "q4YedO": {
+    "defaultMessage": "Broj razvrstavanja"
+  },
+  "q6fppQ": {
+    "defaultMessage": "Izbriši"
+  },
+  "q7gxLw": {
+    "defaultMessage": "Korisnički račun će se izbrisati s ovog servera.<ul><li>Napredak čitanja za ovaj korisnički račun će se trajno izbrisati.</li><li>Aktivnost autentifikacije za ovog korisnika će se trajno izbrisati.</li></ul><b>Ovo je nepovratna radnja.</b>"
+  },
+  "qiZm6U": {
+    "defaultMessage": "Nepoznato"
+  },
+  "qlImvg": {
+    "defaultMessage": "Obnovi standardne vrijednosti"
+  },
+  "qq92EF": {
+    "defaultMessage": "Otključaj polje"
+  },
+  "r/G7j0": {
+    "defaultMessage": "Broj"
+  },
+  "r48oBl": {
+    "defaultMessage": "Organiziraj popis čitanja"
+  },
+  "r5O+/d": {
+    "defaultMessage": "Žanr"
+  },
+  "r6CqyT": {
+    "defaultMessage": "Izbriši korisnika"
+  },
+  "r6JNfI": {
+    "defaultMessage": "Ne sjećaš se lozinke?"
+  },
+  "r7xCeA": {
+    "defaultMessage": "Promjeni lozinku"
+  },
+  "rCLYEd": {
+    "defaultMessage": "Popravi proširenje"
+  },
   "rDBhmQ": {
     "defaultMessage": "Izbriši"
+  },
+  "rHwSrF": {
+    "defaultMessage": "Procesi zadataka"
+  },
+  "rKyTwd": {
+    "defaultMessage": "Radnje"
+  },
+  "rRFQKU": {
+    "defaultMessage": "Kobo sinkronizacija"
+  },
+  "rhtmLf": {
+    "defaultMessage": "Redoslijed"
+  },
+  "rkpCD1": {
+    "defaultMessage": "Doprinosilji"
+  },
+  "rks1H9": {
+    "defaultMessage": "Upravljanje datotekama"
+  },
+  "rm0c6Y": {
+    "defaultMessage": "Ovaj server još nema nijednu biblioteku"
+  },
+  "rnClur": {
+    "defaultMessage": "{rating}+"
+  },
+  "roy9ap": {
+    "defaultMessage": "Radi samo ako je konfiguriran jedan OAuth2 pružatelj"
   },
   "rrF/Z2": {
     "defaultMessage": "Ime"
@@ -452,11 +2390,20 @@
   "ruWj+g": {
     "defaultMessage": "Preuzmi"
   },
+  "rw5pw5": {
+    "defaultMessage": "Ilustracija"
+  },
   "s/A/wz": {
     "defaultMessage": "ISBN"
   },
+  "s1nzhU": {
+    "defaultMessage": "Ime biblioteke"
+  },
   "sGsWvI": {
     "defaultMessage": "Promijeni lozinku"
+  },
+  "sMmke1": {
+    "defaultMessage": "Značajni elementi"
   },
   "sNSGMQ": {
     "defaultMessage": "Povuci i ispusti slike ovdje"
@@ -467,25 +2414,280 @@
   "sUSVQS": {
     "defaultMessage": "Označi kao pročitano"
   },
+  "sUl0GP": {
+    "defaultMessage": "izbornik prezentacija"
+  },
+  "samiG7": {
+    "defaultMessage": "Zadnja promjena"
+  },
+  "sbwSuO": {
+    "defaultMessage": "Veza u stvarnom vremenu sa serverom nije dostupna. UI elementi možda se ispravno neće aktualizirati."
+  },
+  "sdNz1F": {
+    "defaultMessage": "Isprazni smeće"
+  },
+  "sj2JGj": {
+    "defaultMessage": "Otkvačeno"
+  },
+  "sjC8ot": {
+    "defaultMessage": "Datoteka knjige se nije mogla analizirati:"
+  },
+  "so1P5Y": {
+    "defaultMessage": "Osvježi lokalnu grafiku knjige"
+  },
+  "sutqn3": {
+    "defaultMessage": "Prilagođena vrsta …"
+  },
+  "syF0Ap": {
+    "defaultMessage": "Veličina"
+  },
+  "t0Tkmy": {
+    "defaultMessage": "Prisili Kobo sinkronizaciju"
+  },
+  "t38TG7": {
+    "defaultMessage": "Aktualiziran je popis čitanja knjiga: {readlist}"
+  },
+  "t3B+Qv": {
+    "defaultMessage": "Ukloni stranice s oznakama"
+  },
+  "t5NC5O": {
+    "defaultMessage": "i još {count}"
+  },
+  "t5ZhnZ": {
+    "defaultMessage": "Ostavi prazno za deaktiviranje"
+  },
+  "tA65z3": {
+    "defaultMessage": "Broj stranice"
+  },
+  "tCm6kO": {
+    "defaultMessage": "{count, plural, one {# odbrana} few {# odbrane} other {# odbranih} }"
+  },
+  "tEA65+": {
+    "defaultMessage": "Uklonit će se {count, plural, one {# knjiga} few {# knjige} other {# knjiga} }"
+  },
+  "tFx9of": {
+    "defaultMessage": "{count, plural, one {Uklonjena je # knjiga} few {Uklonjene su # knjige} other {Uklonjeno je # knjiga} } iz popisa čitanja: {readlist}"
+  },
+  "tLFumw": {
+    "defaultMessage": "Dobna ocjena"
+  },
+  "tPD6YO": {
+    "defaultMessage": "Traži serije"
+  },
+  "tbNQ5v": {
+    "defaultMessage": "{rating}+"
+  },
+  "tc55Tn": {
+    "defaultMessage": "Ukloni iz zbirke"
+  },
+  "tcXhCG": {
+    "defaultMessage": "Zaključaj polje"
+  },
+  "ti4Pzo": {
+    "defaultMessage": "Odjava"
+  },
+  "tj5v0L": {
+    "defaultMessage": "Dodaj u zbirku"
+  },
+  "tm9g8D": {
+    "defaultMessage": "U redu"
+  },
+  "tn7uib": {
+    "defaultMessage": "Godina"
+  },
+  "toP54Z": {
+    "defaultMessage": "Greška"
+  },
+  "tqrq7S": {
+    "defaultMessage": "Odbaci promjene ili poništi zadnje brisanje"
+  },
+  "u23YLt": {
+    "defaultMessage": "Poništi"
+  },
+  "uBqZMx": {
+    "defaultMessage": "Postojeće"
+  },
+  "uD9n5o": {
+    "defaultMessage": "Redoslijed knjiga"
+  },
+  "uGC9fD": {
+    "defaultMessage": "Opcije"
+  },
+  "uOPuSH": {
+    "defaultMessage": "Žanr"
+  },
+  "uTuk/9": {
+    "defaultMessage": "Veličina datoteke"
+  },
+  "uW+6XG": {
+    "defaultMessage": "Sažetak"
+  },
+  "uXY7Eg": {
+    "defaultMessage": "Komga logotip"
+  },
+  "uY7N6Z": {
+    "defaultMessage": "Profil medija"
+  },
+  "uoc99F": {
+    "defaultMessage": "Može trošiti puno resursa na velikim bibliotekama ili sporom hardveru"
+  },
+  "upo+2b": {
+    "defaultMessage": "Kandidat"
+  },
+  "ut2gmo": {
+    "defaultMessage": "Uloge"
+  },
+  "uwFE74": {
+    "defaultMessage": "Pretraži"
+  },
+  "v3beFf": {
+    "defaultMessage": "Mora biti valjani BCP 47 jezični kod"
+  },
+  "vOS8Dl": {
+    "defaultMessage": "Zbirka s tim imenom već postoji"
+  },
   "vTqlcG": {
     "defaultMessage": "Izbriši"
+  },
+  "vXhkpo": {
+    "defaultMessage": "Izbriši datoteku"
   },
   "vcA12h": {
     "defaultMessage": "Jezik"
   },
+  "veqjHc": {
+    "defaultMessage": "Ponovi"
+  },
+  "viKuRl": {
+    "defaultMessage": "Poster"
+  },
+  "vkeTYG": {
+    "defaultMessage": "Uvoz knjige nije uspio"
+  },
+  "vs88Ef": {
+    "defaultMessage": "Osvježava metapodatke za sve medijske datoteke u biblioteci. Ovisno o veličini biblioteke, to može potrajati."
+  },
+  "vtBARB": {
+    "defaultMessage": "Generirana grafika"
+  },
+  "vvl9xP": {
+    "defaultMessage": "Isprazni smeće"
+  },
   "w2K5yu": {
-    "defaultMessage": "Liste čitanja"
+    "defaultMessage": "Popisi čitanja"
   },
   "wESuod": {
     "defaultMessage": "Nepročitano"
   },
   "wJaip6": {
-    "defaultMessage": "Izračunaj šifre za datoteke"
+    "defaultMessage": "Izračunaj šifru za datoteke"
+  },
+  "wRjFWz": {
+    "defaultMessage": "Automatski poredak"
+  },
+  "wXGljO": {
+    "defaultMessage": "Nastavi"
+  },
+  "wbH42A": {
+    "defaultMessage": "Nedostupno"
+  },
+  "wk+b55": {
+    "defaultMessage": "Uredi"
+  },
+  "wwiazg": {
+    "defaultMessage": "Nije pronađena nijedna valjana slika u međuspremniku"
+  },
+  "x1MEvu": {
+    "defaultMessage": "Datum izdanja"
   },
   "xAZMxz": {
     "defaultMessage": "Ime datoteke"
   },
   "xPBqGY": {
     "defaultMessage": "Izbriši serije"
+  },
+  "xSNdDU": {
+    "defaultMessage": "Popis čitanja će se izbrisati<ul><li>Serije i knjige se neće izbrisati.</li></ul><b>Ovo je nepovratna radnja.</b>"
+  },
+  "xYp/8u": {
+    "defaultMessage": "Odaberi knjigu"
+  },
+  "xeiMMk": {
+    "defaultMessage": "Završna obrada crteža"
+  },
+  "xfThoX": {
+    "defaultMessage": "Podudaranja"
+  },
+  "xiyw1J": {
+    "defaultMessage": "Osvježi sve metapodatke"
+  },
+  "xjHL5K": {
+    "defaultMessage": "Poster"
+  },
+  "xpBvz8": {
+    "defaultMessage": "Godina izdanja"
+  },
+  "y1Fk/a": {
+    "defaultMessage": "Nema rezultata"
+  },
+  "y1P/K4": {
+    "defaultMessage": "Zadnja aktivnost"
+  },
+  "y3nPgO": {
+    "defaultMessage": "Provodi dubinsko pretraživanje datoteka biblioteke. Ovisno o veličini biblioteke, to može potrajati."
+  },
+  "y5GoQ3": {
+    "defaultMessage": "Otvori izbornik za navigaciju korisnika"
+  },
+  "yDWzUi": {
+    "defaultMessage": "API ključevi"
+  },
+  "yPygXa": {
+    "defaultMessage": "Stvori"
+  },
+  "yaa8so": {
+    "defaultMessage": "Pretraživač"
+  },
+  "ycrpqO": {
+    "defaultMessage": "Generiraj novi API ključ"
+  },
+  "yrE0Rx": {
+    "defaultMessage": "Detalji"
+  },
+  "yvQfma": {
+    "defaultMessage": "Uklonit će se {count, plural, one {# serija} few {# serije} other {# serija} }"
+  },
+  "yxnX5k": {
+    "defaultMessage": "Sakrij polja prijave ako je OAuth2 aktivirano"
+  },
+  "yyAGH1": {
+    "defaultMessage": "š: {width}, v: {height}"
+  },
+  "z4ywpN": {
+    "defaultMessage": "Serija zbirke je aktualizirana: {collection}"
+  },
+  "z5sjUM": {
+    "defaultMessage": "Šifriraj datoteku knjige"
+  },
+  "z8b1Xe": {
+    "defaultMessage": "Uvezi iz direktorija"
+  },
+  "zRDVnR": {
+    "defaultMessage": "Veličina"
+  },
+  "zWRhDm": {
+    "defaultMessage": "Alternativni naslovi"
+  },
+  "zfQq+w": {
+    "defaultMessage": "E-mail adresa"
+  },
+  "zphiTI": {
+    "defaultMessage": "API ključ s tim komentarom već postoji"
+  },
+  "zqAxRE": {
+    "defaultMessage": "Knjiga"
+  },
+  "zuhGGz": {
+    "defaultMessage": "Promijeni redoslijed ili prikvači"
   }
 }
