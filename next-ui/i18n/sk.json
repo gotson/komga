@@ -1,0 +1,2693 @@
+{
+  "+6DtMH": {
+    "defaultMessage": "Používateľské rozhranie"
+  },
+  "+6YDzS": {
+    "defaultMessage": "Nenašli sa žiadne údaje"
+  },
+  "+8++PW": {
+    "defaultMessage": "Knižnica vytvorená: {library}"
+  },
+  "+C/+3o": {
+    "defaultMessage": "Zoznam nemôže byť prázdny"
+  },
+  "+PNCoe": {
+    "defaultMessage": "Alternatívny názov"
+  },
+  "+TldjW": {
+    "defaultMessage": "Nie je čo zobraziť"
+  },
+  "+jaADC": {
+    "defaultMessage": "Názov súboru"
+  },
+  "+mJGIg": {
+    "defaultMessage": "Cesta k súboru"
+  },
+  "+mvfpU": {
+    "defaultMessage": "{count, plural, one {# séria bola aktualizovaná} few {# série boli aktualizované} other {# sérií bolo aktualizovaných} }"
+  },
+  "+opDqu": {
+    "defaultMessage": "Prejsť na"
+  },
+  "+pyj1u": {
+    "defaultMessage": "Nedostupné"
+  },
+  "+r8FCS": {
+    "defaultMessage": "Port, na ktorom server počúva"
+  },
+  "+sF9Fw": {
+    "defaultMessage": "Existujúce hodnoty"
+  },
+  "+sXZtI": {
+    "defaultMessage": "Zavrieť"
+  },
+  "+y+9xL": {
+    "defaultMessage": "Súbory presahujúce limit veľkosti: {filenames}"
+  },
+  "/4RRHN": {
+    "defaultMessage": "Zoznam nemôže byť prázdny"
+  },
+  "/5Gb4y": {
+    "defaultMessage": "Odstrániť"
+  },
+  "/8sSxS": {
+    "defaultMessage": "Vyžaduje sa na obnovenie z koša a zisťovanie duplicitných súborov"
+  },
+  "/Acs82": {
+    "defaultMessage": "Vytvoriť alebo pridať do zoznamov na čítanie"
+  },
+  "/LDx9p": {
+    "defaultMessage": "Porovnať knihy"
+  },
+  "/NAG9i": {
+    "defaultMessage": "Žiadne výsledky"
+  },
+  "/TRmi5": {
+    "defaultMessage": "Štítky zdieľania"
+  },
+  "/YxHru": {
+    "defaultMessage": "Niektoré z vybraných kníh sú duplicitné"
+  },
+  "/lE31l": {
+    "defaultMessage": "Vynútiť synchronizáciu Kobo"
+  },
+  "/mhcNO": {
+    "defaultMessage": "Zavrieť"
+  },
+  "02SRax": {
+    "defaultMessage": "Prihlásiť sa"
+  },
+  "083NeH": {
+    "defaultMessage": "Jazyková značka IETF BCP 47"
+  },
+  "0ESsC0": {
+    "defaultMessage": "Pokračovať cez {provider}"
+  },
+  "0ILHru": {
+    "defaultMessage": "OK"
+  },
+  "0J3Gvp": {
+    "defaultMessage": "{count, plural, one {# séria} few {# série} other {# sérií} }"
+  },
+  "0JF9f5": {
+    "defaultMessage": "Zbaliť bočný panel"
+  },
+  "0MePSx": {
+    "defaultMessage": "Presuňte sem knižnicu na pripnutie"
+  },
+  "0OEO+j": {
+    "defaultMessage": "Žánre"
+  },
+  "0UFr4y": {
+    "defaultMessage": "Všetky z"
+  },
+  "0XDhyR": {
+    "defaultMessage": "výber motívu"
+  },
+  "0YG9GQ": {
+    "defaultMessage": "Zapamätať si ma"
+  },
+  "0c6DrH": {
+    "defaultMessage": "Obnoviť pôvodnú hodnotu"
+  },
+  "0eIJ3K": {
+    "defaultMessage": "Manuálne radenie"
+  },
+  "0iT7Vf": {
+    "defaultMessage": "Metadáta"
+  },
+  "0qntYX": {
+    "defaultMessage": "Vypočítať hash pre strany"
+  },
+  "0sIkhg": {
+    "defaultMessage": "FILTRE"
+  },
+  "1+Ux6s": {
+    "defaultMessage": "Začnite vytvorením knižnice"
+  },
+  "111Isd": {
+    "defaultMessage": "Znovu zostaviť index vyhľadávania"
+  },
+  "13nnQg": {
+    "defaultMessage": "Použiť nové rozhranie NextUI ako predvolené pre tento server"
+  },
+  "14/Uh8": {
+    "defaultMessage": "Režim importu"
+  },
+  "18OKhZ": {
+    "defaultMessage": "Nájsť knihy na konverziu"
+  },
+  "1A8Mc1": {
+    "defaultMessage": "Významné entity"
+  },
+  "1E0Duw": {
+    "defaultMessage": "Veľkosť súboru"
+  },
+  "1MAL38": {
+    "defaultMessage": "Duplicitná kniha"
+  },
+  "1VkZao": {
+    "defaultMessage": "Viac"
+  },
+  "1dgTdi": {
+    "defaultMessage": "Analyzovať"
+  },
+  "1hsKmu": {
+    "defaultMessage": "Postava"
+  },
+  "1qIfds": {
+    "defaultMessage": "Pripnuté"
+  },
+  "1z+Z+q": {
+    "defaultMessage": "Štítky zdieľania"
+  },
+  "2Bh8F2": {
+    "defaultMessage": "Najnovšia"
+  },
+  "2IYW7s": {
+    "defaultMessage": "URL"
+  },
+  "2LLpzV": {
+    "defaultMessage": "Zobraziť podrobnosti"
+  },
+  "2Sx0J4": {
+    "defaultMessage": "Strana"
+  },
+  "2g7iOx": {
+    "defaultMessage": "Metriky"
+  },
+  "2p+JVw": {
+    "defaultMessage": "Tento server Komga ešte nie je aktívny, aby ste k nemu mali prístup, musíte si vytvoriť používateľský účet."
+  },
+  "2uUiqM": {
+    "defaultMessage": "Radenie sérií"
+  },
+  "3DBPuv": {
+    "defaultMessage": "Posúvanie"
+  },
+  "3J6FI8": {
+    "defaultMessage": "Upraviť zobrazenie"
+  },
+  "3MUQYL": {
+    "defaultMessage": "Vytvoriť alebo pridať do zbierok"
+  },
+  "3OgH93": {
+    "defaultMessage": "Séria"
+  },
+  "3Pm2PO": {
+    "defaultMessage": "Cieľový názov súboru"
+  },
+  "3T1ln7": {
+    "defaultMessage": "Odstrániť knižnicu"
+  },
+  "3W0jUi": {
+    "defaultMessage": "Vylúčiť štítky"
+  },
+  "3b7v1+": {
+    "defaultMessage": "Importovať metadáta knihy"
+  },
+  "3beD4X": {
+    "defaultMessage": "Odstrániť API kľúč"
+  },
+  "3gimvl": {
+    "defaultMessage": "ponuka knižnice"
+  },
+  "3lLmfX": {
+    "defaultMessage": "Zbierka"
+  },
+  "3qQjnw": {
+    "defaultMessage": "Jazyk"
+  },
+  "3rNj7/": {
+    "defaultMessage": "Kliknutím potvrďte"
+  },
+  "3zkvDp": {
+    "defaultMessage": "Zavrieť"
+  },
+  "40HXjy": {
+    "defaultMessage": "Zrušiť"
+  },
+  "464rk3": {
+    "defaultMessage": "Vybrať sériu"
+  },
+  "4AKIbg": {
+    "defaultMessage": "Externý port Kobo Sync"
+  },
+  "4CIw7i": {
+    "defaultMessage": "Stav vydávania"
+  },
+  "4CX0cY": {
+    "defaultMessage": "Importovať metadáta série"
+  },
+  "4IKM3R": {
+    "defaultMessage": "Štítok"
+  },
+  "4PDVX2": {
+    "defaultMessage": "EPUB"
+  },
+  "4TEXni": {
+    "defaultMessage": "Všetci autori"
+  },
+  "4U6L0S": {
+    "defaultMessage": "Odkazy"
+  },
+  "4X3RAp": {
+    "defaultMessage": "{count, plural, one {# kniha} few {# knihy} other {# kníh} }"
+  },
+  "4Ybicn": {
+    "defaultMessage": "Vytvoriť"
+  },
+  "4g2M9O": {
+    "defaultMessage": "Nenašli sa žiadne série"
+  },
+  "4jKnoO": {
+    "defaultMessage": "Na rade — {number}"
+  },
+  "4uqafX": {
+    "defaultMessage": "Samostatný diel"
+  },
+  "4yDvPA": {
+    "defaultMessage": "Vymazať filtre"
+  },
+  "5AAGkA": {
+    "defaultMessage": "Heslo"
+  },
+  "5JGOUU": {
+    "defaultMessage": "Analyzovať knižnicu"
+  },
+  "5Qha5m": {
+    "defaultMessage": "Manuálne radenie"
+  },
+  "5WMvLb": {
+    "defaultMessage": "Epub"
+  },
+  "5Xt1ke": {
+    "defaultMessage": "Tím"
+  },
+  "5Zw5Zt": {
+    "defaultMessage": "Prejsť na ďalšiu sériu v zbierke"
+  },
+  "5b2A0u": {
+    "defaultMessage": "Budete presmerovaní na domovskú stránku"
+  },
+  "5nswuX": {
+    "defaultMessage": "Otvoriť klasické rozhranie"
+  },
+  "5rziSG": {
+    "defaultMessage": "Nedostupné"
+  },
+  "5tbu8Y": {
+    "defaultMessage": "Skúsiť znova"
+  },
+  "5voJNm": {
+    "defaultMessage": "Bez obmedzenia"
+  },
+  "5zPpyT": {
+    "defaultMessage": "Vekové rozpätie"
+  },
+  "69jd/r": {
+    "defaultMessage": "Odstrániť zo zoznamu na čítanie"
+  },
+  "6F1ebQ": {
+    "defaultMessage": "HTTP server"
+  },
+  "6Kd/YV": {
+    "defaultMessage": "Vyžaduje reštart na prejavenie zmien"
+  },
+  "6OXY1N": {
+    "defaultMessage": "Priečinok samostatných dielov"
+  },
+  "6UXlVe": {
+    "defaultMessage": "Značky"
+  },
+  "6WDISV": {
+    "defaultMessage": "Stránka sa nenašla"
+  },
+  "6cwDEs": {
+    "defaultMessage": "Tmavý"
+  },
+  "6eAECF": {
+    "defaultMessage": "Knižnica"
+  },
+  "6nCIPn": {
+    "defaultMessage": "Typ"
+  },
+  "70/wK4": {
+    "defaultMessage": "Vytvoriť knižnicu"
+  },
+  "700A3r": {
+    "defaultMessage": "Kniha"
+  },
+  "7M1pUf": {
+    "defaultMessage": "Vyprázdniť kôš"
+  },
+  "7Ndu8p": {
+    "defaultMessage": "Číslo"
+  },
+  "7RfNiY": {
+    "defaultMessage": "Zhrnutie"
+  },
+  "7gdpKG": {
+    "defaultMessage": "Vytvoriť"
+  },
+  "7hwFJo": {
+    "defaultMessage": "Scenárista"
+  },
+  "7z91nm": {
+    "defaultMessage": "História"
+  },
+  "8/BXfN": {
+    "defaultMessage": "Všetky"
+  },
+  "811PxA": {
+    "defaultMessage": "alebo"
+  },
+  "81BMAQ": {
+    "defaultMessage": "Importovať metadáta knihy"
+  },
+  "87q6WX": {
+    "defaultMessage": "Žiadne"
+  },
+  "8CVWWg": {
+    "defaultMessage": "Odstrániť súbory"
+  },
+  "8Dun/Y": {
+    "defaultMessage": "Nie"
+  },
+  "8KsYYJ": {
+    "defaultMessage": "Značky"
+  },
+  "8LT9D4": {
+    "defaultMessage": "Zrušiť"
+  },
+  "8NDqor": {
+    "defaultMessage": "Písmový dizajnér"
+  },
+  "8Om/o/": {
+    "defaultMessage": "Importovať z priečinka"
+  },
+  "8P7Yn+": {
+    "defaultMessage": "Vekové hodnotenie"
+  },
+  "8Yd/3a": {
+    "defaultMessage": "Názov roly"
+  },
+  "8hC76W": {
+    "defaultMessage": "Úlohy"
+  },
+  "8jE3eP": {
+    "defaultMessage": "Knihu sa nepodarilo analyzovať"
+  },
+  "8kylzj": {
+    "defaultMessage": "Odstrániť"
+  },
+  "8xonXJ": {
+    "defaultMessage": "Analyzuje všetky mediálne súbory v knižnici. Analýza zhromažďuje informácie o médiách. V závislosti od veľkosti knižnice to môže trvať dlhý čas."
+  },
+  "9/1/c7": {
+    "defaultMessage": "Vygenerovať miniatúru knihy"
+  },
+  "90k6a7": {
+    "defaultMessage": "Zbierka musí obsahovať aspoň jednu sériu"
+  },
+  "90yqRq": {
+    "defaultMessage": "pridať knižnicu"
+  },
+  "98Q8V7": {
+    "defaultMessage": "Odstrániť"
+  },
+  "9GaR82": {
+    "defaultMessage": "Všeobecné"
+  },
+  "9TJRkm": {
+    "defaultMessage": "Importovať metadáta série"
+  },
+  "9VuyZU": {
+    "defaultMessage": "Skúste naskenovať iný priečinok"
+  },
+  "9XDmYO": {
+    "defaultMessage": "Odstrániť používateľa"
+  },
+  "9aVhJC": {
+    "defaultMessage": "CBZ"
+  },
+  "9dNd68": {
+    "defaultMessage": "Nahrané používateľom"
+  },
+  "9mujmD": {
+    "defaultMessage": "Bez dátumu vydania"
+  },
+  "9oA9gw": {
+    "defaultMessage": "Nepripnuté"
+  },
+  "AEaKHC": {
+    "defaultMessage": "Nájsť miniatúry kníh na opätovné vygenerovanie"
+  },
+  "AJa6Tq": {
+    "defaultMessage": "Žiadne údaje"
+  },
+  "ALGXT9": {
+    "defaultMessage": "Duplikát"
+  },
+  "AMQANB": {
+    "defaultMessage": "Pridať vlastný druh"
+  },
+  "Ai7bBV": {
+    "defaultMessage": "{count, plural, one {# strana} few {# strany} other {# strán} }"
+  },
+  "AjBiEw": {
+    "defaultMessage": "Pripojiť zväzok k názvu série"
+  },
+  "AjWlka": {
+    "defaultMessage": "Neplatné prihlasovacie meno alebo heslo"
+  },
+  "AoSCGy": {
+    "defaultMessage": "Vľavo"
+  },
+  "B2wcN0": {
+    "defaultMessage": "Importovať ISBN z čiarového kódu"
+  },
+  "B48EcS": {
+    "defaultMessage": "Nadradený priečinok"
+  },
+  "BQmPch": {
+    "defaultMessage": "Odstrániť knihu"
+  },
+  "BXkP7H": {
+    "defaultMessage": "Zavrieť"
+  },
+  "Bewgy6": {
+    "defaultMessage": "Obálka série"
+  },
+  "Bl30xt": {
+    "defaultMessage": "Pridať používateľa"
+  },
+  "BpzKDW": {
+    "defaultMessage": "Viacero položiek bude odstránených. <b>Túto akciu nie je možné vrátiť späť.</b>"
+  },
+  "BtDfUf": {
+    "defaultMessage": "Prepísať"
+  },
+  "ByRsV9": {
+    "defaultMessage": "Vyžaduje sa na to, aby WebReader rozpoznal strany na šírku"
+  },
+  "C0paz4": {
+    "defaultMessage": "Analyzovať knihu"
+  },
+  "C1bGrS": {
+    "defaultMessage": "Zobraziť informácie"
+  },
+  "C4S+yv": {
+    "defaultMessage": "Musí byť platná adresa URL"
+  },
+  "C9LkYh": {
+    "defaultMessage": "Komentár"
+  },
+  "CAKrBF": {
+    "defaultMessage": "Zbierka bola vytvorená"
+  },
+  "CE7pPQ": {
+    "defaultMessage": "Cesta k súboru"
+  },
+  "CGRz8d": {
+    "defaultMessage": "Súbor knihy sa zmenil a bude potrebné ho znova analyzovať"
+  },
+  "CJaS7j": {
+    "defaultMessage": "Koreňový priečinok knižnice"
+  },
+  "CMuDjt": {
+    "defaultMessage": "podrobnosti o aktivite"
+  },
+  "COn5A6": {
+    "defaultMessage": "Lokálne mediálne súbory"
+  },
+  "CPMLrI": {
+    "defaultMessage": "Knihu je potrebné najprv analyzovať"
+  },
+  "CUxhzL": {
+    "defaultMessage": "Roly"
+  },
+  "CVk1J6": {
+    "defaultMessage": "Chyba"
+  },
+  "CW0idP": {
+    "defaultMessage": "Vydavateľ"
+  },
+  "CY8sfH": {
+    "defaultMessage": "Skenovať všetky knižnice"
+  },
+  "CkUPZe": {
+    "defaultMessage": "Formát súboru knihy nie je podporovaný"
+  },
+  "CpNtjm": {
+    "defaultMessage": "Dátum a čas"
+  },
+  "CqlsIa": {
+    "defaultMessage": "Autori"
+  },
+  "Cv11G8": {
+    "defaultMessage": "Celkový počet kníh"
+  },
+  "CvsH7/": {
+    "defaultMessage": "Žiadna nedávna aktivita"
+  },
+  "CwteMk": {
+    "defaultMessage": "Vyprázdniť kôš pre všetky knižnice"
+  },
+  "CxuwFR": {
+    "defaultMessage": "Typ súboru nie je podporovaný"
+  },
+  "D+ZsSd": {
+    "defaultMessage": "Pridať alternatívny názov"
+  },
+  "D/yypj": {
+    "defaultMessage": "<ul><li>Týmto sa odstráni celá história synchronizácie pre tento API kľúč. </li><li>Vaše zariadenie Kobo pri ďalšej synchronizácii zosynchronizuje všetko.</li></ul>"
+  },
+  "D4qD6S": {
+    "defaultMessage": "Uzamknúť pole"
+  },
+  "DG4tYb": {
+    "defaultMessage": "{count, plural, one {# kniha} few {# knihy} other {# kníh} }"
+  },
+  "DK4PsD": {
+    "defaultMessage": "Knihy v sérii"
+  },
+  "DNVnmS": {
+    "defaultMessage": "Názov priečinka"
+  },
+  "DNmepU": {
+    "defaultMessage": "Povoľte túto možnosť, ak používate KOReader Sync"
+  },
+  "DbrNAW": {
+    "defaultMessage": "Vyhľadať alebo vytvoriť"
+  },
+  "DfakWW": {
+    "defaultMessage": "Odstrániť súbory"
+  },
+  "DgXStw": {
+    "defaultMessage": "Prejsť na predchádzajúcu sériu v zbierke"
+  },
+  "Dn4qvV": {
+    "defaultMessage": "Obnoviť predvolené"
+  },
+  "Dsytsl": {
+    "defaultMessage": "Vylúčiť od (vrátane)"
+  },
+  "DwDa04": {
+    "defaultMessage": "Interval skenovania"
+  },
+  "DxtDpt": {
+    "defaultMessage": "Analýza médií"
+  },
+  "E0cw62": {
+    "defaultMessage": "Zbierka bola aktualizovaná: {collection}"
+  },
+  "E1kQun": {
+    "defaultMessage": "Prehľadávať"
+  },
+  "E4ssEg": {
+    "defaultMessage": "Konvertovať knihu"
+  },
+  "E5ZMyt": {
+    "defaultMessage": "Analyzovať"
+  },
+  "EIYfj+": {
+    "defaultMessage": "Číslo"
+  },
+  "ELl0N9": {
+    "defaultMessage": "Knihy s chýbajúcimi plagátmi je teraz možné filtrovať priamo v hlavnom zobrazení knižnice."
+  },
+  "ELttw/": {
+    "defaultMessage": "Vyprázdniť kôš"
+  },
+  "EMhLEN": {
+    "defaultMessage": "Presunúť súbory"
+  },
+  "EOrAHc": {
+    "defaultMessage": "PDF"
+  },
+  "EabQ38": {
+    "defaultMessage": "Zapamätať si ma"
+  },
+  "EbhcQd": {
+    "defaultMessage": "Podrobnosti"
+  },
+  "EnHAAa": {
+    "defaultMessage": "PDF"
+  },
+  "Epp7Fi": {
+    "defaultMessage": "Značky"
+  },
+  "Er4D87": {
+    "defaultMessage": "Vizuálne"
+  },
+  "EzOmuX": {
+    "defaultMessage": "Vytvorené"
+  },
+  "FBGnzt": {
+    "defaultMessage": "Zoznam na čítanie s týmto názvom už existuje"
+  },
+  "FH0CJ+": {
+    "defaultMessage": "Strany"
+  },
+  "FLqm9f": {
+    "defaultMessage": "Pomôžte nám s prekladom"
+  },
+  "FSJoDl": {
+    "defaultMessage": "Vyberte sériu, aby ste videli jej knihy"
+  },
+  "FVq9w5": {
+    "defaultMessage": "Mylar (series.json)"
+  },
+  "FX2bI8": {
+    "defaultMessage": "{count, plural, one {# séria bola odstránená} few {# série boli odstránené} other {# sérií bolo odstránených} } zo zbierky: {collection}"
+  },
+  "FZXkIP": {
+    "defaultMessage": "Prekladateľ"
+  },
+  "Fdinos": {
+    "defaultMessage": "Plagát"
+  },
+  "FpwJlU": {
+    "defaultMessage": "Uložiť zmeny"
+  },
+  "Fwvj/i": {
+    "defaultMessage": "{count, plural, one {# séria} few {# série} other {# sérií} }"
+  },
+  "G/T8/2": {
+    "defaultMessage": "Zrušiť"
+  },
+  "G25PY/": {
+    "defaultMessage": "Vyhľadať"
+  },
+  "G7quju": {
+    "defaultMessage": "Oznámenia"
+  },
+  "G93mS3": {
+    "defaultMessage": "Zobraziť všetko"
+  },
+  "GCwZB2": {
+    "defaultMessage": "Skenovať súbory knižnice"
+  },
+  "GnHrCd": {
+    "defaultMessage": "Použiť lokálne ilustrácie"
+  },
+  "Gwmnm6": {
+    "defaultMessage": "Séria"
+  },
+  "GyRV+/": {
+    "defaultMessage": "Túto možnosť by ste mali povoliť, ak je knižnica uložená na Disku Google"
+  },
+  "GySX8C": {
+    "defaultMessage": "Automaticky vyprázdniť kôš po každom skenovaní"
+  },
+  "H+LXXE": {
+    "defaultMessage": "Potiahnite sem, aby ste odpojili knižnicu"
+  },
+  "H1+81t": {
+    "defaultMessage": "Manuálne"
+  },
+  "H2B6uF": {
+    "defaultMessage": "Vyberte sériu"
+  },
+  "H4Kte4": {
+    "defaultMessage": "Názov"
+  },
+  "HA4xOM": {
+    "defaultMessage": "Obnoviť metadáta knihy"
+  },
+  "HHvDPs": {
+    "defaultMessage": "E-mail"
+  },
+  "HIKKsB": {
+    "defaultMessage": "Profil"
+  },
+  "HMbMJF": {
+    "defaultMessage": "Dátum a čas"
+  },
+  "HOBFqq": {
+    "defaultMessage": "chyba"
+  },
+  "HXms0S": {
+    "defaultMessage": "Vyberte položku alebo vytvorte novú"
+  },
+  "HZ/e6n": {
+    "defaultMessage": "Skúste upraviť filtre"
+  },
+  "HZqgan": {
+    "defaultMessage": "Zavrieť"
+  },
+  "HaF+a6": {
+    "defaultMessage": "Knižnice"
+  },
+  "HaWCi3": {
+    "defaultMessage": "Nastavenia"
+  },
+  "HdsnFp": {
+    "defaultMessage": "Zbierka bola odstránená: {collection}"
+  },
+  "Hl9H/B": {
+    "defaultMessage": "Médiá"
+  },
+  "Hv7lqq": {
+    "defaultMessage": "Mriežka"
+  },
+  "Hyz5su": {
+    "defaultMessage": "Importovať knihu"
+  },
+  "I75Xgh": {
+    "defaultMessage": "Prejsť na ďalšiu knihu v sérii"
+  },
+  "I9L5Ag": {
+    "defaultMessage": "ZORADIŤ"
+  },
+  "I9ub/l": {
+    "defaultMessage": "Známe duplikáty"
+  },
+  "IE0XzE": {
+    "defaultMessage": "Odstrániť"
+  },
+  "IEUgyy": {
+    "defaultMessage": "Existujúci súbor"
+  },
+  "II5EFN": {
+    "defaultMessage": "Kreslič"
+  },
+  "IIqDdQ": {
+    "defaultMessage": "Zoznam na čítanie bol aktualizovaný: {readlist}"
+  },
+  "IXhDH6": {
+    "defaultMessage": "Duplicitná strana"
+  },
+  "Icqm5y": {
+    "defaultMessage": "Číslo strany"
+  },
+  "If3RCw": {
+    "defaultMessage": "Vymaže hodnotu na všetkých vybraných položkách"
+  },
+  "Ih4MH9": {
+    "defaultMessage": "Skúste upraviť vyhľadávanie"
+  },
+  "IlRX+s": {
+    "defaultMessage": "š: {width}, v: {height}"
+  },
+  "InW6ko": {
+    "defaultMessage": "Preklady"
+  },
+  "IpvWiZ": {
+    "defaultMessage": "Server"
+  },
+  "J+H9cC": {
+    "defaultMessage": "Odstrániť súbory"
+  },
+  "J44THG": {
+    "defaultMessage": "Stav"
+  },
+  "J8l62K": {
+    "defaultMessage": "Pridať"
+  },
+  "J8rAqm": {
+    "defaultMessage": "Rok vydania"
+  },
+  "JGOfZq": {
+    "defaultMessage": "Používatelia"
+  },
+  "JHaKYw": {
+    "defaultMessage": "Vybrať všetko"
+  },
+  "JNBONk": {
+    "defaultMessage": "Zoznam"
+  },
+  "JbF1nK": {
+    "defaultMessage": "Heslo používateľa bolo zmenené: {email}"
+  },
+  "Jj4uO/": {
+    "defaultMessage": "Počet strán"
+  },
+  "Ju97UA": {
+    "defaultMessage": "Čítať"
+  },
+  "JwBlXP": {
+    "defaultMessage": "Otvoriť"
+  },
+  "K+fQO2": {
+    "defaultMessage": "Skenovať tieto typy súborov"
+  },
+  "K40g4r": {
+    "defaultMessage": "Upraviť používateľa"
+  },
+  "KBLD9U": {
+    "defaultMessage": "Vekové hodnotenie"
+  },
+  "KPlFII": {
+    "defaultMessage": "Vekové obmedzenie"
+  },
+  "KTifVk": {
+    "defaultMessage": "Všetky významné entity"
+  },
+  "Kie8HQ": {
+    "defaultMessage": "Kniha"
+  },
+  "Ku7NJ+": {
+    "defaultMessage": "Súbory série sa nepodarilo nájsť"
+  },
+  "LBuB6T": {
+    "defaultMessage": "Pridať do zoznamu na čítanie"
+  },
+  "LD5j8J": {
+    "defaultMessage": "Požadovaná séria"
+  },
+  "LFf8QB": {
+    "defaultMessage": "Odstrániť"
+  },
+  "LKoz42": {
+    "defaultMessage": "Zhrnutie"
+  },
+  "LM4LL9": {
+    "defaultMessage": "Obnoviť lokálne ilustrácie série"
+  },
+  "LOcuZ2": {
+    "defaultMessage": "Označiť ako prečítané"
+  },
+  "LaMAsc": {
+    "defaultMessage": "Aktivita overovania"
+  },
+  "LaxrEO": {
+    "defaultMessage": "Heslá sa musia zhodovať"
+  },
+  "LjqS9+": {
+    "defaultMessage": "Zoznam na čítanie s týmto názvom už existuje"
+  },
+  "Lto2Lg": {
+    "defaultMessage": "Musí začínať znakom '/', nesmie končiť znakmi '/-_' a môže obsahovať iba '/-_a-z0-9'"
+  },
+  "M3OTuv": {
+    "defaultMessage": "Viacero hodnôt"
+  },
+  "M4STMh": {
+    "defaultMessage": "Vrátiť späť"
+  },
+  "MC2JtF": {
+    "defaultMessage": "Všetky"
+  },
+  "MEWT0D": {
+    "defaultMessage": "Zhrnutie z knihy {number}:"
+  },
+  "MKs9N+": {
+    "defaultMessage": "Prehľad"
+  },
+  "MYYgTv": {
+    "defaultMessage": "Neznáma veľkosť súboru"
+  },
+  "MoOECu": {
+    "defaultMessage": "Importovať metadáta série"
+  },
+  "MvwDsn": {
+    "defaultMessage": "Známe"
+  },
+  "N7+QXi": {
+    "defaultMessage": "Import"
+  },
+  "N9WFH4": {
+    "defaultMessage": "Uložiť"
+  },
+  "NArFTo": {
+    "defaultMessage": "API kľúč bol odstránený: {apiKeyComment}"
+  },
+  "NKVL81": {
+    "defaultMessage": "Samostatný diel"
+  },
+  "NLiXdm": {
+    "defaultMessage": "Štítok"
+  },
+  "NN7kAK": {
+    "defaultMessage": "Synchronizácia Kobo bola vynútená: {apiKeyComment}"
+  },
+  "Nahedl": {
+    "defaultMessage": "Pridať"
+  },
+  "NasBHg": {
+    "defaultMessage": "Dátum prečítania"
+  },
+  "Nb0V0p": {
+    "defaultMessage": "Chýbajúce plagáty"
+  },
+  "NgRz9T": {
+    "defaultMessage": "Oprávnenia"
+  },
+  "NhIart": {
+    "defaultMessage": "Odstrániť súbory knihy"
+  },
+  "No9Upl": {
+    "defaultMessage": "Názov"
+  },
+  "NpjqFA": {
+    "defaultMessage": "Skúste upraviť filtre"
+  },
+  "NruW40": {
+    "defaultMessage": "Vydavateľ"
+  },
+  "NwK2Kv": {
+    "defaultMessage": "Značka"
+  },
+  "O/3awV": {
+    "defaultMessage": "Analýza"
+  },
+  "O4Nnj5": {
+    "defaultMessage": "Kniha {number}"
+  },
+  "O6qNva": {
+    "defaultMessage": "Podrobnosti"
+  },
+  "O9hZBS": {
+    "defaultMessage": "Veľkosť plagátu"
+  },
+  "OLqBQc": {
+    "defaultMessage": "Vydavateľ"
+  },
+  "OUyleX": {
+    "defaultMessage": "Obnoviť všetky metadáta"
+  },
+  "OW1/zn": {
+    "defaultMessage": "Žiadna nedávna aktivita"
+  },
+  "OZSDCE": {
+    "defaultMessage": "Pripnuté"
+  },
+  "OgM2Q2": {
+    "defaultMessage": "Obnoviť metadáta série"
+  },
+  "Oj3xqB": {
+    "defaultMessage": "Zoznam na čítanie bol odstránený: {readlist}"
+  },
+  "OxqfKF": {
+    "defaultMessage": "Hĺbkové skenovanie"
+  },
+  "P+WI/K": {
+    "defaultMessage": "Duplicitná strana"
+  },
+  "P8Ox+D": {
+    "defaultMessage": "Metadáta knihy boli aktualizované: {book}"
+  },
+  "P9B8fE": {
+    "defaultMessage": "Prejsť na predchádzajúcu knihu v sérii"
+  },
+  "PTr5Wc": {
+    "defaultMessage": "Skontrolujte, či je váš server Komga spustený"
+  },
+  "PUU04H": {
+    "defaultMessage": "Prispôsobiť veľkosť plagátu (vyplniť)"
+  },
+  "PguYSD": {
+    "defaultMessage": "Prepísať existujúci zoznam na čítanie"
+  },
+  "Pj29A+": {
+    "defaultMessage": "Vyžaduje sa na zisťovanie duplicitných strán"
+  },
+  "Po0Z4Z": {
+    "defaultMessage": "Zoznam na čítanie"
+  },
+  "Pp3+1S": {
+    "defaultMessage": "Stav"
+  },
+  "PvKF7E": {
+    "defaultMessage": "Knižnica bola odstránená: {library}"
+  },
+  "Q7tJAG": {
+    "defaultMessage": "Zoznam na čítanie"
+  },
+  "QALnuE": {
+    "defaultMessage": "Typ súboru"
+  },
+  "QBQ5a/": {
+    "defaultMessage": "Názov"
+  },
+  "QIr0z7": {
+    "defaultMessage": "E-mail"
+  },
+  "QM5+gW": {
+    "defaultMessage": "Počet odstránení"
+  },
+  "Qxij/I": {
+    "defaultMessage": "Odstránená strana"
+  },
+  "Qz1UTX": {
+    "defaultMessage": "Zavrieť"
+  },
+  "RCUCFa": {
+    "defaultMessage": "Zoznam na čítanie musí obsahovať aspoň jednu knihu"
+  },
+  "REmxIM": {
+    "defaultMessage": "Upravené"
+  },
+  "RHJo8j": {
+    "defaultMessage": "Importovať"
+  },
+  "RMHfEo": {
+    "defaultMessage": "Ktorékoľvek z"
+  },
+  "ROFRn4": {
+    "defaultMessage": "Vygenerovať"
+  },
+  "RR+XGR": {
+    "defaultMessage": "Táto stránka je v štádiu prípravy."
+  },
+  "RTNaxB": {
+    "defaultMessage": "Rozbaliť bočný panel"
+  },
+  "RcbD73": {
+    "defaultMessage": "Kniha {number}"
+  },
+  "Rgl4jp": {
+    "defaultMessage": "{count, plural, one {# kniha bola aktualizovaná} few {# knihy boli aktualizované} other {# kníh bolo aktualizovaných} }"
+  },
+  "Rm52xk": {
+    "defaultMessage": "Vitajte v Komge"
+  },
+  "Rt/kZN": {
+    "defaultMessage": "{first} a {rest, plural, one {# ďalšia kniha} few {# ďalšie knihy} other {# ďalších kníh} }"
+  },
+  "Rw2Iwj": {
+    "defaultMessage": "Prejsť na ďalšiu knihu v zozname na čítanie"
+  },
+  "RwuMl5": {
+    "defaultMessage": "Automaticky opraviť nesprávne prípony súborov"
+  },
+  "S1/qO0": {
+    "defaultMessage": "Zbierka"
+  },
+  "S39lnB": {
+    "defaultMessage": "Rozsah rokov"
+  },
+  "S9SjlA": {
+    "defaultMessage": "Vybrané"
+  },
+  "SF1C8o": {
+    "defaultMessage": "Uložiť a zavrieť"
+  },
+  "SIfmpC": {
+    "defaultMessage": "Vybrať sériu"
+  },
+  "ST34jK": {
+    "defaultMessage": "Súkromná relácia čítania"
+  },
+  "STdfYg": {
+    "defaultMessage": "Analyzovať rozmery strán"
+  },
+  "SWm3SC": {
+    "defaultMessage": "Pridať odkaz"
+  },
+  "SZHxy4": {
+    "defaultMessage": "Vybrať knihu"
+  },
+  "Sj0HXz": {
+    "defaultMessage": "Povoliť iba štítky"
+  },
+  "SqZoei": {
+    "defaultMessage": "Vybrať sériu"
+  },
+  "Ss08kC": {
+    "defaultMessage": "{count} položiek"
+  },
+  "SuegoE": {
+    "defaultMessage": "Automatické radenie"
+  },
+  "T3Ofay": {
+    "defaultMessage": "Prečítané dňa {readDate}"
+  },
+  "TAVSfO": {
+    "defaultMessage": "Počet kníh"
+  },
+  "TCjAyg": {
+    "defaultMessage": "{first} a {rest, plural, one {# ďalšia séria} few {# ďalšie série} other {# ďalších sérií} }"
+  },
+  "TG7prC": {
+    "defaultMessage": "Dátum pridania"
+  },
+  "TPX4qo": {
+    "defaultMessage": "Značky"
+  },
+  "TTO9NT": {
+    "defaultMessage": "Zhrnutie"
+  },
+  "TUxJCd": {
+    "defaultMessage": "Skenovať pri spustení aplikácie"
+  },
+  "TfdugD": {
+    "defaultMessage": "Podľa dátumu vydania"
+  },
+  "ThHjN4": {
+    "defaultMessage": "Séria"
+  },
+  "Thjcar": {
+    "defaultMessage": "Značky kníh"
+  },
+  "TkIvo8": {
+    "defaultMessage": "Neznáme rozmery"
+  },
+  "ToD0+o": {
+    "defaultMessage": "E-mail"
+  },
+  "TtH2LJ": {
+    "defaultMessage": "Musí byť platné ISBN 13"
+  },
+  "TwB29u": {
+    "defaultMessage": "Nastavte len v prípade problémov so synchronizáciou obálok a sťahovaním"
+  },
+  "U3Uo3q": {
+    "defaultMessage": "Heslo"
+  },
+  "UFZ+PY": {
+    "defaultMessage": "Značky"
+  },
+  "UPOAPc": {
+    "defaultMessage": "Vymazať vyhľadávanie"
+  },
+  "USJuJ1": {
+    "defaultMessage": "Lokálna ilustrácia"
+  },
+  "UTPZNG": {
+    "defaultMessage": "Názov zoznamu na čítanie"
+  },
+  "UaD47n": {
+    "defaultMessage": "Znovu vygenerovať kľúč „Zapamätať si ma“"
+  },
+  "UfbIyV": {
+    "defaultMessage": "Odkazy"
+  },
+  "Uj479p": {
+    "defaultMessage": "Dátum vydania"
+  },
+  "Ulohnz": {
+    "defaultMessage": "Označiť ako neprečítané"
+  },
+  "UoaxO7": {
+    "defaultMessage": "Kniha bude aktualizovaná"
+  },
+  "UsTdV2": {
+    "defaultMessage": "Štítky zdieľania"
+  },
+  "Usohru": {
+    "defaultMessage": "Prehľadávať"
+  },
+  "Uuu6fQ": {
+    "defaultMessage": "Žiadne výsledky"
+  },
+  "UvhIIT": {
+    "defaultMessage": "Zdieľané knižnice"
+  },
+  "UxBl+J": {
+    "defaultMessage": "Svetlý"
+  },
+  "V/OYJE": {
+    "defaultMessage": "Používateľ bol odstránený: {email}"
+  },
+  "V3wgcu": {
+    "defaultMessage": "Duplicitná strana"
+  },
+  "V8tkJa": {
+    "defaultMessage": "Automatické prihlásenie cez OAuth2"
+  },
+  "VHe28r": {
+    "defaultMessage": "Dátum aktualizácie"
+  },
+  "VP+GhR": {
+    "defaultMessage": "Vygenerovať"
+  },
+  "VQ/hT4": {
+    "defaultMessage": "ISBN"
+  },
+  "VcueWO": {
+    "defaultMessage": "Použije sa prvok 'SeriesGroup'"
+  },
+  "VeEnkD": {
+    "defaultMessage": "Odkazy"
+  },
+  "VhMXcu": {
+    "defaultMessage": "{total, plural, one {{count} / # kniha} few {{count} / # knihy} other {{count} / # kníh} }"
+  },
+  "Vpmsx0": {
+    "defaultMessage": "Knihy v sérii"
+  },
+  "Vs7y3+": {
+    "defaultMessage": "Pridať do zoznamu na čítanie"
+  },
+  "VtC7Ce": {
+    "defaultMessage": "Editor"
+  },
+  "VvjZEl": {
+    "defaultMessage": "Nenašli sa žiadne knihy"
+  },
+  "Vwpr+D": {
+    "defaultMessage": "Náhodné"
+  },
+  "W3BUf7": {
+    "defaultMessage": "Rozumiem"
+  },
+  "WADecv": {
+    "defaultMessage": "Nainštalovaná"
+  },
+  "WLfi1+": {
+    "defaultMessage": "{count, plural, one {# kniha} few {# knihy} other {# kníh} }"
+  },
+  "WLwQG8": {
+    "defaultMessage": "Zatiaľ neboli vytvorené žiadne API kľúče"
+  },
+  "WNY0pu": {
+    "defaultMessage": "Najnovšia verzia Komgy je už nainštalovaná"
+  },
+  "WPxleH": {
+    "defaultMessage": "Súbory knihy budú odstránené<ul><li>Mediálny súbor knihy bude odstránený z disku.</li><li>Pomocné súbory knihy budú odstránené z disku.</li><li>Kniha bude odstránená spolu s jej metadátami a priebehom čítania.</li></ul><b>Túto akciu nie je možné vrátiť späť.</b>"
+  },
+  "WSTiWA": {
+    "defaultMessage": "Pridané do zbierky"
+  },
+  "WVblsI": {
+    "defaultMessage": "Počet strán"
+  },
+  "WY7aQf": {
+    "defaultMessage": "Ušetrené miesto"
+  },
+  "WhasCZ": {
+    "defaultMessage": "Nové heslo"
+  },
+  "Wi+k3O": {
+    "defaultMessage": "Je možné použiť desatinné čísla"
+  },
+  "Wivz5J": {
+    "defaultMessage": "Zavrieť"
+  },
+  "Wlzzv8": {
+    "defaultMessage": "Požadované číslo"
+  },
+  "WyueEI": {
+    "defaultMessage": "Upraviť metadáta sérií"
+  },
+  "X/Z8x+": {
+    "defaultMessage": "Nezabudnite si svoj API kľúč skopírovať teraz. Znova ho už neuvidíte!"
+  },
+  "X47Js+": {
+    "defaultMessage": "Séria"
+  },
+  "X80giU": {
+    "defaultMessage": "Pridať"
+  },
+  "XCwAkR": {
+    "defaultMessage": "Otvoriť"
+  },
+  "XDV3Si": {
+    "defaultMessage": "Viac"
+  },
+  "XM8VQH": {
+    "defaultMessage": "Akcia"
+  },
+  "XR+P68": {
+    "defaultMessage": "Jazyk"
+  },
+  "XRbUyd": {
+    "defaultMessage": "Stav čítania"
+  },
+  "XXr6pI": {
+    "defaultMessage": "Veľkosť strany"
+  },
+  "XZ5lw4": {
+    "defaultMessage": "Úspešné overenie"
+  },
+  "Xbf2fj": {
+    "defaultMessage": "Vynútiť čas úpravy priečinka"
+  },
+  "XnidLu": {
+    "defaultMessage": "Na potvrdenie napíšte <b>{validateText}</b>."
+  },
+  "Xq4kkn": {
+    "defaultMessage": "Prejsť na predchádzajúcu knihu v zozname na čítanie"
+  },
+  "XuqK4C": {
+    "defaultMessage": "Neznáme duplikáty"
+  },
+  "Xx+ITC": {
+    "defaultMessage": "Moja aktivita"
+  },
+  "Xxk+hl": {
+    "defaultMessage": "Vyskytuje sa v"
+  },
+  "Xxu514": {
+    "defaultMessage": "Odstrániť súbory série"
+  },
+  "Y/fJj5": {
+    "defaultMessage": "Veľkosť súboru"
+  },
+  "Y0cG3G": {
+    "defaultMessage": "API kľúč bude z tohto servera odstránený.<ul><li>Žiadna aplikácia ani skript používajúci tento API kľúč už nebude mať prístup k rozhraniu Komga API.</li><li>Aktivita overovania pre tento API kľúč bude natrvalo odstránená.</li></ul><b>Túto akciu nie je možné vrátiť späť.</b>"
+  },
+  "Y4xJBN": {
+    "defaultMessage": "Naposledy upravené"
+  },
+  "Y6VlM9": {
+    "defaultMessage": "Zoznam na čítanie"
+  },
+  "Y7Y2T0": {
+    "defaultMessage": "Čítať"
+  },
+  "Y8SsFO": {
+    "defaultMessage": "Čítať"
+  },
+  "YHxouG": {
+    "defaultMessage": "Import bol vyžiadaný"
+  },
+  "YVQ49g": {
+    "defaultMessage": "Upraviť zbierku"
+  },
+  "YaCWYs": {
+    "defaultMessage": "Analýza médií sa presunula"
+  },
+  "YbkrN9": {
+    "defaultMessage": "IP"
+  },
+  "YeFgyc": {
+    "defaultMessage": "Knihy s chybou je teraz možné filtrovať priamo v hlavnom zobrazení knižnice."
+  },
+  "YeUvoE": {
+    "defaultMessage": "Vlastná rola..."
+  },
+  "Ym48fa": {
+    "defaultMessage": "Žiadne nedávne udalosti"
+  },
+  "Z/EY89": {
+    "defaultMessage": "Chyba siete"
+  },
+  "Z42XVQ": {
+    "defaultMessage": "Vypočítať hash súboru knihy (KOReader)"
+  },
+  "Z5hsZ9": {
+    "defaultMessage": "Zostáva strán: {count}"
+  },
+  "ZE3XpF": {
+    "defaultMessage": "Nie sú nakonfigurované žiadne sekcie"
+  },
+  "ZEbDUo": {
+    "defaultMessage": "Dokončené"
+  },
+  "ZGppaw": {
+    "defaultMessage": "Séria"
+  },
+  "ZPuFVu": {
+    "defaultMessage": "Všeobecné"
+  },
+  "ZWFPAg": {
+    "defaultMessage": "Heslá sa musia zhodovať"
+  },
+  "ZZmdmI": {
+    "defaultMessage": "Počet strán: {pagesCount}"
+  },
+  "ZfDKy4": {
+    "defaultMessage": "Nájsť knihy s chýbajúcim hashom strán"
+  },
+  "Zh8AOV": {
+    "defaultMessage": "Upraviť používateľa"
+  },
+  "ZiTv+F": {
+    "defaultMessage": "Chýbajúce plagáty sa presunuli"
+  },
+  "ZnjyI3": {
+    "defaultMessage": "Zobraziť menej"
+  },
+  "ZnnG58": {
+    "defaultMessage": "Plagát"
+  },
+  "Zozcfh": {
+    "defaultMessage": "Zdroj"
+  },
+  "Zzqa/A": {
+    "defaultMessage": "Odstrániť zo zbierky"
+  },
+  "a+32Gi": {
+    "defaultMessage": "Povoliť do (vrátane)"
+  },
+  "a5MYiP": {
+    "defaultMessage": "Plagáty"
+  },
+  "a5jT6x": {
+    "defaultMessage": "Odstrániť zoznam na čítanie"
+  },
+  "aDFZOW": {
+    "defaultMessage": "E-mail"
+  },
+  "aHyrmS": {
+    "defaultMessage": "Odstrániť"
+  },
+  "aOiU5f": {
+    "defaultMessage": "Knižnica bola aktualizovaná: {library}"
+  },
+  "aR6KDt": {
+    "defaultMessage": "Jazyk"
+  },
+  "aSDxrt": {
+    "defaultMessage": "Súbory série boli odstránené: {series}"
+  },
+  "aU1qcP": {
+    "defaultMessage": "Odstrániť"
+  },
+  "aYalqk": {
+    "defaultMessage": "Vyberte nejaké knihy"
+  },
+  "aeEb6w": {
+    "defaultMessage": "Zahoďte zmeny alebo vráťte späť posledné odstránenie"
+  },
+  "afXGQS": {
+    "defaultMessage": "Koreňový priečinok"
+  },
+  "am3r7e": {
+    "defaultMessage": "Aktualizovať knižnicu"
+  },
+  "anhfpP": {
+    "defaultMessage": "Typ súboru nie je podporovaný"
+  },
+  "ap/Lnw": {
+    "defaultMessage": "Pevný odkaz/Kopírovať súbory"
+  },
+  "app.error.ERR_1000": {
+    "defaultMessage": "Počas analýzy nebolo možné získať prístup k súboru"
+  },
+  "app.error.ERR_1001": {
+    "defaultMessage": "Typ média nie je podporovaný"
+  },
+  "app.error.ERR_1002": {
+    "defaultMessage": "Šifrované archívy RAR nie sú podporované"
+  },
+  "app.error.ERR_1003": {
+    "defaultMessage": "Archívy Solid RAR nie sú podporované"
+  },
+  "app.error.ERR_1004": {
+    "defaultMessage": "Viaczväzkové archívy RAR nie sú podporované"
+  },
+  "app.error.ERR_1005": {
+    "defaultMessage": "Neznáma chyba pri analýze knihy"
+  },
+  "app.error.ERR_1006": {
+    "defaultMessage": "Kniha neobsahuje žiadnu stranu"
+  },
+  "app.error.ERR_1007": {
+    "defaultMessage": "Niektoré položky sa nepodarilo analyzovať"
+  },
+  "app.error.ERR_1008": {
+    "defaultMessage": "Neznáma chyba pri získavaní položiek knihy"
+  },
+  "app.error.ERR_1009": {
+    "defaultMessage": "Zoznam na čítanie s týmto názvom už existuje"
+  },
+  "app.error.ERR_1015": {
+    "defaultMessage": "Chyba pri deserializácii súboru ComicRack CBL"
+  },
+  "app.error.ERR_1016": {
+    "defaultMessage": "Priečinok nie je prístupný alebo nejde o priečinok"
+  },
+  "app.error.ERR_1017": {
+    "defaultMessage": "Nie je možné skenovať priečinok, ktorý je súčasťou existujúcej knižnice"
+  },
+  "app.error.ERR_1018": {
+    "defaultMessage": "Súbor sa nenašiel"
+  },
+  "app.error.ERR_1019": {
+    "defaultMessage": "Nie je možné importovať súbor, ktorý je súčasťou existujúcej knižnice"
+  },
+  "app.error.ERR_1020": {
+    "defaultMessage": "Kniha na aktualizáciu nepatrí do zadanej série"
+  },
+  "app.error.ERR_1021": {
+    "defaultMessage": "Cieľový súbor už existuje"
+  },
+  "app.error.ERR_1022": {
+    "defaultMessage": "Novo importovanú knihu sa nepodarilo naskenovať"
+  },
+  "app.error.ERR_1023": {
+    "defaultMessage": "Kniha sa už nachádza v zozname na čítanie"
+  },
+  "app.error.ERR_1024": {
+    "defaultMessage": "Chyba prihlásenia OAuth2: chýba atribút email"
+  },
+  "app.error.ERR_1025": {
+    "defaultMessage": "Chyba prihlásenia OAuth2: neexistuje žiadny lokálny používateľ s týmto e-mailom"
+  },
+  "app.error.ERR_1026": {
+    "defaultMessage": "Chyba prihlásenia OpenID Connect: e-mail nie je overený"
+  },
+  "app.error.ERR_1027": {
+    "defaultMessage": "Chyba prihlásenia OpenID Connect: chýba atribút email_verified"
+  },
+  "app.error.ERR_1028": {
+    "defaultMessage": "Chyba prihlásenia OpenID Connect: chýba atribút email"
+  },
+  "app.error.ERR_1029": {
+    "defaultMessage": "Súbor ComicRack CBL neobsahuje žiadny prvok Book"
+  },
+  "app.error.ERR_1030": {
+    "defaultMessage": "Súbor ComicRack CBL nemá žiadny prvok Name"
+  },
+  "app.error.ERR_1031": {
+    "defaultMessage": "Prvku Book v ComicRack CBL chýba séria alebo číslo"
+  },
+  "app.error.ERR_1032": {
+    "defaultMessage": "Súbor EPUB má nesprávny typ média"
+  },
+  "app.error.ERR_1033": {
+    "defaultMessage": "Niektoré položky chýbajú"
+  },
+  "app.error.ERR_1034": {
+    "defaultMessage": "API kľúč s týmto komentárom už existuje"
+  },
+  "app.error.ERR_1035": {
+    "defaultMessage": "Chyba pri získavaní EPUB TOC"
+  },
+  "app.error.ERR_1036": {
+    "defaultMessage": "Chyba pri získavaní EPUB Landmarks"
+  },
+  "app.error.ERR_1037": {
+    "defaultMessage": "Chyba pri získavaní zoznamu strán EPUB"
+  },
+  "app.error.ERR_1038": {
+    "defaultMessage": "Chyba pri získavaní strán EPUB divina"
+  },
+  "app.error.ERR_1039": {
+    "defaultMessage": "Chyba pri získavaní pozícií EPUB"
+  },
+  "app.user-create-dialog.all_libraries": {
+    "defaultMessage": "Všetky knižnice"
+  },
+  "ayrmyn": {
+    "defaultMessage": "Názov pre radenie"
+  },
+  "b1hvh9": {
+    "defaultMessage": "Automaticky konvertovať CBR na CBZ"
+  },
+  "b4J0RU": {
+    "defaultMessage": "Vo výstavbe"
+  },
+  "bCFD9B": {
+    "defaultMessage": "Stránkované"
+  },
+  "bDNZqj": {
+    "defaultMessage": "Upraviť zoznam na čítanie"
+  },
+  "bDNv5+": {
+    "defaultMessage": "Akékoľvek"
+  },
+  "bFoCHJ": {
+    "defaultMessage": "Cieľový názov súboru"
+  },
+  "bN2VbA": {
+    "defaultMessage": "Vylúčenia priečinkov"
+  },
+  "bOUy3X": {
+    "defaultMessage": "Kniha"
+  },
+  "bRAV2F": {
+    "defaultMessage": "Miesto"
+  },
+  "bRxSgh": {
+    "defaultMessage": "Manuálne"
+  },
+  "bSoeY6": {
+    "defaultMessage": "Cieľový názov"
+  },
+  "bWiqyw": {
+    "defaultMessage": "Názov druhu"
+  },
+  "bk1tX8": {
+    "defaultMessage": "Knižnica bude z tohto servera odstránená.<ul><li>Série a knihy budú odstránené spolu s ich metadátami a priebehom čítania.</li><li>Mediálne súbory nebudú odstránené z disku.</li></ul><b>Túto akciu nie je možné vrátiť späť.</b>"
+  },
+  "bqoEfm": {
+    "defaultMessage": "Vypočítať hash strán knihy"
+  },
+  "bzY8FH": {
+    "defaultMessage": "Vyhľadať"
+  },
+  "bzn96A": {
+    "defaultMessage": "Vytvoriť knižnicu"
+  },
+  "c+hx0g": {
+    "defaultMessage": "Používatelia"
+  },
+  "cAu/I6": {
+    "defaultMessage": "Duplicitné strany"
+  },
+  "cGOJnB": {
+    "defaultMessage": "{count, plural, one {# kniha} few {# knihy} other {# kníh} }"
+  },
+  "cIM3eJ": {
+    "defaultMessage": "Pokračovať"
+  },
+  "cM9FuW": {
+    "defaultMessage": "Vyberte sériu"
+  },
+  "cTPeOs": {
+    "defaultMessage": "alebo prilepte pomocou"
+  },
+  "cWVIRm": {
+    "defaultMessage": "User Agent"
+  },
+  "ccAMWS": {
+    "defaultMessage": "Dokumentácia"
+  },
+  "ccDES8": {
+    "defaultMessage": "Súbory knihy boli odstránené: {book}"
+  },
+  "cfWux+": {
+    "defaultMessage": "Názov zbierky"
+  },
+  "crClNV": {
+    "defaultMessage": "Obálka"
+  },
+  "cyQk6S": {
+    "defaultMessage": "Zbierky"
+  },
+  "d2J/J/": {
+    "defaultMessage": "Vybrať"
+  },
+  "d5c33V": {
+    "defaultMessage": "Neznámy typ média"
+  },
+  "d8lMZe": {
+    "defaultMessage": "Vytvoriť používateľský účet"
+  },
+  "dHyAgE": {
+    "defaultMessage": "Zmeniť heslo"
+  },
+  "dK/kHO": {
+    "defaultMessage": "Komentár k médiu"
+  },
+  "dLE2PW": {
+    "defaultMessage": "Žiadna aktivita"
+  },
+  "dN5GoW": {
+    "defaultMessage": "Kniha"
+  },
+  "dNnqm2": {
+    "defaultMessage": "Upraviť metadáta kníh"
+  },
+  "dP6SpT": {
+    "defaultMessage": "Podľa názvu"
+  },
+  "dQ9kx9": {
+    "defaultMessage": "výber jazyka"
+  },
+  "dSlkbn": {
+    "defaultMessage": "Celkové správanie skenovania"
+  },
+  "dSy8IC": {
+    "defaultMessage": "Pridané do zoznamu na čítanie"
+  },
+  "da/wb0": {
+    "defaultMessage": "Označiť všetko ako prečítané"
+  },
+  "ddpX9L": {
+    "defaultMessage": "Všeobecné"
+  },
+  "ddthL2": {
+    "defaultMessage": "Potvrdiť"
+  },
+  "dfslqC": {
+    "defaultMessage": "Súbory série budú odstránené<ul><li>Mediálne súbory kníh budú odstránené z disku.</li><li>Séria a knihy budú odstránené spolu s ich metadátami a priebehom čítania.</li></ul><b>Túto akciu nie je možné vrátiť späť.</b>"
+  },
+  "dipMGb": {
+    "defaultMessage": "Vytvoriť"
+  },
+  "dto0D+": {
+    "defaultMessage": "Usporiadať"
+  },
+  "dx9s7S": {
+    "defaultMessage": "Vytvorené"
+  },
+  "e7cgeE": {
+    "defaultMessage": "Pridať do zbierky"
+  },
+  "e8DJzj": {
+    "defaultMessage": "Motív"
+  },
+  "eDA9Gm": {
+    "defaultMessage": "Veľkosť generovaného plagátu"
+  },
+  "eRJOa6": {
+    "defaultMessage": "Základná URL servera"
+  },
+  "eW3fXu": {
+    "defaultMessage": "Duplicitné súbory"
+  },
+  "efspoY": {
+    "defaultMessage": "Tabuľka"
+  },
+  "egrxd6": {
+    "defaultMessage": "Používateľ bol vytvorený: {email}"
+  },
+  "enum.MediaProfile.DIVINA": {
+    "defaultMessage": "DiViNa"
+  },
+  "enum.MediaProfile.EPUB": {
+    "defaultMessage": "Epub"
+  },
+  "enum.MediaProfile.PDF": {
+    "defaultMessage": "Pdf"
+  },
+  "enum.MediaStatus.ERROR": {
+    "defaultMessage": "Chyba"
+  },
+  "enum.MediaStatus.OUTDATED": {
+    "defaultMessage": "Zastarané"
+  },
+  "enum.MediaStatus.READY": {
+    "defaultMessage": "Pripravené"
+  },
+  "enum.MediaStatus.UNKNOWN": {
+    "defaultMessage": "Neznáme"
+  },
+  "enum.MediaStatus.UNSUPPORTED": {
+    "defaultMessage": "Nepodporované"
+  },
+  "enum.OverviewSection.keep_reading": {
+    "defaultMessage": "Pokračovať v čítaní"
+  },
+  "enum.OverviewSection.on_deck": {
+    "defaultMessage": "Na rade"
+  },
+  "enum.OverviewSection.recently_added_books": {
+    "defaultMessage": "Nedávno pridané knihy"
+  },
+  "enum.OverviewSection.recently_added_series": {
+    "defaultMessage": "Nedávno pridané série"
+  },
+  "enum.OverviewSection.recently_read_books": {
+    "defaultMessage": "Nedávno prečítané knihy"
+  },
+  "enum.OverviewSection.recently_released_books": {
+    "defaultMessage": "Nedávno vydané knihy"
+  },
+  "enum.OverviewSection.recently_updated_series": {
+    "defaultMessage": "Nedávno aktualizované série"
+  },
+  "enum.ReadStatus.IN_PROGRESS": {
+    "defaultMessage": "Rozčítané"
+  },
+  "enum.ReadStatus.READ": {
+    "defaultMessage": "Prečítané"
+  },
+  "enum.ReadStatus.UNREAD": {
+    "defaultMessage": "Neprečítané"
+  },
+  "enum.ReadingDirection.LEFT_TO_RIGHT": {
+    "defaultMessage": "Zľava doprava"
+  },
+  "enum.ReadingDirection.RIGHT_TO_LEFT": {
+    "defaultMessage": "Sprava doľava"
+  },
+  "enum.ReadingDirection.VERTICAL": {
+    "defaultMessage": "Zvisle"
+  },
+  "enum.ReadingDirection.WEBTOON": {
+    "defaultMessage": "Webtoon"
+  },
+  "enum.ScanInterval.DAILY": {
+    "defaultMessage": "Denne"
+  },
+  "enum.ScanInterval.DISABLED": {
+    "defaultMessage": "Vypnuté"
+  },
+  "enum.ScanInterval.EVERY_12H": {
+    "defaultMessage": "Každých 12 hodín"
+  },
+  "enum.ScanInterval.EVERY_6H": {
+    "defaultMessage": "Každých 6 hodín"
+  },
+  "enum.ScanInterval.HOURLY": {
+    "defaultMessage": "Každú hodinu"
+  },
+  "enum.ScanInterval.WEEKLY": {
+    "defaultMessage": "Týždenne"
+  },
+  "enum.SeriesCover.FIRST": {
+    "defaultMessage": "Prvá"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_FIRST": {
+    "defaultMessage": "Prvá neprečítaná, inak prvá"
+  },
+  "enum.SeriesCover.FIRST_UNREAD_OR_LAST": {
+    "defaultMessage": "Prvá neprečítaná, inak posledná"
+  },
+  "enum.SeriesCover.LAST": {
+    "defaultMessage": "Posledná"
+  },
+  "enum.SeriesStatus.ABANDONED": {
+    "defaultMessage": "Opustené"
+  },
+  "enum.SeriesStatus.ENDED": {
+    "defaultMessage": "Ukončené"
+  },
+  "enum.SeriesStatus.HIATUS": {
+    "defaultMessage": "Pozastavené"
+  },
+  "enum.SeriesStatus.ONGOING": {
+    "defaultMessage": "Prebiehajúce"
+  },
+  "enum.ThumbnailSize.DEFAULT": {
+    "defaultMessage": "Predvolená (300px)"
+  },
+  "enum.ThumbnailSize.LARGE": {
+    "defaultMessage": "Veľká (900px)"
+  },
+  "enum.ThumbnailSize.MEDIUM": {
+    "defaultMessage": "Stredná (600px)"
+  },
+  "enum.ThumbnailSize.XLARGE": {
+    "defaultMessage": "Extra veľká (1200px)"
+  },
+  "enum.UserRole.ADMIN": {
+    "defaultMessage": "Administrátor"
+  },
+  "enum.UserRole.FILE_DOWNLOAD": {
+    "defaultMessage": "Sťahovanie súborov"
+  },
+  "enum.UserRole.KOBO_SYNC": {
+    "defaultMessage": "Synchronizácia Kobo"
+  },
+  "enum.UserRole.KOREADER_SYNC": {
+    "defaultMessage": "Synchronizácia KOReader"
+  },
+  "enum.UserRole.PAGE_STREAMING": {
+    "defaultMessage": "Streamovanie strán"
+  },
+  "enum.UserRole.USER": {
+    "defaultMessage": "Používateľ"
+  },
+  "enum.historicalEvent.BookConverted": {
+    "defaultMessage": "Kniha konvertovaná"
+  },
+  "enum.historicalEvent.BookFileDeleted": {
+    "defaultMessage": "Súbor knihy odstránený"
+  },
+  "enum.historicalEvent.BookImported": {
+    "defaultMessage": "Kniha importovaná"
+  },
+  "enum.historicalEvent.DuplicatePageDeleted": {
+    "defaultMessage": "Duplicitná strana odstránená"
+  },
+  "enum.historicalEvent.SeriesFolderDeleted": {
+    "defaultMessage": "Priečinok série odstránený"
+  },
+  "enum.pageHashAction.DELETE_AUTO": {
+    "defaultMessage": "Automaticky odstrániť"
+  },
+  "enum.pageHashAction.DELETE_MANUAL": {
+    "defaultMessage": "Ručne odstrániť"
+  },
+  "enum.pageHashAction.IGNORE": {
+    "defaultMessage": "Ignorovať"
+  },
+  "estf95": {
+    "defaultMessage": "Zoznam na čítanie bol vytvorený"
+  },
+  "exrB0E": {
+    "defaultMessage": "Všeobecné"
+  },
+  "eyYZUe": {
+    "defaultMessage": "Knižnice"
+  },
+  "ezgnXr": {
+    "defaultMessage": "Potvrdiť heslo"
+  },
+  "f1fW81": {
+    "defaultMessage": "Stav analýzy"
+  },
+  "f3/J8+": {
+    "defaultMessage": "Vpravo"
+  },
+  "fQIepD": {
+    "defaultMessage": "Knihy"
+  },
+  "fRfbEb": {
+    "defaultMessage": "Pridať rolu"
+  },
+  "fVqdik": {
+    "defaultMessage": "ComicInfo.xml (CBR/CBZ)"
+  },
+  "fbEqBB": {
+    "defaultMessage": "Odkazy"
+  },
+  "fl2YLT": {
+    "defaultMessage": "Stav médií"
+  },
+  "foSDIW": {
+    "defaultMessage": "Hĺbkové skenovanie"
+  },
+  "g+OQSw": {
+    "defaultMessage": "zmeniť poradie"
+  },
+  "g2UW+6": {
+    "defaultMessage": "Formát knihy nie je podporovaný"
+  },
+  "gEBeQv": {
+    "defaultMessage": "Metadáta série boli aktualizované: {series}"
+  },
+  "gNiEAF": {
+    "defaultMessage": "Komentár"
+  },
+  "ggaOkE": {
+    "defaultMessage": "Nenašli sa žiadne údaje"
+  },
+  "gjlnkj": {
+    "defaultMessage": "Systémový"
+  },
+  "gojrIJ": {
+    "defaultMessage": "Vybrať sériu"
+  },
+  "gsqrOd": {
+    "defaultMessage": "Znovu vygenerovať plagáty"
+  },
+  "gtEH1R": {
+    "defaultMessage": "Všeobecné"
+  },
+  "gxZjIe": {
+    "defaultMessage": "Akcia"
+  },
+  "h6C8/l": {
+    "defaultMessage": "Všeobecné"
+  },
+  "hBanlz": {
+    "defaultMessage": "Žáner"
+  },
+  "hEOGa9": {
+    "defaultMessage": "Vekové obmedzenie"
+  },
+  "hGFogR": {
+    "defaultMessage": "Štítok zdieľania"
+  },
+  "hJEc5M": {
+    "defaultMessage": "ponuka knižníc"
+  },
+  "hPYi11": {
+    "defaultMessage": "Smer čítania"
+  },
+  "hPo41m": {
+    "defaultMessage": "Nenašli sa žiadne údaje"
+  },
+  "hV3EW+": {
+    "defaultMessage": "Hĺbkové skenovanie"
+  },
+  "hYO2n6": {
+    "defaultMessage": "Môže ísť o problém s vaším pripojením alebo serverom."
+  },
+  "hdoWGT": {
+    "defaultMessage": "Zhody"
+  },
+  "hgiBeR": {
+    "defaultMessage": "Posledná aktivita"
+  },
+  "hkbgs/": {
+    "defaultMessage": "Pridať vlastnú rolu"
+  },
+  "hrh5Rn": {
+    "defaultMessage": "Aktualizovať"
+  },
+  "hude41": {
+    "defaultMessage": "Odstrániť API kľúč"
+  },
+  "i+kSy9": {
+    "defaultMessage": "Obnoviť"
+  },
+  "i6UTPu": {
+    "defaultMessage": "Odomknúť pole"
+  },
+  "iCYg8R": {
+    "defaultMessage": "Žiadne výsledky zodpovedajúce „<b>{search}</b>“. Stlačte <kbd>enter</kbd> alebo kliknite na vytvorenie novej položky."
+  },
+  "iDU5FS": {
+    "defaultMessage": "Trvanie „Zapamätať si ma“ (v dňoch)"
+  },
+  "iGdw+C": {
+    "defaultMessage": "Ďalší"
+  },
+  "iNBto3": {
+    "defaultMessage": "Presmerovať nespracované požiadavky do Kobo Store"
+  },
+  "iQKrku": {
+    "defaultMessage": "EPUB"
+  },
+  "iVYrha": {
+    "defaultMessage": "Všeobecné"
+  },
+  "icSG40": {
+    "defaultMessage": "Vyhľadať alebo vytvoriť"
+  },
+  "ieysdI": {
+    "defaultMessage": "Aktualizovať index vyhľadávania"
+  },
+  "iin6d2": {
+    "defaultMessage": "API kľúče možno použiť na overenie prostredníctvom protokolu Kobo Sync alebo REST API."
+  },
+  "iq1PzT": {
+    "defaultMessage": "Spravovať"
+  },
+  "iu31A4": {
+    "defaultMessage": "Komiksové archívy"
+  },
+  "ixQlWv": {
+    "defaultMessage": "Niečo sa pokazilo"
+  },
+  "iylxeo": {
+    "defaultMessage": "Áno (všetky knihy)"
+  },
+  "j7CGMQ": {
+    "defaultMessage": "potvrdiť"
+  },
+  "jD87k9": {
+    "defaultMessage": "Zbierka bude odstránená<ul><li>Série a knihy nebudú odstránené.</li></ul><b>Túto akciu nie je možné vrátiť späť.</b>"
+  },
+  "jHJk+v": {
+    "defaultMessage": "Vytvorené"
+  },
+  "jN3N1Q": {
+    "defaultMessage": "Analyzovať"
+  },
+  "jYOsNC": {
+    "defaultMessage": "Nevybrané"
+  },
+  "jeXb2z": {
+    "defaultMessage": "Typ média"
+  },
+  "jm9oYh": {
+    "defaultMessage": "Akýkoľvek typ"
+  },
+  "jnjpZy": {
+    "defaultMessage": "Lokálny súbor"
+  },
+  "jpdD8R": {
+    "defaultMessage": "Motív"
+  },
+  "jyrqhz": {
+    "defaultMessage": "Čiarový kód"
+  },
+  "jywpqq": {
+    "defaultMessage": "Vek"
+  },
+  "k2JkZX": {
+    "defaultMessage": "Kolorista"
+  },
+  "k6BCzW": {
+    "defaultMessage": "Odstrániť zbierku"
+  },
+  "k9X/05": {
+    "defaultMessage": "Plagát"
+  },
+  "kDc7YL": {
+    "defaultMessage": "Mediálny server predvolene neodstraňuje informácie o médiách okamžite. To pomáha v prípade dočasného odpojenia disku. Keď vyprázdnite kôš pre knižnicu, všetky informácie o chýbajúcich médiách sa odstránia."
+  },
+  "kFQatO": {
+    "defaultMessage": "Zobraziť filtre"
+  },
+  "kGC6Gu": {
+    "defaultMessage": "Žiadna nedávna aktivita"
+  },
+  "kHmCVM": {
+    "defaultMessage": "Skenovať knižnicu"
+  },
+  "kMw47z": {
+    "defaultMessage": "Odstrániť zo zoznamu na čítanie"
+  },
+  "kXuNY8": {
+    "defaultMessage": "Pridať stranu do výberu"
+  },
+  "kYDPt1": {
+    "defaultMessage": "Názov súboru"
+  },
+  "kZ0WlY": {
+    "defaultMessage": "Súbor knihy sa nepodarilo nájsť"
+  },
+  "kh49ZJ": {
+    "defaultMessage": "Zahodiť"
+  },
+  "knm6Z+": {
+    "defaultMessage": "Stav"
+  },
+  "kqV7EJ": {
+    "defaultMessage": "Po skenovaní odstrániť prázdne zoznamy na čítanie"
+  },
+  "kvbi4j": {
+    "defaultMessage": "Používateľ bol aktualizovaný: {email}"
+  },
+  "l/To3S": {
+    "defaultMessage": "História"
+  },
+  "l5qiAB": {
+    "defaultMessage": "Nájsť duplicitné strany na odstránenie"
+  },
+  "l7+H/k": {
+    "defaultMessage": "Má prednosť pred konfiguračným súborom"
+  },
+  "l7mpQK": {
+    "defaultMessage": "Prečítané"
+  },
+  "lDnmZD": {
+    "defaultMessage": "Aktualizácie"
+  },
+  "lFTdQ+": {
+    "defaultMessage": "Označiť ako"
+  },
+  "lFWPpj": {
+    "defaultMessage": "Pridať druh"
+  },
+  "lPZ5hy": {
+    "defaultMessage": "Zavrieť"
+  },
+  "lSlhp0": {
+    "defaultMessage": "Názov zdrojového súboru"
+  },
+  "laWvMU": {
+    "defaultMessage": "Ok"
+  },
+  "ldAVd7": {
+    "defaultMessage": "Zoznam na čítanie"
+  },
+  "lkoTf7": {
+    "defaultMessage": "CBR"
+  },
+  "lt7Tru": {
+    "defaultMessage": "Série"
+  },
+  "lu0qxx": {
+    "defaultMessage": "Odstrániť"
+  },
+  "lvCpSX": {
+    "defaultMessage": "Akcie"
+  },
+  "lzHPYD": {
+    "defaultMessage": "Skúste vyhľadať niečo iné"
+  },
+  "m+yz6Z": {
+    "defaultMessage": "Číslo strany"
+  },
+  "m9h2wk": {
+    "defaultMessage": "Miniatúra"
+  },
+  "m9tuzy": {
+    "defaultMessage": "Aktivita"
+  },
+  "mP9Ldq": {
+    "defaultMessage": "Dátum vytvorenia"
+  },
+  "mQ3hSR": {
+    "defaultMessage": "Obmedzenia štítkov"
+  },
+  "n0TnQ2": {
+    "defaultMessage": "Server nie je dostupný"
+  },
+  "n0tWL5": {
+    "defaultMessage": "Hromadná úprava"
+  },
+  "n0yuoo": {
+    "defaultMessage": "Aktivita"
+  },
+  "n1Ik+L": {
+    "defaultMessage": "Sú dostupné aktualizácie"
+  },
+  "n4w2CE": {
+    "defaultMessage": "Upraviť"
+  },
+  "n8mugB": {
+    "defaultMessage": "Áno (iba zväčšenie)"
+  },
+  "nJiYF7": {
+    "defaultMessage": "Potvrdiť heslo"
+  },
+  "nOcpr8": {
+    "defaultMessage": "Samostatný diel"
+  },
+  "nWgSSS": {
+    "defaultMessage": "Zbierka"
+  },
+  "nXEvYQ": {
+    "defaultMessage": "Uložiť a ďalší"
+  },
+  "nXFVsQ": {
+    "defaultMessage": "Vypočítať hash pre KOReader"
+  },
+  "nXWSTf": {
+    "defaultMessage": "Názov"
+  },
+  "nYtEQI": {
+    "defaultMessage": "Obnoviť metadáta"
+  },
+  "nhrFtV": {
+    "defaultMessage": "Nedostupné"
+  },
+  "noaGSP": {
+    "defaultMessage": "Vybrať knihu"
+  },
+  "nuoJ1n": {
+    "defaultMessage": "Vytvoriť knižnicu"
+  },
+  "nyxfPy": {
+    "defaultMessage": "Použijú sa prvky 'AlternateSeries' alebo 'StoryArc'"
+  },
+  "o+A10T": {
+    "defaultMessage": "Heslo"
+  },
+  "o+h0F+": {
+    "defaultMessage": "Názov súboru"
+  },
+  "o1XnPU": {
+    "defaultMessage": "API kľúč"
+  },
+  "o8WeX3": {
+    "defaultMessage": "Odstrániť"
+  },
+  "oB2hG3": {
+    "defaultMessage": "Zdieľanie"
+  },
+  "oFOkWZ": {
+    "defaultMessage": "API kľúče"
+  },
+  "oOtDhj": {
+    "defaultMessage": "Kopírovať do schránky"
+  },
+  "oQ2wIE": {
+    "defaultMessage": "Niektoré z vybraných kníh obsahujú chybu"
+  },
+  "oWsqnh": {
+    "defaultMessage": "Na čo slúži tento API kľúč?"
+  },
+  "oyeyK/": {
+    "defaultMessage": "Miniatúra"
+  },
+  "pBivnm": {
+    "defaultMessage": "Bez hodnoty"
+  },
+  "pCBNlA": {
+    "defaultMessage": "Knižnica"
+  },
+  "pENCUD": {
+    "defaultMessage": "Zrušiť"
+  },
+  "pHdVzh": {
+    "defaultMessage": "Po skenovaní odstrániť prázdne zbierky"
+  },
+  "pHycdf": {
+    "defaultMessage": "Súbor knihy ešte nebol analyzovaný"
+  },
+  "pK72Vk": {
+    "defaultMessage": "Predchádzajúci"
+  },
+  "pR3VdQ": {
+    "defaultMessage": "Séria"
+  },
+  "pTsA/M": {
+    "defaultMessage": "Knihy"
+  },
+  "phzvRy": {
+    "defaultMessage": "Knižnica"
+  },
+  "pvD6TS": {
+    "defaultMessage": "Porovnať"
+  },
+  "pz7ZlL": {
+    "defaultMessage": "Strany"
+  },
+  "q/AkPU": {
+    "defaultMessage": "Agregovať metadáta série"
+  },
+  "q4YedO": {
+    "defaultMessage": "Číslo pre radenie"
+  },
+  "q6fppQ": {
+    "defaultMessage": "Odstrániť"
+  },
+  "q7gxLw": {
+    "defaultMessage": "Používateľský účet bude z tohto servera odstránený.<ul><li>Priebeh čítania pre tento používateľský účet bude natrvalo odstránený.</li><li>Aktivita overovania pre tohto používateľa bude natrvalo odstránená.</li></ul><b>Túto akciu nie je možné vrátiť späť.</b>"
+  },
+  "qiZm6U": {
+    "defaultMessage": "Neznáme"
+  },
+  "qlImvg": {
+    "defaultMessage": "Obnoviť na predvolené"
+  },
+  "qq92EF": {
+    "defaultMessage": "Odomknúť pole"
+  },
+  "r/G7j0": {
+    "defaultMessage": "Číslo"
+  },
+  "r48oBl": {
+    "defaultMessage": "Usporiadať zoznam na čítanie"
+  },
+  "r5O+/d": {
+    "defaultMessage": "Žáner"
+  },
+  "r6CqyT": {
+    "defaultMessage": "Odstrániť používateľa"
+  },
+  "r6JNfI": {
+    "defaultMessage": "Zabudli ste heslo?"
+  },
+  "r7xCeA": {
+    "defaultMessage": "Zmeniť heslo"
+  },
+  "rCLYEd": {
+    "defaultMessage": "Opraviť príponu"
+  },
+  "rDBhmQ": {
+    "defaultMessage": "Odstrániť"
+  },
+  "rHwSrF": {
+    "defaultMessage": "Vlákna úloh"
+  },
+  "rKyTwd": {
+    "defaultMessage": "Akcie"
+  },
+  "rRFQKU": {
+    "defaultMessage": "Kobo Sync"
+  },
+  "rhtmLf": {
+    "defaultMessage": "Poradie"
+  },
+  "rkpCD1": {
+    "defaultMessage": "Autori"
+  },
+  "rks1H9": {
+    "defaultMessage": "Správa súborov"
+  },
+  "rm0c6Y": {
+    "defaultMessage": "Tento server zatiaľ nemá žiadnu knižnicu"
+  },
+  "rnClur": {
+    "defaultMessage": "{rating}+"
+  },
+  "roy9ap": {
+    "defaultMessage": "Funguje len vtedy, ak je nakonfigurovaný jeden poskytovateľ OAuth2"
+  },
+  "rrF/Z2": {
+    "defaultMessage": "Názov"
+  },
+  "rtOXU6": {
+    "defaultMessage": "Podrobnosti knihy"
+  },
+  "ruWj+g": {
+    "defaultMessage": "Stiahnuť"
+  },
+  "rw5pw5": {
+    "defaultMessage": "Vizuál"
+  },
+  "s/A/wz": {
+    "defaultMessage": "ISBN"
+  },
+  "s1nzhU": {
+    "defaultMessage": "Názov knižnice"
+  },
+  "sGsWvI": {
+    "defaultMessage": "Zmeniť heslo"
+  },
+  "sMmke1": {
+    "defaultMessage": "Významné entity"
+  },
+  "sNSGMQ": {
+    "defaultMessage": "Sem presuňte obrázky"
+  },
+  "sPScum": {
+    "defaultMessage": "Kniha bola importovaná"
+  },
+  "sUSVQS": {
+    "defaultMessage": "Označiť ako prečítané"
+  },
+  "sUl0GP": {
+    "defaultMessage": "výber zobrazenia"
+  },
+  "samiG7": {
+    "defaultMessage": "Naposledy upravené"
+  },
+  "sbwSuO": {
+    "defaultMessage": "Pripojenie v reálnom čase k serveru nie je k dispozícii. Prvky rozhrania sa nemusia aktualizovať správne."
+  },
+  "sdNz1F": {
+    "defaultMessage": "Vyprázdniť kôš"
+  },
+  "sj2JGj": {
+    "defaultMessage": "Nepripnuté"
+  },
+  "sjC8ot": {
+    "defaultMessage": "Súbor knihy sa nepodarilo analyzovať:"
+  },
+  "so1P5Y": {
+    "defaultMessage": "Obnoviť lokálne ilustrácie knihy"
+  },
+  "sutqn3": {
+    "defaultMessage": "Vlastný druh..."
+  },
+  "syF0Ap": {
+    "defaultMessage": "Veľkosť"
+  },
+  "t0Tkmy": {
+    "defaultMessage": "Vynútiť synchronizáciu Kobo"
+  },
+  "t38TG7": {
+    "defaultMessage": "Knihy v zozname na čítanie boli aktualizované: {readlist}"
+  },
+  "t3B+Qv": {
+    "defaultMessage": "Odstrániť zahashované strany"
+  },
+  "t5NC5O": {
+    "defaultMessage": "+ {count} ďalších"
+  },
+  "t5ZhnZ": {
+    "defaultMessage": "Ponechajte prázdne na vypnutie"
+  },
+  "tA65z3": {
+    "defaultMessage": "Číslo strany"
+  },
+  "tCm6kO": {
+    "defaultMessage": "{count, plural, one {# vybratá} few {# vybraté} other {# vybratých} }"
+  },
+  "tEA65+": {
+    "defaultMessage": "{count, plural, one {# kniha bude odstránená} few {# knihy budú odstránené} other {# kníh bude odstránených} }"
+  },
+  "tFx9of": {
+    "defaultMessage": "{count, plural, one {# kniha bola odstránená} few {# knihy boli odstránené} other {# kníh bolo odstránených} } zo zoznamu na čítanie: {readlist}"
+  },
+  "tLFumw": {
+    "defaultMessage": "Vekové hodnotenie"
+  },
+  "tPD6YO": {
+    "defaultMessage": "Hľadať sériu"
+  },
+  "tbNQ5v": {
+    "defaultMessage": "{rating}+"
+  },
+  "tc55Tn": {
+    "defaultMessage": "Odstrániť zo zbierky"
+  },
+  "tcXhCG": {
+    "defaultMessage": "Uzamknúť pole"
+  },
+  "ti4Pzo": {
+    "defaultMessage": "Odhlásiť sa"
+  },
+  "tj5v0L": {
+    "defaultMessage": "Pridať do zbierky"
+  },
+  "tm9g8D": {
+    "defaultMessage": "Ok"
+  },
+  "tn7uib": {
+    "defaultMessage": "Rok"
+  },
+  "toP54Z": {
+    "defaultMessage": "Chyba"
+  },
+  "tqrq7S": {
+    "defaultMessage": "Zahoďte zmeny alebo vráťte späť posledné odstránenie"
+  },
+  "u23YLt": {
+    "defaultMessage": "Vrátiť späť"
+  },
+  "uBqZMx": {
+    "defaultMessage": "Existujúca"
+  },
+  "uD9n5o": {
+    "defaultMessage": "Radenie kníh"
+  },
+  "uGC9fD": {
+    "defaultMessage": "Možnosti"
+  },
+  "uOPuSH": {
+    "defaultMessage": "Žáner"
+  },
+  "uTuk/9": {
+    "defaultMessage": "Veľkosť súboru"
+  },
+  "uW+6XG": {
+    "defaultMessage": "Zhrnutie"
+  },
+  "uXY7Eg": {
+    "defaultMessage": "Logo Komga"
+  },
+  "uY7N6Z": {
+    "defaultMessage": "Profil médií"
+  },
+  "uoc99F": {
+    "defaultMessage": "Môže spotrebovať veľa prostriedkov pri veľkých knižniciach alebo pomalom hardvéri"
+  },
+  "upo+2b": {
+    "defaultMessage": "Kandidát"
+  },
+  "ut2gmo": {
+    "defaultMessage": "Roly"
+  },
+  "uwFE74": {
+    "defaultMessage": "Skenovať"
+  },
+  "v3beFf": {
+    "defaultMessage": "Musí byť platný kód jazyka BCP 47"
+  },
+  "vOS8Dl": {
+    "defaultMessage": "Zbierka s týmto názvom už existuje"
+  },
+  "vTqlcG": {
+    "defaultMessage": "Odstrániť"
+  },
+  "vXhkpo": {
+    "defaultMessage": "Odstrániť súbor"
+  },
+  "vcA12h": {
+    "defaultMessage": "Jazyk"
+  },
+  "veqjHc": {
+    "defaultMessage": "Znova"
+  },
+  "viKuRl": {
+    "defaultMessage": "Plagát"
+  },
+  "vkeTYG": {
+    "defaultMessage": "Import knihy zlyhal"
+  },
+  "vs88Ef": {
+    "defaultMessage": "Obnoví metadáta pre všetky mediálne súbory v knižnici. V závislosti od veľkosti knižnice to môže trvať dlhý čas."
+  },
+  "vtBARB": {
+    "defaultMessage": "Vygenerovaná ilustrácia"
+  },
+  "vvl9xP": {
+    "defaultMessage": "Vyprázdniť kôš"
+  },
+  "w2K5yu": {
+    "defaultMessage": "Zoznamy na čítanie"
+  },
+  "wESuod": {
+    "defaultMessage": "Neprečítané"
+  },
+  "wJaip6": {
+    "defaultMessage": "Vypočítať hash pre súbory"
+  },
+  "wRjFWz": {
+    "defaultMessage": "Automatické radenie"
+  },
+  "wXGljO": {
+    "defaultMessage": "Pokračovať"
+  },
+  "wbH42A": {
+    "defaultMessage": "Nedostupné"
+  },
+  "wk+b55": {
+    "defaultMessage": "Upraviť"
+  },
+  "wwiazg": {
+    "defaultMessage": "V schránke sa nenašiel žiadny platný obrázok"
+  },
+  "x1MEvu": {
+    "defaultMessage": "Dátum vydania"
+  },
+  "xAZMxz": {
+    "defaultMessage": "Názov súboru"
+  },
+  "xPBqGY": {
+    "defaultMessage": "Odstrániť sériu"
+  },
+  "xSNdDU": {
+    "defaultMessage": "Zoznam na čítanie bude odstránený<ul><li>Série a knihy nebudú odstránené.</li></ul><b>Túto akciu nie je možné vrátiť späť.</b>"
+  },
+  "xYp/8u": {
+    "defaultMessage": "Vyberte knihu"
+  },
+  "xeiMMk": {
+    "defaultMessage": "Tušer"
+  },
+  "xfThoX": {
+    "defaultMessage": "Zhody"
+  },
+  "xiyw1J": {
+    "defaultMessage": "Obnoviť všetky metadáta"
+  },
+  "xjHL5K": {
+    "defaultMessage": "Plagát"
+  },
+  "xpBvz8": {
+    "defaultMessage": "Rok vydania"
+  },
+  "y1Fk/a": {
+    "defaultMessage": "Žiadne výsledky"
+  },
+  "y1P/K4": {
+    "defaultMessage": "Posledná aktivita"
+  },
+  "y3nPgO": {
+    "defaultMessage": "Vykoná sa hĺbkové skenovanie súborov knižnice. V závislosti od veľkosti knižnice to môže trvať dlhý čas."
+  },
+  "y5GoQ3": {
+    "defaultMessage": "Otvoriť navigačnú ponuku používateľa"
+  },
+  "yDWzUi": {
+    "defaultMessage": "API kľúče"
+  },
+  "yPygXa": {
+    "defaultMessage": "Vytvoriť"
+  },
+  "yaa8so": {
+    "defaultMessage": "Skener"
+  },
+  "ycrpqO": {
+    "defaultMessage": "Vygenerovať nový API kľúč"
+  },
+  "yrE0Rx": {
+    "defaultMessage": "Podrobnosti"
+  },
+  "yvQfma": {
+    "defaultMessage": "{count, plural, one {# séria bude odstránená} few {# série budú odstránené} other {# sérií bude odstránených} }"
+  },
+  "yxnX5k": {
+    "defaultMessage": "Skryť prihlasovacie polia, ak je povolené OAuth2"
+  },
+  "yyAGH1": {
+    "defaultMessage": "š: {width}, v: {height}"
+  },
+  "z4ywpN": {
+    "defaultMessage": "Série v zbierke boli aktualizované: {collection}"
+  },
+  "z5sjUM": {
+    "defaultMessage": "Vypočítať hash súboru knihy"
+  },
+  "z8b1Xe": {
+    "defaultMessage": "Importovať z priečinka"
+  },
+  "zRDVnR": {
+    "defaultMessage": "Veľkosť"
+  },
+  "zWRhDm": {
+    "defaultMessage": "Alternatívne názvy"
+  },
+  "zfQq+w": {
+    "defaultMessage": "E-mail"
+  },
+  "zphiTI": {
+    "defaultMessage": "API kľúč s týmto komentárom už existuje"
+  },
+  "zqAxRE": {
+    "defaultMessage": "Kniha"
+  },
+  "zuhGGz": {
+    "defaultMessage": "Zmeniť poradie alebo pripnúť"
+  }
+}
